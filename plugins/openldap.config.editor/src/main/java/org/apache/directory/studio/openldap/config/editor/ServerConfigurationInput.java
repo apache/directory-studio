@@ -20,9 +20,8 @@
 package org.apache.directory.studio.openldap.config.editor;
 
 
-import org.eclipse.ui.IEditorInput;
-
 import org.apache.directory.studio.openldap.config.jobs.EntryBasedConfigurationPartition;
+import org.eclipse.ui.IEditorInput;
 
 
 /**
@@ -35,8 +34,7 @@ public interface ServerConfigurationInput extends IEditorInput
     /**
      * Gets the original configuration partition.
      *
-     * @return
-     *      the original configuration partition
+     * @return the original configuration partition
      */
     public EntryBasedConfigurationPartition getOriginalPartition();
 
@@ -44,8 +42,7 @@ public interface ServerConfigurationInput extends IEditorInput
     /**
      * Sets the original configuration partition.
      *
-     * @param originalPartition
-     *      the original configuration 
+     * @param originalPartition the original configuration 
      */
     public void setOriginalPartition( EntryBasedConfigurationPartition originalPartition );
 }

@@ -38,8 +38,7 @@ public class ConnectionServerConfigurationInput extends AbstractServerConfigurat
     /**
      * Creates a new instance of ConnectionServerConfigurationInput.
      *
-     * @param connection
-     *      the connection
+     * @param connection the connection
      */
     public ConnectionServerConfigurationInput( Connection connection )
     {
@@ -99,6 +98,7 @@ public class ConnectionServerConfigurationInput extends AbstractServerConfigurat
         if ( obj instanceof ConnectionServerConfigurationInput )
         {
             ConnectionServerConfigurationInput input = ( ConnectionServerConfigurationInput ) obj;
+
             if ( input.exists() && exists() )
             {
                 Connection inputConnection = input.getConnection();

@@ -22,10 +22,9 @@ package org.apache.directory.studio.openldap.config.editor;
 
 import java.io.File;
 
-import org.eclipse.jface.resource.ImageDescriptor;
-
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPlugin;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginConstants;
+import org.eclipse.jface.resource.ImageDescriptor;
 
 
 /**
@@ -123,6 +122,7 @@ public class DirectoryServerConfigurationInput extends AbstractServerConfigurati
         if ( obj instanceof DirectoryServerConfigurationInput )
         {
             DirectoryServerConfigurationInput input = ( DirectoryServerConfigurationInput ) obj;
+
             if ( input.exists() && exists() )
             {
                 File inputDirectory = input.getDirectory();

@@ -30,6 +30,26 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.openldap.common.ui.widgets.BooleanWithDefaultWidget;
+import org.apache.directory.studio.openldap.common.ui.widgets.EntryWidget;
+import org.apache.directory.studio.openldap.common.ui.widgets.PasswordWidget;
+import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPlugin;
+import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginConstants;
+import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginUtils;
+import org.apache.directory.studio.openldap.config.editor.dialogs.OverlayDialog;
+import org.apache.directory.studio.openldap.config.editor.dialogs.ReplicationConsumerDialog;
+import org.apache.directory.studio.openldap.config.model.OlcOverlayConfig;
+import org.apache.directory.studio.openldap.config.model.database.OlcBdbConfig;
+import org.apache.directory.studio.openldap.config.model.database.OlcDatabaseConfig;
+import org.apache.directory.studio.openldap.config.model.database.OlcHdbConfig;
+import org.apache.directory.studio.openldap.config.model.database.OlcLdifConfig;
+import org.apache.directory.studio.openldap.config.model.database.OlcMdbConfig;
+import org.apache.directory.studio.openldap.config.model.database.OlcNullConfig;
+import org.apache.directory.studio.openldap.config.model.database.OlcRelayConfig;
+import org.apache.directory.studio.openldap.syncrepl.Provider;
+import org.apache.directory.studio.openldap.syncrepl.SyncRepl;
+import org.apache.directory.studio.openldap.syncrepl.SyncReplParser;
+import org.apache.directory.studio.openldap.syncrepl.SyncReplParserException;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -63,26 +83,6 @@ import org.eclipse.ui.forms.IFormPart;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
-import org.apache.directory.studio.openldap.common.ui.widgets.BooleanWithDefaultWidget;
-import org.apache.directory.studio.openldap.common.ui.widgets.EntryWidget;
-import org.apache.directory.studio.openldap.common.ui.widgets.PasswordWidget;
-import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPlugin;
-import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginConstants;
-import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginUtils;
-import org.apache.directory.studio.openldap.config.editor.dialogs.OverlayDialog;
-import org.apache.directory.studio.openldap.config.editor.dialogs.ReplicationConsumerDialog;
-import org.apache.directory.studio.openldap.config.model.OlcOverlayConfig;
-import org.apache.directory.studio.openldap.config.model.database.OlcBdbConfig;
-import org.apache.directory.studio.openldap.config.model.database.OlcDatabaseConfig;
-import org.apache.directory.studio.openldap.config.model.database.OlcHdbConfig;
-import org.apache.directory.studio.openldap.config.model.database.OlcLdifConfig;
-import org.apache.directory.studio.openldap.config.model.database.OlcMdbConfig;
-import org.apache.directory.studio.openldap.config.model.database.OlcNullConfig;
-import org.apache.directory.studio.openldap.config.model.database.OlcRelayConfig;
-import org.apache.directory.studio.openldap.syncrepl.Provider;
-import org.apache.directory.studio.openldap.syncrepl.SyncRepl;
-import org.apache.directory.studio.openldap.syncrepl.SyncReplParser;
-import org.apache.directory.studio.openldap.syncrepl.SyncReplParserException;
 
 
 /**
@@ -96,12 +96,23 @@ public class DatabasesDetailsPage implements IDetailsPage
     private static DatabaseTypeEnum[] EDITABLE_DATABASE_TYPES = new DatabaseTypeEnum[]
         {
             DatabaseTypeEnum.NONE,
+            DatabaseTypeEnum.FRONTEND,
+            DatabaseTypeEnum.CONFIG,
             DatabaseTypeEnum.BDB,
+            DatabaseTypeEnum.DB_PERL,
+            DatabaseTypeEnum.DB_SOCKET,
             DatabaseTypeEnum.HDB,
-            DatabaseTypeEnum.LDIF,
             DatabaseTypeEnum.MDB,
+            DatabaseTypeEnum.LDAP,
+            DatabaseTypeEnum.LDIF,
+            DatabaseTypeEnum.META,
+            DatabaseTypeEnum.MONITOR,
+            DatabaseTypeEnum.NDB,
             DatabaseTypeEnum.NULL,
-            DatabaseTypeEnum.RELAY
+            DatabaseTypeEnum.PASSWD,
+            DatabaseTypeEnum.RELAY,
+            DatabaseTypeEnum.SHELL,
+            DatabaseTypeEnum.SQL
     };
 
     /** The frontend database type array */
@@ -227,12 +238,12 @@ public class DatabasesDetailsPage implements IDetailsPage
         }
     };
 
-
     private ISelectionChangedListener databaseTypeComboViewerSelectionChangedListener = new ISelectionChangedListener()
     {
         public void selectionChanged( SelectionChangedEvent event )
         {
-            DatabaseTypeEnum type = ( DatabaseTypeEnum ) ( ( StructuredSelection ) databaseTypeComboViewer.getSelection() )
+            DatabaseTypeEnum type = ( DatabaseTypeEnum ) ( ( StructuredSelection ) databaseTypeComboViewer
+                .getSelection() )
                 .getFirstElement();
 
             if ( ( databaseWrapper != null ) && ( databaseWrapper.getDatabase() != null ) )
@@ -376,19 +387,19 @@ public class DatabasesDetailsPage implements IDetailsPage
         databaseTypeComboViewer = new ComboViewer( databaseTypeCombo );
         databaseTypeComboViewer.setContentProvider( new ArrayContentProvider() );
         databaseTypeComboViewer.setLabelProvider( new LabelProvider()
+        {
+            public String getText( Object element )
             {
-                public String getText( Object element )
+                if ( element instanceof DatabaseTypeEnum )
                 {
-                    if ( element instanceof DatabaseTypeEnum )
-                    {
-                        DatabaseTypeEnum databaseType = ( DatabaseTypeEnum ) element;
+                    DatabaseTypeEnum databaseType = ( DatabaseTypeEnum ) element;
 
-                        return databaseType.getName();
-                    }
-
-                    return super.getText( element );
+                    return databaseType.getName();
                 }
-            } );
+
+                return super.getText( element );
+            }
+        } );
 
         // Suffix
         toolkit.createLabel( composite, "Suffix:" );

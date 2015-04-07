@@ -26,6 +26,10 @@ import java.util.Enumeration;
 import org.apache.directory.studio.common.core.jobs.StudioJob;
 import org.apache.directory.studio.common.core.jobs.StudioRunnableWithProgress;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.openldap.config.editor.databases.DatabasesPage;
+import org.apache.directory.studio.openldap.config.jobs.LoadConfigurationRunnable;
+import org.apache.directory.studio.openldap.config.model.OpenLdapConfiguration;
+import org.apache.directory.studio.openldap.config.model.io.SaveConfigurationRunnable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.IPageChangedListener;
 import org.eclipse.jface.dialogs.PageChangedEvent;
@@ -37,11 +41,6 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.forms.editor.FormEditor;
-
-import org.apache.directory.studio.openldap.config.editor.databases.DatabasesPage;
-import org.apache.directory.studio.openldap.config.jobs.LoadConfigurationRunnable;
-import org.apache.directory.studio.openldap.config.model.OpenLdapConfiguration;
-import org.apache.directory.studio.openldap.config.model.io.SaveConfigurationRunnable;
 
 
 /**
@@ -131,9 +130,11 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
     private void showOrHideTabFolder()
     {
         Composite container = getContainer();
+
         if ( container instanceof CTabFolder )
         {
             CTabFolder folder = ( CTabFolder ) container;
+
             if ( getPageCount() == 1 )
             {
                 folder.setTabHeight( 0 );
@@ -142,6 +143,7 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
             {
                 folder.setTabHeight( -1 );
             }
+
             folder.layout( true, true );
         }
     }

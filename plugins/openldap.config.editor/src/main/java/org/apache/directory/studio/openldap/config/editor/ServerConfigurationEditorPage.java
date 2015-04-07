@@ -20,6 +20,9 @@
 package org.apache.directory.studio.openldap.config.editor;
 
 
+import org.apache.directory.studio.openldap.config.actions.EditorExportConfigurationAction;
+import org.apache.directory.studio.openldap.config.actions.EditorImportConfigurationAction;
+import org.apache.directory.studio.openldap.config.model.OpenLdapConfiguration;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.osgi.util.NLS;
@@ -44,10 +47,6 @@ import org.eclipse.ui.forms.editor.FormPage;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 
-import org.apache.directory.studio.openldap.config.actions.EditorExportConfigurationAction;
-import org.apache.directory.studio.openldap.config.actions.EditorImportConfigurationAction;
-import org.apache.directory.studio.openldap.config.model.OpenLdapConfiguration;
-
 
 /**
  * This class represents the General Page of the Server Configuration Editor.
@@ -58,7 +57,7 @@ public abstract class ServerConfigurationEditorPage extends FormPage
 {
     protected static final Color GRAY_COLOR = new Color( null, 120, 120, 120 );
     protected static final String TABULATION = "      ";
-    
+
     /** A flag to indicate if the page is initialized */
     protected boolean isInitialized = false;
 
@@ -82,8 +81,7 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     /**
      * Creates a new instance of GeneralPage.
      *
-     * @param editor
-     *      the associated editor
+     * @param editor the associated editor
      */
     public ServerConfigurationEditorPage( ServerConfigurationEditor editor, String id, String title )
     {
@@ -94,8 +92,7 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     /**
      * Gets the ServerConfigurationEditor object associated with the page.
      *
-     * @return
-     *      the ServerConfigurationEditor object associated with the page
+     * @return the ServerConfigurationEditor object associated with the page
      */
     public ServerConfigurationEditor getServerConfigurationEditor()
     {
@@ -115,8 +112,7 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     /**
      * Gets the configuration associated with the editor.
      *
-     * @return
-     *      the configuration associated with the editor
+     * @return the configuration associated with the editor
      */
     public OpenLdapConfiguration getConfiguration()
     {
@@ -156,7 +152,7 @@ public abstract class ServerConfigurationEditorPage extends FormPage
         toolbarManager.update( true );
 
         createFormContent( parent, toolkit );
-        
+
         isInitialized = true;
     }
 
@@ -164,10 +160,8 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     /**
      * Subclasses must implement this method to create the content of their form.
      *
-     * @param parent
-     *      the parent element
-     * @param toolkit
-     *      the form toolkit
+     * @param parent the parent element
+     * @param toolkit the form toolkit
      */
     protected abstract void createFormContent( Composite parent, FormToolkit toolkit );
 
@@ -176,7 +170,8 @@ public abstract class ServerConfigurationEditorPage extends FormPage
      * Refreshes the UI.
      */
     protected abstract void refreshUI();
-    
+
+
     /**
      * Indicates if the page is initialized.
      *
@@ -192,12 +187,9 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     /**
      * Creates a Text that can be used to enter a port number.
      *
-     * @param toolkit
-     *      the toolkit
-     * @param parent
-     *      the parent
-     * @return
-     *      a Text that can be used to enter a port number
+     * @param toolkit the toolkit
+     * @param parent the parent
+     * @return a Text that can be used to enter a port number
      */
     protected Text createPortText( FormToolkit toolkit, Composite parent )
     {

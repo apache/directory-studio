@@ -20,16 +20,15 @@
 package org.apache.directory.studio.openldap.config.editor.databases;
 
 
+import org.apache.directory.studio.openldap.config.editor.ServerConfigurationEditor;
+import org.apache.directory.studio.openldap.config.editor.ServerConfigurationEditorPage;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
-import org.apache.directory.studio.openldap.config.editor.ServerConfigurationEditor;
-import org.apache.directory.studio.openldap.config.editor.ServerConfigurationEditorPage;
-
 
 /**
- * This class represents the General Page of the Server Configuration Editor.
+ * This class represents the Databases Page of the Server Configuration Editor.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -46,10 +45,9 @@ public class DatabasesPage extends ServerConfigurationEditorPage
 
 
     /**
-     * Creates a new instance of GeneralPage.
+     * Creates a new instance of DatabasePage.
      *
-     * @param editor
-     *      the associated editor
+     * @param editor the associated editor
      */
     public DatabasesPage( ServerConfigurationEditor editor )
     {

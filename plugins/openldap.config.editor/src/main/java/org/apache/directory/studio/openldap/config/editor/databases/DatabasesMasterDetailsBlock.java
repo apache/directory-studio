@@ -26,6 +26,11 @@ import java.util.List;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPlugin;
+import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginConstants;
+import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginUtils;
+import org.apache.directory.studio.openldap.config.editor.ServerConfigurationEditor;
+import org.apache.directory.studio.openldap.config.model.database.OlcDatabaseConfig;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -53,11 +58,6 @@ import org.eclipse.ui.forms.MasterDetailsBlock;
 import org.eclipse.ui.forms.SectionPart;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
-import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPlugin;
-import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginConstants;
-import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginUtils;
-import org.apache.directory.studio.openldap.config.editor.ServerConfigurationEditor;
-import org.apache.directory.studio.openldap.config.model.database.OlcDatabaseConfig;
 
 
 /**
@@ -82,10 +82,19 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
     private Object currentSelection;
 
     // UI Fields
+    /** The table listing all the existing databases */
     private TableViewer viewer;
+
+    /** The button used to add a new Database */
     private Button addButton;
+
+    /** The button used to delete an existing Database */
     private Button deleteButton;
+
+    /** The button used to move up Database in the list */
     private Button upButton;
+
+    /** The button used to move down Database in the list */
     private Button downButton;
 
     // Listeners
@@ -230,7 +239,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
     private void initFromInput()
     {
         databaseWrappers.clear();
-        
+
         for ( OlcDatabaseConfig database : page.getConfiguration().getDatabases() )
         {
             databaseWrappers.add( new DatabaseWrapper( database ) );
@@ -272,6 +281,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
 
         OlcDatabaseConfig database = new OlcDatabaseConfig();
         database.setOlcDatabase( "{" + getNewOrderingValue() + "}" + newId );
+
         try
         {
             database.addOlcSuffix( new Dn( "dc=" + newId + ",dc=com" ) ); //$NON-NLS-1$ //$NON-NLS-2$

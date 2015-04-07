@@ -22,6 +22,7 @@ package org.apache.directory.studio.openldap.config.editor;
 
 import java.util.List;
 
+import org.apache.directory.studio.openldap.config.model.OlcGlobal;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -32,11 +33,9 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.forms.widgets.TableWrapData;
 import org.eclipse.ui.forms.widgets.TableWrapLayout;
 
-import org.apache.directory.studio.openldap.config.model.OlcGlobal;
-
 
 /**
- * This class represents the Otptions Page of the Server Configuration Editor.
+ * This class represents the Options Page of the Server Configuration Editor.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -86,10 +85,9 @@ public class OptionsPage extends ServerConfigurationEditorPage
 
 
     /**
-     * Creates a new instance of GeneralPage.
+     * Creates a new instance of OptionsPage.
      *
-     * @param editor
-     *      the associated editor
+     * @param editor the associated editor
      */
     public OptionsPage( ServerConfigurationEditor editor )
     {
@@ -498,7 +496,7 @@ public class OptionsPage extends ServerConfigurationEditorPage
                 }
                 else
                 {
-                    maxPduSizeAnonymousSessionsText.setText( "");
+                    maxPduSizeAnonymousSessionsText.setText( "" );
                 }
 
                 // Max PDU Size Authenticated Sessions Text
@@ -510,7 +508,7 @@ public class OptionsPage extends ServerConfigurationEditorPage
                 }
                 else
                 {
-                    maxPduSizeAuthenticatedSessionsText.setText( "");
+                    maxPduSizeAuthenticatedSessionsText.setText( "" );
                 }
 
                 // TCP Buffer Size Text
@@ -522,7 +520,7 @@ public class OptionsPage extends ServerConfigurationEditorPage
                 }
                 else
                 {
-                    tcpBufferSizeText.setText( "");
+                    tcpBufferSizeText.setText( "" );
                 }
 
                 // Max Pending Requests Anonymous Session Text
@@ -534,7 +532,7 @@ public class OptionsPage extends ServerConfigurationEditorPage
                 }
                 else
                 {
-                    maxPendingRequestsAnonymousSessionText.setText( "");
+                    maxPendingRequestsAnonymousSessionText.setText( "" );
                 }
 
                 // Max Pending Requests Authenticated Session Text
@@ -546,7 +544,7 @@ public class OptionsPage extends ServerConfigurationEditorPage
                 }
                 else
                 {
-                    maxPendingRequestsAuthenticatedSessionText.setText( "");
+                    maxPendingRequestsAuthenticatedSessionText.setText( "" );
                 }
 
                 // Number Seconds Closing Idle Connection Text
@@ -558,7 +556,7 @@ public class OptionsPage extends ServerConfigurationEditorPage
                 }
                 else
                 {
-                    numberSecondsClosingIdleConnectionText.setText( "");
+                    numberSecondsClosingIdleConnectionText.setText( "" );
                 }
 
                 // Number Seconds Closing Connection With Outstanding Write Text
@@ -571,7 +569,7 @@ public class OptionsPage extends ServerConfigurationEditorPage
                 }
                 else
                 {
-                    numberSecondsClosingConnectionWithOutstandingWriteText.setText( "");
+                    numberSecondsClosingConnectionWithOutstandingWriteText.setText( "" );
                 }
 
                 // Level Of Concurrency Text
@@ -584,7 +582,7 @@ public class OptionsPage extends ServerConfigurationEditorPage
                 else
                 {
 
-                    levelOfConcurrencyText.setText( "");
+                    levelOfConcurrencyText.setText( "" );
                 }
 
                 // Maximum Number Of Threads
@@ -595,7 +593,7 @@ public class OptionsPage extends ServerConfigurationEditorPage
                 }
                 else
                 {
-                    maximumNumberOfThreadsText.setText( "");
+                    maximumNumberOfThreadsText.setText( "" );
                 }
 
                 // Maximum Number Of Threads In Tool Mode Text
@@ -607,7 +605,7 @@ public class OptionsPage extends ServerConfigurationEditorPage
                 }
                 else
                 {
-                    maximumNumberOfThreadsInToolModeText.setText( "");
+                    maximumNumberOfThreadsInToolModeText.setText( "" );
                 }
 
                 // Authentication Auxprop Plugins Text
@@ -619,7 +617,7 @@ public class OptionsPage extends ServerConfigurationEditorPage
                 }
                 else
                 {
-                    authenticationAuxpropPluginsText.setText( "");
+                    authenticationAuxpropPluginsText.setText( "" );
                 }
 
                 // SASL Host Text
@@ -631,7 +629,7 @@ public class OptionsPage extends ServerConfigurationEditorPage
                 }
                 else
                 {
-                    saslHostText.setText( "");
+                    saslHostText.setText( "" );
                 }
 
                 // SASL Realm Text
@@ -643,7 +641,7 @@ public class OptionsPage extends ServerConfigurationEditorPage
                 }
                 else
                 {
-                    saslRealmText.setText( "");
+                    saslRealmText.setText( "" );
                 }
 
                 // SASL Security Properties Text
@@ -655,7 +653,7 @@ public class OptionsPage extends ServerConfigurationEditorPage
                 }
                 else
                 {
-                    saslSecurityPropertiesText.setText( "");
+                    saslSecurityPropertiesText.setText( "" );
                 }
 
                 // Certificate Authorities File Text
@@ -667,7 +665,7 @@ public class OptionsPage extends ServerConfigurationEditorPage
                 }
                 else
                 {
-                    certificateAuthoritiesFileText.setText( "");
+                    certificateAuthoritiesFileText.setText( "" );
                 }
 
                 // Certificate Authorities Path Text
@@ -679,7 +677,7 @@ public class OptionsPage extends ServerConfigurationEditorPage
                 }
                 else
                 {
-                    certificateAuthoritiesPathText.setText( "");
+                    certificateAuthoritiesPathText.setText( "" );
                 }
 
                 // Server Certificate File Text
@@ -691,7 +689,7 @@ public class OptionsPage extends ServerConfigurationEditorPage
                 }
                 else
                 {
-                    serverCertificateFileText.setText( "");
+                    serverCertificateFileText.setText( "" );
                 }
 
                 // Server Private Key File Text
@@ -703,7 +701,7 @@ public class OptionsPage extends ServerConfigurationEditorPage
                 }
                 else
                 {
-                    serverPrivateKeyFileText.setText( "");
+                    serverPrivateKeyFileText.setText( "" );
                 }
 
                 // Cipher Suite Text
@@ -715,7 +713,7 @@ public class OptionsPage extends ServerConfigurationEditorPage
                 }
                 else
                 {
-                    cipherSuiteText.setText( "");
+                    cipherSuiteText.setText( "" );
                 }
 
                 // Certificate Revocation List File Text
@@ -739,7 +737,7 @@ public class OptionsPage extends ServerConfigurationEditorPage
                 }
                 else
                 {
-                    certificateRevocationListLevelText.setText( "");
+                    certificateRevocationListLevelText.setText( "" );
                 }
 
                 // Diffie-Hellman Parameters File Text
@@ -751,7 +749,7 @@ public class OptionsPage extends ServerConfigurationEditorPage
                 }
                 else
                 {
-                    diffieHellmanParametersFileText.setText( "");
+                    diffieHellmanParametersFileText.setText( "" );
                 }
 
                 // Random Bits File Text
@@ -763,7 +761,7 @@ public class OptionsPage extends ServerConfigurationEditorPage
                 }
                 else
                 {
-                    randomBitsFileText.setText( "");
+                    randomBitsFileText.setText( "" );
                 }
 
                 // Incoming Certificates Verification Level Text
@@ -775,7 +773,7 @@ public class OptionsPage extends ServerConfigurationEditorPage
                 }
                 else
                 {
-                    incomingCertificatesVerificationLevelText.setText( "");
+                    incomingCertificatesVerificationLevelText.setText( "" );
                 }
 
                 // Key Length for Ordered Integer Indices Text
@@ -787,7 +785,7 @@ public class OptionsPage extends ServerConfigurationEditorPage
                 }
                 else
                 {
-                    keyLengthForOrderedIntegerIndicesText.setText( "");
+                    keyLengthForOrderedIntegerIndicesText.setText( "" );
                 }
 
                 // Maximum Length For Subinitial And Subfinal Indices Text
@@ -800,7 +798,7 @@ public class OptionsPage extends ServerConfigurationEditorPage
                 }
                 else
                 {
-                    maximumLengthForSubinitialAndSubfinalIndicesText.setText( "");
+                    maximumLengthForSubinitialAndSubfinalIndicesText.setText( "" );
                 }
 
                 // Minimum Length For Subinitial And Subfinal Indices Text
@@ -813,7 +811,7 @@ public class OptionsPage extends ServerConfigurationEditorPage
                 }
                 else
                 {
-                    minimumLengthForSubinitialAndSubfinalIndicesText.setText( "");
+                    minimumLengthForSubinitialAndSubfinalIndicesText.setText( "" );
                 }
 
                 // Length Used For Subany Indices Text
@@ -824,7 +822,7 @@ public class OptionsPage extends ServerConfigurationEditorPage
                 }
                 else
                 {
-                    lengthUsedForSubanyIndicesText.setText( "");
+                    lengthUsedForSubanyIndicesText.setText( "" );
                 }
 
                 // Steps Used In Subany Index Lookups Text
@@ -836,7 +834,7 @@ public class OptionsPage extends ServerConfigurationEditorPage
                 }
                 else
                 {
-                    stepsUsedInSubanyIndexLookupsText.setText( "");
+                    stepsUsedInSubanyIndexLookupsText.setText( "" );
                 }
 
                 // Authentication Usernames To DN Rewrite Rule Text
@@ -848,7 +846,7 @@ public class OptionsPage extends ServerConfigurationEditorPage
                 }
                 else
                 {
-                    authUsernamesToDnRewriteRuleText.setText( "");
+                    authUsernamesToDnRewriteRuleText.setText( "" );
                 }
 
                 // Proxy Authorization Policy Text
@@ -860,7 +858,7 @@ public class OptionsPage extends ServerConfigurationEditorPage
                 }
                 else
                 {
-                    proxyAuthorizationPolicyText.setText( "");
+                    proxyAuthorizationPolicyText.setText( "" );
                 }
 
                 // Authorization Usernames To DN Regexp Text
@@ -872,7 +870,7 @@ public class OptionsPage extends ServerConfigurationEditorPage
                 }
                 else
                 {
-                    authzUsernamesToDnRegexpText.setText( "");
+                    authzUsernamesToDnRegexpText.setText( "" );
                 }
             }
         }
