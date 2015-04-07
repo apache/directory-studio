@@ -63,7 +63,6 @@ import org.eclipse.ui.forms.IFormPart;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
-
 import org.apache.directory.studio.openldap.common.ui.widgets.BooleanWithDefaultWidget;
 import org.apache.directory.studio.openldap.common.ui.widgets.EntryWidget;
 import org.apache.directory.studio.openldap.common.ui.widgets.PasswordWidget;
@@ -72,14 +71,14 @@ import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginCo
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginUtils;
 import org.apache.directory.studio.openldap.config.editor.dialogs.OverlayDialog;
 import org.apache.directory.studio.openldap.config.editor.dialogs.ReplicationConsumerDialog;
-import org.apache.directory.studio.openldap.config.model.OlcBdbConfig;
 import org.apache.directory.studio.openldap.config.model.OlcDatabaseConfig;
-import org.apache.directory.studio.openldap.config.model.OlcHdbConfig;
-import org.apache.directory.studio.openldap.config.model.OlcLdifConfig;
-import org.apache.directory.studio.openldap.config.model.OlcMdbConfig;
-import org.apache.directory.studio.openldap.config.model.OlcNullConfig;
 import org.apache.directory.studio.openldap.config.model.OlcOverlayConfig;
-import org.apache.directory.studio.openldap.config.model.OlcRelayConfig;
+import org.apache.directory.studio.openldap.config.model.database.OlcBdbConfig;
+import org.apache.directory.studio.openldap.config.model.database.OlcHdbConfig;
+import org.apache.directory.studio.openldap.config.model.database.OlcLdifConfig;
+import org.apache.directory.studio.openldap.config.model.database.OlcMdbConfig;
+import org.apache.directory.studio.openldap.config.model.database.OlcNullConfig;
+import org.apache.directory.studio.openldap.config.model.database.OlcRelayConfig;
 import org.apache.directory.studio.openldap.syncrepl.Provider;
 import org.apache.directory.studio.openldap.syncrepl.SyncRepl;
 import org.apache.directory.studio.openldap.syncrepl.SyncReplParser;

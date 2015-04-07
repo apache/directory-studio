@@ -17,13 +17,15 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.openldap.config.model;
+package org.apache.directory.studio.openldap.config.model.overlay;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.studio.openldap.config.model.ConfigurationElement;
+import org.apache.directory.studio.openldap.config.model.OlcOverlayConfig;
 
 
 /**

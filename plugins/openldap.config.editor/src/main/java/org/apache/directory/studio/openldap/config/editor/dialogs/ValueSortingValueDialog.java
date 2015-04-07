@@ -50,10 +50,9 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
-
 import org.apache.directory.studio.openldap.common.ui.widgets.EntryWidget;
-import org.apache.directory.studio.openldap.config.model.OlcValSortMethodEnum;
-import org.apache.directory.studio.openldap.config.model.OlcValSortValue;
+import org.apache.directory.studio.openldap.config.model.overlay.OlcValSortMethodEnum;
+import org.apache.directory.studio.openldap.config.model.overlay.OlcValSortValue;
 
 
 /**

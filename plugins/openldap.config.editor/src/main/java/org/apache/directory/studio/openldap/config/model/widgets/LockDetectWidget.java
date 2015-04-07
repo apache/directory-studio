@@ -30,8 +30,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-
-import org.apache.directory.studio.openldap.config.model.OlcBdbConfigLockDetectEnum;
+import org.apache.directory.studio.openldap.config.model.database.OlcBdbConfigLockDetectEnum;
 
 
 /**

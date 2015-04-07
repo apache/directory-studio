@@ -31,11 +31,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
-
 import org.apache.directory.studio.openldap.common.ui.widgets.BooleanWithDefaultWidget;
 import org.apache.directory.studio.openldap.common.ui.widgets.DirectoryBrowserWidget;
 import org.apache.directory.studio.openldap.common.ui.widgets.UnixPermissionsWidget;
-import org.apache.directory.studio.openldap.config.model.OlcMdbConfig;
+import org.apache.directory.studio.openldap.config.model.database.OlcMdbConfig;
 import org.apache.directory.studio.openldap.config.model.widgets.IndicesWidget;
 
 

@@ -25,11 +25,10 @@ import java.util.List;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.eclipse.swt.widgets.Composite;
-
 import org.apache.directory.studio.openldap.common.ui.widgets.FileBrowserWidget;
 import org.apache.directory.studio.openldap.config.editor.dialogs.AbstractOverlayDialogConfigurationBlock;
 import org.apache.directory.studio.openldap.config.editor.dialogs.OverlayDialog;
-import org.apache.directory.studio.openldap.config.model.OlcAuditlogConfig;
+import org.apache.directory.studio.openldap.config.model.overlay.OlcAuditlogConfig;
 
 
 /**

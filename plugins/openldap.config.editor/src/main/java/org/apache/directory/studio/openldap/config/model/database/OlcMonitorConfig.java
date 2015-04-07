@@ -17,44 +17,25 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.openldap.config.model;
+package org.apache.directory.studio.openldap.config.model.database;
+
+import org.apache.directory.studio.openldap.config.model.OlcDatabaseConfig;
 
 
 /**
- * Java bean for the 'olcLdifConfig' object class.
+ * Java bean for the 'olcMonitorConfig' object class.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class OlcLdifConfig extends OlcDatabaseConfig
+public class OlcMonitorConfig extends OlcDatabaseConfig
 {
-    /**
-     * Field for the 'olcDbDirectory' attribute.
-     */
-    @ConfigurationElement(attributeType = "olcDbDirectory", isOptional = false)
-    private String olcDbDirectory;
-
-
-    /**
-     * @return the olcDbDirectory
-     */
-    public String getOlcDbDirectory()
-    {
-        return olcDbDirectory;
-    }
-
-
-    /**
-     * @param olcDbDirectory the olcDbDirectory to set
-     */
-    public void setOlcDbDirectory( String olcDbDirectory )
-    {
-        this.olcDbDirectory = olcDbDirectory;
-    }
-
+    // No other fields than those inherited from the 'OlcDatabaseConfig' class
 
     /**
      * {@inheritDoc}
      */
     public String getOlcDatabaseType()
     {
-        return "ldif";
+        return "monitor";
     };
 }

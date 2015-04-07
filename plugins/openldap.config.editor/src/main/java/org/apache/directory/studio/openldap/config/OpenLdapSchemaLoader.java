@@ -76,7 +76,7 @@ public class OpenLdapSchemaLoader extends JarLdifSchemaLoader
 
 
     /**
-     * Initializes the schema.
+     * Initializes the schema. We will load 'system', 'core' and 'apache'.
      */
     private void initializeSchema()
     {

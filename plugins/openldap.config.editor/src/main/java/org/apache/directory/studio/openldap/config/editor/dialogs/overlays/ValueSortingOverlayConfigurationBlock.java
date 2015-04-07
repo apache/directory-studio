@@ -39,12 +39,11 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-
 import org.apache.directory.studio.openldap.common.ui.dialogs.AttributeDialog;
 import org.apache.directory.studio.openldap.config.editor.dialogs.AbstractOverlayDialogConfigurationBlock;
 import org.apache.directory.studio.openldap.config.editor.dialogs.OverlayDialog;
 import org.apache.directory.studio.openldap.config.editor.dialogs.ValueSortingValueDialog;
-import org.apache.directory.studio.openldap.config.model.OlcValSortConfig;
+import org.apache.directory.studio.openldap.config.model.overlay.OlcValSortConfig;
 
 
 /**

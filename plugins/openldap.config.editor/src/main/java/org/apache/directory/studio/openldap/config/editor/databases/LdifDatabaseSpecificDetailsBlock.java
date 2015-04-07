@@ -25,9 +25,8 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-
 import org.apache.directory.studio.openldap.common.ui.widgets.DirectoryBrowserWidget;
-import org.apache.directory.studio.openldap.config.model.OlcLdifConfig;
+import org.apache.directory.studio.openldap.config.model.database.OlcLdifConfig;
 
 
 /**

@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.openldap.config.model;
+package org.apache.directory.studio.openldap.config.model.overlay;
 
 
 import java.text.ParseException;

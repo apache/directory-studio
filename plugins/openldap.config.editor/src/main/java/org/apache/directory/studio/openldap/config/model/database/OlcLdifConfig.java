@@ -17,41 +17,39 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.openldap.config.model;
+package org.apache.directory.studio.openldap.config.model.database;
 
-
-import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.studio.openldap.config.model.ConfigurationElement;
+import org.apache.directory.studio.openldap.config.model.OlcDatabaseConfig;
 
 
 /**
- * Java bean for the 'olcRelayConfig' object class.
- * 
- * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * Java bean for the 'olcLdifConfig' object class.
  */
-public class OlcRelayConfig extends OlcDatabaseConfig
+public class OlcLdifConfig extends OlcDatabaseConfig
 {
     /**
-     * Field for the 'olcRelay' attribute.
+     * Field for the 'olcDbDirectory' attribute.
      */
-    @ConfigurationElement(attributeType = "olcRelay")
-    private Dn olcRelay;
+    @ConfigurationElement(attributeType = "olcDbDirectory", isOptional = false)
+    private String olcDbDirectory;
 
 
     /**
-     * @return the olcRelay
+     * @return the olcDbDirectory
      */
-    public Dn getOlcRelay()
+    public String getOlcDbDirectory()
     {
-        return olcRelay;
+        return olcDbDirectory;
     }
 
 
     /**
-     * @param olcRelay the olcRelay to set
+     * @param olcDbDirectory the olcDbDirectory to set
      */
-    public void setOlcRelay( Dn olcRelay )
+    public void setOlcDbDirectory( String olcDbDirectory )
     {
-        this.olcRelay = olcRelay;
+        this.olcDbDirectory = olcDbDirectory;
     }
 
 
@@ -60,6 +58,6 @@ public class OlcRelayConfig extends OlcDatabaseConfig
      */
     public String getOlcDatabaseType()
     {
-        return "relay";
+        return "ldif";
     };
 }

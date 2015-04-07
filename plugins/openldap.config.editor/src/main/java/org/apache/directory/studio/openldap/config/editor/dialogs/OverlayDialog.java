@@ -37,7 +37,6 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
-
 import org.apache.directory.studio.openldap.config.editor.dialogs.overlays.AccessLogOverlayConfigurationBlock;
 import org.apache.directory.studio.openldap.config.editor.dialogs.overlays.AuditLogOverlayConfigurationBlock;
 import org.apache.directory.studio.openldap.config.editor.dialogs.overlays.MemberOfOverlayConfigurationBlock;
@@ -46,15 +45,15 @@ import org.apache.directory.studio.openldap.config.editor.dialogs.overlays.Refer
 import org.apache.directory.studio.openldap.config.editor.dialogs.overlays.RewriteRemapOverlayConfigurationBlock;
 import org.apache.directory.studio.openldap.config.editor.dialogs.overlays.SyncProvOverlayConfigurationBlock;
 import org.apache.directory.studio.openldap.config.editor.dialogs.overlays.ValueSortingOverlayConfigurationBlock;
-import org.apache.directory.studio.openldap.config.model.OlcAccessLogConfig;
-import org.apache.directory.studio.openldap.config.model.OlcAuditlogConfig;
-import org.apache.directory.studio.openldap.config.model.OlcMemberOf;
 import org.apache.directory.studio.openldap.config.model.OlcOverlayConfig;
-import org.apache.directory.studio.openldap.config.model.OlcPPolicyConfig;
-import org.apache.directory.studio.openldap.config.model.OlcRefintConfig;
-import org.apache.directory.studio.openldap.config.model.OlcRwmConfig;
 import org.apache.directory.studio.openldap.config.model.OlcSyncProvConfig;
-import org.apache.directory.studio.openldap.config.model.OlcValSortConfig;
+import org.apache.directory.studio.openldap.config.model.overlay.OlcAccessLogConfig;
+import org.apache.directory.studio.openldap.config.model.overlay.OlcAuditlogConfig;
+import org.apache.directory.studio.openldap.config.model.overlay.OlcMemberOf;
+import org.apache.directory.studio.openldap.config.model.overlay.OlcPPolicyConfig;
+import org.apache.directory.studio.openldap.config.model.overlay.OlcRefintConfig;
+import org.apache.directory.studio.openldap.config.model.overlay.OlcRwmConfig;
+import org.apache.directory.studio.openldap.config.model.overlay.OlcValSortConfig;
 
 
 /**

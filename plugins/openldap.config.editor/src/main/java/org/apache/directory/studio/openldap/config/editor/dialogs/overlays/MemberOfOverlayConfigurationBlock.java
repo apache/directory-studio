@@ -42,12 +42,11 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-
 import org.apache.directory.studio.openldap.common.ui.widgets.EntryWidget;
 import org.apache.directory.studio.openldap.config.editor.dialogs.AbstractOverlayDialogConfigurationBlock;
 import org.apache.directory.studio.openldap.config.editor.dialogs.OverlayDialog;
-import org.apache.directory.studio.openldap.config.model.OlcMemberOf;
-import org.apache.directory.studio.openldap.config.model.OlcMemberOfDanglingReferenceBehaviorEnum;
+import org.apache.directory.studio.openldap.config.model.overlay.OlcMemberOf;
+import org.apache.directory.studio.openldap.config.model.overlay.OlcMemberOfDanglingReferenceBehaviorEnum;
 
 
 /**

@@ -17,13 +17,15 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.openldap.config.model;
+package org.apache.directory.studio.openldap.config.model.database;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.studio.openldap.config.editor.databases.DatabaseTypeEnum;
+import org.apache.directory.studio.openldap.config.model.ConfigurationElement;
+import org.apache.directory.studio.openldap.config.model.OlcDatabaseConfig;
 
 
 /**
@@ -228,7 +230,7 @@ public class OlcBdbConfig extends OlcDatabaseConfig
      */
     public List<String> getOlcDbConfig()
     {
-        return olcDbConfig;
+        return copyListString( olcDbConfig );
     }
 
 
@@ -246,6 +248,14 @@ public class OlcBdbConfig extends OlcDatabaseConfig
      */
     public byte[] getOlcDbCryptKey()
     {
+        if ( olcDbCryptKey != null )
+        {
+            byte[] copy = new byte[olcDbCryptKey.length];
+            System.arraycopy( olcDbCryptKey, 0, copy, 0, olcDbCryptKey.length );
+
+            return copy;
+        }
+
         return olcDbCryptKey;
     }
 
@@ -291,7 +301,7 @@ public class OlcBdbConfig extends OlcDatabaseConfig
      */
     public List<String> getOlcDbIndex()
     {
-        return olcDbIndex;
+        return copyListString( olcDbIndex );
     }
 
 
@@ -336,7 +346,7 @@ public class OlcBdbConfig extends OlcDatabaseConfig
      */
     public List<String> getOlcDbPageSize()
     {
-        return olcDbPageSize;
+        return copyListString( olcDbPageSize );
     }
 
 
@@ -390,7 +400,7 @@ public class OlcBdbConfig extends OlcDatabaseConfig
      */
     public void setOlcDbConfig( List<String> olcDbConfig )
     {
-        this.olcDbConfig = olcDbConfig;
+        this.olcDbConfig = copyListString( olcDbConfig );
     }
 
 
@@ -408,7 +418,15 @@ public class OlcBdbConfig extends OlcDatabaseConfig
      */
     public void setOlcDbCryptKey( byte[] olcDbCryptKey )
     {
-        this.olcDbCryptKey = olcDbCryptKey;
+        if ( olcDbCryptKey != null )
+        {
+            this.olcDbCryptKey = new byte[olcDbCryptKey.length];
+            System.arraycopy( olcDbCryptKey, 0, this.olcDbCryptKey, 0, olcDbCryptKey.length );
+        }
+        else
+        {
+            this.olcDbCryptKey = olcDbCryptKey;
+        }
     }
 
 
@@ -453,7 +471,7 @@ public class OlcBdbConfig extends OlcDatabaseConfig
      */
     public void setOlcDbIndex( List<String> olcDbIndex )
     {
-        this.olcDbIndex = olcDbIndex;
+        this.olcDbIndex = copyListString( olcDbIndex );
     }
 
 
@@ -498,7 +516,7 @@ public class OlcBdbConfig extends OlcDatabaseConfig
      */
     public void setOlcDbPageSize( List<String> olcDbPageSize )
     {
-        this.olcDbPageSize = olcDbPageSize;
+        this.olcDbPageSize = copyListString( olcDbPageSize );
     }
 
 

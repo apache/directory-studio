@@ -17,21 +17,49 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.openldap.config.model;
+package org.apache.directory.studio.openldap.config.model.database;
+
+import org.apache.directory.studio.openldap.config.model.ConfigurationElement;
+import org.apache.directory.studio.openldap.config.model.OlcDatabaseConfig;
 
 
 /**
- * Java bean for the 'olcHdbConfig' object class.
+ * Java bean for the 'olcNullConfig' object class.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class OlcHdbConfig extends OlcBdbConfig
+public class OlcNullConfig extends OlcDatabaseConfig
 {
+    /**
+     * Field for the 'olcDbBindAllowed' attribute.
+     */
+    @ConfigurationElement(attributeType = "olcDbBindAllowed")
+    private Boolean olcDbBindAllowed;
+
+
+    /**
+     * @return the olcDbBindAllowed
+     */
+    public Boolean getOlcDbBindAllowed()
+    {
+        return olcDbBindAllowed;
+    }
+
+
+    /**
+     * @param olcDbBindAllowed the olcDbBindAllowed to set
+     */
+    public void setOlcDbBindAllowed( Boolean olcDbBindAllowed )
+    {
+        this.olcDbBindAllowed = olcDbBindAllowed;
+    }
+
+
     /**
      * {@inheritDoc}
      */
     public String getOlcDatabaseType()
     {
-        return "hdb";
+        return "null";
     };
 }

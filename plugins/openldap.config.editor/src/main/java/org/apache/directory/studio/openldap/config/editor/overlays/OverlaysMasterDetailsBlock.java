@@ -41,11 +41,8 @@ import org.eclipse.ui.forms.MasterDetailsBlock;
 import org.eclipse.ui.forms.SectionPart;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
-
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPlugin;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginConstants;
-import org.apache.directory.studio.openldap.config.model.OlcAccessLogConfig;
-import org.apache.directory.studio.openldap.config.model.OlcAuditlogConfig;
 import org.apache.directory.studio.openldap.config.model.OlcChainConfig;
 import org.apache.directory.studio.openldap.config.model.OlcConfig;
 import org.apache.directory.studio.openldap.config.model.OlcDistProcConfig;
@@ -53,6 +50,8 @@ import org.apache.directory.studio.openldap.config.model.OlcOverlayConfig;
 import org.apache.directory.studio.openldap.config.model.OlcPBindConfig;
 import org.apache.directory.studio.openldap.config.model.OlcSyncProvConfig;
 import org.apache.directory.studio.openldap.config.model.OpenLdapConfiguration;
+import org.apache.directory.studio.openldap.config.model.overlay.OlcAccessLogConfig;
+import org.apache.directory.studio.openldap.config.model.overlay.OlcAuditlogConfig;
 
 
 /**

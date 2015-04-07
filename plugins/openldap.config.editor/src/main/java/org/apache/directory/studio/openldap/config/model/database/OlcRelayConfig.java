@@ -17,38 +17,43 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.openldap.config.model;
+package org.apache.directory.studio.openldap.config.model.database;
+
+
+import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.studio.openldap.config.model.ConfigurationElement;
+import org.apache.directory.studio.openldap.config.model.OlcDatabaseConfig;
 
 
 /**
- * Java bean for the 'olcNullConfig' object class.
+ * Java bean for the 'olcRelayConfig' object class.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class OlcNullConfig extends OlcDatabaseConfig
+public class OlcRelayConfig extends OlcDatabaseConfig
 {
     /**
-     * Field for the 'olcDbBindAllowed' attribute.
+     * Field for the 'olcRelay' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbBindAllowed")
-    private Boolean olcDbBindAllowed;
+    @ConfigurationElement(attributeType = "olcRelay")
+    private Dn olcRelay;
 
 
     /**
-     * @return the olcDbBindAllowed
+     * @return the olcRelay
      */
-    public Boolean getOlcDbBindAllowed()
+    public Dn getOlcRelay()
     {
-        return olcDbBindAllowed;
+        return olcRelay;
     }
 
 
     /**
-     * @param olcDbBindAllowed the olcDbBindAllowed to set
+     * @param olcRelay the olcRelay to set
      */
-    public void setOlcDbBindAllowed( Boolean olcDbBindAllowed )
+    public void setOlcRelay( Dn olcRelay )
     {
-        this.olcDbBindAllowed = olcDbBindAllowed;
+        this.olcRelay = olcRelay;
     }
 
 
@@ -57,6 +62,6 @@ public class OlcNullConfig extends OlcDatabaseConfig
      */
     public String getOlcDatabaseType()
     {
-        return "null";
+        return "relay";
     };
 }

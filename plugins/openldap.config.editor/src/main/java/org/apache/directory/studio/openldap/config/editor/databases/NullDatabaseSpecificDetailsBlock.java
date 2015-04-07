@@ -26,8 +26,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-
-import org.apache.directory.studio.openldap.config.model.OlcNullConfig;
+import org.apache.directory.studio.openldap.config.model.database.OlcNullConfig;
 
 
 /**
