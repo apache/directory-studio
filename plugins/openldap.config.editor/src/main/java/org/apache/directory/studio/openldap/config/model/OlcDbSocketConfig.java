@@ -67,7 +67,7 @@ public class OlcDbSocketConfig extends OlcDatabaseConfig
      */
     public List<String> getOlcDbSocketExtensions()
     {
-        return olcDbSocketExtensions;
+        return copyListString( olcDbSocketExtensions );
     }
 
 
@@ -85,7 +85,7 @@ public class OlcDbSocketConfig extends OlcDatabaseConfig
      */
     public void setOlcDbSocketExtensions( List<String> olcDbSocketExtensions )
     {
-        this.olcDbSocketExtensions = olcDbSocketExtensions;
+        this.olcDbSocketExtensions = copyListString( olcDbSocketExtensions );
     }
 
 

@@ -181,7 +181,7 @@ public class OlcSchemaConfig extends OlcConfig
      */
     public List<String> getCn()
     {
-        return cn;
+        return copyListString( cn );
     }
 
 
@@ -190,7 +190,7 @@ public class OlcSchemaConfig extends OlcConfig
      */
     public List<String> getOlcAttributeTypes()
     {
-        return olcAttributeTypes;
+        return copyListString( olcAttributeTypes );
     }
 
 
@@ -199,7 +199,7 @@ public class OlcSchemaConfig extends OlcConfig
      */
     public List<String> getOlcDitContentRules()
     {
-        return olcDitContentRules;
+        return copyListString( olcDitContentRules );
     }
 
 
@@ -208,7 +208,7 @@ public class OlcSchemaConfig extends OlcConfig
      */
     public List<String> getOlcLdapSyntaxes()
     {
-        return olcLdapSyntaxes;
+        return copyListString( olcLdapSyntaxes );
     }
 
 
@@ -217,7 +217,7 @@ public class OlcSchemaConfig extends OlcConfig
      */
     public List<String> getOlcObjectClasses()
     {
-        return olcObjectClasses;
+        return copyListString( olcObjectClasses );
     }
 
 
@@ -226,7 +226,7 @@ public class OlcSchemaConfig extends OlcConfig
      */
     public List<String> getOlcObjectIdentifier()
     {
-        return olcObjectIdentifier;
+        return copyListString( olcObjectIdentifier );
     }
 
 
@@ -235,7 +235,7 @@ public class OlcSchemaConfig extends OlcConfig
      */
     public void setCn( List<String> cn )
     {
-        this.cn = cn;
+        this.cn = copyListString( cn );
     }
 
 
@@ -244,7 +244,7 @@ public class OlcSchemaConfig extends OlcConfig
      */
     public void setOlcAttributeTypes( List<String> olcAttributeTypes )
     {
-        this.olcAttributeTypes = olcAttributeTypes;
+        this.olcAttributeTypes = copyListString( olcAttributeTypes );
     }
 
 
@@ -253,7 +253,7 @@ public class OlcSchemaConfig extends OlcConfig
      */
     public void setOlcDitContentRules( List<String> olcDitContentRules )
     {
-        this.olcDitContentRules = olcDitContentRules;
+        this.olcDitContentRules = copyListString( olcDitContentRules );
     }
 
 
@@ -262,7 +262,7 @@ public class OlcSchemaConfig extends OlcConfig
      */
     public void setOlcLdapSyntaxes( List<String> olcLdapSyntaxes )
     {
-        this.olcLdapSyntaxes = olcLdapSyntaxes;
+        this.olcLdapSyntaxes = copyListString( olcLdapSyntaxes );
     }
 
 
@@ -271,7 +271,7 @@ public class OlcSchemaConfig extends OlcConfig
      */
     public void setOlcObjectClasses( List<String> olcObjectClasses )
     {
-        this.olcObjectClasses = olcObjectClasses;
+        this.olcObjectClasses = copyListString( olcObjectClasses );
     }
 
 
@@ -280,6 +280,6 @@ public class OlcSchemaConfig extends OlcConfig
      */
     public void setOlcObjectIdentifier( List<String> olcObjectIdentifier )
     {
-        this.olcObjectIdentifier = olcObjectIdentifier;
+        this.olcObjectIdentifier = copyListString( olcObjectIdentifier );
     }
 }

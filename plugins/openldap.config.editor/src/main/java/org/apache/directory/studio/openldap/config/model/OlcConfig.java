@@ -59,7 +59,10 @@ public class OlcConfig
      */
     public List<AuxiliaryObjectClass> getAuxiliaryObjectClasses()
     {
-        return auxiliaryObjectClasses;
+        List<AuxiliaryObjectClass> copy = new ArrayList<AuxiliaryObjectClass>( auxiliaryObjectClasses.size() );
+        copy.addAll( auxiliaryObjectClasses );
+
+        return copy;
     }
 
 
