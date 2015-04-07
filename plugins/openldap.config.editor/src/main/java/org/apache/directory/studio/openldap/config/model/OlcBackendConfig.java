@@ -21,77 +21,53 @@ package org.apache.directory.studio.openldap.config.model;
 
 
 /**
- * Java bean for the 'olcOverlayConfig' object class.
+ * Java bean for the 'olcBackendConfig' object class.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class OlcOverlayConfig extends OlcConfig
+public class OlcBackendConfig extends OlcConfig
 {
     /**
-     * Field for the 'olcDisabled' attribute. (Added in OpenLDAP 2.4.36)
+     * Field for the 'olcBackend' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDisabled")
-    private Boolean olcDisabled;
-
-    /**
-     * Field for the 'olcOverlay' attribute.
-     */
-    @ConfigurationElement(attributeType = "olcOverlay", isOptional = false, isRdn = true)
-    protected String olcOverlay;
+    @ConfigurationElement(attributeType = "olcBackend", isOptional = false)
+    private String olcBackend;
 
 
     /**
-     * Creates a new instance of OlcOverlayConfig.
+     * Creates a new instance of olcBackendConfig.
      */
-    public OlcOverlayConfig()
+    public OlcBackendConfig()
     {
     }
 
 
     /**
-     * Creates a copy instance of OlcOverlayConfig.
+     * Creates a copy instance of olcBackendConfig.
      *
      * @param o the initial object
      */
-    public OlcOverlayConfig( OlcOverlayConfig o )
+    public OlcBackendConfig( OlcBackendConfig o )
     {
-        olcOverlay = o.olcOverlay;
+        olcBackend = o.olcBackend;
     }
 
 
     /**
-     * @return the olcDisabled
+     * @return the olcBackend
      */
-    public Boolean getOlcDisabled()
+    public String getOlcBackend()
     {
-        return olcDisabled;
+        return olcBackend;
     }
 
 
     /**
-     * @return the olcOverlay
+     * @param olcBackend the olcBackend to set
      */
-    public String getOlcOverlay()
+    public void setOlcBackend( String olcBackend )
     {
-        return olcOverlay;
-    }
-
-
-    /**
-     * @param oldDisabled the olcDisabled to set
-     */
-    public void setOlcDisabled( Boolean olcDisabled )
-    {
-        this.olcDisabled = olcDisabled;
-    }
-
-
-    /**
-     * @param olcOverlay the olcOverlay to set
-     */
-    public void setOlcOverlay( String olcOverlay )
-    {
-        this.olcOverlay = olcOverlay;
+        this.olcBackend = olcBackend;
     }
 
 
@@ -100,8 +76,8 @@ public class OlcOverlayConfig extends OlcConfig
      *
      * @return a copy of this object
      */
-    public OlcOverlayConfig copy()
+    public OlcBackendConfig copy()
     {
-        return new OlcOverlayConfig( this );
+        return new OlcBackendConfig( this );
     }
 }

@@ -118,7 +118,7 @@ public class OlcLDAPConfig extends OlcDatabaseConfig
     private String olcDbIdleTimeout;
 
     /**
-     * Field for the 'olcDbKeepalive' attribute.
+     * Field for the 'olcDbKeepalive' attribute. (Added in OpenLDAP 2.4.34)
      */
     @ConfigurationElement(attributeType = "olcDbKeepalive")
     private String olcDbKeepalive;
@@ -142,7 +142,7 @@ public class OlcLDAPConfig extends OlcDatabaseConfig
     private Boolean olcDbNoUndefFilter;
 
     /**
-     * Field for the 'olcDbOnErr' attribute.
+     * Field for the 'olcDbOnErr' attribute. (Added in OpenLDAP 2.4.34)
      */
     @ConfigurationElement(attributeType = "olcDbOnErr")
     private String olcDbOnErr;

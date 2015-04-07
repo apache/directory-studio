@@ -25,11 +25,11 @@ import java.util.List;
 
 
 /**
- * Java bean for the 'OlcGlobal' object class.
+ * Java bean for the 'olcIncludeFile' object class.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class OlcModuleList extends OlcConfig
+public class OlcIncludeFile extends OlcConfig
 {
     /**
      * Field for the 'cn' attribute.
@@ -38,16 +38,35 @@ public class OlcModuleList extends OlcConfig
     private List<String> cn = new ArrayList<String>();
 
     /**
-     * Field for the 'olcAllows' attribute.
+     * Field for the 'olcInclude' attribute.
      */
-    @ConfigurationElement(attributeType = "olcModuleLoad")
-    private List<String> olcModuleLoad = new ArrayList<String>();
+    @ConfigurationElement(attributeType = "olcInclude", isOptional = false)
+    private List<String> olcInclude = new ArrayList<String>();
 
     /**
-     * Field for the 'olcModulePath' attribute.
+     * Field for the 'olcRootDSE' attribute.
      */
-    @ConfigurationElement(attributeType = "olcModulePath")
-    private String olcModulePath;
+    @ConfigurationElement(attributeType = "olcRootDSE")
+    private List<String> olcRootDSE = new ArrayList<String>();
+
+
+    /**
+     * Creates a new instance of olcBackendConfig.
+     */
+    public OlcIncludeFile()
+    {
+    }
+
+
+    /**
+     * Creates a copy instance of olcInclude.
+     *
+     * @param o the initial object
+     */
+    public OlcIncludeFile( OlcIncludeFile o )
+    {
+        olcInclude = copyListString( o.olcInclude );
+    }
 
 
     /**
@@ -65,11 +84,23 @@ public class OlcModuleList extends OlcConfig
     /**
      * @param strings
      */
-    public void addOlcModuleLoad( String... strings )
+    public void addOlcInclude( String... strings )
     {
         for ( String string : strings )
         {
-            olcModuleLoad.add( string );
+            olcInclude.add( string );
+        }
+    }
+
+
+    /**
+     * @param strings
+     */
+    public void addOlcRootDSE( String... strings )
+    {
+        for ( String string : strings )
+        {
+            olcRootDSE.add( string );
         }
     }
 
@@ -80,9 +111,17 @@ public class OlcModuleList extends OlcConfig
     }
 
 
-    public void clearOlcModuleLoad()
+    /**
+     */
+    public void clearOlcInclude()
     {
-        olcModuleLoad.clear();
+        olcInclude.clear();
+    }
+
+
+    public void clearOlcRootDSE()
+    {
+        olcRootDSE.clear();
     }
 
 
@@ -96,20 +135,20 @@ public class OlcModuleList extends OlcConfig
 
 
     /**
-     * @return the olcModuleLoad
+     * @return the olcInclude
      */
-    public List<String> getOlcModuleLoad()
+    public List<String> getOlcInclude()
     {
-        return copyListString( olcModuleLoad );
+        return copyListString( olcInclude );
     }
 
 
     /**
-     * @return the olcModulePath
+     * @return the olcRootDSE
      */
-    public String getOlcModulePath()
+    public List<String> getOlcRootDSE()
     {
-        return olcModulePath;
+        return copyListString( olcRootDSE );
     }
 
 
@@ -123,19 +162,30 @@ public class OlcModuleList extends OlcConfig
 
 
     /**
-     * @param olcModuleLoad the olcModuleLoad to set
+     * @param olcInclude the olcInclude to set
      */
-    public void setOlcModuleLoad( List<String> olcModuleLoad )
+    public void setOlcInclude( List<String> olcInclude )
     {
-        this.olcModuleLoad = copyListString( olcModuleLoad );
+        this.olcInclude = copyListString( olcInclude );
     }
 
 
     /**
-     * @param olcArgsFile the olcArgsFile to set
+     * @param olcRootDSE the olcRootDSE to set
      */
-    public void setOlcModulePath( String olcModulePath )
+    public void setOlcRootDSE( List<String> olcRootDSE )
     {
-        this.olcModulePath = olcModulePath;
+        this.olcRootDSE = copyListString( olcRootDSE );
+    }
+
+
+    /**
+     * Gets a copy of this object.
+     *
+     * @return a copy of this object
+     */
+    public OlcIncludeFile copy()
+    {
+        return new OlcIncludeFile( this );
     }
 }
