@@ -28,6 +28,8 @@ import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.Messages;
+import org.apache.directory.studio.openldap.common.ui.OpenLdapCommonUiConstants;
+import org.apache.directory.studio.openldap.common.ui.OpenLdapCommonUiPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -39,9 +41,6 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-
-import org.apache.directory.studio.openldap.common.ui.OpenLdapCommonUiConstants;
-import org.apache.directory.studio.openldap.common.ui.OpenLdapCommonUiPlugin;
 
 
 /**
