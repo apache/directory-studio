@@ -24,6 +24,9 @@ import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.openldap.config.model.database.OlcMdbConfig;
 import org.apache.directory.studio.openldap.config.model.widgets.IndicesWidget;
+import org.apache.directory.studio.openldap.common.ui.widgets.BooleanWithDefaultWidget;
+import org.apache.directory.studio.openldap.common.ui.widgets.DirectoryBrowserWidget;
+import org.apache.directory.studio.openldap.common.ui.widgets.UnixPermissionsWidget;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
@@ -147,6 +150,11 @@ public class MdbDatabaseSpecificDetailsBlock extends AbstractDatabaseSpecificDet
      * <li>Directory : the directory on disk where the file will be stored</li>
      * <li>mode : the file mode for this directory</li>
      * </ul>
+     * It covers the following attributes :
+     * <ul>
+     * <li>olcDbDirectory</li>
+     * <li>olcDbMode</li>
+     * </ul>
      *
      * @param parent the parent composite
      * @param toolkit the toolkit
@@ -183,6 +191,10 @@ public class MdbDatabaseSpecificDetailsBlock extends AbstractDatabaseSpecificDet
 
     /**
      * Creates the database indexes section.
+     * It covers the following attribute :
+     * <ul>
+     * <li>olcDbIndex</li>
+     * </ul>
      *
      * @param parent the parent composite
      * @param toolkit the toolkit
@@ -207,6 +219,14 @@ public class MdbDatabaseSpecificDetailsBlock extends AbstractDatabaseSpecificDet
 
     /**
      * Creates the database limits section.
+     * It covers the following attributes :
+     * <ul>
+     * <li>olcDbCheckpoint</li>
+     * <li>olcDbMaxEntrySize (for OpenLDAP 2.4.41)</li>
+     * <li>olcDbMaxReaders</li>
+     * <li>olcDbMaxSize</li>
+     * <li>olcDbSearchStack</li>
+     * </ul>
      *
      * @param parent the parent composite
      * @param toolkit the toolkit
@@ -253,7 +273,12 @@ public class MdbDatabaseSpecificDetailsBlock extends AbstractDatabaseSpecificDet
 
 
     /**
-     * Creates the database options section.
+     * Creates the database options section. 
+     * It covers the following attributes :
+     * <ul>
+     * <li>olcDbNoSync</li>
+     * <li>olcDbEnvFlags (for OpenLDAP 2.4.33)</li>
+     * </ul>
      *
      * @param parent the parent composite
      * @param toolkit the toolkit

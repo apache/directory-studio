@@ -150,23 +150,39 @@ public class DatabasesDetailsPage implements IDetailsPage
     private FormToolkit toolkit;
     private ComboViewer databaseTypeComboViewer;
     private EntryWidget suffixEntryWidget;
+
+    /** The olcRootDN attribute */
     private EntryWidget rootDnEntryWidget;
+
+    /** The olcRootPW attribute */
     private PasswordWidget rootPasswordWidget;
+
+    /** The olcReadOnly attribute */
     private BooleanWithDefaultWidget readOnlyBooleanWithDefaultWidget;
+
+    /** The olcHidden attribute */
     private BooleanWithDefaultWidget hiddenBooleanWithDefaultWidget;
+
+    /** The associated overlays */
     private TableViewer overlaysTableViewer;
     private Button addOverlayButton;
     private Button editOverlayButton;
     private Button deleteOverlayButton;
+
     private Section specificSettingsSection;
     private Composite specificSettingsSectionComposite;
     private Composite databaseSpecificDetailsComposite;
+
+    /** The Syncrepl part */
     private TableViewer replicationConsumersTableViewer;
     private Button addReplicationConsumerButton;
     private Button editReplicationConsumerButton;
     private Button deleteReplicationConsumerButton;
 
     // Listeners
+    /**
+     * A listener for changes on the Overlay table 
+     */
     private ISelectionChangedListener overlaysTableViewerSelectionChangedListener = new ISelectionChangedListener()
     {
         public void selectionChanged( SelectionChangedEvent event )
@@ -174,6 +190,10 @@ public class DatabasesDetailsPage implements IDetailsPage
             updateOverlaysTableButtonsState();
         }
     };
+
+    /**
+     * A listener for selections on the Overlay table 
+     */
     private IDoubleClickListener overlaysTableViewerDoubleClickListener = new IDoubleClickListener()
     {
         public void doubleClick( DoubleClickEvent event )
@@ -181,6 +201,10 @@ public class DatabasesDetailsPage implements IDetailsPage
             editOverlayButtonAction();
         }
     };
+
+    /**
+     * A listener for the Overlay table Add button 
+     */
     private SelectionListener addOverlayButtonListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
@@ -188,6 +212,10 @@ public class DatabasesDetailsPage implements IDetailsPage
             addOverlayButtonAction();
         }
     };
+
+    /**
+     * A listener for the Overlay table Edit button 
+     */
     private SelectionListener editOverlayButtonListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
@@ -195,6 +223,10 @@ public class DatabasesDetailsPage implements IDetailsPage
             editOverlayButtonAction();
         }
     };
+
+    /**
+     * A listener for the Overlay table Delete button 
+     */
     private SelectionListener deleteOverlayButtonListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
@@ -202,6 +234,10 @@ public class DatabasesDetailsPage implements IDetailsPage
             deleteOverlayButtonAction();
         }
     };
+
+    /**
+     * A listener for changes on the Replication Consumers table 
+     */
     private ISelectionChangedListener replicationConsumersTableViewerSelectionChangedListener = new ISelectionChangedListener()
     {
         public void selectionChanged( SelectionChangedEvent event )
@@ -209,6 +245,10 @@ public class DatabasesDetailsPage implements IDetailsPage
             updateReplicationConsumersTableButtonsState();
         }
     };
+
+    /**
+     * A listener for selections on the Replication Consumers table 
+     */
     private IDoubleClickListener replicationConsumersTableViewerDoubleClickListener = new IDoubleClickListener()
     {
         public void doubleClick( DoubleClickEvent event )
@@ -216,6 +256,10 @@ public class DatabasesDetailsPage implements IDetailsPage
             editReplicationConsumerButtonAction();
         }
     };
+
+    /**
+     * A listener for the Replication Consumers table Add button 
+     */
     private SelectionListener addReplicationConsumerButtonListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
@@ -223,6 +267,10 @@ public class DatabasesDetailsPage implements IDetailsPage
             addReplicationConsumerButtonAction();
         }
     };
+
+    /**
+     * A listener for the Replication Consumers table Edit button 
+     */
     private SelectionListener editReplicationConsumerButtonListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
@@ -230,6 +278,10 @@ public class DatabasesDetailsPage implements IDetailsPage
             editReplicationConsumerButtonAction();
         }
     };
+
+    /**
+     * A listener for the Replication Consumers table Delete button 
+     */
     private SelectionListener deleteReplicationConsumerButtonListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
@@ -238,6 +290,9 @@ public class DatabasesDetailsPage implements IDetailsPage
         }
     };
 
+    /**
+     * The listener that manage the specific database parameters
+     */
     private ISelectionChangedListener databaseTypeComboViewerSelectionChangedListener = new ISelectionChangedListener()
     {
         public void selectionChanged( SelectionChangedEvent event )
@@ -319,7 +374,10 @@ public class DatabasesDetailsPage implements IDetailsPage
             }
         }
     };
-    /** The modify listener which set the editor dirty */
+
+    /** 
+     * The modify listener which set the editor dirty 
+     **/
     private WidgetModifyListener dirtyWidgetModifyListener = new WidgetModifyListener()
     {
         public void widgetModified( WidgetModifyEvent event )
@@ -351,7 +409,7 @@ public class DatabasesDetailsPage implements IDetailsPage
      */
     public void createContents( Composite parent )
     {
-        this.parentComposite = parent;
+        parentComposite = parent;
         parent.setLayout( new GridLayout() );
 
         createGeneralSettingsSection( parent, toolkit );
@@ -362,7 +420,10 @@ public class DatabasesDetailsPage implements IDetailsPage
 
 
     /**
-     * Creates the General Settings Section
+     * Creates the General Settings Section. This will expose the following attributes :
+     * <ul>
+     * <li></li>
+     * </ul>
      *
      * @param parent the parent composite
      * @param toolkit the toolkit to use
@@ -401,7 +462,7 @@ public class DatabasesDetailsPage implements IDetailsPage
             }
         } );
 
-        // Suffix
+        // Suffix DN
         toolkit.createLabel( composite, "Suffix:" );
         suffixEntryWidget = new EntryWidget( browserConnection, null, true );
         suffixEntryWidget.createWidget( composite, toolkit );
@@ -676,6 +737,7 @@ public class DatabasesDetailsPage implements IDetailsPage
     public void selectionChanged( IFormPart part, ISelection selection )
     {
         IStructuredSelection ssel = ( IStructuredSelection ) selection;
+
         if ( ssel.size() == 1 )
         {
             databaseWrapper = ( DatabaseWrapper ) ssel.getFirstElement();
@@ -684,6 +746,7 @@ public class DatabasesDetailsPage implements IDetailsPage
         {
             databaseWrapper = null;
         }
+
         refresh();
     }
 
@@ -796,7 +859,8 @@ public class DatabasesDetailsPage implements IDetailsPage
         {
             OlcDatabaseConfig database = databaseWrapper.getDatabase();
 
-            // Enabling or disabling UI elements depending on the database
+            // Enabling or disabling UI elements depending on the database, dealing with
+            // the two specific Database (Frontend and Config)
             if ( isFrontendDatabase( database ) )
             {
                 databaseTypeComboViewer.getControl().setEnabled( false );
@@ -828,10 +892,12 @@ public class DatabasesDetailsPage implements IDetailsPage
             // Suffixes
             List<Dn> suffixesDnList = database.getOlcSuffix();
             Dn suffixDn = null;
+
             if ( suffixesDnList.size() == 1 )
             {
                 suffixDn = suffixesDnList.get( 0 );
             }
+
             suffixEntryWidget.setInput( suffixDn );
 
             // Root DN

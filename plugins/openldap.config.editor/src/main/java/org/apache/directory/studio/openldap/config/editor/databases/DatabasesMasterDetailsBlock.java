@@ -98,6 +98,10 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
     private Button downButton;
 
     // Listeners
+    /**
+     * A listener called when the Database table content has changed. It will enable
+     * or disabled button accordingly to the changes.
+     */
     private ISelectionChangedListener viewerSelectionChangedListener = new ISelectionChangedListener()
     {
         public void selectionChanged( SelectionChangedEvent event )
@@ -106,6 +110,10 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
             refreshButtonStates();
         }
     };
+
+    /**
+     * A listener called when the Add button is clicked
+     */
     private SelectionAdapter addButtonSelectionListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
@@ -113,6 +121,10 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
             addNewDatabase();
         }
     };
+
+    /**
+     * A listener called when the Delete button is clicked
+     */
     private SelectionAdapter deleteButtonSelectionListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
@@ -120,6 +132,10 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
             deleteSelectedDatabase();
         }
     };
+
+    /**
+     * A listener called when the Up button is clicked
+     */
     private SelectionAdapter upButtonSelectionListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
@@ -127,6 +143,10 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
             moveSelectedDatabaseUp();
         }
     };
+
+    /**
+     * A listener called when the Down button is clicked
+     */
     private SelectionAdapter downButtonSelectionListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
@@ -139,8 +159,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
     /**
      * Creates a new instance of DatabasesMasterDetailsBlock.
      *
-     * @param page
-     *      the associated page
+     * @param page the associated page
      */
     public DatabasesMasterDetailsBlock( DatabasesPage page )
     {
@@ -163,7 +182,22 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
 
 
     /**
-     * {@inheritDoc}
+     * Create the form with the list of existing Database, and the button to update it :
+     * <pre>
+     * .------------------------------.
+     * | All Databases                |
+     * |+------------------+          |
+     * ||DB1               | ( Add  ) |
+     * ||DB2               | (Delete) |
+     * ||DB3               | -------- |
+     * ||                  | (  Up  ) |
+     * ||                  | ( Down ) |
+     * ||                  |          |
+     * ||                  |          |
+     * ||                  |          |
+     * |+------------------+          |
+     * +------------------------------+
+     * </pre>
      */
     protected void createMasterPart( final IManagedForm managedForm, Composite parent )
     {
@@ -191,6 +225,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
         final SectionPart spart = new SectionPart( section );
         managedForm.addPart( spart );
         viewer = new TableViewer( table );
+
         viewer.addSelectionChangedListener( new ISelectionChangedListener()
         {
             public void selectionChanged( SelectionChangedEvent event )
@@ -205,6 +240,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
                 }
             }
         } );
+
         viewer.setContentProvider( new ArrayContentProvider() );
         viewer.setLabelProvider( new DatabaseWrapperLabelProvider() );
         viewer.setSorter( new DatabaseWrapperViewerSorter() );
@@ -345,10 +381,9 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
 
 
     /**
-     * Gets a new ID for a new database.
+     * Gets a new ID for a new database. They are incremental
      *
-     * @return 
-     *      a new ID for a new database
+     * @return  a new ID for a new database
      */
     private String getNewId()
     {
@@ -369,6 +404,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
                     ok = false;
                 }
             }
+
             counter++;
         }
 
@@ -457,6 +493,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
                 .getOlcDatabase() );
 
             OlcDatabaseConfig swapDatabase = findPreviousDatabase( selectedDatabaseOrderingPrefix );
+
             if ( swapDatabase != null )
             {
                 int swapDatabaseOrderingPrefix = OpenLdapConfigurationPluginUtils.getOrderingPrefix( swapDatabase
@@ -519,6 +556,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
                 .getOlcDatabase() );
 
             OlcDatabaseConfig swapDatabase = findNextDatabase( selectedDatabaseOrderingPrefix );
+
             if ( swapDatabase != null )
             {
                 int swapDatabaseOrderingPrefix = OpenLdapConfigurationPluginUtils.getOrderingPrefix( swapDatabase
@@ -565,6 +603,14 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
     }
 
 
+    /**
+     * Update the button according to the content of the table. If we have
+     * no Database, we just enable the Add button. If we only have one Database,
+     * we don't enable the Add and Delete buttons. We also enable the Up and
+     * Down button accordingly to the selected database : if it's the first one,
+     * the Up butto is disabled, if it's the last one, the Down button is
+     * disabled.
+     */
     private void refreshButtonStates()
     {
         // Getting the selection of the table viewer
@@ -640,6 +686,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
 
         // Saving the databases
         getPage().getConfiguration().clearDatabases();
+
         for ( DatabaseWrapper databaseWrapper : databaseWrappers )
         {
             getPage().getConfiguration().addDatabase( databaseWrapper.getDatabase() );
@@ -651,6 +698,9 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
      */
     private class DatabaseWrapperLabelProvider extends LabelProvider
     {
+        /**
+         * Construct the label for a database. It's the type, followed by the suffixDN.
+         */
         public String getText( Object element )
         {
             if ( element instanceof DatabaseWrapper )
@@ -664,6 +714,9 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
         };
 
 
+        /**
+         * Get the Database image, if it's a Database
+         */
         public Image getImage( Object element )
         {
             if ( element instanceof DatabaseWrapper )
@@ -728,6 +781,9 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
         }
 
 
+        /**
+         * Return the Database suffix DN
+         */
         private String getSuffix( OlcDatabaseConfig database )
         {
             if ( database != null )
@@ -756,9 +812,12 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
             {
                 OlcDatabaseConfig database1 = ( ( DatabaseWrapper ) e1 ).getDatabase();
                 OlcDatabaseConfig database2 = ( ( DatabaseWrapper ) e2 ).getDatabase();
+                boolean db1HasOrderingPrefix = OpenLdapConfigurationPluginUtils.hasOrderingPrefix( database1
+                    .getOlcDatabase() );
+                boolean db2HasOrderingPrefix = OpenLdapConfigurationPluginUtils.hasOrderingPrefix( database2
+                    .getOlcDatabase() );
 
-                if ( OpenLdapConfigurationPluginUtils.hasOrderingPrefix( database1.getOlcDatabase() )
-                    && ( OpenLdapConfigurationPluginUtils.hasOrderingPrefix( database2.getOlcDatabase() ) ) )
+                if ( db1HasOrderingPrefix && db2HasOrderingPrefix )
                 {
                     int orderingPrefix1 = OpenLdapConfigurationPluginUtils.getOrderingPrefix( database1
                         .getOlcDatabase() );
@@ -778,13 +837,11 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
                         return 0;
                     }
                 }
-                else if ( OpenLdapConfigurationPluginUtils.hasOrderingPrefix( database1.getOlcDatabase() )
-                    && ( !OpenLdapConfigurationPluginUtils.hasOrderingPrefix( database2.getOlcDatabase() ) ) )
+                else if ( db1HasOrderingPrefix )
                 {
                     return Integer.MIN_VALUE;
                 }
-                else if ( !OpenLdapConfigurationPluginUtils.hasOrderingPrefix( database1.getOlcDatabase() )
-                    && ( OpenLdapConfigurationPluginUtils.hasOrderingPrefix( database2.getOlcDatabase() ) ) )
+                else if ( db2HasOrderingPrefix )
                 {
                     return Integer.MAX_VALUE;
                 }
