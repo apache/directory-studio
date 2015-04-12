@@ -85,6 +85,7 @@ public class BerkeleyDbDatabaseSpecificDetailsBlock<BDB extends OlcBdbConfig> ex
         {
             DbConfigurationDialog dialog = new DbConfigurationDialog( editConfigurationButton.getShell(),
                 database.getOlcDbConfig().toArray( new String[0] ) );
+            
             if ( dialog.open() == DbConfigurationDialog.OK )
             {
                 List<String> newConfiguration = new ArrayList<String>();

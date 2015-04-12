@@ -1399,8 +1399,11 @@ public class DatabasesDetailsPage implements IDetailsPage
                             newSyncReplValue = "{" + orderingPrefix + "}" + newSyncReplValue;
                         }
 
-                        databaseWrapper.getDatabase().getOlcSyncrepl().remove( syncReplValue );
-                        databaseWrapper.getDatabase().getOlcSyncrepl().add( newSyncReplValue );
+                        OlcDatabaseConfig databaseConfig = databaseWrapper.getDatabase();
+                        List<String> newOlcSyncrepls = databaseConfig.getOlcSyncrepl();
+                        newOlcSyncrepls.remove( syncReplValue );
+                        newOlcSyncrepls.add( newSyncReplValue );
+                        databaseConfig.setOlcSyncrepl( newOlcSyncrepls );
                         refreshReplicationConsumersTableViewer();
                         replicationConsumersTableViewer.setSelection( new StructuredSelection( newSyncReplValue ) );
                         setEditorDirty();
@@ -1434,11 +1437,19 @@ public class DatabasesDetailsPage implements IDetailsPage
                 NLS.bind( "Are you sure you want to delete the ''{0}'' replication consumer ?",
                     getReplicationConsumerText( syncReplValue ) ) ) )
             {
-                if ( ( databaseWrapper != null ) && ( databaseWrapper.getDatabase() != null ) )
+
+                if ( databaseWrapper != null )
                 {
-                    databaseWrapper.getDatabase().getOlcSyncrepl().remove( syncReplValue );
-                    refreshReplicationConsumersTableViewer();
-                    setEditorDirty();
+                    OlcDatabaseConfig databaseConfig = databaseWrapper.getDatabase();
+                    
+                    if( databaseConfig != null )
+                    { 
+                        List<String> newOlcSynrepls = databaseConfig.getOlcSyncrepl();
+                        newOlcSynrepls.remove( syncReplValue );
+                        databaseConfig.setOlcSyncrepl( newOlcSynrepls );
+                        refreshReplicationConsumersTableViewer();
+                        setEditorDirty();
+                    }
                 }
             }
         }
