@@ -461,15 +461,13 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
 
         for ( DatabaseWrapper databaseWrapper : databaseWrappers )
         {
-            if ( OpenLdapConfigurationPluginUtils.hasOrderingPrefix( databaseWrapper.getDatabase().getOlcDatabase() ) )
-            {
-                int databaseOrderingValue = OpenLdapConfigurationPluginUtils.getOrderingPrefix( databaseWrapper
-                    .getDatabase().getOlcDatabase() );
+            String database = databaseWrapper.getDatabase().getOlcDatabase();
+            
+            int databaseOrderingValue = OpenLdapConfigurationPluginUtils.getOrderingPrefix( database );
 
-                if ( databaseOrderingValue > maxOrderingValue )
-                {
-                    maxOrderingValue = databaseOrderingValue;
-                }
+            if ( databaseOrderingValue > maxOrderingValue )
+            {
+                maxOrderingValue = databaseOrderingValue;
             }
         }
 
