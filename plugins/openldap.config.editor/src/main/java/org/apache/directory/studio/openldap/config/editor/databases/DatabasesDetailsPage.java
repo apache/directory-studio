@@ -169,11 +169,18 @@ public class DatabasesDetailsPage implements IDetailsPage
     private Button editOverlayButton;
     private Button deleteOverlayButton;
 
+    /** The specific configuration for each type of database */
     private Section specificSettingsSection;
     private Composite specificSettingsSectionComposite;
     private Composite databaseSpecificDetailsComposite;
 
-    /** The Syncrepl part */
+    /** The olcMirrorMode flag */
+    private BooleanWithDefaultWidget mirrorModeBooleanWithDefaultWidget;
+    
+    /** The olcDisabled flag (only available in OpenDLAP 2.4.36) */
+    private BooleanWithDefaultWidget disabledBooleanWithDefaultWidget;
+    
+    /** The Syncrepl consumer part */
     private TableViewer replicationConsumersTableViewer;
     private Button addReplicationConsumerButton;
     private Button editReplicationConsumerButton;
@@ -527,6 +534,37 @@ public class DatabasesDetailsPage implements IDetailsPage
         hiddenCheckboxDecoration.setMarginWidth( 4 );
         hiddenCheckboxDecoration
             .setDescriptionText( "Sets whether the database will be used to answer queries." );
+        
+        // mirrorMode
+        toolkit.createLabel( composite, "Mirror Mode:" );
+        mirrorModeBooleanWithDefaultWidget = new BooleanWithDefaultWidget();
+        mirrorModeBooleanWithDefaultWidget.create( composite, toolkit );
+        mirrorModeBooleanWithDefaultWidget.setValue( false );
+        mirrorModeBooleanWithDefaultWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        ControlDecoration mirrorModeCheckboxDecoration = new ControlDecoration(
+            mirrorModeBooleanWithDefaultWidget.getControl(), SWT.CENTER | SWT.RIGHT );
+        mirrorModeCheckboxDecoration.setImage( OpenLdapConfigurationPlugin.getDefault().getImageDescriptor(
+            OpenLdapConfigurationPluginConstants.IMG_INFORMATION ).createImage() );
+        mirrorModeCheckboxDecoration.setMarginWidth( 4 );
+        mirrorModeCheckboxDecoration
+            .setDescriptionText( "Sets the database in MirrorMode. This is only useful in a Multi-Master configuration" );
+        
+        // disabled (only in OpenLDAP 2.4.36
+        if ( browserConnection.getSchema().hasAttributeTypeDescription( "olcDisabled" ) )
+        {
+            toolkit.createLabel( composite, "Disabled:" );
+            disabledBooleanWithDefaultWidget = new BooleanWithDefaultWidget();
+            disabledBooleanWithDefaultWidget.create( composite, toolkit );
+            disabledBooleanWithDefaultWidget.setValue( false );
+            disabledBooleanWithDefaultWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+            ControlDecoration disabledCheckboxDecoration = new ControlDecoration(
+                disabledBooleanWithDefaultWidget.getControl(), SWT.CENTER | SWT.RIGHT );
+            disabledCheckboxDecoration.setImage( OpenLdapConfigurationPlugin.getDefault().getImageDescriptor(
+                OpenLdapConfigurationPluginConstants.IMG_INFORMATION ).createImage() );
+            disabledCheckboxDecoration.setMarginWidth( 4 );
+            disabledCheckboxDecoration
+                .setDescriptionText( "Disable this Database" );
+        }
     }
 
 
@@ -791,6 +829,15 @@ public class DatabasesDetailsPage implements IDetailsPage
             {
                 databaseSpecificDetailsBlock.commit( onSave );
             }
+            
+            // MirrorMode
+            database.setOlcMirrorMode( mirrorModeBooleanWithDefaultWidget.getValue() );
+            
+            // Disabled
+            if ( browserConnection.getSchema().hasAttributeTypeDescription( "olcDisabled" ) )
+            {
+                database.setOlcDisabled( disabledBooleanWithDefaultWidget.getValue() );
+            }
         }
     }
 
@@ -869,6 +916,13 @@ public class DatabasesDetailsPage implements IDetailsPage
                 rootPasswordWidget.setEnabled( false );
                 readOnlyBooleanWithDefaultWidget.setEnabled( false );
                 hiddenBooleanWithDefaultWidget.setEnabled( false );
+                mirrorModeBooleanWithDefaultWidget.setEnabled( false );
+                
+                // Disabled
+                if ( browserConnection.getSchema().hasAttributeTypeDescription( "olcDisabled" ) )
+                {
+                    disabledBooleanWithDefaultWidget.setEnabled( false );
+                }
             }
             else if ( isConfigDatabase( database ) )
             {
@@ -878,6 +932,13 @@ public class DatabasesDetailsPage implements IDetailsPage
                 rootPasswordWidget.setEnabled( true );
                 readOnlyBooleanWithDefaultWidget.setEnabled( false );
                 hiddenBooleanWithDefaultWidget.setEnabled( false );
+                mirrorModeBooleanWithDefaultWidget.setEnabled( true );
+                
+                // Disabled
+                if ( browserConnection.getSchema().hasAttributeTypeDescription( "olcDisabled" ) )
+                {
+                    disabledBooleanWithDefaultWidget.setEnabled( false );
+                }
             }
             else
             {
@@ -887,6 +948,13 @@ public class DatabasesDetailsPage implements IDetailsPage
                 rootPasswordWidget.setEnabled( true );
                 readOnlyBooleanWithDefaultWidget.setEnabled( true );
                 hiddenBooleanWithDefaultWidget.setEnabled( true );
+                mirrorModeBooleanWithDefaultWidget.setEnabled( true );
+                
+                // Disabled
+                if ( browserConnection.getSchema().hasAttributeTypeDescription( "olcDisabled" ) )
+                {
+                    disabledBooleanWithDefaultWidget.setEnabled( true );
+                }
             }
 
             // Suffixes
@@ -914,6 +982,15 @@ public class DatabasesDetailsPage implements IDetailsPage
 
             // Hidden
             hiddenBooleanWithDefaultWidget.setValue( database.getOlcHidden() );
+            
+            // Mirror Mode
+            mirrorModeBooleanWithDefaultWidget.setValue( database.getOlcMirrorMode() );
+            
+            // Disabled
+            if ( browserConnection.getSchema().hasAttributeTypeDescription( "olcDisabled" ) )
+            {
+                disabledBooleanWithDefaultWidget.setValue( database.getOlcDisabled() );
+            }
 
             // Overlays
             refreshOverlaysTableViewer();
@@ -1076,6 +1153,12 @@ public class DatabasesDetailsPage implements IDetailsPage
         addModifyListener( rootPasswordWidget, dirtyWidgetModifyListener );
         addModifyListener( readOnlyBooleanWithDefaultWidget, dirtyWidgetModifyListener );
         addModifyListener( hiddenBooleanWithDefaultWidget, dirtyWidgetModifyListener );
+        addModifyListener( mirrorModeBooleanWithDefaultWidget, dirtyWidgetModifyListener );
+        
+        if ( browserConnection.getSchema().hasAttributeTypeDescription( "olcDisabled" ) )
+        {
+            addModifyListener( disabledBooleanWithDefaultWidget, dirtyWidgetModifyListener );
+        }
 
         addSelectionChangedListener( databaseTypeComboViewer, databaseTypeComboViewerSelectionChangedListener );
 
@@ -1104,6 +1187,12 @@ public class DatabasesDetailsPage implements IDetailsPage
         removeModifyListener( rootPasswordWidget, dirtyWidgetModifyListener );
         removeModifyListener( readOnlyBooleanWithDefaultWidget, dirtyWidgetModifyListener );
         removeModifyListener( hiddenBooleanWithDefaultWidget, dirtyWidgetModifyListener );
+        removeModifyListener( mirrorModeBooleanWithDefaultWidget, dirtyWidgetModifyListener );
+        
+        if ( browserConnection.getSchema().hasAttributeTypeDescription( "olcDisabled" ) )
+        {
+            removeModifyListener( disabledBooleanWithDefaultWidget, dirtyWidgetModifyListener );
+        }
 
         removeSelectionChangedListener( databaseTypeComboViewer, databaseTypeComboViewerSelectionChangedListener );
 
