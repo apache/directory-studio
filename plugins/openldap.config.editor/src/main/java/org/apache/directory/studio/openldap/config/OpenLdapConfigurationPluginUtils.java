@@ -89,7 +89,7 @@ public class OpenLdapConfigurationPluginUtils
         boolean positive = true;
         int prefix = 0;
 
-        if ( !Strings.isCharASCII( prefixString, pos, '-') )
+        if ( Strings.isCharASCII( prefixString, pos, '-') )
         {
             positive = false;
         }
