@@ -1342,8 +1342,9 @@ public class DatabasesDetailsPage implements IDetailsPage
                 {
                     String newSyncReplValue = dialog.getSyncRepl().toString();
 
-                    databaseWrapper.getDatabase().getOlcSyncrepl().add( newSyncReplValue );
+                    databaseWrapper.getDatabase().addOlcSyncrepl( newSyncReplValue );
                     refreshReplicationConsumersTableViewer();
+                    
                     replicationConsumersTableViewer.setSelection( new StructuredSelection( newSyncReplValue ) );
                     setEditorDirty();
                 }
