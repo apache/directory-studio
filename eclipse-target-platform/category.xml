@@ -19,7 +19,7 @@
   @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
 -->
 <site>
-  <category-def name="all" label="Maven osgi-bundles"/>
+  <category-def name="all" label="Apache Directory Studio Dependencies"/>
   <iu>
     <category name="all"/>
     <query>
