@@ -93,16 +93,17 @@
  org.apache.directory.studio.ldapbrowser.core.propertypageproviders,
  org.apache.directory.studio.ldapbrowser.core.utils</Export-Package>
  
-            <Import-Package>org.apache.commons.lang,
+            <Import-Package>
+ org.apache.commons.lang,
  org.apache.commons.io,
  org.apache.commons.collections,
  org.apache.commons.codec.digest,
  org.dom4j,
  org.dom4j.io,
- org.xmlpull.v1</Import-Package>
+ org.xmlpull.v1
+            </Import-Package>
             
-            <Require-Bundle>org.eclipse.core.runtime,
- org.eclipse.search,
+            <Require-Bundle>
  org.apache.directory.api.asn1.api;bundle-version="${org.apache.directory.api.bundleversion}",
  org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.bundleversion}",
  org.apache.directory.api.ldap.codec.core;bundle-version="${org.apache.directory.api.bundleversion}",
@@ -110,7 +111,10 @@
  org.apache.directory.api.util;bundle-version="${org.apache.directory.api.bundleversion}",
  org.apache.directory.studio.common.core,
  org.apache.directory.studio.connection.core,
- org.apache.directory.studio.ldifparser</Require-Bundle>
+ org.apache.directory.studio.ldifparser,
+ org.eclipse.core.runtime,
+ org.eclipse.search
+            </Require-Bundle>
 
             <Embed-Directory>lib</Embed-Directory>
             <Embedded-Artifacts>lib/poi-3.9.jar;g="org.apache.poi";a="poi";v="3.9"</Embedded-Artifacts>

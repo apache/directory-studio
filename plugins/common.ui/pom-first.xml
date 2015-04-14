@@ -50,10 +50,12 @@
             <Export-Package>org.apache.directory.studio.common.ui,
  org.apache.directory.studio.common.ui.filesystem,
  org.apache.directory.studio.common.ui.widgets</Export-Package>
- 
-            <Require-Bundle>org.eclipse.core.runtime,
+            
+            <Require-Bundle>
+ org.eclipse.core.runtime,
  org.eclipse.ui,
- org.eclipse.ui.editors</Require-Bundle>
+ org.eclipse.ui.editors
+            </Require-Bundle>
           </instructions>
         </configuration>
         <executions>

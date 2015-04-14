@@ -49,33 +49,29 @@
             
             <Export-Package>org.apache.directory.studio.ldapservers.apacheds</Export-Package>
  
-            <Import-Package>org.apache.directory.server.core.api,
- org.dom4j,
- org.dom4j.io,
- org.dom4j.tree</Import-Package>
+            <Import-Package>
+ org.apache.mina.util
+            </Import-Package>
             
-            <Require-Bundle>org.apache.directory.server.config;bundle-version="${org.apache.directory.server.bundleversion}",
- org.apache.directory.server.xdbm.partition;bundle-version="${org.apache.directory.server.bundleversion}",
+            <Require-Bundle>
  org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.bundleversion}",
+ org.apache.directory.server.config;bundle-version="${org.apache.directory.server.bundleversion}",
+ org.apache.directory.server.core.api;bundle-version="${org.apache.directory.server.bundleversion}",
+ org.apache.directory.server.xdbm.partition;bundle-version="${org.apache.directory.server.bundleversion}",
  org.apache.directory.studio.apacheds.configuration,
  org.apache.directory.studio.common.core,
  org.apache.directory.studio.common.ui,
  org.apache.directory.studio.connection.core,
  org.apache.directory.studio.connection.ui,
  org.apache.directory.studio.ldapservers,
- org.apache.commons.lang;bundle-version="${org.apache.commons.lang.bundleversion}",
- org.apache.commons.collections;bundle-version="${org.apache.commons.collections.bundleversion}",
- org.apache.commons.io;bundle-version="${org.apache.commons.io.bundleversion}",
- org.apache.mina.core;bundle-version="${org.apache.mina.bundleversion}",
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.eclipse.debug.core,
  org.eclipse.debug.ui,
  org.eclipse.jdt.launching,
- org.eclipse.jface.text,
  org.eclipse.ui,
- org.eclipse.ui.editors,
- org.eclipse.ui.ide</Require-Bundle>
+ org.eclipse.ui.editors
+            </Require-Bundle>
           </instructions>
         </configuration>
         <executions>

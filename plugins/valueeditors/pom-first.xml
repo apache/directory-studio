@@ -53,12 +53,14 @@
  org.apache.directory.studio.valueeditors.password,
  org.apache.directory.studio.valueeditors.integer</Export-Package>
  
-            <Import-Package>org.apache.commons.lang,
+            <Import-Package>
+ org.apache.commons.lang,
  org.apache.commons.codec,
  org.apache.commons.codec.binary,
- org.apache.commons.io</Import-Package>
+ org.apache.commons.io
+            </Import-Package>
             
-            <Require-Bundle>org.eclipse.core.runtime,
+            <Require-Bundle>
  org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.bundleversion}",
  org.apache.directory.api.util;bundle-version="${org.apache.directory.api.bundleversion}",
  org.apache.directory.studio.common.ui,
@@ -67,7 +69,8 @@
  org.apache.directory.studio.ldapbrowser.core,
  org.apache.directory.studio.ldapbrowser.common,
  org.eclipse.core.runtime,
- org.eclipse.ui</Require-Bundle>
+ org.eclipse.ui
+            </Require-Bundle>
           </instructions>
         </configuration>
         <executions>

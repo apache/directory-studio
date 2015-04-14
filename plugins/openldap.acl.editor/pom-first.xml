@@ -68,13 +68,14 @@
             <Bundle-Localization>plugin</Bundle-Localization>
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Bundle-Activator>org.apache.directory.studio.openldap.config.acl.OpenLdapAclEditorPlugin</Bundle-Activator>
-            <Require-Bundle>org.apache.directory.server.core.api;bundle-version="${org.apache.directory.server.bundleversion}",
- org.apache.directory.server.ldif.partition;bundle-version="${org.apache.directory.server.bundleversion}",
- org.apache.directory.server.xdbm.partition;bundle-version="${org.apache.directory.server.bundleversion}",
- org.apache.directory.api.asn1.api;bundle-version="${org.apache.directory.api.bundleversion}",
+            <Import-Package>
+ antlr,
+ antlr.collections,
+ antlr.collections.impl,
+ org.slf4j
+            </Import-Package>
+            <Require-Bundle>
  org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.bundleversion}",
- org.apache.directory.api.ldap.schema;bundle-version="${org.apache.directory.api.bundleversion}",
- org.apache.directory.api.util;bundle-version="${org.apache.directory.api.bundleversion}",
  org.apache.directory.studio.common.core,
  org.apache.directory.studio.common.ui,
  org.apache.directory.studio.connection.core,
@@ -83,14 +84,11 @@
  org.apache.directory.studio.ldapbrowser.common,
  org.apache.directory.studio.valueeditors,
  org.eclipse.core.runtime,
- org.eclipse.core.resources,
  org.eclipse.jface.text,
  org.eclipse.ui,
  org.eclipse.ui.editors,
- org.eclipse.ui.forms,
- org.eclipse.ui.ide,
- org.apache.servicemix.bundles.antlr,
- slf4j.api</Require-Bundle>
+ org.eclipse.ui.forms
+            </Require-Bundle>
             <Export-Package>org.apache.directory.studio.openldap.config.acl,
  org.apache.directory.studio.openldap.config.acl.dialogs,
  org.apache.directory.studio.openldap.config.acl.editor,

@@ -56,22 +56,26 @@
  org.apache.directory.studio.connection.ui.wizards,
  org.apache.directory.studio.utils</Export-Package>
             
-            <Require-Bundle>org.eclipse.core.runtime,
- org.eclipse.ui,
- org.eclipse.ui.forms,
- org.eclipse.ui.workbench.texteditor,
- org.apache.directory.studio.common.core,
- org.apache.directory.studio.common.ui,
- org.apache.directory.studio.connection.core,
- org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.bundleversion}"</Require-Bundle>
-            
-            <Import-Package>org.apache.commons.lang,
+            <Import-Package>
+ org.apache.commons.lang,
  org.apache.commons.lang.time,
  org.apache.commons.io,
  org.apache.commons.codec.binary,
  org.apache.commons.codec.digest,
  org.bouncycastle.asn1,
- org.bouncycastle.x509.extension</Import-Package>
+ org.bouncycastle.x509.extension
+            </Import-Package>
+            
+            <Require-Bundle>
+ org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.bundleversion}",
+ org.apache.directory.studio.common.core,
+ org.apache.directory.studio.common.ui,
+ org.apache.directory.studio.connection.core,
+ org.eclipse.core.runtime,
+ org.eclipse.ui,
+ org.eclipse.ui.forms,
+ org.eclipse.ui.workbench.texteditor
+            </Require-Bundle>
           </instructions>
         </configuration>
         <executions>

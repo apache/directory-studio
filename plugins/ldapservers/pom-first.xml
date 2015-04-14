@@ -52,27 +52,27 @@
  org.apache.directory.studio.ldapservers.views,
  org.apache.directory.studio.ldapservers.actions</Export-Package>
  
-            <Import-Package>org.apache.commons.lang,
+            <Import-Package>
+ org.apache.commons.collections.map,
+ org.apache.commons.io,
+ org.apache.mina.util,
  org.dom4j,
  org.dom4j.io,
- org.dom4j.tree</Import-Package>
+ org.dom4j.tree
+            </Import-Package>
             
-            <Require-Bundle>org.eclipse.core.runtime,
- org.apache.mina.core;bundle-version="${org.apache.mina.bundleversion}",
- org.apache.commons.collections;bundle-version="${org.apache.commons.collections.bundleversion}",
- org.apache.commons.io;bundle-version="${org.apache.commons.io.bundleversion}",
+            <Require-Bundle>
+ org.apache.directory.studio.common.core,
+ org.apache.directory.studio.common.ui,
+ org.apache.directory.studio.connection.core,
  org.eclipse.jdt.launching,
- org.eclipse.jface.text,
  org.eclipse.ui,
  org.eclipse.debug.core,
  org.eclipse.debug.ui,
  org.eclipse.core.resources,
  org.eclipse.core.runtime,
- org.eclipse.ui.console,
- org.eclipse.ui.ide,
- org.apache.directory.studio.common.core,
- org.apache.directory.studio.common.ui,
- org.apache.directory.studio.connection.core</Require-Bundle>
+ org.eclipse.ui.console
+            </Require-Bundle>
           </instructions>
         </configuration>
         <executions>

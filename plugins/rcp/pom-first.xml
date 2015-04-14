@@ -49,15 +49,15 @@
             <Export-Package>!*</Export-Package>
             <Import-Package/>
             
-<!--  org.eclipse.update.core, -->
-<!--  org.eclipse.update.ui, -->
-            <Require-Bundle>org.eclipse.core.runtime,
- org.eclipse.ui,
- org.eclipse.ui.intro,
- org.eclipse.core.resources,
- org.eclipse.ui.ide,
+            <Require-Bundle>
  org.eclipse.core.filesystem,
- org.eclipse.core.net</Require-Bundle>
+ org.eclipse.core.net,
+ org.eclipse.core.resources,
+ org.eclipse.core.runtime,
+ org.eclipse.ui,
+ org.eclipse.ui.ide,
+ org.eclipse.ui.intro
+            </Require-Bundle>
           </instructions>
         </configuration>
         <executions>
