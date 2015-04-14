@@ -114,6 +114,7 @@
     <module>helps</module>
     <module>features</module>
     <module>tests</module>
+    <module>p2repository</module>
     <module>product</module>
   </modules>
 
