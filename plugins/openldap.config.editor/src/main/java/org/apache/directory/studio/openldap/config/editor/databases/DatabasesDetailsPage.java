@@ -180,6 +180,12 @@ public class DatabasesDetailsPage implements IDetailsPage
     /** The olcDisabled flag (only available in OpenDLAP 2.4.36) */
     private BooleanWithDefaultWidget disabledBooleanWithDefaultWidget;
     
+    /** The olcLastMod flag */
+    private BooleanWithDefaultWidget lastModBooleanWithDefaultWidget;
+    
+    /** The olcAddContentAcl flag */
+    private BooleanWithDefaultWidget addContentAclBooleanWithDefaultWidget;
+    
     /** The Syncrepl consumer part */
     private TableViewer replicationConsumersTableViewer;
     private Button addReplicationConsumerButton;
@@ -562,9 +568,35 @@ public class DatabasesDetailsPage implements IDetailsPage
             disabledCheckboxDecoration.setImage( OpenLdapConfigurationPlugin.getDefault().getImageDescriptor(
                 OpenLdapConfigurationPluginConstants.IMG_INFORMATION ).createImage() );
             disabledCheckboxDecoration.setMarginWidth( 4 );
-            disabledCheckboxDecoration
-                .setDescriptionText( "Disable this Database" );
+            disabledCheckboxDecoration.setDescriptionText( "Disable this Database" );
         }
+        
+        // The olcLastMod parameter : Controls whether slapd will automatically maintain the 
+        // modifiersName, modifyTimestamp, creatorsName, and createTimestamp attributes for entries
+        toolkit.createLabel( composite, "Last Modifier:" );
+        lastModBooleanWithDefaultWidget = new BooleanWithDefaultWidget();
+        lastModBooleanWithDefaultWidget.create( composite, toolkit );
+        lastModBooleanWithDefaultWidget.setValue( false );
+        lastModBooleanWithDefaultWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        ControlDecoration lastModCheckboxDecoration = new ControlDecoration(
+            lastModBooleanWithDefaultWidget.getControl(), SWT.CENTER | SWT.RIGHT );
+        lastModCheckboxDecoration.setImage( OpenLdapConfigurationPlugin.getDefault().getImageDescriptor(
+            OpenLdapConfigurationPluginConstants.IMG_INFORMATION ).createImage() );
+        lastModCheckboxDecoration.setMarginWidth( 4 );
+        lastModCheckboxDecoration.setDescriptionText( "Controls whether slapd will automatically maintain the modifiersName, modifyTimestamp, creatorsName, and createTimestamp attributes for entries" );
+        
+        // The olcAddAclContent parameter : Controls whether Add operations will perform ACL checks on the content of the entry being added
+        toolkit.createLabel( composite, "Last Modifier:" );
+        addContentAclBooleanWithDefaultWidget = new BooleanWithDefaultWidget();
+        addContentAclBooleanWithDefaultWidget.create( composite, toolkit );
+        addContentAclBooleanWithDefaultWidget.setValue( false );
+        addContentAclBooleanWithDefaultWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        ControlDecoration addAclContentCheckboxDecoration = new ControlDecoration(
+            addContentAclBooleanWithDefaultWidget.getControl(), SWT.CENTER | SWT.RIGHT );
+        addAclContentCheckboxDecoration.setImage( OpenLdapConfigurationPlugin.getDefault().getImageDescriptor(
+            OpenLdapConfigurationPluginConstants.IMG_INFORMATION ).createImage() );
+        addAclContentCheckboxDecoration.setMarginWidth( 4 );
+        addAclContentCheckboxDecoration.setDescriptionText( "Controls whether Add operations will perform ACL checks on the content of the entry being added" );
     }
 
 
@@ -838,6 +870,12 @@ public class DatabasesDetailsPage implements IDetailsPage
             {
                 database.setOlcDisabled( disabledBooleanWithDefaultWidget.getValue() );
             }
+            
+            // LastMod
+            database.setOlcLastMod( lastModBooleanWithDefaultWidget.getValue() );
+            
+            // AddAclContent
+            database.setOlcAddContentAcl( addContentAclBooleanWithDefaultWidget.getValue() );
         }
     }
 
@@ -923,6 +961,9 @@ public class DatabasesDetailsPage implements IDetailsPage
                 {
                     disabledBooleanWithDefaultWidget.setEnabled( false );
                 }
+
+                lastModBooleanWithDefaultWidget.setEnabled( false );
+                addContentAclBooleanWithDefaultWidget.setEnabled( false );
             }
             else if ( isConfigDatabase( database ) )
             {
@@ -939,6 +980,9 @@ public class DatabasesDetailsPage implements IDetailsPage
                 {
                     disabledBooleanWithDefaultWidget.setEnabled( false );
                 }
+                
+                lastModBooleanWithDefaultWidget.setEnabled( false );
+                addContentAclBooleanWithDefaultWidget.setEnabled( false );
             }
             else
             {
@@ -955,6 +999,9 @@ public class DatabasesDetailsPage implements IDetailsPage
                 {
                     disabledBooleanWithDefaultWidget.setEnabled( true );
                 }
+                
+                lastModBooleanWithDefaultWidget.setEnabled( true );
+                addContentAclBooleanWithDefaultWidget.setEnabled( true );
             }
 
             // Suffixes
@@ -991,6 +1038,12 @@ public class DatabasesDetailsPage implements IDetailsPage
             {
                 disabledBooleanWithDefaultWidget.setValue( database.getOlcDisabled() );
             }
+
+            // LastMod
+            lastModBooleanWithDefaultWidget.setValue( database.getOlcLastMod() );
+            
+            // AddAclContent
+            addContentAclBooleanWithDefaultWidget.setValue( database.getOlcAddContentAcl() );
 
             // Overlays
             refreshOverlaysTableViewer();
@@ -1160,6 +1213,9 @@ public class DatabasesDetailsPage implements IDetailsPage
             addModifyListener( disabledBooleanWithDefaultWidget, dirtyWidgetModifyListener );
         }
 
+        addModifyListener( lastModBooleanWithDefaultWidget, dirtyWidgetModifyListener );
+        addModifyListener( addContentAclBooleanWithDefaultWidget, dirtyWidgetModifyListener );
+
         addSelectionChangedListener( databaseTypeComboViewer, databaseTypeComboViewerSelectionChangedListener );
 
         addDoubleClickListener( overlaysTableViewer, overlaysTableViewerDoubleClickListener );
@@ -1193,6 +1249,9 @@ public class DatabasesDetailsPage implements IDetailsPage
         {
             removeModifyListener( disabledBooleanWithDefaultWidget, dirtyWidgetModifyListener );
         }
+
+        removeModifyListener( lastModBooleanWithDefaultWidget, dirtyWidgetModifyListener );
+        removeModifyListener( addContentAclBooleanWithDefaultWidget, dirtyWidgetModifyListener );
 
         removeSelectionChangedListener( databaseTypeComboViewer, databaseTypeComboViewerSelectionChangedListener );
 
