@@ -154,16 +154,6 @@ public class ExportXlsRunnable implements StudioConnectionRunnableWithProgress
             headerRow.createCell( cellNum ).setCellValue( "dn" ); //$NON-NLS-1$
         }
 
-        // String[] exportAttributes =
-        // this.searchParameter.getReturningAttributes();
-        // exportAttributes = null;
-        // for (int i = 0; exportAttributes != null && i <
-        // exportAttributes.length; i++) {
-        // short cellNum = (short)attributeNameMap.size();
-        // attributeNameMap.put(exportAttributes[i], new Short(cellNum));
-        // headerRow.createCell(cellNum).setCellValue(exportAttributes[i]);
-        // }
-
         // max export
         if ( searchParameter.getCountLimit() < 1 || searchParameter.getCountLimit() > MAX_COUNT_LIMIT )
         {
@@ -321,16 +311,6 @@ public class ExportXlsRunnable implements StudioConnectionRunnableWithProgress
                 cell.setCellValue( value );
             }
         }
-
-        // for (int i = 0; i < attributes.length; i++) {
-        //
-        // String attributeName = attributes[i];
-        // if (attributeMap.containsKey(attributeName)) {
-        // String value = (String)attributeMap.get(attributeName);
-        // short cellNum = (short)(i + (exportDn?1:0));
-        // row.createCell(cellNum).setCellValue(value);
-        // }
-        // }
 
     }
 }
