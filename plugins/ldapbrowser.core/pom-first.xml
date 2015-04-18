@@ -45,6 +45,19 @@
     <plugins>
       <!-- Embedded artifacts -->
       <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>.</directory>
+              <includes>
+                <include>lib/**</include>
+              </includes>
+            </fileset>
+          </filesets>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
         <executions>
@@ -61,6 +74,26 @@
                   <groupId>org.apache.poi</groupId>
                   <artifactId>poi</artifactId>
                   <version>3.9</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.odftoolkit</groupId>
+                  <artifactId>simple-odf</artifactId>
+                  <version>0.7-incubating</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.odftoolkit</groupId>
+                  <artifactId>odfdom-java</artifactId>
+                  <version>0.8.8-incubating</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>xerces</groupId>
+                  <artifactId>xercesImpl</artifactId>
+                  <version>2.11.0</version>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>xml-apis</groupId>
+                  <artifactId>xml-apis</artifactId>
+                  <version>1.4.01</version>
                 </artifactItem>
               </artifactItems>
             </configuration>
@@ -119,7 +152,11 @@
             <Embed-Directory>lib</Embed-Directory>
             <Embedded-Artifacts>lib/poi-3.9.jar;g="org.apache.poi";a="poi";v="3.9"</Embedded-Artifacts>
             <Bundle-ClassPath>.,
- lib/poi-3.9.jar</Bundle-ClassPath>
+ lib/poi-3.9.jar,
+ lib/xercesImpl-2.11.0.jar,
+ lib/xml-apis-1.4.01.jar,
+ lib/odfdom-java-0.8.8-incubating.jar,
+ lib/simple-odf-0.7-incubating.jar</Bundle-ClassPath>
           </instructions>
         </configuration>
         <executions>

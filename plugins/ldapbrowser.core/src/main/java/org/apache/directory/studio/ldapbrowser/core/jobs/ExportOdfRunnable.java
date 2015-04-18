@@ -42,16 +42,11 @@ import org.apache.directory.studio.ldapbrowser.core.utils.JNDIUtils;
 import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
 import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
 import org.eclipse.core.runtime.Preferences;
-/*
-import org.openoffice.odf.doc.OdfFileDom;
-import org.openoffice.odf.doc.OdfSpreadsheetDocument;
-import org.openoffice.odf.doc.element.table.OdfTable;
-import org.openoffice.odf.doc.element.table.OdfTableCell;
-import org.openoffice.odf.doc.element.table.OdfTableRow;
-import org.openoffice.odf.dom.OdfNamespace;
-import org.openoffice.odf.dom.type.office.OdfValueType;
-*/
-import org.w3c.dom.Element;
+import org.odftoolkit.odfdom.type.ValueType;
+import org.odftoolkit.simple.SpreadsheetDocument;
+import org.odftoolkit.simple.table.Cell;
+import org.odftoolkit.simple.table.Row;
+import org.odftoolkit.simple.table.Table;
 
 
 /**
@@ -138,7 +133,6 @@ public class ExportOdfRunnable implements StudioConnectionRunnableWithProgress
      */
     public void run( StudioProgressMonitor monitor )
     {
-    	/*
         monitor.beginTask( BrowserCoreMessages.jobs__export_odf_task, 2 );
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
@@ -150,35 +144,24 @@ public class ExportOdfRunnable implements StudioConnectionRunnableWithProgress
         // export
         try
         {
-            OdfSpreadsheetDocument doc = OdfSpreadsheetDocument.createSpreadsheetDocument();
-            OdfFileDom contentDoc = doc.getContentDom();
+            SpreadsheetDocument doc = SpreadsheetDocument.newSpreadsheetDocument();
 
             // Remove the default table added in construction
-            Element spreadsheetElement = ( Element ) contentDoc.getElementsByTagNameNS( OdfNamespace.OFFICE.getUri(),
-                "spreadsheet" ).item( 0 ); //$NON-NLS-1$
-            OdfTable table = ( OdfTable ) ( spreadsheetElement.getElementsByTagNameNS( OdfNamespace.TABLE.getUri(),
-                "table" ).item( 0 ) ); //$NON-NLS-1$
-            table.getParentNode().removeChild( table );
+            doc.removeSheet( 0 );
 
             // create the table
-            table = new OdfTable( contentDoc );
-            table.setName( "Export" ); //$NON-NLS-1$
-            Element officeSpreadsheet = ( Element ) contentDoc.getElementsByTagNameNS( OdfNamespace.OFFICE.getUri(),
-                "spreadsheet" ).item( 0 ); //$NON-NLS-1$
-            officeSpreadsheet.appendChild( table );
+            Table table = doc.appendSheet( "Export" ); //$NON-NLS-1$
 
             // header
-            OdfTableRow headerRow = new OdfTableRow( contentDoc );
-            table.appendChild( headerRow );
+            Row headerRow = table.appendRow();
             LinkedHashMap<String, Short> attributeNameMap = new LinkedHashMap<String, Short>();
             if ( this.exportDn )
             {
-                //                short cellNum = ( short ) 0;
-                //attributeNameMap.put( "dn", new Short( cellNum ) ); //$NON-NLS-1$
-                OdfTableCell cell = new OdfTableCell( contentDoc );
-                cell.setValueType( OdfValueType.STRING );
+                short cellNum = ( short ) 0;
+                attributeNameMap.put( "dn", new Short( cellNum ) ); //$NON-NLS-1$
+                Cell cell = headerRow.getCellByIndex( cellNum );
+                cell.setValueType( ValueType.STRING.name() );
                 cell.setStringValue( "dn" ); //$NON-NLS-1$
-                headerRow.appendCell( cell );
             }
 
             // max export
@@ -188,8 +171,11 @@ public class ExportOdfRunnable implements StudioConnectionRunnableWithProgress
             }
 
             int count = 0;
-            exportToOdf( browserConnection, searchParameter, contentDoc, table, headerRow, count, monitor,
+            exportToOdf( browserConnection, searchParameter, table, headerRow, count, monitor,
                 attributeNameMap, valueDelimiter, binaryEncoding, this.exportDn );
+
+            // remove default rows
+            table.removeRowsByIndex( 0, 2 );
 
             doc.save( exportOdfFilename );
         }
@@ -197,7 +183,6 @@ public class ExportOdfRunnable implements StudioConnectionRunnableWithProgress
         {
             monitor.reportError( e );
         }
-    	 */
     }
 
 
@@ -206,7 +191,6 @@ public class ExportOdfRunnable implements StudioConnectionRunnableWithProgress
      * 
      * @param browserConnection the browser connection
      * @param searchParameter the search parameter
-     * @param contentDoc the document
      * @param table the table
      * @param headerRow the header row
      * @param count the count
@@ -218,9 +202,8 @@ public class ExportOdfRunnable implements StudioConnectionRunnableWithProgress
      * 
      * @throws IOException Signals that an I/O exception has occurred.
      */
-/*
     private static void exportToOdf( IBrowserConnection browserConnection, SearchParameter searchParameter,
-        OdfFileDom contentDoc, OdfTable table, OdfTableRow headerRow, int count, StudioProgressMonitor monitor,
+        Table table, Row headerRow, int count, StudioProgressMonitor monitor,
         LinkedHashMap<String, Short> attributeNameMap, String valueDelimiter, int binaryEncoding, boolean exportDn )
         throws IOException
     {
@@ -234,7 +217,7 @@ public class ExportOdfRunnable implements StudioConnectionRunnableWithProgress
                 if ( container instanceof LdifContentRecord )
                 {
                     LdifContentRecord record = ( LdifContentRecord ) container;
-                    recordToOdfRow( browserConnection, record, contentDoc, table, headerRow, attributeNameMap,
+                    recordToOdfRow( browserConnection, record, table, headerRow, attributeNameMap,
                         valueDelimiter, binaryEncoding, exportDn );
 
                     count++;
@@ -262,7 +245,6 @@ public class ExportOdfRunnable implements StudioConnectionRunnableWithProgress
             monitor.reportError( e );
         }
     }
-*/
 
 
     /**
@@ -270,7 +252,6 @@ public class ExportOdfRunnable implements StudioConnectionRunnableWithProgress
      * 
      * @param browserConnection the browser connection
      * @param record the record
-     * @param contentDoc the document
      * @param table the table
      * @param headerRow the header row
      * @param headerRowAttributeNameMap the header row attribute name map
@@ -278,9 +259,8 @@ public class ExportOdfRunnable implements StudioConnectionRunnableWithProgress
      * @param binaryEncoding the binary encoding
      * @param exportDn the export dn
      */
-/*
     private static void recordToOdfRow( IBrowserConnection browserConnection, LdifContentRecord record,
-        OdfFileDom contentDoc, OdfTable table, OdfTableRow headerRow, Map<String, Short> headerRowAttributeNameMap,
+        Table table, Row headerRow, Map<String, Short> headerRowAttributeNameMap,
         String valueDelimiter, int binaryEncoding, boolean exportDn )
     {
         // group multi-valued attributes
@@ -288,44 +268,37 @@ public class ExportOdfRunnable implements StudioConnectionRunnableWithProgress
             binaryEncoding );
 
         // output attributes
-        OdfTableRow row = new OdfTableRow( contentDoc );
-        table.appendChild( row );
+        Row row = table.appendRow();
 
         if ( exportDn )
         {
-            OdfTableCell cell = new OdfTableCell( contentDoc );
-            cell.setValueType( OdfValueType.STRING );
+            Cell cell = row.getCellByIndex( 0 );
+            cell.setValueType( ValueType.STRING.name() );
             cell.setStringValue( record.getDnLine().getValueAsString() );
-            row.appendCell( cell );
-
         }
         for ( String attributeName : attributeMap.keySet() )
-        {
-            if ( !headerRowAttributeNameMap.containsKey( attributeName ) )
-            {
-                short cellNum = ( short ) headerRowAttributeNameMap.size();
-                headerRowAttributeNameMap.put( attributeName, new Short( cellNum ) );
-
-                OdfTableCell cell = new OdfTableCell( contentDoc );
-                cell.setValueType( OdfValueType.STRING );
-                cell.setStringValue( attributeName );
-                headerRow.appendCell( cell );
-            }
-
-        }
-        for ( String attributeName : headerRowAttributeNameMap.keySet() )
         {
             String value = attributeMap.get( attributeName );
             if ( value == null )
             {
                 value = ""; //$NON-NLS-1$
             }
-            OdfTableCell cell = new OdfTableCell( contentDoc );
-            cell.setValueType( OdfValueType.STRING );
-            cell.setStringValue( value );
-            row.appendCell( cell );
+            if ( !headerRowAttributeNameMap.containsKey( attributeName ) )
+            {
+                short cellNum = ( short ) headerRowAttributeNameMap.size();
+                headerRowAttributeNameMap.put( attributeName, new Short( cellNum ) );
+                Cell cell = headerRow.getCellByIndex( cellNum );
+                cell.setValueType( ValueType.STRING.name() );
+                cell.setStringValue( attributeName );
+            }
+            if ( headerRowAttributeNameMap.containsKey( attributeName ) )
+            {
+                short cellNum = headerRowAttributeNameMap.get( attributeName ).shortValue();
+                Cell cell = row.getCellByIndex( cellNum );
+                cell.setValueType( ValueType.STRING.name() );
+                cell.setStringValue( value );
+            }
         }
     }
-*/
 
 }
