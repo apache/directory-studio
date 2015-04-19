@@ -74,7 +74,6 @@
  org.apache.mina.core;bundle-version="${org.apache.mina.bundleversion}",
  
  org.apache.directory.studio.aciitemeditor,
- org.apache.directory.studio.apacheds.configuration.help,
  org.apache.directory.studio.apacheds.configuration,
  org.apache.directory.studio.apacheds.help,
  org.apache.directory.studio.common.core,
