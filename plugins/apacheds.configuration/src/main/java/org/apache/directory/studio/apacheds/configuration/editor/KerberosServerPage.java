@@ -32,6 +32,7 @@ import org.apache.directory.server.config.beans.KdcServerBean;
 import org.apache.directory.server.config.beans.TransportBean;
 import org.apache.directory.shared.kerberos.codec.types.EncryptionType;
 import org.apache.directory.studio.common.ui.CommonUIUtils;
+import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
@@ -579,17 +580,17 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
 
         // Max Renewable Lifetime Text
         toolkit.createLabel( composite, Messages.getString( "KerberosServerPage.MaxRenewableLifetime" ) ); //$NON-NLS-1$
-        maximumRenewableLifetimeText = createIntegerText( toolkit, composite );
+        maximumRenewableLifetimeText = BaseWidgetUtils.createIntegerText( toolkit, composite );
         setGridDataWithDefaultWidth( maximumRenewableLifetimeText, new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Max Ticket Lifetime Text
         toolkit.createLabel( composite, Messages.getString( "KerberosServerPage.MaxTicketLifetime" ) ); //$NON-NLS-1$
-        maximumTicketLifetimeText = createIntegerText( toolkit, composite );
+        maximumTicketLifetimeText = BaseWidgetUtils.createIntegerText( toolkit, composite );
         setGridDataWithDefaultWidth( maximumTicketLifetimeText, new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Allowable Clock Skew Text
         toolkit.createLabel( composite, Messages.getString( "KerberosServerPage.AllowableClockSkew" ) ); //$NON-NLS-1$
-        allowableClockSkewText = createIntegerText( toolkit, composite );
+        allowableClockSkewText = BaseWidgetUtils.createIntegerText( toolkit, composite );
         setGridDataWithDefaultWidth( allowableClockSkewText, new GridData( SWT.FILL, SWT.NONE, true, false ) );
     }
 

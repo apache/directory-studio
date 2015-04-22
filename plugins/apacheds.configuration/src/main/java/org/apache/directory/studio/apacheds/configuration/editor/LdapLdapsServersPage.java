@@ -36,6 +36,7 @@ import org.apache.directory.server.config.beans.SaslMechHandlerBean;
 import org.apache.directory.server.config.beans.TcpTransportBean;
 import org.apache.directory.server.config.beans.TransportBean;
 import org.apache.directory.studio.common.ui.CommonUIUtils;
+import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
@@ -1222,17 +1223,17 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
 
         // Max. Time Limit Text
         toolkit.createLabel( composite, Messages.getString( "LdapLdapsServersPage.MaxTimeLimit" ) ); //$NON-NLS-1$
-        maxTimeLimitText = createIntegerText( toolkit, composite );
+        maxTimeLimitText = BaseWidgetUtils.createIntegerText( toolkit, composite );
         maxTimeLimitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Max. Size Limit Text
         toolkit.createLabel( composite, Messages.getString( "LdapLdapsServersPage.MaxSizeLimit" ) ); //$NON-NLS-1$
-        maxSizeLimitText = createIntegerText( toolkit, composite );
+        maxSizeLimitText = BaseWidgetUtils.createIntegerText( toolkit, composite );
         maxSizeLimitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Max. PDU Size Text
         toolkit.createLabel( composite, Messages.getString( "LdapLdapsServersPage.MaxPduSize" ) ); //$NON-NLS-1$
-        maxPduSizeText = createIntegerText( toolkit, composite );
+        maxPduSizeText = BaseWidgetUtils.createIntegerText( toolkit, composite );
         maxPduSizeText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
     }
 
@@ -1455,12 +1456,12 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
 
         // Replication Pinger Sleep
         toolkit.createLabel( composite, "Replication Pinger Sleep (sec):" );
-        replicationPingerSleepText = createIntegerText( toolkit, composite );
+        replicationPingerSleepText = BaseWidgetUtils.createIntegerText( toolkit, composite );
         replicationPingerSleepText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Disk Synchronization Delay
         toolkit.createLabel( composite, "Disk Synchronization Delay (ms):" );
-        diskSynchronizationDelayText = createIntegerText( toolkit, composite );
+        diskSynchronizationDelayText = BaseWidgetUtils.createIntegerText( toolkit, composite );
         diskSynchronizationDelayText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
     }
 
