@@ -29,6 +29,7 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -61,15 +62,24 @@ public class CommonUIPlugin extends AbstractUIPlugin
     public void start( BundleContext context ) throws Exception
     {
         super.start( context );
+        
+        // Create the colors we use
+        CommonUIConstants.BLACK_COLOR = new Color( null, CommonUIConstants.BLACK );
+        CommonUIConstants.WHITE_COLOR = new Color( null, CommonUIConstants.WHITE );
     }
 
 
     /**
-     * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
+     * @see AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
      */
     public void stop( BundleContext context ) throws Exception
     {
         plugin = null;
+        
+        // Dispose the colors
+        CommonUIConstants.BLACK_COLOR.dispose();
+        CommonUIConstants.WHITE_COLOR.dispose();
+
         super.stop( context );
     }
 

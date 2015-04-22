@@ -20,6 +20,7 @@
 
 package org.apache.directory.studio.common.ui;
 
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 
 
@@ -61,9 +62,11 @@ public final class CommonUIConstants
      * <li>255 : Full color ([color]), for instance GREEN</li>
      * </ul>
      **/
-    // To see teh world in black and white
+    // To see the world in black and white
     public static final RGB BLACK = new RGB( 0, 0, 0 );
+    public static Color BLACK_COLOR;
     public static final RGB WHITE = new RGB( 255, 255, 255 );
+    public static Color WHITE_COLOR;
     
     // 7 shade of greys... From dark to light, with combinaisons
     public static final RGB BD_GREY = new RGB( 32, 32, 32 );    // Black Dark grey
@@ -89,5 +92,5 @@ public final class CommonUIConstants
     public static final RGB BLUE = new RGB( 0, 0, 255 );        // Full blue
     
     // Some specific colors
-    
+    public static final String IMG_INFORMATION = "resources/icons/information.gif"; //$NON-NLS-1$
 }
