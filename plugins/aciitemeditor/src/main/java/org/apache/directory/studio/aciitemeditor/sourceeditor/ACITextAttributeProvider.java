@@ -60,7 +60,7 @@ public class ACITextAttributeProvider
      */
     public ACITextAttributeProvider()
     {
-        attributes.put( DEFAULT_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(), CommonUIConstants.BLACK ) ) );
+        attributes.put( DEFAULT_ATTRIBUTE, new TextAttribute( CommonUIConstants.BLACK_COLOR ) );
 
         attributes.put( KEYWORD_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(), new RGB( 128, 0, 96 ) ),
             null, SWT.BOLD ) );
