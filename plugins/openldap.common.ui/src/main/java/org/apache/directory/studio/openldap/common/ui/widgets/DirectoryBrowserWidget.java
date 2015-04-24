@@ -196,8 +196,18 @@ public class DirectoryBrowserWidget extends BrowserWidget
      */
     public void loadDialogSettings()
     {
-        String[] history = HistoryUtils.load( OpenLdapCommonUiPlugin.getDefault().getDialogSettings(),
-            OpenLdapCommonUiConstants.DIALOGSETTING_KEY_DIRECTORY_HISTORY );
+        String[] history = null;
+    
+        try
+        {
+            history = HistoryUtils.load( OpenLdapCommonUiPlugin.getDefault().getDialogSettings(),
+                OpenLdapCommonUiConstants.DIALOGSETTING_KEY_DIRECTORY_HISTORY );
+        }
+        catch ( Exception e )
+        {
+            history = new String[]{};
+        }
+        
         directoryCombo.setItems( history );
     }
 
@@ -207,8 +217,13 @@ public class DirectoryBrowserWidget extends BrowserWidget
      */
     public void saveDialogSettings()
     {
-        HistoryUtils.save( OpenLdapCommonUiPlugin.getDefault().getDialogSettings(),
-            OpenLdapCommonUiConstants.DIALOGSETTING_KEY_DIRECTORY_HISTORY, directoryCombo.getText() );
+        OpenLdapCommonUiPlugin plugin = OpenLdapCommonUiPlugin.getDefault();
+        
+        if ( plugin != null )
+        { 
+            HistoryUtils.save( OpenLdapCommonUiPlugin.getDefault().getDialogSettings(),
+                OpenLdapCommonUiConstants.DIALOGSETTING_KEY_DIRECTORY_HISTORY, directoryCombo.getText() );
+        }
     }
 
 
