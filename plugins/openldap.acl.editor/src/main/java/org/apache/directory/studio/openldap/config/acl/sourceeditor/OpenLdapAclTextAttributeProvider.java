@@ -23,6 +23,7 @@ package org.apache.directory.studio.openldap.config.acl.sourceeditor;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.directory.studio.common.ui.CommonUIConstants;
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -49,7 +50,7 @@ public class OpenLdapAclTextAttributeProvider
      */
     public OpenLdapAclTextAttributeProvider()
     {
-        attributes.put( DEFAULT_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(), new RGB( 0, 0, 0 ) ) ) );
+        attributes.put( DEFAULT_ATTRIBUTE, new TextAttribute( CommonUIConstants.BLACK_COLOR ) );
 
         attributes.put( KEYWORD_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(), new RGB( 127, 0, 85 ) ),
             null, SWT.BOLD ) );
