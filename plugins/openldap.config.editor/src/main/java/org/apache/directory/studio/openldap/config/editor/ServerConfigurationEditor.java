@@ -26,7 +26,9 @@ import java.util.Enumeration;
 import org.apache.directory.studio.common.core.jobs.StudioJob;
 import org.apache.directory.studio.common.core.jobs.StudioRunnableWithProgress;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.openldap.config.editor.databases.ConfigPage;
 import org.apache.directory.studio.openldap.config.editor.databases.DatabasesPage;
+import org.apache.directory.studio.openldap.config.editor.databases.FrontendPage;
 import org.apache.directory.studio.openldap.config.jobs.LoadConfigurationRunnable;
 import org.apache.directory.studio.openldap.config.model.OpenLdapConfiguration;
 import org.apache.directory.studio.openldap.config.model.io.SaveConfigurationRunnable;
@@ -60,8 +62,19 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
     private OpenLdapConfiguration configuration;
 
     // The pages
+    /** The page which is used for loading the configuration */
     private LoadingPage loadingPage;
+    
+    /** The Frontend database page */
+    private FrontendPage frontendPage;
+    
+    /** The Config database page */
+    private ConfigPage configPage;
+    
+    /** The page showing the user's databases */
     private DatabasesPage databasesPage;
+    
+    /** The options page */
     private OptionsPage optionsPage;
 
 
@@ -125,7 +138,9 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
 
     /**
      * Shows or hides the tab folder depending on
-     * the number of pages.
+     * the number of pages. If we have one page
+     * only, then we show the tab, otherwise, we hide
+     * it.
      */
     private void showOrHideTabFolder()
     {
@@ -199,8 +214,7 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
     /**
      * Performs the "Save as..." action.
      *
-     * @param monitor
-     *      the monitor to use
+     * @param monitor the monitor to use
      * @throws Exception
      */
     public void doSaveAs( IProgressMonitor monitor ) throws Exception
@@ -243,6 +257,16 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
         {
             databasesPage.doSave( monitor );
         }
+        
+        if ( frontendPage != null )
+        {
+            frontendPage.doSave( monitor );
+        }
+        
+        if ( configPage != null )
+        {
+            configPage.doSave( monitor );
+        }
     }
 
 
@@ -267,8 +291,7 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
     /**
      * Sets the 'dirty' flag.
      *
-     * @param dirty
-     *      the 'dirty' flag
+     * @param dirty the 'dirty' flag
      */
     public void setDirty( boolean dirty )
     {
@@ -287,8 +310,7 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
     /**
      * Gets the configuration.
      *
-     * @return
-     *      the configuration
+     * @return the configuration
      */
     public OpenLdapConfiguration getConfiguration()
     {
@@ -296,11 +318,10 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
     }
 
 
-    /*
+    /**
      * Sets the configuration.
      *
-     * @param configuration
-     *      the configuration
+     * @param configuration the configuration
      */
     public void setConfiguration( OpenLdapConfiguration configuration )
     {
@@ -311,8 +332,7 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
     /**
      * Resets the configuration and refresh the UI.
      *
-     * @param configBean
-     *      the configuration bean
+     * @param configBean the configuration bean
      */
     public void resetConfiguration( OpenLdapConfiguration configuration )
     {
@@ -322,6 +342,8 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
 
         optionsPage.refreshUI();
         databasesPage.refreshUI();
+        frontendPage.refreshUI();
+        configPage.refreshUI();
     }
 
 
@@ -329,8 +351,7 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
      * This method is called by the job responsible for loading the 
      * configuration when it has been fully and correctly loaded.
      *
-     * @param configBean
-     *      the loaded configuration bean
+     * @param configBean the loaded configuration bean
      */
     public void configurationLoaded( OpenLdapConfiguration configuration )
     {
@@ -344,8 +365,7 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
      * This method is called by the job responsible for loading the
      * configuration when it failed to load it.
      *
-     * @param exception
-     *      the exception
+     * @param exception the exception
      */
     public void configurationLoadFailed( Exception exception )
     {
@@ -388,8 +408,7 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
     /**
      * Hides the loading page and displays the error page.
      *
-     * @param exception
-     *      the exception
+     * @param exception the exception
      */
     private void hideLoadingPageAndDisplayErrorPage( Exception exception )
     {
@@ -415,17 +434,18 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
     /**
      * Set a particular page as active if it is found in the pages vector.
      *
-     * @param pageClass
-     *      the class of the page
+     * @param pageClass the class of the page
      */
     public void showPage( Class<?> pageClass )
     {
         if ( pageClass != null )
         {
             Enumeration<?> enumeration = pages.elements();
+            
             while ( enumeration.hasMoreElements() )
             {
                 Object page = enumeration.nextElement();
+                
                 if ( pageClass.isInstance( page ) )
                 {
                     setActivePage( pages.indexOf( page ) );

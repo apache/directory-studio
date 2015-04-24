@@ -34,7 +34,23 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 
 
 /**
- * This class represents the Loading Page of the Server Configuration Editor.
+ * This class represents the Loading Page of the Server Configuration Editor. It is
+ * just a plain page which expose a progress bar and a message :
+ * 
+ * <pre>
+ * .---------------------------------------------.
+ * | Loading Configuration...                    |
+ * +---------------------------------------------+
+ * |                                             |
+ * |                                             |
+ * |             [ \\ \\ \\ \\ \\ ]              |
+ * |  Loading the configuration, please wait...  |
+ * |                                             |
+ * |                                             |
+ * +---------------------------------------------+
+ * </pre>
+ * 
+ * Once the configuration is loaded, this page is closed.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -44,14 +60,13 @@ public class LoadingPage extends FormPage
     public static final String ID = LoadingPage.class.getName(); //$NON-NLS-1$
 
     /** The Page Title */
-    private static final String TITLE = "Loading Configuration";
+    private static final String TITLE = Messages.getString( "LoadingPage.LoadingConfiguration" );
 
 
     /**
      * Creates a new instance of LoadingPage.
      *
-     * @param editor
-     *      the associated editor
+     * @param editor the associated editor
      */
     public LoadingPage( FormEditor editor )
     {
@@ -65,7 +80,7 @@ public class LoadingPage extends FormPage
     protected void createFormContent( IManagedForm managedForm )
     {
         ScrolledForm form = managedForm.getForm();
-        form.setText( "Loading Configuration..." );
+        form.setText( Messages.getString( "LoadingPage.LoadingConfigurationEllipsis" ) );
 
         Composite parent = form.getBody();
         parent.setLayout( new GridLayout() );
@@ -80,7 +95,7 @@ public class LoadingPage extends FormPage
         ProgressBar progressBar = new ProgressBar( composite, SWT.INDETERMINATE );
         progressBar.setLayoutData( new GridData( SWT.CENTER, SWT.NONE, false, false ) );
 
-        Label label = toolkit.createLabel( composite, "Loading the configuration, please wait..." );
+        Label label = toolkit.createLabel( composite, Messages.getString( "LoadingPage.LoadingTheConfigurationPleaseWait" ) );
         label.setLayoutData( new GridData( SWT.CENTER, SWT.NONE, false, false ) );
     }
 }
