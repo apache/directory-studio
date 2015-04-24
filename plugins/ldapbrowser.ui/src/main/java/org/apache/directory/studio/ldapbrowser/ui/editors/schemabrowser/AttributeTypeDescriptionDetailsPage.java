@@ -28,6 +28,7 @@ import org.apache.directory.api.ldap.model.schema.LdapSyntax;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.UsageEnum;
+import org.apache.directory.studio.common.ui.CommonUIConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -53,9 +54,6 @@ import org.eclipse.ui.forms.widgets.Section;
  */
 public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
 {
-    /** The black color */
-    private static final Color BLACK_COLOR = new Color( null, 0, 0, 0 );
-
     /** The gray color */
     private static final Color GRAY_COLOR = new Color( null, 150, 150, 150 );
 
@@ -358,7 +356,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         // set flags
         if ( ( atd != null ) && ( atd.isSingleValued() ) )
         {
-            singleValuedLabel.setForeground( BLACK_COLOR );
+            singleValuedLabel.setForeground( CommonUIConstants.BLACK_COLOR );
         }
         else
         {
@@ -367,7 +365,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
 
         if ( atd != null && atd.isObsolete() )
         {
-            isObsoleteLabel.setForeground( BLACK_COLOR );
+            isObsoleteLabel.setForeground( CommonUIConstants.BLACK_COLOR );
         }
         else
         {
@@ -376,7 +374,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
 
         if ( atd != null && atd.isCollective() )
         {
-            collectiveLabel.setForeground( BLACK_COLOR );
+            collectiveLabel.setForeground( CommonUIConstants.BLACK_COLOR );
         }
         else
         {
@@ -385,7 +383,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
 
         if ( atd != null && !atd.isUserModifiable() )
         {
-            noUserModificationLabel.setForeground( BLACK_COLOR );
+            noUserModificationLabel.setForeground( CommonUIConstants.BLACK_COLOR );
         }
         else
         {
