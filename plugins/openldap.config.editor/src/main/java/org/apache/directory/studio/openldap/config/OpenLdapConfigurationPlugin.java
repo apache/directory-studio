@@ -132,7 +132,7 @@ public class OpenLdapConfigurationPlugin extends AbstractUIPlugin
             URL url = FileLocator.find( getBundle(), new Path( key ), null );
             
             if ( url != null )
-            {   	
+            {
                 return ImageDescriptor.createFromURL( url );
             }
             else

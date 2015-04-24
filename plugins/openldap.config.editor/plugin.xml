@@ -19,64 +19,69 @@
 -->
 <?eclipse version="3.2"?>
 <plugin>
-   <extension
-         point="org.eclipse.ui.editors">
-      <editor
-            class="org.apache.directory.studio.openldap.config.editor.ServerConfigurationEditor"
-            default="false"
-            icon="resources/icons/editor.gif"
-            id="org.apache.directory.studio.openldap.config.editor.ServerConfigurationEditor"
-            name="OpenLDAP Configuration Editor">
-      </editor>
-   </extension>
-   <extension
-         point="org.eclipse.ui.popupMenus">
-      <objectContribution
-            objectClass="org.apache.directory.studio.connection.core.Connection"
-            id="org.apache.directory.studio.connection.core.Connection">
-         <action
-               class="org.apache.directory.studio.openldap.config.actions.OpenConfigurationAction"
-               enablesFor="1"
-               id="org.apache.directory.studio.openldap.config.actions.OpenConfigurationAction"
-               label="Open Configuration"
-               icon="resources/icons/editor.gif">
-         </action>
-         <visibility> 
-             <objectState
-         	    name="serverType"
-         	    value="OPENLDAP_2_3">
-         	 </objectState>
-         </visibility>
-      </objectContribution>
-   </extension>
+  <!-- The context menu which will be used to open the server's configuration -->
+  <extension point="org.eclipse.ui.editors">
+    <editor
+        class="org.apache.directory.studio.openldap.config.editor.ServerConfigurationEditor"
+        default="false"
+        icon="resources/icons/editor.gif"
+        id="org.apache.directory.studio.openldap.config.editor.ServerConfigurationEditor"
+        name="OpenLDAP Configuration Editor">
+    </editor>
+  </extension>
    
-   <extension
-         point="org.eclipse.ui.perspectiveExtensions">
-      <perspectiveExtension targetID="%Perspective_LdapPerspective_id">
-         <actionSet id="%ActionSet_OpenLdapMenuActionSet_id"/>
-      </perspectiveExtension>
-   </extension>
+  <extension point="org.eclipse.ui.popupMenus">
+    <objectContribution
+        objectClass="org.apache.directory.studio.connection.core.Connection"
+        id="org.apache.directory.studio.connection.core.Connection">
+      <action
+          class="org.apache.directory.studio.openldap.config.actions.OpenConfigurationAction"
+          enablesFor="1"
+          id="org.apache.directory.studio.openldap.config.actions.OpenConfigurationAction"
+          label="Open Configuration"
+          icon="resources/icons/editor.gif"/>
+      <visibility> 
+         <objectState name="serverType" value="OPENLDAP_2_3"/>
+      </visibility>
+   </objectContribution>
+  </extension>
+
+  <extension point="org.eclipse.ui.perspectiveExtensions">
+    <perspectiveExtension targetID="%Perspective_LdapPerspective_id">
+      <actionSet id="%ActionSet_OpenLdapMenuActionSet_id"/>
+    </perspectiveExtension>
+  </extension>
    
-   <extension
-         point="org.eclipse.ui.actionSets">
-      <actionSet
-            id="%ActionSet_OpenLdapMenuActionSet_id"
-            label="%ActionSet_OpenLdapMenuActionSet_label"
-            visible="false">
-         <menu
-               id="%ActionSet_OpenLdapMenu_id"
-               label="%ActionSet_OpenLdapMenu_label">
-            <groupMarker name="%GroupMarker_OpenConfiguration_name"/>
-         </menu>
-         <action
-               class="org.apache.directory.studio.openldap.config.actions.OpenDirectoryConfigurationAction"
-               icon="resources/icons/open_configuration.gif"
-               id="%Action_OpenDirectoryConfigurationAction_id"
-               label="%Action_OpenDirectoryConfigurationAction_label"
-               menubarPath="%Action_OpenDirectoryConfigurationAction_menubarpath"
-               style="push">
-         </action>
+  <extension point="org.eclipse.ui.actionSets">
+    <actionSet
+        id="%ActionSet_OpenLdapMenuActionSet_id"
+        label="%ActionSet_OpenLdapMenuActionSet_label"
+        visible="false">
+      <menu id="%ActionSet_OpenLdapMenu_id" label="%ActionSet_OpenLdapMenu_label">
+        <groupMarker name="%GroupMarker_OpenConfiguration_name"/>
+      </menu>
+      <action
+          class="org.apache.directory.studio.openldap.config.actions.OpenDirectoryConfigurationAction"
+          icon="resources/icons/open_configuration.gif"
+          id="%Action_OpenDirectoryConfigurationAction_id"
+          label="%Action_OpenDirectoryConfigurationAction_label"
+          menubarPath="%Action_OpenDirectoryConfigurationAction_menubarpath"
+          style="push"/>
     </actionSet>
+  </extension>
+
+
+ <!-- Add a new entry to create an OpenLDAP  configuration in the New menu -->  
+ <extension point="org.eclipse.ui.newWizards">
+  <category id="%NewWizards_Category_id" name="%NewWizards_Category_name" />
+  <wizard
+      canFinishEarly="true"
+      category="%NewWizards_Category_id"
+      class="org.apache.directory.studio.openldap.config.wizards.NewOpenLDAPConfigurationFileWizard"
+      hasPages="false"
+      icon="resources/icons/editor_new.gif"
+      id="%NewWizards_NewOpenLDAPConfigurationFileWizard_id"
+      name="%NewWizards_NewOpenLDAPConfigurationFileWizard_name"
+      project="false"/>
  </extension>
-   
 </plugin>

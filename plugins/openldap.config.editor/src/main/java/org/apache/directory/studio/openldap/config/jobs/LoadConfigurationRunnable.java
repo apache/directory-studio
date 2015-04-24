@@ -48,8 +48,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
     /**
      * Creates a new instance of LoadConfigurationRunnable.
      * 
-     * @param editor
-     *            the editor
+     * @param editor the editor
      */
     public LoadConfigurationRunnable( ServerConfigurationEditor editor )
     {
@@ -128,12 +127,9 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
     /**
      * Gets the configuration from the input.
      * 
-     * @param input
-     *      the editor input
-     * @param monitor
-     *      the studio progress monitor
-     * @return
-     *      the configuration
+     * @param input the editor input
+     * @param monitor the studio progress monitor
+     * @return the configuration
      * @throws Exception
      */
     public OpenLdapConfiguration getConfiguration( IEditorInput input, StudioProgressMonitor monitor ) throws Exception
@@ -158,12 +154,9 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
     /**
      * Reads the configuration from the given connection.
      *
-     * @param input
-     *      the editor input
-     * @param monitor 
-     *      the studio progress monitor
-     * @return
-     *      the associated configuration bean
+     * @param input the editor input
+     * @param monitor the studio progress monitor
+     * @return the associated configuration bean
      * @throws Exception
      */
     private OpenLdapConfiguration readConfiguration( ConnectionServerConfigurationInput input,
@@ -181,12 +174,9 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
     /**
      * Reads the configuration from the given connection.
      *
-     * @param input
-     *      the editor input
-     * @param monitor 
-     *      the studio progress monitor
-     * @return
-     *      the associated configuration bean
+     * @param input the editor input
+     * @param monitor the studio progress monitor
+     * @return the associated configuration bean
      * @throws Exception
      */
     private OpenLdapConfiguration readConfiguration( DirectoryServerConfigurationInput input,
