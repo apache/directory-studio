@@ -24,13 +24,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.api.util.Strings;
+import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.events.VerifyEvent;
-import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -200,7 +199,7 @@ public class BerkeleyDbDatabaseSpecificDetailsBlock<BDB extends OlcBdbConfig> ex
 
         // Shared Memory Key Text
         toolkit.createLabel( databaseConfigurationComposite, "Shared Memory Key:" );
-        sharedMemoryKeyText = createIntegerText( toolkit, databaseConfigurationComposite );
+        sharedMemoryKeyText = BaseWidgetUtils.createIntegerText( toolkit, databaseConfigurationComposite );
         sharedMemoryKeyText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
     }
 
@@ -255,22 +254,22 @@ public class BerkeleyDbDatabaseSpecificDetailsBlock<BDB extends OlcBdbConfig> ex
 
         // Cache Size Text
         toolkit.createLabel( databaseCacheComposite, "Cache Size:" );
-        cacheSizeText = createIntegerText( toolkit, databaseCacheComposite );
+        cacheSizeText = BaseWidgetUtils.createIntegerText( toolkit, databaseCacheComposite );
         cacheSizeText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Cache Free Text
         toolkit.createLabel( databaseCacheComposite, "Cache Free:" );
-        cacheFreeText = createIntegerText( toolkit, databaseCacheComposite );
+        cacheFreeText = BaseWidgetUtils.createIntegerText( toolkit, databaseCacheComposite );
         cacheFreeText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // DN Cache Size Text
         toolkit.createLabel( databaseCacheComposite, "DN Cache Size:" );
-        dnCacheSizeText = createIntegerText( toolkit, databaseCacheComposite );
+        dnCacheSizeText = BaseWidgetUtils.createIntegerText( toolkit, databaseCacheComposite );
         dnCacheSizeText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // IDL Cache Size Text
         toolkit.createLabel( databaseCacheComposite, "IDL Cache Size:" );
-        idlCacheSizeText = createIntegerText( toolkit, databaseCacheComposite );
+        idlCacheSizeText = BaseWidgetUtils.createIntegerText( toolkit, databaseCacheComposite );
         idlCacheSizeText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
     }
 
@@ -294,7 +293,7 @@ public class BerkeleyDbDatabaseSpecificDetailsBlock<BDB extends OlcBdbConfig> ex
 
         // Search Stack Depth Text
         toolkit.createLabel( databaseLimitsComposite, "Search Stack Depth:" );
-        searchStackDepthText = createIntegerText( toolkit, databaseLimitsComposite );
+        searchStackDepthText = BaseWidgetUtils.createIntegerText( toolkit, databaseLimitsComposite );
         searchStackDepthText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Page Size Text
@@ -482,31 +481,6 @@ public class BerkeleyDbDatabaseSpecificDetailsBlock<BDB extends OlcBdbConfig> ex
         disableSynchronousDatabaseWritesBooleanWithDefaultWidget.removeWidgetModifyListener( dirtyWidgetModifyListener );
         allowReadsOfUncommitedDataBooleanWithDefaultWidget.removeWidgetModifyListener( dirtyWidgetModifyListener );
         lockDetectWidget.removeWidgetModifyListener( dirtyWidgetModifyListener );
-    }
-
-
-    /**
-     * Creates a Text that can be used to enter an integer.
-     *
-     * @param toolkit the toolkit
-     * @param parent the parent
-     * @return a Text that can be used to enter a port number
-     */
-    protected Text createIntegerText( FormToolkit toolkit, Composite parent )
-    {
-        Text integerText = toolkit.createText( parent, "" ); //$NON-NLS-1$
-        integerText.addVerifyListener( new VerifyListener()
-        {
-            public void verifyText( VerifyEvent e )
-            {
-                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
-                {
-                    e.doit = false;
-                }
-            }
-        } );
-
-        return integerText;
     }
 
 

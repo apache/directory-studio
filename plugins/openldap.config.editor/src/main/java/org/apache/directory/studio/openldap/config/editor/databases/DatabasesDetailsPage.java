@@ -25,6 +25,7 @@ import java.util.List;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.common.ui.CommonUIUtils;
+import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
@@ -66,6 +67,7 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -157,6 +159,9 @@ public class DatabasesDetailsPage implements IDetailsPage
     /** The olcRootPW attribute */
     private PasswordWidget rootPasswordWidget;
 
+    /** The olcSchemaDN attribute */
+    private EntryWidget schemaDnEntryWidget;
+
     /** The olcReadOnly attribute */
     private BooleanWithDefaultWidget readOnlyBooleanWithDefaultWidget;
 
@@ -186,11 +191,17 @@ public class DatabasesDetailsPage implements IDetailsPage
     /** The olcAddContentAcl flag */
     private BooleanWithDefaultWidget addContentAclBooleanWithDefaultWidget;
     
+    /** The olMonitoring flag */
+    private BooleanWithDefaultWidget monitoringBooleanWithDefaultWidget;
+    
     /** The Syncrepl consumer part */
     private TableViewer replicationConsumersTableViewer;
     private Button addReplicationConsumerButton;
     private Button editReplicationConsumerButton;
     private Button deleteReplicationConsumerButton;
+
+    /** The olcMaxDerefDepth parameter */
+    private Text maxDerefDepthText;
 
     // Listeners
     /**
@@ -327,6 +338,7 @@ public class DatabasesDetailsPage implements IDetailsPage
                         databaseSpecificDetailsBlock = new BerkeleyDbDatabaseSpecificDetailsBlock<OlcBdbConfig>(
                             instance, newBdbDatabase, browserConnection );
                         break;
+                        
                     case HDB:
                         OlcHdbConfig newHdbDatabase = new OlcHdbConfig();
                         copyDatabaseProperties( database, newHdbDatabase );
@@ -357,6 +369,7 @@ public class DatabasesDetailsPage implements IDetailsPage
                     //                        databaseWrapper.setDatabase( newLdapDatabase );
                     //                        // databaseSpecificDetailsBlock = new LdapDatabaseSpecificDetailsBlock( newLdapDatabase ); // TODO
                     //                        break;
+                        
                     case NULL:
                         OlcNullConfig newNullDatabase = new OlcNullConfig();
                         copyDatabaseProperties( database, newNullDatabase );
@@ -364,6 +377,7 @@ public class DatabasesDetailsPage implements IDetailsPage
                         databaseSpecificDetailsBlock = new NullDatabaseSpecificDetailsBlock( instance,
                             newNullDatabase );
                         break;
+                        
                     case RELAY:
                         OlcRelayConfig newRelayDatabase = new OlcRelayConfig();
                         copyDatabaseProperties( database, newRelayDatabase );
@@ -371,12 +385,14 @@ public class DatabasesDetailsPage implements IDetailsPage
                         databaseSpecificDetailsBlock = new RelayDatabaseSpecificDetailsBlock( instance,
                             newRelayDatabase, browserConnection );
                         break;
+                        
                     case NONE:
                         OlcDatabaseConfig newNoneDatabase = new OlcDatabaseConfig();
                         copyDatabaseProperties( database, newNoneDatabase );
                         databaseWrapper.setDatabase( newNoneDatabase );
                         databaseSpecificDetailsBlock = null;
                         break;
+                        
                     default:
                         break;
                 }
@@ -394,6 +410,17 @@ public class DatabasesDetailsPage implements IDetailsPage
     private WidgetModifyListener dirtyWidgetModifyListener = new WidgetModifyListener()
     {
         public void widgetModified( WidgetModifyEvent event )
+        {
+            setEditorDirty();
+        }
+    };
+    
+    /**
+     * A modify listener for text zones when they have been modified
+     */
+    protected ModifyListener dirtyModifyListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
         {
             setEditorDirty();
         }
@@ -515,6 +542,19 @@ public class DatabasesDetailsPage implements IDetailsPage
         rootPasswordTextDecoration
             .setDescriptionText( "The password for the the Root DN." );
 
+        // Schema DN
+        toolkit.createLabel( composite, "Schema DN:" );
+        schemaDnEntryWidget = new EntryWidget( browserConnection, null, true );
+        schemaDnEntryWidget.createWidget( composite, toolkit );
+        schemaDnEntryWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        ControlDecoration schemaDnTextDecoration = new ControlDecoration( schemaDnEntryWidget.getControl(), SWT.CENTER
+            | SWT.RIGHT );
+        schemaDnTextDecoration.setImage( OpenLdapConfigurationPlugin.getDefault().getImageDescriptor(
+            OpenLdapConfigurationPluginConstants.IMG_INFORMATION ).createImage() );
+        schemaDnTextDecoration.setMarginWidth( 4 );
+        schemaDnTextDecoration.setDescriptionText( 
+            "Specify the distinguished name for the subschema subentry that controls the entries on this server" );
+
         // Read Only
         toolkit.createLabel( composite, "Read Only:" );
         readOnlyBooleanWithDefaultWidget = new BooleanWithDefaultWidget();
@@ -586,7 +626,7 @@ public class DatabasesDetailsPage implements IDetailsPage
         lastModCheckboxDecoration.setDescriptionText( "Controls whether slapd will automatically maintain the modifiersName, modifyTimestamp, creatorsName, and createTimestamp attributes for entries" );
         
         // The olcAddAclContent parameter : Controls whether Add operations will perform ACL checks on the content of the entry being added
-        toolkit.createLabel( composite, "Last Modifier:" );
+        toolkit.createLabel( composite, "Add Acl Check:" );
         addContentAclBooleanWithDefaultWidget = new BooleanWithDefaultWidget();
         addContentAclBooleanWithDefaultWidget.create( composite, toolkit );
         addContentAclBooleanWithDefaultWidget.setValue( false );
@@ -597,6 +637,25 @@ public class DatabasesDetailsPage implements IDetailsPage
             OpenLdapConfigurationPluginConstants.IMG_INFORMATION ).createImage() );
         addAclContentCheckboxDecoration.setMarginWidth( 4 );
         addAclContentCheckboxDecoration.setDescriptionText( "Controls whether Add operations will perform ACL checks on the content of the entry being added" );
+        
+        // The olcMonitoring parameter
+        toolkit.createLabel( composite, "Monitoring:" );
+        monitoringBooleanWithDefaultWidget = new BooleanWithDefaultWidget();
+        monitoringBooleanWithDefaultWidget.create( composite, toolkit );
+        monitoringBooleanWithDefaultWidget.setValue( false );
+        monitoringBooleanWithDefaultWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        ControlDecoration monitoringCheckboxDecoration = new ControlDecoration(
+            monitoringBooleanWithDefaultWidget.getControl(), SWT.CENTER | SWT.RIGHT );
+        monitoringCheckboxDecoration.setImage( OpenLdapConfigurationPlugin.getDefault().getImageDescriptor(
+            OpenLdapConfigurationPluginConstants.IMG_INFORMATION ).createImage() );
+        monitoringCheckboxDecoration.setMarginWidth( 4 );
+        monitoringCheckboxDecoration.setDescriptionText( "Controls whether monitoring is enabled for this database" );
+        
+        // The olcMaxDerefDepth parameter
+        toolkit.createLabel( composite, "Max Deref. Depth:" );
+        maxDerefDepthText = BaseWidgetUtils.createIntegerText( toolkit, composite, 
+                "Specifies the maximum number of aliases to dereference when trying to resolve an entry" );
+        maxDerefDepthText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
     }
 
 
@@ -849,6 +908,9 @@ public class DatabasesDetailsPage implements IDetailsPage
             {
                 database.setOlcRootPW( rootPassword );
             }
+            
+            // Schema DN
+            database.setOlcSchemaDN( schemaDnEntryWidget.getDn() );
 
             // Read Only
             database.setOlcReadOnly( readOnlyBooleanWithDefaultWidget.getValue() );
@@ -876,6 +938,18 @@ public class DatabasesDetailsPage implements IDetailsPage
             
             // AddAclContent
             database.setOlcAddContentAcl( addContentAclBooleanWithDefaultWidget.getValue() );
+            
+            // Monitoring
+            if ( ( database instanceof OlcHdbConfig ) || ( database instanceof OlcBdbConfig ) )
+            {
+                database.setOlcMonitoring( monitoringBooleanWithDefaultWidget.getValue() );
+            }
+            
+            // MaxDerefDepth
+            if ( ( maxDerefDepthText.getText() != null ) && ( maxDerefDepthText.getText().length() > 0 ) )
+            {
+                database.setOlcMaxDerefDepth( Integer.parseInt( maxDerefDepthText.getText() ) );
+            }
         }
     }
 
@@ -952,6 +1026,7 @@ public class DatabasesDetailsPage implements IDetailsPage
                 suffixEntryWidget.setEnabled( false );
                 rootDnEntryWidget.setEnabled( false );
                 rootPasswordWidget.setEnabled( false );
+                schemaDnEntryWidget.setEnabled( false );
                 readOnlyBooleanWithDefaultWidget.setEnabled( false );
                 hiddenBooleanWithDefaultWidget.setEnabled( false );
                 mirrorModeBooleanWithDefaultWidget.setEnabled( false );
@@ -964,6 +1039,8 @@ public class DatabasesDetailsPage implements IDetailsPage
 
                 lastModBooleanWithDefaultWidget.setEnabled( false );
                 addContentAclBooleanWithDefaultWidget.setEnabled( false );
+                monitoringBooleanWithDefaultWidget.setEnabled( false );
+                maxDerefDepthText.setEnabled( false );
             }
             else if ( isConfigDatabase( database ) )
             {
@@ -971,6 +1048,7 @@ public class DatabasesDetailsPage implements IDetailsPage
                 suffixEntryWidget.setEnabled( false );
                 rootDnEntryWidget.setEnabled( true );
                 rootPasswordWidget.setEnabled( true );
+                schemaDnEntryWidget.setEnabled( true );
                 readOnlyBooleanWithDefaultWidget.setEnabled( false );
                 hiddenBooleanWithDefaultWidget.setEnabled( false );
                 mirrorModeBooleanWithDefaultWidget.setEnabled( true );
@@ -983,6 +1061,8 @@ public class DatabasesDetailsPage implements IDetailsPage
                 
                 lastModBooleanWithDefaultWidget.setEnabled( false );
                 addContentAclBooleanWithDefaultWidget.setEnabled( false );
+                monitoringBooleanWithDefaultWidget.setEnabled( false );
+                maxDerefDepthText.setEnabled( false );
             }
             else
             {
@@ -990,6 +1070,7 @@ public class DatabasesDetailsPage implements IDetailsPage
                 suffixEntryWidget.setEnabled( true );
                 rootDnEntryWidget.setEnabled( true );
                 rootPasswordWidget.setEnabled( true );
+                schemaDnEntryWidget.setEnabled( true );
                 readOnlyBooleanWithDefaultWidget.setEnabled( true );
                 hiddenBooleanWithDefaultWidget.setEnabled( true );
                 mirrorModeBooleanWithDefaultWidget.setEnabled( true );
@@ -1002,6 +1083,17 @@ public class DatabasesDetailsPage implements IDetailsPage
                 
                 lastModBooleanWithDefaultWidget.setEnabled( true );
                 addContentAclBooleanWithDefaultWidget.setEnabled( true );
+                
+                if ( ( database instanceof OlcHdbConfig ) || ( database instanceof OlcBdbConfig ) )
+                {
+                    monitoringBooleanWithDefaultWidget.setEnabled( true );
+                }
+                else
+                {
+                    monitoringBooleanWithDefaultWidget.setEnabled( false );
+                }
+                
+                maxDerefDepthText.setEnabled( true );
             }
 
             // Suffixes
@@ -1044,6 +1136,14 @@ public class DatabasesDetailsPage implements IDetailsPage
             
             // AddAclContent
             addContentAclBooleanWithDefaultWidget.setValue( database.getOlcAddContentAcl() );
+
+            // Monitoring
+            if ( ( database instanceof OlcHdbConfig ) || ( database instanceof OlcBdbConfig ) )
+            {
+                monitoringBooleanWithDefaultWidget.setValue( database.getOlcMonitoring() );
+            }
+            
+            maxDerefDepthText.setText( database.getOlcMaxDerefDepth() == null ? "" : Integer.toString( database.getOlcMaxDerefDepth() ) );
 
             // Overlays
             refreshOverlaysTableViewer();
@@ -1204,6 +1304,7 @@ public class DatabasesDetailsPage implements IDetailsPage
         addModifyListener( suffixEntryWidget, dirtyWidgetModifyListener );
         addModifyListener( rootDnEntryWidget, dirtyWidgetModifyListener );
         addModifyListener( rootPasswordWidget, dirtyWidgetModifyListener );
+        addModifyListener( schemaDnEntryWidget, dirtyWidgetModifyListener );
         addModifyListener( readOnlyBooleanWithDefaultWidget, dirtyWidgetModifyListener );
         addModifyListener( hiddenBooleanWithDefaultWidget, dirtyWidgetModifyListener );
         addModifyListener( mirrorModeBooleanWithDefaultWidget, dirtyWidgetModifyListener );
@@ -1215,6 +1316,8 @@ public class DatabasesDetailsPage implements IDetailsPage
 
         addModifyListener( lastModBooleanWithDefaultWidget, dirtyWidgetModifyListener );
         addModifyListener( addContentAclBooleanWithDefaultWidget, dirtyWidgetModifyListener );
+        addModifyListener( monitoringBooleanWithDefaultWidget, dirtyWidgetModifyListener );
+        maxDerefDepthText.addModifyListener( dirtyModifyListener );
 
         addSelectionChangedListener( databaseTypeComboViewer, databaseTypeComboViewerSelectionChangedListener );
 
@@ -1241,6 +1344,7 @@ public class DatabasesDetailsPage implements IDetailsPage
         removeModifyListener( suffixEntryWidget, dirtyWidgetModifyListener );
         removeModifyListener( rootDnEntryWidget, dirtyWidgetModifyListener );
         removeModifyListener( rootPasswordWidget, dirtyWidgetModifyListener );
+        removeModifyListener( schemaDnEntryWidget, dirtyWidgetModifyListener );
         removeModifyListener( readOnlyBooleanWithDefaultWidget, dirtyWidgetModifyListener );
         removeModifyListener( hiddenBooleanWithDefaultWidget, dirtyWidgetModifyListener );
         removeModifyListener( mirrorModeBooleanWithDefaultWidget, dirtyWidgetModifyListener );
@@ -1252,6 +1356,8 @@ public class DatabasesDetailsPage implements IDetailsPage
 
         removeModifyListener( lastModBooleanWithDefaultWidget, dirtyWidgetModifyListener );
         removeModifyListener( addContentAclBooleanWithDefaultWidget, dirtyWidgetModifyListener );
+        removeModifyListener( monitoringBooleanWithDefaultWidget, dirtyWidgetModifyListener );
+        maxDerefDepthText.removeModifyListener( dirtyModifyListener );
 
         removeSelectionChangedListener( databaseTypeComboViewer, databaseTypeComboViewerSelectionChangedListener );
 

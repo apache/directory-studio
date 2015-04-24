@@ -21,6 +21,7 @@ package org.apache.directory.studio.openldap.config.editor.databases;
 
 
 import org.apache.directory.api.util.Strings;
+import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.openldap.config.model.database.OlcMdbConfig;
 import org.apache.directory.studio.openldap.config.model.widgets.IndicesWidget;
@@ -28,8 +29,6 @@ import org.apache.directory.studio.openldap.common.ui.widgets.BooleanWithDefault
 import org.apache.directory.studio.openldap.common.ui.widgets.DirectoryBrowserWidget;
 import org.apache.directory.studio.openldap.common.ui.widgets.UnixPermissionsWidget;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.VerifyEvent;
-import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -244,25 +243,25 @@ public class MdbDatabaseSpecificDetailsBlock extends AbstractDatabaseSpecificDet
 
         // Max Readers Text
         toolkit.createLabel( databaseLimitsComposite, "Maximum Readers:" );
-        maxReadersText = createIntegerText( toolkit, databaseLimitsComposite );
+        maxReadersText = BaseWidgetUtils.createIntegerText( toolkit, databaseLimitsComposite );
         maxReadersText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Max Size Text
         toolkit.createLabel( databaseLimitsComposite, "Maximum Size:" );
-        maxSizeText = createIntegerText( toolkit, databaseLimitsComposite );
+        maxSizeText = BaseWidgetUtils.createIntegerText( toolkit, databaseLimitsComposite );
         maxSizeText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         if ( browserConnection.getSchema().hasAttributeTypeDescription( "olcDbMaxEntrySize" ) )
         {
             // Max Entry Size Text
             toolkit.createLabel( databaseLimitsComposite, "Maximum Entry Size:" );
-            maxEntrySizeText = createIntegerText( toolkit, databaseLimitsComposite );
+            maxEntrySizeText = BaseWidgetUtils.createIntegerText( toolkit, databaseLimitsComposite );
             maxEntrySizeText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         }
 
         // Search Stack Depth Text
         toolkit.createLabel( databaseLimitsComposite, "Search Stack Depth:" );
-        searchStackDepthText = createIntegerText( toolkit, databaseLimitsComposite );
+        searchStackDepthText = BaseWidgetUtils.createIntegerText( toolkit, databaseLimitsComposite );
         searchStackDepthText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Checkpoint Text
@@ -396,31 +395,6 @@ public class MdbDatabaseSpecificDetailsBlock extends AbstractDatabaseSpecificDet
         checkpointText.removeModifyListener( dirtyModifyListener );
 
         disableSynchronousDatabaseWritesBooleanWithDefaultWidget.removeWidgetModifyListener( dirtyWidgetModifyListener );
-    }
-
-
-    /**
-     * Creates a Text that can be used to enter an integer.
-     *
-     * @param toolkit the toolkit
-     * @param parent the parent
-     * @return a Text that can be used to enter a port number
-     */
-    protected Text createIntegerText( FormToolkit toolkit, Composite parent )
-    {
-        Text integerText = toolkit.createText( parent, "" ); //$NON-NLS-1$
-        integerText.addVerifyListener( new VerifyListener()
-        {
-            public void verifyText( VerifyEvent e )
-            {
-                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
-                {
-                    e.doit = false;
-                }
-            }
-        } );
-
-        return integerText;
     }
 
 

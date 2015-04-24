@@ -23,13 +23,23 @@ package org.apache.directory.studio.openldap.config.editor.databases;
 /**
  * The various Database types. One of :
  * <ul>
- * <li>DBD</li>
+ * <li>None</li>
+ * <li>Frontend DB</li>
+ * <li>Config DB</li>
+ * <li>BDB</li>
+ * <li>DB Perl</li>
+ * <li>DB_Socket</li>
  * <li>HDB</li>
  * <li>MDB</li>
  * <li>LDAP</li>
  * <li>LDIF</li>
+ * <li>META</li>
  * <li>MONITOR</li>
+ * <li>NDB</li>
+ * <li>PASSWORD</li>
  * <li>RELAY</li>
+ * <li>SHELL</li>
+ * <li>SQL DB</li>
  * <li>NULL</li>
  * </ul>
  *
