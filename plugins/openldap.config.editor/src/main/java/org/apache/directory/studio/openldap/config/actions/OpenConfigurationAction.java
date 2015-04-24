@@ -34,7 +34,7 @@ import org.apache.directory.studio.openldap.config.editor.ServerConfigurationEdi
 
 
 /**
- * This class implements the action which open the configuration.
+ * This class implements the action which open the OpenLDAP configuration.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -71,6 +71,7 @@ public class OpenConfigurationAction implements IObjectActionDelegate
     public void selectionChanged( IAction action, ISelection selection )
     {
         StructuredSelection structuredSelection = ( StructuredSelection ) selection;
+        
         if ( ( structuredSelection.size() == 1 ) && ( structuredSelection.getFirstElement() instanceof Connection ) )
         {
             selectedConnection = ( Connection ) structuredSelection.getFirstElement();
