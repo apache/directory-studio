@@ -280,11 +280,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         {
             try
             {
-                if ( ldapConnection.isAuthenticated() )
-                {
-                    ldapConnection.unBind();
-                }
-                
                 ldapConnection.close();
             }
             catch ( Exception e )
