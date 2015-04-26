@@ -63,7 +63,7 @@
       icon="resources/icons/editor_single_tab.gif"
       id="%Editor_SingleTabCombinedEntryEditor_id"
       name="%Editor_SingleTabCombinedEntryEditor_fullname"
-      priority="11"
+      priority="42"
       multiWindow="false">
     </entryEditor>
 
@@ -74,7 +74,7 @@
       icon="resources/icons/editor_multi_tab.gif"
       id="%Editor_MultiTabCombinedEntryEditor_id"
       name="%Editor_MultiTabCombinedEntryEditor_fullname"
-      priority="10"
+      priority="41"
       multiWindow="true">
     </entryEditor>
   </extension>

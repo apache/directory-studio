@@ -90,7 +90,7 @@
       icon="resources/icons/editor_single_tab.gif"
       id="%Editor_SingleTabTemplateEntryEditor_id"
       name="%Editor_SingleTabTemplateEntryEditor_fullname"
-      priority="9"
+      priority="32"
       multiWindow="false">
     </entryEditor>
 		
@@ -101,7 +101,7 @@
       icon="resources/icons/editor_multi_tab.gif"
       id="%Editor_MultiTabTemplateEntryEditor_id"
       name="%Editor_MultiTabTemplateEntryEditor_fullname"
-      priority="8"
+      priority="31"
       multiWindow="true">
     </entryEditor>
   </extension>

@@ -488,7 +488,7 @@
           icon="resources/icons/browser_singletab_entry_editor.gif"
           id="%Editor_SingleTabEntryEditor_id"
           name="%Editor_SingleTabEntryEditor_fullname"
-          priority="5"
+          priority="52"
           multiWindow="false">
     </entryEditor>
     <entryEditor
@@ -498,7 +498,7 @@
           icon="resources/icons/browser_multitab_entry_editor.gif"
           id="%Editor_MultiTabEntryEditor_id"
           name="%Editor_MultiTabEntryEditor_fullname"
-          priority="3"
+          priority="51"
           multiWindow="true">
     </entryEditor>
     <entryEditor
@@ -509,7 +509,7 @@
           id="%Editor_SingleTabLdifEntryEditor_id"
           multiWindow="false"
           name="%Editor_SingleTabLdifEntryEditor_fullname"
-          priority="1">
+          priority="21">
     </entryEditor>
     <entryEditor
           class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.MultiTabLdifEntryEditor"
@@ -519,7 +519,7 @@
           id="%Editor_MultiTabLdifEntryEditor_id"
           multiWindow="true"
           name="%Editor_MultiTabLdifEntryEditor_fullname"
-          priority="2">
+          priority="22">
     </entryEditor>
  </extension>
 
