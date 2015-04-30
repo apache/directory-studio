@@ -19,6 +19,9 @@
  */
 package org.apache.directory.studio.test.integration.ui.bots;
 
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
+import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
+
 
 public class RenameEntryDialogBot extends DialogBot
 {
@@ -31,7 +34,9 @@ public class RenameEntryDialogBot extends DialogBot
 
     public void clickOkButton()
     {
+        JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__rename_entry_name );
         super.clickButton( "OK" );
+        watcher.waitUntilDone();
     }
 
 

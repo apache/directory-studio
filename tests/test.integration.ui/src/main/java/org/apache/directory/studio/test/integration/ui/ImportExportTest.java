@@ -36,7 +36,6 @@ import org.apache.directory.server.annotations.CreateLdapServer;
 import org.apache.directory.server.annotations.CreateTransport;
 import org.apache.directory.server.core.annotations.ApplyLdifFiles;
 import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
-import org.apache.directory.server.core.integ.FrameworkRunner;
 import org.apache.directory.server.core.api.partition.Partition;
 import org.apache.directory.server.core.partition.impl.avl.AvlPartition;
 import org.apache.directory.api.ldap.model.name.Dn;
@@ -47,6 +46,7 @@ import org.apache.directory.studio.test.integration.ui.bots.DeleteDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.ExportWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.ImportWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
+import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.eclipse.core.runtime.Platform;
 import org.junit.After;
 import org.junit.Before;
@@ -60,7 +60,7 @@ import org.junit.runner.RunWith;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-@RunWith(FrameworkRunner.class)
+@RunWith(FrameworkRunnerWithScreenshotCaptureListener.class)
 @CreateLdapServer(transports =
     { @CreateTransport(protocol = "LDAP") })
 @ApplyLdifFiles( clazz = ImportExportTest.class,
@@ -256,10 +256,10 @@ public class ImportExportTest extends AbstractLdapTestUnit
         ImportWizardBot importWizardBot = browserViewBot.openImportLdifWizard();
         importWizardBot.typeFile( destFile );
         importWizardBot.clickFinishButton();
+        browserViewBot.waitForEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=User.1" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=User.1" );
 
         long fireCount1 = EventRegistry.getFireCount();
-
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=User.1" );
 
         // verify that only three two events were fired between Import
         long fireCount = fireCount1 - fireCount0;

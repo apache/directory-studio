@@ -20,6 +20,8 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
+import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
@@ -28,6 +30,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 public class NewConnectionWizardBot extends WizardBot
 {
 
+    private static final String TITLE = "New LDAP Connection";
     private static final String CERTIFICATE_TRUST = "Certificate Trust";
     private static final String CONNECTION_NAME = "Connection name:";
     private static final String HOSTNAME = "Hostname:";
@@ -50,10 +53,23 @@ public class NewConnectionWizardBot extends WizardBot
     private static final String START_TLS_ENCRYPTION = "Use StartTLS extension";
     private static final String LDAPS_ENCRYPTION = "Use SSL encryption (ldaps://)";
 
+    
+    public NewConnectionWizardBot()
+    {
+        super( TITLE );
+    }
 
+    @Override
+    public void clickFinishButton()
+    {
+        JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__open_connections_name_1 );
+        super.clickFinishButton();
+        watcher.waitUntilDone();
+    }
+    
     public boolean isVisible()
     {
-        return isVisible( "New LDAP Connection" );
+        return isVisible( TITLE );
     }
 
 

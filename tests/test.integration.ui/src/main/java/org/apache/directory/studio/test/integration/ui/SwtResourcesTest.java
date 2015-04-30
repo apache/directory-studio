@@ -27,12 +27,12 @@ import static org.junit.Assert.assertTrue;
 import org.apache.directory.server.annotations.CreateLdapServer;
 import org.apache.directory.server.annotations.CreateTransport;
 import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
-import org.apache.directory.server.core.integ.FrameworkRunner;
 import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.DeleteDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewEntryWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
+import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.eclipse.swt.graphics.DeviceData;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
@@ -49,7 +49,7 @@ import org.junit.runner.RunWith;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-@RunWith(FrameworkRunner.class)
+@RunWith(FrameworkRunnerWithScreenshotCaptureListener.class)
 @CreateLdapServer(transports =
     { @CreateTransport(protocol = "LDAP") })
 public class SwtResourcesTest extends AbstractLdapTestUnit
@@ -163,6 +163,7 @@ public class SwtResourcesTest extends AbstractLdapTestUnit
 
         wizardBot.clickFinishButton();
 
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "o=" + name ) );
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "o=" + name );
         DeleteDialogBot dialog = browserViewBot.openDeleteDialog();
         dialog.clickOkButton();

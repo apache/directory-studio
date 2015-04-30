@@ -79,6 +79,9 @@ public class StudioBot
             {
                 try
                 {
+                    // https://wiki.eclipse.org/SWTBot/Troubleshooting#No_active_Shell_when_running_SWTBot_tests_in_Xvfb
+                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell().forceActive();
+
                     IWorkbench workbench = PlatformUI.getWorkbench();
                     IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
 

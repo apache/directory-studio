@@ -27,7 +27,6 @@ import static org.junit.Assert.assertTrue;
 import org.apache.directory.server.annotations.CreateLdapServer;
 import org.apache.directory.server.annotations.CreateTransport;
 import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
-import org.apache.directory.server.core.integ.FrameworkRunner;
 import org.apache.directory.api.ldap.model.message.ModifyRequest;
 import org.apache.directory.api.ldap.model.message.ModifyRequestImpl;
 import org.apache.directory.api.ldap.model.name.Dn;
@@ -42,6 +41,7 @@ import org.apache.directory.studio.test.integration.ui.bots.SearchDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.SearchPropertiesDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.SearchResultEditorBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
+import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -55,7 +55,7 @@ import org.junit.runner.RunWith;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-@RunWith(FrameworkRunner.class)
+@RunWith(FrameworkRunnerWithScreenshotCaptureListener.class)
 @CreateLdapServer(transports =
     { @CreateTransport(protocol = "LDAP") })
 public class SearchTest extends AbstractLdapTestUnit

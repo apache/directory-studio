@@ -20,7 +20,8 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
-import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
+import org.eclipse.swtbot.swt.finder.waits.Conditions;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 
 
 public abstract class WizardBot extends DialogBot
@@ -84,23 +85,17 @@ public abstract class WizardBot extends DialogBot
 
     public void clickFinishButton()
     {
-        clickButton( "Finish" );
-
+        SWTBotShell shell = null;
         if ( title != null )
         {
-            bot.waitUntil( new DefaultCondition()
-            {
-                public boolean test() throws Exception
-                {
-                    return isVisible( title );
-                }
+            shell = bot.shell( title );
+        }
 
+        clickButton( "Finish" );
 
-                public String getFailureMessage()
-                {
-                    return "Wizard " + title + " not closed.";
-                }
-            } );
+        if ( shell != null )
+        {
+            bot.waitUntil( Conditions.shellCloses( shell ) );
         }
     }
 

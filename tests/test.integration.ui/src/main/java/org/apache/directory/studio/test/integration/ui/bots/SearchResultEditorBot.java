@@ -30,6 +30,7 @@ import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.ToolItem;
+import org.eclipse.swt.widgets.Widget;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
@@ -75,7 +76,7 @@ public class SearchResultEditorBot
     {
         JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__search_name );
         //bot.toolbarButton( "Search Again (F5)" ).click();
-        Matcher matcher = allOf( widgetOfType( ToolItem.class ), withTooltip( "Search Again (F5)" ), withStyle(
+        Matcher<Widget> matcher = allOf( widgetOfType( ToolItem.class ), withTooltip( "Search Again (F5)" ), withStyle(
             SWT.PUSH, "SWT.PUSH" ) );
         SWTBotToolbarPushButton button = new SWTBotToolbarPushButton( ( ToolItem ) bot.widget( matcher, 0 ), matcher );
         button.click();

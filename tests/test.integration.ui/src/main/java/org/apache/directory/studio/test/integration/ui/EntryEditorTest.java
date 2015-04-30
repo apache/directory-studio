@@ -31,7 +31,6 @@ import org.apache.directory.server.annotations.CreateLdapServer;
 import org.apache.directory.server.annotations.CreateTransport;
 import org.apache.directory.server.core.annotations.ApplyLdifFiles;
 import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
-import org.apache.directory.server.core.integ.FrameworkRunner;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
@@ -43,6 +42,7 @@ import org.apache.directory.studio.test.integration.ui.bots.ModificationLogsView
 import org.apache.directory.studio.test.integration.ui.bots.NewAttributeWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.SelectDnDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
+import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
 import org.junit.After;
@@ -57,7 +57,7 @@ import org.junit.runner.RunWith;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-@RunWith(FrameworkRunner.class)
+@RunWith(FrameworkRunnerWithScreenshotCaptureListener.class)
 @CreateLdapServer(transports =
     { @CreateTransport(protocol = "LDAP") })
 @ApplyLdifFiles( clazz=EntryEditorTest.class,

@@ -20,24 +20,35 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 import org.apache.directory.api.ldap.model.name.Dn;
-
-
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
+import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
 
 
 public class NewEntryWizardBot extends WizardBot
 {
+    private static final String TITLE = "New Entry";
+
     private EntryEditorWidgetBot widgetBot;
 
 
     public NewEntryWizardBot()
     {
+        super( TITLE );
         this.widgetBot = new EntryEditorWidgetBot( bot );
     }
 
 
+    @Override
+    public void clickFinishButton()
+    {
+        JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__create_entry_name_1 );
+        super.clickFinishButton();
+        watcher.waitUntilDone();
+    }
+
     public boolean isVisible()
     {
-        return isVisible( "New Entry" );
+        return isVisible( TITLE );
     }
 
 
@@ -117,7 +128,7 @@ public class NewEntryWizardBot extends WizardBot
 
     public ReferralDialogBot clickFinishButtonExpectingReferralDialog()
     {
-        clickFinishButton();
+        clickButton( "Finish" );
         return new ReferralDialogBot();
     }
 

@@ -30,10 +30,10 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
-import org.apache.directory.server.core.integ.FrameworkRunner;
 import org.apache.directory.studio.test.integration.ui.bots.CertificateValidationPreferencePageBot;
 import org.apache.directory.studio.test.integration.ui.bots.PreferencesBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
+import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.eclipse.core.runtime.Platform;
 import org.junit.After;
 import org.junit.Before;
@@ -47,7 +47,7 @@ import org.junit.runner.RunWith;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-@RunWith(FrameworkRunner.class)
+@RunWith(FrameworkRunnerWithScreenshotCaptureListener.class)
 public class PreferencesTest extends AbstractLdapTestUnit
 {
     private StudioBot studioBot;

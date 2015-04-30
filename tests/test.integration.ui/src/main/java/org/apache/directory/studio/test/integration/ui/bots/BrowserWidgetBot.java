@@ -11,6 +11,7 @@ import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
+import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
@@ -170,20 +171,7 @@ class BrowserWidgetBot
     {
         if ( !bot.tree().isEnabled() )
         {
-            bot.waitUntil( new DefaultCondition()
-            {
-
-                public boolean test() throws Exception
-                {
-                    return bot.tree().isEnabled();
-                }
-
-
-                public String getFailureMessage()
-                {
-                    return "Entry " + entry + " is not enabled!";
-                }
-            } );
+            bot.waitUntil( Conditions.widgetIsEnabled( bot.tree() ) );
         }
         JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__init_entries_title_attonly );
         entry.click();

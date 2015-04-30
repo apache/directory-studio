@@ -22,6 +22,8 @@ package org.apache.directory.studio.test.integration.ui.bots;
 
 import java.io.File;
 
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
+import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 
 
@@ -34,6 +36,7 @@ public class ExportWizardBot extends WizardBot
 
     public ExportWizardBot( String title )
     {
+        super(title);
         this.title = title;
     }
 
@@ -47,6 +50,28 @@ public class ExportWizardBot extends WizardBot
     public void typeFile( String file )
     {
         bot.comboBox().setText( file );
+    }
+
+
+    @Override
+    public void clickFinishButton()
+    {
+        JobWatcher watcher = null;
+        if ( EXPORT_LDIF_TITLE.equals( title ) )
+        {
+            watcher = new JobWatcher( BrowserCoreMessages.jobs__export_ldif_name );
+        }
+        else if ( EXPORT_DSML_TITLE.equals( title ) )
+        {
+            watcher = new JobWatcher( BrowserCoreMessages.jobs__export_dsml_name );
+        }
+
+        super.clickFinishButton();
+
+        if ( watcher != null )
+        {
+            watcher.waitUntilDone();
+        }
     }
 
 
