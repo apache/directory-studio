@@ -72,7 +72,6 @@
  org.apache.commons.collections, 
  org.apache.commons.collections.map,
  org.apache.commons.io,
- org.apache.log4j,
  org.dom4j,
  org.dom4j.io
             </Import-Package>

@@ -30,7 +30,6 @@ import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandlerAdapter;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener;
 import org.apache.directory.studio.schemaeditor.model.Schema;
-import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.IPageChangedListener;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -47,9 +46,6 @@ import org.eclipse.ui.forms.editor.FormEditor;
  */
 public class ObjectClassEditor extends FormEditor
 {
-    /** The logger */
-    private static Logger logger = Logger.getLogger( ObjectClassEditor.class );
-
     /** The ID of the Editor */
     public static final String ID = PluginConstants.EDITOR_OBJECT_CLASS_ID;
 
@@ -202,7 +198,7 @@ public class ObjectClassEditor extends FormEditor
         }
         catch ( PartInitException e )
         {
-            logger.debug( "error when adding pages" ); //$NON-NLS-1$
+            PluginUtils.logError( "error when adding pages", e ); //$NON-NLS-1$
         }
     }
 

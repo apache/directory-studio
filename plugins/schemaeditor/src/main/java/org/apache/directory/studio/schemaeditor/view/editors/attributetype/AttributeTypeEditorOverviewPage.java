@@ -33,6 +33,7 @@ import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.UsageEnum;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
+import org.apache.directory.studio.schemaeditor.PluginUtils;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener;
 import org.apache.directory.studio.schemaeditor.model.Schema;
@@ -46,7 +47,6 @@ import org.apache.directory.studio.schemaeditor.view.editors.NonExistingMatching
 import org.apache.directory.studio.schemaeditor.view.editors.NonExistingSyntax;
 import org.apache.directory.studio.schemaeditor.view.editors.schema.SchemaEditor;
 import org.apache.directory.studio.schemaeditor.view.editors.schema.SchemaEditorInput;
-import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -327,7 +327,7 @@ public class AttributeTypeEditorOverviewPage extends AbstractAttributeTypeEditor
             }
             catch ( PartInitException exception )
             {
-                Logger.getLogger( AttributeTypeEditorInput.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                PluginUtils.logError( "error when opening the editor", exception ); //$NON-NLS-1$
             }
         }
     };
@@ -362,7 +362,7 @@ public class AttributeTypeEditorOverviewPage extends AbstractAttributeTypeEditor
                 }
                 catch ( PartInitException exception )
                 {
-                    Logger.getLogger( AttributeTypeEditorInput.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                    PluginUtils.logError( "error when opening the editor", exception ); //$NON-NLS-1$
                 }
             }
         }
