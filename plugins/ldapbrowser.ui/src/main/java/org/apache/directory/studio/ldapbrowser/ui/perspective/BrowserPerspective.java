@@ -48,6 +48,10 @@ import org.eclipse.ui.IPerspectiveFactory;
 public class BrowserPerspective implements IPerspectiveFactory
 {
 
+    private static final String PROGRESS_VIEW_ID = "org.eclipse.ui.views.ProgressView"; //$NON-NLS-1$
+    private static final String ERROR_LOG_VIEW_ID = "org.eclipse.pde.runtime.LogView"; //$NON-NLS-1$
+
+
     /**
      * Gets the ID of the browser perspective.
      * 
@@ -94,7 +98,8 @@ public class BrowserPerspective implements IPerspectiveFactory
         layout.addShowViewShortcut( ModificationLogsView.getId() );
         layout.addShowViewShortcut( SearchLogsView.getId() );
         layout.addShowViewShortcut( IPageLayout.ID_OUTLINE );
-        layout.addShowViewShortcut( "org.eclipse.ui.views.ProgressView" ); //$NON-NLS-1$
+        layout.addShowViewShortcut( PROGRESS_VIEW_ID );
+        layout.addShowViewShortcut( ERROR_LOG_VIEW_ID );
     }
 
 
@@ -127,12 +132,13 @@ public class BrowserPerspective implements IPerspectiveFactory
         // Progress folder
         IFolderLayout progessFolder = layout.createFolder( "progressFolder", IPageLayout.BOTTOM, ( float ) 0.75, //$NON-NLS-1$
             "outlineFolder" ); //$NON-NLS-1$
-        progessFolder.addView( "org.eclipse.ui.views.ProgressView" ); //$NON-NLS-1$
+        progessFolder.addView( PROGRESS_VIEW_ID );
 
         // Log folder
         IFolderLayout logFolder = layout.createFolder( "logFolder", IPageLayout.BOTTOM, ( float ) 0.75, editorArea ); //$NON-NLS-1$
         logFolder.addView( ModificationLogsView.getId() );
         logFolder.addView( SearchLogsView.getId() );
+        logFolder.addView( ERROR_LOG_VIEW_ID );
         logFolder.addPlaceholder( "*" ); //$NON-NLS-1$
 
         // non-closable?
@@ -142,7 +148,7 @@ public class BrowserPerspective implements IPerspectiveFactory
             layout.getViewLayout( BrowserView.getId() ).setCloseable( false );
             layout.getViewLayout( ConnectionView.getId() ).setCloseable( false );
             layout.getViewLayout( IPageLayout.ID_OUTLINE ).setCloseable( false );
-            layout.getViewLayout( "org.eclipse.ui.views.ProgressView" ).setCloseable( false ); //$NON-NLS-1$
+            layout.getViewLayout( PROGRESS_VIEW_ID ).setCloseable( false );
             layout.getViewLayout( ModificationLogsView.getId() ).setCloseable( false );
         }
     }
