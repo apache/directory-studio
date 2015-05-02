@@ -134,7 +134,10 @@ class BrowserWidgetBot
         {
             public void run()
             {
-                entry.expand();
+                if ( !entry.isExpanded() )
+                {
+                    entry.expand();
+                }
             }
         } );
 

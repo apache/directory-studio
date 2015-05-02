@@ -55,6 +55,7 @@
     <module>rcp/pom-first.xml</module>
     <module>combinededitor/pom-first.xml</module>
     <module>templateeditor/pom-first.xml</module>
+    <module>slf4j-eclipselog/pom-first.xml</module>
   </modules>
 
   <build>

@@ -19,7 +19,7 @@
   @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
 -->
 <?pde version="3.8"?>
-<target name="Apache Directory Studio Platform" sequenceNumber="124">
+<target name="Apache Directory Studio Platform" sequenceNumber="136">
   <locations>
 
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
@@ -30,9 +30,8 @@
       <unit id="net.sf.ehcache" version="${net.sf.ehcache.bundleversion}"/>
 
       <!-- Logging jars -->
-      <unit id="log4j" version="${log4j.log4j.bundleversion}"/>
       <unit id="slf4j.api" version="${org.slf4j.bundleversion}"/>
-      <unit id="slf4j.log4j12" version="${org.slf4j.bundleversion}"/>
+      <unit id="log4j.over.slf4j" version="${org.slf4j.bundleversion}"/>
 
       <!-- Commons jars -->
       <unit id="org.apache.commons.collections" version="${org.apache.commons.collections.bundleversion}"/>
@@ -115,6 +114,9 @@
       <unit id="org.eclipse.platform.feature.group" version="4.4.2.v20150204-1700"/>
       <unit id="org.eclipse.platform.source.feature.group" version="4.4.2.v20150204-1700"/>
       <unit id="org.eclipse.jdt.feature.group" version="3.10.1.v20150204-1700"/>
+      <unit id="org.eclipse.jdt.source.feature.group" version="3.10.1.v20150204-1700"/>
+      <unit id="org.eclipse.pde.feature.group" version="3.10.1.v20150204-1700"/>
+      <unit id="org.eclipse.pde.source.feature.group" version="3.10.1.v20150204-1700"/>
       <unit id="org.eclipse.equinox.p2.user.ui.feature.group" version="2.2.0.v20150129-0838"/>
       <unit id="org.eclipse.equinox.executable.feature.group" version="3.6.102.v20150204-1316"/>
       <repository location="http://download.eclipse.org/eclipse/updates/4.4"/>

@@ -54,6 +54,7 @@
     <module>openldap.acl.editor</module>
     <module>templateeditor</module>
     <module>combinededitor</module>
+    <module>slf4j-eclipselog</module>
   </modules>
 
   <build>

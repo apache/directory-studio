@@ -388,13 +388,6 @@ http://www.apache.org/licenses/
          unpack="false"/>
 
    <plugin
-         id="log4j"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.apache.directory.api.ldap.schema"
          download-size="0"
          install-size="0"
@@ -413,14 +406,6 @@ http://www.apache.org/licenses/
          download-size="0"
          install-size="0"
          version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="slf4j.log4j12"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
          unpack="false"/>
 
    <plugin
@@ -516,6 +501,20 @@ http://www.apache.org/licenses/
 
    <plugin
          id="org.apache.directory.server.core.constants"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ui.views.log"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.directory.studio.slf4j-eclipselog"
          download-size="0"
          install-size="0"
          version="0.0.0"
