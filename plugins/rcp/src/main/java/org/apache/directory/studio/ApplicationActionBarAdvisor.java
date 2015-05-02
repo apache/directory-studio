@@ -333,6 +333,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
         editMenu.add( renameAction );
         editMenu.add( new Separator() );
         editMenu.add( findAction );
+        editMenu.add(new GroupMarker(IWorkbenchActionConstants.FIND_EXT));
 
         // Populating Navigate Menu
         navigateMenu.add( nextAction );

@@ -23,6 +23,7 @@ package org.apache.directory.studio.test.integration.ui.bots;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.ui.IViewReference;
@@ -68,6 +69,12 @@ public class StudioBot
     public EntryEditorBot getEntryEditorBot( String title )
     {
         return new EntryEditorBot( title );
+    }
+
+
+    public SearchResultEditorBot getSearchResultEditorBot( String title )
+    {
+        return new SearchResultEditorBot( title );
     }
 
 
@@ -141,9 +148,18 @@ public class StudioBot
     }
 
 
-    public SearchResultEditorBot getSearchResultEditorBot( String title )
+    public NewWizardBot openNewWizard()
     {
-        return new SearchResultEditorBot( title );
+        try
+        {
+            // In IDE
+            new SWTBot().menu( "File" ).menu( "New" ).menu( "Other..." ).click();
+        }
+        catch ( WidgetNotFoundException wnfe )
+        {
+            // In RCP application
+            new SWTBot().menu( "File" ).menu( "New..." ).click();
+        }
+        return new NewWizardBot();
     }
-
 }
