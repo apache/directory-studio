@@ -101,3 +101,10 @@ Update site (p2 repo) is generated in product/target/repository
 Distribution files are generated in product/target/products
 
 
+## Misc tips and tricks
+
+How to search features, plugins, versions in P2 repo?
+
+<https://stackoverflow.com/questions/10025599/how-to-find-out-which-feature-contains-a-needed-plug-in-on-an-eclipse-download-s>
+
+
