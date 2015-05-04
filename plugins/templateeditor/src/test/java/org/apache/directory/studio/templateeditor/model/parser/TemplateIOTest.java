@@ -231,7 +231,7 @@ public class TemplateIOTest extends TestCase
      * Tests the parser with a template file containing a section with a wrong
      * 'columns' attribute.
      */
-    public void testReadTemplateSectionWrongColumnsAttributeTest()
+    public void testReadTemplateSectionWrongColumnsAttributeTest() throws Exception
     {
         testParsingFail( "template_section_with_wrong_columns_attribute.xml" ); //$NON-NLS-1$
     }
@@ -1268,7 +1268,7 @@ public class TemplateIOTest extends TestCase
     /**
      * Tests the parser with a template containing a wrong root element.
      */
-    public void testReadTemplateWrongRootElementTest()
+    public void testReadTemplateWrongRootElementTest() throws Exception
     {
         testParsingFail( "template_wrong_root_element.xml" ); //$NON-NLS-1$
     }
@@ -1277,7 +1277,7 @@ public class TemplateIOTest extends TestCase
     /**
      * Tests the parser with a template containing no 'id' attribute.
      */
-    public void testReadTemplateNoIdAttributeTest()
+    public void testReadTemplateNoIdAttributeTest() throws Exception
     {
         testParsingFail( "template_no_id_attribute.xml" ); //$NON-NLS-1$
     }
@@ -1286,7 +1286,7 @@ public class TemplateIOTest extends TestCase
     /**
      * Tests the parser with a template containing no 'title' attribute.
      */
-    public void testReadTemplateNoTitleAttributeTest()
+    public void testReadTemplateNoTitleAttributeTest() throws Exception
     {
         testParsingFail( "template_no_title_attribute.xml" ); //$NON-NLS-1$
     }
@@ -1295,7 +1295,7 @@ public class TemplateIOTest extends TestCase
     /**
      * Tests the parser with a template containing no 'objectClasses' element.
      */
-    public void testReadTemplateNoObjectClassesElementTest()
+    public void testReadTemplateNoObjectClassesElementTest() throws Exception
     {
         testParsingFail( "template_no_objectClasses_element.xml" ); //$NON-NLS-1$
     }
@@ -1304,7 +1304,7 @@ public class TemplateIOTest extends TestCase
     /**
      * Tests the parser with a template containing no 'structural' element.
      */
-    public void testReadTemplateNoObjectClassElementTest()
+    public void testReadTemplateNoObjectClassElementTest() throws Exception
     {
         testParsingFail( "template_no_structural_element.xml" ); //$NON-NLS-1$
     }
@@ -1313,7 +1313,7 @@ public class TemplateIOTest extends TestCase
     /**
      * Tests the parser with a template containing no 'form' element.
      */
-    public void testReadTemplateNoFormElementTest()
+    public void testReadTemplateNoFormElementTest() throws Exception
     {
         testParsingFail( "template_no_form_element.xml" ); //$NON-NLS-1$
     }
@@ -1322,7 +1322,7 @@ public class TemplateIOTest extends TestCase
     /**
      * Tests the parser with a template containing no 'section' element.
      */
-    public void testReadTemplateNoSectionElementTest()
+    public void testReadTemplateNoSectionElementTest() throws Exception
     {
         testParsingFail( "template_no_section_element.xml" ); //$NON-NLS-1$
     }
@@ -1336,7 +1336,7 @@ public class TemplateIOTest extends TestCase
      * @param filename
      *      the path of the xml file to parse 
      */
-    public void testParsingFail( String filename )
+    public void testParsingFail( String filename ) throws Exception
     {
         try
         {
@@ -1346,10 +1346,6 @@ public class TemplateIOTest extends TestCase
         {
             assertTrue( e.getMessage(), true );
             return;
-        }
-        catch ( Exception e )
-        {
-            fail( e.getMessage() );
         }
         fail();
     }

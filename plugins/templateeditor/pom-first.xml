@@ -57,6 +57,13 @@
               org.apache.directory.studio.templateeditor.view.preferences,
               org.apache.directory.studio.templateeditor.view.wizards
             </Export-Package>
+            
+            <Import-Package>
+              org.dom4j,
+              org.dom4j.io,
+              org.slf4j
+            </Import-Package>
+            
             <Require-Bundle>
               org.eclipse.core.runtime,
               org.eclipse.ui,
@@ -74,9 +81,7 @@
               org.apache.directory.studio.ldapbrowser.ui,
               org.apache.directory.studio.ldifparser,
               org.apache.directory.studio.ldifeditor,
-              org.apache.directory.studio.valueeditors,
-              org.apache.servicemix.bundles.dom4j,
-              slf4j.api
+              org.apache.directory.studio.valueeditors
             </Require-Bundle>
           </instructions>
         </configuration>
