@@ -22,10 +22,10 @@
   <!-- The context menu which will be used to open the server's configuration -->
   <extension point="org.eclipse.ui.editors">
     <editor
-        class="org.apache.directory.studio.openldap.config.editor.ServerConfigurationEditor"
+        class="org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor"
         default="false"
         icon="resources/icons/editor.gif"
-        id="org.apache.directory.studio.openldap.config.editor.ServerConfigurationEditor"
+        id="org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor"
         name="OpenLDAP Configuration Editor">
     </editor>
   </extension>
