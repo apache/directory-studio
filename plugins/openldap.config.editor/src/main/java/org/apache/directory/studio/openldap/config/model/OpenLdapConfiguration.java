@@ -47,80 +47,176 @@ public class OpenLdapConfiguration
 
     /** The other configuration elements list*/
     private List<OlcConfig> configurationElements = new ArrayList<OlcConfig>();
+    
+    /** The loaded modules */
+    private List<OlcModuleList> modules = new ArrayList<OlcModuleList>();
 
 
-    public boolean add( OlcConfig o )
+    /**
+     * @return the list of modules
+     */
+    public List<OlcModuleList> getModules()
     {
-        return configurationElements.add( o );
+        return modules;
     }
 
 
-    public boolean addDatabase( OlcDatabaseConfig o )
+    /**
+     * Add a module in the list of modules
+     * 
+     * @param modules the modules to add
+     */
+    public void add( OlcModuleList module )
     {
-        return databases.add( o );
+        modules.add( module );
     }
 
 
-    public void clearDatabases()
+    /**
+     * Remove a module from the list of modules
+     * 
+     * @param modules the modules to remove
+     */
+    public boolean remove( OlcModuleList module )
     {
-        databases.clear();
+        return modules.remove( module );
     }
 
 
-    public boolean contains( OlcConfig o )
+    /**
+     * Reset the module list
+     */
+    public void clearModuleList()
     {
-        return configurationElements.contains( o );
+        modules.clear();
     }
 
 
+    /**
+     * @return the list of configuration elements
+     */
     public List<OlcConfig> getConfigurationElements()
     {
         return configurationElements;
     }
 
-
-    public Connection getConnection()
+    
+    /**
+     * Add a configuration element in the list of elements
+     * 
+     * @param element the element to add
+     */
+    public boolean add( OlcConfig element )
     {
-        return connection;
+        return configurationElements.add( element );
     }
 
 
+    /**
+     * Tells if the list of elements contains a given element
+     *
+     * @param element The element we are looking for
+     * @return true if the element exists
+     */
+    public boolean contains( OlcConfig element )
+    {
+        return configurationElements.contains( element );
+    }
+
+
+    /**
+     * Remove a element from the list of configuration elements
+     * 
+     * @param element the element to remove
+     */
+    public boolean remove( OlcConfig element )
+    {
+        return configurationElements.remove( element );
+    }
+
+
+    /**
+     * @return the list of databases
+     */
     public List<OlcDatabaseConfig> getDatabases()
     {
         return databases;
     }
 
 
+    /**
+     * Add a database in the list of databases
+     * 
+     * @param database the database to add
+     */
+    public boolean add( OlcDatabaseConfig database )
+    {
+        return databases.add( database );
+    }
+
+
+    /**
+     * Reset the database list
+     */
+    public void clearDatabases()
+    {
+        databases.clear();
+    }
+
+
+    /**
+     * Remove a database from the list of databases
+     * 
+     * @param database the database to remove
+     */
+    public boolean remove( OlcDatabaseConfig database )
+    {
+        return databases.remove( database );
+    }
+
+
+    /**
+     * @return the connection
+     */
+    public Connection getConnection()
+    {
+        return connection;
+    }
+
+
+    /**
+     * @return the global configuration
+     */
     public OlcGlobal getGlobal()
     {
         return global;
     }
 
 
-    public boolean remove( OlcConfig o )
-    {
-        return configurationElements.remove( o );
-    }
-
-
-    public boolean removeDatabase( OlcDatabaseConfig o )
-    {
-        return databases.remove( o );
-    }
-
-
-    public void setConnection( Connection connection )
-    {
-        this.connection = connection;
-    }
-
-
+    /**
+     * Store the global configuration (which belongs to cn=config)
+     * @param global The configuration
+     */
     public void setGlobal( OlcGlobal global )
     {
         this.global = global;
     }
 
 
+    /**
+     * Stores the connection in the configuration
+     *
+     * @param connection The connection to store
+     */
+    public void setConnection( Connection connection )
+    {
+        this.connection = connection;
+    }
+
+
+    /**
+     * @return The number of configuration elements stored
+     */
     public int size()
     {
         return configurationElements.size();

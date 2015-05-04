@@ -17,11 +17,13 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.openldap.config.editor;
+package org.apache.directory.studio.openldap.config.editor.pages;
 
 
 import java.util.List;
 
+import org.apache.directory.studio.openldap.config.editor.Messages;
+import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
 import org.apache.directory.studio.openldap.config.model.OlcGlobal;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -39,7 +41,7 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class OptionsPage extends ServerConfigurationEditorPage
+public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
 {
     /** The Page ID*/
     public static final String ID = OptionsPage.class.getName(); //$NON-NLS-1$
@@ -48,8 +50,15 @@ public class OptionsPage extends ServerConfigurationEditorPage
     private static final String TITLE = "Options";
 
     // UI Controls
+    /** The olcLogFile parameter */
     private Text logFileText;
+    
+    /** The olcLogLevel parameter */
     private Text logLevelText;
+    
+    /** The olcPluginLogFile parameter */
+    private Text pluginLogFileText; 
+    
     private Text maxPduSizeAnonymousSessionsText;
     private Text maxPduSizeAuthenticatedSessionsText;
     private Text tcpBufferSizeText;
@@ -89,12 +98,13 @@ public class OptionsPage extends ServerConfigurationEditorPage
      *
      * @param editor the associated editor
      */
-    public OptionsPage( ServerConfigurationEditor editor )
+    public OptionsPage( OpenLDAPServerConfigurationEditor editor )
     {
         super( editor, ID, TITLE );
     }
 
 
+    
     /**
      * {@inheritDoc}
      */
@@ -138,7 +148,8 @@ public class OptionsPage extends ServerConfigurationEditorPage
      */
     private void createLogsSection( FormToolkit toolkit, Composite parent )
     {
-        Section section = createSection( toolkit, parent, "Logs" );
+        // The Logs section, which can be expanded or compacted
+        Section section = createSection( toolkit, parent, Messages.getString( "OptionsPage.LogTitle" ) );
         Composite composite = createSectionComposite( toolkit, section, 2, false );
 
         // Log File Text
@@ -150,6 +161,11 @@ public class OptionsPage extends ServerConfigurationEditorPage
         toolkit.createLabel( composite, "Log Level:" );
         logLevelText = toolkit.createText( composite, "" );
         logLevelText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        
+        // Plugin Log File Text
+        toolkit.createLabel( composite, "Plugin Log File:" );
+        pluginLogFileText = toolkit.createText( composite, "" );
+        pluginLogFileText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
     }
 
 
@@ -406,6 +422,22 @@ public class OptionsPage extends ServerConfigurationEditorPage
         authzUsernamesToDnRegexpText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
     }
 
+    
+    /**
+     * Adds listeners to UI Controls.
+     */
+    private void addListeners()
+    {
+    }
+
+    
+    /**
+     * Removes listeners to UI Controls.
+     */
+    private void removeListeners()
+    {
+    }
+    
 
     /**
      * Creates a section with the given text.
@@ -414,12 +446,13 @@ public class OptionsPage extends ServerConfigurationEditorPage
      * @param parent the parent composite
      * @param text the text
      * @return a section with the given text
-     */
+     *
     private Section createSection( FormToolkit toolkit, Composite parent, String text )
     {
-        Section section = toolkit.createSection( parent, Section.TITLE_BAR );
+        Section section = toolkit.createSection( parent, Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED );
         section.setText( text );
         section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        
         return section;
     }
 
@@ -450,10 +483,12 @@ public class OptionsPage extends ServerConfigurationEditorPage
     /**
      * {@inheritDoc}
      */
-    protected void refreshUI()
+    public void refreshUI()
     {
         if ( isInitialized() )
         {
+            removeListeners();
+
             // Getting the global configuration object
             OlcGlobal global = getConfiguration().getGlobal();
 
@@ -485,6 +520,18 @@ public class OptionsPage extends ServerConfigurationEditorPage
                 else
                 {
                     logLevelText.setText( "" );
+                }
+                
+                // Plugin Log File Text
+                String pluginLogFile = global.getOlcPluginLogFile();
+
+                if ( pluginLogFile != null )
+                {
+                    pluginLogFileText.setText( pluginLogFile );
+                }
+                else
+                {
+                    pluginLogFileText.setText( "" );
                 }
 
                 // Max PDU Size Anonymous Sessions Text
@@ -872,6 +919,8 @@ public class OptionsPage extends ServerConfigurationEditorPage
                 {
                     authzUsernamesToDnRegexpText.setText( "" );
                 }
+
+                addListeners();
             }
         }
     }

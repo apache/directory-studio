@@ -27,8 +27,8 @@ import org.eclipse.osgi.util.NLS;
 
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPlugin;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginConstants;
-import org.apache.directory.studio.openldap.config.editor.ServerConfigurationEditor;
-import org.apache.directory.studio.openldap.config.editor.ServerConfigurationEditorUtils;
+import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
+import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditorUtils;
 
 
 /**
@@ -39,7 +39,7 @@ import org.apache.directory.studio.openldap.config.editor.ServerConfigurationEdi
 public class EditorExportConfigurationAction extends Action
 {
     /** The associated editor */
-    private ServerConfigurationEditor editor;
+    private OpenLDAPServerConfigurationEditor editor;
 
 
     /**
@@ -48,7 +48,7 @@ public class EditorExportConfigurationAction extends Action
      * @param editor
      *      the associated editor
      */
-    public EditorExportConfigurationAction( ServerConfigurationEditor editor )
+    public EditorExportConfigurationAction( OpenLDAPServerConfigurationEditor editor )
     {
         this.editor = editor;
     }
@@ -80,7 +80,7 @@ public class EditorExportConfigurationAction extends Action
     {
         try
         {
-            ServerConfigurationEditorUtils.saveAs( editor.getConfiguration(), false );
+            OpenLDAPServerConfigurationEditorUtils.saveAs( editor.getConfiguration(), false );
         }
         catch ( Exception e )
         {

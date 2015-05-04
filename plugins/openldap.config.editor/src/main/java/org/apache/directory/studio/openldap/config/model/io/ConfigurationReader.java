@@ -62,12 +62,13 @@ import org.apache.directory.studio.openldap.config.ExpandedLdifUtils;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPlugin;
 import org.apache.directory.studio.openldap.config.editor.ConnectionServerConfigurationInput;
 import org.apache.directory.studio.openldap.config.editor.DirectoryServerConfigurationInput;
-import org.apache.directory.studio.openldap.config.editor.ServerConfigurationEditorUtils;
+import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditorUtils;
 import org.apache.directory.studio.openldap.config.jobs.EntryBasedConfigurationPartition;
 import org.apache.directory.studio.openldap.config.model.AuxiliaryObjectClass;
 import org.apache.directory.studio.openldap.config.model.ConfigurationElement;
 import org.apache.directory.studio.openldap.config.model.OlcConfig;
 import org.apache.directory.studio.openldap.config.model.OlcGlobal;
+import org.apache.directory.studio.openldap.config.model.OlcModuleList;
 import org.apache.directory.studio.openldap.config.model.OlcOverlayConfig;
 import org.apache.directory.studio.openldap.config.model.OpenLdapConfiguration;
 import org.apache.directory.studio.openldap.config.model.database.OlcDatabaseConfig;
@@ -132,12 +133,7 @@ public class ConfigurationReader
                 // Storing the object in the configuration objects map
                 dnToConfigObjectMap.put( entry.getDn(), configurationObject );
 
-                if ( configurationObject instanceof OlcDatabaseConfig )
-                {
-                    OlcDatabaseConfig databaseConfig = ( OlcDatabaseConfig ) configurationObject;
-                    configuration.addDatabase( databaseConfig );
-                }
-                else if ( configurationObject instanceof OlcOverlayConfig )
+                if ( configurationObject instanceof OlcOverlayConfig )
                 {
                     OlcOverlayConfig overlayConfig = ( OlcOverlayConfig ) configurationObject;
 
@@ -156,6 +152,14 @@ public class ConfigurationReader
                 else if ( configurationObject instanceof OlcGlobal )
                 {
                     configuration.setGlobal( ( OlcGlobal ) configurationObject );
+                }
+                else if ( configurationObject instanceof OlcModuleList )
+                {
+                    configuration.add( (OlcModuleList)configurationObject );
+                }
+                else if ( configurationObject instanceof OlcDatabaseConfig )
+                {
+                    configuration.add( ( OlcDatabaseConfig ) configurationObject );
                 }
                 else
                 {
@@ -253,14 +257,8 @@ public class ConfigurationReader
                     // Storing the object in the configuration objects map
                     dnToConfigObjectMap.put( entry.getDn(), configurationObject );
 
-                    // Checking if it's a database
-                    if ( configurationObject instanceof OlcDatabaseConfig )
-                    {
-                        OlcDatabaseConfig databaseConfig = ( OlcDatabaseConfig ) configurationObject;
-                        configuration.addDatabase( databaseConfig );
-                    }
                     // Checking if it's an overlay
-                    else if ( configurationObject instanceof OlcOverlayConfig )
+                    if ( configurationObject instanceof OlcOverlayConfig )
                     {
                         OlcOverlayConfig overlayConfig = ( OlcOverlayConfig ) configurationObject;
 
@@ -281,6 +279,11 @@ public class ConfigurationReader
                     else if ( configurationObject instanceof OlcGlobal )
                     {
                         configuration.setGlobal( ( OlcGlobal ) configurationObject );
+                    }
+                    // Checking if it's a database
+                    else if ( configurationObject instanceof OlcDatabaseConfig )
+                    {
+                        configuration.add( (OlcDatabaseConfig)configurationObject );
                     }
                     // Any other object type
                     else
@@ -349,7 +352,7 @@ public class ConfigurationReader
                 // Create the set of candidates
                 for ( Value<?> objectClassValue : objectClassAttribute )
                 {
-                    ObjectClass oc = ServerConfigurationEditorUtils.getObjectClass( schemaManager,
+                    ObjectClass oc = OpenLDAPServerConfigurationEditorUtils.getObjectClass( schemaManager,
                         objectClassValue.getString() );
 
                     if ( ( oc != null ) && ( oc.isStructural() ) )
@@ -361,14 +364,14 @@ public class ConfigurationReader
                 // Now find the parent OC
                 for ( Value<?> objectClassValue : objectClassAttribute )
                 {
-                    ObjectClass oc = ServerConfigurationEditorUtils.getObjectClass( schemaManager,
+                    ObjectClass oc = OpenLDAPServerConfigurationEditorUtils.getObjectClass( schemaManager,
                         objectClassValue.getString() );
 
                     if ( oc != null )
                     {
                         for ( String superiorName : oc.getSuperiorOids() )
                         {
-                            ObjectClass superior = ServerConfigurationEditorUtils.getObjectClass( schemaManager,
+                            ObjectClass superior = OpenLDAPServerConfigurationEditorUtils.getObjectClass( schemaManager,
                                 superiorName );
 
                             if ( ( superior != null ) && ( superior.isStructural() )
@@ -411,7 +414,7 @@ public class ConfigurationReader
             {
                 for ( Value<?> objectClassValue : objectClassAttribute )
                 {
-                    ObjectClass oc = ServerConfigurationEditorUtils.getObjectClass( schemaManager,
+                    ObjectClass oc = OpenLDAPServerConfigurationEditorUtils.getObjectClass( schemaManager,
                         objectClassValue.getString() );
 
                     if ( ( oc != null ) && ( oc.isAuxiliary() ) )
@@ -454,7 +457,7 @@ public class ConfigurationReader
         // The DN corresponding to the configuration base
 
         // Creating the configuration partition
-        EntryBasedConfigurationPartition configurationPartition = ServerConfigurationEditorUtils
+        EntryBasedConfigurationPartition configurationPartition = OpenLDAPServerConfigurationEditorUtils
             .createConfigurationPartition( schemaManager, configurationDn );
 
         // Opening the connection (if needed)

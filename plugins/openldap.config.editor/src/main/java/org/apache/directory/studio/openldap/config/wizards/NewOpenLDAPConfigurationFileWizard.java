@@ -21,7 +21,7 @@ package org.apache.directory.studio.openldap.config.wizards;
 
 
 import org.apache.directory.studio.openldap.config.editor.NewServerConfigurationInput;
-import org.apache.directory.studio.openldap.config.editor.ServerConfigurationEditor;
+import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
@@ -55,7 +55,7 @@ public class NewOpenLDAPConfigurationFileWizard extends Wizard implements INewWi
         try
         {
             IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-            page.openEditor( new NewServerConfigurationInput(), ServerConfigurationEditor.ID );
+            page.openEditor( new NewServerConfigurationInput(), OpenLDAPServerConfigurationEditor.ID );
         }
         catch ( PartInitException e )
         {

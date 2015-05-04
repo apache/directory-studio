@@ -30,7 +30,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 
 import org.apache.directory.studio.openldap.config.editor.ConnectionServerConfigurationInput;
-import org.apache.directory.studio.openldap.config.editor.ServerConfigurationEditor;
+import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
 
 
 /**
@@ -55,7 +55,7 @@ public class OpenConfigurationAction implements IObjectActionDelegate
             {
                 PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
                     .openEditor( new ConnectionServerConfigurationInput( selectedConnection ),
-                        ServerConfigurationEditor.ID );
+                        OpenLDAPServerConfigurationEditor.ID );
             }
             catch ( Exception e )
             {

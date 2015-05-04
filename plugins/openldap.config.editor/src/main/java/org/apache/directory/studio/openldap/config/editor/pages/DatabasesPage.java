@@ -17,11 +17,11 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.openldap.config.editor.databases;
+package org.apache.directory.studio.openldap.config.editor.pages;
 
 
-import org.apache.directory.studio.openldap.config.editor.ServerConfigurationEditor;
-import org.apache.directory.studio.openldap.config.editor.ServerConfigurationEditorPage;
+import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
+import org.apache.directory.studio.openldap.config.editor.databases.DatabasesMasterDetailsBlock;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -32,7 +32,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class DatabasesPage extends ServerConfigurationEditorPage
+public class DatabasesPage extends OpenLDAPServerConfigurationEditorPage
 {
     /** The Page ID*/
     public static final String ID = DatabasesPage.class.getName(); //$NON-NLS-1$
@@ -49,7 +49,7 @@ public class DatabasesPage extends ServerConfigurationEditorPage
      *
      * @param editor the associated editor
      */
-    public DatabasesPage( ServerConfigurationEditor editor )
+    public DatabasesPage( OpenLDAPServerConfigurationEditor editor )
     {
         super( editor, ID, TITLE );
     }

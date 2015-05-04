@@ -27,8 +27,13 @@ import org.apache.directory.studio.common.core.jobs.StudioJob;
 import org.apache.directory.studio.common.core.jobs.StudioRunnableWithProgress;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.openldap.config.editor.databases.ConfigPage;
-import org.apache.directory.studio.openldap.config.editor.databases.DatabasesPage;
 import org.apache.directory.studio.openldap.config.editor.databases.FrontendPage;
+import org.apache.directory.studio.openldap.config.editor.pages.DatabasesPage;
+import org.apache.directory.studio.openldap.config.editor.pages.ErrorPage;
+import org.apache.directory.studio.openldap.config.editor.pages.LoadingPage;
+import org.apache.directory.studio.openldap.config.editor.pages.OpenLDAPServerConfigurationEditorPage;
+import org.apache.directory.studio.openldap.config.editor.pages.OptionsPage;
+import org.apache.directory.studio.openldap.config.editor.pages.OverviewPage;
 import org.apache.directory.studio.openldap.config.jobs.LoadConfigurationRunnable;
 import org.apache.directory.studio.openldap.config.model.OpenLdapConfiguration;
 import org.apache.directory.studio.openldap.config.model.io.SaveConfigurationRunnable;
@@ -50,10 +55,10 @@ import org.eclipse.ui.forms.editor.FormEditor;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ServerConfigurationEditor extends FormEditor implements IPageChangedListener
+public class OpenLDAPServerConfigurationEditor extends FormEditor implements IPageChangedListener
 {
     /** The Editor ID */
-    public static final String ID = ServerConfigurationEditor.class.getName();
+    public static final String ID = OpenLDAPServerConfigurationEditor.class.getName();
 
     /** The flag indicating if the editor is dirty */
     private boolean dirty = false;
@@ -61,7 +66,10 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
     /** The configuration */
     private OpenLdapConfiguration configuration;
 
-    // The pages
+    // The pages for the Open LDAP configuration
+    /** The Overview page */
+    private OverviewPage overviewPage;
+    
     /** The page which is used for loading the configuration */
     private LoadingPage loadingPage;
     
@@ -111,9 +119,9 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
     {
         Object selectedPage = event.getSelectedPage();
 
-        if ( selectedPage instanceof ServerConfigurationEditorPage )
+        if ( selectedPage instanceof OpenLDAPServerConfigurationEditorPage )
         {
-            ( ( ServerConfigurationEditorPage ) selectedPage ).refreshUI();
+            ( ( OpenLDAPServerConfigurationEditorPage ) selectedPage ).refreshUI();
         }
     }
 
@@ -223,7 +231,7 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
         doSavePages( monitor );
 
         // Saving the configuration as a new file and getting the associated new editor input
-        IEditorInput newInput = ServerConfigurationEditorUtils.saveAs( getConfiguration(), true );
+        IEditorInput newInput = OpenLDAPServerConfigurationEditorUtils.saveAs( getConfiguration(), true );
 
         // Checking if the 'save as' is successful 
         if ( newInput != null )
@@ -340,6 +348,7 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
 
         setDirty( true );
 
+        overviewPage.refreshUI();
         optionsPage.refreshUI();
         databasesPage.refreshUI();
         frontendPage.refreshUI();
@@ -388,8 +397,12 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
         // Adding the configuration pages
         try
         {
+            overviewPage = new OverviewPage( this );
+            addPage( overviewPage);
+            
             databasesPage = new DatabasesPage( this );
             addPage( databasesPage );
+            
             optionsPage = new OptionsPage( this );
             addPage( optionsPage );
         }

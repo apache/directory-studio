@@ -32,7 +32,7 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PartInitException;
 
 import org.apache.directory.studio.openldap.config.editor.DirectoryServerConfigurationInput;
-import org.apache.directory.studio.openldap.config.editor.ServerConfigurationEditor;
+import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
 
 
 /**
@@ -75,7 +75,7 @@ public class OpenDirectoryConfigurationAction extends Action implements IWorkben
             try
             {
                 window.getActivePage().openEditor( new DirectoryServerConfigurationInput( new File(
-                    selectedDirectory ) ), ServerConfigurationEditor.ID );
+                    selectedDirectory ) ), OpenLDAPServerConfigurationEditor.ID );
             }
             catch ( PartInitException e )
             {

@@ -43,6 +43,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPlugin;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginConstants;
+import org.apache.directory.studio.openldap.config.editor.pages.OverlaysPage;
 import org.apache.directory.studio.openldap.config.model.OlcChainConfig;
 import org.apache.directory.studio.openldap.config.model.OlcConfig;
 import org.apache.directory.studio.openldap.config.model.OlcDistProcConfig;

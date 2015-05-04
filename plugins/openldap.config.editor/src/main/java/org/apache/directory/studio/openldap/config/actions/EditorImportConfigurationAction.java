@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.DirectoryDialog;
 
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPlugin;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginConstants;
-import org.apache.directory.studio.openldap.config.editor.ServerConfigurationEditor;
+import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
 import org.apache.directory.studio.openldap.config.model.OpenLdapConfiguration;
 import org.apache.directory.studio.openldap.config.model.io.ConfigurationReader;
 
@@ -44,7 +44,7 @@ import org.apache.directory.studio.openldap.config.model.io.ConfigurationReader;
 public class EditorImportConfigurationAction extends Action
 {
     /** The associated editor */
-    private ServerConfigurationEditor editor;
+    private OpenLDAPServerConfigurationEditor editor;
 
 
     /**
@@ -53,7 +53,7 @@ public class EditorImportConfigurationAction extends Action
      * @param editor
      *      the associated editor
      */
-    public EditorImportConfigurationAction( ServerConfigurationEditor editor )
+    public EditorImportConfigurationAction( OpenLDAPServerConfigurationEditor editor )
     {
         this.editor = editor;
     }

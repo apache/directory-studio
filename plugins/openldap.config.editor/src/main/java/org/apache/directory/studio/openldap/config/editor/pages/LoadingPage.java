@@ -17,9 +17,10 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.openldap.config.editor;
+package org.apache.directory.studio.openldap.config.editor.pages;
 
 
+import org.apache.directory.studio.openldap.config.editor.Messages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;

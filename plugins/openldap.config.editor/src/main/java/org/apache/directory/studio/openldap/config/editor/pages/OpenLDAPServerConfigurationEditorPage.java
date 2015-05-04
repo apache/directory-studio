@@ -17,11 +17,15 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.openldap.config.editor;
+package org.apache.directory.studio.openldap.config.editor.pages;
 
 
+import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
+import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.openldap.config.actions.EditorExportConfigurationAction;
 import org.apache.directory.studio.openldap.config.actions.EditorImportConfigurationAction;
+import org.apache.directory.studio.openldap.config.editor.Messages;
+import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
 import org.apache.directory.studio.openldap.config.model.OpenLdapConfiguration;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
@@ -46,6 +50,7 @@ import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormPage;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
+import org.eclipse.ui.forms.widgets.Section;
 
 
 /**
@@ -53,7 +58,7 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class ServerConfigurationEditorPage extends FormPage
+public abstract class OpenLDAPServerConfigurationEditorPage extends FormPage
 {
     protected static final Color GRAY_COLOR = new Color( null, 120, 120, 120 );
     protected static final String TABULATION = "      ";
@@ -61,6 +66,9 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     /** A flag to indicate if the page is initialized */
     protected boolean isInitialized = false;
 
+    /**
+     * A listener used to set the dirty flag when a Text is updated
+     */
     private ModifyListener dirtyModifyListener = new ModifyListener()
     {
         public void modifyText( ModifyEvent e )
@@ -69,9 +77,23 @@ public abstract class ServerConfigurationEditorPage extends FormPage
         }
     };
 
+    /**
+     * A listener used to set the dirty flag when a widget is selected
+     */
     private SelectionListener dirtySelectionListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
+        {
+            setEditorDirty();
+        }
+    };
+
+    /**
+     * A listener used to set the dirty flag when a widget is updated
+     */
+    protected WidgetModifyListener dirtyWidgetModifyListener = new WidgetModifyListener()
+    {
+        public void widgetModified( WidgetModifyEvent event )
         {
             setEditorDirty();
         }
@@ -83,7 +105,7 @@ public abstract class ServerConfigurationEditorPage extends FormPage
      *
      * @param editor the associated editor
      */
-    public ServerConfigurationEditorPage( ServerConfigurationEditor editor, String id, String title )
+    public OpenLDAPServerConfigurationEditorPage( OpenLDAPServerConfigurationEditor editor, String id, String title )
     {
         super( editor, id, title );
     }
@@ -94,9 +116,9 @@ public abstract class ServerConfigurationEditorPage extends FormPage
      *
      * @return the ServerConfigurationEditor object associated with the page
      */
-    public ServerConfigurationEditor getServerConfigurationEditor()
+    public OpenLDAPServerConfigurationEditor getServerConfigurationEditor()
     {
-        return ( ServerConfigurationEditor ) getEditor();
+        return ( OpenLDAPServerConfigurationEditor ) getEditor();
     }
 
 
@@ -142,7 +164,7 @@ public abstract class ServerConfigurationEditorPage extends FormPage
         FormToolkit toolkit = managedForm.getToolkit();
         toolkit.decorateFormHeading( form.getForm() );
 
-        ServerConfigurationEditor editor = ( ServerConfigurationEditor ) getEditor();
+        OpenLDAPServerConfigurationEditor editor = ( OpenLDAPServerConfigurationEditor ) getEditor();
 
         IToolBarManager toolbarManager = form.getToolBarManager();
         toolbarManager.add( new EditorImportConfigurationAction( editor ) );
@@ -169,7 +191,7 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     /**
      * Refreshes the UI.
      */
-    protected abstract void refreshUI();
+    public abstract void refreshUI();
 
 
     /**
@@ -210,6 +232,33 @@ public abstract class ServerConfigurationEditorPage extends FormPage
         portText.setTextLimit( 5 );
 
         return portText;
+    }
+    
+    
+    /**
+     * A shared method used to create a Section, based on a GridLayout.
+     * 
+     * @param toolkit The Form toolkit
+     * @param parent The parent 
+     * @param title The Section title
+     * @param nbColumns The number of columns for the inner grid
+     * 
+     * @return The created Composite
+     */
+    protected Composite createSection( FormToolkit toolkit, Composite parent, String title, int nbColumns, int style )
+    {
+        Section section = toolkit.createSection( parent, style );
+        section.setText( Messages.getString( title ) );
+        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        Composite composite = toolkit.createComposite( section );
+        toolkit.paintBordersFor( composite );
+        GridLayout gridLayout = new GridLayout( nbColumns, false );
+        gridLayout.marginHeight = 0;
+        gridLayout.marginWidth = 0;
+        composite.setLayout( gridLayout );
+        section.setClient( composite );
+
+        return composite;
     }
 
 
@@ -254,10 +303,8 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     /**
      * Adds a selection listener to the given Button.
      *
-     * @param button
-     *      the Button control
-     * @param listener
-     *      the listener
+     * @param button the Button control
+     * @param listener the listener
      */
     protected void addSelectionListener( Button button, SelectionListener listener )
     {
@@ -396,5 +443,18 @@ public abstract class ServerConfigurationEditorPage extends FormPage
         {
             control.setFocus();
         }
+    }
+    
+    
+    /**
+     * Create an expandable Section with a title 
+     */
+    protected Section createSection( FormToolkit toolkit, Composite parent, String title )
+    {
+        Section section = toolkit.createSection( parent, Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED);
+        section.setText( title ); //$NON-NLS-1$
+        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        
+        return section;
     }
 }

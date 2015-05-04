@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.openldap.config.editor.overlays;
+package org.apache.directory.studio.openldap.config.editor.pages;
 
 
 /**

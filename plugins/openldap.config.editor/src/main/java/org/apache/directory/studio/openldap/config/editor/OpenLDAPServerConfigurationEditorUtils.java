@@ -68,7 +68,7 @@ import org.apache.directory.studio.openldap.config.model.io.ConfigurationWriter;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ServerConfigurationEditorUtils
+public class OpenLDAPServerConfigurationEditorUtils
 {
     /**
      * Performs the "Save as..." action.
@@ -335,7 +335,7 @@ public class ServerConfigurationEditorUtils
      *      <code>false</code> if not
      * @throws Exception
      */
-    public static void saveConfiguration( ConnectionServerConfigurationInput input, ServerConfigurationEditor editor,
+    public static void saveConfiguration( ConnectionServerConfigurationInput input, OpenLDAPServerConfigurationEditor editor,
         IProgressMonitor monitor ) throws Exception
     {
         // Getting the browser connection associated with the connection in the input

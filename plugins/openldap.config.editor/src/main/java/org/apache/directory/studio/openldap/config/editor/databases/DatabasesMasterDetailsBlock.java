@@ -26,26 +26,21 @@ import java.util.List;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPlugin;
-import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginConstants;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginUtils;
-import org.apache.directory.studio.openldap.config.editor.ServerConfigurationEditor;
+import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
+import org.apache.directory.studio.openldap.config.editor.pages.DatabasesPage;
 import org.apache.directory.studio.openldap.config.model.database.OlcDatabaseConfig;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -638,7 +633,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
      */
     public void setEditorDirty()
     {
-        ( ( ServerConfigurationEditor ) page.getEditor() ).setDirty( true );
+        ( ( OpenLDAPServerConfigurationEditor ) page.getEditor() ).setDirty( true );
         detailsPage.commit( false );
         viewer.refresh();
     }
@@ -687,169 +682,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
 
         for ( DatabaseWrapper databaseWrapper : databaseWrappers )
         {
-            getPage().getConfiguration().addDatabase( databaseWrapper.getDatabase() );
-        }
-    }
-
-    /**
-     * This class defines a label provider for a database wrapper viewer.
-     */
-    private class DatabaseWrapperLabelProvider extends LabelProvider
-    {
-        /**
-         * Construct the label for a database. It's the type, followed by the suffixDN.
-         */
-        public String getText( Object element )
-        {
-            if ( element instanceof DatabaseWrapper )
-            {
-                OlcDatabaseConfig database = ( ( DatabaseWrapper ) element ).getDatabase();
-
-                return getDatabaseType( database ) + " (" + getSuffix( database ) + ")";
-            }
-
-            return super.getText( element );
-        };
-
-
-        /**
-         * Get the Database image, if it's a Database
-         */
-        public Image getImage( Object element )
-        {
-            if ( element instanceof DatabaseWrapper )
-            {
-                return OpenLdapConfigurationPlugin.getDefault().getImage(
-                    OpenLdapConfigurationPluginConstants.IMG_DATABASE );
-            }
-
-            return super.getImage( element );
-        };
-
-
-        private String getDatabaseType( OlcDatabaseConfig database )
-        {
-            if ( database != null )
-            {
-                String databaseType = OpenLdapConfigurationPluginUtils.stripOrderingPrefix( database.getOlcDatabase() );
-
-                if ( "bdb".equalsIgnoreCase( databaseType ) )
-                {
-                    return "BDB";
-                }
-                else if ( "hdb".equalsIgnoreCase( databaseType ) )
-                {
-                    return "HDB";
-                }
-                else if ( "mdb".equalsIgnoreCase( databaseType ) )
-                {
-                    return "MDB";
-                }
-                else if ( "ldap".equalsIgnoreCase( databaseType ) )
-                {
-                    return "LDAP";
-                }
-                else if ( "ldif".equalsIgnoreCase( databaseType ) )
-                {
-                    return "LDIF";
-                }
-                else if ( "null".equalsIgnoreCase( databaseType ) )
-                {
-                    return "Null";
-                }
-                else if ( "relay".equalsIgnoreCase( databaseType ) )
-                {
-                    return "Relay";
-                }
-                else if ( "frontend".equalsIgnoreCase( databaseType ) )
-                {
-                    return "FrontEnd";
-                }
-                else if ( "config".equalsIgnoreCase( databaseType ) )
-                {
-                    return "Config";
-                }
-                else
-                {
-                    return "None";
-                }
-            }
-
-            return null;
-        }
-
-
-        /**
-         * Return the Database suffix DN
-         */
-        private String getSuffix( OlcDatabaseConfig database )
-        {
-            if ( database != null )
-            {
-                List<Dn> suffixes = database.getOlcSuffix();
-
-                if ( ( suffixes != null ) && ( suffixes.size() > 0 ) )
-                {
-                    return suffixes.get( 0 ).toString();
-                }
-            }
-
-            return "none";
-        }
-    }
-
-    /**
-     * This class defines a sorter for a database wrapper viewer.
-     */
-    private class DatabaseWrapperViewerSorter extends ViewerSorter
-    {
-        public int compare( Viewer viewer, Object e1, Object e2 )
-        {
-            if ( ( e1 != null ) && ( e2 != null ) && ( e1 instanceof DatabaseWrapper )
-                && ( e2 instanceof DatabaseWrapper ) )
-            {
-                OlcDatabaseConfig database1 = ( ( DatabaseWrapper ) e1 ).getDatabase();
-                OlcDatabaseConfig database2 = ( ( DatabaseWrapper ) e2 ).getDatabase();
-                boolean db1HasOrderingPrefix = OpenLdapConfigurationPluginUtils.hasOrderingPrefix( database1
-                    .getOlcDatabase() );
-                boolean db2HasOrderingPrefix = OpenLdapConfigurationPluginUtils.hasOrderingPrefix( database2
-                    .getOlcDatabase() );
-
-                if ( db1HasOrderingPrefix && db2HasOrderingPrefix )
-                {
-                    int orderingPrefix1 = OpenLdapConfigurationPluginUtils.getOrderingPrefix( database1
-                        .getOlcDatabase() );
-                    int orderingPrefix2 = OpenLdapConfigurationPluginUtils.getOrderingPrefix( database2
-                        .getOlcDatabase() );
-
-                    if ( orderingPrefix1 > orderingPrefix2 )
-                    {
-                        return Integer.MAX_VALUE;
-                    }
-                    else if ( orderingPrefix1 < orderingPrefix2 )
-                    {
-                        return Integer.MIN_VALUE;
-                    }
-                    else
-                    {
-                        return 0;
-                    }
-                }
-                else if ( db1HasOrderingPrefix )
-                {
-                    return Integer.MIN_VALUE;
-                }
-                else if ( db2HasOrderingPrefix )
-                {
-                    return Integer.MAX_VALUE;
-                }
-                else
-                {
-                    return 1;
-                }
-            }
-
-            return super.compare( viewer, e1, e2 );
+            getPage().getConfiguration().add( databaseWrapper.getDatabase() );
         }
     }
 }

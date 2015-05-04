@@ -28,8 +28,8 @@ import org.eclipse.ui.IEditorInput;
 
 import org.apache.directory.studio.openldap.config.editor.ConnectionServerConfigurationInput;
 import org.apache.directory.studio.openldap.config.editor.DirectoryServerConfigurationInput;
-import org.apache.directory.studio.openldap.config.editor.ServerConfigurationEditor;
-import org.apache.directory.studio.openldap.config.editor.ServerConfigurationEditorUtils;
+import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
+import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditorUtils;
 
 
 /**
@@ -40,7 +40,7 @@ import org.apache.directory.studio.openldap.config.editor.ServerConfigurationEdi
 public class SaveConfigurationRunnable implements StudioRunnableWithProgress
 {
     /** The associated editor */
-    private ServerConfigurationEditor editor;
+    private OpenLDAPServerConfigurationEditor editor;
 
 
     /**
@@ -49,7 +49,7 @@ public class SaveConfigurationRunnable implements StudioRunnableWithProgress
      * @param editor
      *            the editor
      */
-    public SaveConfigurationRunnable( ServerConfigurationEditor editor )
+    public SaveConfigurationRunnable( OpenLDAPServerConfigurationEditor editor )
     {
         super();
         this.editor = editor;
@@ -100,14 +100,14 @@ public class SaveConfigurationRunnable implements StudioRunnableWithProgress
                 if ( input instanceof ConnectionServerConfigurationInput )
                 {
                     // Saving the ServerConfiguration to the connection
-                    ServerConfigurationEditorUtils.saveConfiguration( ( ConnectionServerConfigurationInput ) input,
+                    OpenLDAPServerConfigurationEditorUtils.saveConfiguration( ( ConnectionServerConfigurationInput ) input,
                         editor, monitor );
                     success = true;
                 }
                 else if ( input instanceof DirectoryServerConfigurationInput )
                 {
                     // Saving the ServerConfiguration to the 'slapd.d' directory
-                    ServerConfigurationEditorUtils.saveConfiguration( editor.getConfiguration(),
+                    OpenLDAPServerConfigurationEditorUtils.saveConfiguration( editor.getConfiguration(),
                         ( ( DirectoryServerConfigurationInput ) input ).getDirectory() );
                     success = true;
                 }

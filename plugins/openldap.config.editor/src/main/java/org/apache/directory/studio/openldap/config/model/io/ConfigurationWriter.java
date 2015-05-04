@@ -42,7 +42,7 @@ import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPlugin;
-import org.apache.directory.studio.openldap.config.editor.ServerConfigurationEditorUtils;
+import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditorUtils;
 import org.apache.directory.studio.openldap.config.model.AuxiliaryObjectClass;
 import org.apache.directory.studio.openldap.config.model.ConfigurationElement;
 import org.apache.directory.studio.openldap.config.model.OlcConfig;
@@ -487,7 +487,7 @@ public class ConfigurationWriter
     {
         try
         {
-            ObjectClass objectClassObject = ServerConfigurationEditorUtils.getObjectClass( OpenLdapConfigurationPlugin
+            ObjectClass objectClassObject = OpenLDAPServerConfigurationEditorUtils.getObjectClass( OpenLdapConfigurationPlugin
                 .getDefault().getSchemaManager(), objectClass );
 
             if ( objectClassObject != null )
@@ -529,7 +529,7 @@ public class ConfigurationWriter
         {
             SchemaManager schemaManager = OpenLdapConfigurationPlugin.getDefault().getSchemaManager();
 
-            ObjectClass topObjectClass = ServerConfigurationEditorUtils.getObjectClass( schemaManager,
+            ObjectClass topObjectClass = OpenLDAPServerConfigurationEditorUtils.getObjectClass( schemaManager,
                 SchemaConstants.TOP_OC );
 
             if ( topObjectClass != null )
@@ -550,7 +550,7 @@ public class ConfigurationWriter
                 {
                     for ( String superior : superiors )
                     {
-                        ObjectClass superiorObjectClass = ServerConfigurationEditorUtils.getObjectClass( schemaManager,
+                        ObjectClass superiorObjectClass = OpenLDAPServerConfigurationEditorUtils.getObjectClass( schemaManager,
                             superior );
                         computeObjectClassAttributeValues( objectClassAttributeValues, superiorObjectClass );
                     }
