@@ -364,6 +364,14 @@ public class LogLevelDialog extends Dialog
         }
         else
         {
+            if ( logLevelValue == LogLevel.ANY.getValue() )
+            {
+                // We cancel the ANY selection, so we have to set the LogLevelValue
+                // to 0, as it's currently -1
+                logLevelValue = 0;
+            }
+            
+            // Now, check all the checkBox selections
             if ( aclCheckbox.getSelection() )
             {
                 logLevelValue |= LogLevel.ACL.getValue();
