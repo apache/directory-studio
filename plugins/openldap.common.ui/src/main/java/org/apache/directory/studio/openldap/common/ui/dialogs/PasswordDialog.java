@@ -181,7 +181,6 @@ public class PasswordDialog extends Dialog
         Composite composite = ( Composite ) super.createDialogArea( parent );
         GridData gd = new GridData( SWT.FILL, SWT.FILL, true, true );
         gd.widthHint = convertHorizontalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH );
-        //        gd.heightHint = convertVerticalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH );// * 2 / 3;
         composite.setLayoutData( gd );
 
         if ( hasCurrentPassword() )
