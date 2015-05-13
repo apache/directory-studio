@@ -68,23 +68,25 @@ public class IndicesWidget extends BrowserWidget
 
     // UI widgets
     private Composite composite;
-    private Table table;
-    private TableViewer tableViewer;
+    private Table indexTable;
+    private TableViewer indexTableViewer;
     private Button addButton;
     private Button editButton;
     private Button deleteButton;
 
-    // Listeners
+    // A listener on the Index table, that modifies the button when a index is selected
     private ISelectionChangedListener tableViewerSelectionChangedListener = new ISelectionChangedListener()
     {
         public void selectionChanged( SelectionChangedEvent event )
         {
-            StructuredSelection selection = ( StructuredSelection ) tableViewer.getSelection();
+            StructuredSelection selection = ( StructuredSelection ) indexTableViewer.getSelection();
 
             editButton.setEnabled( !selection.isEmpty() );
             deleteButton.setEnabled( !selection.isEmpty() );
         }
     };
+    
+    // A listener on the Index table, that reacts to a doubleClick : it's opening the index editor
     private IDoubleClickListener tableViewerDoubleClickListener = new IDoubleClickListener()
     {
         public void doubleClick( DoubleClickEvent event )
@@ -92,6 +94,8 @@ public class IndicesWidget extends BrowserWidget
             editIndex();
         }
     };
+    
+    // A listener on the Add button, which opens the index addition editor
     private SelectionListener addButtonListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
@@ -99,6 +103,8 @@ public class IndicesWidget extends BrowserWidget
             addIndex();
         }
     };
+    
+    // A listener on the Edit button, that open the index editor
     private SelectionListener editButtonListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
@@ -106,6 +112,8 @@ public class IndicesWidget extends BrowserWidget
             editIndex();
         }
     };
+    
+    // A listener on the Delete button, which delete the selected index
     private SelectionListener deleteButtonListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
@@ -116,7 +124,7 @@ public class IndicesWidget extends BrowserWidget
 
 
     /**
-     * Creates a new instance of LockDetectWidget.
+     * Creates a new instance of IndicesWidget.
      *
      * @param connection the browserConnection
      */
@@ -138,7 +146,14 @@ public class IndicesWidget extends BrowserWidget
 
 
     /**
-     * Creates the widget.
+     * Creates the Index widget. It's a Table and three button :
+     * <pre>
+     * +--------------------------------------+
+     * | Index 1                              | (Add... )
+     * | Index 2                              | (Edit...)
+     * |                                      | (Delete )
+     * +--------------------------------------+
+     * </pre>
      * 
      * @param parent the parent
      * @param toolkit the toolkit
@@ -154,26 +169,34 @@ public class IndicesWidget extends BrowserWidget
         {
             composite = new Composite( parent, SWT.NONE );
         }
+        
+        // First, define a grid of 2 columns
         GridLayout compositeGridLayout = new GridLayout( 2, false );
         compositeGridLayout.marginHeight = compositeGridLayout.marginWidth = 0;
         composite.setLayout( compositeGridLayout );
 
-        // Table and Table Viewer
+        // Create the index Table and Table Viewer
         if ( toolkit != null )
         {
-            table = toolkit.createTable( composite, SWT.NULL );
+            indexTable = toolkit.createTable( composite, SWT.NULL );
         }
         else
         {
-            table = new Table( composite, SWT.NULL );
+            indexTable = new Table( composite, SWT.NULL );
         }
+        
+        // Define the table size and height. It will span on 3 lines.
         GridData gd = new GridData( SWT.FILL, SWT.FILL, true, true, 1, 3 );
         gd.heightHint = 20;
         gd.widthHint = 100;
-        table.setLayoutData( gd );
-        tableViewer = new TableViewer( table );
-        tableViewer.setContentProvider( new ArrayContentProvider() );
-        tableViewer.setLabelProvider( new LabelProvider()
+        indexTable.setLayoutData( gd );
+        
+        // Create the index TableViewer
+        indexTableViewer = new TableViewer( indexTable );
+        indexTableViewer.setContentProvider( new ArrayContentProvider() );
+        
+        // The LabelProvider
+        indexTableViewer.setLabelProvider( new LabelProvider()
         {
             public Image getImage( Object element )
             {
@@ -181,11 +204,15 @@ public class IndicesWidget extends BrowserWidget
                     OpenLdapConfigurationPluginConstants.IMG_INDEX );
             }
         } );
-        tableViewer.addSelectionChangedListener( tableViewerSelectionChangedListener );
-        tableViewer.addDoubleClickListener( tableViewerDoubleClickListener );
-        tableViewer.setInput( indices );
+        
+        // Listeners : we want to catch changes and double clicks
+        indexTableViewer.addSelectionChangedListener( tableViewerSelectionChangedListener );
+        indexTableViewer.addDoubleClickListener( tableViewerDoubleClickListener );
+        
+        // Inject the existing indices
+        indexTableViewer.setInput( indices );
 
-        // Add Button
+        // Create the Add Button and its listener
         if ( toolkit != null )
         {
             addButton = toolkit.createButton( composite, "Add...", SWT.PUSH );
@@ -194,10 +221,11 @@ public class IndicesWidget extends BrowserWidget
         {
             addButton = BaseWidgetUtils.createButton( composite, "Add...", 1 );
         }
+        
         addButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
         addButton.addSelectionListener( addButtonListener );
 
-        // Edit Button
+        // Create the Edit Button and its listener
         if ( toolkit != null )
         {
             editButton = toolkit.createButton( composite, "Edit...", SWT.PUSH );
@@ -206,11 +234,13 @@ public class IndicesWidget extends BrowserWidget
         {
             editButton = BaseWidgetUtils.createButton( composite, "Edit...", SWT.PUSH );
         }
+        
+        // It's not enabled unless we have selected an index
         editButton.setEnabled( false );
         editButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
         editButton.addSelectionListener( editButtonListener );
 
-        // Delete Button
+        // Create the Delete Button and its listener
         if ( toolkit != null )
         {
             deleteButton = toolkit.createButton( composite, "Delete", SWT.PUSH );
@@ -219,6 +249,8 @@ public class IndicesWidget extends BrowserWidget
         {
             deleteButton = BaseWidgetUtils.createButton( composite, "Delete", SWT.PUSH );
         }
+        
+        // It's not selected unless we have selected an index
         deleteButton.setEnabled( false );
         deleteButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
         deleteButton.addSelectionListener( deleteButtonListener );
@@ -248,7 +280,7 @@ public class IndicesWidget extends BrowserWidget
             this.indices.addAll( indices );
         }
 
-        tableViewer.refresh();
+        indexTableViewer.refresh();
     }
 
 
@@ -268,14 +300,14 @@ public class IndicesWidget extends BrowserWidget
      */
     private void addIndex()
     {
-        IndexDialog dialog = new IndexDialog( addButton.getShell(), null,
-            browserConnection );
+        IndexDialog dialog = new IndexDialog( addButton.getShell(), null, browserConnection );
+        
         if ( dialog.open() == IndexDialog.OK )
         {
             OlcDbIndex newIndex = dialog.getNewIndex();
             indices.add( newIndex.toString() );
-            tableViewer.refresh();
-            tableViewer.setSelection( new StructuredSelection( newIndex.toString() ) );
+            indexTableViewer.refresh();
+            indexTableViewer.setSelection( new StructuredSelection( newIndex.toString() ) );
             notifyListeners();
         }
     }
@@ -287,22 +319,26 @@ public class IndicesWidget extends BrowserWidget
      */
     private void editIndex()
     {
-        StructuredSelection selection = ( StructuredSelection ) tableViewer.getSelection();
+        StructuredSelection selection = ( StructuredSelection ) indexTableViewer.getSelection();
 
         if ( !selection.isEmpty() )
         {
             String selectedIndex = ( String ) selection.getFirstElement();
 
+            // Open the index dialog, with the selected index
             IndexDialog dialog = new IndexDialog( addButton.getShell(), new OlcDbIndex( selectedIndex ),
                 browserConnection );
+            
             if ( dialog.open() == IndexDialog.OK )
             {
                 OlcDbIndex newIndex = dialog.getNewIndex();
                 int selectedIndexPosition = indices.indexOf( selectedIndex );
+                
+                // We will remove the modifie dindex, and replace it with the new index
                 indices.remove( selectedIndex );
                 indices.add( selectedIndexPosition, newIndex.toString() );
-                tableViewer.refresh();
-                tableViewer.setSelection( new StructuredSelection( newIndex.toString() ) );
+                indexTableViewer.refresh();
+                indexTableViewer.setSelection( new StructuredSelection( newIndex.toString() ) );
                 notifyListeners();
             }
         }
@@ -314,14 +350,14 @@ public class IndicesWidget extends BrowserWidget
      */
     private void deleteIndex()
     {
-        StructuredSelection selection = ( StructuredSelection ) tableViewer.getSelection();
+        StructuredSelection selection = ( StructuredSelection ) indexTableViewer.getSelection();
 
         if ( !selection.isEmpty() )
         {
             String selectedIndex = ( String ) selection.getFirstElement();
 
             indices.remove( selectedIndex );
-            tableViewer.refresh();
+            indexTableViewer.refresh();
             notifyListeners();
         }
     }
