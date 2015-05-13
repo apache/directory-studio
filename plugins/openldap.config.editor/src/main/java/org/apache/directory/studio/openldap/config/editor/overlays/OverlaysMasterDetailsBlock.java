@@ -66,7 +66,7 @@ public class OverlaysMasterDetailsBlock extends MasterDetailsBlock
     private OverlaysPage page;
 
     // UI Fields
-    private TableViewer viewer;
+    private TableViewer overlaysTableViewer;
     private Button addButton;
     private Button deleteButton;
 
@@ -74,8 +74,7 @@ public class OverlaysMasterDetailsBlock extends MasterDetailsBlock
     /**
      * Creates a new instance of OverlaysMasterDetailsBlock.
      *
-     * @param page
-     *      the associated page
+     * @param page the associated page
      */
     public OverlaysMasterDetailsBlock( OverlaysPage page )
     {
@@ -120,23 +119,26 @@ public class OverlaysMasterDetailsBlock extends MasterDetailsBlock
         section.setClient( client );
 
         // Creating the Table and Table Viewer
-        Table table = toolkit.createTable( client, SWT.NULL );
+        Table overlaysTable = toolkit.createTable( client, SWT.NULL );
         GridData gd = new GridData( SWT.FILL, SWT.FILL, true, true, 1, 2 );
         gd.heightHint = 20;
         gd.widthHint = 100;
-        table.setLayoutData( gd );
-        final SectionPart spart = new SectionPart( section );
-        managedForm.addPart( spart );
-        viewer = new TableViewer( table );
-        viewer.addSelectionChangedListener( new ISelectionChangedListener()
+        overlaysTable.setLayoutData( gd );
+        final SectionPart sectionPart = new SectionPart( section );
+        managedForm.addPart( sectionPart );
+        
+        overlaysTableViewer = new TableViewer( overlaysTable );
+        overlaysTableViewer.addSelectionChangedListener( new ISelectionChangedListener()
         {
             public void selectionChanged( SelectionChangedEvent event )
             {
-                managedForm.fireSelectionChanged( spart, event.getSelection() );
+                managedForm.fireSelectionChanged( sectionPart, event.getSelection() );
             }
         } );
-        viewer.setContentProvider( new ArrayContentProvider() );
-        viewer.setLabelProvider( new LabelProvider()
+        
+        overlaysTableViewer.setContentProvider( new ArrayContentProvider() );
+        
+        overlaysTableViewer.setLabelProvider( new LabelProvider()
         {
             public String getText( Object element )
             {
@@ -184,6 +186,7 @@ public class OverlaysMasterDetailsBlock extends MasterDetailsBlock
 
         List<OlcConfig> configurationElements = configuration.getConfigurationElements();
         List<OlcOverlayConfig> overlayConfigurationElements = new ArrayList<OlcOverlayConfig>();
+        
         for ( OlcConfig configurationElement : configurationElements )
         {
             if ( configurationElement instanceof OlcOverlayConfig )
@@ -192,7 +195,7 @@ public class OverlaysMasterDetailsBlock extends MasterDetailsBlock
             }
         }
 
-        viewer.setInput( overlayConfigurationElements.toArray( new OlcOverlayConfig[0] ) );
+        overlaysTableViewer.setInput( overlayConfigurationElements.toArray( new OlcOverlayConfig[0] ) );
     }
 
 
