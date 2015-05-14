@@ -56,6 +56,26 @@ import org.apache.directory.studio.openldap.config.model.OlcDbIndexTypeEnum;
 
 /**
  * The IndexDialog is used to edit an index configuration.
+ * <pre>
+ * +--------------------------------------------------+
+ * |  Attributes                                      |
+ * | .----------------------------------------------. |
+ * | |   +------------------------------+           | |
+ * | | o |                              | (Add...)  | |
+ * | |   |                              | (Delete)  | |
+ * | |   +------------------------------+           | |
+ * | | o Default                                    | |
+ * | '----------------------------------------------' |
+ * |  Indices                                         |
+ * | .----------------------------------------------. |
+ * | | [] pres        [] eq          [] approx      | |
+ * | | [] sub         [] nolang      [] nosubtypes  | |
+ * | |    [] subinitial                             | |
+ * | |    [] subany                                 | |
+ * | |    [] subfinal                               | |
+ * | '----------------------------------------------' |
+ * +--------------------------------------------------+
+ * </pre>
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -91,7 +111,11 @@ public class IndexDialog extends Dialog
     private Button subAnyCheckbox;
     private Button subFinalCheckbox;
 
-    // Listeners
+    /**
+     * Listeners for the Attributes radiobutton. It will enable the buttons accordingly
+     * to the content of the Attributes table : Add is always active, Delete is active if
+     * an attribute is selected.
+     * */ 
     private SelectionListener attributesCheckboxSelectionListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
@@ -102,6 +126,11 @@ public class IndexDialog extends Dialog
             checkAndUpdateOkButtonEnableState();
         }
     };
+    
+    /**
+     * A listener on the Attributes Table : if one attribute is selected, then the Delete
+     * button will be activated. 
+     */
     private ISelectionChangedListener tableViewerSelectionChangedListener = new ISelectionChangedListener()
     {
         public void selectionChanged( SelectionChangedEvent event )
@@ -109,11 +138,17 @@ public class IndexDialog extends Dialog
             deleteButton.setEnabled( !tableViewer.getSelection().isEmpty() );
         }
     };
+    
+    /**
+     * A listener on the Attributes Add button. If selected, it opens a dialog that lists
+     * the possible attributes. The added attribute will be selected.
+     */
     private SelectionListener addButtonSelectionListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
         {
             AttributeDialog dialog = new AttributeDialog( addButton.getShell(), browserConnection );
+            
             if ( dialog.open() == AttributeDialog.OK )
             {
                 String attribute = dialog.getAttribute();
@@ -128,6 +163,12 @@ public class IndexDialog extends Dialog
             }
         }
     };
+    
+    /** 
+     * A listener on the Attributes Delete button. If an attribute is selected (which should
+     * always be the case, otherwise the button would be disabled!), then it will be removed
+     * from the table.
+     */
     private SelectionListener deleteButtonSelectionListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
@@ -144,6 +185,11 @@ public class IndexDialog extends Dialog
             }
         }
     };
+    
+    /**
+     * A listener on the Default radio button. It will disable the Attributes table
+     * and the associated buttons.
+     */
     private SelectionListener defaultCheckboxSelectionListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
@@ -152,6 +198,10 @@ public class IndexDialog extends Dialog
             checkAndUpdateOkButtonEnableState();
         }
     };
+    
+    /**
+     * A listener on the SUB indice check box
+     */
     private SelectionListener subCheckboxSelectionListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
@@ -160,6 +210,10 @@ public class IndexDialog extends Dialog
             checkAndUpdateOkButtonEnableState();
         }
     };
+    
+    /**
+     * A listener on the OkButton
+     */
     private SelectionListener checkOkButtonSelectionListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
@@ -167,6 +221,10 @@ public class IndexDialog extends Dialog
             checkAndUpdateOkButtonEnableState();
         };
     };
+    
+    /**
+     * A listener on the SUB related indice check boxs
+     */
     private SelectionListener checkSubCheckboxSelectionListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
@@ -216,6 +274,12 @@ public class IndexDialog extends Dialog
 
 
     /**
+     * When the OK button is pressed, a list of actions is done :
+     * <ul>
+     * <li>- we create a new index</li>
+     * <li>- the attributes list is added to this instance</li>
+     * <li>- the index types are added</li>
+     * </ul>
      * {@inheritDoc}
      */
     protected void okPressed()
@@ -245,14 +309,17 @@ public class IndexDialog extends Dialog
         {
             newIndex.addIndexType( OlcDbIndexTypeEnum.PRES );
         }
+        
         if ( eqCheckbox.getSelection() )
         {
             newIndex.addIndexType( OlcDbIndexTypeEnum.EQ );
         }
+        
         if ( approxCheckbox.getSelection() )
         {
             newIndex.addIndexType( OlcDbIndexTypeEnum.APPROX );
         }
+        
         if ( ( subCheckbox.getSelection() ) && ( !subCheckbox.getGrayed() ) )
         {
             newIndex.addIndexType( OlcDbIndexTypeEnum.SUB );
@@ -263,19 +330,23 @@ public class IndexDialog extends Dialog
             {
                 newIndex.addIndexType( OlcDbIndexTypeEnum.SUBINITIAL );
             }
+            
             if ( subAnyCheckbox.getSelection() )
             {
                 newIndex.addIndexType( OlcDbIndexTypeEnum.SUBANY );
             }
+            
             if ( subFinalCheckbox.getSelection() )
             {
                 newIndex.addIndexType( OlcDbIndexTypeEnum.SUBFINAL );
             }
         }
+        
         if ( noLangCheckbox.getSelection() )
         {
             newIndex.addIndexType( OlcDbIndexTypeEnum.NOLANG );
         }
+        
         if ( noSubtypesCheckbox.getSelection() )
         {
             newIndex.addIndexType( OlcDbIndexTypeEnum.NOSUBTYPES );
@@ -286,6 +357,27 @@ public class IndexDialog extends Dialog
 
 
     /**
+     * Creates the IndexDialog, which has two groups : attributes and indices.
+     * <pre>
+     * +--------------------------------------------------+
+     * |  Attributes                                      |
+     * | .----------------------------------------------. |
+     * | |   +------------------------------+           | |
+     * | | o |                              | (Add...)  | |
+     * | |   |                              | (Delete)  | |
+     * | |   +------------------------------+           | |
+     * | | o Default                                    | |
+     * | '----------------------------------------------' |
+     * |  Indices                                         |
+     * | .----------------------------------------------. |
+     * | | [] pres        [] eq          [] approx      | |
+     * | | [] sub         [] nolang      [] nosubtypes  | |
+     * | |    [] subinitial                             | |
+     * | |    [] subany                                 | |
+     * | |    [] subfinal                               | |
+     * | '----------------------------------------------' |
+     * +--------------------------------------------------+
+     * </pre>
      * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
     protected Control createDialogArea( Composite parent )
@@ -294,18 +386,32 @@ public class IndexDialog extends Dialog
         GridData gd = new GridData( GridData.FILL_BOTH );
         composite.setLayoutData( gd );
 
+        // The attributes group
         createAttributesGroup( composite );
+        
+        // The indices grouo
         createIndicesGroup( composite );
 
+        // Load the dialog if this was an Edit call
         initFromIndex();
 
         applyDialogFont( composite );
+        
         return composite;
     }
 
 
     /**
      * Creates the attributes group.
+     * <pre>
+     *   Attributes
+     *  .----------------------------------------------.
+     *  |   +------------------------------+           |
+     *  | o |                              | (Add...)  |
+     *  |   |                              | (Delete)  |
+     *  |   +------------------------------+           |
+     *  | o Default                                    |
+     *  '----------------------------------------------'
      *
      * @param parent the parent composite
      */
@@ -368,7 +474,16 @@ public class IndexDialog extends Dialog
 
     /**
      * Creates the indices group.
-     *
+     * <pre>
+     *  Indices                                        
+     * .----------------------------------------------.
+     * | [] pres        [] eq          [] approx      |
+     * | [] sub         [] nolang      [] nosubtypes  |
+     * |    [] subinitial                             |
+     * |    [] subany                                 |
+     * |    [] subfinal                               |
+     * '----------------------------------------------'
+     * </pre>
      * @param parent the parent composite
      */
     private void createIndicesGroup( Composite parent )
@@ -499,6 +614,7 @@ public class IndexDialog extends Dialog
                 presCheckbox.setSelection( indexTypes.contains( OlcDbIndexTypeEnum.PRES ) );
                 eqCheckbox.setSelection( indexTypes.contains( OlcDbIndexTypeEnum.EQ ) );
                 approxCheckbox.setSelection( indexTypes.contains( OlcDbIndexTypeEnum.APPROX ) );
+                
                 if ( indexTypes.contains( OlcDbIndexTypeEnum.SUB ) )
                 {
                     subCheckbox.setSelection( true );
@@ -511,6 +627,7 @@ public class IndexDialog extends Dialog
                     subFinalCheckbox.setSelection( indexTypes.contains( OlcDbIndexTypeEnum.SUBFINAL ) );
                     checkAndUpdateSubCheckboxSelectionState();
                 }
+                
                 noLangCheckbox.setSelection( indexTypes.contains( OlcDbIndexTypeEnum.NOLANG ) );
                 noSubtypesCheckbox.setSelection( indexTypes.contains( OlcDbIndexTypeEnum.NOSUBTYPES ) );
             }
@@ -519,7 +636,9 @@ public class IndexDialog extends Dialog
 
 
     /**
-     * Checks and updates the OK button 'enable' state.
+     * Checks and updates the OK button 'enable' state. For the OK button to be enabled, either
+     * the default checkbox has to be selected, and one selection has to be made on the indices,
+     * or the attributes table should not be empty.
      */
     private void checkAndUpdateOkButtonEnableState()
     {
