@@ -42,4 +42,5 @@ public interface OpenLdapConfigurationPluginConstants
     public static final String IMG_INFORMATION = "resources/icons/information.gif"; //$NON-NLS-1$
     public static final String IMG_IMPORT = "resources/icons/import.gif"; //$NON-NLS-1$
     public static final String IMG_OVERLAY = "resources/icons/overlay.gif"; //$NON-NLS-1$
+    public static final String IMG_LDAP_SERVER = "resources/icons/server.gif"; //$NON-NLS-1$
 }
