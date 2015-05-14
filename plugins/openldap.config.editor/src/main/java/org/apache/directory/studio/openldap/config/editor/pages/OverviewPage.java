@@ -36,15 +36,14 @@ import org.apache.directory.studio.openldap.config.editor.overlays.ModuleWrapper
 import org.apache.directory.studio.openldap.config.editor.pages.OverlaysPage;
 import org.apache.directory.studio.openldap.config.model.OlcModuleList;
 import org.apache.directory.studio.openldap.config.model.database.OlcDatabaseConfig;
+import org.apache.directory.studio.openldap.config.model.widgets.ServerIdTableWidget;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.events.HyperlinkAdapter;
@@ -74,7 +73,12 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
  * | .-------------------------------------------------------------------------------. |
  * | |V Global parameters                                                            | |
  * | +-------------------------------------------------------------------------------+ |
- * | | Server ID  : [   ]                                                            | |
+ * | | Server ID  :                                                                  | |
+ * | | +-----------------------------------------------------------------+           | |
+ * | | |                                                                 | (Add)     | |
+ * | | |                                                                 | (Edit)    | |
+ * | | |                                                                 | (Delete)  | |
+ * | | +-----------------------------------------------------------------+           | |
  * | |                                                                               | |
  * | | Configuration Dir : [                ]  Pid File  : [                ]        | |
  * | | Log File          : [                ]  Log Level : [                ]  (edit)| |
@@ -109,9 +113,12 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
     private static final String TITLE = Messages.getString( "OpenLDAPOverviewPage.Title" ); //$NON-NLS-1$"Overview";
     
     // UI Controls
-    /** olcServerID */
-    private Text serverIdText;
+    /** The serverID wrapper */
+    private List<ServerIdWrapper> serverIdWrappers = new ArrayList<ServerIdWrapper>();
     
+    /** The Widget used to manage ServerID */
+    private ServerIdTableWidget serverIdWidget;
+
     /** olcConfigDir */
     private Text configDirText;
     
@@ -318,12 +325,18 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
      * .-------------------------------------------------------------------------------.
      * |V Global parameters                                                            |
      * +-------------------------------------------------------------------------------+
-     * | Server ID  : [   ]                                                            |
+     * | Server ID  :                                                                  |
+     * | +-----------------------------------------------------------------+           |
+     * | |                                                                 | (Add)     |
+     * | |                                                                 | (Edit)    |
+     * | |                                                                 | (Delete)  |
+     * | +-----------------------------------------------------------------+           |
      * |                                                                               |
      * | Configuration Dir : [                ]  Pid File  : [                ]        |
-     * | Log File          : [                ]  Log Level : [                ] (Edit) |
+     * | Log File          : [                ]  Log Level : [                ]  (edit)|
      * +-------------------------------------------------------------------------------+
      * </pre>
+     * 
      *
      * @param toolkit the toolkit
      * @param parent the parent composite
@@ -334,42 +347,45 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
         Section section = createSection( toolkit, parent, Messages.getString( "OpenLDAPOverviewPage.GlobalSection" ) );
 
         // The content
-        Composite composite = toolkit.createComposite( section );
-        toolkit.paintBordersFor( composite );
+        Composite globalSectionComposite = toolkit.createComposite( section );
+        toolkit.paintBordersFor( globalSectionComposite );
         GridLayout gridLayout = new GridLayout( 4, false );
         gridLayout.marginHeight = gridLayout.marginWidth = 0;
-        composite.setLayout( gridLayout );
-        section.setClient( composite );
+        globalSectionComposite.setLayout( gridLayout );
+        section.setClient( globalSectionComposite );
 
-        // The ServerID parameter
-        toolkit.createLabel( composite, Messages.getString( "OpenLDAPOverviewPage.ServerID" ) ); //$NON-NLS-1$
-        serverIdText = createServerIdText( toolkit, composite );
-        toolkit.createLabel( composite, TABULATION );
-        toolkit.createLabel( composite, TABULATION );
+        // The ServerID parameter.
+        Label serverIdLabel = toolkit.createLabel( globalSectionComposite, Messages.getString( "OpenLDAPOverviewPage.ServerID" ) ); //$NON-NLS-1$
+        serverIdLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, false, 4, 1 ) );
+
+        // The ServerID widget
+        serverIdWidget = new ServerIdTableWidget();
+        serverIdWidget.createWidget( globalSectionComposite );
+        serverIdWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 4, 1 ) );
         
         // One blank line
         for ( int i = 0; i < gridLayout.numColumns; i++ )
         {
-            toolkit.createLabel( composite, TABULATION );
+            toolkit.createLabel( globalSectionComposite, TABULATION );
         }
         
         // The ConfigDir parameter
-        toolkit.createLabel( composite, Messages.getString( "OpenLDAPOverviewPage.ConfigDir" ) ); //$NON-NLS-1$
-        configDirText = createConfigDirText( toolkit, composite );
+        toolkit.createLabel( globalSectionComposite, Messages.getString( "OpenLDAPOverviewPage.ConfigDir" ) ); //$NON-NLS-1$
+        configDirText = createConfigDirText( toolkit, globalSectionComposite );
         
         // The PidFile parameter
-        toolkit.createLabel( composite, Messages.getString( "OpenLDAPOverviewPage.PidFile" ) ); //$NON-NLS-1$
-        pidFileText = createPidFileText( toolkit, composite );
+        toolkit.createLabel( globalSectionComposite, Messages.getString( "OpenLDAPOverviewPage.PidFile" ) ); //$NON-NLS-1$
+        pidFileText = createPidFileText( toolkit, globalSectionComposite );
         pidFileText.setText( getConfiguration().getGlobal().getOlcPidFile() );
         
         // The LogFile parameter
-        toolkit.createLabel( composite, Messages.getString( "OpenLDAPOverviewPage.LogFile" ) ); //$NON-NLS-1$
-        logFileText = createLogFileText( toolkit, composite );
+        toolkit.createLabel( globalSectionComposite, Messages.getString( "OpenLDAPOverviewPage.LogFile" ) ); //$NON-NLS-1$
+        logFileText = createLogFileText( toolkit, globalSectionComposite );
         
         // The LogLevel parameter
-        toolkit.createLabel( composite, Messages.getString( "OpenLDAPOverviewPage.LogLevel" ) );
+        toolkit.createLabel( globalSectionComposite, Messages.getString( "OpenLDAPOverviewPage.LogLevel" ) );
         logLevelWidget = new LogLevelWidget();
-        logLevelWidget.create( composite, toolkit );
+        logLevelWidget.create( globalSectionComposite, toolkit );
         logLevelWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
     }
     
@@ -549,49 +565,6 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
 
     
     /**
-     * Creates a Text that can be used to enter a serverID. If the serverID is incorrect, 
-     * it will be in red while typing until it gets correct.
-     *
-     * @param toolkit the toolkit
-     * @param parent the parent
-     * @return a Text that can be used to enter a ServerID
-     */
-    private Text createServerIdText( FormToolkit toolkit, Composite parent )
-    {
-        final Text serverIdText = toolkit.createText( parent, "" ); //$NON-NLS-1$
-        GridData gd = new GridData( SWT.NONE, SWT.NONE, false, false );
-        gd.widthHint = 200;
-        serverIdText.setLayoutData( gd );
-        
-        serverIdText.addModifyListener( new ModifyListener()
-        {
-            Display display = serverIdText.getDisplay();
-
-            // Check that the ServerID is valid
-            public void modifyText( ModifyEvent e )
-            {
-                Text serverIdText = (Text)e.widget;
-                String serverId = serverIdText.getText();
-                
-                try
-                {
-                    Integer.parseInt( serverId );
-                }
-                catch ( NumberFormatException nfe )
-                {
-                    serverIdText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
-                }
-            }
-        } );
-        
-        // No more than 3 digits
-        serverIdText.setTextLimit( 3 );
-
-        return serverIdText;
-    }
-
-
-    /**
      * Creates a Text that can be used to enter an ConfigDir.
      *
      * @param toolkit the toolkit
@@ -655,85 +628,6 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
 
 
     /**
-     * Creates a Text that can be used to enter the Log level.
-     *
-     * @param toolkit the toolkit
-     * @param parent the parent
-     * @return a Text that can be used to enter the Log level
-     */
-    private Text createLogLevelText( FormToolkit toolkit, Composite parent )
-    {
-        final Text logLevelText = toolkit.createText( parent, "" ); //$NON-NLS-1$
-        GridData gd = new GridData( SWT.NONE, SWT.NONE, false, false );
-        gd.widthHint = 200;
-        logLevelText.setLayoutData( gd );
-        
-        // No more than 512 digits
-        logLevelText.setTextLimit( 512 );
-
-        logLevelText.addModifyListener( new ModifyListener()
-        {
-            Display display = logLevelText.getDisplay();
-
-            // Check that the LogLevel is valid
-            public void modifyText( ModifyEvent e )
-            {
-                Text logLevelText = (Text)e.widget;
-                String logLevel = logLevelText.getText();
-                
-                try
-                {
-                    Integer.parseInt( logLevel );
-                    logLevelText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
-                }
-                catch ( NumberFormatException nfe )
-                {
-                    logLevelText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
-                }
-            }
-        } );
-        
-        // No more than 6 digits
-        logLevelText.setTextLimit( 6 );
-
-        return logLevelText;
-    }
-
-    
-    /**
-     * Get the ServerID
-     */
-    private String getServerId()
-    {
-        List<String> serverIdList = getConfiguration().getGlobal().getOlcServerID();
-        
-        if ( serverIdList == null )
-        {
-            return "";
-        }
-        
-        boolean isFirst = true;
-        StringBuilder sb = new StringBuilder();
-        
-        for ( String serverId : serverIdList )
-        {
-            if ( isFirst )
-            {
-                isFirst = false;
-            }
-            else
-            {
-                sb.append( ", " );
-            }
-            
-            sb.append( serverId );
-        }
-        
-        return sb.toString();
-    }
-
-    
-    /**
      * Get the various LogLevel values, and concatenate them in a String
      */
     private String getLogLevel()
@@ -776,7 +670,15 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
             removeListeners();
 
             // Update the ServerIDText
-            serverIdText.setText( getServerId() );
+            // Update the DatabaseTableViewer
+            serverIdWrappers.clear();
+
+            for ( String serverIdWrapper : getConfiguration().getGlobal().getOlcServerID() )
+            {
+                serverIdWrappers.add( new ServerIdWrapper( serverIdWrapper ) );
+            }
+
+            serverIdWidget.setElements( serverIdWrappers );
             
             // Update the ConfigDirText
             configDirText.setText( getConfiguration().getGlobal().getOlcConfigDir() );
@@ -841,7 +743,7 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
     private void removeListeners()
     {
         // The serverID Text 
-        removeDirtyListener( serverIdText );
+        //removeDirtyListener( serverIdText );
 
         // The configDir Text 
         removeDirtyListener( configDirText );
@@ -863,7 +765,7 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
     private void addListeners()
     {
         // The serverID Text 
-        addDirtyListener( serverIdText );
+        //addDirtyListener( serverIdText );
 
         // The configDir Text 
         addDirtyListener( configDirText );
