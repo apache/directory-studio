@@ -21,7 +21,9 @@
 package org.slf4j.impl;
 
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.osgi.framework.Bundle;
 import org.slf4j.helpers.MarkerIgnoringBase;
 import org.slf4j.helpers.MessageFormatter;
 
@@ -40,15 +42,16 @@ public class EclipseLogLogger extends MarkerIgnoringBase
 {
     private static final long serialVersionUID = 1L;
 
+    private static final String SYMBOLIC_NAME = "org.apache.directory.studio.slf4j-eclipselog";
+
 
     private void internalLog( int severity, String message, Throwable t )
     {
-        Activator activator = Activator.getDefault();
-        if ( activator != null )
+        Bundle bundle = Platform.getBundle( SYMBOLIC_NAME );
+        if ( bundle != null )
         {
-            String symbolicName = activator.getBundle().getSymbolicName();
-            Status status = new Status( severity, symbolicName, message, t );
-            activator.getLog().log( status );
+            Status status = new Status( severity, SYMBOLIC_NAME, message, t );
+            Platform.getLog( bundle ).log( status );
         }
     }
 

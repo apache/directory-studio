@@ -64,10 +64,14 @@
         <configuration>
           <dependency-resolution>
             <extraRequirements>
-              <!-- TODO: more requirements required -->
               <requirement>
                 <type>eclipse-feature</type>
                 <id>org.eclipse.rcp</id>
+                <versionRange>0.0.0</versionRange>
+              </requirement>
+              <requirement>
+                <type>eclipse-plugin</type>
+                <id>org.apache.directory.studio.slf4j-eclipselog</id>
                 <versionRange>0.0.0</versionRange>
               </requirement>
             </extraRequirements>

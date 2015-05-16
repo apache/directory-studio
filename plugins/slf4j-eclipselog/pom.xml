@@ -32,6 +32,6 @@
   <packaging>eclipse-plugin</packaging>
 
   <description>
-    An slf4j logger binding that a forwards log entries to Eclipse log in '.metadata/.log'.
+    An slf4j logger binding that forwards log messages to Eclipse log in '.metadata/.log'.
   </description>
 </project>

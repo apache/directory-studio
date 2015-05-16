@@ -97,8 +97,6 @@
  org.apache.directory.studio.rcp.help,
  org.apache.directory.studio.schemaeditor,
  org.apache.directory.studio.schemaeditor.help,
- org.apache.directory.studio.slf4j-eclipselog,
- org.apache.directory.studio.test.integration.core,
  org.apache.directory.studio.valueeditors,
  
  org.eclipse.core.runtime,

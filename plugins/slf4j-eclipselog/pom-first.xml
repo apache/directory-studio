@@ -30,7 +30,7 @@
   <artifactId>org.apache.directory.studio.slf4j-eclipselog</artifactId>
   <name>Apache Directory Studio SLF4J to Eclipse Log Binding</name>
   <description>
-    An slf4j logger binding that a forwards log entries to Eclipse log in '.metadata/.log'.
+    An slf4j logger binding that forwards log messages to Eclipse log in '.metadata/.log'.
   </description>
   <packaging>bundle</packaging>
 
@@ -46,8 +46,7 @@
           <instructions>
             <Bundle-SymbolicName>${project.artifactId};singleton:=true</Bundle-SymbolicName>
             <Bundle-Localization>plugin</Bundle-Localization>
-            <Eclipse-LazyStart>true</Eclipse-LazyStart>
-            <Bundle-Activator>org.slf4j.impl.Activator</Bundle-Activator>
+            <Fragment-Host>slf4j.api;bundle-version="[1.7.10,1.7.11)"</Fragment-Host>
             
             <Export-Package>org.slf4j.impl</Export-Package>
             
@@ -56,6 +55,7 @@
             
             <Require-Bundle>
  slf4j.api,
+ org.slf4j.api,
  org.eclipse.core.runtime
             </Require-Bundle>
           </instructions>
