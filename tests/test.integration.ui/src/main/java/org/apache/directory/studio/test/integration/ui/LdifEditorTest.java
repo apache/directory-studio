@@ -50,6 +50,10 @@ public class LdifEditorTest extends AbstractLdapTestUnit
     {
         studioBot = new StudioBot();
         studioBot.resetLdapPerspective();
+
+        // activate search and modifications logs, they also include an LDIF editor and increment the counter
+        studioBot.getSearchLogsViewBot().getSearchLogsText();
+        studioBot.getModificationLogsViewBot().getModificationLogsText();
     }
 
 
@@ -70,7 +74,8 @@ public class LdifEditorTest extends AbstractLdapTestUnit
         assertTrue( newWizard.isFinishButtonEnabled() );
         newWizard.clickFinishButton();
 
-        LdifEditorBot ldifEditorBot = new LdifEditorBot( "LDIF 2" );
+        // TODO: use matcher instead of hard code editor number
+        LdifEditorBot ldifEditorBot = new LdifEditorBot( "LDIF 3" );
         ldifEditorBot.activate();
         ldifEditorBot.typeText( "dn: dc=test\nobjectClass: domain\n\n" );
         assertTrue( ldifEditorBot.isDirty() );

@@ -20,16 +20,31 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
-public class ModificationLogsViewBot extends AbstractLogsViewBot
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarPushButton;
+
+
+public class AbstractLogsViewBot
 {
-    public ModificationLogsViewBot()
+
+    private SWTBotView view;
+
+
+    public AbstractLogsViewBot( String title )
     {
-        super( "Modification Logs" );
+        view = new SWTWorkbenchBot().viewByTitle( title );
     }
 
 
-    public String getModificationLogsText()
+    public String getLogsText()
     {
-        return super.getLogsText();
+        view.show();
+        SWTBotToolbarPushButton refreshButton = view.toolbarPushButton( "Refresh" );
+        if ( refreshButton.isEnabled() )
+        {
+            refreshButton.click();
+        }
+        return view.bot().styledText().getText();
     }
 }
