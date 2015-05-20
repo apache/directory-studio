@@ -50,6 +50,7 @@ import org.apache.directory.studio.connection.core.ConnectionParameter.Encryptio
 import org.apache.directory.studio.connection.core.ConnectionParameter.NetworkProvider;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
 import org.apache.directory.studio.connection.core.io.jndi.JNDIConnectionWrapper;
+import org.apache.mina.util.AvailablePortFinder;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -105,7 +106,7 @@ public class JNDIConnectionWrapperTest extends AbstractLdapTestUnit
 
         // invalid port
         monitor = getProgressMonitor();
-        connectionParameter = new ConnectionParameter( null, "localhost", ldapServer.getPort() + 1,
+        connectionParameter = new ConnectionParameter( null, "localhost", AvailablePortFinder.getNextAvailable(),
             EncryptionMethod.NONE, NetworkProvider.JNDI, AuthenticationMethod.NONE, null, null, null, true, null );
         connection = new Connection( connectionParameter );
         connectionWrapper = connection.getConnectionWrapper();

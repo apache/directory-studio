@@ -58,6 +58,7 @@ import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
 import org.apache.directory.studio.connection.core.io.api.DirectoryApiConnectionWrapper;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeRootDSERunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.BrowserConnection;
+import org.apache.mina.util.AvailablePortFinder;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -114,7 +115,7 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
 
         // invalid port
         monitor = getProgressMonitor();
-        connectionParameter = new ConnectionParameter( null, "localhost", ldapServer.getPort() + 1,
+        connectionParameter = new ConnectionParameter( null, "localhost", AvailablePortFinder.getNextAvailable(),
             EncryptionMethod.NONE, NetworkProvider.APACHE_DIRECTORY_LDAP_API, AuthenticationMethod.NONE, null, null,
             null, true, null );
         connection = new Connection( connectionParameter );
