@@ -23,8 +23,8 @@ package org.apache.directory.studio.openldap.common.ui.widgets;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.studio.common.ui.widgets.AbstractWidget;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 
-public class LogOperationsWidget extends BrowserWidget
+public class LogOperationsWidget extends AbstractWidget
 {
     // UI widgets
     private Composite composite;

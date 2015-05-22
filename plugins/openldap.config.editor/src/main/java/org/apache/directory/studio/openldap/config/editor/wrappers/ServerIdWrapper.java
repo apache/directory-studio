@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.openldap.config.editor.pages;
+package org.apache.directory.studio.openldap.config.editor.wrappers;
 
 /**
  * A wrapper for a ServerID which can be either an integer between 0 and 4095 

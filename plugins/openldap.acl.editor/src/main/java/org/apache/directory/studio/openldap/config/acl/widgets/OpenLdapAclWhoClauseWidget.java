@@ -22,8 +22,8 @@ package org.apache.directory.studio.openldap.config.acl.widgets;
 
 import java.text.MessageFormat;
 
+import org.apache.directory.studio.common.ui.widgets.AbstractWidget;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -36,7 +36,6 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
-
 import org.apache.directory.studio.openldap.config.acl.OpenLdapAclEditorPlugin;
 import org.apache.directory.studio.openldap.config.acl.OpenLdapAclEditorPluginConstants;
 import org.apache.directory.studio.openldap.config.acl.dialogs.OpenLdapAccessLevelDialog;
@@ -69,7 +68,7 @@ import org.apache.directory.studio.openldap.config.acl.widgets.composites.WhoCla
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class OpenLdapAclWhoClauseWidget extends BrowserWidget implements SelectionListener
+public class OpenLdapAclWhoClauseWidget extends AbstractWidget implements SelectionListener
 {
     /** The array of clauses */
     private Object[] clauses = new Object[]

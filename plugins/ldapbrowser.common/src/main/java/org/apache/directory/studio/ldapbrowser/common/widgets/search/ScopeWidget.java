@@ -22,7 +22,7 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.search;
 
 
 import org.apache.directory.api.ldap.model.message.SearchScope;
-import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
+import org.apache.directory.studio.common.ui.widgets.AbstractWidget;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -39,7 +39,7 @@ import org.eclipse.swt.widgets.Group;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ScopeWidget extends BrowserWidget
+public class ScopeWidget extends AbstractWidget
 {
 
     /** The initial scope. */

@@ -20,7 +20,7 @@
 package org.apache.directory.studio.openldap.config.model.widgets;
 
 
-import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
+import org.apache.directory.studio.common.ui.widgets.AbstractWidget;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -38,7 +38,7 @@ import org.apache.directory.studio.openldap.config.model.database.OlcBdbConfigLo
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LockDetectWidget extends BrowserWidget
+public class LockDetectWidget extends AbstractWidget
 {
     /** The combo viewer's values */
     private Object[] comboViewerValues = new Object[]

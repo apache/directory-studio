@@ -20,8 +20,8 @@
 package org.apache.directory.studio.openldap.config.editor.pages;
 
 
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.openldap.config.actions.EditorExportConfigurationAction;
 import org.apache.directory.studio.openldap.config.actions.EditorImportConfigurationAction;
 import org.apache.directory.studio.openldap.config.editor.Messages;
@@ -69,7 +69,7 @@ public abstract class OpenLDAPServerConfigurationEditorPage extends FormPage
     /**
      * A listener used to set the dirty flag when a Text is updated
      */
-    private ModifyListener dirtyModifyListener = new ModifyListener()
+    protected ModifyListener dirtyModifyListener = new ModifyListener()
     {
         public void modifyText( ModifyEvent e )
         {

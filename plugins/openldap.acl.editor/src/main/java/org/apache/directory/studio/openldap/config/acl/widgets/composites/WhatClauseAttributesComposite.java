@@ -23,11 +23,10 @@ package org.apache.directory.studio.openldap.config.acl.widgets.composites;
 import java.util.Arrays;
 
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.swt.widgets.Composite;
-
 import org.apache.directory.studio.openldap.config.acl.model.AclWhatClauseAttributes;
 import org.apache.directory.studio.openldap.config.acl.widgets.AttributesWidget;
 

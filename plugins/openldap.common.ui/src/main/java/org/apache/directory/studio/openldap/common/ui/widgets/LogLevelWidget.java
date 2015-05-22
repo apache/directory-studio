@@ -20,8 +20,8 @@
 package org.apache.directory.studio.openldap.common.ui.widgets;
 
 
+import org.apache.directory.studio.common.ui.widgets.AbstractWidget;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -61,7 +61,7 @@ import org.apache.directory.studio.openldap.common.ui.dialogs.LogLevelDialog;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LogLevelWidget extends BrowserWidget
+public class LogLevelWidget extends AbstractWidget
 {
     /** The log level */
     private int value;

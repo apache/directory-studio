@@ -24,12 +24,12 @@ package org.apache.directory.studio.openldap.common.ui.widgets;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.common.ui.HistoryUtils;
+import org.apache.directory.studio.common.ui.widgets.AbstractWidget;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.SelectEntryDialog;
-import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.Messages;
 import org.apache.directory.studio.ldapbrowser.core.jobs.ReadEntryRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -60,7 +60,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class EntryWidget extends BrowserWidget
+public class EntryWidget extends AbstractWidget
 {
     /** The connection. */
     private IBrowserConnection browserConnection;

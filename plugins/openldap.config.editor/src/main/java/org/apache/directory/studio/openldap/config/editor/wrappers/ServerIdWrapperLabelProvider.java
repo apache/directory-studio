@@ -17,35 +17,39 @@
  *  under the License. 
  *  
  */
+package org.apache.directory.studio.openldap.config.editor.wrappers;
 
-package org.apache.directory.studio.ldapbrowser.common.widgets;
-
-
-import java.util.EventObject;
-
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.swt.graphics.Image;
 
 /**
- * A WidgetModifyEvent indicates that a {@link BrowserWidget} has
- * been modified.
- *
+ * This class defines a label provider for a ServerID wrapper viewer.
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class WidgetModifyEvent extends EventObject
+public class ServerIdWrapperLabelProvider extends LabelProvider
 {
+    /**
+     * Construct the label for a ServerID. It can be a number in [0..999], or an URL
+     */
+    public String getText( Object element )
+    {
+        if ( element instanceof ServerIdWrapper )
+        {
+            String serverIdtext = ( ( ServerIdWrapper ) element ).toString();
 
-    /** The serialVersionUID */
-    private static final long serialVersionUID = 2421335730580648878L;
+            return serverIdtext;
+        }
+
+        return super.getText( element );
+    };
 
 
     /**
-     * Creates a new instance of WidgetModifyEvent.
-     *
-     * @param source the event source
+     * Get the image. We have none (may be we could add one for URLs ?)
      */
-    public WidgetModifyEvent( Object source )
+    public Image getImage( Object element )
     {
-        super( source );
-
-    }
-
+        return null;
+    };
 }

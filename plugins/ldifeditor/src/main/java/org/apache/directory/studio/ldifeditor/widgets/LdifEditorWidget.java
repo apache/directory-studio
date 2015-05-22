@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldifeditor.widgets;
 
 
-import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
+import org.apache.directory.studio.common.ui.widgets.AbstractWidget;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldifeditor.editor.ILdifEditor;
 import org.apache.directory.studio.ldifeditor.editor.LdifDocumentProvider;
@@ -48,7 +48,7 @@ import org.eclipse.swt.widgets.Control;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LdifEditorWidget extends BrowserWidget implements ILdifEditor, ITextListener
+public class LdifEditorWidget extends AbstractWidget implements ILdifEditor, ITextListener
 {
 
     /** The connection. */

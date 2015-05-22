@@ -17,28 +17,29 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.openldap.config.editor.pages;
+package org.apache.directory.studio.openldap.config.editor.wrappers;
 
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 /**
- * This class defines a label provider for a ServerID wrapper viewer.
+ * This class defines a label provider for a TCPBuffer wrapper viewer.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ServerIdWrapperLabelProvider extends LabelProvider
+public class TcpBufferWrapperLabelProvider extends LabelProvider
 {
     /**
-     * Construct the label for a ServerID. It can be a number in [0..999], or an URL
+     * Construct the label for a TCPBuffer. It can be one of :
+     * 
      */
     public String getText( Object element )
     {
-        if ( element instanceof ServerIdWrapper )
+        if ( element instanceof TcpBufferWrapper )
         {
-            String serverIdtext = ( ( ServerIdWrapper ) element ).toString();
+            String tcpBufferText = ( ( TcpBufferWrapper ) element ).toString();
 
-            return serverIdtext;
+            return tcpBufferText;
         }
 
         return super.getText( element );

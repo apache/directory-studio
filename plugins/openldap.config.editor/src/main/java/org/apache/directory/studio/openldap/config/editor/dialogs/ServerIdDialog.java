@@ -40,16 +40,16 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.apache.directory.studio.openldap.config.editor.pages.ServerIdWrapper;
+import org.apache.directory.studio.openldap.config.editor.wrappers.ServerIdWrapper;
 
 
 /**
- * The ServerIdDialog is used to edit a ServerID, which can be an integer, an hexadicimal number,
+ * The ServerIdDialog is used to edit a ServerID, which can be an integer, an hexadecimal number,
  * optionally followed by an URL. The dialog overlay is like :
  * 
  * <pre>
  * +---------------------------------------+
- * |  ServerID                             |
+ * |  ServerID Input                       |
  * | .-----------------------------------. |
  * | | ID  : [    ]                      | |
  * | | URL : [                         ] | |
@@ -83,7 +83,7 @@ public class ServerIdDialog extends Dialog
     /** The URL text */
     private Text urlText;
     
-    /** The resulting sevrerID Text, or an error message */
+    /** The resulting serverID Text, or an error message */
     private Text serverIdText;
 
 
@@ -122,7 +122,7 @@ public class ServerIdDialog extends Dialog
     
     
     /**
-     * The A listener for the ID Text
+     * The listener for the ID Text
      */
     private ModifyListener idTextListener = new ModifyListener()
     {
@@ -183,7 +183,7 @@ public class ServerIdDialog extends Dialog
     
     
     /**
-     * The A listener for the URL Text
+     * The listener for the URL Text
      */
     private ModifyListener urlTextListener = new ModifyListener()
     {
@@ -284,7 +284,7 @@ public class ServerIdDialog extends Dialog
      * where one can insert the ServerID values:
      * 
      * <pre>
-     * ServerID
+     * ServerID Input
      * .-----------------------------------.
      * | ID  : [    ]                      |
      * | URL : [                         ] |
@@ -294,10 +294,10 @@ public class ServerIdDialog extends Dialog
      */
     private void createServerIdEditGroup( Composite parent )
     {
-        // Attributes Group
+        // ServerID Group
         Group serverIdGroup = BaseWidgetUtils.createGroup( parent, "ServerID input", 1 );
-        GridLayout attributesGroupGridLayout = new GridLayout( 2, false );
-        serverIdGroup.setLayout( attributesGroupGridLayout );
+        GridLayout serverIdGroupGridLayout = new GridLayout( 2, false );
+        serverIdGroup.setLayout( serverIdGroupGridLayout );
         serverIdGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // ServerID Text
@@ -328,10 +328,10 @@ public class ServerIdDialog extends Dialog
      */
     private void createServerIdShowGroup( Composite parent )
     {
-        // Attributes Group
+        // ServerId Group
         Group serverIdGroup = BaseWidgetUtils.createGroup( parent, "", 1 );
-        GridLayout attributesGroupGridLayout = new GridLayout( 2, false );
-        serverIdGroup.setLayout( attributesGroupGridLayout );
+        GridLayout serverIdGroupGridLayout = new GridLayout( 2, false );
+        serverIdGroup.setLayout( serverIdGroupGridLayout );
         serverIdGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // ServerID Text

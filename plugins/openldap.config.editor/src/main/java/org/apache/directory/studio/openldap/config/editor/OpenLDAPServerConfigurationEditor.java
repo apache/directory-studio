@@ -34,6 +34,8 @@ import org.apache.directory.studio.openldap.config.editor.pages.LoadingPage;
 import org.apache.directory.studio.openldap.config.editor.pages.OpenLDAPServerConfigurationEditorPage;
 import org.apache.directory.studio.openldap.config.editor.pages.OptionsPage;
 import org.apache.directory.studio.openldap.config.editor.pages.OverviewPage;
+import org.apache.directory.studio.openldap.config.editor.pages.SecurityPage;
+import org.apache.directory.studio.openldap.config.editor.pages.TuningPage;
 import org.apache.directory.studio.openldap.config.jobs.LoadConfigurationRunnable;
 import org.apache.directory.studio.openldap.config.model.OpenLdapConfiguration;
 import org.apache.directory.studio.openldap.config.model.io.SaveConfigurationRunnable;
@@ -84,6 +86,12 @@ public class OpenLDAPServerConfigurationEditor extends FormEditor implements IPa
     
     /** The options page */
     private OptionsPage optionsPage;
+    
+    /** The Security page */
+    private SecurityPage securityPage;
+    
+    /** The Tuning page */
+    private TuningPage tuningPage;
 
 
     /**
@@ -271,6 +279,16 @@ public class OpenLDAPServerConfigurationEditor extends FormEditor implements IPa
             frontendPage.doSave( monitor );
         }
         
+        if ( securityPage != null )
+        {
+            securityPage.doSave( monitor );
+        }
+        
+        if ( tuningPage != null )
+        {
+            tuningPage.doSave( monitor );
+        }
+        
         if ( configPage != null )
         {
             configPage.doSave( monitor );
@@ -352,6 +370,8 @@ public class OpenLDAPServerConfigurationEditor extends FormEditor implements IPa
         optionsPage.refreshUI();
         databasesPage.refreshUI();
         frontendPage.refreshUI();
+        securityPage.refreshUI();
+        tuningPage.refreshUI();
         configPage.refreshUI();
     }
 
@@ -402,6 +422,12 @@ public class OpenLDAPServerConfigurationEditor extends FormEditor implements IPa
             
             databasesPage = new DatabasesPage( this );
             addPage( databasesPage );
+            
+            securityPage = new SecurityPage( this );
+            addPage( securityPage );
+            
+            tuningPage = new TuningPage( this );
+            addPage( tuningPage );
             
             optionsPage = new OptionsPage( this );
             addPage( optionsPage );

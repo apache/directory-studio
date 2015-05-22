@@ -22,8 +22,6 @@ package org.apache.directory.studio.combinededitor.editor;
 
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.studio.entryeditors.EntryEditorInput;
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
@@ -50,8 +48,9 @@ import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
-
 import org.apache.directory.studio.combinededitor.actions.FetchOperationalAttributesAction;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.templateeditor.actions.EditorPagePropertiesAction;
 import org.apache.directory.studio.templateeditor.actions.RefreshAction;
 import org.apache.directory.studio.templateeditor.actions.SimpleActionProxy;

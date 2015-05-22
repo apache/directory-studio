@@ -456,13 +456,24 @@ public class EntryEditorManager
      */
     public EntryEditorManager()
     {
+        if ( PlatformUI.getWorkbench().getActiveWorkbenchWindow() != null )
+        {
+            getEditorManager();
+        }
+    }
+
+    
+    /**
+     * Get the EditorManager instance
+     */
+    public void getEditorManager()
+    {
         initEntryEditorExtensions();
         PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().addPartListener( partListener );
         EventRegistry
             .addEntryUpdateListener( entryUpdateListener, BrowserCommonActivator.getDefault().getEventRunner() );
         ConnectionEventRegistry.addConnectionUpdateListener( connectionUpdateListener, ConnectionUIPlugin.getDefault()
             .getEventRunner() );
-
     }
 
 
@@ -513,7 +524,6 @@ public class EntryEditorManager
             entryEditorExtensions.put( bean.getId(), bean );
         }
     }
-
 
     public void dispose()
     {

@@ -18,11 +18,10 @@
  *  
  */
 
-package org.apache.directory.studio.ldapbrowser.common.widgets;
+package org.apache.directory.studio.common.ui.widgets;
 
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 
@@ -32,17 +31,16 @@ import java.util.List;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class BrowserWidget
+public abstract class AbstractWidget
 {
-
     /** The listener list */
     protected List<WidgetModifyListener> modifyListenerList;
 
 
     /**
-     * Creates a new instance of BrowserWidget.
+     * Creates a new instance of AbstractWidget.
      */
-    protected BrowserWidget()
+    protected AbstractWidget()
     {
         modifyListenerList = new ArrayList<WidgetModifyListener>( 3 );
     }
@@ -70,7 +68,9 @@ public abstract class BrowserWidget
     public void removeWidgetModifyListener( WidgetModifyListener listener )
     {
         if ( modifyListenerList.contains( listener ) )
+        {
             modifyListenerList.remove( listener );
+        }
     }
 
 
@@ -80,11 +80,10 @@ public abstract class BrowserWidget
     protected void notifyListeners()
     {
         WidgetModifyEvent event = new WidgetModifyEvent( this );
-        for ( Iterator<WidgetModifyListener> it = modifyListenerList.iterator(); it.hasNext(); )
-        {
-            WidgetModifyListener listener = it.next();
+        
+        for ( WidgetModifyListener listener : modifyListenerList )
+        { 
             listener.widgetModified( event );
         }
     }
-
 }

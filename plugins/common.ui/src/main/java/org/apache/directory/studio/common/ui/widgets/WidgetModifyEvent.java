@@ -18,23 +18,32 @@
  *  
  */
 
-package org.apache.directory.studio.ldapbrowser.common.widgets;
+package org.apache.directory.studio.common.ui.widgets;
+
+
+import java.util.EventObject;
 
 
 /**
- * A WidgetModifyListener listens for modifications of a
- * {@link BrowserWidget}.
+ * A WidgetModifyEvent indicates that a {@link AbstractWidget} has
+ * been modified.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface WidgetModifyListener
+public class WidgetModifyEvent extends EventObject
 {
 
-    /**
-     * Notified about the modification of a {@link BrowserWidget}.
-     * 
-     * @param event the event
-     */
-    public void widgetModified( WidgetModifyEvent event );
+    /** The serialVersionUID */
+    private static final long serialVersionUID = 2421335730580648878L;
 
+
+    /**
+     * Creates a new instance of WidgetModifyEvent.
+     *
+     * @param source the event source
+     */
+    public WidgetModifyEvent( Object source )
+    {
+        super( source );
+    }
 }

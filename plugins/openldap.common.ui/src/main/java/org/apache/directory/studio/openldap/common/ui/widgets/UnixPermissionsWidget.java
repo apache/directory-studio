@@ -22,8 +22,8 @@ package org.apache.directory.studio.openldap.common.ui.widgets;
 
 import java.text.ParseException;
 
+import org.apache.directory.studio.common.ui.widgets.AbstractWidget;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -36,7 +36,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-
 import org.apache.directory.studio.openldap.common.ui.dialogs.UnixPermissions;
 import org.apache.directory.studio.openldap.common.ui.dialogs.UnixPermissionsDialog;
 
@@ -45,7 +44,7 @@ import org.apache.directory.studio.openldap.common.ui.dialogs.UnixPermissionsDia
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class UnixPermissionsWidget extends BrowserWidget
+public class UnixPermissionsWidget extends AbstractWidget
 {
     // The value
     private String value;

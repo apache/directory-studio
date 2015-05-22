@@ -17,14 +17,15 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.openldap.config.model.widgets;
+package org.apache.directory.studio.common.ui.widgets;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.studio.common.ui.widgets.AbstractWidget;
+import org.apache.directory.studio.common.ui.AddEditDialog;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -33,11 +34,11 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -45,123 +46,106 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPlugin;
-import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginConstants;
-import org.apache.directory.studio.openldap.config.editor.dialogs.ServerIdDialog;
-import org.apache.directory.studio.openldap.config.editor.wrappers.ServerIdWrapper;
 
 
 /**
- * The ServerIdTable Widget provides a table viewer to add/edit/remove ServerId from
- * a list of ServerId.
+ * The TableWidget provides a table viewer to add/edit/remove an element.
+ *
  * <pre>
  * +--------------------------------------+
- * | ServerId 1                           | (Add... )
- * | ServerId 2                           | (Edit...)
+ * | Element 1                            | (Add... )
+ * | Element 2                            | (Edit...)
  * |                                      | (Delete )
  * +--------------------------------------+
  * </pre>
  * 
+ * The elements are ordered. 
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ServerIdTableWidget extends AbstractWidget
+public class TableWidget<E> extends AbstractWidget
 {
-    /** The ServerId list */
-    private List<ServerIdWrapper> serverIds = new ArrayList<ServerIdWrapper>();
+    /** The element list */
+    private List<E> elements = new ArrayList<E>();
+    
+    /** The associated Dialog for the addition or edition of elements */
+    private AddEditDialog<E> elementDialog;
+
+    /** The LabelProvider for the elements */
+    private LabelProvider labelProvider;
+
 
     // UI widgets
     private Composite composite;
-    private Table table;
-    private TableViewer tableViewer;
+    private Table elementTable;
+    private TableViewer elementTableViewer;
     private Button addButton;
     private Button editButton;
     private Button deleteButton;
-    
-    /**
-     *  A listener on the ServerIds table, that modifies the button when an ServerId is selected
-     */
+
+    // A listener on the Elements table, that modifies the button when an Element is selected
     private ISelectionChangedListener tableViewerSelectionChangedListener = new ISelectionChangedListener()
     {
         public void selectionChanged( SelectionChangedEvent event )
         {
-            StructuredSelection selection = ( StructuredSelection ) tableViewer.getSelection();
+            StructuredSelection selection = ( StructuredSelection ) elementTableViewer.getSelection();
 
             editButton.setEnabled( !selection.isEmpty() );
             deleteButton.setEnabled( !selection.isEmpty() );
         }
     };
     
-    /**
-     * A listener on the ServerIds table, that reacts to a doubleClick : it's opening the ServerId editor
-     */
+    // A listener on the Element table, that reacts to a doubleClick : it's opening the Element editor
     private IDoubleClickListener tableViewerDoubleClickListener = new IDoubleClickListener()
     {
         public void doubleClick( DoubleClickEvent event )
         {
-            editServerId();
+            editElement();
         }
     };
     
-    
-    /**
-     *  A listener on the Add button, which opens the ServerId addition editor
-     */
+    // A listener on the Add button, which opens the Element addition editor
     private SelectionListener addButtonListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
         {
-            addServerId();
+            addElement();
         }
     };
     
-    /**
-     *  A listener on the Edit button, that open the ServerId editor
-     */
+    // A listener on the Edit button, that open the Element editor
     private SelectionListener editButtonListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
         {
-            editServerId();
+            editElement();
         }
     };
     
-    /**
-     *  A listener on the Delete button, which delete the selected ServerId
-     */
+    // A listener on the Delete button, which delete the selected Element
     private SelectionListener deleteButtonListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
         {
-            deleteServerId();
+            deleteElement();
         }
     };
 
 
     /**
-     * Creates a new instance of ServerIdTableWidget.
+     * Creates a new instance of TableWidget.
      */
-    public ServerIdTableWidget()
+    public TableWidget()
     {
     }
 
 
     /**
-     * Creates the widget.
-     * 
-     * @param parent the parent
-     */
-    public void createWidget( Composite parent )
-    {
-        createWidget( parent, null );
-    }
-
-
-    /**
-     * Creates the ServerId widget. It's a Table and three button :
+     * Creates the Table widget. It's a Table and three button :
      * <pre>
      * +--------------------------------------+
-     * | ServerId 1                           | (Add... )
-     * | ServerId 2                           | (Edit...)
+     * | Element 1                            | (Add... )
+     * | Element 2                            | (Edit...)
      * |                                      | (Delete )
      * +--------------------------------------+
      * </pre>
@@ -171,7 +155,7 @@ public class ServerIdTableWidget extends AbstractWidget
      */
     public void createWidget( Composite parent, FormToolkit toolkit )
     {
-        // Compositea
+        // Composite
         if ( toolkit != null )
         {
             composite = toolkit.createComposite( parent );
@@ -181,7 +165,7 @@ public class ServerIdTableWidget extends AbstractWidget
             composite = new Composite( parent, SWT.NONE );
         }
         
-        // First, define a grid of 2 columns
+        // First, define a grid of 2 columns (one for the table, one for the buttons)
         GridLayout compositeGridLayout = new GridLayout( 2, false );
         compositeGridLayout.marginHeight = compositeGridLayout.marginWidth = 0;
         composite.setLayout( compositeGridLayout );
@@ -189,39 +173,32 @@ public class ServerIdTableWidget extends AbstractWidget
         // Create the Element Table and Table Viewer
         if ( toolkit != null )
         {
-            table = toolkit.createTable( composite, SWT.BORDER );
+            elementTable = toolkit.createTable( composite, SWT.NULL );
         }
         else
         {
-            table = new Table( composite, SWT.BORDER );
+            elementTable = new Table( composite, SWT.NULL );
         }
         
         // Define the table size and height. It will span on 3 lines.
         GridData gd = new GridData( SWT.FILL, SWT.FILL, true, true, 1, 3 );
         gd.heightHint = 20;
         gd.widthHint = 100;
-        table.setLayoutData( gd );
+        elementTable.setLayoutData( gd );
         
-        // Create the Elements TableViewer
-        tableViewer = new TableViewer( table );
-        tableViewer.setContentProvider( new ArrayContentProvider() );
+        // Create the index TableViewer
+        elementTableViewer = new TableViewer( elementTable );
+        elementTableViewer.setContentProvider( new ArrayContentProvider() );
         
         // The LabelProvider
-        tableViewer.setLabelProvider( new LabelProvider()
-        {
-            public Image getImage( Object element )
-            {
-                return OpenLdapConfigurationPlugin.getDefault().getImage(
-                    OpenLdapConfigurationPluginConstants.IMG_LDAP_SERVER );
-            }
-        } );
+        elementTableViewer.setLabelProvider( labelProvider );
         
         // Listeners : we want to catch changes and double clicks
-        tableViewer.addSelectionChangedListener( tableViewerSelectionChangedListener );
-        tableViewer.addDoubleClickListener( tableViewerDoubleClickListener );
+        elementTableViewer.addSelectionChangedListener( tableViewerSelectionChangedListener );
+        elementTableViewer.addDoubleClickListener( tableViewerDoubleClickListener );
         
-        // Inject the existing indices
-        tableViewer.setInput( serverIds );
+        // Inject the existing elements
+        elementTableViewer.setInput( elements );
 
         // Create the Add Button and its listener
         if ( toolkit != null )
@@ -246,7 +223,7 @@ public class ServerIdTableWidget extends AbstractWidget
             editButton = BaseWidgetUtils.createButton( composite, "Edit...", SWT.PUSH );
         }
         
-        // It's not enabled unless we have selected a serverId
+        // It's not enabled unless we have selected an element
         editButton.setEnabled( false );
         editButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
         editButton.addSelectionListener( editButtonListener );
@@ -261,7 +238,7 @@ public class ServerIdTableWidget extends AbstractWidget
             deleteButton = BaseWidgetUtils.createButton( composite, "Delete", SWT.PUSH );
         }
         
-        // It's not selected unless we have selected a ServerId
+        // It's not selected unless we have selected an index
         deleteButton.setEnabled( false );
         deleteButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
         deleteButton.addSelectionListener( deleteButtonListener );
@@ -280,84 +257,55 @@ public class ServerIdTableWidget extends AbstractWidget
 
 
     /**
-     * Sets the ServerIds.
+     * Sets the Elements.
      *
-     * @param serverIds the ServerIds
+     * @param elements the elements
      */
-    public void setElements( List<ServerIdWrapper> serverIds )
+    public void setElements( List<E> elements )
     {
-        if ( ( serverIds != null ) && ( serverIds.size() > 0 ) )
+        if ( ( elements != null ) && ( elements.size() > 0 ) )
         {
-            this.serverIds.addAll( serverIds );
+            this.elements.addAll( elements );
         }
 
-        tableViewer.refresh();
+        elementTableViewer.refresh();
     }
 
 
     /**
-     * Gets the ServerIds.
+     * Gets the elements.
      *
-     * @return the ServerIds
+     * @return the elements
      */
-    public List<ServerIdWrapper> getServerIds()
+    public List<E> getElements()
     {
-        return serverIds;
-    }
-    
-    
-    /**
-     * Insert the modified or added ServerID at the right place in the ServerID table
-     * @param newServerId
-     */
-    private void insertServerId( ServerIdWrapper newServerId )
-    {
-        // Search for the inclusion position
-        int pos = 0;
-
-        for ( ServerIdWrapper serverIdWrapper : serverIds )
+        if ( elements != null )
         {
-            if ( serverIdWrapper.getServerId() > newServerId.getServerId() )
-            {
-                serverIds.add( pos, newServerId );
-                break;
-            }
-            else
-            {
-                pos++;
-            }
+            List<E> copy = new ArrayList<E>( elements.size() );
+            System.arraycopy( elements, 0, copy, 0, elements.size() );
+            
+            return copy;
         }
         
-        // Special case : the value has to be added at the end
-        if ( pos == serverIds.size() )
-        {
-            serverIds.add( newServerId );
-        }
-
+        return null;
     }
 
 
     /**
      * This method is called when the 'Add...' button is clicked.
      */
-    private void addServerId()
+    private void addElement()
     {
-        ServerIdDialog dialog = new ServerIdDialog( addButton.getShell(), serverIds, (ServerIdWrapper)null );
-        
-        if ( dialog.open() == ServerIdDialog.OK )
+        elementDialog.addNewElement();
+
+        if ( elementDialog.open() == Dialog.OK )
         {
-            ServerIdWrapper newServerId = dialog.getNewServerId();
-            
-            // If the user clicked on OK but the value was invalid, we will receive a Null value
-            if ( newServerId != null )
-            {
-                String serverIdString = newServerId.toString();
-                
-                insertServerId( newServerId );
-                tableViewer.refresh();
-                tableViewer.setSelection( new StructuredSelection( serverIdString ) );
-                notifyListeners();
-            }
+            E newElement = elementDialog.getNewElement();
+            String elementStr = newElement.toString();
+            elements.add( newElement );
+            elementTableViewer.refresh();
+            elementTableViewer.setSelection( new StructuredSelection( elementStr ) );
+            notifyListeners();
         }
     }
 
@@ -366,27 +314,26 @@ public class ServerIdTableWidget extends AbstractWidget
      * This method is called when the 'Edit...' button is clicked
      * or the table viewer is double-clicked.
      */
-    private void editServerId()
+    private void editElement()
     {
-        StructuredSelection selection = ( StructuredSelection ) tableViewer.getSelection();
+        StructuredSelection selection = ( StructuredSelection ) elementTableViewer.getSelection();
 
         if ( !selection.isEmpty() )
         {
-            ServerIdWrapper selectedServerId = ( ServerIdWrapper ) selection.getFirstElement();
+            E selectedElement = (E)selection.getFirstElement();
+            elementDialog.setEditedElement( selectedElement );
 
-            // Open the ServerID dialog, with the selected serverId
-            ServerIdDialog dialog = new ServerIdDialog( addButton.getShell(), serverIds, selectedServerId );
-            
-            if ( dialog.open() == ServerIdDialog.OK )
+            // Open the element dialog, with the selected index
+            if ( elementDialog.open() == Dialog.OK )
             {
-                ServerIdWrapper newServerId = dialog.getNewServerId();
+                E newElement = elementDialog.getNewElement();
+                int selectedIndexPosition = elements.indexOf( selectedElement );
                 
-                // We will remove the modifies serverId, and replace it with the new serverId, at the right position
-                serverIds.remove( selectedServerId );
-                
-                insertServerId( newServerId );
-                tableViewer.refresh();
-                tableViewer.setSelection( new StructuredSelection( newServerId.toString() ) );
+                // We will remove the modified element, and replace it with the new element
+                elements.remove( selectedElement );
+                elements.add( selectedIndexPosition, newElement );
+                elementTableViewer.refresh();
+                elementTableViewer.setSelection( new StructuredSelection( newElement.toString() ) );
                 notifyListeners();
             }
         }
@@ -394,20 +341,37 @@ public class ServerIdTableWidget extends AbstractWidget
 
 
     /**
-     * This method is called when the 'Delete' button is clicked. It removes the selected
-     * ServerId from the list.
+     * This method is called when the 'Delete' button is clicked.
      */
-    private void deleteServerId()
+    private void deleteElement()
     {
-        StructuredSelection selection = ( StructuredSelection ) tableViewer.getSelection();
+        StructuredSelection selection = ( StructuredSelection ) elementTableViewer.getSelection();
 
         if ( !selection.isEmpty() )
         {
-            ServerIdWrapper selectedIndex = ( ServerIdWrapper ) selection.getFirstElement();
+            E selectedElement = ( E ) selection.getFirstElement();
 
-            serverIds.remove( selectedIndex );
-            tableViewer.refresh();
+            elements.remove( selectedElement );
+            elementTableViewer.refresh();
             notifyListeners();
         }
+    }
+
+    
+    /**
+     * @param elementDialog the elementDialog to set
+     */
+    public void setElementDialog( AddEditDialog<E> elementDialog )
+    {
+        this.elementDialog = elementDialog;
+    }
+
+    
+    /**
+     * @param labelProvider the labelProvider to set
+     */
+    public void setLabelProvider( LabelProvider labelProvider )
+    {
+        this.labelProvider = labelProvider;
     }
 }

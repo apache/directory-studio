@@ -29,8 +29,8 @@ import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.EntryWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.FilterWidget;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -67,7 +67,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
-
 import org.apache.directory.studio.openldap.common.ui.dialogs.AttributeDialog;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPlugin;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginConstants;

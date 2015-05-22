@@ -27,13 +27,14 @@ import org.apache.directory.studio.openldap.common.ui.LogLevel;
 import org.apache.directory.studio.openldap.common.ui.widgets.LogLevelWidget;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginUtils;
 import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
-import org.apache.directory.studio.openldap.config.editor.databases.DatabaseWrapper;
-import org.apache.directory.studio.openldap.config.editor.databases.DatabaseWrapperLabelProvider;
-import org.apache.directory.studio.openldap.config.editor.databases.DatabaseWrapperViewerSorter;
 import org.apache.directory.studio.openldap.config.editor.overlays.ModuleWrapper;
 import org.apache.directory.studio.openldap.config.editor.overlays.ModuleWrapperLabelProvider;
 import org.apache.directory.studio.openldap.config.editor.overlays.ModuleWrapperViewerSorter;
 import org.apache.directory.studio.openldap.config.editor.pages.OverlaysPage;
+import org.apache.directory.studio.openldap.config.editor.wrappers.DatabaseWrapper;
+import org.apache.directory.studio.openldap.config.editor.wrappers.DatabaseWrapperLabelProvider;
+import org.apache.directory.studio.openldap.config.editor.wrappers.DatabaseWrapperViewerSorter;
+import org.apache.directory.studio.openldap.config.editor.wrappers.ServerIdWrapper;
 import org.apache.directory.studio.openldap.config.model.OlcModuleList;
 import org.apache.directory.studio.openldap.config.model.database.OlcDatabaseConfig;
 import org.apache.directory.studio.openldap.config.model.widgets.ServerIdTableWidget;
@@ -149,16 +150,16 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
     /** This link opens the Overlays configuration tab */
     private Hyperlink overlaysPageLink;
 
-    // This link opens the Security configuration tab 
+    /** This link opens the Security configuration tab */ 
     private Hyperlink securityPageLink;
 
-    // This link opens the Tuning configuration tab 
+    /** This link opens the Tuning configuration tab */
     private Hyperlink tuningPageLink;
 
-    // This link opens the Schema configuration tab 
+    /** This link opens the Schema configuration tab */
     private Hyperlink schemaPageLink;
 
-    // This link opens the Options configuration tab 
+    /** This link opens the Options configuration tab */
     private Hyperlink optionsPageLink;
 
     /**
@@ -203,7 +204,7 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
     {
         public void linkActivated( HyperlinkEvent e )
         {
-            //getServerConfigurationEditor().showPage( SecurityPage.class );
+            getServerConfigurationEditor().showPage( SecurityPage.class );
         }
     };
 
@@ -215,7 +216,7 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
     {
         public void linkActivated( HyperlinkEvent e )
         {
-            //getServerConfigurationEditor().showPage( TuningPage.class );
+            getServerConfigurationEditor().showPage( TuningPage.class );
         }
     };
 

@@ -20,7 +20,7 @@
 package org.apache.directory.studio.openldap.common.ui.widgets;
 
 
-import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
+import org.apache.directory.studio.common.ui.widgets.AbstractWidget;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 
-public class BooleanWithDefaultWidget extends BrowserWidget
+public class BooleanWithDefaultWidget extends AbstractWidget
 {
     /** The combo viewer's values */
     private Object[] comboViewerValues = new Object[]

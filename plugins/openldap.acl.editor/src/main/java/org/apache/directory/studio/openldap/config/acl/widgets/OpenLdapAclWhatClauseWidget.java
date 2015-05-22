@@ -20,15 +20,14 @@
 package org.apache.directory.studio.openldap.config.acl.widgets;
 
 
+import org.apache.directory.studio.common.ui.widgets.AbstractWidget;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-
 import org.apache.directory.studio.openldap.config.acl.OpenLdapAclValueWithContext;
 import org.apache.directory.studio.openldap.config.acl.model.AclWhatClause;
 import org.apache.directory.studio.openldap.config.acl.model.AclWhatClauseAttributes;
@@ -43,7 +42,7 @@ import org.apache.directory.studio.openldap.config.acl.widgets.composites.WhatCl
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class OpenLdapAclWhatClauseWidget extends BrowserWidget
+public class OpenLdapAclWhatClauseWidget extends AbstractWidget
 {
     /** The visual editor composite */
     private OpenLdapAclVisualEditorComposite visualEditorComposite;

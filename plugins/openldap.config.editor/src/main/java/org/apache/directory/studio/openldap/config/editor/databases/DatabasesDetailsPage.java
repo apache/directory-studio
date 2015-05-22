@@ -25,10 +25,10 @@ import java.util.List;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.common.ui.CommonUIUtils;
+import org.apache.directory.studio.common.ui.widgets.AbstractWidget;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.openldap.common.ui.widgets.BooleanWithDefaultWidget;
@@ -39,6 +39,7 @@ import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginCo
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginUtils;
 import org.apache.directory.studio.openldap.config.editor.dialogs.OverlayDialog;
 import org.apache.directory.studio.openldap.config.editor.dialogs.ReplicationConsumerDialog;
+import org.apache.directory.studio.openldap.config.editor.wrappers.DatabaseWrapper;
 import org.apache.directory.studio.openldap.config.model.OlcOverlayConfig;
 import org.apache.directory.studio.openldap.config.model.database.OlcBdbConfig;
 import org.apache.directory.studio.openldap.config.model.database.OlcDatabaseConfig;
@@ -1735,7 +1736,7 @@ public class DatabasesDetailsPage implements IDetailsPage
      * @param listener
      *      the listener
      */
-    protected void addModifyListener( BrowserWidget widget, WidgetModifyListener listener )
+    protected void addModifyListener( AbstractWidget widget, WidgetModifyListener listener )
     {
         if ( ( widget != null ) && ( listener != null ) )
         {
@@ -1820,7 +1821,7 @@ public class DatabasesDetailsPage implements IDetailsPage
      * @param listener
      *      the listener
      */
-    protected void removeModifyListener( BrowserWidget widget, WidgetModifyListener listener )
+    protected void removeModifyListener( AbstractWidget widget, WidgetModifyListener listener )
     {
         if ( ( widget != null ) && ( listener != null ) )
         {

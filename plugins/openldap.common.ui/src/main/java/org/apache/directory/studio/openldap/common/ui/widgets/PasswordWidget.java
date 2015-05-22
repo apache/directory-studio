@@ -20,8 +20,8 @@
 package org.apache.directory.studio.openldap.common.ui.widgets;
 
 
+import org.apache.directory.studio.common.ui.widgets.AbstractWidget;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -33,7 +33,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-
 import org.apache.directory.studio.openldap.common.ui.dialogs.PasswordDialog;
 
 
@@ -41,7 +40,7 @@ import org.apache.directory.studio.openldap.common.ui.dialogs.PasswordDialog;
  * The PasswordWidget provides a label to display the password, an edit button 
  * and a 'Show Password' button to show/hide the password.
  */
-public class PasswordWidget extends BrowserWidget
+public class PasswordWidget extends AbstractWidget
 {
     /** The password */
     private byte[] password;

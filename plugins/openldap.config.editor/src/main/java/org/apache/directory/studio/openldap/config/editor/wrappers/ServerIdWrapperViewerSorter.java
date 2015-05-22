@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.openldap.config.editor.pages;
+package org.apache.directory.studio.openldap.config.editor.wrappers;
 
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;

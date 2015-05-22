@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.openldap.config.editor.databases;
+package org.apache.directory.studio.openldap.config.editor.wrappers;
 
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginUtils;
 import org.apache.directory.studio.openldap.config.model.database.OlcDatabaseConfig;

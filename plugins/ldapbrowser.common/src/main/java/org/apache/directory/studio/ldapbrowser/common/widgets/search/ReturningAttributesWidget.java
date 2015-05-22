@@ -26,10 +26,10 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.directory.studio.common.ui.HistoryUtils;
+import org.apache.directory.studio.common.ui.widgets.AbstractWidget;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
-import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.DialogContentAssistant;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
@@ -49,7 +49,7 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ReturningAttributesWidget extends BrowserWidget
+public class ReturningAttributesWidget extends AbstractWidget
 {
 
     /** The returning attributes combo. */

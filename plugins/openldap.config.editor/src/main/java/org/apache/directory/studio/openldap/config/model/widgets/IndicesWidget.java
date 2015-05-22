@@ -23,8 +23,8 @@ package org.apache.directory.studio.openldap.config.model.widgets;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.studio.common.ui.widgets.AbstractWidget;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -46,7 +46,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPlugin;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginConstants;
 import org.apache.directory.studio.openldap.config.editor.dialogs.IndexDialog;
@@ -58,7 +57,7 @@ import org.apache.directory.studio.openldap.config.model.OlcDbIndex;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class IndicesWidget extends BrowserWidget
+public class IndicesWidget extends AbstractWidget
 {
     /** The indices list */
     private List<String> indices = new ArrayList<String>();
@@ -326,7 +325,7 @@ public class IndicesWidget extends BrowserWidget
             String selectedIndex = ( String ) selection.getFirstElement();
 
             // Open the index dialog, with the selected index
-            IndexDialog dialog = new IndexDialog( addButton.getShell(), new OlcDbIndex( selectedIndex ),
+            IndexDialog dialog = new IndexDialog( editButton.getShell(), new OlcDbIndex( selectedIndex ),
                 browserConnection );
             
             if ( dialog.open() == IndexDialog.OK )

@@ -20,8 +20,8 @@
 package org.apache.directory.studio.openldap.config.editor.databases;
 
 
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.openldap.config.model.database.OlcDatabaseConfig;
 import org.eclipse.swt.events.ModifyEvent;

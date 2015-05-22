@@ -23,10 +23,10 @@ package org.apache.directory.studio.openldap.common.ui.widgets;
 import java.io.File;
 
 import org.apache.directory.studio.common.ui.HistoryUtils;
+import org.apache.directory.studio.common.ui.widgets.AbstractWidget;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
-import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.Messages;
 import org.apache.directory.studio.openldap.common.ui.OpenLdapCommonUiConstants;
 import org.apache.directory.studio.openldap.common.ui.OpenLdapCommonUiPlugin;
@@ -47,7 +47,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
  * The DirectoryBrowserWidget provides a combo with a history of recently
  * used directory and a browse button to open the directory browser.
  */
-public class DirectoryBrowserWidget extends BrowserWidget
+public class DirectoryBrowserWidget extends AbstractWidget
 {
     /** The combo with the history of recently used directories */
     protected Combo directoryCombo;
