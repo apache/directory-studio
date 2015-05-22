@@ -319,6 +319,14 @@ http://www.apache.org/licenses/
          unpack="false"/>
 
    <plugin
+         id="org.eclipse.jdt.launching.macosx"
+         os="macosx"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.jdt.core"
          download-size="0"
          install-size="0"

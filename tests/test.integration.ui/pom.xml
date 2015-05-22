@@ -38,6 +38,7 @@
    -->
   <properties>
     <skip-ui-tests>true</skip-ui-tests>
+    <os-jvm-flags/>
   </properties>
 
   <profiles>
@@ -52,7 +53,15 @@
         <skip-ui-tests>false</skip-ui-tests>
       </properties>
     </profile>
-    <!-- TODO: for Mac VM args -XstartOnFirstThread may be required -->
+    <profile>
+      <id>macosx-jvm-flags</id>
+      <activation>
+        <os><family>mac</family></os>
+      </activation>
+      <properties>
+        <os-jvm-flags>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</os-jvm-flags>
+      </properties>
+    </profile>
   </profiles>
 
 
@@ -70,8 +79,8 @@
                 <versionRange>0.0.0</versionRange>
               </requirement>
               <requirement>
-                <type>eclipse-plugin</type>
-                <id>org.apache.directory.studio.slf4j-eclipselog</id>
+                <type>eclipse-feature</type>
+                <id>org.apache.directory.studio.rcp.feature</id>
                 <versionRange>0.0.0</versionRange>
               </requirement>
             </extraRequirements>
@@ -101,6 +110,7 @@
           <useUIHarness>true</useUIHarness>
           <useUIThread>false</useUIThread>
           <appArgLine>-nl en -debug debugoptions</appArgLine>
+          <argLine>${os-jvm-flags}</argLine>
           <!-- TODO: Run tests in Studio RCP app only, or in full IDE, or both? -->
 <!--           <product>org.eclipse.sdk.ide</product> -->
 <!--           <application>org.eclipse.ui.ide.workbench</application> -->
