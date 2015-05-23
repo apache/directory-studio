@@ -252,7 +252,6 @@ public class ApacheDSPluginTest
         Connection connection = getBrowserConnection();
 
         // Checking if the connection is open
-        waitForConnectionOpened( connection );
         assertTrue( connection.getConnectionWrapper().isConnected() );
 
         // Closing the connection
@@ -260,7 +259,6 @@ public class ApacheDSPluginTest
         connectionsViewBot.closeSelectedConnections();
 
         // Checking if the connection is closed
-        waitForConnectionClosed( connection );
         assertFalse( connection.getConnectionWrapper().isConnected() );
 
         // Deleting the connection
@@ -344,51 +342,4 @@ public class ApacheDSPluginTest
         return null;
     }
 
-
-    /**
-     * Waits until the given connection is opened.
-     *
-     * @param connection
-     *      the connection
-     */
-    public void waitForConnectionOpened( final Connection connection )
-    {
-        new SWTWorkbenchBot().waitUntil( new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return connection.getConnectionWrapper().isConnected();
-            }
-
-
-            public String getFailureMessage()
-            {
-                return "Connection " + connection.getName() + " not opened in connections view.";
-            }
-        } );
-    }
-
-
-    /**
-     * Waits until the given connection is closed.
-     *
-     * @param connection
-     *      the connection
-     */
-    public void waitForConnectionClosed( final Connection connection )
-    {
-        new SWTWorkbenchBot().waitUntil( new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return !connection.getConnectionWrapper().isConnected();
-            }
-
-
-            public String getFailureMessage()
-            {
-                return "Connection " + connection.getName() + " not closed in connections view.";
-            }
-        } );
-    }
 }
