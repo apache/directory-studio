@@ -32,6 +32,9 @@ import java.net.URL;
  */
 public class TcpBufferWrapper
 {
+    /** The maximum buffer size (2^32-1) */
+    public static final long MAX_TCP_BUFFER_SIZE = 0xFFFFFFFFL;
+    
     /** The two kind of TCP buffer we can configure */
     public enum TcpType
     {
@@ -58,8 +61,8 @@ public class TcpBufferWrapper
     /** The type of TCP buffer (either read or write, or both ) (optional) */
     private TcpType tcpType;
     
-    /** The TCP Buffer size (between 0 and 65535) */
-    private int size; 
+    /** The TCP Buffer size (between 0 and 2^32-1) */
+    private long size; 
     
     
     /**
@@ -69,10 +72,11 @@ public class TcpBufferWrapper
      * @param tcpType read or write, but can be null for both
      * @param url The listener
      */
-    public TcpBufferWrapper( int size, TcpType tcpType, String url )
+    public TcpBufferWrapper( long size, TcpType tcpType, String url )
     {
         this.size = size;
         this.tcpType = tcpType;
+        
         try
         {
             listener = new URL( url );
@@ -148,15 +152,16 @@ public class TcpBufferWrapper
                 // get the integer
                 String sizeStr = lowerCaseTcpBuffer.substring( pos );
                 
-                size = Integer.valueOf( sizeStr );
+                size = Long.valueOf( sizeStr );
                 
-                if ( ( size < 0 ) ||( size > 65535 ) )
+                if ( ( size < 0L ) || ( size > MAX_TCP_BUFFER_SIZE ) )
                 {
                     // This is wrong
                 }
             }
         }
     }
+    
 
     /**
      * @return the listener
@@ -197,7 +202,7 @@ public class TcpBufferWrapper
     /**
      * @return the size
      */
-    public int getSize()
+    public long getSize()
     {
         return size;
     }
@@ -206,7 +211,7 @@ public class TcpBufferWrapper
     /**
      * @param size the size to set
      */
-    public void setSize( int size )
+    public void setSize( long size )
     {
         this.size = size;
     }
@@ -216,18 +221,18 @@ public class TcpBufferWrapper
      * Tells if the TcpBuffer element is valid or not
      * @param sizeStr the TCP buffer size
      * @param urlStr The listener as a String
-     * @return true if the value are correct, false otherwise
+     * @return true if the values are correct, false otherwise
      */
     public static boolean isValid( String sizeStr, String urlStr )
     {
         // the size must be positive and below 2^32-1
-        if ( ( sizeStr != null) && ( sizeStr.length() > 0 ) )
+        if ( ( sizeStr != null ) && ( sizeStr.length() > 0 ) )
         {
             try
             {
-                int size = Integer.valueOf( sizeStr );
+                long size = Long.valueOf( sizeStr );
             
-                if ( ( size < 0 ) || ( size > 65535 ) )
+                if ( ( size < 0L ) || ( size > MAX_TCP_BUFFER_SIZE ) )
                 {
                     return false;
                 }

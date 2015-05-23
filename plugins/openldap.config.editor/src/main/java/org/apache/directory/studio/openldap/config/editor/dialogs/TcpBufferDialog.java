@@ -139,7 +139,7 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
     /**
      * The listener for the size Text
      */
-    private ModifyListener idTextListener = new ModifyListener()
+    private ModifyListener sizeTextListener = new ModifyListener()
     {
         public void modifyText( ModifyEvent e )
         {
@@ -154,10 +154,10 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
 
             try
             {
-                int sizeValue = Integer.parseInt( sizeText.getText() );
+                long sizeValue = Long.parseLong( sizeText.getText() );
 
-                // The size must be between 0 and 65535
-                if ( ( sizeValue < 0 ) || ( sizeValue > 65535 ) )
+                // The size must be between 0 and 2^32-1
+                if ( ( sizeValue < 0L ) || ( sizeValue > TcpBufferWrapper.MAX_TCP_BUFFER_SIZE ) )
                 {
                     sizeText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
                     tcpBufferText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
@@ -392,7 +392,7 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
         // Size Text
         BaseWidgetUtils.createLabel( tcpBufferGroup, "Size :", 1 );
         sizeText = BaseWidgetUtils.createText( tcpBufferGroup, "", 1 );
-        sizeText.addModifyListener( idTextListener );
+        sizeText.addModifyListener( sizeTextListener );
 
         // Read checkbox Button
         readCheckbox = BaseWidgetUtils.createCheckbox( tcpBufferGroup, "read", 2 );
@@ -441,7 +441,7 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
     {
         if ( getEditedElement() != null )
         {
-            sizeText.setText( Integer.toString( getEditedElement().getSize() ) );
+            sizeText.setText( Long.toString( getEditedElement().getSize() ) );
             
             URL listener =  getEditedElement().getListener();
             
