@@ -92,6 +92,14 @@ public class ApacheDSServersViewBot
     }
 
 
+    public ApacheDSConfigurationEditorBot openConfigurationEditor( String serverName )
+    {
+        selectServer( serverName );
+        ContextMenuHelper.clickContextMenu( getServersTree(), "Open Configuration" );
+        return new ApacheDSConfigurationEditorBot();
+    }
+
+
     /**
      * Gets the tree associated with the 'Servers' view.
      *
@@ -126,7 +134,7 @@ public class ApacheDSServersViewBot
      */
     public void runServer( String serverName )
     {
-        getServersTree().select( serverName );
+        selectServer( serverName );
         ContextMenuHelper.clickContextMenu( getServersTree(), "&Run" );
     }
 
@@ -139,7 +147,7 @@ public class ApacheDSServersViewBot
      */
     public void stopServer( String serverName )
     {
-        getServersTree().select( serverName );
+        selectServer( serverName );
         ContextMenuHelper.clickContextMenu( getServersTree(), "S&top" );
     }
 
