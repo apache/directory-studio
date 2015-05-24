@@ -61,7 +61,7 @@ public class JobWatcher
             public void done( IJobChangeEvent event )
             {
                 // if the done job has the expected name we are done
-                if ( jobName.equals( event.getJob().getName() ) )
+                if ( event.getJob().getName().startsWith( jobName ) )
                 {
                     done.set( true );
                     jobManager.removeJobChangeListener( listener );
@@ -95,7 +95,7 @@ public class JobWatcher
                 Job[] find = jobManager.find( null );
                 for ( Job job : find )
                 {
-                    if ( jobName.equals( job.getName() ) )
+                    if ( job.getName().startsWith( jobName ) )
                     {
                         running = true;
                         break;

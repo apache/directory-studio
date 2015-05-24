@@ -55,6 +55,10 @@ public class DeleteDialogBot extends DialogBot
         {
             watcher = new JobWatcher( BrowserCoreMessages.jobs__delete_entries_name_n );
         }
+        else if ( DELETE_SERVER.equals( title ) )
+        {
+            watcher = new JobWatcher( "Delete Server" );
+        }
 
         super.clickButton( "OK" );
 
