@@ -19,7 +19,6 @@
  */
 package org.apache.directory.studio.test.integration.ui.bots;
 
-import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
 
 
@@ -46,26 +45,9 @@ public class DeleteDialogBot extends DialogBot
 
     public void clickOkButton()
     {
-        JobWatcher watcher = null;
-        if ( DELETE_ENTRY_TITLE.equals( title ) )
-        {
-            watcher = new JobWatcher( BrowserCoreMessages.jobs__delete_entries_name_1 );
-        }
-        else if ( DELETE_ENTRIES_TITLE.equals( title ) )
-        {
-            watcher = new JobWatcher( BrowserCoreMessages.jobs__delete_entries_name_n );
-        }
-        else if ( DELETE_SERVER.equals( title ) )
-        {
-            watcher = new JobWatcher( "Delete Server" );
-        }
-
+        JobWatcher watcher = new JobWatcher( title );
         super.clickButton( "OK" );
-
-        if ( watcher != null )
-        {
-            watcher.waitUntilDone();
-        }
+        watcher.waitUntilDone();
     }
 
 

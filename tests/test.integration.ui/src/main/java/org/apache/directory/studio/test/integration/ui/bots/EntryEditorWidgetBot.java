@@ -23,7 +23,9 @@ package org.apache.directory.studio.test.integration.ui.bots;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.test.integration.ui.ContextMenuHelper;
+import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
@@ -80,7 +82,10 @@ class EntryEditorWidgetBot
         SWTBotPreferences.KEYBOARD_LAYOUT = "org.eclipse.swtbot.swt.finder.keyboard.EN_US";
         SWTBotText text = bot.text( 1 );
         text.setText( value );
+
+        JobWatcher jobWatcher = new JobWatcher( BrowserCoreMessages.jobs__execute_ldif_name );
         bot.tree().pressShortcut( Keystrokes.LF );
+        jobWatcher.waitUntilDone();
     }
 
 
