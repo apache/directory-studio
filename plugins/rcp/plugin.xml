@@ -309,6 +309,66 @@
             isEqualityPattern="true"
             pattern="org.eclipse.ui.ide/org.eclipse.ui.wizards.new.file">
       </activityPatternBinding>
+      <activityPatternBinding
+            activityId="org.apache.directory.studio.rcp.hide"
+            isEqualityPattern="true"
+            pattern="org.eclipse.ui.ide/org.eclipse.ui.preferencePages.Globalization">
+      </activityPatternBinding>
+      <activityPatternBinding
+            activityId="org.apache.directory.studio.rcp.hide"
+            isEqualityPattern="true"
+            pattern="org.eclipse.ui.ide/org.eclipse.ui.preferencePages.Workspace">
+      </activityPatternBinding>
+      <activityPatternBinding
+            activityId="org.apache.directory.studio.rcp.hide"
+            isEqualityPattern="true"
+            pattern="org.eclipse.ui.ide/org.eclipse.ui.preferencePages.Perspectives">
+      </activityPatternBinding>
+      <activityPatternBinding
+            activityId="org.apache.directory.studio.rcp.hide"
+            isEqualityPattern="true"
+            pattern="org.eclipse.ui.ide/org.eclipse.ui.preferencePages.Editors">
+      </activityPatternBinding>
+      <activityPatternBinding
+            activityId="org.apache.directory.studio.rcp.hide"
+            isEqualityPattern="true"
+            pattern="org.eclipse.ui.ide/org.eclipse.ui.preferencePages.Views">
+      </activityPatternBinding>
+      <activityPatternBinding
+            activityId="org.apache.directory.studio.rcp.hide"
+            isEqualityPattern="true"
+            pattern="org.eclipse.ui.ide/org.eclipse.ui.preferencePages.Keys">
+      </activityPatternBinding>
+      <activityPatternBinding
+            activityId="org.apache.directory.studio.rcp.hide"
+            isEqualityPattern="true"
+            pattern="org.eclipse.ui.ide/org.eclipse.ui.preferencePages.ContentTypes">
+      </activityPatternBinding>
+      <activityPatternBinding
+            activityId="org.apache.directory.studio.rcp.hide"
+            isEqualityPattern="true"
+            pattern="org.eclipse.ui.browser/org.eclipse.ui.browser.preferencePage">
+      </activityPatternBinding>
+      <activityPatternBinding
+            activityId="org.apache.directory.studio.rcp.hide"
+            isEqualityPattern="true"
+            pattern="org.eclipse.search/org.eclipse.search.preferences.SearchPreferencePage">
+      </activityPatternBinding>
+      <activityPatternBinding
+            activityId="org.apache.directory.studio.rcp.hide"
+            isEqualityPattern="true"
+            pattern="org.eclipse.compare/org.eclipse.compare.internal.ComparePreferencePage">
+      </activityPatternBinding>
+      <activityPatternBinding
+            activityId="org.apache.directory.studio.rcp.hide"
+            isEqualityPattern="true"
+            pattern="org.eclipse.jsch.ui/org.eclipse.jsch.ui.SSHPreferences">
+      </activityPatternBinding>
+      <activityPatternBinding
+            activityId="org.apache.directory.studio.rcp.hide"
+            isEqualityPattern="true"
+            pattern="org.eclipse.equinox.security.ui/org.eclipse.equinox.security.ui.category">
+      </activityPatternBinding>
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
