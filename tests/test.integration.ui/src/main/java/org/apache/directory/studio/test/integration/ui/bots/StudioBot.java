@@ -20,12 +20,14 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
+import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
@@ -143,7 +145,14 @@ public class StudioBot
 
     public PreferencesBot openPreferences()
     {
-        new SWTBot().menu( "Window" ).menu( "Preferences" ).click();
+        if ( SWTUtils.isMac() )
+        {
+            new SWTBot().activeShell().pressShortcut( SWT.COMMAND, ',' );
+        }
+        else
+        {
+            new SWTBot().menu( "Window" ).menu( "Preferences" ).click();
+        }
         return new PreferencesBot();
     }
 
