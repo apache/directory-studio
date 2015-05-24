@@ -93,6 +93,19 @@ The build produces binaries for all platforms. Archived versions can be found in
 
 Work in progress...
 
+### Preparation
+
+Check legal files
+
+    mvn apache-rat:check
+
+Run UI tests (if possilbe on all platforms)
+
+    mvn clean install -Denable-ui-tests
+
+
+### 
+
 Generate help plugins
 
     cd helps
