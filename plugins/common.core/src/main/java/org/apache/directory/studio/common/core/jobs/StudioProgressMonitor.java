@@ -24,8 +24,6 @@ package org.apache.directory.studio.common.core.jobs;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -34,7 +32,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.ProgressMonitorWrapper;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 
 
 /**
@@ -45,75 +42,6 @@ import org.eclipse.core.runtime.jobs.Job;
  */
 public class StudioProgressMonitor extends ProgressMonitorWrapper
 {
-    /** The job reports progress and checks for cancellation. */
-    protected static Job reportProgressAndCheckCancellationJob = new Job(
-        Messages.getString( "StudioProgressMonitor.CheckCancellation" ) ) //$NON-NLS-1$
-    {
-        protected IStatus run( IProgressMonitor monitor )
-        {
-            while ( true )
-            {
-                synchronized ( monitors )
-                {
-                    for ( Iterator<StudioProgressMonitor> it = monitors.iterator(); it.hasNext(); )
-                    {
-                        StudioProgressMonitor next = it.next();
-                        StudioProgressMonitor spm = next;
-
-                        do
-                        {
-                            // check report progress message
-                            if ( !spm.isCanceled() && !spm.done && spm.reportProgressMessage != null )
-                            {
-                                spm.subTask( spm.reportProgressMessage );
-                                spm.reportProgressMessage = null;
-                            }
-
-                            // check if canceled
-                            if ( spm.isCanceled() )
-                            {
-                                spm.fireCancelRequested();
-                            }
-                            if ( spm.isCanceled() || spm.done )
-                            {
-                                it.remove();
-                                break;
-                            }
-
-                            if ( spm.getWrappedProgressMonitor() != null
-                                && spm.getWrappedProgressMonitor() instanceof StudioProgressMonitor )
-                            {
-                                spm = ( StudioProgressMonitor ) spm.getWrappedProgressMonitor();
-                            }
-                            else
-                            {
-                                spm = null;
-                            }
-                        }
-                        while ( spm != null );
-                    }
-                }
-
-                try
-                {
-                    Thread.sleep( 1000 );
-                }
-                catch ( InterruptedException e )
-                {
-                }
-            }
-        }
-    };
-    static
-    {
-        reportProgressAndCheckCancellationJob.setSystem( true );
-        reportProgressAndCheckCancellationJob.schedule();
-    }
-
-    /** The list of monitors */
-    protected static List<StudioProgressMonitor> monitors = Collections
-        .synchronizedList( new ArrayList<StudioProgressMonitor>() );
-
     /** The plugin ID */
     protected String pluginId;
 
@@ -140,7 +68,7 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
         super( monitor );
         this.pluginId = CommonCoreConstants.PLUGIN_ID;
         done = false;
-        monitors.add( this );
+        CommonCorePlugin.getDefault().getStudioProgressMonitorWatcherJob().addMonitor(this);
     }
 
 
@@ -154,7 +82,7 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
         super( monitor );
         this.pluginId = pluginId;
         done = false;
-        monitors.add( this );
+        CommonCorePlugin.getDefault().getStudioProgressMonitorWatcherJob().addMonitor(this);
     }
 
 
@@ -216,7 +144,7 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
     }
 
 
-    private void fireCancelRequested()
+    void fireCancelRequested()
     {
         CancelEvent event = new CancelEvent( this );
         if ( cancelListenerList != null )
