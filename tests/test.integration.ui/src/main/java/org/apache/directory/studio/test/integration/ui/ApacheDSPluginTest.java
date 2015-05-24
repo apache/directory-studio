@@ -236,22 +236,15 @@ public class ApacheDSPluginTest
     private void setAvailablePorts( String serverName )
     {
         ApacheDSConfigurationEditorBot editorBot = serversViewBot.openConfigurationEditor( serverName );
-        editorBot.setLdapPort( getAvailablePort() );
-        editorBot.setLdapsPort( getAvailablePort() );
+
+        int ldapPort = AvailablePortFinder.getNextAvailable( 1024 );
+        editorBot.setLdapPort( ldapPort );
+
+        int ldapsPort = AvailablePortFinder.getNextAvailable( ldapPort + 1 );
+        editorBot.setLdapsPort( ldapsPort );
+
         editorBot.save();
         editorBot.close();
-    }
-
-
-    private int getAvailablePort()
-    {
-        int port;
-        do
-        {
-            port = AvailablePortFinder.getNextAvailable();
-        }
-        while ( port < AvailablePortFinder.MIN_PORT_NUMBER || port > AvailablePortFinder.MAX_PORT_NUMBER );
-        return port;
     }
 
 
