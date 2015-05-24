@@ -234,6 +234,61 @@
             isEqualityPattern="true"
             pattern="org.eclipse.equinox.p2.ui.importexport/org.eclipse.equinox.p2.replication.export">
       </activityPatternBinding>
+      <activityPatternBinding
+            activityId="org.apache.directory.studio.rcp.hide"
+            isEqualityPattern="true"
+            pattern="org.eclipse.ui.ide/org.eclipse.ui.views.AllMarkersView">
+      </activityPatternBinding>
+      <activityPatternBinding
+            activityId="org.apache.directory.studio.rcp.hide"
+            isEqualityPattern="true"
+            pattern="org.eclipse.ui.ide/org.eclipse.ui.views.ProblemView">
+      </activityPatternBinding>
+      <activityPatternBinding
+            activityId="org.apache.directory.studio.rcp.hide"
+            isEqualityPattern="true"
+            pattern="org.eclipse.ui.ide/org.eclipse.ui.views.TaskList">
+      </activityPatternBinding>
+      <activityPatternBinding
+            activityId="org.apache.directory.studio.rcp.hide"
+            isEqualityPattern="true"
+            pattern="org.eclipse.ui.ide/org.eclipse.ui.views.BookmarkView">
+      </activityPatternBinding>
+      <activityPatternBinding
+            activityId="org.apache.directory.studio.rcp.hide"
+            isEqualityPattern="true"
+            pattern="org.eclipse.ui.ide/org.eclipse.ui.views.ResourceNavigator">
+      </activityPatternBinding>
+      <activityPatternBinding
+            activityId="org.apache.directory.studio.rcp.hide"
+            isEqualityPattern="true"
+            pattern="org.eclipse.ui.ide/org.eclipse.ui.views.ProgressView">
+      </activityPatternBinding>
+      <activityPatternBinding
+            activityId="org.apache.directory.studio.rcp.hide"
+            isEqualityPattern="true"
+            pattern="org.eclipse.ui.browser/org.eclipse.ui.browser.view">
+      </activityPatternBinding>
+      <activityPatternBinding
+            activityId="org.apache.directory.studio.rcp.hide"
+            isEqualityPattern="true"
+            pattern="org.eclipse.search/org.eclipse.search.ui.views.SearchView">
+      </activityPatternBinding>
+      <activityPatternBinding
+            activityId="org.apache.directory.studio.rcp.hide"
+            isEqualityPattern="true"
+            pattern="org.eclipse.search/org.eclipse.search.SearchResultView">
+      </activityPatternBinding>
+      <activityPatternBinding
+            activityId="org.apache.directory.studio.rcp.hide"
+            isEqualityPattern="true"
+            pattern="org.eclipse.ui.views/org.eclipse.ui.views.PropertySheet">
+      </activityPatternBinding>
+      <activityPatternBinding
+            activityId="org.apache.directory.studio.rcp.hide"
+            isEqualityPattern="true"
+            pattern="org.eclipse.ui.navigator.resources/org.eclipse.ui.navigator.ProjectExplorer">
+      </activityPatternBinding>
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
