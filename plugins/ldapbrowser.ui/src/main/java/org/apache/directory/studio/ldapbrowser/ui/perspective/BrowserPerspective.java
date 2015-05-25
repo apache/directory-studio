@@ -150,6 +150,7 @@ public class BrowserPerspective implements IPerspectiveFactory
             layout.getViewLayout( IPageLayout.ID_OUTLINE ).setCloseable( false );
             layout.getViewLayout( PROGRESS_VIEW_ID ).setCloseable( false );
             layout.getViewLayout( ModificationLogsView.getId() ).setCloseable( false );
+            layout.getViewLayout( SearchLogsView.getId() ).setCloseable( false );
         }
     }
 

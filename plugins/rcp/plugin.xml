@@ -65,16 +65,6 @@
          </property>
       </product>
    </extension>
-   <extension
-         point="org.eclipse.ui.views">
-	  <view
-            name="Progress"
-            icon="resources/icons/progress.gif"
-            category="org.eclipse.ui"
-            class="org.eclipse.ui.ExtensionFactory:progressView"
-            id="org.eclipse.ui.views.ProgressView">
-         </view>
-   </extension>
    
       <extension
          point="org.eclipse.ui.intro">
@@ -258,11 +248,6 @@
             activityId="org.apache.directory.studio.rcp.hide"
             isEqualityPattern="true"
             pattern="org.eclipse.ui.ide/org.eclipse.ui.views.ResourceNavigator">
-      </activityPatternBinding>
-      <activityPatternBinding
-            activityId="org.apache.directory.studio.rcp.hide"
-            isEqualityPattern="true"
-            pattern="org.eclipse.ui.ide/org.eclipse.ui.views.ProgressView">
       </activityPatternBinding>
       <activityPatternBinding
             activityId="org.apache.directory.studio.rcp.hide"
