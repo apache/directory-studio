@@ -411,6 +411,11 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
      */
     private void saveSchema( IBrowserConnection browserConnection )
     {
+        if ( browserConnection == null )
+        {
+            return;
+        }
+
         try
         {
             String filename = getSchemaCacheFileName( browserConnection.getConnection().getId() );

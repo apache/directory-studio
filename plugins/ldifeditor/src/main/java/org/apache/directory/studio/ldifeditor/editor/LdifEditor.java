@@ -623,8 +623,11 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
         if ( browserConnectionWidget != null )
         {
             IBrowserConnection browserConnection = browserConnectionWidget.getBrowserConnection();
-            setConnection( browserConnection );
-            browserConnectionWidget.setBrowserConnection( browserConnection );
+            if ( browserConnection != null && browserConnection.getConnection().equals( connection ) )
+            {
+                setConnection( browserConnection );
+                browserConnectionWidget.setBrowserConnection( browserConnection );
+            }
         }
     }
 

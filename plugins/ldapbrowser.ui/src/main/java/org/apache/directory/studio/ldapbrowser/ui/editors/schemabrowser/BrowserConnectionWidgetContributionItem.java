@@ -198,6 +198,11 @@ public class BrowserConnectionWidgetContributionItem extends ContributionItem im
      */
     public final void connectionUpdated( Connection connection )
     {
+        if ( connection == null )
+        {
+            return;
+        }
+
         IBrowserConnection selectedConnection = browserConnectionWidget.getBrowserConnection();
         if ( connection.equals( selectedConnection.getConnection() ) )
         {
@@ -220,6 +225,11 @@ public class BrowserConnectionWidgetContributionItem extends ContributionItem im
      */
     public void connectionRemoved( Connection connection )
     {
+        if ( connection == null )
+        {
+            return;
+        }
+
         IBrowserConnection selectedConnection = browserConnectionWidget.getBrowserConnection();
         if ( connection.equals( selectedConnection.getConnection() ) )
         {

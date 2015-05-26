@@ -488,6 +488,16 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
         IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
             .getBrowserConnection( connection );
 
+        if ( browserConnection == null )
+        {
+            //
+            // If browser connection is null then it has been temporarily created
+            // by a dialog or other transient entity. Only display in the view those
+            // browser connections stored in the connection manager
+            //
+            return;
+        }
+
         // expand viewer
         viewer.refresh( browserConnection );
         viewer.expandToLevel( 2 );
@@ -511,6 +521,16 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
     {
         IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
             .getBrowserConnection( connection );
+
+        if (browserConnection == null)
+        {
+            //
+            // If browser connection is null then it has been temporarily created
+            // by a dialog or other transient entity. Only display in the view those
+            // browser connections stored in the connection manager
+            //
+            return;
+        }
 
         viewer.collapseAll();
         connectionToExpandedElementsMap.remove( browserConnection );
