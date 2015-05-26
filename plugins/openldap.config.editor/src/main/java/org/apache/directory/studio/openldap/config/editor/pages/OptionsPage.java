@@ -53,11 +53,6 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
     /** The olcPluginLogFile parameter */
     private Text pluginLogFileText; 
     
-    private Text maxPduSizeAnonymousSessionsText;
-    private Text maxPduSizeAuthenticatedSessionsText;
-    private Text tcpBufferSizeText;
-    private Text maxPendingRequestsAnonymousSessionText;
-    private Text maxPendingRequestsAuthenticatedSessionText;
     private Text numberSecondsClosingIdleConnectionText;
     private Text numberSecondsClosingConnectionWithOutstandingWriteText;
     private Text authenticationAuxpropPluginsText;
@@ -123,8 +118,6 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         createConnectionLimitsSection( toolkit, leftComposite );
         createIndicesSection( toolkit, leftComposite );
         createSaslSection( toolkit, rightComposite );
-        createSocketAndBufferLimitsSection( toolkit, rightComposite );
-        createThreadsSection( toolkit, rightComposite );
         createTlsSection( toolkit, rightComposite );
 
         refreshUI();
@@ -151,34 +144,6 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
 
 
     /**
-     * Creates the Socket & Buffer Limits section.
-     *
-     * @param toolkit the toolkit
-     * @param parent the parent composite
-     */
-    private void createSocketAndBufferLimitsSection( FormToolkit toolkit, Composite parent )
-    {
-        Section section = createSection( toolkit, parent, "Socket & Buffer Limits" );
-        Composite composite = createSectionComposite( toolkit, section, 2, false );
-
-        // Max PDU Size Anonymous Sessions Text
-        toolkit.createLabel( composite, "Maximum incoming LDAP PDU size for anonymous sessions:" );
-        maxPduSizeAnonymousSessionsText = toolkit.createText( composite, "" );
-        maxPduSizeAnonymousSessionsText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-
-        // Max PDU Size Authenticated Sessions Text
-        toolkit.createLabel( composite, "Maximum incoming LDAP PDU size for authenticated sessions:" );
-        maxPduSizeAuthenticatedSessionsText = toolkit.createText( composite, "" );
-        maxPduSizeAuthenticatedSessionsText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-
-        // TCP Buffer Size Text
-        toolkit.createLabel( composite, "TCP Buffer Size:" );
-        tcpBufferSizeText = toolkit.createText( composite, "" );
-        tcpBufferSizeText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-    }
-
-
-    /**
      * Creates the Connection Limits section.
      *
      * @param toolkit the toolkit
@@ -188,16 +153,6 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
     {
         Section section = createSection( toolkit, parent, "Connection Limits" );
         Composite composite = createSectionComposite( toolkit, section, 2, false );
-
-        // Max Pending Requests Anonymous Session Text
-        toolkit.createLabel( composite, "Maximum number of pending requests for an anonymous session:" );
-        maxPendingRequestsAnonymousSessionText = toolkit.createText( composite, "" );
-        maxPendingRequestsAnonymousSessionText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-
-        // Max Pending Requests Authenticated Session Text
-        toolkit.createLabel( composite, "Maximum number of pending requests for an authenticated session:" );
-        maxPendingRequestsAuthenticatedSessionText = toolkit.createText( composite, "" );
-        maxPendingRequestsAuthenticatedSessionText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Number Seconds Closing Idle Connection Text
         toolkit.createLabel( composite, "Number of seconds before closing an idle connection:" );
@@ -209,19 +164,6 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         numberSecondsClosingConnectionWithOutstandingWriteText = toolkit.createText( composite, "" );
         numberSecondsClosingConnectionWithOutstandingWriteText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true,
             false ) );
-    }
-
-
-    /**
-     * Creates the Threads section.
-     *
-     * @param toolkit the toolkit
-     * @param parent the parent composite
-     */
-    private void createThreadsSection( FormToolkit toolkit, Composite parent )
-    {
-        Section section = createSection( toolkit, parent, "Threads" );
-        Composite composite = createSectionComposite( toolkit, section, 2, false );
     }
 
 
@@ -474,66 +416,6 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
                 else
                 {
                     pluginLogFileText.setText( "" );
-                }
-
-                // Max PDU Size Anonymous Sessions Text
-                String maxPduSizeAnonymousSessions = global.getOlcSockbufMaxIncoming();
-
-                if ( maxPduSizeAnonymousSessions != null )
-                {
-                    maxPduSizeAnonymousSessionsText.setText( maxPduSizeAnonymousSessions );
-                }
-                else
-                {
-                    maxPduSizeAnonymousSessionsText.setText( "" );
-                }
-
-                // Max PDU Size Authenticated Sessions Text
-                String maxPduSizeAuthenticatedSessions = global.getOlcSockbufMaxIncomingAuth();
-
-                if ( maxPduSizeAuthenticatedSessions != null )
-                {
-                    maxPduSizeAuthenticatedSessionsText.setText( maxPduSizeAuthenticatedSessions );
-                }
-                else
-                {
-                    maxPduSizeAuthenticatedSessionsText.setText( "" );
-                }
-
-                // TCP Buffer Size Text
-                List<String> tcpBufferSize = global.getOlcTCPBuffer();
-
-                if ( maxPduSizeAuthenticatedSessions != null )
-                {
-                    tcpBufferSizeText.setText( tcpBufferSize + "" );
-                }
-                else
-                {
-                    tcpBufferSizeText.setText( "" );
-                }
-
-                // Max Pending Requests Anonymous Session Text
-                Integer maxPendingRequestsAnonymousSession = global.getOlcConnMaxPending();
-
-                if ( maxPendingRequestsAnonymousSession != null )
-                {
-                    maxPendingRequestsAnonymousSessionText.setText( maxPendingRequestsAnonymousSession + "" );
-                }
-                else
-                {
-                    maxPendingRequestsAnonymousSessionText.setText( "" );
-                }
-
-                // Max Pending Requests Authenticated Session Text
-                Integer maxPendingRequestsAuthenticatedSession = global.getOlcConnMaxPendingAuth();
-
-                if ( maxPendingRequestsAuthenticatedSession != null )
-                {
-                    maxPendingRequestsAuthenticatedSessionText.setText( maxPendingRequestsAuthenticatedSession + "" );
-                }
-                else
-                {
-                    maxPendingRequestsAuthenticatedSessionText.setText( "" );
                 }
 
                 // Number Seconds Closing Idle Connection Text
