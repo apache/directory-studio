@@ -103,7 +103,14 @@ import org.apache.directory.studio.openldap.config.editor.wrappers.TcpBufferWrap
  *   | .-------------------------------------. .-------------------------------------. |
  *   | | LDAP Limits                         | | Index Limits                        | |
  *   | +-------------------------------------+ +-------------------------------------+ |
- *   | 
+ *   | | Write Timeout            : [      ] | | Integer Indices Length   : [      ] | |
+ *   | | Idle Timeout             : [      ] | | Subany Indices Length    : [      ] | |
+ *   | | Size Limit : [                    ] | | Subany Indices Step      : [      ] | |
+ *   | | Time Limit : [                    ] | | Sub indices Max length   : [      ] | |
+ *   | |                                     | | Sub indices Min length   : [      ] | |
+ *   | +-------------------------------------+ +-------------------------------------+ |
+ *   |                                                                                 |
+ *   +---------------------------------------------------------------------------------+
  * </pre>
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -144,6 +151,19 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
     
     /** The olcToolThreads Text */
     private Text toolThreadsText;
+    
+    // UI Controls for the LDAP Limits
+    /** The olcSizeLimit */
+    private Text sizeLimitText;
+    
+    /** The olcTimeLimit */
+    private Text timeLimitText;
+    
+    /** The olcWriteTimeout */
+    private Text writeTimeoutText;
+    
+    /** The olcIdleTimeout */
+    private Text idleTimeoutText;
     
     // UI Controls for the Index Limits
     /** The olcIndexIntLenText Text */
@@ -602,7 +622,73 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
             }
         }
     };
+    
+    
+    /**
+     * The listener for the writeTimeout Text
+     */
+    private ModifyListener writeTimeoutTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            Display display = writeTimeoutText.getDisplay();
 
+            try
+            {
+                int writeTimeoutValue = Integer.parseInt( writeTimeoutText.getText() );
+
+                // The value must be >= 0
+                if ( writeTimeoutValue < 0 )
+                {
+                    System.out.println( "Wrong value : it must be a positive number" );
+                    writeTimeoutText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
+                    return;
+                }
+                
+                writeTimeoutText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
+            }
+            catch ( NumberFormatException nfe )
+            {
+                // Not even a number
+                System.out.println( "Wrong value : it must be an integer" );
+                writeTimeoutText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
+            }
+        }
+    };
+    
+    
+    /**
+     * The listener for the idleTimeout Text
+     */
+    private ModifyListener idleTimeoutTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            Display display = idleTimeoutText.getDisplay();
+
+            try
+            {
+                int idleTimeoutValue = Integer.parseInt( idleTimeoutText.getText() );
+
+                // The value must be >= 0
+                if ( idleTimeoutValue < 0 )
+                {
+                    System.out.println( "Wrong value : it must be a positive number" );
+                    idleTimeoutText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
+                    return;
+                }
+                
+                idleTimeoutText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
+            }
+            catch ( NumberFormatException nfe )
+            {
+                // Not even a number
+                System.out.println( "Wrong value : it must be an integer" );
+                idleTimeoutText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
+            }
+        }
+    };
+    
     
     /**
      * Creates the OpenLDAP tuning config Tab. It contains 2 rows, with
@@ -838,13 +924,106 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
     }
 
     
+    /**
+     * The Index Limits section. We support the configuration
+     * of those parameters :
+     * <ul>
+     * </ul>
+     *   <li>olcIdleTimeout</li>
+     *   <li>olcSizeLimit</li>
+     *   <li>olcTimeLimit</li>
+     *   <li>olcWriteTimeout</li>
+     * <pre>
+     * .-------------------------------------.
+     * | LDAP Limits                         |
+     * +-------------------------------------+
+     * | Write Timeout            : [      ] |
+     * | Idle Timeout             : [      ] |
+     * | Size Limit : [                    ] |
+     * | Time Limit : [                    ] |
+     * |                                     |
+     * +-------------------------------------+
+     * </pre>
+     * 
+     * @param toolkit the toolkit
+     * @param parent the parent composite
+     */
     private void createLdapLimitsSection( FormToolkit toolkit, Composite parent )
     {
         // Creation of the section
         Section section = createSection( toolkit, parent, Messages.getString( "OpenLDAPTuningPage.LdapLimitsSection" ) );
+
+        // The content
+        Composite ldapLimitSectionComposite = toolkit.createComposite( section );
+        toolkit.paintBordersFor( ldapLimitSectionComposite );
+        GridLayout gridLayout = new GridLayout( 2, false );
+        gridLayout.marginHeight = gridLayout.marginWidth = 0;
+        ldapLimitSectionComposite.setLayout( gridLayout );
+        section.setClient( ldapLimitSectionComposite );
+        
+        // The olcWriteTimeout parameter.
+        toolkit.createLabel( ldapLimitSectionComposite, 
+            Messages.getString( "OpenLDAPTuningPage.WriteTimeout" ) ); //$NON-NLS-1$
+        writeTimeoutText = toolkit.createText( ldapLimitSectionComposite, "" );
+        writeTimeoutText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        // Attach a listener to check the value
+        writeTimeoutText.addModifyListener( writeTimeoutTextListener );
+        
+        // The olcIdleTimeout parameter.
+        toolkit.createLabel( ldapLimitSectionComposite, 
+            Messages.getString( "OpenLDAPTuningPage.IdleTimeout" ) ); //$NON-NLS-1$
+        idleTimeoutText = toolkit.createText( ldapLimitSectionComposite, "" );
+        idleTimeoutText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        // Attach a listener to check the value
+        idleTimeoutText.addModifyListener( idleTimeoutTextListener );
+        
+        // The olcSizeLimit parameter.
+        toolkit.createLabel( ldapLimitSectionComposite, 
+            Messages.getString( "OpenLDAPTuningPage.SizeLimit" ) ); //$NON-NLS-1$
+        sizeLimitText = toolkit.createText( ldapLimitSectionComposite, "" );
+        sizeLimitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        sizeLimitText.setEditable( false );
+        // Attach a listener to check the value
+        //sizeLimitText.addModifyListener( sizeLimitTextListener );
+        
+        // The olcTimeLimit parameter.
+        toolkit.createLabel( ldapLimitSectionComposite, 
+            Messages.getString( "OpenLDAPTuningPage.TimeLimit" ) ); //$NON-NLS-1$
+        timeLimitText = toolkit.createText( ldapLimitSectionComposite, "" );
+        timeLimitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        timeLimitText.setEditable( false );
+        // Attach a listener to check the value
+        //timeLimitText.addModifyListener( timeLimitTextListener );
+
     }
 
     
+    /**
+     * The Index Limits section. We support the configuration
+     * of those parameters :
+     * <ul>
+     *   <li>olcIndexIntLen</li>
+     *   <li>olcIndexSubstrAnyLen</li>
+     *   <li>olcIndexSubstrAnyStep</li>
+     *   <li>olcIndexSubstrIfMaxLen</li>
+     *   <li>olcIndexSubstrIfMinLen</li>
+     * </ul>
+     * 
+     * <pre>
+     * .-------------------------------------.
+     * | Concurrency                         |
+     * +-------------------------------------+
+     * | Integer Indices Length   : [      ] |
+     * | Subany Indices Length    : [      ] |
+     * | Subany Indices Step      : [      ] |
+     * | Sub indices Max length   : [      ] |
+     * | Sub indices Min length   : [      ] |
+     * +-------------------------------------+
+     * </pre>
+     * 
+     * @param toolkit the toolkit
+     * @param parent the parent composite
+     */
     private void createIndexLimitsSection( FormToolkit toolkit, Composite parent )
     {
         // Creation of the section
@@ -939,9 +1118,7 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
         removeListeners();
 
         // TCPBuffer Text
-        List<String> list = new ArrayList<String>();
-        list.add( "Listener=http://www.apache.org write=65535" );
-        List<TcpBufferWrapper> tcpBufferList = createTcpBufferList( list ); //;getConfiguration().getGlobal().getOlcTCPBuffer() );
+        List<TcpBufferWrapper> tcpBufferList = createTcpBufferList( getConfiguration().getGlobal().getOlcTCPBuffer() );
         tcpBufferTableWidget.setElements( tcpBufferList );
 
         // Socket Buffer Max Incoming Text
@@ -961,93 +1138,129 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
         }
 
         // Concurrency Text
-        Integer concurrencyString = getConfiguration().getGlobal().getOlcConcurrency();
+        Integer concurrency = getConfiguration().getGlobal().getOlcConcurrency();
         
-        if ( concurrencyString != null )
+        if ( concurrency != null )
         {
-            concurrencyText.setText( concurrencyString.toString() );
+            concurrencyText.setText( concurrency.toString() );
         }
 
         // ConnMaxPending Text
-        Integer connMaxPendingString = getConfiguration().getGlobal().getOlcConnMaxPending();
+        Integer connMaxPending = getConfiguration().getGlobal().getOlcConnMaxPending();
         
-        if ( connMaxPendingString != null )
+        if ( connMaxPending != null )
         {
-            connMaxPendingText.setText( connMaxPendingString.toString() );
+            connMaxPendingText.setText( connMaxPending.toString() );
         }
 
         // ConnMaxPendingAuth Text
-        Integer connMaxPendingAuthString = getConfiguration().getGlobal().getOlcConnMaxPendingAuth();
+        Integer connMaxPendingAuth = getConfiguration().getGlobal().getOlcConnMaxPendingAuth();
         
-        if ( connMaxPendingAuthString != null )
+        if ( connMaxPendingAuth != null )
         {
-            connMaxPendingAuthText.setText( connMaxPendingAuthString.toString() );
+            connMaxPendingAuthText.setText( connMaxPendingAuth.toString() );
         }
 
         // ListenerThreads Text
-        Integer listenerThreadsString = getConfiguration().getGlobal().getOlcListenerThreads();
+        Integer listenerThreads = getConfiguration().getGlobal().getOlcListenerThreads();
         
-        if ( listenerThreadsString != null )
+        if ( listenerThreads != null )
         {
-            listenerThreadsText.setText( listenerThreadsString.toString() );
+            listenerThreadsText.setText( listenerThreads.toString() );
         }
 
         // Threads Text
-        Integer threadsString = getConfiguration().getGlobal().getOlcThreads();
+        Integer threads = getConfiguration().getGlobal().getOlcThreads();
         
-        if ( threadsString != null )
+        if ( threads != null )
         {
-            threadsText.setText( threadsString.toString() );
+            threadsText.setText( threads.toString() );
         }
 
         // ToolThreads Text
-        Integer toolThreadsString = getConfiguration().getGlobal().getOlcToolThreads();
+        Integer toolThreads = getConfiguration().getGlobal().getOlcToolThreads();
         
-        if ( toolThreadsString != null )
+        if ( toolThreads != null )
         {
-            toolThreadsText.setText( toolThreadsString.toString() );
+            toolThreadsText.setText( toolThreads.toString() );
         }
 
         // IndexIntLen Text
-        Integer indexIntLenString = getConfiguration().getGlobal().getOlcIndexIntLen();
+        Integer indexIntLen = getConfiguration().getGlobal().getOlcIndexIntLen();
         
-        if ( indexIntLenString != null )
+        if ( indexIntLen != null )
         {
-            indexIntLenText.setText( indexIntLenString.toString() );
+            indexIntLenText.setText( indexIntLen.toString() );
         }
 
         // IndexSubstrAnyLen Text
-        Integer indexSubstrAnyLenString = getConfiguration().getGlobal().getOlcIndexSubstrAnyLen();
+        Integer indexSubstrAnyLen = getConfiguration().getGlobal().getOlcIndexSubstrAnyLen();
         
-        if ( indexSubstrAnyLenString != null )
+        if ( indexSubstrAnyLen != null )
         {
-            indexSubstrAnyLenText.setText( indexSubstrAnyLenString.toString() );
+            indexSubstrAnyLenText.setText( indexSubstrAnyLen.toString() );
         }
 
         // IndexSubstrAnyStep Text
-        Integer indexSubstrAnyStepString = getConfiguration().getGlobal().getOlcIndexSubstrAnyStep();
+        Integer indexSubstrAnyStep = getConfiguration().getGlobal().getOlcIndexSubstrAnyStep();
         
-        if ( indexSubstrAnyStepString != null )
+        if ( indexSubstrAnyStep != null )
         {
-            indexSubstrAnyStepText.setText( indexSubstrAnyStepString.toString() );
+            indexSubstrAnyStepText.setText( indexSubstrAnyStep.toString() );
         }
 
         // IndexSubstrIfMaxLen Text
-        Integer indexSubstrIfMaxLenString = getConfiguration().getGlobal().getOlcIndexSubstrIfMaxLen();
+        Integer indexSubstrIfMaxLen = getConfiguration().getGlobal().getOlcIndexSubstrIfMaxLen();
         
-        if ( indexSubstrIfMaxLenString != null )
+        if ( indexSubstrIfMaxLen != null )
         {
-            indexSubstrIfMaxLenText.setText( indexSubstrIfMaxLenString.toString() );
+            indexSubstrIfMaxLenText.setText( indexSubstrIfMaxLen.toString() );
         }
 
         // IndexSubstrIfMinLen Text
-        Integer indexSubstrIfMinLenString = getConfiguration().getGlobal().getOlcIndexSubstrIfMinLen();
+        Integer indexSubstrIfMinLen = getConfiguration().getGlobal().getOlcIndexSubstrIfMinLen();
         
-        if ( indexSubstrIfMinLenString != null )
+        if ( indexSubstrIfMinLen != null )
         {
-            indexSubstrIfMinLenText.setText( indexSubstrIfMinLenString.toString() );
+            indexSubstrIfMinLenText.setText( indexSubstrIfMinLen.toString() );
         }
 
+        // IndexSubstrIfMinLen Text
+        Integer writeTimeout = getConfiguration().getGlobal().getOlcWriteTimeout();
+        
+        if ( writeTimeout != null )
+        {
+            writeTimeoutText.setText( writeTimeout.toString() );
+        }
+
+        // IdleTiemout Text
+        Integer idleTimeout = getConfiguration().getGlobal().getOlcIdleTimeout();
+        
+        if ( idleTimeout != null )
+        {
+            idleTimeoutText.setText( idleTimeout.toString() );
+        }
+
+        // SizeLimit Text
+        String sizeLimitString = getConfiguration().getGlobal().getOlcSizeLimit();
+        
+        if ( sizeLimitString != null )
+        {
+            sizeLimitText.setText( sizeLimitString );
+        }
+
+        // TimeLimit Text Text
+        List<String> timeLimitList = getConfiguration().getGlobal().getOlcTimeLimit();
+        
+        if ( ( timeLimitList != null ) && ( timeLimitList.size() > 0 ) )
+        {
+            timeLimitText.setText( timeLimitList.get( 0 ) );
+        }
+        else
+        {
+            timeLimitText.setText( "" );
+        }
+        
         addListeners();
     }
 
@@ -1072,6 +1285,10 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
         indexSubstrAnyStepText.addModifyListener( dirtyModifyListener );
         indexSubstrIfMaxLenText.addModifyListener( dirtyModifyListener );
         indexSubstrIfMinLenText.addModifyListener( dirtyModifyListener );
+        writeTimeoutText.addModifyListener( dirtyModifyListener );
+        idleTimeoutText.addModifyListener( dirtyModifyListener );
+        sizeLimitText.addModifyListener( dirtyModifyListener );
+        timeLimitText.addModifyListener( dirtyModifyListener );
     }
 
 
@@ -1095,5 +1312,9 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
         indexSubstrAnyStepText.removeModifyListener( dirtyModifyListener );
         indexSubstrIfMaxLenText.removeModifyListener( dirtyModifyListener );
         indexSubstrIfMinLenText.removeModifyListener( dirtyModifyListener );
+        writeTimeoutText.removeModifyListener( dirtyModifyListener );
+        idleTimeoutText.removeModifyListener( dirtyModifyListener );
+        sizeLimitText.removeModifyListener( dirtyModifyListener );
+        timeLimitText.removeModifyListener( dirtyModifyListener );
     }
 }
