@@ -108,6 +108,23 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
     TableWidget<TcpBufferWrapper> tcpBufferTableWidget;
     
     // UI Controls for the Concurrency part
+    /** The olcConcurrency Text */
+    private Text concurrencyText;
+
+    /** The olcConnMaxPending Text */
+    private Text connMaxPendingText;
+    
+    /** The olcConnMaxPendingAuth Text */
+    private Text connMaxPendingAuthText;
+    
+    /** The olcListenerThreads Text */
+    private Text listenerThreadsText;
+    
+    /** The olcThreads Text */
+    private Text threadsText;
+    
+    /** The olcToolThreads Text */
+    private Text toolThreadsText;
 
     /**
      * Creates a new instance of TuningPage.
@@ -133,10 +150,10 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
 
             try
             {
-                int idValue = Integer.parseInt( sockbufMaxIncomingText.getText() );
+                int sockbufMaxIncomingValue = Integer.parseInt( sockbufMaxIncomingText.getText() );
 
                 // The value must be between 0 and 0x3FFFF
-                if ( ( idValue < 0 ) || ( idValue > 0x3FFFF ) )
+                if ( ( sockbufMaxIncomingValue < 0 ) || ( sockbufMaxIncomingValue > 0x3FFFF ) )
                 {
                     System.out.println( "Wrong value : it must be a value in [0..0x3FFFF]" );
                     sockbufMaxIncomingText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
@@ -166,10 +183,10 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
 
             try
             {
-                int idValue = Integer.parseInt( sockbufMaxIncomingAuthText.getText() );
+                int sockbufMaxIncomingAuthValue = Integer.parseInt( sockbufMaxIncomingAuthText.getText() );
 
                 // The value must be between 0 and 0x3FFFFF
-                if ( ( idValue < 0 ) || ( idValue > 0x3FFFFF ) )
+                if ( ( sockbufMaxIncomingAuthValue < 0 ) || ( sockbufMaxIncomingAuthValue > 0x3FFFFF ) )
                 {
                     System.out.println( "Wrong value : it must be a value in [0..0x3FFFFF]" );
                     sockbufMaxIncomingAuthText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
@@ -183,6 +200,204 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
                 // Not even a number
                 System.out.println( "Wrong value : it must be an integer" );
                 sockbufMaxIncomingAuthText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
+            }
+        }
+    };
+    
+    
+    /**
+     * The listener for the concurrencyText Text
+     */
+    private ModifyListener concurrencyTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            Display display = concurrencyText.getDisplay();
+
+            try
+            {
+                int concurrencyValue = Integer.parseInt( concurrencyText.getText() );
+
+                // The value must be >= 0
+                if ( concurrencyValue < 0 )
+                {
+                    System.out.println( "Wrong value : it must be a positive" );
+                    concurrencyText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
+                    return;
+                }
+                
+                concurrencyText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
+            }
+            catch ( NumberFormatException nfe )
+            {
+                // Not even a number
+                System.out.println( "Wrong value : it must be an integer" );
+                concurrencyText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
+            }
+        }
+    };
+    
+    
+    /**
+     * The listener for the connMaxPendingText Text
+     */
+    private ModifyListener connMaxPendingTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            Display display = connMaxPendingText.getDisplay();
+
+            try
+            {
+                int connMaxPendingValue = Integer.parseInt( connMaxPendingText.getText() );
+
+                // The value must be >= 0
+                if ( connMaxPendingValue < 0 )
+                {
+                    System.out.println( "Wrong value : it must be a positive number" );
+                    connMaxPendingText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
+                    return;
+                }
+                
+                connMaxPendingText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
+            }
+            catch ( NumberFormatException nfe )
+            {
+                // Not even a number
+                System.out.println( "Wrong value : it must be an integer" );
+                connMaxPendingText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
+            }
+        }
+    };
+    
+    
+    /**
+     * The listener for the connMaxPendingAuthText Text
+     */
+    private ModifyListener connMaxPendingAuthTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            Display display = connMaxPendingAuthText.getDisplay();
+
+            try
+            {
+                int connMaxPendingAuthValue = Integer.parseInt( connMaxPendingAuthText.getText() );
+
+                // The value must be >= 0
+                if ( connMaxPendingAuthValue < 0 )
+                {
+                    System.out.println( "Wrong value : it must be a positive number" );
+                    connMaxPendingAuthText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
+                    return;
+                }
+                
+                connMaxPendingAuthText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
+            }
+            catch ( NumberFormatException nfe )
+            {
+                // Not even a number
+                System.out.println( "Wrong value : it must be an integer" );
+                connMaxPendingAuthText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
+            }
+        }
+    };
+    
+    
+    /**
+     * The listener for the listenerThreadsText Text
+     */
+    private ModifyListener listenerThreadsTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            Display display = listenerThreadsText.getDisplay();
+
+            try
+            {
+                int listenerThreadsValue = Integer.parseInt( listenerThreadsText.getText() );
+
+                // The value must be >= 0
+                if ( listenerThreadsValue < 0 )
+                {
+                    System.out.println( "Wrong value : it must be a positive number" );
+                    listenerThreadsText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
+                    return;
+                }
+                
+                listenerThreadsText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
+            }
+            catch ( NumberFormatException nfe )
+            {
+                // Not even a number
+                System.out.println( "Wrong value : it must be an integer" );
+                listenerThreadsText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
+            }
+        }
+    };
+    
+    
+    /**
+     * The listener for the ThreadsText Text
+     */
+    private ModifyListener threadsTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            Display display = threadsText.getDisplay();
+
+            try
+            {
+                int threadsValue = Integer.parseInt( threadsText.getText() );
+
+                // The value must be >= 0
+                if ( threadsValue < 0 )
+                {
+                    System.out.println( "Wrong value : it must be a positive number" );
+                    threadsText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
+                    return;
+                }
+                
+                threadsText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
+            }
+            catch ( NumberFormatException nfe )
+            {
+                // Not even a number
+                System.out.println( "Wrong value : it must be an integer" );
+                threadsText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
+            }
+        }
+    };
+    
+    
+    /**
+     * The listener for the ToolThreadsText Text
+     */
+    private ModifyListener toolThreadsTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            Display display = toolThreadsText.getDisplay();
+
+            try
+            {
+                int toolThreadsValue = Integer.parseInt( toolThreadsText.getText() );
+
+                // The value must be >= 0
+                if ( toolThreadsValue < 0 )
+                {
+                    System.out.println( "Wrong value : it must be a positive number" );
+                    toolThreadsText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
+                    return;
+                }
+                
+                toolThreadsText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
+            }
+            catch ( NumberFormatException nfe )
+            {
+                // Not even a number
+                System.out.println( "Wrong value : it must be an integer" );
+                toolThreadsText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
             }
         }
     };
@@ -304,7 +519,7 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
         tcpBufferTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 4, 1 ) );
 
         // The olcSockbufMaxIncoming parameter.
-        Label sockbufMaxIncomingLabel = toolkit.createLabel( networkSectionComposite, 
+        toolkit.createLabel( networkSectionComposite, 
             Messages.getString( "OpenLDAPTuningPage.SockbufMaxIncoming" ) ); //$NON-NLS-1$
         sockbufMaxIncomingText = toolkit.createText( networkSectionComposite, "" );
         sockbufMaxIncomingText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
@@ -314,7 +529,7 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
         sockbufMaxIncomingText.addModifyListener( sockbufMaxIncomingTextListener );
 
         // The olcSockbufMaxIncomingAuth parameter.
-        Label sockbufMaxIncomingAuthLabel = toolkit.createLabel( networkSectionComposite, 
+        toolkit.createLabel( networkSectionComposite, 
             Messages.getString( "OpenLDAPTuningPage.SockbufMaxIncomingAuth" ) ); //$NON-NLS-1$
         sockbufMaxIncomingAuthText = toolkit.createText( networkSectionComposite, "" );
         sockbufMaxIncomingAuthText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
@@ -322,17 +537,103 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
         sockbufMaxIncomingAuthText.setTextLimit( 7 );
         // Attach a listener to check the value
         sockbufMaxIncomingAuthText.addModifyListener( sockbufMaxIncomingAuthTextListener );
-
-        //sockbufMaxIncomingText = createConfigDirText
-        //serverIdWidget.createWidget( networkSectionComposite );
-        //serverIdWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 4, 1 ) );
     }
     
 
+    /**
+     * Creates the Concurrency section. We support the configuration
+     * of those parameters :
+     * <ul>
+     *   <li>olcConcurrency</li>
+     *   <li>olcConnMaxPending</li>
+     *   <li>olcConnMaxPendingAuth</li>
+     *   <li>olcListenerThreads</li>
+     *   <li>olcThreads</li>
+     *   <li>olcToolThreads</li>
+     * </ul>
+     * 
+     * <pre>
+     * .-------------------------------------.
+     * | Concurrency                         |
+     * +-------------------------------------+
+     * | Concurrency              : [      ] |
+     * | Max Pending Conn         : [      ] |
+     * | Max Pending Conn Auth    : [      ] |
+     * | Nb Threads               : [      ] |
+     * | Nb Threads Tool Mode     : [      ] |
+     * | Nb Listener threads      : [      ] |
+     * +-------------------------------------+
+     * </pre>
+     *
+     * @param toolkit the toolkit
+     * @param parent the parent composite
+     */
     private void createConcurrencySection( FormToolkit toolkit, Composite parent )
     {
         // Creation of the section
         Section section = createSection( toolkit, parent, Messages.getString( "OpenLDAPTuningPage.ConcurrencySection" ) );
+
+        // The content
+        Composite concurrencySectionComposite = toolkit.createComposite( section );
+        toolkit.paintBordersFor( concurrencySectionComposite );
+        GridLayout gridLayout = new GridLayout( 2, false );
+        gridLayout.marginHeight = gridLayout.marginWidth = 0;
+        concurrencySectionComposite.setLayout( gridLayout );
+        section.setClient( concurrencySectionComposite );
+
+        // The olcConcurrency parameter.
+        toolkit.createLabel( concurrencySectionComposite, 
+            Messages.getString( "OpenLDAPTuningPage.Concurrency" ) ); //$NON-NLS-1$
+        concurrencyText = toolkit.createText( concurrencySectionComposite, "" );
+        concurrencyText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        concurrencyText.setTextLimit( 5 );
+        // Attach a listener to check the value
+        concurrencyText.addModifyListener( concurrencyTextListener );
+
+        // The olcConnMaxPending parameter.
+        toolkit.createLabel( concurrencySectionComposite, 
+            Messages.getString( "OpenLDAPTuningPage.ConnMaxPending" ) ); //$NON-NLS-1$
+        connMaxPendingText = toolkit.createText( concurrencySectionComposite, "" );
+        connMaxPendingText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        connMaxPendingText.setTextLimit( 5 );
+        // Attach a listener to check the value
+        connMaxPendingText.addModifyListener( connMaxPendingTextListener );
+
+        // The olcConnMaxPendingAuth parameter.
+        toolkit.createLabel( concurrencySectionComposite, 
+            Messages.getString( "OpenLDAPTuningPage.ConnMaxPendingAuth" ) ); //$NON-NLS-1$
+        connMaxPendingAuthText = toolkit.createText( concurrencySectionComposite, "" );
+        connMaxPendingAuthText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        connMaxPendingAuthText.setTextLimit( 5 );
+        // Attach a listener to check the value
+        connMaxPendingAuthText.addModifyListener( connMaxPendingAuthTextListener );
+
+        // The olcListenerThreads parameter.
+        toolkit.createLabel( concurrencySectionComposite, 
+            Messages.getString( "OpenLDAPTuningPage.ListenerThreads" ) ); //$NON-NLS-1$
+        listenerThreadsText = toolkit.createText( concurrencySectionComposite, "" );
+        listenerThreadsText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        listenerThreadsText.setTextLimit( 5 );
+        // Attach a listener to check the value
+        listenerThreadsText.addModifyListener( listenerThreadsTextListener );
+
+        // The olcThreads parameter.
+        toolkit.createLabel( concurrencySectionComposite, 
+            Messages.getString( "OpenLDAPTuningPage.Threads" ) ); //$NON-NLS-1$
+        threadsText = toolkit.createText( concurrencySectionComposite, "" );
+        threadsText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        threadsText.setTextLimit( 5 );
+        // Attach a listener to check the value
+        threadsText.addModifyListener( threadsTextListener );
+
+        // The olcToolThreads parameter.
+        toolkit.createLabel( concurrencySectionComposite, 
+            Messages.getString( "OpenLDAPTuningPage.ToolThreads" ) ); //$NON-NLS-1$
+        toolThreadsText = toolkit.createText( concurrencySectionComposite, "" );
+        toolThreadsText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        toolThreadsText.setTextLimit( 5 );
+        // Attach a listener to check the value
+        toolThreadsText.addModifyListener( toolThreadsTextListener );
     }
 
     
@@ -405,6 +706,54 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
             sockbufMaxIncomingAuthText.setText( sockbufMaxIncomingAuthString );
         }
 
+        // Concurrency Text
+        Integer concurrencyString = getConfiguration().getGlobal().getOlcConcurrency();
+        
+        if ( concurrencyString != null )
+        {
+            concurrencyText.setText( concurrencyString.toString() );
+        }
+
+        // ConnMaxPending Text
+        Integer connMaxPendingString = getConfiguration().getGlobal().getOlcConnMaxPending();
+        
+        if ( connMaxPendingString != null )
+        {
+            connMaxPendingText.setText( connMaxPendingString.toString() );
+        }
+
+        // ConnMaxPendingAuth Text
+        Integer connMaxPendingAuthString = getConfiguration().getGlobal().getOlcConnMaxPendingAuth();
+        
+        if ( connMaxPendingAuthString != null )
+        {
+            connMaxPendingAuthText.setText( connMaxPendingAuthString.toString() );
+        }
+
+        // ListenerThreads Text
+        Integer listenerThreadsString = getConfiguration().getGlobal().getOlcListenerThreads();
+        
+        if ( listenerThreadsString != null )
+        {
+            listenerThreadsText.setText( listenerThreadsString.toString() );
+        }
+
+        // Threads Text
+        Integer threadsString = getConfiguration().getGlobal().getOlcThreads();
+        
+        if ( threadsString != null )
+        {
+            threadsText.setText( threadsString.toString() );
+        }
+
+        // ToolThreads Text
+        Integer toolThreadsString = getConfiguration().getGlobal().getOlcToolThreads();
+        
+        if ( toolThreadsString != null )
+        {
+            toolThreadsText.setText( toolThreadsString.toString() );
+        }
+
         addListeners();
     }
 
@@ -418,6 +767,12 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
 
         sockbufMaxIncomingText.addModifyListener( dirtyModifyListener );
         sockbufMaxIncomingAuthText.addModifyListener( dirtyModifyListener );
+        concurrencyText.addModifyListener( dirtyModifyListener );
+        connMaxPendingText.addModifyListener( dirtyModifyListener );
+        connMaxPendingAuthText.addModifyListener( dirtyModifyListener );
+        listenerThreadsText.addModifyListener( dirtyModifyListener );
+        threadsText.addModifyListener( dirtyModifyListener );
+        toolThreadsText.addModifyListener( dirtyModifyListener );
     }
 
 
@@ -430,5 +785,11 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
 
         sockbufMaxIncomingText.removeModifyListener( dirtyModifyListener );
         sockbufMaxIncomingAuthText.removeModifyListener( dirtyModifyListener );
+        concurrencyText.removeModifyListener( dirtyModifyListener );
+        connMaxPendingText.removeModifyListener( dirtyModifyListener );
+        connMaxPendingAuthText.removeModifyListener( dirtyModifyListener );
+        listenerThreadsText.removeModifyListener( dirtyModifyListener );
+        threadsText.removeModifyListener( dirtyModifyListener );
+        toolThreadsText.removeModifyListener( dirtyModifyListener );
     }
 }
