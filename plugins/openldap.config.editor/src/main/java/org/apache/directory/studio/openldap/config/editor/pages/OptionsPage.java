@@ -69,11 +69,6 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
     private Text diffieHellmanParametersFileText;
     private Text randomBitsFileText;
     private Text incomingCertificatesVerificationLevelText;
-    private Text keyLengthForOrderedIntegerIndicesText;
-    private Text maximumLengthForSubinitialAndSubfinalIndicesText;
-    private Text minimumLengthForSubinitialAndSubfinalIndicesText;
-    private Text lengthUsedForSubanyIndicesText;
-    private Text stepsUsedInSubanyIndexLookupsText;
     private Text authUsernamesToDnRewriteRuleText;
     private Text proxyAuthorizationPolicyText;
     private Text authzUsernamesToDnRegexpText;
@@ -116,7 +111,6 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         createLogsSection( toolkit, leftComposite );
         createAuthenticationAndAuthorizationSection( toolkit, leftComposite );
         createConnectionLimitsSection( toolkit, leftComposite );
-        createIndicesSection( toolkit, leftComposite );
         createSaslSection( toolkit, rightComposite );
         createTlsSection( toolkit, rightComposite );
 
@@ -260,46 +254,6 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         toolkit.createLabel( composite, "Incoming certificates verification level:" );
         incomingCertificatesVerificationLevelText = toolkit.createText( composite, "" );
         incomingCertificatesVerificationLevelText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-    }
-
-
-    /**
-     * Creates the Indices section.
-     *
-     * @param toolkit the toolkit
-     * @param parent the parent composite
-     */
-    private void createIndicesSection( FormToolkit toolkit, Composite parent )
-    {
-        Section section = createSection( toolkit, parent, "Indices" );
-        Composite composite = createSectionComposite( toolkit, section, 2, false );
-
-        // Key Length for Ordered Integer Indices Text
-        toolkit.createLabel( composite, "Key length for ordered integer indices:" );
-        keyLengthForOrderedIntegerIndicesText = toolkit.createText( composite, "" );
-        keyLengthForOrderedIntegerIndicesText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-
-        // Maximum Length For Subinitial And Subfinal Indices Text
-        toolkit.createLabel( composite, "Maximum length for subinitial and subfinal indices:" );
-        maximumLengthForSubinitialAndSubfinalIndicesText = toolkit.createText( composite, "" );
-        maximumLengthForSubinitialAndSubfinalIndicesText
-            .setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-
-        // Minimum Length For Subinitial And Subfinal Indices Text
-        toolkit.createLabel( composite, "Minimum length for subinitial and subfinal indices:" );
-        minimumLengthForSubinitialAndSubfinalIndicesText = toolkit.createText( composite, "" );
-        minimumLengthForSubinitialAndSubfinalIndicesText
-            .setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-
-        // Length Used For Subany Indices Text
-        toolkit.createLabel( composite, "Length used for subany indices:" );
-        lengthUsedForSubanyIndicesText = toolkit.createText( composite, "" );
-        lengthUsedForSubanyIndicesText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-
-        // Steps Used In Subany Index Lookups Text
-        toolkit.createLabel( composite, "Steps used in subany index lookups:" );
-        stepsUsedInSubanyIndexLookupsText = toolkit.createText( composite, "" );
-        stepsUsedInSubanyIndexLookupsText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
     }
 
 
@@ -609,67 +563,6 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
                 else
                 {
                     incomingCertificatesVerificationLevelText.setText( "" );
-                }
-
-                // Key Length for Ordered Integer Indices Text
-                Integer keyLengthForOrderedIntegerIndices = global.getOlcIndexIntLen();
-
-                if ( keyLengthForOrderedIntegerIndices != null )
-                {
-                    keyLengthForOrderedIntegerIndicesText.setText( keyLengthForOrderedIntegerIndices + "" );
-                }
-                else
-                {
-                    keyLengthForOrderedIntegerIndicesText.setText( "" );
-                }
-
-                // Maximum Length For Subinitial And Subfinal Indices Text
-                Integer maximumLengthForSubinitialAndSubfinalIndices = global.getOlcIndexSubstrIfMaxLen();
-
-                if ( maximumLengthForSubinitialAndSubfinalIndices != null )
-                {
-                    maximumLengthForSubinitialAndSubfinalIndicesText
-                        .setText( maximumLengthForSubinitialAndSubfinalIndices + "" );
-                }
-                else
-                {
-                    maximumLengthForSubinitialAndSubfinalIndicesText.setText( "" );
-                }
-
-                // Minimum Length For Subinitial And Subfinal Indices Text
-                Integer minimumLengthForSubinitialAndSubfinalIndices = global.getOlcIndexSubstrIfMinLen();
-
-                if ( minimumLengthForSubinitialAndSubfinalIndices != null )
-                {
-                    minimumLengthForSubinitialAndSubfinalIndicesText
-                        .setText( minimumLengthForSubinitialAndSubfinalIndices + "" );
-                }
-                else
-                {
-                    minimumLengthForSubinitialAndSubfinalIndicesText.setText( "" );
-                }
-
-                // Length Used For Subany Indices Text
-                Integer lengthUsedForSubanyIndices = global.getOlcIndexSubstrAnyLen();
-                if ( lengthUsedForSubanyIndices != null )
-                {
-                    lengthUsedForSubanyIndicesText.setText( lengthUsedForSubanyIndices + "" );
-                }
-                else
-                {
-                    lengthUsedForSubanyIndicesText.setText( "" );
-                }
-
-                // Steps Used In Subany Index Lookups Text
-                Integer stepsUsedInSubanyIndexLookups = global.getOlcIndexSubstrAnyStep();
-
-                if ( stepsUsedInSubanyIndexLookups != null )
-                {
-                    stepsUsedInSubanyIndexLookupsText.setText( stepsUsedInSubanyIndexLookups + "" );
-                }
-                else
-                {
-                    stepsUsedInSubanyIndexLookupsText.setText( "" );
                 }
 
                 // Authentication Usernames To DN Rewrite Rule Text

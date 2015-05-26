@@ -74,7 +74,6 @@ import org.apache.directory.studio.openldap.config.editor.wrappers.TcpBufferWrap
  *   </li>
  *   <li>Index limits :
  *     <ul>
- *       <li>olcIndexHash64</li>
  *       <li>olcIndexIntLen</li>
  *       <li>olcIndexSubstrAnyLen</li>
  *       <li>olcIndexSubstrAnyStep</li>
@@ -85,6 +84,26 @@ import org.apache.directory.studio.openldap.config.editor.wrappers.TcpBufferWrap
  * </ul>
  * 
  * <pre>
+ *   +---------------------------------------------------------------------------------+
+ *   | Tuning                                                                          |
+ *   +---------------------------------------------------------------------------------+
+ *   | .-------------------------------------. .-------------------------------------. |
+ *   | | TCP configuration                   | | Concurrency                         | |
+ *   | +-------------------------------------+ +-------------------------------------+ |
+ *   | | TCPBuffers                          | |                                     | |
+ *   | | +-----------------------+           | | Concurrency              : [      ] | |
+ *   | | | xyz                   | (Add)     | | Max Pending Conn         : [      ] | |
+ *   | | | abc                   | (Edit)    | | Max Pending Conn Auth    : [      ] | |
+ *   | | |                       | (Delete)  | | Nb Threads               : [      ] | |
+ *   | | +-----------------------+           | | Nb Threads Tool Mode     : [      ] | |
+ *   | |                                     | | Nb Listener threads      : [      ] | |
+ *   | | Max Incoming Buffer      : [      ] | |                                     | |
+ *   | | Max Incoming Buffer Auth : [      ] | |                                     | |
+ *   | +-------------------------------------+ +-------------------------------------+ |
+ *   | .-------------------------------------. .-------------------------------------. |
+ *   | | LDAP Limits                         | | Index Limits                        | |
+ *   | +-------------------------------------+ +-------------------------------------+ |
+ *   | 
  * </pre>
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -125,6 +144,23 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
     
     /** The olcToolThreads Text */
     private Text toolThreadsText;
+    
+    // UI Controls for the Index Limits
+    /** The olcIndexIntLenText Text */
+    private Text indexIntLenText;
+
+    /** The olcIndexSubstrAnyLen Text */
+    private Text indexSubstrAnyLenText;
+
+    /** The olcIndexSubstrAnyStep Text */
+    private Text indexSubstrAnyStepText;
+
+    /** The olcIndexSubstrIfMaxLen Text */
+    private Text indexSubstrIfMaxLenText;
+
+    /** The olcIndexSubstrIfMinLen Text */
+    private Text indexSubstrIfMinLenText;
+
 
     /**
      * Creates a new instance of TuningPage.
@@ -401,8 +437,173 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
             }
         }
     };
+    
+    
+    /**
+     * The listener for the IndexIntLenText Text
+     */
+    private ModifyListener indexIntLenTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            Display display = indexIntLenText.getDisplay();
 
+            try
+            {
+                int indexIntLenValue = Integer.parseInt( indexIntLenText.getText() );
 
+                // The value must be >= 0
+                if ( indexIntLenValue < 0 )
+                {
+                    System.out.println( "Wrong value : it must be a positive number" );
+                    indexIntLenText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
+                    return;
+                }
+                
+                indexIntLenText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
+            }
+            catch ( NumberFormatException nfe )
+            {
+                // Not even a number
+                System.out.println( "Wrong value : it must be an integer" );
+                indexIntLenText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
+            }
+        }
+    };
+    
+    
+    /**
+     * The listener for the IndexSubstrAnyLenText Text
+     */
+    private ModifyListener indexSubstrAnyLenTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            Display display = indexSubstrAnyLenText.getDisplay();
+
+            try
+            {
+                int indexSubstrAnyLenValue = Integer.parseInt( indexSubstrAnyLenText.getText() );
+
+                // The value must be >= 0
+                if ( indexSubstrAnyLenValue < 0 )
+                {
+                    System.out.println( "Wrong value : it must be a positive number" );
+                    indexSubstrAnyLenText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
+                    return;
+                }
+                
+                indexSubstrAnyLenText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
+            }
+            catch ( NumberFormatException nfe )
+            {
+                // Not even a number
+                System.out.println( "Wrong value : it must be an integer" );
+                indexSubstrAnyLenText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
+            }
+        }
+    };
+    
+    
+    /**
+     * The listener for the IndexSubstrAnyStepText Text
+     */
+    private ModifyListener indexSubstrAnyStepTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            Display display = indexSubstrAnyStepText.getDisplay();
+
+            try
+            {
+                int indexSubstrAnyStepValue = Integer.parseInt( indexSubstrAnyStepText.getText() );
+
+                // The value must be >= 0
+                if ( indexSubstrAnyStepValue < 0 )
+                {
+                    System.out.println( "Wrong value : it must be a positive number" );
+                    indexSubstrAnyStepText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
+                    return;
+                }
+                
+                indexSubstrAnyStepText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
+            }
+            catch ( NumberFormatException nfe )
+            {
+                // Not even a number
+                System.out.println( "Wrong value : it must be an integer" );
+                indexSubstrAnyStepText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
+            }
+        }
+    };
+    
+    
+    /**
+     * The listener for the IndexSubstrIfMaxLenText Text
+     */
+    private ModifyListener indexSubstrIfMaxLenTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            Display display = indexSubstrIfMaxLenText.getDisplay();
+
+            try
+            {
+                int indexSubstrIfMaxLenValue = Integer.parseInt( indexSubstrIfMaxLenText.getText() );
+
+                // The value must be >= 0
+                if ( indexSubstrIfMaxLenValue < 0 )
+                {
+                    System.out.println( "Wrong value : it must be a positive number" );
+                    indexSubstrIfMaxLenText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
+                    return;
+                }
+                
+                indexSubstrIfMaxLenText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
+            }
+            catch ( NumberFormatException nfe )
+            {
+                // Not even a number
+                System.out.println( "Wrong value : it must be an integer" );
+                indexSubstrIfMaxLenText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
+            }
+        }
+    };
+    
+    
+    /**
+     * The listener for the IndexSubstrIfMinLenText Text
+     */
+    private ModifyListener indexSubstrIfMinLenTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            Display display = indexSubstrIfMinLenText.getDisplay();
+
+            try
+            {
+                int indexSubstrIfMinLenValue = Integer.parseInt( indexSubstrIfMinLenText.getText() );
+
+                // The value must be >= 0
+                if ( indexSubstrIfMinLenValue < 0 )
+                {
+                    System.out.println( "Wrong value : it must be a positive number" );
+                    indexSubstrIfMinLenText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
+                    return;
+                }
+                
+                indexSubstrIfMinLenText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
+            }
+            catch ( NumberFormatException nfe )
+            {
+                // Not even a number
+                System.out.println( "Wrong value : it must be an integer" );
+                indexSubstrIfMinLenText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
+            }
+        }
+    };
+
+    
     /**
      * Creates the OpenLDAP tuning config Tab. It contains 2 rows, with
      * 2 columns :
@@ -648,6 +849,59 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
     {
         // Creation of the section
         Section section = createSection( toolkit, parent, Messages.getString( "OpenLDAPTuningPage.IndexLimitsSection" ) );
+
+        // The content
+        Composite indexLimitSectionComposite = toolkit.createComposite( section );
+        toolkit.paintBordersFor( indexLimitSectionComposite );
+        GridLayout gridLayout = new GridLayout( 2, false );
+        gridLayout.marginHeight = gridLayout.marginWidth = 0;
+        indexLimitSectionComposite.setLayout( gridLayout );
+        section.setClient( indexLimitSectionComposite );
+
+        // The olcIndexIntLen parameter.
+        toolkit.createLabel( indexLimitSectionComposite, 
+            Messages.getString( "OpenLDAPTuningPage.IndexIntLen" ) ); //$NON-NLS-1$
+        indexIntLenText = toolkit.createText( indexLimitSectionComposite, "" );
+        indexIntLenText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        indexIntLenText.setTextLimit( 5 );
+        // Attach a listener to check the value
+        indexIntLenText.addModifyListener( indexIntLenTextListener );
+
+        // The olcIndexSubstrAnyLen parameter.
+        toolkit.createLabel( indexLimitSectionComposite, 
+            Messages.getString( "OpenLDAPTuningPage.IndexSubstrAnyLen" ) ); //$NON-NLS-1$
+        indexSubstrAnyLenText = toolkit.createText( indexLimitSectionComposite, "" );
+        indexSubstrAnyLenText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        indexSubstrAnyLenText.setTextLimit( 5 );
+        // Attach a listener to check the value
+        indexSubstrAnyLenText.addModifyListener( indexSubstrAnyLenTextListener );
+
+        // The olcIndexIntLen parameter.
+        toolkit.createLabel( indexLimitSectionComposite, 
+            Messages.getString( "OpenLDAPTuningPage.IndexSubstrAnyStep" ) ); //$NON-NLS-1$
+        indexSubstrAnyStepText = toolkit.createText( indexLimitSectionComposite, "" );
+        indexSubstrAnyStepText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        indexSubstrAnyStepText.setTextLimit( 5 );
+        // Attach a listener to check the value
+        indexSubstrAnyStepText.addModifyListener( indexSubstrAnyStepTextListener );
+
+        // The olcIndexSubstrIfMaxLen parameter.
+        toolkit.createLabel( indexLimitSectionComposite, 
+            Messages.getString( "OpenLDAPTuningPage.IndexSubstrIfMaxLen" ) ); //$NON-NLS-1$
+        indexSubstrIfMaxLenText = toolkit.createText( indexLimitSectionComposite, "" );
+        indexSubstrIfMaxLenText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        indexSubstrIfMaxLenText.setTextLimit( 5 );
+        // Attach a listener to check the value
+        indexSubstrIfMaxLenText.addModifyListener( indexSubstrIfMaxLenTextListener );
+
+        // The olcIndexSubstrIfMinLen parameter.
+        toolkit.createLabel( indexLimitSectionComposite, 
+            Messages.getString( "OpenLDAPTuningPage.IndexSubstrIfMinLen" ) ); //$NON-NLS-1$
+        indexSubstrIfMinLenText = toolkit.createText( indexLimitSectionComposite, "" );
+        indexSubstrIfMinLenText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        indexSubstrIfMinLenText.setTextLimit( 5 );
+        // Attach a listener to check the value
+        indexSubstrIfMinLenText.addModifyListener( indexSubstrIfMinLenTextListener );
     }
     
     
@@ -754,6 +1008,46 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
             toolThreadsText.setText( toolThreadsString.toString() );
         }
 
+        // IndexIntLen Text
+        Integer indexIntLenString = getConfiguration().getGlobal().getOlcIndexIntLen();
+        
+        if ( indexIntLenString != null )
+        {
+            indexIntLenText.setText( indexIntLenString.toString() );
+        }
+
+        // IndexSubstrAnyLen Text
+        Integer indexSubstrAnyLenString = getConfiguration().getGlobal().getOlcIndexSubstrAnyLen();
+        
+        if ( indexSubstrAnyLenString != null )
+        {
+            indexSubstrAnyLenText.setText( indexSubstrAnyLenString.toString() );
+        }
+
+        // IndexSubstrAnyStep Text
+        Integer indexSubstrAnyStepString = getConfiguration().getGlobal().getOlcIndexSubstrAnyStep();
+        
+        if ( indexSubstrAnyStepString != null )
+        {
+            indexSubstrAnyStepText.setText( indexSubstrAnyStepString.toString() );
+        }
+
+        // IndexSubstrIfMaxLen Text
+        Integer indexSubstrIfMaxLenString = getConfiguration().getGlobal().getOlcIndexSubstrIfMaxLen();
+        
+        if ( indexSubstrIfMaxLenString != null )
+        {
+            indexSubstrIfMaxLenText.setText( indexSubstrIfMaxLenString.toString() );
+        }
+
+        // IndexSubstrIfMinLen Text
+        Integer indexSubstrIfMinLenString = getConfiguration().getGlobal().getOlcIndexSubstrIfMinLen();
+        
+        if ( indexSubstrIfMinLenString != null )
+        {
+            indexSubstrIfMinLenText.setText( indexSubstrIfMinLenString.toString() );
+        }
+
         addListeners();
     }
 
@@ -773,6 +1067,11 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
         listenerThreadsText.addModifyListener( dirtyModifyListener );
         threadsText.addModifyListener( dirtyModifyListener );
         toolThreadsText.addModifyListener( dirtyModifyListener );
+        indexIntLenText.addModifyListener( dirtyModifyListener );
+        indexSubstrAnyLenText.addModifyListener( dirtyModifyListener );
+        indexSubstrAnyStepText.addModifyListener( dirtyModifyListener );
+        indexSubstrIfMaxLenText.addModifyListener( dirtyModifyListener );
+        indexSubstrIfMinLenText.addModifyListener( dirtyModifyListener );
     }
 
 
@@ -791,5 +1090,10 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
         listenerThreadsText.removeModifyListener( dirtyModifyListener );
         threadsText.removeModifyListener( dirtyModifyListener );
         toolThreadsText.removeModifyListener( dirtyModifyListener );
+        indexIntLenText.removeModifyListener( dirtyModifyListener );
+        indexSubstrAnyLenText.removeModifyListener( dirtyModifyListener );
+        indexSubstrAnyStepText.removeModifyListener( dirtyModifyListener );
+        indexSubstrIfMaxLenText.removeModifyListener( dirtyModifyListener );
+        indexSubstrIfMinLenText.removeModifyListener( dirtyModifyListener );
     }
 }
