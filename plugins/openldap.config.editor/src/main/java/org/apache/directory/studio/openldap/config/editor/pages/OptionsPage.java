@@ -50,12 +50,6 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
     private static final String TITLE = "Options";
 
     // UI Controls
-    /** The olcLogFile parameter */
-    private Text logFileText;
-    
-    /** The olcLogLevel parameter */
-    private Text logLevelText;
-    
     /** The olcPluginLogFile parameter */
     private Text pluginLogFileText; 
     
@@ -66,9 +60,6 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
     private Text maxPendingRequestsAuthenticatedSessionText;
     private Text numberSecondsClosingIdleConnectionText;
     private Text numberSecondsClosingConnectionWithOutstandingWriteText;
-    private Text levelOfConcurrencyText;
-    private Text maximumNumberOfThreadsText;
-    private Text maximumNumberOfThreadsInToolModeText;
     private Text authenticationAuxpropPluginsText;
     private Text saslHostText;
     private Text saslRealmText;
@@ -152,16 +143,6 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         Section section = createSection( toolkit, parent, Messages.getString( "OptionsPage.LogTitle" ) );
         Composite composite = createSectionComposite( toolkit, section, 2, false );
 
-        // Log File Text
-        toolkit.createLabel( composite, "Log File:" );
-        logFileText = toolkit.createText( composite, "" );
-        logFileText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-
-        // Log Level Text
-        toolkit.createLabel( composite, "Log Level:" );
-        logLevelText = toolkit.createText( composite, "" );
-        logLevelText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        
         // Plugin Log File Text
         toolkit.createLabel( composite, "Plugin Log File:" );
         pluginLogFileText = toolkit.createText( composite, "" );
@@ -241,21 +222,6 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
     {
         Section section = createSection( toolkit, parent, "Threads" );
         Composite composite = createSectionComposite( toolkit, section, 2, false );
-
-        // Level Of Concurrency Text
-        toolkit.createLabel( composite, "Level of concurrency:" );
-        levelOfConcurrencyText = toolkit.createText( composite, "" );
-        levelOfConcurrencyText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-
-        // Maximum Number Of Threads
-        toolkit.createLabel( composite, "Maximum number of threads:" );
-        maximumNumberOfThreadsText = toolkit.createText( composite, "" );
-        maximumNumberOfThreadsText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-
-        // Maximum Number Of Threads In Tool Mode Text
-        toolkit.createLabel( composite, "Maximum number of threads in tool mode:" );
-        maximumNumberOfThreadsInToolModeText = toolkit.createText( composite, "" );
-        maximumNumberOfThreadsInToolModeText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
     }
 
 
@@ -498,30 +464,6 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
                 // Assigning values to UI Controls
                 //
 
-                // Log File Text
-                String logFile = global.getOlcLogFile();
-
-                if ( logFile != null )
-                {
-                    logFileText.setText( logFile );
-                }
-                else
-                {
-                    logFileText.setText( "" );
-                }
-
-                // Log Level Text
-                List<String> logLevel = global.getOlcLogLevel();
-
-                if ( logLevel != null )
-                {
-                    logLevelText.setText( logLevel + "" );
-                }
-                else
-                {
-                    logLevelText.setText( "" );
-                }
-                
                 // Plugin Log File Text
                 String pluginLogFile = global.getOlcPluginLogFile();
 
@@ -617,42 +559,6 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
                 else
                 {
                     numberSecondsClosingConnectionWithOutstandingWriteText.setText( "" );
-                }
-
-                // Level Of Concurrency Text
-                Integer levelOfConcurrency = global.getOlcConcurrency();
-
-                if ( levelOfConcurrency != null )
-                {
-                    levelOfConcurrencyText.setText( levelOfConcurrency + "" );
-                }
-                else
-                {
-
-                    levelOfConcurrencyText.setText( "" );
-                }
-
-                // Maximum Number Of Threads
-                Integer maximumNumberOfThreads = global.getOlcThreads();
-                if ( maximumNumberOfThreads != null )
-                {
-                    maximumNumberOfThreadsText.setText( maximumNumberOfThreads + "" );
-                }
-                else
-                {
-                    maximumNumberOfThreadsText.setText( "" );
-                }
-
-                // Maximum Number Of Threads In Tool Mode Text
-                Integer maximumNumberOfThreadsInToolMode = global.getOlcToolThreads();
-
-                if ( maximumNumberOfThreadsInToolMode != null )
-                {
-                    maximumNumberOfThreadsInToolModeText.setText( maximumNumberOfThreadsInToolMode + "" );
-                }
-                else
-                {
-                    maximumNumberOfThreadsInToolModeText.setText( "" );
                 }
 
                 // Authentication Auxprop Plugins Text
