@@ -227,6 +227,21 @@
       <activityPatternBinding
             activityId="org.apache.directory.studio.rcp.hide"
             isEqualityPattern="true"
+            pattern="org.eclipse.jdt.ui/org.eclipse.jdt.internal.ui.javadocexport.JavadocWizard">
+      </activityPatternBinding>
+      <activityPatternBinding
+            activityId="org.apache.directory.studio.rcp.hide"
+            isEqualityPattern="true"
+            pattern="org.eclipse.jdt.ui/org.eclipse.jdt.internal.ui.jarpackager.JarPackageWizard">
+      </activityPatternBinding>
+      <activityPatternBinding
+            activityId="org.apache.directory.studio.rcp.hide"
+            isEqualityPattern="true"
+            pattern="org.eclipse.jdt.ui/org.eclipse.jdt.internal.ui.fatjarpackager.JarPackageWizard">
+      </activityPatternBinding>
+      <activityPatternBinding
+            activityId="org.apache.directory.studio.rcp.hide"
+            isEqualityPattern="true"
             pattern="org.eclipse.ui.ide/org.eclipse.ui.views.AllMarkersView">
       </activityPatternBinding>
       <activityPatternBinding
