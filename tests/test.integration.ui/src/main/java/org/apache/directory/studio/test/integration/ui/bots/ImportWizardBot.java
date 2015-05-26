@@ -19,6 +19,7 @@
  */
 package org.apache.directory.studio.test.integration.ui.bots;
 
+
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
 
@@ -30,9 +31,15 @@ public class ImportWizardBot extends WizardBot
     private String title;
 
 
+    public ImportWizardBot()
+    {
+        this( "Import" );
+    }
+
+
     public ImportWizardBot( String title )
     {
-        super(title);
+        super( title );
         this.title = title;
     }
 

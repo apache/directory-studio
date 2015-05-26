@@ -60,7 +60,7 @@ public class StudioBot
     {
         return new ModificationLogsViewBot();
     }
-    
+
 
     public ApacheDSServersViewBot getApacheDSServersViewBot()
     {
@@ -81,6 +81,18 @@ public class StudioBot
 
 
     public void resetLdapPerspective()
+    {
+        resetPerspective( "org.apache.directory.studio.ldapbrowser.ui.perspective.BrowserPerspective" );
+    }
+
+
+    public void resetSchemaPerspective()
+    {
+        resetPerspective( "org.apache.directory.studio.schemaeditor.perspective" );
+    }
+
+
+    private void resetPerspective( final String perspectiveId )
     {
         UIThreadRunnable.syncExec( new VoidResult()
         {
@@ -112,8 +124,7 @@ public class StudioBot
                     }
 
                     // open LDAP perspective
-                    workbench.showPerspective(
-                        "org.apache.directory.studio.ldapbrowser.ui.perspective.BrowserPerspective", window );
+                    workbench.showPerspective( perspectiveId, window );
 
                     // close "LDAP Browser view" as it sometimes does not respond, will be re-opened by the following reset
                     for ( IViewReference viewref : page.getViewReferences() )
@@ -139,7 +150,6 @@ public class StudioBot
                 }
             }
         } );
-
     }
 
 
@@ -170,5 +180,26 @@ public class StudioBot
             new SWTBot().menu( "File" ).menu( "New..." ).click();
         }
         return new NewWizardBot();
+    }
+
+
+    public ExportWizardBot openExportWizard()
+    {
+        new SWTBot().menu( "File" ).menu( "Export..." ).click();
+        return new ExportWizardBot();
+    }
+
+
+    public ImportWizardBot openImportWizard()
+    {
+        new SWTBot().menu( "File" ).menu( "Import..." ).click();
+        return new ImportWizardBot();
+    }
+
+
+    public ShowViewsBot openShowViews()
+    {
+        new SWTBot().menu( "Window" ).menu( "Show View" ).menu( "Other..." ).click();
+        return new ShowViewsBot();
     }
 }

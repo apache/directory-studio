@@ -20,6 +20,7 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
+import org.apache.directory.studio.test.integration.ui.bots.utils.TreeBot;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 
@@ -103,6 +104,20 @@ public abstract class WizardBot extends DialogBot
     public void clickCancelButton()
     {
         clickButton( "Cancel" );
+    }
+
+
+    public boolean existsCategory( String category )
+    {
+        TreeBot treeBot = new TreeBot( bot.tree() );
+        return treeBot.exists( category );
+    }
+
+
+    public boolean existsWizard( String category, String wizard )
+    {
+        TreeBot treeBot = new TreeBot( bot.tree() );
+        return treeBot.exists( category, wizard );
     }
 
 }

@@ -34,9 +34,15 @@ public class ExportWizardBot extends WizardBot
     private String title;
 
 
+    public ExportWizardBot()
+    {
+        this( "Export" );
+    }
+
+
     public ExportWizardBot( String title )
     {
-        super(title);
+        super( title );
         this.title = title;
     }
 

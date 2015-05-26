@@ -20,28 +20,28 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.apache.directory.studio.test.integration.ui.bots.utils.TreeBot;
 
 
-public class NewWizardBot extends WizardBot
+public class ShowViewsBot extends DialogBot
 {
 
-    public NewWizardBot()
+    public void clickCancelButton()
     {
-        super( "New" );
+        super.clickButton( "Cancel" );
     }
 
 
-    public void selectLdifFile()
+    public boolean existsCategory( String category )
     {
-        select( "LDAP Browser", "LDIF File" );
+        TreeBot treeBot = new TreeBot( bot.tree() );
+        return treeBot.exists( category );
     }
 
 
-    public void select( String parent, String child )
+    public boolean existsView( String category, String view )
     {
-        SWTBotTree tree = bot.tree();
-        tree.expandNode( parent ).select( child );
+        TreeBot treeBot = new TreeBot( bot.tree() );
+        return treeBot.exists( category, view );
     }
-
 }
