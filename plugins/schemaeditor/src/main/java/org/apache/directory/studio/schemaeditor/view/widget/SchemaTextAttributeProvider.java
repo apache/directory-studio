@@ -56,16 +56,16 @@ public class SchemaTextAttributeProvider
     {
         attributes.put( DEFAULT_ATTRIBUTE, new TextAttribute( CommonUIConstants.BLACK_COLOR ) );
 
-        attributes.put( KEYWORD_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(), new RGB( 128, 0, 96 ) ),
+        attributes.put( KEYWORD_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(), CommonUIConstants.M_PURPLE ),
             null, SWT.BOLD ) );
 
         attributes.put( STRING_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(), CommonUIConstants.BLUE ) ) );
 
-        attributes.put( ATTRIBUTETYPE_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(), new RGB( 96, 64,
-            160 ) ), null, SWT.BOLD ) );
+        attributes.put( ATTRIBUTETYPE_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(), new RGB( 95, 63,
+            159 ) ), null, SWT.BOLD ) );
 
         attributes.put( OBJECTCLASS_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(),
-            new RGB( 64, 128, 64 ) ), null, SWT.BOLD ) );
+            new RGB( 63, 127, 63 ) ), null, SWT.BOLD ) );
 
         attributes.put( OID_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(), CommonUIConstants.RED ) ) );
     }

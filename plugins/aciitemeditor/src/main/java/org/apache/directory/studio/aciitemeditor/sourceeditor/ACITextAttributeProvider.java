@@ -24,7 +24,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.directory.studio.common.ui.CommonUIConstants;
-import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -62,7 +61,7 @@ public class ACITextAttributeProvider
     {
         attributes.put( DEFAULT_ATTRIBUTE, new TextAttribute( CommonUIConstants.BLACK_COLOR ) );
 
-        attributes.put( KEYWORD_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(), new RGB( 128, 0, 96 ) ),
+        attributes.put( KEYWORD_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(), CommonUIConstants.M_PURPLE ),
             null, SWT.BOLD ) );
 
         attributes.put( STRING_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(), CommonUIConstants.BLUE ) ) );
@@ -79,10 +78,9 @@ public class ACITextAttributeProvider
 
         attributes.put( AUTHENTICATIONLEVEL_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(), CommonUIConstants.M_GREEN ), null, SWT.BOLD ) );
 
-        attributes.put( ITEMORUSERFIRST_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(), new RGB( 128, 0,
-            128 ) ), null, SWT.BOLD ) );
+        attributes.put( ITEMORUSERFIRST_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(), CommonUIConstants.M_PURPLE ), null, SWT.BOLD ) );
 
-        attributes.put( USER_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(), new RGB( 0, 128, 255 ) ),
+        attributes.put( USER_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(), new RGB( 0, 127, 255 ) ),
             null, SWT.BOLD ) );
 
     }

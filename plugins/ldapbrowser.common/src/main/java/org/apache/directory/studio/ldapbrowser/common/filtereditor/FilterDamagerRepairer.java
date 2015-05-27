@@ -54,7 +54,7 @@ public class FilterDamagerRepairer implements IPresentationDamager, IPresentatio
         .getDefault().getColor( CommonUIConstants.M_GREEN ), null, SWT.BOLD );
 
     private static final TextAttribute ATTRIBUTE_TEXT_ATTRIBUTE = new TextAttribute( BrowserCommonActivator
-        .getDefault().getColor( new RGB( 128, 0, 96 ) ) );
+        .getDefault().getColor( CommonUIConstants.M_PURPLE ) );
 
     private static final TextAttribute FILTER_TYPE_TEXT_ATTRIBUTE = new TextAttribute( BrowserCommonActivator
         .getDefault().getColor( CommonUIConstants.RED ), null, SWT.BOLD );
