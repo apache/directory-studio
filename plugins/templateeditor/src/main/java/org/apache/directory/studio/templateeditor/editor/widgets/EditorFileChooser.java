@@ -46,7 +46,6 @@ import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-
 import org.apache.directory.studio.templateeditor.EntryTemplatePlugin;
 import org.apache.directory.studio.templateeditor.EntryTemplatePluginConstants;
 import org.apache.directory.studio.templateeditor.EntryTemplatePluginUtils;
@@ -80,17 +79,17 @@ public class EditorFileChooser extends EditorWidget<TemplateFileChooser>
 
     /** The file data as bytes array */
     private byte[] fileBytes;
+    
+    /** The icon Image we might have to create */
+    private Image iconImage;
 
 
     /**
      * Creates a new instance of EditorFileChooser.
      * 
-     * @param editor
-     *      the associated editor
-     * @param templateFileChooser
-     *      the associated template file chooser
-     * @param toolkit
-     *      the associated toolkit
+     * @param editor the associated editor
+     * @param templateFileChooser the associated template file chooser
+     * @param toolkit the associated toolkit
      */
     public EditorFileChooser( IEntryEditor editor, TemplateFileChooser templateFileChooser, FormToolkit toolkit )
     {
@@ -119,10 +118,8 @@ public class EditorFileChooser extends EditorWidget<TemplateFileChooser>
     /**
      * Creates and initializes the widget UI.
      *
-     * @param parent
-     *      the parent composite
-     * @return
-     *      the associated composite
+     * @param parent the parent composite
+     * @return the associated composite
      */
     private Composite initWidget( Composite parent )
     {
@@ -145,6 +142,7 @@ public class EditorFileChooser extends EditorWidget<TemplateFileChooser>
             // Getting the icon (if available)
             ImageData iconData = null;
             String icon = getWidget().getIcon();
+            
             if ( ( icon != null ) && ( !icon.equals( "" ) ) ) //$NON-NLS-1$
             {
                 try
@@ -160,7 +158,8 @@ public class EditorFileChooser extends EditorWidget<TemplateFileChooser>
             // Assigning the icon
             if ( iconData != null )
             {
-                iconLabel.setImage( new Image( PlatformUI.getWorkbench().getDisplay(), iconData ) );
+                iconImage = new Image( PlatformUI.getWorkbench().getDisplay(), iconData );
+                iconLabel.setImage( iconImage );
             }
             else
             {
@@ -212,8 +211,7 @@ public class EditorFileChooser extends EditorWidget<TemplateFileChooser>
     /**
      * Gets the number of columns needed for the layout.
      *
-     * @return
-     *      the number of columns needed
+     * @return the number of columns needed
      */
     private int getLayoutNumberOfColumns()
     {
@@ -224,6 +222,7 @@ public class EditorFileChooser extends EditorWidget<TemplateFileChooser>
         {
             numberOfColumns++;
         }
+        
         // Toolbar
         if ( needsToolbar() )
         {
@@ -237,9 +236,8 @@ public class EditorFileChooser extends EditorWidget<TemplateFileChooser>
     /**
      * Indicates if the widget needs a toolbar for actions.
      *
-     * @return
-     *      <code>true</code> if the widget needs a toolbar for actions,
-     *      <code>false</code> if not
+     * @return<code>true</code> if the widget needs a toolbar for actions,
+     * <code>false</code> if not
      */
     private boolean needsToolbar()
     {
@@ -270,6 +268,7 @@ public class EditorFileChooser extends EditorWidget<TemplateFileChooser>
     {
         // Getting the file bytes in the attribute
         IAttribute attribute = getAttribute();
+        
         if ( ( attribute != null ) && ( attribute.isBinary() ) && ( attribute.getValueSize() > 0 ) )
         {
             fileBytes = attribute.getBinaryValues()[0];
@@ -343,6 +342,7 @@ public class EditorFileChooser extends EditorWidget<TemplateFileChooser>
         if ( fileBytes != null )
         {
             int length = fileBytes.length;
+            
             if ( length > 1000000 )
             {
                 return NLS.bind( Messages.getString( "EditorFileChooser.MB" ), new Object[] //$NON-NLS-1$
@@ -374,10 +374,12 @@ public class EditorFileChooser extends EditorWidget<TemplateFileChooser>
         // Launching a FileDialog to select where to save the file
         FileDialog fd = new FileDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.SAVE );
         String selected = fd.open();
+        
         if ( selected != null )
         {
             // Getting the selected file
             File selectedFile = new File( selected );
+            
             if ( ( !selectedFile.exists() ) || ( selectedFile.canWrite() ) )
             {
                 try
@@ -436,24 +438,45 @@ public class EditorFileChooser extends EditorWidget<TemplateFileChooser>
         // Launching a FileDialog to select the file to load
         FileDialog fd = new FileDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OPEN );
         String selected = fd.open();
+        
         if ( selected != null )
         {
             // Getting the selected file
             File selectedFile = new File( selected );
+            
             if ( ( selectedFile.exists() ) && ( selectedFile.canRead() ) )
             {
                 try
                 {
-                    FileInputStream fis = new FileInputStream( selectedFile );
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream( ( int ) selectedFile.length() );
-                    byte[] buf = new byte[4096];
-                    int len;
-                    while ( ( len = fis.read( buf ) ) > 0 )
-                    {
-                        baos.write( buf, 0, len );
-                    }
+                    FileInputStream fis = null;
+                    ByteArrayOutputStream baos = null;
 
-                    fileBytes = baos.toByteArray();
+                    try
+                    {
+                        fis = new FileInputStream( selectedFile );
+                        baos = new ByteArrayOutputStream( ( int ) selectedFile.length() );
+                        byte[] buf = new byte[4096];
+                        int len;
+                        
+                        while ( ( len = fis.read( buf ) ) > 0 )
+                        {
+                            baos.write( buf, 0, len );
+                        }
+    
+                        fileBytes = baos.toByteArray();
+                    }
+                    finally
+                    {
+                        if ( fis != null )
+                        {
+                            fis.close();
+                        }
+                        
+                        if ( baos != null )
+                        {
+                            baos.close();
+                        }
+                    }
                 }
                 catch ( Exception e )
                 {
@@ -501,6 +524,7 @@ public class EditorFileChooser extends EditorWidget<TemplateFileChooser>
     {
         // Getting the attribute
         IAttribute attribute = getAttribute();
+        
         if ( attribute == null )
         {
             if ( ( fileBytes != null ) && ( fileBytes.length != 0 ) )
@@ -581,6 +605,9 @@ public class EditorFileChooser extends EditorWidget<TemplateFileChooser>
      */
     public void dispose()
     {
-        // Nothing to do
+        if ( iconImage != null )
+        {
+            iconImage.dispose();
+        }
     }
 }

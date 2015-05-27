@@ -509,24 +509,44 @@ public class EditorImage extends EditorWidget<TemplateImage>
         // Launching a FileDialog to select the file to load
         FileDialog fd = new FileDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OPEN );
         String selected = fd.open();
+        
         if ( selected != null )
         {
             // Getting the selected file
             File selectedFile = new File( selected );
+            
             if ( ( selectedFile.exists() ) && ( selectedFile.canRead() ) )
             {
                 try
                 {
-                    FileInputStream fis = new FileInputStream( selectedFile );
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream( ( int ) selectedFile.length() );
-                    byte[] buf = new byte[4096];
-                    int len;
-                    while ( ( len = fis.read( buf ) ) > 0 )
+                    FileInputStream fis = null;
+                    ByteArrayOutputStream baos = null;
+                    
+                    try
                     {
-                        baos.write( buf, 0, len );
+                        fis = new FileInputStream( selectedFile );
+                        baos = new ByteArrayOutputStream( ( int ) selectedFile.length() );
+                        byte[] buf = new byte[4096];
+                        int len;
+                        while ( ( len = fis.read( buf ) ) > 0 )
+                        {
+                            baos.write( buf, 0, len );
+                        }
+        
+                        imageBytes = baos.toByteArray();
                     }
-
-                    imageBytes = baos.toByteArray();
+                    finally
+                    {
+                        if ( fis != null )
+                        {
+                            fis.close();
+                        }
+                        
+                        if ( baos != null )
+                        {
+                            baos.close();
+                        }
+                    }
                 }
                 catch ( Exception e )
                 {
@@ -628,7 +648,7 @@ public class EditorImage extends EditorWidget<TemplateImage>
      */
     public void dispose()
     {
-        // Nothing to do
+        image.dispose();
     }
 
 
