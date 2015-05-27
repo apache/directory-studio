@@ -52,9 +52,6 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
     // UI Controls
     /** The olcPluginLogFile parameter */
     private Text pluginLogFileText; 
-    
-    private Text numberSecondsClosingIdleConnectionText;
-    private Text numberSecondsClosingConnectionWithOutstandingWriteText;
     private Text authenticationAuxpropPluginsText;
     private Text saslHostText;
     private Text saslRealmText;
@@ -110,7 +107,6 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
 
         createLogsSection( toolkit, leftComposite );
         createAuthenticationAndAuthorizationSection( toolkit, leftComposite );
-        createConnectionLimitsSection( toolkit, leftComposite );
         createSaslSection( toolkit, rightComposite );
         createTlsSection( toolkit, rightComposite );
 
@@ -134,30 +130,6 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         toolkit.createLabel( composite, "Plugin Log File:" );
         pluginLogFileText = toolkit.createText( composite, "" );
         pluginLogFileText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-    }
-
-
-    /**
-     * Creates the Connection Limits section.
-     *
-     * @param toolkit the toolkit
-     * @param parent the parent composite
-     */
-    private void createConnectionLimitsSection( FormToolkit toolkit, Composite parent )
-    {
-        Section section = createSection( toolkit, parent, "Connection Limits" );
-        Composite composite = createSectionComposite( toolkit, section, 2, false );
-
-        // Number Seconds Closing Idle Connection Text
-        toolkit.createLabel( composite, "Number of seconds before closing an idle connection:" );
-        numberSecondsClosingIdleConnectionText = toolkit.createText( composite, "" );
-        numberSecondsClosingIdleConnectionText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-
-        // Number Seconds Closing Connection With Outstanding Write Text
-        toolkit.createLabel( composite, "Number of seconds before closing a connection with an outstanding write:" );
-        numberSecondsClosingConnectionWithOutstandingWriteText = toolkit.createText( composite, "" );
-        numberSecondsClosingConnectionWithOutstandingWriteText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true,
-            false ) );
     }
 
 
@@ -370,31 +342,6 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
                 else
                 {
                     pluginLogFileText.setText( "" );
-                }
-
-                // Number Seconds Closing Idle Connection Text
-                Integer numberSecondsClosingIdleConnection = global.getOlcIdleTimeout();
-
-                if ( numberSecondsClosingIdleConnection != null )
-                {
-                    numberSecondsClosingIdleConnectionText.setText( numberSecondsClosingIdleConnection + "" );
-                }
-                else
-                {
-                    numberSecondsClosingIdleConnectionText.setText( "" );
-                }
-
-                // Number Seconds Closing Connection With Outstanding Write Text
-                Integer numberSecondsClosingConnectionWithOutstandingWrite = global.getOlcWriteTimeout();
-
-                if ( numberSecondsClosingConnectionWithOutstandingWrite != null )
-                {
-                    numberSecondsClosingConnectionWithOutstandingWriteText
-                        .setText( numberSecondsClosingConnectionWithOutstandingWrite + "" );
-                }
-                else
-                {
-                    numberSecondsClosingConnectionWithOutstandingWriteText.setText( "" );
                 }
 
                 // Authentication Auxprop Plugins Text
