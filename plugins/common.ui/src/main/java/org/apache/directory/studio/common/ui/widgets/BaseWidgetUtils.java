@@ -481,18 +481,25 @@ public class BaseWidgetUtils
     public static Button createButton( Composite parent, String text, int span )
     {
         GC gc = new GC( parent );
-        gc.setFont( JFaceResources.getDialogFont() );
-        FontMetrics fontMetrics = gc.getFontMetrics();
-        gc.dispose();
 
-        Button button = new Button( parent, SWT.PUSH );
-        GridData gridData = new GridData();
-        gridData.widthHint = Dialog.convertHorizontalDLUsToPixels( fontMetrics, IDialogConstants.BUTTON_WIDTH );
-        gridData.horizontalSpan = span;
-        button.setLayoutData( gridData );
-        button.setText( text );
-        
-        return button;
+        try
+        {
+            gc.setFont( JFaceResources.getDialogFont() );
+            FontMetrics fontMetrics = gc.getFontMetrics();
+            Button button = new Button( parent, SWT.PUSH );
+            GridData gridData = new GridData();
+            gridData.widthHint = Dialog.convertHorizontalDLUsToPixels( fontMetrics, IDialogConstants.BUTTON_WIDTH );
+            gridData.horizontalSpan = span;
+            button.setLayoutData( gridData );
+            button.setText( text );
+            
+            return button;
+        }
+        finally
+        {
+            gc.dispose();
+        }
+
     }
 
 

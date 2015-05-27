@@ -100,10 +100,17 @@ public class EditorLabel extends EditorWidget<TemplateLabel>
         if ( numberOfRows != 1 )
         {
             GC gc = new GC( parent );
-            gc.setFont( label.getFont() );
-            FontMetrics fontMetrics = gc.getFontMetrics();
-            gc.dispose();
-            gd.heightHint = fontMetrics.getHeight() * numberOfRows;
+            
+            try
+            {
+                gc.setFont( label.getFont() );
+                FontMetrics fontMetrics = gc.getFontMetrics();
+                gd.heightHint = fontMetrics.getHeight() * numberOfRows;
+            }
+            finally
+            {
+                gc.dispose();
+            }
         }
 
         return parent;

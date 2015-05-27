@@ -127,10 +127,17 @@ public class EditorTextField extends EditorWidget<TemplateTextField>
         if ( numberOfRows != 1 )
         {
             GC gc = new GC( parent );
-            gc.setFont( textfield.getFont() );
-            FontMetrics fontMetrics = gc.getFontMetrics();
-            gc.dispose();
-            gd.heightHint = fontMetrics.getHeight() * numberOfRows;
+            
+            try
+            {
+                gc.setFont( textfield.getFont() );
+                FontMetrics fontMetrics = gc.getFontMetrics();
+                gd.heightHint = fontMetrics.getHeight() * numberOfRows;
+            }
+            finally
+            {
+                gc.dispose();
+            }
         }
         
         textfield.pack();

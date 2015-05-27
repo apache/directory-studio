@@ -201,12 +201,20 @@ public class Activator extends AbstractUIPlugin
     public static int getButtonWidth( Control control )
     {
         GC gc = new GC( control );
-        gc.setFont( JFaceResources.getDialogFont() );
-        FontMetrics fontMetrics = gc.getFontMetrics();
-        gc.dispose();
+        
+        try
+        {
+            gc.setFont( JFaceResources.getDialogFont() );
+            FontMetrics fontMetrics = gc.getFontMetrics();
+    
+            int width = Dialog.convertHorizontalDLUsToPixels( fontMetrics, IDialogConstants.BUTTON_WIDTH );
 
-        int width = Dialog.convertHorizontalDLUsToPixels( fontMetrics, IDialogConstants.BUTTON_WIDTH );
-        return width;
+            return width;
+        }
+        finally
+        {
+            gc.dispose();
+        }
     }
 
 

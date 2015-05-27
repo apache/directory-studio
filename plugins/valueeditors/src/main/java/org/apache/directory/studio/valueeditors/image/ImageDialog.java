@@ -654,10 +654,17 @@ public class ImageDialog extends Dialog
         Image resizedImage = new Image( Display.getDefault(), width, height );
 
         GC gc = new GC( resizedImage );
-        gc.setAntialias( SWT.ON );
-        gc.setInterpolation( SWT.HIGH );
-        gc.drawImage( image, 0, 0, image.getBounds().width, image.getBounds().height, 0, 0, width, height );
-        gc.dispose();
+        
+        try
+        {
+            gc.setAntialias( SWT.ON );
+            gc.setInterpolation( SWT.HIGH );
+            gc.drawImage( image, 0, 0, image.getBounds().width, image.getBounds().height, 0, 0, width, height );
+        }
+        finally
+        {
+            gc.dispose();
+        }
 
         image.dispose();
 
