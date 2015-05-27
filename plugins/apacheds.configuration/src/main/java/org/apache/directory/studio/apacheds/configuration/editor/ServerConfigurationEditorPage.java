@@ -30,6 +30,7 @@ import org.apache.directory.studio.apacheds.configuration.actions.EditorImportCo
 import org.apache.directory.studio.connection.core.Connection;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -475,8 +476,8 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     protected Label setBold( Label label )
     {
         FontData fontData = label.getFont().getFontData()[0];
-        Font font = new Font( label.getDisplay(), new FontData( fontData.getName(), fontData.getHeight(), SWT.BOLD ) );
-        label.setFont( font );
+        Font boldFont = JFaceResources.getFontRegistry().getBold( fontData.getName() );
+        label.setFont( boldFont );
 
         return label;
     }

@@ -29,10 +29,8 @@ import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.ITableColorProvider;
 import org.eclipse.jface.viewers.ITableFontProvider;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.PlatformUI;
 
@@ -299,20 +297,8 @@ public class TemplatesLabelProvider extends ColumnsLabelProvider implements ITab
             {
                 if ( manager.isDefaultTemplate( ( Template ) element ) )
                 {
-                    Font defaultFont = JFaceResources.getFontRegistry().defaultFont();
-                    FontData[] fontDatas = defaultFont.getFontData();
-                    if ( fontDatas != null )
-                    {
-                        // Setting the font as bold
-                        for ( FontData fontData : fontDatas )
-                        {
-                            int style = fontData.getStyle();
-                            style |= SWT.BOLD;
-                            fontData.setStyle( SWT.BOLD );
-                        }
-
-                        return new Font( defaultFont.getDevice(), fontDatas );
-                    }
+                    // Get the default Bold Font
+                    return JFaceResources.getFontRegistry().getBold( JFaceResources.DEFAULT_FONT );
                 }
             }
         }
