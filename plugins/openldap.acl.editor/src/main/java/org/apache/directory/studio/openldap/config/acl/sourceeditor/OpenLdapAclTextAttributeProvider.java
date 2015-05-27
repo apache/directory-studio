@@ -26,9 +26,6 @@ import java.util.Map;
 import org.apache.directory.studio.common.ui.CommonUIConstants;
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.widgets.Display;
 
 
 /**
@@ -52,10 +49,9 @@ public class OpenLdapAclTextAttributeProvider
     {
         attributes.put( DEFAULT_ATTRIBUTE, new TextAttribute( CommonUIConstants.BLACK_COLOR ) );
 
-        attributes.put( KEYWORD_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(), CommonUIConstants.M_PURPLE ),
-            null, SWT.BOLD ) );
+        attributes.put( KEYWORD_ATTRIBUTE, new TextAttribute( CommonUIConstants.M_PURPLE_COLOR, null, SWT.BOLD ) );
 
-        attributes.put( STRING_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(), CommonUIConstants.BLUE ) ) );
+        attributes.put( STRING_ATTRIBUTE, new TextAttribute( CommonUIConstants.BLUE_COLOR ) );
     }
 
 

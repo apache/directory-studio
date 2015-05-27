@@ -27,6 +27,7 @@ import org.apache.directory.server.config.beans.ConfigBean;
 import org.apache.directory.server.config.beans.DirectoryServiceBean;
 import org.apache.directory.studio.apacheds.configuration.actions.EditorExportConfigurationAction;
 import org.apache.directory.studio.apacheds.configuration.actions.EditorImportConfigurationAction;
+import org.apache.directory.studio.common.ui.CommonUIConstants;
 import org.apache.directory.studio.connection.core.Connection;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
@@ -46,7 +47,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.layout.GridData;
@@ -87,7 +87,6 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     /** The default IPV4 address for servers */
     protected static final String DEFAULT_ADDRESS = "0.0.0.0"; //$NON-NLS-1$
     
-    protected static final Color GRAY_COLOR = new Color( null, 120, 120, 120 );
     protected static final String TABULATION = "      "; //$NON-NLS-1$
     
     /** A flag to indicate if the page is initialized */
@@ -461,7 +460,7 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     {
         Label label = toolkit.createLabel( parent,
             NLS.bind( Messages.getString( "ServerConfigurationEditorPage.DefaultWithValue" ), text ), SWT.WRAP ); //$NON-NLS-1$
-        label.setForeground( GRAY_COLOR );
+        label.setForeground( CommonUIConstants.M_GREY_COLOR );
 
         return label;
     }

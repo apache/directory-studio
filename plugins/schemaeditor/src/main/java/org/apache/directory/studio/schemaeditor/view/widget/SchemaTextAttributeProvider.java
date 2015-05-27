@@ -26,9 +26,6 @@ import java.util.Map;
 import org.apache.directory.studio.common.ui.CommonUIConstants;
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.widgets.Display;
 
 
 /**
@@ -55,19 +52,11 @@ public class SchemaTextAttributeProvider
     public SchemaTextAttributeProvider()
     {
         attributes.put( DEFAULT_ATTRIBUTE, new TextAttribute( CommonUIConstants.BLACK_COLOR ) );
-
-        attributes.put( KEYWORD_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(), CommonUIConstants.M_PURPLE ),
-            null, SWT.BOLD ) );
-
-        attributes.put( STRING_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(), CommonUIConstants.BLUE ) ) );
-
-        attributes.put( ATTRIBUTETYPE_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(), new RGB( 95, 63,
-            159 ) ), null, SWT.BOLD ) );
-
-        attributes.put( OBJECTCLASS_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(),
-            new RGB( 63, 127, 63 ) ), null, SWT.BOLD ) );
-
-        attributes.put( OID_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(), CommonUIConstants.RED ) ) );
+        attributes.put( KEYWORD_ATTRIBUTE, new TextAttribute( CommonUIConstants.M_PURPLE_COLOR, null, SWT.BOLD ) );
+        attributes.put( STRING_ATTRIBUTE, new TextAttribute( CommonUIConstants.BLUE_COLOR ) );
+        attributes.put( ATTRIBUTETYPE_ATTRIBUTE, new TextAttribute( CommonUIConstants.R95_G63_B159_COLOR, null, SWT.BOLD ) );
+        attributes.put( OBJECTCLASS_ATTRIBUTE, new TextAttribute( CommonUIConstants.R63_G127_B63_COLOR, null, SWT.BOLD ) );
+        attributes.put( OID_ATTRIBUTE, new TextAttribute( CommonUIConstants.RED_COLOR ) );
     }
 
 

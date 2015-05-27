@@ -32,7 +32,6 @@ import org.apache.directory.studio.common.ui.CommonUIConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -54,9 +53,6 @@ import org.eclipse.ui.forms.widgets.Section;
  */
 public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
 {
-    /** The gray color */
-    private static final Color GRAY_COLOR = new Color( null, 150, 150, 150 );
-
     /** The main section, contains oid, names, desc and usage */
     private Section mainSection;
 
@@ -345,6 +341,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
     public void setInput( Object input )
     {
         AttributeType atd = null;
+        
         if ( input instanceof AttributeType )
         {
             atd = ( AttributeType ) input;
@@ -360,7 +357,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         }
         else
         {
-            singleValuedLabel.setForeground( GRAY_COLOR );
+            singleValuedLabel.setForeground( CommonUIConstants.ML_GREY_COLOR );
         }
 
         if ( atd != null && atd.isObsolete() )
@@ -369,7 +366,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         }
         else
         {
-            isObsoleteLabel.setForeground( GRAY_COLOR );
+            isObsoleteLabel.setForeground( CommonUIConstants.ML_GREY_COLOR );
         }
 
         if ( atd != null && atd.isCollective() )
@@ -378,7 +375,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         }
         else
         {
-            collectiveLabel.setForeground( GRAY_COLOR );
+            collectiveLabel.setForeground( CommonUIConstants.ML_GREY_COLOR );
         }
 
         if ( atd != null && !atd.isUserModifiable() )
@@ -387,7 +384,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         }
         else
         {
-            noUserModificationLabel.setForeground( GRAY_COLOR );
+            noUserModificationLabel.setForeground( CommonUIConstants.ML_GREY_COLOR );
         }
 
         flagSection.layout();
@@ -396,15 +393,19 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         String lsdOid = null;
         LdapSyntax lsd = null;
         long lsdLength = 0;
+        
         if ( atd != null )
         {
             lsdOid = SchemaUtils.getSyntaxNumericOidTransitive( atd, getSchema() );
+            
             if ( lsdOid != null && getSchema().hasLdapSyntaxDescription( lsdOid ) )
             {
                 lsd = getSchema().getLdapSyntaxDescription( lsdOid );
             }
+            
             lsdLength = SchemaUtils.getSyntaxLengthTransitive( atd, getSchema() );
         }
+        
         syntaxLink.setText( getNonNullString( lsd != null ? lsd.getOid() : lsdOid ) );
         syntaxLink.setHref( lsd );
         syntaxLink.setUnderlined( lsd != null );
@@ -416,14 +417,17 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         // set matching rules content
         String emrOid = null;
         MatchingRule emr = null;
+        
         if ( atd != null )
         {
             emrOid = SchemaUtils.getEqualityMatchingRuleNameOrNumericOidTransitive( atd, getSchema() );
+            
             if ( emrOid != null && getSchema().hasMatchingRuleDescription( emrOid ) )
             {
                 emr = getSchema().getMatchingRuleDescription( emrOid );
             }
         }
+        
         equalityLink.setText( getNonNullString( emr != null ? SchemaUtils.toString( emr ) : emrOid ) );
         equalityLink.setHref( emr );
         equalityLink.setUnderlined( emr != null );
@@ -431,14 +435,17 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
 
         String smrOid = null;
         MatchingRule smr = null;
+        
         if ( atd != null )
         {
             smrOid = SchemaUtils.getSubstringMatchingRuleNameOrNumericOidTransitive( atd, getSchema() );
+            
             if ( smrOid != null && getSchema().hasMatchingRuleDescription( smrOid ) )
             {
                 smr = getSchema().getMatchingRuleDescription( smrOid );
             }
         }
+        
         substringLink.setText( getNonNullString( smr != null ? SchemaUtils.toString( smr ) : smrOid ) );
         substringLink.setHref( smr );
         substringLink.setUnderlined( smr != null );
@@ -446,14 +453,17 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
 
         String omrOid = null;
         MatchingRule omr = null;
+        
         if ( atd != null )
         {
             omrOid = SchemaUtils.getOrderingMatchingRuleNameOrNumericOidTransitive( atd, getSchema() );
+            
             if ( omrOid != null && getSchema().hasMatchingRuleDescription( omrOid ) )
             {
                 omr = getSchema().getMatchingRuleDescription( omrOid );
             }
         }
+        
         orderingLink.setText( getNonNullString( omr != null ? SchemaUtils.toString( omr ) : omrOid ) );
         orderingLink.setHref( omr );
         orderingLink.setUnderlined( omr != null );

@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor;
 
 
+import org.apache.directory.studio.common.ui.CommonUIConstants;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
@@ -261,16 +262,15 @@ public class EntryEditorWidgetLabelProvider extends LabelProvider implements ITa
         {
             if ( value.isEmpty() )
             {
-                return BrowserCommonActivator.getDefault().getColor(
-                    Display.getDefault().getSystemColor( SWT.COLOR_RED ).getRGB() );
+                return CommonUIConstants.RED_COLOR;
             }
         }
+        
         if ( attribute != null && value == null )
         {
             if ( !attribute.isConsistent() )
             {
-                return BrowserCommonActivator.getDefault().getColor(
-                    Display.getDefault().getSystemColor( SWT.COLOR_RED ).getRGB() );
+                return CommonUIConstants.RED_COLOR;
             }
         }
 

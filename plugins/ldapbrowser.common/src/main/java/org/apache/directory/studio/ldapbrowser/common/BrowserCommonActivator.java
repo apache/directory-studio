@@ -27,11 +27,7 @@ import java.util.PropertyResourceBundle;
 import org.apache.directory.studio.connection.core.event.EventRunner;
 import org.apache.directory.studio.connection.ui.UiThreadEventRunner;
 import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtension;
-import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ColorRegistry;
 import org.eclipse.jface.resource.FontRegistry;
@@ -275,8 +271,7 @@ public class BrowserCommonActivator extends AbstractUIPlugin
      * Note: Don't dispose the returned color. It is disposed automatically
      * when the plugin is stopped.
      *
-     * @param rgb
-     *                the rgb color data
+     * @param rgb the rgb color data
      * @return The SWT Color
      */
     public Color getColor( RGB rgb )

@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.directory.studio.common.ui.CommonUIConstants;
 import org.apache.directory.studio.ldifeditor.LdifEditorActivator;
 import org.apache.directory.studio.ldifeditor.LdifEditorConstants;
 import org.apache.directory.studio.ldifeditor.editor.ILdifEditor;

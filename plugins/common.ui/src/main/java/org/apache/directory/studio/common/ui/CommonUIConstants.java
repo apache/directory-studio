@@ -70,31 +70,59 @@ public final class CommonUIConstants
     
     // 7 shade of greys... From dark to light, with combinaisons
     public static final RGB BD_GREY = new RGB( 31, 31, 31 );    // Black Dark grey
+    public static Color BD_GREY_COLOR;
     public static final RGB D_GREY = new RGB( 63, 63, 63 );     // Dark grey
+    public static Color D_GREY_COLOR;
     public static final RGB MD_GREY = new RGB( 95, 95, 95 );    // Medium Dark grey
+    public static Color MD_GREY_COLOR;
     public static final RGB M_GREY = new RGB( 127, 127, 127 );  // Grey
+    public static Color M_GREY_COLOR;
     public static final RGB ML_GREY = new RGB( 159, 159, 159 ); // Medium Light grey
+    public static Color ML_GREY_COLOR;
     public static final RGB L_GREY = new RGB( 191, 191, 191 );  // Light grey
+    public static Color L_GREY_COLOR;
     public static final RGB WL_GREY = new RGB( 224, 224, 224 ); // White Light grey
+    public static Color WL_GREY_COLOR;
     
     // Red
     public static final RGB M_RED = new RGB( 127, 0, 0 );       // Medium red
+    public static Color M_RED_COLOR;
     public static final RGB ML_RED = new RGB( 159, 0, 0 );      // Medium light red
+    public static Color ML_RED_COLOR;
     public static final RGB RED = new RGB( 255, 0, 0 );         // Full red
+    public static Color RED_COLOR;
     
     // Green
     public static final RGB M_GREEN = new RGB( 0, 127, 0 );     // Medium green
+    public static Color M_GREEN_COLOR;
     public static final RGB ML_GREEN = new RGB( 0, 159, 0 );    // Medium Light green
+    public static Color ML_GREEN_COLOR;
+    public static final RGB GREEN = new RGB( 0, 255, 0 );       // Full green
+    public static Color GREEN_COLOR;
     
     // Blue
     public static final RGB M_BLUE = new RGB( 0, 0, 127 );      // Medium blue
+    public static Color M_BLUE_COLOR;
     public static final RGB L_BLUE = new RGB( 0, 0, 191 );      // Light blue 
+    public static Color L_BLUE_COLOR;
     public static final RGB BLUE = new RGB( 0, 0, 255 );        // Full blue
+    public static Color BLUE_COLOR;
     
     // Purple
     public static final RGB M_PURPLE = new RGB( 127, 0, 127 );  // Middle purple
-    public static final RGB PURPLE = new RGB( 255, 0, 255 );    // Deep purple
-    
+    public static Color M_PURPLE_COLOR;
+    public static final RGB PURPLE = new RGB( 255, 0, 255 );    // Full purple
+    public static Color PURPLE_COLOR;
+
+    // Other colors
+    public static final RGB R0_G127_B255 = new RGB( 0, 127, 255 );
+    public static Color R0_G127_B255_COLOR;
+    public static final RGB R95_G63_B159 = new RGB( 95, 63, 159 );
+    public static Color R95_G63_B159_COLOR;
+    public static final RGB R63_G127_B63 = new RGB( 63, 127, 63 );
+    public static Color R63_G127_B63_COLOR;
+
     // Some specific colors
+    
     public static final String IMG_INFORMATION = "resources/icons/information.gif"; //$NON-NLS-1$
 }

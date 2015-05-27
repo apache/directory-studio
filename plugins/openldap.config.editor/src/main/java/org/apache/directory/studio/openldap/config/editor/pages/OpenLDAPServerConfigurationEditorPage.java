@@ -20,6 +20,7 @@
 package org.apache.directory.studio.openldap.config.editor.pages;
 
 
+import org.apache.directory.studio.common.ui.CommonUIConstants;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.openldap.config.actions.EditorExportConfigurationAction;
@@ -38,7 +39,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -60,7 +60,6 @@ import org.eclipse.ui.forms.widgets.Section;
  */
 public abstract class OpenLDAPServerConfigurationEditorPage extends FormPage
 {
-    protected static final Color GRAY_COLOR = new Color( null, 120, 120, 120 );
     protected static final String TABULATION = "      ";
 
     /** A flag to indicate if the page is initialized */
@@ -277,7 +276,7 @@ public abstract class OpenLDAPServerConfigurationEditorPage extends FormPage
     protected Label createDefaultValueLabel( FormToolkit toolkit, Composite parent, String text )
     {
         Label label = toolkit.createLabel( parent, NLS.bind( "(Default: {0})", text ) );
-        label.setForeground( GRAY_COLOR );
+        label.setForeground( CommonUIConstants.M_GREY_COLOR );
 
         return label;
     }

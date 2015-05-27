@@ -104,6 +104,7 @@ public class Activator extends AbstractUIPlugin
         {
             aciTemplateStore = new ContributionTemplateStore( getAciTemplateContextTypeRegistry(),
                 getPreferenceStore(), "templates" ); //$NON-NLS-1$
+            
             try
             {
                 aciTemplateStore.load();
@@ -163,15 +164,18 @@ public class Activator extends AbstractUIPlugin
     public Image getImage( String path )
     {
         Image image = getImageRegistry().get( path );
+        
         if ( image == null )
         {
             ImageDescriptor id = getImageDescriptor( path );
+            
             if ( id != null )
             {
                 image = id.createImage();
                 getImageRegistry().put( path, image );
             }
         }
+        
         return image;
     }
 
@@ -188,6 +192,7 @@ public class Activator extends AbstractUIPlugin
         {
             aciItemParser = new ACIItemParser( null );
         }
+        
         return aciItemParser;
     }
 
@@ -221,8 +226,7 @@ public class Activator extends AbstractUIPlugin
     /**
      * Returns the TextAttribute Provider
      * 
-     * @return
-     *      the TextAttribute Provider
+     * @return the TextAttribute Provider
      */
     public ACITextAttributeProvider getTextAttributeProvider()
     {
@@ -230,6 +234,7 @@ public class Activator extends AbstractUIPlugin
         {
             textAttributeProvider = new ACITextAttributeProvider();
         }
+        
         return textAttributeProvider;
     }
 
@@ -237,8 +242,7 @@ public class Activator extends AbstractUIPlugin
     /**
      * Retuns the the Aci Code Scanner
      * 
-     * @return 
-     *      the the Aci Code Scanner
+     * @return the the Aci Code Scanner
      */
     public ACICodeScanner getAciCodeScanner()
     {
@@ -246,6 +250,7 @@ public class Activator extends AbstractUIPlugin
         {
             aciCodeScanner = new ACICodeScanner( getTextAttributeProvider() );
         }
+        
         return aciCodeScanner;
     }
 
@@ -253,8 +258,7 @@ public class Activator extends AbstractUIPlugin
     /**
      * Gets the ACI Template ContextType Registry
      *
-     * @return
-     *      the ACI Template ContextType Registry
+     * @return the ACI Template ContextType Registry
      */
     public ContributionContextTypeRegistry getAciTemplateContextTypeRegistry()
     {
@@ -265,8 +269,7 @@ public class Activator extends AbstractUIPlugin
     /**
      * Gets the ACI Template Store
      *
-     * @return
-     *      the ACI Template Store
+     * @return the ACI Template Store
      */
     public ContributionTemplateStore getAciTemplateStore()
     {
@@ -277,8 +280,7 @@ public class Activator extends AbstractUIPlugin
     /**
      * Gets the plugin properties.
      *
-     * @return
-     *      the plugin properties
+     * @return the plugin properties
      */
     public PropertyResourceBundle getPluginProperties()
     {
