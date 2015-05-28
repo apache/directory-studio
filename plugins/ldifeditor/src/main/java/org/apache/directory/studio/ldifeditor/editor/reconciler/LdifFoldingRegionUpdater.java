@@ -99,11 +99,11 @@ public class LdifFoldingRegionUpdater implements IPropertyChangeListener
             // create folding regions of current LDIF model; mark comments
             // and
             // folded lines as collapsed
-            Map positionToAnnotationMap = createFoldingRegions( editor.getLdifModel(), document );
+            Map<Position, ProjectionAnnotation> positionToAnnotationMap = createFoldingRegions( editor.getLdifModel(), document );
 
             // compare with current annotation model (--> toAdd, toDelete)
-            List annotationsToDeleteList = new ArrayList();
-            Map annotationsToAddMap = new HashMap();
+            List<Annotation> annotationsToDeleteList = new ArrayList<Annotation>();
+            Map<ProjectionAnnotation, Position> annotationsToAddMap = new HashMap<ProjectionAnnotation, Position>();
             this.computeDifferences( projectionAnnotationModel, positionToAnnotationMap, annotationsToDeleteList,
                 annotationsToAddMap );
             Annotation[] annotationsToDelete = ( Annotation[] ) annotationsToDeleteList
@@ -124,28 +124,31 @@ public class LdifFoldingRegionUpdater implements IPropertyChangeListener
     }
 
 
-    private void computeDifferences( ProjectionAnnotationModel model, Map positionToAnnotationMap,
-        List annotationsToDeleteList, Map annotationsToAddMap )
+    private void computeDifferences( ProjectionAnnotationModel model, Map<Position, ProjectionAnnotation> positionToAnnotationMap,
+        List<Annotation> annotationsToDeleteList, Map<ProjectionAnnotation, Position> annotationsToAddMap )
     {
-
-        for ( Iterator iter = model.getAnnotationIterator(); iter.hasNext(); )
+        for ( Iterator<Annotation> iter = model.getAnnotationIterator(); iter.hasNext(); )
         {
-            Object annotation = iter.next();
+            Annotation annotation = iter.next();
+            
             if ( annotation instanceof ProjectionAnnotation )
             {
                 Position position = model.getPosition( ( Annotation ) annotation );
+                
                 if ( positionToAnnotationMap.containsKey( position ) )
+                {
                     positionToAnnotationMap.remove( position );
+                }
                 else
+                {
                     annotationsToDeleteList.add( annotation );
+                }
             }
         }
 
-        for ( Iterator iter = positionToAnnotationMap.keySet().iterator(); iter.hasNext(); )
+        for ( Map.Entry<Position, ProjectionAnnotation> entry : positionToAnnotationMap.entrySet() )
         {
-            Position position = ( Position ) iter.next();
-            ProjectionAnnotation annotation = ( ProjectionAnnotation ) positionToAnnotationMap.get( position );
-            annotationsToAddMap.put( annotation, position );
+            annotationsToAddMap.put( entry.getValue(), entry.getKey() );
         }
     }
 
@@ -159,9 +162,9 @@ public class LdifFoldingRegionUpdater implements IPropertyChangeListener
      * @return a map with positions as keys to annotations as values
      * @throws BadLocationException
      */
-    private Map createFoldingRegions( LdifFile model, IDocument document ) throws BadLocationException
+    private Map<Position, ProjectionAnnotation> createFoldingRegions( LdifFile model, IDocument document ) throws BadLocationException
     {
-        Map positionToAnnotationMap = new HashMap();
+        Map<Position, ProjectionAnnotation> positionToAnnotationMap = new HashMap<Position, ProjectionAnnotation>();
         LdifContainer[] containers = model.getContainers();
 
         boolean ENABLE_FOLDING = LdifEditorActivator.getDefault().getPreferenceStore().getBoolean(
@@ -181,6 +184,7 @@ public class LdifFoldingRegionUpdater implements IPropertyChangeListener
                 int containerStartLine = document.getLineOfOffset( container.getOffset() );
                 int containerEndLine = -1;
                 LdifPart[] parts = container.getParts();
+                
                 for ( int j = parts.length - 1; j >= 0; j-- )
                 {
                     if ( containerEndLine == -1
@@ -189,9 +193,11 @@ public class LdifFoldingRegionUpdater implements IPropertyChangeListener
                         containerEndLine = document.getLineOfOffset( parts[j].getOffset() + parts[j].getLength() - 1 );
                         // break;
                     }
+                    
                     if ( parts[j] instanceof LdifNonEmptyLineBase )
                     {
                         LdifNonEmptyLineBase line = ( LdifNonEmptyLineBase ) parts[j];
+                        
                         if ( line.isFolded() )
                         {
                             Position position = new Position( line.getOffset(), line.getLength() );
@@ -208,9 +214,6 @@ public class LdifFoldingRegionUpdater implements IPropertyChangeListener
                     int start = document.getLineOffset( containerStartLine );
                     int end = document.getLineOffset( containerEndLine ) + document.getLineLength( containerEndLine );
                     Position position = new Position( start, end - start );
-                    // ProjectionAnnotation annotation = new
-                    // ProjectionAnnotation(container instanceof
-                    // LdifCommentContainer);
                     ProjectionAnnotation annotation = new ProjectionAnnotation( FOLD_RECORDS
                         || ( FOLD_COMMENTS && container instanceof LdifCommentContainer ) );
                     positionToAnnotationMap.put( position, annotation );

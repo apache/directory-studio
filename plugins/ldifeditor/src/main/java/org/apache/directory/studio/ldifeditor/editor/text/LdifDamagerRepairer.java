@@ -102,11 +102,13 @@ public class LdifDamagerRepairer implements IPresentationDamager, IPresentationR
 
         LdifFile ldifModel = this.editor.getLdifModel();
         LdifContainer[] allContainers = ldifModel.getContainers();
-        List containerList = new ArrayList();
+        List<LdifContainer> containerList = new ArrayList<LdifContainer>();
+        
         for ( int i = 0; i < allContainers.length; i++ )
         {
             LdifContainer container = allContainers[i];
             Region containerRegion = new Region( container.getOffset(), container.getLength() );
+            
             if ( TextUtilities.overlaps( containerRegion, damage ) )
             {
                 containerList.add( container );
@@ -115,12 +117,6 @@ public class LdifDamagerRepairer implements IPresentationDamager, IPresentationR
         LdifContainer[] containers = ( LdifContainer[] ) containerList
             .toArray( new LdifContainer[containerList.size()] );
         this.highlight( containers, presentation, damage );
-
-        // LdifFile ldifModel = this.editor.getLdifModel();
-        // System.out.println(ldifModel.toRawString());
-        // LdifContainer[] allContainers = ldifModel.getContainers();
-        // this.highlight(allContainers, presentation, null);
-
     }
 
     private Map textAttributeKeyToValueMap;

@@ -27,9 +27,6 @@ import org.apache.directory.studio.ldifparser.LdifUtils;
 
 public class LdifControlLine extends LdifValueLineBase
 {
-
-    private static final long serialVersionUID = -3961159214439218610L;
-
     private String rawCriticality;
 
     private String rawControlValueType;

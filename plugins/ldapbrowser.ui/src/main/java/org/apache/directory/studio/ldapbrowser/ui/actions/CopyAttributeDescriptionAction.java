@@ -21,17 +21,17 @@
 package org.apache.directory.studio.ldapbrowser.ui.actions;
 
 
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
 import org.apache.directory.studio.ldapbrowser.common.actions.CopyAction;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
+import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
+import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
-
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
@@ -59,11 +59,20 @@ public class CopyAttributeDescriptionAction extends BrowserAction
     public void run()
     {
         StringBuffer text = new StringBuffer();
-        for ( Iterator iterator = getAttributeNameSet().iterator(); iterator.hasNext(); )
+        boolean isFirst = true;
+        
+        for ( String attributeName : getAttributeNameSet() )
         {
-            text.append( iterator.next() );
-            if ( iterator.hasNext() )
+            if ( isFirst )
+            {
+                isFirst = false;
+            }
+            else
+            {
                 text.append( BrowserCoreConstants.LINE_SEPARATOR );
+            }
+
+            text.append( attributeName );
         }
 
         if ( text.length() > 0 )
@@ -78,28 +87,30 @@ public class CopyAttributeDescriptionAction extends BrowserAction
     /**
      * Gets a Set containing all the Attribute Names.
      *
-     * @return
-     *      a Set containing all the Attribute Names
+     * @return a Set containing all the Attribute Names
      */
-    private Set getAttributeNameSet()
+    private Set<String> getAttributeNameSet()
     {
         Set<String> attributeNameSet = new LinkedHashSet<String>();
-        for ( int i = 0; i < getSelectedAttributeHierarchies().length; i++ )
+        
+        for ( AttributeHierarchy attributeHierarchy : getSelectedAttributeHierarchies() )
         {
-            for ( Iterator it = getSelectedAttributeHierarchies()[i].iterator(); it.hasNext(); )
+            for ( IAttribute attribute : attributeHierarchy )
             {
-                IAttribute att = ( IAttribute ) it.next();
-                attributeNameSet.add( att.getDescription() );
+                attributeNameSet.add( attribute.getDescription() );
             }
         }
-        for ( int i = 0; i < getSelectedAttributes().length; i++ )
+        
+        for ( IAttribute attribute : getSelectedAttributes() )
         {
-            attributeNameSet.add( getSelectedAttributes()[i].getDescription() );
+            attributeNameSet.add( attribute.getDescription() );
         }
-        for ( int i = 0; i < getSelectedValues().length; i++ )
+        
+        for ( IValue value : getSelectedValues() )
         {
-            attributeNameSet.add( getSelectedValues()[i].getAttribute().getDescription() );
+            attributeNameSet.add( value.getAttribute().getDescription() );
         }
+        
         return attributeNameSet;
     }
 

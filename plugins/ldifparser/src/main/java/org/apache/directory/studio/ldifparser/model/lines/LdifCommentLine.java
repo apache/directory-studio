@@ -26,10 +26,6 @@ import org.apache.directory.studio.ldifparser.LdifParserConstants;
 
 public class LdifCommentLine extends LdifNonEmptyLineBase
 {
-
-    private static final long serialVersionUID = -4810053047583328865L;
-
-
     protected LdifCommentLine()
     {
     }

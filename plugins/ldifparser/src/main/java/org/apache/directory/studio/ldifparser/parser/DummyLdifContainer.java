@@ -22,7 +22,6 @@ package org.apache.directory.studio.ldifparser.parser;
 
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.directory.studio.ldifparser.model.LdifPart;
@@ -32,10 +31,6 @@ import org.apache.directory.studio.ldifparser.model.lines.LdifCommentLine;
 
 public class DummyLdifContainer extends LdifContainer
 {
-
-    private static final long serialVersionUID = -6712132529064161996L;
-
-
     public DummyLdifContainer( LdifPart part )
     {
         super( part );
@@ -44,16 +39,17 @@ public class DummyLdifContainer extends LdifContainer
 
     public LdifCommentLine[] getComments()
     {
-        List l = new ArrayList();
-        for ( Iterator it = this.ldifParts.iterator(); it.hasNext(); )
+        List<LdifPart> ldifPartList = new ArrayList<LdifPart>();
+        
+        for ( LdifPart ldifPart : ldifParts )
         {
-            Object o = it.next();
-            if ( o instanceof LdifCommentLine )
+            if ( ldifPart instanceof LdifCommentLine )
             {
-                l.add( o );
+                ldifPartList.add( ldifPart );
             }
         }
-        return ( LdifCommentLine[] ) l.toArray( new LdifCommentLine[l.size()] );
+        
+        return ( LdifCommentLine[] ) ldifPartList.toArray( new LdifCommentLine[ldifPartList.size()] );
     }
 
 
@@ -61,5 +57,4 @@ public class DummyLdifContainer extends LdifContainer
     {
         return false;
     }
-
 }

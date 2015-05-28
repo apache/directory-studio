@@ -26,10 +26,6 @@ import org.apache.directory.studio.ldifparser.LdifParserConstants;
 
 public class LdifModSpecSepLine extends LdifNonEmptyLineBase
 {
-
-    private static final long serialVersionUID = -6411592502825895865L;
-
-
     protected LdifModSpecSepLine()
     {
     }

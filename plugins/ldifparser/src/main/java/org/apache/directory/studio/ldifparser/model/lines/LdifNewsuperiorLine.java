@@ -27,10 +27,6 @@ import org.apache.directory.studio.ldifparser.LdifUtils;
 
 public class LdifNewsuperiorLine extends LdifValueLineBase
 {
-
-    private static final long serialVersionUID = -8614298286815271694L;
-
-
     protected LdifNewsuperiorLine()
     {
     }

@@ -79,7 +79,7 @@ class LdifAnnotationUpdater
         {
             ( ( IAnnotationModelExtension ) annotationModel ).removeAllAnnotations();
 
-            List positionList = new ArrayList();
+            List<Position> positionList = new ArrayList<Position>();
 
             LdifContainer[] containers = model.getContainers();
             for ( int i = 0; i < containers.length; i++ )
@@ -92,9 +92,11 @@ class LdifAnnotationUpdater
                 StringBuffer errorText = null;
 
                 LdifPart[] parts = container.getParts();
+                
                 for ( int k = 0; k < parts.length; k++ )
                 {
                     LdifPart part = parts[k];
+                    
                     if ( !part.isValid() )
                     {
                         if ( errorOffset == -1 )
@@ -123,20 +125,11 @@ class LdifAnnotationUpdater
 
                 if ( errorOffset > -1 )
                 {
-                    // Annotation annotation = new Annotation("DEFAULT",
-                    // true,
-                    // invalidFilters[i].toString());
-                    // if(errorPart instanceof LdifUnknownPart) {
-                    // errorOffset = container.getOffset();
-                    // errorLength = container.getLength();
-                    // errorText = new StringBuffer(container.toString());
-                    // }
                     Annotation annotation = new Annotation( ERROR_ANNOTATION_TYPE, true, errorText.toString() );
                     Position position = new Position( errorOffset, errorLength );
                     positionList.add( position );
                     viewer.getAnnotationModel().addAnnotation( annotation, position );
                 }
-
             }
         }
     }

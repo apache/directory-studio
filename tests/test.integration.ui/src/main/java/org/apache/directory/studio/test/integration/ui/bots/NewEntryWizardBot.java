@@ -115,9 +115,10 @@ public class NewEntryWizardBot extends WizardBot
 
     public String getDnPreview()
     {
-        for ( int i = 0;; i++ )
+        while ( true )
         {
             String text = bot.text( 1 ).getText();
+            
             if ( Dn.isValid( text ) )
             {
                 return text;

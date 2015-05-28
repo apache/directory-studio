@@ -130,7 +130,8 @@ public class LdifOutlinePage extends ContentOutlinePage
                     }
                     else if ( element instanceof List )
                     {
-                        List list = ( List ) element;
+                        List<?> list = ( List<?> ) element;
+                        
                         if ( !list.isEmpty() && list.get( 0 ) instanceof LdifAttrValLine )
                         {
                             LdifAttrValLine line = ( LdifAttrValLine ) list.get( 0 );
@@ -283,9 +284,9 @@ public class LdifOutlinePage extends ContentOutlinePage
             }
 
             // List of AttrValLine --> Array of AttrValLine
-            else if ( element instanceof List && ( ( List ) element ).get( 0 ) instanceof LdifAttrValLine )
+            else if ( element instanceof List && ( ( List<?> ) element ).get( 0 ) instanceof LdifAttrValLine )
             {
-                List list = ( List ) element;
+                List<?> list = ( List<?> ) element;
                 return list.toArray();
             }
             else if ( element instanceof LdifModSpec )
@@ -304,22 +305,27 @@ public class LdifOutlinePage extends ContentOutlinePage
         /**
          * Returns a unique line of attribute values from an array of attribute value lines
          *
-         * @param lines
-         *      the attribute value lines
-         * @return 
-         *      a unique line of attribute values from an array of attribute values lines
+         * @param lines the attribute value lines
+         * @return a unique line of attribute values from an array of attribute values lines
          */
         private Object[] getUniqueAttrValLineArray( LdifAttrValLine[] lines )
         {
-            Map uniqueAttrMap = new LinkedHashMap();
-            for ( int i = 0; i < lines.length; i++ )
+            Map<String, List<LdifAttrValLine>> uniqueAttrMap = new LinkedHashMap<String, List<LdifAttrValLine>>();
+            
+            for ( LdifAttrValLine ldifAttrValLine : lines )
             {
-                if ( !uniqueAttrMap.containsKey( lines[i].getUnfoldedAttributeDescription() ) )
+                String key = ldifAttrValLine.getUnfoldedAttributeDescription();
+                List<LdifAttrValLine> listLdifAttrValLine = uniqueAttrMap.get( key );
+                
+                if ( listLdifAttrValLine == null )
                 {
-                    uniqueAttrMap.put( lines[i].getUnfoldedAttributeDescription(), new ArrayList() );
+                    listLdifAttrValLine = new ArrayList<LdifAttrValLine>();
+                    uniqueAttrMap.put( key, listLdifAttrValLine );
                 }
-                ( ( List ) uniqueAttrMap.get( lines[i].getUnfoldedAttributeDescription() ) ).add( lines[i] );
+                
+                listLdifAttrValLine.add( ldifAttrValLine );
             }
+            
             return uniqueAttrMap.values().toArray();
         }
 
@@ -402,9 +408,9 @@ public class LdifOutlinePage extends ContentOutlinePage
             }
 
             // List of AttrValLine
-            else if ( element instanceof List && ( ( List ) element ).get( 0 ) instanceof LdifAttrValLine )
+            else if ( element instanceof List && ( ( List<?> ) element ).get( 0 ) instanceof LdifAttrValLine )
             {
-                List list = ( List ) element;
+                List<?> list = ( List<?> ) element;
                 return ( ( LdifAttrValLine ) list.get( 0 ) ).getUnfoldedAttributeDescription() + " (" + list.size() //$NON-NLS-1$
                     + ")"; //$NON-NLS-1$
             }

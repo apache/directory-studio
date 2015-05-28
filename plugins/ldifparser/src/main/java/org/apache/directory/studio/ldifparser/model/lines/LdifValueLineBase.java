@@ -31,9 +31,6 @@ import org.apache.directory.studio.ldifparser.LdifUtils;
 
 public class LdifValueLineBase extends LdifNonEmptyLineBase
 {
-
-    private static final long serialVersionUID = -7030930374861554147L;
-
     private String rawValueType;
 
     private String rawValue;
