@@ -25,6 +25,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -54,8 +55,10 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
     /** The list of cancel listeners */
     protected List<CancelListener> cancelListenerList;
 
-    /** The progress message to report */
-    protected String reportProgressMessage = null;
+    /** Flag to indicate if message reporting is allowed. Whenever reporting a mesasage
+     * this flag is set to false. The {@link StudioProgressMonitorWatcherJob} is resetting
+     * it to true once a second. This way too many updates are prevented. */
+    protected AtomicBoolean allowMessageReporting;
 
 
     /**
@@ -65,10 +68,7 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
      */
     public StudioProgressMonitor( IProgressMonitor monitor )
     {
-        super( monitor );
-        this.pluginId = CommonCoreConstants.PLUGIN_ID;
-        done = false;
-        CommonCorePlugin.getDefault().getStudioProgressMonitorWatcherJob().addMonitor(this);
+        this( CommonCoreConstants.PLUGIN_ID, monitor );
     }
 
 
@@ -83,6 +83,7 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
         this.pluginId = pluginId;
         done = false;
         CommonCorePlugin.getDefault().getStudioProgressMonitorWatcherJob().addMonitor(this);
+        allowMessageReporting = new AtomicBoolean( true );
     }
 
 
@@ -165,7 +166,11 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
      */
     public void reportProgress( String message )
     {
-        reportProgressMessage = message;
+        boolean doReport = allowMessageReporting.getAndSet( false );
+        if ( doReport )
+        {
+            subTask( message );
+        }
     }
 
 

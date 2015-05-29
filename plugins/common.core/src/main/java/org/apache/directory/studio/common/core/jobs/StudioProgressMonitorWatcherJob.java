@@ -77,11 +77,10 @@ public class StudioProgressMonitorWatcherJob extends Job
 
                 do
                 {
-                    // check report progress message
-                    if ( !spm.isCanceled() && !spm.done && spm.reportProgressMessage != null )
+                    // reset allow message reporting
+                    if ( !spm.isCanceled() && !spm.done )
                     {
-                        spm.subTask( spm.reportProgressMessage );
-                        spm.reportProgressMessage = null;
+                        spm.allowMessageReporting.set( true );
                     }
 
                     // check if canceled
