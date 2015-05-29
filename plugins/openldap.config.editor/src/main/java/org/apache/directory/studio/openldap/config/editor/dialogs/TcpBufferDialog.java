@@ -304,12 +304,12 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
 
 
     /**
-     * We have to check that the ID does not already exist.
+     * Construct the TcpBufferWrapper from what we have in the dialog
      * {@inheritDoc}
      */
     protected void okPressed()
     {
-        // Creating the new index
+        // Creating the new TcpBufferWrapper
         String sizeStr = sizeText.getText();
         String url = listenerText.getText();
         int sizeValue = Integer.valueOf( sizeStr );
