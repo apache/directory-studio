@@ -31,7 +31,7 @@ import org.apache.directory.api.util.Strings;
  * hardLimit ::= 'soft' | limit
  * </pre>
  * 
- * Note : each of the limt is an Integer, so that we can have two states :
+ * Note : each of the limit is an Integer, so that we can have two states :
  * <ul>
  * <li>not existent</li>
  * <li>has a value</li>
@@ -52,8 +52,8 @@ public class TimeLimitWrapper
     private Integer hardLimit;
     
     //Define some of the used constants
-    private static final Integer UNLIMITED = Integer.valueOf( -1 );
-    private static final Integer HARD_SOFT = Integer.valueOf( -3 );
+    public static final Integer UNLIMITED = Integer.valueOf( -1 );
+    public static final Integer HARD_SOFT = Integer.valueOf( -3 );
     
     /**
      * Create a TimeLimitWrapper instance

@@ -385,8 +385,8 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
     {
         // TcpBuffer Group
         Group tcpBufferGroup = BaseWidgetUtils.createGroup( parent, "TcpBuffer input", 1 );
-        GridLayout attributesGroupGridLayout = new GridLayout( 6, false );
-        tcpBufferGroup.setLayout( attributesGroupGridLayout );
+        GridLayout tcpBufferGroupGridLayout = new GridLayout( 6, false );
+        tcpBufferGroup.setLayout( tcpBufferGroupGridLayout );
         tcpBufferGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Size Text
