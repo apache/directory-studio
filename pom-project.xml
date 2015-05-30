@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!--
+  @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.apache.directory.project</groupId>
+    <artifactId>project</artifactId>
+    <version>34</version>
+    <relativePath />
+  </parent>
+
+  <groupId>org.apache.directory.studio</groupId>
+  <artifactId>org.apache.directory.studio.project</artifactId>
+  <version>1</version>
+  <name>Apache Directory Studio Project</name>
+  <description>Apache Directory Studio is a complete directory tooling platform intended to be used with any LDAP server however it is particularly designed for use with the Apache Directory Server.</description>
+  <packaging>pom</packaging>
+
+  <url>http://directory.apache.org/studio/</url>
+
+  <issueManagement>
+    <system>JIRA</system>
+    <url>http://issues.apache.org/jira/browse/DIRSTUDIO</url>
+  </issueManagement>
+
+  <scm>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/studio/trunk/</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/studio/trunk/</developerConnection>
+    <url>https://svn.apache.org/viewvc/directory/studio/trunk/</url>
+  </scm>
+
+  <distributionManagement>
+    <site>
+      <id>apache.directory.studio</id>
+      <url>${distMgmtSiteUrl}</url>
+    </site>
+  </distributionManagement>
+
+  <properties>
+    <!--
+      Set default of various URLs for deployment repositories/paths/....
+      Can be overwritten in the settings.xml
+    -->
+    <studio.dist.url>${project.distributionManagement.repository.url}</studio.dist.url>
+    <distMgmtSiteUrl>scpexe://people.apache.org/www/directory.apache.org/studio/gen-docs/${project.version}</distMgmtSiteUrl>
+
+    <tycho.version>0.22.0</tycho.version>
+
+    <!-- Set versions for dependencies -->
+    <antlr.version>2.7.7</antlr.version>
+    <antlr.bundleversion>2.7.7</antlr.bundleversion>
+    <junit.version>4.11</junit.version>
+    <log4j.log4j.version>1.2.17</log4j.log4j.version>
+    <log4j.log4j.bundleversion>1.2.17</log4j.log4j.bundleversion>
+    <net.sf.ehcache.version>2.8.5</net.sf.ehcache.version>
+    <net.sf.ehcache.bundleversion>2.8.5</net.sf.ehcache.bundleversion>
+    <org.apache.commons.codec.version>1.8</org.apache.commons.codec.version>
+    <org.apache.commons.codec.bundleversion>1.8.0</org.apache.commons.codec.bundleversion>
+    <org.apache.commons.collections.version>3.2.1</org.apache.commons.collections.version>
+    <org.apache.commons.collections.bundleversion>3.2.1</org.apache.commons.collections.bundleversion>
+    <org.apache.commons.io.version>2.4</org.apache.commons.io.version>
+    <org.apache.commons.io.bundleversion>2.4.0</org.apache.commons.io.bundleversion>
+    <org.apache.commons.lang.version>2.6</org.apache.commons.lang.version>
+    <org.apache.commons.lang.bundleversion>2.6.0</org.apache.commons.lang.bundleversion>
+    <org.apache.commons.pool.version>1.6</org.apache.commons.pool.version>
+    <org.apache.commons.pool.bundleversion>1.6.0</org.apache.commons.pool.bundleversion>
+    <org.apache.directory.api.version>1.0.0-M30</org.apache.directory.api.version>
+    <org.apache.directory.api.bundleversion>1.0.0.M30</org.apache.directory.api.bundleversion>
+    <org.apache.directory.server.version>2.0.0-M20</org.apache.directory.server.version>
+    <org.apache.directory.server.bundleversion>2.0.0.M20</org.apache.directory.server.bundleversion>
+    <org.apache.mina.version>2.0.9</org.apache.mina.version>
+    <org.apache.mina.bundleversion>2.0.9</org.apache.mina.bundleversion>
+    <org.apache.poi.version>3.9</org.apache.poi.version>
+    <org.apache.poi.bundleversion>3.9.0</org.apache.poi.bundleversion>
+    <org.apache.xmlgraphics.fop.version>1.0</org.apache.xmlgraphics.fop.version>
+    <org.bouncycastle.bcprov.jdk15.version>140</org.bouncycastle.bcprov.jdk15.version>
+    <org.bouncycastle.bcprov.jdk15.bundleversion>140.0.0</org.bouncycastle.bcprov.jdk15.bundleversion>
+    <org.slf4j.version>1.7.10</org.slf4j.version>
+    <org.slf4j.bundleversion>1.7.10</org.slf4j.bundleversion>
+    <org.xpp3.version>1.1.0.4c</org.xpp3.version>
+    <org.xpp3.bundleversion>1.1.0.4c</org.xpp3.bundleversion>
+    <xerces.xercesimpl.version>2.11.0</xerces.xercesimpl.version>
+    <xerces.xercesimpl.bundleversion>2.11.0</xerces.xercesimpl.bundleversion>
+
+    <!-- Set versions for skins -->
+    <skin.version>1.0.2</skin.version>
+
+    <!-- The repositories -->
+    <juno-repo.url>http://download.eclipse.org/releases/juno</juno-repo.url>
+    <kepler-repo.url>http://download.eclipse.org/releases/kepler</kepler-repo.url>
+    <luna-repo.url>http://download.eclipse.org/releases/luna</luna-repo.url>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-maven-plugin</artifactId>
+        <extensions>true</extensions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-packaging-plugin</artifactId>
+        <configuration>
+          <format>'v'yyyyMMdd</format>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>target-platform-configuration</artifactId>
+        <configuration>
+          <target>
+             <artifact>
+                <groupId>org.apache.directory.studio</groupId>
+                <artifactId>org.apache.directory.studio.eclipse-target-platform</artifactId>
+                <version>${project.version}</version>
+             </artifact>
+          </target>
+
+          <environments>
+            <environment>
+              <os>linux</os>
+              <ws>gtk</ws>
+              <arch>x86</arch>
+            </environment>
+
+            <environment>
+              <os>linux</os>
+              <ws>gtk</ws>
+              <arch>x86_64</arch>
+            </environment>
+
+            <environment>
+              <os>win32</os>
+              <ws>win32</ws>
+              <arch>x86</arch>
+            </environment>
+
+            <environment>
+              <os>win32</os>
+              <ws>win32</ws>
+              <arch>x86_64</arch>
+            </environment>
+
+            <environment>
+              <os>macosx</os>
+              <ws>cocoa</ws>
+              <arch>x86_64</arch>
+            </environment>
+          </environments>
+        </configuration>
+      </plugin>
+    </plugins>
+
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.eclipse.tycho</groupId>
+          <artifactId>tycho-maven-plugin</artifactId>
+          <version>${tycho.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.eclipse.tycho</groupId>
+          <artifactId>tycho-compiler-plugin</artifactId>
+          <version>${tycho.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.eclipse.tycho</groupId>
+          <artifactId>tycho-packaging-plugin</artifactId>
+          <version>${tycho.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.eclipse.tycho</groupId>
+          <artifactId>target-platform-configuration</artifactId>
+          <version>${tycho.version}</version>
+        </plugin>
+        
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-antrun-plugin</artifactId>
+          <dependencies>
+            <dependency>
+              <groupId>org.apache.ant</groupId>
+              <artifactId>ant-apache-regexp</artifactId>
+              <version>1.7.1</version>
+              <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+              <groupId>xalan</groupId>
+              <artifactId>xalan</artifactId>
+              <version>2.7.0</version>
+              <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+              <groupId>ant</groupId>
+              <artifactId>optional</artifactId>
+              <version>1.5.4</version>
+              <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+              <groupId>org.apache.xmlgraphics</groupId>
+              <artifactId>fop</artifactId>
+              <version>${org.apache.xmlgraphics.fop.version}</version>
+              <scope>compile</scope>
+            </dependency>
+          </dependencies>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.rat</groupId>
+          <artifactId>apache-rat-plugin</artifactId>
+          <configuration>
+            <excludeSubProjects>false</excludeSubProjects>
+            <excludes>
+              <!-- MAVEN_DEFAULT_EXCLUDES -->
+              <exclude>**/target/**/*</exclude>
+              <exclude>**/cobertura.ser</exclude>
+              <exclude>**/META-INF/DEPENDENCIES</exclude>
+              <!-- ECLIPSE_DEFAULT_EXCLUDES -->
+              <exclude>**/.classpath</exclude>
+              <exclude>**/.project</exclude>
+              <exclude>**/.settings/**/*</exclude>
+              <!-- IDEA_DEFAULT_EXCLUDES -->
+              <exclude>**/*.iml</exclude>
+              <exclude>**/*.ipr</exclude>
+              <exclude>**/*.iws</exclude>
+              <!-- MANIFEST_MF_EXCLUDES -->
+              <exclude>**/MANIFEST.MF</exclude>
+              <!-- Missing license header in dependency reduced pom, see http://jira.codehaus.org/browse/MSHADE-48 -->
+              <exclude>**/dependency-reduced-pom.xml</exclude>
+              <!-- GITIGNORE_EXCLUDES -->
+              <exclude>**/.gitignore</exclude>
+              <!-- ABOUT_EXCLUDES -->
+              <exclude>**/about.ini</exclude>
+              <exclude>**/about_files/*</exclude>
+              <!-- LOG_FILES_EXCLUDES -->
+              <exclude>**/*.log</exclude>
+              <exclude>**/*.vm</exclude>
+              <!-- NSIS_EXCLUDES -->
+              <exclude>**/src/main/resources/AdvUninstLog.nsh</exclude>
+              <!-- IMAGES_EXCLUDES -->
+              <exclude>**/studio.xpm</exclude>
+              <exclude>**/*.bmp</exclude>
+              <!-- OTHER_EXCLUDES -->
+              <exclude>**/*.launch</exclude>
+              <!-- OTHER_EXCLUDES -->
+              <exclude>**/rfc*/rfc*.txt</exclude>
+              <exclude>tools/**/*</exclude>
+            </excludes>
+          </configuration>
+         </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
+</project>
