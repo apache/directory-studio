@@ -68,6 +68,12 @@ public class StudioBot
     }
 
 
+    public ProgressViewBot getProgressView()
+    {
+        return new ProgressViewBot();
+    }
+
+
     public EntryEditorBot getEntryEditorBot( String title )
     {
         return new EntryEditorBot( title );
