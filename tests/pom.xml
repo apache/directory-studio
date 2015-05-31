@@ -35,5 +35,17 @@
     <module>test.integration.core</module>
     <module>test.integration.ui</module>
   </modules>
-  
+
+  <build>
+    <plugins>
+      <!-- Skip javadoc jar for test plugins. -->
+      <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+       </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
 </project>
