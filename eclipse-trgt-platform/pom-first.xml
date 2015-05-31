@@ -28,7 +28,7 @@
     <relativePath>../pom-first.xml</relativePath>
   </parent>
 
-  <artifactId>org.apache.directory.studio.eclipse-target-platform</artifactId>
+  <artifactId>org.apache.directory.studio.eclipse-trgt-platform</artifactId>
   <name>Apache Directory Studio Target Platform for Eclipse</name>
   <packaging>eclipse-target-definition</packaging>
 
@@ -534,14 +534,33 @@
       </plugin>
 
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>rename-resources</id>
+            <phase>generate-resources</phase>
+            <configuration>
+              <target>
+                <move file="${basedir}/org.apache.directory.studio.eclipse-trgt-platform.template"
+                  tofile="${basedir}/org.apache.directory.studio.eclipse-trgt-platform.target" />
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
         <artifactId>maven-clean-plugin</artifactId>
         <configuration>
           <filesets>
             <fileset>
               <directory>${basedir}</directory>
               <includes>
-                <include>eclipse-target-platform.target</include>
-                <include>org.apache.directory.studio.eclipse-target-platform.target</include>
+                <include>org.apache.directory.studio.eclipse-trgt-platform.target</include>
               </includes>
             </fileset>
           </filesets>

@@ -113,7 +113,7 @@
   </properties>
 
   <modules>
-    <module>eclipse-target-platform</module>
+    <module>eclipse-trgt-platform</module>
     <module>plugins</module>
     <module>helps</module>
     <module>features</module>
@@ -154,7 +154,7 @@
           <target>
              <artifact>
                 <groupId>org.apache.directory.studio</groupId>
-                <artifactId>org.apache.directory.studio.eclipse-target-platform</artifactId>
+                <artifactId>org.apache.directory.studio.eclipse-trgt-platform</artifactId>
                 <version>${project.version}</version>
              </artifact>
           </target>

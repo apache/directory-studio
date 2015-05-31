@@ -84,7 +84,7 @@
             <configuration>
               <source>
                 <repository>
-                  <url>${project.baseUri}/../eclipse-target-platform/target/repository</url>
+                  <url>${project.baseUri}/../eclipse-trgt-platform/target/repository</url>
                 </repository>
               </source>
               <mirrorMetadataOnly>false</mirrorMetadataOnly>

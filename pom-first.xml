@@ -32,7 +32,7 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>eclipse-target-platform/pom-first.xml</module>
+    <module>eclipse-trgt-platform/pom-first.xml</module>
     <module>plugins/pom-first.xml</module>
     <module>helps/pom-first.xml</module>
     <module>tests/pom-first.xml</module>

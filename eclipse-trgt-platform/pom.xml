@@ -28,7 +28,7 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>org.apache.directory.studio.eclipse-target-platform</artifactId>
+  <artifactId>org.apache.directory.studio.eclipse-trgt-platform</artifactId>
   <name>Apache Directory Studio Target Platform for Eclipse</name>
   <packaging>eclipse-target-definition</packaging>
 
