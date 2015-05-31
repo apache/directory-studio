@@ -500,11 +500,15 @@ public class TimeLimitWrapper
                         {
                             sb.append( "time.hard=unlimited" );
                         }
-                        else if ( ( hardLimit.intValue() == 0 ) || ( hardLimit.intValue() < softLimit.intValue() ) )
+                        else if ( hardLimit.intValue() == 0 )
                         {
                             // Special cases : hard = soft
-                            // or hard limit should be higher than soft limit : use the short limit
                             sb.append( "time=" ).append( softLimit );
+                        }
+                        else if ( hardLimit.intValue() < softLimit.intValue() )
+                        {
+                            // when the hard limit is lower than the soft limit : use the hard limit
+                            sb.append( "time=" ).append( hardLimit );
                         }
                         else 
                         {
