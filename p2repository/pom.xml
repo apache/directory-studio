@@ -126,7 +126,17 @@
           <skip>true</skip>
        </configuration>
       </plugin>
-    
+      <!-- Skip source plugin during release. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <phase>none</phase>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 

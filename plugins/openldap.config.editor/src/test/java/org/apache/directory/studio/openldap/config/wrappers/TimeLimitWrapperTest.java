@@ -32,6 +32,7 @@ import org.junit.Test;
  */
 public class TimeLimitWrapperTest
 {
+    @org.junit.Ignore
     @Test
     public void testToString()
     {
