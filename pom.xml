@@ -62,6 +62,9 @@
     <studio.dist.url>${project.distributionManagement.repository.url}</studio.dist.url>
     <distMgmtSiteUrl>scpexe://people.apache.org/www/directory.apache.org/studio/gen-docs/${project.version}</distMgmtSiteUrl>
 
+    <!-- Disable Java8 javadoc linter -->
+    <additionalparam>-Xdoclint:none</additionalparam>
+
     <tycho.version>0.22.0</tycho.version>
 
     <!-- Set versions for dependencies -->
