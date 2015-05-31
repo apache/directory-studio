@@ -23,7 +23,7 @@ package org.apache.directory.studio.common.core.jobs;
 
 /**
  * Constants used in the Apache Directory Studio Common Core plugin.
- * Final reference -> class shouldn't be extended
+ * Final reference -&gt; class shouldn't be extended
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

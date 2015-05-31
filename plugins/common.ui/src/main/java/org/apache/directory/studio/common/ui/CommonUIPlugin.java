@@ -188,7 +188,7 @@ public class CommonUIPlugin extends AbstractUIPlugin
     /**
      * Use this method to get SWT images. Use the IMG_ constants from
      * BrowserWidgetsConstants for the key. A ImageRegistry is used to manage the
-     * the key->Image mapping.
+     * the key-&gt;Image mapping.
      * <p>
      * Note: Don't dispose the returned SWT Image. It is disposed
      * automatically when the plugin is stopped.

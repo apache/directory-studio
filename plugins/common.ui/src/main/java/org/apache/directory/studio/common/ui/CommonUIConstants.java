@@ -26,7 +26,7 @@ import org.eclipse.swt.graphics.RGB;
 
 /**
  * Constants used in the connection UI plugin.
- * Final reference -> class shouldn't be extended
+ * Final reference -&gt; class shouldn't be extended
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

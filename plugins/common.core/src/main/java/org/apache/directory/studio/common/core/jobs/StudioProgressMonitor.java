@@ -75,6 +75,7 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
     /**
      * Creates a new instance of ExtendedProgressMonitor.
      * 
+     * @param pluginId the identifier of the plugin, used to report errors
      * @param monitor the progress monitor to forward to
      */
     public StudioProgressMonitor( String pluginId, IProgressMonitor monitor )
@@ -234,7 +235,6 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
      * Gets the error status.
      * 
      * @param message the message
-     * @param TODO: context message, e.g. search parameters or mod-ldif
      * 
      * @return the error status
      */
