@@ -460,7 +460,7 @@ public class TimeLimitWrapper
         
         if ( globalLimit != null )
         {
-            // The globalLimoit overrides the soft and hard limit
+            // The globalLioit overrides the soft and hard limit
             sb.append( "time=" );
             
             if ( globalLimit == -1 )
@@ -481,7 +481,7 @@ public class TimeLimitWrapper
                 {
                     if ( hardLimit.equals( softLimit ) )
                     {
-                        // If hard and soft are set and equals, e use the global limit instead
+                        // If hard and soft are set and equals, we use the global limit instead
                         sb.append( "time=" );
                         
                         if ( hardLimit == -1 )
@@ -495,27 +495,40 @@ public class TimeLimitWrapper
                     }
                     else
                     {
-                        // We have both values
-                        sb.append( "time.hard=" );
-                        
-                        if ( hardLimit == -1 )
+                        // We have both values. 
+                        if ( hardLimit == UNLIMITED )
                         {
-                            sb.append( "unlimited" );
+                            sb.append( "time.hard=unlimited" );
                         }
-                        else if ( hardLimit >= 0 )
+                        else if ( ( hardLimit.intValue() == 0 ) || ( hardLimit.intValue() < softLimit.intValue() ) )
                         {
-                            sb.append( hardLimit );
+                            // Special cases : hard = soft
+                            // or hard limit should be higher than soft limit : use the short limit
+                            sb.append( "time=" ).append( softLimit );
                         }
-
-                        sb.append( " time.soft=" );
-                        
-                        if ( softLimit == -1 )
+                        else 
                         {
-                            sb.append( "unlimited" );
-                        }
-                        else if ( softLimit >= 0 )
-                        {
-                            sb.append( softLimit );
+                            sb.append( "time.hard=" );
+                            
+                            if ( hardLimit == -1 )
+                            {
+                                sb.append( "unlimited" );
+                            }
+                            else if ( hardLimit > 0 )
+                            {
+                                sb.append( hardLimit );
+                            }
+    
+                            sb.append( " time.soft=" );
+                            
+                            if ( softLimit == -1 )
+                            {
+                                sb.append( "unlimited" );
+                            }
+                            else if ( softLimit >= 0 )
+                            {
+                                sb.append( softLimit );
+                            }
                         }
                     }
                 }
