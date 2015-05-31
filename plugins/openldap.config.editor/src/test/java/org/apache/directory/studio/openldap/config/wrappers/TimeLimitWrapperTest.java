@@ -32,13 +32,16 @@ import org.junit.Test;
  */
 public class TimeLimitWrapperTest
 {
-    @org.junit.Ignore
     @Test
     public void testToString()
     {
-        TimeLimitWrapper tlw = new TimeLimitWrapper( null, new Integer( 100 ), new Integer( 200 ) );
+        TimeLimitWrapper tlw = new TimeLimitWrapper( null, new Integer( 200 ), new Integer( 100 ) );
         
-        assertEquals( "time.hard=100 time.soft=200", tlw.toString() );
+        assertEquals( "time.hard=200 time.soft=100", tlw.toString() );
+
+        tlw = new TimeLimitWrapper( null, new Integer( 100 ), new Integer( 200 ) );
+        
+        assertEquals( "time=100", tlw.toString() );
 
         tlw = new TimeLimitWrapper( null, new Integer( 100 ), new Integer( 100 ) );
         
@@ -78,7 +81,7 @@ public class TimeLimitWrapperTest
 
         tlw = new TimeLimitWrapper( null, new Integer( 200 ),  new Integer( -1 ) );
         
-        assertEquals( "time.hard=200 time.soft=unlimited", tlw.toString() );
+        assertEquals( "time=200", tlw.toString() );
 
         tlw = new TimeLimitWrapper( new Integer( -1 ), new Integer( 200 ),  new Integer( -1 ) );
         
