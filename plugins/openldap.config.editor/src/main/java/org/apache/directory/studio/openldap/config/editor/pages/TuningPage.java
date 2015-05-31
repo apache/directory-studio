@@ -26,8 +26,12 @@ import java.util.List;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
@@ -36,9 +40,12 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.forms.widgets.TableWrapData;
 import org.eclipse.ui.forms.widgets.TableWrapLayout;
+import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.common.ui.widgets.TableWidget;
 import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
+import org.apache.directory.studio.openldap.config.editor.dialogs.OverlayDialog;
 import org.apache.directory.studio.openldap.config.editor.dialogs.TcpBufferDialog;
+import org.apache.directory.studio.openldap.config.editor.dialogs.TimeLimitDialog;
 import org.apache.directory.studio.openldap.config.editor.wrappers.TcpBufferWrapper;
 import org.apache.directory.studio.openldap.config.editor.wrappers.TcpBufferWrapperLabelProvider;
 
@@ -156,9 +163,15 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
     /** The olcSizeLimit */
     private Text sizeLimitText;
     
+    /** The SizeLimit edit Button */
+    private Button sizeLimitEditButton;
+    
     /** The olcTimeLimit */
     private Text timeLimitText;
     
+    /** The TimeLimit edit Button */
+    private Button timeLimitEditButton;
+
     /** The olcWriteTimeout */
     private Text writeTimeoutText;
     
@@ -691,6 +704,44 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
     
     
     /**
+     * The listener for the timeLimit Text
+     */
+    private SelectionListener timeLimitEditSelectionListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            TimeLimitDialog dialog = new TimeLimitDialog( timeLimitText.getShell(), timeLimitText.getText() );
+
+            if ( dialog.open() == OverlayDialog.OK )
+            {
+                String newTimeLimitStr = dialog.getNewTimeLimit();
+                
+                if ( newTimeLimitStr != null )
+                {
+                    timeLimitText.setText( newTimeLimitStr );
+                }
+            }
+        }
+    };
+    
+    
+    /**
+     * The listener for the sizeLimit Text
+     */
+    private SelectionListener sizeLimitEditSelectionListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            TimeLimitDialog dialog = new TimeLimitDialog( timeLimitText.getShell(), timeLimitText.getText() );
+
+            if ( dialog.open() == OverlayDialog.OK )
+            {
+            }
+        }
+    };
+    
+    
+    /**
      * Creates the OpenLDAP tuning config Tab. It contains 2 rows, with
      * 2 columns :
      * 
@@ -809,7 +860,7 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
         toolkit.createLabel( networkSectionComposite, 
             Messages.getString( "OpenLDAPTuningPage.SockbufMaxIncoming" ) ); //$NON-NLS-1$
         sockbufMaxIncomingText = toolkit.createText( networkSectionComposite, "" );
-        sockbufMaxIncomingText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        sockbufMaxIncomingText.setLayoutData( new GridData( SWT.LEFT, SWT.NONE, false, false ) );
         // From 0 to 262 143 (0x3FFFF)
         sockbufMaxIncomingText.setTextLimit( 6 );
         // Attach a listener to check the value
@@ -819,7 +870,7 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
         toolkit.createLabel( networkSectionComposite, 
             Messages.getString( "OpenLDAPTuningPage.SockbufMaxIncomingAuth" ) ); //$NON-NLS-1$
         sockbufMaxIncomingAuthText = toolkit.createText( networkSectionComposite, "" );
-        sockbufMaxIncomingAuthText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        sockbufMaxIncomingAuthText.setLayoutData( new GridData( SWT.LEFT, SWT.NONE, false, false ) );
         // From 0 to 4 193 303 (0x3FFFFF)
         sockbufMaxIncomingAuthText.setTextLimit( 7 );
         // Attach a listener to check the value
@@ -956,7 +1007,7 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
         // The content
         Composite ldapLimitSectionComposite = toolkit.createComposite( section );
         toolkit.paintBordersFor( ldapLimitSectionComposite );
-        GridLayout gridLayout = new GridLayout( 2, false );
+        GridLayout gridLayout = new GridLayout( 4, false );
         gridLayout.marginHeight = gridLayout.marginWidth = 0;
         ldapLimitSectionComposite.setLayout( gridLayout );
         section.setClient( ldapLimitSectionComposite );
@@ -965,36 +1016,45 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
         toolkit.createLabel( ldapLimitSectionComposite, 
             Messages.getString( "OpenLDAPTuningPage.WriteTimeout" ) ); //$NON-NLS-1$
         writeTimeoutText = toolkit.createText( ldapLimitSectionComposite, "" );
-        writeTimeoutText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        writeTimeoutText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false ) );
         // Attach a listener to check the value
         writeTimeoutText.addModifyListener( writeTimeoutTextListener );
+        toolkit.createLabel( ldapLimitSectionComposite, "" );
+        toolkit.createLabel( ldapLimitSectionComposite, "" );
         
         // The olcIdleTimeout parameter.
         toolkit.createLabel( ldapLimitSectionComposite, 
             Messages.getString( "OpenLDAPTuningPage.IdleTimeout" ) ); //$NON-NLS-1$
         idleTimeoutText = toolkit.createText( ldapLimitSectionComposite, "" );
-        idleTimeoutText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        idleTimeoutText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false ) );
         // Attach a listener to check the value
         idleTimeoutText.addModifyListener( idleTimeoutTextListener );
+        toolkit.createLabel( ldapLimitSectionComposite, "" );
+        toolkit.createLabel( ldapLimitSectionComposite, "" );
         
         // The olcSizeLimit parameter.
         toolkit.createLabel( ldapLimitSectionComposite, 
             Messages.getString( "OpenLDAPTuningPage.SizeLimit" ) ); //$NON-NLS-1$
         sizeLimitText = toolkit.createText( ldapLimitSectionComposite, "" );
-        sizeLimitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        sizeLimitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false, 2, 1 ) );
         sizeLimitText.setEditable( false );
-        // Attach a listener to check the value
-        //sizeLimitText.addModifyListener( sizeLimitTextListener );
-        
+
+        // The SizeLimit edit button
+        sizeLimitEditButton = BaseWidgetUtils.createButton( ldapLimitSectionComposite, "Edit...", 1 );
+        sizeLimitEditButton.setLayoutData( new GridData( SWT.RIGHT, SWT.CENTER, false, false ) );
+        sizeLimitEditButton.addSelectionListener( sizeLimitEditSelectionListener );
+
         // The olcTimeLimit parameter.
         toolkit.createLabel( ldapLimitSectionComposite, 
             Messages.getString( "OpenLDAPTuningPage.TimeLimit" ) ); //$NON-NLS-1$
         timeLimitText = toolkit.createText( ldapLimitSectionComposite, "" );
-        timeLimitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        timeLimitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
         timeLimitText.setEditable( false );
-        // Attach a listener to check the value
-        //timeLimitText.addModifyListener( timeLimitTextListener );
 
+        // The TimeLimit edit button
+        timeLimitEditButton = BaseWidgetUtils.createButton( ldapLimitSectionComposite, "Edit...", 1 );
+        timeLimitEditButton.setLayoutData( new GridData( SWT.RIGHT, SWT.CENTER, false, false ) );
+        timeLimitEditButton.addSelectionListener( timeLimitEditSelectionListener );
     }
 
     
