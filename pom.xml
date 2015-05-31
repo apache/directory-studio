@@ -113,6 +113,7 @@
   </properties>
 
   <modules>
+    <module>eclipse-target-platform</module>
     <module>plugins</module>
     <module>helps</module>
     <module>features</module>
