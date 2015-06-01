@@ -57,7 +57,7 @@ import org.apache.directory.studio.openldap.config.editor.wrappers.TimeLimitWrap
  * 
  * <pre>
  * +-------------------------------------------------------+
- * | TimeLimit                                             |
+ * | Time Limit                                            |
  * | .---------------------------------------------------. |
  * | | Soft Limit :  [----------]  [] Unlimited          | |
  * | |                                                   | |
@@ -65,7 +65,7 @@ import org.apache.directory.studio.openldap.config.editor.wrappers.TimeLimitWrap
  * | |                                                   | |
  * | | Global :      [----------]  [] Unlimited          | |
  * | '---------------------------------------------------' |
- * | Resulting TimeLimit                                   |
+ * | Resulting Time Limit                                  |
  * | .---------------------------------------------------. |
  * | | Time Limit  : </////////////////////////////////> | |
  * | '---------------------------------------------------' |
@@ -564,7 +564,7 @@ public class TimeLimitDialog extends Dialog
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
-        shell.setText( "TimeLimit" );
+        shell.setText( "Time Limit" );
     }
 
 
@@ -583,7 +583,7 @@ public class TimeLimitDialog extends Dialog
      * Create the Dialog for TimeLimit :
      * <pre>
      * +-------------------------------------------------------+
-     * | TimeLimit                                             |
+     * | Time Limit                                            |
      * | .---------------------------------------------------. |
      * | | Soft Limit :  [----------]  [] Unlimited          | |
      * | |                                                   | |
@@ -591,7 +591,7 @@ public class TimeLimitDialog extends Dialog
      * | |                                                   | |
      * | | Global :      [----------]  [] Unlimited          | |
      * | '---------------------------------------------------' |
-     * | Resulting TimeLimit                                   |
+     * | Resulting Time Limit                                  |
      * | .---------------------------------------------------. |
      * | | Time Limit  : </////////////////////////////////> | |
      * | '---------------------------------------------------' |
