@@ -232,7 +232,14 @@ public class TimeLimitDialog extends Dialog
             // The possible values are : 'unlimited' | 'none' | INT | -1
             String softLimitStr = softLimitText.getText();
 
-            if ( UNLIMITED_STR.equalsIgnoreCase( softLimitStr ) || NONE_STR.equalsIgnoreCase( softLimitStr ) ) 
+            if ( Strings.isEmpty( softLimitStr ) )
+            {
+                // Check the case we don't have anything
+                timeLimitWrapper.setSoftLimit( null );
+                softUnlimitedCheckbox.setSelection( false );
+                softLimitText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
+            }
+            else if ( UNLIMITED_STR.equalsIgnoreCase( softLimitStr ) || NONE_STR.equalsIgnoreCase( softLimitStr ) ) 
             {
                 timeLimitWrapper.setSoftLimit( TimeLimitWrapper.UNLIMITED );
                 softUnlimitedCheckbox.setSelection( true );
@@ -249,6 +256,7 @@ public class TimeLimitDialog extends Dialog
                     {
                         // The value must be either -1 (unlimited) or a positive number
                         softLimitText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
+                        softUnlimitedCheckbox.setSelection( false );
                     }
                     else if ( value == TimeLimitWrapper.UNLIMITED )
                     {
@@ -267,6 +275,7 @@ public class TimeLimitDialog extends Dialog
                 {
                     // The value must be either -1 (unlimited) or a positive number
                     softLimitText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
+                    softUnlimitedCheckbox.setSelection( false );
                 }
             }
 
@@ -384,6 +393,7 @@ public class TimeLimitDialog extends Dialog
             {
                 // Check the case we don't have anything
                 timeLimitWrapper.setGlobalLimit( null );
+                globalUnlimitedCheckbox.setEnabled( false );
                 globalLimitText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
             }
             else if ( UNLIMITED_STR.equalsIgnoreCase( globalLimitStr ) || NONE_STR.equalsIgnoreCase( globalLimitStr ) ) 
@@ -420,6 +430,7 @@ public class TimeLimitDialog extends Dialog
                 catch ( NumberFormatException nfe )
                 {
                     // The value must be either -1 (unlimited) or a positive number
+                    globalUnlimitedCheckbox.setEnabled( false );
                     globalLimitText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
                 }
             }
@@ -687,7 +698,7 @@ public class TimeLimitDialog extends Dialog
      * is invalid.
      * 
      * <pre>
-     * Resulting TimeLimit
+     * Resulting Time Limit
      * .------------------------------------.
      * | Time Limit : <///////////////////> |
      * '------------------------------------'
@@ -697,7 +708,7 @@ public class TimeLimitDialog extends Dialog
     private void createTimeLimitShowGroup( Composite parent )
     {
         // TimeLimit Group
-        Group timeLimitGroup = BaseWidgetUtils.createGroup( parent, "Resulting TimeLimit", 1 );
+        Group timeLimitGroup = BaseWidgetUtils.createGroup( parent, "Resulting Time Limit", 1 );
         GridLayout timeLimitGroupGridLayout = new GridLayout( 2, false );
         timeLimitGroup.setLayout( timeLimitGroupGridLayout );
         timeLimitGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
