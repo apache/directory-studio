@@ -22,13 +22,16 @@ package org.apache.directory.studio.openldap.config.editor.wrappers;
 import org.apache.directory.api.util.Strings;
 
 /**
- * This class wraps the TimeLimit parameter :
+ * This class wraps the SizeLimit parameter :
  * <pre>
- * time      ::= 'time' timeLimit time-e
- * time-e    ::= ' time' timeLimit time-e | e
- * timeLimit ::= '.soft=' limit | '.hard=' hardLimit | '=' limit
+ * size      ::= 'size' sizeLimit size-e
+ * size-e    ::= ' size' sizeLimit size-e | e
+ * sizeLimit ::= '.soft=' limit | '.hard=' hardLimit | '.pr=' prLimit | '.prtotal=' prTLimit
+ *                  | '.unchecked=' uLimit | '=' limit
  * limit     ::= 'unlimited' | 'none' | INT
- * hardLimit ::= 'soft' | limit
+ * ulimit    ::= 'disabled' | limit
+ * prLimit   ::= 'noEstimate' | limit
+ * prTLimit  ::= ulimit | 'hard'
  * </pre>
  * 
  * Note : each of the limit is an Integer, so that we can have two states :
@@ -40,7 +43,7 @@ import org.apache.directory.api.util.Strings;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class TimeLimitWrapper
+public class SizeLimitWrapper
 {
     /** The global limit */
     private Integer globalLimit;
@@ -51,49 +54,72 @@ public class TimeLimitWrapper
     /** The hard limit */
     private Integer hardLimit;
     
+    /** The unchecked limit */
+    private Integer uncheckedLimit;
+    
+    /** The PR limit */
+    private Integer prLimit;
+    
+    /** The PRTotal limit */
+    private Integer prTotalLimit;
+    
+    /** The noEstimate flag */
+    private boolean noEstimate;
+    
     //Define some of the used constants
-    public static final Integer UNLIMITED = Integer.valueOf( -1 );
-    public static final Integer HARD_SOFT = Integer.valueOf( -3 );
+    private static final Integer UC_DISABLED = Integer.valueOf( 0 );
+    private static final Integer PR_HARD = Integer.valueOf( 0 );
+    private static final Integer UNLIMITED = Integer.valueOf( -1 );
+    private static final Integer PR_DISABLED = Integer.valueOf( -2 );
+    private static final Integer HARD_SOFT = Integer.valueOf( -3 );
     
     /**
-     * Create a TimeLimitWrapper instance
+     * Create a SizeLimitWrapper instance
      */
-    private TimeLimitWrapper()
+    private SizeLimitWrapper()
     {
     }
     
     
     /**
-     * Create a TimeLimitWrapper instance
+     * Create a SizeLimitWrapper instance
      * 
      * @param globalLimit The global limit
      * @param hardLimit The hard limit
      * @param softLimit The soft limit
+     * @param uncheckedLimit The unchecked limit
+     * @param prLimit The pr limit
+     * @param prTotalLimit The prTotal limit
      */
-    public TimeLimitWrapper( Integer globalLimit, Integer hardLimit, Integer softLimit )
+    public SizeLimitWrapper( Integer globalLimit, Integer hardLimit, Integer softLimit, Integer uncheckedLimit, 
+        Integer prLimit, Integer prTotalLimit, boolean noEstimate )
     {
         this.globalLimit = globalLimit;
         this.hardLimit = hardLimit;
         this.softLimit = softLimit;
+        this.uncheckedLimit = uncheckedLimit;
+        this.prLimit = prLimit;
+        this.prTotalLimit = prTotalLimit;
+        this.noEstimate = noEstimate;
     }
     
     
     /**
-     * Create a TimeLimitWrapper instance from a String. 
+     * Create a SizeLimitWrapper instance from a String. 
      * 
-     * @param timeLimitStr The String that contain the value
+     * @param sizeLimitStr The String that contain the value
      */
-    public TimeLimitWrapper( String timeLimitStr )
+    public SizeLimitWrapper( String sizeLimitStr )
     {
-        if ( timeLimitStr != null )
+        if ( sizeLimitStr != null )
         {
             // use a lowercase version of the string
-            String lowerCaseTimeLimitStr = timeLimitStr.toLowerCase();
+            String lowerCaseSizeLimitStr = sizeLimitStr.toLowerCase();
             
-            TimeLimitWrapper tmp = new TimeLimitWrapper();
+            SizeLimitWrapper tmp = new SizeLimitWrapper();
             
             // Split the strings
-            String[] limits = lowerCaseTimeLimitStr.split( " " );
+            String[] limits = lowerCaseSizeLimitStr.split( " " );
             
             if ( limits != null )
             {
@@ -105,6 +131,7 @@ public class TimeLimitWrapper
                     
                     if ( !result )
                     {
+                        // No need to continue if the value is wrong
                         clear();
                         break;
                     }
@@ -154,6 +181,27 @@ public class TimeLimitWrapper
                                     }
                                 }
                             }
+                            
+                            // Deal with the unchecked parameter
+                            if ( tmp.uncheckedLimit != null )
+                            {
+                                uncheckedLimit = tmp.uncheckedLimit;
+                            }
+                            
+                            // Deal with the PR limit
+                            if ( tmp.prLimit != null )
+                            {
+                                prLimit = tmp.prLimit;
+                            }
+                            
+                            // Special case for noEstimate
+                            noEstimate = tmp.noEstimate;
+                            
+                            // Last, not least, prTotalLimit
+                            if ( tmp.prTotalLimit != null )
+                            {
+                                prTotalLimit = tmp.prTotalLimit;
+                            }
                         }
                     }
                 }
@@ -163,36 +211,45 @@ public class TimeLimitWrapper
     
     
     /**
-     * Clear the TimeLimitWrapper (reset all the values to null)
+     * Clear the SizeLimitWrapper (reset all the values to null)
      */
     public void clear()
     {
         globalLimit = null;
         softLimit = null;
         hardLimit = null;
+        uncheckedLimit = null;
+        prLimit = null;
+        prTotalLimit = null;
+        noEstimate = false;
     }
     
     
     /**
      * Parse a single limit :
      * <pre>
-     * timeLimit ::= 'time' ( '.hard=' hardLimit | '.soft=' limit | '=' limit )
+     * size      ::= 'size' sizeLimit size-e
+     * size-e    ::= ' size' sizeLimit size-e | e
+     * sizeLimit ::= '.soft=' limit | '.hard=' hardLimit | '.pr=' prLimit | '.prtotal=' prTLimit
+     *                  | '.unchecked=' uLimit | '=' limit
      * limit     ::= 'unlimited' | 'none' | INT
-     * hardLimit ::= 'soft' | limit
+     * ulimit    ::= 'disabled' | limit
+     * prLimit   ::= 'noEstimate' | limit
+     * prTLimit  ::= ulimit | 'hard'
      * </pre>
-     * @param tlw
+     * @param slw
      * @param limitStr
      */
-    private static boolean parseLimit( TimeLimitWrapper tlw, String limitStr )
+    private static boolean parseLimit( SizeLimitWrapper slw, String limitStr )
     {
         int pos = 0;
         
-        // The timelimit always starts with a "time"
-        if ( limitStr.startsWith( "time" ) )
+        // The sizelimit always starts with a "size"
+        if ( limitStr.startsWith( "size" ) )
         {
             pos += 4;
             
-            // A global or hard/soft ?
+            // A global or hard/soft/pr/prtotal ?
             if ( limitStr.startsWith( "=", pos ) )
             {
                 // Global : get the limit
@@ -201,12 +258,12 @@ public class TimeLimitWrapper
                 if ( limitStr.startsWith( "unlimited", pos ) )
                 {
                     pos += 9;
-                    tlw.globalLimit = UNLIMITED;
+                    slw.globalLimit = UNLIMITED;
                 }
                 else if ( limitStr.startsWith( "none", pos ) )
                 {
                     pos += 4;
-                    tlw.globalLimit = UNLIMITED;
+                    slw.globalLimit = UNLIMITED;
                 }
                 else
                 {
@@ -220,7 +277,7 @@ public class TimeLimitWrapper
                         
                         if ( value > UNLIMITED )
                         {
-                            tlw.globalLimit = value;
+                            slw.globalLimit = value;
                         }
                         else
                         {
@@ -242,18 +299,18 @@ public class TimeLimitWrapper
                 {
                     pos += 9;
                     
-                    tlw.hardLimit = UNLIMITED;
+                    slw.hardLimit = UNLIMITED;
                 }
                 else if ( limitStr.startsWith( "none", pos ) )
                 {
                     pos += 4;
                     
-                    tlw.hardLimit = UNLIMITED;
+                    slw.hardLimit = UNLIMITED;
                 }
                 else if ( limitStr.startsWith( "soft", pos ) )
                 {
                     pos += 4;
-                    tlw.globalLimit = HARD_SOFT;
+                    slw.globalLimit = HARD_SOFT;
                 }
                 else
                 {
@@ -266,7 +323,7 @@ public class TimeLimitWrapper
                         
                         if ( value >= UNLIMITED )
                         {
-                            tlw.hardLimit = value;
+                            slw.hardLimit = value;
                         }
                     }
                     else
@@ -284,13 +341,13 @@ public class TimeLimitWrapper
                 {
                     pos += 9;
                     
-                    tlw.softLimit = UNLIMITED;
+                    slw.softLimit = UNLIMITED;
                 }
                 else if ( limitStr.startsWith( "none", pos ) )
                 {
                     pos += 4;
                     
-                    tlw.softLimit = UNLIMITED;
+                    slw.softLimit = UNLIMITED;
                 }
                 else
                 {
@@ -303,7 +360,160 @@ public class TimeLimitWrapper
 
                         if ( value > UNLIMITED )
                         {
-                            tlw.softLimit = value;
+                            slw.softLimit = value;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            else if ( limitStr.startsWith( ".unchecked=", pos ) )
+            {
+                // Unchecked limit : get the limit
+                pos += 11;
+
+                if ( limitStr.startsWith( "unlimited", pos ) )
+                {
+                    pos += 9;
+                    
+                    slw.uncheckedLimit = UNLIMITED;
+                }
+                else if ( limitStr.startsWith( "none", pos ) )
+                {
+                    pos += 4;
+                    
+                    slw.uncheckedLimit = UNLIMITED;
+                }
+                else if ( limitStr.startsWith( "disabled", pos ) )
+                {
+                    pos += 8;
+                    
+                    slw.uncheckedLimit = UC_DISABLED;
+                }
+                else
+                {
+                    String integer = getInteger( limitStr, pos );
+                    
+                    if ( integer != null )
+                    {
+                        pos += integer.length();
+                        Integer value = Integer.valueOf( integer );
+
+                        if ( value > UNLIMITED )
+                        {
+                            slw.uncheckedLimit = value;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            else if ( limitStr.startsWith( ".pr=", pos ) )
+            {
+                // pr limit : get the limit
+                pos += 4;
+
+                if ( limitStr.startsWith( "unlimited", pos ) )
+                {
+                    pos += 9;
+                    
+                    slw.prLimit = UNLIMITED;
+                }
+                else if ( limitStr.startsWith( "none", pos ) )
+                {
+                    pos += 4;
+                    
+                    slw.prLimit = UNLIMITED;
+                }
+                else if ( limitStr.startsWith( "noestimate", pos ) )
+                {
+                    pos += 10;
+                    
+                    slw.noEstimate = true;
+                }
+                else if ( limitStr.startsWith( "disabled", pos ) )
+                {
+                    pos += 8;
+                    
+                    slw.prLimit = PR_DISABLED;
+                }
+                else
+                {
+                    String integer = getInteger( limitStr, pos );
+                    
+                    if ( integer != null )
+                    {
+                        pos += integer.length();
+                        Integer value = Integer.valueOf( integer );
+
+                        if ( value > UNLIMITED )
+                        {
+                            slw.prLimit = value;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            else if ( limitStr.startsWith( ".prtotal=", pos ) )
+            {
+                // prTotal limit : get the limit
+                pos += 9;
+
+                if ( limitStr.startsWith( "unlimited", pos ) )
+                {
+                    pos += 9;
+                    
+                    slw.prTotalLimit = UNLIMITED;
+                }
+                else if ( limitStr.startsWith( "none", pos ) )
+                {
+                    pos += 4;
+                    
+                    slw.prTotalLimit = UNLIMITED;
+                }
+                else if ( limitStr.startsWith( "disabled", pos ) )
+                {
+                    pos += 8;
+                    
+                    slw.prTotalLimit = PR_DISABLED;
+                }
+                else if ( limitStr.startsWith( "hard", pos ) )
+                {
+                    pos += 4;
+                    
+                    slw.prTotalLimit = PR_HARD;
+                }
+                else
+                {
+                    String integer = getInteger( limitStr, pos );
+                    
+                    if ( integer != null )
+                    {
+                        pos += integer.length();
+                        Integer value = Integer.valueOf( integer );
+
+                        if ( value > UNLIMITED )
+                        {
+                            slw.prTotalLimit = value;
                         }
                         else
                         {
@@ -360,21 +570,21 @@ public class TimeLimitWrapper
     
     
     /**
-     * Tells if the TimeLimit element is valid or not
-     * @param timeLimitStr the timeLimit String to check
+     * Tells if the SizeLimit element is valid or not
+     * @param sizeLimitStr the sizeLimit String to check
      * @return true if the values are correct, false otherwise
      */
-    public static boolean isValid( String timeLimitStr )
+    public static boolean isValid( String sizeLimitStr )
     {
-        if ( !Strings.isEmpty( timeLimitStr ) )
+        if ( !Strings.isEmpty( sizeLimitStr ) )
         {
             // use a lowercase version of the string
-            String lowerCaseTimeLimitStr = timeLimitStr.toLowerCase();
+            String lowerCaseSizeLimitStr = sizeLimitStr.toLowerCase();
             
-            TimeLimitWrapper tmp = new TimeLimitWrapper();
+            SizeLimitWrapper tmp = new SizeLimitWrapper();
             
             // Split the strings
-            String[] limits = lowerCaseTimeLimitStr.split( " " );
+            String[] limits = lowerCaseSizeLimitStr.split( " " );
             
             if ( limits != null )
             {
@@ -450,12 +660,67 @@ public class TimeLimitWrapper
 
 
     /**
+     * @return the prLimit
+     */
+    public Integer getPrLimit()
+    {
+        return prLimit;
+    }
+
+
+    /**
+     * @param prLimit the prLimit to set
+     */
+    public void setPrLimit( Integer prLimit )
+    {
+        this.prLimit = prLimit;
+    }
+
+
+    /**
+     * @return the prTotalLimit
+     */
+    public Integer getPrTotalLimit()
+    {
+        return prTotalLimit;
+    }
+
+
+    /**
+     * @param prTotalLimit the prTotalLimit to set
+     */
+    public void setPrTotalLimit( Integer prTotalLimit )
+    {
+        this.prTotalLimit = prTotalLimit;
+    }
+
+
+    /**
+     * @return the uncheckedLimit
+     */
+    public Integer getUncheckedLimit()
+    {
+        return uncheckedLimit;
+    }
+
+
+    /**
+     * @param uncheckedLimit the uncheckedLimit to set
+     */
+    public void setUncheckedLimit( Integer uncheckedLimit )
+    {
+        this.uncheckedLimit = uncheckedLimit;
+    }
+
+
+    /**
      * @see Object#toString()
      */
     public String toString()
     {
         StringBuilder sb = new StringBuilder();
         
+        // Deal with global/hard/soft limits first
         if ( globalLimit != null )
         {
             // The globalLimit overrides the soft and hard limit
@@ -573,6 +838,43 @@ public class TimeLimitWrapper
                     sb.append( softLimit );
                 }
             }
+        }
+        
+        // Process the pr/prtotal limit now
+        if ( prLimit != null )
+        {
+            sb.append( "size.pr=" );
+            
+            if ( prLimit.equals( UNLIMITED ) )
+            {
+                sb.append( "unlimited" );
+            }
+            else if ( prLimit.intValue() >= 0 )
+            {
+                sb.append( prLimit );
+            }
+            
+        }
+
+        if ( prTotalLimit != null )
+        {
+            sb.append( "size.prtotal=" );
+            
+            if ( prTotalLimit.equals( UNLIMITED ) )
+            {
+                sb.append( "unlimited" );
+            }
+            else if ( prTotalLimit.intValue() >= 0 )
+            {
+                sb.append( prTotalLimit );
+            }
+            
+        }
+        
+        // Last, not least, the noEstimate flag
+        if ( noEstimate )
+        {
+            sb.append( "size.pr=noEstimate" );
         }
         
         return sb.toString();
