@@ -157,7 +157,7 @@ public class SizeLimitWrapper
                                     {
                                         if ( hardLimit.equals( HARD_SOFT ) || hardLimit.equals( softLimit ) )
                                         {
-                                            // Special case : we have had a time.hard=soft before,
+                                            // Special case : we have had a size.hard=soft before,
                                             // or the hard and soft limit are equals : we set the global limit
                                             globalLimit = softLimit;
                                             softLimit = null;
@@ -169,7 +169,7 @@ public class SizeLimitWrapper
                                 {
                                     if ( ( tmp.hardLimit.equals( HARD_SOFT ) && ( softLimit != null ) ) || tmp.hardLimit.equals( softLimit ) )
                                     {
-                                        // special case, softLimit was set and hardLimit was time.hard=soft,
+                                        // special case, softLimit was set and hardLimit was size.hard=soft,
                                         // or is equal to softLimit
                                         globalLimit = softLimit;
                                         softLimit = null;
@@ -724,7 +724,7 @@ public class SizeLimitWrapper
         if ( globalLimit != null )
         {
             // The globalLimit overrides the soft and hard limit
-            sb.append( "time=" );
+            sb.append( "size=" );
             
             if ( globalLimit.equals( UNLIMITED ) )
             {
@@ -745,7 +745,7 @@ public class SizeLimitWrapper
                     if ( hardLimit.equals( softLimit ) )
                     {
                         // If hard and soft are set and equals, we use the global limit instead
-                        sb.append( "time=" );
+                        sb.append( "size=" );
                         
                         if ( hardLimit.equals( UNLIMITED ) )
                         {
@@ -761,18 +761,18 @@ public class SizeLimitWrapper
                         // We have both values, the aren't equal. 
                         if ( hardLimit.equals( UNLIMITED ) )
                         {
-                            sb.append( "time.hard=unlimited time.soft=" );
+                            sb.append( "size.hard=unlimited size.soft=" );
                             sb.append( softLimit );
                         }
                         else if ( hardLimit.intValue() == 0 )
                         {
                             // Special cases : hard = soft
-                            sb.append( "time=" ).append( softLimit );
+                            sb.append( "size=" ).append( softLimit );
                         }
                         else if ( hardLimit.intValue() < softLimit.intValue() )
                         {
                             // when the hard limit is lower than the soft limit : use the hard limit
-                            sb.append( "time=" ).append( hardLimit );
+                            sb.append( "size=" ).append( hardLimit );
                         }
                         else 
                         {
@@ -780,11 +780,11 @@ public class SizeLimitWrapper
                             if ( softLimit.equals( UNLIMITED ) )
                             {
                                 // We use the hard limit
-                                sb.append( "time=" ).append( hardLimit );
+                                sb.append( "size=" ).append( hardLimit );
                             }
                             else
                             {
-                                sb.append( "time.hard=" );
+                                sb.append( "size.hard=" );
                                 
                                 if ( hardLimit.equals( UNLIMITED ) )
                                 {
@@ -795,7 +795,7 @@ public class SizeLimitWrapper
                                     sb.append( hardLimit );
                                 }
         
-                                sb.append( " time.soft=" );
+                                sb.append( " size.soft=" );
                                 
                                 if ( softLimit.equals( UNLIMITED ) )
                                 {
@@ -812,7 +812,7 @@ public class SizeLimitWrapper
                 else
                 {
                     // Only an hard limit
-                    sb.append( "time.hard=" );
+                    sb.append( "size.hard=" );
                     
                     if ( hardLimit.equals( UNLIMITED ) )
                     {
@@ -827,7 +827,7 @@ public class SizeLimitWrapper
             else if ( softLimit != null )
             {
                 // Only a soft limit
-                sb.append( "time.soft=" );
+                sb.append( "size.soft=" );
                 
                 if ( softLimit.equals( UNLIMITED ) )
                 {
