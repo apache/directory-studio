@@ -152,9 +152,16 @@ public class TimeLimitDialog extends Dialog
      */
     private boolean isValid()
     {
+        return isValidSoft() && isValidHard() && isValidGlobal();
+    }
+    
+    
+    /**
+     * Check if the soft value is valid or not
+     */
+    private boolean isValidSoft()
+    {
         String softLimitStr = softLimitText.getText();
-        String hardLimitStr = hardLimitText.getText();
-        String globalLimitStr = globalLimitText.getText();
         
         if ( !Strings.isEmpty( softLimitStr ) )
         {
@@ -162,7 +169,7 @@ public class TimeLimitDialog extends Dialog
             {
                 try
                 {
-                    if ( Integer.valueOf( softLimitStr ) < -1 )
+                    if ( Integer.valueOf( softLimitStr ).intValue() < -1 )
                     {
                        return false;
                     }
@@ -174,13 +181,26 @@ public class TimeLimitDialog extends Dialog
             }
         }
         
+        return true;
+    }
+    
+    
+    /**
+     * Check if the hard value is valid or not
+     */
+    private boolean isValidHard()
+    {
+        String hardLimitStr = hardLimitText.getText();
+        
         if ( !Strings.isEmpty( hardLimitStr ) )
         {
-            if ( !UNLIMITED_STR.equalsIgnoreCase( hardLimitStr ) && !NONE_STR.equals( hardLimitStr ) && !SOFT_STR.equalsIgnoreCase( hardLimitStr ) )
+            if ( !UNLIMITED_STR.equalsIgnoreCase( hardLimitStr ) && 
+                 !NONE_STR.equals( hardLimitStr ) && 
+                 !SOFT_STR.equalsIgnoreCase( hardLimitStr ) )
             {
                 try
                 {
-                    if ( Integer.valueOf( hardLimitStr ) < -1 )
+                    if ( Integer.valueOf( hardLimitStr ).intValue() < -1 )
                     {
                        return false;
                     }
@@ -191,6 +211,17 @@ public class TimeLimitDialog extends Dialog
                 }
             }
         }
+        
+        return true;
+    }
+    
+    
+    /**
+     * Check if the global value is valid or not
+     */
+    private boolean isValidGlobal()
+    {
+        String globalLimitStr = hardLimitText.getText();
         
         if ( !Strings.isEmpty( globalLimitStr ) )
         {
@@ -212,6 +243,7 @@ public class TimeLimitDialog extends Dialog
         
         return true;
     }
+    
     
     /**
      * The listener for the Soft Limit Text
@@ -287,6 +319,10 @@ public class TimeLimitDialog extends Dialog
                 else
                 {
                     hardLimitText.setText( softLimitStr );
+                    
+                    // Use the same color than for the soft
+                    Display displayHard = softLimitText.getDisplay();
+                    hardLimitText.setForeground( displayHard.getSystemColor( color ) );
                 }
             }
             
@@ -360,20 +396,18 @@ public class TimeLimitDialog extends Dialog
                 }
             }
 
-            // Udate the Soft checkbox
-            if ( timeLimitWrapper.getHardLimit() != null )
-            {
-                hardSoftCheckbox.setSelection( false );
-            }
-            else
-            {
-                hardSoftCheckbox.setSelection( timeLimitWrapper.getHardLimit().equals( timeLimitWrapper.getSoftLimit() ) );
-            }
-            
             hardUnlimitedCheckbox.setSelection( unlimited );
             hardLimitText.setForeground( display.getSystemColor( color ) );
             timeLimitText.setText( timeLimitWrapper.toString() );
-            okButton.setEnabled( isValid() );
+            
+            if ( isValidSoft() )
+            { 
+                okButton.setEnabled( true );
+            }
+            else
+            {
+                okButton.setEnabled( isValid() );
+            }
         }
     };
     
@@ -467,7 +501,15 @@ public class TimeLimitDialog extends Dialog
                 timeLimitWrapper.setSoftLimit( null );
             }
 
-            softLimitText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
+            if ( isValidSoft() )
+            {
+                softLimitText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
+            }
+            else
+            {
+                softLimitText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
+            }
+            
             timeLimitText.setText( timeLimitWrapper.toString() );
             okButton.setEnabled( isValid() );
         }
@@ -489,6 +531,7 @@ public class TimeLimitDialog extends Dialog
                 hardLimitText.setText( UNLIMITED_STR );
                 timeLimitWrapper.setHardLimit( TimeLimitWrapper.UNLIMITED );
                 hardSoftCheckbox.setSelection( false );
+                hardLimitText.setEnabled( true );
             }
             else
             {
@@ -504,7 +547,8 @@ public class TimeLimitDialog extends Dialog
     
     
     /**
-     * The listener in charge of exposing the changes when the hard unlimited button is checked
+     * The listener in charge of exposing the changes when the hard unlimited button is checked.
+     * We will disable the hardLimitText.
      */
     private SelectionListener hardSoftCheckboxSelectionListener = new SelectionAdapter()
     {
@@ -515,6 +559,7 @@ public class TimeLimitDialog extends Dialog
 
             if ( hardSoftCheckbox.getSelection() )
             {
+                hardLimitText.setEnabled( false );
                 String softStr = softLimitText.getText();
                 
                 if ( softStr != null )
@@ -528,14 +573,23 @@ public class TimeLimitDialog extends Dialog
                 
                 timeLimitWrapper.setHardLimit( timeLimitWrapper.getSoftLimit() );
                 hardUnlimitedCheckbox.setSelection( TimeLimitWrapper.UNLIMITED.equals( timeLimitWrapper.getSoftLimit() ) );
+
+                if ( isValidSoft() )
+                { 
+                    hardLimitText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
+                }
+                else
+                {
+                    hardLimitText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
+                }
             }
             else
             {
                 hardLimitText.setText( "" );
+                hardLimitText.setEnabled( true );
                 timeLimitWrapper.setHardLimit( null );
             }
 
-            hardLimitText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
             timeLimitText.setText( timeLimitWrapper.toString() );
             okButton.setEnabled( isValid() );
         }
