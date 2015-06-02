@@ -29,6 +29,7 @@ import org.apache.directory.api.util.Strings;
  * sizeLimit ::= '.soft=' limit | '.hard=' hardLimit | '.pr=' prLimit | '.prtotal=' prTLimit
  *                  | '.unchecked=' uLimit | '=' limit
  * limit     ::= 'unlimited' | 'none' | INT
+ * hardLimit ::= 'soft' | limit
  * ulimit    ::= 'disabled' | limit
  * prLimit   ::= 'noEstimate' | limit
  * prTLimit  ::= ulimit | 'hard'
@@ -62,16 +63,16 @@ public class SizeLimitWrapper
     
     /** The PRTotal limit */
     private Integer prTotalLimit;
-    
+
     /** The noEstimate flag */
     private boolean noEstimate;
     
     //Define some of the used constants
-    private static final Integer UC_DISABLED = Integer.valueOf( 0 );
-    private static final Integer PR_HARD = Integer.valueOf( 0 );
-    private static final Integer UNLIMITED = Integer.valueOf( -1 );
-    private static final Integer PR_DISABLED = Integer.valueOf( -2 );
-    private static final Integer HARD_SOFT = Integer.valueOf( -3 );
+    public static final Integer UC_DISABLED = Integer.valueOf( 0 );
+    public static final Integer PR_HARD = Integer.valueOf( 0 );
+    public static final Integer UNLIMITED = Integer.valueOf( -1 );
+    public static final Integer PR_DISABLED = Integer.valueOf( -2 );
+    public static final Integer HARD_SOFT = Integer.valueOf( -3 );
     
     /**
      * Create a SizeLimitWrapper instance
@@ -711,6 +712,24 @@ public class SizeLimitWrapper
     {
         this.uncheckedLimit = uncheckedLimit;
     }
+    
+    /**
+     * @return the noEstimate
+     */
+    public boolean isNoEstimate()
+    {
+        return noEstimate;
+    }
+
+
+    /**
+     * @param noEstimate the noEstimate to set
+     */
+    public void setNoEstimate( boolean noEstimate )
+    {
+        this.noEstimate = noEstimate;
+    }
+
 
 
     /**
