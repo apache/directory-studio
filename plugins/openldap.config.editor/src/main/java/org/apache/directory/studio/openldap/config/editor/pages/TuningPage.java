@@ -44,6 +44,7 @@ import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.common.ui.widgets.TableWidget;
 import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
 import org.apache.directory.studio.openldap.config.editor.dialogs.OverlayDialog;
+import org.apache.directory.studio.openldap.config.editor.dialogs.SizeLimitDialog;
 import org.apache.directory.studio.openldap.config.editor.dialogs.TcpBufferDialog;
 import org.apache.directory.studio.openldap.config.editor.dialogs.TimeLimitDialog;
 import org.apache.directory.studio.openldap.config.editor.wrappers.TcpBufferWrapper;
@@ -732,10 +733,16 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            TimeLimitDialog dialog = new TimeLimitDialog( timeLimitText.getShell(), timeLimitText.getText() );
+            SizeLimitDialog dialog = new SizeLimitDialog( sizeLimitText.getShell(), sizeLimitText.getText() );
 
             if ( dialog.open() == OverlayDialog.OK )
             {
+                String newSizeLimitStr = dialog.getNewSizeLimit();
+                
+                if ( newSizeLimitStr != null )
+                {
+                    sizeLimitText.setText( newSizeLimitStr );
+                }
             }
         }
     };
