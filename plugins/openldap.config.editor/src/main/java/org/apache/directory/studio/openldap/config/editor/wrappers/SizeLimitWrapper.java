@@ -68,12 +68,21 @@ public class SizeLimitWrapper
     private boolean noEstimate;
     
     //Define some of the used constants
-    public static final Integer UC_DISABLED = Integer.valueOf( 0 );
-    public static final Integer PR_HARD = Integer.valueOf( 0 );
-    public static final Integer UNLIMITED = Integer.valueOf( -1 );
-    public static final Integer PR_DISABLED = Integer.valueOf( -2 );
     public static final Integer HARD_SOFT = Integer.valueOf( -3 );
+    public static final Integer PR_DISABLED = Integer.valueOf( -2 );
+    public static final Integer PR_HARD = Integer.valueOf( 0 );
+    public static final Integer UC_DISABLED = Integer.valueOf( 0 );
+    public static final Integer UNLIMITED = Integer.valueOf( -1 );
     
+    public static final String DISABLED_STR = "disabled";
+    public static final String HARD_STR = "hard";
+    public static final String NONE_STR = "none";
+    public static final String SOFT_STR = "soft";
+    public static final String UNCHECKED_STR = "unchecked";
+    public static final String UNLIMITED_STR = "unlimited";
+
+
+
     /**
      * Create a SizeLimitWrapper instance
      */
@@ -256,12 +265,12 @@ public class SizeLimitWrapper
                 // Global : get the limit
                 pos++;
                 
-                if ( limitStr.startsWith( "unlimited", pos ) )
+                if ( limitStr.startsWith( UNLIMITED_STR, pos ) )
                 {
                     pos += 9;
                     slw.globalLimit = UNLIMITED;
                 }
-                else if ( limitStr.startsWith( "none", pos ) )
+                else if ( limitStr.startsWith( NONE_STR, pos ) )
                 {
                     pos += 4;
                     slw.globalLimit = UNLIMITED;
@@ -296,19 +305,19 @@ public class SizeLimitWrapper
                 // Hard limit : get the hard limit
                 pos += 6;
                 
-                if ( limitStr.startsWith( "unlimited", pos ) )
+                if ( limitStr.startsWith( UNLIMITED_STR, pos ) )
                 {
                     pos += 9;
                     
                     slw.hardLimit = UNLIMITED;
                 }
-                else if ( limitStr.startsWith( "none", pos ) )
+                else if ( limitStr.startsWith( NONE_STR, pos ) )
                 {
                     pos += 4;
                     
                     slw.hardLimit = UNLIMITED;
                 }
-                else if ( limitStr.startsWith( "soft", pos ) )
+                else if ( limitStr.startsWith( SOFT_STR, pos ) )
                 {
                     pos += 4;
                     slw.globalLimit = HARD_SOFT;
@@ -338,13 +347,13 @@ public class SizeLimitWrapper
                 // Soft limit : get the limit
                 pos += 6;
 
-                if ( limitStr.startsWith( "unlimited", pos ) )
+                if ( limitStr.startsWith( UNLIMITED_STR, pos ) )
                 {
                     pos += 9;
                     
                     slw.softLimit = UNLIMITED;
                 }
-                else if ( limitStr.startsWith( "none", pos ) )
+                else if ( limitStr.startsWith( NONE_STR, pos ) )
                 {
                     pos += 4;
                     
@@ -379,19 +388,19 @@ public class SizeLimitWrapper
                 // Unchecked limit : get the limit
                 pos += 11;
 
-                if ( limitStr.startsWith( "unlimited", pos ) )
+                if ( limitStr.startsWith( UNLIMITED_STR, pos ) )
                 {
                     pos += 9;
                     
                     slw.uncheckedLimit = UNLIMITED;
                 }
-                else if ( limitStr.startsWith( "none", pos ) )
+                else if ( limitStr.startsWith( NONE_STR, pos ) )
                 {
                     pos += 4;
                     
                     slw.uncheckedLimit = UNLIMITED;
                 }
-                else if ( limitStr.startsWith( "disabled", pos ) )
+                else if ( limitStr.startsWith( DISABLED_STR, pos ) )
                 {
                     pos += 8;
                     
@@ -426,13 +435,13 @@ public class SizeLimitWrapper
                 // pr limit : get the limit
                 pos += 4;
 
-                if ( limitStr.startsWith( "unlimited", pos ) )
+                if ( limitStr.startsWith( UNLIMITED_STR, pos ) )
                 {
                     pos += 9;
                     
                     slw.prLimit = UNLIMITED;
                 }
-                else if ( limitStr.startsWith( "none", pos ) )
+                else if ( limitStr.startsWith( NONE_STR, pos ) )
                 {
                     pos += 4;
                     
@@ -444,7 +453,7 @@ public class SizeLimitWrapper
                     
                     slw.noEstimate = true;
                 }
-                else if ( limitStr.startsWith( "disabled", pos ) )
+                else if ( limitStr.startsWith( DISABLED_STR, pos ) )
                 {
                     pos += 8;
                     
@@ -479,25 +488,25 @@ public class SizeLimitWrapper
                 // prTotal limit : get the limit
                 pos += 9;
 
-                if ( limitStr.startsWith( "unlimited", pos ) )
+                if ( limitStr.startsWith( UNLIMITED_STR, pos ) )
                 {
                     pos += 9;
                     
                     slw.prTotalLimit = UNLIMITED;
                 }
-                else if ( limitStr.startsWith( "none", pos ) )
+                else if ( limitStr.startsWith( NONE_STR, pos ) )
                 {
                     pos += 4;
                     
                     slw.prTotalLimit = UNLIMITED;
                 }
-                else if ( limitStr.startsWith( "disabled", pos ) )
+                else if ( limitStr.startsWith( DISABLED_STR, pos ) )
                 {
                     pos += 8;
                     
                     slw.prTotalLimit = PR_DISABLED;
                 }
-                else if ( limitStr.startsWith( "hard", pos ) )
+                else if ( limitStr.startsWith( HARD_STR, pos ) )
                 {
                     pos += 4;
                     
@@ -747,7 +756,7 @@ public class SizeLimitWrapper
             
             if ( globalLimit.equals( UNLIMITED ) )
             {
-                sb.append( "unlimited" );
+                sb.append( UNLIMITED_STR );
             }
             else if ( globalLimit.intValue() >= 0 )
             {
@@ -768,7 +777,7 @@ public class SizeLimitWrapper
                         
                         if ( hardLimit.equals( UNLIMITED ) )
                         {
-                            sb.append( "unlimited" );
+                            sb.append( UNLIMITED_STR );
                         }
                         else if ( hardLimit.intValue() >= 0 )
                         {
@@ -807,7 +816,7 @@ public class SizeLimitWrapper
                                 
                                 if ( hardLimit.equals( UNLIMITED ) )
                                 {
-                                    sb.append( "unlimited" );
+                                    sb.append( UNLIMITED_STR );
                                 }
                                 else if ( hardLimit.intValue() > 0 )
                                 {
@@ -818,7 +827,7 @@ public class SizeLimitWrapper
                                 
                                 if ( softLimit.equals( UNLIMITED ) )
                                 {
-                                    sb.append( "unlimited" );
+                                    sb.append( UNLIMITED_STR );
                                 }
                                 else if ( softLimit.intValue() >= 0 )
                                 {
@@ -835,7 +844,7 @@ public class SizeLimitWrapper
                     
                     if ( hardLimit.equals( UNLIMITED ) )
                     {
-                        sb.append( "unlimited" );
+                        sb.append( UNLIMITED_STR );
                     }
                     else if ( hardLimit.intValue() >= 0 )
                     {
@@ -850,7 +859,7 @@ public class SizeLimitWrapper
                 
                 if ( softLimit.equals( UNLIMITED ) )
                 {
-                    sb.append( "unlimited" );
+                    sb.append( UNLIMITED_STR );
                 }
                 else if ( softLimit.intValue() >= 0 )
                 {
@@ -858,32 +867,73 @@ public class SizeLimitWrapper
                 }
             }
         }
+
+        // Eventually add a space at the end if we have had some size limit
+        if ( sb.length() > 0 )
+        {
+            sb.append( ' ' );
+        }
         
-        // Process the pr/prtotal limit now
+        // process the unchecked limit
+        if ( uncheckedLimit != null )
+        {
+            sb.append( "size.unchecked=" );
+            
+            if ( uncheckedLimit.equals( UNLIMITED ) )
+            {
+                sb.append( UNLIMITED_STR );
+            }
+            else if ( uncheckedLimit.equals( UC_DISABLED ) )
+            {
+                sb.append( DISABLED_STR );
+            }
+            else
+            {
+                sb.append( uncheckedLimit );
+            }
+        }
+        
+        // Process the pr limit
         if ( prLimit != null )
         {
+            // Add a space if we have had some unchecked limit
+            if ( uncheckedLimit != null )
+            {
+                sb.append( ' ' );
+            }
+            
             sb.append( "size.pr=" );
             
             if ( prLimit.equals( UNLIMITED ) )
             {
-                sb.append( "unlimited" );
+                sb.append( UNLIMITED_STR );
             }
-            else if ( prLimit.intValue() >= 0 )
+            else
             {
                 sb.append( prLimit );
             }
-            
         }
 
+        // Process the prTotal limit
         if ( prTotalLimit != null )
         {
+            // Add a space if we have had some unchecked limit or some pr limit
+            if ( ( uncheckedLimit != null ) || ( prLimit != null ) )
+            {
+                sb.append( ' ' );
+            }
+
             sb.append( "size.prtotal=" );
             
             if ( prTotalLimit.equals( UNLIMITED ) )
             {
-                sb.append( "unlimited" );
+                sb.append( UNLIMITED_STR );
             }
-            else if ( prTotalLimit.intValue() >= 0 )
+            else if ( prTotalLimit.intValue() == PR_HARD )
+            {
+                sb.append( HARD_STR );
+            }
+            else
             {
                 sb.append( prTotalLimit );
             }
@@ -893,6 +943,12 @@ public class SizeLimitWrapper
         // Last, not least, the noEstimate flag
         if ( noEstimate )
         {
+            // Add a space if we have had some unchecked, pr or prTotal limit
+            if ( ( uncheckedLimit != null ) || ( prLimit != null ) || ( prTotalLimit != null ) )
+            {
+                sb.append( ' ' );
+            }
+
             sb.append( "size.pr=noEstimate" );
         }
         

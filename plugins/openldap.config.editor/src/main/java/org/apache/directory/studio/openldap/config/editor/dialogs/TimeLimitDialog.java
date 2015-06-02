@@ -249,7 +249,7 @@ public class TimeLimitDialog extends Dialog
                 // An integer
                 try
                 {
-                    Integer value = Integer.parseInt( softLimitStr );
+                    int value = Integer.parseInt( softLimitStr );
                     
                     if ( value < TimeLimitWrapper.UNLIMITED )
                     {
@@ -336,7 +336,7 @@ public class TimeLimitDialog extends Dialog
                 // An integer
                 try
                 {
-                    Integer value = Integer.parseInt( hardLimitStr );
+                    int value = Integer.parseInt( hardLimitStr );
                     
                     if ( value < TimeLimitWrapper.UNLIMITED )
                     {
@@ -361,9 +361,9 @@ public class TimeLimitDialog extends Dialog
             }
 
             // Udate the Soft checkbox
-            if ( timeLimitWrapper.getHardLimit() == null )
+            if ( timeLimitWrapper.getHardLimit() != null )
             {
-                hardSoftCheckbox.setSelection( timeLimitWrapper.getSoftLimit() == null );
+                hardSoftCheckbox.setSelection( false );
             }
             else
             {
@@ -414,7 +414,7 @@ public class TimeLimitDialog extends Dialog
                 // An integer
                 try
                 {
-                    Integer value = Integer.parseInt( globalLimitStr );
+                    int value = Integer.parseInt( globalLimitStr );
                     
                     if ( value < TimeLimitWrapper.UNLIMITED )
                     {
