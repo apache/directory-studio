@@ -43,7 +43,7 @@
       startupProgressRect="0,280,455,15"
       startupMessageRect="10,237,435,20"
       startupForegroundColor="FFFFFF" />
-   <launcher name="Apache Directory Studio">
+   <launcher name="ApacheDirectoryStudio">
       <linux icon="icons/linux/studio.xpm"/>
       <macosx icon="icons/macosx/studio.icns"/>
       <solaris/>
