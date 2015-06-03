@@ -21,6 +21,7 @@ package org.apache.directory.studio.openldap.config.wrappers;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import org.apache.directory.studio.openldap.config.editor.wrappers.SizeLimitWrapper;
 import org.junit.Test;
@@ -119,7 +120,7 @@ public class SizeLimitWrapperTest
     
     
     @Test
-    public void testCreateTimeLimit()
+    public void testCreateSizeLimit()
     {
         SizeLimitWrapper slw = new SizeLimitWrapper( null );
         assertEquals( null, slw.getGlobalLimit() );
@@ -206,5 +207,15 @@ public class SizeLimitWrapperTest
         assertEquals( 100, slw.getGlobalLimit().intValue() );
         assertEquals( null, slw.getSoftLimit() );
         assertEquals( null, slw.getHardLimit() );
+        assertFalse( slw.isNoEstimate() );
+
+        slw = new SizeLimitWrapper( "size.hard=100 size.soft=50 size.unchecked=20 size.pr=10 size.prtotal=20 size.pr=noEstimate" );
+        assertEquals( null, slw.getGlobalLimit() );
+        assertEquals( 50, slw.getSoftLimit().intValue() );
+        assertEquals( 100, slw.getHardLimit().intValue() );
+        assertEquals( 20, slw.getUncheckedLimit().intValue() );
+        assertEquals( 10, slw.getPrLimit().intValue() );
+        assertEquals( 20, slw.getPrTotalLimit().intValue() );
+        assertTrue( slw.isNoEstimate() );
     }
 }

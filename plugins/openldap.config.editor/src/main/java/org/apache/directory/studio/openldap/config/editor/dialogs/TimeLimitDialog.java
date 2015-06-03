@@ -20,25 +20,14 @@
 package org.apache.directory.studio.openldap.config.editor.dialogs;
 
 
-import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
-import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 import org.apache.directory.studio.openldap.config.editor.wrappers.TimeLimitWrapper;
 
 
@@ -83,41 +72,8 @@ import org.apache.directory.studio.openldap.config.editor.wrappers.TimeLimitWrap
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class TimeLimitDialog extends Dialog
+public class TimeLimitDialog extends AbstractLimitDialog
 {
-    // UI widgets
-    /** The SoftLimit Text */
-    private Text softLimitText;
-    
-    /** The HardLimit Text */
-    private Text hardLimitText;
-    
-    /** The GlobalLimit Text */
-    private Text globalLimitText;
-    
-    /** The unlimited checkboxes */
-    private Button softUnlimitedCheckbox;
-    private Button hardUnlimitedCheckbox;
-    private Button globalUnlimitedCheckbox;
-    
-    /** The hard limit Soft checkbox */
-    private Button hardSoftCheckbox;
-    
-    /** The resulting TimeLimit Text, or an error message */
-    private Text timeLimitText;
-    
-    /** The TimeLimitWrapper */
-    private TimeLimitWrapper timeLimitWrapper;
-    
-    /** The modified TimeLimit, as a String */
-    private String newTimeLimitStr;
-    
-    // Some constants
-    private static final String UNLIMITED_STR = "unlimited";
-    private static final String NONE_STR = "none";
-    private static final String SOFT_STR = "soft";
-
-
     /**
      * Create a new instance of the TimeLimitDialog
      * 
@@ -141,488 +97,9 @@ public class TimeLimitDialog extends Dialog
         super( parentShell );
         super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
         
-        timeLimitWrapper = new TimeLimitWrapper( timeLimitStr );
+        limitWrapper = new TimeLimitWrapper( timeLimitStr );
     }
     
-    
-    /**
-     * Check if the global TimeLimit is valid : 
-     * the values must be numeric, or "unlimited" or "none" or "soft" (for the hard limit). They
-     * also have to be >=0
-     */
-    private boolean isValid()
-    {
-        return isValidSoft() && isValidHard() && isValidGlobal();
-    }
-    
-    
-    /**
-     * Check if the soft value is valid or not
-     */
-    private boolean isValidSoft()
-    {
-        String softLimitStr = softLimitText.getText();
-        
-        if ( !Strings.isEmpty( softLimitStr ) )
-        {
-            if ( !UNLIMITED_STR.equalsIgnoreCase( softLimitStr ) && !NONE_STR.equals( softLimitStr ) )
-            {
-                try
-                {
-                    if ( Integer.valueOf( softLimitStr ).intValue() < -1 )
-                    {
-                       return false;
-                    }
-                }
-                catch ( NumberFormatException nfe )
-                {
-                    return false;
-                }
-            }
-        }
-        
-        return true;
-    }
-    
-    
-    /**
-     * Check if the hard value is valid or not
-     */
-    private boolean isValidHard()
-    {
-        String hardLimitStr = hardLimitText.getText();
-        
-        if ( !Strings.isEmpty( hardLimitStr ) )
-        {
-            if ( !UNLIMITED_STR.equalsIgnoreCase( hardLimitStr ) && 
-                 !NONE_STR.equals( hardLimitStr ) && 
-                 !SOFT_STR.equalsIgnoreCase( hardLimitStr ) )
-            {
-                try
-                {
-                    if ( Integer.valueOf( hardLimitStr ).intValue() < -1 )
-                    {
-                       return false;
-                    }
-                }
-                catch ( NumberFormatException nfe )
-                {
-                    return false;
-                }
-            }
-        }
-        
-        return true;
-    }
-    
-    
-    /**
-     * Check if the global value is valid or not
-     */
-    private boolean isValidGlobal()
-    {
-        String globalLimitStr = hardLimitText.getText();
-        
-        if ( !Strings.isEmpty( globalLimitStr ) )
-        {
-            if ( !UNLIMITED_STR.equalsIgnoreCase( globalLimitStr ) && !NONE_STR.equals( globalLimitStr ) )
-            {
-                try
-                {
-                    if ( Integer.valueOf( globalLimitStr ) < -1 )
-                    {
-                       return false;
-                    }
-                }
-                catch ( NumberFormatException nfe )
-                {
-                    return false;
-                }
-            }
-        }
-        
-        return true;
-    }
-    
-    
-    /**
-     * The listener for the Soft Limit Text
-     */
-    private ModifyListener softLimitTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
-        {
-            Display display = softLimitText.getDisplay();
-            Button okButton = getButton( IDialogConstants.OK_ID );
-            boolean unlimited = false;
-            int color = SWT.COLOR_BLACK;
-
-            // This button might be null when the dialog is called.
-            if ( okButton == null )
-            {
-                return;
-            }
-
-            // The possible values are : 'unlimited' | 'none' | INT | -1
-            String softLimitStr = softLimitText.getText();
-
-            if ( Strings.isEmpty( softLimitStr ) )
-            {
-                // Check the case we don't have anything
-                timeLimitWrapper.setSoftLimit( null );
-            }
-            else if ( UNLIMITED_STR.equalsIgnoreCase( softLimitStr ) || NONE_STR.equalsIgnoreCase( softLimitStr ) ) 
-            {
-                timeLimitWrapper.setSoftLimit( TimeLimitWrapper.UNLIMITED );
-                unlimited = true;
-            }
-            else
-            {
-                // An integer
-                try
-                {
-                    int value = Integer.parseInt( softLimitStr );
-                    
-                    if ( value < TimeLimitWrapper.UNLIMITED )
-                    {
-                        // The value must be either -1 (unlimited) or a positive number
-                        color = SWT.COLOR_RED ;
-                    }
-                    else if ( value == TimeLimitWrapper.UNLIMITED )
-                    {
-                        timeLimitWrapper.setSoftLimit( TimeLimitWrapper.UNLIMITED );
-                        unlimited = true;
-                    }
-                    else
-                    {
-                        timeLimitWrapper.setSoftLimit( value );
-                    }
-                }
-                catch ( NumberFormatException nfe )
-                {
-                    // The value must be either -1 (unlimited) or a positive number
-                    color = SWT.COLOR_RED ;
-                }
-            }
-
-            softUnlimitedCheckbox.setSelection( unlimited );
-            softLimitText.setForeground( display.getSystemColor( color ) );
-            timeLimitText.setText( timeLimitWrapper.toString() );
-            
-            // Update the Hard limit if the hardSoft checkbox is set
-            if ( hardSoftCheckbox.getSelection() )
-            {
-                if ( Strings.isEmpty( softLimitStr ) )
-                {
-                    hardLimitText.setText( "" );
-                }
-                else
-                {
-                    hardLimitText.setText( softLimitStr );
-                    
-                    // Use the same color than for the soft
-                    Display displayHard = softLimitText.getDisplay();
-                    hardLimitText.setForeground( displayHard.getSystemColor( color ) );
-                }
-            }
-            
-            okButton.setEnabled( isValid() );
-        }
-    };
-    
-    
-    /**
-     * The listener for the Hard Limit Text
-     */
-    private ModifyListener hardLimitTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
-        {
-            Display display = hardLimitText.getDisplay();
-            Button okButton = getButton( IDialogConstants.OK_ID );
-            boolean unlimited = false;
-            int color = SWT.COLOR_BLACK;
-
-            // This button might be null when the dialog is called.
-            if ( okButton == null )
-            {
-                return;
-            }
-
-            // The possible values are : 'unlimited' | 'none' | 'soft' | INT | -1
-            String hardLimitStr = hardLimitText.getText();
-
-            if ( Strings.isEmpty( hardLimitStr ) )
-            {
-                // Check the case we don't have anything
-                timeLimitWrapper.setHardLimit( null );
-            }
-            else if ( UNLIMITED_STR.equalsIgnoreCase( hardLimitStr ) || NONE_STR.equalsIgnoreCase( hardLimitStr ) ) 
-            {
-                timeLimitWrapper.setHardLimit( TimeLimitWrapper.UNLIMITED );
-                unlimited = true;
-            }
-            else if ( SOFT_STR.equalsIgnoreCase( hardLimitStr ) ) 
-            {
-                timeLimitWrapper.setHardLimit( timeLimitWrapper.getSoftLimit() );
-                unlimited = softUnlimitedCheckbox.getSelection();
-            }
-            else
-            {
-                // An integer
-                try
-                {
-                    int value = Integer.parseInt( hardLimitStr );
-                    
-                    if ( value < TimeLimitWrapper.UNLIMITED )
-                    {
-                        // The value must be either -1 (unlimited) or a positive number
-                        color = SWT.COLOR_RED;
-                    }
-                    else if ( value == TimeLimitWrapper.UNLIMITED )
-                    {
-                        timeLimitWrapper.setHardLimit( TimeLimitWrapper.UNLIMITED );
-                        unlimited = true;
-                    }
-                    else
-                    {
-                        timeLimitWrapper.setHardLimit( value );
-                    }
-                }
-                catch ( NumberFormatException nfe )
-                {
-                    // The value must be either -1 (unlimited) or a positive number
-                    color = SWT.COLOR_RED;
-                }
-            }
-
-            hardUnlimitedCheckbox.setSelection( unlimited );
-            hardLimitText.setForeground( display.getSystemColor( color ) );
-            timeLimitText.setText( timeLimitWrapper.toString() );
-            
-            if ( isValidSoft() )
-            { 
-                okButton.setEnabled( true );
-            }
-            else
-            {
-                okButton.setEnabled( isValid() );
-            }
-        }
-    };
-    
-    
-    /**
-     * The listener for the Global Limit Text
-     */
-    private ModifyListener globalLimitTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
-        {
-            Display display = globalLimitText.getDisplay();
-            Button okButton = getButton( IDialogConstants.OK_ID );
-            boolean unlimited = false;
-            int color = SWT.COLOR_BLACK;
-
-            // This button might be null when the dialog is called.
-            if ( okButton == null )
-            {
-                return;
-            }
-
-            // The possible values are : 'unlimited' | 'none' | INT | -1
-            String globalLimitStr = globalLimitText.getText();
-            
-            if ( Strings.isEmpty( globalLimitStr ) )
-            {
-                // Check the case we don't have anything
-                timeLimitWrapper.setGlobalLimit( null );
-            }
-            else if ( UNLIMITED_STR.equalsIgnoreCase( globalLimitStr ) || NONE_STR.equalsIgnoreCase( globalLimitStr ) ) 
-            {
-                timeLimitWrapper.setGlobalLimit( TimeLimitWrapper.UNLIMITED );
-                unlimited = true;
-            }
-            else
-            {
-                // An integer
-                try
-                {
-                    int value = Integer.parseInt( globalLimitStr );
-                    
-                    if ( value < TimeLimitWrapper.UNLIMITED )
-                    {
-                        // The value must be either -1 (unlimited) or a positive number
-                        color = SWT.COLOR_RED;
-                    }
-                    else if ( value == TimeLimitWrapper.UNLIMITED )
-                    {
-                        timeLimitWrapper.setGlobalLimit( TimeLimitWrapper.UNLIMITED );
-                        unlimited = true;
-                    }
-                    else
-                    {
-                        timeLimitWrapper.setGlobalLimit( value );
-                    }
-                }
-                catch ( NumberFormatException nfe )
-                {
-                    // The value must be either -1 (unlimited) or a positive number
-                    color = SWT.COLOR_RED;
-                }
-            }
-
-            timeLimitText.setText( timeLimitWrapper.toString() );
-            globalLimitText.setForeground( display.getSystemColor( color ) );
-            globalUnlimitedCheckbox.setSelection( unlimited );
-            okButton.setEnabled( isValid() );
-        }
-    };
-    
-    
-    /**
-     * The listener in charge of exposing the changes when the soft unlimited button is checked
-     */
-    private SelectionListener softUnlimitedCheckboxSelectionListener = new SelectionAdapter()
-    {
-        public void widgetSelected( SelectionEvent e )
-        {
-            Display display = softLimitText.getDisplay();
-            Button okButton = getButton( IDialogConstants.OK_ID );
-
-            if ( softUnlimitedCheckbox.getSelection() )
-            {
-                softLimitText.setText( UNLIMITED_STR );
-                timeLimitWrapper.setSoftLimit( TimeLimitWrapper.UNLIMITED );
-            }
-            else
-            {
-                softLimitText.setText( "" );
-                timeLimitWrapper.setSoftLimit( null );
-            }
-
-            if ( isValidSoft() )
-            {
-                softLimitText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
-            }
-            else
-            {
-                softLimitText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
-            }
-            
-            timeLimitText.setText( timeLimitWrapper.toString() );
-            okButton.setEnabled( isValid() );
-        }
-    };
-    
-    
-    /**
-     * The listener in charge of exposing the changes when the hard unlimited button is checked
-     */
-    private SelectionListener hardUnlimitedCheckboxSelectionListener = new SelectionAdapter()
-    {
-        public void widgetSelected( SelectionEvent e )
-        {
-            Display display = hardLimitText.getDisplay();
-            Button okButton = getButton( IDialogConstants.OK_ID );
-
-            if ( hardUnlimitedCheckbox.getSelection() )
-            {
-                hardLimitText.setText( UNLIMITED_STR );
-                timeLimitWrapper.setHardLimit( TimeLimitWrapper.UNLIMITED );
-                hardSoftCheckbox.setSelection( false );
-                hardLimitText.setEnabled( true );
-            }
-            else
-            {
-                hardLimitText.setText( "" );
-                timeLimitWrapper.setHardLimit( null );
-            }
-
-            hardLimitText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
-            timeLimitText.setText( timeLimitWrapper.toString() );
-            okButton.setEnabled( isValid() );
-        }
-    };
-    
-    
-    /**
-     * The listener in charge of exposing the changes when the hard unlimited button is checked.
-     * We will disable the hardLimitText.
-     */
-    private SelectionListener hardSoftCheckboxSelectionListener = new SelectionAdapter()
-    {
-        public void widgetSelected( SelectionEvent e )
-        {
-            Display display = hardLimitText.getDisplay();
-            Button okButton = getButton( IDialogConstants.OK_ID );
-
-            if ( hardSoftCheckbox.getSelection() )
-            {
-                hardLimitText.setEnabled( false );
-                String softStr = softLimitText.getText();
-                
-                if ( softStr != null )
-                {
-                    hardLimitText.setText( softStr );
-                }
-                else
-                {
-                    hardLimitText.setText( "" );
-                }
-                
-                timeLimitWrapper.setHardLimit( timeLimitWrapper.getSoftLimit() );
-                hardUnlimitedCheckbox.setSelection( TimeLimitWrapper.UNLIMITED.equals( timeLimitWrapper.getSoftLimit() ) );
-
-                if ( isValidSoft() )
-                { 
-                    hardLimitText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
-                }
-                else
-                {
-                    hardLimitText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
-                }
-            }
-            else
-            {
-                hardLimitText.setText( "" );
-                hardLimitText.setEnabled( true );
-                timeLimitWrapper.setHardLimit( null );
-            }
-
-            timeLimitText.setText( timeLimitWrapper.toString() );
-            okButton.setEnabled( isValid() );
-        }
-    };
-    
-    
-    /**
-     * The listener in charge of exposing the changes when the global unlimited button is checked
-     */
-    private SelectionListener globalUnlimitedCheckboxSelectionListener = new SelectionAdapter()
-    {
-        public void widgetSelected( SelectionEvent e )
-        {
-            Display display = globalLimitText.getDisplay();
-            Button okButton = getButton( IDialogConstants.OK_ID );
-
-            if ( globalUnlimitedCheckbox.getSelection() )
-            {
-                globalLimitText.setText( UNLIMITED_STR );
-                timeLimitWrapper.setGlobalLimit( TimeLimitWrapper.UNLIMITED );
-            }
-            else
-            {
-                globalLimitText.setText( "" );
-                timeLimitWrapper.setGlobalLimit( null );
-            }
-
-            globalLimitText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
-            timeLimitText.setText( timeLimitWrapper.toString() );
-            okButton.setEnabled( isValid() );
-        }
-    };
-
     
     /**
      * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
@@ -631,17 +108,6 @@ public class TimeLimitDialog extends Dialog
     {
         super.configureShell( shell );
         shell.setText( "Time Limit" );
-    }
-
-
-    /**
-     * Construct the new TimeLimit from what we have in the dialog
-     * {@inheritDoc}
-     */
-    protected void okPressed()
-    {
-        setNewTimeLimit( timeLimitWrapper.toString() );
-        super.okPressed();
     }
 
 
@@ -769,9 +235,9 @@ public class TimeLimitDialog extends Dialog
         timeLimitGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // TimeLimit Text
-        timeLimitText = BaseWidgetUtils.createText( timeLimitGroup, "", 1 );
-        timeLimitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        timeLimitText.setEditable( false );
+        limitText = BaseWidgetUtils.createText( timeLimitGroup, "", 1 );
+        limitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        limitText.setEditable( false );
     }
 
 
@@ -780,10 +246,10 @@ public class TimeLimitDialog extends Dialog
      */
     private void initFromTimeLimit()
     {
-        if ( timeLimitWrapper != null )
+        if ( limitWrapper != null )
         {
             // The SoftLimit
-            Integer softLimit = timeLimitWrapper.getSoftLimit();
+            Integer softLimit = limitWrapper.getSoftLimit();
             
             if ( softLimit == null )
             {
@@ -792,7 +258,7 @@ public class TimeLimitDialog extends Dialog
             }
             else if ( softLimit.equals( TimeLimitWrapper.UNLIMITED ) )
             {
-                softLimitText.setText( UNLIMITED_STR );
+                softLimitText.setText( TimeLimitWrapper.UNLIMITED_STR );
                 softUnlimitedCheckbox.setSelection( true );
             }
             else
@@ -802,7 +268,7 @@ public class TimeLimitDialog extends Dialog
             }
             
             // The HardLimit
-            Integer hardLimit = timeLimitWrapper.getHardLimit();
+            Integer hardLimit = limitWrapper.getHardLimit();
             
             if ( hardLimit == null )
             {
@@ -812,13 +278,13 @@ public class TimeLimitDialog extends Dialog
             }
             else if ( hardLimit.equals( TimeLimitWrapper.UNLIMITED ) )
             {
-                hardLimitText.setText( UNLIMITED_STR );
+                hardLimitText.setText( TimeLimitWrapper.UNLIMITED_STR );
                 hardUnlimitedCheckbox.setSelection( true );
                 hardSoftCheckbox.setSelection( false );
             }
             else if ( hardLimit.equals( TimeLimitWrapper.HARD_SOFT ) )
             {
-                hardLimitText.setText( SOFT_STR );
+                hardLimitText.setText( TimeLimitWrapper.SOFT_STR );
                 hardUnlimitedCheckbox.setSelection( false );
                 hardSoftCheckbox.setSelection( true );
             }
@@ -830,7 +296,7 @@ public class TimeLimitDialog extends Dialog
             }
             
             // The GlobalLimit
-            Integer globalLimit = timeLimitWrapper.getGlobalLimit();
+            Integer globalLimit = limitWrapper.getGlobalLimit();
             
             if ( globalLimit == null )
             {
@@ -839,7 +305,7 @@ public class TimeLimitDialog extends Dialog
             }
             else if ( globalLimit.equals( TimeLimitWrapper.UNLIMITED ) )
             {
-                globalLimitText.setText( UNLIMITED_STR );
+                globalLimitText.setText( TimeLimitWrapper.UNLIMITED_STR );
                 globalUnlimitedCheckbox.setSelection( true );
             }
             else
@@ -848,25 +314,7 @@ public class TimeLimitDialog extends Dialog
                 globalUnlimitedCheckbox.setSelection( false );
             }
             
-            timeLimitText.setText( timeLimitWrapper.toString() );
+            limitText.setText( limitWrapper.toString() );
         }
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public String getNewTimeLimit()
-    {
-        return newTimeLimitStr;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void setNewTimeLimit( String newTimeLimitStr )
-    {
-        this.newTimeLimitStr = newTimeLimitStr;
     }
 }

@@ -715,7 +715,7 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
 
             if ( dialog.open() == OverlayDialog.OK )
             {
-                String newTimeLimitStr = dialog.getNewTimeLimit();
+                String newTimeLimitStr = dialog.getNewLimit();
                 
                 if ( newTimeLimitStr != null )
                 {
@@ -737,7 +737,7 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
 
             if ( dialog.open() == OverlayDialog.OK )
             {
-                String newSizeLimitStr = dialog.getNewSizeLimit();
+                String newSizeLimitStr = dialog.getNewLimit();
                 
                 if ( newSizeLimitStr != null )
                 {

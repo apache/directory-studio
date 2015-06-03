@@ -44,17 +44,8 @@ import org.apache.directory.api.util.Strings;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SizeLimitWrapper
+public class SizeLimitWrapper extends AbstractLimitWrapper
 {
-    /** The global limit */
-    private Integer globalLimit;
-
-    /** The soft limit */
-    private Integer softLimit;
-    
-    /** The hard limit */
-    private Integer hardLimit;
-    
     /** The unchecked limit */
     private Integer uncheckedLimit;
     
@@ -68,19 +59,12 @@ public class SizeLimitWrapper
     private boolean noEstimate;
     
     //Define some of the used constants
-    public static final Integer HARD_SOFT = Integer.valueOf( -3 );
     public static final Integer PR_DISABLED = Integer.valueOf( -2 );
     public static final Integer PR_HARD = Integer.valueOf( 0 );
     public static final Integer UC_DISABLED = Integer.valueOf( 0 );
-    public static final Integer UNLIMITED = Integer.valueOf( -1 );
     
     public static final String DISABLED_STR = "disabled";
-    public static final String HARD_STR = "hard";
-    public static final String NONE_STR = "none";
-    public static final String SOFT_STR = "soft";
     public static final String UNCHECKED_STR = "unchecked";
-    public static final String UNLIMITED_STR = "unlimited";
-
 
 
     /**
@@ -88,6 +72,7 @@ public class SizeLimitWrapper
      */
     private SizeLimitWrapper()
     {
+        super();
     }
     
     
@@ -104,9 +89,7 @@ public class SizeLimitWrapper
     public SizeLimitWrapper( Integer globalLimit, Integer hardLimit, Integer softLimit, Integer uncheckedLimit, 
         Integer prLimit, Integer prTotalLimit, boolean noEstimate )
     {
-        this.globalLimit = globalLimit;
-        this.hardLimit = hardLimit;
-        this.softLimit = softLimit;
+        super( globalLimit, hardLimit, softLimit );
         this.uncheckedLimit = uncheckedLimit;
         this.prLimit = prLimit;
         this.prTotalLimit = prTotalLimit;
@@ -225,9 +208,7 @@ public class SizeLimitWrapper
      */
     public void clear()
     {
-        globalLimit = null;
-        softLimit = null;
-        hardLimit = null;
+        super.clear();
         uncheckedLimit = null;
         prLimit = null;
         prTotalLimit = null;
@@ -554,32 +535,6 @@ public class SizeLimitWrapper
     
     
     /**
-     * Get an integer out of a String. Return null if we don't find any.
-     */
-    private static String getInteger( String str, int pos )
-    {
-        for ( int i = pos; i < str.length(); i++ )
-        {
-            char c = str.charAt( i );
-            
-            if ( ( c < '0') && ( c > '9' ) )
-            {
-                if ( i == pos )
-                {
-                    return null;
-                }
-                else
-                {
-                    return str.substring( pos, i );
-                }
-            }
-        }
-        
-        return str.substring( pos );
-    }
-    
-    
-    /**
      * Tells if the SizeLimit element is valid or not
      * @param sizeLimitStr the sizeLimit String to check
      * @return true if the values are correct, false otherwise
@@ -612,60 +567,6 @@ public class SizeLimitWrapper
         }
 
         return true;
-    }
-    
-    
-    /**
-     * @return the globalLimit
-     */
-    public Integer getGlobalLimit()
-    {
-        return globalLimit;
-    }
-
-
-    /**
-     * @param globalLimit the globalLimit to set
-     */
-    public void setGlobalLimit( Integer globalLimit )
-    {
-        this.globalLimit = globalLimit;
-    }
-
-
-    /**
-     * @return the softLimit
-     */
-    public Integer getSoftLimit()
-    {
-        return softLimit;
-    }
-
-
-    /**
-     * @param softLimit the softLimit to set
-     */
-    public void setSoftLimit( Integer softLimit )
-    {
-        this.softLimit = softLimit;
-    }
-
-
-    /**
-     * @return the hardLimit
-     */
-    public Integer getHardLimit()
-    {
-        return hardLimit;
-    }
-
-
-    /**
-     * @param hardLimit the hardLimit to set
-     */
-    public void setHardLimit( Integer hardLimit )
-    {
-        this.hardLimit = hardLimit;
     }
 
 
@@ -738,7 +639,15 @@ public class SizeLimitWrapper
     {
         this.noEstimate = noEstimate;
     }
-
+    
+    
+    /**
+     * @return The Limit's type
+     */
+    protected String getType()
+    {
+        return "size";
+    }
 
 
     /**
@@ -748,135 +657,17 @@ public class SizeLimitWrapper
     {
         StringBuilder sb = new StringBuilder();
         
-        // Deal with global/hard/soft limits first
-        if ( globalLimit != null )
-        {
-            // The globalLimit overrides the soft and hard limit
-            sb.append( "size=" );
-            
-            if ( globalLimit.equals( UNLIMITED ) )
-            {
-                sb.append( UNLIMITED_STR );
-            }
-            else if ( globalLimit.intValue() >= 0 )
-            {
-                sb.append( globalLimit );
-            }
-        }
-        else
-        {
-            if ( hardLimit != null )
-            {
-                // First check the hard limit, has it can be set to be equal to soft limit
-                if ( softLimit != null )
-                {
-                    if ( hardLimit.equals( softLimit ) )
-                    {
-                        // If hard and soft are set and equals, we use the global limit instead
-                        sb.append( "size=" );
-                        
-                        if ( hardLimit.equals( UNLIMITED ) )
-                        {
-                            sb.append( UNLIMITED_STR );
-                        }
-                        else if ( hardLimit.intValue() >= 0 )
-                        {
-                            sb.append( hardLimit );
-                        }
-                    }
-                    else
-                    {
-                        // We have both values, the aren't equal. 
-                        if ( hardLimit.equals( UNLIMITED ) )
-                        {
-                            sb.append( "size.hard=unlimited size.soft=" );
-                            sb.append( softLimit );
-                        }
-                        else if ( hardLimit.intValue() == 0 )
-                        {
-                            // Special cases : hard = soft
-                            sb.append( "size=" ).append( softLimit );
-                        }
-                        else if ( hardLimit.intValue() < softLimit.intValue() )
-                        {
-                            // when the hard limit is lower than the soft limit : use the hard limit
-                            sb.append( "size=" ).append( hardLimit );
-                        }
-                        else 
-                        {
-                            // Special case : softLimit is -1
-                            if ( softLimit.equals( UNLIMITED ) )
-                            {
-                                // We use the hard limit
-                                sb.append( "size=" ).append( hardLimit );
-                            }
-                            else
-                            {
-                                sb.append( "size.hard=" );
-                                
-                                if ( hardLimit.equals( UNLIMITED ) )
-                                {
-                                    sb.append( UNLIMITED_STR );
-                                }
-                                else if ( hardLimit.intValue() > 0 )
-                                {
-                                    sb.append( hardLimit );
-                                }
-        
-                                sb.append( " size.soft=" );
-                                
-                                if ( softLimit.equals( UNLIMITED ) )
-                                {
-                                    sb.append( UNLIMITED_STR );
-                                }
-                                else if ( softLimit.intValue() >= 0 )
-                                {
-                                    sb.append( softLimit );
-                                }
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    // Only an hard limit
-                    sb.append( "size.hard=" );
-                    
-                    if ( hardLimit.equals( UNLIMITED ) )
-                    {
-                        sb.append( UNLIMITED_STR );
-                    }
-                    else if ( hardLimit.intValue() >= 0 )
-                    {
-                        sb.append( hardLimit );
-                    }
-                }
-            }
-            else if ( softLimit != null )
-            {
-                // Only a soft limit
-                sb.append( "size.soft=" );
-                
-                if ( softLimit.equals( UNLIMITED ) )
-                {
-                    sb.append( UNLIMITED_STR );
-                }
-                else if ( softLimit.intValue() >= 0 )
-                {
-                    sb.append( softLimit );
-                }
-            }
-        }
+        sb.append( super.toString() );
 
-        // Eventually add a space at the end if we have had some size limit
-        if ( sb.length() > 0 )
-        {
-            sb.append( ' ' );
-        }
-        
         // process the unchecked limit
         if ( uncheckedLimit != null )
         {
+            // Eventually add a space at the end if we have had some size limit
+            if ( sb.length() > 0 )
+            {
+                sb.append( ' ' );
+            }
+            
             sb.append( "size.unchecked=" );
             
             if ( uncheckedLimit.equals( UNLIMITED ) )
@@ -896,11 +687,12 @@ public class SizeLimitWrapper
         // Process the pr limit
         if ( prLimit != null )
         {
-            // Add a space if we have had some unchecked limit
-            if ( uncheckedLimit != null )
+            // Eventually add a space at the end if we have had some size limit
+            if ( sb.length() > 0 )
             {
                 sb.append( ' ' );
             }
+            
             
             sb.append( "size.pr=" );
             
@@ -917,12 +709,12 @@ public class SizeLimitWrapper
         // Process the prTotal limit
         if ( prTotalLimit != null )
         {
-            // Add a space if we have had some unchecked limit or some pr limit
-            if ( ( uncheckedLimit != null ) || ( prLimit != null ) )
+            // Eventually add a space at the end if we have had some size limit
+            if ( sb.length() > 0 )
             {
                 sb.append( ' ' );
             }
-
+            
             sb.append( "size.prtotal=" );
             
             if ( prTotalLimit.equals( UNLIMITED ) )
@@ -933,22 +725,25 @@ public class SizeLimitWrapper
             {
                 sb.append( HARD_STR );
             }
+            else if ( prTotalLimit.intValue() == PR_DISABLED )
+            {
+                sb.append( DISABLED_STR );
+            }
             else
             {
                 sb.append( prTotalLimit );
             }
-            
         }
         
         // Last, not least, the noEstimate flag
         if ( noEstimate )
         {
-            // Add a space if we have had some unchecked, pr or prTotal limit
-            if ( ( uncheckedLimit != null ) || ( prLimit != null ) || ( prTotalLimit != null ) )
+            // Eventually add a space at the end if we have had some size limit
+            if ( sb.length() > 0 )
             {
                 sb.append( ' ' );
             }
-
+            
             sb.append( "size.pr=noEstimate" );
         }
         

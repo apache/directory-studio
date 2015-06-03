@@ -22,7 +22,6 @@ package org.apache.directory.studio.openldap.config.editor.dialogs;
 
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -93,22 +92,8 @@ import org.apache.directory.studio.openldap.config.editor.wrappers.SizeLimitWrap
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SizeLimitDialog extends Dialog
+public class SizeLimitDialog extends AbstractLimitDialog
 {
-    // UI widgets
-    /** The SoftLimit Text and checkboxes */
-    private Text softLimitText;
-    private Button softUnlimitedCheckbox;
-    
-    /** The HardLimit Text and checkboxes */
-    private Text hardLimitText;
-    private Button hardUnlimitedCheckbox;
-    private Button hardSoftCheckbox;
-    
-    /** The GlobalLimit Text and checkboxes */
-    private Text globalLimitText;
-    private Button globalUnlimitedCheckbox;
-    
     /** The UncheckedLimit Text and checkboxes */
     private Text uncheckedLimitText;
     private Button uncheckedUnlimitedCheckbox;
@@ -124,15 +109,6 @@ public class SizeLimitDialog extends Dialog
     private Button prTotalUnlimitedCheckbox;
     private Button prTotalDisabledCheckbox;
     private Button prTotalHardCheckbox;
-
-    /** The resulting SizeLimit Text, or an error message */
-    private Text sizeLimitText;
-    
-    /** The SizeLimitWrapper */
-    private SizeLimitWrapper sizeLimitWrapper;
-    
-    /** The modified SizeLimit, as a String */
-    private String newSizeLimitStr;
     
     /**
      * Create a new instance of the SizeLimitDialog
@@ -157,7 +133,7 @@ public class SizeLimitDialog extends Dialog
         super( parentShell );
         super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
         
-        sizeLimitWrapper = new SizeLimitWrapper( sizeLimitStr );
+        limitWrapper = new SizeLimitWrapper( sizeLimitStr );
     }
     
     
@@ -166,59 +142,27 @@ public class SizeLimitDialog extends Dialog
      * the values must be numeric, or "unlimited" or "none" or "soft" (for the hard limit). They
      * also have to be >=0
      */
-    private boolean isValid()
+    protected boolean isValid()
     {
-        String softLimitStr = softLimitText.getText();
-        String hardLimitStr = hardLimitText.getText();
-        String globalLimitStr = globalLimitText.getText();
+        return super.isValid() && isValidUnchecked() && isValidPr() && isValidPrTotal();
+    }
+    
+    
+    /**
+     * Check if the unchecked value is valid or not
+     */
+    protected boolean isValidUnchecked()
+    {
+        String uncheckedlLimitStr = uncheckedLimitText.getText();
         
-        if ( !Strings.isEmpty( softLimitStr ) )
+        if ( !Strings.isEmpty( uncheckedlLimitStr ) )
         {
-            if ( !SizeLimitWrapper.UNLIMITED_STR.equalsIgnoreCase( softLimitStr ) && 
-                !SizeLimitWrapper.NONE_STR.equals( softLimitStr ) )
+            if ( !SizeLimitWrapper.UNLIMITED_STR.equalsIgnoreCase( uncheckedlLimitStr ) && 
+                 !SizeLimitWrapper.NONE_STR.equals( uncheckedlLimitStr ) )
             {
                 try
                 {
-                    if ( Integer.valueOf( softLimitStr ) < -1 )
-                    {
-                       return false;
-                    }
-                }
-                catch ( NumberFormatException nfe )
-                {
-                    return false;
-                }
-            }
-        }
-        
-        if ( !Strings.isEmpty( hardLimitStr ) )
-        {
-            if ( !SizeLimitWrapper.UNLIMITED_STR.equalsIgnoreCase( hardLimitStr ) && 
-                !SizeLimitWrapper.NONE_STR.equals( hardLimitStr ) && 
-                !SizeLimitWrapper.SOFT_STR.equalsIgnoreCase( hardLimitStr ) )
-            {
-                try
-                {
-                    if ( Integer.valueOf( hardLimitStr ) < -1 )
-                    {
-                       return false;
-                    }
-                }
-                catch ( NumberFormatException nfe )
-                {
-                    return false;
-                }
-            }
-        }
-        
-        if ( !Strings.isEmpty( globalLimitStr ) )
-        {
-            if ( !SizeLimitWrapper.UNLIMITED_STR.equalsIgnoreCase( globalLimitStr ) && 
-                !SizeLimitWrapper.NONE_STR.equals( globalLimitStr ) )
-            {
-                try
-                {
-                    if ( Integer.valueOf( globalLimitStr ) < -1 )
+                    if ( Integer.parseInt( uncheckedlLimitStr ) < SizeLimitWrapper.UNLIMITED.intValue() )
                     {
                        return false;
                     }
@@ -234,247 +178,65 @@ public class SizeLimitDialog extends Dialog
     }
     
     
-    
     /**
-     * The listener for the Soft Limit Text
+     * Check if the pr value is valid or not
      */
-    private ModifyListener softLimitTextListener = new ModifyListener()
+    protected boolean isValidPr()
     {
-        public void modifyText( ModifyEvent e )
+        String prLimitStr = prLimitText.getText();
+        
+        if ( !Strings.isEmpty( prLimitStr ) )
         {
-            Display display = softLimitText.getDisplay();
-            Button okButton = getButton( IDialogConstants.OK_ID );
-            boolean unlimited = false;
-            int color = SWT.COLOR_BLACK;
-
-            // This button might be null when the dialog is called.
-            if ( okButton == null )
+            if ( !SizeLimitWrapper.UNLIMITED_STR.equalsIgnoreCase( prLimitStr ) && 
+                 !SizeLimitWrapper.NONE_STR.equals( prLimitStr ) )
             {
-                return;
-            }
-
-            // The possible values are : 'unlimited' | 'none' | INT | -1
-            String softLimitStr = softLimitText.getText();
-
-            if ( Strings.isEmpty( softLimitStr ) )
-            {
-                // Check the case we don't have anything
-                sizeLimitWrapper.setSoftLimit( null );
-            }
-            else if ( SizeLimitWrapper.UNLIMITED_STR.equalsIgnoreCase( softLimitStr ) || 
-                SizeLimitWrapper.NONE_STR.equalsIgnoreCase( softLimitStr ) ) 
-            {
-                sizeLimitWrapper.setSoftLimit( SizeLimitWrapper.UNLIMITED );
-                unlimited = true;
-            }
-            else
-            {
-                // An integer
                 try
                 {
-                    int value = Integer.parseInt( softLimitStr );
-                    
-                    if ( value < SizeLimitWrapper.UNLIMITED )
+                    if ( Integer.parseInt( prLimitStr ) < SizeLimitWrapper.UNLIMITED.intValue() )
                     {
-                        // The value must be either -1 (unlimited) or a positive number
-                        color = SWT.COLOR_RED ;
-                    }
-                    else if ( value == SizeLimitWrapper.UNLIMITED )
-                    {
-                        sizeLimitWrapper.setSoftLimit( SizeLimitWrapper.UNLIMITED );
-                        unlimited = true;
-                    }
-                    else
-                    {
-                        sizeLimitWrapper.setSoftLimit( value );
+                       return false;
                     }
                 }
                 catch ( NumberFormatException nfe )
                 {
-                    // The value must be either -1 (unlimited) or a positive number
-                    color = SWT.COLOR_RED ;
+                    return false;
                 }
             }
-
-            softUnlimitedCheckbox.setSelection( unlimited );
-            softLimitText.setForeground( display.getSystemColor( color ) );
-            sizeLimitText.setText( sizeLimitWrapper.toString() );
-            
-            // Update the Hard limit if the hardSoft checkbox is set
-            if ( hardSoftCheckbox.getSelection() )
-            {
-                if ( Strings.isEmpty( softLimitStr ) )
-                {
-                    hardLimitText.setText( "" );
-                }
-                else
-                {
-                    hardLimitText.setText( softLimitStr );
-                }
-            }
-            
-            okButton.setEnabled( isValid() );
         }
-    };
-    
-    
+        
+        return true;
+    }
     
     
     /**
-     * The listener for the Hard Limit Text
+     * Check if the prtotal value is valid or not
      */
-    private ModifyListener hardLimitTextListener = new ModifyListener()
+    protected boolean isValidPrTotal()
     {
-        public void modifyText( ModifyEvent e )
+        String prTotalLimitStr = prTotalLimitText.getText();
+        
+        if ( !Strings.isEmpty( prTotalLimitStr ) )
         {
-            Display display = hardLimitText.getDisplay();
-            Button okButton = getButton( IDialogConstants.OK_ID );
-            boolean unlimited = false;
-            int color = SWT.COLOR_BLACK;
-
-            // This button might be null when the dialog is called.
-            if ( okButton == null )
+            if ( !SizeLimitWrapper.UNLIMITED_STR.equalsIgnoreCase( prTotalLimitStr ) && 
+                 !SizeLimitWrapper.NONE_STR.equals( prTotalLimitStr ) &&
+                 !SizeLimitWrapper.DISABLED_STR.equals( prTotalLimitStr ) )
             {
-                return;
-            }
-
-            // The possible values are : 'unlimited' | 'none' | 'soft' | INT | -1
-            String hardLimitStr = hardLimitText.getText();
-
-            if ( Strings.isEmpty( hardLimitStr ) )
-            {
-                // Check the case we don't have anything
-                sizeLimitWrapper.setHardLimit( null );
-            }
-            else if ( SizeLimitWrapper.UNLIMITED_STR.equalsIgnoreCase( hardLimitStr ) || 
-                SizeLimitWrapper.NONE_STR.equalsIgnoreCase( hardLimitStr ) ) 
-            {
-                sizeLimitWrapper.setHardLimit( SizeLimitWrapper.UNLIMITED );
-                unlimited = true;
-            }
-            else if ( SizeLimitWrapper.SOFT_STR.equalsIgnoreCase( hardLimitStr ) ) 
-            {
-                sizeLimitWrapper.setHardLimit( sizeLimitWrapper.getSoftLimit() );
-                unlimited = softUnlimitedCheckbox.getSelection();
-            }
-            else
-            {
-                // An integer
                 try
                 {
-                    int value = Integer.parseInt( hardLimitStr );
-                    
-                    if ( value < SizeLimitWrapper.UNLIMITED )
+                    if ( Integer.parseInt( prTotalLimitStr ) < SizeLimitWrapper.PR_DISABLED.intValue() )
                     {
-                        // The value must be either -1 (unlimited) or a positive number
-                        color = SWT.COLOR_RED;
-                    }
-                    else if ( value == SizeLimitWrapper.UNLIMITED )
-                    {
-                        sizeLimitWrapper.setHardLimit( SizeLimitWrapper.UNLIMITED );
-                        unlimited = true;
-                    }
-                    else
-                    {
-                        sizeLimitWrapper.setHardLimit( value );
+                       return false;
                     }
                 }
                 catch ( NumberFormatException nfe )
                 {
-                    // The value must be either -1 (unlimited) or a positive number
-                    color = SWT.COLOR_RED;
+                    return false;
                 }
             }
-
-            // Udate the Soft checkbox
-            if ( sizeLimitWrapper.getHardLimit() == null )
-            {
-                hardSoftCheckbox.setSelection( false );
-            }
-            else
-            {
-                hardSoftCheckbox.setSelection( sizeLimitWrapper.getHardLimit().equals( sizeLimitWrapper.getSoftLimit() ) );
-            }
-            
-            hardUnlimitedCheckbox.setSelection( unlimited );
-            hardLimitText.setForeground( display.getSystemColor( color ) );
-            sizeLimitText.setText( sizeLimitWrapper.toString() );
-            okButton.setEnabled( isValid() );
         }
-    };
-    
-    
-    /**
-     * The listener for the Global Limit Text
-     */
-    private ModifyListener globalLimitTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
-        {
-            Display display = globalLimitText.getDisplay();
-            Button okButton = getButton( IDialogConstants.OK_ID );
-            boolean unlimited = false;
-            int color = SWT.COLOR_BLACK;
-
-            // This button might be null when the dialog is called.
-            if ( okButton == null )
-            {
-                return;
-            }
-
-            // The possible values are : 'unlimited' | 'none' | INT | -1
-            String globalLimitStr = globalLimitText.getText();
-            
-            if ( Strings.isEmpty( globalLimitStr ) )
-            {
-                // Check the case we don't have anything
-                sizeLimitWrapper.setGlobalLimit( null );
-            }
-            else if ( SizeLimitWrapper.UNLIMITED_STR.equalsIgnoreCase( globalLimitStr ) || 
-                SizeLimitWrapper.NONE_STR.equalsIgnoreCase( globalLimitStr ) ) 
-            {
-                sizeLimitWrapper.setGlobalLimit( SizeLimitWrapper.UNLIMITED );
-                unlimited = true;
-            }
-            else
-            {
-                // An integer
-                try
-                {
-                    int value = Integer.parseInt( globalLimitStr );
-                    
-                    if ( value < SizeLimitWrapper.UNLIMITED )
-                    {
-                        // The value must be either -1 (unlimited) or a positive number
-                        color = SWT.COLOR_RED;
-                    }
-                    else if ( value == SizeLimitWrapper.UNLIMITED )
-                    {
-                        sizeLimitWrapper.setGlobalLimit( SizeLimitWrapper.UNLIMITED );
-                        unlimited = true;
-                    }
-                    else
-                    {
-                        sizeLimitWrapper.setGlobalLimit( value );
-                    }
-                }
-                catch ( NumberFormatException nfe )
-                {
-                    // The value must be either -1 (unlimited) or a positive number
-                    color = SWT.COLOR_RED;
-                }
-            }
-
-            sizeLimitText.setText( sizeLimitWrapper.toString() );
-            globalLimitText.setForeground( display.getSystemColor( color ) );
-            globalUnlimitedCheckbox.setSelection( unlimited );
-            okButton.setEnabled( isValid() );
-        }
-    };
-    
-    
-
-    
+        
+        return true;
+    }
     
     
     /**
@@ -502,17 +264,17 @@ public class SizeLimitDialog extends Dialog
             if ( Strings.isEmpty( uncheckedLimitStr ) )
             {
                 // Check the case we don't have anything
-                sizeLimitWrapper.setUncheckedLimit( null );
+                ((SizeLimitWrapper)limitWrapper).setUncheckedLimit( null );
             }
             else if ( SizeLimitWrapper.UNLIMITED_STR.equalsIgnoreCase( uncheckedLimitStr ) || 
                 SizeLimitWrapper.NONE_STR.equalsIgnoreCase( uncheckedLimitStr ) ) 
             {
-                sizeLimitWrapper.setUncheckedLimit( SizeLimitWrapper.UNLIMITED );
+                ((SizeLimitWrapper)limitWrapper).setUncheckedLimit( SizeLimitWrapper.UNLIMITED );
                 unlimited = true;
             }
             else if ( SizeLimitWrapper.DISABLED_STR.equalsIgnoreCase( uncheckedLimitStr ) )
             {
-                sizeLimitWrapper.setUncheckedLimit( SizeLimitWrapper.PR_DISABLED );
+                ((SizeLimitWrapper)limitWrapper).setUncheckedLimit( SizeLimitWrapper.PR_DISABLED );
                 disabled = true;
             }
             else
@@ -529,17 +291,17 @@ public class SizeLimitDialog extends Dialog
                     }
                     else if ( value == SizeLimitWrapper.UNLIMITED )
                     {
-                        sizeLimitWrapper.setUncheckedLimit( SizeLimitWrapper.UNLIMITED );
+                        ((SizeLimitWrapper)limitWrapper).setUncheckedLimit( SizeLimitWrapper.UNLIMITED );
                         unlimited = true;
                     }
                     else if ( value == SizeLimitWrapper.UC_DISABLED )
                     {
-                        sizeLimitWrapper.setUncheckedLimit( SizeLimitWrapper.UC_DISABLED );
+                        ((SizeLimitWrapper)limitWrapper).setUncheckedLimit( SizeLimitWrapper.UC_DISABLED );
                         disabled = true;
                     }
                     else
                     {
-                        sizeLimitWrapper.setUncheckedLimit( value );
+                        ((SizeLimitWrapper)limitWrapper).setUncheckedLimit( value );
                     }
                 }
                 catch ( NumberFormatException nfe )
@@ -552,7 +314,7 @@ public class SizeLimitDialog extends Dialog
             uncheckedLimitText.setForeground( display.getSystemColor( color ) );
             uncheckedUnlimitedCheckbox.setSelection( unlimited );
             uncheckedDisabledCheckbox.setSelection( disabled );
-            sizeLimitText.setText( sizeLimitWrapper.toString() );
+            limitText.setText( limitWrapper.toString() );
             okButton.setEnabled( isValid() );
         }
     };
@@ -582,12 +344,12 @@ public class SizeLimitDialog extends Dialog
             if ( Strings.isEmpty( prLimitStr ) )
             {
                 // Check the case we don't have anything
-                sizeLimitWrapper.setPrLimit( null );
+                ((SizeLimitWrapper)limitWrapper).setPrLimit( null );
             }
             else if ( SizeLimitWrapper.UNLIMITED_STR.equalsIgnoreCase( prLimitStr ) || 
                 SizeLimitWrapper.NONE_STR.equalsIgnoreCase( prLimitStr ) ) 
             {
-                sizeLimitWrapper.setPrLimit( SizeLimitWrapper.UNLIMITED );
+                ((SizeLimitWrapper)limitWrapper).setPrLimit( SizeLimitWrapper.UNLIMITED );
                 unlimited = true;
             }
             else
@@ -604,12 +366,12 @@ public class SizeLimitDialog extends Dialog
                     }
                     else if ( value == SizeLimitWrapper.UNLIMITED )
                     {
-                        sizeLimitWrapper.setPrLimit( SizeLimitWrapper.UNLIMITED );
+                        ((SizeLimitWrapper)limitWrapper).setPrLimit( SizeLimitWrapper.UNLIMITED );
                         unlimited = true;
                     }
                     else
                     {
-                        sizeLimitWrapper.setPrLimit( value );
+                        ((SizeLimitWrapper)limitWrapper).setPrLimit( value );
                     }
                 }
                 catch ( NumberFormatException nfe )
@@ -621,7 +383,7 @@ public class SizeLimitDialog extends Dialog
 
             prLimitText.setForeground( display.getSystemColor( color ) );
             prUnlimitedCheckbox.setSelection( unlimited );
-            sizeLimitText.setText( sizeLimitWrapper.toString() );
+            limitText.setText( limitWrapper.toString() );
             okButton.setEnabled( isValid() );
         }
     };
@@ -655,22 +417,22 @@ public class SizeLimitDialog extends Dialog
             if ( Strings.isEmpty( prTotalLimitStr ) )
             {
                 // Check the case we don't have anything
-                sizeLimitWrapper.setPrTotalLimit( null );
+                ((SizeLimitWrapper)limitWrapper).setPrTotalLimit( null );
             }
             else if ( SizeLimitWrapper.UNLIMITED_STR.equalsIgnoreCase( prTotalLimitStr ) || 
                 SizeLimitWrapper.NONE_STR.equalsIgnoreCase( prTotalLimitStr ) ) 
             {
-                sizeLimitWrapper.setPrTotalLimit( SizeLimitWrapper.UNLIMITED );
+                ((SizeLimitWrapper)limitWrapper).setPrTotalLimit( SizeLimitWrapper.UNLIMITED );
                 unlimited = true;
             }
             else if ( SizeLimitWrapper.HARD_STR.equalsIgnoreCase( prTotalLimitStr ) ) 
             {
-                sizeLimitWrapper.setPrTotalLimit( SizeLimitWrapper.PR_HARD );
+                ((SizeLimitWrapper)limitWrapper).setPrTotalLimit( SizeLimitWrapper.PR_HARD );
                 hard = true;
             }
             else if ( SizeLimitWrapper.DISABLED_STR.equalsIgnoreCase( prTotalLimitStr ) )
             {
-                sizeLimitWrapper.setPrTotalLimit( SizeLimitWrapper.PR_DISABLED );
+                ((SizeLimitWrapper)limitWrapper).setPrTotalLimit( SizeLimitWrapper.PR_DISABLED );
                 disabled = true;
             }
             else
@@ -687,21 +449,21 @@ public class SizeLimitDialog extends Dialog
                     }
                     else if ( value == SizeLimitWrapper.PR_DISABLED )
                     {
-                        sizeLimitWrapper.setPrTotalLimit( SizeLimitWrapper.PR_DISABLED );
+                        ((SizeLimitWrapper)limitWrapper).setPrTotalLimit( SizeLimitWrapper.PR_DISABLED );
                         disabled = true;
                     }
                     else if ( value == SizeLimitWrapper.UNLIMITED )
                     {
-                        sizeLimitWrapper.setPrTotalLimit( SizeLimitWrapper.UNLIMITED );
+                        ((SizeLimitWrapper)limitWrapper).setPrTotalLimit( SizeLimitWrapper.UNLIMITED );
                         unlimited = true;
                     }
                     else if ( value == SizeLimitWrapper.PR_HARD )
                     {
-                        sizeLimitWrapper.setPrTotalLimit( SizeLimitWrapper.PR_HARD );
+                        ((SizeLimitWrapper)limitWrapper).setPrTotalLimit( SizeLimitWrapper.PR_HARD );
                     }
                     else
                     {
-                        sizeLimitWrapper.setPrTotalLimit( value );
+                        ((SizeLimitWrapper)limitWrapper).setPrTotalLimit( value );
                     }
                 }
                 catch ( NumberFormatException nfe )
@@ -715,131 +477,7 @@ public class SizeLimitDialog extends Dialog
             prTotalUnlimitedCheckbox.setSelection( unlimited );
             prTotalDisabledCheckbox.setSelection( disabled );
             prTotalHardCheckbox.setSelection( hard );
-            sizeLimitText.setText( sizeLimitWrapper.toString() );
-            okButton.setEnabled( isValid() );
-        }
-    };
-
-    
-    /**
-     * The listener in charge of exposing the changes when the soft unlimited button is checked
-     */
-    private SelectionListener softUnlimitedCheckboxSelectionListener = new SelectionAdapter()
-    {
-        public void widgetSelected( SelectionEvent e )
-        {
-            Display display = softLimitText.getDisplay();
-            Button okButton = getButton( IDialogConstants.OK_ID );
-
-            if ( softUnlimitedCheckbox.getSelection() )
-            {
-                softLimitText.setText( SizeLimitWrapper.UNLIMITED_STR );
-                sizeLimitWrapper.setSoftLimit( SizeLimitWrapper.UNLIMITED );
-            }
-            else
-            {
-                softLimitText.setText( "" );
-                sizeLimitWrapper.setSoftLimit( null );
-            }
-
-            softLimitText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
-            sizeLimitText.setText( sizeLimitWrapper.toString() );
-            okButton.setEnabled( isValid() );
-        }
-    };
-    
-    
-    /**
-     * The listener in charge of exposing the changes when the hard unlimited button is checked
-     */
-    private SelectionListener hardUnlimitedCheckboxSelectionListener = new SelectionAdapter()
-    {
-        public void widgetSelected( SelectionEvent e )
-        {
-            Display display = hardLimitText.getDisplay();
-            Button okButton = getButton( IDialogConstants.OK_ID );
-
-            if ( hardUnlimitedCheckbox.getSelection() )
-            {
-                hardLimitText.setText( SizeLimitWrapper.UNLIMITED_STR );
-                sizeLimitWrapper.setHardLimit( SizeLimitWrapper.UNLIMITED );
-                hardSoftCheckbox.setSelection( false );
-            }
-            else
-            {
-                hardLimitText.setText( "" );
-                sizeLimitWrapper.setHardLimit( null );
-            }
-
-            hardLimitText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
-            sizeLimitText.setText( sizeLimitWrapper.toString() );
-            okButton.setEnabled( isValid() );
-        }
-    };
-    
-    
-    /**
-     * The listener in charge of exposing the changes when the hard unlimited button is checked
-     */
-    private SelectionListener hardSoftCheckboxSelectionListener = new SelectionAdapter()
-    {
-        public void widgetSelected( SelectionEvent e )
-        {
-            Display display = hardLimitText.getDisplay();
-            Button okButton = getButton( IDialogConstants.OK_ID );
-
-            if ( hardSoftCheckbox.getSelection() )
-            {
-                String softStr = softLimitText.getText();
-                
-                if ( softStr != null )
-                {
-                    hardLimitText.setText( softStr );
-                }
-                else
-                {
-                    hardLimitText.setText( "" );
-                }
-                
-                sizeLimitWrapper.setHardLimit( sizeLimitWrapper.getSoftLimit() );
-                hardUnlimitedCheckbox.setSelection( SizeLimitWrapper.UNLIMITED.equals( sizeLimitWrapper.getSoftLimit() ) );
-            }
-            else
-            {
-                hardLimitText.setText( "" );
-                sizeLimitWrapper.setHardLimit( null );
-            }
-
-            hardLimitText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
-            sizeLimitText.setText( sizeLimitWrapper.toString() );
-            okButton.setEnabled( isValid() );
-        }
-    };
-    
-    
-    /**
-     * The listener in charge of exposing the changes when the global unlimited button is checked
-     */
-    private SelectionListener globalUnlimitedCheckboxSelectionListener = new SelectionAdapter()
-    {
-        public void widgetSelected( SelectionEvent e )
-        {
-            Display display = globalLimitText.getDisplay();
-            Button okButton = getButton( IDialogConstants.OK_ID );
-
-            if ( globalUnlimitedCheckbox.getSelection() )
-            {
-                globalLimitText.setText( SizeLimitWrapper.UNLIMITED_STR );
-                sizeLimitWrapper.setGlobalLimit( SizeLimitWrapper.UNLIMITED );
-            }
-            else
-            {
-                globalLimitText.setText( "" );
-                sizeLimitWrapper.setGlobalLimit( null );
-            }
-
-            globalLimitText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
-            sizeLimitText.setText( sizeLimitWrapper.toString() );
+            limitText.setText( limitWrapper.toString() );
             okButton.setEnabled( isValid() );
         }
     };
@@ -859,16 +497,16 @@ public class SizeLimitDialog extends Dialog
             {
                 uncheckedLimitText.setText( SizeLimitWrapper.UNLIMITED_STR );
                 uncheckedDisabledCheckbox.setSelection( false );
-                sizeLimitWrapper.setUncheckedLimit( SizeLimitWrapper.UNLIMITED );
+                ((SizeLimitWrapper)limitWrapper).setUncheckedLimit( SizeLimitWrapper.UNLIMITED );
             }
             else
             {
                 uncheckedLimitText.setText( "" );
-                sizeLimitWrapper.setUncheckedLimit( null );
+                ((SizeLimitWrapper)limitWrapper).setUncheckedLimit( null );
             }
 
             uncheckedLimitText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
-            sizeLimitText.setText( sizeLimitWrapper.toString() );
+            limitText.setText( limitWrapper.toString() );
             okButton.setEnabled( isValid() );
         }
     };
@@ -888,23 +526,23 @@ public class SizeLimitDialog extends Dialog
             {
                 uncheckedLimitText.setText( SizeLimitWrapper.DISABLED_STR );
                 uncheckedUnlimitedCheckbox.setSelection( false );
-                sizeLimitWrapper.setUncheckedLimit( SizeLimitWrapper.UC_DISABLED );
+                ((SizeLimitWrapper)limitWrapper).setUncheckedLimit( SizeLimitWrapper.UC_DISABLED );
             }
             else
             {
                 uncheckedLimitText.setText( "" );
-                sizeLimitWrapper.setUncheckedLimit( null );
+                ((SizeLimitWrapper)limitWrapper).setUncheckedLimit( null );
             }
 
             uncheckedLimitText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
-            sizeLimitText.setText( sizeLimitWrapper.toString() );
+            limitText.setText( limitWrapper.toString() );
             okButton.setEnabled( isValid() );
         }
     };
     
     
     /**
-     * The listener in charge of exposing the changes when the pr unlimted button is checked
+     * The listener in charge of exposing the changes when the pr unlimited button is checked
      */
     private SelectionListener prUnlimitedCheckboxSelectionListener = new SelectionAdapter()
     {
@@ -916,17 +554,142 @@ public class SizeLimitDialog extends Dialog
             if ( prUnlimitedCheckbox.getSelection() )
             {
                 prLimitText.setText( SizeLimitWrapper.UNLIMITED_STR );
-                sizeLimitWrapper.setPrLimit( SizeLimitWrapper.UNLIMITED );
+                ((SizeLimitWrapper)limitWrapper).setPrLimit( SizeLimitWrapper.UNLIMITED );
             }
             else
             {
                 prLimitText.setText( "" );
-                sizeLimitWrapper.setPrLimit( null );
+                ((SizeLimitWrapper)limitWrapper).setPrLimit( null );
             }
 
             prLimitText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
-            sizeLimitText.setText( sizeLimitWrapper.toString() );
+            limitText.setText( limitWrapper.toString() );
             okButton.setEnabled( isValid() );
+        }
+    };
+    
+    
+    /**
+     * The listener in charge of exposing the changes when the pr noEstimate button is checked
+     */
+    private SelectionListener prNoEstimateCheckboxSelectionListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            Button okButton = getButton( IDialogConstants.OK_ID );
+
+            ((SizeLimitWrapper)limitWrapper).setNoEstimate( prNoEstimateCheckbox.getSelection() );
+            limitText.setText( limitWrapper.toString() );
+            okButton.setEnabled( isValid() );
+        }
+    };
+    
+    
+    /**
+     * The listener in charge of exposing the changes when the prTotal unlimited button is checked
+     */
+    private SelectionListener prTotalUnlimitedCheckboxSelectionListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            Display display = prTotalLimitText.getDisplay();
+            Button okButton = getButton( IDialogConstants.OK_ID );
+
+            if ( prTotalUnlimitedCheckbox.getSelection() )
+            {
+                prTotalLimitText.setText( SizeLimitWrapper.UNLIMITED_STR );
+                ((SizeLimitWrapper)limitWrapper).setPrTotalLimit( SizeLimitWrapper.UNLIMITED );
+            }
+            else
+            {
+                prTotalLimitText.setText( "" );
+                ((SizeLimitWrapper)limitWrapper).setPrTotalLimit( null );
+            }
+
+            prTotalLimitText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
+            prTotalDisabledCheckbox.setSelection( false );
+            prTotalHardCheckbox.setSelection( false );
+            limitText.setText( limitWrapper.toString() );
+            okButton.setEnabled( isValid() );
+        }
+    };
+    
+    
+    /**
+     * The listener in charge of exposing the changes when the prTotal disabled button is checked
+     */
+    private SelectionListener prTotalDisabledCheckboxSelectionListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            Display display = prTotalLimitText.getDisplay();
+            Button okButton = getButton( IDialogConstants.OK_ID );
+
+            if ( prTotalDisabledCheckbox.getSelection() )
+            {
+                prTotalLimitText.setText( SizeLimitWrapper.DISABLED_STR );
+                ((SizeLimitWrapper)limitWrapper).setPrTotalLimit( SizeLimitWrapper.PR_DISABLED );
+            }
+            else
+            {
+                prTotalLimitText.setText( "" );
+                ((SizeLimitWrapper)limitWrapper).setPrTotalLimit( null );
+            }
+
+            prTotalLimitText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
+            prTotalUnlimitedCheckbox.setSelection( false );
+            prTotalHardCheckbox.setSelection( false );
+            limitText.setText( limitWrapper.toString() );
+            okButton.setEnabled( isValid() );
+        }
+    };
+    
+    
+    /**
+     * The listener in charge of exposing the changes when the prTotal hard button is checked
+     */
+    private SelectionListener prTotalHardCheckboxSelectionListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            Display display = prTotalLimitText.getDisplay();
+            Button okButton = getButton( IDialogConstants.OK_ID );
+
+            if ( prTotalHardCheckbox.getSelection() )
+            {
+                String hardStr = hardLimitText.getText();
+                
+                if ( Strings.isEmpty( hardStr ) )
+                {
+                    prTotalLimitText.setText( "" );
+                }
+                else
+                {
+                    prTotalLimitText.setText( hardStr );
+                }
+
+                ((SizeLimitWrapper)limitWrapper).setPrTotalLimit( limitWrapper.getHardLimit() );
+            }
+            else
+            {
+                prTotalLimitText.setText( "" );
+                ((SizeLimitWrapper)limitWrapper).setPrTotalLimit( null );
+            }
+
+            if ( isValid() )
+            {
+                okButton.setEnabled( true );
+                prTotalLimitText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
+            }
+            else
+            {
+                okButton.setEnabled( false );
+                prTotalLimitText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
+            }
+            
+            prTotalUnlimitedCheckbox.setSelection( false );
+            prTotalHardCheckbox.setSelection( false );
+            limitText.setText( limitWrapper.toString() );
         }
     };
 
@@ -938,17 +701,6 @@ public class SizeLimitDialog extends Dialog
     {
         super.configureShell( shell );
         shell.setText( "Size Limit" );
-    }
-
-
-    /**
-     * Construct the new SizeLimit from what we have in the dialog
-     * {@inheritDoc}
-     */
-    protected void okPressed()
-    {
-        setNewSizeLimit( sizeLimitWrapper.toString() );
-        super.okPressed();
     }
 
 
@@ -1099,7 +851,7 @@ public class SizeLimitDialog extends Dialog
 
         // Paged Results Limit noEstimate checkbox Button
         prNoEstimateCheckbox = BaseWidgetUtils.createCheckbox( sizeLimitGroup, "No Estimate", 2 );
-        //prNoEstimateCheckbox.addSelectionListener( prNoEstimateCheckboxSelectionListener );
+        prNoEstimateCheckbox.addSelectionListener( prNoEstimateCheckboxSelectionListener );
 
         // 2 tabs to fill the line
         BaseWidgetUtils.createLabel( sizeLimitGroup, "", 2 );
@@ -1112,15 +864,15 @@ public class SizeLimitDialog extends Dialog
 
         // Paged Results Limit unlimited checkbox Button
         prTotalUnlimitedCheckbox = BaseWidgetUtils.createCheckbox( sizeLimitGroup, "Unlimited", 2 );
-        //prTotalUnlimitedCheckbox.addSelectionListener( prUnlimitedCheckboxSelectionListener );
+        prTotalUnlimitedCheckbox.addSelectionListener( prTotalUnlimitedCheckboxSelectionListener );
 
         // Paged Results Limit disabled checkbox Button
         prTotalDisabledCheckbox = BaseWidgetUtils.createCheckbox( sizeLimitGroup, "Disabled", 2 );
-        //prTotalDisabledCheckbox.addSelectionListener( prDisabledCheckboxSelectionListener );
+        prTotalDisabledCheckbox.addSelectionListener( prTotalDisabledCheckboxSelectionListener );
 
         // Paged Results Limit hard checkbox Button
         prTotalHardCheckbox = BaseWidgetUtils.createCheckbox( sizeLimitGroup, "Hard", 2 );
-        //prTotalHardCheckbox.addSelectionListener( prDisabledCheckboxSelectionListener );
+        prTotalHardCheckbox.addSelectionListener( prTotalHardCheckboxSelectionListener );
     }
 
 
@@ -1146,9 +898,9 @@ public class SizeLimitDialog extends Dialog
         sizeLimitGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // SizeLimit Text
-        sizeLimitText = BaseWidgetUtils.createText( sizeLimitGroup, "", 1 );
-        sizeLimitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        sizeLimitText.setEditable( false );
+        limitText = BaseWidgetUtils.createText( sizeLimitGroup, "", 1 );
+        limitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        limitText.setEditable( false );
     }
 
 
@@ -1157,10 +909,10 @@ public class SizeLimitDialog extends Dialog
      */
     private void initFromSizeLimit()
     {
-        if ( sizeLimitWrapper != null )
+        if ( limitWrapper != null )
         {
             // The SoftLimit
-            Integer softLimit = sizeLimitWrapper.getSoftLimit();
+            Integer softLimit = limitWrapper.getSoftLimit();
             
             if ( softLimit == null )
             {
@@ -1179,7 +931,7 @@ public class SizeLimitDialog extends Dialog
             }
             
             // The HardLimit
-            Integer hardLimit = sizeLimitWrapper.getHardLimit();
+            Integer hardLimit = limitWrapper.getHardLimit();
             
             if ( hardLimit == null )
             {
@@ -1207,7 +959,7 @@ public class SizeLimitDialog extends Dialog
             }
             
             // The GlobalLimit
-            Integer globalLimit = sizeLimitWrapper.getGlobalLimit();
+            Integer globalLimit = limitWrapper.getGlobalLimit();
             
             if ( globalLimit == null )
             {
@@ -1225,25 +977,7 @@ public class SizeLimitDialog extends Dialog
                 globalUnlimitedCheckbox.setSelection( false );
             }
             
-            sizeLimitText.setText( sizeLimitWrapper.toString() );
+            limitText.setText( limitWrapper.toString() );
         }
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public String getNewSizeLimit()
-    {
-        return newSizeLimitStr;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void setNewSizeLimit( String newSizeLimitStr )
-    {
-        this.newSizeLimitStr = newSizeLimitStr;
     }
 }

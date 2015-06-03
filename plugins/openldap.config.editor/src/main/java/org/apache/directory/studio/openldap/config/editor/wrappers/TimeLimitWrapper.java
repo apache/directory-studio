@@ -40,26 +40,14 @@ import org.apache.directory.api.util.Strings;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class TimeLimitWrapper
+public class TimeLimitWrapper extends AbstractLimitWrapper
 {
-    /** The global limit */
-    private Integer globalLimit;
-
-    /** The soft limit */
-    private Integer softLimit;
-    
-    /** The hard limit */
-    private Integer hardLimit;
-    
-    //Define some of the used constants
-    public static final Integer UNLIMITED = Integer.valueOf( -1 );
-    public static final Integer HARD_SOFT = Integer.valueOf( -3 );
-    
     /**
      * Create a TimeLimitWrapper instance
      */
     private TimeLimitWrapper()
     {
+        super();
     }
     
     
@@ -72,9 +60,7 @@ public class TimeLimitWrapper
      */
     public TimeLimitWrapper( Integer globalLimit, Integer hardLimit, Integer softLimit )
     {
-        this.globalLimit = globalLimit;
-        this.hardLimit = hardLimit;
-        this.softLimit = softLimit;
+        super( globalLimit, hardLimit, softLimit );
     }
     
     
@@ -163,17 +149,6 @@ public class TimeLimitWrapper
     
     
     /**
-     * Clear the TimeLimitWrapper (reset all the values to null)
-     */
-    public void clear()
-    {
-        globalLimit = null;
-        softLimit = null;
-        hardLimit = null;
-    }
-    
-    
-    /**
      * Parse a single limit :
      * <pre>
      * timeLimit ::= 'time' ( '.hard=' hardLimit | '.soft=' limit | '=' limit )
@@ -198,12 +173,12 @@ public class TimeLimitWrapper
                 // Global : get the limit
                 pos++;
                 
-                if ( limitStr.startsWith( "unlimited", pos ) )
+                if ( limitStr.startsWith( UNLIMITED_STR, pos ) )
                 {
                     pos += 9;
                     tlw.globalLimit = UNLIMITED;
                 }
-                else if ( limitStr.startsWith( "none", pos ) )
+                else if ( limitStr.startsWith( NONE_STR, pos ) )
                 {
                     pos += 4;
                     tlw.globalLimit = UNLIMITED;
@@ -238,19 +213,19 @@ public class TimeLimitWrapper
                 // Hard limit : get the hard limit
                 pos += 6;
                 
-                if ( limitStr.startsWith( "unlimited", pos ) )
+                if ( limitStr.startsWith( UNLIMITED_STR, pos ) )
                 {
                     pos += 9;
                     
                     tlw.hardLimit = UNLIMITED;
                 }
-                else if ( limitStr.startsWith( "none", pos ) )
+                else if ( limitStr.startsWith( NONE_STR, pos ) )
                 {
                     pos += 4;
                     
                     tlw.hardLimit = UNLIMITED;
                 }
-                else if ( limitStr.startsWith( "soft", pos ) )
+                else if ( limitStr.startsWith( SOFT_STR, pos ) )
                 {
                     pos += 4;
                     tlw.globalLimit = HARD_SOFT;
@@ -280,13 +255,13 @@ public class TimeLimitWrapper
                 // Soft limit : get the limit
                 pos += 6;
 
-                if ( limitStr.startsWith( "unlimited", pos ) )
+                if ( limitStr.startsWith( UNLIMITED_STR, pos ) )
                 {
                     pos += 9;
                     
                     tlw.softLimit = UNLIMITED;
                 }
-                else if ( limitStr.startsWith( "none", pos ) )
+                else if ( limitStr.startsWith( NONE_STR, pos ) )
                 {
                     pos += 4;
                     
@@ -334,32 +309,6 @@ public class TimeLimitWrapper
     
     
     /**
-     * Get an integer out of a String. Return null if we don't find any.
-     */
-    private static String getInteger( String str, int pos )
-    {
-        for ( int i = pos; i < str.length(); i++ )
-        {
-            char c = str.charAt( i );
-            
-            if ( ( c < '0') && ( c > '9' ) )
-            {
-                if ( i == pos )
-                {
-                    return null;
-                }
-                else
-                {
-                    return str.substring( pos, i );
-                }
-            }
-        }
-        
-        return str.substring( pos );
-    }
-    
-    
-    /**
      * Tells if the TimeLimit element is valid or not
      * @param timeLimitStr the timeLimit String to check
      * @return true if the values are correct, false otherwise
@@ -396,185 +345,10 @@ public class TimeLimitWrapper
     
     
     /**
-     * @return the globalLimit
+     * @return The Limit's type
      */
-    public Integer getGlobalLimit()
+    protected String getType()
     {
-        return globalLimit;
-    }
-
-
-    /**
-     * @param globalLimit the globalLimit to set
-     */
-    public void setGlobalLimit( Integer globalLimit )
-    {
-        this.globalLimit = globalLimit;
-    }
-
-
-    /**
-     * @return the softLimit
-     */
-    public Integer getSoftLimit()
-    {
-        return softLimit;
-    }
-
-
-    /**
-     * @param softLimit the softLimit to set
-     */
-    public void setSoftLimit( Integer softLimit )
-    {
-        this.softLimit = softLimit;
-    }
-
-
-    /**
-     * @return the hardLimit
-     */
-    public Integer getHardLimit()
-    {
-        return hardLimit;
-    }
-
-
-    /**
-     * @param hardLimit the hardLimit to set
-     */
-    public void setHardLimit( Integer hardLimit )
-    {
-        this.hardLimit = hardLimit;
-    }
-
-
-    /**
-     * @see Object#toString()
-     */
-    public String toString()
-    {
-        StringBuilder sb = new StringBuilder();
-        
-        if ( globalLimit != null )
-        {
-            // The globalLimit overrides the soft and hard limit
-            sb.append( "time=" );
-            
-            if ( globalLimit.equals( UNLIMITED ) )
-            {
-                sb.append( "unlimited" );
-            }
-            else if ( globalLimit.intValue() >= 0 )
-            {
-                sb.append( globalLimit );
-            }
-        }
-        else
-        {
-            if ( hardLimit != null )
-            {
-                // First check the hard limit, has it can be set to be equal to soft limit
-                if ( softLimit != null )
-                {
-                    if ( hardLimit.equals( softLimit ) )
-                    {
-                        // If hard and soft are set and equals, we use the global limit instead
-                        sb.append( "time=" );
-                        
-                        if ( hardLimit.equals( UNLIMITED ) )
-                        {
-                            sb.append( "unlimited" );
-                        }
-                        else if ( hardLimit.intValue() >= 0 )
-                        {
-                            sb.append( hardLimit );
-                        }
-                    }
-                    else
-                    {
-                        // We have both values, the aren't equal. 
-                        if ( hardLimit.equals( UNLIMITED ) )
-                        {
-                            sb.append( "time.hard=unlimited time.soft=" );
-                            sb.append( softLimit );
-                        }
-                        else if ( hardLimit.intValue() == 0 )
-                        {
-                            // Special cases : hard = soft
-                            sb.append( "time=" ).append( softLimit );
-                        }
-                        else if ( hardLimit.intValue() < softLimit.intValue() )
-                        {
-                            // when the hard limit is lower than the soft limit : use the hard limit
-                            sb.append( "time=" ).append( hardLimit );
-                        }
-                        else 
-                        {
-                            // Special case : softLimit is -1
-                            if ( softLimit.equals( UNLIMITED ) )
-                            {
-                                // We use the hard limit
-                                sb.append( "time=" ).append( hardLimit );
-                            }
-                            else
-                            {
-                                sb.append( "time.hard=" );
-                                
-                                if ( hardLimit.equals( UNLIMITED ) )
-                                {
-                                    sb.append( "unlimited" );
-                                }
-                                else if ( hardLimit.intValue() > 0 )
-                                {
-                                    sb.append( hardLimit );
-                                }
-        
-                                sb.append( " time.soft=" );
-                                
-                                if ( softLimit.equals( UNLIMITED ) )
-                                {
-                                    sb.append( "unlimited" );
-                                }
-                                else if ( softLimit.intValue() >= 0 )
-                                {
-                                    sb.append( softLimit );
-                                }
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    // Only an hard limit
-                    sb.append( "time.hard=" );
-                    
-                    if ( hardLimit.equals( UNLIMITED ) )
-                    {
-                        sb.append( "unlimited" );
-                    }
-                    else if ( hardLimit.intValue() >= 0 )
-                    {
-                        sb.append( hardLimit );
-                    }
-                }
-            }
-            else if ( softLimit != null )
-            {
-                // Only a soft limit
-                sb.append( "time.soft=" );
-                
-                if ( softLimit.equals( UNLIMITED ) )
-                {
-                    sb.append( "unlimited" );
-                }
-                else if ( softLimit.intValue() >= 0 )
-                {
-                    sb.append( softLimit );
-                }
-            }
-        }
-        
-        return sb.toString();
+        return "time";
     }
 }
