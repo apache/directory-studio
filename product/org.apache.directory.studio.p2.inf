@@ -21,6 +21,8 @@ instructions.configure = \
     org.eclipse.equinox.p2.touchpoint.natives.remove(path:${installFolder}/notice.html);\
     org.eclipse.equinox.p2.touchpoint.natives.remove(path:${installFolder}/epl-v10.html);\
     org.eclipse.equinox.p2.touchpoint.natives.remove(path:${installFolder}/.eclipseproduct);\
+    org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../../../../../../../../LICENSE.txt,target:${installFolder}/LICENSE.txt,overwrite:true);\
+    org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../../../../../../../../NOTICE.txt,target:${installFolder}/NOTICE.txt,overwrite:true);\
     addRepository(type:0,location:http${#58}//directory.apache.org/studio/update);\
     addRepository(type:1,location:http${#58}//directory.apache.org/studio/update);
 
