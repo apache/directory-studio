@@ -111,10 +111,10 @@ import org.apache.directory.studio.openldap.config.editor.wrappers.TcpBufferWrap
  *   | .-------------------------------------. .-------------------------------------. |
  *   | | LDAP Limits                         | | Index Limits                        | |
  *   | +-------------------------------------+ +-------------------------------------+ |
- *   | | Write Timeout            : [      ] | | Integer Indices Length   : [      ] | |
- *   | | Idle Timeout             : [      ] | | Subany Indices Length    : [      ] | |
- *   | | Size Limit : [                    ] | | Subany Indices Step      : [      ] | |
- *   | | Time Limit : [                    ] | | Sub indices Max length   : [      ] | |
+ *   | | Write Timeout : [      ]            | | Integer Indices Length   : [      ] | |
+ *   | | Idle Timeout  : [      ]            | | Subany Indices Length    : [      ] | |
+ *   | | Size Limit : [             ] (Edit) | | Subany Indices Step      : [      ] | |
+ *   | | Time Limit : [             ] (Edit) | | Sub indices Max length   : [      ] | |
  *   | |                                     | | Sub indices Min length   : [      ] | |
  *   | +-------------------------------------+ +-------------------------------------+ |
  *   |                                                                                 |
@@ -769,33 +769,34 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
     {
         TableWrapLayout twl = new TableWrapLayout();
         twl.numColumns = 2;
+        twl.makeColumnsEqualWidth = true;
         parent.setLayout( twl );
 
         // The Network part
         Composite networkComposite = toolkit.createComposite( parent );
         networkComposite.setLayout( new GridLayout() );
-        TableWrapData networkCompositeTableWrapData = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP, 1, 1 );
+        TableWrapData networkCompositeTableWrapData = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
         networkCompositeTableWrapData.grabHorizontal = true;
         networkComposite.setLayoutData( networkCompositeTableWrapData );
 
         // The Concurrency part
         Composite concurrencyComposite = toolkit.createComposite( parent );
         concurrencyComposite.setLayout( new GridLayout() );
-        TableWrapData concurrencyCompositeTableWrapData = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP, 1, 1 );
+        TableWrapData concurrencyCompositeTableWrapData = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
         concurrencyCompositeTableWrapData.grabHorizontal = true;
         concurrencyComposite.setLayoutData( concurrencyCompositeTableWrapData );
 
         // The LDAP Limits part
         Composite ldapLimitsComposite = toolkit.createComposite( parent );
         ldapLimitsComposite.setLayout( new GridLayout() );
-        TableWrapData ldapLimitsCompositeTableWrapData = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP, 1, 1 );
+        TableWrapData ldapLimitsCompositeTableWrapData = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
         ldapLimitsCompositeTableWrapData.grabHorizontal = true;
         ldapLimitsComposite.setLayoutData( ldapLimitsCompositeTableWrapData );
 
         // The Index Limits part
         Composite indexLimitsComposite = toolkit.createComposite( parent );
         indexLimitsComposite.setLayout( new GridLayout() );
-        TableWrapData indexLimitsCompositeTableWrapData = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP, 1, 1 );
+        TableWrapData indexLimitsCompositeTableWrapData = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
         indexLimitsCompositeTableWrapData.grabHorizontal = true;
         indexLimitsComposite.setLayoutData( indexLimitsCompositeTableWrapData );
 
@@ -844,12 +845,7 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
         Section section = createSection( toolkit, parent, Messages.getString( "OpenLDAPTuningPage.NetworkSection" ) );
 
         // The content
-        Composite networkSectionComposite = toolkit.createComposite( section );
-        toolkit.paintBordersFor( networkSectionComposite );
-        GridLayout gridLayout = new GridLayout( 2, false );
-        gridLayout.marginHeight = gridLayout.marginWidth = 0;
-        networkSectionComposite.setLayout( gridLayout );
-        section.setClient( networkSectionComposite );
+        Composite networkSectionComposite = createSectionComposite( toolkit, section, 2, false );
 
         // The TCPBuffers Label
         Label serverIdLabel = toolkit.createLabel( networkSectionComposite, Messages.getString( "OpenLDAPTuningPage.TCPBuffers" ) ); //$NON-NLS-1$
@@ -919,12 +915,7 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
         Section section = createSection( toolkit, parent, Messages.getString( "OpenLDAPTuningPage.ConcurrencySection" ) );
 
         // The content
-        Composite concurrencySectionComposite = toolkit.createComposite( section );
-        toolkit.paintBordersFor( concurrencySectionComposite );
-        GridLayout gridLayout = new GridLayout( 2, false );
-        gridLayout.marginHeight = gridLayout.marginWidth = 0;
-        concurrencySectionComposite.setLayout( gridLayout );
-        section.setClient( concurrencySectionComposite );
+        Composite concurrencySectionComposite = createSectionComposite( toolkit, section, 2, false );
 
         // The olcConcurrency parameter.
         toolkit.createLabel( concurrencySectionComposite, 
@@ -1012,12 +1003,7 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
         Section section = createSection( toolkit, parent, Messages.getString( "OpenLDAPTuningPage.LdapLimitsSection" ) );
 
         // The content
-        Composite ldapLimitSectionComposite = toolkit.createComposite( section );
-        toolkit.paintBordersFor( ldapLimitSectionComposite );
-        GridLayout gridLayout = new GridLayout( 4, false );
-        gridLayout.marginHeight = gridLayout.marginWidth = 0;
-        ldapLimitSectionComposite.setLayout( gridLayout );
-        section.setClient( ldapLimitSectionComposite );
+        Composite ldapLimitSectionComposite = createSectionComposite( toolkit, section, 4, false );
         
         // The olcWriteTimeout parameter.
         toolkit.createLabel( ldapLimitSectionComposite, 
@@ -1097,12 +1083,7 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
         Section section = createSection( toolkit, parent, Messages.getString( "OpenLDAPTuningPage.IndexLimitsSection" ) );
 
         // The content
-        Composite indexLimitSectionComposite = toolkit.createComposite( section );
-        toolkit.paintBordersFor( indexLimitSectionComposite );
-        GridLayout gridLayout = new GridLayout( 2, false );
-        gridLayout.marginHeight = gridLayout.marginWidth = 0;
-        indexLimitSectionComposite.setLayout( gridLayout );
-        section.setClient( indexLimitSectionComposite );
+        Composite indexLimitSectionComposite = createSectionComposite( toolkit, section, 2, false );
 
         // The olcIndexIntLen parameter.
         toolkit.createLabel( indexLimitSectionComposite, 
