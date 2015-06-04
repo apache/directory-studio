@@ -158,7 +158,8 @@ public class SizeLimitDialog extends AbstractLimitDialog
         if ( !Strings.isEmpty( uncheckedlLimitStr ) )
         {
             if ( !SizeLimitWrapper.UNLIMITED_STR.equalsIgnoreCase( uncheckedlLimitStr ) && 
-                 !SizeLimitWrapper.NONE_STR.equals( uncheckedlLimitStr ) )
+                 !SizeLimitWrapper.NONE_STR.equalsIgnoreCase( uncheckedlLimitStr ) &&
+                 !SizeLimitWrapper.DISABLED_STR.equalsIgnoreCase( uncheckedlLimitStr ) )
             {
                 try
                 {
@@ -188,7 +189,7 @@ public class SizeLimitDialog extends AbstractLimitDialog
         if ( !Strings.isEmpty( prLimitStr ) )
         {
             if ( !SizeLimitWrapper.UNLIMITED_STR.equalsIgnoreCase( prLimitStr ) && 
-                 !SizeLimitWrapper.NONE_STR.equals( prLimitStr ) )
+                 !SizeLimitWrapper.NONE_STR.equalsIgnoreCase( prLimitStr ) )
             {
                 try
                 {
@@ -218,8 +219,9 @@ public class SizeLimitDialog extends AbstractLimitDialog
         if ( !Strings.isEmpty( prTotalLimitStr ) )
         {
             if ( !SizeLimitWrapper.UNLIMITED_STR.equalsIgnoreCase( prTotalLimitStr ) && 
-                 !SizeLimitWrapper.NONE_STR.equals( prTotalLimitStr ) &&
-                 !SizeLimitWrapper.DISABLED_STR.equals( prTotalLimitStr ) )
+                 !SizeLimitWrapper.NONE_STR.equalsIgnoreCase( prTotalLimitStr ) &&
+                 !SizeLimitWrapper.HARD_STR.equalsIgnoreCase( prTotalLimitStr ) &&
+                 !SizeLimitWrapper.DISABLED_STR.equalsIgnoreCase( prTotalLimitStr ) )
             {
                 try
                 {
@@ -665,10 +667,10 @@ public class SizeLimitDialog extends AbstractLimitDialog
                 }
                 else
                 {
-                    prTotalLimitText.setText( hardStr );
+                    prTotalLimitText.setText( SizeLimitWrapper.HARD_STR );
                 }
 
-                ((SizeLimitWrapper)limitWrapper).setPrTotalLimit( limitWrapper.getHardLimit() );
+                ((SizeLimitWrapper)limitWrapper).setPrTotalLimit( SizeLimitWrapper.PR_HARD );
             }
             else
             {
@@ -688,7 +690,7 @@ public class SizeLimitDialog extends AbstractLimitDialog
             }
             
             prTotalUnlimitedCheckbox.setSelection( false );
-            prTotalHardCheckbox.setSelection( false );
+            prTotalDisabledCheckbox.setSelection( false );
             limitText.setText( limitWrapper.toString() );
         }
     };
@@ -741,7 +743,7 @@ public class SizeLimitDialog extends AbstractLimitDialog
         createSizeLimitEditGroup( composite );
         createSizeLimitShowGroup( composite );
 
-        initFromSizeLimit();
+        initFromLimit();
         
         applyDialogFont( composite );
         
@@ -905,79 +907,105 @@ public class SizeLimitDialog extends AbstractLimitDialog
 
 
     /**
-     * Initializes the UI from the SizeLimit
+     * Initializes the UI from the Limit
      */
-    private void initFromSizeLimit()
+    protected void initFromLimit()
     {
+        super.initFromLimit();
+        
+        // Deal with specific SizeLimit fields
         if ( limitWrapper != null )
         {
-            // The SoftLimit
-            Integer softLimit = limitWrapper.getSoftLimit();
+            SizeLimitWrapper sizeLimitWrapper = (SizeLimitWrapper)limitWrapper;
             
-            if ( softLimit == null )
+            // The UncheckedLimit
+            Integer uncheckedLimit = sizeLimitWrapper.getUncheckedLimit();
+            
+            if ( uncheckedLimit == null )
             {
-                softLimitText.setText( "" );
-                softUnlimitedCheckbox.setSelection( false );
+                uncheckedLimitText.setText( "" );
+                uncheckedUnlimitedCheckbox.setSelection( false );
+                uncheckedDisabledCheckbox.setSelection( false );
             }
-            else if ( softLimit.equals( SizeLimitWrapper.UNLIMITED ) )
+            else if ( uncheckedLimit.equals( SizeLimitWrapper.UNLIMITED ) )
             {
-                softLimitText.setText( SizeLimitWrapper.UNLIMITED_STR );
-                softUnlimitedCheckbox.setSelection( true );
+                uncheckedLimitText.setText( SizeLimitWrapper.UNLIMITED_STR );
+                uncheckedUnlimitedCheckbox.setSelection( true );
+                uncheckedDisabledCheckbox.setSelection( false );
+            }
+            else if ( uncheckedLimit.equals( SizeLimitWrapper.UC_DISABLED ) )
+            {
+                uncheckedLimitText.setText( SizeLimitWrapper.DISABLED_STR );
+                uncheckedUnlimitedCheckbox.setSelection( false );
+                uncheckedDisabledCheckbox.setSelection( true );
             }
             else
             {
-                softLimitText.setText( softLimit.toString() );
-                softUnlimitedCheckbox.setSelection( false );
+                uncheckedLimitText.setText( uncheckedLimit.toString() );
+                uncheckedUnlimitedCheckbox.setSelection( false );
+                uncheckedDisabledCheckbox.setSelection( false );
             }
             
-            // The HardLimit
-            Integer hardLimit = limitWrapper.getHardLimit();
+            // The pr Limit
+            Integer prLimit = sizeLimitWrapper.getPrLimit();
             
-            if ( hardLimit == null )
+            if ( prLimit == null )
             {
-                hardLimitText.setText( "" );
-                hardUnlimitedCheckbox.setSelection( false );
-                hardSoftCheckbox.setSelection( false );
+                prLimitText.setText( "" );
+                prUnlimitedCheckbox.setSelection( false );
             }
-            else if ( hardLimit.equals( SizeLimitWrapper.UNLIMITED ) )
+            else if ( prLimit.equals( SizeLimitWrapper.UNLIMITED ) )
             {
-                hardLimitText.setText( SizeLimitWrapper.UNLIMITED_STR );
-                hardUnlimitedCheckbox.setSelection( true );
-                hardSoftCheckbox.setSelection( false );
-            }
-            else if ( hardLimit.equals( SizeLimitWrapper.HARD_SOFT ) )
-            {
-                hardLimitText.setText( SizeLimitWrapper.SOFT_STR );
-                hardUnlimitedCheckbox.setSelection( false );
-                hardSoftCheckbox.setSelection( true );
+                prLimitText.setText( SizeLimitWrapper.UNLIMITED_STR );
+                prUnlimitedCheckbox.setSelection( true );
             }
             else
             {
-                hardLimitText.setText( hardLimit.toString() );
-                hardUnlimitedCheckbox.setSelection( false );
-                hardSoftCheckbox.setSelection( false );
+                prLimitText.setText( prLimit.toString() );
+                prUnlimitedCheckbox.setSelection( false );
             }
+
+            // The NoEstimate flag
+            prNoEstimateCheckbox.setSelection( sizeLimitWrapper.isNoEstimate() );
             
-            // The GlobalLimit
-            Integer globalLimit = limitWrapper.getGlobalLimit();
+            // The prTotal limit
+            Integer prTotalLimit = sizeLimitWrapper.getPrTotalLimit();
             
-            if ( globalLimit == null )
+            if ( prTotalLimit == null )
             {
-                globalLimitText.setText( "" );
-                globalUnlimitedCheckbox.setSelection( false );
+                prTotalLimitText.setText( "" );
+                prUnlimitedCheckbox.setSelection( false );
+                prTotalDisabledCheckbox.setSelection( false );
+                prTotalHardCheckbox.setSelection( false );
             }
-            else if ( globalLimit.equals( SizeLimitWrapper.UNLIMITED ) )
+            else if ( prTotalLimit.equals( SizeLimitWrapper.UNLIMITED ) )
             {
-                globalLimitText.setText( SizeLimitWrapper.UNLIMITED_STR );
-                globalUnlimitedCheckbox.setSelection( true );
+                prTotalLimitText.setText( SizeLimitWrapper.UNLIMITED_STR );
+                prTotalUnlimitedCheckbox.setSelection( true );
+                prTotalDisabledCheckbox.setSelection( false );
+                prTotalHardCheckbox.setSelection( false );
+            }
+            else if ( prTotalLimit.equals( SizeLimitWrapper.PR_DISABLED ) )
+            {
+                prTotalLimitText.setText( SizeLimitWrapper.DISABLED_STR );
+                prTotalDisabledCheckbox.setSelection( true );
+                prTotalUnlimitedCheckbox.setSelection( false );
+                prTotalHardCheckbox.setSelection( false );
+            }
+            else if ( prTotalLimit.equals( SizeLimitWrapper.PR_HARD))
+            {
+                prTotalLimitText.setText(SizeLimitWrapper.HARD_STR );
+                prTotalUnlimitedCheckbox.setSelection( false );
+                prTotalDisabledCheckbox.setSelection( false );
+                prTotalHardCheckbox.setSelection( true );
             }
             else
             {
-                globalLimitText.setText( globalLimit.toString() );
-                globalUnlimitedCheckbox.setSelection( false );
+                prTotalLimitText.setText( prTotalLimit.toString() );
+                prTotalUnlimitedCheckbox.setSelection( false );
+                prTotalDisabledCheckbox.setSelection( false );
+                prTotalHardCheckbox.setSelection( false );
             }
-            
-            limitText.setText( limitWrapper.toString() );
         }
     }
 }

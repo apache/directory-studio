@@ -29,6 +29,7 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -1029,8 +1030,13 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
         toolkit.createLabel( ldapLimitSectionComposite, 
             Messages.getString( "OpenLDAPTuningPage.SizeLimit" ) ); //$NON-NLS-1$
         sizeLimitText = toolkit.createText( ldapLimitSectionComposite, "" );
-        sizeLimitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false, 2, 1 ) );
+        GridData sizeLimitData= new GridData( SWT.FILL, SWT.NONE, false, false, 2, 1 );
+        sizeLimitData.horizontalAlignment = SWT.FILL;
+        Rectangle rect = sizeLimitText.getShell().getMonitor().getClientArea();
+        sizeLimitData.widthHint = rect.width/8;
+        sizeLimitText.setLayoutData(sizeLimitData );
         sizeLimitText.setEditable( false );
+        
 
         // The SizeLimit edit button
         sizeLimitEditButton = BaseWidgetUtils.createButton( ldapLimitSectionComposite, "Edit...", 1 );

@@ -142,7 +142,7 @@ public class TimeLimitDialog extends AbstractLimitDialog
         createTimeLimitEditGroup( composite );
         createTimeLimitShowGroup( composite );
 
-        initFromTimeLimit();
+        initFromLimit();
         
         applyDialogFont( composite );
         
@@ -238,83 +238,5 @@ public class TimeLimitDialog extends AbstractLimitDialog
         limitText = BaseWidgetUtils.createText( timeLimitGroup, "", 1 );
         limitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         limitText.setEditable( false );
-    }
-
-
-    /**
-     * Initializes the UI from the TimeLimit
-     */
-    private void initFromTimeLimit()
-    {
-        if ( limitWrapper != null )
-        {
-            // The SoftLimit
-            Integer softLimit = limitWrapper.getSoftLimit();
-            
-            if ( softLimit == null )
-            {
-                softLimitText.setText( "" );
-                softUnlimitedCheckbox.setSelection( false );
-            }
-            else if ( softLimit.equals( TimeLimitWrapper.UNLIMITED ) )
-            {
-                softLimitText.setText( TimeLimitWrapper.UNLIMITED_STR );
-                softUnlimitedCheckbox.setSelection( true );
-            }
-            else
-            {
-                softLimitText.setText( softLimit.toString() );
-                softUnlimitedCheckbox.setSelection( false );
-            }
-            
-            // The HardLimit
-            Integer hardLimit = limitWrapper.getHardLimit();
-            
-            if ( hardLimit == null )
-            {
-                hardLimitText.setText( "" );
-                hardUnlimitedCheckbox.setSelection( false );
-                hardSoftCheckbox.setSelection( false );
-            }
-            else if ( hardLimit.equals( TimeLimitWrapper.UNLIMITED ) )
-            {
-                hardLimitText.setText( TimeLimitWrapper.UNLIMITED_STR );
-                hardUnlimitedCheckbox.setSelection( true );
-                hardSoftCheckbox.setSelection( false );
-            }
-            else if ( hardLimit.equals( TimeLimitWrapper.HARD_SOFT ) )
-            {
-                hardLimitText.setText( TimeLimitWrapper.SOFT_STR );
-                hardUnlimitedCheckbox.setSelection( false );
-                hardSoftCheckbox.setSelection( true );
-            }
-            else
-            {
-                hardLimitText.setText( hardLimit.toString() );
-                hardUnlimitedCheckbox.setSelection( false );
-                hardSoftCheckbox.setSelection( false );
-            }
-            
-            // The GlobalLimit
-            Integer globalLimit = limitWrapper.getGlobalLimit();
-            
-            if ( globalLimit == null )
-            {
-                globalLimitText.setText( "" );
-                globalUnlimitedCheckbox.setSelection( false );
-            }
-            else if ( globalLimit.equals( TimeLimitWrapper.UNLIMITED ) )
-            {
-                globalLimitText.setText( TimeLimitWrapper.UNLIMITED_STR );
-                globalUnlimitedCheckbox.setSelection( true );
-            }
-            else
-            {
-                globalLimitText.setText( globalLimit.toString() );
-                globalUnlimitedCheckbox.setSelection( false );
-            }
-            
-            limitText.setText( limitWrapper.toString() );
-        }
     }
 }

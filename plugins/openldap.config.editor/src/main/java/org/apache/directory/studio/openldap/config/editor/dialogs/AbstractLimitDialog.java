@@ -21,6 +21,7 @@ package org.apache.directory.studio.openldap.config.editor.dialogs;
 
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.openldap.config.editor.wrappers.AbstractLimitWrapper;
+import org.apache.directory.studio.openldap.config.editor.wrappers.SizeLimitWrapper;
 import org.apache.directory.studio.openldap.config.editor.wrappers.TimeLimitWrapper;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -579,5 +580,83 @@ public abstract class AbstractLimitDialog extends Dialog
     public String getNewLimit()
     {
         return newLimitStr;
+    }
+
+
+    /**
+     * Initializes the UI from the Limit
+     */
+    protected void initFromLimit()
+    {
+        if ( limitWrapper != null )
+        {
+            // The SoftLimit
+            Integer softLimit = limitWrapper.getSoftLimit();
+            
+            if ( softLimit == null )
+            {
+                softLimitText.setText( "" );
+                softUnlimitedCheckbox.setSelection( false );
+            }
+            else if ( softLimit.equals( SizeLimitWrapper.UNLIMITED ) )
+            {
+                softLimitText.setText( SizeLimitWrapper.UNLIMITED_STR );
+                softUnlimitedCheckbox.setSelection( true );
+            }
+            else
+            {
+                softLimitText.setText( softLimit.toString() );
+                softUnlimitedCheckbox.setSelection( false );
+            }
+            
+            // The HardLimit
+            Integer hardLimit = limitWrapper.getHardLimit();
+            
+            if ( hardLimit == null )
+            {
+                hardLimitText.setText( "" );
+                hardUnlimitedCheckbox.setSelection( false );
+                hardSoftCheckbox.setSelection( false );
+            }
+            else if ( hardLimit.equals( SizeLimitWrapper.UNLIMITED ) )
+            {
+                hardLimitText.setText( SizeLimitWrapper.UNLIMITED_STR );
+                hardUnlimitedCheckbox.setSelection( true );
+                hardSoftCheckbox.setSelection( false );
+            }
+            else if ( hardLimit.equals( SizeLimitWrapper.HARD_SOFT ) )
+            {
+                hardLimitText.setText( SizeLimitWrapper.SOFT_STR );
+                hardUnlimitedCheckbox.setSelection( false );
+                hardSoftCheckbox.setSelection( true );
+            }
+            else
+            {
+                hardLimitText.setText( hardLimit.toString() );
+                hardUnlimitedCheckbox.setSelection( false );
+                hardSoftCheckbox.setSelection( false );
+            }
+            
+            // The GlobalLimit
+            Integer globalLimit = limitWrapper.getGlobalLimit();
+            
+            if ( globalLimit == null )
+            {
+                globalLimitText.setText( "" );
+                globalUnlimitedCheckbox.setSelection( false );
+            }
+            else if ( globalLimit.equals( SizeLimitWrapper.UNLIMITED ) )
+            {
+                globalLimitText.setText( SizeLimitWrapper.UNLIMITED_STR );
+                globalUnlimitedCheckbox.setSelection( true );
+            }
+            else
+            {
+                globalLimitText.setText( globalLimit.toString() );
+                globalUnlimitedCheckbox.setSelection( false );
+            }
+            
+            limitText.setText( limitWrapper.toString() );
+        }
     }
 }

@@ -274,47 +274,6 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
     
 
     /**
-     * Creates a section with the given text.
-     *
-     * @param toolkit the toolkit
-     * @param parent the parent composite
-     * @param text the text
-     * @return a section with the given text
-     *
-    private Section createSection( FormToolkit toolkit, Composite parent, String text )
-    {
-        Section section = toolkit.createSection( parent, Section.TITLE_BAR | Section.TWISTIE | Section.EXPANDED );
-        section.setText( text );
-        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        
-        return section;
-    }
-
-
-    /**
-     * Creates a composite for the given section.
-     *
-     * @param toolkit the toolkit
-     * @param section the section
-     * @param numColumns the number of columns in the grid
-     * @param makeColumnsEqualWidth whether or not the columns will have equal width
-     * 
-     * @return a composite for the given section.
-     */
-    private Composite createSectionComposite( FormToolkit toolkit, Section section, int numColumns,
-        boolean makeColumnsEqualWidth )
-    {
-        Composite composite = toolkit.createComposite( section );
-        toolkit.paintBordersFor( composite );
-        GridLayout gridLayout = new GridLayout( numColumns, makeColumnsEqualWidth );
-        gridLayout.marginHeight = gridLayout.marginWidth = 0;
-        composite.setLayout( gridLayout );
-        section.setClient( composite );
-        return composite;
-    }
-
-
-    /**
      * {@inheritDoc}
      */
     public void refreshUI()
