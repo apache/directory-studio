@@ -47,14 +47,6 @@
           </filesets>
         </configuration>
       </plugin>
-      <!-- Add legal files to META-INF directory -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-remote-resources-plugin</artifactId>
-        <configuration>
-          <outputDirectory>${basedir}</outputDirectory>
-        </configuration>
-      </plugin>
 
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
@@ -77,7 +69,7 @@
         <executions>
           <execution>
             <id>combine</id>
-            <phase>install</phase>
+            <phase>prepare-package</phase>
             <goals>
               <goal>mirror</goal>
             </goals>
@@ -93,7 +85,6 @@
         </executions>
       </plugin>
 
-    
       <!-- Legal files are put to different folders, don't know how to verify. -->
       <plugin>
         <groupId>org.apache.geronimo.genesis.plugins</groupId>
