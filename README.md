@@ -162,6 +162,26 @@ Define a variable for later use:
     mvn -Papache-release -Puserguides clean install/deploy
 
 
+#### Sign distribution packages
+
+There is a script that
+
+* creates `dist` folder
+* copies all distribution packages (sources, products, P2 repo) to dist folder
+* checks that all packages contain LICENSE.txt and NOTICE.txt
+* sign the packages
+
+For non-interactive signing with GPG agent define env variable with key to use
+
+	export RELEASE_KEY=28686142
+
+Run helper script
+
+    tools/dist.sh
+
+Afterwards all distribution packages are in `dist` folder.
+
+
 tbc.
 
 

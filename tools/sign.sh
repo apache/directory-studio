@@ -16,14 +16,16 @@
 # specific language governing permissions and limitations
 # under the License.
 
-echo "PGP Key ID: "
-read DEFAULT_KEY
+if [ -z "$RELEASE_KEY" ]; then
+    echo "PGP Key ID: "
+    read RELEASE_KEY
 
-echo "PGP Key Password: "
-stty -echo
-read PASSWORD
-stty echo
-echo ""
+    echo "PGP Key Password: "
+    stty -echo
+    read PASSWORD
+    stty echo
+    echo ""
+fi
 
 for FILE in $(find . -maxdepth 1 -not '(' -name "sign.sh" -or -name ".*" -or -name "*.md5" -or -name "*.sha1" -or -name "*.asc" ')' -and -type f) ; do
     if [ -f "$FILE.asc" ]; then
@@ -45,7 +47,7 @@ for FILE in $(find . -maxdepth 1 -not '(' -name "sign.sh" -or -name ".*" -or -na
     # SHA1
     if [ ! -f "$FILE.sha1" ];
     then
-        gpg --default-key "$DEFAULT_KEY" --print-md SHA1 "$FILE" > "$FILE".sha1
+        gpg --default-key "$RELEASE_KEY" --print-md SHA1 "$FILE" > "$FILE".sha1
         echo "  - Generated '$FILE.sha1'"
     else
         echo "  - Skipped '$FILE.sha1' (file already existing)"
@@ -54,7 +56,7 @@ for FILE in $(find . -maxdepth 1 -not '(' -name "sign.sh" -or -name ".*" -or -na
     # ASC
     if [ ! -f "$FILE.asc" ];
     then
-        echo "$PASSWORD" | gpg --default-key "$DEFAULT_KEY" --detach-sign --armor --no-tty --yes --passphrase-fd 0 "$FILE"
+        echo "$PASSWORD" | gpg --default-key "$RELEASE_KEY" --detach-sign --armor --no-tty --yes --passphrase-fd 0 "$FILE"
         echo "  - Generated '$FILE.asc'"
     else
         echo "  - Skipped '$FILE.asc' (file already existing)"
