@@ -48,6 +48,7 @@
         </configuration>
       </plugin>
 
+      <!-- Create the P2 repository -->
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-p2-repository-plugin</artifactId>
@@ -62,6 +63,7 @@
         </configuration>
       </plugin>
 
+      <!-- Mirror ApacheDS/API bundles from target platform -->
       <plugin>
         <groupId>org.eclipse.tycho.extras</groupId>
         <artifactId>tycho-p2-extras-plugin</artifactId>
@@ -80,6 +82,33 @@
                 </repository>
               </source>
               <mirrorMetadataOnly>false</mirrorMetadataOnly>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Include license and notice file in P2 repository -->
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-resources</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <inherited>false</inherited>
+            <configuration>
+              <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${basedir}/..</directory>
+                  <includes>
+                    <include>LICENSE.txt</include>
+                    <include>NOTICE.txt</include>
+                  </includes>
+                </resource>
+              </resources>
             </configuration>
           </execution>
         </executions>
