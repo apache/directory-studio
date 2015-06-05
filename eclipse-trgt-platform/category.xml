@@ -19,9 +19,13 @@
   @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
 -->
 <site>
-  <category-def name="all" label="Apache Directory Studio Dependencies"/>
+  <category-def name="org.apache.directory.studio.dependencies" label="Apache Directory Studio Dependencies">
+    <description>
+      Apache Directory Studio Dependencies
+    </description>
+  </category-def>
   <iu>
-    <category name="all"/>
+    <category name="org.apache.directory.studio.dependencies"/>
     <query>
       <expression type="match">providedCapabilities.exists(p | p.namespace == 'osgi.bundle')</expression>
     </query>

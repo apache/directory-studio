@@ -31,5 +31,9 @@
    <bundle id="org.apache.directory.studio.slf4j-eclipselog" version="2.0.0.qualifier">
       <category name="org.apache.directory.studio"/>
    </bundle>
-   <category-def name="org.apache.directory.studio" label="Apache Directory Studio"/>
+   <category-def name="org.apache.directory.studio" label="Apache Directory Studio">
+      <description>
+         Apache Directory Studio
+      </description>
+   </category-def>
 </site>

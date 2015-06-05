@@ -31,5 +31,9 @@
    <feature url="features/org.apache.directory.studio.schemaeditor.feature_2.0.0.qualifier.jar" id="org.apache.directory.studio.schemaeditor.feature" version="2.0.0.qualifier">
       <category name="org.apache.directory.studio"/>
    </feature>
-   <category-def name="org.apache.directory.studio" label="Apache Directory Studio"/>
+   <category-def name="org.apache.directory.studio" label="Apache Directory Studio">
+      <description>
+         Apache Directory Studio
+      </description>
+   </category-def>
 </site>
