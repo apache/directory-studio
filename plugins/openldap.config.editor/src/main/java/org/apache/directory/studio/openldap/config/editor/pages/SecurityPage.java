@@ -20,6 +20,8 @@
 package org.apache.directory.studio.openldap.config.editor.pages;
 
 
+import java.util.List;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -36,6 +38,7 @@ import org.apache.directory.studio.common.ui.widgets.TableWidget;
 import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
 import org.apache.directory.studio.openldap.config.editor.wrappers.SsfWrapper;
 import org.apache.directory.studio.openldap.config.editor.wrappers.TcpBufferWrapperLabelProvider;
+import org.apache.directory.studio.openldap.config.model.OlcGlobal;
 
 
 /**
@@ -178,10 +181,13 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
     /** The olcSecurity table widget */
     private TableWidget<SsfWrapper> securityTableWidget;
 
+    /** A constant for the no-selection in Combo */
+    private static final String NO_CHOICE = "---";
+    
     /** The CRL Checks */
     private static final String[] crlChecks = new String[]
         {
-        "---",
+        NO_CHOICE,
         "none",
         "peer",
         "all"
@@ -190,7 +196,7 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
     /** The list of supported protocols */
     private static final String[] protocols = new String[]
         {
-        "---",
+        NO_CHOICE,
         "3.0",
         "3.1",
         "3.2"
@@ -199,7 +205,7 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
     /** The list of VerifyClient choices protocols */
     private static final String[] verifyClients = new String[]
         {
-        "---",
+        NO_CHOICE,
         "never",
         "allow",
         "try",
@@ -341,29 +347,28 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
         tlsCipherSuiteText = toolkit.createText( tlsSectionComposite, "" );
         tlsCipherSuiteText.setLayoutData( new GridData(GridData.FILL_HORIZONTAL ) );
 
-        // The tlsCRLCheck parameter
-        toolkit.createLabel( tlsSectionComposite, Messages.getString( "OpenLDAPSecurityPage.TLSCRLCheck" ) ); //$NON-NLS-1$
-        tlsCrlCheckCombo = BaseWidgetUtils.createCombo( tlsSectionComposite, crlChecks, -1, 1 );
-        //tlsCipherSuiteText.setLayoutData( new GridData(GridData.FILL_HORIZONTAL ) );
+        // The tlsDHParamFile parameter
+        toolkit.createLabel( tlsSectionComposite, Messages.getString( "OpenLDAPSecurityPage.TLSDHParamFile" ) ); //$NON-NLS-1$
+        tlsDhParamFileText = toolkit.createText( tlsSectionComposite, "" );
+        tlsDhParamFileText.setLayoutData( new GridData(GridData.FILL_HORIZONTAL ) );
+
+        // The tlsRandFile parameter
+        toolkit.createLabel( tlsSectionComposite, Messages.getString( "OpenLDAPSecurityPage.TLSRandFile" ) ); //$NON-NLS-1$
+        tlsRandFileText = toolkit.createText( tlsSectionComposite, "" );
+        tlsRandFileText.setLayoutData( new GridData(GridData.FILL_HORIZONTAL ) );
 
         // The tlsCRLFile parameter
         toolkit.createLabel( tlsSectionComposite, Messages.getString( "OpenLDAPSecurityPage.TLSCRLFile" ) ); //$NON-NLS-1$
         tlsCrlFileText = toolkit.createText( tlsSectionComposite, "" );
         tlsCrlFileText.setLayoutData( new GridData(GridData.FILL_HORIZONTAL ) );
 
-        // The tlsDHParamFile parameter
-        toolkit.createLabel( tlsSectionComposite, Messages.getString( "OpenLDAPSecurityPage.TLSDHParamFile" ) ); //$NON-NLS-1$
-        tlsDhParamFileText = toolkit.createText( tlsSectionComposite, "" );
-        tlsDhParamFileText.setLayoutData( new GridData(GridData.FILL_HORIZONTAL ) );
+        // The tlsCRLCheck parameter
+        toolkit.createLabel( tlsSectionComposite, Messages.getString( "OpenLDAPSecurityPage.TLSCRLCheck" ) ); //$NON-NLS-1$
+        tlsCrlCheckCombo = BaseWidgetUtils.createCombo( tlsSectionComposite, crlChecks, -1, 1 );
 
         // The tlsProtocolMin parameter
         toolkit.createLabel( tlsSectionComposite, Messages.getString( "OpenLDAPSecurityPage.TLSProtocolMin" ) ); //$NON-NLS-1$
         tlsProtocolMinCombo = BaseWidgetUtils.createCombo( tlsSectionComposite, protocols, -1, 1 );
-
-        // The tlsRandFile parameter
-        toolkit.createLabel( tlsSectionComposite, Messages.getString( "OpenLDAPSecurityPage.TLSRandFile" ) ); //$NON-NLS-1$
-        tlsRandFileText = toolkit.createText( tlsSectionComposite, "" );
-        tlsRandFileText.setLayoutData( new GridData(GridData.FILL_HORIZONTAL ) );
 
         // The tlsProtocolMin parameter
         toolkit.createLabel( tlsSectionComposite, Messages.getString( "OpenLDAPSecurityPage.TLSVerifyClient" ) ); //$NON-NLS-1$
@@ -516,5 +521,348 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
      */
     public void refreshUI()
     {
+        removeListeners();
+
+        // Getting the global configuration object
+        OlcGlobal global = getConfiguration().getGlobal();
+
+        if ( global != null )
+        {
+            //
+            // Assigning values to UI Controls
+            //
+
+            // Authentication Auxprop Plugins Text
+            String authenticationAuxpropPlugins = global.getOlcSaslAuxprops();
+
+            if ( authenticationAuxpropPlugins != null )
+            {
+                saslAuxPropsText.setText( authenticationAuxpropPlugins );
+            }
+            else
+            {
+                saslAuxPropsText.setText( "" );
+            }
+
+            // SASL Host Text
+            String saslHost = global.getOlcSaslHost();
+
+            if ( saslHost != null )
+            {
+                saslHostText.setText( saslHost );
+            }
+            else
+            {
+                saslHostText.setText( "" );
+            }
+
+            // SASL Realm Text
+            String saslRealm = global.getOlcSaslRealm();
+
+            if ( saslRealm != null )
+            {
+                saslRealmText.setText( saslRealm );
+            }
+            else
+            {
+                saslRealmText.setText( "" );
+            }
+
+            // SASL Security Properties Text
+            String saslSecurityProperties = global.getOlcSaslSecProps();
+
+            if ( saslSecurityProperties != null )
+            {
+                saslSecPropsText.setText( saslSecurityProperties );
+            }
+            else
+            {
+                saslSecPropsText.setText( "" );
+            }
+
+            // TLS CA Certificate File Text
+            String tlsCaCertificateFile = global.getOlcTLSCACertificateFile();
+
+            if ( tlsCaCertificateFile != null )
+            {
+                tlsCaCertificateFileText.setText( tlsCaCertificateFile );
+            }
+            else
+            {
+                tlsCaCertificateFileText.setText( "" );
+            }
+
+            // TLS CA Certificate Path Text
+            String tlsCaCertificatePath = global.getOlcTLSCACertificatePath();
+
+            if ( tlsCaCertificatePath != null )
+            {
+                tlsCaCertificatePathText.setText( tlsCaCertificatePath );
+            }
+            else
+            {
+                tlsCaCertificatePathText.setText( "" );
+            }
+
+            // TLS Certificate File Text
+            String tlsCertificateFile = global.getOlcTLSCertificateFile();
+
+            if ( tlsCertificateFile != null )
+            {
+                tlsCertificateFileText.setText( tlsCertificateFile );
+            }
+            else
+            {
+                tlsCertificateFileText.setText( "" );
+            }
+
+            // TLS Certificate Key File Text
+            String tlsCertificateKeyFile = global.getOlcTLSCertificateKeyFile();
+
+            if ( tlsCertificateKeyFile != null )
+            {
+                tlsCertificateKeyFileText.setText( tlsCertificateKeyFile );
+            }
+            else
+            {
+                tlsCertificateKeyFileText.setText( "" );
+            }
+
+            // Cipher Suite Text
+            String tlsCipherSuite = global.getOlcTLSCipherSuite();
+
+            if ( tlsCipherSuite != null )
+            {
+                tlsCipherSuiteText.setText( tlsCipherSuite );
+            }
+            else
+            {
+                tlsCipherSuiteText.setText( "" );
+            }
+
+            // Certificate Revocation List File Text
+            String tlsCrlFile = global.getOlcTLSCRLFile();
+
+            if ( tlsCrlFile != null )
+            {
+                tlsCrlFileText.setText( tlsCrlFile );
+            }
+            else
+            {
+                tlsCrlFileText.setText( "" );
+            }
+
+            // Certificate Check List Level Combo
+            String tlsCrlCheck = global.getOlcTLSCRLCheck();
+
+            if ( tlsCrlCheck != null )
+            {
+                // Select the right one
+                boolean found = false;
+                
+                for ( String check : crlChecks )
+                {
+                    if ( check.equalsIgnoreCase( tlsCrlCheck ) )
+                    {
+                        tlsCrlCheckCombo.setText( check );
+                        found = true;
+                        break;
+                    }
+                }
+                
+                if ( !found )
+                {
+                    tlsVerifyClientCombo.setText( NO_CHOICE );
+                }
+            }
+            else
+            {
+                tlsCrlCheckCombo.setText( NO_CHOICE );
+            }
+
+            // Diffie-Hellman Parameters File Text
+            String tlsDhParamFile = global.getOlcTLSDHParamFile();
+
+            if ( tlsDhParamFile != null )
+            {
+                tlsDhParamFileText.setText( tlsDhParamFile );
+            }
+            else
+            {
+                tlsDhParamFileText.setText( "" );
+            }
+
+            // TLS Random Bits File Text
+            String tlsRandFile = global.getOlcTLSRandFile();
+
+            if ( tlsRandFile != null )
+            {
+                tlsRandFileText.setText( tlsRandFile );
+            }
+            else
+            {
+                tlsRandFileText.setText( "" );
+            }
+
+            // TLS Incoming Certificates Verification Level Combo
+            String tlsVerifyClient = global.getOlcTLSVerifyClient();
+
+            if ( tlsVerifyClient != null )
+            {
+                // Select the right one
+                boolean found = false;
+                
+                for ( String verify : verifyClients )
+                {
+                    if ( verify.equalsIgnoreCase( tlsVerifyClient ) )
+                    {
+                        tlsVerifyClientCombo.setText( verify );
+                        found = true;
+                        break;
+                    }
+                }
+                
+                if ( !found )
+                {
+                    tlsVerifyClientCombo.setText( NO_CHOICE );
+                }
+            }
+            else
+            {
+                tlsVerifyClientCombo.setText( NO_CHOICE );
+            }
+
+            // TLS Protocol Min Combo
+            String tlsProtocolMin = global.getOlcTLSProtocolMin();
+
+            if ( tlsProtocolMin != null )
+            {
+                // Select the right one
+                boolean found = false;
+                
+                for ( String protocol : protocols )
+                {
+                    if ( protocol.equalsIgnoreCase( tlsProtocolMin ) )
+                    {
+                        tlsProtocolMinCombo.setText( protocol );
+                        found = true;
+                        break;
+                    }
+                }
+                
+                if ( !found )
+                {
+                    tlsProtocolMinCombo.setText( NO_CHOICE );
+                }
+            }
+            else
+            {
+                tlsProtocolMinCombo.setText( NO_CHOICE );
+            }
+
+            // Local SSF Text
+            Integer localSsf = global.getOlcLocalSSF();
+
+            if ( localSsf != null )
+            {
+                localSsfText.setText( localSsf.toString() );
+            }
+            else
+            {
+                localSsfText.setText( "" );
+            }
+
+            // Password Crypt Format Text
+            String passwordCryptSaltFormat = global.getOlcPasswordCryptSaltFormat();
+
+            if ( passwordCryptSaltFormat != null )
+            {
+                passwordCryptSaltFormatText.setText( passwordCryptSaltFormat );
+            }
+            else
+            {
+                passwordCryptSaltFormatText.setText( "" );
+            }
+
+            // Password Hash Table Widget
+            List<String> passwordHash = global.getOlcPasswordHash();
+
+            if ( passwordHash != null )
+            {
+                //TODO
+            }
+            else
+            {
+                //TODO
+            }
+
+            // Security Table Widget
+            List<String> security = global.getOlcSecurity();
+
+            if ( security != null )
+            {
+                // TODO
+            }
+            else
+            {
+                // TODO
+            }
+        }
+        
+        addListeners();
+    }
+
+
+    /**
+     * Adds the listeners.
+     */
+    private void addListeners()
+    {
+        localSsfText.addModifyListener( dirtyModifyListener );
+        passwordCryptSaltFormatText.addModifyListener( dirtyModifyListener );
+        passwordHashTableWidget.addWidgetModifyListener( dirtyWidgetModifyListener );
+        saslAuxPropsText.addModifyListener( dirtyModifyListener );
+        saslHostText.addModifyListener( dirtyModifyListener );
+        saslRealmText.addModifyListener( dirtyModifyListener );
+        saslSecPropsText.addModifyListener( dirtyModifyListener );
+        securityTableWidget.addWidgetModifyListener( dirtyWidgetModifyListener );
+        tlsCaCertificateFileText.addModifyListener( dirtyModifyListener );
+        tlsCaCertificatePathText.addModifyListener( dirtyModifyListener );
+        tlsCertificateFileText.addModifyListener( dirtyModifyListener );
+        tlsCertificateKeyFileText.addModifyListener( dirtyModifyListener );
+        tlsCipherSuiteText.addModifyListener( dirtyModifyListener );
+        tlsCrlCheckCombo.addModifyListener( dirtyModifyListener );
+        tlsCrlFileText.addModifyListener( dirtyModifyListener );
+        tlsDhParamFileText.addModifyListener( dirtyModifyListener );
+        tlsProtocolMinCombo.addModifyListener( dirtyModifyListener );
+        tlsRandFileText.addModifyListener( dirtyModifyListener );
+        tlsVerifyClientCombo.addModifyListener( dirtyModifyListener );
+    }
+
+
+    /**
+     * Removes the listeners
+     */
+    private void removeListeners()
+    {
+        localSsfText.removeModifyListener( dirtyModifyListener );
+        passwordCryptSaltFormatText.removeModifyListener( dirtyModifyListener );
+        passwordHashTableWidget.removeWidgetModifyListener( dirtyWidgetModifyListener );
+        saslAuxPropsText.removeModifyListener( dirtyModifyListener );
+        saslHostText.removeModifyListener( dirtyModifyListener );
+        saslRealmText.removeModifyListener( dirtyModifyListener );
+        saslSecPropsText.removeModifyListener( dirtyModifyListener );
+        securityTableWidget.removeWidgetModifyListener( dirtyWidgetModifyListener );
+        tlsCaCertificateFileText.removeModifyListener( dirtyModifyListener );
+        tlsCaCertificatePathText.removeModifyListener( dirtyModifyListener );
+        tlsCertificateFileText.removeModifyListener( dirtyModifyListener );
+        tlsCertificateKeyFileText.removeModifyListener( dirtyModifyListener );
+        tlsCipherSuiteText.removeModifyListener( dirtyModifyListener );
+        tlsCrlCheckCombo.removeModifyListener( dirtyModifyListener );
+        tlsCrlFileText.removeModifyListener( dirtyModifyListener );
+        tlsDhParamFileText.removeModifyListener( dirtyModifyListener );
+        tlsProtocolMinCombo.removeModifyListener( dirtyModifyListener );
+        tlsRandFileText.removeModifyListener( dirtyModifyListener );
+        tlsVerifyClientCombo.removeModifyListener( dirtyModifyListener );
     }
 }
