@@ -69,7 +69,8 @@
         </configuration>
       </plugin>
 
-      <!-- Include license and notice file in P2 repository -->
+      <!-- Include LICENSE.txt, NOTICE.txt, and p2.index files in P2 repositories -->
+      <!-- Don't add META-INF/LICENSE and META-INF/NOTICE into P2 repositories -->
       <plugin>
         <artifactId>maven-resources-plugin</artifactId>
         <executions>
@@ -98,6 +99,20 @@
                 </resource>
               </resources>
             </configuration>
+          </execution>
+          <execution>
+            <id>default-resources</id>
+            <phase>none</phase>
+            <goals>
+              <goal>resources</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>default-testResources</id>
+            <phase>none</phase>
+            <goals>
+              <goal>testResources</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>
