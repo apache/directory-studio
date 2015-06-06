@@ -79,7 +79,7 @@
             <goals>
               <goal>copy-resources</goal>
             </goals>
-            <inherited>false</inherited>
+            <inherited>true</inherited>
             <configuration>
               <outputDirectory>${project.build.outputDirectory}</outputDirectory>
               <resources>
@@ -88,6 +88,12 @@
                   <includes>
                     <include>LICENSE.txt</include>
                     <include>NOTICE.txt</include>
+                  </includes>
+                </resource>
+                <resource>
+                  <directory>${basedir}/..</directory>
+                  <includes>
+                    <include>p2.index</include>
                   </includes>
                 </resource>
               </resources>
