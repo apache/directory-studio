@@ -290,9 +290,9 @@
               <exclude>**/*.bmp</exclude>
               <!-- OTHER_EXCLUDES -->
               <exclude>**/*.launch</exclude>
-              <!-- OTHER_EXCLUDES -->
               <exclude>**/rfc*/rfc*.txt</exclude>
               <exclude>tools/**/*</exclude>
+              <exclude>**/p2.index</exclude>
             </excludes>
           </configuration>
          </plugin>
