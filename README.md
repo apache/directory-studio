@@ -59,13 +59,13 @@ Recommended IDE is 'Eclipse (Luna) for RCP Developers': <http://www.eclipse.org/
 1. Import 'Eclipse Target Platorm' project first
 
     * File -> Import... -> Maven -> Existing Maven Projects
-    * Choose 'studio/eclipse-target-platform' as root directory
+    * Choose 'studio/eclipse-trgt-platform' as root directory
     * Only this single project is selected
     * Finish
 
 2. Initialize target platform
 
-    * Open the `eclipse-target-platform.target` file with the 'Target Editor'
+    * Open the `eclipse-trgt-platform.target` file with the 'Target Editor'
     * In the top right corner click 'Set as Target Platform'
 
 3. Import the main plugins
