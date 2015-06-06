@@ -144,9 +144,16 @@ Define a variable for later use:
 
     export VERSION=2.0.0.v20150529-M9
 
+Also create an empty directory used during the release process and store it in a variable:
+
+    export RELEASE_DIR=$(pwd)
+
 #### Create and checkout branch
 
+    cd $RELEASE_DIR
     svn copy https://svn.apache.org/repos/asf/directory/studio/trunk https://svn.apache.org/repos/asf/directory/studio/branches/$VERSION -m "Prepare release $VERSION"
+    svn checkout https://svn.apache.org/repos/asf/directory/studio/branches/$VERSION branch-$VERSION
+    cd branch-$VERSION
 
 #### Set the version
 
@@ -161,13 +168,15 @@ Define a variable for later use:
 
 ### Create and checkout tag
 
+    cd $RELEASE_DIR
     svn copy https://svn.apache.org/repos/asf/directory/studio/branches/$VERSION https://svn.apache.org/repos/asf/directory/studio/tags/$VERSION -m "Tag release $VERSION"
+    svn checkout https://svn.apache.org/repos/asf/directory/studio/tags/$VERSION tag-$VERSION
+    cd tag-$VERSION
 
 #### Build the release and deploy to staging Nexus repository
 
     mvn -f pom-first.xml clean install
-    mvn -Papache-release -Duserguides clean install/deploy
-
+    mvn -Papache-release -Duserguides clean deploy
 
 #### Package and sign distribution packages
 
@@ -182,7 +191,15 @@ Run the dist script:
     cd dist
     ./dist.sh
 
-Afterwards all distribution packages are located in `target`. Upload `target/$VERSION` to people.apache.org and start the vote. After successful vote the content of `target` can be committed as-is to https://dist.apache.org/repos/dist/release/directory/studio.
+Afterwards all distribution packages are located in `target`.
+
+#### Call the vode
+
+Upload `target/$VERSION` to people.apache.org and start the vote. 
+
+#### Publish
+
+After successful vote the content of `target` can be committed as-is to https://dist.apache.org/repos/dist/release/directory/studio.
 
 
 tbc.
