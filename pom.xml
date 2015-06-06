@@ -118,7 +118,7 @@
     <module>helps</module>
     <module>features</module>
     <module>tests</module>
-    <module>p2repository</module>
+    <module>p2repositories</module>
     <module>product</module>
   </modules>
 
