@@ -103,8 +103,15 @@ We release the following artifacts:
     * plugins: pom, jar, javadoc, src
     * features: pom, jar, src
     * helps: pom, jar, src
-* P2 repository zip
-* Product archives Mac OS X, Linux (32+64bit), Windows (32+64bit)
+* P2 repositories
+    * the main features (LDAP Browser, Schema Editor, ApacheDS)
+    * dependencies
+* Product archives for
+    * Linux GTK 32bit tar.gz
+    * Linux GTK 64bit tar.gz
+    * Mac OS X 64bit tar.gz
+    * Windows 32bit zip
+    * Windows 64bit zip
 * Userguides
 
 
@@ -115,7 +122,7 @@ Test the release build: rat check, javadoc and source jar generation, GPG signin
     mvn -f pom-first.xml clean install
     mvn -Papache-release -Duserguides clean install
 
-Run UI tests (if possilbe on all platforms)
+Run UI tests (if possible on all platforms)
 
     mvn clean install -Denable-ui-tests
 
@@ -156,30 +163,26 @@ Define a variable for later use:
 
     svn copy https://svn.apache.org/repos/asf/directory/studio/branches/$VERSION https://svn.apache.org/repos/asf/directory/studio/tags/$VERSION -m "Tag release $VERSION"
 
-#### Build the release
+#### Build the release and deploy to staging Nexus repository
 
     mvn -f pom-first.xml clean install
     mvn -Papache-release -Puserguides clean install/deploy
 
 
-#### Sign distribution packages
+#### Package and sign distribution packages
 
-There is a script that
+There is a script that collects and signs all update sites and distribution packages.
 
-* creates `dist` folder
-* copies all distribution packages (sources, products, P2 repo) to dist folder
-* checks that all packages contain LICENSE.txt and NOTICE.txt
-* sign the packages
+For non-interactive signing with GPG agent define env variable:
 
-For non-interactive signing with GPG agent define env variable with key to use
+    export RELEASE_KEY=28686142
 
-	export RELEASE_KEY=28686142
+Run the dist script:
 
-Run helper script
+    cd dist
+    ./dist.sh
 
-    tools/dist.sh
-
-Afterwards all distribution packages are in `dist` folder.
+Afterwards all distribution packages are located in `target`. Upload `target/$VERSION` to people.apache.org and start the vote. After successful vote the content of `target` can be committed as-is to https://dist.apache.org/repos/dist/release/directory/studio.
 
 
 tbc.

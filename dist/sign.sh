@@ -27,7 +27,7 @@ if [ -z "$RELEASE_KEY" ]; then
     echo ""
 fi
 
-for FILE in $(find . -maxdepth 1 -not '(' -name "sign.sh" -or -name ".*" -or -name "*.md5" -or -name "*.sha1" -or -name "*.asc" ')' -and -type f) ; do
+for FILE in $(find . -maxdepth 2 -not '(' -name "sign.sh" -or -name ".*" -or -name "*.md5" -or -name "*.sha1" -or -name "*.asc" ')' -and -type f) ; do
     if [ -f "$FILE.asc" ]; then
         echo "Skipping: $FILE"
         continue
