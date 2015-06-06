@@ -166,7 +166,7 @@ Define a variable for later use:
 #### Build the release and deploy to staging Nexus repository
 
     mvn -f pom-first.xml clean install
-    mvn -Papache-release -Puserguides clean install/deploy
+    mvn -Papache-release -Duserguides clean install/deploy
 
 
 #### Package and sign distribution packages
