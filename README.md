@@ -21,15 +21,15 @@ You can use either of those two methods to build the project :
 
 ### Do it manually
 
-1. Build the 'Eclipse Target Platform' and generate MANIFEST.MF files first
+Build the 'Eclipse Target Platform' and generate MANIFEST.MF files first
 
     mvn -f pom-first.xml clean install
 
-2. Build the main eclipse artifacts using Tycho
+Build the main eclipse artifacts using Tycho
 
     mvn clean install
 
-### Use the script  (which does run the two previous commands)
+### Use the script  (which runs the two previous commands)
 
 On Linux / Mac OS X :
 
@@ -43,7 +43,8 @@ or on Windows :
 
 * Unit tests included in src/test/java of each plugin are executed automatically and run in 'test' phase
 * Core integration tests in tests/test.integration.core are executed automatically and run in 'integration-test' phase
-* SWTBot based UI integration tests in tests/test/integration.ui are diabled by default. They can be enabled with -Denable-ui-tests. A failing test generates a screenshot. To not block the developer computer UI tests they can run within a virtual framebuffer:
+* SWTBot based UI integration tests in tests/test.integration.ui are diabled by default. They can be enabled with -Denable-ui-tests. A failing test generates a screenshot. To not block the developer computer UI tests they can run within a virtual framebuffer:
+
         export DISPLAY=:99
         Xvfb :99 -screen 0 1024x768x16 &
 
@@ -54,7 +55,7 @@ Tycho doesn't handle snapshot dependencies well. The first time a snapshot depen
 
 ## Setup Eclipse workspace
 
-Recommended IDE is 'Eclipse (Luna) for RCP Developers': <http://www.eclipse.org/downloads/packages/eclipse-rcp-and-rap-developers/lunasr1>
+Recommended IDE is 'Eclipse (Luna) for RCP Developers': <http://www.eclipse.org/downloads/packages/eclipse-rcp-and-rap-developers/lunasr2>
 
 1. Import 'Eclipse Target Platorm' project first
 
@@ -137,8 +138,7 @@ We use a release number scheme that suites for both, Maven and Eclipse.
 
     <MAJOR>.<MINOR>.<PATCH>.v<YYYYMMDD>[-M<X>|RC<X>]
 
-Example for milestone version: `2.0.0.v20150529-M9`
-Example for GA version: `2.0.1.v20150529`
+Example for milestone version: `2.0.0.v20150529-M9`. Example for GA version: `2.0.1.v20150529`.
 
 Define a variable for later use:
 
@@ -164,7 +164,7 @@ Also create an empty directory used during the release process and store it in a
 
 #### Commit
 
-    svn commit -m "Set version numbers for release $VERSION"
+    svn commit -m "Set version number for release $VERSION"
 
 ### Create and checkout tag
 
@@ -176,7 +176,11 @@ Also create an empty directory used during the release process and store it in a
 #### Build the release and deploy to staging Nexus repository
 
     mvn -f pom-first.xml clean install
-    mvn -Papache-release -Duserguides clean deploy
+    mvn -Papache-release -Duserguides -DretryFailedDeploymentCount=3 clean deploy
+
+#### Close the staging Nexus repository
+
+See <https://repository.apache.org/#stagingRepositories>.
 
 #### Package and sign distribution packages
 
@@ -193,9 +197,13 @@ Run the dist script:
 
 Afterwards all distribution packages are located in `target`.
 
-#### Call the vode
+#### Call the vote
 
-Upload `target/$VERSION` to people.apache.org and start the vote. 
+Upload `target/$VERSION` to people.apache.org
+
+    scp -r target/$VERSION people.apache.org:~/public_html/
+
+and start the vote.
 
 #### Publish
 
