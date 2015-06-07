@@ -128,7 +128,7 @@ Run UI tests (if possible on all platforms)
     mvn clean install -Denable-ui-tests
 
 
-### Release steps
+### Release build steps
 
 As Tycho doesn't support the maven-release-plugin the release process is as follows:
 
@@ -166,7 +166,7 @@ Also create an empty directory used during the release process and store it in a
 
     svn commit -m "Set version number for release $VERSION"
 
-### Create and checkout tag
+#### Create and checkout tag
 
     cd $RELEASE_DIR
     svn copy https://svn.apache.org/repos/asf/directory/studio/branches/$VERSION https://svn.apache.org/repos/asf/directory/studio/tags/$VERSION -m "Tag release $VERSION"
@@ -197,7 +197,7 @@ Run the dist script:
 
 Afterwards all distribution packages are located in `target`.
 
-#### Call the vote
+### Call the vote
 
 Upload `target/$VERSION` to people.apache.org
 
@@ -205,9 +205,22 @@ Upload `target/$VERSION` to people.apache.org
 
 and start the vote.
 
-#### Publish
+### Publish
 
 After successful vote the content of `target` can be committed as-is to https://dist.apache.org/repos/dist/release/directory/studio.
+
+#### Update site
+
+The update site https://svn.apache.org/repos/asf/directory/site/trunk/content/studio/update needs to be updated.
+
+In the following files
+
+* compositeArtifacts--xml.html
+* compositeContent--xml.html
+* product/compositeArtifacts--xml.html
+* product/compositeContent--xml.html
+
+change the location path to the new release and also update the `p2.timestamp` to the current timestamp milliseconds (hint: `date +%s000`)
 
 
 tbc.
