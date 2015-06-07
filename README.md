@@ -17,9 +17,18 @@
 
 ## Build from command line
 
+### Prerequisites
+
+* JDK 7 or newer
+* Maven 3 or newer
+* Sufficient heap space for Maven: `export MAVEN_OPTS="-Xmx512m"`
+* FIXME: Windows users have to replace the repository location `file://${basedir}/target/repository` in `eclipse-trgt-platform/template/org.apache.directory.studio.eclipse-trgt-platform.template` with the actual path, e.g. `file:///C:/Development/studio/eclipse-trgt-platform/target/repository`
+
+### Build
+
 You can use either of those two methods to build the project :
 
-### Do it manually
+#### Do it manually
 
 Build the 'Eclipse Target Platform' and generate MANIFEST.MF files first
 
@@ -29,7 +38,7 @@ Build the main eclipse artifacts using Tycho
 
     mvn clean install
 
-### Use the script  (which runs the two previous commands)
+#### Use the script  (which runs the two previous commands)
 
 On Linux / Mac OS X :
 
