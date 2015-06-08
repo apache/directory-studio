@@ -49,6 +49,7 @@
             
             <Export-Package>org.apache.directory.studio.openldap.common.ui,
  org.apache.directory.studio.openldap.common.ui.dialogs,
+ org.apache.directory.studio.openldap.common.ui.model,
  org.apache.directory.studio.openldap.common.ui.widgets</Export-Package>
  
             <Require-Bundle>
