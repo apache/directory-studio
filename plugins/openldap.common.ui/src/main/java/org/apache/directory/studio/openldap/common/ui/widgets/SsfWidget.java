@@ -20,11 +20,8 @@
 package org.apache.directory.studio.openldap.common.ui.widgets;
 
 
-import java.text.ParseException;
-
 import org.apache.directory.studio.common.ui.widgets.AbstractWidget;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -36,18 +33,43 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.apache.directory.studio.openldap.common.ui.dialogs.UnixPermissionsDialog;
-import org.apache.directory.studio.openldap.common.ui.model.UnixPermissions;
+import org.apache.directory.studio.openldap.common.ui.LogLevel;
+import org.apache.directory.studio.openldap.common.ui.dialogs.LogLevelDialog;
+import org.apache.directory.studio.openldap.common.ui.dialogs.SsfDialog;
+import org.apache.directory.studio.openldap.common.ui.model.SsfEnum;
 
 
 /**
- *
+ * A widget used to configure the OpenLDAP SSF. SSF (Security Strength Factors) associates
+ * a strength to a feature. Here is the list of feature that support a SSF :
+ * <ul>
+ * <li>ssf : global</li>
+ * <li>transport</li>
+ * <li>tls</li>
+ * <li>sasl</li>
+ * <li>simple_bind</li>
+ * <li>update_ssf</li>
+ * <li>update_transport</li>
+ * <li>update_tls</li>
+ * <li>update_sasl</li>
+ * </ul>
+ * The ssf valus will generally depend on the number of bits used by the cipher to use,
+ * with two special values : 0 and 1. Here is a set of possible values :
+ * <ul>
+ * <li>0 : no protection</li>
+ * <li>1 : integrity check only</li>
+ * <li>56 : DES (key length is 56 bits)</li>
+ * <li>112 : 3DES (key length is 112 bits)</li>
+ * <li>128 : RC4, Blowish, AES-128</li>
+ * <li>256 : AES-256</li>
+ * </ul>
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class UnixPermissionsWidget extends AbstractWidget
+public class SsfWidget extends AbstractWidget
 {
-    // The value
-    private String value;
+    /** The SSF-features */
+    private SsfEnum ssf;
 
     // UI widgets
     private Composite composite;
@@ -59,12 +81,12 @@ public class UnixPermissionsWidget extends AbstractWidget
     {
         public void widgetSelected( SelectionEvent e )
         {
-            // Creating and opening a UNIX permission dialog
-            UnixPermissionsDialog dialog = new UnixPermissionsDialog( editButton.getShell(), value );
+            // Creating and opening a SSF dialog
+            SsfDialog dialog = new SsfDialog( editButton.getShell(), null );
 
-            if ( UnixPermissionsDialog.OK == dialog.open() )
+            if ( LogLevelDialog.OK == dialog.open() )
             {
-                setValue( dialog.getDecimalValue() );
+                //setValue( dialog.getLogLevelValue() );
                 notifyListeners();
             }
         }
@@ -120,11 +142,11 @@ public class UnixPermissionsWidget extends AbstractWidget
         // Edit Button
         if ( toolkit != null )
         {
-            editButton = toolkit.createButton( composite, "Edit Permissions...", SWT.PUSH );
+            editButton = toolkit.createButton( composite, "Edit LogLevels...", SWT.PUSH );
         }
         else
         {
-            editButton = BaseWidgetUtils.createButton( composite, "Edit Permissions...", 1 );
+            editButton = BaseWidgetUtils.createButton( composite, "Edit LogLevels...", 1 );
         }
         
         editButton.setLayoutData( new GridData( SWT.RIGHT, SWT.CENTER, false, false ) );
@@ -157,24 +179,13 @@ public class UnixPermissionsWidget extends AbstractWidget
     /**
      * Sets the value.
      *
-     * @param s the value
+     * @param ints the value
      */
-    public void setValue( String s )
+    public void setValue( int value )
     {
-        value = s;
+        //this.value = value;
 
-        UnixPermissions perm = null;
-
-        try
-        {
-            perm = new UnixPermissions( s );
-        }
-        catch ( ParseException e )
-        {
-            perm = new UnixPermissions();
-        }
-
-        label.setText( NLS.bind( "{0} ({1})", perm.getSymbolicValue(), perm.getOctalValue() ) );
+        label.setText( LogLevel.getLogLevelText( value ) );
     }
 
 
@@ -183,9 +194,9 @@ public class UnixPermissionsWidget extends AbstractWidget
      *
      * @return the value
      */
-    public String getValue()
+    public int getValue()
     {
-        return value;
+        return 0;
     }
 
 

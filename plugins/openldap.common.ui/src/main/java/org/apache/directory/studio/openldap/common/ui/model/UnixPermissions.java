@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.openldap.common.ui.dialogs;
+package org.apache.directory.studio.openldap.common.ui.model;
 
 
 import java.text.ParseException;

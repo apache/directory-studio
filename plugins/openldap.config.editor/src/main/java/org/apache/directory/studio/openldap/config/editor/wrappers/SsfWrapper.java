@@ -20,7 +20,7 @@
 package org.apache.directory.studio.openldap.config.editor.wrappers;
 
 import org.apache.directory.api.util.Strings;
-import org.apache.directory.studio.openldap.common.ui.SsfEnum;
+import org.apache.directory.studio.openldap.common.ui.model.SsfEnum;
 
 /**
  * This class wraps the olcSecurity parameter :

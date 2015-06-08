@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.openldap.common.ui;
+package org.apache.directory.studio.openldap.common.ui.model;
 
 import org.apache.directory.api.util.Strings;
 

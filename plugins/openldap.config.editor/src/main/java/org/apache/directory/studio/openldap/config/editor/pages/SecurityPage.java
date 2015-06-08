@@ -202,7 +202,7 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
         "3.2"
         };
 
-    /** The list of VerifyClient choices protocols */
+    /** The list of VerifyClients */
     private static final String[] verifyClients = new String[]
         {
         NO_CHOICE,
@@ -212,6 +212,18 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
         "demand",
         "hard",
         "true"
+        };
+    
+    /** The list of Password Hashes choices  */
+    private static final String[] hashes = new String[]
+        {
+        NO_CHOICE,
+        "{CLEARTEXT}",
+        "{CRYPT}",
+        "{MD5}",
+        "{SMD5}",
+        "{SHA}",
+        "{SSHA}"
         };
     
     /**

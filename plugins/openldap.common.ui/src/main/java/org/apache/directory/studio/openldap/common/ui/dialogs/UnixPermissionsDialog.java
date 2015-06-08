@@ -23,6 +23,7 @@ package org.apache.directory.studio.openldap.common.ui.dialogs;
 import java.text.ParseException;
 
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.openldap.common.ui.model.UnixPermissions;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
