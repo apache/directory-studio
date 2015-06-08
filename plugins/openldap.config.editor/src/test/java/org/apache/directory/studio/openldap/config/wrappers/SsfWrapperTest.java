@@ -23,7 +23,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 
-import org.apache.directory.studio.openldap.common.ui.SsfEnum;
+import org.apache.directory.studio.openldap.common.ui.model.SsfEnum;
 import org.apache.directory.studio.openldap.config.editor.wrappers.SsfWrapper;
 import org.junit.Test;
 

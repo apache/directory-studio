@@ -23,6 +23,7 @@ package org.apache.directory.studio.openldap.common.ui.dialogs;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import org.apache.directory.studio.openldap.common.ui.model.UnixPermissions;
 
 import org.junit.Test;
 
