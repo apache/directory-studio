@@ -23,8 +23,12 @@ package org.apache.directory.studio.openldap.config.editor.pages;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -36,6 +40,8 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.common.ui.widgets.TableWidget;
 import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
+import org.apache.directory.studio.openldap.config.editor.dialogs.OverlayDialog;
+import org.apache.directory.studio.openldap.config.editor.dialogs.SaslSecPropsDialog;
 import org.apache.directory.studio.openldap.config.editor.wrappers.SsfWrapper;
 import org.apache.directory.studio.openldap.config.editor.wrappers.TcpBufferWrapperLabelProvider;
 import org.apache.directory.studio.openldap.config.model.OlcGlobal;
@@ -85,10 +91,10 @@ import org.apache.directory.studio.openldap.config.model.OlcGlobal;
  *   | .-----------------------------------------------. .------------------------------------------------. |
  *   | |V TLS Configuration                            | |V SASL  Configuration                           | |
  *   | +-----------------------------------------------+ +------------------------------------------------+ |
- *   | | TLS Certificate File :     [                ] | | SASL Host :                [                 ] | |
- *   | | TLS Certificate Key File : [                ] | | SASL Realm :               [                 ] | |
- *   | | TLS CA Certificate File :  [                ] | | SASL Auxprops plugin :     [                 ] | |
- *   | | TLS CA Certificate Path :  [                ] | | SASL Security Properties : [                 ] | |
+ *   | | TLS Certificate File :     [                ] | | SASL Host :                [       ]           | |
+ *   | | TLS Certificate Key File : [                ] | | SASL Realm :               [       ]           | |
+ *   | | TLS CA Certificate File :  [                ] | | SASL Auxprops plugin :     [       ]           | |
+ *   | | TLS CA Certificate Path :  [                ] | | SASL Security Properties : [       ] (Edit...) | |
  *   | | TLS Cipher Suite  :        [                ] | +------------------------------------------------+ |
  *   | | TLS CRL Check  :           [=============]    | .------------------------------------------------. |
  *   | | TLS CRL File  :            [                ] | |V Miscellaneous Security Parameters             | |
@@ -167,6 +173,7 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
 
     /** The olcSaslSecProps */
     private Text saslSecPropsText;
+    private Button saslSecPropsEditButton;
     
     // UI Controls for the Misc part
     /** The olcLocalSSF */
@@ -226,6 +233,29 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
         "{SSHA}"
         };
     
+    
+    
+    /**
+     * The listener for the SaslSecProps Text
+     */
+    private SelectionListener saslSecPropsEditSelectionListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            SaslSecPropsDialog dialog = new SaslSecPropsDialog( saslSecPropsText.getShell(), saslSecPropsText.getText() );
+
+            if ( dialog.open() == OverlayDialog.OK )
+            {
+                String saslSecPropsValue = dialog.getSaslSecPropsValue();
+                
+                if ( saslSecPropsValue != null )
+                {
+                    saslSecPropsText.setText( saslSecPropsValue );
+                }
+            }
+        }
+    };
+
     /**
      * Creates a new instance of SecurityPage.
      *
@@ -398,14 +428,14 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
      * </ul>
      * 
      * <pre>
-     * .-----------------------------------------------.
-     * |V SASL Parameters                              |
-     * +-----------------------------------------------+
-     * | SASL Host :                [                ] |
-     * | SASL Realm :               [                ] |
-     * | SASL Auxprops plugin :     [                ] |
-     * | SASL Security Properties : [                ] |
-     * +-----------------------------------------------+
+     * .---------------------------------------------------------.
+     * |V SASL Parameters                                        |
+     * +---------------------------------------------------------+
+     * | SASL Host :                [                ]           |
+     * | SASL Realm :               [                ]           |
+     * | SASL Auxprops plugin :     [                ]           |
+     * | SASL Security Properties : [                ] (Edit...) |
+     * +---------------------------------------------------------+
      * </pre>
      * 
      *
@@ -418,27 +448,30 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
         Section section = createSection( toolkit, parent, Messages.getString( "OpenLDAPSecurityPage.SaslSection" ) );
 
         // The content
-        Composite saslSectionComposite = createSectionComposite( toolkit, section, 2, false );
+        Composite saslSectionComposite = createSectionComposite( toolkit, section, 3, false );
 
         // The saslHost parameter
         toolkit.createLabel( saslSectionComposite, Messages.getString( "OpenLDAPSecurityPage.SaslHost" ) ); //$NON-NLS-1$
         saslHostText = toolkit.createText( saslSectionComposite, "" );
-        saslHostText.setLayoutData( new GridData(GridData.FILL_HORIZONTAL ) );
+        saslHostText.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false, 2, 1 ) );
 
         // The saslRealm parameter
         toolkit.createLabel( saslSectionComposite, Messages.getString( "OpenLDAPSecurityPage.SaslRealm" ) ); //$NON-NLS-1$
         saslRealmText = toolkit.createText( saslSectionComposite, "" );
-        saslRealmText.setLayoutData( new GridData(GridData.FILL_HORIZONTAL ) );
+        saslRealmText.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false, 2, 1 ) );
 
         // The saslAuxProps parameter
         toolkit.createLabel( saslSectionComposite, Messages.getString( "OpenLDAPSecurityPage.SaslAuxProps" ) ); //$NON-NLS-1$
         saslAuxPropsText = toolkit.createText( saslSectionComposite, "" );
-        saslAuxPropsText.setLayoutData( new GridData(GridData.FILL_HORIZONTAL ) );
+        saslAuxPropsText.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false, 2, 1 ) );
 
         // The saslSecProps parameter
         toolkit.createLabel( saslSectionComposite, Messages.getString( "OpenLDAPSecurityPage.SaslSecProps" ) ); //$NON-NLS-1$
         saslSecPropsText = toolkit.createText( saslSectionComposite, "" );
-        saslSecPropsText.setLayoutData( new GridData(GridData.FILL_HORIZONTAL ) );
+        saslSecPropsText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
+        saslSecPropsEditButton = BaseWidgetUtils.createButton( saslSectionComposite, "Edit...", 1 );
+        saslSecPropsEditButton.setLayoutData( new GridData( SWT.RIGHT, SWT.CENTER, false, false ) );
+        saslSecPropsEditButton.addSelectionListener( saslSecPropsEditSelectionListener );
     }
 
 

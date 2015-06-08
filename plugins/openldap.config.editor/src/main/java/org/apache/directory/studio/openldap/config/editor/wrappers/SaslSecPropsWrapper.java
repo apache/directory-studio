@@ -340,7 +340,7 @@ public class SaslSecPropsWrapper
             }
             else
             {
-                sb.append( ' ' );
+                sb.append( ',' );
             }
             
             sb.append( saslSecProp.getName() );
@@ -351,7 +351,7 @@ public class SaslSecPropsWrapper
         {
             if ( sb.length() > 0 )
             {
-                sb.append( ' ' );
+                sb.append( ',' );
             }
             
             sb.append( SaslSecPropEnum.MIN_SSF.getName() ).append( '=' ).append( minSsf.intValue() );
@@ -363,7 +363,7 @@ public class SaslSecPropsWrapper
         {
             if ( sb.length() > 0 )
             {
-                sb.append( ' ' );
+                sb.append( ',' );
             }
             
             sb.append( SaslSecPropEnum.MAX_SSF.getName() ).append( '=' ).append( maxSsf.intValue() );
@@ -374,7 +374,7 @@ public class SaslSecPropsWrapper
         {
             if ( sb.length() > 0 )
             {
-                sb.append( ' ' );
+                sb.append( ',' );
             }
             
             sb.append( SaslSecPropEnum.MAX_BUF_SIZE.getName() ).append( '=' ).append( maxBufSize.intValue() );
