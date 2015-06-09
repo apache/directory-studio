@@ -32,7 +32,7 @@ import org.apache.directory.api.util.Strings;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class TcpBufferWrapper
+public class TcpBufferWrapper implements Cloneable
 {
     /** The maximum buffer size (2^32-1) */
     public static final long MAX_TCP_BUFFER_SIZE = 0xFFFFFFFFL;
@@ -141,22 +141,25 @@ public class TcpBufferWrapper
                         pos++;
                     }
                 }
-                    
-                // We might have a 'read' or 'write' prefix
-                if ( lowerCaseTcpBuffer.startsWith( "read=", pos ) )
-                {
-                    tcpType = TcpTypeEnum.READ;
-                    pos += 5;
-                }
-                else if ( lowerCaseTcpBuffer.startsWith( "write=", pos ) )
-                {
-                    tcpType = TcpTypeEnum.WRITE;
-                    pos += 6;
-                }
+            }
                 
-                // get the integer
-                String sizeStr = lowerCaseTcpBuffer.substring( pos );
-                
+            // We might have a 'read' or 'write' prefix
+            if ( lowerCaseTcpBuffer.startsWith( "read=", pos ) )
+            {
+                tcpType = TcpTypeEnum.READ;
+                pos += 5;
+            }
+            else if ( lowerCaseTcpBuffer.startsWith( "write=", pos ) )
+            {
+                tcpType = TcpTypeEnum.WRITE;
+                pos += 6;
+            }
+            
+            // get the integer
+            String sizeStr = lowerCaseTcpBuffer.substring( pos );
+            
+            if ( !Strings.isEmpty( sizeStr ) )
+            {
                 size = Long.valueOf( sizeStr );
                 
                 if ( ( size < 0L ) || ( size > MAX_TCP_BUFFER_SIZE ) )
@@ -262,6 +265,22 @@ public class TcpBufferWrapper
         }
         
         return true;
+    }
+    
+    
+    /**
+     * Clone the current object
+     */
+    public TcpBufferWrapper clone()
+    {
+        try
+        {
+            return (TcpBufferWrapper)super.clone();
+        }
+        catch ( CloneNotSupportedException e )
+        {
+            return null;
+        }
     }
     
     

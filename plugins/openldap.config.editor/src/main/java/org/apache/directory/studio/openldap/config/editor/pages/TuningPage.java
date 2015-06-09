@@ -857,7 +857,7 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
         tcpBufferTableWidget.setLabelProvider( new TcpBufferWrapperLabelProvider() );
         tcpBufferTableWidget.setElementDialog( new TcpBufferDialog( null ) );
 
-        tcpBufferTableWidget.createWidget( networkSectionComposite, toolkit );
+        tcpBufferTableWidget.createWidgetWithEdit( networkSectionComposite, toolkit );
         tcpBufferTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 4, 1 ) );
 
         // The olcSockbufMaxIncoming parameter.

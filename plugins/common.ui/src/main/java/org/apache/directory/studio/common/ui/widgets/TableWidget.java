@@ -73,6 +73,8 @@ public class TableWidget<E> extends AbstractWidget
     /** The LabelProvider for the elements */
     private LabelProvider labelProvider;
 
+    /** A flag set to tell if we have a Edit button */
+    private boolean hasEdit;
 
     // UI widgets
     private Composite composite;
@@ -89,7 +91,11 @@ public class TableWidget<E> extends AbstractWidget
         {
             StructuredSelection selection = ( StructuredSelection ) elementTableViewer.getSelection();
 
-            editButton.setEnabled( !selection.isEmpty() );
+            if ( hasEdit )
+            {
+                editButton.setEnabled( !selection.isEmpty() );
+            }
+            
             deleteButton.setEnabled( !selection.isEmpty() );
         }
     };
@@ -140,7 +146,7 @@ public class TableWidget<E> extends AbstractWidget
 
 
     /**
-     * Creates the Table widget. It's a Table and three button :
+     * Creates the Table widget. It's a Table and three buttons :
      * <pre>
      * +--------------------------------------+
      * | Element 1                            | (Add... )
@@ -148,12 +154,61 @@ public class TableWidget<E> extends AbstractWidget
      * |                                      | (Delete )
      * +--------------------------------------+
      * </pre>
+     * </pre>
      * 
      * @param parent the parent
      * @param toolkit the toolkit
      */
-    public void createWidget( Composite parent, FormToolkit toolkit )
+    public void createWidgetWithEdit( Composite parent, FormToolkit toolkit )
     {
+        createWidget( parent, toolkit, true );
+    }
+    
+    
+    /**
+     * Creates the Table widget. It's a Table and two buttons :
+     * <pre>
+     * +--------------------------------------+
+     * | Element 1                            | (Add... )
+     * | Element 2                            | (Delete )
+     * |                                      |
+     * +--------------------------------------+
+     * </pre>
+     * 
+     * @param parent the parent
+     * @param toolkit the toolkit
+     */
+    public void createWidgetNoEdit( Composite parent, FormToolkit toolkit )
+    {
+        createWidget( parent, toolkit, false );
+    }
+
+
+    /**
+     * Creates the Table widget. It's a Table and two or three button :
+     * <pre>
+     * +--------------------------------------+
+     * | Element 1                            | (Add... )
+     * | Element 2                            | (Edit...)
+     * |                                      | (Delete )
+     * +--------------------------------------+
+     * </pre>
+     * or :
+     * <pre>
+     * +--------------------------------------+
+     * | Element 1                            | (Add... )
+     * | Element 2                            | (Delete )
+     * |                                      |
+     * +--------------------------------------+
+     * </pre>
+     * 
+     * @param parent the parent
+     * @param toolkit the toolkit
+     */
+    private void createWidget( Composite parent, FormToolkit toolkit, boolean hasEdit )
+    {
+        this.hasEdit = hasEdit;
+        
         // Composite
         if ( toolkit != null )
         {
@@ -192,9 +247,12 @@ public class TableWidget<E> extends AbstractWidget
         // The LabelProvider
         elementTableViewer.setLabelProvider( labelProvider );
         
-        // Listeners : we want to catch changes and double clicks
-        elementTableViewer.addSelectionChangedListener( tableViewerSelectionChangedListener );
-        elementTableViewer.addDoubleClickListener( tableViewerDoubleClickListener );
+        // Listeners : we want to catch changes and double clicks (if we have an edit button)
+        if ( hasEdit )
+        {
+            elementTableViewer.addSelectionChangedListener( tableViewerSelectionChangedListener );
+            elementTableViewer.addDoubleClickListener( tableViewerDoubleClickListener );
+        }
         
         // Inject the existing elements
         elementTableViewer.setInput( elements );
@@ -212,20 +270,23 @@ public class TableWidget<E> extends AbstractWidget
         addButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
         addButton.addSelectionListener( addButtonListener );
 
-        // Create the Edit Button and its listener
-        if ( toolkit != null )
+        // Create the Edit Button and its listener, if requested
+        if ( hasEdit )
         {
-            editButton = toolkit.createButton( composite, "Edit...", SWT.PUSH );
+            if ( toolkit != null )
+            {
+                editButton = toolkit.createButton( composite, "Edit...", SWT.PUSH );
+            }
+            else
+            {
+                editButton = BaseWidgetUtils.createButton( composite, "Edit...", SWT.PUSH );
+            }
+            
+            // It's not enabled unless we have selected an element
+            editButton.setEnabled( false );
+            editButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
+            editButton.addSelectionListener( editButtonListener );
         }
-        else
-        {
-            editButton = BaseWidgetUtils.createButton( composite, "Edit...", SWT.PUSH );
-        }
-        
-        // It's not enabled unless we have selected an element
-        editButton.setEnabled( false );
-        editButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
-        editButton.addSelectionListener( editButtonListener );
 
         // Create the Delete Button and its listener
         if ( toolkit != null )
@@ -300,10 +361,15 @@ public class TableWidget<E> extends AbstractWidget
         if ( elementDialog.open() == Dialog.OK )
         {
             E newElement = elementDialog.getNewElement();
-            String elementStr = newElement.toString();
-            elements.add( newElement );
-            elementTableViewer.refresh();
-            elementTableViewer.setSelection( new StructuredSelection( elementStr ) );
+            
+            if ( !elements.contains( newElement ) )
+            {
+                String elementStr = newElement.toString();
+                elements.add( newElement );
+                elementTableViewer.refresh();
+                elementTableViewer.setSelection( new StructuredSelection( elementStr ) );
+            }
+            
             notifyListeners();
         }
     }
@@ -326,13 +392,26 @@ public class TableWidget<E> extends AbstractWidget
             if ( elementDialog.open() == Dialog.OK )
             {
                 E newElement = elementDialog.getNewElement();
-                int selectedIndexPosition = elements.indexOf( selectedElement );
                 
-                // We will remove the modified element, and replace it with the new element
-                elements.remove( selectedElement );
-                elements.add( selectedIndexPosition, newElement );
+                if ( elements.contains( newElement ) )
+                {
+                    // Remove the original element
+                    elements.remove( selectedElement );
+                    
+                    // Replace the existing element with the new one
+                    elements.remove( newElement );
+                    elements.add( newElement );
+                }
+                else
+                {
+                    // We will remove the modified element, and replace it with the new element
+                    elements.remove( selectedElement );
+                    elements.add( newElement );
+                }
+
                 elementTableViewer.refresh();
                 elementTableViewer.setSelection( new StructuredSelection( newElement.toString() ) );
+
                 notifyListeners();
             }
         }

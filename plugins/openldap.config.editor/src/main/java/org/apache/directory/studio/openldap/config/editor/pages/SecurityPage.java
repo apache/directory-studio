@@ -20,6 +20,7 @@
 package org.apache.directory.studio.openldap.config.editor.pages;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
@@ -39,8 +40,10 @@ import org.eclipse.ui.forms.widgets.TableWrapData;
 import org.eclipse.ui.forms.widgets.TableWrapLayout;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.common.ui.widgets.TableWidget;
+import org.apache.directory.studio.openldap.common.ui.model.PasswordHashEnum;
 import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
 import org.apache.directory.studio.openldap.config.editor.dialogs.OverlayDialog;
+import org.apache.directory.studio.openldap.config.editor.dialogs.PasswordHashDialog;
 import org.apache.directory.studio.openldap.config.editor.dialogs.SaslSecPropsDialog;
 import org.apache.directory.studio.openldap.config.editor.wrappers.SsfWrapper;
 import org.apache.directory.studio.openldap.config.editor.wrappers.TcpBufferWrapperLabelProvider;
@@ -183,7 +186,7 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
     private Text passwordCryptSaltFormatText;
 
     /** The olcPasswordHash */
-    private TableWidget<String> passwordHashTableWidget;
+    private TableWidget<PasswordHashEnum> passwordHashTableWidget;
 
     /** The olcSecurity table widget */
     private TableWidget<SsfWrapper> securityTableWidget;
@@ -220,19 +223,6 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
         "hard",
         "true"
         };
-    
-    /** The list of Password Hashes choices  */
-    private static final String[] hashes = new String[]
-        {
-        NO_CHOICE,
-        "{CLEARTEXT}",
-        "{CRYPT}",
-        "{MD5}",
-        "{SMD5}",
-        "{SHA}",
-        "{SSHA}"
-        };
-    
     
     
     /**
@@ -535,11 +525,11 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
         Label passwordHashLabel = toolkit.createLabel( miscSectionComposite, Messages.getString( "OpenLDAPSecurityPage.PasswordHash" ) ); //$NON-NLS-1$
         passwordHashLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, false, 4, 1 ) );
         
-        passwordHashTableWidget = new TableWidget<String>();
+        passwordHashTableWidget = new TableWidget<PasswordHashEnum>();
         passwordHashTableWidget.setLabelProvider( new TcpBufferWrapperLabelProvider() );
-        //passwordHashTableWidget.setElementDialog( "" );
+        passwordHashTableWidget.setElementDialog( new PasswordHashDialog( null ) );
 
-        passwordHashTableWidget.createWidget( miscSectionComposite, toolkit );
+        passwordHashTableWidget.createWidgetNoEdit( miscSectionComposite, toolkit );
         passwordHashTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 4, 1 ) );
         
         // A blank line
@@ -556,7 +546,7 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
         securityTableWidget.setLabelProvider( new TcpBufferWrapperLabelProvider() );
         //securityTableWidget.setElementDialog( "" );
 
-        securityTableWidget.createWidget( miscSectionComposite, toolkit );
+        securityTableWidget.createWidgetWithEdit( miscSectionComposite, toolkit );
         securityTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 4, 1 ) );
     }
 
@@ -830,15 +820,22 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
             }
 
             // Password Hash Table Widget
-            List<String> passwordHash = global.getOlcPasswordHash();
+            List<String> passwordHashes = global.getOlcPasswordHash();
 
-            if ( passwordHash != null )
+            if ( passwordHashes != null )
             {
-                //TODO
+                List<PasswordHashEnum> hashes = new ArrayList<PasswordHashEnum>();
+                
+                for ( String passwordHashName : passwordHashes )
+                {
+                    hashes.add( PasswordHashEnum.getPasswordHash( passwordHashName ) );
+                }
+                
+                passwordHashTableWidget.setElements( hashes );
             }
             else
             {
-                //TODO
+                passwordHashTableWidget.setElements( new ArrayList<PasswordHashEnum>() );
             }
 
             // Security Table Widget

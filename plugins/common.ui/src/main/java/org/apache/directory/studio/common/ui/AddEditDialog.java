@@ -49,6 +49,15 @@ public abstract class AddEditDialog<E> extends Dialog
     }
 
     /**
+     * Initialize the Dialog with the content of the edited element, if any
+     */
+    protected void initDialog()
+    {
+        // Nothing to do
+    }
+    
+    
+    /**
      * @return The added or edited element 
      */
     public E getNewElement()
@@ -61,7 +70,7 @@ public abstract class AddEditDialog<E> extends Dialog
      * Store the Element that has been added or edited
      * @param newElement The added or edited Element 
      */
-    public void setNewElement( E newElement )
+    protected void setNewElement( E newElement )
     {
         this.newElement = newElement;
     }
@@ -71,6 +80,15 @@ public abstract class AddEditDialog<E> extends Dialog
      * Add a new Element that will be edited
      */
     public abstract void addNewElement();
+    
+
+    /**
+     * Add a new Element that will be edited
+     */
+    protected void addNewElement( E editedElement )
+    {
+        // Nothing to do
+    }
     
 
     /**
@@ -86,15 +104,9 @@ public abstract class AddEditDialog<E> extends Dialog
      * Store the Element that will be edited
      * @param editedElement The edited Element 
      */
-    public void setEditedElement( E editedElement )
+    public final void setEditedElement( E editedElement )
     {
         this.editedElement = editedElement;
+        addNewElement( editedElement );
     }
-
-
-    /**
-     * Store the Element that will be edited
-     * @param editedElement The edited Element 
-     */
-    public abstract void setEditedElement( String editedElement );
 }

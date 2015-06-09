@@ -202,7 +202,6 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
             Display display = tcpBufferText.getDisplay();
             Button okButton = getButton( IDialogConstants.OK_ID );
             
-            
             // This button might be null when the dialog is called.
             if ( okButton == null )
             {
@@ -359,7 +358,7 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
         createTcpBufferEditGroup( composite );
         createTcpBufferShowGroup( composite );
 
-        initFromTcpBuffer();
+        initDialog();
         addListeners();
         
         applyDialogFont( composite );
@@ -437,13 +436,15 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
     /**
      * Initializes the UI from the TcpBuffer
      */
-    private void initFromTcpBuffer()
+    protected void initDialog()
     {
-        if ( getEditedElement() != null )
+        TcpBufferWrapper editedElement = (TcpBufferWrapper)getEditedElement();
+        
+        if ( editedElement != null )
         {
-            sizeText.setText( Long.toString( getEditedElement().getSize() ) );
+            sizeText.setText( Long.toString( editedElement.getSize() ) );
             
-            URL listener =  getEditedElement().getListener();
+            URL listener =  editedElement.getListener();
             
             if ( listener == null )
             {
@@ -454,7 +455,7 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
                 listenerText.setText( listener.toString() );
             }
             
-            tcpBufferText.setText( getEditedElement().toString() );
+            tcpBufferText.setText( editedElement.toString() );
         }
     }
 
@@ -476,15 +477,6 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
         this.tcpBufferList = tcpBufferList;
     }
     
-    
-    /**
-     * {@inheritDoc}
-     */
-    public void setEditedElement( String editedElement )
-    {
-        setEditedElement( new TcpBufferWrapper( editedElement ) );
-    }
-    
 
     /**
      * Add a new Element that will be edited
@@ -492,6 +484,16 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
     public void addNewElement()
     {
         setNewElement( new TcpBufferWrapper( "" ) );
+    }
+    
+
+    /**
+     * Add a new Element that will be edited
+     */
+    protected void addNewElement( TcpBufferWrapper editedElement )
+    {
+        TcpBufferWrapper newElement = (TcpBufferWrapper)editedElement.clone();
+        setNewElement( newElement );
     }
 
     
