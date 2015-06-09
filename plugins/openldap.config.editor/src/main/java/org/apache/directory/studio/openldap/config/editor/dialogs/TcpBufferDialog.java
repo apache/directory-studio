@@ -44,7 +44,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.apache.directory.studio.openldap.config.editor.wrappers.TcpBufferWrapper;
-import org.apache.directory.studio.openldap.config.editor.wrappers.TcpBufferWrapper.TcpType;
+import org.apache.directory.studio.openldap.config.editor.wrappers.TcpBufferWrapper.TcpTypeEnum;
 
 
 /**
@@ -253,27 +253,27 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
             {
                 if ( writeCheckbox.getSelection())
                 {
-                    getNewElement().setTcpType( TcpType.BOTH );
+                    getNewElement().setTcpType( TcpTypeEnum.BOTH );
                 }
                 else
                 {
-                    getNewElement().setTcpType( TcpType.READ );
+                    getNewElement().setTcpType( TcpTypeEnum.READ );
                 }
             }
             else if ( writeCheckbox.getSelection() )
             {
                 if ( readCheckbox.getSelection() )
                 {
-                    getNewElement().setTcpType( TcpType.BOTH );
+                    getNewElement().setTcpType( TcpTypeEnum.BOTH );
                 }
                 else
                 {
-                    getNewElement().setTcpType( TcpType.WRITE );
+                    getNewElement().setTcpType( TcpTypeEnum.WRITE );
                 }
             }
             else
             {
-                getNewElement().setTcpType( TcpType.BOTH );
+                getNewElement().setTcpType( TcpTypeEnum.BOTH );
             }
             
             // Set the TcpBuffer into the text box
@@ -316,15 +316,15 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
         
         boolean read = readCheckbox.getSelection();
         boolean write = writeCheckbox.getSelection();
-        TcpType tcpType = null;
+        TcpTypeEnum tcpType = null;
         
         if ( read && !write )
         {
-            tcpType = TcpType.READ;
+            tcpType = TcpTypeEnum.READ;
         }
         else if ( !read && write )
         {
-            tcpType = TcpType.WRITE;
+            tcpType = TcpTypeEnum.WRITE;
         }
         
         setNewElement( new TcpBufferWrapper( sizeValue , tcpType, url ) );

@@ -22,6 +22,8 @@ package org.apache.directory.studio.openldap.config.editor.wrappers;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.apache.directory.api.util.Strings;
+
 /**
  * This class wraps the TCPBuffer parameter :
  * <pre>
@@ -36,7 +38,7 @@ public class TcpBufferWrapper
     public static final long MAX_TCP_BUFFER_SIZE = 0xFFFFFFFFL;
     
     /** The two kind of TCP buffer we can configure */
-    public enum TcpType
+    public enum TcpTypeEnum
     {
         READ( "read" ),
         WRITE( "write" ),
@@ -44,7 +46,7 @@ public class TcpBufferWrapper
         
         private String value;
         
-        private TcpType( String value )
+        private TcpTypeEnum( String value )
         {
             this.value = value;
         }
@@ -59,7 +61,7 @@ public class TcpBufferWrapper
     private URL listener;
 
     /** The type of TCP buffer (either read or write, or both ) (optional) */
-    private TcpType tcpType;
+    private TcpTypeEnum tcpType;
     
     /** The TCP Buffer size (between 0 and 2^32-1) */
     private long size; 
@@ -72,18 +74,21 @@ public class TcpBufferWrapper
      * @param tcpType read or write, but can be null for both
      * @param url The listener
      */
-    public TcpBufferWrapper( long size, TcpType tcpType, String url )
+    public TcpBufferWrapper( long size, TcpTypeEnum tcpType, String url )
     {
         this.size = size;
         this.tcpType = tcpType;
         
-        try
+        if ( !Strings.isEmpty( url ) )
         {
-            listener = new URL( url );
-        }
-        catch ( MalformedURLException e )
-        {
-            e.printStackTrace();
+            try
+            {
+                listener = new URL( url );
+            }
+            catch ( MalformedURLException e )
+            {
+                e.printStackTrace();
+            }
         }
     }
     
@@ -140,12 +145,12 @@ public class TcpBufferWrapper
                 // We might have a 'read' or 'write' prefix
                 if ( lowerCaseTcpBuffer.startsWith( "read=", pos ) )
                 {
-                    tcpType = TcpType.READ;
+                    tcpType = TcpTypeEnum.READ;
                     pos += 5;
                 }
                 else if ( lowerCaseTcpBuffer.startsWith( "write=", pos ) )
                 {
-                    tcpType = TcpType.WRITE;
+                    tcpType = TcpTypeEnum.WRITE;
                     pos += 6;
                 }
                 
@@ -184,7 +189,7 @@ public class TcpBufferWrapper
     /**
      * @return the tcpType
      */
-    public TcpType getTcpType()
+    public TcpTypeEnum getTcpType()
     {
         return tcpType;
     }
@@ -193,7 +198,7 @@ public class TcpBufferWrapper
     /**
      * @param tcpType the tcpType to set
      */
-    public void setTcpType( TcpType tcpType )
+    public void setTcpType( TcpTypeEnum tcpType )
     {
         this.tcpType = tcpType;
     }
@@ -261,6 +266,62 @@ public class TcpBufferWrapper
     
     
     /**
+     * @see Object#equals(Object)
+     */
+    public boolean equals( Object that )
+    {
+        // Quick test
+        if ( this == that )
+        {
+            return true;
+        }
+        
+        if ( that instanceof TcpBufferWrapper )
+        {
+            TcpBufferWrapper thatInstance = (TcpBufferWrapper)that;
+            
+            if ( size != thatInstance.size )
+            {
+                return false;
+            }
+            
+            if ( tcpType != thatInstance.tcpType )
+            {
+                return false;
+            }
+            
+            if ( listener != null )
+            {
+                return listener.equals( thatInstance.listener );
+            }
+            else
+            {
+                return thatInstance.listener == null;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
+    
+    /**
+     * @see Object#hashCode()
+     */
+    public int hashCode()
+    {
+        int h = 37;
+        
+        h += h*17 + size;
+        h += h*17 + tcpType.hashCode();
+        h += h*17 + listener.hashCode();
+        
+        return h;
+    }
+    
+    
+    /**
      * @see Object#toString()
      */
     public String toString()
@@ -272,7 +333,7 @@ public class TcpBufferWrapper
             sb.append( "listener=" ).append( listener ).append( " ");
         }
         
-        if ( ( tcpType != null ) && ( tcpType != TcpType.BOTH ) )
+        if ( ( tcpType != null ) && ( tcpType != TcpTypeEnum.BOTH ) )
         {
             sb.append( tcpType.getValue() ).append( "=" );
         }
