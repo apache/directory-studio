@@ -32,7 +32,7 @@ import org.apache.directory.studio.openldap.common.ui.model.SsfEnum;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SsfWrapper
+public class SsfWrapper implements Cloneable
 {
     /** The feature */
     private SsfEnum feature;
@@ -175,6 +175,55 @@ public class SsfWrapper
     public int getNbBits()
     {
         return nbBits;
+    }
+    
+    
+    /**
+     * @see Object#equals()
+     */
+    public boolean equals( Object that )
+    {
+        if ( that == this )
+        {
+            return true;
+        }
+        
+        if ( ! ( that instanceof SsfWrapper ) )
+        {
+            return false;
+        }
+        
+        return ( feature == ((SsfWrapper)that).getFeature() ) && ( nbBits == ((SsfWrapper)that).getNbBits() );
+    }
+    
+    
+    /**
+     * @see Object#hashCode()
+     */
+    public int hashCode()
+    {
+        int h = 37;
+        
+        h += h*17 + feature.hashCode();
+        h += h*17 + nbBits;
+        
+        return h;
+    }
+    
+    
+    /**
+     * @see Object#clone()
+     */
+    public SsfWrapper clone()
+    {
+        try
+        {
+            return (SsfWrapper)super.clone();
+        }
+        catch ( CloneNotSupportedException cnse )
+        {
+            return null;
+        }
     }
 
 
