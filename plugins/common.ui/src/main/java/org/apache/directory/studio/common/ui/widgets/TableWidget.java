@@ -246,11 +246,11 @@ public class TableWidget<E> extends AbstractWidget
         
         // The LabelProvider
         elementTableViewer.setLabelProvider( labelProvider );
+        elementTableViewer.addSelectionChangedListener( tableViewerSelectionChangedListener );
         
         // Listeners : we want to catch changes and double clicks (if we have an edit button)
         if ( hasEdit )
         {
-            elementTableViewer.addSelectionChangedListener( tableViewerSelectionChangedListener );
             elementTableViewer.addDoubleClickListener( tableViewerDoubleClickListener );
         }
         
@@ -357,6 +357,7 @@ public class TableWidget<E> extends AbstractWidget
     private void addElement()
     {
         elementDialog.addNewElement();
+        elementDialog.setElements( elements );
 
         if ( elementDialog.open() == Dialog.OK )
         {

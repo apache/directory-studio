@@ -129,7 +129,7 @@ public class PasswordHashDialog extends AddEditDialog<PasswordHashEnum>
                     {
                         setNewElement( PasswordHashEnum.getPasswordHash( i ) );
                     }
-                    else
+                    else if ( passwordHashCheckboxes[i].isEnabled() )
                     {
                         passwordHashCheckboxes[i].setSelection( false );
                     }
@@ -205,10 +205,22 @@ public class PasswordHashDialog extends AddEditDialog<PasswordHashEnum>
             Button button = BaseWidgetUtils.createCheckbox( passwordHashGroup, passwordHash.getName(), 1 );
             passwordHashCheckboxes[i] = button;
             passwordHashCheckboxes[i].addSelectionListener( checkboxSelectionListener );
+        }
+    }
+    
+    
+    protected void initDialog()
+    {
+        List<PasswordHashEnum> elements = getElements();
+        
+        for ( int i = 1; i < passwordHashCheckboxes.length; i++ )
+        {
+            PasswordHashEnum value = PasswordHashEnum.getPasswordHash( passwordHashCheckboxes[i].getText() );
             
             // Disable the hashes already selected
-            if ( hashes.contains( passwordHashCheckboxes[i] ) )
+            if ( elements.contains( value ) )
             {
+                passwordHashCheckboxes[i].setSelection( true );
                 passwordHashCheckboxes[i].setEnabled( false );
             }
         }

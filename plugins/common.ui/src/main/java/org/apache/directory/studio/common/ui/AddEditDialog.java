@@ -19,6 +19,9 @@
  */
 package org.apache.directory.studio.common.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.widgets.Shell;
 
@@ -37,6 +40,9 @@ public abstract class AddEditDialog<E> extends Dialog
     
     /** The element that we have added or edited */
     private E newElement;
+    
+    /** The table's elements */
+    private List<E> elements;
     
     /**
      * Create a new instance of the TableAddEditDialog
@@ -85,7 +91,7 @@ public abstract class AddEditDialog<E> extends Dialog
     /**
      * Add a new Element that will be edited
      */
-    protected void addNewElement( E editedElement )
+    protected void addNewElement( E newElement )
     {
         // Nothing to do
     }
@@ -108,5 +114,25 @@ public abstract class AddEditDialog<E> extends Dialog
     {
         this.editedElement = editedElement;
         addNewElement( editedElement );
+    }
+    
+    
+    /**
+     * Stores the TableWidget list of elements
+     * @param elements The elements to store
+     */
+    public void setElements( List<E> elements )
+    {
+        this.elements = new ArrayList<E>();
+        this.elements.addAll( elements );
+    }
+    
+    
+    /**
+     * @return The list of elements stored in the TableWidget
+     */
+    protected List<E> getElements()
+    {
+        return elements;
     }
 }

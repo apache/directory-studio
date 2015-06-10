@@ -22,7 +22,6 @@ package org.apache.directory.studio.openldap.config.editor.dialogs;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.studio.common.ui.AddEditDialog;
@@ -102,40 +101,6 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
     }
 
 
-    /**
-     * Create a new instance of the TcpBufferDialog
-     * 
-     * @param parentShell The parent Shell
-     * @param tcpBuffer The instance containing the TcpServer data
-     */
-    public TcpBufferDialog( Shell parentShell, List<TcpBufferWrapper> tcpBufferList, TcpBufferWrapper tcpBuffer )
-    {
-        super( parentShell );
-        super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
-        setEditedElement( tcpBuffer );
-        this.tcpBufferList = tcpBufferList;
-        
-        if ( tcpBufferList == null )
-        {
-            this.tcpBufferList = new ArrayList<TcpBufferWrapper>();
-        }
-    }
-
-
-    /**
-     * Create a new instance of the TcpBufferDialog
-     * 
-     * @param parentShell The parent Shell
-     * @param tcpBufferStr : The string containing the tcpBuffer
-     */
-    public TcpBufferDialog( Shell parentShell, String tcpBufferStr )
-    {
-        super( parentShell );
-        super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
-        setEditedElement( new TcpBufferWrapper( tcpBufferStr ) );
-    }
-    
-    
     /**
      * The listener for the size Text
      */
@@ -459,24 +424,6 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
         }
     }
 
-
-    /**
-     * @return the tcpBufferList
-     */
-    public List<TcpBufferWrapper> getTcpBufferList()
-    {
-        return tcpBufferList;
-    }
-
-
-    /**
-     * @param tcpBufferList the tcpBufferList to set
-     */
-    public void setTcpBufferList( List<TcpBufferWrapper> tcpBufferList )
-    {
-        this.tcpBufferList = tcpBufferList;
-    }
-    
 
     /**
      * Add a new Element that will be edited
