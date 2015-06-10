@@ -140,7 +140,7 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
     private Text sockbufMaxIncomingAuthText;
     
     /** The olcTCPBuffer widget */
-    TableWidget<TcpBufferWrapper> tcpBufferTableWidget;
+    private TableWidget<TcpBufferWrapper> tcpBufferTableWidget;
     
     // UI Controls for the Concurrency part
     /** The olcConcurrency Text */

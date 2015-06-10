@@ -131,8 +131,8 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
                 }
                 
                 sizeText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
-                getNewElement().setSize( sizeValue );
-                tcpBufferText.setText( getNewElement().toString() );
+                getEditedElement().setSize( sizeValue );
+                tcpBufferText.setText( getEditedElement().toString() );
                 
                 if ( TcpBufferWrapper.isValid( sizeText.getText(), listenerText.getText() ) )
                 {
@@ -149,7 +149,7 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
             {
                 // Not even a number
                 sizeText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
-                tcpBufferText.setText( getNewElement().toString() );
+                tcpBufferText.setText( getEditedElement().toString() );
                 tcpBufferText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
                 okButton.setEnabled( false );
             }
@@ -177,9 +177,9 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
             {
                 URL newUrl = new URL( listenerText.getText() );
 
-                getNewElement().setListener( newUrl );
+                getEditedElement().setListener( newUrl );
                 listenerText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
-                tcpBufferText.setText( getNewElement().toString() );
+                tcpBufferText.setText( getEditedElement().toString() );
                 
                 if ( TcpBufferWrapper.isValid( sizeText.getText(), listenerText.getText() ) )
                 {
@@ -195,7 +195,7 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
             catch ( MalformedURLException mue )
             {
                 listenerText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
-                tcpBufferText.setText( getNewElement().toString() );
+                tcpBufferText.setText( getEditedElement().toString() );
                 tcpBufferText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
                 okButton.setEnabled( false );
             }
@@ -217,31 +217,31 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
             {
                 if ( writeCheckbox.getSelection())
                 {
-                    getNewElement().setTcpType( TcpTypeEnum.BOTH );
+                    getEditedElement().setTcpType( TcpTypeEnum.BOTH );
                 }
                 else
                 {
-                    getNewElement().setTcpType( TcpTypeEnum.READ );
+                    getEditedElement().setTcpType( TcpTypeEnum.READ );
                 }
             }
             else if ( writeCheckbox.getSelection() )
             {
                 if ( readCheckbox.getSelection() )
                 {
-                    getNewElement().setTcpType( TcpTypeEnum.BOTH );
+                    getEditedElement().setTcpType( TcpTypeEnum.BOTH );
                 }
                 else
                 {
-                    getNewElement().setTcpType( TcpTypeEnum.WRITE );
+                    getEditedElement().setTcpType( TcpTypeEnum.WRITE );
                 }
             }
             else
             {
-                getNewElement().setTcpType( TcpTypeEnum.BOTH );
+                getEditedElement().setTcpType( TcpTypeEnum.BOTH );
             }
             
             // Set the TcpBuffer into the text box
-            tcpBufferText.setText( getNewElement().toString() );
+            tcpBufferText.setText( getEditedElement().toString() );
 
             if ( TcpBufferWrapper.isValid( sizeText.getText(), listenerText.getText() ) )
             {
@@ -274,6 +274,7 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
     protected void okPressed()
     {
         // Creating the new TcpBufferWrapper
+        /*
         String sizeStr = sizeText.getText();
         String url = listenerText.getText();
         int sizeValue = Integer.valueOf( sizeStr );
@@ -292,6 +293,7 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
         }
         
         setNewElement( new TcpBufferWrapper( sizeValue , tcpType, url ) );
+        */
         super.okPressed();
     }
 
@@ -430,7 +432,7 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
      */
     public void addNewElement()
     {
-        setNewElement( new TcpBufferWrapper( "" ) );
+        setEditedElement( new TcpBufferWrapper( "" ) );
     }
     
 
@@ -440,7 +442,7 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
     protected void addNewElement( TcpBufferWrapper editedElement )
     {
         TcpBufferWrapper newElement = (TcpBufferWrapper)editedElement.clone();
-        setNewElement( newElement );
+        setEditedElement( newElement );
     }
 
     

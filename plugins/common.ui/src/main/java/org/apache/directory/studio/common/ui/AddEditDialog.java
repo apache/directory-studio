@@ -38,9 +38,6 @@ public abstract class AddEditDialog<E> extends Dialog
     /** The edited Element, if any */
     private E editedElement;
     
-    /** The element that we have added or edited */
-    private E newElement;
-    
     /** The table's elements */
     private List<E> elements;
     
@@ -63,25 +60,6 @@ public abstract class AddEditDialog<E> extends Dialog
     }
     
     
-    /**
-     * @return The added or edited element 
-     */
-    public E getNewElement()
-    {
-        return newElement;
-    }
-    
-
-    /**
-     * Store the Element that has been added or edited
-     * @param newElement The added or edited Element 
-     */
-    protected void setNewElement( E newElement )
-    {
-        this.newElement = newElement;
-    }
-    
-
     /**
      * Add a new Element that will be edited
      */
@@ -113,7 +91,6 @@ public abstract class AddEditDialog<E> extends Dialog
     public final void setEditedElement( E editedElement )
     {
         this.editedElement = editedElement;
-        addNewElement( editedElement );
     }
     
     

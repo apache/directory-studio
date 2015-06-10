@@ -25,7 +25,7 @@ import java.util.Set;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.openldap.common.ui.model.SaslSecPropEnum;
 /**
- * A wrapper for the olcSaslSecAuxProps parameter. The syntax is the following :
+ * A wrapper for the olcSaslSecProps parameter. The syntax is the following :
  * 
  * <pre>
  * saslSecProp ::= ( 'none' | 'noplain' | 'noactive' | 'nodict' | 'noanonymous' | 'forwardsec' |
@@ -33,7 +33,7 @@ import org.apache.directory.studio.openldap.common.ui.model.SaslSecPropEnum;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SaslSecPropsWrapper
+public class SaslSecPropsWrapper implements Cloneable
 {
     /** The flags for properties with no arguments */
     private Set<SaslSecPropEnum> flags = new HashSet<SaslSecPropEnum>();
@@ -322,6 +322,92 @@ public class SaslSecPropsWrapper
         this.maxBufSize = maxBufSize;
     }
     
+    
+    /**
+     * Compare two Integer instance and return true if they are equal 
+     */
+    private boolean equals( Integer int1, Integer int2 )
+    {
+        if ( int1 == null )
+        {
+            return int2 == null;
+        }
+        
+        return int1.equals( int2 );
+    }
+    
+    
+    /**
+     * @see Object#equals(Object)
+     */
+    public boolean equals( Object that )
+    {
+        if ( this == that )
+        {
+            return true;
+        }
+        
+        if ( !( that instanceof SaslSecPropsWrapper ) )
+        {
+            return false;
+        }
+        
+        SaslSecPropsWrapper thatInstance = (SaslSecPropsWrapper)that;
+        
+        return ( ( flags.size() == thatInstance.flags.size() ) &&
+                 ( thatInstance.flags.containsAll( flags ) ) &&
+                 ( equals( minSsf, thatInstance.minSsf ) ) &&
+                 ( equals( maxSsf, thatInstance.maxSsf ) ) &&
+                 ( equals( maxBufSize, thatInstance.maxBufSize ) ) );
+    }
+    
+    
+    /**
+     * @see Object#hashCode()
+     */
+    public int hashCode()
+    {
+        int h = 37;
+        
+        if ( minSsf != null )
+        {
+            h += h*17 + minSsf.intValue();
+        }
+        
+        if ( maxSsf != null )
+        {
+            h += h*17 + maxSsf.intValue();
+        }
+        
+        if ( maxBufSize != null )
+        {
+            h += h*17 + maxBufSize.intValue();
+        }
+        
+        for ( SaslSecPropEnum saslSecProp : flags )
+        {
+            h += h*17 + saslSecProp.hashCode();
+        }
+        
+        return h;
+    }
+    
+    
+    /**
+     * Clone the current object
+     */
+    public SaslSecPropsWrapper clone()
+    {
+        try
+        {
+            return (SaslSecPropsWrapper)super.clone();
+        }
+        catch ( CloneNotSupportedException e )
+        {
+            return null;
+        }
+    }
+
     
     /**
      * @see Object#toString()

@@ -127,7 +127,7 @@ public class PasswordHashDialog extends AddEditDialog<PasswordHashEnum>
                 {
                     if ( selectedCheckbox == passwordHashCheckboxes[i] )
                     {
-                        setNewElement( PasswordHashEnum.getPasswordHash( i ) );
+                        setEditedElement( PasswordHashEnum.getPasswordHash( i ) );
                     }
                     else if ( passwordHashCheckboxes[i].isEnabled() )
                     {
@@ -234,6 +234,6 @@ public class PasswordHashDialog extends AddEditDialog<PasswordHashEnum>
     public void addNewElement()
     {
         // Default to none
-        setNewElement( PasswordHashEnum.NO_CHOICE );
+        setEditedElement( PasswordHashEnum.NO_CHOICE );
     }
 }

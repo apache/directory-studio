@@ -361,7 +361,7 @@ public class TableWidget<E> extends AbstractWidget
 
         if ( elementDialog.open() == Dialog.OK )
         {
-            E newElement = elementDialog.getNewElement();
+            E newElement = elementDialog.getEditedElement();
             
             if ( !elements.contains( newElement ) )
             {
@@ -392,7 +392,7 @@ public class TableWidget<E> extends AbstractWidget
             // Open the element dialog, with the selected index
             if ( elementDialog.open() == Dialog.OK )
             {
-                E newElement = elementDialog.getNewElement();
+                E newElement = elementDialog.getEditedElement();
                 
                 if ( elements.contains( newElement ) )
                 {
