@@ -81,18 +81,12 @@ public class ServerConfigurationEditorUtils
     /**
      * Performs the "Save as..." action.
      *
-     * @param monitor
-     *      the monitor
-     * @param shell
-     *      the shell
-     * @param input
-     *      the editor input
-     * @param configWriter
-     *      the configuration writer
-     * @param newInput
-     *      a flag to indicate if a new input is required
-     * @return
-     *      the new input for the editor
+     * @param monitor the monitor
+     * @param shell the shell
+     * @param input the editor input
+     * @param configWriter the configuration writer
+     * @param newInput a flag to indicate if a new input is required
+     * @return the new input for the editor
      * @throws Exception
      */
     public static IEditorInput saveAs( IProgressMonitor monitor, Shell shell, IEditorInput input,
@@ -168,6 +162,7 @@ public class ServerConfigurationEditorUtils
             {
                 // Open FileDialog
                 path = openFileDialogInUIThread( shell );
+                
                 if ( path == null )
                 {
                     return null;
@@ -175,6 +170,7 @@ public class ServerConfigurationEditorUtils
 
                 // Check whether file exists and if so, confirm overwrite
                 final File externalFile = new File( path );
+                
                 if ( externalFile.exists() )
                 {
                     String question = NLS.bind(
@@ -184,13 +180,16 @@ public class ServerConfigurationEditorUtils
                         MessageDialog.QUESTION, new String[]
                             { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL, IDialogConstants.CANCEL_LABEL }, 0 );
                     int overwrite = openDialogInUIThread( overwriteDialog );
+                    
                     switch ( overwrite )
                     {
                         case 0: // Yes
                             canOverwrite = true;
                             break;
+                            
                         case 1: // No
                             break;
+                            
                         case 2: // Cancel
                         default:
                             return null;
@@ -222,10 +221,8 @@ public class ServerConfigurationEditorUtils
     /**
      * Opens a {@link Dialog} in the UI thread.
      *
-     * @param dialog
-     *      the dialog
-     * @return
-     *      the result of the dialog
+     * @param dialog the dialog
+     * @return the result of the dialog
      */
     private static int openDialogInUIThread( final Dialog dialog )
     {
@@ -233,7 +230,6 @@ public class ServerConfigurationEditorUtils
         class DialogResult
         {
             private int result;
-
 
             public int getResult()
             {
@@ -266,10 +262,8 @@ public class ServerConfigurationEditorUtils
     /**
      * Opens a {@link FileDialog} in the UI thread.
      *
-     * @param shell
-     *      the shell
-     * @return
-     *      the result of the dialog
+     * @param shell the shell
+     * @return the result of the dialog
      */
     private static String openFileDialogInUIThread( final Shell shell )
     {
@@ -277,7 +271,6 @@ public class ServerConfigurationEditorUtils
         class DialogResult
         {
             private String result;
-
 
             public String getResult()
             {
@@ -311,15 +304,10 @@ public class ServerConfigurationEditorUtils
     /**
      * Saves the configuration.
      *
-     * @param input
-     *      the connection server configuration input
-     * @param configWriter
-     *      the configuration writer
-     * @param monitor
-     *      the monitor
-     * @return
-     *      <code>true</code> if the operation is successful,
-     *      <code>false</code> if not
+     * @param input the connection server configuration input
+     * @param configWriter the configuration writer
+     * @param monitor the monitor
+     * @return <code>true</code> if the operation is successful, <code>false</code> if not
      * @throws Exception
      */
     public static void saveConfiguration( ConnectionServerConfigurationInput input, ConfigWriter configWriter,
@@ -338,6 +326,7 @@ public class ServerConfigurationEditorUtils
         newconfigurationPartition.setCacheService( cacheService );
         newconfigurationPartition.initialize();
         List<LdifEntry> convertedLdifEntries = configWriter.getConvertedLdifEntries();
+        
         for ( LdifEntry ldifEntry : convertedLdifEntries )
         {
             newconfigurationPartition.addEntry( new DefaultEntry( schemaManager, ldifEntry.getEntry() ) );
@@ -358,6 +347,7 @@ public class ServerConfigurationEditorUtils
 
             // Building the resulting LDIF
             StringBuilder modificationsLdif = new StringBuilder();
+            
             for ( LdifEntry ldifEntry : modificationsList )
             {
                 modificationsLdif.append( ldifEntry.toString() );
@@ -397,10 +387,8 @@ public class ServerConfigurationEditorUtils
     /**
      * Saves the configuration.
      *
-     * @param file
-     *      the file
-     * @param configWriter
-     *      the configuration writer
+     * @param file the file
+     * @param configWriter the configuration writer
      * @throws Exception
      */
     public static void saveConfiguration( File file, ConfigWriter configWriter, Configuration configuration )
@@ -419,13 +407,16 @@ public class ServerConfigurationEditorUtils
         {
             // create partiton
             AbstractLdifPartition configPartition;
+            
             if ( file.getName().equals( ApacheDS2ConfigurationPluginConstants.OU_CONFIG_LDIF ) )
             {
                 File confDir = file.getParentFile();
+                
                 if ( file.exists() )
                 {
                     FileUtils.deleteDirectory( confDir );
                 }
+                
                 configPartition = createMultiFileConfiguration( confDir, schemaManager, dnFactory, cacheService );
             }
             else
@@ -434,23 +425,28 @@ public class ServerConfigurationEditorUtils
                 {
                     file.delete();
                 }
+                
                 configPartition = createSingleFileConfiguration( file, schemaManager, dnFactory, cacheService );
             }
 
             // write entries to partition
             List<LdifEntry> convertedLdifEntries = configWriter.getConvertedLdifEntries();
+            
             for ( LdifEntry ldifEntry : convertedLdifEntries )
             {
                 Entry entry = new DefaultEntry( schemaManager, ldifEntry.getEntry() );
+                
                 if ( entry.get( SchemaConstants.ENTRY_CSN_AT ) == null )
                 {
                     entry.add( SchemaConstants.ENTRY_CSN_AT, csnFactory.newInstance().toString() );
                 }
+                
                 if ( entry.get( SchemaConstants.ENTRY_UUID_AT ) == null )
                 {
                     String uuid = UUID.randomUUID().toString();
                     entry.add( SchemaConstants.ENTRY_UUID_AT, uuid );
                 }
+                
                 configPartition.add( new AddOperationContext( null, entry ) );
             }
         }
@@ -467,6 +463,7 @@ public class ServerConfigurationEditorUtils
         configPartition.setSchemaManager( schemaManager );
         configPartition.setCacheService( cacheService );
         configPartition.initialize();
+        
         return configPartition;
     }
 
@@ -481,11 +478,12 @@ public class ServerConfigurationEditorUtils
         configPartition.setSchemaManager( schemaManager );
         configPartition.setCacheService( cacheService );
         configPartition.initialize();
+        
         return configPartition;
     }
 
 
-    // TODO: somthing link this should be used in future to only write changes to partition
+    // TODO: something link this should be used in future to only write changes to partition
     private static List<LdifEntry> computeModifications( ConfigWriter configWriter,
         AbstractBTreePartition originalPartition ) throws Exception
     {
@@ -498,6 +496,7 @@ public class ServerConfigurationEditorUtils
         newconfigurationPartition.setCacheService( cacheService );
         newconfigurationPartition.initialize();
         List<LdifEntry> convertedLdifEntries = configWriter.getConvertedLdifEntries();
+        
         for ( LdifEntry ldifEntry : convertedLdifEntries )
         {
             newconfigurationPartition.addEntry( new DefaultEntry( schemaManager, ldifEntry.getEntry() ) );
