@@ -355,21 +355,21 @@ public class OpenLDAPServerConfigurationEditorUtils
         try
         {
             // Creating a new configuration partition
-            EntryBasedConfigurationPartition newconfigurationPartition = createConfigurationPartition( schemaManager,
+            EntryBasedConfigurationPartition modifiedPartition = createConfigurationPartition( schemaManager,
                 originalPartition.getSuffixDn() );
+            
             for ( LdifEntry ldifEntry : configurationWriter.getConvertedLdifEntries() )
             {
-                newconfigurationPartition.addEntry( new DefaultEntry( schemaManager, ldifEntry.getEntry() ) );
+                modifiedPartition.addEntry( new DefaultEntry( schemaManager, ldifEntry.getEntry() ) );
             }
 
             // Comparing both partitions to get the list of modifications to be applied
-            PartitionsDiffComputer partitionsDiffComputer = new PartitionsDiffComputer( originalPartition,
-                newconfigurationPartition );
-            List<LdifEntry> modificationsList = partitionsDiffComputer.computeModifications( new String[]
-                { SchemaConstants.ALL_USER_ATTRIBUTES } );
+            List<LdifEntry> modificationsList = PartitionsDiffComputer.computeModifications( originalPartition, 
+                modifiedPartition, new String[] { SchemaConstants.ALL_USER_ATTRIBUTES } );
 
             // Building the resulting LDIF
             StringBuilder modificationsLdif = new StringBuilder();
+            
             for ( LdifEntry ldifEntry : modificationsList )
             {
                 modificationsLdif.append( ldifEntry.toString() );
@@ -405,7 +405,7 @@ public class OpenLDAPServerConfigurationEditorUtils
             else
             {
                 // Swapping the new configuration partition
-                input.setOriginalPartition( newconfigurationPartition );
+                input.setOriginalPartition( modifiedPartition );
             }
         }
         finally

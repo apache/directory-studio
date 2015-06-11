@@ -48,52 +48,33 @@ import org.apache.directory.server.core.api.partition.Partition;
 
 
 /**
- * 
+ * An utility class that computes the difference between two Partitions.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class PartitionsDiffComputer
 {
-    /** The original partition */
-    private Partition originalPartition;
-
-    /** The destination partition */
-    private Partition destinationPartition;
-
-
-    public PartitionsDiffComputer()
-    {
-    }
-
-
-    public PartitionsDiffComputer( Partition originalPartition, Partition destinationPartition )
-    {
-        this.originalPartition = originalPartition;
-        this.destinationPartition = destinationPartition;
-    }
-
-
-    public List<LdifEntry> computeModifications() throws Exception
+    public static List<LdifEntry> computeModifications( Partition originalPartition, Partition modifiedPartition ) throws Exception
     {
         // Using the original partition suffix as base 
         // '*' for all user attributes, '+' for all operational attributes
-        return computeModifications( originalPartition.getSuffixDn(), new String[]
+        return computeModifications( originalPartition, modifiedPartition, originalPartition.getSuffixDn(), new String[]
             { "*", "+" } );
     }
 
 
-    public List<LdifEntry> computeModifications( String[] attributeIds ) throws Exception
+    public static List<LdifEntry> computeModifications(  Partition originalPartition, Partition modifiedPartition, String[] attributeIds ) throws Exception
     {
-        return computeModifications( originalPartition.getSuffixDn(), attributeIds );
+        return computeModifications( originalPartition, modifiedPartition, originalPartition.getSuffixDn(), attributeIds );
     }
 
 
-    public List<LdifEntry> computeModifications( Dn baseDn, String[] attributeIds ) throws Exception
+    private static List<LdifEntry> computeModifications( Partition originalPartition, Partition modifiedPartition, Dn baseDn, String[] attributeIds ) throws Exception
     {
         // Checking partitions
-        checkPartitions();
+        checkPartitions( originalPartition, modifiedPartition );
 
-        return comparePartitions( baseDn, attributeIds );
+        return comparePartitions( originalPartition, modifiedPartition, baseDn, attributeIds );
     }
 
 
@@ -102,7 +83,7 @@ public class PartitionsDiffComputer
      *
      * @throws PartitionsDiffException
      */
-    private void checkPartitions() throws PartitionsDiffException
+    private static void checkPartitions( Partition originalPartition, Partition modifiedPartition ) throws PartitionsDiffException
     {
         // Checking the original partition
         if ( originalPartition == null )
@@ -122,17 +103,17 @@ public class PartitionsDiffComputer
         }
 
         // Checking the destination partition
-        if ( destinationPartition == null )
+        if ( modifiedPartition == null )
         {
             throw new PartitionsDiffException( "The destination partition must not be 'null'." );
         }
         else
         {
-            if ( !destinationPartition.isInitialized() )
+            if ( !modifiedPartition.isInitialized() )
             {
                 throw new PartitionsDiffException( "The destination partition must be intialized." );
             }
-            else if ( destinationPartition.getSuffixDn() == null )
+            else if ( modifiedPartition.getSuffixDn() == null )
             {
                 throw new PartitionsDiffException( "The destination suffix is null." );
             }
@@ -143,15 +124,12 @@ public class PartitionsDiffComputer
     /**
      * Compare the two partitions.
      *
-     * @param baseDn
-     *      the base Dn
-     * @param attributeIds
-     *      the IDs of the attributes
-     * @return
-     *      a list containing LDIF entries with all modifications
+     * @param baseDn the base Dn
+     * @param attributeIds the IDs of the attributes
+     * @return a list containing LDIF entries with all modifications
      * @throws Exception
      */
-    public List<LdifEntry> comparePartitions( Dn baseDn, String[] attributeIds ) throws PartitionsDiffException
+    public static List<LdifEntry> comparePartitions(  Partition originalPartition, Partition modifiedPartition,Dn baseDn, String[] attributeIds ) throws PartitionsDiffException
     {
         // Creating the list containing all modifications
         List<LdifEntry> modifications = new ArrayList<LdifEntry>();
@@ -161,6 +139,7 @@ public class PartitionsDiffComputer
             // Looking up the original base entry
             Entry originalBaseEntry = originalPartition
                 .lookup( new LookupOperationContext( null, baseDn, attributeIds ) );
+            
             if ( originalBaseEntry == null )
             {
                 throw new PartitionsDiffException( "Unable to find the base entry in the original partition." );
@@ -182,8 +161,9 @@ public class PartitionsDiffComputer
                 modificationEntry.setDn( originalEntry.getDn() );
 
                 // Looking for the equivalent entry in the destination partition
-                Entry destinationEntry = destinationPartition.lookup( new LookupOperationContext( null, originalEntry
+                Entry destinationEntry = modifiedPartition.lookup( new LookupOperationContext( null, originalEntry
                     .getDn(), attributeIds ) );
+                
                 if ( destinationEntry != null )
                 {
                     // Setting the changetype to delete
@@ -202,6 +182,7 @@ public class PartitionsDiffComputer
 
                 // Checking if modifications occurred on the original entry
                 ChangeType modificationEntryChangeType = modificationEntry.getChangeType();
+                
                 if ( modificationEntryChangeType != ChangeType.None )
                 {
                     if ( modificationEntryChangeType == ChangeType.Delete
@@ -221,6 +202,7 @@ public class PartitionsDiffComputer
 
                 // Looking for the children of the current entry
                 EntryFilteringCursor cursor = originalPartition.search( soc );
+                
                 while ( cursor.next() )
                 {
                     originalEntries.add( ( ( ClonedServerEntry ) cursor.get() ).getClonedEntry() );
@@ -228,8 +210,9 @@ public class PartitionsDiffComputer
             }
 
             // Looking up the destination base entry
-            Entry destinationBaseEntry = destinationPartition
+            Entry destinationBaseEntry = modifiedPartition
                 .lookup( new LookupOperationContext( null, baseDn, attributeIds ) );
+            
             if ( destinationBaseEntry == null )
             {
                 throw new PartitionsDiffException( "Unable to find the base entry in the destination partition." );
@@ -249,6 +232,7 @@ public class PartitionsDiffComputer
                 // Looking for the equivalent entry in the destination partition
                 Entry originalEntry = originalPartition.lookup( new LookupOperationContext( null, destinationEntry
                     .getDn(), attributeIds ) );
+                
                 // We're only looking for new entries, modified or removed 
                 // entries have already been computed
                 if ( originalEntry == null )
@@ -277,7 +261,7 @@ public class PartitionsDiffComputer
                 soc.setAliasDerefMode( AliasDerefMode.DEREF_ALWAYS );
 
                 // Looking for the children of the current entry
-                EntryFilteringCursor cursor = destinationPartition.search( soc );
+                EntryFilteringCursor cursor = modifiedPartition.search( soc );
 
                 while ( cursor.next() )
                 {
@@ -297,15 +281,11 @@ public class PartitionsDiffComputer
     /**
      * Compares the two given entries.
      *
-     * @param originalEntry
-     *      the original entry
-     * @param destinationEntry
-     *      the destination entry
-     * @param modificationEntry
-     *      the modification LDIF entry holding the modifications 
-     *      between both entries
+     * @param originalEntry the original entry
+     * @param destinationEntry the destination entry
+     * @param modificationEntry the modification LDIF entry holding the modifications between both entries
      */
-    private void compareEntries( Entry originalEntry, Entry destinationEntry, LdifEntry modificationEntry )
+    private static void compareEntries( Entry originalEntry, Entry destinationEntry, LdifEntry modificationEntry )
     {
         // Creating a list to store the already evaluated attribute type
         List<AttributeType> evaluatedATs = new ArrayList<AttributeType>();
@@ -319,6 +299,7 @@ public class PartitionsDiffComputer
             if ( originalAttributeType.getUsage() == UsageEnum.USER_APPLICATIONS )
             {
                 Attribute destinationAttribute = destinationEntry.get( originalAttributeType );
+                
                 if ( destinationAttribute == null )
                 {
                     // Creating a modification for the removed AT
@@ -377,15 +358,11 @@ public class PartitionsDiffComputer
     /**
      * Compares the two given attributes.
      *
-     * @param originalAttribute
-     *      the original attribute
-     * @param destinationAttribute
-     *      the destination attribute
-     * @param modificationEntry
-     *      the modification LDIF entry holding the modifications 
-     *      between both attributes
+     * @param originalAttribute the original attribute
+     * @param destinationAttribute the destination attribute
+     * @param modificationEntry the modification LDIF entry holding the modifications between both attributes
      */
-    private void compareAttributes( Attribute originalAttribute, Attribute destinationAttribute,
+    private static void compareAttributes( Attribute originalAttribute, Attribute destinationAttribute,
         LdifEntry modificationEntry )
     {
         // Special case for 'objectClass' attribute, due to a bug in OpenLDAP
@@ -403,53 +380,5 @@ public class PartitionsDiffComputer
                 modificationEntry.addModification( modification );
             }
         }
-    }
-
-
-    /**
-     * Gets the original partition.
-     *
-     * @return
-     *      the original partition
-     */
-    public Partition getOriginalPartition()
-    {
-        return originalPartition;
-    }
-
-
-    /**
-     * Sets the original partition.
-     *
-     * @param originalPartition
-     *      the original partition
-     */
-    public void setOriginalPartition( Partition originalPartition )
-    {
-        this.originalPartition = originalPartition;
-    }
-
-
-    /**
-     * Gets the destination partition.
-     *
-     * @return
-     *      the destination partition
-     */
-    public Partition getDestinationPartition()
-    {
-        return destinationPartition;
-    }
-
-
-    /**
-     * Sets the destination partition.
-     *
-     * @param destinationPartition
-     *      the destination partition
-     */
-    public void setDestinationPartition( Partition destinationPartition )
-    {
-        this.destinationPartition = destinationPartition;
     }
 }
