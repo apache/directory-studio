@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.openldap.common.ui;
+package org.apache.directory.studio.openldap.common.ui.model;
 
 /**
  * The various LogLevel values :
@@ -41,7 +41,7 @@ package org.apache.directory.studio.openldap.common.ui;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public enum LogLevel
+public enum LogLevelEnum
 {
     NONE(0),
     TRACE(1),
@@ -71,7 +71,7 @@ public enum LogLevel
      *
      * @param value The internal value
      */
-    private LogLevel( int value )
+    private LogLevelEnum( int value )
     {
         this.value = value;
     }
@@ -292,9 +292,14 @@ public enum LogLevel
         while ( currentPos < chars.length )
         {
             // Skip the ' ' at the beginning
-            while ( chars[currentPos] == ' ' )
+            while ( ( currentPos < chars.length ) && ( chars[currentPos] == ' ' ) )
             {
                 currentPos++;
+            }
+            
+            if ( currentPos >= chars.length )
+            {
+                break;
             }
             
             // Now, start analysing what's next

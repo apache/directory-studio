@@ -21,7 +21,7 @@ package org.apache.directory.studio.openldap.common.ui.dialogs;
 
 
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.openldap.common.ui.LogLevel;
+import org.apache.directory.studio.openldap.common.ui.model.LogLevelEnum;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -164,7 +164,7 @@ public class LogLevelDialog extends Dialog
             }
             
             computeLogValue();
-            setLogLeveltext();
+            setLogLevelText();
         }
     };
 
@@ -241,28 +241,28 @@ public class LogLevelDialog extends Dialog
      */
     private void setCheckboxesValue()
     {
-        noneCheckbox.setSelection( logLevelValue == LogLevel.NONE.getValue() );
-        traceCheckbox.setSelection( ( logLevelValue & LogLevel.TRACE.getValue() ) != 0 );
-        packetsCheckbox.setSelection( ( logLevelValue & LogLevel.PACKETS.getValue() ) != 0 );
-        argsCheckbox.setSelection( ( logLevelValue & LogLevel.ARGS.getValue() ) != 0 );
-        connsCheckbox.setSelection( ( logLevelValue & LogLevel.CONNS.getValue() ) != 0 );
-        berCheckbox.setSelection( ( logLevelValue & LogLevel.BER.getValue() ) != 0 );
-        filterCheckbox.setSelection( ( logLevelValue & LogLevel.FILTER.getValue() ) != 0 );
-        configCheckbox.setSelection( ( logLevelValue & LogLevel.CONFIG.getValue() ) != 0 );
-        aclCheckbox.setSelection( ( logLevelValue & LogLevel.ACL.getValue() ) != 0 );
-        statsCheckbox.setSelection( ( logLevelValue & LogLevel.STATS.getValue() ) != 0 );
-        stats2Checkbox.setSelection( ( logLevelValue & LogLevel.STATS2.getValue() ) != 0 );
-        shellCheckbox.setSelection( ( logLevelValue & LogLevel.SHELL.getValue() ) != 0 );
-        parseCheckbox.setSelection( ( logLevelValue & LogLevel.PARSE.getValue() ) != 0 );
-        syncCheckbox.setSelection( ( logLevelValue & LogLevel.SYNC.getValue() ) != 0 );
-        anyCheckbox.setSelection( logLevelValue == LogLevel.ANY.getValue() );
+        noneCheckbox.setSelection( logLevelValue == LogLevelEnum.NONE.getValue() );
+        traceCheckbox.setSelection( ( logLevelValue & LogLevelEnum.TRACE.getValue() ) != 0 );
+        packetsCheckbox.setSelection( ( logLevelValue & LogLevelEnum.PACKETS.getValue() ) != 0 );
+        argsCheckbox.setSelection( ( logLevelValue & LogLevelEnum.ARGS.getValue() ) != 0 );
+        connsCheckbox.setSelection( ( logLevelValue & LogLevelEnum.CONNS.getValue() ) != 0 );
+        berCheckbox.setSelection( ( logLevelValue & LogLevelEnum.BER.getValue() ) != 0 );
+        filterCheckbox.setSelection( ( logLevelValue & LogLevelEnum.FILTER.getValue() ) != 0 );
+        configCheckbox.setSelection( ( logLevelValue & LogLevelEnum.CONFIG.getValue() ) != 0 );
+        aclCheckbox.setSelection( ( logLevelValue & LogLevelEnum.ACL.getValue() ) != 0 );
+        statsCheckbox.setSelection( ( logLevelValue & LogLevelEnum.STATS.getValue() ) != 0 );
+        stats2Checkbox.setSelection( ( logLevelValue & LogLevelEnum.STATS2.getValue() ) != 0 );
+        shellCheckbox.setSelection( ( logLevelValue & LogLevelEnum.SHELL.getValue() ) != 0 );
+        parseCheckbox.setSelection( ( logLevelValue & LogLevelEnum.PARSE.getValue() ) != 0 );
+        syncCheckbox.setSelection( ( logLevelValue & LogLevelEnum.SYNC.getValue() ) != 0 );
+        anyCheckbox.setSelection( logLevelValue == LogLevelEnum.ANY.getValue() );
     }
 
 
     /**
      * Sets the LogLevel value.
      */
-    private void setLogLeveltext()
+    private void setLogLevelText()
     {
         logLevelText.setText( Integer.toString( logLevelValue ) );
     }
@@ -364,7 +364,7 @@ public class LogLevelDialog extends Dialog
         }
         else
         {
-            if ( logLevelValue == LogLevel.ANY.getValue() )
+            if ( logLevelValue == LogLevelEnum.ANY.getValue() )
             {
                 // We cancel the ANY selection, so we have to set the LogLevelValue
                 // to 0, as it's currently -1
@@ -374,119 +374,119 @@ public class LogLevelDialog extends Dialog
             // Now, check all the checkBox selections
             if ( aclCheckbox.getSelection() )
             {
-                logLevelValue |= LogLevel.ACL.getValue();
+                logLevelValue |= LogLevelEnum.ACL.getValue();
             }
             else
             {
-                logLevelValue &= ~LogLevel.ACL.getValue();
+                logLevelValue &= ~LogLevelEnum.ACL.getValue();
             }
 
             if ( argsCheckbox.getSelection() )
             {
-                logLevelValue |= LogLevel.ARGS.getValue();
+                logLevelValue |= LogLevelEnum.ARGS.getValue();
             }
             else
             {
-                logLevelValue &= ~LogLevel.ARGS.getValue();
+                logLevelValue &= ~LogLevelEnum.ARGS.getValue();
             }
 
             if ( berCheckbox.getSelection() )
             {
-                logLevelValue |= LogLevel.BER.getValue();
+                logLevelValue |= LogLevelEnum.BER.getValue();
             }
             else
             {
-                logLevelValue &= ~LogLevel.BER.getValue();
+                logLevelValue &= ~LogLevelEnum.BER.getValue();
             }
 
             if ( configCheckbox.getSelection() )
             {
-                logLevelValue |= LogLevel.CONFIG.getValue();
+                logLevelValue |= LogLevelEnum.CONFIG.getValue();
             }
             else
             {
-                logLevelValue &= ~LogLevel.CONFIG.getValue();
+                logLevelValue &= ~LogLevelEnum.CONFIG.getValue();
             }
 
             if ( connsCheckbox.getSelection() )
             {
-                logLevelValue |= LogLevel.CONNS.getValue();
+                logLevelValue |= LogLevelEnum.CONNS.getValue();
             }
             else
             {
-                logLevelValue &= ~LogLevel.CONNS.getValue();
+                logLevelValue &= ~LogLevelEnum.CONNS.getValue();
             }
 
             if ( filterCheckbox.getSelection() )
             {
-                logLevelValue |= LogLevel.FILTER.getValue();
+                logLevelValue |= LogLevelEnum.FILTER.getValue();
             }
             else
             {
-                logLevelValue &= ~LogLevel.FILTER.getValue();
+                logLevelValue &= ~LogLevelEnum.FILTER.getValue();
             }
 
             if ( packetsCheckbox.getSelection() )
             {
-                logLevelValue |= LogLevel.PACKETS.getValue();
+                logLevelValue |= LogLevelEnum.PACKETS.getValue();
             }
             else
             {
-                logLevelValue &= ~LogLevel.PACKETS.getValue();
+                logLevelValue &= ~LogLevelEnum.PACKETS.getValue();
             }
 
             if ( parseCheckbox.getSelection() )
             {
-                logLevelValue |= LogLevel.PARSE.getValue();
+                logLevelValue |= LogLevelEnum.PARSE.getValue();
             }
             else
             {
-                logLevelValue &= ~LogLevel.PARSE.getValue();
+                logLevelValue &= ~LogLevelEnum.PARSE.getValue();
             }
 
             if ( shellCheckbox.getSelection() )
             {
-                logLevelValue |= LogLevel.SHELL.getValue();
+                logLevelValue |= LogLevelEnum.SHELL.getValue();
             }
             else
             {
-                logLevelValue &= ~LogLevel.SHELL.getValue();
+                logLevelValue &= ~LogLevelEnum.SHELL.getValue();
             }
 
             if ( statsCheckbox.getSelection() )
             {
-                logLevelValue |= LogLevel.STATS.getValue();
+                logLevelValue |= LogLevelEnum.STATS.getValue();
             }
             else
             {
-                logLevelValue &= ~LogLevel.STATS.getValue();
+                logLevelValue &= ~LogLevelEnum.STATS.getValue();
             }
 
             if ( stats2Checkbox.getSelection() )
             {
-                logLevelValue |= LogLevel.STATS2.getValue();
+                logLevelValue |= LogLevelEnum.STATS2.getValue();
             }
             else
             {
-                logLevelValue &= ~LogLevel.STATS2.getValue();
+                logLevelValue &= ~LogLevelEnum.STATS2.getValue();
             }
 
             if ( syncCheckbox.getSelection() )
             {
-                logLevelValue |= LogLevel.SYNC.getValue();
+                logLevelValue |= LogLevelEnum.SYNC.getValue();
             }
             else
             {
-                logLevelValue &= ~LogLevel.SYNC.getValue();
+                logLevelValue &= ~LogLevelEnum.SYNC.getValue();
             }
             
             if ( traceCheckbox.getSelection() )
             {
-                logLevelValue |= LogLevel.TRACE.getValue();
+                logLevelValue |= LogLevelEnum.TRACE.getValue();
             }
             else
             {
-                logLevelValue &= ~LogLevel.TRACE.getValue();
+                logLevelValue &= ~LogLevelEnum.TRACE.getValue();
             }
         }
     }

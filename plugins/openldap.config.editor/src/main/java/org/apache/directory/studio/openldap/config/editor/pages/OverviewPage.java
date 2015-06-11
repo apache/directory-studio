@@ -23,8 +23,10 @@ package org.apache.directory.studio.openldap.config.editor.pages;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.studio.openldap.common.ui.LogLevel;
-import org.apache.directory.studio.openldap.common.ui.widgets.LogLevelWidget;
+import org.apache.directory.api.util.Strings;
+import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.openldap.common.ui.model.LogLevelEnum;
+import org.apache.directory.studio.openldap.common.ui.dialogs.LogLevelDialog;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginUtils;
 import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
 import org.apache.directory.studio.openldap.config.editor.overlays.ModuleWrapper;
@@ -43,6 +45,9 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -135,8 +140,6 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
     /** olcLogLevel */
     private Text logLevelText;
     private Button logLevelEditButton;
-
-    private LogLevelWidget logLevelWidget;
     
     /** The table listing all the existing databases */
     private TableViewer databaseViewer;
@@ -204,6 +207,36 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
         }
     };
 
+    /**
+     * The olcLogLevl listener
+     */
+    private SelectionListener logLevelEditButtonSelectionListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            // Creating and opening a LogLevel dialog
+            String logLevelStr = logLevelText.getText();
+            int logLevelValue = LogLevelEnum.NONE.getValue();
+            
+            if ( !Strings.isEmpty( logLevelStr ) )
+            {
+                logLevelValue = LogLevelEnum.parseLogLevel( logLevelStr );
+            }
+            
+            LogLevelDialog dialog = new LogLevelDialog( logLevelEditButton.getShell(), logLevelValue );
+
+            if ( LogLevelDialog.OK == dialog.open() )
+            {
+                logLevelStr = LogLevelEnum.getLogLevelText( dialog.getLogLevelValue() );
+                logLevelText.setText( logLevelStr );
+                List<String> logLevelList = new ArrayList<String>();
+                logLevelList.add( logLevelStr );
+                getConfiguration().getGlobal().setOlcLogLevel( logLevelList );
+            }
+        }
+    };
+
+    
     /**
      * Creates a new instance of GeneralPage.
      *
@@ -392,19 +425,19 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
         // The content
         Composite globalSectionComposite = toolkit.createComposite( section );
         toolkit.paintBordersFor( globalSectionComposite );
-        GridLayout gridLayout = new GridLayout( 4, false );
+        GridLayout gridLayout = new GridLayout( 5, false );
         gridLayout.marginHeight = gridLayout.marginWidth = 0;
         globalSectionComposite.setLayout( gridLayout );
         section.setClient( globalSectionComposite );
 
         // The ServerID parameter.
         Label serverIdLabel = toolkit.createLabel( globalSectionComposite, Messages.getString( "OpenLDAPOverviewPage.ServerID" ) ); //$NON-NLS-1$
-        serverIdLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, false, 4, 1 ) );
+        serverIdLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, false, 5, 1 ) );
 
         // The ServerID widget
         serverIdWidget = new ServerIdTableWidget();
         serverIdWidget.createWidget( globalSectionComposite );
-        serverIdWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 4, 1 ) );
+        serverIdWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 5, 1 ) );
         
         // One blank line
         for ( int i = 0; i < gridLayout.numColumns; i++ )
@@ -419,7 +452,6 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
         // The PidFile parameter
         toolkit.createLabel( globalSectionComposite, Messages.getString( "OpenLDAPOverviewPage.PidFile" ) ); //$NON-NLS-1$
         pidFileText = createPidFileText( toolkit, globalSectionComposite );
-        pidFileText.setText( getConfiguration().getGlobal().getOlcPidFile() );
         
         // The LogFile parameter
         toolkit.createLabel( globalSectionComposite, Messages.getString( "OpenLDAPOverviewPage.LogFile" ) ); //$NON-NLS-1$
@@ -427,9 +459,10 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
         
         // The LogLevel parameter
         toolkit.createLabel( globalSectionComposite, Messages.getString( "OpenLDAPOverviewPage.LogLevel" ) );
-        logLevelWidget = new LogLevelWidget();
-        logLevelWidget.create( globalSectionComposite, toolkit );
-        logLevelWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        logLevelText = BaseWidgetUtils.createText( globalSectionComposite, "", 1 );
+        logLevelText.setEditable( false );
+        logLevelEditButton = BaseWidgetUtils.createButton( globalSectionComposite, "Edit LogLevels...", 1 );
+        logLevelEditButton.addSelectionListener( logLevelEditButtonSelectionListener );
     }
     
     
@@ -641,7 +674,7 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
     private Text createPidFileText( FormToolkit toolkit, Composite parent )
     {
         final Text pidFileText = toolkit.createText( parent, "" ); //$NON-NLS-1$
-        GridData gd = new GridData( SWT.NONE, SWT.NONE, false, false );
+        GridData gd = new GridData( SWT.FILL, SWT.NONE, false, true, 2, 1 );
         gd.widthHint = 300;
         pidFileText.setLayoutData( gd );
         
@@ -782,7 +815,7 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
             
             // Update the LogLevelWidget
             String logLevels = getLogLevel();
-            logLevelWidget.setValue( LogLevel.parseLogLevel( logLevels ) );
+            logLevelText.setText( logLevels );
 
             addListeners();
         }
@@ -807,7 +840,7 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
         removeDirtyListener( logFileText );
 
         // The LogLevel Widget 
-        logLevelWidget.removeWidgetModifyListener( dirtyWidgetModifyListener );
+        removeDirtyListener( logLevelText );
     }
 
     
@@ -829,6 +862,6 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
         addDirtyListener( logFileText );
 
         // The LogLevel Widget 
-        logLevelWidget.addWidgetModifyListener( dirtyWidgetModifyListener );
+        addDirtyListener( logLevelText );
     }
 }
