@@ -273,27 +273,6 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
      */
     protected void okPressed()
     {
-        // Creating the new TcpBufferWrapper
-        /*
-        String sizeStr = sizeText.getText();
-        String url = listenerText.getText();
-        int sizeValue = Integer.valueOf( sizeStr );
-        
-        boolean read = readCheckbox.getSelection();
-        boolean write = writeCheckbox.getSelection();
-        TcpTypeEnum tcpType = null;
-        
-        if ( read && !write )
-        {
-            tcpType = TcpTypeEnum.READ;
-        }
-        else if ( !read && write )
-        {
-            tcpType = TcpTypeEnum.WRITE;
-        }
-        
-        setNewElement( new TcpBufferWrapper( sizeValue , tcpType, url ) );
-        */
         super.okPressed();
     }
 

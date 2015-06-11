@@ -45,6 +45,8 @@ import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigur
 import org.apache.directory.studio.openldap.config.editor.dialogs.OverlayDialog;
 import org.apache.directory.studio.openldap.config.editor.dialogs.PasswordHashDialog;
 import org.apache.directory.studio.openldap.config.editor.dialogs.SaslSecPropsDialog;
+import org.apache.directory.studio.openldap.config.editor.dialogs.SsfDialog;
+import org.apache.directory.studio.openldap.config.editor.wrappers.SsfLabelProvider;
 import org.apache.directory.studio.openldap.config.editor.wrappers.SsfWrapper;
 import org.apache.directory.studio.openldap.config.editor.wrappers.TcpBufferWrapperLabelProvider;
 import org.apache.directory.studio.openldap.config.model.OlcGlobal;
@@ -543,8 +545,8 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
         securityLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, false, 4, 1 ) );
         
         securityTableWidget = new TableWidget<SsfWrapper>();
-        securityTableWidget.setLabelProvider( new TcpBufferWrapperLabelProvider() );
-        //securityTableWidget.setElementDialog( "" );
+        securityTableWidget.setLabelProvider( new SsfLabelProvider() );
+        securityTableWidget.setElementDialog( new SsfDialog( null) );
 
         securityTableWidget.createWidgetWithEdit( miscSectionComposite, toolkit );
         securityTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 4, 1 ) );

@@ -45,7 +45,7 @@ import org.eclipse.swt.widgets.Text;
 
 /**
  * The SaslSecPropsDialog is used to edit the Sasl Security Properties. We manage
- * two kind of propertyes : with or without parameters. Here is the list of those properties
+ * two kind of properties : with or without parameters. Here is the list of those properties
  * 
  * <ul>
  * <li>none : the  flag properties default, "noanonymous,noplain", will be cleared</li>

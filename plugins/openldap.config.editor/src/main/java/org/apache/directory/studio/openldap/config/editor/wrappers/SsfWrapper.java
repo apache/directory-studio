@@ -20,14 +20,14 @@
 package org.apache.directory.studio.openldap.config.editor.wrappers;
 
 import org.apache.directory.api.util.Strings;
-import org.apache.directory.studio.openldap.common.ui.model.SsfEnum;
+import org.apache.directory.studio.openldap.common.ui.model.SsfFeatureEnum;
 
 /**
  * This class wraps the olcSecurity parameter :
  * <pre>
  * olcSecurity ::= (<feature>=<size>)*
  * <feature> ::= 'ssf' | 'transport' | 'tls' | 'sasl' | 'simple_bind' | 
- *               'updates_ssf' | 'updates_transport' | 'updates_rls' | 'updates_sasl'
+ *               'update_ssf' | 'update_transport' | 'update_tls' | 'update_sasl'
  * </pre>
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -35,10 +35,10 @@ import org.apache.directory.studio.openldap.common.ui.model.SsfEnum;
 public class SsfWrapper implements Cloneable
 {
     /** The feature */
-    private SsfEnum feature;
+    private SsfFeatureEnum feature;
     
     /** The number of bits for this feature */
-    private int nbBits;
+    private int nbBits = 0;
     
     /**
      * Creates an instance using a name of a feature and its size
@@ -48,9 +48,9 @@ public class SsfWrapper implements Cloneable
      */
     public SsfWrapper( String feature, int nbBits )
     {
-        this.feature = SsfEnum.getSsf( feature );
+        this.feature = SsfFeatureEnum.getSsf( feature );
 
-        if ( this.feature == SsfEnum.NONE )
+        if ( this.feature == SsfFeatureEnum.NONE )
         {
             this.nbBits = 0;
         }
@@ -77,7 +77,7 @@ public class SsfWrapper implements Cloneable
     {
         if ( Strings.isEmpty( feature ) )
         {
-            this.feature = SsfEnum.NONE;
+            this.feature = SsfFeatureEnum.NONE;
             this.nbBits = 0;
         }
         else
@@ -86,14 +86,14 @@ public class SsfWrapper implements Cloneable
             
             if ( pos < 0 )
             {
-                this.feature = SsfEnum.NONE;
+                this.feature = SsfFeatureEnum.NONE;
                 this.nbBits = 0;
             }
 
             String name = Strings.trim( feature.substring( 0, pos ) );
-            this.feature = SsfEnum.getSsf( name );
+            this.feature = SsfFeatureEnum.getSsf( name );
             
-            if ( this.feature == SsfEnum.NONE )
+            if ( this.feature == SsfFeatureEnum.NONE )
             {
                 this.nbBits = 0;
             }
@@ -115,37 +115,49 @@ public class SsfWrapper implements Cloneable
     
     
     /**
+     * Tells if this is a valid SSF. The format is :
+     * feature = <nbBits> where nbBits >= 0.
+     * 
+     * @return true if valid
+     */
+    public boolean isValid()
+    {
+        return ( feature != null ) && ( feature != SsfFeatureEnum.NONE ) && ( nbBits >= 0 );
+    }
+
+    
+    /**
      * Tells if the String is a valid SSF. The format is :
      * feature = <nbBits>
      * 
-     * @param feature The feature to check
+     * @param ssf The feature to check
      * @return true if valid
      */
-    public static boolean isValid(String feature )
+    public static boolean isValid( String ssf )
     {
-        if ( Strings.isEmpty( feature ) )
+        if ( Strings.isEmpty( ssf ) )
         {
             return false;
         }
         else
         {
-            int pos = feature.indexOf( '=' );
+            int pos = ssf.indexOf( '=' );
             
             if ( pos < 0 )
             {
                 return false;
             }
             
-            String name = Strings.trim( feature.substring( 0, pos ) );
-            SsfEnum ssf = SsfEnum.getSsf( name );
+            String name = Strings.trim( ssf.substring( 0, pos ) );
+            SsfFeatureEnum ssfFeature = SsfFeatureEnum.getSsf( name );
             
-            if ( ssf == SsfEnum.NONE )
+            if ( ssfFeature == SsfFeatureEnum.NONE )
             {
                 return false;
             }
             else
             {
-                String value = Strings.trim( feature.substring( pos + 1 ) );
+                String value = Strings.trim( ssf.substring( pos + 1 ) );
                 
                 try
                 {
@@ -163,9 +175,18 @@ public class SsfWrapper implements Cloneable
     /**
      * @return the feature
      */
-    public SsfEnum getFeature()
+    public SsfFeatureEnum getFeature()
     {
         return feature;
+    }
+
+
+    /**
+     * @param feature the feature to set
+     */
+    public void setFeature( SsfFeatureEnum feature )
+    {
+        this.feature = feature;
     }
 
 
@@ -178,6 +199,15 @@ public class SsfWrapper implements Cloneable
     }
     
     
+    /**
+     * @param nbBits the nbBits to set
+     */
+    public void setNbBits( int nbBits )
+    {
+        this.nbBits = nbBits;
+    }
+
+
     /**
      * @see Object#equals()
      */
@@ -193,7 +223,8 @@ public class SsfWrapper implements Cloneable
             return false;
         }
         
-        return ( feature == ((SsfWrapper)that).getFeature() ) && ( nbBits == ((SsfWrapper)that).getNbBits() );
+        // We don't use the nbBits
+        return ( feature == ((SsfWrapper)that).getFeature() );
     }
     
     
@@ -204,8 +235,8 @@ public class SsfWrapper implements Cloneable
     {
         int h = 37;
         
+        // We don't use the nbBits
         h += h*17 + feature.hashCode();
-        h += h*17 + nbBits;
         
         return h;
     }
@@ -232,7 +263,7 @@ public class SsfWrapper implements Cloneable
      */
     public String toString()
     {
-        if ( feature != SsfEnum.NONE )
+        if ( feature != SsfFeatureEnum.NONE )
         {
             return feature.getText() + '=' + nbBits;
         }

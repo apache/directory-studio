@@ -23,7 +23,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 
-import org.apache.directory.studio.openldap.common.ui.model.SsfEnum;
+import org.apache.directory.studio.openldap.common.ui.model.SsfFeatureEnum;
 import org.apache.directory.studio.openldap.config.editor.wrappers.SsfWrapper;
 import org.junit.Test;
 
@@ -71,15 +71,15 @@ public class SsfWrapperTest
     public void testCreateSsf()
     {
         SsfWrapper ssfWrapper = new SsfWrapper( "ssf", 128 );
-        assertEquals( SsfEnum.SSF, ssfWrapper.getFeature() );
+        assertEquals( SsfFeatureEnum.SSF, ssfWrapper.getFeature() );
         assertEquals( 128, ssfWrapper.getNbBits() );
 
         ssfWrapper = new SsfWrapper( "ssf", -128 );
-        assertEquals( SsfEnum.SSF, ssfWrapper.getFeature() );
+        assertEquals( SsfFeatureEnum.SSF, ssfWrapper.getFeature() );
         assertEquals( 0, ssfWrapper.getNbBits() );
 
         ssfWrapper = new SsfWrapper( "SSF", 128 );
-        assertEquals( SsfEnum.SSF, ssfWrapper.getFeature() );
+        assertEquals( SsfFeatureEnum.SSF, ssfWrapper.getFeature() );
         assertEquals( 128, ssfWrapper.getNbBits() );
     }
 }
