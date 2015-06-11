@@ -22,11 +22,11 @@ package org.apache.directory.studio.openldap.common.ui.model;
 import org.apache.directory.api.util.Strings;
 
 /**
- * An enumeratuon of all the possible SSF freatures.
+ * An enumeration of all the possible SSF features.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public enum SsfEnum
+public enum SsfFeatureEnum
 {
     SSF( "ssf" ),
     TRANSPORT( "transport" ),
@@ -37,7 +37,7 @@ public enum SsfEnum
     UPDATE_TLS( "update_tls" ),
     UPDATE_SASL( "update_sasl" ),
     SIMPLE_BIND( "simple_bind" ),
-    NONE( "" );
+    NONE( "---" );
     
     /** The associated Text */
     private String text;
@@ -45,7 +45,7 @@ public enum SsfEnum
     /**
      * Creates an SsfEnum instance
      */
-    private SsfEnum( String text )
+    private SsfFeatureEnum( String text )
     {
         this.text = text;
     }
@@ -65,7 +65,7 @@ public enum SsfEnum
      * @param feature The feature to retrieve
      * @return The SsfEnum instance found, or NONE.
      */
-    public static SsfEnum getSsf( String feature )
+    public static SsfFeatureEnum getSsf( String feature )
     {
         String ssfText = Strings.toLowerCase( feature );
         
@@ -76,42 +76,42 @@ public enum SsfEnum
         
         if ( TRANSPORT.text.equals( ssfText ) )
         {
-            return SSF;
+            return TRANSPORT;
         }
         
         if ( TLS.text.equals( ssfText ) )
         {
-            return SSF;
+            return TLS;
         }
         
         if ( SASL.text.equals( ssfText ) )
         {
-            return SSF;
+            return SASL;
         }
         
         if ( SIMPLE_BIND.text.equals( ssfText ) )
         {
-            return SSF;
+            return SIMPLE_BIND;
         }
         
         if ( UPDATE_SASL.text.equals( ssfText ) )
         {
-            return SSF;
+            return UPDATE_SASL;
         }
         
         if ( UPDATE_SSF.text.equals( ssfText ) )
         {
-            return SSF;
+            return UPDATE_SSF;
         }
         
         if ( UPDATE_TLS.text.equals( ssfText ) )
         {
-            return SSF;
+            return UPDATE_TLS;
         }
         
         if ( UPDATE_TRANSPORT.text.equals( ssfText ) )
         {
-            return SSF;
+            return UPDATE_TRANSPORT;
         }
         
         // Default...
