@@ -41,8 +41,11 @@ import org.apache.directory.studio.openldap.config.model.widgets.ServerIdTableWi
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
@@ -130,6 +133,9 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
     private Text logFileText;
     
     /** olcLogLevel */
+    private Text logLevelText;
+    private Button logLevelEditButton;
+
     private LogLevelWidget logLevelWidget;
     
     /** The table listing all the existing databases */
@@ -161,6 +167,42 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
 
     /** This link opens the Options configuration tab */
     private Hyperlink optionsPageLink;
+    
+    
+    /**
+     * The olcLogFile listener
+     */
+    private ModifyListener logFileTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            getConfiguration().getGlobal().setOlcLogFile( logFileText.getText() );
+        }
+    };
+    
+    
+    /**
+     * The olcConfigDir listener
+     */
+    private ModifyListener configDirTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            getConfiguration().getGlobal().setOlcConfigDir( configDirText.getText() );
+        }
+    };
+    
+    
+    /**
+     * The olcPidFile listener
+     */
+    private ModifyListener pidFileTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            getConfiguration().getGlobal().setOlcPidFile( pidFileText.getText() );
+        }
+    };
 
     /**
      * Creates a new instance of GeneralPage.
@@ -581,6 +623,9 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
         
         // No more than 512 digits
         configDirText.setTextLimit( 512 );
+        
+        // The associated listener
+        addModifyListener( configDirText, configDirTextListener );
 
         return configDirText;
     }
@@ -602,7 +647,10 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
         
         // No more than 512 digits
         pidFileText.setTextLimit( 512 );
-
+        
+        // The associated listener
+        addModifyListener( pidFileText, pidFileTextListener );
+        
         return pidFileText;
     }
 
@@ -623,6 +671,9 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
         
         // No more than 512 digits
         logFileText.setTextLimit( 512 );
+        
+        // The associated listener
+        addModifyListener( logFileText, logFileTextListener );
 
         return logFileText;
     }
