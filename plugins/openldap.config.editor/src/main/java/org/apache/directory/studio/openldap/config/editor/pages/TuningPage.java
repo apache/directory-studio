@@ -226,17 +226,16 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
                 // The value must be between 0 and 0x3FFFF
                 if ( ( sockbufMaxIncomingValue < 0 ) || ( sockbufMaxIncomingValue > 0x3FFFF ) )
                 {
-                    System.out.println( "Wrong value : it must be a value in [0..0x3FFFF]" );
                     sockbufMaxIncomingText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
                     return;
                 }
                 
                 sockbufMaxIncomingText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
+                getConfiguration().getGlobal().setOlcSockbufMaxIncoming( sockbufMaxIncomingValue );
             }
             catch ( NumberFormatException nfe )
             {
                 // Not even a number
-                System.out.println( "Wrong value : it must be an integer" );
                 sockbufMaxIncomingText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
             }
         }
@@ -254,22 +253,22 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
 
             try
             {
-                int sockbufMaxIncomingAuthValue = Integer.parseInt( sockbufMaxIncomingAuthText.getText() );
+                String sockbufMaxIncomingAuthstr = sockbufMaxIncomingAuthText.getText();
+                int sockbufMaxIncomingAuthValue = Integer.parseInt( sockbufMaxIncomingAuthstr );
 
                 // The value must be between 0 and 0x3FFFFF
                 if ( ( sockbufMaxIncomingAuthValue < 0 ) || ( sockbufMaxIncomingAuthValue > 0x3FFFFF ) )
                 {
-                    System.out.println( "Wrong value : it must be a value in [0..0x3FFFFF]" );
                     sockbufMaxIncomingAuthText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
                     return;
                 }
                 
                 sockbufMaxIncomingAuthText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
+                getConfiguration().getGlobal().setOlcSockbufMaxIncomingAuth( sockbufMaxIncomingAuthstr );
             }
             catch ( NumberFormatException nfe )
             {
                 // Not even a number
-                System.out.println( "Wrong value : it must be an integer" );
                 sockbufMaxIncomingAuthText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
             }
         }
@@ -292,17 +291,16 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
                 // The value must be >= 0
                 if ( concurrencyValue < 0 )
                 {
-                    System.out.println( "Wrong value : it must be a positive" );
                     concurrencyText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
                     return;
                 }
                 
                 concurrencyText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
+                getConfiguration().getGlobal().setOlcConcurrency( concurrencyValue );
             }
             catch ( NumberFormatException nfe )
             {
                 // Not even a number
-                System.out.println( "Wrong value : it must be an integer" );
                 concurrencyText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
             }
         }
@@ -325,17 +323,16 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
                 // The value must be >= 0
                 if ( connMaxPendingValue < 0 )
                 {
-                    System.out.println( "Wrong value : it must be a positive number" );
                     connMaxPendingText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
                     return;
                 }
                 
                 connMaxPendingText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
+                getConfiguration().getGlobal().setOlcConnMaxPending( connMaxPendingValue );
             }
             catch ( NumberFormatException nfe )
             {
                 // Not even a number
-                System.out.println( "Wrong value : it must be an integer" );
                 connMaxPendingText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
             }
         }
@@ -358,17 +355,16 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
                 // The value must be >= 0
                 if ( connMaxPendingAuthValue < 0 )
                 {
-                    System.out.println( "Wrong value : it must be a positive number" );
                     connMaxPendingAuthText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
                     return;
                 }
                 
                 connMaxPendingAuthText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
+                getConfiguration().getGlobal().setOlcConnMaxPendingAuth( connMaxPendingAuthValue );
             }
             catch ( NumberFormatException nfe )
             {
                 // Not even a number
-                System.out.println( "Wrong value : it must be an integer" );
                 connMaxPendingAuthText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
             }
         }
@@ -391,17 +387,16 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
                 // The value must be >= 0
                 if ( listenerThreadsValue < 0 )
                 {
-                    System.out.println( "Wrong value : it must be a positive number" );
                     listenerThreadsText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
                     return;
                 }
                 
                 listenerThreadsText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
+                getConfiguration().getGlobal().setOlcListenerThreads( listenerThreadsValue );
             }
             catch ( NumberFormatException nfe )
             {
                 // Not even a number
-                System.out.println( "Wrong value : it must be an integer" );
                 listenerThreadsText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
             }
         }
@@ -424,17 +419,16 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
                 // The value must be >= 0
                 if ( threadsValue < 0 )
                 {
-                    System.out.println( "Wrong value : it must be a positive number" );
                     threadsText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
                     return;
                 }
                 
                 threadsText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
+                getConfiguration().getGlobal().setOlcThreads( threadsValue );
             }
             catch ( NumberFormatException nfe )
             {
                 // Not even a number
-                System.out.println( "Wrong value : it must be an integer" );
                 threadsText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
             }
         }
@@ -457,17 +451,16 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
                 // The value must be >= 0
                 if ( toolThreadsValue < 0 )
                 {
-                    System.out.println( "Wrong value : it must be a positive number" );
                     toolThreadsText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
                     return;
                 }
                 
                 toolThreadsText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
+                getConfiguration().getGlobal().setOlcToolThreads( toolThreadsValue );
             }
             catch ( NumberFormatException nfe )
             {
                 // Not even a number
-                System.out.println( "Wrong value : it must be an integer" );
                 toolThreadsText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
             }
         }
@@ -490,17 +483,16 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
                 // The value must be >= 0
                 if ( indexIntLenValue < 0 )
                 {
-                    System.out.println( "Wrong value : it must be a positive number" );
                     indexIntLenText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
                     return;
                 }
                 
                 indexIntLenText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
+                getConfiguration().getGlobal().setOlcIndexIntLen( indexIntLenValue );
             }
             catch ( NumberFormatException nfe )
             {
                 // Not even a number
-                System.out.println( "Wrong value : it must be an integer" );
                 indexIntLenText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
             }
         }
@@ -523,17 +515,16 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
                 // The value must be >= 0
                 if ( indexSubstrAnyLenValue < 0 )
                 {
-                    System.out.println( "Wrong value : it must be a positive number" );
                     indexSubstrAnyLenText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
                     return;
                 }
                 
                 indexSubstrAnyLenText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
+                getConfiguration().getGlobal().setOlcIndexSubstrAnyLen( indexSubstrAnyLenValue );
             }
             catch ( NumberFormatException nfe )
             {
                 // Not even a number
-                System.out.println( "Wrong value : it must be an integer" );
                 indexSubstrAnyLenText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
             }
         }
@@ -556,17 +547,16 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
                 // The value must be >= 0
                 if ( indexSubstrAnyStepValue < 0 )
                 {
-                    System.out.println( "Wrong value : it must be a positive number" );
                     indexSubstrAnyStepText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
                     return;
                 }
                 
                 indexSubstrAnyStepText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
+                getConfiguration().getGlobal().setOlcIndexSubstrAnyStep( indexSubstrAnyStepValue );
             }
             catch ( NumberFormatException nfe )
             {
                 // Not even a number
-                System.out.println( "Wrong value : it must be an integer" );
                 indexSubstrAnyStepText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
             }
         }
@@ -589,17 +579,16 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
                 // The value must be >= 0
                 if ( indexSubstrIfMaxLenValue < 0 )
                 {
-                    System.out.println( "Wrong value : it must be a positive number" );
                     indexSubstrIfMaxLenText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
                     return;
                 }
                 
                 indexSubstrIfMaxLenText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
+                getConfiguration().getGlobal().setOlcIndexSubstrIfMaxLen( indexSubstrIfMaxLenValue );
             }
             catch ( NumberFormatException nfe )
             {
                 // Not even a number
-                System.out.println( "Wrong value : it must be an integer" );
                 indexSubstrIfMaxLenText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
             }
         }
@@ -622,17 +611,16 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
                 // The value must be >= 0
                 if ( indexSubstrIfMinLenValue < 0 )
                 {
-                    System.out.println( "Wrong value : it must be a positive number" );
                     indexSubstrIfMinLenText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
                     return;
                 }
                 
                 indexSubstrIfMinLenText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
+                getConfiguration().getGlobal().setOlcIndexSubstrIfMinLen( indexSubstrIfMinLenValue );
             }
             catch ( NumberFormatException nfe )
             {
                 // Not even a number
-                System.out.println( "Wrong value : it must be an integer" );
                 indexSubstrIfMinLenText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
             }
         }
@@ -655,17 +643,16 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
                 // The value must be >= 0
                 if ( writeTimeoutValue < 0 )
                 {
-                    System.out.println( "Wrong value : it must be a positive number" );
                     writeTimeoutText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
                     return;
                 }
                 
                 writeTimeoutText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
+                getConfiguration().getGlobal().setOlcWriteTimeout( writeTimeoutValue );
             }
             catch ( NumberFormatException nfe )
             {
                 // Not even a number
-                System.out.println( "Wrong value : it must be an integer" );
                 writeTimeoutText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
             }
         }
@@ -688,17 +675,16 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
                 // The value must be >= 0
                 if ( idleTimeoutValue < 0 )
                 {
-                    System.out.println( "Wrong value : it must be a positive number" );
                     idleTimeoutText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
                     return;
                 }
                 
                 idleTimeoutText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
+                getConfiguration().getGlobal().setOlcIdleTimeout( idleTimeoutValue );
             }
             catch ( NumberFormatException nfe )
             {
                 // Not even a number
-                System.out.println( "Wrong value : it must be an integer" );
                 idleTimeoutText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
             }
         }
@@ -721,6 +707,9 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
                 if ( newTimeLimitStr != null )
                 {
                     timeLimitText.setText( newTimeLimitStr );
+                    List<String> timeLimitList = new ArrayList<String>();
+                    timeLimitList.add( newTimeLimitStr );
+                    getConfiguration().getGlobal().setOlcTimeLimit( timeLimitList );
                 }
             }
         }
@@ -743,6 +732,7 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
                 if ( newSizeLimitStr != null )
                 {
                     sizeLimitText.setText( newSizeLimitStr );
+                    getConfiguration().getGlobal().setOlcSizeLimit( newSizeLimitStr );
                 }
             }
         }
@@ -1176,11 +1166,11 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
         tcpBufferTableWidget.setElements( tcpBufferList );
 
         // Socket Buffer Max Incoming Text
-        String sockbufMaxIncomingString = getConfiguration().getGlobal().getOlcSockbufMaxIncoming();
+        Integer sockbufMaxIncomingString = getConfiguration().getGlobal().getOlcSockbufMaxIncoming();
         
         if ( sockbufMaxIncomingString != null )
         {
-            sockbufMaxIncomingText.setText( sockbufMaxIncomingString );
+            sockbufMaxIncomingText.setText( sockbufMaxIncomingString.toString() );
         }
 
         // Socket Buffer Max Incoming Text

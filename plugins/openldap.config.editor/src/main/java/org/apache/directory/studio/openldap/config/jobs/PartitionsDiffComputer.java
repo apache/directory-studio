@@ -449,6 +449,7 @@ public class PartitionsDiffComputer
             if ( !originalAttribute.equals( modifiedAttribute ) )
             {
                 // Creating a modification for the modified AT values. We do that globally, for all the values
+                // The values should also be ordered if this is required (X-ORDERED)
                 Modification modification = new DefaultModification(
                     ModificationOperation.REPLACE_ATTRIBUTE, modifiedAttribute );
 

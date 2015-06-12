@@ -70,11 +70,13 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
  * <ul>
  * <li>olcServerID</li>
  * <li>olcConfigDir</li>
+ * <li>olcConfigFile</li>
  * <li>olcPidFile</li>
  * <li>olcLogFile</li>
  * <li>olcLogLevel</li>
  * </ul>
  * 
+ * The olcConfigFile is not handled, it's deprecated.
  * <pre>
  * .-----------------------------------------------------------------------------------.
  * | Overview                                                                          |

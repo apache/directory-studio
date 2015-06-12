@@ -347,7 +347,7 @@ public class OlcGlobal extends OlcConfig
      * Field for the 'olcSockbufMaxIncoming' attribute.
      */
     @ConfigurationElement(attributeType = "olcSockbufMaxIncoming")
-    private String olcSockbufMaxIncoming;
+    private Integer olcSockbufMaxIncoming;
 
     /**
      * Field for the 'olcSockbufMaxIncomingAuth' attribute.
@@ -1277,7 +1277,7 @@ public class OlcGlobal extends OlcConfig
     /**
      * @return the olcSockbufMaxIncoming
      */
-    public String getOlcSockbufMaxIncoming()
+    public Integer getOlcSockbufMaxIncoming()
     {
         return olcSockbufMaxIncoming;
     }
@@ -1907,7 +1907,7 @@ public class OlcGlobal extends OlcConfig
     /**
      * @param olcSockbufMaxIncoming the olcSockbufMaxIncoming to set
      */
-    public void setOlcSockbufMaxIncoming( String olcSockbufMaxIncoming )
+    public void setOlcSockbufMaxIncoming( int olcSockbufMaxIncoming )
     {
         this.olcSockbufMaxIncoming = olcSockbufMaxIncoming;
     }
