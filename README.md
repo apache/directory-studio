@@ -15,6 +15,12 @@
 > specific language governing permissions and limitations
 > under the License.
 
+# Apache Directory Studio™
+
+The Eclipse-based LDAP browser and directory client.
+
+Apache Directory Studio is a complete directory tooling platform intended to be used with any LDAP server however it is particularly designed for use with ApacheDS. It is an Eclipse RCP application, composed of several Eclipse (OSGi) plugins, that can be easily upgraded with additional ones. These plugins can even run within Eclipse itself.
+
 ## Build from command line
 
 ### Prerequisites
@@ -52,7 +58,7 @@ or on Windows :
 
 * Unit tests included in src/test/java of each plugin are executed automatically and run in 'test' phase
 * Core integration tests in tests/test.integration.core are executed automatically and run in 'integration-test' phase
-* SWTBot based UI integration tests in tests/test.integration.ui are diabled by default. They can be enabled with -Denable-ui-tests. A failing test generates a screenshot. To not block the developer computer UI tests they can run within a virtual framebuffer:
+* SWTBot based UI integration tests in tests/test.integration.ui are disabled by default. They can be enabled with -Denable-ui-tests. A failing test generates a screenshot. To not block the developer computer they can run within a virtual framebuffer:
 
         export DISPLAY=:99
         Xvfb :99 -screen 0 1024x768x16 &
@@ -216,7 +222,12 @@ and start the vote.
 
 ### Publish
 
-After successful vote the content of `target` can be committed as-is to https://dist.apache.org/repos/dist/release/directory/studio.
+After successful vote we can publish the artifacts
+
+* Release artifacts in Nexus
+* Commit distribution packages to https://dist.apache.org/repos/dist/release/directory/studio, the content of `dist/target` can be used as-is.
+
+Wait 24h for mirror rsync.
 
 #### Update site
 
@@ -231,8 +242,21 @@ In the following files
 
 change the location path to the new release and also update the `p2.timestamp` to the current timestamp milliseconds (hint: `date +%s000`)
 
+#### Website
 
-tbc.
+Update news and download links
+
+* Versions in `lib/path.pm`
+* content/studio/changelog.mdtext
+* content/studio/news.mdtext
+
+#### User guides
+
+TODO
+
+#### Cleanup
+
+Delete old releases.
 
 
 ## Misc tips and tricks
