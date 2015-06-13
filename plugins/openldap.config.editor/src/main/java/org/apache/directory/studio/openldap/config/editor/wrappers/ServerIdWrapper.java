@@ -26,13 +26,13 @@ package org.apache.directory.studio.openldap.config.editor.wrappers;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ServerIdWrapper
+public class ServerIdWrapper implements Cloneable
 {
     /** The server ID */
-    int serverId;
+    private int serverId;
     
     /** The URL, if any */
-    String url;
+    private String url;
 
     /**
      * Creates a new instance of ServerIdWrapper.
@@ -102,6 +102,81 @@ public class ServerIdWrapper
         this.url = url;
     }
     
+    
+    /**
+     * Clone the current object
+     */
+    public ServerIdWrapper clone()
+    {
+        try
+        {
+            return (ServerIdWrapper)super.clone();
+        }
+        catch ( CloneNotSupportedException e )
+        {
+            return null;
+        }
+    }
+
+    
+    /**
+     * @see Object#equals(Object)
+     */
+    public boolean equals( Object that )
+    {
+        // Quick test
+        if ( this == that )
+        {
+            return true;
+        }
+        
+        if ( that instanceof ServerIdWrapper )
+        {
+            ServerIdWrapper thatInstance = (ServerIdWrapper)that;
+            
+            if ( serverId != thatInstance.serverId )
+            {
+                return false;
+            }
+            
+            if ( url == thatInstance.url )
+            {
+                return true;
+            }
+            
+            if ( url != null )
+            {
+                return url.equals( thatInstance.url );
+            }
+            else
+            {
+                return thatInstance.url == null;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    
+    /**
+     * @see Object#hashCode()
+     */
+    public int hashCode()
+    {
+        int h = 37;
+        
+        h += h*17 + serverId;
+        
+        if ( url != null )
+        {
+            h += h*17 + url.hashCode();
+        }
+        
+        return h;
+    }
+
     
     /**
      * @see Object#toString()
