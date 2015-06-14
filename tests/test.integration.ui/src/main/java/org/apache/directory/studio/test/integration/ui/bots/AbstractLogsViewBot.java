@@ -22,6 +22,7 @@ package org.apache.directory.studio.test.integration.ui.bots;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarPushButton;
 
 
@@ -46,5 +47,33 @@ public class AbstractLogsViewBot
             refreshButton.click();
         }
         return view.bot().styledText().getText();
+    }
+
+
+    public void waitForText( final String text )
+    {
+        view.show();
+
+        view.bot().waitUntil( new DefaultCondition()
+        {
+            @Override
+            public boolean test() throws Exception
+            {
+                SWTBotToolbarPushButton refreshButton = view.toolbarPushButton( "Refresh" );
+                if ( refreshButton.isEnabled() )
+                {
+                    refreshButton.click();
+                }
+                return view.bot().styledText().getText().contains( text );
+            }
+
+
+            @Override
+            public String getFailureMessage()
+            {
+                return "Text '" + text + "' not found.";
+            }
+
+        } );
     }
 }

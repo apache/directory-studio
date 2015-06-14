@@ -24,7 +24,6 @@ package org.apache.directory.studio.test.integration.ui;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.eclipse.swtbot.swt.finder.SWTBotTestCase.assertContains;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.directory.server.annotations.CreateLdapServer;
@@ -116,8 +115,7 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         entryEditorBot.typeValueAndFinish( "This is the 1st description." );
         assertEquals( 9, entryEditorBot.getAttributeValues().size() );
         assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the 1st description." ) );
-        assertContains( "add: description\ndescription: This is the 1st description.",
-            modificationLogsViewBot.getModificationLogsText() );
+        modificationLogsViewBot.waitForText( "add: description\ndescription: This is the 1st description." );
 
         // add second value
         entryEditorBot.activate();
@@ -126,8 +124,7 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         assertEquals( 10, entryEditorBot.getAttributeValues().size() );
         assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the 1st description." ) );
         assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the 2nd description." ) );
-        assertContains( "add: description\ndescription: This is the 2nd description.",
-            modificationLogsViewBot.getModificationLogsText() );
+        modificationLogsViewBot.waitForText( "add: description\ndescription: This is the 2nd description." );
 
         // edit second value
         entryEditorBot.editValue( "description", "This is the 2nd description." );
@@ -137,18 +134,15 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the 1st description." ) );
         assertFalse( entryEditorBot.getAttributeValues().contains( "description: This is the 2nd description." ) );
         assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the 3rd description." ) );
-        assertContains( "delete: description\ndescription: This is the 2nd description.",
-            modificationLogsViewBot.getModificationLogsText() );
-        assertContains( "add: description\ndescription: This is the 3rd description.",
-            modificationLogsViewBot.getModificationLogsText() );
+        modificationLogsViewBot.waitForText( "delete: description\ndescription: This is the 2nd description." );
+        modificationLogsViewBot.waitForText( "add: description\ndescription: This is the 3rd description." );
 
         // delete second value
         entryEditorBot.deleteValue( "description", "This is the 3rd description." );
         assertEquals( 9, entryEditorBot.getAttributeValues().size() );
         assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the 1st description." ) );
         assertFalse( entryEditorBot.getAttributeValues().contains( "description: This is the 3rd description." ) );
-        assertContains( "delete: description\ndescription: This is the 3rd description.",
-            modificationLogsViewBot.getModificationLogsText() );
+        modificationLogsViewBot.waitForText( "delete: description\ndescription: This is the 3rd description." );
 
         // edit 1st value
         entryEditorBot.editValue( "description", "This is the 1st description." );
@@ -156,14 +150,13 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         assertEquals( 9, entryEditorBot.getAttributeValues().size() );
         assertFalse( entryEditorBot.getAttributeValues().contains( "description: This is the 1st description." ) );
         assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the final description." ) );
-        assertContains( "replace: description\ndescription: This is the final description.",
-            modificationLogsViewBot.getModificationLogsText() );
+        modificationLogsViewBot.waitForText( "replace: description\ndescription: This is the final description." );
 
         // delete 1st value/attribute
         entryEditorBot.deleteValue( "description", "This is the final description." );
         assertEquals( 8, entryEditorBot.getAttributeValues().size() );
         assertFalse( entryEditorBot.getAttributeValues().contains( "description: This is the final description." ) );
-        assertContains( "delete: description\n-", modificationLogsViewBot.getModificationLogsText() );
+        modificationLogsViewBot.waitForText( "delete: description\n-" );
 
         assertEquals( "Expected 6 modifications.", 6,
             StringUtils.countMatches( modificationLogsViewBot.getModificationLogsText(), "#!RESULT OK" ) );
@@ -210,6 +203,7 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         assertEquals( "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system", dnEditorBot.getDnText() );
         dnEditorBot.clickCancelButton();
 
+        modificationLogsViewBot.waitForText( "#!RESULT OK" );
         assertEquals( "Expected 1 modification.", 1,
             StringUtils.countMatches( modificationLogsViewBot.getModificationLogsText(), "#!RESULT OK" ) );
     }
