@@ -19,7 +19,7 @@
   @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
 -->
 <?pde version="3.8"?>
-<target name="Apache Directory Studio Platform" sequenceNumber="177">
+<target name="Apache Directory Studio Platform" sequenceNumber="181">
   <locations>
 
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
@@ -130,11 +130,11 @@
     </location>
 
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-      <unit id="org.eclipse.swtbot.eclipse.feature.group" version="2.2.1.201402241301"/>
+      <unit id="org.eclipse.swtbot.eclipse.feature.group" version="2.3.0.201506081302"/>
       <unit id="org.hamcrest.core" version="1.3.0.v201303031735"/>
       <unit id="org.hamcrest.library" version="1.3.0.v201305281000"/>
       <unit id="org.apache.log4j" version="1.2.15.v201012070815"/>
-      <repository location="http://download.eclipse.org/technology/swtbot/releases/latest/"/>
+      <repository location="http://download.eclipse.org/technology/swtbot/releases/2.3.0/"/>
     </location>
 
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
