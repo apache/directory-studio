@@ -692,7 +692,8 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
         toolkit.createLabel( saslSectionComposite, Messages.getString( "OpenLDAPSecurityPage.SaslSecProps" ) ); //$NON-NLS-1$
         saslSecPropsText = toolkit.createText( saslSectionComposite, "" );
         saslSecPropsText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-        saslSecPropsEditButton = BaseWidgetUtils.createButton( saslSectionComposite, "Edit...", 1 );
+        saslSecPropsEditButton = BaseWidgetUtils.createButton( saslSectionComposite, 
+            Messages.getString( "OpenLDAPSecurityPage.Edit" ), 1 );
         saslSecPropsEditButton.setLayoutData( new GridData( SWT.RIGHT, SWT.CENTER, false, false ) );
         saslSecPropsEditButton.addSelectionListener( saslSecPropsEditSelectionListener );
     }

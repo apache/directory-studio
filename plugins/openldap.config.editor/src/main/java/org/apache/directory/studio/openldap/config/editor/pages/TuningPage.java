@@ -1051,7 +1051,8 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
         
 
         // The SizeLimit edit button
-        sizeLimitEditButton = BaseWidgetUtils.createButton( ldapLimitSectionComposite, "Edit...", 1 );
+        sizeLimitEditButton = BaseWidgetUtils.createButton( ldapLimitSectionComposite, 
+            Messages.getString( "OpenLDAPSecurityPage.Edit" ), 1 ); //$NON-NLS-1$
         sizeLimitEditButton.setLayoutData( new GridData( SWT.RIGHT, SWT.CENTER, false, false ) );
         sizeLimitEditButton.addSelectionListener( sizeLimitEditSelectionListener );
 
@@ -1063,7 +1064,8 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
         timeLimitText.setEditable( false );
 
         // The TimeLimit edit button
-        timeLimitEditButton = BaseWidgetUtils.createButton( ldapLimitSectionComposite, "Edit...", 1 );
+        timeLimitEditButton = BaseWidgetUtils.createButton( ldapLimitSectionComposite, 
+            Messages.getString( "OpenLDAPSecurityPage.Edit" ), 1 );
         timeLimitEditButton.setLayoutData( new GridData( SWT.RIGHT, SWT.CENTER, false, false ) );
         timeLimitEditButton.addSelectionListener( timeLimitEditSelectionListener );
     }

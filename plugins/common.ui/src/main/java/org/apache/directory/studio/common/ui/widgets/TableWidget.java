@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.studio.common.ui.AddEditDialog;
+import org.apache.directory.studio.common.ui.Messages;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -260,11 +261,11 @@ public class TableWidget<E> extends AbstractWidget
         // Create the Add Button and its listener
         if ( toolkit != null )
         {
-            addButton = toolkit.createButton( composite, "Add...", SWT.PUSH );
+            addButton = toolkit.createButton( composite, Messages.getString( "CommonUIWidgets.Add" ), SWT.PUSH );
         }
         else
         {
-            addButton = BaseWidgetUtils.createButton( composite, "Add...", 1 );
+            addButton = BaseWidgetUtils.createButton( composite, Messages.getString( "CommonUIWidgets.Add" ), 1 );
         }
         
         addButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
@@ -275,11 +276,11 @@ public class TableWidget<E> extends AbstractWidget
         {
             if ( toolkit != null )
             {
-                editButton = toolkit.createButton( composite, "Edit...", SWT.PUSH );
+                editButton = toolkit.createButton( composite, Messages.getString( "CommonUIWidgets.Edit" ), SWT.PUSH );
             }
             else
             {
-                editButton = BaseWidgetUtils.createButton( composite, "Edit...", SWT.PUSH );
+                editButton = BaseWidgetUtils.createButton( composite, Messages.getString( "CommonUIWidgets.Edit" ), SWT.PUSH );
             }
             
             // It's not enabled unless we have selected an element
@@ -291,11 +292,11 @@ public class TableWidget<E> extends AbstractWidget
         // Create the Delete Button and its listener
         if ( toolkit != null )
         {
-            deleteButton = toolkit.createButton( composite, "Delete", SWT.PUSH );
+            deleteButton = toolkit.createButton( composite, Messages.getString( "CommonUIWidgets.Delete" ), SWT.PUSH );
         }
         else
         {
-            deleteButton = BaseWidgetUtils.createButton( composite, "Delete", SWT.PUSH );
+            deleteButton = BaseWidgetUtils.createButton( composite, Messages.getString( "CommonUIWidgets.Delete" ), SWT.PUSH );
         }
         
         // It's not selected unless we have selected an index

@@ -492,7 +492,8 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
         toolkit.createLabel( globalSectionComposite, Messages.getString( "OpenLDAPOverviewPage.LogLevel" ) );
         logLevelText = BaseWidgetUtils.createText( globalSectionComposite, "", 1 );
         logLevelText.setEditable( false );
-        logLevelEditButton = BaseWidgetUtils.createButton( globalSectionComposite, "Edit LogLevels...", 1 );
+        logLevelEditButton = BaseWidgetUtils.createButton( globalSectionComposite, 
+            Messages.getString( "OpenLDAPSecurityPage.EditLogLevels" ), 1 );
         logLevelEditButton.addSelectionListener( logLevelEditButtonSelectionListener );
     }
     
