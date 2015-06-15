@@ -1336,25 +1336,24 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
      */
     private void addListeners()
     {
-        tcpBufferTableWidget.addWidgetModifyListener( dirtyWidgetModifyListener );
-
-        sockbufMaxIncomingText.addModifyListener( dirtyModifyListener );
-        sockbufMaxIncomingAuthText.addModifyListener( dirtyModifyListener );
-        concurrencyText.addModifyListener( dirtyModifyListener );
-        connMaxPendingText.addModifyListener( dirtyModifyListener );
-        connMaxPendingAuthText.addModifyListener( dirtyModifyListener );
-        listenerThreadsText.addModifyListener( dirtyModifyListener );
-        threadsText.addModifyListener( dirtyModifyListener );
-        toolThreadsText.addModifyListener( dirtyModifyListener );
-        indexIntLenText.addModifyListener( dirtyModifyListener );
-        indexSubstrAnyLenText.addModifyListener( dirtyModifyListener );
-        indexSubstrAnyStepText.addModifyListener( dirtyModifyListener );
-        indexSubstrIfMaxLenText.addModifyListener( dirtyModifyListener );
-        indexSubstrIfMinLenText.addModifyListener( dirtyModifyListener );
-        writeTimeoutText.addModifyListener( dirtyModifyListener );
-        idleTimeoutText.addModifyListener( dirtyModifyListener );
-        sizeLimitText.addModifyListener( dirtyModifyListener );
-        timeLimitText.addModifyListener( dirtyModifyListener );
+        addDirtyListener( tcpBufferTableWidget );
+        addDirtyListener( sockbufMaxIncomingText );
+        addDirtyListener( sockbufMaxIncomingAuthText );
+        addDirtyListener( concurrencyText );
+        addDirtyListener( connMaxPendingText );
+        addDirtyListener( connMaxPendingAuthText );
+        addDirtyListener( listenerThreadsText );
+        addDirtyListener( threadsText );
+        addDirtyListener( toolThreadsText );
+        addDirtyListener( indexIntLenText );
+        addDirtyListener( indexSubstrAnyLenText );
+        addDirtyListener( indexSubstrAnyStepText );
+        addDirtyListener( indexSubstrIfMaxLenText );
+        addDirtyListener( indexSubstrIfMinLenText );
+        addDirtyListener( writeTimeoutText );
+        addDirtyListener( idleTimeoutText);
+        addDirtyListener( sizeLimitText );
+        addDirtyListener( timeLimitText );
     }
 
 
@@ -1363,24 +1362,23 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
      */
     private void removeListeners()
     {
-        tcpBufferTableWidget.removeWidgetModifyListener( dirtyWidgetModifyListener );
-
-        sockbufMaxIncomingText.removeModifyListener( dirtyModifyListener );
-        sockbufMaxIncomingAuthText.removeModifyListener( dirtyModifyListener );
-        concurrencyText.removeModifyListener( dirtyModifyListener );
-        connMaxPendingText.removeModifyListener( dirtyModifyListener );
-        connMaxPendingAuthText.removeModifyListener( dirtyModifyListener );
-        listenerThreadsText.removeModifyListener( dirtyModifyListener );
-        threadsText.removeModifyListener( dirtyModifyListener );
-        toolThreadsText.removeModifyListener( dirtyModifyListener );
-        indexIntLenText.removeModifyListener( dirtyModifyListener );
-        indexSubstrAnyLenText.removeModifyListener( dirtyModifyListener );
-        indexSubstrAnyStepText.removeModifyListener( dirtyModifyListener );
-        indexSubstrIfMaxLenText.removeModifyListener( dirtyModifyListener );
-        indexSubstrIfMinLenText.removeModifyListener( dirtyModifyListener );
-        writeTimeoutText.removeModifyListener( dirtyModifyListener );
-        idleTimeoutText.removeModifyListener( dirtyModifyListener );
-        sizeLimitText.removeModifyListener( dirtyModifyListener );
-        timeLimitText.removeModifyListener( dirtyModifyListener );
+        removeDirtyListener( tcpBufferTableWidget );
+        removeDirtyListener( sockbufMaxIncomingText );
+        removeDirtyListener( sockbufMaxIncomingAuthText );
+        removeDirtyListener( concurrencyText );
+        removeDirtyListener( connMaxPendingText );
+        removeDirtyListener( connMaxPendingAuthText );
+        removeDirtyListener( listenerThreadsText );
+        removeDirtyListener( threadsText );
+        removeDirtyListener( toolThreadsText );
+        removeDirtyListener( indexIntLenText );
+        removeDirtyListener( indexSubstrAnyLenText );
+        removeDirtyListener( indexSubstrAnyStepText );
+        removeDirtyListener( indexSubstrIfMaxLenText );
+        removeDirtyListener( indexSubstrIfMinLenText );
+        removeDirtyListener( writeTimeoutText );
+        removeDirtyListener( idleTimeoutText);
+        removeDirtyListener( sizeLimitText );
+        removeDirtyListener( timeLimitText );
     }
 }

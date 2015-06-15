@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -40,6 +42,8 @@ import org.eclipse.ui.forms.widgets.TableWrapData;
 import org.eclipse.ui.forms.widgets.TableWrapLayout;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.common.ui.widgets.TableWidget;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.openldap.common.ui.model.PasswordHashEnum;
 import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
 import org.apache.directory.studio.openldap.config.editor.dialogs.OverlayDialog;
@@ -228,6 +232,217 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
     
     
     /**
+     * The olcLocalSSF listener
+     */
+    private ModifyListener localSsfListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            getConfiguration().getGlobal().setOlcLocalSSF( Integer.valueOf( localSsfText.getText() ) );
+        }
+    };
+    
+    
+    /**
+     * The olcPasswordCryptSaltFormat listener
+     */
+    private ModifyListener passwordCryptSaltFormatListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            getConfiguration().getGlobal().setOlcPasswordCryptSaltFormat( passwordCryptSaltFormatText.getText() );
+        }
+    };
+    
+    
+    /**
+     * The olcPasswordHash listener
+     */
+    private WidgetModifyListener passwordHashListener = new WidgetModifyListener()
+    {
+        public void widgetModified( WidgetModifyEvent e )
+        {
+            List<String> passwordHashes = new ArrayList<String>();
+            
+            for ( PasswordHashEnum passwordHash : passwordHashTableWidget.getElements() )
+            {
+                passwordHashes.add( passwordHash.getName() );
+            }
+            
+            getConfiguration().getGlobal().setOlcPasswordHash( passwordHashes );
+        }
+    };
+    
+    
+    /**
+     * The olcTlsCertificateFile listener
+     */
+    private ModifyListener tlsCertificateFileTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            getConfiguration().getGlobal().setOlcTLSCertificateFile( tlsCertificateFileText.getText() );
+        }
+    };
+    
+    
+    /**
+     * The olcTlsCertificateKeyFile listener
+     */
+    private ModifyListener tlsCertificateKeyFileTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            getConfiguration().getGlobal().setOlcTLSCertificateKeyFile( tlsCertificateKeyFileText.getText() );
+        }
+    };
+    
+    
+    /**
+     * The olcTlsCACertificateFile listener
+     */
+    private ModifyListener tlsCaCertificateFileTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            getConfiguration().getGlobal().setOlcTLSCACertificateFile( tlsCaCertificateFileText.getText() );
+        }
+    };
+    
+    
+    /**
+     * The olcTlsCACertificatePath listener
+     */
+    private ModifyListener tlsCaCertificatePathTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            getConfiguration().getGlobal().setOlcTLSCACertificatePath( tlsCaCertificatePathText.getText() );
+        }
+    };
+    
+    
+    /**
+     * The olcTlsCipherSuite listener
+     */
+    private ModifyListener tlsCipherSuiteTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            getConfiguration().getGlobal().setOlcTLSCipherSuite( tlsCipherSuiteText.getText() );
+        }
+    };
+    
+    
+    /**
+     * The olcTlsCrlFile listener
+     */
+    private ModifyListener tlsCrlFileTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            getConfiguration().getGlobal().setOlcTLSCRLFile( tlsCrlFileText.getText() );
+        }
+    };
+    
+    
+    /**
+     * The olcTlsCrlCheck listener
+     */
+    private SelectionListener tlsCrlCheckComboListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            getConfiguration().getGlobal().setOlcTLSCRLCheck( tlsCrlCheckCombo.getText() );
+        }
+    };
+    
+    
+    /**
+     * The olcTlsDhParamFile listener
+     */
+    private ModifyListener tlsDhParamFileTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            getConfiguration().getGlobal().setOlcTLSDHParamFile(  tlsDhParamFileText.getText() );
+        }
+    };
+    
+    
+    /**
+     * The olcTlsRandFile listener
+     */
+    private ModifyListener tlsRandFileTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            getConfiguration().getGlobal().setOlcTLSRandFile(  tlsRandFileText.getText() );
+        }
+    };
+    
+    
+    /**
+     * The olcTlsProtocolMin listener
+     */
+    private SelectionListener tlsProtocolMinComboListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            getConfiguration().getGlobal().setOlcTLSProtocolMin( tlsProtocolMinCombo.getText() );
+        }
+    };
+    
+    
+    /**
+     * The olcTlsVerifyClient listener
+     */
+    private SelectionListener tlsVerifyClientComboListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            getConfiguration().getGlobal().setOlcTLSVerifyClient( tlsVerifyClientCombo.getText() );
+        }
+    };
+    
+    
+    /**
+     * The olcSaslAuxProps listener
+     */
+    private ModifyListener saslAuxPropsTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            getConfiguration().getGlobal().setOlcSaslAuxprops( saslAuxPropsText.getText() );
+        }
+    };
+    
+    
+    /**
+     * The olcSaslHost listener
+     */
+    private ModifyListener saslHostTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            getConfiguration().getGlobal().setOlcSaslHost( saslHostText.getText() );
+        }
+    };
+    
+    
+    /**
+     * The olcSaslrealm listener
+     */
+    private ModifyListener saslRealmTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            getConfiguration().getGlobal().setOlcSaslRealm( saslRealmText.getText() );
+        }
+    };
+    
+    
+    /**
      * The listener for the SaslSecProps Text
      */
     private SelectionListener saslSecPropsEditSelectionListener = new SelectionAdapter()
@@ -244,6 +459,8 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
                 {
                     saslSecPropsText.setText( saslSecPropsValue );
                 }
+                
+                getConfiguration().getGlobal().setOlcSaslSecProps( saslSecPropsValue );
             }
         }
     };
@@ -360,53 +577,64 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
         toolkit.createLabel( tlsSectionComposite, Messages.getString( "OpenLDAPSecurityPage.TLSCertificateFile" ) ); //$NON-NLS-1$
         tlsCertificateFileText = toolkit.createText( tlsSectionComposite, "" );
         tlsCertificateFileText.setLayoutData( new GridData(GridData.FILL_HORIZONTAL ) );
+        addModifyListener( tlsCertificateFileText, tlsCertificateFileTextListener );
 
         // The tlsCertificateKeyFile parameter
         toolkit.createLabel( tlsSectionComposite, Messages.getString( "OpenLDAPSecurityPage.TLSCertificateKeyFile" ) ); //$NON-NLS-1$
         tlsCertificateKeyFileText = toolkit.createText( tlsSectionComposite, "" );
         tlsCertificateKeyFileText.setLayoutData( new GridData(GridData.FILL_HORIZONTAL ) );
+        addModifyListener( tlsCertificateKeyFileText, tlsCertificateKeyFileTextListener );
 
         // The tlsCaCertificateFile parameter
         toolkit.createLabel( tlsSectionComposite, Messages.getString( "OpenLDAPSecurityPage.TLSCACertificateFile" ) ); //$NON-NLS-1$
         tlsCaCertificateFileText = toolkit.createText( tlsSectionComposite, "" );
         tlsCaCertificateFileText.setLayoutData( new GridData(GridData.FILL_HORIZONTAL ) );
+        addModifyListener( tlsCaCertificateFileText, tlsCaCertificateFileTextListener );
 
         // The tlsCaCertificatePath parameter
         toolkit.createLabel( tlsSectionComposite, Messages.getString( "OpenLDAPSecurityPage.TLSCACertificatePath" ) ); //$NON-NLS-1$
         tlsCaCertificatePathText = toolkit.createText( tlsSectionComposite, "" );
         tlsCaCertificatePathText.setLayoutData( new GridData(GridData.FILL_HORIZONTAL ) );
+        addModifyListener( tlsCaCertificatePathText, tlsCaCertificatePathTextListener );
 
         // The tlsCipherSuite parameter
         toolkit.createLabel( tlsSectionComposite, Messages.getString( "OpenLDAPSecurityPage.TLSCipherSuite" ) ); //$NON-NLS-1$
         tlsCipherSuiteText = toolkit.createText( tlsSectionComposite, "" );
         tlsCipherSuiteText.setLayoutData( new GridData(GridData.FILL_HORIZONTAL ) );
+        addModifyListener( tlsCipherSuiteText, tlsCipherSuiteTextListener );
 
         // The tlsDHParamFile parameter
         toolkit.createLabel( tlsSectionComposite, Messages.getString( "OpenLDAPSecurityPage.TLSDHParamFile" ) ); //$NON-NLS-1$
         tlsDhParamFileText = toolkit.createText( tlsSectionComposite, "" );
         tlsDhParamFileText.setLayoutData( new GridData(GridData.FILL_HORIZONTAL ) );
+        addModifyListener( tlsDhParamFileText, tlsDhParamFileTextListener );
 
         // The tlsRandFile parameter
         toolkit.createLabel( tlsSectionComposite, Messages.getString( "OpenLDAPSecurityPage.TLSRandFile" ) ); //$NON-NLS-1$
         tlsRandFileText = toolkit.createText( tlsSectionComposite, "" );
         tlsRandFileText.setLayoutData( new GridData(GridData.FILL_HORIZONTAL ) );
+        addModifyListener( tlsRandFileText, tlsRandFileTextListener );
 
         // The tlsCRLFile parameter
         toolkit.createLabel( tlsSectionComposite, Messages.getString( "OpenLDAPSecurityPage.TLSCRLFile" ) ); //$NON-NLS-1$
         tlsCrlFileText = toolkit.createText( tlsSectionComposite, "" );
         tlsCrlFileText.setLayoutData( new GridData(GridData.FILL_HORIZONTAL ) );
+        addModifyListener( tlsCrlFileText, tlsCrlFileTextListener );
 
         // The tlsCRLCheck parameter
         toolkit.createLabel( tlsSectionComposite, Messages.getString( "OpenLDAPSecurityPage.TLSCRLCheck" ) ); //$NON-NLS-1$
         tlsCrlCheckCombo = BaseWidgetUtils.createCombo( tlsSectionComposite, crlChecks, -1, 1 );
+        tlsCrlCheckCombo.addSelectionListener( tlsCrlCheckComboListener );
 
         // The tlsProtocolMin parameter
         toolkit.createLabel( tlsSectionComposite, Messages.getString( "OpenLDAPSecurityPage.TLSProtocolMin" ) ); //$NON-NLS-1$
         tlsProtocolMinCombo = BaseWidgetUtils.createCombo( tlsSectionComposite, protocols, -1, 1 );
+        tlsProtocolMinCombo.addSelectionListener( tlsProtocolMinComboListener );
 
         // The tlsProtocolMin parameter
         toolkit.createLabel( tlsSectionComposite, Messages.getString( "OpenLDAPSecurityPage.TLSVerifyClient" ) ); //$NON-NLS-1$
         tlsVerifyClientCombo = BaseWidgetUtils.createCombo( tlsSectionComposite, verifyClients, -1, 1 );
+        tlsVerifyClientCombo.addSelectionListener( tlsVerifyClientComboListener );
     }
 
 
@@ -446,16 +674,19 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
         toolkit.createLabel( saslSectionComposite, Messages.getString( "OpenLDAPSecurityPage.SaslHost" ) ); //$NON-NLS-1$
         saslHostText = toolkit.createText( saslSectionComposite, "" );
         saslHostText.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false, 2, 1 ) );
+        addModifyListener( saslHostText, saslHostTextListener );
 
         // The saslRealm parameter
         toolkit.createLabel( saslSectionComposite, Messages.getString( "OpenLDAPSecurityPage.SaslRealm" ) ); //$NON-NLS-1$
         saslRealmText = toolkit.createText( saslSectionComposite, "" );
         saslRealmText.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false, 2, 1 ) );
+        addModifyListener( saslRealmText, saslRealmTextListener );
 
         // The saslAuxProps parameter
         toolkit.createLabel( saslSectionComposite, Messages.getString( "OpenLDAPSecurityPage.SaslAuxProps" ) ); //$NON-NLS-1$
         saslAuxPropsText = toolkit.createText( saslSectionComposite, "" );
         saslAuxPropsText.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false, 2, 1 ) );
+        addModifyListener( saslAuxPropsText, saslAuxPropsTextListener );
 
         // The saslSecProps parameter
         toolkit.createLabel( saslSectionComposite, Messages.getString( "OpenLDAPSecurityPage.SaslSecProps" ) ); //$NON-NLS-1$
@@ -512,10 +743,12 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
         // The LocalSSF parameter
         toolkit.createLabel( miscSectionComposite, Messages.getString( "OpenLDAPSecurityPage.LocalSSF" ) ); //$NON-NLS-1$
         localSsfText = toolkit.createText( miscSectionComposite, "" );
+        addModifyListener( localSsfText, localSsfListener );
 
         // The PasswordCryptSaltFormat parameter
         toolkit.createLabel( miscSectionComposite, Messages.getString( "OpenLDAPSecurityPage.PasswordCryptSaltFormat" ) ); //$NON-NLS-1$
         passwordCryptSaltFormatText = toolkit.createText( miscSectionComposite, "" );
+        addModifyListener( passwordCryptSaltFormatText, passwordCryptSaltFormatListener );
         
         // A blank line
         toolkit.createLabel( miscSectionComposite, "" );
@@ -533,7 +766,8 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
 
         passwordHashTableWidget.createWidgetNoEdit( miscSectionComposite, toolkit );
         passwordHashTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 4, 1 ) );
-        
+        addModifyListener( passwordHashTableWidget, passwordHashListener );
+
         // A blank line
         toolkit.createLabel( miscSectionComposite, "" );
         toolkit.createLabel( miscSectionComposite, "" );
@@ -862,25 +1096,25 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
      */
     private void addListeners()
     {
-        localSsfText.addModifyListener( dirtyModifyListener );
-        passwordCryptSaltFormatText.addModifyListener( dirtyModifyListener );
-        passwordHashTableWidget.addWidgetModifyListener( dirtyWidgetModifyListener );
-        saslAuxPropsText.addModifyListener( dirtyModifyListener );
-        saslHostText.addModifyListener( dirtyModifyListener );
-        saslRealmText.addModifyListener( dirtyModifyListener );
-        saslSecPropsText.addModifyListener( dirtyModifyListener );
-        securityTableWidget.addWidgetModifyListener( dirtyWidgetModifyListener );
-        tlsCaCertificateFileText.addModifyListener( dirtyModifyListener );
-        tlsCaCertificatePathText.addModifyListener( dirtyModifyListener );
-        tlsCertificateFileText.addModifyListener( dirtyModifyListener );
-        tlsCertificateKeyFileText.addModifyListener( dirtyModifyListener );
-        tlsCipherSuiteText.addModifyListener( dirtyModifyListener );
-        tlsCrlCheckCombo.addModifyListener( dirtyModifyListener );
-        tlsCrlFileText.addModifyListener( dirtyModifyListener );
-        tlsDhParamFileText.addModifyListener( dirtyModifyListener );
-        tlsProtocolMinCombo.addModifyListener( dirtyModifyListener );
-        tlsRandFileText.addModifyListener( dirtyModifyListener );
-        tlsVerifyClientCombo.addModifyListener( dirtyModifyListener );
+        addDirtyListener( localSsfText );
+        addDirtyListener( passwordCryptSaltFormatText );
+        addDirtyListener( passwordHashTableWidget );
+        addDirtyListener( saslAuxPropsText );
+        addDirtyListener( saslHostText );
+        addDirtyListener( saslRealmText );
+        addDirtyListener( saslSecPropsText );
+        addDirtyListener( securityTableWidget );
+        addDirtyListener( tlsCaCertificateFileText );
+        addDirtyListener( tlsCaCertificatePathText );
+        addDirtyListener( tlsCertificateFileText );
+        addDirtyListener( tlsCertificateKeyFileText );
+        addDirtyListener( tlsCipherSuiteText );
+        addDirtyListener( tlsCrlCheckCombo );
+        addDirtyListener( tlsCrlFileText );
+        addDirtyListener( tlsDhParamFileText );
+        addDirtyListener( tlsProtocolMinCombo );
+        addDirtyListener( tlsRandFileText );
+        addDirtyListener( tlsVerifyClientCombo );
     }
 
 
@@ -889,24 +1123,24 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
      */
     private void removeListeners()
     {
-        localSsfText.removeModifyListener( dirtyModifyListener );
-        passwordCryptSaltFormatText.removeModifyListener( dirtyModifyListener );
-        passwordHashTableWidget.removeWidgetModifyListener( dirtyWidgetModifyListener );
-        saslAuxPropsText.removeModifyListener( dirtyModifyListener );
-        saslHostText.removeModifyListener( dirtyModifyListener );
-        saslRealmText.removeModifyListener( dirtyModifyListener );
-        saslSecPropsText.removeModifyListener( dirtyModifyListener );
-        securityTableWidget.removeWidgetModifyListener( dirtyWidgetModifyListener );
-        tlsCaCertificateFileText.removeModifyListener( dirtyModifyListener );
-        tlsCaCertificatePathText.removeModifyListener( dirtyModifyListener );
-        tlsCertificateFileText.removeModifyListener( dirtyModifyListener );
-        tlsCertificateKeyFileText.removeModifyListener( dirtyModifyListener );
-        tlsCipherSuiteText.removeModifyListener( dirtyModifyListener );
-        tlsCrlCheckCombo.removeModifyListener( dirtyModifyListener );
-        tlsCrlFileText.removeModifyListener( dirtyModifyListener );
-        tlsDhParamFileText.removeModifyListener( dirtyModifyListener );
-        tlsProtocolMinCombo.removeModifyListener( dirtyModifyListener );
-        tlsRandFileText.removeModifyListener( dirtyModifyListener );
-        tlsVerifyClientCombo.removeModifyListener( dirtyModifyListener );
+        removeDirtyListener( localSsfText );
+        removeDirtyListener( passwordCryptSaltFormatText );
+        removeDirtyListener( passwordHashTableWidget );
+        removeDirtyListener( saslAuxPropsText );
+        removeDirtyListener( saslHostText );
+        removeDirtyListener( saslRealmText );
+        removeDirtyListener( saslSecPropsText );
+        removeDirtyListener( securityTableWidget );
+        removeDirtyListener( tlsCaCertificateFileText );
+        removeDirtyListener( tlsCaCertificatePathText );
+        removeDirtyListener( tlsCertificateFileText );
+        removeDirtyListener( tlsCertificateKeyFileText );
+        removeDirtyListener( tlsCipherSuiteText );
+        removeDirtyListener( tlsCrlCheckCombo );
+        removeDirtyListener( tlsCrlFileText );
+        removeDirtyListener( tlsDhParamFileText );
+        removeDirtyListener( tlsProtocolMinCombo );
+        removeDirtyListener( tlsRandFileText );
+        removeDirtyListener( tlsVerifyClientCombo );
     }
 }

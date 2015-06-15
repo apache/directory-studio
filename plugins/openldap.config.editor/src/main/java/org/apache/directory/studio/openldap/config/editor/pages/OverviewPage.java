@@ -859,7 +859,7 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
     private void removeListeners()
     {
         // The serverID Text 
-        serverIdTableWidget.removeWidgetModifyListener( dirtyWidgetModifyListener );
+        removeDirtyListener( serverIdTableWidget );
 
         // The configDir Text 
         removeDirtyListener( configDirText );
@@ -881,7 +881,7 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
     private void addListeners()
     {
         // The serverID Text 
-        serverIdTableWidget.addWidgetModifyListener( dirtyWidgetModifyListener );
+        addDirtyListener( serverIdTableWidget );
 
         // The configDir Text 
         addDirtyListener( configDirText );

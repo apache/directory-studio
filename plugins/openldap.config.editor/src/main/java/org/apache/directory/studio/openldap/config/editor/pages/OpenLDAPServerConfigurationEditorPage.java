@@ -480,6 +480,17 @@ public abstract class OpenLDAPServerConfigurationEditorPage extends FormPage
 
 
     /**
+     * Removes a 'dirty' listener to the given TableWidget.
+     *
+     * @param tableWidget the TableWidget control
+     */
+    protected void removeDirtyListener( TableWidget<?> tableWidget )
+    {
+        removeModifyListener( tableWidget, dirtyWidgetModifyListener );
+    }
+
+
+    /**
      * Sets the selection state of the button widget.
      * <p>
      * Verifies that the button exists and is not disposed 
