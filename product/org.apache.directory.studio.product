@@ -232,6 +232,7 @@ http://www.apache.org/licenses/
       <feature id="org.apache.directory.studio.ldapbrowser.feature"/>
       <feature id="org.apache.directory.studio.ldifeditor.feature"/>
       <feature id="org.apache.directory.studio.schemaeditor.feature"/>
+      <feature id="org.apache.directory.studio.openldap.feature"/>
       <feature id="org.eclipse.rcp"/>
       <feature id="org.eclipse.emf.ecore"/>
       <feature id="org.eclipse.e4.rcp"/>
