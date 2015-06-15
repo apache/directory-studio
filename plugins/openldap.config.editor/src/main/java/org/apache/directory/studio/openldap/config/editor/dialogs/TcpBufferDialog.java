@@ -125,6 +125,7 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
                 if ( ( sizeValue < 0L ) || ( sizeValue > TcpBufferWrapper.MAX_TCP_BUFFER_SIZE ) )
                 {
                     sizeText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
+                    tcpBufferText.setText( getEditedElement().toString() );
                     tcpBufferText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
                     okButton.setEnabled( false );
                     return;
@@ -264,16 +265,6 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
     {
         super.configureShell( shell );
         shell.setText( "TcpBuffer" );
-    }
-
-
-    /**
-     * Construct the TcpBufferWrapper from what we have in the dialog
-     * {@inheritDoc}
-     */
-    protected void okPressed()
-    {
-        super.okPressed();
     }
 
 
@@ -433,5 +424,4 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
         readCheckbox.addSelectionListener( checkboxSelectionListener );
         writeCheckbox.addSelectionListener( checkboxSelectionListener );
     }
-
 }

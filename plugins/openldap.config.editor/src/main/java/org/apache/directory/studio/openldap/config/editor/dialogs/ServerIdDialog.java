@@ -20,13 +20,10 @@
 package org.apache.directory.studio.openldap.config.editor.dialogs;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.directory.api.ldap.model.exception.LdapURLEncodingException;
 import org.apache.directory.api.ldap.model.url.LdapUrl;
+import org.apache.directory.studio.common.ui.AddEditDialog;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -65,17 +62,8 @@ import org.apache.directory.studio.openldap.config.editor.wrappers.ServerIdWrapp
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ServerIdDialog extends Dialog
+public class ServerIdDialog extends AddEditDialog<ServerIdWrapper>
 {
-    /** The ServerId */
-    private ServerIdWrapper serverId;
-
-    /** The new serverId */
-    private ServerIdWrapper newServerId;
-
-    /** The list of existing ServerID */
-    List<ServerIdWrapper> serverIdList;
-    
     // UI widgets
     /** The ID Text */
     private Text idText;
@@ -91,33 +79,11 @@ public class ServerIdDialog extends Dialog
      * Create a new instance of the ServerIdDialog
      * 
      * @param parentShell The parent Shell
-     * @param serverId The instance containing the ServerID data
      */
-    public ServerIdDialog( Shell parentShell, List<ServerIdWrapper> serverIdList, ServerIdWrapper serverId )
+    public ServerIdDialog( Shell parentShell )
     {
         super( parentShell );
         super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
-        this.serverId = serverId;
-        this.serverIdList = serverIdList;
-        
-        if ( serverIdList == null )
-        {
-            this.serverIdList = new ArrayList<ServerIdWrapper>();
-        }
-    }
-
-
-    /**
-     * Create a new instance of the ServerIdDialog
-     * 
-     * @param parentShell The parent Shell
-     * @param serverIdStr : The string containing the serverID
-     */
-    public ServerIdDialog( Shell parentShell, String serverIdStr )
-    {
-        super( parentShell );
-        super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
-        this.serverId = new ServerIdWrapper( serverIdStr );
     }
     
     
@@ -140,27 +106,26 @@ public class ServerIdDialog extends Dialog
             try
             {
                 int idValue = Integer.parseInt( idText.getText() );
+                serverIdText.setText( getEditedElement().toString() );
 
                 // The value must be between 0 and 4095, and it must not already exists
                 if ( ( idValue < 0 ) || ( idValue > 4096 ) )
                 {
-                    System.out.println( "Wrong ID : it must be a value in [0..4095]" );
-                    serverIdText.setText( "Wrong ID : it must be a value in [0..4095]" );
                     serverIdText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
                     okButton.setEnabled( false );
+                    
                     return;
                 }
                 else
                 {
                     // Be sure the value is not already taken
-                    for ( ServerIdWrapper serverIdWrapper : serverIdList )
+                    for ( ServerIdWrapper serverIdWrapper : getElements() )
                     {
                         if ( serverIdWrapper.getServerId() == idValue )
                         {
-                            System.out.println( "Wrong ServerID : already taken" );
-                            serverIdText.setText( "Wrong ID : it's already taken by another Server ID" );
                             serverIdText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
                             okButton.setEnabled( false );
+                            
                             return;
                         }
                     }
@@ -168,13 +133,13 @@ public class ServerIdDialog extends Dialog
                 
                 serverIdText.setText( idText.getText() + ' ' + urlText.getText() );
                 serverIdText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
+                getEditedElement().setServerId( idValue );
                 okButton.setEnabled( true );
             }
             catch ( NumberFormatException nfe )
             {
                 // Not even a number
-                System.out.println( "Wrong ServerID : it must be an integer" );
-                serverIdText.setText( "Wrong ID : it must be an integer in [0..4095]" );
+                serverIdText.setText( getEditedElement().toString() );
                 serverIdText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
                 okButton.setEnabled( false );
             }
@@ -201,16 +166,16 @@ public class ServerIdDialog extends Dialog
 
             try
             {
-                new LdapUrl( urlText.getText() );
-                
-                serverIdText.setText( idText.getText() + ' ' + urlText.getText() );
+                String urlStr = urlText.getText();
+                new LdapUrl( urlStr );
+
+                getEditedElement().setUrl( urlStr );
+                serverIdText.setText( idText.getText() + ' ' + urlStr );
                 serverIdText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
                 okButton.setEnabled( true );
             }
             catch ( LdapURLEncodingException luee )
             {
-                System.out.println( "Wrong ServerID : the URL is invalid" );
-                serverIdText.setText( "Wrong ServerID : the URL is invalid" );
                 serverIdText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
                 okButton.setEnabled( false );
             }
@@ -226,22 +191,6 @@ public class ServerIdDialog extends Dialog
     {
         super.configureShell( shell );
         shell.setText( "ServerId" );
-    }
-
-
-    /**
-     * We have to check that the ID does not already exist.
-     * {@inheritDoc}
-     */
-    protected void okPressed()
-    {
-        // Creating the new index
-        String id = idText.getText();
-        String url = urlText.getText();
-        int idValue = Integer.valueOf( id );
-        
-        newServerId = new ServerIdWrapper( idValue , url );
-        super.okPressed();
     }
 
 
@@ -271,7 +220,8 @@ public class ServerIdDialog extends Dialog
         createServerIdEditGroup( composite );
         createServerIdShowGroup( composite );
 
-        initFromServerId();
+        initDialog();
+        addListeners();
 
         applyDialogFont( composite );
         
@@ -304,13 +254,11 @@ public class ServerIdDialog extends Dialog
         BaseWidgetUtils.createLabel( serverIdGroup, "ID:", 1 );
         idText = BaseWidgetUtils.createText( serverIdGroup, "", 1 );
         idText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        idText.addModifyListener( idTextListener );
 
         // URL Text
         BaseWidgetUtils.createLabel( serverIdGroup, "URL:", 1 );
         urlText = BaseWidgetUtils.createText( serverIdGroup, "", 1 );
         urlText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        urlText.addModifyListener( urlTextListener );
     }
 
 
@@ -343,13 +291,15 @@ public class ServerIdDialog extends Dialog
     /**
      * Initializes the UI from the ServerId
      */
-    private void initFromServerId()
+    protected void initDialog()
     {
-        if ( serverId != null )
+        ServerIdWrapper editedElement = (ServerIdWrapper)getEditedElement();
+        
+        if ( editedElement != null )
         {
-            idText.setText( Integer.toString( serverId.getServerId() ) );
+            idText.setText( Integer.toString( editedElement.getServerId() ) );
             
-            String url = serverId.getUrl();
+            String url = editedElement.getUrl();
             
             if ( url == null )
             {
@@ -357,19 +307,36 @@ public class ServerIdDialog extends Dialog
             }
             else
             {
-                urlText.setText( serverId.getUrl() );
+                urlText.setText( editedElement.getUrl() );
             }
         }
     }
 
 
     /**
-     * Gets the new ServerId.
-     *
-     * @return the new serverID
+     * Add a new Element that will be edited
      */
-    public ServerIdWrapper getNewServerId()
+    public void addNewElement()
     {
-        return newServerId;
+        setEditedElement( new ServerIdWrapper( "" ) );
+    }
+
+
+    @Override
+    public void addNewElement( ServerIdWrapper editedElement )
+    {
+        ServerIdWrapper newElement = (ServerIdWrapper)editedElement.clone();
+        setEditedElement( newElement );
+        
+    }
+
+    
+    /**
+     * Adds listeners.
+     */
+    private void addListeners()
+    {
+        idText.addModifyListener( idTextListener );
+        urlText.addModifyListener( urlTextListener );
     }
 }

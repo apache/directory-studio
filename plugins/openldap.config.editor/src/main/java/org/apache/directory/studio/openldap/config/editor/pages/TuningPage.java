@@ -43,6 +43,8 @@ import org.eclipse.ui.forms.widgets.TableWrapData;
 import org.eclipse.ui.forms.widgets.TableWrapLayout;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.common.ui.widgets.TableWidget;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
 import org.apache.directory.studio.openldap.config.editor.dialogs.OverlayDialog;
 import org.apache.directory.studio.openldap.config.editor.dialogs.SizeLimitDialog;
@@ -206,8 +208,6 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
     {
         super( editor, ID, TITLE );
     }
-
-    
     
     
     /**
@@ -739,6 +739,27 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
     };
     
     
+    // The listener for the TcpBufferTableWidget
+    private WidgetModifyListener tcpBufferTableWidgetListener = new WidgetModifyListener()
+    {
+        @Override
+        public void widgetModified( WidgetModifyEvent event )
+        {
+            // Process the parameter modification
+            TableWidget<TcpBufferWrapper> tcpBufferWrapperTable = (TableWidget<TcpBufferWrapper>)event.getSource();
+            List<String> tcpBuffers = new ArrayList<String>();
+            
+            for ( Object tcpBufferWrapper : tcpBufferWrapperTable.getElements() )
+            {
+                String str = tcpBufferWrapper.toString();
+                tcpBuffers.add( str );
+            }
+            
+            getConfiguration().getGlobal().setOlcTCPBuffer( tcpBuffers );
+        }
+    };
+    
+    
     /**
      * Creates the OpenLDAP tuning config Tab. It contains 2 rows, with
      * 2 columns :
@@ -849,6 +870,7 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
 
         tcpBufferTableWidget.createWidgetWithEdit( networkSectionComposite, toolkit );
         tcpBufferTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 4, 1 ) );
+        tcpBufferTableWidget.addWidgetModifyListener( tcpBufferTableWidgetListener );
 
         // The olcSockbufMaxIncoming parameter.
         toolkit.createLabel( networkSectionComposite, 

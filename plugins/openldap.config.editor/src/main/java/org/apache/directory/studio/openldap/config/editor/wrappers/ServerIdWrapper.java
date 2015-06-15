@@ -19,6 +19,8 @@
  */
 package org.apache.directory.studio.openldap.config.editor.wrappers;
 
+import org.apache.directory.api.util.Strings;
+
 /**
  * A wrapper for a ServerID which can be either an integer between 0 and 4095 
  * (or from 0x0 to 0xFFF), and may be followed by an URL. We can't have both format,
@@ -65,7 +67,10 @@ public class ServerIdWrapper implements Cloneable
      */
     public ServerIdWrapper( String serverIdStr )
     {
-        this.serverId = Integer.parseInt( serverIdStr );
+        if ( !Strings.isEmpty( serverIdStr ) )
+        {
+            this.serverId = Integer.parseInt( serverIdStr );
+        }
     }
 
     

@@ -342,7 +342,8 @@ public class TableWidget<E> extends AbstractWidget
         if ( elements != null )
         {
             List<E> copy = new ArrayList<E>( elements.size() );
-            System.arraycopy( elements, 0, copy, 0, elements.size() );
+            
+            copy.addAll( elements );
             
             return copy;
         }

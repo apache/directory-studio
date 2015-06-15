@@ -25,10 +25,14 @@ import java.util.List;
 
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.common.ui.widgets.TableWidget;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.openldap.common.ui.model.LogLevelEnum;
 import org.apache.directory.studio.openldap.common.ui.dialogs.LogLevelDialog;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginUtils;
 import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
+import org.apache.directory.studio.openldap.config.editor.dialogs.ServerIdDialog;
 import org.apache.directory.studio.openldap.config.editor.overlays.ModuleWrapper;
 import org.apache.directory.studio.openldap.config.editor.overlays.ModuleWrapperLabelProvider;
 import org.apache.directory.studio.openldap.config.editor.overlays.ModuleWrapperViewerSorter;
@@ -37,9 +41,9 @@ import org.apache.directory.studio.openldap.config.editor.wrappers.DatabaseWrapp
 import org.apache.directory.studio.openldap.config.editor.wrappers.DatabaseWrapperLabelProvider;
 import org.apache.directory.studio.openldap.config.editor.wrappers.DatabaseWrapperViewerSorter;
 import org.apache.directory.studio.openldap.config.editor.wrappers.ServerIdWrapper;
+import org.apache.directory.studio.openldap.config.editor.wrappers.ServerIdWrapperLabelProvider;
 import org.apache.directory.studio.openldap.config.model.OlcModuleList;
 import org.apache.directory.studio.openldap.config.model.database.OlcDatabaseConfig;
-import org.apache.directory.studio.openldap.config.model.widgets.ServerIdTableWidget;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
@@ -128,7 +132,7 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
     private List<ServerIdWrapper> serverIdWrappers = new ArrayList<ServerIdWrapper>();
     
     /** The Widget used to manage ServerID */
-    private ServerIdTableWidget serverIdWidget;
+    private TableWidget<ServerIdWrapper> serverIdTableWidget;
 
     /** olcConfigDir */
     private Text configDirText;
@@ -321,6 +325,27 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
         }
     };
 
+    
+    // The listener for the ServerIdTableWidget
+    private WidgetModifyListener serverIdTableWidgetListener = new WidgetModifyListener()
+    {
+        @Override
+        public void widgetModified( WidgetModifyEvent event )
+        {
+            // Process the parameter modification
+            TableWidget<ServerIdWrapper> serverIdWrapperTable = (TableWidget<ServerIdWrapper>)event.getSource();
+            List<String> serverIds = new ArrayList<String>();
+            
+            for ( Object serverIdWrapper : serverIdWrapperTable.getElements() )
+            {
+                String str = serverIdWrapper.toString();
+                serverIds.add( str );
+            }
+            
+            getConfiguration().getGlobal().setOlcServerID( serverIds );
+        }
+    };
+
 
     /**
      * Creates the global Overview OpenLDAP config Tab. It contains 3 rows, with
@@ -437,10 +462,14 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
         serverIdLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, false, 5, 1 ) );
 
         // The ServerID widget
-        serverIdWidget = new ServerIdTableWidget();
-        serverIdWidget.createWidget( globalSectionComposite );
-        serverIdWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 5, 1 ) );
-        
+        serverIdTableWidget = new TableWidget<ServerIdWrapper>();
+        serverIdTableWidget.setLabelProvider( new ServerIdWrapperLabelProvider() );
+        serverIdTableWidget.setElementDialog( new ServerIdDialog( null ) );
+
+        serverIdTableWidget.createWidgetWithEdit( globalSectionComposite, toolkit );
+        serverIdTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 5, 1 ) );
+        serverIdTableWidget.addWidgetModifyListener( serverIdTableWidgetListener );
+
         // One blank line
         for ( int i = 0; i < gridLayout.numColumns; i++ )
         {
@@ -765,7 +794,7 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
                 serverIdWrappers.add( new ServerIdWrapper( serverIdWrapper ) );
             }
 
-            serverIdWidget.setElements( serverIdWrappers );
+            serverIdTableWidget.setElements( serverIdWrappers );
             
             // Update the ConfigDirText
             configDirText.setText( getConfiguration().getGlobal().getOlcConfigDir() );
@@ -830,7 +859,7 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
     private void removeListeners()
     {
         // The serverID Text 
-        //removeDirtyListener( serverIdText );
+        serverIdTableWidget.removeWidgetModifyListener( dirtyWidgetModifyListener );
 
         // The configDir Text 
         removeDirtyListener( configDirText );
@@ -852,7 +881,7 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
     private void addListeners()
     {
         // The serverID Text 
-        //addDirtyListener( serverIdText );
+        serverIdTableWidget.addWidgetModifyListener( dirtyWidgetModifyListener );
 
         // The configDir Text 
         addDirtyListener( configDirText );
