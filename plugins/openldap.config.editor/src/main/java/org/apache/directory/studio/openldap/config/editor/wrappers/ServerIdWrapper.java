@@ -24,7 +24,10 @@ import org.apache.directory.api.util.Strings;
 /**
  * A wrapper for a ServerID which can be either an integer between 0 and 4095 
  * (or from 0x0 to 0xFFF), and may be followed by an URL. We can't have both format,
- * and if it's not an URL, then only one value is accepted
+ * and if it's not an URL, then only one value is accepted. The syntax is :
+ * <pre>
+ * ServerId ::= ( INT | HEX ) [ ' ' URL ]
+ * </pre> 
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -61,6 +64,21 @@ public class ServerIdWrapper implements Cloneable
 
     
     /**
+     * Parse a String that contains either a integer value or an hexa value
+     */
+    private int parseInt( String str )
+    {
+        if ( str.startsWith( "0x" ) || str.startsWith( "0X" ) )
+        {
+            return Integer.parseInt( str.substring( 2 ), 16 );
+        }
+        else
+        {
+            return Integer.parseInt( str );
+        }
+    }
+    
+    /**
      * Creates a new instance of ServerIdWrapper.
      *
      * @param serverIdStr the serverID
@@ -69,7 +87,20 @@ public class ServerIdWrapper implements Cloneable
     {
         if ( !Strings.isEmpty( serverIdStr ) )
         {
-            this.serverId = Integer.parseInt( serverIdStr );
+            // Let's see if we have an URL, and if so, it's after the number 
+            int pos = serverIdStr.indexOf( ' ' );
+            
+            if ( pos == -1 )
+            {
+                // No URL
+                serverId = parseInt( serverIdStr );
+            }
+            else
+            {
+                // ServerID and URL
+                this.serverId = parseInt( serverIdStr.substring( 0, pos ) );
+                this.url = serverIdStr.substring( pos + 1 );
+            }
         }
     }
 

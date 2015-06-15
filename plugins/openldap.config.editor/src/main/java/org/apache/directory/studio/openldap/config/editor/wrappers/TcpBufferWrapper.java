@@ -32,7 +32,7 @@ import org.apache.directory.api.util.Strings;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class TcpBufferWrapper implements Cloneable
+public class TcpBufferWrapper implements Cloneable, Comparable<TcpBufferWrapper>
 {
     /** The maximum buffer size (2^32-1) */
     public static final long MAX_TCP_BUFFER_SIZE = 0xFFFFFFFFL;
@@ -338,7 +338,56 @@ public class TcpBufferWrapper implements Cloneable
         
         return h;
     }
-    
+
+
+    /**
+     * @see Comparable#compareTo()
+     */
+    public int compareTo( TcpBufferWrapper that )
+    {
+        // Compare by size first then by URL
+        if ( that == null )
+        {
+            return 1;
+        }
+        
+        if ( size > that.size )
+        {
+            return 1;
+        }
+        else if ( size < that.size )
+        {
+            return -1;
+        }
+        
+        // The URL, as a String
+        if ( listener == null )
+        {
+            if ( that.listener == null )
+            {
+                return 0;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+        else
+        {
+           if ( that.listener == null )
+           {
+               return 1;
+           }
+           else
+           {
+               String thisListener = listener.toString();
+               String thatListener = that.listener.toString();
+               
+               return thisListener.compareToIgnoreCase( thatListener );
+           }
+        }
+    }
+
     
     /**
      * @see Object#toString()
