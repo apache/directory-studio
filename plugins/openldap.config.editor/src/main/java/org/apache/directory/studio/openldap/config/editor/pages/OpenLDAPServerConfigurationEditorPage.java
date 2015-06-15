@@ -21,6 +21,7 @@ package org.apache.directory.studio.openldap.config.editor.pages;
 
 
 import org.apache.directory.studio.common.ui.CommonUIConstants;
+import org.apache.directory.studio.common.ui.widgets.TableWidget;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.openldap.config.actions.EditorExportConfigurationAction;
@@ -42,6 +43,7 @@ import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -218,6 +220,7 @@ public abstract class OpenLDAPServerConfigurationEditorPage extends FormPage
         GridData gd = new GridData( SWT.NONE, SWT.NONE, false, false );
         gd.widthHint = 42;
         portText.setLayoutData( gd );
+        
         portText.addVerifyListener( new VerifyListener()
         {
             public void verifyText( VerifyEvent e )
@@ -228,6 +231,7 @@ public abstract class OpenLDAPServerConfigurationEditorPage extends FormPage
                 }
             }
         } );
+        
         portText.setTextLimit( 5 );
 
         return portText;
@@ -264,14 +268,10 @@ public abstract class OpenLDAPServerConfigurationEditorPage extends FormPage
     /**
      * Creates default value Label.
      *
-     * @param toolkit
-     *      the toolkit
-     * @param parent
-     *      the parent
-     * @param text
-     *      the text string
-     * @return
-     *      a default value Label
+     * @param toolkit the toolkit
+     * @param parent the parent
+     * @param text the text string
+     * @return a default value Label
      */
     protected Label createDefaultValueLabel( FormToolkit toolkit, Composite parent, String text )
     {
@@ -285,10 +285,8 @@ public abstract class OpenLDAPServerConfigurationEditorPage extends FormPage
     /**
      * Adds a modify listener to the given Text.
      *
-     * @param text
-     *      the Text control
-     * @param listener
-     *      the listener
+     * @param text the Text control
+     * @param listener the listener
      */
     protected void addModifyListener( Text text, ModifyListener listener )
     {
@@ -315,12 +313,40 @@ public abstract class OpenLDAPServerConfigurationEditorPage extends FormPage
 
 
     /**
+     * Adds a selection listener to the given Combo.
+     *
+     * @param combo the Combo control
+     * @param listener the listener
+     */
+    protected void addSelectionListener( Combo combo, SelectionListener listener )
+    {
+        if ( ( combo != null ) && ( !combo.isDisposed() ) && ( listener != null ) )
+        {
+            combo.addSelectionListener( listener );
+        }
+    }
+
+
+    /**
+     * Adds a modify listener to the given TableWidget.
+     *
+     * @param tableWidget the TableWidget control
+     * @param listener the listener
+     */
+    protected void addModifyListener( TableWidget<?> tableWidget, WidgetModifyListener listener )
+    {
+        if ( ( tableWidget != null ) && ( listener != null ) )
+        {
+            tableWidget.addWidgetModifyListener( listener );
+        }
+    }
+
+
+    /**
      * Removes a modify listener to the given Text.
      *
-     * @param text
-     *      the Text control
-     * @param listener
-     *      the listener
+     * @param text the Text control
+     * @param listener the listener
      */
     protected void removeModifyListener( Text text, ModifyListener listener )
     {
@@ -334,10 +360,8 @@ public abstract class OpenLDAPServerConfigurationEditorPage extends FormPage
     /**
      * Removes a selection listener to the given Button.
      *
-     * @param button
-     *      the Button control
-     * @param listener
-     *      the listener
+     * @param button the Button control
+     * @param listener the listener
      */
     protected void removeSelectionListener( Button button, SelectionListener listener )
     {
@@ -349,10 +373,39 @@ public abstract class OpenLDAPServerConfigurationEditorPage extends FormPage
 
 
     /**
+     * Removes a selection listener to the given Combo.
+     *
+     * @param combo the Combo control
+     * @param listener the listener
+     */
+    protected void removeSelectionListener( Combo combo, SelectionListener listener )
+    {
+        if ( ( combo != null ) && ( !combo.isDisposed() ) && ( listener != null ) )
+        {
+            combo.removeSelectionListener( listener );
+        }
+    }
+
+
+    /**
+     * Removes a modify listener to the given TableWidget.
+     *
+     * @param tableWidget the TableWidget control
+     * @param listener the listener
+     */
+    protected void removeModifyListener( TableWidget<?> tableWidget, WidgetModifyListener listener )
+    {
+        if ( ( tableWidget != null ) && ( listener != null ) )
+        {
+            tableWidget.removeWidgetModifyListener( listener );
+        }
+    }
+
+
+    /**
      * Adds a 'dirty' listener to the given Text.
      *
-     * @param text
-     *      the Text control
+     * @param text the Text control
      */
     protected void addDirtyListener( Text text )
     {
@@ -363,8 +416,7 @@ public abstract class OpenLDAPServerConfigurationEditorPage extends FormPage
     /**
      * Adds a 'dirty' listener to the given Button.
      *
-     * @param button
-     *      the Button control
+     * @param button the Button control
      */
     protected void addDirtyListener( Button button )
     {
@@ -373,10 +425,31 @@ public abstract class OpenLDAPServerConfigurationEditorPage extends FormPage
 
 
     /**
+     * Adds a 'dirty' listener to the given Combo.
+     *
+     * @param button the Button control
+     */
+    protected void addDirtyListener( Combo combo )
+    {
+        addSelectionListener( combo, dirtySelectionListener );
+    }
+
+
+    /**
+     * Adds a 'dirty' listener to the given TableWidget.
+     *
+     * @param tableWidget the TableWidget control
+     */
+    protected void addDirtyListener( TableWidget<?> tableWidget )
+    {
+        addModifyListener( tableWidget, dirtyWidgetModifyListener );
+    }
+
+
+    /**
      * Removes a 'dirty' listener to the given Text.
      *
-     * @param text
-     *      the Text control
+     * @param text the Text control
      */
     protected void removeDirtyListener( Text text )
     {
@@ -387,12 +460,22 @@ public abstract class OpenLDAPServerConfigurationEditorPage extends FormPage
     /**
      * Removes a 'dirty' listener to the given Button.
      *
-     * @param button
-     *      the Button control
+     * @param button the Button control
      */
     protected void removeDirtyListener( Button button )
     {
         removeSelectionListener( button, dirtySelectionListener );
+    }
+
+
+    /**
+     * Removes a 'dirty' listener to the given Combo.
+     *
+     * @param combo the Combo control
+     */
+    protected void removeDirtyListener( Combo combo )
+    {
+        removeSelectionListener( combo, dirtySelectionListener );
     }
 
 
@@ -402,10 +485,8 @@ public abstract class OpenLDAPServerConfigurationEditorPage extends FormPage
      * Verifies that the button exists and is not disposed 
      * before applying the new selection state.
      *
-     * @param button
-     *      the button
-     * @param selected
-     *      the new selection state
+     * @param button the button
+     * @param selected the new selection state
      */
     protected void setSelection( Button button, boolean selected )
     {
@@ -422,10 +503,8 @@ public abstract class OpenLDAPServerConfigurationEditorPage extends FormPage
      * Verifies that the button exists and is not disposed 
      * before applying the new text.
      *
-     * @param text
-     *      the text
-     * @param string
-     *       the new text
+     * @param text the text
+     * @param string the new text
      */
     protected void setText( Text text, String string )
     {
@@ -477,6 +556,7 @@ public abstract class OpenLDAPServerConfigurationEditorPage extends FormPage
         gridLayout.marginHeight = gridLayout.marginWidth = 0;
         composite.setLayout( gridLayout );
         section.setClient( composite );
+        
         return composite;
     }
 }
