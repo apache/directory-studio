@@ -40,6 +40,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.forms.widgets.TableWrapData;
 import org.eclipse.ui.forms.widgets.TableWrapLayout;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.common.ui.widgets.TableWidget;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
@@ -238,7 +239,10 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
     {
         public void modifyText( ModifyEvent e )
         {
-            getConfiguration().getGlobal().setOlcLocalSSF( Integer.valueOf( localSsfText.getText() ) );
+            if ( !Strings.isEmpty( localSsfText.getText() ) )
+            {
+                getConfiguration().getGlobal().setOlcLocalSSF( Integer.valueOf( localSsfText.getText() ) );
+            }
         }
     };
     
