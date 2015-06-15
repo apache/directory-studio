@@ -31,7 +31,7 @@ import org.apache.directory.api.util.Strings;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ServerIdWrapper implements Cloneable
+public class ServerIdWrapper implements Cloneable, Comparable<ServerIdWrapper>
 {
     /** The server ID */
     private int serverId;
@@ -213,6 +213,36 @@ public class ServerIdWrapper implements Cloneable
         return h;
     }
 
+
+    /**
+     * @see Comparable#compareTo()
+     */
+    public int compareTo( ServerIdWrapper that )
+    {
+        if ( that == null )
+        {
+            return 1;
+        }
+        
+        // Check the serverId first
+        if ( serverId == that.serverId )
+        {
+            // Now, compare the url
+            if ( Strings.isEmpty( url ) )
+            {
+                return 0;
+            }
+            else
+            {
+                return url.compareToIgnoreCase( that.url );
+            }
+        }
+        else
+        {
+            return serverId - that.serverId;
+        }
+    }
+    
     
     /**
      * @see Object#toString()

@@ -32,7 +32,7 @@ import org.apache.directory.studio.openldap.common.ui.model.SsfFeatureEnum;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SsfWrapper implements Cloneable
+public class SsfWrapper implements Cloneable, Comparable<SsfWrapper>
 {
     /** The feature */
     private SsfFeatureEnum feature;
@@ -254,6 +254,30 @@ public class SsfWrapper implements Cloneable
         catch ( CloneNotSupportedException cnse )
         {
             return null;
+        }
+    }
+
+
+    /**
+     * @see Comparable#compareTo()
+     */
+    public int compareTo( SsfWrapper that )
+    {
+        // Compare by feature first then by nbBits
+        if ( that == null )
+        {
+            return 1;
+        }
+        
+        int comp = feature.getText().compareTo( that.feature.getText() );
+        
+        if ( comp == 0 )
+        {
+            return nbBits - that.nbBits;
+        }
+        else
+        {
+            return comp;
         }
     }
 
