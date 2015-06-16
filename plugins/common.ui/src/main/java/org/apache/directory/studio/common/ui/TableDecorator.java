@@ -19,6 +19,8 @@
  */
 package org.apache.directory.studio.common.ui;
 
+import java.util.Comparator;
+
 import org.eclipse.jface.viewers.LabelProvider;
 
 /**
@@ -26,7 +28,7 @@ import org.eclipse.jface.viewers.LabelProvider;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class TableDecorator<E> extends LabelProvider
+public abstract class TableDecorator<E> extends LabelProvider implements Comparator<E>
 {
     /** The Dialog instance */
     private AddEditDialog<E> dialog;

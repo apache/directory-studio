@@ -21,6 +21,7 @@ package org.apache.directory.studio.common.ui.widgets;
 
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.apache.directory.studio.common.ui.Messages;
@@ -59,6 +60,10 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
  * </pre>
  * 
  * The elements are ordered. 
+ * 
+ * <pre>
+ * Note : This class contain codes from the Apache PDF box project ('sort' method)
+ * </pre>
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -315,7 +320,84 @@ public class TableWidget<E> extends AbstractWidget
         return composite;
     }
 
+    /* --------------------------------------------------------------------------------------------------------------- */
+    /* Taken from the Apache PdfBox project,                                                                           */
+    /* @author UWe Pachler                                                                                             */
+    /* --------------------------------------------------------------------------------------------------------------- */
+    /**
+     * Sorts the given list using the given comparator.
+     * 
+     * @param list list to be sorted
+     * @param cmp comparator used to compare the object swithin the list
+     */
+    public static <T> void sort( List<T> list, Comparator<T> cmp )
+    {
+        int size = list.size();
+        
+        if ( size < 2 )
+        {
+            return;
+        }
+        
+        quicksort( list, cmp, 0, size - 1 );
+    }
+    
+    
+    private static <T> void quicksort( List<T> list, Comparator<T> cmp, int left, int right )
+    {
+        if ( left < right )
+        {
+            int splitter = split( list, cmp, left, right );
+            quicksort( list, cmp, left, splitter - 1 );
+            quicksort( list, cmp, splitter + 1, right );
+        }
+    }
+    
+    
+    private static <T> void swap( List<T> list, int i, int j )
+    {
+        T tmp = list.get( i );
+        list.set( i, list.get( j ) );
+        list.set( j, tmp );
+    }
+    
+    
+    private static <T> int split( List<T> list, Comparator<T> cmp, int left, int right )
+    {
+        int i = left;
+        int j = right - 1;
+        T pivot = list.get( right );
+        
+        do
+        {
+            while ( ( cmp.compare( list.get( i ), pivot ) <= 0 ) && ( i < right ) )
+            {
+                ++i;
+            }
+            
+            while ( ( cmp.compare( pivot, list.get( j ) ) <= 0 ) && ( j > left ) )
+            {
+                --j;
+            }
+            
+            if ( i < j )
+            {
+                swap( list, i, j );
+            }
+        } while ( i < j );
+        
+        if ( cmp.compare( pivot, list.get( i ) ) < 0 )
+        {
+            swap( list, i, right );
+        }
+        
+        return i;
+    }
+    /* --------------------------------------------------------------------------------------------------------------- */
+    /* End of the QuickSort implementation taken  from the Apache PdfBox project,                                      */
+    /* --------------------------------------------------------------------------------------------------------------- */
 
+    
     /**
      * Sets the Elements.
      *
@@ -325,6 +407,7 @@ public class TableWidget<E> extends AbstractWidget
     {
         if ( ( elements != null ) && ( elements.size() > 0 ) )
         {
+            sort( elements, decorator );
             this.elements.addAll( elements );
         }
 
