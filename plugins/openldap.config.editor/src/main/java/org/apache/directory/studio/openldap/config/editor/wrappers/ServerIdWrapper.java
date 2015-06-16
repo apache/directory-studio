@@ -41,6 +41,13 @@ public class ServerIdWrapper implements Cloneable, Comparable<ServerIdWrapper>
 
     /**
      * Creates a new instance of ServerIdWrapper.
+     */
+    public ServerIdWrapper()
+    {
+    }
+
+    /**
+     * Creates a new instance of ServerIdWrapper.
      *
      * @param serverId the serverID
      */

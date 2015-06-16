@@ -23,15 +23,14 @@ package org.apache.directory.studio.common.ui.widgets;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.studio.common.ui.AddEditDialog;
 import org.apache.directory.studio.common.ui.Messages;
+import org.apache.directory.studio.common.ui.TableDecorator;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
@@ -67,12 +66,6 @@ public class TableWidget<E> extends AbstractWidget
 {
     /** The element list */
     private List<E> elements = new ArrayList<E>();
-    
-    /** The associated Dialog for the addition or edition of elements */
-    private AddEditDialog<E> elementDialog;
-
-    /** The LabelProvider for the elements */
-    private LabelProvider labelProvider;
 
     /** A flag set to tell if we have a Edit button */
     private boolean hasEdit;
@@ -84,6 +77,9 @@ public class TableWidget<E> extends AbstractWidget
     private Button addButton;
     private Button editButton;
     private Button deleteButton;
+    
+    /** The decorator */
+    private TableDecorator<E> decorator;
 
     // A listener on the Elements table, that modifies the button when an Element is selected
     private ISelectionChangedListener tableViewerSelectionChangedListener = new ISelectionChangedListener()
@@ -140,9 +136,12 @@ public class TableWidget<E> extends AbstractWidget
 
     /**
      * Creates a new instance of TableWidget.
+     * 
+     * @param decorator the decoartor to use, containing the Dialog comparator and labelProvider
      */
-    public TableWidget()
+    public TableWidget( TableDecorator<E> decorator )
     {
+        this.decorator = decorator;
     }
 
 
@@ -246,7 +245,7 @@ public class TableWidget<E> extends AbstractWidget
         elementTableViewer.setContentProvider( new ArrayContentProvider() );
         
         // The LabelProvider
-        elementTableViewer.setLabelProvider( labelProvider );
+        elementTableViewer.setLabelProvider( decorator );
         elementTableViewer.addSelectionChangedListener( tableViewerSelectionChangedListener );
         
         // Listeners : we want to catch changes and double clicks (if we have an edit button)
@@ -358,17 +357,31 @@ public class TableWidget<E> extends AbstractWidget
      */
     private void addElement()
     {
-        elementDialog.addNewElement();
-        elementDialog.setElements( elements );
+        decorator.getDialog().addNewElement();
+        decorator.getDialog().setElements( elements );
 
-        if ( elementDialog.open() == Dialog.OK )
+        if ( decorator.getDialog().open() == Dialog.OK )
         {
-            E newElement = elementDialog.getEditedElement();
+            E newElement = decorator.getDialog().getEditedElement();
             
             if ( !elements.contains( newElement ) )
             {
                 String elementStr = newElement.toString();
-                elements.add( newElement );
+                int pos = 0;
+                
+                for ( E element : elements )
+                {
+                    if ( decorator.compare( element, newElement ) > 0 )
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        pos++;
+                    }
+                }
+                
+                elements.add( pos, newElement );
                 elementTableViewer.refresh();
                 elementTableViewer.setSelection( new StructuredSelection( elementStr ) );
             }
@@ -389,12 +402,12 @@ public class TableWidget<E> extends AbstractWidget
         if ( !selection.isEmpty() )
         {
             E selectedElement = (E)selection.getFirstElement();
-            elementDialog.setEditedElement( selectedElement );
+            decorator.getDialog().setEditedElement( selectedElement );
 
             // Open the element dialog, with the selected index
-            if ( elementDialog.open() == Dialog.OK )
+            if ( decorator.getDialog().open() == Dialog.OK )
             {
-                E newElement = elementDialog.getEditedElement();
+                E newElement = decorator.getDialog().getEditedElement();
                 
                 if ( elements.contains( newElement ) )
                 {
@@ -403,13 +416,43 @@ public class TableWidget<E> extends AbstractWidget
                     
                     // Replace the existing element with the new one
                     elements.remove( newElement );
-                    elements.add( newElement );
+
+                    int pos = 0;
+                    
+                    for ( E element : elements )
+                    {
+                        if ( decorator.compare( element, newElement ) > 0 )
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            pos++;
+                        }
+                    }
+                    
+                    elements.add( pos, newElement );
                 }
                 else
                 {
                     // We will remove the modified element, and replace it with the new element
                     elements.remove( selectedElement );
-                    elements.add( newElement );
+
+                    int pos = 0;
+                    
+                    for ( E element : elements )
+                    {
+                        if ( decorator.compare( element, newElement ) > 0 )
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            pos++;
+                        }
+                    }
+                    
+                    elements.add( pos, newElement );
                 }
 
                 elementTableViewer.refresh();
@@ -436,23 +479,5 @@ public class TableWidget<E> extends AbstractWidget
             elementTableViewer.refresh();
             notifyListeners();
         }
-    }
-
-    
-    /**
-     * @param elementDialog the elementDialog to set
-     */
-    public void setElementDialog( AddEditDialog<E> elementDialog )
-    {
-        this.elementDialog = elementDialog;
-    }
-
-    
-    /**
-     * @param labelProvider the labelProvider to set
-     */
-    public void setLabelProvider( LabelProvider labelProvider )
-    {
-        this.labelProvider = labelProvider;
     }
 }

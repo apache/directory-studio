@@ -19,16 +19,27 @@
  */
 package org.apache.directory.studio.openldap.config.editor.wrappers;
 
-import org.eclipse.jface.viewers.LabelProvider;
+import org.apache.directory.studio.common.ui.TableDecorator;
+import org.apache.directory.studio.openldap.config.editor.dialogs.SsfDialog;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Shell;
 
 /**
- * This class defines a label provider for a SSF wrapper viewer.
- * 
+ * A decorator for the SsfWrapper table.
+ *  
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SsfLabelProvider extends LabelProvider
+public class SsDecorator extends TableDecorator<SsfWrapper>
 {
+    /**
+     * Create a new instance of SsfDecorator
+     * @param parentShell The parent Shell
+     */
+    public SsDecorator( Shell parentShell )
+    {
+        setDialog( new SsfDialog( parentShell ) );
+    }
+
     /**
      * Construct the label for a TCPBuffer. It can be one of :
      * 
@@ -53,4 +64,28 @@ public class SsfLabelProvider extends LabelProvider
     {
         return null;
     };
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int compare( SsfWrapper e1, SsfWrapper e2 )
+    {
+        if ( e1 != null )
+        {
+            return e1.compareTo( e2 );
+        }
+        else
+        {
+            if ( e2 == null )
+            {
+                return 0;
+            }
+            else
+            {
+                return 1;
+            }
+        }
+    }
 }

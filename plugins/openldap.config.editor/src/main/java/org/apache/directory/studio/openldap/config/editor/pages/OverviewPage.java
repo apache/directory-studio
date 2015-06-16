@@ -32,7 +32,6 @@ import org.apache.directory.studio.openldap.common.ui.model.LogLevelEnum;
 import org.apache.directory.studio.openldap.common.ui.dialogs.LogLevelDialog;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginUtils;
 import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
-import org.apache.directory.studio.openldap.config.editor.dialogs.ServerIdDialog;
 import org.apache.directory.studio.openldap.config.editor.overlays.ModuleWrapper;
 import org.apache.directory.studio.openldap.config.editor.overlays.ModuleWrapperLabelProvider;
 import org.apache.directory.studio.openldap.config.editor.overlays.ModuleWrapperViewerSorter;
@@ -40,8 +39,8 @@ import org.apache.directory.studio.openldap.config.editor.pages.OverlaysPage;
 import org.apache.directory.studio.openldap.config.editor.wrappers.DatabaseWrapper;
 import org.apache.directory.studio.openldap.config.editor.wrappers.DatabaseWrapperLabelProvider;
 import org.apache.directory.studio.openldap.config.editor.wrappers.DatabaseWrapperViewerSorter;
+import org.apache.directory.studio.openldap.config.editor.wrappers.ServerIdDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.ServerIdWrapper;
-import org.apache.directory.studio.openldap.config.editor.wrappers.ServerIdWrapperLabelProvider;
 import org.apache.directory.studio.openldap.config.model.OlcModuleList;
 import org.apache.directory.studio.openldap.config.model.database.OlcDatabaseConfig;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -462,9 +461,7 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
         serverIdLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, false, 5, 1 ) );
 
         // The ServerID widget
-        serverIdTableWidget = new TableWidget<ServerIdWrapper>();
-        serverIdTableWidget.setLabelProvider( new ServerIdWrapperLabelProvider() );
-        serverIdTableWidget.setElementDialog( new ServerIdDialog( null ) );
+        serverIdTableWidget = new TableWidget<ServerIdWrapper>( new ServerIdDecorator( section.getShell() ) );
 
         serverIdTableWidget.createWidgetWithEdit( globalSectionComposite, toolkit );
         serverIdTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 5, 1 ) );

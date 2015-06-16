@@ -50,8 +50,8 @@ import org.apache.directory.studio.openldap.config.editor.dialogs.OverlayDialog;
 import org.apache.directory.studio.openldap.config.editor.dialogs.SizeLimitDialog;
 import org.apache.directory.studio.openldap.config.editor.dialogs.TcpBufferDialog;
 import org.apache.directory.studio.openldap.config.editor.dialogs.TimeLimitDialog;
+import org.apache.directory.studio.openldap.config.editor.wrappers.TcpBufferDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.TcpBufferWrapper;
-import org.apache.directory.studio.openldap.config.editor.wrappers.TcpBufferWrapperLabelProvider;
 
 
 /**
@@ -864,9 +864,7 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
         serverIdLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, false, 2, 1 ) );
 
         // The TCPBuffers widget
-        tcpBufferTableWidget = new TableWidget<TcpBufferWrapper>();
-        tcpBufferTableWidget.setLabelProvider( new TcpBufferWrapperLabelProvider() );
-        tcpBufferTableWidget.setElementDialog( new TcpBufferDialog( null ) );
+        tcpBufferTableWidget = new TableWidget<TcpBufferWrapper>( new TcpBufferDecorator( networkSectionComposite.getShell() ) );
 
         tcpBufferTableWidget.createWidgetWithEdit( networkSectionComposite, toolkit );
         tcpBufferTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 4, 1 ) );

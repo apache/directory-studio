@@ -19,26 +19,38 @@
  */
 package org.apache.directory.studio.openldap.config.editor.wrappers;
 
-import org.eclipse.jface.viewers.LabelProvider;
+import org.apache.directory.studio.common.ui.TableDecorator;
+import org.apache.directory.studio.openldap.config.editor.dialogs.TcpBufferDialog;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Shell;
 
 /**
- * This class defines a label provider for a ServerID wrapper viewer.
- * 
+ * A decorator for the TcpBuffer table.
+ *  
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ServerIdWrapperLabelProvider extends LabelProvider
+public class TcpBufferDecorator extends TableDecorator<TcpBufferWrapper>
 {
     /**
-     * Construct the label for a ServerID. It can be a number in [0..999], or an URL
+     * Create a new instance of TcpBufferDecorator
+     * @param parentShell The parent Shell
+     */
+    public TcpBufferDecorator( Shell parentShell )
+    {
+        setDialog( new TcpBufferDialog( parentShell ) );
+    }
+
+    /**
+     * Construct the label for a TCPBuffer.
+     * 
      */
     public String getText( Object element )
     {
-        if ( element instanceof ServerIdWrapper )
+        if ( element instanceof TcpBufferWrapper )
         {
-            String serverIdtext = ( ( ServerIdWrapper ) element ).toString();
+            String tcpBufferText = ( ( TcpBufferWrapper ) element ).toString();
 
-            return serverIdtext;
+            return tcpBufferText;
         }
 
         return super.getText( element );
@@ -52,4 +64,28 @@ public class ServerIdWrapperLabelProvider extends LabelProvider
     {
         return null;
     };
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int compare( TcpBufferWrapper e1, TcpBufferWrapper e2 )
+    {
+        if ( e1 != null )
+        {
+            return e1.compareTo( e2 );
+        }
+        else
+        {
+            if ( e2 == null )
+            {
+                return 0;
+            }
+            else
+            {
+                return 1;
+            }
+        }
+    }
 }

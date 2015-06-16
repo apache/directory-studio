@@ -17,40 +17,51 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.openldap.config.editor.wrappers;
+package org.apache.directory.studio.common.ui;
 
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.swt.graphics.Image;
 
 /**
- * This class defines a label provider for a TCPBuffer wrapper viewer.
+ * An Class used to store the comparator and labelProvider used by the TableWidget.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class TcpBufferWrapperLabelProvider extends LabelProvider
+public abstract class TableDecorator<E> extends LabelProvider
 {
+    /** The Dialog instance */
+    private AddEditDialog<E> dialog;
+    
     /**
-     * Construct the label for a TCPBuffer. It can be one of :
-     * 
+     * Create a new instance of a TableDecorator
      */
-    public String getText( Object element )
+    public TableDecorator()
     {
-        if ( element instanceof TcpBufferWrapper )
-        {
-            String tcpBufferText = ( ( TcpBufferWrapper ) element ).toString();
+    }
 
-            return tcpBufferText;
-        }
-
-        return super.getText( element );
-    };
+    
+    /**
+     * @return the dialog
+     */
+    public AddEditDialog<E> getDialog()
+    {
+        return dialog;
+    }
 
 
     /**
-     * Get the image. We have none (may be we could add one for URLs ?)
+     * @param dialog the dialog to set
      */
-    public Image getImage( Object element )
+    public void setDialog( AddEditDialog<E> dialog )
     {
-        return null;
-    };
+        this.dialog = dialog;
+    }
+
+    
+    /**
+     * Compare two elements.
+     * @param e1 The first element
+     * @param e2 The second element
+     * @return A negative value when e1 < e2, positive when e1 > e2, and 0 when e1 = e2
+     */
+    public abstract int compare( E e1, E e2 );
 }

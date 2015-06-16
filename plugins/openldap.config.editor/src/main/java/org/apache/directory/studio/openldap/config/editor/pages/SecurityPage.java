@@ -48,12 +48,10 @@ import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.openldap.common.ui.model.PasswordHashEnum;
 import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
 import org.apache.directory.studio.openldap.config.editor.dialogs.OverlayDialog;
-import org.apache.directory.studio.openldap.config.editor.dialogs.PasswordHashDialog;
 import org.apache.directory.studio.openldap.config.editor.dialogs.SaslSecPropsDialog;
-import org.apache.directory.studio.openldap.config.editor.dialogs.SsfDialog;
-import org.apache.directory.studio.openldap.config.editor.wrappers.SsfLabelProvider;
+import org.apache.directory.studio.openldap.config.editor.wrappers.PasswordHashDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.SsfWrapper;
-import org.apache.directory.studio.openldap.config.editor.wrappers.TcpBufferWrapperLabelProvider;
+import org.apache.directory.studio.openldap.config.editor.wrappers.SsDecorator;
 import org.apache.directory.studio.openldap.config.model.OlcGlobal;
 
 
@@ -765,9 +763,7 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
         Label passwordHashLabel = toolkit.createLabel( miscSectionComposite, Messages.getString( "OpenLDAPSecurityPage.PasswordHash" ) ); //$NON-NLS-1$
         passwordHashLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, false, 4, 1 ) );
         
-        passwordHashTableWidget = new TableWidget<PasswordHashEnum>();
-        passwordHashTableWidget.setLabelProvider( new TcpBufferWrapperLabelProvider() );
-        passwordHashTableWidget.setElementDialog( new PasswordHashDialog( null ) );
+        passwordHashTableWidget = new TableWidget<PasswordHashEnum>( new PasswordHashDecorator( miscSectionComposite.getShell() ) );
 
         passwordHashTableWidget.createWidgetNoEdit( miscSectionComposite, toolkit );
         passwordHashTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 4, 1 ) );
@@ -783,9 +779,7 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
         Label securityLabel = toolkit.createLabel( miscSectionComposite, Messages.getString( "OpenLDAPSecurityPage.Security" ) ); //$NON-NLS-1$
         securityLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, false, 4, 1 ) );
         
-        securityTableWidget = new TableWidget<SsfWrapper>();
-        securityTableWidget.setLabelProvider( new SsfLabelProvider() );
-        securityTableWidget.setElementDialog( new SsfDialog( null) );
+        securityTableWidget = new TableWidget<SsfWrapper>( new SsDecorator( miscSectionComposite.getShell() ) );
 
         securityTableWidget.createWidgetWithEdit( miscSectionComposite, toolkit );
         securityTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 4, 1 ) );
