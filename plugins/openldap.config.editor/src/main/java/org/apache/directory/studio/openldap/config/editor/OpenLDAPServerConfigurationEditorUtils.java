@@ -22,6 +22,7 @@ package org.apache.directory.studio.openldap.config.editor;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -54,6 +55,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.PlatformUI;
 import org.apache.directory.studio.openldap.config.ExpandedLdifUtils;
+import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPlugin;
 import org.apache.directory.studio.openldap.config.jobs.EntryBasedConfigurationPartition;
 import org.apache.directory.studio.openldap.config.jobs.PartitionsDiffComputer;
 import org.apache.directory.studio.openldap.config.model.OpenLdapConfiguration;
@@ -249,6 +251,8 @@ public class OpenLDAPServerConfigurationEditorUtils
         // Creating the configuration writer
         ConfigurationWriter configurationWriter = new ConfigurationWriter( browserConnection, configuration );
 
+        SchemaManager schemaManager = OpenLdapConfigurationPlugin.getDefault().getSchemaManager();
+
         // Converting the configuration beans to entries
         List<LdifEntry> entries = configurationWriter.getConvertedLdifEntries( ConfigurationUtils
             .getDefaultConfigurationDn() );
@@ -285,10 +289,19 @@ public class OpenLDAPServerConfigurationEditorUtils
             entry.addAttribute( "structuralObjectClass", getStructuralObjectClass( entry ) );
 
             // Adding the entry to tree
-            tree.add( entry.getDn(), entry.getEntry() );
+            tree.add( entry.getDn().apply( schemaManager ), entry.getEntry() );
         }
 
-        ExpandedLdifUtils.write( tree, directory );
+        try
+        {
+            Dn rootDn = ConfigurationUtils.getDefaultConfigurationDn();
+            rootDn.apply( schemaManager );
+            ExpandedLdifUtils.write( tree, rootDn, directory );
+        }
+        catch ( ConfigurationException e )
+        {
+            throw new IOException( e );
+        }
     }
 
 
