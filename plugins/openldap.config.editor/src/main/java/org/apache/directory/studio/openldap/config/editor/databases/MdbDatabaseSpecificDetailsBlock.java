@@ -342,6 +342,18 @@ public class MdbDatabaseSpecificDetailsBlock extends AbstractDatabaseSpecificDet
 
             // Disable Synchronous Database Writes Widget
             disableSynchronousDatabaseWritesBooleanWithDefaultWidget.setValue( database.getOlcDbNoSync() );
+
+            // MaxEntrySize Text
+            if ( browserConnection.getSchema().hasAttributeTypeDescription( "olcDbMaxEntrySize" ) )
+            {
+                // Max Entry Size Text
+                Integer maxEntrySize = database.getOlcDbMaxEntrySize();
+                
+                if ( maxEntrySize != null )
+                {
+                    maxEntrySizeText.setText( maxEntrySize.toString() );
+                }
+            }
         }
 
         addListeners();
