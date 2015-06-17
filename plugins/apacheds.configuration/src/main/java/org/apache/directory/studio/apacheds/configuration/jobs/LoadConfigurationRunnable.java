@@ -399,7 +399,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
 
                 SearchParameter searchParameter = new SearchParameter();
                 searchParameter.setSearchBase( entry.getDn() );
-                searchParameter.setFilter( "(objectClass=*)" ); //$NON-NLS-1$
+                searchParameter.setFilter( LdapConstants.OBJECT_CLASS_STAR ); //$NON-NLS-1$
                 searchParameter.setScope( SearchScope.ONELEVEL );
                 searchParameter.setReturningAttributes( SchemaConstants.ALL_USER_ATTRIBUTES_ARRAY );
 

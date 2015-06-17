@@ -24,6 +24,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.api.ldap.model.constants.LdapConstants;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.cursor.CursorException;
 import org.apache.directory.api.ldap.model.entry.Attribute;
@@ -257,7 +258,7 @@ public class PartitionsDiffComputer
                 // Creating a search operation context to get the children of the current entry
                 SearchOperationContext soc = new SearchOperationContext( null, originalEntry.getDn(),
                     SearchScope.ONELEVEL,
-                    FilterParser.parse( originalPartition.getSchemaManager(), "(objectClass=*)" ), attributeIds );
+                    FilterParser.parse( originalPartition.getSchemaManager(), LdapConstants.OBJECT_CLASS_STAR ), attributeIds );
                 soc.setAliasDerefMode( AliasDerefMode.DEREF_ALWAYS );
 
                 // Looking for the children of the current entry
@@ -318,7 +319,7 @@ public class PartitionsDiffComputer
                 // Creating a search operation context to get the children of the current entry
                 SearchOperationContext soc = new SearchOperationContext( null, modifiedEntry.getDn(),
                     SearchScope.ONELEVEL,
-                    FilterParser.parse( originalPartition.getSchemaManager(), "(objectClass=*)" ), attributeIds );
+                    FilterParser.parse( originalPartition.getSchemaManager(), LdapConstants.OBJECT_CLASS_STAR ), attributeIds );
                 soc.setAliasDerefMode( AliasDerefMode.DEREF_ALWAYS );
 
                 // Looking for the children of the current entry
@@ -349,7 +350,7 @@ public class PartitionsDiffComputer
         // Lookup for the children
         SearchOperationContext soc = new SearchOperationContext( null, parentDn,
             SearchScope.ONELEVEL,
-            FilterParser.parse( originalPartition.getSchemaManager(), "(objectClass=*)" ), SchemaConstants.NO_ATTRIBUTE_ARRAY );
+            FilterParser.parse( originalPartition.getSchemaManager(), LdapConstants.OBJECT_CLASS_STAR ), SchemaConstants.NO_ATTRIBUTE_ARRAY );
         soc.setAliasDerefMode( AliasDerefMode.DEREF_ALWAYS );
 
         // Looking for the children of the current entry

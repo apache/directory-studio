@@ -20,6 +20,7 @@
 package org.apache.directory.studio.apacheds.configuration.editor;
 
 
+import org.apache.directory.api.ldap.model.constants.LdapConstants;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.message.AliasDerefMode;
 import org.apache.directory.api.ldap.model.message.SearchScope;
@@ -286,7 +287,7 @@ public class ReplicationMasterDetailsBlock extends MasterDetailsBlock
         consumerBean.setReplAliasDerefMode( AliasDerefMode.NEVER_DEREF_ALIASES.getJndiValue() );
         consumerBean.setReplProvHostName( "localhost" );
         consumerBean.setReplProvPort( 10389 );
-        consumerBean.setReplSearchFilter( "(objectClass=*)" );
+        consumerBean.setReplSearchFilter( LdapConstants.OBJECT_CLASS_STAR );
         consumerBean.setReplSearchScope( SearchScope.SUBTREE.getLdapUrlValue() );
         consumerBean.setReplUserDn( "uid=admin,ou=system" );
         consumerBean.setReplUserPassword( "secret".getBytes() );

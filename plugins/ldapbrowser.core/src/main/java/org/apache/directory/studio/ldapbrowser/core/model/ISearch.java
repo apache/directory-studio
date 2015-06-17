@@ -24,6 +24,7 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 import java.io.Serializable;
 import java.util.List;
 
+import org.apache.directory.api.ldap.model.constants.LdapConstants;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.url.LdapUrl;
@@ -52,7 +53,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
     public static final String[] NO_ATTRIBUTES = new String[0];
 
     /** True filter (objectClass=*) */
-    public static final String FILTER_TRUE = "(objectClass=*)"; //$NON-NLS-1$
+    public static final String FILTER_TRUE = LdapConstants.OBJECT_CLASS_STAR;
 
     /** False filter (!(objectClass=*)) */
     public static final String FILTER_FALSE = "(!(objectClass=*))"; //$NON-NLS-1$

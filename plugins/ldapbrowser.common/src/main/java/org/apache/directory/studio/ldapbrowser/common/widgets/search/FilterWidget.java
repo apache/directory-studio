@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.search;
 
 
+import org.apache.directory.api.ldap.model.constants.LdapConstants;
 import org.apache.directory.studio.common.ui.HistoryUtils;
 import org.apache.directory.studio.common.ui.widgets.AbstractWidget;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
@@ -175,7 +176,7 @@ public class FilterWidget extends AbstractWidget
         filterCombo.setItems( history );
 
         // initial values
-        filterCombo.setText( initalFilter == null ? "(objectClass=*)" : initalFilter ); //$NON-NLS-1$
+        filterCombo.setText( initalFilter == null ? LdapConstants.OBJECT_CLASS_STAR : initalFilter ); //$NON-NLS-1$
     }
 
 

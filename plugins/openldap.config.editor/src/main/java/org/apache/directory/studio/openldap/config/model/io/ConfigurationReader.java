@@ -38,6 +38,7 @@ import java.util.Set;
 
 import javax.naming.directory.SearchResult;
 
+import org.apache.directory.api.ldap.model.constants.LdapConstants;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.AttributeUtils;
@@ -466,7 +467,7 @@ public class ConfigurationReader
         // Creating the search parameter
         SearchParameter configSearchParameter = new SearchParameter();
         configSearchParameter.setSearchBase( configurationDn );
-        configSearchParameter.setFilter( "(objectClass=*)" );
+        configSearchParameter.setFilter( LdapConstants.OBJECT_CLASS_STAR );
         configSearchParameter.setScope( SearchScope.OBJECT );
         configSearchParameter.setReturningAttributes( SchemaConstants.ALL_USER_ATTRIBUTES_ARRAY );
 
@@ -514,7 +515,7 @@ public class ConfigurationReader
 
             SearchParameter searchParameter = new SearchParameter();
             searchParameter.setSearchBase( entry.getDn() );
-            searchParameter.setFilter( "(objectClass=*)" );
+            searchParameter.setFilter( LdapConstants.OBJECT_CLASS_STAR );
             searchParameter.setScope( SearchScope.ONELEVEL );
             searchParameter.setReturningAttributes( SchemaConstants.ALL_USER_ATTRIBUTES_ARRAY );
 

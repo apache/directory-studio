@@ -217,7 +217,8 @@ public class ExpandedLdifUtils
     {
         try
         {
-            write( tree, ConfigurationUtils.getDefaultConfigurationDn(), directory );
+            Dn rootDn = ConfigurationUtils.getDefaultConfigurationDn();
+            write( tree, rootDn, directory );
         }
         catch ( ConfigurationException e )
         {

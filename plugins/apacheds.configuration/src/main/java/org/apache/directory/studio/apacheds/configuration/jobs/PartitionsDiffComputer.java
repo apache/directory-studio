@@ -317,7 +317,7 @@ public class PartitionsDiffComputer
                 // Creating a search operation context to get the children of the current entry
                 SearchOperationContext soc = new SearchOperationContext( null, destinationEntry.getDn(),
                     SearchScope.ONELEVEL,
-                    FilterParser.parse( originalPartition.getSchemaManager(), "(objectClass=*)" ), attributeIds ); //$NON-NLS-1$
+                    FilterParser.parse( originalPartition.getSchemaManager(), LdapConstants.OBJECT_CLASS_STAR ), attributeIds ); //$NON-NLS-1$
                 soc.setAliasDerefMode( AliasDerefMode.DEREF_ALWAYS );
 
                 // Looking for the children of the current entry
