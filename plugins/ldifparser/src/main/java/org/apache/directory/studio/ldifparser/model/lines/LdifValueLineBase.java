@@ -212,13 +212,25 @@ public class LdifValueLineBase extends LdifNonEmptyLineBase
         }
         else if ( this.isValueTypeURL() )
         {
+            FileInputStream fis = null;
+            
             try
             {
-                File file = new File( this.getUnfoldedValue() );
-                byte[] data = new byte[( int ) file.length()];
-                FileInputStream fis = new FileInputStream( file );
-                fis.read( data );
-                return data;
+                try
+                {
+                    File file = new File( this.getUnfoldedValue() );
+                    byte[] data = new byte[( int ) file.length()];
+                    fis = new FileInputStream( file );
+                    fis.read( data );
+                    return data;
+                }
+                finally
+                {
+                    if ( fis != null )
+                    {
+                        fis.close();
+                    }
+                }
             }
             catch ( IOException ioe )
             {

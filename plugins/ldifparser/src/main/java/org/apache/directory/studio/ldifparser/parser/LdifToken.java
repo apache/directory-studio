@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldifparser.parser;
 
 
-public class LdifToken implements Comparable
+public class LdifToken implements Comparable<LdifToken>
 {
 
     public static final int NEW = Integer.MIN_VALUE;
@@ -144,17 +144,8 @@ public class LdifToken implements Comparable
     }
 
 
-    public int compareTo( Object o )
+    public int compareTo( LdifToken ldifToken )
     {
-        if ( o instanceof LdifToken )
-        {
-            LdifToken token = ( LdifToken ) o;
-            return this.offset - token.offset;
-        }
-        else
-        {
-            throw new ClassCastException( "Not instanceof LdifToken: " + o.getClass().getName() );
-        }
+        return this.offset - ldifToken.offset;
     }
-
 }
