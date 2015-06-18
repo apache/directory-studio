@@ -300,8 +300,7 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
      */
     public void browserConnectionUpdated( BrowserConnectionUpdateEvent browserConnectionUpdateEvent )
     {
-        if ( browserConnectionUpdateEvent.getDetail() == BrowserConnectionUpdateEvent.Detail.BROWSER_CONNECTION_OPENED
-            || browserConnectionUpdateEvent.getDetail() == BrowserConnectionUpdateEvent.Detail.SCHEMA_UPDATED )
+        if ( browserConnectionUpdateEvent.getDetail() == BrowserConnectionUpdateEvent.Detail.SCHEMA_UPDATED )
         {
             saveSchema( browserConnectionUpdateEvent.getBrowserConnection() );
         }
