@@ -42,7 +42,7 @@ public enum PasswordHashEnum
     private String name;
     
     /**
-     * Instanciation of the values
+     * A private constructor for this enum
      */
     private PasswordHashEnum( int number, String name )
     {

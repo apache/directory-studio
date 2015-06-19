@@ -96,7 +96,7 @@ public class PasswordHashDialog extends AddEditDialog<PasswordHashEnum>
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
-        shell.setText( "Password Hash" );
+        shell.setText( Messages.getString( "PasswordHash.Title" ) );
     }
 
     /**

@@ -33,12 +33,12 @@ package org.apache.directory.studio.openldap.common.ui.model;
  */
 public enum AllowFeatureEnum
 {
-    BIND_V2( "bind_v2" ),
+    UNKNOWN( "---" ),
     BIND_ANON_CRED( "bind_anon_cred" ),
     BIND_ANON_DN( "bind_anon_dn" ),
-    UPDATE_ANON( "update_anon" ),
+    BIND_V2( "bind_v2" ),
     PROXY_AUTHZ_ANON( "proxy_authz_anon" ),
-    UNKNOWN( "---" );
+    UPDATE_ANON( "update_anon" );
     
     /** The interned name */
     private String name;
@@ -49,6 +49,36 @@ public enum AllowFeatureEnum
     private AllowFeatureEnum( String name )
     {
         this.name = name;
+    }
+    
+    
+    /**
+     * @return the name
+     */
+    public String getName()
+    {
+        return name;
+    }
+    
+    
+    /**
+     * Get the PassworAllowFeatureEnumdHashEnum instance from its number
+     * 
+     * @param number The number we are looking for
+     * @return The associated AllowFeatureEnum instance
+     */
+    public static AllowFeatureEnum getFeature( int number )
+    {
+        AllowFeatureEnum[] values = AllowFeatureEnum.values();
+        
+        if ( ( number > 0 ) && ( number < values.length ) )
+        {
+            return values[number];
+        }
+        else
+        {
+            return UNKNOWN;
+        }
     }
 
     
@@ -86,14 +116,5 @@ public enum AllowFeatureEnum
         }
         
         return UNKNOWN;
-    }
-    
-    
-    /**
-     * @return the name
-     */
-    public String getName()
-    {
-        return name;
     }
 }
