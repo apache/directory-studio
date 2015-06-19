@@ -20,7 +20,7 @@
 package org.apache.directory.studio.openldap.common.ui.model;
 
 /**
- * An enum for the various possible value of the olcAllows parameter. One of
+ * An enum for the various possible value of the olcAllows parameter. Some of
  * <ul>
  * <li>bind_v2</li>
  * <li>bind_anon_cred</li>

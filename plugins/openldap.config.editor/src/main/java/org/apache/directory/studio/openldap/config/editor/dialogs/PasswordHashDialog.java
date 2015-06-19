@@ -51,10 +51,6 @@ import org.apache.directory.studio.openldap.common.ui.model.PasswordHashEnum;
  * <li>{SHA}</li>
  * <li>{SSHA}</li>
  * <li>{UNIX}</li>
- * <li></li>
- * <li></li>
- * </ul>
- * </pre>
  * 
  * The dialog overlay is like :
  * 
@@ -71,13 +67,6 @@ import org.apache.directory.studio.openldap.common.ui.model.PasswordHashEnum;
  * |  (Cancel)                         (OK)  |
  * +-----------------------------------------+
  * </pre>
- * 
- * A few rules :
- * <ul>
- * <li>When the global limit is set, the soft and hard limits are not used</li>
- * <li>When the Unlimited button is checked, the integer value is discarded</li>
- * <li>When the Soft checkbox for the hard limit is checked, the Global value is used </li>
- * </ul>
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
