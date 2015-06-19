@@ -77,10 +77,10 @@ public enum RestrictOperationEnum
     /**
      * Return an instance of RestrictOperationEnum from a String
      * 
-     * @param name The feature's name
+     * @param name The operation's name
      * @return The associated RestrictOperationEnum
      */
-    public static RestrictOperationEnum getFeature( String name )
+    public static RestrictOperationEnum getOperation( String name )
     {
         if ( ADD.name.equalsIgnoreCase( name ) )
         {

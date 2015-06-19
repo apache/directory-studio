@@ -20,26 +20,26 @@
 package org.apache.directory.studio.openldap.common.ui.model;
 
 /**
- * An enum for the various possible value of the olcRequires parameter. One of
+ * An enum for the various possible value of the olcAuthzPolicy parameter. One of
  * <ul>
- * <li>bind</li>
- * <li>authc</li>
- * <li>LDAPv3</li>
- * <li>sasl</li>
- * <li>strong</li>
  * <li>none</li>
+ * <li>from</li>
+ * <li>to</li>
+ * <li>any</li>
+ * <li>all</li>
+ * <li>both</li>
  * </ul>
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public enum RequireConditionEnum
+public enum AuthzPolicyEnum
 {
-    BIND( "bind" ),
-    AUTHC( "authc" ),
-    LDAP_V3( "LDAPv3" ),
-    SASL( "sasl" ),
-    STRONG( "strong" ),
+    ALL( "all" ),
+    ANY( "any" ),
+    BOTH( "both" ),
+    FROM( "from" ),
     NONE( "none" ),
+    TO( "to" ),
     UNKNOWN( "---" );
     
     /** The interned name */
@@ -48,48 +48,48 @@ public enum RequireConditionEnum
     /**
      * A private constructor for this enum
      */
-    private RequireConditionEnum( String name )
+    private AuthzPolicyEnum( String name )
     {
         this.name = name;
     }
 
     
     /**
-     * Return an instance of RequireConditionEnum from a String
+     * Return an instance of AuthzPolicyEnum from a String
      * 
-     * @param name The condition's name
-     * @return The associated RequireConditionEnum
+     * @param name The policy's name
+     * @return The associated AuthzPolicyEnum
      */
-    public static RequireConditionEnum getCondition( String name )
+    public static AuthzPolicyEnum getPolicy( String name )
     {
-        if ( BIND.name.equalsIgnoreCase( name ) )
+        if ( ALL.name.equalsIgnoreCase( name ) )
         {
-            return BIND;
+            return ALL;
         }
         
-        if ( AUTHC.name.equalsIgnoreCase( name ) )
+        if ( ANY.name.equalsIgnoreCase( name ) )
         {
-            return AUTHC;
+            return ANY;
         }
         
-        if ( LDAP_V3.name.equalsIgnoreCase( name ) )
+        if ( BOTH.name.equalsIgnoreCase( name ) )
         {
-            return LDAP_V3;
+            return BOTH;
         }
         
-        if ( SASL.name.equalsIgnoreCase( name ) )
+        if ( FROM.name.equalsIgnoreCase( name ) )
         {
-            return SASL;
-        }
-        
-        if ( STRONG.name.equalsIgnoreCase( name ) )
-        {
-            return STRONG;
+            return FROM;
         }
         
         if ( NONE.name.equalsIgnoreCase( name ) )
         {
             return NONE;
+        }
+        
+        if ( TO.name.equalsIgnoreCase( name ) )
+        {
+            return TO;
         }
         
         return UNKNOWN;
