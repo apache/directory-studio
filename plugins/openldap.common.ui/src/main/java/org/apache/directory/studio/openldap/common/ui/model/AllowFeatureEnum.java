@@ -62,7 +62,7 @@ public enum AllowFeatureEnum
     
     
     /**
-     * Get the PassworAllowFeatureEnumdHashEnum instance from its number
+     * Get the AllowFeatureEnumd instance from its number
      * 
      * @param number The number we are looking for
      * @return The associated AllowFeatureEnum instance

@@ -180,17 +180,16 @@ public class AllowFeatureDialog extends AddEditDialog<AllowFeatureEnum>
     private void createAllowFeatureEditGroup( Composite parent )
     {
         // Allow Feature Group
-        Group allowFeatureGroup = BaseWidgetUtils.createGroup( parent, "", 2 );
-        GridLayout allowFeatureGridLayout = new GridLayout( 2, false );
+        Group allowFeatureGroup = BaseWidgetUtils.createGroup( parent, "", 1 );
+        GridLayout allowFeatureGridLayout = new GridLayout( 1, false );
         allowFeatureGroup.setLayout( allowFeatureGridLayout );
         allowFeatureGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // The various buttons
         for ( int i = 1; i < allowFeatureCheckboxes.length; i++ )
         {
-            AllowFeatureEnum allowFeature = AllowFeatureEnum.getFeature( i );
-            Button button = BaseWidgetUtils.createCheckbox( allowFeatureGroup, allowFeature.getName(), 1 );
-            allowFeatureCheckboxes[i] = button;
+            String allowFeature = AllowFeatureEnum.getFeature( i ).getName();
+            allowFeatureCheckboxes[i] = BaseWidgetUtils.createCheckbox( allowFeatureGroup, allowFeature, 1 );
             allowFeatureCheckboxes[i].addSelectionListener( checkboxSelectionListener );
         }
     }
@@ -204,7 +203,7 @@ public class AllowFeatureDialog extends AddEditDialog<AllowFeatureEnum>
         {
             AllowFeatureEnum value = AllowFeatureEnum.getFeature( allowFeatureCheckboxes[i].getText() );
             
-            // Disable the featrues already selected
+            // Disable the features already selected
             if ( elements.contains( value ) )
             {
                 allowFeatureCheckboxes[i].setSelection( true );

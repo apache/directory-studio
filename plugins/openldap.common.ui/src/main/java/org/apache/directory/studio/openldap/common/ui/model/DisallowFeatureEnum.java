@@ -34,13 +34,13 @@ package org.apache.directory.studio.openldap.common.ui.model;
  */
 public enum DisallowFeatureEnum
 {
+    UNKNOWN( "---" ),
     BIND_ANON( "bind_anon" ),
     BIND_SIMPLE( "bind_simple" ),
     TLS_2_ANON( "tls_2_anon" ),
     TLS_AUTHC( "tls_authc" ),
     PROXY_AUTHZ_NON_CRITICAL( "proxy_authz_non_critical" ),
-    DONTUSECOPY_NON_CRITICAL( "dontusecopy_non_critical" ),
-    UNKNOWN( "---" );
+    DONTUSECOPY_NON_CRITICAL( "dontusecopy_non_critical" );
     
     /** The interned name */
     private String name;
@@ -51,6 +51,36 @@ public enum DisallowFeatureEnum
     private DisallowFeatureEnum( String name )
     {
         this.name = name;
+    }
+    
+    
+    /**
+     * @return the name
+     */
+    public String getName()
+    {
+        return name;
+    }
+
+    
+    /**
+     * Get the DisallowFeatureEnumd instance from its number
+     * 
+     * @param number The number we are looking for
+     * @return The associated DisallowFeatureEnum instance
+     */
+    public static DisallowFeatureEnum getFeature( int number )
+    {
+        DisallowFeatureEnum[] values = DisallowFeatureEnum.values();
+        
+        if ( ( number > 0 ) && ( number < values.length ) )
+        {
+            return values[number];
+        }
+        else
+        {
+            return UNKNOWN;
+        }
     }
 
     
@@ -93,14 +123,5 @@ public enum DisallowFeatureEnum
         }
         
         return UNKNOWN;
-    }
-    
-    
-    /**
-     * @return the name
-     */
-    public String getName()
-    {
-        return name;
     }
 }
