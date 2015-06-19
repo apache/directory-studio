@@ -52,31 +52,31 @@ public class LdifValueLineBase extends LdifNonEmptyLineBase
 
     public String getRawValueType()
     {
-        return getNonNull( this.rawValueType );
+        return getNonNull( rawValueType );
     }
 
 
     public String getUnfoldedValueType()
     {
-        return unfold( this.getRawValueType() );
+        return unfold( getRawValueType() );
     }
 
 
     public String getRawValue()
     {
-        return getNonNull( this.rawValue );
+        return getNonNull( rawValue );
     }
 
 
     public String getUnfoldedValue()
     {
-        return unfold( this.getRawValue() );
+        return unfold( getRawValue() );
     }
 
 
     public String toRawString()
     {
-        return this.getRawLineStart() + this.getRawValueType() + this.getRawValue() + this.getRawNewLine();
+        return getRawLineStart() + getRawValueType() + getRawValue() + getRawNewLine();
     }
 
 
@@ -121,17 +121,17 @@ public class LdifValueLineBase extends LdifNonEmptyLineBase
 
     public boolean isValid()
     {
-        return super.isValid() && this.rawValueType != null && this.rawValue != null;
+        return super.isValid() && rawValueType != null && rawValue != null;
     }
 
 
     public String getInvalidString()
     {
-        if ( this.rawValueType == null )
+        if ( rawValueType == null )
         {
             return "Missing value type ':', '::' or ':<'";
         }
-        else if ( this.rawValue == null )
+        else if ( rawValue == null )
         {
             return "Missing value";
         }
@@ -202,15 +202,15 @@ public class LdifValueLineBase extends LdifNonEmptyLineBase
      */
     public final Object getValueAsObject()
     {
-        if ( this.isValueTypeSafe() )
+        if ( isValueTypeSafe() )
         {
-            return this.getUnfoldedValue();
+            return getUnfoldedValue();
         }
-        else if ( this.isValueTypeBase64() )
+        else if ( isValueTypeBase64() )
         {
-            return LdifUtils.base64decodeToByteArray( this.getUnfoldedValue() );
+            return LdifUtils.base64decodeToByteArray( getUnfoldedValue() );
         }
-        else if ( this.isValueTypeURL() )
+        else if ( isValueTypeURL() )
         {
             FileInputStream fis = null;
             
@@ -218,7 +218,7 @@ public class LdifValueLineBase extends LdifNonEmptyLineBase
             {
                 try
                 {
-                    File file = new File( this.getUnfoldedValue() );
+                    File file = new File( getUnfoldedValue() );
                     byte[] data = new byte[( int ) file.length()];
                     fis = new FileInputStream( file );
                     fis.read( data );
@@ -246,19 +246,19 @@ public class LdifValueLineBase extends LdifNonEmptyLineBase
 
     public boolean isValueTypeURL()
     {
-        return this.getUnfoldedValueType().startsWith( ":<" ); //$NON-NLS-1$
+        return getUnfoldedValueType().startsWith( ":<" ); //$NON-NLS-1$
     }
 
 
     public boolean isValueTypeBase64()
     {
-        return this.getUnfoldedValueType().startsWith( "::" ); //$NON-NLS-1$
+        return getUnfoldedValueType().startsWith( "::" ); //$NON-NLS-1$
     }
 
 
     public boolean isValueTypeSafe()
     {
-        return this.getUnfoldedValueType().startsWith( ":" ) && !this.isValueTypeBase64() && !this.isValueTypeURL(); //$NON-NLS-1$
+        return getUnfoldedValueType().startsWith( ":" ) && !isValueTypeBase64() && !isValueTypeURL(); //$NON-NLS-1$
     }
 
 }

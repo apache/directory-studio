@@ -24,6 +24,7 @@ package org.apache.directory.studio.ldifparser.model.container;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.studio.ldifparser.model.LdifPart;
 import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifChangeTypeLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifDnLine;
@@ -57,7 +58,7 @@ public class LdifChangeAddRecord extends LdifChangeRecord
     {
         List<LdifAttrValLine> ldifAttrValLines = new ArrayList<LdifAttrValLine>();
 
-        for ( Object part : ldifParts )
+        for ( LdifPart part : ldifParts )
         {
             if ( part instanceof LdifAttrValLine )
             {
@@ -85,7 +86,7 @@ public class LdifChangeAddRecord extends LdifChangeRecord
             return false;
         }
 
-        for ( Object part : ldifParts )
+        for ( LdifPart part : ldifParts )
         {
             if ( part instanceof LdifAttrValLine )
             {

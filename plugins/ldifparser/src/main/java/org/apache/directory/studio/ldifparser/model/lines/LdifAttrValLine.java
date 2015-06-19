@@ -51,7 +51,7 @@ public class LdifAttrValLine extends LdifValueLineBase
 
     public String getInvalidString()
     {
-        if ( this.getUnfoldedAttributeDescription().length() == 0 )
+        if ( getUnfoldedAttributeDescription().length() == 0 )
         {
             return "Missing attribute name";
         }

@@ -50,11 +50,6 @@ public class LdifCommentContainer extends LdifContainer
 
     public boolean isValid()
     {
-        if ( !super.isAbstractValid() )
-        {
-            return false;
-        }
-
-        return true;
+        return super.isAbstractValid();
     }
 }

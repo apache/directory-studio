@@ -27,11 +27,6 @@ import org.apache.directory.studio.ldifparser.LdifUtils;
 
 public class LdifNewsuperiorLine extends LdifValueLineBase
 {
-    protected LdifNewsuperiorLine()
-    {
-    }
-
-
     public LdifNewsuperiorLine( int offset, String rawNewSuperiorSpec, String rawValueType, String rawNewSuperiorDn,
         String rawNewLine )
     {
@@ -63,25 +58,13 @@ public class LdifNewsuperiorLine extends LdifValueLineBase
     }
 
 
-    public String toRawString()
-    {
-        return super.toRawString();
-    }
-
-
-    public boolean isValid()
-    {
-        return super.isValid();
-    }
-
-
     public String getInvalidString()
     {
-        if ( this.getUnfoldedNewSuperiorSpec().length() == 0 )
+        if ( getUnfoldedNewSuperiorSpec().length() == 0 )
         {
             return "Missing new superior spec 'newsuperior'";
         }
-        else if ( this.getUnfoldedNewSuperiorDn().length() == 0 )
+        else if ( getUnfoldedNewSuperiorDn().length() == 0 )
         {
             return "Missing new superior Dn";
         }

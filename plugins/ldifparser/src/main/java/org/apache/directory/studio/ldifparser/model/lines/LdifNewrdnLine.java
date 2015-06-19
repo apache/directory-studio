@@ -27,11 +27,6 @@ import org.apache.directory.studio.ldifparser.LdifUtils;
 
 public class LdifNewrdnLine extends LdifValueLineBase
 {
-    protected LdifNewrdnLine()
-    {
-    }
-
-
     public LdifNewrdnLine( int offset, String rawNewrdnSpec, String rawValueType, String rawNewrdn, String rawNewLine )
     {
         super( offset, rawNewrdnSpec, rawValueType, rawNewrdn, rawNewLine );
@@ -62,25 +57,13 @@ public class LdifNewrdnLine extends LdifValueLineBase
     }
 
 
-    public String toRawString()
-    {
-        return super.toRawString();
-    }
-
-
-    public boolean isValid()
-    {
-        return super.isValid();
-    }
-
-
     public String getInvalidString()
     {
-        if ( this.getUnfoldedNewrdnSpec().length() == 0 )
+        if ( getUnfoldedNewrdnSpec().length() == 0 )
         {
             return "Missing new Rdn spec 'newrdn'";
         }
-        else if ( this.getUnfoldedNewrdn().length() == 0 )
+        else if ( getUnfoldedNewrdn().length() == 0 )
         {
             return "Missing new Rdn";
         }
@@ -102,7 +85,5 @@ public class LdifNewrdnLine extends LdifValueLineBase
         {
             return new LdifNewrdnLine( 0, "newrdn", ":", newrdn, LdifParserConstants.LINE_SEPARATOR ); //$NON-NLS-1$ //$NON-NLS-2$
         }
-
     }
-
 }

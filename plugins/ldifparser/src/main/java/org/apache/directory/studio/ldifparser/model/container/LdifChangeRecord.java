@@ -112,13 +112,12 @@ public class LdifChangeRecord extends LdifRecord
 
     public boolean isValid()
     {
-        return this.isAbstractValid();
+        return isAbstractValid();
     }
 
 
     public String getInvalidString()
     {
-
         if ( getChangeTypeLine() == null )
         {
             return "Missing changetype line";

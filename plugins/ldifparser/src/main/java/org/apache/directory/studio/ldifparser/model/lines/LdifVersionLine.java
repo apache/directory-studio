@@ -26,11 +26,6 @@ import org.apache.directory.studio.ldifparser.LdifParserConstants;
 
 public class LdifVersionLine extends LdifValueLineBase
 {
-    protected LdifVersionLine()
-    {
-    }
-
-
     public LdifVersionLine( int offset, String rawVersionSpec, String rawValueType, String rawVersion, String rawNewLine )
     {
         super( offset, rawVersionSpec, rawValueType, rawVersion, rawNewLine );
@@ -61,25 +56,13 @@ public class LdifVersionLine extends LdifValueLineBase
     }
 
 
-    public String toRawString()
-    {
-        return super.toRawString();
-    }
-
-
-    public boolean isValid()
-    {
-        return super.isValid();
-    }
-
-
     public String getInvalidString()
     {
-        if ( this.getUnfoldedVersionSpec().length() == 0 )
+        if ( getUnfoldedVersionSpec().length() == 0 )
         {
             return "Missing version spec";
         }
-        else if ( this.getUnfoldedVersion().length() == 0 )
+        else if ( getUnfoldedVersion().length() == 0 )
         {
             return "Missing version";
         }
@@ -94,5 +77,4 @@ public class LdifVersionLine extends LdifValueLineBase
     {
         return new LdifVersionLine( 0, "version", ":", "1", LdifParserConstants.LINE_SEPARATOR ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
-
 }

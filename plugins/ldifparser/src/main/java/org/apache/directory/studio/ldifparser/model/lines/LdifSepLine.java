@@ -26,11 +26,6 @@ import org.apache.directory.studio.ldifparser.LdifParserConstants;
 
 public class LdifSepLine extends LdifLineBase
 {
-    protected LdifSepLine()
-    {
-    }
-
-
     public LdifSepLine( int offset, String rawNewLine )
     {
         super( offset, rawNewLine );

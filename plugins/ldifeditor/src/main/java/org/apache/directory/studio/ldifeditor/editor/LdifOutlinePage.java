@@ -440,6 +440,7 @@ public class LdifOutlinePage extends ContentOutlinePage
          */
         public Image getImage( Object element )
         {
+            
             // Record
             if ( element instanceof LdifContentRecord )
             {
@@ -448,10 +449,12 @@ public class LdifOutlinePage extends ContentOutlinePage
                     LdifContentRecord record = ( LdifContentRecord ) element;
 
                     LdifDnLine dnLine = record.getDnLine();
+                    
                     if ( dnLine != null )
                     {
                         String dn = dnLine.getUnfoldedDn();
-                        if ( dn != null && "".equals( dn ) ) //$NON-NLS-1$
+                        
+                        if ( ( dn != null ) && ( dn.length() == 0 ) ) //$NON-NLS-1$
                         {
                             // Root DSE
                             return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_ENTRY_ROOT );
@@ -490,7 +493,6 @@ public class LdifOutlinePage extends ContentOutlinePage
             {
                 return LdifEditorActivator.getDefault().getImage( LdifEditorConstants.IMG_LDIF_RENAME );
             }
-
             // List of AttrValLine
             else if ( element instanceof List && ( ( List ) element ).get( 0 ) instanceof LdifAttrValLine )
             {
@@ -499,14 +501,23 @@ public class LdifOutlinePage extends ContentOutlinePage
             else if ( element instanceof LdifModSpec )
             {
                 LdifModSpec modSpec = ( LdifModSpec ) element;
+                
                 if ( modSpec.isAdd() )
+                {
                     return LdifEditorActivator.getDefault().getImage( LdifEditorConstants.IMG_LDIF_MOD_ADD );
+                }
                 else if ( modSpec.isReplace() )
+                {
                     return LdifEditorActivator.getDefault().getImage( LdifEditorConstants.IMG_LDIF_MOD_REPLACE );
+                }
                 else if ( modSpec.isDelete() )
+                {
                     return LdifEditorActivator.getDefault().getImage( LdifEditorConstants.IMG_LDIF_MOD_DELETE );
+                }
                 else
+                {
                     return null;
+                }
             }
 
             // AttrValLine
@@ -514,7 +525,6 @@ public class LdifOutlinePage extends ContentOutlinePage
             {
                 return LdifEditorActivator.getDefault().getImage( LdifEditorConstants.IMG_LDIF_VALUE );
             }
-
             else
             {
                 return null;

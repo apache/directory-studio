@@ -23,7 +23,6 @@ package org.apache.directory.studio.ldifparser.parser;
 
 public class LdifToken implements Comparable<LdifToken>
 {
-
     public static final int NEW = Integer.MIN_VALUE;
 
     public static final int ERROR = -2;
@@ -110,7 +109,7 @@ public class LdifToken implements Comparable<LdifToken>
      */
     public int getOffset()
     {
-        return this.offset;
+        return offset;
     }
 
 
@@ -121,31 +120,31 @@ public class LdifToken implements Comparable<LdifToken>
      */
     public int getLength()
     {
-        return this.value.length();
+        return value.length();
     }
 
 
     public int getType()
     {
-        return this.type;
+        return type;
     }
 
 
     public String getValue()
     {
-        return this.value;
+        return value;
     }
 
 
     public String toString()
     {
-        return "(type=" + this.type + ") " + "(offset=" + this.offset + ") " + "(length=" + this.getLength() + ") '" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-            + this.value + "'"; //$NON-NLS-1$
+        return "(type=" + type + ") " + "(offset=" + offset + ") " + "(length=" + getLength() + ") '" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+            + value + "'"; //$NON-NLS-1$
     }
 
 
     public int compareTo( LdifToken ldifToken )
     {
-        return this.offset - ldifToken.offset;
+        return offset - ldifToken.offset;
     }
 }

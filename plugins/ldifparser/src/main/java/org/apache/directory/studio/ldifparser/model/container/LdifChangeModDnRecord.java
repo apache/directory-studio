@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldifparser.model.container;
 
 
+import org.apache.directory.studio.ldifparser.model.LdifPart;
 import org.apache.directory.studio.ldifparser.model.lines.LdifChangeTypeLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifDeloldrdnLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifDnLine;
@@ -76,7 +77,7 @@ public class LdifChangeModDnRecord extends LdifChangeRecord
 
     public LdifNewrdnLine getNewrdnLine()
     {
-        for ( Object part : ldifParts )
+        for ( LdifPart part : ldifParts )
         {
             if ( part instanceof LdifNewrdnLine )
             {
@@ -138,11 +139,11 @@ public class LdifChangeModDnRecord extends LdifChangeRecord
 
     public String getInvalidString()
     {
-        if ( this.getNewrdnLine() == null )
+        if ( getNewrdnLine() == null )
         {
             return "Missing new Rdn";
         }
-        else if ( this.getDeloldrdnLine() == null )
+        else if ( getDeloldrdnLine() == null )
         {
             return "Missing delete old Rdn";
         }

@@ -36,7 +36,7 @@ import org.apache.directory.studio.ldifparser.model.lines.LdifLineBase;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class LdifContainer
+public abstract class LdifContainer implements LdifPart
 {
     /** The contained Ldif Parts */
     protected List<LdifPart> ldifParts = new ArrayList<LdifPart>();

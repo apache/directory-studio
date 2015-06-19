@@ -26,11 +26,6 @@ import org.apache.directory.studio.ldifparser.LdifParserConstants;
 
 public class LdifModSpecTypeLine extends LdifValueLineBase
 {
-    protected LdifModSpecTypeLine()
-    {
-    }
-
-
     public LdifModSpecTypeLine( int offset, String rawModType, String rawValueType, String rawAttributeDescription,
         String rawNewLine )
     {
@@ -62,47 +57,41 @@ public class LdifModSpecTypeLine extends LdifValueLineBase
     }
 
 
-    public String toRawString()
-    {
-        return super.toRawString();
-    }
-
-
     public boolean isAdd()
     {
-        return this.getUnfoldedModType().equals( "add" ); //$NON-NLS-1$
+        return getUnfoldedModType().equals( "add" ); //$NON-NLS-1$
     }
 
 
     public boolean isReplace()
     {
-        return this.getUnfoldedModType().equals( "replace" ); //$NON-NLS-1$
+        return getUnfoldedModType().equals( "replace" ); //$NON-NLS-1$
     }
 
 
     public boolean isDelete()
     {
-        return this.getUnfoldedModType().equals( "delete" ); //$NON-NLS-1$
+        return getUnfoldedModType().equals( "delete" ); //$NON-NLS-1$
     }
 
 
     public boolean isValid()
     {
-        return super.isValid() && ( this.isAdd() || this.isReplace() || this.isDelete() );
+        return super.isValid() && ( isAdd() || isReplace() || isDelete() );
     }
 
 
     public String getInvalidString()
     {
-        if ( this.getUnfoldedModType().length() == 0 )
+        if ( getUnfoldedModType().length() == 0 )
         {
             return "Missing modification type 'add', 'replace' or 'delete'";
         }
-        else if ( !this.isAdd() && !this.isReplace() && !this.isDelete() )
+        else if ( !isAdd() && !isReplace() && !isDelete() )
         {
             return "Invalid modification type, expected 'add', 'replace' or 'delete'";
         }
-        else if ( this.getUnfoldedAttributeDescription().length() == 0 )
+        else if ( getUnfoldedAttributeDescription().length() == 0 )
         {
             return "Missing attribute";
         }

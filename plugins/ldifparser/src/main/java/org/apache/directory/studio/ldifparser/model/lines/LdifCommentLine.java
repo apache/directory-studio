@@ -26,11 +26,6 @@ import org.apache.directory.studio.ldifparser.LdifParserConstants;
 
 public class LdifCommentLine extends LdifNonEmptyLineBase
 {
-    protected LdifCommentLine()
-    {
-    }
-
-
     public LdifCommentLine( int offset, String rawComment, String rawNewLine )
     {
         super( offset, rawComment, rawNewLine );
@@ -46,24 +41,6 @@ public class LdifCommentLine extends LdifNonEmptyLineBase
     public String getUnfoldedComment()
     {
         return super.getUnfoldedLineStart();
-    }
-
-
-    public String toRawString()
-    {
-        return super.toRawString();
-    }
-
-
-    public boolean isValid()
-    {
-        return super.isValid();
-    }
-
-
-    public String getInvalidString()
-    {
-        return super.getInvalidString();
     }
 
 

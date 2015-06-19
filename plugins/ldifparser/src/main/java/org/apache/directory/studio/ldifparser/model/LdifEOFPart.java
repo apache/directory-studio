@@ -30,6 +30,7 @@ import org.apache.directory.studio.ldifparser.LdifFormatParameters;
  */
 public final class LdifEOFPart implements LdifPart
 {
+    /** The offset of this part */
     private int offset;
 
 
@@ -41,7 +42,7 @@ public final class LdifEOFPart implements LdifPart
 
     public final int getOffset()
     {
-        return this.offset;
+        return offset;
     }
 
 
@@ -89,7 +90,6 @@ public final class LdifEOFPart implements LdifPart
 
     public final void adjustOffset( int adjust )
     {
-        this.offset += adjust;
+        offset += adjust;
     }
-
 }

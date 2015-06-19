@@ -26,11 +26,6 @@ import org.apache.directory.studio.ldifparser.LdifParserConstants;
 
 public class LdifDeloldrdnLine extends LdifValueLineBase
 {
-    protected LdifDeloldrdnLine()
-    {
-    }
-
-
     public LdifDeloldrdnLine( int offset, String rawDeleteOldrdnSpec, String rawValueType, String rawDeleteOldrdn,
         String rawNewLine )
     {
@@ -64,20 +59,16 @@ public class LdifDeloldrdnLine extends LdifValueLineBase
 
     public boolean isDeleteOldRdn()
     {
-        return "1".equals( this.getUnfoldedDeleteOldrdn() ); //$NON-NLS-1$
-    }
-
-
-    public String toRawString()
-    {
-        return super.toRawString();
+        return "1".equals( getUnfoldedDeleteOldrdn() ); //$NON-NLS-1$
     }
 
 
     public boolean isValid()
     {
         if ( !super.isValid() )
+        {
             return false;
+        }
 
         return ( "0".equals( getUnfoldedDeleteOldrdn() ) || "1".equals( getUnfoldedDeleteOldrdn() ) ); //$NON-NLS-1$ //$NON-NLS-2$
     }
@@ -85,7 +76,7 @@ public class LdifDeloldrdnLine extends LdifValueLineBase
 
     public String getInvalidString()
     {
-        if ( this.getUnfoldedDeleteOldrdnSpec().length() == 0 )
+        if ( getUnfoldedDeleteOldrdnSpec().length() == 0 )
         {
             return "Missing delete old Rdn spec 'deleteoldrdn'";
         }

@@ -61,12 +61,6 @@ public class LdifChangeTypeLine extends LdifValueLineBase
     }
 
 
-    public String toRawString()
-    {
-        return super.toRawString();
-    }
-
-
     public boolean isAdd()
     {
         return getUnfoldedChangeType().equals( "add" ); //$NON-NLS-1$

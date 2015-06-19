@@ -71,8 +71,9 @@ import org.eclipse.swt.graphics.RGB;
 
 public class LdifDamagerRepairer implements IPresentationDamager, IPresentationRepairer
 {
-
     private ILdifEditor editor;
+
+    private Map<String, Object> textAttributeKeyToValueMap;
 
 
     // private IDocument document;
@@ -101,26 +102,23 @@ public class LdifDamagerRepairer implements IPresentationDamager, IPresentationR
     {
 
         LdifFile ldifModel = this.editor.getLdifModel();
-        LdifContainer[] allContainers = ldifModel.getContainers();
+        List<LdifContainer> allContainers = ldifModel.getContainers();
         List<LdifContainer> containerList = new ArrayList<LdifContainer>();
         
-        for ( int i = 0; i < allContainers.length; i++ )
+        for ( LdifContainer ldifContainer : allContainers )
         {
-            LdifContainer container = allContainers[i];
-            Region containerRegion = new Region( container.getOffset(), container.getLength() );
+            Region containerRegion = new Region( ldifContainer.getOffset(), ldifContainer.getLength() );
             
             if ( TextUtilities.overlaps( containerRegion, damage ) )
             {
-                containerList.add( container );
+                containerList.add( ldifContainer );
             }
         }
+        
         LdifContainer[] containers = ( LdifContainer[] ) containerList
             .toArray( new LdifContainer[containerList.size()] );
         this.highlight( containers, presentation, damage );
     }
-
-    private Map textAttributeKeyToValueMap;
-
 
     private TextAttribute geTextAttribute( String key )
     {
@@ -168,7 +166,7 @@ public class LdifDamagerRepairer implements IPresentationDamager, IPresentationR
     {
         if ( textAttributeKeyToValueMap == null )
         {
-            textAttributeKeyToValueMap = new HashMap();
+            textAttributeKeyToValueMap = new HashMap<String, Object>();
         }
         textAttributeKeyToValueMap.put( key + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_RGB_SUFFIX, rgb );
         textAttributeKeyToValueMap.put( key + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_STYLE_SUFFIX,

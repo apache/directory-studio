@@ -29,13 +29,12 @@ import java.util.List;
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
 import org.apache.directory.studio.ldifparser.model.container.LdifChangeRecord;
 import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
-import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
 import org.apache.directory.studio.ldifparser.model.container.LdifModSpec;
 import org.apache.directory.studio.ldifparser.model.container.LdifRecord;
 
 
 /**
- * A LDIF file, as we manipulate it in Studio.
+ * A LDIF file, as we manipulate it in Studio. It's a list of LdifContainer.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -46,6 +45,9 @@ public class LdifFile implements Serializable
 
     /** The list of container constituting this LDIF file */
     private List<LdifContainer> containerList = new ArrayList<LdifContainer>();
+    
+    /** A flag which is set if a LdifChange is added into the LdifFile */
+    private boolean hasChanges = false;
 
 
     /**
@@ -63,15 +65,7 @@ public class LdifFile implements Serializable
      */
     public boolean isContentType()
     {
-        for ( LdifContainer container : containerList )
-        {
-            if ( container instanceof LdifRecord )
-            {
-                return container instanceof LdifContentRecord;
-            }
-        }
-
-        return false;
+        return !hasChanges;
     }
 
 
@@ -82,49 +76,37 @@ public class LdifFile implements Serializable
      */
     public boolean isChangeType()
     {
-        for ( LdifContainer container : containerList )
-        {
-            if ( container instanceof LdifRecord )
-            {
-                return container instanceof LdifChangeRecord;
-            }
-        }
-
-        return false;
+        return hasChanges;
     }
 
 
+    /**
+     * Add a new LdifContainer to the LdifFile
+     * 
+     * @param container The added LdifContainer
+     */
     public void addContainer( LdifContainer container )
     {
         containerList.add( container );
+        
+        if ( container instanceof LdifChangeRecord )
+        {
+            hasChanges = true;
+        }
     }
 
 
     /**
-     * 
-     * @return all container, includes version, comments, records and
-     *         unknown
+     * @return A list of LdifContainers, including version, comments, records and unknown
      */
-    public LdifContainer[] getContainers()
-    {
-        return containerList.toArray( new LdifContainer[containerList.size()] );
-    }
-
-
-    /**
-     * 
-     * @return all container, includes version, comments, records and
-     *         unknown
-     */
-    private List<LdifContainer> getContainerList()
+    public List<LdifContainer> getContainers()
     {
         return containerList;
     }
 
 
     /**
-     * @return only records (even invalid), no version, comments, and
-     *         unknown
+     * @return An array of LdifRecords (even invalid), no LdifVersion, LdifComments, or LdifUnknown
      */
     public LdifRecord[] getRecords()
     {
@@ -143,8 +125,7 @@ public class LdifFile implements Serializable
 
 
     /**
-     * 
-     * @return the last container or null
+     * @return the last LdifContainer, or null
      */
     public LdifContainer getLastContainer()
     {
@@ -212,7 +193,7 @@ public class LdifFile implements Serializable
             return null;
         }
 
-        List<LdifContainer> containers = model.getContainerList();
+        List<LdifContainer> containers = model.getContainers();
 
         if ( containers.size() > 0 )
         {
@@ -269,7 +250,7 @@ public class LdifFile implements Serializable
         }
 
         List<LdifContainer> containerList = new ArrayList<LdifContainer>();
-        List<LdifContainer> containers = model.getContainerList();
+        List<LdifContainer> containers = model.getContainers();
 
         if ( containers.size() > 0 )
         {
@@ -296,14 +277,14 @@ public class LdifFile implements Serializable
             return null;
         }
 
-        LdifContainer[] containers = model.getContainers();
+        List<LdifContainer> containers = model.getContainers();
 
         return getParts( containers, offset, length );
 
     }
 
 
-    public static LdifPart[] getParts( LdifContainer[] containers, int offset, int length )
+    public static LdifPart[] getParts( List<LdifContainer> containers, int offset, int length )
     {
         if ( ( containers == null ) || ( offset < 0 ) )
         {
@@ -331,8 +312,10 @@ public class LdifFile implements Serializable
                         if ( ldifPart instanceof LdifModSpec )
                         {
                             LdifModSpec spec = ( LdifModSpec ) ldifPart;
-                            partList.addAll( Arrays.asList( getParts( new LdifContainer[]
-                                { spec }, offset, length ) ) );
+                            List<LdifContainer> newLdifContainer = new ArrayList<LdifContainer>();
+                            newLdifContainer.add( spec );
+                            
+                            partList.addAll( Arrays.asList( getParts( newLdifContainer, offset, length ) ) );
                         }
                         else
                         {
@@ -391,7 +374,7 @@ public class LdifFile implements Serializable
     }
 
 
-    public void replace( LdifContainer[] oldContainers, LdifContainer[] newContainers )
+    public void replace( LdifContainer[] oldContainers, List<LdifContainer> newContainers )
     {
         // find index
         int index = 0;
@@ -418,18 +401,20 @@ public class LdifFile implements Serializable
 
         // add new containers
         int insertLength = 0;
+        int pos = 0;
 
-        for ( int i = 0; i < newContainers.length; i++ )
+        for ( LdifContainer ldifContainer : newContainers )
         {
-            newContainers[i].adjustOffset( removeOffset );
-            insertLength += newContainers[i].getLength();
-            containerList.add( index + i, newContainers[i] );
+            ldifContainer.adjustOffset( removeOffset );
+            insertLength += ldifContainer.getLength();
+            containerList.add( index + pos, ldifContainer );
+            pos++;
         }
 
         // adjust offset of following containers
         int adjust = insertLength - removeLength;
 
-        for ( int i = index + newContainers.length; i < containerList.size(); i++ )
+        for ( int i = index + newContainers.size(); i < containerList.size(); i++ )
         {
             LdifContainer container = containerList.get( i );
             container.adjustOffset( adjust );

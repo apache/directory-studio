@@ -24,9 +24,13 @@ package org.apache.directory.studio.ldifparser.model;
 import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
 
 
+/**
+ * A LdifContainer enumeration.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public interface LdifEnumeration
 {
-
     /**
      * @return true if this enumeration has more elements.
      */
@@ -38,5 +42,4 @@ public interface LdifEnumeration
      * @return the next LDIF container or null if hasNext() returns false.
      */
     public LdifContainer next() throws Exception;
-
 }

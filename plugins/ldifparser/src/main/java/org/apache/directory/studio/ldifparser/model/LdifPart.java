@@ -43,6 +43,11 @@ public interface LdifPart
     public int getLength();
 
 
+    /**
+     * Tells if the part is valid or not
+     * 
+     * @return <code>true</code> if the part is valid.
+     */
     public boolean isValid();
 
 

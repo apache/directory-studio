@@ -72,6 +72,12 @@ public class LdifParser
     }
 
 
+    /**
+     * Parse a Ldif String. It will be stored in a LdifFile.
+     * 
+     * @param ldif The String to parse
+     * @return The resulting LdifFile
+     */
     public LdifFile parse( String ldif )
     {
         LdifFile model = new LdifFile();
@@ -142,10 +148,10 @@ public class LdifParser
                         footerParsed = true;
                     }
 
-                    LdifContainer[] containers = model.getContainers();
-                    containerList.addAll( Arrays.asList( containers ) );
+                    List<LdifContainer> containers = model.getContainers();
+                    containerList.addAll( containers );
                     
-                    return !containerList.isEmpty() && !( containers[0] instanceof LdifEOFContainer );
+                    return !containerList.isEmpty() && !( containers.get( 0 ) instanceof LdifEOFContainer );
                 }
                 else
                 {

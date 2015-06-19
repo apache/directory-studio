@@ -165,7 +165,7 @@ public class LdifFoldingRegionUpdater implements IPropertyChangeListener
     private Map<Position, ProjectionAnnotation> createFoldingRegions( LdifFile model, IDocument document ) throws BadLocationException
     {
         Map<Position, ProjectionAnnotation> positionToAnnotationMap = new HashMap<Position, ProjectionAnnotation>();
-        LdifContainer[] containers = model.getContainers();
+        List<LdifContainer> containers = model.getContainers();
 
         boolean ENABLE_FOLDING = LdifEditorActivator.getDefault().getPreferenceStore().getBoolean(
             LdifEditorConstants.PREFERENCE_LDIFEDITOR_FOLDING_ENABLE );
@@ -178,17 +178,16 @@ public class LdifFoldingRegionUpdater implements IPropertyChangeListener
 
         if ( ENABLE_FOLDING )
         {
-            for ( int i = 0; i < containers.length; i++ )
+            for ( LdifContainer ldifContainer : containers )
             {
-                LdifContainer container = containers[i];
-                int containerStartLine = document.getLineOfOffset( container.getOffset() );
+                int containerStartLine = document.getLineOfOffset( ldifContainer.getOffset() );
                 int containerEndLine = -1;
-                LdifPart[] parts = container.getParts();
+                LdifPart[] parts = ldifContainer.getParts();
                 
                 for ( int j = parts.length - 1; j >= 0; j-- )
                 {
                     if ( containerEndLine == -1
-                        && ( !( parts[j] instanceof LdifSepLine ) || ( container instanceof LdifCommentContainer && j < parts.length - 1 ) ) )
+                        && ( !( parts[j] instanceof LdifSepLine ) || ( ldifContainer instanceof LdifCommentContainer && j < parts.length - 1 ) ) )
                     {
                         containerEndLine = document.getLineOfOffset( parts[j].getOffset() + parts[j].getLength() - 1 );
                         // break;
@@ -215,7 +214,7 @@ public class LdifFoldingRegionUpdater implements IPropertyChangeListener
                     int end = document.getLineOffset( containerEndLine ) + document.getLineLength( containerEndLine );
                     Position position = new Position( start, end - start );
                     ProjectionAnnotation annotation = new ProjectionAnnotation( FOLD_RECORDS
-                        || ( FOLD_COMMENTS && container instanceof LdifCommentContainer ) );
+                        || ( FOLD_COMMENTS && ldifContainer instanceof LdifCommentContainer ) );
                     positionToAnnotationMap.put( position, annotation );
                 }
             }

@@ -35,7 +35,7 @@ import org.apache.directory.studio.ldifparser.model.lines.LdifModSpecTypeLine;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LdifModSpec extends LdifContainer implements LdifPart
+public class LdifModSpec extends LdifContainer
 {
     public LdifModSpec( LdifModSpecTypeLine modSpecTypeLine )
     {

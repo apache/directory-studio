@@ -26,11 +26,6 @@ import org.apache.directory.studio.ldifparser.LdifParserConstants;
 
 public class LdifModSpecSepLine extends LdifNonEmptyLineBase
 {
-    protected LdifModSpecSepLine()
-    {
-    }
-
-
     public LdifModSpecSepLine( int offset, String rawMinus, String rawNewLine )
     {
         super( offset, rawMinus, rawNewLine );
@@ -49,21 +44,15 @@ public class LdifModSpecSepLine extends LdifNonEmptyLineBase
     }
 
 
-    public String toRawString()
-    {
-        return super.toRawString();
-    }
-
-
     public boolean isValid()
     {
-        return super.isValid() && this.getUnfoldedMinus().equals( "-" ); //$NON-NLS-1$
+        return super.isValid() && getUnfoldedMinus().equals( "-" ); //$NON-NLS-1$
     }
 
 
     public String getInvalidString()
     {
-        if ( !this.getUnfoldedMinus().equals( "-" ) ) //$NON-NLS-1$
+        if ( !getUnfoldedMinus().equals( "-" ) ) //$NON-NLS-1$
         {
             return "Missing '-'";
         }
