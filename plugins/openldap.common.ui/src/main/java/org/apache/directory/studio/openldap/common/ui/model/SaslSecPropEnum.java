@@ -43,6 +43,7 @@ public enum SaslSecPropEnum
     
     /** A flag set when the property has a value */
     private boolean hasValue;
+    
     /**
      * A private constructor for this enum
      */

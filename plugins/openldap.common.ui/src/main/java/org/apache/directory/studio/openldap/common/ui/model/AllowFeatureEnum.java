@@ -20,7 +20,7 @@
 package org.apache.directory.studio.openldap.common.ui.model;
 
 /**
- * An enum for the various possible value of the olcRequires parameter. One of
+ * An enum for the various possible value of the olcAllows parameter. One of
  * <ul>
  * <li>bind_v2</li>
  * <li>bind_anon_cred</li>
@@ -52,7 +52,13 @@ public enum AllowFeatureEnum
     }
 
     
-    public static AllowFeatureEnum getFlag( String name )
+    /**
+     * Return an instance of AllowFeatureEnum from a String
+     * 
+     * @param name The feature's name
+     * @return The associated AllowFeatureEnum
+     */
+    public static AllowFeatureEnum getFeature( String name )
     {
         if ( BIND_V2.name.equalsIgnoreCase( name ) )
         {
