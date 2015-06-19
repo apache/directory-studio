@@ -617,14 +617,12 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
      * Creates the configuration details section. It just links to some other pages
      * 
      * <pre>
-     * .------------------------------------------------------------------------.
-     * |V Configuration detail                                                  |
-     * +------------------------------------------------------------------------+
-     * | <Security configuration>                                               |
-     * | <Tunning configuration>                                                |
-     * | <Options configuration>                                                |
-     * | <Schemas configuration>                                                |
-     * +------------------------------------------------------------------------+ |
+     * .----------------------------------------------------.
+     * |V Configuration detail                              |
+     * +----------------------------------------------------+
+     * | <Security configuration>   <Tunning configuration> |
+     * | <Schemas configuration>    <Options configuration> |
+     * +----------------------------------------------------+
      * </pre>
      *
      * @param toolkit the toolkit

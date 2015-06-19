@@ -37,7 +37,55 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
 
 
 /**
- * This class represents the Options Page of the Server Configuration Editor.
+ * This class represents the Options Page of the Server Configuration Editor. Here is the 
+ * content of this page :
+ * <pre>
+ * .-----------------------------------------------------------------------------------.
+ * | Options                                                                           |
+ * +-----------------------------------------------------------------------------------+
+ * | .-------------------------------------------------------------------------------. |
+ * | |V Operations & Features                                                        | |
+ * | +-------------------------------------------------------------------------------+ |
+ * | |                                                                               | |
+ * | | Allowed Features :                     Disallowed Features :                  | |
+ * | | +--------------------------+           +--------------------------+           | |
+ * | | | xyz                      | (Add...)  | xyz                      | (Add...)  | |
+ * | | | abcde                    |           | abcde                    |           | |
+ * | | | aaa                      | (Delete)  | aaa                      | (Delete)  | |
+ * | | +--------------------------+           +--------------------------+           | |
+ * | |                                                                               | |
+ * | | Required Conditions :                  Restricted Operations :                | |
+ * | | +--------------------------+           +--------------------------+           | |
+ * | | | xyz                      | (Add...)  | xyz                      | (Add...)  | |
+ * | | | abcde                    |           | abcde                    |           | |
+ * | | | aaa                      | (Delete)  | aaa                      | (Delete)  | |
+ * | | +--------------------------+           +--------------------------+           | |
+ * | +-------------------------------------------------------------------------------+ |
+ * | .-------------------------------------------------------------------------------. |
+ * | |V Authorization regexps & rewrite rules                                        | |
+ * | +-------------------------------------------------------------------------------+ |
+ * | | AuthId Rewrite Rules :                 Authorization regexps :                | |
+ * | | +--------------------------+           +--------------------------+           | |
+ * | | | xyz                      | (Add...)  | xyz                      | (Add...)  | |
+ * | | | abcde                    |           | abcde                    |           | |
+ * | | | aaa                      | (Edit...) | aaa                      | (Edit...) | |
+ * | | |                          |           |                          |           | |
+ * | | |                          | (Delete)  |                          | (Delete)  | |
+ * | | +--------------------------+           +--------------------------+           | |
+ * | +-------------------------------------------------------------------------------+ |
+ * | .-------------------------------------------------------------------------------. |
+ * | |V Miscellaneous options                                                        | |
+ * | +-------------------------------------------------------------------------------+ |
+ * | | Args File : [///////////////////////]  Plugin Log File : [//////////////////] | |
+ * | |                                                                               | |
+ * | | Referral :  [///////////////////////]  Authz Policy :    [------------------] | |
+ * | |                                                                               | |
+ * | | Root DSE :  [///////////////////////]  GentleHUP :       [X]                  | |
+ * | |                                                                               | |
+ * | | Read Only : [X]                        Reverse Lookup :  [X]                  | |
+ * | +-------------------------------------------------------------------------------+ |
+ * +-----------------------------------------------------------------------------------+
+ * </pre>
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -47,7 +95,7 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
     public static final String ID = OptionsPage.class.getName(); //$NON-NLS-1$
 
     /** The Page Title */
-    private static final String TITLE = "Options";
+    private static final String TITLE = Messages.getString( "OptionsPage.Title" );
 
     // UI Controls
     /** The olcPluginLogFile parameter */

@@ -28,7 +28,10 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 
 
 /**
- * This class represents the Databases Page of the Server Configuration Editor.
+ * This class represents the Databases Page of the Server Configuration Editor. It just
+ * create a main page that contains two other pages, a master block and a detail block.
+ * 
+ * NOTE : I'm not sure we need this page...
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -38,7 +41,7 @@ public class DatabasesPage extends OpenLDAPServerConfigurationEditorPage
     public static final String ID = DatabasesPage.class.getName(); //$NON-NLS-1$
 
     /** The Page Title */
-    private static final String TITLE = "Databases";
+    private static final String TITLE = Messages.getString( "DatabasesPage.Title" ); //$NON-NLS-1$
 
     /** The master details block */
     private DatabasesMasterDetailsBlock masterDetailsBlock;
