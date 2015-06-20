@@ -20,7 +20,7 @@
 package org.apache.directory.studio.openldap.common.ui.model;
 
 /**
- * An enum for the various possible value of the olcRestrict parameter. One of
+ * An enum for the various possible value of the olcRestrict parameter. Some of
  * <ul>
  * <li>add</li>
  * <li>all</li>
@@ -44,6 +44,7 @@ package org.apache.directory.studio.openldap.common.ui.model;
  */
 public enum RestrictOperationEnum
 {
+    UNKNOWN( "---" ),
     ADD( "add" ),
     ALL( "all" ),
     BIND( "bind" ),
@@ -59,8 +60,7 @@ public enum RestrictOperationEnum
     READ( "read" ),
     RENAME( "rename" ),
     SEARCH( "search" ),
-    WRITE( "write" ),
-    UNKNOWN( "---" );
+    WRITE( "write" );
     
     /** The interned name */
     private String name;
@@ -71,6 +71,36 @@ public enum RestrictOperationEnum
     private RestrictOperationEnum( String name )
     {
         this.name = name;
+    }
+    
+    
+    /**
+     * @return the name
+     */
+    public String getName()
+    {
+        return name;
+    }
+    
+    
+    /**
+     * Get the RestrictOperationEnum instance from its number
+     * 
+     * @param number The number we are looking for
+     * @return The associated RestrictOperationEnum instance
+     */
+    public static RestrictOperationEnum getOperartion( int number )
+    {
+        RestrictOperationEnum[] values = RestrictOperationEnum.values();
+        
+        if ( ( number > 0 ) && ( number < values.length ) )
+        {
+            return values[number];
+        }
+        else
+        {
+            return UNKNOWN;
+        }
     }
 
     
@@ -163,14 +193,5 @@ public enum RestrictOperationEnum
         }
         
         return UNKNOWN;
-    }
-    
-    
-    /**
-     * @return the name
-     */
-    public String getName()
-    {
-        return name;
     }
 }

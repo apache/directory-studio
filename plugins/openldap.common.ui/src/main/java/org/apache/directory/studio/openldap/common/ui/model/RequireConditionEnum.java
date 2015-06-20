@@ -20,27 +20,27 @@
 package org.apache.directory.studio.openldap.common.ui.model;
 
 /**
- * An enum for the various possible value of the olcRequires parameter. One of
+ * An enum for the various possible value of the olcRequires parameter. Some of
  * <ul>
- * <li>bind</li>
  * <li>authc</li>
+ * <li>bind</li>
  * <li>LDAPv3</li>
+ * <li>none</li>
  * <li>sasl</li>
  * <li>strong</li>
- * <li>none</li>
  * </ul>
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public enum RequireConditionEnum
 {
-    BIND( "bind" ),
+    UNKNOWN( "---" ),
     AUTHC( "authc" ),
+    BIND( "bind" ),
     LDAP_V3( "LDAPv3" ),
-    SASL( "sasl" ),
-    STRONG( "strong" ),
     NONE( "none" ),
-    UNKNOWN( "---" );
+    SASL( "sasl" ),
+    STRONG( "strong" );
     
     /** The interned name */
     private String name;
@@ -51,6 +51,36 @@ public enum RequireConditionEnum
     private RequireConditionEnum( String name )
     {
         this.name = name;
+    }
+    
+    
+    /**
+     * @return the name
+     */
+    public String getName()
+    {
+        return name;
+    }
+    
+    
+    /**
+     * Get the RequireConditionEnum instance from its number
+     * 
+     * @param number The number we are looking for
+     * @return The associated RequireConditionEnum instance
+     */
+    public static RequireConditionEnum getCondition( int number )
+    {
+        RequireConditionEnum[] values = RequireConditionEnum.values();
+        
+        if ( ( number > 0 ) && ( number < values.length ) )
+        {
+            return values[number];
+        }
+        else
+        {
+            return UNKNOWN;
+        }
     }
 
     
@@ -93,14 +123,5 @@ public enum RequireConditionEnum
         }
         
         return UNKNOWN;
-    }
-    
-    
-    /**
-     * @return the name
-     */
-    public String getName()
-    {
-        return name;
     }
 }
