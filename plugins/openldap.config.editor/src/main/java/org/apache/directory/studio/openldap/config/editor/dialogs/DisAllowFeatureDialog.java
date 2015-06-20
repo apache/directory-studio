@@ -165,8 +165,7 @@ public class DisAllowFeatureDialog extends AddEditDialog<DisallowFeatureEnum>
 
 
     /**
-     * Creates the DisallowFeature input group. This is the part of the dialog
-     * where one can insert the TimeLimit values
+     * Creates the DisallowFeature input group.
      * 
      * <pre>
      * Disallowed feature

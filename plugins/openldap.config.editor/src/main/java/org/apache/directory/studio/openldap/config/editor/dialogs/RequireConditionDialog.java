@@ -36,53 +36,52 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
-import org.apache.directory.studio.openldap.common.ui.model.AllowFeatureEnum;
+import org.apache.directory.studio.openldap.common.ui.model.RequireConditionEnum;
 
 
 /**
- * The AllowFeatureDialog is used to select one feature to allow. The possible
+ * The RequireConditionDialog is used to select one required condition. The possible
  * features are :
  * <ul>
- * <li>bind_v2</li>
- * <li>bind_anon_cred</li>
- * <li>bind_anon_dn</li>
- * <li>update_anon</li>
- * <li>proxy_authz_anon</li>
+ * <li>authc</li>
+ * <li>bind</li>
+ * <li>LDAPv3</li>
+ * <li>none</li>
+ * <li>sasl</li>
+ * <li>strong</li>
  * </ul>
  * 
  * The dialog overlay is like :
  * 
  * <pre>
- * +----------------------------+
- * | Allowed feature            |
- * | .------------------------. |
- * | | bind_v2 :          [ ] | |
- * | | bond_anon_cred :   [ ] | |
- * | | bind_anon_dn :     [ ] | |
- * | | update_anon :      [ ] | |
- * | | proxy_authz_anon : [ ] | |
- * | '------------------------' |
- * |                            |
- * |  (Cancel)            (OK)  |
- * +----------------------------+
+ * +-----------------------------+
+ * | Required condition          |
+ * | .-------------------------. |
+ * | | authc :  [ ]  bind : [] | |
+ * | | LDAPv3 : [ ]  sasl : [] | |
+ * | | strong : [ ]  none : [] | |
+ * | '-------------------------' |
+ * |                             |
+ * |  (Cancel)            (OK)   |
+ * +-----------------------------+
  * </pre>
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class AllowFeatureDialog extends AddEditDialog<AllowFeatureEnum>
+public class RequireConditionDialog extends AddEditDialog<RequireConditionEnum>
 {
     /** The array of buttons */
-    private Button[] allowFeatureCheckboxes = new Button[5];
+    private Button[] requireConditionCheckboxes = new Button[5];
     
-    /** The already selected allowed features */
-    List<AllowFeatureEnum> features = new ArrayList<AllowFeatureEnum>();
+    /** The already selected Required Conditions */
+    List<RequireConditionEnum> features = new ArrayList<RequireConditionEnum>();
     
     /**
-     * Create a new instance of the AllowFeatureDialog
+     * Create a new instance of the RequireConditionDialog
      * 
      * @param parentShell The parent Shell
      */
-    public AllowFeatureDialog( Shell parentShell )
+    public RequireConditionDialog( Shell parentShell )
     {
         super( parentShell );
         super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
@@ -95,7 +94,7 @@ public class AllowFeatureDialog extends AddEditDialog<AllowFeatureEnum>
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
-        shell.setText( Messages.getString( "AllowFeature.Title" ) );
+        shell.setText( Messages.getString( "RequireCondition.Title" ) );
     }
     
 
@@ -112,15 +111,15 @@ public class AllowFeatureDialog extends AddEditDialog<AllowFeatureEnum>
             {
                 Button selectedCheckbox = (Button)object;
                 
-                for ( int i = 1; i < allowFeatureCheckboxes.length; i++ )
+                for ( int i = 1; i < requireConditionCheckboxes.length; i++ )
                 {
-                    if ( selectedCheckbox == allowFeatureCheckboxes[i] )
+                    if ( selectedCheckbox == requireConditionCheckboxes[i] )
                     {
-                        setEditedElement( AllowFeatureEnum.getFeature( i ) );
+                        setEditedElement( RequireConditionEnum.getCondition( i ) );
                     }
-                    else if ( allowFeatureCheckboxes[i].isEnabled() )
+                    else if ( requireConditionCheckboxes[i].isEnabled() )
                     {
-                        allowFeatureCheckboxes[i].setSelection( false );
+                        requireConditionCheckboxes[i].setSelection( false );
                     }
                 }
             }
@@ -129,20 +128,18 @@ public class AllowFeatureDialog extends AddEditDialog<AllowFeatureEnum>
 
 
     /**
-     * Create the Dialog for AllowFeature :
+     * Create the Dialog for RequireCondition :
      * <pre>
-     * +----------------------------+
-     * | Allowed feature            |
-     * | .------------------------. |
-     * | | bind_v2 :          [ ] | |
-     * | | bond_anon_cred :   [ ] | |
-     * | | bind_anon_dn :     [ ] | |
-     * | | update_anon :      [ ] | |
-     * | | proxy_authz_anon : [ ] | |
-     * | '------------------------' |
-     * |                            |
-     * |  (Cancel)            (OK)  |
-     * +----------------------------+
+     * +-----------------------------+
+     * | Required condition          |
+     * | .-------------------------. |
+     * | | authc :  [ ]  bind : [] | |
+     * | | LDAPv3 : [ ]  sasl : [] | |
+     * | | strong : [ ]  none : [] | |
+     * | '-------------------------' |
+     * |                             |
+     * |  (Cancel)            (OK)   |
+     * +-----------------------------+
      * </pre>
      * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
@@ -152,7 +149,7 @@ public class AllowFeatureDialog extends AddEditDialog<AllowFeatureEnum>
         GridData gd = new GridData( GridData.FILL_BOTH );
         composite.setLayoutData( gd );
         
-        createAllowFeatureEditGroup( composite );
+        createRequireConditionEditGroup( composite );
         initDialog();
         
         applyDialogFont( composite );
@@ -162,51 +159,49 @@ public class AllowFeatureDialog extends AddEditDialog<AllowFeatureEnum>
 
 
     /**
-     * Creates the AllowFeature input group.
+     * Creates the RequireCondition input group.
      * 
      * <pre>
-     * Allowed feature
-     * .------------------------.
-     * | bind_v2 :          [ ] |
-     * | bond_anon_cred :   [ ] |
-     * | bind_anon_dn :     [ ] |
-     * | update_anon :      [ ] |
-     * | proxy_authz_anon : [ ] |
-     * '------------------------'
+     * Required condition
+     * .-------------------------.
+     * | authc :  [ ]  bind : [] |
+     * | LDAPv3 : [ ]  sasl : [] |
+     * | strong : [ ]  none : [] |
+     * '-------------------------'
      * </pre>
      * @param parent the parent composite
      */
-    private void createAllowFeatureEditGroup( Composite parent )
+    private void createRequireConditionEditGroup( Composite parent )
     {
-        // Allow Feature Group
-        Group allowFeatureGroup = BaseWidgetUtils.createGroup( parent, "", 1 );
-        GridLayout allowFeatureGridLayout = new GridLayout( 1, false );
-        allowFeatureGroup.setLayout( allowFeatureGridLayout );
-        allowFeatureGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        // Require Condition Group
+        Group requireConditionGroup = BaseWidgetUtils.createGroup( parent, "", 2 );
+        GridLayout requireConditionGridLayout = new GridLayout( 2, false );
+        requireConditionGroup.setLayout( requireConditionGridLayout );
+        requireConditionGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // The various buttons
-        for ( int i = 1; i < allowFeatureCheckboxes.length; i++ )
+        for ( int i = 1; i < requireConditionCheckboxes.length; i++ )
         {
-            String allowFeature = AllowFeatureEnum.getFeature( i ).getName();
-            allowFeatureCheckboxes[i] = BaseWidgetUtils.createCheckbox( allowFeatureGroup, allowFeature, 1 );
-            allowFeatureCheckboxes[i].addSelectionListener( checkboxSelectionListener );
+            String requireCondition = RequireConditionEnum.getCondition( i ).getName();
+            requireConditionCheckboxes[i] = BaseWidgetUtils.createCheckbox( requireConditionGroup, requireCondition, 1 );
+            requireConditionCheckboxes[i].addSelectionListener( checkboxSelectionListener );
         }
     }
     
     
     protected void initDialog()
     {
-        List<AllowFeatureEnum> elements = getElements();
+        List<RequireConditionEnum> elements = getElements();
         
-        for ( int i = 1; i < allowFeatureCheckboxes.length; i++ )
+        for ( int i = 1; i < requireConditionCheckboxes.length; i++ )
         {
-            AllowFeatureEnum value = AllowFeatureEnum.getFeature( allowFeatureCheckboxes[i].getText() );
+            RequireConditionEnum value = RequireConditionEnum.getCondition( requireConditionCheckboxes[i].getText() );
             
-            // Disable the features already selected
+            // Disable the Conditions already selected
             if ( elements.contains( value ) )
             {
-                allowFeatureCheckboxes[i].setSelection( true );
-                allowFeatureCheckboxes[i].setEnabled( false );
+                requireConditionCheckboxes[i].setSelection( true );
+                requireConditionCheckboxes[i].setEnabled( false );
             }
         }
     }
@@ -219,6 +214,6 @@ public class AllowFeatureDialog extends AddEditDialog<AllowFeatureEnum>
     public void addNewElement()
     {
         // Default to none
-        setEditedElement( AllowFeatureEnum.UNKNOWN );
+        setEditedElement( RequireConditionEnum.UNKNOWN );
     }
 }
