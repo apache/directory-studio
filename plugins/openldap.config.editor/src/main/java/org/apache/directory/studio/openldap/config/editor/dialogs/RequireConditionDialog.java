@@ -40,8 +40,8 @@ import org.apache.directory.studio.openldap.common.ui.model.RequireConditionEnum
 
 
 /**
- * The RequireConditionDialog is used to select one required condition. The possible
- * features are :
+ * The RestrictOperationDialog is used to select one required condition. The possible
+ * conditions are :
  * <ul>
  * <li>authc</li>
  * <li>bind</li>
@@ -71,10 +71,10 @@ import org.apache.directory.studio.openldap.common.ui.model.RequireConditionEnum
 public class RequireConditionDialog extends AddEditDialog<RequireConditionEnum>
 {
     /** The array of buttons */
-    private Button[] requireConditionCheckboxes = new Button[5];
+    private Button[] requireConditionCheckboxes = new Button[6];
     
     /** The already selected Required Conditions */
-    List<RequireConditionEnum> features = new ArrayList<RequireConditionEnum>();
+    List<RequireConditionEnum> conditions = new ArrayList<RequireConditionEnum>();
     
     /**
      * Create a new instance of the RequireConditionDialog

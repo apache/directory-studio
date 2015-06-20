@@ -74,7 +74,7 @@ import org.apache.directory.studio.openldap.common.ui.model.DisallowFeatureEnum;
 public class DisAllowFeatureDialog extends AddEditDialog<DisallowFeatureEnum>
 {
     /** The array of buttons */
-    private Button[] disallowFeatureCheckboxes = new Button[5];
+    private Button[] disallowFeatureCheckboxes = new Button[6];
     
     /** The already selected disaallowed features */
     List<DisallowFeatureEnum> features = new ArrayList<DisallowFeatureEnum>();

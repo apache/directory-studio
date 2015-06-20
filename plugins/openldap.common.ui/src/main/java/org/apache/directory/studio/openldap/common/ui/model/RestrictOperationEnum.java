@@ -89,7 +89,7 @@ public enum RestrictOperationEnum
      * @param number The number we are looking for
      * @return The associated RestrictOperationEnum instance
      */
-    public static RestrictOperationEnum getOperartion( int number )
+    public static RestrictOperationEnum getOperation( int number )
     {
         RestrictOperationEnum[] values = RestrictOperationEnum.values();
         
