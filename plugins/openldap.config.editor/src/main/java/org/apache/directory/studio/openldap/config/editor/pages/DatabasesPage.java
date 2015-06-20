@@ -41,7 +41,7 @@ public class DatabasesPage extends OpenLDAPServerConfigurationEditorPage
     public static final String ID = DatabasesPage.class.getName(); //$NON-NLS-1$
 
     /** The Page Title */
-    private static final String TITLE = Messages.getString( "DatabasesPage.Title" ); //$NON-NLS-1$
+    private static final String TITLE = Messages.getString( "OpenLDAPDatabasesPage.Title" ); //$NON-NLS-1$
 
     /** The master details block */
     private DatabasesMasterDetailsBlock masterDetailsBlock;

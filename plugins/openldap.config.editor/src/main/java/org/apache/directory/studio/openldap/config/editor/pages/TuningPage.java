@@ -41,6 +41,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.forms.widgets.TableWrapData;
 import org.eclipse.ui.forms.widgets.TableWrapLayout;
+import org.apache.directory.studio.common.ui.CommonUIUtils;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.common.ui.widgets.TableWidget;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
@@ -48,7 +49,6 @@ import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
 import org.apache.directory.studio.openldap.config.editor.dialogs.OverlayDialog;
 import org.apache.directory.studio.openldap.config.editor.dialogs.SizeLimitDialog;
-import org.apache.directory.studio.openldap.config.editor.dialogs.TcpBufferDialog;
 import org.apache.directory.studio.openldap.config.editor.dialogs.TimeLimitDialog;
 import org.apache.directory.studio.openldap.config.editor.wrappers.TcpBufferDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.TcpBufferWrapper;
@@ -929,58 +929,28 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
         Composite concurrencySectionComposite = createSectionComposite( toolkit, section, 2, false );
 
         // The olcConcurrency parameter.
-        toolkit.createLabel( concurrencySectionComposite, 
-            Messages.getString( "OpenLDAPTuningPage.Concurrency" ) ); //$NON-NLS-1$
-        concurrencyText = toolkit.createText( concurrencySectionComposite, "" );
-        concurrencyText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        concurrencyText.setTextLimit( 5 );
-        // Attach a listener to check the value
-        concurrencyText.addModifyListener( concurrencyTextListener );
+        concurrencyText = CommonUIUtils.createText( toolkit, concurrencySectionComposite, 
+            Messages.getString( "OpenLDAPTuningPage.Concurrency" ), "", 5, concurrencyTextListener );
 
         // The olcConnMaxPending parameter.
-        toolkit.createLabel( concurrencySectionComposite, 
-            Messages.getString( "OpenLDAPTuningPage.ConnMaxPending" ) ); //$NON-NLS-1$
-        connMaxPendingText = toolkit.createText( concurrencySectionComposite, "" );
-        connMaxPendingText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        connMaxPendingText.setTextLimit( 5 );
-        // Attach a listener to check the value
-        connMaxPendingText.addModifyListener( connMaxPendingTextListener );
+        connMaxPendingText = CommonUIUtils.createText( toolkit, concurrencySectionComposite, 
+            Messages.getString( "OpenLDAPTuningPage.ConnMaxPending" ), "", 5, connMaxPendingTextListener );
 
         // The olcConnMaxPendingAuth parameter.
-        toolkit.createLabel( concurrencySectionComposite, 
-            Messages.getString( "OpenLDAPTuningPage.ConnMaxPendingAuth" ) ); //$NON-NLS-1$
-        connMaxPendingAuthText = toolkit.createText( concurrencySectionComposite, "" );
-        connMaxPendingAuthText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        connMaxPendingAuthText.setTextLimit( 5 );
-        // Attach a listener to check the value
-        connMaxPendingAuthText.addModifyListener( connMaxPendingAuthTextListener );
+        connMaxPendingAuthText = CommonUIUtils.createText( toolkit, concurrencySectionComposite, 
+            Messages.getString( "OpenLDAPTuningPage.ConnMaxPendingAuth" ), "", 5, connMaxPendingAuthTextListener );
 
         // The olcListenerThreads parameter.
-        toolkit.createLabel( concurrencySectionComposite, 
-            Messages.getString( "OpenLDAPTuningPage.ListenerThreads" ) ); //$NON-NLS-1$
-        listenerThreadsText = toolkit.createText( concurrencySectionComposite, "" );
-        listenerThreadsText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        listenerThreadsText.setTextLimit( 5 );
-        // Attach a listener to check the value
-        listenerThreadsText.addModifyListener( listenerThreadsTextListener );
+        listenerThreadsText = CommonUIUtils.createText( toolkit, concurrencySectionComposite, 
+            Messages.getString( "OpenLDAPTuningPage.ListenerThreads" ), "", 5, listenerThreadsTextListener );
 
         // The olcThreads parameter.
-        toolkit.createLabel( concurrencySectionComposite, 
-            Messages.getString( "OpenLDAPTuningPage.Threads" ) ); //$NON-NLS-1$
-        threadsText = toolkit.createText( concurrencySectionComposite, "" );
-        threadsText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        threadsText.setTextLimit( 5 );
-        // Attach a listener to check the value
-        threadsText.addModifyListener( threadsTextListener );
+        threadsText = CommonUIUtils.createText( toolkit, concurrencySectionComposite, 
+            Messages.getString( "OpenLDAPTuningPage.Threads" ), "", 5, threadsTextListener );
 
         // The olcToolThreads parameter.
-        toolkit.createLabel( concurrencySectionComposite, 
-            Messages.getString( "OpenLDAPTuningPage.ToolThreads" ) ); //$NON-NLS-1$
-        toolThreadsText = toolkit.createText( concurrencySectionComposite, "" );
-        toolThreadsText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        toolThreadsText.setTextLimit( 5 );
-        // Attach a listener to check the value
-        toolThreadsText.addModifyListener( toolThreadsTextListener );
+        toolThreadsText = CommonUIUtils.createText( toolkit, concurrencySectionComposite, 
+            Messages.getString( "OpenLDAPTuningPage.ToolThreads" ), "", 5, toolThreadsTextListener );
     }
 
     
@@ -1104,49 +1074,24 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
         Composite indexLimitSectionComposite = createSectionComposite( toolkit, section, 2, false );
 
         // The olcIndexIntLen parameter.
-        toolkit.createLabel( indexLimitSectionComposite, 
-            Messages.getString( "OpenLDAPTuningPage.IndexIntLen" ) ); //$NON-NLS-1$
-        indexIntLenText = toolkit.createText( indexLimitSectionComposite, "" );
-        indexIntLenText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        indexIntLenText.setTextLimit( 5 );
-        // Attach a listener to check the value
-        indexIntLenText.addModifyListener( indexIntLenTextListener );
+        indexIntLenText = CommonUIUtils.createText( toolkit, indexLimitSectionComposite, 
+            Messages.getString( "OpenLDAPTuningPage.IndexIntLen" ), "", 5, indexIntLenTextListener );
 
         // The olcIndexSubstrAnyLen parameter.
-        toolkit.createLabel( indexLimitSectionComposite, 
-            Messages.getString( "OpenLDAPTuningPage.IndexSubstrAnyLen" ) ); //$NON-NLS-1$
-        indexSubstrAnyLenText = toolkit.createText( indexLimitSectionComposite, "" );
-        indexSubstrAnyLenText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        indexSubstrAnyLenText.setTextLimit( 5 );
-        // Attach a listener to check the value
-        indexSubstrAnyLenText.addModifyListener( indexSubstrAnyLenTextListener );
+        indexSubstrAnyLenText = CommonUIUtils.createText( toolkit, indexLimitSectionComposite, 
+            Messages.getString( "OpenLDAPTuningPage.IndexSubstrAnyLen" ), "", 5, indexSubstrAnyLenTextListener );
 
-        // The olcIndexIntLen parameter.
-        toolkit.createLabel( indexLimitSectionComposite, 
-            Messages.getString( "OpenLDAPTuningPage.IndexSubstrAnyStep" ) ); //$NON-NLS-1$
-        indexSubstrAnyStepText = toolkit.createText( indexLimitSectionComposite, "" );
-        indexSubstrAnyStepText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        indexSubstrAnyStepText.setTextLimit( 5 );
-        // Attach a listener to check the value
-        indexSubstrAnyStepText.addModifyListener( indexSubstrAnyStepTextListener );
+        // The olcIndexSubstrAnyStep parameter.
+        indexSubstrAnyStepText = CommonUIUtils.createText( toolkit, indexLimitSectionComposite, 
+            Messages.getString( "OpenLDAPTuningPage.IndexSubstrAnyStep" ), "", 5, indexSubstrAnyStepTextListener );
 
         // The olcIndexSubstrIfMaxLen parameter.
-        toolkit.createLabel( indexLimitSectionComposite, 
-            Messages.getString( "OpenLDAPTuningPage.IndexSubstrIfMaxLen" ) ); //$NON-NLS-1$
-        indexSubstrIfMaxLenText = toolkit.createText( indexLimitSectionComposite, "" );
-        indexSubstrIfMaxLenText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        indexSubstrIfMaxLenText.setTextLimit( 5 );
-        // Attach a listener to check the value
-        indexSubstrIfMaxLenText.addModifyListener( indexSubstrIfMaxLenTextListener );
+        indexSubstrIfMaxLenText = CommonUIUtils.createText( toolkit, indexLimitSectionComposite, 
+            Messages.getString( "OpenLDAPTuningPage.IndexSubstrIfMaxLen" ), "", 5, indexSubstrIfMaxLenTextListener );
 
         // The olcIndexSubstrIfMinLen parameter.
-        toolkit.createLabel( indexLimitSectionComposite, 
-            Messages.getString( "OpenLDAPTuningPage.IndexSubstrIfMinLen" ) ); //$NON-NLS-1$
-        indexSubstrIfMinLenText = toolkit.createText( indexLimitSectionComposite, "" );
-        indexSubstrIfMinLenText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        indexSubstrIfMinLenText.setTextLimit( 5 );
-        // Attach a listener to check the value
-        indexSubstrIfMinLenText.addModifyListener( indexSubstrIfMinLenTextListener );
+        indexSubstrIfMinLenText = CommonUIUtils.createText( toolkit, indexLimitSectionComposite, 
+            Messages.getString( "OpenLDAPTuningPage.IndexSubstrIfMinLen" ), "", 5, indexSubstrIfMinLenTextListener );
     }
     
     

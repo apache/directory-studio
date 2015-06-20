@@ -22,7 +22,6 @@ package org.apache.directory.studio.openldap.config.editor.pages;
 
 import java.util.List;
 
-import org.apache.directory.studio.openldap.config.editor.Messages;
 import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
 import org.apache.directory.studio.openldap.config.model.OlcGlobal;
 import org.eclipse.swt.SWT;
@@ -95,7 +94,7 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
     public static final String ID = OptionsPage.class.getName(); //$NON-NLS-1$
 
     /** The Page Title */
-    private static final String TITLE = Messages.getString( "OptionsPage.Title" );
+    private static final String TITLE = Messages.getString( "OpenLDAPOptionsPage.Title" );
 
     // UI Controls
     /** The olcPluginLogFile parameter */

@@ -23,7 +23,13 @@ package org.apache.directory.studio.common.ui;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.osgi.framework.Bundle;
 
 
@@ -131,5 +137,84 @@ public class CommonUIUtils
     {
         Bundle bundle = Platform.getBundle( "org.apache.directory.studio.rcp" );
         return bundle == null;
+    }
+    
+    
+    /**
+     * Create a default Text input, with a label and a ModifyListener.
+     * 
+     * @param toolkit the toolkit
+     * @param composite the Composite
+     * @param label the Text label
+     * @param value the default value. Default to "" if null
+     * @param limit the size limit. Ignored if < 0 
+     * @param listener the ModifyListener
+     * @return An instance of a Text
+     */
+    public static Text createText( FormToolkit toolkit, Composite composite, String label, String defaultValue, int limit, ModifyListener listener  )
+    {
+        toolkit.createLabel( composite, label );
+        String value = "";
+        
+        if ( defaultValue != null )
+        {
+            value = defaultValue;
+        }
+        
+        Text text = toolkit.createText( composite, value );
+        text.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        
+        if ( limit >= 0 )
+        {
+            text.setTextLimit( limit );
+        }
+        
+        // Attach a listener to check the value
+        if ( listener != null )
+        {
+            text.addModifyListener( listener );
+        }
+        
+        return text;
+    }
+    
+    
+    /**
+     * Create a default Text input, with a label and a ModifyListener.
+     * 
+     * @param toolkit the toolkit
+     * @param composite the Composite
+     * @param label the Text label
+     * @param value the default value. Default to "" if null
+     * @param limit the size limit. Ignored if < 0 
+     * @param gridData the GridData
+     * @param listener the ModifyListener
+     * @return An instance of a Text
+     */
+    public static Text createText( FormToolkit toolkit, Composite composite, String label, String defaultValue, int limit, GridData gridData, ModifyListener listener  )
+    {
+        toolkit.createLabel( composite, label );
+        String value = "";
+        
+        if ( defaultValue != null )
+        {
+            value = defaultValue;
+        }
+        
+        Text text = toolkit.createText( composite, value );
+        text.setLayoutData( gridData );
+        
+        if ( limit >= 0 )
+        {
+            text.setTextLimit( limit );
+        }
+        
+        // Attach a listener to check the value
+        if ( listener != null )
+        {
+            text.addModifyListener( listener );
+        }
+        
+        return text;
     }
 }
