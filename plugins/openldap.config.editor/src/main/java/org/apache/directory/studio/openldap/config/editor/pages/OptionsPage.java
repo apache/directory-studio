@@ -34,6 +34,7 @@ import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigur
 import org.apache.directory.studio.openldap.config.editor.wrappers.AllowFeatureDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.AuthIdRewriteWrapper;
 import org.apache.directory.studio.openldap.config.editor.wrappers.AuthzRegexpWrapper;
+import org.apache.directory.studio.openldap.config.editor.wrappers.DisallowFeatureDecorator;
 import org.apache.directory.studio.openldap.config.model.OlcGlobal;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -186,7 +187,7 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
     
     
     /**
-     * The olcAllowFeature listener
+     * The olcAllows listener
      */
     private WidgetModifyListener allowFeatureListener = new WidgetModifyListener()
     {
@@ -200,6 +201,25 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
             }
             
             getConfiguration().getGlobal().setOlcAllows( allowFeatures );
+        }
+    };
+    
+    
+    /**
+     * The olcDisallows listener
+     */
+    private WidgetModifyListener disallowFeatureListener = new WidgetModifyListener()
+    {
+        public void widgetModified( WidgetModifyEvent e )
+        {
+            List<String> disallowFeatures = new ArrayList<String>();
+            
+            for ( DisallowFeatureEnum disallowFeature : disallowFeatureTableWidget.getElements() )
+            {
+                disallowFeatures.add( disallowFeature.getName() );
+            }
+            
+            getConfiguration().getGlobal().setOlcDisallows( disallowFeatures );
         }
     };
 
@@ -250,18 +270,33 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
     private void createFeaturesAndOperationsSection( FormToolkit toolkit, Composite parent )
     {
         // The Features & Operations section, which can be expanded or compacted
-        Section section = createSection( toolkit, parent, Messages.getString( "OptionsPage.FeaturesAndOperationsSection" ) );
-        Composite composite = createSectionComposite( toolkit, section, 2, false );
+        Section section = createSection( toolkit, parent, 
+            Messages.getString( "OpenLDAPOptionsPage.FeaturesAndOperationsSection" ) );
+        Composite composite = createSectionComposite( toolkit, section, 4, false );
 
-        // The olcAllowFeature parameter
-        Label passwordHashLabel = toolkit.createLabel( composite, Messages.getString( "OptionsPage.AllowFeature" ) ); //$NON-NLS-1$
-        passwordHashLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, false, 2, 1 ) );
-        
+        // The olcAllows parameter label
+        Label allowFeatureLabel = toolkit.createLabel( composite, 
+            Messages.getString( "OpenLDAPOptionsPage.AllowFeature" ) ); //$NON-NLS-1$
+        allowFeatureLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, false, 2, 1 ) );
+
+        // The olcDisallows parameter label
+        Label disallowFeatureLabel = toolkit.createLabel( composite,
+            Messages.getString( "OpenLDAPOptionsPage.DisallowFeature" ) ); //$NON-NLS-1$
+        disallowFeatureLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, false, 2, 1 ) );
+
+        // The olcAllows parameter table
         allowFeatureTableWidget = new TableWidget<AllowFeatureEnum>( new AllowFeatureDecorator( composite.getShell() ) );
 
         allowFeatureTableWidget.createWidgetNoEdit( composite, toolkit );
-        allowFeatureTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 4, 1 ) );
+        allowFeatureTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
         addModifyListener( allowFeatureTableWidget, allowFeatureListener );
+
+        // The olcDisallows parameter table
+        disallowFeatureTableWidget = new TableWidget<DisallowFeatureEnum>( new DisallowFeatureDecorator( composite.getShell() ) );
+
+        disallowFeatureTableWidget.createWidgetNoEdit( composite, toolkit );
+        disallowFeatureTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+        addModifyListener( disallowFeatureTableWidget, disallowFeatureListener );
 
         // Plugin Log File Text
         toolkit.createLabel( composite, "Plugin Log File:" );
@@ -306,6 +341,7 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
     private void addListeners()
     {
         addDirtyListener( allowFeatureTableWidget );
+        addDirtyListener( disallowFeatureTableWidget );
     }
 
     
@@ -315,6 +351,7 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
     private void removeListeners()
     {
         removeDirtyListener( allowFeatureTableWidget );
+        removeDirtyListener( disallowFeatureTableWidget );
     }
     
 
@@ -351,6 +388,25 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
             else
             {
                 allowFeatureTableWidget.setElements( new ArrayList<AllowFeatureEnum>() );
+            }
+
+            // Disallow Feature Table Widget
+            List<String> disallowedFeatures = global.getOlcDisallows();
+
+            if ( disallowedFeatures != null )
+            {
+                List<DisallowFeatureEnum> disalloweds = new ArrayList<DisallowFeatureEnum>();
+                
+                for ( String disallowedFeature : disallowedFeatures )
+                {
+                    disalloweds.add( DisallowFeatureEnum.getFeature( disallowedFeature ) );
+                }
+                
+                disallowFeatureTableWidget.setElements( disalloweds );
+            }
+            else
+            {
+                disallowFeatureTableWidget.setElements( new ArrayList<DisallowFeatureEnum>() );
             }
 
             addListeners();
