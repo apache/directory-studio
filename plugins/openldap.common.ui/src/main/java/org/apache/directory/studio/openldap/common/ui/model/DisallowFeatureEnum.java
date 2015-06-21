@@ -124,4 +124,13 @@ public enum DisallowFeatureEnum
         
         return UNKNOWN;
     }
+    
+    
+    /**
+     * @see Object#toString()
+     */
+    public String toString()
+    {
+        return name;
+    }
 }

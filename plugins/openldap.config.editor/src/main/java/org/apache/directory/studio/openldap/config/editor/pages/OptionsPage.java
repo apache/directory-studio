@@ -40,6 +40,7 @@ import org.apache.directory.studio.openldap.config.editor.wrappers.RestrictOpera
 import org.apache.directory.studio.openldap.config.model.OlcGlobal;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -47,6 +48,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
+import org.eclipse.ui.forms.widgets.TableWrapData;
+import org.eclipse.ui.forms.widgets.TableWrapLayout;
 
 
 /**
@@ -83,51 +86,50 @@ import org.eclipse.ui.forms.widgets.Section;
  * </ul>
  * Here is the content of this page :
  * <pre>
- * .-----------------------------------------------------------------------------------.
- * | Options                                                                           |
- * +-----------------------------------------------------------------------------------+
- * | .-------------------------------------------------------------------------------. |
- * | |V Operations & Features                                                        | |
- * | +-------------------------------------------------------------------------------+ |
- * | |                                                                               | |
- * | | Allowed Features :                     Disallowed Features :                  | |
- * | | +--------------------------+           +--------------------------+           | |
- * | | | xyz                      | (Add...)  | xyz                      | (Add...)  | |
- * | | | abcde                    |           | abcde                    |           | |
- * | | | aaa                      | (Delete)  | aaa                      | (Delete)  | |
- * | | +--------------------------+           +--------------------------+           | |
- * | |                                                                               | |
- * | | Required Conditions :                  Restricted Operations :                | |
- * | | +--------------------------+           +--------------------------+           | |
- * | | | xyz                      | (Add...)  | xyz                      | (Add...)  | |
- * | | | abcde                    |           | abcde                    |           | |
- * | | | aaa                      | (Delete)  | aaa                      | (Delete)  | |
- * | | +--------------------------+           +--------------------------+           | |
- * | +-------------------------------------------------------------------------------+ |
- * | .-------------------------------------------------------------------------------. |
- * | |V Authorization regexps & rewrite rules                                        | |
- * | +-------------------------------------------------------------------------------+ |
- * | | AuthId Rewrite Rules :                 Authorization regexps :                | |
- * | | +--------------------------+           +--------------------------+           | |
- * | | | xyz                      | (Add...)  | xyz                      | (Add...)  | |
- * | | | abcde                    |           | abcde                    |           | |
- * | | | aaa                      | (Edit...) | aaa                      | (Edit...) | |
- * | | |                          |           |                          |           | |
- * | | |                          | (Delete)  |                          | (Delete)  | |
- * | | +--------------------------+           +--------------------------+           | |
- * | +-------------------------------------------------------------------------------+ |
- * | .-------------------------------------------------------------------------------. |
- * | |V Miscellaneous options                                                        | |
- * | +-------------------------------------------------------------------------------+ |
- * | | Args File : [///////////////////////]  Plugin Log File : [//////////////////] | |
- * | |                                                                               | |
- * | | Referral :  [///////////////////////]  Authz Policy :    [------------------] | |
- * | |                                                                               | |
- * | | Root DSE :  [///////////////////////]  GentleHUP :       [X]                  | |
- * | |                                                                               | |
- * | | Read Only : [X]                        Reverse Lookup :  [X]                  | |
- * | +-------------------------------------------------------------------------------+ |
- * +-----------------------------------------------------------------------------------+
+ * .--------------------------------------------------------------------------------------.
+ * | Options                                                                              |
+ * +--------------------------------------------------------------------------------------+
+ * | .---------------------------------------. .----------------------------------------. |
+ * | |V Features                             | |V Operations                            | |
+ * | +---------------------------------------+ +----------------------------------------+ |
+ * | |                                       | |                                        | |
+ * | | Allowed Features :                    | | Required Conditions :                  | |
+ * | | +--------------------------+          | | +--------------------------+           | |
+ * | | | xyz                      | (Add...) | | | xyz                      | (Add...)  | |
+ * | | | abcde                    |          | | | abcde                    |           | |
+ * | | | aaa                      | (Delete) | | | aaa                      | (Delete)  | |
+ * | | +--------------------------+          | | +--------------------------+           | |
+ * | |                                       | |                                        | |
+ * | | Disallowed Features :                 | | Restricted Operations :                | |
+ * | | +--------------------------+          | | +--------------------------+           | |
+ * | | | xyz                      | (Add...) | | | xyz                      | (Add...)  | |
+ * | | | abcde                    |          | | | abcde                    |           | |
+ * | | | aaa                      | (Delete) | | | aaa                      | (Delete)  | |
+ * | | +--------------------------+          | | +--------------------------+           | |
+ * | +---------------------------------------+ +----------------------------------------+ |
+ * | .---------------------------------------. .----------------------------------------. |
+ * | |V Authorization rewrite rules          | |V Authorisation ID Regexp               | |
+ * | +---------------------------------------+ +----------------------------------------+ |
+ * | | +--------------------------+          | | +--------------------------+           | |
+ * | | | xyz                      | (Add...) | | | xyz                      | (Add...)  | |
+ * | | | abcde                    |          | | | abcde                    |           | |
+ * | | | aaa                      | (Edit)   | | | aaa                      | (Edit...) | |
+ * | | |                          |          | | |                          |           | |
+ * | | |                          | (Delete) | | |                          | (Delete)  | |
+ * | | +--------------------------+          | | +--------------------------+           | |
+ * | +---------------------------------------+ +----------------------------------------+ |
+ * | .----------------------------------------------------------------------------------. |
+ * | |V Miscellaneous options                                                           | |
+ * | +----------------------------------------------------------------------------------+ |
+ * | | Args File : [///////////////////////]     Plugin Log File : [//////////////////] | |
+ * | |                                                                                  | |
+ * | | Referral :  [///////////////////////]     Authz Policy :    [------------------] | |
+ * | |                                                                                  | |
+ * | | Root DSE :  [///////////////////////]     GentleHUP :       [X]                  | |
+ * | |                                                                                  | |
+ * | | Read Only : [X]                           Reverse Lookup :  [X]                  | |
+ * | +----------------------------------------------------------------------------------+ |
+ * +--------------------------------------------------------------------------------------+
  * </pre>
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -277,53 +279,110 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
 
     /**
      * {@inheritDoc}
-     * Creates the OpenLDAP options config Tab. It contains 3 sections :
+     * Creates the OpenLDAP options config Tab. It contains 5 sections, in "
+     * columns and 2 rows
      * 
      * <pre>
-     * +-----------------------------+
-     * |                             |
-     * |    Features & Operations    |
-     * |                             |
-     * +-----------------------------+
-     * |                             |
-     * |   Authz regxep  & rewrite   |
-     * |                             |
-     * +-----------------------------+
-     * |                             |
-     * |        Miscellaneous        |
-     * |                             |
-     * +-----------------------------+
+     * +--------------+---------------+
+     * |              |               |
+     * |   Features   |  Operations   |
+     * |              |               |
+     * +--------------+---------------+
+     * |              |               |
+     * |    rewrite   |    regexp     |
+     * |              |               |
+     * +--------------+---------------+
+     * |                              |
+     * |        Miscellaneous         |
+     * |                              |
+     * +------------------------------+
      */
     protected void createFormContent( Composite parent, FormToolkit toolkit )
     {
-        createFeaturesAndOperationsSection( toolkit, parent );
-        //createAuthzRegexpAndRewriteSection( toolkit, parent );
-        //createMiscellaneousSection( toolkit, parent );
+        TableWrapLayout twl = new TableWrapLayout();
+        twl.numColumns = 2;
+        parent.setLayout( twl );
+
+        // The upper left part
+        Composite uperLeftComposite = toolkit.createComposite( parent );
+        uperLeftComposite.setLayout( new GridLayout() );
+        TableWrapData upperLeftCompositeTableWrapData = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP, 1, 1 );
+        upperLeftCompositeTableWrapData.grabHorizontal = true;
+        uperLeftComposite.setLayoutData( upperLeftCompositeTableWrapData );
+
+        // The upper right part
+        Composite upperRightComposite = toolkit.createComposite( parent );
+        upperRightComposite.setLayout( new GridLayout() );
+        TableWrapData upperRightCompositeTableWrapData = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP, 1, 1 );
+        upperRightCompositeTableWrapData.grabHorizontal = true;
+        upperRightComposite.setLayoutData( upperRightCompositeTableWrapData );
+
+        // The middle left part
+        Composite middleLeftComposite = toolkit.createComposite( parent );
+        middleLeftComposite.setLayout( new GridLayout() );
+        TableWrapData middleLeftCompositeTableWrapData = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP, 1, 1 );
+        middleLeftCompositeTableWrapData.grabHorizontal = true;
+        middleLeftComposite.setLayoutData( middleLeftCompositeTableWrapData );
+
+        // The middle right part
+        Composite middleRightComposite = toolkit.createComposite( parent );
+        middleRightComposite.setLayout( new GridLayout() );
+        TableWrapData middleRightCompositeTableWrapData = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP, 1, 1 );
+        middleRightCompositeTableWrapData.grabHorizontal = true;
+        middleRightComposite.setLayoutData( middleRightCompositeTableWrapData );
+
+        // The lower part
+        Composite lowerComposite = toolkit.createComposite( parent );
+        lowerComposite.setLayout( new GridLayout() );
+        TableWrapData lowerCompositeTableWrapData = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP, 1, 2 );
+        lowerCompositeTableWrapData.grabHorizontal = true;
+        lowerComposite.setLayoutData( lowerCompositeTableWrapData );
+
+        createFeaturesSection( toolkit, middleLeftComposite );
+        createOperationsSection( toolkit, middleRightComposite );
+        createAuthorizationRewriteRuleSection( toolkit, middleLeftComposite );
+        createAuthIdRegexpsSection( toolkit, middleRightComposite );
+        createMiscellaneousSection( toolkit, lowerComposite );
     }
 
 
     /**
-     * Creates the Features & Operations section.
+     * Creates the Features section.
      *
+     *<pre>
+     * .---------------------------------------.
+     * |V Features                             |
+     * +---------------------------------------+
+     * |                                       |
+     * | Allowed Features :                    |
+     * | +--------------------------+          |
+     * | | xyz                      | (Add...) |
+     * | | abcde                    |          |
+     * | | aaa                      | (Delete) |
+     * | +--------------------------+          |
+     * |                                       |
+     * | Disallowed Features :                 |
+     * | +--------------------------+          |
+     * | | xyz                      | (Add...) |
+     * | | abcde                    |          |
+     * | | aaa                      | (Delete) |
+     * | +--------------------------+          |
+     * +---------------------------------------+
+     *</pre>
      * @param toolkit the toolkit
      * @param parent the parent composite
      */
-    private void createFeaturesAndOperationsSection( FormToolkit toolkit, Composite parent )
+    private void createFeaturesSection( FormToolkit toolkit, Composite parent )
     {
-        // The Features & Operations section, which can be expanded or compacted
+        // The Features section, which can be expanded or compacted
         Section section = createSection( toolkit, parent, 
-            Messages.getString( "OpenLDAPOptionsPage.FeaturesAndOperationsSection" ) );
-        Composite composite = createSectionComposite( toolkit, section, 4, false );
+            Messages.getString( "OpenLDAPOptionsPage.FeaturesSection" ) );
+        Composite composite = createSectionComposite( toolkit, section, 2, false );
 
         // The olcAllows parameter label
         Label allowFeatureLabel = toolkit.createLabel( composite, 
             Messages.getString( "OpenLDAPOptionsPage.AllowFeature" ) ); //$NON-NLS-1$
         allowFeatureLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, false, 2, 1 ) );
-
-        // The olcDisallows parameter label
-        Label disallowFeatureLabel = toolkit.createLabel( composite,
-            Messages.getString( "OpenLDAPOptionsPage.DisallowFeature" ) ); //$NON-NLS-1$
-        disallowFeatureLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, false, 2, 1 ) );
 
         // The olcAllows parameter table
         allowFeatureTableWidget = new TableWidget<AllowFeatureEnum>( new AllowFeatureDecorator( composite.getShell() ) );
@@ -332,22 +391,56 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         allowFeatureTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
         addModifyListener( allowFeatureTableWidget, allowFeatureListener );
 
+        // The olcDisallows parameter label
+        Label disallowFeatureLabel = toolkit.createLabel( composite,
+            Messages.getString( "OpenLDAPOptionsPage.DisallowFeature" ) ); //$NON-NLS-1$
+        disallowFeatureLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, false, 2, 1 ) );
+
         // The olcDisallows parameter table
         disallowFeatureTableWidget = new TableWidget<DisallowFeatureEnum>( new DisallowFeatureDecorator( composite.getShell() ) );
 
         disallowFeatureTableWidget.createWidgetNoEdit( composite, toolkit );
         disallowFeatureTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
         addModifyListener( disallowFeatureTableWidget, disallowFeatureListener );
+    }
+
+
+    /**
+     * Creates the Operations section.
+     * <pre>
+     * .----------------------------------------.
+     * |V Operations                            |
+     * +----------------------------------------+
+     * |                                        |
+     * | Required Conditions :                  |
+     * | +--------------------------+           |
+     * | | xyz                      | (Add...)  |
+     * | | abcde                    |           |
+     * | | aaa                      | (Delete)  |
+     * | +--------------------------+           |
+     * |                                        |
+     * | Restricted Operations :                |
+     * | +--------------------------+           |
+     * | | xyz                      | (Add...)  |
+     * | | abcde                    |           |
+     * | | aaa                      | (Delete)  |
+     * | +--------------------------+           |
+     * +----------------------------------------+
+     * </pre>
+     * @param toolkit the toolkit
+     * @param parent the parent composite
+     */
+    private void createOperationsSection( FormToolkit toolkit, Composite parent )
+    {
+        // The Operations section, which can be expanded or compacted
+        Section section = createSection( toolkit, parent, 
+            Messages.getString( "OpenLDAPOptionsPage.OperationsSection" ) );
+        Composite composite = createSectionComposite( toolkit, section, 2, false );
 
         // The olcRequires parameter label
         Label requireConditionLabel = toolkit.createLabel( composite, 
             Messages.getString( "OpenLDAPOptionsPage.RequireCondition" ) ); //$NON-NLS-1$
         requireConditionLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, false, 2, 1 ) );
-
-        // The olcRestrict parameter label
-        Label restrictOperationLabel = toolkit.createLabel( composite,
-            Messages.getString( "OpenLDAPOptionsPage.RestrictOperation" ) ); //$NON-NLS-1$
-        restrictOperationLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, false, 2, 1 ) );
 
         // The olcRequires parameter table
         requireConditionTableWidget = new TableWidget<RequireConditionEnum>( new RequireConditionDecorator( composite.getShell() ) );
@@ -355,6 +448,11 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         requireConditionTableWidget.createWidgetNoEdit( composite, toolkit );
         requireConditionTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
         addModifyListener( requireConditionTableWidget, requireConditionListener );
+
+        // The olcRestrict parameter label
+        Label restrictOperationLabel = toolkit.createLabel( composite,
+            Messages.getString( "OpenLDAPOptionsPage.RestrictOperation" ) ); //$NON-NLS-1$
+        restrictOperationLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, false, 2, 1 ) );
 
         // The olcRestrict parameter table
         restrictOperationTableWidget = new TableWidget<RestrictOperationEnum>( new RestrictOperationDecorator( composite.getShell() ) );
@@ -366,14 +464,27 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
 
 
     /**
-     * Creates the Authentication & Authorization section.
-     *
+     * Creates the Authorization Rewrite Rules section.
+     * <pre>
+     * .---------------------------------------.
+     * |V Authorization rewrite rules          |
+     * +---------------------------------------+
+     * | +--------------------------+          |
+     * | | xyz                      | (Add...) |
+     * | | abcde                    |          |
+     * | | aaa                      | (Edit)   |
+     * | |                          |          |
+     * | |                          | (Delete) |
+     * | +--------------------------+          |
+     * +---------------------------------------+
+     * </pre>
      * @param toolkit the toolkit
      * @param parent the parent composite
      */
-    private void createAuthenticationAndAuthorizationSection( FormToolkit toolkit, Composite parent )
+    private void createAuthorizationRewriteRuleSection( FormToolkit toolkit, Composite parent )
     {
-        Section section = createSection( toolkit, parent, "Authentication & Authorization" );
+        Section section = createSection( toolkit, parent, 
+            Messages.getString( "OpenLDAPOptionsPage.AuthzRewriteRules" ) );
         Composite composite = createSectionComposite( toolkit, section, 2, false );
 
         /*
@@ -392,6 +503,58 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         authzUsernamesToDnRegexpText = toolkit.createText( composite, "" );
         authzUsernamesToDnRegexpText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         */
+    }
+
+
+    /**
+     * Creates the AuthID Regexp section.
+     * <pre>
+     * .----------------------------------------.
+     * |V Authentication ID Regexp              |
+     * +----------------------------------------+
+     * | +--------------------------+           |
+     * | | xyz                      | (Add...)  |
+     * | | abcde                    |           |
+     * | | aaa                      | (Edit...) |
+     * | |                          |           |
+     * | |                          | (Delete)  |
+     * | +--------------------------+           |
+     * +----------------------------------------+
+     * </pre>
+     * @param toolkit the toolkit
+     * @param parent the parent composite
+     */
+    private void createAuthIdRegexpsSection( FormToolkit toolkit, Composite parent )
+    {
+        Section section = createSection( toolkit, parent, 
+            Messages.getString( "OpenLDAPOptionsPage.AuthIdRegexps" ) );
+        Composite composite = createSectionComposite( toolkit, section, 2, false );
+    }
+
+
+    /**
+     * Creates the miscellaneous section.
+     * <pre>
+     * .----------------------------------------------------------------------------------.
+     * |V Miscellaneous options                                                           |
+     * +----------------------------------------------------------------------------------+
+     * | Args File : [///////////////////////]     Plugin Log File : [//////////////////] |
+     * |                                                                                  |
+     * | Referral :  [///////////////////////]     Authz Policy :    [------------------] |
+     * |                                                                                  |
+     * | Root DSE :  [///////////////////////]     GentleHUP :       [X]                  |
+     * |                                                                                  |
+     * | Read Only : [X]                           Reverse Lookup :  [X]                  |
+     * +----------------------------------------------------------------------------------+
+     * </pre>
+     * @param toolkit the toolkit
+     * @param parent the parent composite
+     */
+    private void createMiscellaneousSection( FormToolkit toolkit, Composite parent )
+    {
+        Section section = createSection( toolkit, parent, 
+            Messages.getString( "OpenLDAPOptionsPage.Miscellaneous" ) );
+        Composite composite = createSectionComposite( toolkit, section, 4, false );
     }
 
     
