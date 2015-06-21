@@ -29,13 +29,13 @@ import org.eclipse.swt.widgets.Shell;
  *  
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SsDecorator extends TableDecorator<SsfWrapper>
+public class SsfDecorator extends TableDecorator<SsfWrapper>
 {
     /**
      * Create a new instance of SsfDecorator
      * @param parentShell The parent Shell
      */
-    public SsDecorator( Shell parentShell )
+    public SsfDecorator( Shell parentShell )
     {
         setDialog( new SsfDialog( parentShell ) );
     }

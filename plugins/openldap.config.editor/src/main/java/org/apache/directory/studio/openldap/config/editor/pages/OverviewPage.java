@@ -406,8 +406,6 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
         createDatabasesSection( toolkit, middleLeftComposite );
         createOverlaysSection( toolkit, middleRightComposite );
         createConfigDetailsLinksSection( toolkit, lowerComposite );
-
-        refreshUI();
     }
 
 

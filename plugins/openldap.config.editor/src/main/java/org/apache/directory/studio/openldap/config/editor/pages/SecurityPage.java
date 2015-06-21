@@ -51,7 +51,7 @@ import org.apache.directory.studio.openldap.config.editor.dialogs.OverlayDialog;
 import org.apache.directory.studio.openldap.config.editor.dialogs.SaslSecPropsDialog;
 import org.apache.directory.studio.openldap.config.editor.wrappers.PasswordHashDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.SsfWrapper;
-import org.apache.directory.studio.openldap.config.editor.wrappers.SsDecorator;
+import org.apache.directory.studio.openldap.config.editor.wrappers.SsfDecorator;
 import org.apache.directory.studio.openldap.config.model.OlcGlobal;
 
 
@@ -112,8 +112,8 @@ import org.apache.directory.studio.openldap.config.model.OlcGlobal;
  *   | | TLS Verify Client  :       [=============]    | | Password Hash  :                               | |
  *   | +-----------------------------------------------+ | +----------------------------------+           | |
  *   |                                                   | |                                  | (Add)     | |
- *   |                                                   | |                                  | (Edit)    | |
  *   |                                                   | |                                  | (Delete)  | |
+ *   |                                                   | |                                  |           | |
  *   |                                                   | +----------------------------------+           | |
  *   |                                                   | Security  :                                    | |
  *   |                                                   | +----------------------------------+           | |
@@ -719,8 +719,8 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
      * | Password Hash  :                                                              |
      * | +-----------------------------------------------------------------+           |
      * | |                                                                 | (Add)     |
-     * | |                                                                 | (Edit)    |
      * | |                                                                 | (Delete)  |
+     * | |                                                                 |           |
      * | +-----------------------------------------------------------------+           |
      * | Security  :                                                                   |
      * | +-----------------------------------------------------------------+           |
@@ -779,7 +779,7 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
         Label securityLabel = toolkit.createLabel( miscSectionComposite, Messages.getString( "OpenLDAPSecurityPage.Security" ) ); //$NON-NLS-1$
         securityLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, false, 4, 1 ) );
         
-        securityTableWidget = new TableWidget<SsfWrapper>( new SsDecorator( miscSectionComposite.getShell() ) );
+        securityTableWidget = new TableWidget<SsfWrapper>( new SsfDecorator( miscSectionComposite.getShell() ) );
 
         securityTableWidget.createWidgetWithEdit( miscSectionComposite, toolkit );
         securityTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 4, 1 ) );

@@ -817,8 +817,6 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
         createConcurrencySection( toolkit, concurrencyComposite );
         createLdapLimitsSection( toolkit, ldapLimitsComposite );
         createIndexLimitsSection( toolkit, indexLimitsComposite );
-
-        //refreshUI();
     }
 
     

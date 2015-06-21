@@ -20,24 +20,65 @@
 package org.apache.directory.studio.openldap.config.editor.pages;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.studio.common.ui.widgets.TableWidget;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
+import org.apache.directory.studio.openldap.common.ui.model.AllowFeatureEnum;
+import org.apache.directory.studio.openldap.common.ui.model.DisallowFeatureEnum;
+import org.apache.directory.studio.openldap.common.ui.model.RequireConditionEnum;
+import org.apache.directory.studio.openldap.common.ui.model.RestrictOperationEnum;
 import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
+import org.apache.directory.studio.openldap.config.editor.wrappers.AllowFeatureDecorator;
+import org.apache.directory.studio.openldap.config.editor.wrappers.AuthIdRewriteWrapper;
+import org.apache.directory.studio.openldap.config.editor.wrappers.AuthzRegexpWrapper;
 import org.apache.directory.studio.openldap.config.model.OlcGlobal;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
-import org.eclipse.ui.forms.widgets.TableWrapData;
-import org.eclipse.ui.forms.widgets.TableWrapLayout;
 
 
 /**
- * This class represents the Options Page of the Server Configuration Editor. Here is the 
- * content of this page :
+ * This class represents the Options Page of the Server Configuration Editor. We manage the 
+ * following parameters :
+ * <ul>
+ *   <li>Operations and features :
+ *     <ul>
+ *       <li>olcAllows</li>
+ *       <li>olcDisallows</li>
+ *       <li>olcRequires</li>
+ *       <li>olcRestrict</li>
+ *     </ul>
+ *   </li>
+ *   <li>Authorization regexp & rewrite rules :
+ *     <ul>
+ *       <li>olcAuthIDRewrite</li>
+ *       <li>olcAuthzRegexp</li>
+ *     </ul>
+ *   </li>
+ *   <li>Miscellaneous options :
+ *     <ul>
+ *       <li>olcArgsFile</li>
+ *       <li>olcPluginLogFile</li>
+ *       <li>olcReferral</li>
+ *       <li>olcAuthzPolicy</li>
+ *       <li>olcRootDSE</li>
+ *       <li>olcReadOnly</li>
+ *       <li>olcGentleHUP</li>
+ *       <li>olcReadOnly</li>
+ *       <li>olcReverseLookup</li>
+ *     </ul>
+ *   </li>
+ * </ul>
+ * Here is the content of this page :
  * <pre>
  * .-----------------------------------------------------------------------------------.
  * | Options                                                                           |
@@ -97,12 +138,70 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
     private static final String TITLE = Messages.getString( "OpenLDAPOptionsPage.Title" );
 
     // UI Controls
+    // Operations and features
+    /** The olcAllows parameter */
+    private TableWidget<AllowFeatureEnum> allowFeatureTableWidget;
+
+    /** The olcDisallows parameter */
+    private TableWidget<DisallowFeatureEnum> disallowFeatureTableWidget;
+    
+    /** The olcRequires parameter */
+    private TableWidget<RequireConditionEnum> requireConditionTableWidget;
+
+    /** The olcRestrict parameter */
+    private TableWidget<RestrictOperationEnum> restrictOperationTableWidget;
+
+    // The Authz regexp and rewrite rules
+    /** The olcAuthIDRewrite parameter */
+    private TableWidget<AuthIdRewriteWrapper> authIdRewriteTableWidget;
+
+    /** The olcAuthzRegexp parameter */
+    private TableWidget<AuthzRegexpWrapper> authzRegexpTableWidget;
+
+    
+    // The miscellaneous parameters
+    /** The olcArgsFile parameter */
+    private Text argsFileText; 
+
     /** The olcPluginLogFile parameter */
     private Text pluginLogFileText; 
-    private Text authUsernamesToDnRewriteRuleText;
-    private Text proxyAuthorizationPolicyText;
-    private Text authzUsernamesToDnRegexpText;
 
+    /** The olcReferral parameter */
+    private Text referralText; 
+
+    /** The olcRootDSE parameter */
+    private Text rootDseText; 
+
+    /** The olcAuthzPolicy parameter */
+    private Combo authzPolicyCombo; 
+
+    /** The olcGentleHUP parameter */
+    private Button gentleHupCheckbox;
+
+    /** The olcReadOnly parameter */
+    private Button readOnlyCheckbox;
+
+    /** The olcReverseLookup parameter */
+    private Button reverseLookupCheckbox;
+    
+    
+    /**
+     * The olcAllowFeature listener
+     */
+    private WidgetModifyListener allowFeatureListener = new WidgetModifyListener()
+    {
+        public void widgetModified( WidgetModifyEvent e )
+        {
+            List<String> allowFeatures = new ArrayList<String>();
+            
+            for ( AllowFeatureEnum allowFeature : allowFeatureTableWidget.getElements() )
+            {
+                allowFeatures.add( allowFeature.getName() );
+            }
+            
+            getConfiguration().getGlobal().setOlcAllows( allowFeatures );
+        }
+    };
 
     /**
      * Creates a new instance of OptionsPage.
@@ -115,47 +214,54 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
     }
 
 
-    
     /**
      * {@inheritDoc}
+     * Creates the OpenLDAP options config Tab. It contains 3 sections :
+     * 
+     * <pre>
+     * +-----------------------------+
+     * |                             |
+     * |    Features & Operations    |
+     * |                             |
+     * +-----------------------------+
+     * |                             |
+     * |   Authz regxep  & rewrite   |
+     * |                             |
+     * +-----------------------------+
+     * |                             |
+     * |        Miscellaneous        |
+     * |                             |
+     * +-----------------------------+
      */
     protected void createFormContent( Composite parent, FormToolkit toolkit )
     {
-        TableWrapLayout twl = new TableWrapLayout();
-        twl.numColumns = 2;
-        twl.makeColumnsEqualWidth = true;
-        parent.setLayout( twl );
-
-        Composite leftComposite = toolkit.createComposite( parent );
-        leftComposite.setLayout( new GridLayout() );
-        TableWrapData leftCompositeTableWrapData = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
-        leftCompositeTableWrapData.grabHorizontal = true;
-        leftComposite.setLayoutData( leftCompositeTableWrapData );
-
-        Composite rightComposite = toolkit.createComposite( parent );
-        rightComposite.setLayout( new GridLayout() );
-        TableWrapData rightCompositeTableWrapData = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
-        rightCompositeTableWrapData.grabHorizontal = true;
-        rightComposite.setLayoutData( rightCompositeTableWrapData );
-
-        createLogsSection( toolkit, leftComposite );
-        createAuthenticationAndAuthorizationSection( toolkit, leftComposite );
-
-        refreshUI();
+        createFeaturesAndOperationsSection( toolkit, parent );
+        //createAuthzRegexpAndRewriteSection( toolkit, parent );
+        //createMiscellaneousSection( toolkit, parent );
     }
 
 
     /**
-     * Creates the Logs section.
+     * Creates the Features & Operations section.
      *
      * @param toolkit the toolkit
      * @param parent the parent composite
      */
-    private void createLogsSection( FormToolkit toolkit, Composite parent )
+    private void createFeaturesAndOperationsSection( FormToolkit toolkit, Composite parent )
     {
-        // The Logs section, which can be expanded or compacted
-        Section section = createSection( toolkit, parent, Messages.getString( "OptionsPage.LogTitle" ) );
+        // The Features & Operations section, which can be expanded or compacted
+        Section section = createSection( toolkit, parent, Messages.getString( "OptionsPage.FeaturesAndOperationsSection" ) );
         Composite composite = createSectionComposite( toolkit, section, 2, false );
+
+        // The olcAllowFeature parameter
+        Label passwordHashLabel = toolkit.createLabel( composite, Messages.getString( "OptionsPage.AllowFeature" ) ); //$NON-NLS-1$
+        passwordHashLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, false, 2, 1 ) );
+        
+        allowFeatureTableWidget = new TableWidget<AllowFeatureEnum>( new AllowFeatureDecorator( composite.getShell() ) );
+
+        allowFeatureTableWidget.createWidgetNoEdit( composite, toolkit );
+        allowFeatureTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 4, 1 ) );
+        addModifyListener( allowFeatureTableWidget, allowFeatureListener );
 
         // Plugin Log File Text
         toolkit.createLabel( composite, "Plugin Log File:" );
@@ -175,6 +281,7 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         Section section = createSection( toolkit, parent, "Authentication & Authorization" );
         Composite composite = createSectionComposite( toolkit, section, 2, false );
 
+        /*
         // Authentication Usernames To DN Rewrite Rule Text
         toolkit.createLabel( composite, "Authentication rewrite rule to convert simple user names to an LDAP DN:" );
         authUsernamesToDnRewriteRuleText = toolkit.createText( composite, "" );
@@ -189,6 +296,7 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         toolkit.createLabel( composite, "Authorization Regexp to convert simple user names to an LDAP DN:" );
         authzUsernamesToDnRegexpText = toolkit.createText( composite, "" );
         authzUsernamesToDnRegexpText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        */
     }
 
     
@@ -197,6 +305,7 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
      */
     private void addListeners()
     {
+        addDirtyListener( allowFeatureTableWidget );
     }
 
     
@@ -205,6 +314,7 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
      */
     private void removeListeners()
     {
+        removeDirtyListener( allowFeatureTableWidget );
     }
     
 
@@ -213,69 +323,37 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
      */
     public void refreshUI()
     {
-        if ( isInitialized() )
+        removeListeners();
+
+        // Getting the global configuration object
+        OlcGlobal global = getConfiguration().getGlobal();
+
+        if ( global != null )
         {
-            removeListeners();
+            //
+            // Assigning values to UI Controls
+            //
 
-            // Getting the global configuration object
-            OlcGlobal global = getConfiguration().getGlobal();
+            // Allow Feature Table Widget
+            List<String> allowedFeatures = global.getOlcAllows();
 
-            if ( global != null )
+            if ( allowedFeatures != null )
             {
-                //
-                // Assigning values to UI Controls
-                //
-
-                // Plugin Log File Text
-                String pluginLogFile = global.getOlcPluginLogFile();
-
-                if ( pluginLogFile != null )
+                List<AllowFeatureEnum> alloweds = new ArrayList<AllowFeatureEnum>();
+                
+                for ( String allowedFeature : allowedFeatures )
                 {
-                    pluginLogFileText.setText( pluginLogFile );
+                    alloweds.add( AllowFeatureEnum.getFeature( allowedFeature ) );
                 }
-                else
-                {
-                    pluginLogFileText.setText( "" );
-                }
-
-                // Authentication Usernames To DN Rewrite Rule Text
-                List<String> authUsernamesToDnRewriteRule = global.getOlcAuthIDRewrite();
-
-                if ( authUsernamesToDnRewriteRule != null )
-                {
-                    authUsernamesToDnRewriteRuleText.setText( authUsernamesToDnRewriteRule + "" );
-                }
-                else
-                {
-                    authUsernamesToDnRewriteRuleText.setText( "" );
-                }
-
-                // Proxy Authorization Policy Text
-                String proxyAuthorizationPolicy = global.getOlcAuthzPolicy();
-
-                if ( proxyAuthorizationPolicy != null )
-                {
-                    proxyAuthorizationPolicyText.setText( proxyAuthorizationPolicy );
-                }
-                else
-                {
-                    proxyAuthorizationPolicyText.setText( "" );
-                }
-
-                // Authorization Usernames To DN Regexp Text
-                List<String> authzUsernamesToDnRegexp = global.getOlcAuthzRegexp();
-
-                if ( authzUsernamesToDnRegexp != null )
-                {
-                    authzUsernamesToDnRegexpText.setText( authzUsernamesToDnRegexp + "" );
-                }
-                else
-                {
-                    authzUsernamesToDnRegexpText.setText( "" );
-                }
-
-                addListeners();
+                
+                allowFeatureTableWidget.setElements( alloweds );
             }
+            else
+            {
+                allowFeatureTableWidget.setElements( new ArrayList<AllowFeatureEnum>() );
+            }
+
+            addListeners();
         }
     }
 }
