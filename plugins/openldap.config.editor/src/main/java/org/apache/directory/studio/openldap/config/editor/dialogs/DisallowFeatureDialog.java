@@ -71,7 +71,7 @@ import org.apache.directory.studio.openldap.common.ui.model.DisallowFeatureEnum;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class DisAllowFeatureDialog extends AddEditDialog<DisallowFeatureEnum>
+public class DisallowFeatureDialog extends AddEditDialog<DisallowFeatureEnum>
 {
     /** The array of buttons */
     private Button[] disallowFeatureCheckboxes = new Button[6];
@@ -84,7 +84,7 @@ public class DisAllowFeatureDialog extends AddEditDialog<DisallowFeatureEnum>
      * 
      * @param parentShell The parent Shell
      */
-    public DisAllowFeatureDialog( Shell parentShell )
+    public DisallowFeatureDialog( Shell parentShell )
     {
         super( parentShell );
         super.setShellStyle( super.getShellStyle() | SWT.RESIZE );

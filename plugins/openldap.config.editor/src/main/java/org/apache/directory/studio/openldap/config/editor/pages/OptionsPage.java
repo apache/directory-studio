@@ -35,6 +35,8 @@ import org.apache.directory.studio.openldap.config.editor.wrappers.AllowFeatureD
 import org.apache.directory.studio.openldap.config.editor.wrappers.AuthIdRewriteWrapper;
 import org.apache.directory.studio.openldap.config.editor.wrappers.AuthzRegexpWrapper;
 import org.apache.directory.studio.openldap.config.editor.wrappers.DisallowFeatureDecorator;
+import org.apache.directory.studio.openldap.config.editor.wrappers.RequireConditionDecorator;
+import org.apache.directory.studio.openldap.config.editor.wrappers.RestrictOperationDecorator;
 import org.apache.directory.studio.openldap.config.model.OlcGlobal;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -222,7 +224,46 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
             getConfiguration().getGlobal().setOlcDisallows( disallowFeatures );
         }
     };
+    
+    
+    /**
+     * The olcRequires listener
+     */
+    private WidgetModifyListener requireConditionListener = new WidgetModifyListener()
+    {
+        public void widgetModified( WidgetModifyEvent e )
+        {
+            List<String> requires = new ArrayList<String>();
+            
+            for ( RequireConditionEnum requireCondition : requireConditionTableWidget.getElements() )
+            {
+                requires.add( requireCondition.getName() );
+            }
+            
+            getConfiguration().getGlobal().setOlcRequires( requires );
+        }
+    };
+    
+    
+    /**
+     * The olcRestrict listener
+     */
+    private WidgetModifyListener restrictOperationListener = new WidgetModifyListener()
+    {
+        public void widgetModified( WidgetModifyEvent e )
+        {
+            List<String> restricts = new ArrayList<String>();
+            
+            for ( RestrictOperationEnum restrictOperation : restrictOperationTableWidget.getElements() )
+            {
+                restricts.add( restrictOperation.getName() );
+            }
+            
+            getConfiguration().getGlobal().setOlcRestrict( restricts );
+        }
+    };
 
+    
     /**
      * Creates a new instance of OptionsPage.
      *
@@ -298,10 +339,29 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         disallowFeatureTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
         addModifyListener( disallowFeatureTableWidget, disallowFeatureListener );
 
-        // Plugin Log File Text
-        toolkit.createLabel( composite, "Plugin Log File:" );
-        pluginLogFileText = toolkit.createText( composite, "" );
-        pluginLogFileText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        // The olcRequires parameter label
+        Label requireConditionLabel = toolkit.createLabel( composite, 
+            Messages.getString( "OpenLDAPOptionsPage.RequireCondition" ) ); //$NON-NLS-1$
+        requireConditionLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, false, 2, 1 ) );
+
+        // The olcRestrict parameter label
+        Label restrictOperationLabel = toolkit.createLabel( composite,
+            Messages.getString( "OpenLDAPOptionsPage.RestrictOperation" ) ); //$NON-NLS-1$
+        restrictOperationLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, false, 2, 1 ) );
+
+        // The olcRequires parameter table
+        requireConditionTableWidget = new TableWidget<RequireConditionEnum>( new RequireConditionDecorator( composite.getShell() ) );
+
+        requireConditionTableWidget.createWidgetNoEdit( composite, toolkit );
+        requireConditionTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+        addModifyListener( requireConditionTableWidget, requireConditionListener );
+
+        // The olcRestrict parameter table
+        restrictOperationTableWidget = new TableWidget<RestrictOperationEnum>( new RestrictOperationDecorator( composite.getShell() ) );
+
+        restrictOperationTableWidget.createWidgetNoEdit( composite, toolkit );
+        restrictOperationTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+        addModifyListener( restrictOperationTableWidget, restrictOperationListener );
     }
 
 
