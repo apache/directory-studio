@@ -23,6 +23,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -40,7 +44,10 @@ public abstract class AddEditDialog<E> extends Dialog
     
     /** The table's elements */
     private List<E> elements;
-    
+
+    /** A flag used to tell if the okButton must be disabled */
+    protected boolean okDisabled = false;
+
     /**
      * Create a new instance of the TableAddEditDialog
      * 
@@ -57,6 +64,23 @@ public abstract class AddEditDialog<E> extends Dialog
     protected void initDialog()
     {
         // Nothing to do
+    }
+    
+
+    /**
+     * Override the createButtonBar method to be able to hide the OK button if needed
+     */
+    protected Control createButtonBar( Composite parent ) 
+    {
+        Control buttonBar = super.createButtonBar( parent );
+        
+        if ( okDisabled )
+        {
+            Button okButton = getButton( IDialogConstants.OK_ID );
+            okButton.setEnabled( false );
+        }
+        
+        return buttonBar;
     }
     
     

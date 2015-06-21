@@ -76,7 +76,7 @@ public class AllowFeatureDialog extends AddEditDialog<AllowFeatureEnum>
     
     /** The already selected allowed features */
     List<AllowFeatureEnum> features = new ArrayList<AllowFeatureEnum>();
-    
+
     /**
      * Create a new instance of the AllowFeatureDialog
      * 
@@ -159,7 +159,7 @@ public class AllowFeatureDialog extends AddEditDialog<AllowFeatureEnum>
         
         return composite;
     }
-
+    
 
     /**
      * Creates the AllowFeature input group.
@@ -197,6 +197,8 @@ public class AllowFeatureDialog extends AddEditDialog<AllowFeatureEnum>
     protected void initDialog()
     {
         List<AllowFeatureEnum> elements = getElements();
+        boolean allSelected = true;
+        okDisabled = false;
         
         for ( int i = 1; i < allowFeatureCheckboxes.length; i++ )
         {
@@ -208,6 +210,16 @@ public class AllowFeatureDialog extends AddEditDialog<AllowFeatureEnum>
                 allowFeatureCheckboxes[i].setSelection( true );
                 allowFeatureCheckboxes[i].setEnabled( false );
             }
+            else
+            {
+                allSelected = false;
+            }
+        }
+        
+        if ( allSelected )
+        {
+            // Disable the OK button
+            okDisabled = true;
         }
     }
 
