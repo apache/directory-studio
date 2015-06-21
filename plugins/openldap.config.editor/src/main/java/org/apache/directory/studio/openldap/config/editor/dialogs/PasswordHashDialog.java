@@ -201,7 +201,9 @@ public class PasswordHashDialog extends AddEditDialog<PasswordHashEnum>
     protected void initDialog()
     {
         List<PasswordHashEnum> elements = getElements();
-        
+        boolean allSelected = true;
+        okDisabled = false;
+
         for ( int i = 1; i < passwordHashCheckboxes.length; i++ )
         {
             PasswordHashEnum value = PasswordHashEnum.getPasswordHash( passwordHashCheckboxes[i].getText() );
@@ -212,6 +214,16 @@ public class PasswordHashDialog extends AddEditDialog<PasswordHashEnum>
                 passwordHashCheckboxes[i].setSelection( true );
                 passwordHashCheckboxes[i].setEnabled( false );
             }
+            else
+            {
+                allSelected = false;
+            }
+        }
+        
+        if ( allSelected )
+        {
+            // Disable the OK button
+            okDisabled = true;
         }
     }
 

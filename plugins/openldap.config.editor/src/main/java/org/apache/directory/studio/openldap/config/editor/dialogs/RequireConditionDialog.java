@@ -192,7 +192,9 @@ public class RequireConditionDialog extends AddEditDialog<RequireConditionEnum>
     protected void initDialog()
     {
         List<RequireConditionEnum> elements = getElements();
-        
+        boolean allSelected = true;
+        okDisabled = false;
+
         for ( int i = 1; i < requireConditionCheckboxes.length; i++ )
         {
             RequireConditionEnum value = RequireConditionEnum.getCondition( requireConditionCheckboxes[i].getText() );
@@ -203,6 +205,16 @@ public class RequireConditionDialog extends AddEditDialog<RequireConditionEnum>
                 requireConditionCheckboxes[i].setSelection( true );
                 requireConditionCheckboxes[i].setEnabled( false );
             }
+            else
+            {
+                allSelected = false;
+            }
+        }
+        
+        if ( allSelected )
+        {
+            // Disable the OK button
+            okDisabled = true;
         }
     }
 

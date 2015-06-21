@@ -201,7 +201,9 @@ public class DisAllowFeatureDialog extends AddEditDialog<DisallowFeatureEnum>
     protected void initDialog()
     {
         List<DisallowFeatureEnum> elements = getElements();
-        
+        boolean allSelected = true;
+        okDisabled = false;
+
         for ( int i = 1; i < disallowFeatureCheckboxes.length; i++ )
         {
             DisallowFeatureEnum value = DisallowFeatureEnum.getFeature( disallowFeatureCheckboxes[i].getText() );
@@ -212,6 +214,16 @@ public class DisAllowFeatureDialog extends AddEditDialog<DisallowFeatureEnum>
                 disallowFeatureCheckboxes[i].setSelection( true );
                 disallowFeatureCheckboxes[i].setEnabled( false );
             }
+            else
+            {
+                allSelected = false;
+            }
+        }
+        
+        if ( allSelected )
+        {
+            // Disable the OK button
+            okDisabled = true;
         }
     }
 

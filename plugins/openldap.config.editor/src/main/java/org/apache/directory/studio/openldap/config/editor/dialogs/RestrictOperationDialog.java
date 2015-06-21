@@ -79,7 +79,7 @@ import org.apache.directory.studio.openldap.common.ui.model.RestrictOperationEnu
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class RestrictOperartionDialog extends AddEditDialog<RestrictOperationEnum>
+public class RestrictOperationDialog extends AddEditDialog<RestrictOperationEnum>
 {
     /** The array of buttons */
     private Button[] restrictOperationCheckboxes = new Button[16];
@@ -92,7 +92,7 @@ public class RestrictOperartionDialog extends AddEditDialog<RestrictOperationEnu
      * 
      * @param parentShell The parent Shell
      */
-    public RestrictOperartionDialog( Shell parentShell )
+    public RestrictOperationDialog( Shell parentShell )
     {
         super( parentShell );
         super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
@@ -205,7 +205,9 @@ public class RestrictOperartionDialog extends AddEditDialog<RestrictOperationEnu
     protected void initDialog()
     {
         List<RestrictOperationEnum> elements = getElements();
-        
+        boolean allSelected = true;
+        okDisabled = false;
+
         for ( int i = 1; i < restrictOperationCheckboxes.length; i++ )
         {
             RestrictOperationEnum value = RestrictOperationEnum.getOperation( restrictOperationCheckboxes[i].getText() );
@@ -216,6 +218,16 @@ public class RestrictOperartionDialog extends AddEditDialog<RestrictOperationEnu
                 restrictOperationCheckboxes[i].setSelection( true );
                 restrictOperationCheckboxes[i].setEnabled( false );
             }
+            else
+            {
+                allSelected = false;
+            }
+        }
+        
+        if ( allSelected )
+        {
+            // Disable the OK button
+            okDisabled = true;
         }
     }
 
