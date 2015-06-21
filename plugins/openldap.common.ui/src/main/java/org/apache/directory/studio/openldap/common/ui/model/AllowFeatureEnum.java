@@ -117,4 +117,13 @@ public enum AllowFeatureEnum
         
         return UNKNOWN;
     }
+    
+    
+    /**
+     * @see Object#toString()
+     */
+    public String toString()
+    {
+        return name;
+    }
 }

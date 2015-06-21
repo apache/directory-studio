@@ -67,7 +67,7 @@ import org.apache.directory.studio.openldap.common.ui.model.RestrictOperationEnu
  * +--------------------------------------------------------------------+
  * | Restricted Operation                                               |
  * | .----------------------------------------------------------------. |
- * | | add :    []  add :    []  bind :      []  compare :         [] | |
+ * | | add :    []  all :    []  bind :      []  compare :         [] | |
  * | | delete : []  extended []  START_TLS : []  MODIFY_PASSWORD : [] | |
  * | | WHOAMI : []  CANCEL : []  modify :    []  modrdn :          [] | |
  * | | read :   []  rename : []  search :    []  write :           [] | |
@@ -144,7 +144,7 @@ public class RestrictOperationDialog extends AddEditDialog<RestrictOperationEnum
      * +--------------------------------------------------------------------+
      * | Restricted Operation                                               |
      * | .----------------------------------------------------------------. |
-     * | | add :    []  add :    []  bind :      []  compare :         [] | |
+     * | | add :    []  all :    []  bind :      []  compare :         [] | |
      * | | delete : []  extended []  START_TLS : []  MODIFY_PASSWORD : [] | |
      * | | WHOAMI : []  CANCEL : []  modify :    []  modrdn :          [] | |
      * | | read :   []  rename : []  search :    []  write :           [] | |
@@ -176,7 +176,7 @@ public class RestrictOperationDialog extends AddEditDialog<RestrictOperationEnum
      * <pre>
      * Restricted Operation
      * .----------------------------------------------------------------.
-     * | add :    []  add :    []  bind :      []  compare :         [] |
+     * | add :    []  all :    []  bind :      []  compare :         [] |
      * | delete : []  extended []  START_TLS : []  MODIFY_PASSWORD : [] |
      * | WHOAMI : []  CANCEL : []  modify :    []  modrdn :          [] |
      * | read :   []  rename : []  search :    []  write :           [] |
@@ -195,7 +195,7 @@ public class RestrictOperationDialog extends AddEditDialog<RestrictOperationEnum
         // The various buttons
         for ( int i = 1; i < restrictOperationCheckboxes.length; i++ )
         {
-            String restrictOperation = RestrictOperationEnum.getOperation( i ).getName();
+            String restrictOperation = RestrictOperationEnum.getOperation( i ).getExternalName();
             restrictOperationCheckboxes[i] = BaseWidgetUtils.createCheckbox( restrictOperationGroup, restrictOperation, 1 );
             restrictOperationCheckboxes[i].addSelectionListener( checkboxSelectionListener );
         }

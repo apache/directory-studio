@@ -142,4 +142,13 @@ public enum PasswordHashEnum
         
         return NO_CHOICE;
     }
+    
+    
+    /**
+     * @see Object#toString()
+     */
+    public String toString()
+    {
+        return name;
+    }
 }

@@ -402,6 +402,8 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
     {
         addDirtyListener( allowFeatureTableWidget );
         addDirtyListener( disallowFeatureTableWidget );
+        addDirtyListener( requireConditionTableWidget );
+        addDirtyListener( restrictOperationTableWidget );
     }
 
     
@@ -412,6 +414,8 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
     {
         removeDirtyListener( allowFeatureTableWidget );
         removeDirtyListener( disallowFeatureTableWidget );
+        removeDirtyListener( requireConditionTableWidget );
+        removeDirtyListener( restrictOperationTableWidget );
     }
     
 
@@ -467,6 +471,44 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
             else
             {
                 disallowFeatureTableWidget.setElements( new ArrayList<DisallowFeatureEnum>() );
+            }
+
+            // Require Condition Table Widget
+            List<String> requireConditions = global.getOlcRequires();
+
+            if ( requireConditions != null )
+            {
+                List<RequireConditionEnum> requires = new ArrayList<RequireConditionEnum>();
+                
+                for ( String requireCondition : requireConditions )
+                {
+                    requires.add( RequireConditionEnum.getCondition( requireCondition ) );
+                }
+                
+                requireConditionTableWidget.setElements( requires );
+            }
+            else
+            {
+                requireConditionTableWidget.setElements( new ArrayList<RequireConditionEnum>() );
+            }
+
+            // Restrict Operation Condition Table Widget
+            List<String> restrictOperations = global.getOlcRestrict();
+
+            if ( restrictOperations != null )
+            {
+                List<RestrictOperationEnum> restricts = new ArrayList<RestrictOperationEnum>();
+                
+                for ( String restrictOperation : restrictOperations )
+                {
+                    restricts.add( RestrictOperationEnum.getOperation( restrictOperation ) );
+                }
+                
+                restrictOperationTableWidget.setElements( restricts );
+            }
+            else
+            {
+                restrictOperationTableWidget.setElements( new ArrayList<RestrictOperationEnum>() );
             }
 
             addListeners();

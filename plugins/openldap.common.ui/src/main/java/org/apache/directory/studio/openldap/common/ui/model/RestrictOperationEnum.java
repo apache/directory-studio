@@ -44,33 +44,37 @@ package org.apache.directory.studio.openldap.common.ui.model;
  */
 public enum RestrictOperationEnum
 {
-    UNKNOWN( "---" ),
-    ADD( "add" ),
-    ALL( "all" ),
-    BIND( "bind" ),
-    COMPARE( "compare" ),
-    DELETE( "delete" ),
-    EXTENDED( "extended" ),
-    EXTENDED_START_TLS( "extended=1.3.6.1.4.1.1466.20037" ),
-    EXTENDED_MODIFY_PASSWD( "extended=1.3.6.1.4.1.4203.1.11.1" ),
-    EXTENDED_WHOAMI( "extended=1.3.6.1.4.1.4203.1.11.3" ),
-    EXTENDED_CANCEL( "extended=1.3.6.1.1.8" ),
-    MODIFY( "modify" ),
-    MODRDN( "modrdn" ),
-    READ( "read" ),
-    RENAME( "rename" ),
-    SEARCH( "search" ),
-    WRITE( "write" );
+    UNKNOWN( "---", "" ),
+    ADD( "add", "add" ),
+    ALL( "all", "all" ),
+    BIND( "bind", "bind" ),
+    COMPARE( "compare", "compare" ),
+    DELETE( "delete", "delete" ),
+    EXTENDED( "extended", "extended" ),
+    EXTENDED_START_TLS( "extended=1.3.6.1.4.1.1466.20037", "START_TLS" ),
+    EXTENDED_MODIFY_PASSWD( "extended=1.3.6.1.4.1.4203.1.11.1", "MODIFY_PASSWORD" ),
+    EXTENDED_WHOAMI( "extended=1.3.6.1.4.1.4203.1.11.3", "WHOAMI" ),
+    EXTENDED_CANCEL( "extended=1.3.6.1.1.8", "CANCEL" ),
+    MODIFY( "modify", "modify" ),
+    MODRDN( "modrdn", "modrdn" ),
+    READ( "read", "read" ),
+    RENAME( "rename", "rename" ),
+    SEARCH( "search", "search" ),
+    WRITE( "write", "write" );
     
     /** The interned name */
     private String name;
     
+    /** The externalized name */
+    private String externalName;
+    
     /**
      * A private constructor for this enum
      */
-    private RestrictOperationEnum( String name )
+    private RestrictOperationEnum( String name, String externalName )
     {
         this.name = name;
+        this.externalName = externalName;
     }
     
     
@@ -80,6 +84,15 @@ public enum RestrictOperationEnum
     public String getName()
     {
         return name;
+    }
+    
+    
+    /**
+     * @return the external name
+     */
+    public String getExternalName()
+    {
+        return externalName;
     }
     
     
@@ -193,5 +206,14 @@ public enum RestrictOperationEnum
         }
         
         return UNKNOWN;
+    }
+    
+    
+    /**
+     * @see Object#toString()
+     */
+    public String toString()
+    {
+        return externalName;
     }
 }
