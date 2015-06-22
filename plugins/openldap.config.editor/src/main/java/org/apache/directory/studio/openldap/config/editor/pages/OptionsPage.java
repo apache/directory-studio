@@ -23,10 +23,13 @@ package org.apache.directory.studio.openldap.config.editor.pages;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.studio.common.ui.CommonUIUtils;
+import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.common.ui.widgets.TableWidget;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.openldap.common.ui.model.AllowFeatureEnum;
+import org.apache.directory.studio.openldap.common.ui.model.AuthzPolicyEnum;
 import org.apache.directory.studio.openldap.common.ui.model.DisallowFeatureEnum;
 import org.apache.directory.studio.openldap.common.ui.model.RequireConditionEnum;
 import org.apache.directory.studio.openldap.common.ui.model.RestrictOperationEnum;
@@ -39,6 +42,11 @@ import org.apache.directory.studio.openldap.config.editor.wrappers.RequireCondit
 import org.apache.directory.studio.openldap.config.editor.wrappers.RestrictOperationDecorator;
 import org.apache.directory.studio.openldap.config.model.OlcGlobal;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -262,6 +270,53 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
             }
             
             getConfiguration().getGlobal().setOlcRestrict( restricts );
+        }
+    };
+    
+    
+    /**
+     * The olcArgsFile listener
+     */
+    private ModifyListener argsFileTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            getConfiguration().getGlobal().setOlcArgsFile( argsFileText.getText() );
+        }
+    };
+    
+    
+    /**
+     * The olcPluginFileLog listener
+     */
+    private ModifyListener pluginLogFileTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            getConfiguration().getGlobal().setOlcPluginLogFile( pluginLogFileText.getText() );
+        }
+    };
+    
+    /**
+     * The olcReferral listener
+     */
+    private ModifyListener referralTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            getConfiguration().getGlobal().setOlcReferral( referralText.getText() );
+        }
+    };
+    
+    
+    /**
+     * The olcAuthzPolicy listener
+     */
+    private SelectionListener authzPolicyComboListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            getConfiguration().getGlobal().setOlcAuthzPolicy( authzPolicyCombo.getText() );
         }
     };
 
@@ -555,6 +610,23 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         Section section = createSection( toolkit, parent, 
             Messages.getString( "OpenLDAPOptionsPage.Miscellaneous" ) );
         Composite composite = createSectionComposite( toolkit, section, 4, false );
+
+        // The olcArgFile parameter.
+        argsFileText = CommonUIUtils.createText( toolkit, composite, 
+            Messages.getString( "OpenLDAPOptionsPage.ArgsFile" ), "", -1, argsFileTextListener );
+
+        // The olcPluginLogFile parameter.
+        pluginLogFileText = CommonUIUtils.createText( toolkit, composite, 
+            Messages.getString( "OpenLDAPOptionsPage.PluginLogFile" ), "", -1, pluginLogFileTextListener );
+
+        // The olcReferral parameter.
+        referralText = CommonUIUtils.createText( toolkit, composite, 
+            Messages.getString( "OpenLDAPOptionsPage.Referral" ), "", -1, referralTextListener );
+
+        // The authzPolocy parameter
+        toolkit.createLabel( composite, Messages.getString( "OpenLDAPSecurityPage.AuthzPolicy" ) ); //$NON-NLS-1$
+        authzPolicyCombo = BaseWidgetUtils.createCombo( composite, AuthzPolicyEnum.getNames(), -1, 1 );
+        authzPolicyCombo.addSelectionListener( authzPolicyComboListener );
     }
 
     
@@ -567,6 +639,10 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         addDirtyListener( disallowFeatureTableWidget );
         addDirtyListener( requireConditionTableWidget );
         addDirtyListener( restrictOperationTableWidget );
+        addDirtyListener( argsFileText );
+        addDirtyListener( pluginLogFileText );
+        addDirtyListener( referralText );
+        addDirtyListener( authzPolicyCombo );
     }
 
     
@@ -579,6 +655,10 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         removeDirtyListener( disallowFeatureTableWidget );
         removeDirtyListener( requireConditionTableWidget );
         removeDirtyListener( restrictOperationTableWidget );
+        removeDirtyListener( argsFileText );
+        removeDirtyListener( pluginLogFileText );
+        removeDirtyListener( referralText );
+        removeDirtyListener( authzPolicyCombo );
     }
     
 
@@ -672,6 +752,70 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
             else
             {
                 restrictOperationTableWidget.setElements( new ArrayList<RestrictOperationEnum>() );
+            }
+
+            // Update the ArgsFileText
+            String argsFile = getConfiguration().getGlobal().getOlcArgsFile();
+            
+            if ( argsFile != null )
+            {
+                argsFileText.setText( argsFile );
+            }
+            else
+            {
+                argsFileText.setText( "" );
+            }
+
+            // Update the PluginLogFileText
+            String pluginLogFile = getConfiguration().getGlobal().getOlcPluginLogFile();
+                
+            if ( pluginLogFile != null )
+            { 
+                pluginLogFileText.setText( getConfiguration().getGlobal().getOlcPluginLogFile() );
+            }
+            else
+            {
+                pluginLogFileText.setText( "" );
+            }
+
+            // Update the ReferralText
+            String referral = getConfiguration().getGlobal().getOlcReferral();
+            
+            if ( referral != null )
+            {
+                referralText.setText( referral );
+            }
+            else
+            {
+                referralText.setText( "" );
+            }
+
+            // AuthzPolicyl Combo
+            String authzPolicy = global.getOlcAuthzPolicy();
+
+            if ( authzPolicy != null )
+            {
+                // Select the right one
+                boolean found = false;
+                
+                for ( String authzPolicyStr : AuthzPolicyEnum.getNames() )
+                {
+                    if ( authzPolicyStr.equalsIgnoreCase( authzPolicy ) )
+                    {
+                        authzPolicyCombo.setText( authzPolicyStr );
+                        found = true;
+                        break;
+                    }
+                }
+                
+                if ( !found )
+                {
+                    authzPolicyCombo.setText( AuthzPolicyEnum.UNKNOWN.getName() );
+                }
+            }
+            else
+            {
+                authzPolicyCombo.setText( AuthzPolicyEnum.UNKNOWN.getName() );
             }
 
             addListeners();

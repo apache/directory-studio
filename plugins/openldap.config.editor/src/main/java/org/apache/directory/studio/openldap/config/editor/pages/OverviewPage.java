@@ -791,7 +791,16 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
             serverIdTableWidget.setElements( serverIdWrappers );
             
             // Update the ConfigDirText
-            configDirText.setText( getConfiguration().getGlobal().getOlcConfigDir() );
+            String configDir = getConfiguration().getGlobal().getOlcConfigDir();
+            
+            if ( configDir != null )
+            {
+                configDirText.setText( configDir );
+            }
+            else
+            {
+                configDirText.setText( "" );
+            }
 
             // Update the LogFIleText
             String logFile = getConfiguration().getGlobal().getOlcLogFile();

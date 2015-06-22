@@ -94,7 +94,25 @@ public enum AuthzPolicyEnum
         
         return UNKNOWN;
     }
+
     
+    /**
+     * @return An array with all the ENum value's name
+     */
+    public static String[] getNames()
+    {
+        String[] names = new String[values().length];
+        int pos = 0;
+    
+        for ( AuthzPolicyEnum authzPolicy : values() )
+        {
+            names[pos] = authzPolicy.getName();
+            pos++;
+        }
+        
+        return names;
+    }
+
     
     /**
      * @return the name
