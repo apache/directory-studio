@@ -52,6 +52,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -297,6 +298,7 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         }
     };
     
+    
     /**
      * The olcReferral listener
      */
@@ -310,6 +312,18 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
     
     
     /**
+     * The olcRootDSE listener
+     */
+    private ModifyListener rootDseTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            getConfiguration().getGlobal().setOlcRootDSE( rootDseText.getText() );
+        }
+    };
+    
+    
+    /**
      * The olcAuthzPolicy listener
      */
     private SelectionListener authzPolicyComboListener = new SelectionAdapter()
@@ -317,6 +331,42 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         public void widgetSelected( SelectionEvent e )
         {
             getConfiguration().getGlobal().setOlcAuthzPolicy( authzPolicyCombo.getText() );
+        }
+    };
+
+    
+    /**
+     * The olcGentleHup listener
+     */
+    private SelectionListener gentleHupCheckboxSelectionListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            getConfiguration().getGlobal().setOlcGentleHUP( gentleHupCheckbox.getSelection() );
+        }
+    };
+
+    
+    /**
+     * The olcReadOnly listener
+     */
+    private SelectionListener readOnlyCheckboxSelectionListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            getConfiguration().getGlobal().setOlcReadOnly( readOnlyCheckbox.getSelection() );
+        }
+    };
+
+    
+    /**
+     * The olcReverseLookup listener
+     */
+    private SelectionListener reverseLookupCheckboxSelectionListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            getConfiguration().getGlobal().setOlcGentleHUP( reverseLookupCheckbox.getSelection() );
         }
     };
 
@@ -609,11 +659,12 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
     {
         Section section = createSection( toolkit, parent, 
             Messages.getString( "OpenLDAPOptionsPage.Miscellaneous" ) );
-        Composite composite = createSectionComposite( toolkit, section, 4, false );
+        Composite composite = createSectionComposite( toolkit, section, 5, false );
 
         // The olcArgFile parameter.
         argsFileText = CommonUIUtils.createText( toolkit, composite, 
             Messages.getString( "OpenLDAPOptionsPage.ArgsFile" ), "", -1, argsFileTextListener );
+        toolkit.createLabel( composite, "" );
 
         // The olcPluginLogFile parameter.
         pluginLogFileText = CommonUIUtils.createText( toolkit, composite, 
@@ -622,11 +673,33 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         // The olcReferral parameter.
         referralText = CommonUIUtils.createText( toolkit, composite, 
             Messages.getString( "OpenLDAPOptionsPage.Referral" ), "", -1, referralTextListener );
+        toolkit.createLabel( composite, "" );
 
         // The authzPolocy parameter
         toolkit.createLabel( composite, Messages.getString( "OpenLDAPSecurityPage.AuthzPolicy" ) ); //$NON-NLS-1$
         authzPolicyCombo = BaseWidgetUtils.createCombo( composite, AuthzPolicyEnum.getNames(), -1, 1 );
         authzPolicyCombo.addSelectionListener( authzPolicyComboListener );
+
+        // The olcRootDSE parameter.
+        rootDseText = CommonUIUtils.createText( toolkit, composite, 
+            Messages.getString( "OpenLDAPOptionsPage.RootDSE" ), "", -1, rootDseTextListener );
+        toolkit.createLabel( composite, "" );
+
+        // The olcGentleHUP Button
+        gentleHupCheckbox = BaseWidgetUtils.createCheckbox( composite, 
+            Messages.getString( "OpenLDAPOptionsPage.GentleHUP" ), 2 );
+        gentleHupCheckbox.addSelectionListener( gentleHupCheckboxSelectionListener );
+
+        // The olcReadOnly Button
+        readOnlyCheckbox = BaseWidgetUtils.createCheckbox( composite, 
+            Messages.getString( "OpenLDAPOptionsPage.ReadOnly" ), 2 );
+        readOnlyCheckbox.addSelectionListener( readOnlyCheckboxSelectionListener );
+        toolkit.createLabel( composite, "" );
+
+        // The olcReverseLookup Button
+        reverseLookupCheckbox = BaseWidgetUtils.createCheckbox( composite, 
+            Messages.getString( "OpenLDAPOptionsPage.ReverseLookup" ), 2 );
+        reverseLookupCheckbox.addSelectionListener( reverseLookupCheckboxSelectionListener );
     }
 
     
@@ -643,6 +716,10 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         addDirtyListener( pluginLogFileText );
         addDirtyListener( referralText );
         addDirtyListener( authzPolicyCombo );
+        addDirtyListener( rootDseText );
+        addDirtyListener( gentleHupCheckbox );
+        addDirtyListener( readOnlyCheckbox );
+        addDirtyListener( reverseLookupCheckbox );
     }
 
     
@@ -659,6 +736,10 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         removeDirtyListener( pluginLogFileText );
         removeDirtyListener( referralText );
         removeDirtyListener( authzPolicyCombo );
+        removeDirtyListener( rootDseText );
+        removeDirtyListener( gentleHupCheckbox );
+        removeDirtyListener( readOnlyCheckbox );
+        removeDirtyListener( reverseLookupCheckbox );
     }
     
 
@@ -817,6 +898,27 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
             {
                 authzPolicyCombo.setText( AuthzPolicyEnum.UNKNOWN.getName() );
             }
+
+            // Update the RootDSEText
+            String rootDse = getConfiguration().getGlobal().getOlcRootDSE();
+            
+            if ( rootDse != null )
+            {
+                rootDseText.setText( rootDse );
+            }
+            else
+            {
+                rootDseText.setText( "" );
+            }
+            
+            // Update the GentleHupCheckbox
+            CommonUIUtils.setValue( global.getOlcGentleHUP(), gentleHupCheckbox );
+            
+            // Update the ReadOnlyCheckbox
+            CommonUIUtils.setValue( global.getOlcReadOnly(), readOnlyCheckbox );
+            
+            // Update the GentleHupCheckbox
+            CommonUIUtils.setValue( global.getOlcReverseLookup(), reverseLookupCheckbox );
 
             addListeners();
         }

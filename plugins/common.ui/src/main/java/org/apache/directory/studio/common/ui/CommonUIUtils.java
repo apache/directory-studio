@@ -26,6 +26,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
@@ -216,5 +217,25 @@ public class CommonUIUtils
         }
         
         return text;
+    }
+    
+    
+    /**
+     * Set a value in a Button, if it's not null
+     * 
+     * @param value The Value to set
+     * @param checkBox The Button which will be checked if teh value is not null and set to True
+     */
+    public static void setValue( Boolean value, Button checkBox )
+    {
+        if ( value != null )
+        {
+            checkBox.setSelection( value );
+        }
+        else
+        {
+            checkBox.setSelection( false );
+        }
+        
     }
 }
