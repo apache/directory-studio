@@ -287,7 +287,7 @@ public class OlcGlobal extends OlcConfig
      * Field for the 'olcRootDSE' attribute.
      */
     @ConfigurationElement(attributeType = "olcRootDSE")
-    private List<String> olcRootDSE = new ArrayList<String>();
+    private String olcRootDSE;
 
     /**
      * Field for the 'olcSaslAuxprops' attribute.
@@ -647,18 +647,6 @@ public class OlcGlobal extends OlcConfig
     /**
      * @param strings
      */
-    public void addOlcRootDSE( String... strings )
-    {
-        for ( String string : strings )
-        {
-            olcRootDSE.add( string );
-        }
-    }
-
-
-    /**
-     * @param strings
-     */
     public void addOlcSecurity( String... strings )
     {
         for ( String string : strings )
@@ -791,12 +779,6 @@ public class OlcGlobal extends OlcConfig
     public void clearOlcRestrict()
     {
         olcRestrict.clear();
-    }
-
-
-    public void clearOlcRootDSE()
-    {
-        olcRootDSE.clear();
     }
 
 
@@ -1187,9 +1169,9 @@ public class OlcGlobal extends OlcConfig
     /**
      * @return the olcRootDSE
      */
-    public List<String> getOlcRootDSE()
+    public String getOlcRootDSE()
     {
-        return copyListString( olcRootDSE );
+        return olcRootDSE;
     }
 
 
@@ -1817,9 +1799,9 @@ public class OlcGlobal extends OlcConfig
     /**
      * @param olcRootDSE the olcRootDSE to set
      */
-    public void setOlcRootDSE( List<String> olcRootDSE )
+    public void setOlcRootDSE( String olcRootDSE )
     {
-        this.olcRootDSE = copyListString( olcRootDSE );
+        this.olcRootDSE = olcRootDSE;
     }
 
 
