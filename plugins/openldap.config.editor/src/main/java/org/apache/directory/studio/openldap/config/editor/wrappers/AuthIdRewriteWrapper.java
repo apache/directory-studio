@@ -24,7 +24,42 @@ package org.apache.directory.studio.openldap.config.editor.wrappers;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class AuthIdRewriteWrapper
+public class AuthIdRewriteWrapper implements Cloneable, Comparable<AuthIdRewriteWrapper>
 {
+    /** The rewrite */
+    private String rewrite;
+    
+    /**
+     * Creates a new instance of AuthIdRewriteWrapper using a String value
+     * 
+     * @param rewrite The value
+     */
+    public AuthIdRewriteWrapper( String rewrite )
+    {
+        this.rewrite = rewrite;
+    }
 
+
+    /**
+     * @see Comparable#compareTo()
+     */
+    public int compareTo( AuthIdRewriteWrapper that )
+    {
+        if ( that == null )
+        {
+            return 1;
+        }
+        
+        // 
+        return 0;
+    }
+
+    
+    /**
+     * @see Object#toString()
+     */
+    public String toString()
+    {
+        return rewrite;
+    }
 }

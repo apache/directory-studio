@@ -20,11 +20,53 @@
 package org.apache.directory.studio.openldap.config.editor.wrappers;
 
 /**
- * A wrapper class for the values stored in the olcAuthzRegexp attribute.
+ * A wrapper class for the values stored in the olcAuthzRegexp attribute. It contains
+ * two argument :
+ * <pre>
+ * &lt;match&gt; &lt;replace&gt; 
+ * </pre>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class AuthzRegexpWrapper
+public class AuthzRegexpWrapper implements Cloneable, Comparable<AuthzRegexpWrapper>
 {
+    /** The match part */
+    private String match;
+    
+    /** The replace part */
+    private String replace;
+    
+    /**
+     * Creates a new instance of AuthzRegexpWrapper using a String value
+     * 
+     * @param regexp The value
+     */
+    public AuthzRegexpWrapper( String authzRegexp )
+    {
+        this.match = authzRegexp;
+    }
 
+
+    /**
+     * @see Comparable#compareTo()
+     */
+    public int compareTo( AuthzRegexpWrapper that )
+    {
+        if ( that == null )
+        {
+            return 1;
+        }
+        
+        // 
+        return 0;
+    }
+
+    
+    /**
+     * @see Object#toString()
+     */
+    public String toString()
+    {
+        return match + ' ' + replace;
+    }
 }

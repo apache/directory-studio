@@ -35,11 +35,15 @@ import org.apache.directory.studio.openldap.common.ui.model.RequireConditionEnum
 import org.apache.directory.studio.openldap.common.ui.model.RestrictOperationEnum;
 import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
 import org.apache.directory.studio.openldap.config.editor.wrappers.AllowFeatureDecorator;
+import org.apache.directory.studio.openldap.config.editor.wrappers.AuthIdRewriteDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.AuthIdRewriteWrapper;
+import org.apache.directory.studio.openldap.config.editor.wrappers.AuthzRegexpDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.AuthzRegexpWrapper;
 import org.apache.directory.studio.openldap.config.editor.wrappers.DisallowFeatureDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.RequireConditionDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.RestrictOperationDecorator;
+import org.apache.directory.studio.openldap.config.editor.wrappers.StringValueDecorator;
+import org.apache.directory.studio.openldap.config.editor.wrappers.StringValueWrapper;
 import org.apache.directory.studio.openldap.config.model.OlcGlobal;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -120,11 +124,11 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
  * | +---------------------------------------+ +----------------------------------------+ |
  * | | +--------------------------+          | | +--------------------------+           | |
  * | | | xyz                      | (Add...) | | | xyz                      | (Add...)  | |
- * | | | abcde                    |          | | | abcde                    |           | |
- * | | | aaa                      | (Edit)   | | | aaa                      | (Edit...) | |
- * | | |                          |          | | |                          |           | |
- * | | |                          | (Delete) | | |                          | (Delete)  | |
- * | | +--------------------------+          | | +--------------------------+           | |
+ * | | | abcde                    |          | | | abcde                    | (Edit...) | |
+ * | | | aaa                      | (Edit)   | | | aaa                      | (Delete)  | |
+ * | | |                          |          | | |                          | --------- | |
+ * | | |                          | (Delete) | | |                          | (Up...)   | |
+ * | | +--------------------------+          | | +--------------------------+ (Down...) | |
  * | +---------------------------------------+ +----------------------------------------+ |
  * | .----------------------------------------------------------------------------------. |
  * | |V Miscellaneous options                                                           | |
@@ -133,9 +137,12 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
  * | |                                                                                  | |
  * | | Referral :  [///////////////////////]     Authz Policy :    [------------------] | |
  * | |                                                                                  | |
- * | | Root DSE :  [///////////////////////]     GentleHUP :       [X]                  | |
- * | |                                                                                  | |
- * | | Read Only : [X]                           Reverse Lookup :  [X]                  | |
+ * | | Root DSE :                                Other :                                | |
+ * | | +--------------------------+              .------------------------------------. | |
+ * | | | xyz                      | (Add...)     | [X] Read Only                      | | |
+ * | | | abcde                    |              | [X] GentleHUP                      | | |
+ * | | | aaa                      | (Delete)     | [X] Reverse Lookup                 | | |
+ * | | +--------------------------+              '------------------------------------' | |
  * | +----------------------------------------------------------------------------------+ |
  * +--------------------------------------------------------------------------------------+
  * </pre>
@@ -171,7 +178,6 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
     /** The olcAuthzRegexp parameter */
     private TableWidget<AuthzRegexpWrapper> authzRegexpTableWidget;
 
-    
     // The miscellaneous parameters
     /** The olcArgsFile parameter */
     private Text argsFileText; 
@@ -183,7 +189,7 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
     private Text referralText; 
 
     /** The olcRootDSE parameter */
-    private Text rootDseText; 
+    private TableWidget<StringValueWrapper> rootDseTableWidget; 
 
     /** The olcAuthzPolicy parameter */
     private Combo authzPolicyCombo; 
@@ -275,6 +281,44 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
     
     
     /**
+     * The olcAuthIdRewrite listener
+     */
+    private WidgetModifyListener authIdRewriteListener = new WidgetModifyListener()
+    {
+        public void widgetModified( WidgetModifyEvent e )
+        {
+            List<String> authIdRewrites = new ArrayList<String>();
+            
+            for ( AuthIdRewriteWrapper authIdRewrite : authIdRewriteTableWidget.getElements() )
+            {
+                authIdRewrites.add( authIdRewrite.toString() );
+            }
+            
+            getConfiguration().getGlobal().setOlcAuthIDRewrite( authIdRewrites );
+        }
+    };
+    
+    
+    /**
+     * The olcAuthzRegexp listener
+     */
+    private WidgetModifyListener authzRegexpListener = new WidgetModifyListener()
+    {
+        public void widgetModified( WidgetModifyEvent e )
+        {
+            List<String> authzRegexps = new ArrayList<String>();
+            
+            for ( AuthzRegexpWrapper authzRegexp : authzRegexpTableWidget.getElements() )
+            {
+                authzRegexps.add( authzRegexp.toString() );
+            }
+            
+            getConfiguration().getGlobal().setOlcAuthzRegexp( authzRegexps );
+        }
+    };
+    
+    
+    /**
      * The olcArgsFile listener
      */
     private ModifyListener argsFileTextListener = new ModifyListener()
@@ -313,11 +357,18 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
     /**
      * The olcRootDSE listener
      */
-    private ModifyListener rootDseTextListener = new ModifyListener()
+    private WidgetModifyListener rootDseTableListener = new WidgetModifyListener()
     {
-        public void modifyText( ModifyEvent e )
+        public void widgetModified( WidgetModifyEvent e )
         {
-            getConfiguration().getGlobal().setOlcRootDSE( rootDseText.getText() );
+            List<String> rootDses = new ArrayList<String>();
+            
+            for ( StringValueWrapper rootDse : rootDseTableWidget.getElements() )
+            {
+                rootDses.add( rootDse.getValue() );
+            }
+            
+            getConfiguration().getGlobal().setOlcRootDSE( rootDses );
         }
     };
     
@@ -590,6 +641,14 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         Section section = createSection( toolkit, parent, 
             Messages.getString( "OpenLDAPOptionsPage.AuthzRewriteRules" ) );
         Composite composite = createSectionComposite( toolkit, section, 2, false );
+
+        // The olcAuthIdRewrite parameter table
+        authIdRewriteTableWidget = new TableWidget<AuthIdRewriteWrapper>( 
+            new AuthIdRewriteDecorator( composite.getShell() ) );
+
+        authIdRewriteTableWidget.createWidgetNoEdit( composite, toolkit );
+        authIdRewriteTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+        addModifyListener( authIdRewriteTableWidget, authIdRewriteListener );
     }
 
 
@@ -599,13 +658,13 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
      * .----------------------------------------.
      * |V Authentication ID Regexp              |
      * +----------------------------------------+
-     * | +--------------------------+           |
+     * | +--------------------------+           | 
      * | | xyz                      | (Add...)  |
-     * | | abcde                    |           |
-     * | | aaa                      | (Edit...) |
-     * | |                          |           |
-     * | |                          | (Delete)  |
-     * | +--------------------------+           |
+     * | | abcde                    | (Edit...) |
+     * | | aaa                      | (Delete)  |
+     * | |                          | --------- |
+     * | |                          | (Up...)   |
+     * | +--------------------------+ (Down...) |
      * +----------------------------------------+
      * </pre>
      * @param toolkit the toolkit
@@ -616,6 +675,14 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         Section section = createSection( toolkit, parent, 
             Messages.getString( "OpenLDAPOptionsPage.AuthIdRegexps" ) );
         Composite composite = createSectionComposite( toolkit, section, 2, false );
+
+        // The olcAuthzRegexp parameter table
+        authzRegexpTableWidget = new TableWidget<AuthzRegexpWrapper>( 
+            new AuthzRegexpDecorator( composite.getShell() ) );
+
+        authzRegexpTableWidget.createWidgetNoEdit( composite, toolkit );
+        authzRegexpTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+        addModifyListener( authzRegexpTableWidget, authzRegexpListener );
     }
 
 
@@ -629,9 +696,12 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
      * |                                                                                  |
      * | Referral :  [///////////////////////]     Authz Policy :    [------------------] |
      * |                                                                                  |
-     * | Root DSE :  [///////////////////////]     GentleHUP :       [X]                  |
-     * |                                                                                  |
-     * | Read Only : [X]                           Reverse Lookup :  [X]                  |
+     * | Root DSE :                                Other :                                |
+     * | +--------------------------+              .------------------------------------. |
+     * | | xyz                      | (Add...)     | [X] Read Only                      | |
+     * | | abcde                    |              | [X] GentleHUP                      | |
+     * | | aaa                      | (Delete)     | [X] Reverse Lookup                 | |
+     * | +--------------------------+              '------------------------------------' |
      * +----------------------------------------------------------------------------------+
      * </pre>
      * @param toolkit the toolkit
@@ -657,14 +727,29 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
             Messages.getString( "OpenLDAPOptionsPage.Referral" ), "", -1, referralTextListener );
         toolkit.createLabel( composite, "" );
 
-        // The authzPolocy parameter
+        // The authzPolicy parameter
         toolkit.createLabel( composite, Messages.getString( "OpenLDAPSecurityPage.AuthzPolicy" ) ); //$NON-NLS-1$
         authzPolicyCombo = BaseWidgetUtils.createCombo( composite, AuthzPolicyEnum.getNames(), -1, 1 );
         authzPolicyCombo.addSelectionListener( authzPolicyComboListener );
 
+        // The olcRootDSE label.
+        toolkit.createLabel( composite, Messages.getString( "OpenLDAPOptionsPage.RootDSE" ) );
+        toolkit.createLabel( composite, "" );
+        toolkit.createLabel( composite, "" );
+
+        // The olcOther label.
+        toolkit.createLabel( composite, 
+            Messages.getString( "OpenLDAPOptionsPage.Others" ) );
+        toolkit.createLabel( composite, "" );
+
         // The olcRootDSE parameter.
-        rootDseText = CommonUIUtils.createText( toolkit, composite, 
-            Messages.getString( "OpenLDAPOptionsPage.RootDSE" ), "", -1, rootDseTextListener );
+        rootDseTableWidget = new TableWidget<StringValueWrapper>( 
+            new StringValueDecorator( composite.getShell(), "rootDSE" ) );
+
+        rootDseTableWidget.createWidgetWithEdit( composite, toolkit );
+        rootDseTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+        addModifyListener( rootDseTableWidget, rootDseTableListener );
+
         toolkit.createLabel( composite, "" );
 
         // The olcGentleHUP Button
@@ -694,11 +779,13 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         addDirtyListener( disallowFeatureTableWidget );
         addDirtyListener( requireConditionTableWidget );
         addDirtyListener( restrictOperationTableWidget );
+        addDirtyListener( authIdRewriteTableWidget );
+        addDirtyListener( authzRegexpTableWidget );
         addDirtyListener( argsFileText );
         addDirtyListener( pluginLogFileText );
         addDirtyListener( referralText );
         addDirtyListener( authzPolicyCombo );
-        addDirtyListener( rootDseText );
+        addDirtyListener( rootDseTableWidget );
         addDirtyListener( gentleHupCheckbox );
         addDirtyListener( readOnlyCheckbox );
         addDirtyListener( reverseLookupCheckbox );
@@ -714,11 +801,13 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         removeDirtyListener( disallowFeatureTableWidget );
         removeDirtyListener( requireConditionTableWidget );
         removeDirtyListener( restrictOperationTableWidget );
+        removeDirtyListener( authIdRewriteTableWidget );
+        removeDirtyListener( authzRegexpTableWidget );
         removeDirtyListener( argsFileText );
         removeDirtyListener( pluginLogFileText );
         removeDirtyListener( referralText );
         removeDirtyListener( authzPolicyCombo );
-        removeDirtyListener( rootDseText );
+        removeDirtyListener( rootDseTableWidget );
         removeDirtyListener( gentleHupCheckbox );
         removeDirtyListener( readOnlyCheckbox );
         removeDirtyListener( reverseLookupCheckbox );
@@ -817,6 +906,44 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
                 restrictOperationTableWidget.setElements( new ArrayList<RestrictOperationEnum>() );
             }
 
+            // AuthID Rewrite Table Widget
+            List<String> authIdRewrites = global.getOlcAuthIDRewrite();
+
+            if ( authIdRewrites != null )
+            {
+                List<AuthIdRewriteWrapper> rewrites = new ArrayList<AuthIdRewriteWrapper>();
+                
+                for ( String rewrite : authIdRewrites )
+                {
+                    rewrites.add( new AuthIdRewriteWrapper( rewrite ) );
+                }
+                
+                authIdRewriteTableWidget.setElements( rewrites );
+            }
+            else
+            {
+                authIdRewriteTableWidget.setElements( new ArrayList<AuthIdRewriteWrapper>() );
+            }
+
+            // Authz Regexp Table Widget
+            List<String> authzRegexps = global.getOlcRestrict();
+
+            if ( authzRegexps != null )
+            {
+                List<AuthzRegexpWrapper> regexps = new ArrayList<AuthzRegexpWrapper>();
+                
+                for ( String regexp : authzRegexps )
+                {
+                    regexps.add( new AuthzRegexpWrapper( regexp ) );
+                }
+                
+                authzRegexpTableWidget.setElements( regexps );
+            }
+            else
+            {
+                authzRegexpTableWidget.setElements( new ArrayList<AuthzRegexpWrapper>() );
+            }
+
             // Update the ArgsFileText
             BaseWidgetUtils.setValue( global.getOlcArgsFile(), argsFileText );
 
@@ -855,7 +982,23 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
             }
 
             // Update the RootDSEText
-            BaseWidgetUtils.setValue( global.getOlcRootDSE(), rootDseText );
+            List<String> rootDses = global.getOlcRootDSE();
+
+            if ( rootDses != null )
+            {
+                List<StringValueWrapper> roots = new ArrayList<StringValueWrapper>();
+                
+                for ( String rootDse : rootDses )
+                {
+                    roots.add( new StringValueWrapper( rootDse, true ) );
+                }
+                
+                rootDseTableWidget.setElements( roots );
+            }
+            else
+            {
+                rootDseTableWidget.setElements( new ArrayList<StringValueWrapper>() );
+            }
             
             // Update the GentleHupCheckbox
             BaseWidgetUtils.setValue( global.getOlcGentleHUP(), gentleHupCheckbox );
