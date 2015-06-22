@@ -107,9 +107,16 @@ public class OlcConfig
      */
     protected List<String> copyListString( List<String> original )
     {
-        List<String> copy = new ArrayList<String>( original.size() );
-        copy.addAll( original );
-
-        return copy;
+        if ( original != null )
+        { 
+            List<String> copy = new ArrayList<String>( original.size() );
+            copy.addAll( original );
+    
+            return copy;
+        }
+        else
+        {
+            return new ArrayList<String>();
+        }
     }
 }

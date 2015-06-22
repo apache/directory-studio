@@ -281,13 +281,13 @@ public class OlcGlobal extends OlcConfig
      * Field for the 'olcReverseLookup' attribute.
      */
     @ConfigurationElement(attributeType = "olcReverseLookup")
-    private String olcReverseLookup;
+    private Boolean olcReverseLookup;
 
     /**
      * Field for the 'olcRootDSE' attribute.
      */
     @ConfigurationElement(attributeType = "olcRootDSE")
-    private String olcRootDSE;
+    private List<String> olcRootDSE;
 
     /**
      * Field for the 'olcSaslAuxprops' attribute.
@@ -1151,7 +1151,7 @@ public class OlcGlobal extends OlcConfig
     /**
      * @return the olcReverseLookup
      */
-    public String getOlcReverseLookup()
+    public Boolean getOlcReverseLookup()
     {
         return olcReverseLookup;
     }
@@ -1169,9 +1169,9 @@ public class OlcGlobal extends OlcConfig
     /**
      * @return the olcRootDSE
      */
-    public String getOlcRootDSE()
+    public List<String> getOlcRootDSE()
     {
-        return olcRootDSE;
+        return copyListString( olcRootDSE );
     }
 
 
@@ -1781,7 +1781,7 @@ public class OlcGlobal extends OlcConfig
     /**
      * @param olcReverseLookup the olcReverseLookup to set
      */
-    public void setOlcReverseLookup( String olcReverseLookup )
+    public void setOlcReverseLookup( Boolean olcReverseLookup )
     {
         this.olcReverseLookup = olcReverseLookup;
     }
@@ -1799,9 +1799,9 @@ public class OlcGlobal extends OlcConfig
     /**
      * @param olcRootDSE the olcRootDSE to set
      */
-    public void setOlcRootDSE( String olcRootDSE )
+    public void setOlcRootDSE( List<String> olcRootDSE )
     {
-        this.olcRootDSE = olcRootDSE;
+        this.olcRootDSE = copyListString( olcRootDSE );
     }
 
 
