@@ -278,10 +278,10 @@ public class OlcGlobal extends OlcConfig
     private List<String> olcRestrict = new ArrayList<String>();
 
     /**
-     * Field for the 'olcReserveLookup' attribute.
+     * Field for the 'olcReverseLookup' attribute.
      */
-    @ConfigurationElement(attributeType = "olcReserveLookup")
-    private String olcReserveLookup;
+    @ConfigurationElement(attributeType = "olcReverseLookup")
+    private String olcReverseLookup;
 
     /**
      * Field for the 'olcRootDSE' attribute.
@@ -1149,11 +1149,11 @@ public class OlcGlobal extends OlcConfig
 
 
     /**
-     * @return the olcReserveLookup
+     * @return the olcReverseLookup
      */
-    public String getOlcReserveLookup()
+    public String getOlcReverseLookup()
     {
-        return olcReserveLookup;
+        return olcReverseLookup;
     }
 
 
@@ -1779,11 +1779,11 @@ public class OlcGlobal extends OlcConfig
 
 
     /**
-     * @param olcReserveLookup the olcReserveLookup to set
+     * @param olcReverseLookup the olcReverseLookup to set
      */
-    public void setOlcReserveLookup( String olcReserveLookup )
+    public void setOlcReverseLookup( String olcReverseLookup )
     {
-        this.olcReserveLookup = olcReserveLookup;
+        this.olcReverseLookup = olcReverseLookup;
     }
 
 
