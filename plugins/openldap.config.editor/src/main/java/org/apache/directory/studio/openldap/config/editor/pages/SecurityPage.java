@@ -803,124 +803,34 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
             //
 
             // Authentication Auxprop Plugins Text
-            String authenticationAuxpropPlugins = global.getOlcSaslAuxprops();
-
-            if ( authenticationAuxpropPlugins != null )
-            {
-                saslAuxPropsText.setText( authenticationAuxpropPlugins );
-            }
-            else
-            {
-                saslAuxPropsText.setText( "" );
-            }
+            BaseWidgetUtils.setValue( global.getOlcSaslAuxprops(), saslAuxPropsText );
 
             // SASL Host Text
-            String saslHost = global.getOlcSaslHost();
-
-            if ( saslHost != null )
-            {
-                saslHostText.setText( saslHost );
-            }
-            else
-            {
-                saslHostText.setText( "" );
-            }
+            BaseWidgetUtils.setValue( global.getOlcSaslHost(), saslHostText );
 
             // SASL Realm Text
-            String saslRealm = global.getOlcSaslRealm();
-
-            if ( saslRealm != null )
-            {
-                saslRealmText.setText( saslRealm );
-            }
-            else
-            {
-                saslRealmText.setText( "" );
-            }
+            BaseWidgetUtils.setValue( global.getOlcSaslRealm(), saslRealmText );
 
             // SASL Security Properties Text
-            String saslSecurityProperties = global.getOlcSaslSecProps();
-
-            if ( saslSecurityProperties != null )
-            {
-                saslSecPropsText.setText( saslSecurityProperties );
-            }
-            else
-            {
-                saslSecPropsText.setText( "" );
-            }
+            BaseWidgetUtils.setValue( global.getOlcSaslSecProps(), saslSecPropsText );
 
             // TLS CA Certificate File Text
-            String tlsCaCertificateFile = global.getOlcTLSCACertificateFile();
-
-            if ( tlsCaCertificateFile != null )
-            {
-                tlsCaCertificateFileText.setText( tlsCaCertificateFile );
-            }
-            else
-            {
-                tlsCaCertificateFileText.setText( "" );
-            }
+            BaseWidgetUtils.setValue( global.getOlcTLSCACertificateFile(), tlsCaCertificateFileText );
 
             // TLS CA Certificate Path Text
-            String tlsCaCertificatePath = global.getOlcTLSCACertificatePath();
-
-            if ( tlsCaCertificatePath != null )
-            {
-                tlsCaCertificatePathText.setText( tlsCaCertificatePath );
-            }
-            else
-            {
-                tlsCaCertificatePathText.setText( "" );
-            }
+            BaseWidgetUtils.setValue( global.getOlcTLSCACertificatePath(), tlsCaCertificatePathText );
 
             // TLS Certificate File Text
-            String tlsCertificateFile = global.getOlcTLSCertificateFile();
-
-            if ( tlsCertificateFile != null )
-            {
-                tlsCertificateFileText.setText( tlsCertificateFile );
-            }
-            else
-            {
-                tlsCertificateFileText.setText( "" );
-            }
+            BaseWidgetUtils.setValue( global.getOlcTLSCertificateFile(), tlsCertificateFileText );
 
             // TLS Certificate Key File Text
-            String tlsCertificateKeyFile = global.getOlcTLSCertificateKeyFile();
-
-            if ( tlsCertificateKeyFile != null )
-            {
-                tlsCertificateKeyFileText.setText( tlsCertificateKeyFile );
-            }
-            else
-            {
-                tlsCertificateKeyFileText.setText( "" );
-            }
+            BaseWidgetUtils.setValue( global.getOlcTLSCertificateKeyFile(), tlsCertificateKeyFileText );
 
             // Cipher Suite Text
-            String tlsCipherSuite = global.getOlcTLSCipherSuite();
-
-            if ( tlsCipherSuite != null )
-            {
-                tlsCipherSuiteText.setText( tlsCipherSuite );
-            }
-            else
-            {
-                tlsCipherSuiteText.setText( "" );
-            }
+            BaseWidgetUtils.setValue( global.getOlcTLSCipherSuite(), tlsCipherSuiteText );
 
             // Certificate Revocation List File Text
-            String tlsCrlFile = global.getOlcTLSCRLFile();
-
-            if ( tlsCrlFile != null )
-            {
-                tlsCrlFileText.setText( tlsCrlFile );
-            }
-            else
-            {
-                tlsCrlFileText.setText( "" );
-            }
+            BaseWidgetUtils.setValue( global.getOlcTLSCRLFile(), tlsCrlFileText );
 
             // Certificate Check List Level Combo
             String tlsCrlCheck = global.getOlcTLSCRLCheck();
@@ -951,28 +861,10 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
             }
 
             // Diffie-Hellman Parameters File Text
-            String tlsDhParamFile = global.getOlcTLSDHParamFile();
-
-            if ( tlsDhParamFile != null )
-            {
-                tlsDhParamFileText.setText( tlsDhParamFile );
-            }
-            else
-            {
-                tlsDhParamFileText.setText( "" );
-            }
+            BaseWidgetUtils.setValue( global.getOlcTLSDHParamFile(), tlsDhParamFileText );
 
             // TLS Random Bits File Text
-            String tlsRandFile = global.getOlcTLSRandFile();
-
-            if ( tlsRandFile != null )
-            {
-                tlsRandFileText.setText( tlsRandFile );
-            }
-            else
-            {
-                tlsRandFileText.setText( "" );
-            }
+            BaseWidgetUtils.setValue( global.getOlcTLSRandFile(), tlsRandFileText );
 
             // TLS Incoming Certificates Verification Level Combo
             String tlsVerifyClient = global.getOlcTLSVerifyClient();
@@ -1031,28 +923,10 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
             }
 
             // Local SSF Text
-            Integer localSsf = global.getOlcLocalSSF();
-
-            if ( localSsf != null )
-            {
-                localSsfText.setText( localSsf.toString() );
-            }
-            else
-            {
-                localSsfText.setText( "" );
-            }
+            BaseWidgetUtils.setValue( global.getOlcLocalSSF(), localSsfText );
 
             // Password Crypt Format Text
-            String passwordCryptSaltFormat = global.getOlcPasswordCryptSaltFormat();
-
-            if ( passwordCryptSaltFormat != null )
-            {
-                passwordCryptSaltFormatText.setText( passwordCryptSaltFormat );
-            }
-            else
-            {
-                passwordCryptSaltFormatText.setText( "" );
-            }
+            BaseWidgetUtils.setValue( global.getOlcPasswordCryptSaltFormat(), passwordCryptSaltFormatText );
 
             // Password Hash Table Widget
             List<String> passwordHashes = global.getOlcPasswordHash();

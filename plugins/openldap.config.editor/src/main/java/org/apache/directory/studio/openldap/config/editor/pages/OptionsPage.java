@@ -52,7 +52,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -591,23 +590,6 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         Section section = createSection( toolkit, parent, 
             Messages.getString( "OpenLDAPOptionsPage.AuthzRewriteRules" ) );
         Composite composite = createSectionComposite( toolkit, section, 2, false );
-
-        /*
-        // Authentication Usernames To DN Rewrite Rule Text
-        toolkit.createLabel( composite, "Authentication rewrite rule to convert simple user names to an LDAP DN:" );
-        authUsernamesToDnRewriteRuleText = toolkit.createText( composite, "" );
-        authUsernamesToDnRewriteRuleText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-
-        // Proxy Authorization Policy Text
-        toolkit.createLabel( composite, "Proxy authorization policy text:" );
-        proxyAuthorizationPolicyText = toolkit.createText( composite, "" );
-        proxyAuthorizationPolicyText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-
-        // Authorization Usernames To DN Regexp Text
-        toolkit.createLabel( composite, "Authorization Regexp to convert simple user names to an LDAP DN:" );
-        authzUsernamesToDnRegexpText = toolkit.createText( composite, "" );
-        authzUsernamesToDnRegexpText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        */
     }
 
 
@@ -836,40 +818,13 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
             }
 
             // Update the ArgsFileText
-            String argsFile = getConfiguration().getGlobal().getOlcArgsFile();
-            
-            if ( argsFile != null )
-            {
-                argsFileText.setText( argsFile );
-            }
-            else
-            {
-                argsFileText.setText( "" );
-            }
+            BaseWidgetUtils.setValue( global.getOlcArgsFile(), argsFileText );
 
             // Update the PluginLogFileText
-            String pluginLogFile = getConfiguration().getGlobal().getOlcPluginLogFile();
-                
-            if ( pluginLogFile != null )
-            { 
-                pluginLogFileText.setText( getConfiguration().getGlobal().getOlcPluginLogFile() );
-            }
-            else
-            {
-                pluginLogFileText.setText( "" );
-            }
+            BaseWidgetUtils.setValue( global.getOlcPluginLogFile(), pluginLogFileText );
 
             // Update the ReferralText
-            String referral = getConfiguration().getGlobal().getOlcReferral();
-            
-            if ( referral != null )
-            {
-                referralText.setText( referral );
-            }
-            else
-            {
-                referralText.setText( "" );
-            }
+            BaseWidgetUtils.setValue( global.getOlcReferral(), referralText );
 
             // AuthzPolicyl Combo
             String authzPolicy = global.getOlcAuthzPolicy();
@@ -900,25 +855,16 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
             }
 
             // Update the RootDSEText
-            String rootDse = getConfiguration().getGlobal().getOlcRootDSE();
-            
-            if ( rootDse != null )
-            {
-                rootDseText.setText( rootDse );
-            }
-            else
-            {
-                rootDseText.setText( "" );
-            }
+            BaseWidgetUtils.setValue( global.getOlcRootDSE(), rootDseText );
             
             // Update the GentleHupCheckbox
-            CommonUIUtils.setValue( global.getOlcGentleHUP(), gentleHupCheckbox );
+            BaseWidgetUtils.setValue( global.getOlcGentleHUP(), gentleHupCheckbox );
             
             // Update the ReadOnlyCheckbox
-            CommonUIUtils.setValue( global.getOlcReadOnly(), readOnlyCheckbox );
+            BaseWidgetUtils.setValue( global.getOlcReadOnly(), readOnlyCheckbox );
             
             // Update the GentleHupCheckbox
-            CommonUIUtils.setValue( global.getOlcReverseLookup(), reverseLookupCheckbox );
+            BaseWidgetUtils.setValue( global.getOlcReverseLookup(), reverseLookupCheckbox );
 
             addListeners();
         }

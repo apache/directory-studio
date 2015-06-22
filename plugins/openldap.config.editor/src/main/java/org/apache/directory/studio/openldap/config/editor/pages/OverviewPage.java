@@ -41,6 +41,7 @@ import org.apache.directory.studio.openldap.config.editor.wrappers.DatabaseWrapp
 import org.apache.directory.studio.openldap.config.editor.wrappers.DatabaseWrapperViewerSorter;
 import org.apache.directory.studio.openldap.config.editor.wrappers.ServerIdDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.ServerIdWrapper;
+import org.apache.directory.studio.openldap.config.model.OlcGlobal;
 import org.apache.directory.studio.openldap.config.model.OlcModuleList;
 import org.apache.directory.studio.openldap.config.model.database.OlcDatabaseConfig;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -779,79 +780,67 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
         { 
             removeListeners();
 
-            // Update the ServerIDText
-            // Update the DatabaseTableViewer
-            serverIdWrappers.clear();
+            // Getting the global configuration object
+            OlcGlobal global = getConfiguration().getGlobal();
 
-            for ( String serverIdWrapper : getConfiguration().getGlobal().getOlcServerID() )
+            if ( global != null )
             {
-                serverIdWrappers.add( new ServerIdWrapper( serverIdWrapper ) );
-            }
-
-            serverIdTableWidget.setElements( serverIdWrappers );
-            
-            // Update the ConfigDirText
-            String configDir = getConfiguration().getGlobal().getOlcConfigDir();
-            
-            if ( configDir != null )
-            {
-                configDirText.setText( configDir );
-            }
-            else
-            {
-                configDirText.setText( "" );
-            }
-
-            // Update the LogFIleText
-            String logFile = getConfiguration().getGlobal().getOlcLogFile();
-            
-            if ( logFile != null )
-            {
-                logFileText.setText( logFile );
-            }
-            else
-            {
-                logFileText.setText( "<stderr>" );
-            }
-
-            // Update the DatabaseTableViewer
-            databaseWrappers.clear();
-
-            for ( OlcDatabaseConfig database : getConfiguration().getDatabases() )
-            {
-                databaseWrappers.add( new DatabaseWrapper( database ) );
-            }
-
-            databaseViewer.setInput( databaseWrappers );
-
-            // Update the OverlaysTableViewer
-            moduleWrappers.clear();
-            
-            for ( OlcModuleList moduleList : getConfiguration().getModules() )
-            {
-                List<String> modules = moduleList.getOlcModuleLoad();
-                int index = OpenLdapConfigurationPluginUtils.getOrderingPostfix( moduleList.getCn().get( 0 ) );
-                
-                if ( modules != null )
+                // Update the ServerIDText
+                // Update the DatabaseTableViewer
+                serverIdWrappers.clear();
+        
+                for ( String serverIdWrapper : global.getOlcServerID() )
                 {
-                    for ( String module : modules )
+                    serverIdWrappers.add( new ServerIdWrapper( serverIdWrapper ) );
+                }
+        
+                serverIdTableWidget.setElements( serverIdWrappers );
+                
+                // Update the ConfigDirText
+                BaseWidgetUtils.setValue( global.getOlcConfigDir(), configDirText );
+        
+                // Update the LogFIleText
+                BaseWidgetUtils.setValue( global.getOlcLogFile(), logFileText );
+        
+                // Update the DatabaseTableViewer
+                databaseWrappers.clear();
+        
+                for ( OlcDatabaseConfig database : getConfiguration().getDatabases() )
+                {
+                    databaseWrappers.add( new DatabaseWrapper( database ) );
+                }
+        
+                databaseViewer.setInput( databaseWrappers );
+        
+                // Update the OverlaysTableViewer
+                moduleWrappers.clear();
+                
+                for ( OlcModuleList moduleList : getConfiguration().getModules() )
+                {
+                    List<String> modules = moduleList.getOlcModuleLoad();
+                    int index = OpenLdapConfigurationPluginUtils.getOrderingPostfix( moduleList.getCn().get( 0 ) );
+                    
+                    if ( modules != null )
                     {
-                        int order = OpenLdapConfigurationPluginUtils.getOrderingPrefix( module );
-                        String strippedModule = OpenLdapConfigurationPluginUtils.stripOrderingPrefix( module );
-                        String strippedModuleListName = OpenLdapConfigurationPluginUtils.stripOrderingPostfix( moduleList.getCn().get( 0 ) );
-                        moduleWrappers.add( new ModuleWrapper( strippedModuleListName, index, strippedModule, moduleList.
-                            getOlcModulePath(), order ) );
+                        for ( String module : modules )
+                        {
+                            int order = OpenLdapConfigurationPluginUtils.getOrderingPrefix( module );
+                            String strippedModule = OpenLdapConfigurationPluginUtils.stripOrderingPrefix( module );
+                            String strippedModuleListName = OpenLdapConfigurationPluginUtils.stripOrderingPostfix( moduleList.getCn().get( 0 ) );
+                            moduleWrappers.add( new ModuleWrapper( strippedModuleListName, index, strippedModule, moduleList.
+                                getOlcModulePath(), order ) );
+                        }
                     }
                 }
+        
+                moduleViewer.setInput( moduleWrappers );
+                
+                // Update the LogLevelWidget
+                String logLevels = getLogLevel();
+                logLevelText.setText( logLevels );
+        
+                addListeners();
             }
-
-            moduleViewer.setInput( moduleWrappers );
-            
-            // Update the LogLevelWidget
-            String logLevels = getLogLevel();
-            logLevelText.setText( logLevels );
-
-            addListeners();
         }
     }
 

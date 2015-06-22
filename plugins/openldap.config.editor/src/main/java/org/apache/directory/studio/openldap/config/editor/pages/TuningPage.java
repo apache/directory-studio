@@ -52,6 +52,7 @@ import org.apache.directory.studio.openldap.config.editor.dialogs.SizeLimitDialo
 import org.apache.directory.studio.openldap.config.editor.dialogs.TimeLimitDialog;
 import org.apache.directory.studio.openldap.config.editor.wrappers.TcpBufferDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.TcpBufferWrapper;
+import org.apache.directory.studio.openldap.config.model.OlcGlobal;
 
 
 /**
@@ -1126,148 +1127,77 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
     {
         removeListeners();
 
-        // TCPBuffer Text
-        List<TcpBufferWrapper> tcpBufferList = createTcpBufferList( getConfiguration().getGlobal().getOlcTCPBuffer() );
-        tcpBufferTableWidget.setElements( tcpBufferList );
+        // Getting the global configuration object
+        OlcGlobal global = getConfiguration().getGlobal();
 
-        // Socket Buffer Max Incoming Text
-        Integer sockbufMaxIncomingString = getConfiguration().getGlobal().getOlcSockbufMaxIncoming();
-        
-        if ( sockbufMaxIncomingString != null )
+        if ( global != null )
         {
-            sockbufMaxIncomingText.setText( sockbufMaxIncomingString.toString() );
-        }
-
-        // Socket Buffer Max Incoming Text
-        String sockbufMaxIncomingAuthString = getConfiguration().getGlobal().getOlcSockbufMaxIncomingAuth();
-        
-        if ( sockbufMaxIncomingAuthString != null )
-        {
-            sockbufMaxIncomingAuthText.setText( sockbufMaxIncomingAuthString );
-        }
-
-        // Concurrency Text
-        Integer concurrency = getConfiguration().getGlobal().getOlcConcurrency();
-        
-        if ( concurrency != null )
-        {
-            concurrencyText.setText( concurrency.toString() );
-        }
-
-        // ConnMaxPending Text
-        Integer connMaxPending = getConfiguration().getGlobal().getOlcConnMaxPending();
-        
-        if ( connMaxPending != null )
-        {
-            connMaxPendingText.setText( connMaxPending.toString() );
-        }
-
-        // ConnMaxPendingAuth Text
-        Integer connMaxPendingAuth = getConfiguration().getGlobal().getOlcConnMaxPendingAuth();
-        
-        if ( connMaxPendingAuth != null )
-        {
-            connMaxPendingAuthText.setText( connMaxPendingAuth.toString() );
-        }
-
-        // ListenerThreads Text
-        Integer listenerThreads = getConfiguration().getGlobal().getOlcListenerThreads();
-        
-        if ( listenerThreads != null )
-        {
-            listenerThreadsText.setText( listenerThreads.toString() );
-        }
-
-        // Threads Text
-        Integer threads = getConfiguration().getGlobal().getOlcThreads();
-        
-        if ( threads != null )
-        {
-            threadsText.setText( threads.toString() );
-        }
-
-        // ToolThreads Text
-        Integer toolThreads = getConfiguration().getGlobal().getOlcToolThreads();
-        
-        if ( toolThreads != null )
-        {
-            toolThreadsText.setText( toolThreads.toString() );
-        }
-
-        // IndexIntLen Text
-        Integer indexIntLen = getConfiguration().getGlobal().getOlcIndexIntLen();
-        
-        if ( indexIntLen != null )
-        {
-            indexIntLenText.setText( indexIntLen.toString() );
-        }
-
-        // IndexSubstrAnyLen Text
-        Integer indexSubstrAnyLen = getConfiguration().getGlobal().getOlcIndexSubstrAnyLen();
-        
-        if ( indexSubstrAnyLen != null )
-        {
-            indexSubstrAnyLenText.setText( indexSubstrAnyLen.toString() );
-        }
-
-        // IndexSubstrAnyStep Text
-        Integer indexSubstrAnyStep = getConfiguration().getGlobal().getOlcIndexSubstrAnyStep();
-        
-        if ( indexSubstrAnyStep != null )
-        {
-            indexSubstrAnyStepText.setText( indexSubstrAnyStep.toString() );
-        }
-
-        // IndexSubstrIfMaxLen Text
-        Integer indexSubstrIfMaxLen = getConfiguration().getGlobal().getOlcIndexSubstrIfMaxLen();
-        
-        if ( indexSubstrIfMaxLen != null )
-        {
-            indexSubstrIfMaxLenText.setText( indexSubstrIfMaxLen.toString() );
-        }
-
-        // IndexSubstrIfMinLen Text
-        Integer indexSubstrIfMinLen = getConfiguration().getGlobal().getOlcIndexSubstrIfMinLen();
-        
-        if ( indexSubstrIfMinLen != null )
-        {
-            indexSubstrIfMinLenText.setText( indexSubstrIfMinLen.toString() );
-        }
-
-        // IndexSubstrIfMinLen Text
-        Integer writeTimeout = getConfiguration().getGlobal().getOlcWriteTimeout();
-        
-        if ( writeTimeout != null )
-        {
-            writeTimeoutText.setText( writeTimeout.toString() );
-        }
-
-        // IdleTiemout Text
-        Integer idleTimeout = getConfiguration().getGlobal().getOlcIdleTimeout();
-        
-        if ( idleTimeout != null )
-        {
-            idleTimeoutText.setText( idleTimeout.toString() );
-        }
-
-        // SizeLimit Text
-        String sizeLimitString = getConfiguration().getGlobal().getOlcSizeLimit();
-        
-        if ( sizeLimitString != null )
-        {
-            sizeLimitText.setText( sizeLimitString );
-        }
-
-        // TimeLimit Text Text
-        List<String> timeLimitList = getConfiguration().getGlobal().getOlcTimeLimit();
-        
-        if ( ( timeLimitList != null ) && ( timeLimitList.size() > 0 ) )
-        {
-            timeLimitText.setText( timeLimitList.get( 0 ) );
-        }
-        else
-        {
-            timeLimitText.setText( "" );
+            //
+            // Assigning values to UI Controls
+            //
+            // TCPBuffer Text
+            List<TcpBufferWrapper> tcpBufferList = createTcpBufferList( global.getOlcTCPBuffer() );
+            tcpBufferTableWidget.setElements( tcpBufferList );
+    
+            // Socket Buffer Max Incoming Text
+            BaseWidgetUtils.setValue( global.getOlcSockbufMaxIncoming(), sockbufMaxIncomingText );
+    
+            // Socket Buffer Max Incoming Text
+            BaseWidgetUtils.setValue( global.getOlcSockbufMaxIncomingAuth(), sockbufMaxIncomingAuthText );
+    
+            // Concurrency Text
+            BaseWidgetUtils.setValue( global.getOlcConcurrency(), concurrencyText );
+    
+            // ConnMaxPending Text
+            BaseWidgetUtils.setValue( global.getOlcConnMaxPending(), connMaxPendingText );
+    
+            // ConnMaxPendingAuth Text
+            BaseWidgetUtils.setValue( global.getOlcConnMaxPendingAuth(), connMaxPendingAuthText );
+    
+            // ListenerThreads Text
+            BaseWidgetUtils.setValue( global.getOlcListenerThreads(), listenerThreadsText );
+    
+            // Threads Text
+            BaseWidgetUtils.setValue( global.getOlcThreads(), threadsText );
+    
+            // ToolThreads Text
+            BaseWidgetUtils.setValue( global.getOlcToolThreads(), toolThreadsText );
+    
+            // IndexIntLen Text
+            BaseWidgetUtils.setValue( global.getOlcIndexIntLen(), indexIntLenText );
+    
+            // IndexSubstrAnyLen Text
+            BaseWidgetUtils.setValue( global.getOlcIndexSubstrAnyLen(), indexSubstrAnyLenText );
+    
+            // IndexSubstrAnyStep Text
+            BaseWidgetUtils.setValue( global.getOlcIndexSubstrAnyStep(), indexSubstrAnyStepText );
+    
+            // IndexSubstrIfMaxLen Text
+            BaseWidgetUtils.setValue( global.getOlcIndexSubstrIfMaxLen(), indexSubstrIfMaxLenText );
+    
+            // IndexSubstrIfMinLen Text
+            BaseWidgetUtils.setValue( global.getOlcIndexSubstrIfMinLen(), indexSubstrIfMinLenText );
+    
+            // IndexSubstrIfMinLen Text
+            BaseWidgetUtils.setValue( global.getOlcWriteTimeout(), writeTimeoutText );
+    
+            // IdleTiemout Text
+            BaseWidgetUtils.setValue( global.getOlcIdleTimeout(), idleTimeoutText );
+    
+            // SizeLimit Text
+            BaseWidgetUtils.setValue( global.getOlcSizeLimit(), sizeLimitText );
+    
+            // TimeLimit Text Text
+            List<String> timeLimitList = getConfiguration().getGlobal().getOlcTimeLimit();
+            
+            if ( ( timeLimitList != null ) && ( timeLimitList.size() > 0 ) )
+            {
+                timeLimitText.setText( timeLimitList.get( 0 ) );
+            }
+            else
+            {
+                timeLimitText.setText( "" );
+            }
         }
         
         addListeners();

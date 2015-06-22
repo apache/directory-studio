@@ -669,4 +669,63 @@ public class BaseWidgetUtils
 
         return integerText;
     }
+    
+    
+    /**
+     * Set a value in a Button, if it's not null
+     * 
+     * @param value The Value to set
+     * @param checkBox The Button which will be checked if the value is not null and set to True
+     */
+    public static void setValue( Boolean value, Button checkBox )
+    {
+        if ( value != null )
+        {
+            checkBox.setSelection( value );
+        }
+        else
+        {
+            checkBox.setSelection( false );
+        }
+        
+    }
+    
+    
+    /**
+     * Set a value in a Text, if it's not null
+     * 
+     * @param value The Value to set
+     * @param inputText The Text which will be set if the value is not null
+     */
+    public static void setValue( Integer value, Text inputText )
+    {
+        if ( value != null )
+        {
+            inputText.setText( value.toString() );
+        }
+        else
+        {
+            inputText.setText( "" );
+        }
+    }
+    
+    
+    /**
+     * Set a value in a Text, if it's not null
+     * 
+     * @param value The Value to set
+     * @param checkBox The Text which will be set if the value is not null
+     */
+    public static void setValue( String value, Text inputText )
+    {
+        if ( value != null )
+        {
+            inputText.setText( value );
+        }
+        else
+        {
+            inputText.setText( "" );
+        }
+        
+    }
 }
