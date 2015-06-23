@@ -65,7 +65,12 @@ public class BaseWidgetUtils
         GridData gridData = new GridData( GridData.FILL_BOTH );
         gridData.horizontalSpan = span;
         group.setLayoutData( gridData );
-        group.setText( label );
+        
+        if ( label != null )
+        {
+            group.setText( label );
+        }
+        
         group.setLayout( new GridLayout() );
         
         return group;
