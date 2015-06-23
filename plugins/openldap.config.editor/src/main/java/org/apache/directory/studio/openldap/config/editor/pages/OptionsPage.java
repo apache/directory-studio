@@ -56,6 +56,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -124,11 +125,11 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
  * | +---------------------------------------+ +----------------------------------------+ |
  * | | +--------------------------+          | | +--------------------------+           | |
  * | | | xyz                      | (Add...) | | | xyz                      | (Add...)  | |
- * | | | abcde                    |          | | | abcde                    | (Edit...) | |
- * | | | aaa                      | (Edit)   | | | aaa                      | (Delete)  | |
- * | | |                          |          | | |                          | --------- | |
- * | | |                          | (Delete) | | |                          | (Up...)   | |
- * | | +--------------------------+          | | +--------------------------+ (Down...) | |
+ * | | | abcde                    | (Edit)   | | | abcde                    | (Edit...) | |
+ * | | | aaa                      | (Delete) | | | aaa                      | (Delete)  | |
+ * | | |                          | -------- | | |                          | --------- | |
+ * | | |                          | (Up...)  | | |                          | (Up...)   | |
+ * | | +--------------------------+ (Down)   | | +--------------------------+ (Down...) | |
  * | +---------------------------------------+ +----------------------------------------+ |
  * | .----------------------------------------------------------------------------------. |
  * | |V Miscellaneous options                                                           | |
@@ -416,7 +417,7 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            getConfiguration().getGlobal().setOlcGentleHUP( reverseLookupCheckbox.getSelection() );
+            getConfiguration().getGlobal().setOlcReverseLookup( reverseLookupCheckbox.getSelection() );
         }
     };
 
@@ -621,17 +622,17 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
     /**
      * Creates the Authorization Rewrite Rules section.
      * <pre>
-     * .---------------------------------------.
-     * |V Authorization rewrite rules          |
-     * +---------------------------------------+
-     * | +--------------------------+          |
-     * | | xyz                      | (Add...) |
-     * | | abcde                    |          |
-     * | | aaa                      | (Edit)   |
-     * | |                          |          |
-     * | |                          | (Delete) |
-     * | +--------------------------+          |
-     * +---------------------------------------+
+     * .----------------------------------------.
+     * |V Authorization rewrite rules           |
+     * +----------------------------------------+
+     * | +--------------------------+           |
+     * | | xyz                      | (Add...)  |
+     * | | abcde                    | (Edit...) |
+     * | | aaa                      | (Delete)  |
+     * | |                          | --------- |
+     * | |                          | (Up...)   |
+     * | +--------------------------+ (Down...) |
+     * +----------------------------------------+
      * </pre>
      * @param toolkit the toolkit
      * @param parent the parent composite
@@ -733,7 +734,7 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         authzPolicyCombo.addSelectionListener( authzPolicyComboListener );
 
         // The olcRootDSE label.
-        toolkit.createLabel( composite, Messages.getString( "OpenLDAPOptionsPage.RootDSE" ) );
+        toolkit.createLabel( composite, Messages.getString( "OpenLDAPOptionsPage.RootDSEs" ) );
         toolkit.createLabel( composite, "" );
         toolkit.createLabel( composite, "" );
 
@@ -744,28 +745,35 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
 
         // The olcRootDSE parameter.
         rootDseTableWidget = new TableWidget<StringValueWrapper>( 
-            new StringValueDecorator( composite.getShell(), "rootDSE" ) );
+            new StringValueDecorator( composite.getShell(), Messages.getString( "OpenLDAPOptionsPage.RootDSE" ) ) );
 
         rootDseTableWidget.createWidgetWithEdit( composite, toolkit );
         rootDseTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
         addModifyListener( rootDseTableWidget, rootDseTableListener );
-
         toolkit.createLabel( composite, "" );
 
+        // A group for the others checkboxes
+        Group othersGroup = BaseWidgetUtils.createGroup( composite, null, 2 );
+        GridLayout othersGroupGridLayout = new GridLayout( 3, false );
+        othersGroup.setLayout( othersGroupGridLayout );
+        othersGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+
+        //toolkit.createLabel( composite, "" );
+
         // The olcGentleHUP Button
-        gentleHupCheckbox = BaseWidgetUtils.createCheckbox( composite, 
-            Messages.getString( "OpenLDAPOptionsPage.GentleHUP" ), 2 );
+        gentleHupCheckbox = BaseWidgetUtils.createCheckbox( othersGroup, 
+            Messages.getString( "OpenLDAPOptionsPage.GentleHUP" ), 1 );
         gentleHupCheckbox.addSelectionListener( gentleHupCheckboxSelectionListener );
 
         // The olcReadOnly Button
-        readOnlyCheckbox = BaseWidgetUtils.createCheckbox( composite, 
-            Messages.getString( "OpenLDAPOptionsPage.ReadOnly" ), 2 );
+        readOnlyCheckbox = BaseWidgetUtils.createCheckbox( othersGroup, 
+            Messages.getString( "OpenLDAPOptionsPage.ReadOnly" ), 1 );
         readOnlyCheckbox.addSelectionListener( readOnlyCheckboxSelectionListener );
         toolkit.createLabel( composite, "" );
 
         // The olcReverseLookup Button
-        reverseLookupCheckbox = BaseWidgetUtils.createCheckbox( composite, 
-            Messages.getString( "OpenLDAPOptionsPage.ReverseLookup" ), 2 );
+        reverseLookupCheckbox = BaseWidgetUtils.createCheckbox( othersGroup, 
+            Messages.getString( "OpenLDAPOptionsPage.ReverseLookup" ), 1 );
         reverseLookupCheckbox.addSelectionListener( reverseLookupCheckboxSelectionListener );
     }
 
