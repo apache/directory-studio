@@ -43,7 +43,6 @@ import org.apache.directory.studio.openldap.config.editor.wrappers.StringValueWr
  * 
  * <pre>
  * +---------------------------------------+
- * |  XXXXXXXX Input                       |
  * | .-----------------------------------. |
  * | | Value  : [                      ] | |
  * | '-----------------------------------' |
@@ -112,7 +111,6 @@ public class StringValueDialog extends AddEditDialog<StringValueWrapper>
      * Create the Dialog for StringValue :
      * <pre>
      * +---------------------------------------+
-     * |  XXXXXXXX                             |
      * | .-----------------------------------. |
      * | | Value  : [                      ] | |
      * | '-----------------------------------' |
@@ -128,7 +126,7 @@ public class StringValueDialog extends AddEditDialog<StringValueWrapper>
         composite.setLayoutData( gd );
 
         // StringValue Group
-        Group stringValueGroup = BaseWidgetUtils.createGroup( parent, "Value input", 1 );
+        Group stringValueGroup = BaseWidgetUtils.createGroup( parent, null, 1 );
         GridLayout stringValueGroupGridLayout = new GridLayout( 2, false );
         stringValueGroup.setLayout( stringValueGroupGridLayout );
         stringValueGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
