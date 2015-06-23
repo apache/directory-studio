@@ -277,6 +277,25 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
     
     
     /**
+     * The olcSecurity listener
+     */
+    private WidgetModifyListener securityListener = new WidgetModifyListener()
+    {
+        public void widgetModified( WidgetModifyEvent e )
+        {
+            List<String> ssfWrappers = new ArrayList<String>();
+            
+            for ( SsfWrapper ssfWrapper : securityTableWidget.getElements() )
+            {
+                ssfWrappers.add( ssfWrapper.toString() );
+            }
+            
+            getConfiguration().getGlobal().setOlcSecurity( ssfWrappers );
+        }
+    };
+
+    
+    /**
      * The olcTlsCertificateFile listener
      */
     private ModifyListener tlsCertificateFileTextListener = new ModifyListener()
@@ -783,6 +802,7 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
 
         securityTableWidget.createWidgetWithEdit( miscSectionComposite, toolkit );
         securityTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 4, 1 ) );
+        addModifyListener( securityTableWidget, securityListener );
     }
 
 
@@ -930,34 +950,31 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
 
             // Password Hash Table Widget
             List<String> passwordHashes = global.getOlcPasswordHash();
+            List<PasswordHashEnum> hashes = new ArrayList<PasswordHashEnum>();
 
             if ( passwordHashes != null )
             {
-                List<PasswordHashEnum> hashes = new ArrayList<PasswordHashEnum>();
-                
                 for ( String passwordHashName : passwordHashes )
                 {
                     hashes.add( PasswordHashEnum.getPasswordHash( passwordHashName ) );
                 }
-                
-                passwordHashTableWidget.setElements( hashes );
             }
-            else
-            {
-                passwordHashTableWidget.setElements( new ArrayList<PasswordHashEnum>() );
-            }
+
+            passwordHashTableWidget.setElements( hashes );
 
             // Security Table Widget
-            List<String> security = global.getOlcSecurity();
+            List<String> features = global.getOlcSecurity();
+            List<SsfWrapper> ssfWrappers = new ArrayList<SsfWrapper>();
 
-            if ( security != null )
+            if ( features != null )
             {
-                // TODO
+                for ( String feature : features )
+                {
+                    ssfWrappers.add( new SsfWrapper( feature ) );
+                }
             }
-            else
-            {
-                // TODO
-            }
+
+            securityTableWidget.setElements( ssfWrappers );
         }
         
         addListeners();

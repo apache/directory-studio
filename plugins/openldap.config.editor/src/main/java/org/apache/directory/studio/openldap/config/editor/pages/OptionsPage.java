@@ -840,117 +840,87 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
 
             // Allow Feature Table Widget
             List<String> allowedFeatures = global.getOlcAllows();
+            List<AllowFeatureEnum> alloweds = new ArrayList<AllowFeatureEnum>();
 
             if ( allowedFeatures != null )
             {
-                List<AllowFeatureEnum> alloweds = new ArrayList<AllowFeatureEnum>();
-                
                 for ( String allowedFeature : allowedFeatures )
                 {
                     alloweds.add( AllowFeatureEnum.getFeature( allowedFeature ) );
                 }
-                
-                allowFeatureTableWidget.setElements( alloweds );
             }
-            else
-            {
-                allowFeatureTableWidget.setElements( new ArrayList<AllowFeatureEnum>() );
-            }
+
+            allowFeatureTableWidget.setElements( alloweds );
 
             // Disallow Feature Table Widget
             List<String> disallowedFeatures = global.getOlcDisallows();
+            List<DisallowFeatureEnum> disalloweds = new ArrayList<DisallowFeatureEnum>();
 
             if ( disallowedFeatures != null )
             {
-                List<DisallowFeatureEnum> disalloweds = new ArrayList<DisallowFeatureEnum>();
-                
                 for ( String disallowedFeature : disallowedFeatures )
                 {
                     disalloweds.add( DisallowFeatureEnum.getFeature( disallowedFeature ) );
                 }
-                
-                disallowFeatureTableWidget.setElements( disalloweds );
             }
-            else
-            {
-                disallowFeatureTableWidget.setElements( new ArrayList<DisallowFeatureEnum>() );
-            }
+            
+            disallowFeatureTableWidget.setElements( disalloweds );
 
             // Require Condition Table Widget
             List<String> requireConditions = global.getOlcRequires();
+            List<RequireConditionEnum> requires = new ArrayList<RequireConditionEnum>();
 
             if ( requireConditions != null )
             {
-                List<RequireConditionEnum> requires = new ArrayList<RequireConditionEnum>();
-                
                 for ( String requireCondition : requireConditions )
                 {
                     requires.add( RequireConditionEnum.getCondition( requireCondition ) );
                 }
-                
-                requireConditionTableWidget.setElements( requires );
             }
-            else
-            {
-                requireConditionTableWidget.setElements( new ArrayList<RequireConditionEnum>() );
-            }
+            
+            requireConditionTableWidget.setElements( requires );
 
             // Restrict Operation Condition Table Widget
             List<String> restrictOperations = global.getOlcRestrict();
+            List<RestrictOperationEnum> restricts = new ArrayList<RestrictOperationEnum>();
 
             if ( restrictOperations != null )
             {
-                List<RestrictOperationEnum> restricts = new ArrayList<RestrictOperationEnum>();
-                
                 for ( String restrictOperation : restrictOperations )
                 {
                     restricts.add( RestrictOperationEnum.getOperation( restrictOperation ) );
                 }
-                
-                restrictOperationTableWidget.setElements( restricts );
             }
-            else
-            {
-                restrictOperationTableWidget.setElements( new ArrayList<RestrictOperationEnum>() );
-            }
+            
+            restrictOperationTableWidget.setElements( restricts );
 
             // AuthID Rewrite Table Widget
             List<String> authIdRewrites = global.getOlcAuthIDRewrite();
+            List<AuthIdRewriteWrapper> rewrites = new ArrayList<AuthIdRewriteWrapper>();
 
             if ( authIdRewrites != null )
             {
-                List<AuthIdRewriteWrapper> rewrites = new ArrayList<AuthIdRewriteWrapper>();
-                
                 for ( String rewrite : authIdRewrites )
                 {
                     rewrites.add( new AuthIdRewriteWrapper( rewrite ) );
                 }
-                
-                authIdRewriteTableWidget.setElements( rewrites );
             }
-            else
-            {
-                authIdRewriteTableWidget.setElements( new ArrayList<AuthIdRewriteWrapper>() );
-            }
+            
+            authIdRewriteTableWidget.setElements( rewrites );
 
             // Authz Regexp Table Widget
             List<String> authzRegexps = global.getOlcRestrict();
+            List<AuthzRegexpWrapper> regexps = new ArrayList<AuthzRegexpWrapper>();
 
             if ( authzRegexps != null )
             {
-                List<AuthzRegexpWrapper> regexps = new ArrayList<AuthzRegexpWrapper>();
-                
                 for ( String regexp : authzRegexps )
                 {
                     regexps.add( new AuthzRegexpWrapper( regexp ) );
                 }
-                
-                authzRegexpTableWidget.setElements( regexps );
             }
-            else
-            {
-                authzRegexpTableWidget.setElements( new ArrayList<AuthzRegexpWrapper>() );
-            }
+            
+            authzRegexpTableWidget.setElements( regexps );
 
             // Update the ArgsFileText
             BaseWidgetUtils.setValue( global.getOlcArgsFile(), argsFileText );
@@ -991,22 +961,17 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
 
             // Update the RootDSEText
             List<String> rootDses = global.getOlcRootDSE();
+            List<StringValueWrapper> roots = new ArrayList<StringValueWrapper>();
 
             if ( rootDses != null )
             {
-                List<StringValueWrapper> roots = new ArrayList<StringValueWrapper>();
-                
                 for ( String rootDse : rootDses )
                 {
                     roots.add( new StringValueWrapper( rootDse, true ) );
                 }
-                
-                rootDseTableWidget.setElements( roots );
             }
-            else
-            {
-                rootDseTableWidget.setElements( new ArrayList<StringValueWrapper>() );
-            }
+            
+            rootDseTableWidget.setElements( roots );
             
             // Update the GentleHupCheckbox
             BaseWidgetUtils.setValue( global.getOlcGentleHUP(), gentleHupCheckbox );
