@@ -21,7 +21,10 @@ package org.apache.directory.studio.openldap.config.editor.pages;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.directory.studio.common.ui.CommonUIUtils;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
@@ -33,6 +36,7 @@ import org.apache.directory.studio.openldap.common.ui.model.AuthzPolicyEnum;
 import org.apache.directory.studio.openldap.common.ui.model.DisallowFeatureEnum;
 import org.apache.directory.studio.openldap.common.ui.model.RequireConditionEnum;
 import org.apache.directory.studio.openldap.common.ui.model.RestrictOperationEnum;
+import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginUtils;
 import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
 import org.apache.directory.studio.openldap.config.editor.wrappers.AllowFeatureDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.AuthIdRewriteDecorator;
@@ -45,6 +49,7 @@ import org.apache.directory.studio.openldap.config.editor.wrappers.RestrictOpera
 import org.apache.directory.studio.openldap.config.editor.wrappers.StringValueDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.StringValueWrapper;
 import org.apache.directory.studio.openldap.config.model.OlcGlobal;
+import org.apache.directory.studio.openldap.config.model.database.OlcDatabaseConfig;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -121,7 +126,7 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
  * | | +--------------------------+          | | +--------------------------+           | |
  * | +---------------------------------------+ +----------------------------------------+ |
  * | .---------------------------------------. .----------------------------------------. |
- * | |V Authorization rewrite rules          | |V Authorisation ID Regexp               | |
+ * | |V Authentication ID rewrite rules      | |V Authorisation Regexp                  | |
  * | +---------------------------------------+ +----------------------------------------+ |
  * | | +--------------------------+          | | +--------------------------+           | |
  * | | | xyz                      | (Add...) | | | xyz                      | (Add...)  | |
@@ -141,7 +146,7 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
  * | | Root DSE :                                Other :                                | |
  * | | +--------------------------+              .------------------------------------. | |
  * | | | xyz                      | (Add...)     | [X] Read Only                      | | |
- * | | | abcde                    |              | [X] GentleHUP                      | | |
+ * | | | abcde                    | (Edit)       | [X] GentleHUP                      | | |
  * | | | aaa                      | (Delete)     | [X] Reverse Lookup                 | | |
  * | | +--------------------------+              '------------------------------------' | |
  * | +----------------------------------------------------------------------------------+ |
@@ -496,8 +501,8 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
 
         createFeaturesSection( toolkit, middleLeftComposite );
         createOperationsSection( toolkit, middleRightComposite );
-        createAuthorizationRewriteRuleSection( toolkit, middleLeftComposite );
-        createAuthIdRegexpsSection( toolkit, middleRightComposite );
+        createAuthIdRewriteSection( toolkit, middleLeftComposite );
+        createAuthzRegexpsSection( toolkit, middleRightComposite );
         createMiscellaneousSection( toolkit, lowerComposite );
     }
 
@@ -620,10 +625,10 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
 
 
     /**
-     * Creates the Authorization Rewrite Rules section.
+     * Creates the Authentication ID Rewrite Rules section.
      * <pre>
      * .----------------------------------------.
-     * |V Authorization rewrite rules           |
+     * |V Authentication ID rewrite rules       |
      * +----------------------------------------+
      * | +--------------------------+           |
      * | | xyz                      | (Add...)  |
@@ -637,27 +642,27 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
      * @param toolkit the toolkit
      * @param parent the parent composite
      */
-    private void createAuthorizationRewriteRuleSection( FormToolkit toolkit, Composite parent )
+    private void createAuthIdRewriteSection( FormToolkit toolkit, Composite parent )
     {
         Section section = createSection( toolkit, parent, 
-            Messages.getString( "OpenLDAPOptionsPage.AuthzRewriteRules" ) );
+            Messages.getString( "OpenLDAPOptionsPage.AuthIdRewrite" ) );
         Composite composite = createSectionComposite( toolkit, section, 2, false );
 
         // The olcAuthIdRewrite parameter table
         authIdRewriteTableWidget = new TableWidget<AuthIdRewriteWrapper>( 
             new AuthIdRewriteDecorator( composite.getShell() ) );
 
-        authIdRewriteTableWidget.createWidgetNoEdit( composite, toolkit );
+        authIdRewriteTableWidget.createOrderedWidgetWithEdit( composite, toolkit );
         authIdRewriteTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
         addModifyListener( authIdRewriteTableWidget, authIdRewriteListener );
     }
 
 
     /**
-     * Creates the AuthID Regexp section.
+     * Creates the Authz Regexp section.
      * <pre>
      * .----------------------------------------.
-     * |V Authentication ID Regexp              |
+     * |V Authorization Regexps                 |
      * +----------------------------------------+
      * | +--------------------------+           | 
      * | | xyz                      | (Add...)  |
@@ -671,17 +676,17 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
      * @param toolkit the toolkit
      * @param parent the parent composite
      */
-    private void createAuthIdRegexpsSection( FormToolkit toolkit, Composite parent )
+    private void createAuthzRegexpsSection( FormToolkit toolkit, Composite parent )
     {
         Section section = createSection( toolkit, parent, 
-            Messages.getString( "OpenLDAPOptionsPage.AuthIdRegexps" ) );
+            Messages.getString( "OpenLDAPOptionsPage.AuthzRegexp" ) );
         Composite composite = createSectionComposite( toolkit, section, 2, false );
 
         // The olcAuthzRegexp parameter table
         authzRegexpTableWidget = new TableWidget<AuthzRegexpWrapper>( 
             new AuthzRegexpDecorator( composite.getShell() ) );
 
-        authzRegexpTableWidget.createWidgetNoEdit( composite, toolkit );
+        authzRegexpTableWidget.createOrderedWidgetWithEdit( composite, toolkit );
         authzRegexpTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
         addModifyListener( authzRegexpTableWidget, authzRegexpListener );
     }
@@ -700,7 +705,7 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
      * | Root DSE :                                Other :                                |
      * | +--------------------------+              .------------------------------------. |
      * | | xyz                      | (Add...)     | [X] Read Only                      | |
-     * | | abcde                    |              | [X] GentleHUP                      | |
+     * | | abcde                    | (Edit)       | [X] GentleHUP                      | |
      * | | aaa                      | (Delete)     | [X] Reverse Lookup                 | |
      * | +--------------------------+              '------------------------------------' |
      * +----------------------------------------------------------------------------------+
@@ -821,6 +826,183 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         removeDirtyListener( reverseLookupCheckbox );
     }
     
+    
+    private void refreshAllowFeatures( OlcGlobal global )
+    {
+        List<String> allowedFeatures = global.getOlcAllows();
+        List<AllowFeatureEnum> alloweds = new ArrayList<AllowFeatureEnum>();
+
+        if ( allowedFeatures != null )
+        {
+            for ( String allowedFeature : allowedFeatures )
+            {
+                alloweds.add( AllowFeatureEnum.getFeature( allowedFeature ) );
+            }
+        }
+
+        allowFeatureTableWidget.setElements( alloweds );
+    }
+    
+    
+    private void refreshDisllowFeatures( OlcGlobal global )
+    {
+        List<String> disallowedFeatures = global.getOlcDisallows();
+        List<DisallowFeatureEnum> disalloweds = new ArrayList<DisallowFeatureEnum>();
+
+        if ( disallowedFeatures != null )
+        {
+            for ( String disallowedFeature : disallowedFeatures )
+            {
+                disalloweds.add( DisallowFeatureEnum.getFeature( disallowedFeature ) );
+            }
+        }
+        
+        disallowFeatureTableWidget.setElements( disalloweds );
+    }
+    
+    
+    private void refreshRequireConditions( OlcGlobal global )
+    {
+        List<String> requireConditions = global.getOlcRequires();
+        List<RequireConditionEnum> requires = new ArrayList<RequireConditionEnum>();
+
+        if ( requireConditions != null )
+        {
+            for ( String requireCondition : requireConditions )
+            {
+                requires.add( RequireConditionEnum.getCondition( requireCondition ) );
+            }
+        }
+        
+        requireConditionTableWidget.setElements( requires );
+    }
+    
+    
+    private void refreshRestrictOperations( OlcGlobal global )
+    {
+        List<String> restrictOperations = global.getOlcRestrict();
+        List<RestrictOperationEnum> restricts = new ArrayList<RestrictOperationEnum>();
+
+        if ( restrictOperations != null )
+        {
+            for ( String restrictOperation : restrictOperations )
+            {
+                restricts.add( RestrictOperationEnum.getOperation( restrictOperation ) );
+            }
+        }
+        
+        restrictOperationTableWidget.setElements( restricts );
+    }
+    
+    
+    /**
+     * The AuthIdRewrite table is ordered, we need to deal with that.
+     */
+    private void refreshAuthIdRewrites( OlcGlobal global )
+    {
+        List<OlcDatabaseConfig> authIdRewrites = getConfiguration().getDatabases();
+
+        if ( authIdRewrites != null )
+        {
+            int nbElements = authIdRewrites.size();
+            List<AuthIdRewriteWrapper> rewrites = new ArrayList<AuthIdRewriteWrapper>( nbElements );
+            int[] valuePrefixes = new int[nbElements];
+            Map<Integer, String> values = new HashMap<Integer, String>(nbElements);
+            int pos = 0;
+
+            // First gather the values
+            for ( OlcDatabaseConfig rewrite : authIdRewrites )
+            {
+                // Parse the prefix, and set the element at the right place
+                int prefix = OpenLdapConfigurationPluginUtils.getOrderingPrefix( rewrite.getOlcDatabase() );
+                
+                valuePrefixes[pos++] = prefix;
+                values.put( prefix, OpenLdapConfigurationPluginUtils.stripOrderingPrefix( rewrite.getOlcDatabase() ) );
+            }
+
+            // Now, order them
+            Arrays.sort( valuePrefixes );
+            
+            // Ok, store the elements accordingly to their prefix now
+            for ( int prefix : valuePrefixes )
+            {
+                String value = values.get( prefix );
+                rewrites.add( new AuthIdRewriteWrapper( value ) );
+            }
+
+            authIdRewriteTableWidget.setElements( rewrites );
+        }
+        else
+        {
+            // Store an empty list
+            List<AuthIdRewriteWrapper> rewrites = new ArrayList<AuthIdRewriteWrapper>();
+            
+            authIdRewriteTableWidget.setElements( rewrites );
+        }
+    }
+
+    
+    private void refreshAuthzRegexps( OlcGlobal global )
+    {
+        List<String> authzRegexps = global.getOlcRestrict();
+
+        if ( authzRegexps != null )
+        {
+            int nbElements = authzRegexps.size();
+            List<AuthzRegexpWrapper> regexps = new ArrayList<AuthzRegexpWrapper>( nbElements );
+            int[] valuePrefixes = new int[nbElements];
+            Map<Integer, String> values = new HashMap<Integer, String>(nbElements);
+            int pos = 0;
+
+            // First gather the values
+            for ( String rewrite : authzRegexps )
+            {
+                // Parse the prefix, and set the element at the right place
+                int prefix = OpenLdapConfigurationPluginUtils.getOrderingPrefix( rewrite );
+                
+                valuePrefixes[pos] = prefix;
+                values.put( prefix, OpenLdapConfigurationPluginUtils.stripOrderingPrefix( rewrite ) );
+            }
+
+            // Now, order them
+            Arrays.sort( valuePrefixes );
+            
+            // Ok, store the elements accordingly to their prefix now
+            for ( int prefix : valuePrefixes )
+            {
+                String value = values.get( prefix );
+                regexps.add( new AuthzRegexpWrapper( value ) );
+            }
+
+            authzRegexpTableWidget.setElements( regexps );
+        }
+        else
+        {
+            // Store an empty list
+            List<AuthzRegexpWrapper> regexps = new ArrayList<AuthzRegexpWrapper>();
+            
+            authzRegexpTableWidget.setElements( regexps );
+        }
+        
+    }
+
+    
+    private void refreshRootDseFiles( OlcGlobal global )
+    {
+        List<String> rootDses = global.getOlcRootDSE();
+        List<StringValueWrapper> roots = new ArrayList<StringValueWrapper>();
+
+        if ( rootDses != null )
+        {
+            for ( String rootDse : rootDses )
+            {
+                roots.add( new StringValueWrapper( rootDse, true ) );
+            }
+        }
+        
+        rootDseTableWidget.setElements( roots );
+    }
+
 
     /**
      * {@inheritDoc}
@@ -839,88 +1021,22 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
             //
 
             // Allow Feature Table Widget
-            List<String> allowedFeatures = global.getOlcAllows();
-            List<AllowFeatureEnum> alloweds = new ArrayList<AllowFeatureEnum>();
-
-            if ( allowedFeatures != null )
-            {
-                for ( String allowedFeature : allowedFeatures )
-                {
-                    alloweds.add( AllowFeatureEnum.getFeature( allowedFeature ) );
-                }
-            }
-
-            allowFeatureTableWidget.setElements( alloweds );
+            refreshAllowFeatures( global );
 
             // Disallow Feature Table Widget
-            List<String> disallowedFeatures = global.getOlcDisallows();
-            List<DisallowFeatureEnum> disalloweds = new ArrayList<DisallowFeatureEnum>();
-
-            if ( disallowedFeatures != null )
-            {
-                for ( String disallowedFeature : disallowedFeatures )
-                {
-                    disalloweds.add( DisallowFeatureEnum.getFeature( disallowedFeature ) );
-                }
-            }
-            
-            disallowFeatureTableWidget.setElements( disalloweds );
+            refreshDisllowFeatures( global );
 
             // Require Condition Table Widget
-            List<String> requireConditions = global.getOlcRequires();
-            List<RequireConditionEnum> requires = new ArrayList<RequireConditionEnum>();
-
-            if ( requireConditions != null )
-            {
-                for ( String requireCondition : requireConditions )
-                {
-                    requires.add( RequireConditionEnum.getCondition( requireCondition ) );
-                }
-            }
-            
-            requireConditionTableWidget.setElements( requires );
+            refreshRequireConditions( global );
 
             // Restrict Operation Condition Table Widget
-            List<String> restrictOperations = global.getOlcRestrict();
-            List<RestrictOperationEnum> restricts = new ArrayList<RestrictOperationEnum>();
-
-            if ( restrictOperations != null )
-            {
-                for ( String restrictOperation : restrictOperations )
-                {
-                    restricts.add( RestrictOperationEnum.getOperation( restrictOperation ) );
-                }
-            }
+            refreshRestrictOperations( global );
             
-            restrictOperationTableWidget.setElements( restricts );
-
             // AuthID Rewrite Table Widget
-            List<String> authIdRewrites = global.getOlcAuthIDRewrite();
-            List<AuthIdRewriteWrapper> rewrites = new ArrayList<AuthIdRewriteWrapper>();
-
-            if ( authIdRewrites != null )
-            {
-                for ( String rewrite : authIdRewrites )
-                {
-                    rewrites.add( new AuthIdRewriteWrapper( rewrite ) );
-                }
-            }
-            
-            authIdRewriteTableWidget.setElements( rewrites );
+            refreshAuthIdRewrites( global );
 
             // Authz Regexp Table Widget
-            List<String> authzRegexps = global.getOlcRestrict();
-            List<AuthzRegexpWrapper> regexps = new ArrayList<AuthzRegexpWrapper>();
-
-            if ( authzRegexps != null )
-            {
-                for ( String regexp : authzRegexps )
-                {
-                    regexps.add( new AuthzRegexpWrapper( regexp ) );
-                }
-            }
-            
-            authzRegexpTableWidget.setElements( regexps );
+            refreshAuthzRegexps( global );
 
             // Update the ArgsFileText
             BaseWidgetUtils.setValue( global.getOlcArgsFile(), argsFileText );
@@ -960,18 +1076,7 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
             }
 
             // Update the RootDSEText
-            List<String> rootDses = global.getOlcRootDSE();
-            List<StringValueWrapper> roots = new ArrayList<StringValueWrapper>();
-
-            if ( rootDses != null )
-            {
-                for ( String rootDse : rootDses )
-                {
-                    roots.add( new StringValueWrapper( rootDse, true ) );
-                }
-            }
-            
-            rootDseTableWidget.setElements( roots );
+            refreshRootDseFiles( global );
             
             // Update the GentleHupCheckbox
             BaseWidgetUtils.setValue( global.getOlcGentleHUP(), gentleHupCheckbox );
