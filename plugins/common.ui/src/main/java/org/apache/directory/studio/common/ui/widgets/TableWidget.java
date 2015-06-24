@@ -74,14 +74,27 @@ public class TableWidget<E> extends AbstractWidget
 
     /** A flag set to tell if we have a Edit button */
     private boolean hasEdit;
+    
+    /** A flag set when the table is ordered (ie, it has a Up and Down buttons) */
+    private boolean isOrdered;
+    
+    /** The flag set when the table is ordered */
+    private static final boolean ORDERED = true;
+    
+    /** The flag set when the table is not ordered */
+    private static final boolean UNORDERED = false;
 
     // UI widgets
     private Composite composite;
     private Table elementTable;
     private TableViewer elementTableViewer;
+    
+    // The buttons
     private Button addButton;
     private Button editButton;
     private Button deleteButton;
+    private Button upButton;
+    private Button downButton;
     
     /** The decorator */
     private TableDecorator<E> decorator;
@@ -99,8 +112,22 @@ public class TableWidget<E> extends AbstractWidget
             }
             
             deleteButton.setEnabled( !selection.isEmpty() );
+            
+            if ( isOrdered )
+            {
+                int selectionLine = elementTableViewer.getTable().getSelectionIndex();
+
+                // We can't enable the UP button when we don't have any element in the table,
+                // or when we have only one, or when the selection is the first one in the table
+                upButton.setEnabled( !selection.isEmpty() && ( elements.size() > 1 ) && ( selectionLine > 0 ) );
+                
+                // We can't enable the DOWN button when we don't have any element in the table,
+                // or when we have only one element, or when the selected element is the last one
+                downButton.setEnabled( !selection.isEmpty() && ( elements.size() > 1 ) && ( selectionLine < elements.size() - 1 ) );
+            }
         }
     };
+    
     
     // A listener on the Element table, that reacts to a doubleClick : it's opening the Element editor
     private IDoubleClickListener tableViewerDoubleClickListener = new IDoubleClickListener()
@@ -111,6 +138,7 @@ public class TableWidget<E> extends AbstractWidget
         }
     };
     
+    
     // A listener on the Add button, which opens the Element addition editor
     private SelectionListener addButtonListener = new SelectionAdapter()
     {
@@ -119,6 +147,7 @@ public class TableWidget<E> extends AbstractWidget
             addElement();
         }
     };
+    
     
     // A listener on the Edit button, that open the Element editor
     private SelectionListener editButtonListener = new SelectionAdapter()
@@ -129,12 +158,33 @@ public class TableWidget<E> extends AbstractWidget
         }
     };
     
+    
     // A listener on the Delete button, which delete the selected Element
     private SelectionListener deleteButtonListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
         {
             deleteElement();
+        }
+    };
+    
+    
+    // A listener on the Up button, that move the selected elemnt up one position
+    private SelectionListener upButtonListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            upElement();
+        }
+    };
+    
+    
+    // A listener on the Down button, that move the selected element down one position
+    private SelectionListener downButtonListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            downElement();
         }
     };
 
@@ -166,7 +216,7 @@ public class TableWidget<E> extends AbstractWidget
      */
     public void createWidgetWithEdit( Composite parent, FormToolkit toolkit )
     {
-        createWidget( parent, toolkit, true );
+        createWidget( parent, toolkit, true, UNORDERED );
     }
     
     
@@ -185,7 +235,52 @@ public class TableWidget<E> extends AbstractWidget
      */
     public void createWidgetNoEdit( Composite parent, FormToolkit toolkit )
     {
-        createWidget( parent, toolkit, false );
+        createWidget( parent, toolkit, false, UNORDERED );
+    }
+
+
+    /**
+     * Creates the ordered Table widget. It's a Table and five buttons :
+     * <pre>
+     * +--------------------------------------+
+     * | Element 1                            | (Add... )
+     * | Element 2                            | (Edit...)
+     * |                                      | (Delete )
+     * |                                      | ---------
+     * |                                      | (Up... )
+     * |                                      | (Down.. )
+     * +--------------------------------------+
+     * </pre>
+     * The 'Up' and 'Down' buttons are used to order the elements.
+     * 
+     * @param parent the parent
+     * @param toolkit the toolkit
+     */
+    public void createOrderedWidgetWithEdit( Composite parent, FormToolkit toolkit )
+    {
+        createWidget( parent, toolkit, true, ORDERED );
+    }
+
+
+    /**
+     * Creates the Table widget. It's a Table and four buttons :
+     * <pre>
+     * +--------------------------------------+
+     * | Element 1                            | (Add... )
+     * | Element 2                            | (Delete )
+     * |                                      | ---------
+     * |                                      | (Up... )
+     * |                                      | (Down.. )
+     * +--------------------------------------+
+     * </pre>
+     * The 'Up' and 'Down' buttons are used to order the elements.
+     * 
+     * @param parent the parent
+     * @param toolkit the toolkit
+     */
+    public void createOrderedWidgetNoEdit( Composite parent, FormToolkit toolkit )
+    {
+        createWidget( parent, toolkit, true, ORDERED );
     }
 
 
@@ -207,12 +302,25 @@ public class TableWidget<E> extends AbstractWidget
      * +--------------------------------------+
      * </pre>
      * 
+     * If the table is ordered, we have two additional buttons to re-organize
+     * the elements at will :
+     * <pre>
+     * ...
+     * |                                      | ---------
+     * |                                      | (Up... )
+     * |                                      | (Down.. )
+     * +--------------------------------------+
+     * </pre>
+     * 
      * @param parent the parent
      * @param toolkit the toolkit
+     * @param hasEdit the flag set when the Edit button is present
+     * @param isOrdered the flag set when we have the Up and Down buttons
      */
-    private void createWidget( Composite parent, FormToolkit toolkit, boolean hasEdit )
+    private void createWidget( Composite parent, FormToolkit toolkit, boolean hasEdit, boolean isOrdered )
     {
         this.hasEdit = hasEdit;
+        this.isOrdered = isOrdered;
         
         // Composite
         if ( toolkit != null )
@@ -239,8 +347,16 @@ public class TableWidget<E> extends AbstractWidget
             elementTable = new Table( composite, SWT.NULL );
         }
         
-        // Define the table size and height. It will span on 3 lines.
-        GridData gd = new GridData( SWT.FILL, SWT.FILL, true, true, 1, 3 );
+        // Define the table size and height. It will span on 3 to 5 lines,
+        // depending on the number of buttons
+        int nbLinesSpan = 3;
+        
+        if ( isOrdered )
+        {
+            nbLinesSpan += 2;
+        }
+        
+        GridData gd = new GridData( SWT.FILL, SWT.FILL, true, true, 1, nbLinesSpan );
         gd.heightHint = 20;
         gd.widthHint = 100;
         elementTable.setLayoutData( gd );
@@ -265,11 +381,11 @@ public class TableWidget<E> extends AbstractWidget
         // Create the Add Button and its listener
         if ( toolkit != null )
         {
-            addButton = toolkit.createButton( composite, Messages.getString( "CommonUIWidgets.Add" ), SWT.PUSH );
+            addButton = toolkit.createButton( composite, Messages.getString( "CommonUIWidgets.AddButton" ), SWT.PUSH );
         }
         else
         {
-            addButton = BaseWidgetUtils.createButton( composite, Messages.getString( "CommonUIWidgets.Add" ), 1 );
+            addButton = BaseWidgetUtils.createButton( composite, Messages.getString( "CommonUIWidgets.AddButton" ), 1 );
         }
         
         addButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
@@ -280,11 +396,11 @@ public class TableWidget<E> extends AbstractWidget
         {
             if ( toolkit != null )
             {
-                editButton = toolkit.createButton( composite, Messages.getString( "CommonUIWidgets.Edit" ), SWT.PUSH );
+                editButton = toolkit.createButton( composite, Messages.getString( "CommonUIWidgets.EditButton" ), SWT.PUSH );
             }
             else
             {
-                editButton = BaseWidgetUtils.createButton( composite, Messages.getString( "CommonUIWidgets.Edit" ), SWT.PUSH );
+                editButton = BaseWidgetUtils.createButton( composite, Messages.getString( "CommonUIWidgets.EditButton" ), SWT.PUSH );
             }
             
             // It's not enabled unless we have selected an element
@@ -296,17 +412,53 @@ public class TableWidget<E> extends AbstractWidget
         // Create the Delete Button and its listener
         if ( toolkit != null )
         {
-            deleteButton = toolkit.createButton( composite, Messages.getString( "CommonUIWidgets.Delete" ), SWT.PUSH );
+            deleteButton = toolkit.createButton( composite, Messages.getString( "CommonUIWidgets.DeleteButton" ), SWT.PUSH );
         }
         else
         {
-            deleteButton = BaseWidgetUtils.createButton( composite, Messages.getString( "CommonUIWidgets.Delete" ), SWT.PUSH );
+            deleteButton = BaseWidgetUtils.createButton( composite, Messages.getString( "CommonUIWidgets.DeleteButton" ), SWT.PUSH );
         }
         
         // It's not selected unless we have selected an index
         deleteButton.setEnabled( false );
         deleteButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
         deleteButton.addSelectionListener( deleteButtonListener );
+
+        // Create the Up and Down button, if requested
+        if ( isOrdered )
+        {
+
+            // Create the Up Button and its listener
+            if ( toolkit != null )
+            {
+                upButton = toolkit.createButton( composite, Messages.getString( "CommonUIWidgets.UpButton" ), SWT.PUSH );
+            }
+            else
+            {
+                upButton = BaseWidgetUtils.createButton( composite, Messages.getString( "CommonUIWidgets.UpButton" ), SWT.PUSH );
+            }
+            
+            // It's not selected unless we have selected an index
+            upButton.setEnabled( false );
+            upButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
+            upButton.addSelectionListener( upButtonListener );
+
+
+            // Create the Down Button and its listener
+            if ( toolkit != null )
+            {
+                downButton = toolkit.createButton( composite, Messages.getString( "CommonUIWidgets.DownButton" ), SWT.PUSH );
+            }
+            else
+            {
+                downButton = BaseWidgetUtils.createButton( composite, Messages.getString( "CommonUIWidgets.DownButton" ), SWT.PUSH );
+            }
+            
+            // It's not selected unless we have selected an index
+            downButton.setEnabled( false );
+            downButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
+            downButton.addSelectionListener( downButtonListener );
+}
     }
 
 
@@ -560,6 +712,65 @@ public class TableWidget<E> extends AbstractWidget
 
             elements.remove( selectedElement );
             elementTableViewer.refresh();
+            notifyListeners();
+        }
+    }
+
+
+    /**
+     * This method is called when the 'Up...' button is clicked
+     */
+    private void upElement()
+    {
+        StructuredSelection selection = ( StructuredSelection ) elementTableViewer.getSelection();
+
+        if ( !selection.isEmpty() )
+        {
+            // Get the line the selected element is in. We will move it up 
+            int selectionLine = elementTableViewer.getTable().getSelectionIndex();
+            
+            // The selected element
+            E selectedElement = (E)selection.getFirstElement();
+            
+            // Just swap the elements which is just before with the selected one
+            E previousElement = getElements().get( selectionLine - 1 );
+            elements.remove( selectionLine - 1 );
+            elements.add( selectionLine, previousElement );
+            
+            // Refresh the table now
+            elementTableViewer.refresh();
+            elementTableViewer.setSelection( new StructuredSelection( selectedElement ) );
+
+            notifyListeners();
+        }
+    }
+
+
+    /**
+     * This method is called when the 'Down...' button is clicked
+     * or the table viewer is double-clicked.
+     */
+    private void downElement()
+    {
+        StructuredSelection selection = ( StructuredSelection ) elementTableViewer.getSelection();
+
+        if ( !selection.isEmpty() )
+        {
+            // Get the line the selected element is in. We will move it down 
+            int selectionLine = elementTableViewer.getTable().getSelectionIndex();
+            
+            // The selected element
+            E selectedElement = (E)selection.getFirstElement();
+            
+            // Just swap the elements which is just after with the selected one
+            E previousElement = getElements().get( selectionLine + 1 );
+            elements.remove( selectionLine + 1 );
+            elements.add( selectionLine, previousElement );
+            
+            // refresh teh table now
+            elementTableViewer.refresh();
+            elementTableViewer.setSelection( new StructuredSelection( selectedElement ) );
+
             notifyListeners();
         }
     }
