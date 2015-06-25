@@ -36,13 +36,6 @@ public class StringValueWrapper implements Cloneable, Comparable<StringValueWrap
 
     /**
      * Creates a new instance of StringValueWrapper.
-     */
-    public StringValueWrapper()
-    {
-    }
-
-    /**
-     * Creates a new instance of StringValueWrapper.
      *
      * @param value the value
      */
