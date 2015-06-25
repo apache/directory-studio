@@ -42,14 +42,14 @@ public class StringValueDecorator extends TableDecorator<StringValueWrapper>
     
 
     /**
-     * Construct the label for an String.
+     * Construct the label for a String.
      * 
      */
     public String getText( Object element )
     {
-        if ( element instanceof String )
+        if ( element instanceof StringValueWrapper )
         {
-            return ( String ) element;
+            return ( ( StringValueWrapper ) element ).getValue();
         }
 
         return super.getText( element );
