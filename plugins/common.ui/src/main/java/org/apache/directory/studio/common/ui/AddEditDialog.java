@@ -44,6 +44,12 @@ public abstract class AddEditDialog<E> extends Dialog
     
     /** The table's elements */
     private List<E> elements;
+    
+    /** The position of the selected element, if we have any */
+    private int selectedPosition;
+
+    /** A flag set to true when the dialog is opened using the Add button */
+    private boolean isAdd = false;
 
     /** A flag used to tell if the okButton must be disabled */
     protected boolean okDisabled = false;
@@ -116,7 +122,23 @@ public abstract class AddEditDialog<E> extends Dialog
     {
         this.editedElement = editedElement;
     }
-    
+
+    /**
+     * @return the selectedPosition
+     */
+    public int getSelectedPosition()
+    {
+        return selectedPosition;
+    }
+
+    /**
+     * @param selectedPosition the selectedPosition to set
+     */
+    public void setSelectedPosition( int selectedPosition )
+    {
+        this.selectedPosition = selectedPosition;
+    }
+
     
     /**
      * Stores the TableWidget list of elements
@@ -135,5 +157,32 @@ public abstract class AddEditDialog<E> extends Dialog
     protected List<E> getElements()
     {
         return elements;
+    }
+    
+    
+    /**
+     * Set the isAdd flag to true
+     */
+    public void setAdd()
+    {
+        isAdd = true;
+    }
+    
+    
+    /**
+     * Set the isAdd flag to false
+     */
+    public void setEdit()
+    {
+        isAdd = false;
+    }
+    
+    
+    /**
+     * @return True if the Dialog has been opened using the Add button.
+     */
+    public boolean isAdd()
+    {
+        return isAdd;
     }
 }
