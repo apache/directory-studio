@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import org.apache.directory.studio.common.ui.AddEditDialog;
 import org.apache.directory.studio.common.ui.Messages;
 import org.apache.directory.studio.common.ui.TableDecorator;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
@@ -592,9 +593,27 @@ public class TableWidget<E> extends AbstractWidget
      */
     private void addElement()
     {
-        decorator.getDialog().addNewElement();
-        decorator.getDialog().setElements( elements );
+        AddEditDialog<E> dialog = decorator.getDialog();
+        dialog.setAdd();
+        dialog.addNewElement();
+        dialog.setElements( elements );
+        
+        // Inject the position if we have a selected value
+        StructuredSelection selection = ( StructuredSelection ) elementTableViewer.getSelection();
+        
+        if ( !selection.isEmpty() )
+        {
+            int insertionPos = elementTableViewer.getTable().getSelectionIndex();
+            
+            dialog.setSelectedPosition( insertionPos );
+        }
+        else
+        {
+            // The element will be added at the end of the table
+            dialog.setSelectedPosition( elements.size() );
+        }
 
+        // Open the Dialog, and process the addition if it went fine
         if ( decorator.getDialog().open() == Dialog.OK )
         {
             E newElement = decorator.getDialog().getEditedElement();
@@ -604,15 +623,31 @@ public class TableWidget<E> extends AbstractWidget
                 String elementStr = newElement.toString();
                 int pos = 0;
                 
-                for ( E element : elements )
-                {
-                    if ( decorator.compare( element, newElement ) > 0 )
+                if ( isOrdered )
+                { 
+                    // The table is ordered, find the right position to insert the element
+                    for ( E element : elements )
                     {
-                        break;
+                        if ( decorator.compare( element, newElement ) > 0 )
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            pos++;
+                        }
+                    }
+                }
+                else
+                {
+                    if ( selection.isEmpty() )
+                    {
+                        // no selected element, add at the end
+                        pos = elements.size();
                     }
                     else
                     {
-                        pos++;
+                        pos = elementTableViewer.getTable().getSelectionIndex() + 1;
                     }
                 }
                 
@@ -636,58 +671,53 @@ public class TableWidget<E> extends AbstractWidget
 
         if ( !selection.isEmpty() )
         {
+            AddEditDialog<E> dialog = decorator.getDialog();
+            dialog.setEdit();
+
             E selectedElement = (E)selection.getFirstElement();
-            decorator.getDialog().setEditedElement( selectedElement );
+            int editPosition = elementTableViewer.getTable().getSelectionIndex();
+            dialog.setEditedElement( selectedElement );
+            dialog.setSelectedPosition( editPosition );
 
             // Open the element dialog, with the selected index
             if ( decorator.getDialog().open() == Dialog.OK )
             {
-                E newElement = decorator.getDialog().getEditedElement();
+                E newElement = dialog.getEditedElement();
                 
-                if ( elements.contains( newElement ) )
+                if ( !isOrdered )
                 {
-                    // Remove the original element
-                    elements.remove( selectedElement );
-                    
-                    // Replace the existing element with the new one
-                    elements.remove( newElement );
-
-                    int pos = 0;
-                    
-                    for ( E element : elements )
+                    // Check to see if the modified element does not already exist
+                    if ( elements.contains( newElement ) )
                     {
-                        if ( decorator.compare( element, newElement ) > 0 )
+                        // Remove the original element
+                        elements.remove( selectedElement );
+                        
+                        // Replace the existing element with the new one
+                        elements.remove( newElement );
+    
+                        int pos = 0;
+                        
+                        for ( E element : elements )
                         {
-                            break;
+                            if ( decorator.compare( element, newElement ) > 0 )
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                pos++;
+                            }
                         }
-                        else
-                        {
-                            pos++;
-                        }
+                        
+                        elements.add( pos, newElement );
                     }
-                    
-                    elements.add( pos, newElement );
-                }
-                else
-                {
-                    // We will remove the modified element, and replace it with the new element
-                    elements.remove( selectedElement );
-
-                    int pos = 0;
-                    
-                    for ( E element : elements )
+                    else
                     {
-                        if ( decorator.compare( element, newElement ) > 0 )
-                        {
-                            break;
-                        }
-                        else
-                        {
-                            pos++;
-                        }
+                        // We will remove the modified element, and replace it with the new element
+                        // Replace the old element by the new one
+                        elements.remove( editPosition );
+                        elements.add( editPosition, newElement );
                     }
-                    
-                    elements.add( pos, newElement );
                 }
 
                 elementTableViewer.refresh();

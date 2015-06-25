@@ -130,6 +130,7 @@ public abstract class AddEditDialog<E> extends Dialog
     {
         return selectedPosition;
     }
+    
 
     /**
      * @param selectedPosition the selectedPosition to set
