@@ -40,6 +40,8 @@ import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginUt
 import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
 import org.apache.directory.studio.openldap.config.editor.wrappers.AllowFeatureDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.DisallowFeatureDecorator;
+import org.apache.directory.studio.openldap.config.editor.wrappers.OrderedStringValueDecorator;
+import org.apache.directory.studio.openldap.config.editor.wrappers.OrderedStringValueWrapper;
 import org.apache.directory.studio.openldap.config.editor.wrappers.RequireConditionDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.RestrictOperationDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.StringValueDecorator;
@@ -175,10 +177,10 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
 
     // The Authz regexp and rewrite rules
     /** The olcAuthIDRewrite parameter */
-    private TableWidget<StringValueWrapper> authIdRewriteTableWidget;
+    private TableWidget<OrderedStringValueWrapper> authIdRewriteTableWidget;
 
     /** The olcAuthzRegexp parameter */
-    private TableWidget<StringValueWrapper> authzRegexpTableWidget;
+    private TableWidget<OrderedStringValueWrapper> authzRegexpTableWidget;
 
     // The miscellaneous parameters
     /** The olcArgsFile parameter */
@@ -291,9 +293,9 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         {
             List<String> authIdRewrites = new ArrayList<String>();
             
-            for ( StringValueWrapper authIdRewrite : authIdRewriteTableWidget.getElements() )
+            for ( OrderedStringValueWrapper authIdRewrite : authIdRewriteTableWidget.getElements() )
             {
-                authIdRewrites.add( authIdRewrite.getValue() );
+                authIdRewrites.add( authIdRewrite.toString() );
             }
             
             getConfiguration().getGlobal().setOlcAuthIDRewrite( authIdRewrites );
@@ -310,9 +312,9 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         {
             List<String> authzRegexps = new ArrayList<String>();
             
-            for ( StringValueWrapper authzRegexp : authzRegexpTableWidget.getElements() )
+            for ( OrderedStringValueWrapper authzRegexp : authzRegexpTableWidget.getElements() )
             {
-                authzRegexps.add( authzRegexp.getValue() );
+                authzRegexps.add( authzRegexp.toString() );
             }
             
             getConfiguration().getGlobal().setOlcAuthzRegexp( authzRegexps );
@@ -645,8 +647,8 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         Composite composite = createSectionComposite( toolkit, section, 2, false );
 
         // The olcAuthIdRewrite parameter table
-        authIdRewriteTableWidget = new TableWidget<StringValueWrapper>( 
-            new StringValueDecorator( composite.getShell() , "authIdRewrite") );
+        authIdRewriteTableWidget = new TableWidget<OrderedStringValueWrapper>( 
+            new OrderedStringValueDecorator( composite.getShell() , "authIdRewrite") );
 
         authIdRewriteTableWidget.createOrderedWidgetWithEdit( composite, toolkit );
         authIdRewriteTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
@@ -679,8 +681,8 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         Composite composite = createSectionComposite( toolkit, section, 2, false );
 
         // The olcAuthzRegexp parameter table
-        authzRegexpTableWidget = new TableWidget<StringValueWrapper>( 
-            new StringValueDecorator( composite.getShell(), "AuthzRegexp" ) );
+        authzRegexpTableWidget = new TableWidget<OrderedStringValueWrapper>( 
+            new OrderedStringValueDecorator( composite.getShell(), "AuthzRegexp" ) );
 
         authzRegexpTableWidget.createOrderedWidgetWithEdit( composite, toolkit );
         authzRegexpTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
@@ -894,67 +896,23 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
      */
     private void refreshAuthIdRewrites( OlcGlobal global )
     {
-        List<OlcDatabaseConfig> authIdRewrites = getConfiguration().getDatabases();
+        List<String> authIdRewrites = global.getOlcAuthIDRewrite();
 
         if ( authIdRewrites != null )
         {
             int nbElements = authIdRewrites.size();
-            List<StringValueWrapper> rewrites = new ArrayList<StringValueWrapper>( nbElements );
+            List<OrderedStringValueWrapper> rewrites = new ArrayList<OrderedStringValueWrapper>( nbElements );
             int[] valuePrefixes = new int[nbElements];
             Map<Integer, String> values = new HashMap<Integer, String>(nbElements);
             int pos = 0;
 
             // First gather the values
-            for ( OlcDatabaseConfig rewrite : authIdRewrites )
-            {
-                // Parse the prefix, and set the element at the right place
-                int prefix = OpenLdapConfigurationPluginUtils.getOrderingPrefix( rewrite.getOlcDatabase() );
-                
-                valuePrefixes[pos++] = prefix;
-                values.put( prefix, OpenLdapConfigurationPluginUtils.stripOrderingPrefix( rewrite.getOlcDatabase() ) );
-            }
-
-            // Now, order them
-            Arrays.sort( valuePrefixes );
-            
-            // Ok, store the elements accordingly to their prefix now
-            for ( int prefix : valuePrefixes )
-            {
-                String value = values.get( prefix );
-                rewrites.add( new StringValueWrapper( value, true ) );
-            }
-
-            authIdRewriteTableWidget.setElements( rewrites );
-        }
-        else
-        {
-            // Store an empty list
-            List<StringValueWrapper> rewrites = new ArrayList<StringValueWrapper>();
-            
-            authIdRewriteTableWidget.setElements( rewrites );
-        }
-    }
-
-    
-    private void refreshAuthzRegexps( OlcGlobal global )
-    {
-        List<String> authzRegexps = global.getOlcRestrict();
-
-        if ( authzRegexps != null )
-        {
-            int nbElements = authzRegexps.size();
-            List<StringValueWrapper> regexps = new ArrayList<StringValueWrapper>( nbElements );
-            int[] valuePrefixes = new int[nbElements];
-            Map<Integer, String> values = new HashMap<Integer, String>(nbElements);
-            int pos = 0;
-
-            // First gather the values
-            for ( String rewrite : authzRegexps )
+            for ( String rewrite : authIdRewrites )
             {
                 // Parse the prefix, and set the element at the right place
                 int prefix = OpenLdapConfigurationPluginUtils.getOrderingPrefix( rewrite );
                 
-                valuePrefixes[pos] = prefix;
+                valuePrefixes[pos++] = prefix;
                 values.put( prefix, OpenLdapConfigurationPluginUtils.stripOrderingPrefix( rewrite ) );
             }
 
@@ -965,7 +923,51 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
             for ( int prefix : valuePrefixes )
             {
                 String value = values.get( prefix );
-                regexps.add( new StringValueWrapper( value, true ) );
+                rewrites.add( new OrderedStringValueWrapper( prefix, value, true ) );
+            }
+
+            authIdRewriteTableWidget.setElements( rewrites );
+        }
+        else
+        {
+            // Store an empty list
+            List<OrderedStringValueWrapper> rewrites = new ArrayList<OrderedStringValueWrapper>();
+            
+            authIdRewriteTableWidget.setElements( rewrites );
+        }
+    }
+
+    
+    private void refreshAuthzRegexps( OlcGlobal global )
+    {
+        List<String> authzRegexps = global.getOlcAuthzRegexp();
+
+        if ( authzRegexps != null )
+        {
+            int nbElements = authzRegexps.size();
+            List<OrderedStringValueWrapper> regexps = new ArrayList<OrderedStringValueWrapper>( nbElements );
+            int[] valuePrefixes = new int[nbElements];
+            Map<Integer, String> values = new HashMap<Integer, String>(nbElements);
+            int pos = 0;
+
+            // First gather the values
+            for ( String regexp : authzRegexps )
+            {
+                // Parse the prefix, and set the element at the right place
+                int prefix = OpenLdapConfigurationPluginUtils.getOrderingPrefix( regexp );
+                
+                valuePrefixes[pos] = prefix;
+                values.put( prefix, OpenLdapConfigurationPluginUtils.stripOrderingPrefix( regexp ) );
+            }
+
+            // Now, order them
+            Arrays.sort( valuePrefixes );
+            
+            // Ok, store the elements accordingly to their prefix now
+            for ( int prefix : valuePrefixes )
+            {
+                String value = values.get( prefix );
+                regexps.add( new OrderedStringValueWrapper( prefix, value, true ) );
             }
 
             authzRegexpTableWidget.setElements( regexps );
@@ -973,7 +975,7 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         else
         {
             // Store an empty list
-            List<StringValueWrapper> regexps = new ArrayList<StringValueWrapper>();
+            List<OrderedStringValueWrapper> regexps = new ArrayList<OrderedStringValueWrapper>();
             
             authzRegexpTableWidget.setElements( regexps );
         }
