@@ -55,6 +55,13 @@ public class ConnectionsViewBot
     }
 
 
+    public SchemaBrowserBot openSchemaBrowser()
+    {
+        ContextMenuHelper.clickContextMenu( getConnectionsTree(), "Open Schema Browser" );
+        return new SchemaBrowserBot();
+    }
+
+
     public void openSelectedConnection()
     {
         JobWatcher watcher = new JobWatcher( Messages.jobs__open_connections_name_1 );

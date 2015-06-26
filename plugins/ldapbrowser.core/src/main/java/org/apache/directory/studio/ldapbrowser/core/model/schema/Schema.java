@@ -71,7 +71,7 @@ public class Schema
 
     public static final String SCHEMA_FILTER = "(objectClass=subschema)"; //$NON-NLS-1$
 
-    public static final String RAW_SCHEMA_DEFINITION_LDIF_VALUE = "RAW_SCHEMA_DEFINITION_LDIF_VALUE"; //$NON-NLS-1$
+    public static final String RAW_SCHEMA_DEFINITION_LDIF_VALUE = "X-RAW-SCHEMA-DEFINITION"; //$NON-NLS-1$
 
     public static final String DN_SYNTAX_OID = "1.3.6.1.4.1.1466.115.121.1.12"; //$NON-NLS-1$
 
