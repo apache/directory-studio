@@ -1095,7 +1095,7 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
     
     
     /**
-     * Construct a list of TcpBufferWrapper list from teh String we get from the LDAP server.
+     * Construct a list of TcpBufferWrapper list from the String we get from the LDAP server.
      * We have to parse this :
      * <pre>
      * [listener=<URL>] [{read|write}=]<size>

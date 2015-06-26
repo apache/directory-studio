@@ -245,7 +245,7 @@ public class SsfDialog extends AddEditDialog<SsfWrapper>
                         }
                     }
                     
-                    // Erase teh content of the Other text
+                    // Erase the content of the Other text
                     otherText.setText( "" );
                 }
 

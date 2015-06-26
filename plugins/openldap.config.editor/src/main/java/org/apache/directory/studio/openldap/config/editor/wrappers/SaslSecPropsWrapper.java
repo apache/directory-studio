@@ -152,7 +152,7 @@ public class SaslSecPropsWrapper implements Cloneable
      * Check if a given String is a valid SaslSecProp parameter
      * 
      * @param str The string to check
-     * @return true if teh string is a valid SaslSecProp parameter
+     * @return true if the string is a valid SaslSecProp parameter
      */
     public static boolean isValid( String str )
     {
