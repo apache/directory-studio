@@ -762,8 +762,15 @@ public class TableWidget<E> extends AbstractWidget
             // The selected element
             E selectedElement = (E)selection.getFirstElement();
             
+            // Decrease the prefix
+            ((OrderedElement)selectedElement).decrementPrefix();
+            
             // Just swap the elements which is just before with the selected one
             E previousElement = getElements().get( selectionLine - 1 );
+
+            // Increase the prefix
+            ((OrderedElement)previousElement).incrementPrefix();
+            
             elements.remove( selectionLine - 1 );
             elements.add( selectionLine, previousElement );
             
@@ -791,13 +798,20 @@ public class TableWidget<E> extends AbstractWidget
             
             // The selected element
             E selectedElement = (E)selection.getFirstElement();
+
+            // Increase the prefix
+            ((OrderedElement)selectedElement).incrementPrefix();
             
             // Just swap the elements which is just after with the selected one
             E previousElement = getElements().get( selectionLine + 1 );
+
+            // Decrease the prefix
+            ((OrderedElement)previousElement).decrementPrefix();
+
             elements.remove( selectionLine + 1 );
             elements.add( selectionLine, previousElement );
             
-            // refresh teh table now
+            // refresh the table now
             elementTableViewer.refresh();
             elementTableViewer.setSelection( new StructuredSelection( selectedElement ) );
 

@@ -20,13 +20,14 @@
 package org.apache.directory.studio.openldap.config.editor.wrappers;
 
 import org.apache.directory.api.util.Strings;
+import org.apache.directory.studio.common.ui.widgets.OrderedElement;
 
 /**
  * A wrapper for an ordered String value. The value is prefixed by "{n}" where n is an integer.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class OrderedStringValueWrapper implements Cloneable, Comparable<OrderedStringValueWrapper>
+public class OrderedStringValueWrapper implements Cloneable, Comparable<OrderedStringValueWrapper>, OrderedElement
 {
     /** The value */
     private String value;
@@ -87,6 +88,24 @@ public class OrderedStringValueWrapper implements Cloneable, Comparable<OrderedS
     public int getPrefix()
     {
         return prefix;
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void decrementPrefix()
+    {
+        prefix--;
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void incrementPrefix()
+    {
+        prefix++;
     }
 
     
