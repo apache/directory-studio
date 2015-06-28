@@ -59,7 +59,25 @@ import org.eclipse.ui.forms.widgets.Section;
 
 
 /**
- * This class represents the Databases Master/Details Block used in the Databases Page.
+ * This class represents the Databases Master/Details Block used in the Databases Page. This is the
+ * left part of the Database tab :
+ * <pre>
+ * .------------------------------------------------------------------.
+ * | .-------------------------------.                                |
+ * | | All Databases                 |                                |
+ * | | +------------------+          |                                |
+ * | | |DB1               | ( Add  ) |                                |
+ * | | |DB2               | (Delete) |                                |
+ * | | |DB3               | -------- |                                |
+ * | | |                  | (  Up  ) |                                |
+ * | | |                  | ( Down ) |                                |
+ * | | |                  |          |                                |
+ * | | |                  |          |                                |
+ * | | |                  |          |                                |
+ * | | +------------------+          |                                |
+ * | +-------------------------------+                                |
+ *'-------------------------------------------------------------------'
+ * </pre>
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
