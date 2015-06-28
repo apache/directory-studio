@@ -36,6 +36,7 @@ public interface OpenLdapConfigurationPluginConstants
     // ------
     public static final String IMG_ATTRIBUTE = "resources/icons/attribute.gif"; //$NON-NLS-1$
     public static final String IMG_DATABASE = "resources/icons/database.gif"; //$NON-NLS-1$
+    public static final String IMG_DISABLED_DATABASE = "resources/icons/disabledDatabase.gif"; //$NON-NLS-1$
     public static final String IMG_EDITOR = "resources/icons/editor.gif"; //$NON-NLS-1$
     public static final String IMG_EXPORT = "resources/icons/export.gif"; //$NON-NLS-1$
     public static final String IMG_INDEX = "resources/icons/index.png"; //$NON-NLS-1$

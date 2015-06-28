@@ -22,96 +22,127 @@ package org.apache.directory.studio.openldap.config.editor.wrappers;
 import java.util.List;
 
 import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.util.Strings;
+import org.apache.directory.studio.common.ui.CommonUIConstants;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPlugin;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginConstants;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginUtils;
+import org.apache.directory.studio.openldap.config.editor.databases.DatabaseTypeEnum;
 import org.apache.directory.studio.openldap.config.model.database.OlcDatabaseConfig;
-import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.StyledCellLabelProvider;
+import org.eclipse.jface.viewers.StyledString;
+import org.eclipse.jface.viewers.StyledString.Styler;
+import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.TextStyle;
 
 /**
- * This class defines a label provider for a database wrapper viewer.
+ * This class defines a label provider for a database wrapper viewer. We use a StyledCellLabelProvider
+ * parent, to be able to grey the disabled databases.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class DatabaseWrapperLabelProvider extends LabelProvider
+public class DatabaseWrapperLabelProvider extends StyledCellLabelProvider
 {
-    /**
-     * Construct the label for a database. It's the type, followed by the suffixDN.
-     */
-    public String getText( Object element )
+    
+    private final Styler grayedStyle;
+    
+    
+    public DatabaseWrapperLabelProvider()
     {
-        if ( element instanceof DatabaseWrapper )
+        grayedStyle = new Styler() 
         {
-            OlcDatabaseConfig database = ( ( DatabaseWrapper ) element ).getDatabase();
-
-            return getDatabaseType( database ) + " (" + getSuffix( database ) + ")";
-        }
-
-        return super.getText( element );
-    };
-
+            @Override
+            public void applyStyles( TextStyle textStyle ) 
+            {
+                textStyle.foreground = CommonUIConstants.L_GREY_COLOR;
+            }
+        };
+    }
 
     /**
-     * Get the Database image, if it's a Database
+     * Get the Database image, if it's a Database. We can show two different icons, depending
+     * on the Database status : enabled or disabled.
      */
     public Image getImage( Object element )
     {
         if ( element instanceof DatabaseWrapper )
         {
-            return OpenLdapConfigurationPlugin.getDefault().getImage(
-                OpenLdapConfigurationPluginConstants.IMG_DATABASE );
+            DatabaseWrapper database = (DatabaseWrapper) element;
+            Boolean disabled = database.getDatabase().getOlcDisabled();
+            
+            if ( ( disabled == null ) || !disabled )
+            {
+                return OpenLdapConfigurationPlugin.getDefault().getImage(
+                    OpenLdapConfigurationPluginConstants.IMG_DATABASE );
+            }
+            else
+            {
+                return OpenLdapConfigurationPlugin.getDefault().getImage(
+                    OpenLdapConfigurationPluginConstants.IMG_DISABLED_DATABASE );
+            }
         }
 
-        return super.getImage( element );
+        return null;
     };
+    
+    
+    /**
+     * Shows the Database name, and grey it if it's disabled.
+     * 
+     * {@inheritDoc}
+     */
+    @Override
+    public void update( ViewerCell cell ) 
+    {
+        Object element = cell.getElement();
+
+        if ( element instanceof DatabaseWrapper ) 
+        {
+            DatabaseWrapper database = (DatabaseWrapper) element;
+
+            Boolean disabled = database.getDatabase().getOlcDisabled();
+            String databaseName = getDatabaseType( database.getDatabase() ) + " (" + getSuffix( database.getDatabase() ) + ")";
+            
+            StyledString styledString = null;
+            
+            // Gry the database if it's disabled.
+            if ( ( disabled == null ) || !disabled )
+            {  
+                styledString = new StyledString( databaseName, grayedStyle );
+            }
+            else
+            {
+                styledString= new StyledString( databaseName, null );
+            }
+            
+            cell.setText( styledString.toString() );
+            cell.setStyleRanges( styledString.getStyleRanges() );
+            cell.setImage( getImage( database ) );
+        }
+
+        super.update(cell);
+    }
 
 
+    /**
+     * Return the database type.
+     */
     private String getDatabaseType( OlcDatabaseConfig database )
     {
         if ( database != null )
         {
             String databaseType = OpenLdapConfigurationPluginUtils.stripOrderingPrefix( database.getOlcDatabase() );
 
-            if ( "bdb".equalsIgnoreCase( databaseType ) )
+            DatabaseTypeEnum databasetype = DatabaseTypeEnum.valueOf( Strings.toUpperCase( databaseType ) );
+            
+            if ( databaseType != null )
             {
-                return "BDB";
-            }
-            else if ( "hdb".equalsIgnoreCase( databaseType ) )
-            {
-                return "HDB";
-            }
-            else if ( "mdb".equalsIgnoreCase( databaseType ) )
-            {
-                return "MDB";
-            }
-            else if ( "ldap".equalsIgnoreCase( databaseType ) )
-            {
-                return "LDAP";
-            }
-            else if ( "ldif".equalsIgnoreCase( databaseType ) )
-            {
-                return "LDIF";
-            }
-            else if ( "null".equalsIgnoreCase( databaseType ) )
-            {
-                return "Null";
-            }
-            else if ( "relay".equalsIgnoreCase( databaseType ) )
-            {
-                return "Relay";
-            }
-            else if ( "frontend".equalsIgnoreCase( databaseType ) )
-            {
-                return "FrontEnd";
-            }
-            else if ( "config".equalsIgnoreCase( databaseType ) )
-            {
-                return "Config";
+                return databasetype.getName();
             }
             else
             {
-                return "None";
+                return DatabaseTypeEnum.NONE.getName();
             }
         }
 
@@ -134,7 +165,6 @@ public class DatabaseWrapperLabelProvider extends LabelProvider
             }
         }
 
-        return "none";
+        return DatabaseTypeEnum.NONE.getName();
     }
-
 }

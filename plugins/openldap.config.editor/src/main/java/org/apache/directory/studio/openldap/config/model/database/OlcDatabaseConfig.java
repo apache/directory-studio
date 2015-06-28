@@ -33,16 +33,38 @@ import org.apache.directory.studio.openldap.config.model.OlcOverlayConfig;
  * Java bean for the 'olcDatabaseConfig' object class. It stores the common parameters
  * for any DB :
  * <ul>
- * <li></li>
- * <li></li>
- * <li></li>
- * <li></li>
- * <li></li>
- * <li></li>
- * <li></li>
- * <li></li>
- * <li></li>
- * <li></li>
+ * <li>olcAccess</li>
+ * <li>olcAddContentAcl</li>
+ * <li>olcDatabase (MUST)</li>
+ * <li>olcDisabled</li>
+ * <li>olcExtraAttrs</li>
+ * <li>olcHidden</li>
+ * <li>olcLastMod</li>
+ * <li>olcLimits</li>
+ * <li>olcMaxDerefDepth</li>
+ * <li>olcMirrorMode</li>
+ * <li>olcMonitoring</li>
+ * <li>olcPlugin</li>
+ * <li>olcReadOnly</li>
+ * <li>olcReplica</li>
+ * <li>olcReplicaArgsFile</li>
+ * <li>olcReplicaPidFile</li>
+ * <li>olcReplicationInterval</li>
+ * <li>olcReplogFile</li>
+ * <li>olcRequires</li>
+ * <li>olcRestrict</li>
+ * <li>olcRootDN</li>
+ * <li>olcRootPW</li>
+ * <li>olcSchemaDN</li>
+ * <li>olcSecurity</li>
+ * <li>olcSizeLimit</li>
+ * <li>olcSubordinate</li>
+ * <li>olcSuffix</li>
+ * <li>olcSyncrepl</li>
+ * <li>olcSyncUseSubentry</li>
+ * <li>olcTimeLimit</li>
+ * <li>olcUpdateDN</li>
+ * <li>olcUpdateRef</li>
  * </ul>
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -50,27 +72,23 @@ import org.apache.directory.studio.openldap.config.model.OlcOverlayConfig;
 public class OlcDatabaseConfig extends OlcConfig
 {
     /**
-     * The overlays list
-     */
-    private List<OlcOverlayConfig> overlays = new ArrayList<OlcOverlayConfig>();
-
-    /**
-     * Field for the 'olcDatabase' attribute.
-     */
-    @ConfigurationElement(attributeType = "olcDatabase", isOptional = false, isRdn = true)
-    private String olcDatabase;
-
-    /**
-     * Field for the 'olcAccess' attribute.
+     * Field for the 'olcAccess' attribute, which is an ordered multi-value String attribute
      */
     @ConfigurationElement(attributeType = "olcAccess")
     private List<String> olcAccess = new ArrayList<String>();
+
 
     /**
      * Field for the 'olcAddContentAcl' attribute.
      */
     @ConfigurationElement(attributeType = "olcAddContentAcl")
     private Boolean olcAddContentAcl;
+
+    /**
+     * Field for the 'olcDatabase' attribute.
+     */
+    @ConfigurationElement(attributeType = "olcDatabase", isOptional = false, isRdn = true)
+    private String olcDatabase;
 
     /**
      * Field for the 'olcDisabled' attribute. (Added in OpenLDAP 2.4.36)
@@ -245,6 +263,11 @@ public class OlcDatabaseConfig extends OlcConfig
      */
     @ConfigurationElement(attributeType = "olcUpdateRef")
     private List<String> olcUpdateRef = new ArrayList<String>();
+    
+    /**
+     * The overlays list
+     */
+    private List<OlcOverlayConfig> overlays = new ArrayList<OlcOverlayConfig>();
 
 
     /**

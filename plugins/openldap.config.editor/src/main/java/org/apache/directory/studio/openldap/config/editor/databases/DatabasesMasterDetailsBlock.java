@@ -42,13 +42,18 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.forms.DetailsPart;
 import org.eclipse.ui.forms.IManagedForm;
@@ -251,8 +256,20 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
                 if ( newSelection != currentSelection )
                 {
                     currentSelection = newSelection;
-                    detailsPart.commit( false );
-                    managedForm.fireSelectionChanged( spart, event.getSelection() );
+                    
+                    OlcDatabaseConfig database = ((DatabaseWrapper)currentSelection).getDatabase();
+                    Boolean disabled = database.getOlcDisabled();
+                    
+                    if ( ( disabled != null ) && ( disabled == true ) )
+                    {
+                        // Do nothing
+                    }
+                    else
+                    {
+                        detailsPart.commit( false );
+                        managedForm.fireSelectionChanged( spart, event.getSelection() );
+                    }
+
                 }
             }
         } );
@@ -260,6 +277,48 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
         viewer.setContentProvider( new ArrayContentProvider() );
         viewer.setLabelProvider( new DatabaseWrapperLabelProvider() );
         viewer.setSorter( new DatabaseWrapperViewerSorter() );
+        
+        viewer.getTable().addMouseListener ( new MouseListener()
+            {
+                public void mouseUp( MouseEvent e ) 
+                {
+                }
+                
+                public void mouseDown( MouseEvent event ) 
+                {
+                    if ( event.button == 3 )
+                    {
+                        Table table = (Table)event.getSource();
+                        int selectedItem = table.getSelectionIndex();
+                        DatabaseWrapper database = databaseWrappers.get( selectedItem );
+                        
+                        Menu menu = new Menu( viewer.getTable().getShell(), SWT.POP_UP );
+                        MenuItem enabled = new MenuItem ( menu, SWT.PUSH );
+                        
+                        Boolean disabled = database.getDatabase().getOlcDisabled();
+                        
+                        if ( ( disabled != null ) && ( disabled == true ) )
+                        {
+                            enabled.setText ( "Enable" );
+                        }
+                        else
+                        {
+                            enabled.setText ( "Disable" );
+                        }
+            
+                        // draws pop up menu:
+                        Point pt = new Point( event.x, event.y );
+                        pt = table.toDisplay( pt );
+                        menu.setLocation( pt.x, pt.y );
+                        menu.setVisible ( true );
+                    }
+                }
+                
+                public void mouseDoubleClick( MouseEvent e ) 
+                {
+                }
+            }
+        ); 
 
         // Creating the button(s)
         addButton = toolkit.createButton( client, "Add", SWT.PUSH );

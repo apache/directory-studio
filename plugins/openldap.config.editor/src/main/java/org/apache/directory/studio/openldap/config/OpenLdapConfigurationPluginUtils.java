@@ -127,6 +127,7 @@ public class OpenLdapConfigurationPluginUtils
         if ( Strings.isCharASCII( prefixString, pos, '-') )
         {
             positive = false;
+            pos++;
         }
 
         char car;
@@ -243,7 +244,11 @@ public class OpenLdapConfigurationPluginUtils
 
 
     /**
-     * Gets the ordering prefix value (or -1 if none is found).
+     * Gets the ordering prefix value (or -1 if none is found). The String's prefix
+     * is at the beginning :
+     * <pre>
+     * {n}blah
+     * </pre>
      *
      * @param prefixString the string
      * @return the precedence value (or -1 if none is found).
