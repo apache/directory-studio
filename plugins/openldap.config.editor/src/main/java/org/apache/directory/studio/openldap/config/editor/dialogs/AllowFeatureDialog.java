@@ -202,7 +202,7 @@ public class AllowFeatureDialog extends AddEditDialog<AllowFeatureEnum>
         
         for ( int i = 1; i < allowFeatureCheckboxes.length; i++ )
         {
-            AllowFeatureEnum value = AllowFeatureEnum.getFeature( allowFeatureCheckboxes[i].getText() );
+            AllowFeatureEnum value = AllowFeatureEnum.getAllowFeature( allowFeatureCheckboxes[i].getText() );
             
             // Disable the features already selected
             if ( elements.contains( value ) )

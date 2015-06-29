@@ -79,7 +79,7 @@ public class SaslSecPropsWrapper implements Cloneable
                 if ( pos == -1 )
                 {
                     // No value
-                    SaslSecPropEnum flag = SaslSecPropEnum.getFlag( Strings.trim( property ) );
+                    SaslSecPropEnum flag = SaslSecPropEnum.getSaslSecProp( Strings.trim( property ) );
                     
                     switch ( flag )
                     {
@@ -104,7 +104,7 @@ public class SaslSecPropsWrapper implements Cloneable
                 {
                     // Fetch the name
                     String name = property.substring( 0, pos );
-                    SaslSecPropEnum flag = SaslSecPropEnum.getFlag( Strings.trim( name ) );
+                    SaslSecPropEnum flag = SaslSecPropEnum.getSaslSecProp( Strings.trim( name ) );
                     
                     try
                     {
@@ -178,7 +178,7 @@ public class SaslSecPropsWrapper implements Cloneable
                 if ( pos == -1 )
                 {
                     // No value
-                    SaslSecPropEnum flag = SaslSecPropEnum.getFlag( Strings.trim( property ) );
+                    SaslSecPropEnum flag = SaslSecPropEnum.getSaslSecProp( Strings.trim( property ) );
                     
                     switch ( flag )
                     {
@@ -199,7 +199,7 @@ public class SaslSecPropsWrapper implements Cloneable
                 {
                     // Fetch the name
                     String name = property.substring( 0, pos );
-                    SaslSecPropEnum flag = SaslSecPropEnum.getFlag( Strings.trim( name ) );
+                    SaslSecPropEnum flag = SaslSecPropEnum.getSaslSecProp( Strings.trim( name ) );
                     
                     try
                     {

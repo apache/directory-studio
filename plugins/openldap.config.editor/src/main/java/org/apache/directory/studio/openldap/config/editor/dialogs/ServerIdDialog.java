@@ -322,7 +322,6 @@ public class ServerIdDialog extends AddEditDialog<ServerIdWrapper>
     }
 
 
-    @Override
     public void addNewElement( ServerIdWrapper editedElement )
     {
         ServerIdWrapper newElement = (ServerIdWrapper)editedElement.clone();

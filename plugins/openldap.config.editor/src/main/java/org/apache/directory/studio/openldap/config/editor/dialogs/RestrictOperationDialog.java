@@ -210,7 +210,7 @@ public class RestrictOperationDialog extends AddEditDialog<RestrictOperationEnum
 
         for ( int i = 1; i < restrictOperationCheckboxes.length; i++ )
         {
-            RestrictOperationEnum value = RestrictOperationEnum.getOperation( restrictOperationCheckboxes[i].getText() );
+            RestrictOperationEnum value = RestrictOperationEnum.getRestrictOperation( restrictOperationCheckboxes[i].getText() );
             
             // Disable the Conditions already selected
             if ( elements.contains( value ) )

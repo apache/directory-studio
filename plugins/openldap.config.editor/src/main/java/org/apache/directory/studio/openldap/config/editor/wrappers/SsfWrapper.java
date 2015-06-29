@@ -48,7 +48,7 @@ public class SsfWrapper implements Cloneable, Comparable<SsfWrapper>
      */
     public SsfWrapper( String feature, int nbBits )
     {
-        this.feature = SsfFeatureEnum.getSsf( feature );
+        this.feature = SsfFeatureEnum.getSsfFeature( feature );
 
         if ( this.feature == SsfFeatureEnum.NONE )
         {
@@ -91,7 +91,7 @@ public class SsfWrapper implements Cloneable, Comparable<SsfWrapper>
             }
 
             String name = Strings.trim( feature.substring( 0, pos ) );
-            this.feature = SsfFeatureEnum.getSsf( name );
+            this.feature = SsfFeatureEnum.getSsfFeature( name );
             
             if ( this.feature == SsfFeatureEnum.NONE )
             {
@@ -149,7 +149,7 @@ public class SsfWrapper implements Cloneable, Comparable<SsfWrapper>
             }
             
             String name = Strings.trim( ssf.substring( 0, pos ) );
-            SsfFeatureEnum ssfFeature = SsfFeatureEnum.getSsf( name );
+            SsfFeatureEnum ssfFeature = SsfFeatureEnum.getSsfFeature( name );
             
             if ( ssfFeature == SsfFeatureEnum.NONE )
             {
@@ -269,7 +269,7 @@ public class SsfWrapper implements Cloneable, Comparable<SsfWrapper>
             return 1;
         }
         
-        int comp = feature.getText().compareTo( that.feature.getText() );
+        int comp = feature.getName().compareTo( that.feature.getName() );
         
         if ( comp == 0 )
         {
@@ -289,7 +289,7 @@ public class SsfWrapper implements Cloneable, Comparable<SsfWrapper>
     {
         if ( feature != SsfFeatureEnum.NONE )
         {
-            return feature.getText() + '=' + nbBits;
+            return feature.getName() + '=' + nbBits;
         }
         else
         {

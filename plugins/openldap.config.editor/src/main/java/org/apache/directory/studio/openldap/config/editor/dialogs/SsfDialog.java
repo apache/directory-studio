@@ -112,16 +112,16 @@ public class SsfDialog extends AddEditDialog<SsfWrapper>
     // The list of options in the combo
     private String[] features = new String[]
         {
-            SsfFeatureEnum.NONE.getText(),
-            SsfFeatureEnum.SASL.getText(),
-            SsfFeatureEnum.SIMPLE_BIND.getText(),
-            SsfFeatureEnum.SSF.getText(),
-            SsfFeatureEnum.TLS.getText(),
-            SsfFeatureEnum.TRANSPORT.getText(),
-            SsfFeatureEnum.UPDATE_SASL.getText(),
-            SsfFeatureEnum.UPDATE_SSF.getText(),
-            SsfFeatureEnum.UPDATE_TLS.getText(),
-            SsfFeatureEnum.UPDATE_TRANSPORT.getText(),
+            SsfFeatureEnum.NONE.getName(),
+            SsfFeatureEnum.SASL.getName(),
+            SsfFeatureEnum.SIMPLE_BIND.getName(),
+            SsfFeatureEnum.SSF.getName(),
+            SsfFeatureEnum.TLS.getName(),
+            SsfFeatureEnum.TRANSPORT.getName(),
+            SsfFeatureEnum.UPDATE_SASL.getName(),
+            SsfFeatureEnum.UPDATE_SSF.getName(),
+            SsfFeatureEnum.UPDATE_TLS.getName(),
+            SsfFeatureEnum.UPDATE_TRANSPORT.getName(),
             
         };
     
@@ -146,7 +146,7 @@ public class SsfDialog extends AddEditDialog<SsfWrapper>
                 String feature = featureCombo.getText();
                 SsfWrapper ssfWrapper = getEditedElement();
                 
-                SsfFeatureEnum ssfFeature = SsfFeatureEnum.getSsf( feature );
+                SsfFeatureEnum ssfFeature = SsfFeatureEnum.getSsfFeature( feature );
                 
                 // Check if it's not already part of the SSF
                 boolean present = false;
@@ -162,7 +162,7 @@ public class SsfDialog extends AddEditDialog<SsfWrapper>
                 
                 if ( !present )
                 {
-                    ssfWrapper.setFeature( SsfFeatureEnum.getSsf( feature ) );
+                    ssfWrapper.setFeature( SsfFeatureEnum.getSsfFeature( feature ) );
                     
                     ssfText.setText( ssfWrapper.toString() );
                     
@@ -180,7 +180,7 @@ public class SsfDialog extends AddEditDialog<SsfWrapper>
                 else
                 {
                     // Come back to NONE
-                    featureCombo.setText( SsfFeatureEnum.NONE.getText() );
+                    featureCombo.setText( SsfFeatureEnum.NONE.getName() );
                 }
             }
         }
@@ -429,20 +429,20 @@ public class SsfDialog extends AddEditDialog<SsfWrapper>
             
             if ( feature == SsfFeatureEnum.NONE )
             {
-                featureCombo.setText( SsfFeatureEnum.NONE.getText() );
+                featureCombo.setText( SsfFeatureEnum.NONE.getName() );
 
                 // Remove the feature that are already part of the list
                 for ( SsfWrapper element : getElements() )
                 {
-                    featureCombo.remove( element.getFeature().getText() );
+                    featureCombo.remove( element.getFeature().getName() );
                 }
             }
             else
             {
                 // Remove all the other features, and inject the one being edited
                 featureCombo.removeAll();
-                featureCombo.add( feature.getText() );
-                featureCombo.setText( feature.getText() );
+                featureCombo.add( feature.getName() );
+                featureCombo.setText( feature.getName() );
                 
                 // Disable the combo
                 featureCombo.setEnabled( false );

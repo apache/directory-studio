@@ -47,7 +47,6 @@ import org.apache.directory.studio.openldap.config.editor.wrappers.RestrictOpera
 import org.apache.directory.studio.openldap.config.editor.wrappers.StringValueDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.StringValueWrapper;
 import org.apache.directory.studio.openldap.config.model.OlcGlobal;
-import org.apache.directory.studio.openldap.config.model.database.OlcDatabaseConfig;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -832,7 +831,7 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         {
             for ( String allowedFeature : allowedFeatures )
             {
-                alloweds.add( AllowFeatureEnum.getFeature( allowedFeature ) );
+                alloweds.add( AllowFeatureEnum.getAllowFeature( allowedFeature ) );
             }
         }
 
@@ -883,7 +882,7 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         {
             for ( String restrictOperation : restrictOperations )
             {
-                restricts.add( RestrictOperationEnum.getOperation( restrictOperation ) );
+                restricts.add( RestrictOperationEnum.getRestrictOperation( restrictOperation ) );
             }
         }
         
