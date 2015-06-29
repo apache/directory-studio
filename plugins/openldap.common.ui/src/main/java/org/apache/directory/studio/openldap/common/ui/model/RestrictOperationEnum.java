@@ -123,86 +123,14 @@ public enum RestrictOperationEnum
      * @param name The operation's name
      * @return The associated RestrictOperationEnum
      */
-    public static RestrictOperationEnum getOperation( String name )
+    public static RestrictOperationEnum getRestrictOperation( String name )
     {
-        if ( ADD.name.equalsIgnoreCase( name ) )
+        for ( RestrictOperationEnum restrictOperation : values() )
         {
-            return ADD;
-        }
-        
-        if ( ALL.name.equalsIgnoreCase( name ) )
-        {
-            return ALL;
-        }
-        
-        if ( BIND.name.equalsIgnoreCase( name ) )
-        {
-            return BIND;
-        }
-        
-        if ( COMPARE.name.equalsIgnoreCase( name ) )
-        {
-            return COMPARE;
-        }
-        
-        if ( DELETE.name.equalsIgnoreCase( name ) )
-        {
-            return DELETE;
-        }
-        
-        if ( EXTENDED.name.equalsIgnoreCase( name ) )
-        {
-            return EXTENDED;
-        }
-        
-        if ( EXTENDED_CANCEL.name.equalsIgnoreCase( name ) )
-        {
-            return EXTENDED_CANCEL;
-        }
-        
-        if ( EXTENDED_MODIFY_PASSWD.name.equalsIgnoreCase( name ) )
-        {
-            return EXTENDED_MODIFY_PASSWD;
-        }
-        
-        if ( EXTENDED_START_TLS.name.equalsIgnoreCase( name ) )
-        {
-            return EXTENDED_START_TLS;
-        }
-        
-        if ( EXTENDED_WHOAMI.name.equalsIgnoreCase( name ) )
-        {
-            return EXTENDED_WHOAMI;
-        }
-        
-        if ( MODIFY.name.equalsIgnoreCase( name ) )
-        {
-            return MODIFY;
-        }
-        
-        if ( MODRDN.name.equalsIgnoreCase( name ) )
-        {
-            return MODRDN;
-        }
-        
-        if ( READ.name.equalsIgnoreCase( name ) )
-        {
-            return READ;
-        }
-        
-        if ( RENAME.name.equalsIgnoreCase( name ) )
-        {
-            return RENAME;
-        }
-        
-        if ( SEARCH.name.equalsIgnoreCase( name ) )
-        {
-            return SEARCH;
-        }
-        
-        if ( WRITE.name.equalsIgnoreCase( name ) )
-        {
-            return WRITE;
+            if ( restrictOperation.name.equalsIgnoreCase( name ) )
+            {
+                return restrictOperation;
+            }
         }
         
         return UNKNOWN;

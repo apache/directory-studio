@@ -60,36 +60,14 @@ public enum AuthzPolicyEnum
      * @param name The policy's name
      * @return The associated AuthzPolicyEnum
      */
-    public static AuthzPolicyEnum getPolicy( String name )
+    public static AuthzPolicyEnum getAuthzPolicy( String name )
     {
-        if ( ALL.name.equalsIgnoreCase( name ) )
+        for ( AuthzPolicyEnum authzPolicy : values() )
         {
-            return ALL;
-        }
-        
-        if ( ANY.name.equalsIgnoreCase( name ) )
-        {
-            return ANY;
-        }
-        
-        if ( BOTH.name.equalsIgnoreCase( name ) )
-        {
-            return BOTH;
-        }
-        
-        if ( FROM.name.equalsIgnoreCase( name ) )
-        {
-            return FROM;
-        }
-        
-        if ( NONE.name.equalsIgnoreCase( name ) )
-        {
-            return NONE;
-        }
-        
-        if ( TO.name.equalsIgnoreCase( name ) )
-        {
-            return TO;
+            if ( authzPolicy.name.equalsIgnoreCase( name ) )
+            {
+                return authzPolicy;
+            }
         }
         
         return UNKNOWN;

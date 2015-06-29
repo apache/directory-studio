@@ -100,44 +100,12 @@ public enum PasswordHashEnum
      */
     public static PasswordHashEnum getPasswordHash( String name )
     {
-        if ( CLEARTEXT.name.equals( name ) )
+        for ( PasswordHashEnum passwordHash : values() )
         {
-            return CLEARTEXT;
-        }
-        
-        if ( CRYPT.name.equals( name ) )
-        {
-            return CRYPT;
-        }
-
-        if ( LANMAN.name.equals( name ) )
-        {
-            return LANMAN;
-        }
-        
-        if ( MD5.name.equals( name ) )
-        {
-            return MD5;
-        }
-        
-        if ( SMD5.name.equals( name ) )
-        {
-            return SMD5;
-        }
-        
-        if ( SHA.name.equals( name ) )
-        {
-            return SHA;
-        }
-        
-        if ( SSHA.name.equals( name ) )
-        {
-            return SSHA;
-        }
-        
-        if ( UNIX.name.equals( name ) )
-        {
-            return UNIX;
+            if ( passwordHash.name.equalsIgnoreCase( name ) )
+            {
+                return passwordHash;
+            }
         }
         
         return NO_CHOICE;

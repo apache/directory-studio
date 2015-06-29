@@ -92,34 +92,12 @@ public enum DisallowFeatureEnum
      */
     public static DisallowFeatureEnum getFeature( String name )
     {
-        if ( BIND_ANON.name.equalsIgnoreCase( name ) )
+        for ( DisallowFeatureEnum disallowFeature : values() )
         {
-            return BIND_ANON;
-        }
-        
-        if ( BIND_SIMPLE.name.equalsIgnoreCase( name ) )
-        {
-            return BIND_SIMPLE;
-        }
-        
-        if ( DONTUSECOPY_NON_CRITICAL.name.equalsIgnoreCase( name ) )
-        {
-            return DONTUSECOPY_NON_CRITICAL;
-        }
-        
-        if ( PROXY_AUTHZ_NON_CRITICAL.name.equalsIgnoreCase( name ) )
-        {
-            return PROXY_AUTHZ_NON_CRITICAL;
-        }
-        
-        if ( TLS_2_ANON.name.equalsIgnoreCase( name ) )
-        {
-            return TLS_2_ANON;
-        }
-        
-        if ( TLS_AUTHC.name.equalsIgnoreCase( name ) )
-        {
-            return TLS_AUTHC;
+            if ( disallowFeature.name.equalsIgnoreCase( name ) )
+            {
+                return disallowFeature;
+            }
         }
         
         return UNKNOWN;

@@ -88,39 +88,17 @@ public enum SsfStrengthEnum
     /**
      * Retrieve the instance associated to a String. Return NONE if not found.
      * 
-     * @param feature The feature to retrieve
+     * @param text The text we are looking for
      * @return The SsfEnum instance found, or NONE.
      */
-    public static SsfStrengthEnum getSsfStrength( String name )
+    public static SsfStrengthEnum getSsfStrength( String text )
     {
-        if ( NO_PROTECTION.text.equals( name ) )
+        for ( SsfStrengthEnum ssfStrength : values() )
         {
-            return NO_PROTECTION;
-        }
-        
-        if ( INTEGRITY_CHECK.text.equals( name ) )
-        {
-            return INTEGRITY_CHECK;
-        }
-        
-        if ( DES.text.equals( name ) )
-        {
-            return DES;
-        }
-        
-        if ( THREE_DES.text.equals( name ) )
-        {
-            return THREE_DES;
-        }
-        
-        if ( AES_128.text.equals( name ) )
-        {
-            return AES_128;
-        }
-        
-        if ( AES_256.text.equals( name ) )
-        {
-            return AES_256;
+            if ( ssfStrength.text.equalsIgnoreCase( text ) )
+            {
+                return ssfStrength;
+            }
         }
         
         // Default...

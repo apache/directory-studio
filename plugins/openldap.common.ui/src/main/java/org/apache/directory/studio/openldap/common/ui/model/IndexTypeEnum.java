@@ -20,9 +20,6 @@
 package org.apache.directory.studio.openldap.common.ui.model;
 
 
-import java.text.ParseException;
-import java.util.regex.Pattern;
-
 
 /**
  * The class defines the different kind of index that can be used :

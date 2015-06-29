@@ -88,31 +88,14 @@ public enum AllowFeatureEnum
      * @param name The feature's name
      * @return The associated AllowFeatureEnum
      */
-    public static AllowFeatureEnum getFeature( String name )
+    public static AllowFeatureEnum getAllowFeature( String name )
     {
-        if ( BIND_V2.name.equalsIgnoreCase( name ) )
+        for ( AllowFeatureEnum allowFeature : values() )
         {
-            return BIND_V2;
-        }
-        
-        if ( BIND_ANON_CRED.name.equalsIgnoreCase( name ) )
-        {
-            return BIND_ANON_CRED;
-        }
-        
-        if ( BIND_ANON_DN.name.equalsIgnoreCase( name ) )
-        {
-            return BIND_ANON_DN;
-        }
-        
-        if ( UPDATE_ANON.name.equalsIgnoreCase( name ) )
-        {
-            return UPDATE_ANON;
-        }
-        
-        if ( PROXY_AUTHZ_ANON.name.equalsIgnoreCase( name ) )
-        {
-            return PROXY_AUTHZ_ANON;
+            if ( allowFeature.name.equalsIgnoreCase( name ) )
+            {
+                return allowFeature;
+            }
         }
         
         return UNKNOWN;

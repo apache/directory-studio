@@ -92,34 +92,12 @@ public enum RequireConditionEnum
      */
     public static RequireConditionEnum getCondition( String name )
     {
-        if ( BIND.name.equalsIgnoreCase( name ) )
+        for ( RequireConditionEnum requireCondition : values() )
         {
-            return BIND;
-        }
-        
-        if ( AUTHC.name.equalsIgnoreCase( name ) )
-        {
-            return AUTHC;
-        }
-        
-        if ( LDAP_V3.name.equalsIgnoreCase( name ) )
-        {
-            return LDAP_V3;
-        }
-        
-        if ( SASL.name.equalsIgnoreCase( name ) )
-        {
-            return SASL;
-        }
-        
-        if ( STRONG.name.equalsIgnoreCase( name ) )
-        {
-            return STRONG;
-        }
-        
-        if ( NONE.name.equalsIgnoreCase( name ) )
-        {
-            return NONE;
+            if ( requireCondition.name.equalsIgnoreCase( name ) )
+            {
+                return requireCondition;
+            }
         }
         
         return UNKNOWN;

@@ -19,7 +19,6 @@
  */
 package org.apache.directory.studio.openldap.common.ui.model;
 
-import org.apache.directory.api.util.Strings;
 
 /**
  * An enumeration of all the possible SSF features.
@@ -39,82 +38,42 @@ public enum SsfFeatureEnum
     SIMPLE_BIND( "simple_bind" ),
     NONE( "---" );
     
-    /** The associated Text */
-    private String text;
+    /** The associated name */
+    private String name;
     
     /**
      * Creates an SsfEnum instance
      */
-    private SsfFeatureEnum( String text )
+    private SsfFeatureEnum( String name )
     {
-        this.text = text;
+        this.name = name;
     }
 
     /**
      * @return the text
      */
-    public String getText()
+    public String getName()
     {
-        return text;
+        return name;
     }
     
     
     /**
      * Retrieve the instance associated to a String. Return NONE if not found.
      * 
-     * @param feature The feature to retrieve
+     * @param name The namr to retrieve
      * @return The SsfEnum instance found, or NONE.
      */
-    public static SsfFeatureEnum getSsf( String feature )
+    public static SsfFeatureEnum getSsfFeature( String name )
     {
-        String ssfText = Strings.toLowerCase( feature );
-        
-        if ( SSF.text.equals( ssfText ) )
+        for ( SsfFeatureEnum ssfFeature : values() )
         {
-            return SSF;
+            if ( ssfFeature.name.equalsIgnoreCase( name ) )
+            {
+                return ssfFeature;
+            }
         }
         
-        if ( TRANSPORT.text.equals( ssfText ) )
-        {
-            return TRANSPORT;
-        }
-        
-        if ( TLS.text.equals( ssfText ) )
-        {
-            return TLS;
-        }
-        
-        if ( SASL.text.equals( ssfText ) )
-        {
-            return SASL;
-        }
-        
-        if ( SIMPLE_BIND.text.equals( ssfText ) )
-        {
-            return SIMPLE_BIND;
-        }
-        
-        if ( UPDATE_SASL.text.equals( ssfText ) )
-        {
-            return UPDATE_SASL;
-        }
-        
-        if ( UPDATE_SSF.text.equals( ssfText ) )
-        {
-            return UPDATE_SSF;
-        }
-        
-        if ( UPDATE_TLS.text.equals( ssfText ) )
-        {
-            return UPDATE_TLS;
-        }
-        
-        if ( UPDATE_TRANSPORT.text.equals( ssfText ) )
-        {
-            return UPDATE_TRANSPORT;
-        }
-        
-        // Default...
         return NONE;
     }
 }

@@ -54,56 +54,20 @@ public enum SaslSecPropEnum
     }
 
     
-    public static SaslSecPropEnum getFlag( String name )
+    /**
+     * Return the SaslSecPropEnum associated with a String
+     * 
+     * @param name The name we are looking for
+     * @return The associated SaslSecPropEnum
+     */
+    public static SaslSecPropEnum getSaslSecProp( String name )
     {
-        if ( NONE.name.equalsIgnoreCase( name ) )
+        for ( SaslSecPropEnum saslSecProp : values() )
         {
-            return NONE;
-        }
-        
-        if ( NO_PLAIN.name.equalsIgnoreCase( name ) )
-        {
-            return NO_PLAIN;
-        }
-        
-        if ( NO_ACTIVE.name.equalsIgnoreCase( name ) )
-        {
-            return NO_ACTIVE;
-        }
-        
-        if ( NO_DICT.name.equalsIgnoreCase( name ) )
-        {
-            return NO_DICT;
-        }
-        
-        if ( NO_ANONYMOUS.name.equalsIgnoreCase( name ) )
-        {
-            return NO_ANONYMOUS;
-        }
-        
-        if ( FORWARD_SEC.name.equalsIgnoreCase( name ) )
-        {
-            return FORWARD_SEC;
-        }
-        
-        if ( PASS_CRED.name.equalsIgnoreCase( name ) )
-        {
-            return PASS_CRED;
-        }
-        
-        if ( MIN_SSF.name.equalsIgnoreCase( name ) )
-        {
-            return MIN_SSF;
-        }
-        
-        if ( MAX_SSF.name.equalsIgnoreCase( name ) )
-        {
-            return MAX_SSF;
-        }
-        
-        if ( MAX_BUF_SIZE.name.equalsIgnoreCase( name ) )
-        {
-            return MAX_BUF_SIZE;
+            if ( saslSecProp.name.equalsIgnoreCase( name ) )
+            {
+                return saslSecProp;
+            }
         }
         
         return UNKNOWN;
