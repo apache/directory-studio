@@ -34,6 +34,7 @@ public class StringValueDecorator extends TableDecorator<StringValueWrapper>
     /**
      * Create a new instance of StringValueDecorator
      * @param parentShell The parent Shell
+     * @param attributeName the name of the attribute which will contain the value
      */
     public StringValueDecorator( Shell parentShell, String attributeName )
     {
@@ -43,7 +44,8 @@ public class StringValueDecorator extends TableDecorator<StringValueWrapper>
 
     /**
      * Construct the label for a String.
-     * 
+     * @param element the Element for which we want the value
+     * @return a String representation of the element
      */
     public String getText( Object element )
     {
@@ -57,7 +59,10 @@ public class StringValueDecorator extends TableDecorator<StringValueWrapper>
 
 
     /**
-     * Get the image. We have none
+     * Get the image. Here, We have none
+     * 
+     * @param element The element for which we want the image
+     * @return The associated Image, or Null
      */
     public Image getImage( Object element )
     {
