@@ -44,22 +44,17 @@ import org.eclipse.swt.graphics.TextStyle;
  */
 public class DatabaseWrapperLabelProvider extends StyledCellLabelProvider
 {
-    
-    private final Styler grayedStyle;
-    
-    
-    public DatabaseWrapperLabelProvider()
+    /** The Style to use when a database is disabled */
+    private static final Styler grayedStyle = new Styler() 
     {
-        grayedStyle = new Styler() 
+        @Override
+        public void applyStyles( TextStyle textStyle ) 
         {
-            @Override
-            public void applyStyles( TextStyle textStyle ) 
-            {
-                textStyle.foreground = CommonUIConstants.L_GREY_COLOR;
-            }
-        };
-    }
-
+            textStyle.foreground = CommonUIConstants.L_GREY_COLOR;
+        }
+    };
+    
+    
     /**
      * Get the Database image, if it's a Database. We can show two different icons, depending
      * on the Database status : enabled or disabled.
@@ -68,6 +63,9 @@ public class DatabaseWrapperLabelProvider extends StyledCellLabelProvider
     {
         if ( element instanceof DatabaseWrapper )
         {
+            // the olcDisabled AT is only present in 2.5
+            // TODO : check with the schemaManager
+            /*
             DatabaseWrapper database = (DatabaseWrapper) element;
             Boolean disabled = database.getDatabase().getOlcDisabled();
             
@@ -81,6 +79,10 @@ public class DatabaseWrapperLabelProvider extends StyledCellLabelProvider
                 return OpenLdapConfigurationPlugin.getDefault().getImage(
                     OpenLdapConfigurationPluginConstants.IMG_DISABLED_DATABASE );
             }
+             */
+
+            return OpenLdapConfigurationPlugin.getDefault().getImage(
+                OpenLdapConfigurationPluginConstants.IMG_DATABASE );
         }
 
         return null;
@@ -101,21 +103,26 @@ public class DatabaseWrapperLabelProvider extends StyledCellLabelProvider
         {
             DatabaseWrapper database = (DatabaseWrapper) element;
 
-            Boolean disabled = database.getDatabase().getOlcDisabled();
             String databaseName = getDatabaseType( database.getDatabase() ) + " (" + getSuffix( database.getDatabase() ) + ")";
             
+            // the olcDisabled AT is only present in 2.5
+            // TODO : check with the schemaManager
+            /*
+            Boolean disabled = database.getDatabase().getOlcDisabled();
             StyledString styledString = null;
             
-            // Gry the database if it's disabled.
+            // Grey the database if it's disabled.
             if ( ( disabled == null ) || !disabled )
             {  
                 styledString = new StyledString( databaseName, grayedStyle );
             }
             else
             {
-                styledString= new StyledString( databaseName, null );
+                styledString = new StyledString( databaseName, null );
             }
+            */
             
+            StyledString styledString = new StyledString( databaseName, null );
             cell.setText( styledString.toString() );
             cell.setStyleRanges( styledString.getStyleRanges() );
             cell.setImage( getImage( database ) );

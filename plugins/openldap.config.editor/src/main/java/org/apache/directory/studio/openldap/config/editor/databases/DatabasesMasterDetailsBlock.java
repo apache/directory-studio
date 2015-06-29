@@ -42,18 +42,13 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.forms.DetailsPart;
 import org.eclipse.ui.forms.IManagedForm;
@@ -92,6 +87,9 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
 
     /** The associated page */
     private DatabasesPage page;
+    
+    /** The Managed form */
+    private IManagedForm managedForm;
 
     /** The details page */
     private DatabasesDetailsPage detailsPage;
@@ -104,7 +102,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
 
     // UI Fields
     /** The table listing all the existing databases */
-    private TableViewer viewer;
+    private TableViewer databseViewer;
 
     /** The button used to add a new Database */
     private Button addButton;
@@ -127,11 +125,39 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
     {
         public void selectionChanged( SelectionChangedEvent event )
         {
-            viewer.refresh();
-            refreshButtonStates();
+            if ( !event.getSelection().isEmpty() )
+            {
+                Object newSelection = ( ( StructuredSelection ) event.getSelection() ).getFirstElement();
+    
+                if ( newSelection != currentSelection )
+                {
+                    currentSelection = newSelection;
+                    
+                    // Only show the details if the database is enabled
+                    // 2.5 feature...
+                    // TODO : check with the SchemaManager is the olcDisabled AT is present.
+                    /*
+                    OlcDatabaseConfig database = ((DatabaseWrapper)currentSelection).getDatabase();
+                    Boolean disabled = database.getOlcDisabled();
+
+                    if ( ( disabled == null ) || ( disabled == false ) )
+                    {
+                        detailsPart.commit( false );
+                        managedForm.fireSelectionChanged( managedForm.getParts()[0], event.getSelection() );
+                        databseViewer.refresh();
+                        refreshButtonStates();
+                    }
+                    */
+                    detailsPart.commit( false );
+                    managedForm.fireSelectionChanged( managedForm.getParts()[0], event.getSelection() );
+                    databseViewer.refresh();
+                    refreshButtonStates();
+                }
+            }
         }
     };
 
+    
     /**
      * A listener called when the Add button is clicked
      */
@@ -220,7 +246,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
      * +------------------------------+
      * </pre>
      */
-    protected void createMasterPart( final IManagedForm managedForm, Composite parent )
+    protected void createMasterPart( IManagedForm managedForm, Composite parent )
     {
         FormToolkit toolkit = managedForm.getToolkit();
 
@@ -243,45 +269,23 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
         gd.heightHint = 20;
         gd.widthHint = 100;
         table.setLayoutData( gd );
-        final SectionPart spart = new SectionPart( section );
-        managedForm.addPart( spart );
-        viewer = new TableViewer( table );
+        SectionPart sectionPart = new SectionPart( section );
+        this.managedForm = managedForm;
+        managedForm.addPart( sectionPart );
+        databseViewer = new TableViewer( table );
 
-        viewer.addSelectionChangedListener( new ISelectionChangedListener()
-        {
-            public void selectionChanged( SelectionChangedEvent event )
-            {
-                Object newSelection = ( ( StructuredSelection ) event.getSelection() ).getFirstElement();
-
-                if ( newSelection != currentSelection )
-                {
-                    currentSelection = newSelection;
-                    
-                    OlcDatabaseConfig database = ((DatabaseWrapper)currentSelection).getDatabase();
-                    Boolean disabled = database.getOlcDisabled();
-                    
-                    if ( ( disabled != null ) && ( disabled == true ) )
-                    {
-                        // Do nothing
-                    }
-                    else
-                    {
-                        detailsPart.commit( false );
-                        managedForm.fireSelectionChanged( spart, event.getSelection() );
-                    }
-
-                }
-            }
-        } );
-
-        viewer.setContentProvider( new ArrayContentProvider() );
-        viewer.setLabelProvider( new DatabaseWrapperLabelProvider() );
-        viewer.setSorter( new DatabaseWrapperViewerSorter() );
+        databseViewer.setContentProvider( new ArrayContentProvider() );
+        databseViewer.setLabelProvider( new DatabaseWrapperLabelProvider() );
+        databseViewer.setSorter( new DatabaseWrapperViewerSorter() );
         
-        viewer.getTable().addMouseListener ( new MouseListener()
+        // Add a contextual menu to enable/disable a Database. This is a 2.5 feature.
+        // TODO : check with the schemaManager
+        /*
+        databseViewer.getTable().addMouseListener ( new MouseListener()
             {
                 public void mouseUp( MouseEvent e ) 
                 {
+                    // Nothing to do
                 }
                 
                 public void mouseDown( MouseEvent event ) 
@@ -292,7 +296,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
                         int selectedItem = table.getSelectionIndex();
                         DatabaseWrapper database = databaseWrappers.get( selectedItem );
                         
-                        Menu menu = new Menu( viewer.getTable().getShell(), SWT.POP_UP );
+                        Menu menu = new Menu( databseViewer.getTable().getShell(), SWT.POP_UP );
                         MenuItem enabled = new MenuItem ( menu, SWT.PUSH );
                         
                         Boolean disabled = database.getDatabase().getOlcDisabled();
@@ -305,6 +309,18 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
                         {
                             enabled.setText ( "Disable" );
                         }
+                        
+                        // Add a listener on the menu
+                        enabled.addListener( SWT.Selection, new Listener()
+                        {
+                            @Override
+                            public void handleEvent( Event event ) 
+                            {
+                                // Switch the flag from disabled to enabled, and from enabled to disabled
+                                database.getDatabase().setOlcDisabled( ( disabled == null ) || !disabled );
+                                databseViewer.refresh();
+                            }
+                        });
             
                         // draws pop up menu:
                         Point pt = new Point( event.x, event.y );
@@ -316,9 +332,11 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
                 
                 public void mouseDoubleClick( MouseEvent e ) 
                 {
+                    // Nothing to do
                 }
             }
         ); 
+        */
 
         // Creating the button(s)
         addButton = toolkit.createButton( client, "Add", SWT.PUSH );
@@ -356,7 +374,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
             databaseWrappers.add( new DatabaseWrapper( database ) );
         }
 
-        viewer.setInput( databaseWrappers );
+        databseViewer.setInput( databaseWrappers );
     }
 
 
@@ -366,7 +384,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
     public void refreshUI()
     {
         initFromInput();
-        viewer.refresh();
+        databseViewer.refresh();
     }
 
 
@@ -375,7 +393,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
      */
     private void addListeners()
     {
-        viewer.addSelectionChangedListener( viewerSelectionChangedListener );
+        databseViewer.addSelectionChangedListener( viewerSelectionChangedListener );
         addButton.addSelectionListener( addButtonSelectionListener );
         deleteButton.addSelectionListener( deleteButtonSelectionListener );
         upButton.addSelectionListener( upButtonSelectionListener );
@@ -404,8 +422,8 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
 
         DatabaseWrapper databaseWrapper = new DatabaseWrapper( database );
         databaseWrappers.add( databaseWrapper );
-        viewer.refresh();
-        viewer.setSelection( new StructuredSelection( databaseWrapper ) );
+        databseViewer.refresh();
+        databseViewer.setSelection( new StructuredSelection( databaseWrapper ) );
         setEditorDirty();
     }
 
@@ -415,7 +433,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
      */
     private void deleteSelectedDatabase()
     {
-        StructuredSelection selection = ( StructuredSelection ) viewer.getSelection();
+        StructuredSelection selection = ( StructuredSelection ) databseViewer.getSelection();
 
         if ( !selection.isEmpty() )
         {
@@ -555,7 +573,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
      */
     private void moveSelectedDatabaseUp()
     {
-        StructuredSelection selection = ( StructuredSelection ) viewer.getSelection();
+        StructuredSelection selection = ( StructuredSelection ) databseViewer.getSelection();
 
         if ( !selection.isEmpty() )
         {
@@ -577,7 +595,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
                 selectedDatabase.setOlcDatabase( "{" + swapDatabaseOrderingPrefix + "}" + selectedDatabaseName );
                 swapDatabase.setOlcDatabase( "{" + selectedDatabaseOrderingPrefix + "}" + swapDatabaseName );
 
-                viewer.refresh();
+                databseViewer.refresh();
                 refreshButtonStates();
                 setEditorDirty();
             }
@@ -618,7 +636,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
      */
     private void moveSelectedDatabaseDown()
     {
-        StructuredSelection selection = ( StructuredSelection ) viewer.getSelection();
+        StructuredSelection selection = ( StructuredSelection ) databseViewer.getSelection();
 
         if ( !selection.isEmpty() )
         {
@@ -640,7 +658,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
                 selectedDatabase.setOlcDatabase( "{" + swapDatabaseOrderingPrefix + "}" + selectedDatabaseName );
                 swapDatabase.setOlcDatabase( "{" + selectedDatabaseOrderingPrefix + "}" + swapDatabaseName );
 
-                viewer.refresh();
+                databseViewer.refresh();
                 refreshButtonStates();
                 setEditorDirty();
             }
@@ -687,7 +705,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
     private void refreshButtonStates()
     {
         // Getting the selection of the table viewer
-        StructuredSelection selection = ( StructuredSelection ) viewer.getSelection();
+        StructuredSelection selection = ( StructuredSelection ) databseViewer.getSelection();
 
         if ( !selection.isEmpty() )
         {
@@ -715,7 +733,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
     {
         ( ( OpenLDAPServerConfigurationEditor ) page.getEditor() ).setDirty( true );
         detailsPage.commit( false );
-        viewer.refresh();
+        databseViewer.refresh();
     }
 
 
