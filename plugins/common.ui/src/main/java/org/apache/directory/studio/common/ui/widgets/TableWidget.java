@@ -79,6 +79,9 @@ public class TableWidget<E> extends AbstractWidget
     /** A flag set when the table is ordered (ie, it has a Up and Down buttons) */
     private boolean isOrdered;
     
+    /** A flag that says if teh table is enabled or disabled */
+    private boolean isEnabled = true;
+    
     /** The flag set when the table is ordered */
     private static final boolean ORDERED = true;
     
@@ -105,26 +108,29 @@ public class TableWidget<E> extends AbstractWidget
     {
         public void selectionChanged( SelectionChangedEvent event )
         {
-            StructuredSelection selection = ( StructuredSelection ) elementTableViewer.getSelection();
-
-            if ( hasEdit )
+            if ( isEnabled )
             {
-                editButton.setEnabled( !selection.isEmpty() );
-            }
-            
-            deleteButton.setEnabled( !selection.isEmpty() );
-            
-            if ( isOrdered )
-            {
-                int selectionLine = elementTableViewer.getTable().getSelectionIndex();
-
-                // We can't enable the UP button when we don't have any element in the table,
-                // or when we have only one, or when the selection is the first one in the table
-                upButton.setEnabled( !selection.isEmpty() && ( elements.size() > 1 ) && ( selectionLine > 0 ) );
+                StructuredSelection selection = ( StructuredSelection ) elementTableViewer.getSelection();
+    
+                if ( hasEdit )
+                {
+                    editButton.setEnabled( !selection.isEmpty() );
+                }
                 
-                // We can't enable the DOWN button when we don't have any element in the table,
-                // or when we have only one element, or when the selected element is the last one
-                downButton.setEnabled( !selection.isEmpty() && ( elements.size() > 1 ) && ( selectionLine < elements.size() - 1 ) );
+                deleteButton.setEnabled( !selection.isEmpty() );
+                
+                if ( isOrdered )
+                {
+                    int selectionLine = elementTableViewer.getTable().getSelectionIndex();
+    
+                    // We can't enable the UP button when we don't have any element in the table,
+                    // or when we have only one, or when the selection is the first one in the table
+                    upButton.setEnabled( !selection.isEmpty() && ( elements.size() > 1 ) && ( selectionLine > 0 ) );
+                    
+                    // We can't enable the DOWN button when we don't have any element in the table,
+                    // or when we have only one element, or when the selected element is the last one
+                    downButton.setEnabled( !selection.isEmpty() && ( elements.size() > 1 ) && ( selectionLine < elements.size() - 1 ) );
+                }
             }
         }
     };
@@ -135,7 +141,10 @@ public class TableWidget<E> extends AbstractWidget
     {
         public void doubleClick( DoubleClickEvent event )
         {
-            editElement();
+            if ( isEnabled )
+            {
+                editElement();
+            }
         }
     };
     
@@ -193,7 +202,7 @@ public class TableWidget<E> extends AbstractWidget
     /**
      * Creates a new instance of TableWidget.
      * 
-     * @param decorator the decoartor to use, containing the Dialog comparator and labelProvider
+     * @param decorator the decorator to use, containing the Dialog comparator and labelProvider
      */
     public TableWidget( TableDecorator<E> decorator )
     {
@@ -459,9 +468,76 @@ public class TableWidget<E> extends AbstractWidget
             downButton.setEnabled( false );
             downButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
             downButton.addSelectionListener( downButtonListener );
-}
+        }
     }
 
+    
+    /**
+     * Enable the table (Buttons will be active, actions on the table will be active)
+     */
+    public void enable()
+    {
+        if ( addButton != null )
+        {
+            addButton.setEnabled( true );
+        }
+        
+        if ( deleteButton != null )
+        {
+            deleteButton.setEnabled( true );
+        }
+        
+        if ( editButton != null )
+        {
+            editButton.setEnabled( true );
+        }
+        
+        if ( upButton != null )
+        {
+            upButton.setEnabled( true );
+        }
+        
+        if ( downButton != null )
+        {
+            downButton.setEnabled( true );
+        }
+        
+        isEnabled = true;
+    }
+    
+
+    /**
+     * Disable the table (Buttons will be inactive, actions on the table will be inactive)
+     */
+    public void disable()
+    {
+        if ( addButton != null )
+        {
+            addButton.setEnabled( false );
+        }
+        
+        if ( deleteButton != null )
+        {
+            deleteButton.setEnabled( false );
+        }
+        
+        if ( editButton != null )
+        {
+            editButton.setEnabled( false );
+        }
+        
+        if ( upButton != null )
+        {
+            upButton.setEnabled( false );
+        }
+        
+        if ( downButton != null )
+        {
+            downButton.setEnabled( false );
+        }
+        
+        isEnabled = false;
+    }
 
     /**
      * Returns the primary control associated with this widget.
