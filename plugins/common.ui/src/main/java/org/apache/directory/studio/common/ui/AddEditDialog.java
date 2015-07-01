@@ -67,10 +67,7 @@ public abstract class AddEditDialog<E> extends Dialog
     /**
      * Initialize the Dialog with the content of the edited element, if any
      */
-    protected void initDialog()
-    {
-        // Nothing to do
-    }
+    protected abstract void initDialog();
     
 
     /**
@@ -94,15 +91,6 @@ public abstract class AddEditDialog<E> extends Dialog
      * Add a new Element that will be edited
      */
     public abstract void addNewElement();
-    
-
-    /**
-     * Add a new Element that will be edited
-     */
-    protected void addNewElement( E newElement )
-    {
-        // Nothing to do
-    }
     
 
     /**
