@@ -31,6 +31,9 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class StringValueDecorator extends TableDecorator<StringValueWrapper>
 {
+    /** The associated image, if any */
+    private Image image;
+    
     /**
      * Create a new instance of StringValueDecorator
      * @param parentShell The parent Shell
@@ -41,6 +44,15 @@ public class StringValueDecorator extends TableDecorator<StringValueWrapper>
         setDialog( new StringValueDialog( parentShell, attributeName ) );
     }
     
+    
+    /** 
+     * Adds an Image to this decorator 
+     * @param image The Image
+     */
+    public void setImage( Image image )
+    {
+        this.image = image;
+    }
 
     /**
      * Construct the label for a String.
@@ -66,7 +78,7 @@ public class StringValueDecorator extends TableDecorator<StringValueWrapper>
      */
     public Image getImage( Object element )
     {
-        return null;
+        return image;
     };
 
     
