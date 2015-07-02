@@ -21,8 +21,8 @@
 package org.apache.directory.studio.apacheds.configuration.dialogs;
 
 
+import org.apache.directory.studio.common.ui.AddEditDialog;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -34,36 +34,46 @@ import org.eclipse.swt.widgets.Shell;
 
 
 /**
- * The AttributeDialog is used to enter/select an attribute type.
- *
+ * The AttributeDialog is used to enter/select an attribute type. Here is what it looks like :
+ * <pre>
+ * .---------------------------------------------------------.
+ * |X| Select Attribute Type or OID                          |
+ * +---------------------------------------------------------|
+ * | Attribute Type or OID : [                           |v] |
+ * |                                                         |
+ * |                                      (CANCEL)  (  OK  ) |
+ * '---------------------------------------------------------'
+ * </pre>
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class AttributeDialog extends Dialog
+public class AttributeDialog extends AddEditDialog<String>
 {
     /** The possible attribute types and OIDs. */
     private String[] attributeTypesAndOids;
 
-    /** The attribute. */
-    private String attribute;
-
-    /** The combo. */
+    /** The combo containing the list of attributes. */
     private Combo typeOrOidCombo;
-
-    /** The OK button of the dialog */
-    private Button okButton;
 
 
     /**
      * Creates a new instance of AttributeDialog.
      * 
      * @param parentShell the parent shell
-     * @param attribute the attribute, null if none 
-     * @param attributeNamesAndOids the possible attribute names and OIDs
      */
-    public AttributeDialog( Shell parentShell, String attribute, String[] attributeNamesAndOids )
+    public AttributeDialog( Shell parentShell )
     {
         super( parentShell );
-        this.attribute = attribute;
+    }
+    
+    
+    /**
+     * Set the list of possible attributes and OIDs
+     * 
+     * @param attributeNamesAndOids The list of possible attribuytes and OID
+     */
+    public void setAttributeNamesAndOids( String[] attributeNamesAndOids )
+    {
         this.attributeTypesAndOids = attributeNamesAndOids;
     }
 
@@ -81,26 +91,49 @@ public class AttributeDialog extends Dialog
     /**
      * {@inheritDoc}
      */
-    protected void createButtonsForButtonBar( Composite parent )
-    {
-        okButton = createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true );
-        createButton( parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false );
-
-        validate();
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
     protected void okPressed()
     {
-        attribute = typeOrOidCombo.getText();
+        setEditedElement( typeOrOidCombo.getText() );
         super.okPressed();
     }
 
+    
+    /**
+     * Overriding the createButton method. The OK button is not enabled until we have a selected attribute
+     * 
+     * {@inheritDoc}
+     */
+    protected Button createButton(Composite parent, int id, String label, boolean defaultButton) 
+    {
+        Button button = super.createButton(parent, id, label, defaultButton);
+
+        if ( id == IDialogConstants.OK_ID ) 
+        {
+            String attribute = (String)getEditedElement();
+
+            if ( ( attribute == null ) || ( attribute.length() == 0 ) )
+            {
+                button.setEnabled( false );
+            }
+        }
+        
+        return button;
+    }
+
 
     /**
+     * Create the Attribute dialog :
+     * 
+     * <pre>
+     * .---------------------------------------------------------.
+     * |X| Select Attribute Type or OID                          |
+     * +---------------------------------------------------------|
+     * | Attribute Type or OID : [                           |v] |
+     * |                                                         |
+     * |                                      (CANCEL)  (  OK  ) |
+     * '---------------------------------------------------------'
+     * </pre>
+     * 
      * {@inheritDoc}
      */
     protected Control createDialogArea( Composite parent )
@@ -111,9 +144,9 @@ public class AttributeDialog extends Dialog
         BaseWidgetUtils.createLabel( c, Messages.getString( "AttributeDialog.AttributeTypeOrOID" ), 1 ); //$NON-NLS-1$
         typeOrOidCombo = BaseWidgetUtils.createCombo( c, attributeTypesAndOids, -1, 1 );
         
-        if ( attribute != null )
+        if ( getEditedElement() != null )
         {
-            typeOrOidCombo.setText( attribute );
+            typeOrOidCombo.setText( getEditedElement() );
         }
         
         typeOrOidCombo.addModifyListener( new ModifyListener()
@@ -124,23 +157,45 @@ public class AttributeDialog extends Dialog
             }
         } );
 
+        initDialog();
+
         return composite;
     }
 
+    
+    /**
+     * {@inheritDoc}
+     */
+    protected void initDialog()
+    {
+        // Nothing to do
+    }
 
+
+    /**
+     * Check that we have selected an attribute
+     */
     private void validate()
     {
+        Button okButton = getButton( IDialogConstants.OK_ID );
+        
+        // This button might be null when the dialog is called.
+        if ( okButton == null )
+        {
+            return;
+        }
+
         okButton.setEnabled( !"".equals( typeOrOidCombo.getText() ) ); //$NON-NLS-1$
     }
 
 
     /**
-     * Gets the attribute.
-     * 
-     * @return the attribute
+     * {@inheritDoc}
      */
-    public String getAttribute()
+    @Override
+    public void addNewElement()
     {
-        return attribute;
+        // Default to none
+        setEditedElement( "" );
     }
 }

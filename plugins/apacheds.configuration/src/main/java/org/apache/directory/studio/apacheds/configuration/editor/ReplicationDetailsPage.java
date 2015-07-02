@@ -506,11 +506,13 @@ public class ReplicationDetailsPage implements IDetailsPage
      */
     private void addNewAttribute()
     {
-        AttributeDialog dialog = new AttributeDialog( addAttributeButton.getShell(), null, getAttributeNamesAndOids() );
+        AttributeDialog dialog = new AttributeDialog( addAttributeButton.getShell() );
+        dialog.addNewElement();
+        dialog.setAttributeNamesAndOids( getAttributeNamesAndOids() );
 
         if ( AttributeDialog.OK == dialog.open() )
         {
-            String newAttribute = dialog.getAttribute();
+            String newAttribute = dialog.getEditedElement();
 
             if ( !attributesList.contains( newAttribute ) )
             {
@@ -535,14 +537,15 @@ public class ReplicationDetailsPage implements IDetailsPage
         {
             String attribute = ( String ) selection.getFirstElement();
 
-            AttributeDialog dialog = new AttributeDialog( addAttributeButton.getShell(), attribute,
-                getAttributeNamesAndOids() );
+            AttributeDialog dialog = new AttributeDialog( addAttributeButton.getShell() );
+            dialog.setEditedElement( attribute );
+            dialog.setAttributeNamesAndOids( getAttributeNamesAndOids() );
 
             if ( AttributeDialog.OK == dialog.open() )
             {
                 attributesList.remove( attribute );
 
-                String newAttribute = dialog.getAttribute();
+                String newAttribute = dialog.getEditedElement();
 
                 if ( !attributesList.contains( newAttribute ) )
                 {
