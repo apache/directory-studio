@@ -48,6 +48,7 @@
             <Bundle-Activator>org.apache.directory.studio.common.ui.CommonUIPlugin</Bundle-Activator>
             
             <Export-Package>org.apache.directory.studio.common.ui,
+ org.apache.directory.studio.common.ui.dialogs,
  org.apache.directory.studio.common.ui.filesystem,
  org.apache.directory.studio.common.ui.widgets</Export-Package>
             

@@ -24,9 +24,10 @@ import java.util.Comparator;
 import org.eclipse.jface.viewers.LabelProvider;
 
 /**
- * An Class used to store the comparator and labelProvider used by the TableWidget.
+ * A Class used to store the comparator and labelProvider used by the TableWidget.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @param <E>The element being handled bu the decorator
  */
 public abstract class TableDecorator<E> extends LabelProvider implements Comparator<E>
 {
