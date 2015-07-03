@@ -95,29 +95,6 @@ import org.eclipse.ui.forms.widgets.Section;
  */
 public class DatabasesDetailsPage implements IDetailsPage
 {
-    /** The editable database types array */
-    private static DatabaseTypeEnum[] EDITABLE_DATABASE_TYPES = new DatabaseTypeEnum[]
-        {
-            DatabaseTypeEnum.NONE,
-            DatabaseTypeEnum.FRONTEND,
-            DatabaseTypeEnum.CONFIG,
-            DatabaseTypeEnum.BDB,
-            DatabaseTypeEnum.DB_PERL,
-            DatabaseTypeEnum.DB_SOCKET,
-            DatabaseTypeEnum.HDB,
-            DatabaseTypeEnum.MDB,
-            DatabaseTypeEnum.LDAP,
-            DatabaseTypeEnum.LDIF,
-            DatabaseTypeEnum.META,
-            DatabaseTypeEnum.MONITOR,
-            DatabaseTypeEnum.NDB,
-            DatabaseTypeEnum.NULL,
-            DatabaseTypeEnum.PASSWD,
-            DatabaseTypeEnum.RELAY,
-            DatabaseTypeEnum.SHELL,
-            DatabaseTypeEnum.SQL
-    };
-
     /** The frontend database type array */
     private static DatabaseTypeEnum[] FRONTEND_DATABASE_TYPES = new DatabaseTypeEnum[]
         {
@@ -463,7 +440,12 @@ public class DatabasesDetailsPage implements IDetailsPage
     /**
      * Creates the General Settings Section. This will expose the following attributes :
      * <ul>
-     * <li></li>
+     * <li>olcSuffix</li>
+     * <li>olcDirectory</li>
+     * <li>olcDbMode</li>
+     * <li>olcRootDN</li>
+     * <li>olcRootPW</li>
+     * <li>olcIndex</li>
      * </ul>
      *
      * @param parent the parent composite
@@ -1158,7 +1140,7 @@ public class DatabasesDetailsPage implements IDetailsPage
             // OlcHdbConfig Type
             if ( database instanceof OlcHdbConfig )
             {
-                databaseTypeComboViewer.setInput( EDITABLE_DATABASE_TYPES );
+                databaseTypeComboViewer.setInput( DatabaseTypeEnum.values() );
                 databaseTypeComboViewer.setSelection( new StructuredSelection( DatabaseTypeEnum.HDB ) );
                 databaseSpecificDetailsBlock = new BerkeleyDbDatabaseSpecificDetailsBlock<OlcHdbConfig>( instance,
                     ( OlcHdbConfig ) database, browserConnection );
@@ -1166,7 +1148,7 @@ public class DatabasesDetailsPage implements IDetailsPage
             // OlcBdbConfig Type
             else if ( database instanceof OlcBdbConfig )
             {
-                databaseTypeComboViewer.setInput( EDITABLE_DATABASE_TYPES );
+                databaseTypeComboViewer.setInput( DatabaseTypeEnum.values() );
                 databaseTypeComboViewer.setSelection( new StructuredSelection( DatabaseTypeEnum.BDB ) );
                 databaseSpecificDetailsBlock = new BerkeleyDbDatabaseSpecificDetailsBlock<OlcBdbConfig>( instance,
                     ( OlcBdbConfig ) database, browserConnection );
@@ -1174,7 +1156,7 @@ public class DatabasesDetailsPage implements IDetailsPage
             // OlcMdbConfig Type
             else if ( database instanceof OlcMdbConfig )
             {
-                databaseTypeComboViewer.setInput( EDITABLE_DATABASE_TYPES );
+                databaseTypeComboViewer.setInput( DatabaseTypeEnum.values() );
                 databaseTypeComboViewer.setSelection( new StructuredSelection( DatabaseTypeEnum.MDB ) );
                 databaseSpecificDetailsBlock = new MdbDatabaseSpecificDetailsBlock( instance,
                     ( OlcMdbConfig ) database, browserConnection );
@@ -1182,7 +1164,7 @@ public class DatabasesDetailsPage implements IDetailsPage
             // OlcLdifConfig Type
             else if ( database instanceof OlcLdifConfig )
             {
-                databaseTypeComboViewer.setInput( EDITABLE_DATABASE_TYPES );
+                databaseTypeComboViewer.setInput( DatabaseTypeEnum.values() );
                 databaseTypeComboViewer.setSelection( new StructuredSelection( DatabaseTypeEnum.LDIF ) );
                 databaseSpecificDetailsBlock = new LdifDatabaseSpecificDetailsBlock( instance,
                     ( OlcLdifConfig ) database );
@@ -1190,7 +1172,7 @@ public class DatabasesDetailsPage implements IDetailsPage
             // OlcNullConfig Type
             else if ( database instanceof OlcNullConfig )
             {
-                databaseTypeComboViewer.setInput( EDITABLE_DATABASE_TYPES );
+                databaseTypeComboViewer.setInput( DatabaseTypeEnum.values() );
                 databaseTypeComboViewer.setSelection( new StructuredSelection( DatabaseTypeEnum.NULL ) );
                 databaseSpecificDetailsBlock = new NullDatabaseSpecificDetailsBlock( instance,
                     ( OlcNullConfig ) database );
@@ -1198,7 +1180,7 @@ public class DatabasesDetailsPage implements IDetailsPage
             // OlcRelayConfig Type
             else if ( database instanceof OlcRelayConfig )
             {
-                databaseTypeComboViewer.setInput( EDITABLE_DATABASE_TYPES );
+                databaseTypeComboViewer.setInput( DatabaseTypeEnum.values() );
                 databaseTypeComboViewer.setSelection( new StructuredSelection( DatabaseTypeEnum.RELAY ) );
                 databaseSpecificDetailsBlock = new RelayDatabaseSpecificDetailsBlock( instance,
                     ( OlcRelayConfig ) database, browserConnection );
@@ -1224,7 +1206,7 @@ public class DatabasesDetailsPage implements IDetailsPage
                 // Any other type of database
                 else
                 {
-                    databaseTypeComboViewer.setInput( EDITABLE_DATABASE_TYPES );
+                    databaseTypeComboViewer.setInput( DatabaseTypeEnum.values() );
                     databaseTypeComboViewer.setSelection( new StructuredSelection( DatabaseTypeEnum.NONE ) );
                     databaseSpecificDetailsBlock = null;
                 }

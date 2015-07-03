@@ -21,7 +21,11 @@ package org.apache.directory.studio.openldap.config.model;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import org.apache.directory.studio.openldap.common.ui.model.DbIndexTypeEnum;
 
 
 /**
@@ -47,7 +51,7 @@ public class OlcDbIndex
     private List<String> attributes = new ArrayList<String>();
 
     /** The list of index types */
-    private List<OlcDbIndexTypeEnum> indexTypes = new ArrayList<OlcDbIndexTypeEnum>();
+    private Set<DbIndexTypeEnum> indexTypes = new HashSet<DbIndexTypeEnum>();
 
 
     /**
@@ -89,7 +93,7 @@ public class OlcDbIndex
                     {
                         for ( String indexType : indexTypes )
                         {
-                            OlcDbIndexTypeEnum type = OlcDbIndexTypeEnum.fromString( indexType );
+                            DbIndexTypeEnum type = DbIndexTypeEnum.valueOf( indexType );
 
                             if ( type != null )
                             {
@@ -148,7 +152,7 @@ public class OlcDbIndex
      *
      * @param indexType the index type
      */
-    public void addIndexType( OlcDbIndexTypeEnum indexType )
+    public void addIndexType( DbIndexTypeEnum indexType )
     {
         indexTypes.add( indexType );
     }
@@ -188,7 +192,7 @@ public class OlcDbIndex
      *
      * @param indexType the index type
      */
-    public void removeIndexType( OlcDbIndexTypeEnum indexType )
+    public void removeIndexType( DbIndexTypeEnum indexType )
     {
         indexTypes.remove( indexType );
     }
@@ -210,7 +214,7 @@ public class OlcDbIndex
      *
      * @return the index types
      */
-    public List<OlcDbIndexTypeEnum> getIndexTypes()
+    public Set<DbIndexTypeEnum> getIndexTypes()
     {
         return indexTypes;
     }
@@ -222,6 +226,7 @@ public class OlcDbIndex
     public String toString()
     {
         StringBuilder sb = new StringBuilder();
+        boolean isFirst = true;
 
         if ( isDefault )
         {
@@ -233,25 +238,38 @@ public class OlcDbIndex
             {
                 for ( String attribute : attributes )
                 {
+                    if ( isFirst )
+                    {
+                        isFirst = false;
+                    }
+                    else
+                    {
+                        sb.append( COMMA_SEPARATOR );
+                    }
+                    
                     sb.append( attribute );
-                    sb.append( COMMA_SEPARATOR );
                 }
-
-                sb.deleteCharAt( sb.length() - 1 );
             }
         }
 
         if ( indexTypes.size() > 0 )
         {
             sb.append( SPACE_SEPARATOR );
+            isFirst = true;
 
-            for ( OlcDbIndexTypeEnum indexType : indexTypes )
+            for ( DbIndexTypeEnum indexType : indexTypes )
             {
+                if ( isFirst )
+                {
+                    isFirst = false;
+                }
+                else
+                {
+                    sb.append( COMMA_SEPARATOR );
+                }
+                
                 sb.append( indexType.toString() );
-                sb.append( COMMA_SEPARATOR );
             }
-
-            sb.deleteCharAt( sb.length() - 1 );
         }
 
         return sb.toString();

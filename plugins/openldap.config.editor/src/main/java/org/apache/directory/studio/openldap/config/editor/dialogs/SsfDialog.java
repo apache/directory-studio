@@ -394,9 +394,10 @@ public class SsfDialog extends AddEditDialog<SsfWrapper>
      */
     protected Button createButton(Composite parent, int id, String label, boolean defaultButton) 
     {
-        if (id == IDialogConstants.OK_ID) 
+        Button button = super.createButton( parent, id, label, defaultButton );
+
+        if ( id == IDialogConstants.OK_ID ) 
         {
-            Button okButton = super.createButton(parent, id, label, defaultButton);
             SsfWrapper ssfWrapper = (SsfWrapper)getEditedElement();
 
             if ( ssfWrapper != null )
@@ -405,17 +406,15 @@ public class SsfDialog extends AddEditDialog<SsfWrapper>
                 
                 if ( feature == SsfFeatureEnum.NONE )
                 {
-                    okButton.setEnabled( false );
+                    button.setEnabled( false );
                 }
             }
-            
-            return okButton;
         }
-        else
-        {
-            return super.createButton(parent, id, label, defaultButton);
-        }
+        
+        return button;
     }
+    
+    
     /**
      * Initializes the Dialog with the values
      */

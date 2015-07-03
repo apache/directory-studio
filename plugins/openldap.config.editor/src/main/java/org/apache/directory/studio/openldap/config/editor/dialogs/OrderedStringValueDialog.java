@@ -185,7 +185,6 @@ public class OrderedStringValueDialog extends AddEditDialog<OrderedStringValueWr
     }
 
 
-    @Override
     public void addNewElement( OrderedStringValueWrapper editedElement )
     {
         OrderedStringValueWrapper newElement = (OrderedStringValueWrapper)editedElement.clone();

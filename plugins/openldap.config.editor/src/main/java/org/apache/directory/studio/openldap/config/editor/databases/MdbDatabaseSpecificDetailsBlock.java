@@ -22,9 +22,11 @@ package org.apache.directory.studio.openldap.config.editor.databases;
 
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.common.ui.widgets.TableWidget;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.openldap.config.editor.wrappers.DbIndexDecorator;
+import org.apache.directory.studio.openldap.config.editor.wrappers.DbIndexWrapper;
 import org.apache.directory.studio.openldap.config.model.database.OlcMdbConfig;
-import org.apache.directory.studio.openldap.config.model.widgets.IndicesWidget;
 import org.apache.directory.studio.openldap.common.ui.widgets.BooleanWithDefaultWidget;
 import org.apache.directory.studio.openldap.common.ui.widgets.DirectoryBrowserWidget;
 import org.apache.directory.studio.openldap.common.ui.widgets.UnixPermissionsWidget;
@@ -45,9 +47,12 @@ import org.eclipse.ui.forms.widgets.Section;
  * .--------------------------------------------------------------------.
  * | Database Specific Settings                                         |
  * +--------------------------------------------------------------------+
- * | v Database Configuration                                           |
- * |  Directory : [                                     [v] (browse...) |
- * |  Mode :      [--------(0000)               ] (Edit Permissions...) |
+ * | .----------------------------------------------------------------. |
+ * | |v MDB Configuration                                             | |
+ * | +----------------------------------------------------------------+ |
+ * | | Directory : [////////////////////////////[v] (Browse)          | |
+ * | | Mode :      [--------(0000)               ] (Edit Permissions) | |
+ * | +----------------------------------------------------------------+ |
  * |                                                                    |
  * | v Database indices                                                 |
  * |  +----------------------------------------------+                  |
@@ -89,7 +94,7 @@ public class MdbDatabaseSpecificDetailsBlock extends AbstractDatabaseSpecificDet
     private Text envFlagsText;
 
     /** The olcDbIndex attribute (String, multi-values) */
-    private IndicesWidget indicesWidget;
+    private TableWidget<DbIndexWrapper> indicesWidget;
 
     /** The olcMaxEntrySize attribute (Integer) No yet available (2.4.41) */
     private Text maxEntrySizeText;
@@ -155,6 +160,14 @@ public class MdbDatabaseSpecificDetailsBlock extends AbstractDatabaseSpecificDet
      * <li>olcDbMode</li>
      * </ul>
      *
+     * <pre>
+     * .------------------------------------------------------------------.
+     * |v MDB Configuration                                               |
+     * +------------------------------------------------------------------+
+     * | Directory : [///////////////////////////////] (Browse)           |
+     * | Mode :      [///////////////////////////////] (Edit Permissions) |
+     * +------------------------------------------------------------------+
+     * </pre
      * @param parent the parent composite
      * @param toolkit the toolkit
      */
@@ -162,7 +175,7 @@ public class MdbDatabaseSpecificDetailsBlock extends AbstractDatabaseSpecificDet
     {
         // Database Configuration Section
         Section databaseConfigurationSection = toolkit.createSection( parent, Section.TWISTIE );
-        databaseConfigurationSection.setText( "Database Configuration" );
+        databaseConfigurationSection.setText( Messages.getString( "OpenLDAPMDBConfiguration.Section" ) );
         databaseConfigurationSection.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite databaseConfigurationComposite = toolkit.createComposite( databaseConfigurationSection );
         toolkit.paintBordersFor( databaseConfigurationComposite );
@@ -170,7 +183,7 @@ public class MdbDatabaseSpecificDetailsBlock extends AbstractDatabaseSpecificDet
         databaseConfigurationSection.setClient( databaseConfigurationComposite );
 
         // Directory Text
-        toolkit.createLabel( databaseConfigurationComposite, "Directory:" );
+        toolkit.createLabel( databaseConfigurationComposite, Messages.getString( "OpenLDAPMDBConfiguration.Directory" ) );
         Composite directoryComposite = toolkit.createComposite( databaseConfigurationComposite );
         GridLayout directoryCompositeGridLayout = new GridLayout( 2, false );
         directoryCompositeGridLayout.marginHeight = directoryCompositeGridLayout.marginWidth = 0;
@@ -181,7 +194,7 @@ public class MdbDatabaseSpecificDetailsBlock extends AbstractDatabaseSpecificDet
         directoryBrowserWidget.createWidget( directoryComposite, toolkit );
 
         // Mode Text
-        toolkit.createLabel( databaseConfigurationComposite, "Mode:" );
+        toolkit.createLabel( databaseConfigurationComposite, Messages.getString( "OpenLDAPMDBConfiguration.Mode" ) );
         modeUnixPermissionsWidget = new UnixPermissionsWidget();
         modeUnixPermissionsWidget.create( databaseConfigurationComposite, toolkit );
         modeUnixPermissionsWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
@@ -202,7 +215,7 @@ public class MdbDatabaseSpecificDetailsBlock extends AbstractDatabaseSpecificDet
     {
         // Database Indices Section
         Section databaseIndexesSection = toolkit.createSection( parent, Section.TWISTIE );
-        databaseIndexesSection.setText( "Database Indices" );
+        databaseIndexesSection.setText( Messages.getString( "OpenLDAPMDBConfiguration.IndicesSection" ) );
         databaseIndexesSection.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite databaseIndexesComposite = toolkit.createComposite( databaseIndexesSection );
         toolkit.paintBordersFor( databaseIndexesComposite );
@@ -210,8 +223,8 @@ public class MdbDatabaseSpecificDetailsBlock extends AbstractDatabaseSpecificDet
         databaseIndexesSection.setClient( databaseIndexesComposite );
 
         // Indices Widget
-        indicesWidget = new IndicesWidget( browserConnection );
-        indicesWidget.createWidget( databaseIndexesComposite, toolkit );
+        indicesWidget = new TableWidget<DbIndexWrapper>( new DbIndexDecorator( null, browserConnection ) );
+        indicesWidget.createWidgetWithEdit( databaseIndexesComposite, toolkit );
         indicesWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
     }
 
@@ -322,7 +335,7 @@ public class MdbDatabaseSpecificDetailsBlock extends AbstractDatabaseSpecificDet
             modeUnixPermissionsWidget.setValue( mode );
 
             // Indices Text
-            indicesWidget.setIndices( database.getOlcDbIndex() );
+            //indicesWidget.setIndices( database.getOlcDbIndex() );
 
             // Max Readers Text
             Integer maxReaders = database.getOlcDbMaxReaders();
@@ -435,10 +448,12 @@ public class MdbDatabaseSpecificDetailsBlock extends AbstractDatabaseSpecificDet
         // Indices
         database.clearOlcDbIndex();
 
+        /*
         for ( String index : indicesWidget.getIndices() )
         {
             database.addOlcDbIndex( index );
         }
+        */
 
         // Max readers
         try

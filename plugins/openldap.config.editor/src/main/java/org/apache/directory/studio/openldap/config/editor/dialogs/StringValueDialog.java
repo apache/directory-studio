@@ -177,7 +177,6 @@ public class StringValueDialog extends AddEditDialog<StringValueWrapper>
     }
 
 
-    @Override
     public void addNewElement( StringValueWrapper editedElement )
     {
         StringValueWrapper newElement = (StringValueWrapper)editedElement.clone();

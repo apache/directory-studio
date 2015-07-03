@@ -223,7 +223,7 @@ public class BerkeleyDbDatabaseSpecificDetailsBlock<BDB extends OlcBdbConfig> ex
 
         // Indices Widget
         indicesWidget = new IndicesWidget( browserConnection );
-        indicesWidget.createWidget( databaseIndexesComposite, toolkit );
+        indicesWidget.createWidgetWithEdit( databaseIndexesComposite, toolkit );
         indicesWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
 
         // Linear Indexes Widget
@@ -377,7 +377,7 @@ public class BerkeleyDbDatabaseSpecificDetailsBlock<BDB extends OlcBdbConfig> ex
             sharedMemoryKeyText.setText( ( sharedMemoryKey == null ) ? "" : "" + sharedMemoryKey ); //$NON-NLS-1$
 
             // Indices Text
-            indicesWidget.setIndices( database.getOlcDbIndex() );
+            //indicesWidget.setIndices( database.getOlcDbIndex() );
 
             // Linear Index Widget
             linearIndexBooleanWithDefaultWidget.setValue( database.getOlcDbLinearIndex() );
@@ -544,10 +544,12 @@ public class BerkeleyDbDatabaseSpecificDetailsBlock<BDB extends OlcBdbConfig> ex
 
         // Indices Widget
         database.clearOlcDbIndex();
+        /*
         for ( String index : indicesWidget.getIndices() )
         {
             database.addOlcDbIndex( index );
         }
+        */
 
         // Linear Index Widget
         database.setOlcDbLinearIndex( linearIndexBooleanWithDefaultWidget.getValue() );
