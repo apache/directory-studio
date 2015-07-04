@@ -24,7 +24,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 
 import org.apache.directory.studio.openldap.config.editor.wrappers.DbIndexWrapper;
-import org.apache.directory.studio.openldap.common.ui.model.IndexTypeEnum;
+import org.apache.directory.studio.openldap.common.ui.model.DbIndexTypeEnum;
 import org.junit.Test;
 
 /**
@@ -54,9 +54,9 @@ public class DbIndexWrapperTest
         
         assertEquals( 3, index1.getAttributes().size() );
         assertEquals( 2, index1.getIndexTypes().size() );
-        assertTrue( index1.getIndexTypes().contains( IndexTypeEnum.EQ ) );
-        assertTrue( index1.getIndexTypes().contains( IndexTypeEnum.SUB ) );
-        assertFalse( index1.getIndexTypes().contains( IndexTypeEnum.APPROX ) );
+        assertTrue( index1.getIndexTypes().contains( DbIndexTypeEnum.EQ ) );
+        assertTrue( index1.getIndexTypes().contains( DbIndexTypeEnum.SUB ) );
+        assertFalse( index1.getIndexTypes().contains( DbIndexTypeEnum.APPROX ) );
         
         assertEquals( "cn,objectclass,sn eq,sub", index1.toString() );
     }
