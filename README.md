@@ -15,7 +15,7 @@
 > specific language governing permissions and limitations
 > under the License.
 
-# Apache Directory Studio™
+# Apache Directory Studio (TM)
 
 The Eclipse-based LDAP browser and directory client.
 
