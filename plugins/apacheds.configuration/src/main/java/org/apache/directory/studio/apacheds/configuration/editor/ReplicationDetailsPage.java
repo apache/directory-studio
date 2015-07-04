@@ -21,8 +21,6 @@ package org.apache.directory.studio.apacheds.configuration.editor;
 
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
@@ -30,7 +28,6 @@ import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.message.AliasDerefMode;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
-import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.server.config.beans.ReplConsumerBean;
 import org.apache.directory.studio.common.ui.dialogs.AttributeDialog;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
@@ -39,7 +36,7 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.search.EntryWidget
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.FilterWidget;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
+import org.apache.directory.studio.ldapbrowser.core.utils.AttributeLoader;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -93,8 +90,8 @@ public class ReplicationDetailsPage implements IDetailsPage
     /** The browser connection */
     private IBrowserConnection browserConnection;
 
-    /** The array of attributes names and OIDs */
-    private String[] attributeNamesAndOids;
+    /** The Attribute list loader */
+    private AttributeLoader attributeLoader;
 
     /** The list of attributes */
     private List<String> attributesList = new ArrayList<String>();
@@ -235,6 +232,7 @@ public class ReplicationDetailsPage implements IDetailsPage
     public ReplicationDetailsPage( ReplicationMasterDetailsBlock pmdb )
     {
         masterDetailsBlock = pmdb;
+        attributeLoader = new AttributeLoader();
 
         // Getting the browser connection associated with the connection in the configuration
         browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
@@ -508,7 +506,7 @@ public class ReplicationDetailsPage implements IDetailsPage
     {
         AttributeDialog dialog = new AttributeDialog( addAttributeButton.getShell() );
         dialog.addNewElement();
-        dialog.setAttributeNamesAndOids( getAttributeNamesAndOids() );
+        dialog.setAttributeNamesAndOids( attributeLoader.getAttributeNamesAndOids() );
 
         if ( AttributeDialog.OK == dialog.open() )
         {
@@ -539,7 +537,7 @@ public class ReplicationDetailsPage implements IDetailsPage
 
             AttributeDialog dialog = new AttributeDialog( addAttributeButton.getShell() );
             dialog.setEditedElement( attribute );
-            dialog.setAttributeNamesAndOids( getAttributeNamesAndOids() );
+            dialog.setAttributeNamesAndOids( attributeLoader.getAttributeNamesAndOids() );
 
             if ( AttributeDialog.OK == dialog.open() )
             {
@@ -574,86 +572,6 @@ public class ReplicationDetailsPage implements IDetailsPage
             attributesList.remove( attribute );
             attributesTableViewer.refresh();
             masterDetailsBlock.setEditorDirty();
-        }
-    }
-
-
-    /**
-     * Gets the array containing the attribute names and OIDs.
-     *
-     * @return the array containing the attribute names and OIDs
-     */
-    private String[] getAttributeNamesAndOids()
-    {
-        // Checking if the array has already be generated
-        if ( ( attributeNamesAndOids == null ) || ( attributeNamesAndOids.length == 0 ) )
-        {
-            List<String> attributeNamesList = new ArrayList<String>();
-            List<String> oidsList = new ArrayList<String>();
-
-            if ( browserConnection == null )
-            {
-                // Getting all connections in the case where no connection is found
-                IBrowserConnection[] connections = BrowserCorePlugin.getDefault().getConnectionManager()
-                    .getBrowserConnections();
-                for ( IBrowserConnection connection : connections )
-                {
-                    addAttributeNamesAndOids( connection.getSchema(), attributeNamesList, oidsList );
-                }
-            }
-            else
-            {
-                // Only adding attribute names and OIDs from the associated connection
-                addAttributeNamesAndOids( browserConnection.getSchema(), attributeNamesList, oidsList );
-            }
-
-            // Also adding attribute names and OIDs from the default schema
-            addAttributeNamesAndOids( Schema.DEFAULT_SCHEMA, attributeNamesList, oidsList );
-
-            // Sorting the set
-            Collections.sort( attributeNamesList );
-            Collections.sort( oidsList );
-
-            attributeNamesAndOids = new String[attributeNamesList.size() + oidsList.size()];
-            System.arraycopy( attributeNamesList.toArray(), 0, attributeNamesAndOids, 0, attributeNamesList
-                .size() );
-            System.arraycopy( oidsList.toArray(), 0, attributeNamesAndOids, attributeNamesList
-                .size(), oidsList.size() );
-        }
-
-        return attributeNamesAndOids;
-    }
-
-
-    /**
-     * Adds the attribute names and OIDs to the given set.
-     *
-     * @param schema the schema
-     * @param attributeNamesList the attribute names list
-     * @param oidsList the OIDs name list
-     */
-    private void addAttributeNamesAndOids( Schema schema, List<String> attributeNamesList, List<String> oidsList )
-    {
-        if ( schema != null )
-        {
-            Collection<AttributeType> atds = schema.getAttributeTypeDescriptions();
-            for ( AttributeType atd : atds )
-            {
-                // OID
-                if ( !oidsList.contains( atd.getOid() ) )
-                {
-                    oidsList.add( atd.getOid() );
-                }
-
-                // Names
-                for ( String name : atd.getNames() )
-                {
-                    if ( !attributeNamesList.contains( name ) )
-                    {
-                        attributeNamesList.add( name );
-                    }
-                }
-            }
         }
     }
 
