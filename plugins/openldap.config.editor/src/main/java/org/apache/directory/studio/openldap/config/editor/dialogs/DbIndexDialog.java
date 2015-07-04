@@ -25,11 +25,14 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.directory.studio.common.ui.AddEditDialog;
+import org.apache.directory.studio.common.ui.dialogs.AttributeDialog;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.common.ui.widgets.TableWidget;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
+import org.apache.directory.studio.common.ui.wrappers.StringValueWrapper;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.ldapbrowser.core.utils.AttributeLoader;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -47,7 +50,6 @@ import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPlugin;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginConstants;
 import org.apache.directory.studio.openldap.config.editor.wrappers.DbIndexWrapper;
 import org.apache.directory.studio.openldap.config.editor.wrappers.StringValueDecorator;
-import org.apache.directory.studio.openldap.config.editor.wrappers.StringValueWrapper;
 
 
 /**
@@ -78,8 +80,8 @@ import org.apache.directory.studio.openldap.config.editor.wrappers.StringValueWr
  */
 public class DbIndexDialog extends AddEditDialog<DbIndexWrapper>
 {
-    /** The attributes list */
-    private List<String> attributes = new ArrayList<String>();
+    /** The Attribute list loader */
+    private AttributeLoader attributeLoader;
 
     // UI widgets
     // The attribute's group
@@ -129,6 +131,8 @@ public class DbIndexDialog extends AddEditDialog<DbIndexWrapper>
             {
                 getEditedElement().getAttributes().add( attribute.getValue() );
             }
+
+            checkAndUpdateOkButtonEnableState();
         }
     };
 
@@ -396,6 +400,7 @@ public class DbIndexDialog extends AddEditDialog<DbIndexWrapper>
     {
         super( parentShell );
         super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
+        attributeLoader = new AttributeLoader();
     }
 
 
@@ -488,6 +493,9 @@ public class DbIndexDialog extends AddEditDialog<DbIndexWrapper>
         StringValueDecorator decorator = new StringValueDecorator( parent.getShell(), "Attribute" );
         decorator.setImage( OpenLdapConfigurationPlugin.getDefault().getImage(
                     OpenLdapConfigurationPluginConstants.IMG_ATTRIBUTE ) );
+        AttributeDialog attributeDialog = new AttributeDialog( parent.getShell() );
+        attributeDialog.setAttributeNamesAndOids( attributeLoader.getAttributeNamesAndOids() );
+        decorator.setDialog( attributeDialog );
         attributeTable = new TableWidget<StringValueWrapper>( decorator );
 
         attributeTable.createWidgetNoEdit( attributesGroup, null );
@@ -747,7 +755,7 @@ public class DbIndexDialog extends AddEditDialog<DbIndexWrapper>
         }
         else
         {
-            okButton.setEnabled( attributes.size() > 0 );
+            okButton.setEnabled( getEditedElement().getAttributes().size() > 0 );
         }
     }
 }

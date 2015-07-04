@@ -35,7 +35,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.apache.directory.studio.openldap.config.editor.wrappers.OrderedStringValueWrapper;
-import org.apache.directory.studio.openldap.config.editor.wrappers.StringValueWrapper;
 
 
 /**

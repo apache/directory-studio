@@ -31,6 +31,7 @@ import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.common.ui.widgets.TableWidget;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
+import org.apache.directory.studio.common.ui.wrappers.StringValueWrapper;
 import org.apache.directory.studio.openldap.common.ui.model.AllowFeatureEnum;
 import org.apache.directory.studio.openldap.common.ui.model.AuthzPolicyEnum;
 import org.apache.directory.studio.openldap.common.ui.model.DisallowFeatureEnum;
@@ -45,7 +46,6 @@ import org.apache.directory.studio.openldap.config.editor.wrappers.OrderedString
 import org.apache.directory.studio.openldap.config.editor.wrappers.RequireConditionDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.RestrictOperationDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.StringValueDecorator;
-import org.apache.directory.studio.openldap.config.editor.wrappers.StringValueWrapper;
 import org.apache.directory.studio.openldap.config.model.OlcGlobal;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
