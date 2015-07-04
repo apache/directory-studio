@@ -37,6 +37,7 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.search.FilterWidge
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.utils.AttributeLoader;
+import org.apache.directory.studio.common.ui.wrappers.StringValueWrapper;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -510,7 +511,7 @@ public class ReplicationDetailsPage implements IDetailsPage
 
         if ( AttributeDialog.OK == dialog.open() )
         {
-            String newAttribute = dialog.getEditedElement();
+            String newAttribute = dialog.getEditedElement().getValue();
 
             if ( !attributesList.contains( newAttribute ) )
             {
@@ -536,14 +537,14 @@ public class ReplicationDetailsPage implements IDetailsPage
             String attribute = ( String ) selection.getFirstElement();
 
             AttributeDialog dialog = new AttributeDialog( addAttributeButton.getShell() );
-            dialog.setEditedElement( attribute );
+            dialog.setEditedElement( new StringValueWrapper( attribute, false ) );
             dialog.setAttributeNamesAndOids( attributeLoader.getAttributeNamesAndOids() );
 
             if ( AttributeDialog.OK == dialog.open() )
             {
                 attributesList.remove( attribute );
 
-                String newAttribute = dialog.getEditedElement();
+                String newAttribute = dialog.getEditedElement().getValue();
 
                 if ( !attributesList.contains( newAttribute ) )
                 {
