@@ -32,7 +32,7 @@ import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.server.config.beans.ReplConsumerBean;
-import org.apache.directory.studio.apacheds.configuration.dialogs.AttributeDialog;
+import org.apache.directory.studio.common.ui.dialogs.AttributeDialog;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.EntryWidget;
