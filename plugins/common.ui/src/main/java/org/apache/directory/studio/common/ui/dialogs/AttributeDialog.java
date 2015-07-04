@@ -24,6 +24,7 @@ package org.apache.directory.studio.common.ui.dialogs;
 import org.apache.directory.studio.common.ui.AddEditDialog;
 import org.apache.directory.studio.common.ui.Messages;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.common.ui.wrappers.StringValueWrapper;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -48,7 +49,7 @@ import org.eclipse.swt.widgets.Shell;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class AttributeDialog extends AddEditDialog<String>
+public class AttributeDialog extends AddEditDialog<StringValueWrapper>
 {
     /** The possible attribute types and OIDs. */
     private String[] attributeTypesAndOids;
@@ -94,7 +95,7 @@ public class AttributeDialog extends AddEditDialog<String>
      */
     protected void okPressed()
     {
-        setEditedElement( typeOrOidCombo.getText() );
+        setEditedElement( new StringValueWrapper( typeOrOidCombo.getText(), false ) );
         super.okPressed();
     }
 
@@ -110,7 +111,7 @@ public class AttributeDialog extends AddEditDialog<String>
 
         if ( id == IDialogConstants.OK_ID ) 
         {
-            String attribute = (String)getEditedElement();
+            String attribute = ((StringValueWrapper)getEditedElement() ).getValue();
 
             if ( ( attribute == null ) || ( attribute.length() == 0 ) )
             {
@@ -147,7 +148,7 @@ public class AttributeDialog extends AddEditDialog<String>
         
         if ( getEditedElement() != null )
         {
-            typeOrOidCombo.setText( getEditedElement() );
+            typeOrOidCombo.setText( getEditedElement().getValue() );
         }
         
         typeOrOidCombo.addModifyListener( new ModifyListener()
@@ -197,6 +198,6 @@ public class AttributeDialog extends AddEditDialog<String>
     public void addNewElement()
     {
         // Default to none
-        setEditedElement( "" );
+        setEditedElement( new StringValueWrapper( "", false  ) );
     }
 }

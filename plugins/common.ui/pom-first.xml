@@ -50,7 +50,9 @@
             <Export-Package>org.apache.directory.studio.common.ui,
  org.apache.directory.studio.common.ui.dialogs,
  org.apache.directory.studio.common.ui.filesystem,
- org.apache.directory.studio.common.ui.widgets</Export-Package>
+ org.apache.directory.studio.common.ui.widgets,
+ org.apache.directory.studio.common.ui.wrappers
+ </Export-Package>
             
             <Require-Bundle>
  org.eclipse.core.runtime,
