@@ -52,7 +52,7 @@
  org.apache.directory.studio.common.ui.filesystem,
  org.apache.directory.studio.common.ui.widgets,
  org.apache.directory.studio.common.ui.wrappers
- </Export-Package>
+            </Export-Package>
             
             <Require-Bundle>
  org.eclipse.core.runtime,
