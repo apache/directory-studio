@@ -69,7 +69,7 @@ public class DbIndexWrapper implements Cloneable, Comparable<DbIndexWrapper>
     );
     
     /** The set of configured attributes */
-    private Set<DbIndexTypeEnum> indexTypes = new HashSet<DbIndexTypeEnum>();
+    private Set<DbIndexTypeEnum> indexTypes = new TreeSet<DbIndexTypeEnum>();
         
     /**
      * Build a DbIndexWrapper from a String containing the description of the index.
