@@ -17,7 +17,7 @@
 -->
 <site>
    <!-- Need to add at least one bundle otherwise assemble-repository fails -->
-   <bundle id="org.apache.directory.api.util" version="1.0.0.M30">
+   <bundle id="org.apache.directory.api.util" version="0.0.0">
       <category name="org.apache.directory.studio.dependencies"/>
    </bundle>
    <category-def name="org.apache.directory.studio.dependencies" label="Apache Directory Studio Dependencies">
