@@ -179,8 +179,6 @@ public class DbIndexDialog extends AddEditDialog<DbIndexWrapper>
                     {
                         indexWrapper.getTypes().remove( indexType );
                     }
-                    
-                    System.out.println( indexWrapper );
                 }
             }
         };
@@ -219,8 +217,6 @@ public class DbIndexDialog extends AddEditDialog<DbIndexWrapper>
                 subAnyCheckbox.setSelection( false );
                 subFinalCheckbox.setSelection( false );
             }
-            
-            System.out.println( indexWrapper );
             
             checkAndUpdateOkButtonEnableState();
         }
@@ -381,8 +377,6 @@ public class DbIndexDialog extends AddEditDialog<DbIndexWrapper>
                     indexWrapper.getIndexTypes().remove( DbIndexTypeEnum.SUBSTR );
                 }
             }
-            
-            System.out.println( indexWrapper );
 
             // Last, update the subCheckbox state
             checkAndUpdateOkButtonEnableState();
