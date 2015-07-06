@@ -28,7 +28,6 @@ import java.util.Collections;
 import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClassTypeEnum;
-import org.apache.directory.api.ldap.model.schema.SchemaObjectRenderer;
 import org.apache.directory.api.ldap.model.schema.UsageEnum;
 import org.junit.Before;
 import org.junit.Test;
@@ -91,7 +90,7 @@ public class OpenLdapSchemaFileExporterTest
     public void testOpenLdapSchemaRendererObjectClassSimple()
     {
         String actual = OpenLdapSchemaFileExporter.toSourceCode( objectClassSimple );
-        String expected = "objectclass ( 1.2.3.4 NAME 'name0'\n\tSTRUCTURAL\n\tMUST att0\n)";
+        String expected = "objectclass ( 1.2.3.4 NAME 'name0'\n\tSTRUCTURAL\n\tMUST att0 )";
         assertEquals( expected, actual );
     }
 
@@ -100,7 +99,7 @@ public class OpenLdapSchemaFileExporterTest
     public void testOpenLdapSchemaRendererObjectClassComplex()
     {
         String actual = OpenLdapSchemaFileExporter.toSourceCode( objectClassComplex );
-        String expected = "objectclass ( 1.2.3.4 NAME ( 'name1' 'name2' )\n\tDESC 'description with \\27quotes\\27'\n\tOBSOLETE\n\tSUP 1.3.5.7\n\tAUXILIARY\n\tMUST ( att1 $ att2 )\n\tMAY ( att3 $ att4 )\n)";
+        String expected = "objectclass ( 1.2.3.4 NAME ( 'name1' 'name2' )\n\tDESC 'description with \\27quotes\\27'\n\tOBSOLETE\n\tSUP 1.3.5.7\n\tAUXILIARY\n\tMUST ( att1 $ att2 )\n\tMAY ( att3 $ att4 ) )";
         assertEquals( expected, actual );
     }
     
@@ -108,7 +107,7 @@ public class OpenLdapSchemaFileExporterTest
     public void testOpenLdapSchemaRendererAttributeTypeSimple()
     {
         String actual = OpenLdapSchemaFileExporter.toSourceCode( attributeTypeSimple );
-        String expected = "attributetype ( 1.2.3.4 NAME 'name0'\n\tEQUALITY matchingRule0\n\tSYNTAX 2.3.4.5{512}\n\tCOLLECTIVE\n\tUSAGE userApplications\n)";
+        String expected = "attributetype ( 1.2.3.4 NAME 'name0'\n\tEQUALITY matchingRule0\n\tSYNTAX 2.3.4.5{512}\n\tCOLLECTIVE\n\tUSAGE userApplications )";
         assertEquals( expected, actual );
     }
 
@@ -117,7 +116,7 @@ public class OpenLdapSchemaFileExporterTest
     public void testOpenLdapSchemaRendererAttributeTypeComplex()
     {
         String actual = OpenLdapSchemaFileExporter.toSourceCode( attributeTypeComplex );
-        String expected = "attributetype ( 1.2.3.4 NAME ( 'name1' 'name2' )\n\tDESC 'description with \\27quotes\\27'\n\tOBSOLETE\n\tSUP superAttr\n\tEQUALITY matchingRule1\n\tORDERING matchingRule2\n\tSUBSTR matchingRule3\n\tSINGLE-VALUE\n\tNO-USER-MODIFICATION\n\tUSAGE directoryOperation\n)";
+        String expected = "attributetype ( 1.2.3.4 NAME ( 'name1' 'name2' )\n\tDESC 'description with \\27quotes\\27'\n\tOBSOLETE\n\tSUP superAttr\n\tEQUALITY matchingRule1\n\tORDERING matchingRule2\n\tSUBSTR matchingRule3\n\tSINGLE-VALUE\n\tNO-USER-MODIFICATION\n\tUSAGE directoryOperation )";
         assertEquals( expected, actual );
     }
 
