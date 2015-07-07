@@ -22,8 +22,6 @@ package org.apache.directory.studio.openldap.config.editor.wrappers;
 import org.apache.directory.studio.openldap.config.model.database.OlcDatabaseConfig;
 
 
-
-
 /**
  * This class implements a database wrapper used in the 'Databases' page UI.
  * 
@@ -73,5 +71,14 @@ public class DatabaseWrapper
     public void setDatabase( OlcDatabaseConfig database )
     {
         this.database = database;
+    }
+    
+    
+    /**
+     * @see Object#toString()
+     */
+    public String toString()
+    {
+        return database.toString();
     }
 }

@@ -29,14 +29,19 @@ import org.apache.directory.studio.openldap.config.model.ConfigurationElement;
 
 /**
  * Java bean for the 'olcMdbConfig' object class. There are a few parameter
- * that can be managed for the MDB databse :
+ * that can be managed for the MDB database :
  * <ul>
- * <li>directory : the place on disk the DB will be stored</li>
- * <li>maxSize : the size of the database, in bytes. As it can't grow automatically, set it to
+ * <li>olcDbDirectory : the place on disk the DB will be stored</li>
+ * <li>olcDbCheckpoint : </li>
+ * <li>olcDbEnvFlags</li>
+ * <li>olcDbIndex</li>
+ * <li>olcDbMaxEntrySize</li>
+ * <li>olcDbMaxreaders</li>
+ * <li>olcDbMaxSize : the size of the database, in bytes. As it can't grow automatically, set it to
  * the expected maximum DB size</li>
- * <li></li>
- * <li></li>
- * <li></li>
+ * <li>olcDbMode</li>
+ * <li>olcDbNoSync</li>
+ * <li>olcDbSearchStack</li>
  * </ul>
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -327,4 +332,20 @@ public class OlcMdbConfig extends OlcDatabaseConfig
     {
         return DatabaseTypeEnum.MDB.toString().toLowerCase();
     };
+    
+    
+    /**
+     * @see Object#toString()
+     */
+    public String toString()
+    {
+        if ( getOlcSuffix().size() > 0 )
+        { 
+            return getOlcDatabase() + ":" + getOlcSuffix().get( 0 );
+        }
+        else
+        {
+            return getOlcDatabase();
+        }
+    }
 }

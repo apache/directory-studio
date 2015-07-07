@@ -102,7 +102,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
 
     // UI Fields
     /** The table listing all the existing databases */
-    private TableViewer databseViewer;
+    private TableViewer databaseTableViewer;
 
     /** The button used to add a new Database */
     private Button addButton;
@@ -150,7 +150,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
                     */
                     detailsPart.commit( false );
                     managedForm.fireSelectionChanged( managedForm.getParts()[0], event.getSelection() );
-                    databseViewer.refresh();
+                    databaseTableViewer.refresh();
                     refreshButtonStates();
                 }
             }
@@ -272,11 +272,11 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
         SectionPart sectionPart = new SectionPart( section );
         this.managedForm = managedForm;
         managedForm.addPart( sectionPart );
-        databseViewer = new TableViewer( table );
+        databaseTableViewer = new TableViewer( table );
 
-        databseViewer.setContentProvider( new ArrayContentProvider() );
-        databseViewer.setLabelProvider( new DatabaseWrapperLabelProvider() );
-        databseViewer.setSorter( new DatabaseWrapperViewerSorter() );
+        databaseTableViewer.setContentProvider( new ArrayContentProvider() );
+        databaseTableViewer.setLabelProvider( new DatabaseWrapperLabelProvider() );
+        databaseTableViewer.setSorter( new DatabaseWrapperViewerSorter() );
         
         // Add a contextual menu to enable/disable a Database. This is a 2.5 feature.
         // TODO : check with the schemaManager
@@ -374,7 +374,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
             databaseWrappers.add( new DatabaseWrapper( database ) );
         }
 
-        databseViewer.setInput( databaseWrappers );
+        databaseTableViewer.setInput( databaseWrappers );
     }
 
 
@@ -384,7 +384,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
     public void refreshUI()
     {
         initFromInput();
-        databseViewer.refresh();
+        databaseTableViewer.refresh();
     }
 
 
@@ -393,7 +393,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
      */
     private void addListeners()
     {
-        databseViewer.addSelectionChangedListener( viewerSelectionChangedListener );
+        databaseTableViewer.addSelectionChangedListener( viewerSelectionChangedListener );
         addButton.addSelectionListener( addButtonSelectionListener );
         deleteButton.addSelectionListener( deleteButtonSelectionListener );
         upButton.addSelectionListener( upButtonSelectionListener );
@@ -422,8 +422,8 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
 
         DatabaseWrapper databaseWrapper = new DatabaseWrapper( database );
         databaseWrappers.add( databaseWrapper );
-        databseViewer.refresh();
-        databseViewer.setSelection( new StructuredSelection( databaseWrapper ) );
+        databaseTableViewer.refresh();
+        databaseTableViewer.setSelection( new StructuredSelection( databaseWrapper ) );
         setEditorDirty();
     }
 
@@ -433,7 +433,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
      */
     private void deleteSelectedDatabase()
     {
-        StructuredSelection selection = ( StructuredSelection ) databseViewer.getSelection();
+        StructuredSelection selection = ( StructuredSelection ) databaseTableViewer.getSelection();
 
         if ( !selection.isEmpty() )
         {
@@ -573,7 +573,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
      */
     private void moveSelectedDatabaseUp()
     {
-        StructuredSelection selection = ( StructuredSelection ) databseViewer.getSelection();
+        StructuredSelection selection = ( StructuredSelection ) databaseTableViewer.getSelection();
 
         if ( !selection.isEmpty() )
         {
@@ -595,7 +595,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
                 selectedDatabase.setOlcDatabase( "{" + swapDatabaseOrderingPrefix + "}" + selectedDatabaseName );
                 swapDatabase.setOlcDatabase( "{" + selectedDatabaseOrderingPrefix + "}" + swapDatabaseName );
 
-                databseViewer.refresh();
+                databaseTableViewer.refresh();
                 refreshButtonStates();
                 setEditorDirty();
             }
@@ -636,7 +636,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
      */
     private void moveSelectedDatabaseDown()
     {
-        StructuredSelection selection = ( StructuredSelection ) databseViewer.getSelection();
+        StructuredSelection selection = ( StructuredSelection ) databaseTableViewer.getSelection();
 
         if ( !selection.isEmpty() )
         {
@@ -658,7 +658,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
                 selectedDatabase.setOlcDatabase( "{" + swapDatabaseOrderingPrefix + "}" + selectedDatabaseName );
                 swapDatabase.setOlcDatabase( "{" + selectedDatabaseOrderingPrefix + "}" + swapDatabaseName );
 
-                databseViewer.refresh();
+                databaseTableViewer.refresh();
                 refreshButtonStates();
                 setEditorDirty();
             }
@@ -705,7 +705,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
     private void refreshButtonStates()
     {
         // Getting the selection of the table viewer
-        StructuredSelection selection = ( StructuredSelection ) databseViewer.getSelection();
+        StructuredSelection selection = ( StructuredSelection ) databaseTableViewer.getSelection();
 
         if ( !selection.isEmpty() )
         {
@@ -733,7 +733,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
     {
         ( ( OpenLDAPServerConfigurationEditor ) page.getEditor() ).setDirty( true );
         detailsPage.commit( false );
-        databseViewer.refresh();
+        databaseTableViewer.refresh();
     }
 
 

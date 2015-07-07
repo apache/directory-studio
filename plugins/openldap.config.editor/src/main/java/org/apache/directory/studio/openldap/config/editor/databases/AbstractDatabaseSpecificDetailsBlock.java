@@ -56,6 +56,7 @@ public abstract class AbstractDatabaseSpecificDetailsBlock<D extends OlcDatabase
             detailsPage.setEditorDirty();
         }
     };
+    
     protected WidgetModifyListener dirtyWidgetModifyListener = new WidgetModifyListener()
     {
         public void widgetModified( WidgetModifyEvent event )
@@ -63,6 +64,7 @@ public abstract class AbstractDatabaseSpecificDetailsBlock<D extends OlcDatabase
             detailsPage.setEditorDirty();
         }
     };
+    
     protected SelectionListener dirtySelectionListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )

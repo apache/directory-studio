@@ -337,12 +337,9 @@ public class OpenLDAPServerConfigurationEditorUtils
     /**
      * Saves the configuration.
      *
-     * @param input
-     *      the connection server configuration input
-     * @param editor
-     *      the editor
-     * @param monitor
-     *      the monitor
+     * @param input the connection server configuration input
+     * @param editor the editor
+     * @param monitor the monitor
      * @return
      *      <code>true</code> if the operation is successful,
      *      <code>false</code> if not

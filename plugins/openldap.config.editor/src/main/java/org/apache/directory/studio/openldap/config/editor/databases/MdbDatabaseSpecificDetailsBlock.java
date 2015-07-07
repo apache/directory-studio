@@ -20,9 +20,14 @@
 package org.apache.directory.studio.openldap.config.editor.databases;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.common.ui.widgets.TableWidget;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.openldap.config.editor.wrappers.DbIndexDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.DbIndexWrapper;
@@ -113,8 +118,26 @@ public class MdbDatabaseSpecificDetailsBlock extends AbstractDatabaseSpecificDet
 
     /** The olcDbSearchStack attribute( Integer) */
     private Text searchStackDepthText;
-
-
+    
+    
+    /**
+     * The olcAllows listener
+     */
+    private WidgetModifyListener indexesListener = new WidgetModifyListener()
+    {
+        public void widgetModified( WidgetModifyEvent e )
+        {
+            List<String> indices = new ArrayList<String>();
+            
+            for ( DbIndexWrapper dbIndex : indicesWidget.getElements() )
+            {
+                indices.add( dbIndex.toString() );
+            }
+            
+            database.setOlcDbIndex( indices );
+        }
+    };
+        
     /**
      * Creates a new instance of MdbDatabaseSpecificDetailsBlock.
      * 
@@ -226,6 +249,8 @@ public class MdbDatabaseSpecificDetailsBlock extends AbstractDatabaseSpecificDet
         indicesWidget = new TableWidget<DbIndexWrapper>( new DbIndexDecorator( null, browserConnection ) );
         indicesWidget.createWidgetWithEdit( databaseIndexesComposite, toolkit );
         indicesWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+        
+        indicesWidget.addWidgetModifyListener( indexesListener );
     }
 
 
@@ -335,7 +360,14 @@ public class MdbDatabaseSpecificDetailsBlock extends AbstractDatabaseSpecificDet
             modeUnixPermissionsWidget.setValue( mode );
 
             // Indices Text
-            //indicesWidget.setIndices( database.getOlcDbIndex() );
+            List<DbIndexWrapper> dbIndexWrappers = new ArrayList<DbIndexWrapper>();
+            
+            for ( String index : database.getOlcDbIndex() )
+            {
+                dbIndexWrappers.add( new DbIndexWrapper( index ) );
+            }
+            
+            indicesWidget.setElements( dbIndexWrappers );
 
             // Max Readers Text
             Integer maxReaders = database.getOlcDbMaxReaders();
@@ -448,12 +480,10 @@ public class MdbDatabaseSpecificDetailsBlock extends AbstractDatabaseSpecificDet
         // Indices
         database.clearOlcDbIndex();
 
-        /*
-        for ( String index : indicesWidget.getIndices() )
+        for ( DbIndexWrapper dbIndexWrapper : indicesWidget.getElements() )
         {
-            database.addOlcDbIndex( index );
+            database.addOlcDbIndex( dbIndexWrapper.toString() );
         }
-        */
 
         // Max readers
         try
