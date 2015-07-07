@@ -89,8 +89,62 @@ import org.eclipse.ui.forms.widgets.Section;
 
 
 /**
- * This class represents the Details Page of the Server Configuration Editor for the Database type
+ * This class represents the Details Page of the Server Configuration Editor for the Database type. 
+ * We have 6 sections to manage :
+ * <ul>
+ * <li>general :</li>
+ *   <ul>
+ *     <li>olcSuffix(DN, SV/MV)</li>
+ *     <li>olcRootDN(DN, SV)</li>
+ *     <li>olcRootPw(String, SV)</li>
+ *     <li></li>
+ *   </ul>
+ * <li>limits :</li>
+ *   <ul>
+ *     <li>olcSizeLimit(String, SV)</li>
+ *     <li>olcTimeLimit(String, MV)</li>
+ *     <li>olcLimits(String, MV, Ordered)</li>
+ *     <li>olcMaxDerefDepth(Integer, SV)</li>
+ *   </ul>
+ * <li>security :</li>
+ *   <ul>
+ *     <li>olcHidden(Boolean)</li>
+ *     <li>olcReadOnly(Boolean)</li>
+ *     <li>olcRequires(String, MV)</li>
+ *     <li>olcRestrict(String, MV)</li>
+ *     <li>olcSecurity(String, MV)</li>
+ *   </ul>
+ * <li>access</li>
+ *   <ul>
+ *     <li>olcAccess(String, MV, Ordered)</li>
+ *     <li>olcAddContentAcl(Boolean)</li>
+ *   </ul>
+ * <li>replication :</li>
+ *   <ul>
+ *     <li>olcMirrorMode(Boolean)</li>
+ *     <li>olcSyncrepl(String, MV, Ordered)</li>
+ *     <li>olcSyncUseSubentry(Boolean)</li>
+ *     <li>olcUpdateDN(DN, SV)</li>
+ *     <li>olcUpdateRef(String, MV)</li>
+ *     <li>olcReplica(String, MV, Ordered)</li>
+ *     <li>olcReplicaArgsFile(String, SV)</li>
+ *     <li>olcReplicaPidFile(String, SV)</li>
+ *     <li>olcReplicationInterval(Integer, SV)</li>
+ *     <li>olcReplogFile(String, SV)</li>
+ *   </ul>
+ * <li>options :</li>
+ *   <ul>
+ *     <li>olcLastMod(Boolean)</li>
+ *     <li>olcMonitoring(Boolean)</li>
+ *     <li>olcPlugin(String, MV)</li>
+ *     <li>olcExtraArgs(String, MV)</li>
+ *     <li>olcSchemaDN(DN, SV)</li>
+ *     <li>olcSubordinate(String, SV)</li>
+ *   </ul>
+ * </ul>
  * 
+ * <pre>
+ * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class DatabasesDetailsPage implements IDetailsPage
