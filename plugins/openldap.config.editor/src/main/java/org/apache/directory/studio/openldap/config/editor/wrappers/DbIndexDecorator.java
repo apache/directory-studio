@@ -23,7 +23,6 @@ import org.apache.directory.studio.common.ui.TableDecorator;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.openldap.common.ui.model.DisallowFeatureEnum;
 import org.apache.directory.studio.openldap.config.editor.dialogs.DbIndexDialog;
-import org.apache.directory.studio.openldap.config.editor.dialogs.DisallowFeatureDialog;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
 

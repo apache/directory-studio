@@ -20,12 +20,10 @@
 package org.apache.directory.studio.openldap.config.editor.wrappers;
 
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.apache.directory.api.ldap.model.schema.SchemaUtils;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.openldap.common.ui.model.DbIndexTypeEnum;
 
