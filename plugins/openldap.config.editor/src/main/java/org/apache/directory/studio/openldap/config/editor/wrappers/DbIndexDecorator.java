@@ -21,7 +21,6 @@ package org.apache.directory.studio.openldap.config.editor.wrappers;
 
 import org.apache.directory.studio.common.ui.TableDecorator;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.openldap.common.ui.model.DisallowFeatureEnum;
 import org.apache.directory.studio.openldap.config.editor.dialogs.DbIndexDialog;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
@@ -43,16 +42,16 @@ public class DbIndexDecorator extends TableDecorator<DbIndexWrapper>
     }
 
     /**
-     * Construct the label for an DisallowFeature.
+     * Construct the label for an DbIndex.
      * 
      */
     public String getText( Object element )
     {
-        if ( element instanceof DisallowFeatureEnum )
+        if ( element instanceof DbIndexWrapper )
         {
-            String disallowFeature = ( ( DisallowFeatureEnum ) element ).toString();
+            String dbIndex = ( ( DbIndexWrapper ) element ).toString();
 
-            return disallowFeature;
+            return dbIndex;
         }
 
         return super.getText( element );
