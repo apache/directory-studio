@@ -624,6 +624,8 @@ public class TableWidget<E> extends AbstractWidget
      */
     public void setElements( List<E> elements )
     {
+        this.elements.clear();
+        
         if ( ( elements != null ) && ( elements.size() > 0 ) )
         {
             sort( elements, decorator );
