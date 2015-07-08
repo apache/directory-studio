@@ -89,6 +89,7 @@ public class EntryWidget extends AbstractWidget
             notifyListeners();
         }
     };
+    
     private ModifyListener dnComboListener = new ModifyListener()
     {
         public void modifyText( ModifyEvent e )
@@ -106,6 +107,7 @@ public class EntryWidget extends AbstractWidget
             notifyListeners();
         }
     };
+    
     private SelectionAdapter entryBrowseButtonListener = new SelectionAdapter()
     {
         public void widgetSelected( SelectionEvent e )
@@ -117,9 +119,11 @@ public class EntryWidget extends AbstractWidget
 
                 // get initial entry
                 IEntry entry = rootEntry;
-                if ( dn != null && dn.size() > 0 )
+                
+                if ( ( dn != null ) && ( dn.size() > 0 ) )
                 {
                     entry = browserConnection.getEntryFromCache( dn );
+                    
                     if ( entry == null )
                     {
                         ReadEntryRunnable runnable = new ReadEntryRunnable( browserConnection, dn );
@@ -224,6 +228,7 @@ public class EntryWidget extends AbstractWidget
         {
             composite = new Composite( parent, SWT.NONE );
         }
+        
         GridLayout compositeGridLayout = new GridLayout( getNumberOfColumnsForComposite(), false );
         compositeGridLayout.marginHeight = compositeGridLayout.marginWidth = 0;
         compositeGridLayout.verticalSpacing = 0;
@@ -244,10 +249,12 @@ public class EntryWidget extends AbstractWidget
 
         // Dn combo
         dnCombo = BaseWidgetUtils.createCombo( composite, new String[0], -1, 1 );
+        
         if ( toolkit != null )
         {
             toolkit.adapt( dnCombo );
         }
+        
         GridData gd = new GridData( GridData.FILL_HORIZONTAL );
         gd.horizontalSpan = 1;
         gd.widthHint = 50;
@@ -268,7 +275,6 @@ public class EntryWidget extends AbstractWidget
         {
             entryBrowseButton = BaseWidgetUtils.createButton( composite,
                 Messages.getString( "EntryWidget.BrowseButton" ), 1 ); //$NON-NLS-1$
-
         }
 
         dnChanged();
