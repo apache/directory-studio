@@ -473,23 +473,13 @@ public class TableWidget<E> extends AbstractWidget
 
     
     /**
-     * Enable the table (Buttons will be active, actions on the table will be active)
+     * Enable the table (Buttons will be active, except the Edit and Delete ones, actions on the table will be active)
      */
     public void enable()
     {
         if ( addButton != null )
         {
             addButton.setEnabled( true );
-        }
-        
-        if ( deleteButton != null )
-        {
-            deleteButton.setEnabled( true );
-        }
-        
-        if ( editButton != null )
-        {
-            editButton.setEnabled( true );
         }
         
         if ( upButton != null )
