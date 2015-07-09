@@ -644,7 +644,7 @@ public class SizeLimitWrapper extends AbstractLimitWrapper
     /**
      * @return The Limit's type
      */
-    protected String getType()
+    public String getType()
     {
         return "size";
     }

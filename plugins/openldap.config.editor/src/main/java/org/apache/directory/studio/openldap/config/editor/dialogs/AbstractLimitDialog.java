@@ -20,10 +20,11 @@
 package org.apache.directory.studio.openldap.config.editor.dialogs;
 
 import org.apache.directory.api.util.Strings;
+import org.apache.directory.studio.common.ui.AddEditDialog;
 import org.apache.directory.studio.openldap.config.editor.wrappers.AbstractLimitWrapper;
+import org.apache.directory.studio.openldap.config.editor.wrappers.LimitWrapper;
 import org.apache.directory.studio.openldap.config.editor.wrappers.SizeLimitWrapper;
 import org.apache.directory.studio.openldap.config.editor.wrappers.TimeLimitWrapper;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -42,7 +43,7 @@ import org.eclipse.swt.widgets.Text;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class AbstractLimitDialog extends Dialog
+public abstract class AbstractLimitDialog<E> extends AddEditDialog<E>
 {
     // UI widgets
     /** The SoftLimit Text and checkboxes */
@@ -64,8 +65,8 @@ public abstract class AbstractLimitDialog extends Dialog
     /** The modified Limit, as a String */
     protected String newLimitStr;
     
-    /** The wrapper (either time or size) used to store tghe parameters */
-    protected AbstractLimitWrapper limitWrapper;
+    /** The wrapper (either time or size) used to store the parameters */
+    //protected AbstractLimitWrapper limitWrapper;
 
 
     /**
@@ -201,6 +202,7 @@ public abstract class AbstractLimitDialog extends Dialog
 
             // The possible values are : 'unlimited' | 'none' | INT | -1
             String softLimitStr = softLimitText.getText();
+            LimitWrapper limitWrapper = ((LimitWrapper)getEditedElement());
 
             if ( Strings.isEmpty( softLimitStr ) )
             {
@@ -288,6 +290,7 @@ public abstract class AbstractLimitDialog extends Dialog
 
             // The possible values are : 'unlimited' | 'none' | 'soft' | INT | -1
             String hardLimitStr = hardLimitText.getText();
+            LimitWrapper limitWrapper = (LimitWrapper)getEditedElement();
 
             if ( Strings.isEmpty( hardLimitStr ) )
             {
@@ -370,7 +373,8 @@ public abstract class AbstractLimitDialog extends Dialog
 
             // The possible values are : 'unlimited' | 'none' | INT | -1
             String globalLimitStr = globalLimitText.getText();
-            
+            LimitWrapper limitWrapper = (LimitWrapper)getEditedElement();
+
             if ( Strings.isEmpty( globalLimitStr ) )
             {
                 // Check the case we don't have anything
@@ -428,6 +432,7 @@ public abstract class AbstractLimitDialog extends Dialog
         {
             Display display = softLimitText.getDisplay();
             Button okButton = getButton( IDialogConstants.OK_ID );
+            LimitWrapper limitWrapper = (LimitWrapper)getEditedElement();
 
             if ( softUnlimitedCheckbox.getSelection() )
             {
@@ -464,6 +469,7 @@ public abstract class AbstractLimitDialog extends Dialog
         {
             Display display = hardLimitText.getDisplay();
             Button okButton = getButton( IDialogConstants.OK_ID );
+            LimitWrapper limitWrapper = (LimitWrapper)getEditedElement();
 
             if ( hardUnlimitedCheckbox.getSelection() )
             {
@@ -495,6 +501,7 @@ public abstract class AbstractLimitDialog extends Dialog
         {
             Display display = hardLimitText.getDisplay();
             Button okButton = getButton( IDialogConstants.OK_ID );
+            LimitWrapper limitWrapper = (LimitWrapper)getEditedElement();
 
             if ( hardSoftCheckbox.getSelection() )
             {
@@ -544,6 +551,7 @@ public abstract class AbstractLimitDialog extends Dialog
         {
             Display display = globalLimitText.getDisplay();
             Button okButton = getButton( IDialogConstants.OK_ID );
+            LimitWrapper limitWrapper = (LimitWrapper)getEditedElement();
 
             if ( globalUnlimitedCheckbox.getSelection() )
             {
@@ -569,7 +577,7 @@ public abstract class AbstractLimitDialog extends Dialog
      */
     protected void okPressed()
     {
-        newLimitStr = limitWrapper.toString();
+        newLimitStr = getEditedElement().toString();
         super.okPressed();
     }
 
@@ -586,8 +594,10 @@ public abstract class AbstractLimitDialog extends Dialog
     /**
      * Initializes the UI from the Limit
      */
-    protected void initFromLimit()
+    protected void initDialog()
     {
+        LimitWrapper limitWrapper = (LimitWrapper)getEditedElement();
+        
         if ( limitWrapper != null )
         {
             // The SoftLimit

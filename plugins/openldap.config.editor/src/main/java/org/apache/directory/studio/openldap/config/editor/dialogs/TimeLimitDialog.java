@@ -72,7 +72,7 @@ import org.apache.directory.studio.openldap.config.editor.wrappers.TimeLimitWrap
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class TimeLimitDialog extends AbstractLimitDialog
+public class TimeLimitDialog extends AbstractLimitDialog<TimeLimitWrapper>
 {
     /**
      * Create a new instance of the TimeLimitDialog
@@ -97,7 +97,7 @@ public class TimeLimitDialog extends AbstractLimitDialog
         super( parentShell );
         super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
         
-        limitWrapper = new TimeLimitWrapper( timeLimitStr );
+        setEditedElement( new TimeLimitWrapper( timeLimitStr ) );
     }
     
     
@@ -142,10 +142,11 @@ public class TimeLimitDialog extends AbstractLimitDialog
         createTimeLimitEditGroup( composite );
         createTimeLimitShowGroup( composite );
 
-        initFromLimit();
+        initDialog();
+        addListeners();
         
         applyDialogFont( composite );
-        
+
         return composite;
     }
 
@@ -177,11 +178,9 @@ public class TimeLimitDialog extends AbstractLimitDialog
         // SoftLimit Text
         BaseWidgetUtils.createLabel( timeLimitGroup, "Soft Limit :", 1 );
         softLimitText = BaseWidgetUtils.createText( timeLimitGroup, "", 1 );
-        softLimitText.addModifyListener( softLimitTextListener );
 
         // Soft Limit unlimited checkbox Button
         softUnlimitedCheckbox = BaseWidgetUtils.createCheckbox( timeLimitGroup, "Unlimited", 2 );
-        softUnlimitedCheckbox.addSelectionListener( softUnlimitedCheckboxSelectionListener );
 
         // 2 tabs to fill the line
         BaseWidgetUtils.createLabel( timeLimitGroup, "", 2 );
@@ -189,24 +188,19 @@ public class TimeLimitDialog extends AbstractLimitDialog
         // HardLimit Text
         BaseWidgetUtils.createLabel( timeLimitGroup, "Hard Limit :", 1 );
         hardLimitText = BaseWidgetUtils.createText( timeLimitGroup, "", 1 );
-        hardLimitText.addModifyListener( hardLimitTextListener );
 
         // Hard Limit unlimited checkbox Button
         hardUnlimitedCheckbox = BaseWidgetUtils.createCheckbox( timeLimitGroup, "Unlimited", 2 );
-        hardUnlimitedCheckbox.addSelectionListener( hardUnlimitedCheckboxSelectionListener );
 
         // HardLimit soft checkbox Button
         hardSoftCheckbox = BaseWidgetUtils.createCheckbox( timeLimitGroup, "Soft", 2 );
-        hardSoftCheckbox.addSelectionListener( hardSoftCheckboxSelectionListener );
 
         // GlobalLimit Text
         BaseWidgetUtils.createLabel( timeLimitGroup, "Global Limit :", 1 );
         globalLimitText = BaseWidgetUtils.createText( timeLimitGroup, "", 1 );
-        globalLimitText.addModifyListener( globalLimitTextListener );
 
         // GLobal Limit unlimited checkbox Button
         globalUnlimitedCheckbox = BaseWidgetUtils.createCheckbox( timeLimitGroup, "Unlimited", 2 );
-        globalUnlimitedCheckbox.addSelectionListener( globalUnlimitedCheckboxSelectionListener );
 
         // 2 tabs to fill the line
         BaseWidgetUtils.createLabel( timeLimitGroup, "", 2 );
@@ -238,5 +232,27 @@ public class TimeLimitDialog extends AbstractLimitDialog
         limitText = BaseWidgetUtils.createText( timeLimitGroup, "", 1 );
         limitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         limitText.setEditable( false );
+    }
+
+
+    /**
+     * Adds listeners.
+     */
+    private void addListeners()
+    {
+        softLimitText.addModifyListener( softLimitTextListener );
+        softUnlimitedCheckbox.addSelectionListener( softUnlimitedCheckboxSelectionListener );
+        hardLimitText.addModifyListener( hardLimitTextListener );
+        hardUnlimitedCheckbox.addSelectionListener( hardUnlimitedCheckboxSelectionListener );
+        hardSoftCheckbox.addSelectionListener( hardSoftCheckboxSelectionListener );
+        globalLimitText.addModifyListener( globalLimitTextListener );
+        globalUnlimitedCheckbox.addSelectionListener( globalUnlimitedCheckboxSelectionListener );
+    }
+
+
+    @Override
+    public void addNewElement()
+    {
+        setEditedElement( new TimeLimitWrapper( "" ) );
     }
 }

@@ -20,37 +20,26 @@
 package org.apache.directory.studio.openldap.config.editor.wrappers;
 
 import org.apache.directory.studio.common.ui.TableDecorator;
-import org.apache.directory.studio.openldap.config.editor.dialogs.SsfDialog;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Shell;
 
 /**
- * A decorator for the SsfWrapper table.
+ * A decorator for the TimeLimitWrapper class.
  *  
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SsfDecorator extends TableDecorator<SsfWrapper>
+public abstract class LimitDecorator<E> extends TableDecorator<E>
 {
     /**
-     * Create a new instance of SsfDecorator
-     * @param parentShell The parent Shell
-     */
-    public SsfDecorator( Shell parentShell )
-    {
-        setDialog( new SsfDialog( parentShell ) );
-    }
-
-    /**
-     * Construct the label for a SSF. It can be one of :
+     * Construct the label for a TimeLimit. It can be one of :
      * 
      */
     public String getText( Object element )
     {
-        if ( element instanceof SsfWrapper )
+        if ( element instanceof LimitWrapper )
         {
-            String ssfText = ( ( SsfWrapper ) element ).toString();
+            String limitText = ( ( LimitWrapper ) element ).toString();
 
-            return ssfText;
+            return limitText;
         }
 
         return super.getText( element );
@@ -58,34 +47,10 @@ public class SsfDecorator extends TableDecorator<SsfWrapper>
 
 
     /**
-     * Get the image. We have none
+     * Get the image. We have none (may be we could add one for URLs ?)
      */
     public Image getImage( Object element )
     {
         return null;
     };
-
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int compare( SsfWrapper e1, SsfWrapper e2 )
-    {
-        if ( e1 != null )
-        {
-            return e1.compareTo( e2 );
-        }
-        else
-        {
-            if ( e2 == null )
-            {
-                return 0;
-            }
-            else
-            {
-                return 1;
-            }
-        }
-    }
 }

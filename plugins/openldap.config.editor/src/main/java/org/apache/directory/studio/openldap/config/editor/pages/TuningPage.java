@@ -46,12 +46,17 @@ import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.common.ui.widgets.TableWidget;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
+import org.apache.directory.studio.common.ui.wrappers.StringValueWrapper;
+import org.apache.directory.studio.openldap.common.ui.model.RequireConditionEnum;
 import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
 import org.apache.directory.studio.openldap.config.editor.dialogs.OverlayDialog;
 import org.apache.directory.studio.openldap.config.editor.dialogs.SizeLimitDialog;
 import org.apache.directory.studio.openldap.config.editor.dialogs.TimeLimitDialog;
+import org.apache.directory.studio.openldap.config.editor.wrappers.LimitWrapper;
 import org.apache.directory.studio.openldap.config.editor.wrappers.TcpBufferDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.TcpBufferWrapper;
+import org.apache.directory.studio.openldap.config.editor.wrappers.TimeLimitDecorator;
+import org.apache.directory.studio.openldap.config.editor.wrappers.TimeLimitWrapper;
 import org.apache.directory.studio.openldap.config.model.OlcGlobal;
 
 
@@ -119,9 +124,12 @@ import org.apache.directory.studio.openldap.config.model.OlcGlobal;
  *   | | Idle Timeout  : [      ]            | | Subany Indices Length    : [      ] | |
  *   | | Size Limit : [             ] (Edit) | | Subany Indices Step      : [      ] | |
  *   | | Time Limit : [             ] (Edit) | | Sub indices Max length   : [      ] | |
- *   | |                                     | | Sub indices Min length   : [      ] | |
- *   | +-------------------------------------+ +-------------------------------------+ |
- *   |                                                                                 |
+ *   | | +-----------------------+           | | Sub indices Min length   : [      ] | |
+ *   | | | xyz                   | (Add)     | +-------------------------------------+ |
+ *   | | | abc                   | (Edit)    |                                         |
+ *   | | |                       | (Delete)  |                                         |
+ *   | | +-----------------------+           |                                         |
+ *   | +-------------------------------------+                                         |
  *   +---------------------------------------------------------------------------------+
  * </pre>
  * 
@@ -171,11 +179,8 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
     /** The SizeLimit edit Button */
     private Button sizeLimitEditButton;
     
-    /** The olcTimeLimit */
-    private Text timeLimitText;
-    
     /** The TimeLimit edit Button */
-    private Button timeLimitEditButton;
+    private TableWidget<TimeLimitWrapper> timeLimitTableViewer;
 
     /** The olcWriteTimeout */
     private Text writeTimeoutText;
@@ -692,27 +697,18 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
     };
     
     
-    /**
-     * The listener for the timeLimit Text
-     */
-    private SelectionListener timeLimitEditSelectionListener = new SelectionAdapter()
+    private WidgetModifyListener timeLimitTableListener = new WidgetModifyListener()
     {
-        public void widgetSelected( SelectionEvent e )
+        public void widgetModified( WidgetModifyEvent e )
         {
-            TimeLimitDialog dialog = new TimeLimitDialog( timeLimitText.getShell(), timeLimitText.getText() );
-
-            if ( dialog.open() == OverlayDialog.OK )
+            List<String> timeLimits = new ArrayList<String>();
+            
+            for ( LimitWrapper limitWrapper : timeLimitTableViewer.getElements() )
             {
-                String newTimeLimitStr = dialog.getNewLimit();
-                
-                if ( newTimeLimitStr != null )
-                {
-                    timeLimitText.setText( newTimeLimitStr );
-                    List<String> timeLimitList = new ArrayList<String>();
-                    timeLimitList.add( newTimeLimitStr );
-                    getConfiguration().getGlobal().setOlcTimeLimit( timeLimitList );
-                }
+                timeLimits.add( limitWrapper.toString() );
             }
+            
+            getConfiguration().getGlobal().setOlcTimeLimit( timeLimits );
         }
     };
     
@@ -969,7 +965,12 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
      * | Write Timeout            : [      ] |
      * | Idle Timeout             : [      ] |
      * | Size Limit : [                    ] |
-     * | Time Limit : [                    ] |
+     * | Time Limit :                        |
+     * | +-----------------------+           |
+     * | | xyz                   | (Add)     |
+     * | | abc                   | (Edit)    |
+     * | |                       | (Delete)  |
+     * | +-----------------------+           |
      * |                                     |
      * +-------------------------------------+
      * </pre>
@@ -992,8 +993,8 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
         writeTimeoutText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false ) );
         // Attach a listener to check the value
         writeTimeoutText.addModifyListener( writeTimeoutTextListener );
-        toolkit.createLabel( ldapLimitSectionComposite, "" );
-        toolkit.createLabel( ldapLimitSectionComposite, "" );
+        //toolkit.createLabel( ldapLimitSectionComposite, "" );
+        //toolkit.createLabel( ldapLimitSectionComposite, "" );
         
         // The olcIdleTimeout parameter.
         toolkit.createLabel( ldapLimitSectionComposite, 
@@ -1002,28 +1003,37 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
         idleTimeoutText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false ) );
         // Attach a listener to check the value
         idleTimeoutText.addModifyListener( idleTimeoutTextListener );
-        toolkit.createLabel( ldapLimitSectionComposite, "" );
-        toolkit.createLabel( ldapLimitSectionComposite, "" );
+        //toolkit.createLabel( ldapLimitSectionComposite, "" );
+        //toolkit.createLabel( ldapLimitSectionComposite, "" );
         
         // The olcSizeLimit parameter.
         toolkit.createLabel( ldapLimitSectionComposite, 
             Messages.getString( "OpenLDAPTuningPage.SizeLimit" ) ); //$NON-NLS-1$
         sizeLimitText = toolkit.createText( ldapLimitSectionComposite, "" );
-        GridData sizeLimitData= new GridData( SWT.FILL, SWT.NONE, false, false, 2, 1 );
+        GridData sizeLimitData= new GridData( SWT.FILL, SWT.NONE, false, false, 1, 1 );
         sizeLimitData.horizontalAlignment = SWT.FILL;
         Rectangle rect = sizeLimitText.getShell().getMonitor().getClientArea();
-        sizeLimitData.widthHint = rect.width/8;
+        sizeLimitData.widthHint = rect.width/12;
         sizeLimitText.setLayoutData(sizeLimitData );
         sizeLimitText.setEditable( false );
-        
 
         // The SizeLimit edit button
         sizeLimitEditButton = BaseWidgetUtils.createButton( ldapLimitSectionComposite, 
             Messages.getString( "OpenLDAPSecurityPage.Edit" ), 1 ); //$NON-NLS-1$
         sizeLimitEditButton.setLayoutData( new GridData( SWT.RIGHT, SWT.CENTER, false, false ) );
         sizeLimitEditButton.addSelectionListener( sizeLimitEditSelectionListener );
+        toolkit.createLabel( ldapLimitSectionComposite, "" );
 
         // The olcTimeLimit parameter.
+        toolkit.createLabel( ldapLimitSectionComposite, 
+            Messages.getString( "OpenLDAPTuningPage.TimeLimit" ) ); //$NON-NLS-1$
+        timeLimitTableViewer = new TableWidget<TimeLimitWrapper>( new TimeLimitDecorator( ldapLimitSectionComposite.getShell() ) );
+
+        timeLimitTableViewer.createWidgetWithEdit( ldapLimitSectionComposite, toolkit );
+        timeLimitTableViewer.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 4, 1 ) );
+        timeLimitTableViewer.addWidgetModifyListener( timeLimitTableListener );
+
+        /*
         toolkit.createLabel( ldapLimitSectionComposite, 
             Messages.getString( "OpenLDAPTuningPage.TimeLimit" ) ); //$NON-NLS-1$
         timeLimitText = toolkit.createText( ldapLimitSectionComposite, "" );
@@ -1035,6 +1045,7 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
             Messages.getString( "OpenLDAPSecurityPage.Edit" ), 1 );
         timeLimitEditButton.setLayoutData( new GridData( SWT.RIGHT, SWT.CENTER, false, false ) );
         timeLimitEditButton.addSelectionListener( timeLimitEditSelectionListener );
+        */
     }
 
     
@@ -1189,14 +1200,16 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
     
             // TimeLimit Text Text
             List<String> timeLimitList = getConfiguration().getGlobal().getOlcTimeLimit();
-            
+            List<TimeLimitWrapper> limitWrappers = new ArrayList<TimeLimitWrapper>();
+
             if ( ( timeLimitList != null ) && ( timeLimitList.size() > 0 ) )
             {
-                timeLimitText.setText( timeLimitList.get( 0 ) );
-            }
-            else
-            {
-                timeLimitText.setText( "" );
+                for ( String timeLimit : timeLimitList )
+                {
+                    limitWrappers.add( new TimeLimitWrapper( timeLimit ) );
+                }
+                
+                timeLimitTableViewer.setElements( limitWrappers );
             }
         }
         
@@ -1226,7 +1239,7 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
         addDirtyListener( writeTimeoutText );
         addDirtyListener( idleTimeoutText);
         addDirtyListener( sizeLimitText );
-        addDirtyListener( timeLimitText );
+        addDirtyListener( timeLimitTableViewer );
     }
 
 
@@ -1252,6 +1265,6 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
         removeDirtyListener( writeTimeoutText );
         removeDirtyListener( idleTimeoutText);
         removeDirtyListener( sizeLimitText );
-        removeDirtyListener( timeLimitText );
+        removeDirtyListener( timeLimitTableViewer );
     }
 }

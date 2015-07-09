@@ -38,6 +38,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.apache.directory.studio.openldap.config.editor.wrappers.LimitWrapper;
 import org.apache.directory.studio.openldap.config.editor.wrappers.SizeLimitWrapper;
 
 
@@ -92,7 +93,7 @@ import org.apache.directory.studio.openldap.config.editor.wrappers.SizeLimitWrap
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SizeLimitDialog extends AbstractLimitDialog
+public class SizeLimitDialog extends AbstractLimitDialog<SizeLimitWrapper>
 {
     /** The UncheckedLimit Text and checkboxes */
     private Text uncheckedLimitText;
@@ -133,7 +134,7 @@ public class SizeLimitDialog extends AbstractLimitDialog
         super( parentShell );
         super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
         
-        limitWrapper = new SizeLimitWrapper( sizeLimitStr );
+        setEditedElement( new SizeLimitWrapper( sizeLimitStr ) );
     }
     
     
@@ -260,23 +261,25 @@ public class SizeLimitDialog extends AbstractLimitDialog
                 return;
             }
 
+            SizeLimitWrapper sizeLimitWrapper = (SizeLimitWrapper)getEditedElement();
+            
             // The possible values are : 'unlimited' | 'none' | 'disabled' | INT
             String uncheckedLimitStr = uncheckedLimitText.getText();
             
             if ( Strings.isEmpty( uncheckedLimitStr ) )
             {
                 // Check the case we don't have anything
-                ((SizeLimitWrapper)limitWrapper).setUncheckedLimit( null );
+                sizeLimitWrapper.setUncheckedLimit( null );
             }
             else if ( SizeLimitWrapper.UNLIMITED_STR.equalsIgnoreCase( uncheckedLimitStr ) || 
                 SizeLimitWrapper.NONE_STR.equalsIgnoreCase( uncheckedLimitStr ) ) 
             {
-                ((SizeLimitWrapper)limitWrapper).setUncheckedLimit( SizeLimitWrapper.UNLIMITED );
+                sizeLimitWrapper.setUncheckedLimit( SizeLimitWrapper.UNLIMITED );
                 unlimited = true;
             }
             else if ( SizeLimitWrapper.DISABLED_STR.equalsIgnoreCase( uncheckedLimitStr ) )
             {
-                ((SizeLimitWrapper)limitWrapper).setUncheckedLimit( SizeLimitWrapper.PR_DISABLED );
+                sizeLimitWrapper.setUncheckedLimit( SizeLimitWrapper.PR_DISABLED );
                 disabled = true;
             }
             else
@@ -293,17 +296,17 @@ public class SizeLimitDialog extends AbstractLimitDialog
                     }
                     else if ( value == SizeLimitWrapper.UNLIMITED )
                     {
-                        ((SizeLimitWrapper)limitWrapper).setUncheckedLimit( SizeLimitWrapper.UNLIMITED );
+                        sizeLimitWrapper.setUncheckedLimit( SizeLimitWrapper.UNLIMITED );
                         unlimited = true;
                     }
                     else if ( value == SizeLimitWrapper.UC_DISABLED )
                     {
-                        ((SizeLimitWrapper)limitWrapper).setUncheckedLimit( SizeLimitWrapper.UC_DISABLED );
+                        sizeLimitWrapper.setUncheckedLimit( SizeLimitWrapper.UC_DISABLED );
                         disabled = true;
                     }
                     else
                     {
-                        ((SizeLimitWrapper)limitWrapper).setUncheckedLimit( value );
+                        sizeLimitWrapper.setUncheckedLimit( value );
                     }
                 }
                 catch ( NumberFormatException nfe )
@@ -316,7 +319,7 @@ public class SizeLimitDialog extends AbstractLimitDialog
             uncheckedLimitText.setForeground( display.getSystemColor( color ) );
             uncheckedUnlimitedCheckbox.setSelection( unlimited );
             uncheckedDisabledCheckbox.setSelection( disabled );
-            limitText.setText( limitWrapper.toString() );
+            limitText.setText( getEditedElement().toString() );
             okButton.setEnabled( isValid() );
         }
     };
@@ -340,18 +343,20 @@ public class SizeLimitDialog extends AbstractLimitDialog
                 return;
             }
 
+            SizeLimitWrapper sizeLimitWrapper = (SizeLimitWrapper)getEditedElement();
+
             // The possible values are : 'unlimited' | 'none' | 'noEstimate' | INT 
             String prLimitStr = prLimitText.getText();
             
             if ( Strings.isEmpty( prLimitStr ) )
             {
                 // Check the case we don't have anything
-                ((SizeLimitWrapper)limitWrapper).setPrLimit( null );
+                sizeLimitWrapper.setPrLimit( null );
             }
             else if ( SizeLimitWrapper.UNLIMITED_STR.equalsIgnoreCase( prLimitStr ) || 
                 SizeLimitWrapper.NONE_STR.equalsIgnoreCase( prLimitStr ) ) 
             {
-                ((SizeLimitWrapper)limitWrapper).setPrLimit( SizeLimitWrapper.UNLIMITED );
+                sizeLimitWrapper.setPrLimit( SizeLimitWrapper.UNLIMITED );
                 unlimited = true;
             }
             else
@@ -368,12 +373,12 @@ public class SizeLimitDialog extends AbstractLimitDialog
                     }
                     else if ( value == SizeLimitWrapper.UNLIMITED )
                     {
-                        ((SizeLimitWrapper)limitWrapper).setPrLimit( SizeLimitWrapper.UNLIMITED );
+                        sizeLimitWrapper.setPrLimit( SizeLimitWrapper.UNLIMITED );
                         unlimited = true;
                     }
                     else
                     {
-                        ((SizeLimitWrapper)limitWrapper).setPrLimit( value );
+                        sizeLimitWrapper.setPrLimit( value );
                     }
                 }
                 catch ( NumberFormatException nfe )
@@ -385,7 +390,7 @@ public class SizeLimitDialog extends AbstractLimitDialog
 
             prLimitText.setForeground( display.getSystemColor( color ) );
             prUnlimitedCheckbox.setSelection( unlimited );
-            limitText.setText( limitWrapper.toString() );
+            limitText.setText( getEditedElement().toString() );
             okButton.setEnabled( isValid() );
         }
     };
@@ -413,28 +418,30 @@ public class SizeLimitDialog extends AbstractLimitDialog
                 return;
             }
 
+            SizeLimitWrapper sizeLimitWrapper = (SizeLimitWrapper)getEditedElement();
+
             // The possible values are : 'unlimited' | 'none' | 'disabled' | 'hard' | INT 
             String prTotalLimitStr = prTotalLimitText.getText();
             
             if ( Strings.isEmpty( prTotalLimitStr ) )
             {
                 // Check the case we don't have anything
-                ((SizeLimitWrapper)limitWrapper).setPrTotalLimit( null );
+                sizeLimitWrapper.setPrTotalLimit( null );
             }
             else if ( SizeLimitWrapper.UNLIMITED_STR.equalsIgnoreCase( prTotalLimitStr ) || 
                 SizeLimitWrapper.NONE_STR.equalsIgnoreCase( prTotalLimitStr ) ) 
             {
-                ((SizeLimitWrapper)limitWrapper).setPrTotalLimit( SizeLimitWrapper.UNLIMITED );
+                sizeLimitWrapper.setPrTotalLimit( SizeLimitWrapper.UNLIMITED );
                 unlimited = true;
             }
             else if ( SizeLimitWrapper.HARD_STR.equalsIgnoreCase( prTotalLimitStr ) ) 
             {
-                ((SizeLimitWrapper)limitWrapper).setPrTotalLimit( SizeLimitWrapper.PR_HARD );
+                sizeLimitWrapper.setPrTotalLimit( SizeLimitWrapper.PR_HARD );
                 hard = true;
             }
             else if ( SizeLimitWrapper.DISABLED_STR.equalsIgnoreCase( prTotalLimitStr ) )
             {
-                ((SizeLimitWrapper)limitWrapper).setPrTotalLimit( SizeLimitWrapper.PR_DISABLED );
+                sizeLimitWrapper.setPrTotalLimit( SizeLimitWrapper.PR_DISABLED );
                 disabled = true;
             }
             else
@@ -451,21 +458,21 @@ public class SizeLimitDialog extends AbstractLimitDialog
                     }
                     else if ( value == SizeLimitWrapper.PR_DISABLED )
                     {
-                        ((SizeLimitWrapper)limitWrapper).setPrTotalLimit( SizeLimitWrapper.PR_DISABLED );
+                        sizeLimitWrapper.setPrTotalLimit( SizeLimitWrapper.PR_DISABLED );
                         disabled = true;
                     }
                     else if ( value == SizeLimitWrapper.UNLIMITED )
                     {
-                        ((SizeLimitWrapper)limitWrapper).setPrTotalLimit( SizeLimitWrapper.UNLIMITED );
+                        sizeLimitWrapper.setPrTotalLimit( SizeLimitWrapper.UNLIMITED );
                         unlimited = true;
                     }
                     else if ( value == SizeLimitWrapper.PR_HARD )
                     {
-                        ((SizeLimitWrapper)limitWrapper).setPrTotalLimit( SizeLimitWrapper.PR_HARD );
+                        sizeLimitWrapper.setPrTotalLimit( SizeLimitWrapper.PR_HARD );
                     }
                     else
                     {
-                        ((SizeLimitWrapper)limitWrapper).setPrTotalLimit( value );
+                        sizeLimitWrapper.setPrTotalLimit( value );
                     }
                 }
                 catch ( NumberFormatException nfe )
@@ -479,7 +486,7 @@ public class SizeLimitDialog extends AbstractLimitDialog
             prTotalUnlimitedCheckbox.setSelection( unlimited );
             prTotalDisabledCheckbox.setSelection( disabled );
             prTotalHardCheckbox.setSelection( hard );
-            limitText.setText( limitWrapper.toString() );
+            limitText.setText( getEditedElement().toString() );
             okButton.setEnabled( isValid() );
         }
     };
@@ -495,20 +502,22 @@ public class SizeLimitDialog extends AbstractLimitDialog
             Display display = uncheckedLimitText.getDisplay();
             Button okButton = getButton( IDialogConstants.OK_ID );
 
+            SizeLimitWrapper sizeLimitWrapper = (SizeLimitWrapper)getEditedElement();
+
             if ( uncheckedUnlimitedCheckbox.getSelection() )
             {
                 uncheckedLimitText.setText( SizeLimitWrapper.UNLIMITED_STR );
                 uncheckedDisabledCheckbox.setSelection( false );
-                ((SizeLimitWrapper)limitWrapper).setUncheckedLimit( SizeLimitWrapper.UNLIMITED );
+                sizeLimitWrapper.setUncheckedLimit( SizeLimitWrapper.UNLIMITED );
             }
             else
             {
                 uncheckedLimitText.setText( "" );
-                ((SizeLimitWrapper)limitWrapper).setUncheckedLimit( null );
+                sizeLimitWrapper.setUncheckedLimit( null );
             }
 
             uncheckedLimitText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
-            limitText.setText( limitWrapper.toString() );
+            limitText.setText( getEditedElement().toString() );
             okButton.setEnabled( isValid() );
         }
     };
@@ -524,20 +533,22 @@ public class SizeLimitDialog extends AbstractLimitDialog
             Display display = uncheckedLimitText.getDisplay();
             Button okButton = getButton( IDialogConstants.OK_ID );
 
+            SizeLimitWrapper sizeLimitWrapper = (SizeLimitWrapper)getEditedElement();
+
             if ( uncheckedDisabledCheckbox.getSelection() )
             {
                 uncheckedLimitText.setText( SizeLimitWrapper.DISABLED_STR );
                 uncheckedUnlimitedCheckbox.setSelection( false );
-                ((SizeLimitWrapper)limitWrapper).setUncheckedLimit( SizeLimitWrapper.UC_DISABLED );
+                sizeLimitWrapper.setUncheckedLimit( SizeLimitWrapper.UC_DISABLED );
             }
             else
             {
                 uncheckedLimitText.setText( "" );
-                ((SizeLimitWrapper)limitWrapper).setUncheckedLimit( null );
+                sizeLimitWrapper.setUncheckedLimit( null );
             }
 
             uncheckedLimitText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
-            limitText.setText( limitWrapper.toString() );
+            limitText.setText( getEditedElement().toString() );
             okButton.setEnabled( isValid() );
         }
     };
@@ -553,19 +564,21 @@ public class SizeLimitDialog extends AbstractLimitDialog
             Display display = prLimitText.getDisplay();
             Button okButton = getButton( IDialogConstants.OK_ID );
 
+            SizeLimitWrapper sizeLimitWrapper = (SizeLimitWrapper)getEditedElement();
+
             if ( prUnlimitedCheckbox.getSelection() )
             {
                 prLimitText.setText( SizeLimitWrapper.UNLIMITED_STR );
-                ((SizeLimitWrapper)limitWrapper).setPrLimit( SizeLimitWrapper.UNLIMITED );
+                sizeLimitWrapper.setPrLimit( SizeLimitWrapper.UNLIMITED );
             }
             else
             {
                 prLimitText.setText( "" );
-                ((SizeLimitWrapper)limitWrapper).setPrLimit( null );
+                sizeLimitWrapper.setPrLimit( null );
             }
 
             prLimitText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
-            limitText.setText( limitWrapper.toString() );
+            limitText.setText( getEditedElement().toString() );
             okButton.setEnabled( isValid() );
         }
     };
@@ -580,8 +593,10 @@ public class SizeLimitDialog extends AbstractLimitDialog
         {
             Button okButton = getButton( IDialogConstants.OK_ID );
 
-            ((SizeLimitWrapper)limitWrapper).setNoEstimate( prNoEstimateCheckbox.getSelection() );
-            limitText.setText( limitWrapper.toString() );
+            SizeLimitWrapper sizeLimitWrapper = (SizeLimitWrapper)getEditedElement();
+
+            sizeLimitWrapper.setNoEstimate( prNoEstimateCheckbox.getSelection() );
+            limitText.setText( getEditedElement().toString() );
             okButton.setEnabled( isValid() );
         }
     };
@@ -597,21 +612,23 @@ public class SizeLimitDialog extends AbstractLimitDialog
             Display display = prTotalLimitText.getDisplay();
             Button okButton = getButton( IDialogConstants.OK_ID );
 
+            SizeLimitWrapper sizeLimitWrapper = (SizeLimitWrapper)getEditedElement();
+
             if ( prTotalUnlimitedCheckbox.getSelection() )
             {
                 prTotalLimitText.setText( SizeLimitWrapper.UNLIMITED_STR );
-                ((SizeLimitWrapper)limitWrapper).setPrTotalLimit( SizeLimitWrapper.UNLIMITED );
+                sizeLimitWrapper.setPrTotalLimit( SizeLimitWrapper.UNLIMITED );
             }
             else
             {
                 prTotalLimitText.setText( "" );
-                ((SizeLimitWrapper)limitWrapper).setPrTotalLimit( null );
+                sizeLimitWrapper.setPrTotalLimit( null );
             }
 
             prTotalLimitText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
             prTotalDisabledCheckbox.setSelection( false );
             prTotalHardCheckbox.setSelection( false );
-            limitText.setText( limitWrapper.toString() );
+            limitText.setText( getEditedElement().toString() );
             okButton.setEnabled( isValid() );
         }
     };
@@ -627,21 +644,23 @@ public class SizeLimitDialog extends AbstractLimitDialog
             Display display = prTotalLimitText.getDisplay();
             Button okButton = getButton( IDialogConstants.OK_ID );
 
+            SizeLimitWrapper sizeLimitWrapper = (SizeLimitWrapper)getEditedElement();
+
             if ( prTotalDisabledCheckbox.getSelection() )
             {
                 prTotalLimitText.setText( SizeLimitWrapper.DISABLED_STR );
-                ((SizeLimitWrapper)limitWrapper).setPrTotalLimit( SizeLimitWrapper.PR_DISABLED );
+                sizeLimitWrapper.setPrTotalLimit( SizeLimitWrapper.PR_DISABLED );
             }
             else
             {
                 prTotalLimitText.setText( "" );
-                ((SizeLimitWrapper)limitWrapper).setPrTotalLimit( null );
+                sizeLimitWrapper.setPrTotalLimit( null );
             }
 
             prTotalLimitText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
             prTotalUnlimitedCheckbox.setSelection( false );
             prTotalHardCheckbox.setSelection( false );
-            limitText.setText( limitWrapper.toString() );
+            limitText.setText( getEditedElement().toString() );
             okButton.setEnabled( isValid() );
         }
     };
@@ -657,6 +676,8 @@ public class SizeLimitDialog extends AbstractLimitDialog
             Display display = prTotalLimitText.getDisplay();
             Button okButton = getButton( IDialogConstants.OK_ID );
 
+            SizeLimitWrapper sizeLimitWrapper = (SizeLimitWrapper)getEditedElement();
+
             if ( prTotalHardCheckbox.getSelection() )
             {
                 String hardStr = hardLimitText.getText();
@@ -670,12 +691,12 @@ public class SizeLimitDialog extends AbstractLimitDialog
                     prTotalLimitText.setText( SizeLimitWrapper.HARD_STR );
                 }
 
-                ((SizeLimitWrapper)limitWrapper).setPrTotalLimit( SizeLimitWrapper.PR_HARD );
+                sizeLimitWrapper.setPrTotalLimit( SizeLimitWrapper.PR_HARD );
             }
             else
             {
                 prTotalLimitText.setText( "" );
-                ((SizeLimitWrapper)limitWrapper).setPrTotalLimit( null );
+                sizeLimitWrapper.setPrTotalLimit( null );
             }
 
             if ( isValid() )
@@ -691,7 +712,7 @@ public class SizeLimitDialog extends AbstractLimitDialog
             
             prTotalUnlimitedCheckbox.setSelection( false );
             prTotalDisabledCheckbox.setSelection( false );
-            limitText.setText( limitWrapper.toString() );
+            limitText.setText( getEditedElement().toString() );
         }
     };
 
@@ -743,8 +764,9 @@ public class SizeLimitDialog extends AbstractLimitDialog
         createSizeLimitEditGroup( composite );
         createSizeLimitShowGroup( composite );
 
-        initFromLimit();
-        
+        initDialog();
+        addListeners();
+
         applyDialogFont( composite );
         
         return composite;
@@ -785,11 +807,9 @@ public class SizeLimitDialog extends AbstractLimitDialog
         // SoftLimit Text
         BaseWidgetUtils.createLabel( sizeLimitGroup, "Soft Limit :", 1 );
         softLimitText = BaseWidgetUtils.createText( sizeLimitGroup, "", 1 );
-        softLimitText.addModifyListener( softLimitTextListener );
 
         // Soft Limit unlimited checkbox Button
         softUnlimitedCheckbox = BaseWidgetUtils.createCheckbox( sizeLimitGroup, "Unlimited", 2 );
-        softUnlimitedCheckbox.addSelectionListener( softUnlimitedCheckboxSelectionListener );
 
         // 4 tabs to fill the line
         BaseWidgetUtils.createLabel( sizeLimitGroup, "", 4 );
@@ -798,15 +818,12 @@ public class SizeLimitDialog extends AbstractLimitDialog
         // HardLimit Text
         BaseWidgetUtils.createLabel( sizeLimitGroup, "Hard Limit :", 1 );
         hardLimitText = BaseWidgetUtils.createText( sizeLimitGroup, "", 1 );
-        hardLimitText.addModifyListener( hardLimitTextListener );
 
         // Hard Limit unlimited checkbox Button
         hardUnlimitedCheckbox = BaseWidgetUtils.createCheckbox( sizeLimitGroup, "Unlimited", 2 );
-        hardUnlimitedCheckbox.addSelectionListener( hardUnlimitedCheckboxSelectionListener );
 
         // HardLimit soft checkbox Button
         hardSoftCheckbox = BaseWidgetUtils.createCheckbox( sizeLimitGroup, "Soft", 2 );
-        hardSoftCheckbox.addSelectionListener( hardSoftCheckboxSelectionListener );
 
         // 2 tabs to fill the line
         BaseWidgetUtils.createLabel( sizeLimitGroup, "", 2 );
@@ -815,11 +832,9 @@ public class SizeLimitDialog extends AbstractLimitDialog
         // GlobalLimit Text
         BaseWidgetUtils.createLabel( sizeLimitGroup, "Global Limit :", 1 );
         globalLimitText = BaseWidgetUtils.createText( sizeLimitGroup, "", 1 );
-        globalLimitText.addModifyListener( globalLimitTextListener );
 
         // GLobal Limit unlimited checkbox Button
         globalUnlimitedCheckbox = BaseWidgetUtils.createCheckbox( sizeLimitGroup, "Unlimited", 2 );
-        globalUnlimitedCheckbox.addSelectionListener( globalUnlimitedCheckboxSelectionListener );
 
         // 4 tabs to fill the line
         BaseWidgetUtils.createLabel( sizeLimitGroup, "", 4 );
@@ -828,15 +843,12 @@ public class SizeLimitDialog extends AbstractLimitDialog
         // Unchecked Text
         BaseWidgetUtils.createLabel( sizeLimitGroup, "Unchecked Limit :", 1 );
         uncheckedLimitText = BaseWidgetUtils.createText( sizeLimitGroup, "", 1 );
-        uncheckedLimitText.addModifyListener( uncheckedLimitTextListener );
 
         // Unchecked Limit unlimited checkbox Button
         uncheckedUnlimitedCheckbox = BaseWidgetUtils.createCheckbox( sizeLimitGroup, "Unlimited", 2 );
-        uncheckedUnlimitedCheckbox.addSelectionListener( uncheckedUnlimitedCheckboxSelectionListener );
 
         // Unchecked Limit unlimited checkbox Button
         uncheckedDisabledCheckbox = BaseWidgetUtils.createCheckbox( sizeLimitGroup, "Disabled", 2 );
-        uncheckedDisabledCheckbox.addSelectionListener( uncheckedDisabledCheckboxSelectionListener );
 
         // 2 tabs to fill the line
         BaseWidgetUtils.createLabel( sizeLimitGroup, "", 2 );
@@ -845,15 +857,12 @@ public class SizeLimitDialog extends AbstractLimitDialog
         // Paged Results Search Text
         BaseWidgetUtils.createLabel( sizeLimitGroup, "Paged Results Limit :", 1 );
         prLimitText = BaseWidgetUtils.createText( sizeLimitGroup, "", 1 );
-        prLimitText.addModifyListener( prLimitTextListener );
 
         // Paged Results Limit unlimited checkbox Button
         prUnlimitedCheckbox = BaseWidgetUtils.createCheckbox( sizeLimitGroup, "Unlimited", 2 );
-        prUnlimitedCheckbox.addSelectionListener( prUnlimitedCheckboxSelectionListener );
 
         // Paged Results Limit noEstimate checkbox Button
         prNoEstimateCheckbox = BaseWidgetUtils.createCheckbox( sizeLimitGroup, "No Estimate", 2 );
-        prNoEstimateCheckbox.addSelectionListener( prNoEstimateCheckboxSelectionListener );
 
         // 2 tabs to fill the line
         BaseWidgetUtils.createLabel( sizeLimitGroup, "", 2 );
@@ -862,19 +871,15 @@ public class SizeLimitDialog extends AbstractLimitDialog
         // Paged Results Search Text
         BaseWidgetUtils.createLabel( sizeLimitGroup, "Paged Results Total :", 1 );
         prTotalLimitText = BaseWidgetUtils.createText( sizeLimitGroup, "", 1 );
-        prTotalLimitText.addModifyListener( prTotalLimitTextListener );
 
         // Paged Results Limit unlimited checkbox Button
         prTotalUnlimitedCheckbox = BaseWidgetUtils.createCheckbox( sizeLimitGroup, "Unlimited", 2 );
-        prTotalUnlimitedCheckbox.addSelectionListener( prTotalUnlimitedCheckboxSelectionListener );
 
         // Paged Results Limit disabled checkbox Button
         prTotalDisabledCheckbox = BaseWidgetUtils.createCheckbox( sizeLimitGroup, "Disabled", 2 );
-        prTotalDisabledCheckbox.addSelectionListener( prTotalDisabledCheckboxSelectionListener );
 
         // Paged Results Limit hard checkbox Button
         prTotalHardCheckbox = BaseWidgetUtils.createCheckbox( sizeLimitGroup, "Hard", 2 );
-        prTotalHardCheckbox.addSelectionListener( prTotalHardCheckboxSelectionListener );
     }
 
 
@@ -907,14 +912,41 @@ public class SizeLimitDialog extends AbstractLimitDialog
 
 
     /**
+     * Adds listeners.
+     */
+    private void addListeners()
+    {
+        softLimitText.addModifyListener( softLimitTextListener );
+        softUnlimitedCheckbox.addSelectionListener( softUnlimitedCheckboxSelectionListener );
+        hardLimitText.addModifyListener( hardLimitTextListener );
+        hardUnlimitedCheckbox.addSelectionListener( hardUnlimitedCheckboxSelectionListener );
+        hardSoftCheckbox.addSelectionListener( hardSoftCheckboxSelectionListener );
+        globalLimitText.addModifyListener( globalLimitTextListener );
+        globalUnlimitedCheckbox.addSelectionListener( globalUnlimitedCheckboxSelectionListener );
+        uncheckedLimitText.addModifyListener( uncheckedLimitTextListener );
+        uncheckedUnlimitedCheckbox.addSelectionListener( uncheckedUnlimitedCheckboxSelectionListener );
+        uncheckedDisabledCheckbox.addSelectionListener( uncheckedDisabledCheckboxSelectionListener );
+        prLimitText.addModifyListener( prLimitTextListener );
+        prUnlimitedCheckbox.addSelectionListener( prUnlimitedCheckboxSelectionListener );
+        prNoEstimateCheckbox.addSelectionListener( prNoEstimateCheckboxSelectionListener );
+        prTotalLimitText.addModifyListener( prTotalLimitTextListener );
+        prTotalUnlimitedCheckbox.addSelectionListener( prTotalUnlimitedCheckboxSelectionListener );
+        prTotalDisabledCheckbox.addSelectionListener( prTotalDisabledCheckboxSelectionListener );
+        prTotalHardCheckbox.addSelectionListener( prTotalHardCheckboxSelectionListener );
+    }
+    
+
+    /**
      * Initializes the UI from the Limit
      */
-    protected void initFromLimit()
+    protected void initDialog()
     {
-        super.initFromLimit();
+        super.initDialog();
         
         // Deal with specific SizeLimit fields
-        if ( limitWrapper != null )
+        LimitWrapper limitWrapper = (LimitWrapper)getEditedElement();
+        
+        if ( getEditedElement() != null )
         {
             SizeLimitWrapper sizeLimitWrapper = (SizeLimitWrapper)limitWrapper;
             
@@ -1007,5 +1039,12 @@ public class SizeLimitDialog extends AbstractLimitDialog
                 prTotalHardCheckbox.setSelection( false );
             }
         }
+    }
+
+
+    @Override
+    public void addNewElement()
+    {
+        setEditedElement( new SizeLimitWrapper( "" ) );
     }
 }

@@ -24,7 +24,7 @@ package org.apache.directory.studio.openldap.config.editor.wrappers;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class AbstractLimitWrapper
+public abstract class AbstractLimitWrapper implements LimitWrapper, Comparable<LimitWrapper>
 {
     /** The global limit */
     protected Integer globalLimit;
@@ -34,19 +34,10 @@ public abstract class AbstractLimitWrapper
     
     /** The hard limit */
     protected Integer hardLimit;
-    
-    // Define some of the used constants
-    public static final Integer HARD_SOFT = Integer.valueOf( -3 );
-    public static final Integer UNLIMITED = Integer.valueOf( -1 );
-
-    public static final String HARD_STR = "hard";
-    public static final String NONE_STR = "none";
-    public static final String SOFT_STR = "soft";
-    public static final String UNLIMITED_STR = "unlimited";
 
 
     /**
-     * Create a LimitWrapper instance
+     * Create a AbstractLimitWrapper instance
      */
     public AbstractLimitWrapper()
     {
@@ -54,7 +45,7 @@ public abstract class AbstractLimitWrapper
     
 
     /**
-     * Create a SizeLimitWrapper instance
+     * Create an AbstractLimitWrapper instance
      * 
      * @param globalLimit The global limit
      * @param hardLimit The hard limit
@@ -157,12 +148,6 @@ public abstract class AbstractLimitWrapper
     {
         this.hardLimit = hardLimit;
     }
-    
-    
-    /**
-     * @return The Limit's type
-     */
-    protected abstract String getType();
     
     
     /**
@@ -295,5 +280,19 @@ public abstract class AbstractLimitWrapper
         }
         
         return sb.toString();
+    }
+
+
+    /**
+     * @see Comparable#compareTo()
+     */
+    public int compareTo( LimitWrapper that )
+    {
+        if ( that == null )
+        {
+            return 1;
+        }
+        
+        return toString().compareTo( that.toString() );
     }
 }

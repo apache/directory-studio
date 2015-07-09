@@ -347,7 +347,7 @@ public class TimeLimitWrapper extends AbstractLimitWrapper
     /**
      * @return The Limit's type
      */
-    protected String getType()
+    public String getType()
     {
         return "time";
     }

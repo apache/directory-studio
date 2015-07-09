@@ -68,11 +68,11 @@ public class StringValueDialog extends AddEditDialog<StringValueWrapper>
      * 
      * @param parentShell The parent Shell
      */
-    public StringValueDialog( Shell parentShell, String atttributeName )
+    public StringValueDialog( Shell parentShell, String attributeName )
     {
         super( parentShell );
         super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
-        this.attributeName = atttributeName;
+        this.attributeName = attributeName;
     }
     
     
