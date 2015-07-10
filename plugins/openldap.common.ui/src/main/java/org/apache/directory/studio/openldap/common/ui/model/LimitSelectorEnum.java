@@ -27,12 +27,11 @@ package org.apache.directory.studio.openldap.common.ui.model;
  */
 public enum LimitSelectorEnum
 {
+    ANY( "*" ),
     ANONYMOUS( "anonymous" ),
     USERS( "users" ),
-    DNSPEC( "dnspec" ),
+    DNSPEC( "dn" ),
     GROUP( "group" ),
-    GROUP_OC( "group/oc" ),
-    GROUP_OC_AC( "group/oc/ac" ),
     NONE( "---" );
     
     /** The associated name */

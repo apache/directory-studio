@@ -29,7 +29,9 @@ public enum DnSpecStyleEnum
 {
     EXACT( "exact" ),
     BASE( "base" ),
+    ONE( "one" ),
     ONE_LEVEL( "onelevel" ),
+    SUB( "sub" ),
     SUBTREE( "subtree" ),
     CHILDREN( "children" ),
     REGEXP( "regexp" ),
