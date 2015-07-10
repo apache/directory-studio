@@ -92,29 +92,46 @@ public class TimeLimitWrapperTest
     @Test
     public void testIsValid()
     {
-        assertTrue( TimeLimitWrapper.isValid( null ) );
-        assertTrue( TimeLimitWrapper.isValid( "" ) );
-        assertTrue( TimeLimitWrapper.isValid( "  " ) );
+        TimeLimitWrapper timeLimitWrapper = new TimeLimitWrapper( null );
+        assertTrue( timeLimitWrapper.isValid() );
+        timeLimitWrapper = new TimeLimitWrapper( "" );
+        assertTrue( timeLimitWrapper.isValid() );
+        timeLimitWrapper = new TimeLimitWrapper( "  " );
+        assertTrue( timeLimitWrapper.isValid() );
         
-        assertTrue( TimeLimitWrapper.isValid( "time=100" ) );
-        assertTrue( TimeLimitWrapper.isValid( "time=none" ) );
-        assertTrue( TimeLimitWrapper.isValid( "time=unlimited" ) );
+        timeLimitWrapper = new TimeLimitWrapper( "time=100" );
+        assertTrue( timeLimitWrapper.isValid() );
+        timeLimitWrapper = new TimeLimitWrapper( "time=none" );
+        assertTrue( timeLimitWrapper.isValid() );
+        timeLimitWrapper = new TimeLimitWrapper( "time=unlimited" );
+        assertTrue( timeLimitWrapper.isValid() );
         
-        assertTrue( TimeLimitWrapper.isValid( "time.hard=100" ) );
-        assertTrue( TimeLimitWrapper.isValid( "time.hard=none" ) );
-        assertTrue( TimeLimitWrapper.isValid( "time.hard=unlimited" ) );
+        timeLimitWrapper = new TimeLimitWrapper( "time.hard=100" );
+        assertTrue( timeLimitWrapper.isValid() );
+        timeLimitWrapper = new TimeLimitWrapper( "time.hard=none" );
+        assertTrue( timeLimitWrapper.isValid() );
+        timeLimitWrapper = new TimeLimitWrapper( "time.hard=unlimited" );
+        assertTrue( timeLimitWrapper.isValid() );
         
-        assertTrue( TimeLimitWrapper.isValid( "time.soft=100" ) );
-        assertTrue( TimeLimitWrapper.isValid( "time.soft=none" ) );
-        assertTrue( TimeLimitWrapper.isValid( "time.soft=unlimited" ) );
+        timeLimitWrapper = new TimeLimitWrapper( "time.soft=100" );
+        assertTrue( timeLimitWrapper.isValid() );
+        timeLimitWrapper = new TimeLimitWrapper( "time.soft=none" );
+        assertTrue( timeLimitWrapper.isValid() );
+        timeLimitWrapper = new TimeLimitWrapper( "time.soft=unlimited" );
+        assertTrue( timeLimitWrapper.isValid() );
 
-        assertTrue( TimeLimitWrapper.isValid( "time.soft=100 time.hard=200" ) );
-        assertTrue( TimeLimitWrapper.isValid( "time.hard=100 time.soft=200" ) );
+        timeLimitWrapper = new TimeLimitWrapper( "time.soft=100 time.hard=200" );
+        assertTrue( timeLimitWrapper.isValid() );
+        timeLimitWrapper = new TimeLimitWrapper( "time.hard=100 time.soft=200" );
+        assertTrue( timeLimitWrapper.isValid() );
 
-        assertTrue( TimeLimitWrapper.isValid( "time.soft=none time.hard=200" ) );
-        assertTrue( TimeLimitWrapper.isValid( "time.hard=100 time.soft=unlimited" ) );
+        timeLimitWrapper = new TimeLimitWrapper( "time.soft=none time.hard=200" );
+        assertTrue( timeLimitWrapper.isValid() );
+        timeLimitWrapper = new TimeLimitWrapper( "time.hard=100 time.soft=unlimited" );
+        assertTrue( timeLimitWrapper.isValid() );
 
-        assertTrue( TimeLimitWrapper.isValid( "time.hard=soft time.soft=unlimited time=100" ) );
+        timeLimitWrapper = new TimeLimitWrapper( "time.hard=soft time.soft=unlimited time=100" );
+        assertTrue( timeLimitWrapper.isValid() );
     }
     
     
@@ -123,7 +140,7 @@ public class TimeLimitWrapperTest
     {
         TimeLimitWrapper tlw = new TimeLimitWrapper( null );
         assertEquals( null, tlw.getGlobalLimit() );
-        assertEquals( null, tlw.getSoftLimit() );
+        assertEquals( null,tlw.getSoftLimit() );
         assertEquals( null, tlw.getHardLimit() );
 
         tlw = new TimeLimitWrapper( "" );

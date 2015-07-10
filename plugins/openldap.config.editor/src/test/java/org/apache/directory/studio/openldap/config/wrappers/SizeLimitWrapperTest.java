@@ -93,29 +93,46 @@ public class SizeLimitWrapperTest
     @Test
     public void testIsValid()
     {
-        assertTrue( SizeLimitWrapper.isValid( null ) );
-        assertTrue( SizeLimitWrapper.isValid( "" ) );
-        assertTrue( SizeLimitWrapper.isValid( "  " ) );
+        SizeLimitWrapper sizeLimitWrapper = new SizeLimitWrapper( null );
+        assertTrue( sizeLimitWrapper.isValid() );
+        sizeLimitWrapper = new SizeLimitWrapper( "" );
+        assertTrue( sizeLimitWrapper.isValid() );
+        sizeLimitWrapper = new SizeLimitWrapper( "  " );
+        assertTrue( sizeLimitWrapper.isValid() );
         
-        assertTrue( SizeLimitWrapper.isValid( "size=100" ) );
-        assertTrue( SizeLimitWrapper.isValid( "size=none" ) );
-        assertTrue( SizeLimitWrapper.isValid( "size=unlimited" ) );
+        sizeLimitWrapper = new SizeLimitWrapper( "size=100" );
+        assertTrue( sizeLimitWrapper.isValid() );
+        sizeLimitWrapper = new SizeLimitWrapper( "size=none" );
+        assertTrue( sizeLimitWrapper.isValid() );
+        sizeLimitWrapper = new SizeLimitWrapper( "size=unlimited" );
+        assertTrue( sizeLimitWrapper.isValid() );
         
-        assertTrue( SizeLimitWrapper.isValid( "size.hard=100" ) );
-        assertTrue( SizeLimitWrapper.isValid( "size.hard=none" ) );
-        assertTrue( SizeLimitWrapper.isValid( "size.hard=unlimited" ) );
+        sizeLimitWrapper = new SizeLimitWrapper( "size.hard=100" );
+        assertTrue( sizeLimitWrapper.isValid() );
+        sizeLimitWrapper = new SizeLimitWrapper( "size.hard=none" );
+        assertTrue( sizeLimitWrapper.isValid() );
+        sizeLimitWrapper = new SizeLimitWrapper( "size.hard=unlimited" );
+        assertTrue( sizeLimitWrapper.isValid() );
         
-        assertTrue( SizeLimitWrapper.isValid( "size.soft=100" ) );
-        assertTrue( SizeLimitWrapper.isValid( "size.soft=none" ) );
-        assertTrue( SizeLimitWrapper.isValid( "size.soft=unlimited" ) );
+        sizeLimitWrapper = new SizeLimitWrapper( "size.soft=100" );
+        assertTrue( sizeLimitWrapper.isValid() );
+        sizeLimitWrapper = new SizeLimitWrapper( "size.soft=none" );
+        assertTrue( sizeLimitWrapper.isValid() );
+        sizeLimitWrapper = new SizeLimitWrapper( "size.soft=unlimited" );
+        assertTrue( sizeLimitWrapper.isValid() );
 
-        assertTrue( SizeLimitWrapper.isValid( "size.soft=100 size.hard=200" ) );
-        assertTrue( SizeLimitWrapper.isValid( "size.hard=100 size.soft=200" ) );
+        sizeLimitWrapper = new SizeLimitWrapper( "size.soft=100 size.hard=200" );
+        assertTrue( sizeLimitWrapper.isValid() );
+        sizeLimitWrapper = new SizeLimitWrapper( "size.hard=100 size.soft=200" );
+        assertTrue( sizeLimitWrapper.isValid() );
 
-        assertTrue( SizeLimitWrapper.isValid( "size.soft=none size.hard=200" ) );
-        assertTrue( SizeLimitWrapper.isValid( "size.hard=100 size.soft=unlimited" ) );
+        sizeLimitWrapper = new SizeLimitWrapper( "size.soft=none size.hard=200" );
+        assertTrue( sizeLimitWrapper.isValid() );
+        sizeLimitWrapper = new SizeLimitWrapper( "size.hard=100 size.soft=unlimited" );
+        assertTrue( sizeLimitWrapper.isValid() );
 
-        assertTrue( SizeLimitWrapper.isValid( "size.hard=soft size.soft=unlimited size=100" ) );
+        sizeLimitWrapper = new SizeLimitWrapper( "size.hard=soft size.soft=unlimited size=100" );
+        assertTrue( sizeLimitWrapper.isValid() );
     }
     
     
