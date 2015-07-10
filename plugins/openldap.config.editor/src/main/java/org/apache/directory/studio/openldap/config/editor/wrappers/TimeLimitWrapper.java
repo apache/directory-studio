@@ -19,8 +19,6 @@
  */
 package org.apache.directory.studio.openldap.config.editor.wrappers;
 
-import org.apache.directory.api.util.Strings;
-
 /**
  * This class wraps the TimeLimit parameter :
  * <pre>
@@ -92,6 +90,7 @@ public class TimeLimitWrapper extends AbstractLimitWrapper
                     if ( !result )
                     {
                         clear();
+                        isValid = false;
                         break;
                     }
                     else
@@ -305,42 +304,6 @@ public class TimeLimitWrapper extends AbstractLimitWrapper
         
         // last check : the pos should be equal to the limitStr length
         return ( pos == limitStr.length() );
-    }
-    
-    
-    /**
-     * Tells if the TimeLimit element is valid or not
-     * @param timeLimitStr the timeLimit String to check
-     * @return true if the values are correct, false otherwise
-     */
-    public static boolean isValid( String timeLimitStr )
-    {
-        if ( !Strings.isEmpty( timeLimitStr ) )
-        {
-            // use a lowercase version of the string
-            String lowerCaseTimeLimitStr = timeLimitStr.toLowerCase();
-            
-            TimeLimitWrapper tmp = new TimeLimitWrapper();
-            
-            // Split the strings
-            String[] limits = lowerCaseTimeLimitStr.split( " " );
-            
-            if ( limits != null )
-            {
-                // Parse each limit
-                for ( String limit : limits )
-                {
-                    boolean result = parseLimit( tmp, limit );
-                    
-                    if ( !result )
-                    {
-                        return false;
-                    }
-                }
-            }
-        }
-
-        return true;
     }
     
     

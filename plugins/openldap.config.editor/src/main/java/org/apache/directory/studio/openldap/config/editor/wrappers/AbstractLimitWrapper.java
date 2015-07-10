@@ -35,6 +35,11 @@ public abstract class AbstractLimitWrapper implements LimitWrapper, Comparable<L
     /** The hard limit */
     protected Integer hardLimit;
 
+    /** A flag that tells if the Limit is valid */
+    protected boolean isValid = true;
+    
+    /** The length of the parsed String, if any */
+    protected int parsedLength = 0;
 
     /**
      * Create a AbstractLimitWrapper instance
@@ -294,5 +299,15 @@ public abstract class AbstractLimitWrapper implements LimitWrapper, Comparable<L
         }
         
         return toString().compareTo( that.toString() );
+    }
+    
+    
+    /**
+     * Tells if the TimeLimit element is valid or not
+     * @return true if the values are correct, false otherwise
+     */
+    public boolean isValid()
+    {
+        return isValid;
     }
 }

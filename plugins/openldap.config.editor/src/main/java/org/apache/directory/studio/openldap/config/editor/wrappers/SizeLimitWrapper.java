@@ -126,6 +126,7 @@ public class SizeLimitWrapper extends AbstractLimitWrapper
                     {
                         // No need to continue if the value is wrong
                         clear();
+                        isValid = false;
                         break;
                     }
                     else
@@ -534,42 +535,6 @@ public class SizeLimitWrapper extends AbstractLimitWrapper
     }
     
     
-    /**
-     * Tells if the SizeLimit element is valid or not
-     * @param sizeLimitStr the sizeLimit String to check
-     * @return true if the values are correct, false otherwise
-     */
-    public static boolean isValid( String sizeLimitStr )
-    {
-        if ( !Strings.isEmpty( sizeLimitStr ) )
-        {
-            // use a lowercase version of the string
-            String lowerCaseSizeLimitStr = sizeLimitStr.toLowerCase();
-            
-            SizeLimitWrapper tmp = new SizeLimitWrapper();
-            
-            // Split the strings
-            String[] limits = lowerCaseSizeLimitStr.split( " " );
-            
-            if ( limits != null )
-            {
-                // Parse each limit
-                for ( String limit : limits )
-                {
-                    boolean result = parseLimit( tmp, limit );
-                    
-                    if ( !result )
-                    {
-                        return false;
-                    }
-                }
-            }
-        }
-
-        return true;
-    }
-
-
     /**
      * @return the prLimit
      */
