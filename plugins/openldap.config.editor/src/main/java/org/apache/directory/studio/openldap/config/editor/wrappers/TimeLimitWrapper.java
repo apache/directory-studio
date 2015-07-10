@@ -19,6 +19,8 @@
  */
 package org.apache.directory.studio.openldap.config.editor.wrappers;
 
+import org.apache.directory.api.util.Strings;
+
 /**
  * This class wraps the TimeLimit parameter :
  * <pre>
@@ -69,7 +71,7 @@ public class TimeLimitWrapper extends AbstractLimitWrapper
      */
     public TimeLimitWrapper( String timeLimitStr )
     {
-        if ( timeLimitStr != null )
+        if ( !Strings.isEmpty( timeLimitStr ) )
         {
             // use a lowercase version of the string
             String lowerCaseTimeLimitStr = timeLimitStr.toLowerCase();

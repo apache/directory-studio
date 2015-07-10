@@ -104,7 +104,7 @@ public class SizeLimitWrapper extends AbstractLimitWrapper
      */
     public SizeLimitWrapper( String sizeLimitStr )
     {
-        if ( sizeLimitStr != null )
+        if ( !Strings.isEmpty( sizeLimitStr ) )
         {
             // use a lowercase version of the string
             String lowerCaseSizeLimitStr = sizeLimitStr.toLowerCase();
@@ -200,6 +200,14 @@ public class SizeLimitWrapper extends AbstractLimitWrapper
                     }
                 }
             }
+            else
+            {
+                isValid = true;
+            }
+        }
+        else
+        {
+            isValid = true;
         }
     }
     
