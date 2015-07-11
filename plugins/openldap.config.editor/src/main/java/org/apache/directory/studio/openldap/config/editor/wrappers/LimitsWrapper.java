@@ -661,6 +661,7 @@ public class LimitsWrapper implements Cloneable, Comparable<LimitsWrapper>
     
     
     /**
+     * LimitsWrapper are ordered objects
      * @see Object#equals(Object)
      */
     public boolean equals( Object that )
@@ -675,6 +676,13 @@ public class LimitsWrapper implements Cloneable, Comparable<LimitsWrapper>
         {
             LimitsWrapper thatInstance = (LimitsWrapper)that;
             
+            // Check the prefix first
+            if ( prefix != thatInstance.prefix )
+            {
+                return false;
+            }
+
+            // The selector
             if ( selector != thatInstance.selector )
             {
                 return false;
@@ -698,6 +706,26 @@ public class LimitsWrapper implements Cloneable, Comparable<LimitsWrapper>
                     break;
                     
                 case GROUP :
+                    // If we have an ObjectClass, check it
+                    if ( ( objectClass != null ) && ( !objectClass.equals( thatInstance.objectClass ) ) )
+                    {
+                        return false;
+                    }
+                    else if ( thatInstance.objectClass != null )
+                    {
+                        return false;
+                    }
+
+                    // If we have an AttributeType, check it
+                    if ( ( attributeType != null ) && ( !attributeType.equals( thatInstance.attributeType ) ) )
+                    {
+                        return false;
+                    }
+                    else if ( thatInstance.attributeType != null )
+                    {
+                        return false;
+                    }
+
                     // Check the pattern
                     if ( selectorPattern != thatInstance.selectorPattern )
                     {
@@ -712,6 +740,31 @@ public class LimitsWrapper implements Cloneable, Comparable<LimitsWrapper>
             }
             
             // Check the limits now
+            if ( limits.size() != thatInstance.limits.size() )
+            {
+                return false;
+            }
+            
+            // Iterate on both limits (they are not ordered... This is a O(n2) loop.
+            for ( LimitWrapper limit : limits )
+            {
+                boolean found = false;
+                
+                for ( LimitWrapper thatLimit : thatInstance.limits )
+                {
+                    if ( limit.equals( thatLimit ) )
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+                
+                if ( !found )
+                {
+                    return false;
+                }
+            }
+            
             return true;
         }
         else
