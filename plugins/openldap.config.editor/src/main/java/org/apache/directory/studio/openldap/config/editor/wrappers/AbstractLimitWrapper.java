@@ -167,15 +167,19 @@ public abstract class AbstractLimitWrapper implements LimitWrapper, Comparable<L
         if ( globalLimit != null )
         {
             // The globalLimit overrides the soft and hard limit
-            sb.append( limitType ).append( "=" );
+            sb.append( limitType );
             
-            if ( globalLimit.equals( UNLIMITED ) )
+            if ( globalLimit.intValue() >= 0 )
             {
-                sb.append( UNLIMITED_STR );
+                sb.append( "=" ).append( globalLimit );
             }
-            else if ( globalLimit.intValue() >= 0 )
+            else if ( globalLimit.equals( UNLIMITED ) )
             {
-                sb.append( globalLimit );
+                sb.append( "=" ).append( UNLIMITED_STR );
+            }
+            else if ( globalLimit.equals( HARD_SOFT ) )
+            {
+                sb.append( ".hard=" ).append( SOFT_STR ); 
             }
         }
         else
