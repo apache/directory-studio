@@ -36,7 +36,7 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.search.EntryWidget
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.FilterWidget;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.ldapbrowser.core.utils.AttributeLoader;
+import org.apache.directory.studio.ldapbrowser.core.utils.SchemaObjectLoader;
 import org.apache.directory.studio.common.ui.wrappers.StringValueWrapper;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -92,7 +92,7 @@ public class ReplicationDetailsPage implements IDetailsPage
     private IBrowserConnection browserConnection;
 
     /** The Attribute list loader */
-    private AttributeLoader attributeLoader;
+    private SchemaObjectLoader attributeLoader;
 
     /** The list of attributes */
     private List<String> attributesList = new ArrayList<String>();
@@ -233,7 +233,7 @@ public class ReplicationDetailsPage implements IDetailsPage
     public ReplicationDetailsPage( ReplicationMasterDetailsBlock pmdb )
     {
         masterDetailsBlock = pmdb;
-        attributeLoader = new AttributeLoader();
+        attributeLoader = new SchemaObjectLoader();
 
         // Getting the browser connection associated with the connection in the configuration
         browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
