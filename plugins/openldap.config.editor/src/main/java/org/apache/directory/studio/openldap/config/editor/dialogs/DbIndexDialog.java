@@ -32,7 +32,7 @@ import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.common.ui.wrappers.StringValueWrapper;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.ldapbrowser.core.utils.AttributeLoader;
+import org.apache.directory.studio.ldapbrowser.core.utils.SchemaObjectLoader;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -81,7 +81,7 @@ import org.apache.directory.studio.openldap.config.editor.wrappers.StringValueDe
 public class DbIndexDialog extends AddEditDialog<DbIndexWrapper>
 {
     /** The Attribute list loader */
-    private AttributeLoader attributeLoader;
+    private SchemaObjectLoader attributeLoader;
 
     // UI widgets
     // The attribute's group
@@ -394,7 +394,7 @@ public class DbIndexDialog extends AddEditDialog<DbIndexWrapper>
     {
         super( parentShell );
         super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
-        attributeLoader = new AttributeLoader();
+        attributeLoader = new SchemaObjectLoader();
     }
 
 

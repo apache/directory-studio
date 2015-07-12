@@ -116,7 +116,7 @@ public class AllowFeatureDialog extends AddEditDialog<AllowFeatureEnum>
                 {
                     if ( selectedCheckbox == allowFeatureCheckboxes[i] )
                     {
-                        setEditedElement( AllowFeatureEnum.getFeature( i ) );
+                        setEditedElement( AllowFeatureEnum.getAllowFeature( i ) );
                     }
                     else if ( allowFeatureCheckboxes[i].isEnabled() )
                     {
@@ -187,7 +187,7 @@ public class AllowFeatureDialog extends AddEditDialog<AllowFeatureEnum>
         // The various buttons
         for ( int i = 1; i < allowFeatureCheckboxes.length; i++ )
         {
-            String allowFeature = AllowFeatureEnum.getFeature( i ).getName();
+            String allowFeature = AllowFeatureEnum.getAllowFeature( i ).getName();
             allowFeatureCheckboxes[i] = BaseWidgetUtils.createCheckbox( allowFeatureGroup, allowFeature, 1 );
             allowFeatureCheckboxes[i].addSelectionListener( checkboxSelectionListener );
         }

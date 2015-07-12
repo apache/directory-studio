@@ -59,7 +59,25 @@ public enum AllowFeatureEnum
     {
         return name;
     }
+
     
+    /**
+     * @return An array with all the Enum value's name
+     */
+    public static String[] getNames()
+    {
+        String[] names = new String[values().length];
+        int pos = 0;
+    
+        for ( AllowFeatureEnum allowFeature : values() )
+        {
+            names[pos] = allowFeature.getName();
+            pos++;
+        }
+        
+        return names;
+    }
+
     
     /**
      * Get the AllowFeatureEnumd instance from its number
@@ -67,7 +85,7 @@ public enum AllowFeatureEnum
      * @param number The number we are looking for
      * @return The associated AllowFeatureEnum instance
      */
-    public static AllowFeatureEnum getFeature( int number )
+    public static AllowFeatureEnum getAllowFeature( int number )
     {
         AllowFeatureEnum[] values = AllowFeatureEnum.values();
         

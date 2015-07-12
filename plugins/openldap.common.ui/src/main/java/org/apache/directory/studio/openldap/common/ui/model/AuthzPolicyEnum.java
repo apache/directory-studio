@@ -75,7 +75,7 @@ public enum AuthzPolicyEnum
 
     
     /**
-     * @return An array with all the ENum value's name
+     * @return An array with all the Enum value's name
      */
     public static String[] getNames()
     {
