@@ -45,6 +45,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
@@ -342,7 +343,7 @@ public class TableWidget<E> extends AbstractWidget
             composite = new Composite( parent, SWT.NONE );
         }
         
-        // First, define a grid of 2 columns (one for the table, one for the buttons)
+        // First, define a grid of 3 columns (two for the table, one for the buttons)
         GridLayout compositeGridLayout = new GridLayout( 2, false );
         compositeGridLayout.marginHeight = compositeGridLayout.marginWidth = 0;
         composite.setLayout( compositeGridLayout );
@@ -363,12 +364,11 @@ public class TableWidget<E> extends AbstractWidget
         
         if ( isOrdered )
         {
-            nbLinesSpan += 2;
+            // If it's an ordered table, we add 3 line s: one for Up, one for Down and one for the separator
+            nbLinesSpan += 3;
         }
         
         GridData gd = new GridData( SWT.FILL, SWT.FILL, true, true, 1, nbLinesSpan );
-        gd.heightHint = 20;
-        gd.widthHint = 100;
         elementTable.setLayoutData( gd );
         
         // Create the index TableViewer
@@ -388,17 +388,22 @@ public class TableWidget<E> extends AbstractWidget
         // Inject the existing elements
         elementTableViewer.setInput( elements );
 
+        GridData buttonGd = new GridData( SWT.FILL, SWT.FILL, false, false, 1, 1 );
+        buttonGd.widthHint = 60;
+
         // Create the Add Button and its listener
         if ( toolkit != null )
         {
             addButton = toolkit.createButton( composite, Messages.getString( "CommonUIWidgets.AddButton" ), SWT.PUSH );
+            addButton.setLayoutData( buttonGd );
         }
         else
         {
             addButton = BaseWidgetUtils.createButton( composite, Messages.getString( "CommonUIWidgets.AddButton" ), 1 );
+            addButton.setLayoutData( buttonGd );
         }
         
-        addButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
+        addButton.setLayoutData( buttonGd );
         addButton.addSelectionListener( addButtonListener );
 
         // Create the Edit Button and its listener, if requested
@@ -415,7 +420,7 @@ public class TableWidget<E> extends AbstractWidget
             
             // It's not enabled unless we have selected an element
             editButton.setEnabled( false );
-            editButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
+            editButton.setLayoutData( buttonGd );
             editButton.addSelectionListener( editButtonListener );
         }
 
@@ -431,13 +436,18 @@ public class TableWidget<E> extends AbstractWidget
         
         // It's not selected unless we have selected an index
         deleteButton.setEnabled( false );
-        deleteButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
+        deleteButton.setLayoutData( buttonGd );
         deleteButton.addSelectionListener( deleteButtonListener );
 
         // Create the Up and Down button, if requested
         if ( isOrdered )
         {
-
+            GridData separatorGd = new GridData( SWT.FILL, SWT.FILL, false, false, 1, 1 );
+            separatorGd.heightHint = 20;
+            separatorGd.widthHint = 60;
+            Label separator = BaseWidgetUtils.createSeparator( composite, -1 );
+            separator.setLayoutData( separatorGd );
+            
             // Create the Up Button and its listener
             if ( toolkit != null )
             {
@@ -450,9 +460,9 @@ public class TableWidget<E> extends AbstractWidget
             
             // It's not selected unless we have selected an index
             upButton.setEnabled( false );
-            upButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
+            upButton.setLayoutData( buttonGd );
+            //upButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
             upButton.addSelectionListener( upButtonListener );
-
 
             // Create the Down Button and its listener
             if ( toolkit != null )
@@ -466,7 +476,8 @@ public class TableWidget<E> extends AbstractWidget
             
             // It's not selected unless we have selected an index
             downButton.setEnabled( false );
-            downButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
+            downButton.setLayoutData( buttonGd );
+            //downButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
             downButton.addSelectionListener( downButtonListener );
         }
     }
