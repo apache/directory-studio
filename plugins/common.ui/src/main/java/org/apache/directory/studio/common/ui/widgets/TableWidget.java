@@ -442,12 +442,9 @@ public class TableWidget<E> extends AbstractWidget
         // Create the Up and Down button, if requested
         if ( isOrdered )
         {
-            GridData separatorGd = new GridData( SWT.FILL, SWT.FILL, false, false, 1, 1 );
-            separatorGd.heightHint = 20;
-            separatorGd.widthHint = 60;
-            Label separator = BaseWidgetUtils.createSeparator( composite, -1 );
-            separator.setLayoutData( separatorGd );
-            
+            Label separator = BaseWidgetUtils.createSeparator( composite, 1 );
+            separator.setLayoutData( new GridData( SWT.NONE, SWT.BEGINNING, false, false ) );
+
             // Create the Up Button and its listener
             if ( toolkit != null )
             {
