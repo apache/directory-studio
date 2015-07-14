@@ -64,7 +64,7 @@ public enum DnSpecStyleEnum
      * @param name The name to retrieve
      * @return The DnSpecTypeEnum instance found, or NONE.
      */
-    public static DnSpecStyleEnum getSelector( String name )
+    public static DnSpecStyleEnum getStyle( String name )
     {
         for ( DnSpecStyleEnum dnSpecStyle : values() )
         {

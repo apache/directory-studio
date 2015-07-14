@@ -57,7 +57,7 @@ public enum DnSpecTypeEnum
      * @param name The name to retrieve
      * @return The DnSpecTypeEnum instance found, or NONE.
      */
-    public static DnSpecTypeEnum getSelector( String name )
+    public static DnSpecTypeEnum getType( String name )
     {
         for ( DnSpecTypeEnum dnSpecType : values() )
         {
