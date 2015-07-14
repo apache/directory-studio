@@ -20,6 +20,7 @@
 package org.apache.directory.studio.openldap.config.editor.databases;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.api.ldap.model.name.Dn;
@@ -27,6 +28,7 @@ import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.common.ui.CommonUIUtils;
 import org.apache.directory.studio.common.ui.widgets.AbstractWidget;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.common.ui.widgets.TableWidget;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
@@ -39,7 +41,13 @@ import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginCo
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginUtils;
 import org.apache.directory.studio.openldap.config.editor.dialogs.OverlayDialog;
 import org.apache.directory.studio.openldap.config.editor.dialogs.ReplicationConsumerDialog;
+import org.apache.directory.studio.openldap.config.editor.dialogs.SizeLimitDialog;
 import org.apache.directory.studio.openldap.config.editor.wrappers.DatabaseWrapper;
+import org.apache.directory.studio.openldap.config.editor.wrappers.DnDecorator;
+import org.apache.directory.studio.openldap.config.editor.wrappers.DnWrapper;
+import org.apache.directory.studio.openldap.config.editor.wrappers.LimitDecorator;
+import org.apache.directory.studio.openldap.config.editor.wrappers.LimitsDecorator;
+import org.apache.directory.studio.openldap.config.editor.wrappers.LimitsWrapper;
 import org.apache.directory.studio.openldap.config.model.OlcOverlayConfig;
 import org.apache.directory.studio.openldap.config.model.database.OlcBdbConfig;
 import org.apache.directory.studio.openldap.config.model.database.OlcDatabaseConfig;
@@ -76,7 +84,6 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
@@ -150,7 +157,7 @@ import org.eclipse.ui.forms.widgets.Section;
  * | +----------------------------------------------------+ |
  * | | Root DN :       [ ] none [///////////////////////] | |
  * | | Root password : [ ] none [///////////////////////] | |
- * | | Suffix :        [ ] none                           | |
+ * | | Suffix :                                           | |
  * | |   +------------------------------------+           | |
  * | |   |                                    | (Add...)  | |
  * | |   |                                    | (Edit...) | |
@@ -161,7 +168,8 @@ import org.eclipse.ui.forms.widgets.Section;
  * | .----------------------------------------------------. |
  * | |V XXXX Database limits                              | |
  * | +----------------------------------------------------+ |
- * | | Size limit : [//////////]  Max Deref Depth : [///] | |
+ * | | Size limit : [//////////] (Edit...)                | |
+ * | | Max Deref Depth : [///]                            | |
  * | | Timelimit :                                        | |
  * | |   +------------------------------------+           | |
  * | |   |                                    | (Add...)  | |
@@ -312,13 +320,30 @@ public class DatabasesDetailsPage implements IDetailsPage
     private Composite parentComposite;
     private FormToolkit toolkit;
     private ComboViewer databaseTypeComboViewer;
-    private EntryWidget suffixEntryWidget;
+    
+    // UI General sesstings widgets
+    /** The olcSuffixDN attribute */
+    private TableWidget<DnWrapper> suffixDnTableWidget;
 
     /** The olcRootDN attribute */
     private EntryWidget rootDnEntryWidget;
 
     /** The olcRootPW attribute */
     private PasswordWidget rootPasswordWidget;
+
+    // UI limits settings widgets
+    /** The olcSizeLimit */
+    private Text sizeLimitText;
+    
+    /** The SizeLimit edit Button */
+    private Button sizeLimitEditButton;
+
+    /** The olcMaxDerefDepth parameter */
+    private Text maxDerefDepthText;
+
+    /** The olcLimits Table */
+    private TableWidget<LimitsWrapper> limitsTableWidget;
+    
 
     /** The olcSchemaDN attribute */
     private EntryWidget schemaDnEntryWidget;
@@ -360,9 +385,47 @@ public class DatabasesDetailsPage implements IDetailsPage
     private Button addReplicationConsumerButton;
     private Button editReplicationConsumerButton;
     private Button deleteReplicationConsumerButton;
+    
+    
+    /**
+     * The olcSuffixDn listener
+     *
+    private WidgetModifyListener suffixDnTableWidgetListener = new WidgetModifyListener()
+    {
+        public void widgetModified( WidgetModifyEvent e )
+        {
+            List<String> suffixDns = new ArrayList<String>();
+            
+            for ( DnWrapper dnWrapper : suffixDnTableWidget.getElements() )
+            {
+                suffixDns.add( dnWrapper.toString() );
+            }
+            
+            getConfiguration().getGlobal().setOlcRequires( requires );
+        }
+    };
+    
+    
+    /**
+     * The listener for the sizeLimit Text
+     */
+    private SelectionListener sizeLimitEditSelectionListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            SizeLimitDialog dialog = new SizeLimitDialog( sizeLimitText.getShell(), sizeLimitText.getText() );
 
-    /** The olcMaxDerefDepth parameter */
-    private Text maxDerefDepthText;
+            if ( dialog.open() == OverlayDialog.OK )
+            {
+                String newSizeLimitStr = dialog.getNewLimit();
+                
+                if ( newSizeLimitStr != null )
+                {
+                    sizeLimitText.setText( newSizeLimitStr );
+                }
+            }
+        }
+    };
 
     // Listeners
     /**
@@ -606,6 +669,17 @@ public class DatabasesDetailsPage implements IDetailsPage
 
 
     /**
+     * Creates the Database general configuration panel. We have 8 sections :
+     * <ul>
+     * <li>General</li>
+     * <li>Limits</li>
+     * <li>Security</li>
+     * <li>Access</li>
+     * <li>Overlays</li>
+     * <li>Replication</li>
+     * <li>Options</li>
+     * <li>Specific</li>
+     * </ul>
      * {@inheritDoc}
      */
     public void createContents( Composite parent )
@@ -614,22 +688,38 @@ public class DatabasesDetailsPage implements IDetailsPage
         parent.setLayout( new GridLayout() );
 
         createGeneralSettingsSection( parent, toolkit );
+        createLimitsSettingsSection( parent, toolkit );
+        //createSecuritySettingsSection( parent, toolkit );
+        //createAccessSettingsSection( parent, toolkit );
         createOverlaySettingsSection( parent, toolkit );
-        createDatabaseSpecificSettingsSection( parent, toolkit );
         createReplicationConsumersSettingsSection( parent, toolkit );
+        //createOptionsSettingsSection( parent, toolkit );
+        createDatabaseSpecificSettingsSection( parent, toolkit );
     }
 
 
     /**
      * Creates the General Settings Section. This will expose the following attributes :
      * <ul>
-     * <li>olcSuffix</li>
-     * <li>olcDirectory</li>
-     * <li>olcDbMode</li>
      * <li>olcRootDN</li>
      * <li>olcRootPW</li>
-     * <li>olcIndex</li>
+     * <li>olcSuffix</li>
      * </ul>
+     * 
+     * <pre>
+     * .----------------------------------------------------.
+     * |V XXXX Database general                             |
+     * +----------------------------------------------------+
+     * | Root DN :       [ ] none [///////////////////////] |
+     * | Root password : [ ] none [///////////////////////] |
+     * | Suffix :                                           |
+     * |   +------------------------------------+           |
+     * |   |                                    | (Add...)  |
+     * |   |                                    | (Edit...) |
+     * |   |                                    | (Delete)  |
+     * |   +------------------------------------+           |
+     * +----------------------------------------------------+
+     * </pre>
      *
      * @param parent the parent composite
      * @param toolkit the toolkit to use
@@ -637,8 +727,8 @@ public class DatabasesDetailsPage implements IDetailsPage
     private void createGeneralSettingsSection( Composite parent, FormToolkit toolkit )
     {
         // Creating the Section
-        Section section = toolkit.createSection( parent, Section.TITLE_BAR );
-        section.setText( "Database General Settings" );
+        Section section = toolkit.createSection( parent, Section.TWISTIE | Section.EXPANDED | Section.TITLE_BAR );
+        section.setText( Messages.getString( "OpenLDAPMasterDetail.GeneralSettings" ) );
         section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite composite = toolkit.createComposite( section );
         toolkit.paintBordersFor( composite );
@@ -646,40 +736,6 @@ public class DatabasesDetailsPage implements IDetailsPage
         gl.marginRight = 18;
         composite.setLayout( gl );
         section.setClient( composite );
-
-        // Database Type
-        toolkit.createLabel( composite, "Database Type:" );
-        Combo databaseTypeCombo = new Combo( composite, SWT.READ_ONLY | SWT.SINGLE );
-        databaseTypeCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        databaseTypeComboViewer = new ComboViewer( databaseTypeCombo );
-        databaseTypeComboViewer.setContentProvider( new ArrayContentProvider() );
-        databaseTypeComboViewer.setLabelProvider( new LabelProvider()
-        {
-            public String getText( Object element )
-            {
-                if ( element instanceof DatabaseTypeEnum )
-                {
-                    DatabaseTypeEnum databaseType = ( DatabaseTypeEnum ) element;
-
-                    return databaseType.getName();
-                }
-
-                return super.getText( element );
-            }
-        } );
-
-        // Suffix DN
-        toolkit.createLabel( composite, "Suffix:" );
-        suffixEntryWidget = new EntryWidget( browserConnection, null, true );
-        suffixEntryWidget.createWidget( composite, toolkit );
-        suffixEntryWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        ControlDecoration suffixTextDecoration = new ControlDecoration( suffixEntryWidget.getControl(), SWT.CENTER
-            | SWT.RIGHT );
-        suffixTextDecoration.setImage( OpenLdapConfigurationPlugin.getDefault().getImageDescriptor(
-            OpenLdapConfigurationPluginConstants.IMG_INFORMATION ).createImage() );
-        suffixTextDecoration.setMarginWidth( 4 );
-        suffixTextDecoration
-            .setDescriptionText( "The DN suffix of queries that will be passed to this backend database." );
 
         // Root DN
         toolkit.createLabel( composite, "Root DN:" );
@@ -707,6 +763,47 @@ public class DatabasesDetailsPage implements IDetailsPage
         rootPasswordTextDecoration.setMarginWidth( 4 );
         rootPasswordTextDecoration
             .setDescriptionText( "The password for the the Root DN." );
+
+        // Database Type
+        /*
+        toolkit.createLabel( composite, "Database Type:" );
+        Combo databaseTypeCombo = new Combo( composite, SWT.READ_ONLY | SWT.SINGLE );
+        databaseTypeCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        databaseTypeComboViewer = new ComboViewer( databaseTypeCombo );
+        databaseTypeComboViewer.setContentProvider( new ArrayContentProvider() );
+        databaseTypeComboViewer.setLabelProvider( new LabelProvider()
+        {
+            public String getText( Object element )
+            {
+                if ( element instanceof DatabaseTypeEnum )
+                {
+                    DatabaseTypeEnum databaseType = ( DatabaseTypeEnum ) element;
+
+                    return databaseType.getName();
+                }
+
+                return super.getText( element );
+            }
+        } );
+        */
+
+        // Suffix DN. We may have more than one
+        toolkit.createLabel( composite, "Suffix:" );
+        suffixDnTableWidget = new TableWidget<DnWrapper>( new DnDecorator( composite.getShell() ) );
+
+        suffixDnTableWidget.createWidgetWithEdit( composite, toolkit );
+        suffixDnTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+        //addModifyListener( suffixDnTableWidget, suffixTableViewerListener );
+
+        ControlDecoration suffixTextDecoration = new ControlDecoration( suffixDnTableWidget.getControl(), SWT.CENTER
+            | SWT.RIGHT );
+        suffixTextDecoration.setImage( OpenLdapConfigurationPlugin.getDefault().getImageDescriptor(
+            OpenLdapConfigurationPluginConstants.IMG_INFORMATION ).createImage() );
+        suffixTextDecoration.setMarginWidth( 4 );
+        suffixTextDecoration
+            .setDescriptionText( "The DN suffix of queries that will be passed to this backend database." );
+
+        /*
 
         // Schema DN
         toolkit.createLabel( composite, "Schema DN:" );
@@ -816,12 +913,89 @@ public class DatabasesDetailsPage implements IDetailsPage
             OpenLdapConfigurationPluginConstants.IMG_INFORMATION ).createImage() );
         monitoringCheckboxDecoration.setMarginWidth( 4 );
         monitoringCheckboxDecoration.setDescriptionText( "Controls whether monitoring is enabled for this database" );
+        */
+    }
+    
+    
+    /**
+     * Creates the Limits Settings Section. This will expose the following attributes :
+     *   <ul>
+     *     <li>olcSizeLimit(String, SV)</li>
+     *     <li>olcTimeLimit(String, MV)</li>
+     *     <li>olcLimits(String, MV, Ordered)</li>
+     *     <li>olcMaxDerefDepth(Integer, SV)</li>
+     *   </ul>
+     * 
+     * <pre>
+     * .----------------------------------------------------.
+     * |V XXXX Database limits                              |
+     * +----------------------------------------------------+
+     * | Size limit : [//////////] (Edit...)                | 
+     * | Max Deref Depth : [///]                            |
+     * | Timelimit :                                        |
+     * |   +------------------------------------+           |
+     * |   |                                    | (Add...)  |
+     * |   |                                    | (Edit...) |
+     * |   |                                    | (Delete)  |
+     * |   +------------------------------------+           |
+     * | Limits :                                           |
+     * |   +------------------------------------+           |
+     * |   |                                    | (Add...)  |
+     * |   |                                    | (Edit...) |
+     * |   |                                    | (Delete)  |
+     * |   |                                    | --------  |
+     * |   |                                    | (Up...)   |
+     * |   |                                    | (Down...) |
+     * |   +------------------------------------+           |
+     * +----------------------------------------------------+
+     * </pre>
+     * 
+     * @param parent the parent composite
+     * @param toolkit the toolkit to use
+     */
+    private void createLimitsSettingsSection( Composite parent, FormToolkit toolkit )
+    {
+        // Creating the Section
+        Section section = toolkit.createSection( parent, Section.TWISTIE | Section.EXPANDED | Section.TITLE_BAR );
+        section.setText( Messages.getString( "OpenLDAPMasterDetail.LimitsSettings" ) );
+        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        Composite composite = toolkit.createComposite( section );
+        toolkit.paintBordersFor( composite );
+        GridLayout gl = new GridLayout( 5, false );
+        gl.marginRight = 18;
+        composite.setLayout( gl );
+        section.setClient( composite );
         
-        // The olcMaxDerefDepth parameter
-        toolkit.createLabel( composite, "Max Deref. Depth:" );
-        maxDerefDepthText = BaseWidgetUtils.createIntegerText( toolkit, composite, 
-                "Specifies the maximum number of aliases to dereference when trying to resolve an entry" );
+        // The olcSizeLimit parameter.
+        toolkit.createLabel( composite, 
+            Messages.getString( "OpenLDAPMasterDetail.SizeLimit" ) ); //$NON-NLS-1$
+        sizeLimitText = toolkit.createText( composite, "" );
+        sizeLimitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+
+        // The SizeLimit edit button
+        sizeLimitEditButton = BaseWidgetUtils.createButton( composite, 
+            Messages.getString( "OpenLDAPMasterDetail.Edit" ), 1 ); //$NON-NLS-1$
+        sizeLimitEditButton.setLayoutData( new GridData( SWT.RIGHT, SWT.CENTER, false, false ) );
+        sizeLimitEditButton.addSelectionListener( sizeLimitEditSelectionListener );
+        
+        // The olcMaxDerefDepth edit button
+        toolkit.createLabel( composite, 
+            Messages.getString( "OpenLDAPMasterDetail.MaxDerefDepth" ) ); //$NON-NLS-1$
+        maxDerefDepthText = BaseWidgetUtils.createIntegerText( toolkit, composite,
+            "Specifies the maximum number of aliases to dereference when trying to resolve an entry" );
         maxDerefDepthText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+
+        // The olcLimits parameter.
+        Label limitsLabel = toolkit.createLabel( composite, 
+            Messages.getString( "OpenLDAPMasterDetail.Limits" ) ); //$NON-NLS-1$
+        limitsLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 5, 1 ) );
+        
+        limitsTableWidget = new TableWidget<LimitsWrapper>( 
+            new LimitsDecorator( composite.getShell(), "Limits" ) );
+
+        limitsTableWidget.createOrderedWidgetWithEdit( composite, toolkit );
+        limitsTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 5, 1 ) );
+        //addModifyListener( limitsTableWidget, limitsListener );
     }
 
 
@@ -895,10 +1069,8 @@ public class DatabasesDetailsPage implements IDetailsPage
     /**
      * Creates the Database Specific Settings Section
      *
-     * @param parent
-     *      the parent composite
-     * @param toolkit
-     *      the toolkit to use
+     * @param parent the parent composite
+     * @param toolkit the toolkit to use
      */
     private void createDatabaseSpecificSettingsSection( Composite parent, FormToolkit toolkit )
     {
@@ -1055,14 +1227,18 @@ public class DatabasesDetailsPage implements IDetailsPage
         {
             OlcDatabaseConfig database = databaseWrapper.getDatabase();
 
-            // Suffix
+            // Suffixes
             database.clearOlcSuffix();
-            Dn suffixDn = suffixEntryWidget.getDn();
-
-            if ( suffixDn != null )
+            List<DnWrapper> dnWrappers = suffixDnTableWidget.getElements();
+            Dn[] suffixDns = new Dn[dnWrappers.size()];
+            int pos = 0;
+            
+            for ( DnWrapper dnWrapper : dnWrappers )
             {
-                database.addOlcSuffix( suffixDn );
+                suffixDns[pos++] = dnWrapper.getDn();
             }
+
+            database.addOlcSuffix( suffixDns );
 
             // Root DN
             database.setOlcRootDN( rootDnEntryWidget.getDn() );
@@ -1076,13 +1252,13 @@ public class DatabasesDetailsPage implements IDetailsPage
             }
             
             // Schema DN
-            database.setOlcSchemaDN( schemaDnEntryWidget.getDn() );
+            //database.setOlcSchemaDN( schemaDnEntryWidget.getDn() );
 
             // Read Only
-            database.setOlcReadOnly( readOnlyBooleanWithDefaultWidget.getValue() );
+            //database.setOlcReadOnly( readOnlyBooleanWithDefaultWidget.getValue() );
 
             // Hidden
-            database.setOlcHidden( hiddenBooleanWithDefaultWidget.getValue() );
+            //database.setOlcHidden( hiddenBooleanWithDefaultWidget.getValue() );
 
             // Database specific details block
             if ( databaseSpecificDetailsBlock != null )
@@ -1091,7 +1267,7 @@ public class DatabasesDetailsPage implements IDetailsPage
             }
             
             // MirrorMode
-            database.setOlcMirrorMode( mirrorModeBooleanWithDefaultWidget.getValue() );
+            //database.setOlcMirrorMode( mirrorModeBooleanWithDefaultWidget.getValue() );
             
             // Disabled
             if ( browserConnection.getSchema().hasAttributeTypeDescription( "olcDisabled" ) )
@@ -1100,21 +1276,21 @@ public class DatabasesDetailsPage implements IDetailsPage
             }
             
             // LastMod
-            database.setOlcLastMod( lastModBooleanWithDefaultWidget.getValue() );
+            //database.setOlcLastMod( lastModBooleanWithDefaultWidget.getValue() );
             
             // AddAclContent
-            database.setOlcAddContentAcl( addContentAclBooleanWithDefaultWidget.getValue() );
+            //database.setOlcAddContentAcl( addContentAclBooleanWithDefaultWidget.getValue() );
             
             // Monitoring
             if ( ( database instanceof OlcHdbConfig ) || ( database instanceof OlcBdbConfig ) )
             {
-                database.setOlcMonitoring( monitoringBooleanWithDefaultWidget.getValue() );
+                //database.setOlcMonitoring( monitoringBooleanWithDefaultWidget.getValue() );
             }
             
             // MaxDerefDepth
-            if ( ( maxDerefDepthText.getText() != null ) && ( maxDerefDepthText.getText().length() > 0 ) )
+            //if ( ( maxDerefDepthText.getText() != null ) && ( maxDerefDepthText.getText().length() > 0 ) )
             {
-                database.setOlcMaxDerefDepth( Integer.parseInt( maxDerefDepthText.getText() ) );
+                //database.setOlcMaxDerefDepth( Integer.parseInt( maxDerefDepthText.getText() ) );
             }
         }
     }
@@ -1189,13 +1365,13 @@ public class DatabasesDetailsPage implements IDetailsPage
             if ( isFrontendDatabase( database ) )
             {
                 databaseTypeComboViewer.getControl().setEnabled( false );
-                suffixEntryWidget.setEnabled( false );
+                suffixDnTableWidget.disable();;
                 rootDnEntryWidget.setEnabled( false );
                 rootPasswordWidget.setEnabled( false );
-                schemaDnEntryWidget.setEnabled( false );
-                readOnlyBooleanWithDefaultWidget.setEnabled( false );
-                hiddenBooleanWithDefaultWidget.setEnabled( false );
-                mirrorModeBooleanWithDefaultWidget.setEnabled( false );
+                //schemaDnEntryWidget.setEnabled( false );
+                //readOnlyBooleanWithDefaultWidget.setEnabled( false );
+                //hiddenBooleanWithDefaultWidget.setEnabled( false );
+                //mirrorModeBooleanWithDefaultWidget.setEnabled( false );
                 
                 // Disabled
                 if ( browserConnection.getSchema().hasAttributeTypeDescription( "olcDisabled" ) )
@@ -1203,21 +1379,21 @@ public class DatabasesDetailsPage implements IDetailsPage
                     disabledBooleanWithDefaultWidget.setEnabled( false );
                 }
 
-                lastModBooleanWithDefaultWidget.setEnabled( false );
-                addContentAclBooleanWithDefaultWidget.setEnabled( false );
-                monitoringBooleanWithDefaultWidget.setEnabled( false );
-                maxDerefDepthText.setEnabled( false );
+                //lastModBooleanWithDefaultWidget.setEnabled( false );
+                //addContentAclBooleanWithDefaultWidget.setEnabled( false );
+                //monitoringBooleanWithDefaultWidget.setEnabled( false );
+                //maxDerefDepthText.setEnabled( false );
             }
             else if ( isConfigDatabase( database ) )
             {
                 databaseTypeComboViewer.getControl().setEnabled( false );
-                suffixEntryWidget.setEnabled( false );
+                suffixDnTableWidget.enable();;
                 rootDnEntryWidget.setEnabled( true );
                 rootPasswordWidget.setEnabled( true );
-                schemaDnEntryWidget.setEnabled( true );
-                readOnlyBooleanWithDefaultWidget.setEnabled( false );
-                hiddenBooleanWithDefaultWidget.setEnabled( false );
-                mirrorModeBooleanWithDefaultWidget.setEnabled( true );
+                //schemaDnEntryWidget.setEnabled( true );
+                //readOnlyBooleanWithDefaultWidget.setEnabled( false );
+                //hiddenBooleanWithDefaultWidget.setEnabled( false );
+                //mirrorModeBooleanWithDefaultWidget.setEnabled( true );
                 
                 // Disabled
                 if ( browserConnection.getSchema().hasAttributeTypeDescription( "olcDisabled" ) )
@@ -1225,21 +1401,21 @@ public class DatabasesDetailsPage implements IDetailsPage
                     disabledBooleanWithDefaultWidget.setEnabled( false );
                 }
                 
-                lastModBooleanWithDefaultWidget.setEnabled( false );
-                addContentAclBooleanWithDefaultWidget.setEnabled( false );
-                monitoringBooleanWithDefaultWidget.setEnabled( false );
-                maxDerefDepthText.setEnabled( false );
+                //lastModBooleanWithDefaultWidget.setEnabled( false );
+                //addContentAclBooleanWithDefaultWidget.setEnabled( false );
+                //monitoringBooleanWithDefaultWidget.setEnabled( false );
+                //maxDerefDepthText.setEnabled( false );
             }
             else
             {
-                databaseTypeComboViewer.getControl().setEnabled( true );
-                suffixEntryWidget.setEnabled( true );
+                //databaseTypeComboViewer.getControl().setEnabled( true );
+                suffixDnTableWidget.enable();;
                 rootDnEntryWidget.setEnabled( true );
                 rootPasswordWidget.setEnabled( true );
-                schemaDnEntryWidget.setEnabled( true );
-                readOnlyBooleanWithDefaultWidget.setEnabled( true );
-                hiddenBooleanWithDefaultWidget.setEnabled( true );
-                mirrorModeBooleanWithDefaultWidget.setEnabled( true );
+                //schemaDnEntryWidget.setEnabled( true );
+                //readOnlyBooleanWithDefaultWidget.setEnabled( true );
+                //hiddenBooleanWithDefaultWidget.setEnabled( true );
+                //mirrorModeBooleanWithDefaultWidget.setEnabled( true );
                 
                 // Disabled
                 if ( browserConnection.getSchema().hasAttributeTypeDescription( "olcDisabled" ) )
@@ -1247,31 +1423,33 @@ public class DatabasesDetailsPage implements IDetailsPage
                     disabledBooleanWithDefaultWidget.setEnabled( true );
                 }
                 
-                lastModBooleanWithDefaultWidget.setEnabled( true );
-                addContentAclBooleanWithDefaultWidget.setEnabled( true );
+                //lastModBooleanWithDefaultWidget.setEnabled( true );
+                //addContentAclBooleanWithDefaultWidget.setEnabled( true );
                 
                 if ( ( database instanceof OlcHdbConfig ) || ( database instanceof OlcBdbConfig ) )
                 {
-                    monitoringBooleanWithDefaultWidget.setEnabled( true );
+                    //monitoringBooleanWithDefaultWidget.setEnabled( true );
                 }
                 else
                 {
-                    monitoringBooleanWithDefaultWidget.setEnabled( false );
+                    //monitoringBooleanWithDefaultWidget.setEnabled( false );
                 }
                 
-                maxDerefDepthText.setEnabled( true );
+                //maxDerefDepthText.setEnabled( true );
             }
 
             // Suffixes
+            suffixDnTableWidget.getElements().clear();
+            
             List<Dn> suffixesDnList = database.getOlcSuffix();
-            Dn suffixDn = null;
-
-            if ( suffixesDnList.size() == 1 )
+            List<DnWrapper> dnWrappers = new ArrayList<DnWrapper>();
+            
+            for ( Dn dn : suffixesDnList )
             {
-                suffixDn = suffixesDnList.get( 0 );
+                dnWrappers.add( new DnWrapper( dn ) );
             }
-
-            suffixEntryWidget.setInput( suffixDn );
+            
+            suffixDnTableWidget.setElements( dnWrappers );
 
             // Root DN
             Dn rootDn = database.getOlcRootDN();
@@ -1283,13 +1461,13 @@ public class DatabasesDetailsPage implements IDetailsPage
             //            rootPasswordText.setText( ( rootPassword == null ) ? "" : rootPassword ); //$NON-NLS-1$
 
             // Read Only
-            readOnlyBooleanWithDefaultWidget.setValue( database.getOlcReadOnly() );
+            //readOnlyBooleanWithDefaultWidget.setValue( database.getOlcReadOnly() );
 
             // Hidden
-            hiddenBooleanWithDefaultWidget.setValue( database.getOlcHidden() );
+            //hiddenBooleanWithDefaultWidget.setValue( database.getOlcHidden() );
             
             // Mirror Mode
-            mirrorModeBooleanWithDefaultWidget.setValue( database.getOlcMirrorMode() );
+            //mirrorModeBooleanWithDefaultWidget.setValue( database.getOlcMirrorMode() );
             
             // Disabled
             if ( browserConnection.getSchema().hasAttributeTypeDescription( "olcDisabled" ) )
@@ -1298,18 +1476,18 @@ public class DatabasesDetailsPage implements IDetailsPage
             }
 
             // LastMod
-            lastModBooleanWithDefaultWidget.setValue( database.getOlcLastMod() );
+            //lastModBooleanWithDefaultWidget.setValue( database.getOlcLastMod() );
             
             // AddAclContent
-            addContentAclBooleanWithDefaultWidget.setValue( database.getOlcAddContentAcl() );
+            //addContentAclBooleanWithDefaultWidget.setValue( database.getOlcAddContentAcl() );
 
             // Monitoring
             if ( ( database instanceof OlcHdbConfig ) || ( database instanceof OlcBdbConfig ) )
             {
-                monitoringBooleanWithDefaultWidget.setValue( database.getOlcMonitoring() );
+                //monitoringBooleanWithDefaultWidget.setValue( database.getOlcMonitoring() );
             }
             
-            maxDerefDepthText.setText( database.getOlcMaxDerefDepth() == null ? "" : Integer.toString( database.getOlcMaxDerefDepth() ) );
+            //maxDerefDepthText.setText( database.getOlcMaxDerefDepth() == null ? "" : Integer.toString( database.getOlcMaxDerefDepth() ) );
 
             // Overlays
             refreshOverlaysTableViewer();
@@ -1339,8 +1517,8 @@ public class DatabasesDetailsPage implements IDetailsPage
             // OlcMdbConfig Type
             else if ( database instanceof OlcMdbConfig )
             {
-                databaseTypeComboViewer.setInput( DatabaseTypeEnum.values() );
-                databaseTypeComboViewer.setSelection( new StructuredSelection( DatabaseTypeEnum.MDB ) );
+                //databaseTypeComboViewer.setInput( DatabaseTypeEnum.values() );
+                //databaseTypeComboViewer.setSelection( new StructuredSelection( DatabaseTypeEnum.MDB ) );
                 databaseSpecificDetailsBlock = new MdbDatabaseSpecificDetailsBlock( instance,
                     ( OlcMdbConfig ) database, browserConnection );
             }
@@ -1467,13 +1645,13 @@ public class DatabasesDetailsPage implements IDetailsPage
      */
     private void addListeners()
     {
-        addModifyListener( suffixEntryWidget, dirtyWidgetModifyListener );
+        addModifyListener( suffixDnTableWidget, dirtyWidgetModifyListener );
         addModifyListener( rootDnEntryWidget, dirtyWidgetModifyListener );
         addModifyListener( rootPasswordWidget, dirtyWidgetModifyListener );
-        addModifyListener( schemaDnEntryWidget, dirtyWidgetModifyListener );
-        addModifyListener( readOnlyBooleanWithDefaultWidget, dirtyWidgetModifyListener );
-        addModifyListener( hiddenBooleanWithDefaultWidget, dirtyWidgetModifyListener );
-        addModifyListener( mirrorModeBooleanWithDefaultWidget, dirtyWidgetModifyListener );
+        //addModifyListener( schemaDnEntryWidget, dirtyWidgetModifyListener );
+        //addModifyListener( readOnlyBooleanWithDefaultWidget, dirtyWidgetModifyListener );
+        //addModifyListener( hiddenBooleanWithDefaultWidget, dirtyWidgetModifyListener );
+        //addModifyListener( mirrorModeBooleanWithDefaultWidget, dirtyWidgetModifyListener );
         
         if ( browserConnection.getSchema().hasAttributeTypeDescription( "olcDisabled" ) )
         {
@@ -1483,7 +1661,7 @@ public class DatabasesDetailsPage implements IDetailsPage
         addModifyListener( lastModBooleanWithDefaultWidget, dirtyWidgetModifyListener );
         addModifyListener( addContentAclBooleanWithDefaultWidget, dirtyWidgetModifyListener );
         addModifyListener( monitoringBooleanWithDefaultWidget, dirtyWidgetModifyListener );
-        maxDerefDepthText.addModifyListener( dirtyModifyListener );
+        //maxDerefDepthText.addModifyListener( dirtyModifyListener );
 
         addSelectionChangedListener( databaseTypeComboViewer, databaseTypeComboViewerSelectionChangedListener );
 
@@ -1507,13 +1685,13 @@ public class DatabasesDetailsPage implements IDetailsPage
      */
     private void removeListeners()
     {
-        removeModifyListener( suffixEntryWidget, dirtyWidgetModifyListener );
+        removeModifyListener( suffixDnTableWidget, dirtyWidgetModifyListener );
         removeModifyListener( rootDnEntryWidget, dirtyWidgetModifyListener );
         removeModifyListener( rootPasswordWidget, dirtyWidgetModifyListener );
-        removeModifyListener( schemaDnEntryWidget, dirtyWidgetModifyListener );
-        removeModifyListener( readOnlyBooleanWithDefaultWidget, dirtyWidgetModifyListener );
-        removeModifyListener( hiddenBooleanWithDefaultWidget, dirtyWidgetModifyListener );
-        removeModifyListener( mirrorModeBooleanWithDefaultWidget, dirtyWidgetModifyListener );
+        //removeModifyListener( schemaDnEntryWidget, dirtyWidgetModifyListener );
+        //removeModifyListener( readOnlyBooleanWithDefaultWidget, dirtyWidgetModifyListener );
+        //removeModifyListener( hiddenBooleanWithDefaultWidget, dirtyWidgetModifyListener );
+        //removeModifyListener( mirrorModeBooleanWithDefaultWidget, dirtyWidgetModifyListener );
         
         if ( browserConnection.getSchema().hasAttributeTypeDescription( "olcDisabled" ) )
         {
@@ -1523,7 +1701,7 @@ public class DatabasesDetailsPage implements IDetailsPage
         removeModifyListener( lastModBooleanWithDefaultWidget, dirtyWidgetModifyListener );
         removeModifyListener( addContentAclBooleanWithDefaultWidget, dirtyWidgetModifyListener );
         removeModifyListener( monitoringBooleanWithDefaultWidget, dirtyWidgetModifyListener );
-        maxDerefDepthText.removeModifyListener( dirtyModifyListener );
+        //maxDerefDepthText.removeModifyListener( dirtyModifyListener );
 
         removeSelectionChangedListener( databaseTypeComboViewer, databaseTypeComboViewerSelectionChangedListener );
 
