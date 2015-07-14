@@ -873,7 +873,11 @@ public class LimitsWrapper implements Cloneable, Comparable<LimitsWrapper>
                     sb.append( '.' ).append( dnSpecStyle.getName() );
                 }
 
-                // fall through
+                sb.append( "=\"" );
+                sb.append( selectorPattern );
+                sb.append(  '\"' );
+                
+                break;
                 
             case GROUP :
                 if ( objectClass != null )
@@ -889,6 +893,7 @@ public class LimitsWrapper implements Cloneable, Comparable<LimitsWrapper>
                 sb.append( "=\"" );
                 sb.append( selectorPattern );
                 sb.append(  '\"' );
+                
                 break;
         }
         

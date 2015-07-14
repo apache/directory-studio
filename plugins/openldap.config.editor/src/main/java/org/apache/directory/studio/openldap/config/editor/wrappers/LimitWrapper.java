@@ -24,7 +24,7 @@ package org.apache.directory.studio.openldap.config.editor.wrappers;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface LimitWrapper
+public interface LimitWrapper extends Comparable<LimitWrapper>
 {
     // Define some of the used constants
     public static final Integer HARD_SOFT = Integer.valueOf( -3 );
