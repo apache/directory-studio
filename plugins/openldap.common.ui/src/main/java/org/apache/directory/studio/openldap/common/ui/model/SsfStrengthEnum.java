@@ -34,27 +34,47 @@ public enum SsfStrengthEnum
     AES_128( 128, "AES-128" ),
     AES_256( 256, "AES-256" );
     
-    /** The associated Text */
-    private String text;
+    /** The associated name */
+    private String name;
     
     /** The SSF strength position */
     private int nbBits;
+    
     /**
      * Creates an SsfEnum instance
      */
-    private SsfStrengthEnum( int nbBits, String text )
+    private SsfStrengthEnum( int nbBits, String name )
     {
         this.nbBits = nbBits;
-        this.text = text;
+        this.name = name;
     }
 
     /**
      * @return the text
      */
-    public String getText()
+    public String getName()
     {
-        return text;
+        return name;
     }
+
+    
+    /**
+     * @return An array with all the Enum value's name
+     */
+    public static String[] getNames()
+    {
+        String[] names = new String[values().length];
+        int pos = 0;
+    
+        for ( SsfStrengthEnum ssfStrength : values() )
+        {
+            names[pos] = ssfStrength.name;
+            pos++;
+        }
+        
+        return names;
+    }
+    
 
     /**
      * @return the number of bits
@@ -95,7 +115,7 @@ public enum SsfStrengthEnum
     {
         for ( SsfStrengthEnum ssfStrength : values() )
         {
-            if ( ssfStrength.text.equalsIgnoreCase( text ) )
+            if ( ssfStrength.name.equalsIgnoreCase( text ) )
             {
                 return ssfStrength;
             }

@@ -84,7 +84,7 @@ public enum AuthzPolicyEnum
     
         for ( AuthzPolicyEnum authzPolicy : values() )
         {
-            names[pos] = authzPolicy.getName();
+            names[pos] = authzPolicy.name;
             pos++;
         }
         

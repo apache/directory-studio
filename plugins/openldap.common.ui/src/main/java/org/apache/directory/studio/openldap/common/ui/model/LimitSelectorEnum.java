@@ -45,6 +45,7 @@ public enum LimitSelectorEnum
         this.name = name;
     }
 
+    
     /**
      * @return the text
      */
@@ -52,7 +53,25 @@ public enum LimitSelectorEnum
     {
         return name;
     }
+
     
+    /**
+     * @return An array with all the Enum value's name
+     */
+    public static String[] getNames()
+    {
+        String[] names = new String[values().length];
+        int pos = 0;
+    
+        for ( LimitSelectorEnum limitSelector : values() )
+        {
+            names[pos] = limitSelector.name;
+            pos++;
+        }
+        
+        return names;
+    }
+
     
     /**
      * Retrieve the instance associated to a String. Return NONE if not found.

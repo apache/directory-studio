@@ -21,36 +21,52 @@ package org.apache.directory.studio.openldap.common.ui.model;
 
 
 /**
- * An enumeration of all the possible SSF features.
- *
+ * This enum represents the list of Overlays
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public enum SsfFeatureEnum
+public enum OverlayTypeEnum
 {
-    SSF( "ssf" ),
-    TRANSPORT( "transport" ),
-    TLS( "tls" ),
-    SASL( "sasl" ),
-    UPDATE_SSF( "update_ssf" ),
-    UPDATE_TRANSPORT( "update_transport" ),
-    UPDATE_TLS( "update_tls" ),
-    UPDATE_SASL( "update_sasl" ),
-    SIMPLE_BIND( "simple_bind" ),
-    NONE( "---" );
+    /** Access Log */
+    ACCESS_LOG( "Access Log" ),
+
+    /** Audit Log */
+    AUDIT_LOG( "Audit Log" ),
+
+    /** Member Of */
+    MEMBER_OF( "Member Of" ),
+
+    /** Password Policy */
+    PASSWORD_POLICY( "Password Policy" ),
+
+    /** Referential Integrity */
+    REFERENTIAL_INTEGRITY( "Referential Integrity" ),
+
+    /** Rewrite/Remap */
+    REWRITE_REMAP( "Rewrite/Remap" ),
+
+    /** Sync Prov (Replication) */
+    SYNC_PROV( "Sync Prov (Replication)" ),
     
-    /** The associated name */
+    /** Value Sorting */
+    VALUE_SORTING( "Value Sorting" ),
+    
+    /** Unknown */
+    NONE( "" );
+    
+    /** The Overlay name */
     private String name;
     
     /**
-     * Creates an SsfEnum instance
+     * Create an instance of an OverlayTypeEnum
      */
-    private SsfFeatureEnum( String name )
+    private OverlayTypeEnum( String name )
     {
         this.name = name;
     }
 
     /**
-     * @return the text
+     * @return the name
      */
     public String getName()
     {
@@ -66,32 +82,12 @@ public enum SsfFeatureEnum
         String[] names = new String[values().length];
         int pos = 0;
     
-        for ( SsfFeatureEnum ssfFeature : values() )
+        for ( OverlayTypeEnum overlayType : values() )
         {
-            names[pos] = ssfFeature.name;
+            names[pos] = overlayType.name;
             pos++;
         }
         
         return names;
-    }
-
-    
-    /**
-     * Retrieve the instance associated to a String. Return NONE if not found.
-     * 
-     * @param name The namr to retrieve
-     * @return The SsfEnum instance found, or NONE.
-     */
-    public static SsfFeatureEnum getSsfFeature( String name )
-    {
-        for ( SsfFeatureEnum ssfFeature : values() )
-        {
-            if ( ssfFeature.name.equalsIgnoreCase( name ) )
-            {
-                return ssfFeature;
-            }
-        }
-        
-        return NONE;
     }
 }

@@ -64,6 +64,24 @@ public enum DisallowFeatureEnum
 
     
     /**
+     * @return An array with all the Enum value's name
+     */
+    public static String[] getNames()
+    {
+        String[] names = new String[values().length];
+        int pos = 0;
+    
+        for ( DisallowFeatureEnum disallowFeature : values() )
+        {
+            names[pos] = disallowFeature.name;
+            pos++;
+        }
+        
+        return names;
+    }
+
+    
+    /**
      * Get the DisallowFeatureEnumd instance from its number
      * 
      * @param number The number we are looking for

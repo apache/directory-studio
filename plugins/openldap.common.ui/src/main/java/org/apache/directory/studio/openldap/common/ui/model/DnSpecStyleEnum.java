@@ -88,7 +88,7 @@ public enum DnSpecStyleEnum
     
         for ( DnSpecStyleEnum dnSpecStyle : values() )
         {
-            names[pos] = dnSpecStyle.getName();
+            names[pos] = dnSpecStyle.name;
             pos++;
         }
         

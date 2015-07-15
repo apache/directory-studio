@@ -61,7 +61,25 @@ public enum RequireConditionEnum
     {
         return name;
     }
+
     
+    /**
+     * @return An array with all the Enum value's name
+     */
+    public static String[] getNames()
+    {
+        String[] names = new String[values().length];
+        int pos = 0;
+    
+        for ( RequireConditionEnum requireCondition : values() )
+        {
+            names[pos] = requireCondition.name;
+            pos++;
+        }
+        
+        return names;
+    }
+
     
     /**
      * Get the RequireConditionEnum instance from its number

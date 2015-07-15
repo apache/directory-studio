@@ -21,45 +21,65 @@ package org.apache.directory.studio.openldap.common.ui.model;
 
 
 /**
- * This enums represents the various access log operation.
+ * This enum represents the various access log operation.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public enum LogOperation
+public enum LogOperationEnum
 {
-    WRITES("writes"),
-    ADD("add"),
-    DELETE("delete"),
-    MODIFY("modify"),
-    MODIFY_RDN("modrdn"),
-    READS("reads"),
-    COMPARE("compare"),
-    SEARCH("search"),
-    SESSION("session"),
-    ABANDON("abandon"),
-    BIND("bind"),
-    UNBIND("unbind"),
-    ALL("all");
+    WRITES( "writes" ),
+    ADD( "add" ),
+    DELETE( "delete" ),
+    MODIFY( "modify" ),
+    MODIFY_RDN( "modrdn" ),
+    READS( "reads" ),
+    COMPARE( "compare" ),
+    SEARCH( "search" ),
+    SESSION( "session" ),
+    ABANDON( "abandon" ),
+    BIND( "bind" ),
+    UNBIND( "unbind" ),
+    ALL( "all" );
 
-    /** The value */
-    protected String value;
+    /** The name */
+    private String name;
 
 
     /**
      * Creates a new instance of LogOperation.
      *
-     * @param value the value
+     * @param name the name
      */
-    private LogOperation( String value )
+    private LogOperationEnum( String name )
     {
-        this.value = value;
+        this.name = name;
     }
 
-
+    
     /**
-     * {@inheritDoc}
+     * @return the text
      */
-    public String toString()
+    public String getName()
     {
-        return value;
+        return name;
+    }
+
+    
+    /**
+     * @return An array with all the Enum value's name
+     */
+    public static String[] getNames()
+    {
+        String[] names = new String[values().length];
+        int pos = 0;
+    
+        for ( LogOperationEnum logOperation : values() )
+        {
+            names[pos] = logOperation.name;
+            pos++;
+        }
+        
+        return names;
     }
 
 
@@ -69,59 +89,59 @@ public enum LogOperation
      * @param s the string
      * @return the corresponding log operation
      */
-    public static  LogOperation fromString( String s )
+    public static  LogOperationEnum fromString( String s )
     {
         if ( s != null )
         {
-            if ( s.equalsIgnoreCase( WRITES.value ) )
+            if ( s.equalsIgnoreCase( WRITES.name ) )
             {
                 return WRITES;
             }
-            else if ( s.equalsIgnoreCase( ADD.value ) )
+            else if ( s.equalsIgnoreCase( ADD.name ) )
             {
                 return ADD;
             }
-            else if ( s.equalsIgnoreCase( DELETE.value ) )
+            else if ( s.equalsIgnoreCase( DELETE.name ) )
             {
                 return DELETE;
             }
-            else if ( s.equalsIgnoreCase( MODIFY.value ) )
+            else if ( s.equalsIgnoreCase( MODIFY.name ) )
             {
                 return MODIFY;
             }
-            else if ( s.equalsIgnoreCase( MODIFY_RDN.value ) )
+            else if ( s.equalsIgnoreCase( MODIFY_RDN.name ) )
             {
                 return MODIFY_RDN;
             }
-            else if ( s.equalsIgnoreCase( READS.value ) )
+            else if ( s.equalsIgnoreCase( READS.name ) )
             {
                 return READS;
             }
-            else if ( s.equalsIgnoreCase( COMPARE.value ) )
+            else if ( s.equalsIgnoreCase( COMPARE.name ) )
             {
                 return COMPARE;
             }
-            else if ( s.equalsIgnoreCase( SEARCH.value ) )
+            else if ( s.equalsIgnoreCase( SEARCH.name ) )
             {
                 return SEARCH;
             }
-            else if ( s.equalsIgnoreCase( SESSION.value ) )
+            else if ( s.equalsIgnoreCase( SESSION.name ) )
             {
                 return SESSION;
             }
-            else if ( s.equalsIgnoreCase( ABANDON.value ) )
+            else if ( s.equalsIgnoreCase( ABANDON.name ) )
             {
                 return ABANDON;
             }
-            else if ( s.equalsIgnoreCase( BIND.value ) )
+            else if ( s.equalsIgnoreCase( BIND.name ) )
             {
                 return BIND;
             }
-            else if ( s.equalsIgnoreCase( UNBIND.value ) )
+            else if ( s.equalsIgnoreCase( UNBIND.name ) )
             {
                 return UNBIND;
             }
-            else if ( s.equalsIgnoreCase( ALL.value ) )
+            else if ( s.equalsIgnoreCase( ALL.name ) )
             {
                 return ALL;
             }

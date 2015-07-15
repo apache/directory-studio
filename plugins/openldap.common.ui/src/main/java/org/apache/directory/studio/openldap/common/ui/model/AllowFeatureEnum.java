@@ -71,7 +71,7 @@ public enum AllowFeatureEnum
     
         for ( AllowFeatureEnum allowFeature : values() )
         {
-            names[pos] = allowFeature.getName();
+            names[pos] = allowFeature.name;
             pos++;
         }
         

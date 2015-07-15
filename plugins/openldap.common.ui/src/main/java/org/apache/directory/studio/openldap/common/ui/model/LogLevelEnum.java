@@ -43,27 +43,30 @@ package org.apache.directory.studio.openldap.common.ui.model;
  */
 public enum LogLevelEnum
 {
-    NONE(0),
-    TRACE(1),
-    PACKETS(2),
-    ARGS(4),
-    CONNS(8),
-    BER(16),
-    FILTER(32),
-    CONFIG(64),
-    ACL(128),
-    STATS(256),
-    STATS2(512),
-    SHELL(1024),
-    PARSE(2048),
+    NONE( "none", 0 ),
+    TRACE( "trace", 1 ),
+    PACKETS( "packets", 2 ),
+    ARGS( "args", 4 ),
+    CONNS( "conns", 8 ),
+    BER( "ber", 16 ),
+    FILTER( "filter", 32 ),
+    CONFIG( "config", 64 ),
+    ACL( "acl", 128 ),
+    STATS( "stats", 256 ),
+    STATS2( "stats2", 512 ),
+    SHELL( "shell", 1024 ),
+    PARSE( "parse", 2048 ),
     // 4096 not used
     // 8196 not used
-    SYNC(16384),
+    SYNC( "sync", 16384 ),
     // 327168 and -1 are equivalent
-    ANY(-1);
+    ANY( "any", -1 );
     
     /** The inner value */
     private int value;
+    
+    /** The inner name */
+    private String name;
     
     
     /**
@@ -71,8 +74,9 @@ public enum LogLevelEnum
      *
      * @param value The internal value
      */
-    private LogLevelEnum( int value )
+    private LogLevelEnum( String name, int value )
     {
+        this.name = name;
         this.value = value;
     }
     
@@ -84,7 +88,34 @@ public enum LogLevelEnum
     {
         return value;
     }
+
     
+    /**
+     * @return the text
+     */
+    public String getName()
+    {
+        return name;
+    }
+
+    
+    /**
+     * @return An array with all the Enum value's name
+     */
+    public static String[] getNames()
+    {
+        String[] names = new String[values().length];
+        int pos = 0;
+    
+        for ( LogLevelEnum logLevel : values() )
+        {
+            names[pos] = logLevel.name;
+            pos++;
+        }
+        
+        return names;
+    }
+
     
     /**
      * @param logLevel The integer value of the LogLevel

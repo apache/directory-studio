@@ -81,7 +81,7 @@ public enum DnSpecTypeEnum
     
         for ( DnSpecTypeEnum dnSpecType : values() )
         {
-            names[pos] = dnSpecType.getName();
+            names[pos] = dnSpecType.name;
             pos++;
         }
         
