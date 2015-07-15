@@ -25,7 +25,7 @@ import java.util.List;
 
 import org.apache.directory.studio.common.ui.widgets.AbstractWidget;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.openldap.common.ui.model.LogOperation;
+import org.apache.directory.studio.openldap.common.ui.model.LogOperationEnum;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -392,7 +392,7 @@ public class LogOperationsWidget extends AbstractWidget
      *
      * @param operationsList the operations list
      */
-    public void setInput( List<LogOperation> operationsList )
+    public void setInput( List<LogOperationEnum> operationsList )
     {
         // Reset all checkboxes
         resetAllCheckboxes();
@@ -400,7 +400,7 @@ public class LogOperationsWidget extends AbstractWidget
         // Select checkboxes according to the log operations list
         if ( operationsList != null )
         {
-            for ( LogOperation logOperation : operationsList )
+            for ( LogOperationEnum logOperation : operationsList )
             {
                 switch ( logOperation )
                 {
@@ -496,92 +496,92 @@ public class LogOperationsWidget extends AbstractWidget
      *
      * @return the list of selected operations
      */
-    public List<LogOperation> getSelectedOperationsList()
+    public List<LogOperationEnum> getSelectedOperationsList()
     {
-        List<LogOperation> logOperations = new ArrayList<LogOperation>();
+        List<LogOperationEnum> logOperations = new ArrayList<LogOperationEnum>();
 
         // All operations
         if ( isChecked( allOperationsCheckbox ) )
         {
-            logOperations.add( LogOperation.ALL );
+            logOperations.add( LogOperationEnum.ALL );
         }
         else
         {
             // Write operations
             if ( isChecked( writeOperationsCheckbox ) )
             {
-                logOperations.add( LogOperation.WRITES );
+                logOperations.add( LogOperationEnum.WRITES );
             }
             else
             {
                 // Add operation
                 if ( isChecked( addOperationCheckbox ) )
                 {
-                    logOperations.add( LogOperation.ADD );
+                    logOperations.add( LogOperationEnum.ADD );
                 }
 
                 // Delete operation
                 if ( isChecked( deleteOperationCheckbox ) )
                 {
-                    logOperations.add( LogOperation.DELETE );
+                    logOperations.add( LogOperationEnum.DELETE );
                 }
 
                 // Modify operation
                 if ( isChecked( modifyOperationCheckbox ) )
                 {
-                    logOperations.add( LogOperation.MODIFY );
+                    logOperations.add( LogOperationEnum.MODIFY );
                 }
 
                 // Modify RDN operation
                 if ( isChecked( modifyRdnOperationCheckbox ) )
                 {
-                    logOperations.add( LogOperation.MODIFY_RDN );
+                    logOperations.add( LogOperationEnum.MODIFY_RDN );
                 }
             }
 
             // Read operations
             if ( isChecked( readOperationsCheckbox ) )
             {
-                logOperations.add( LogOperation.READS );
+                logOperations.add( LogOperationEnum.READS );
             }
             else
             {
                 // Compare operation
                 if ( isChecked( compareOperationCheckbox ) )
                 {
-                    logOperations.add( LogOperation.COMPARE );
+                    logOperations.add( LogOperationEnum.COMPARE );
                 }
 
                 // Search operation
                 if ( isChecked( searchOperationCheckbox ) )
                 {
-                    logOperations.add( LogOperation.SEARCH );
+                    logOperations.add( LogOperationEnum.SEARCH );
                 }
             }
 
             // Session operations
             if ( isChecked( sessionOperationsCheckbox ) )
             {
-                logOperations.add( LogOperation.SESSION );
+                logOperations.add( LogOperationEnum.SESSION );
             }
             else
             {
                 // Abandon operation
                 if ( isChecked( abandonOperationCheckbox ) )
                 {
-                    logOperations.add( LogOperation.ABANDON );
+                    logOperations.add( LogOperationEnum.ABANDON );
                 }
 
                 // Bind operation
                 if ( isChecked( bindOperationCheckbox ) )
                 {
-                    logOperations.add( LogOperation.BIND );
+                    logOperations.add( LogOperationEnum.BIND );
                 }
 
                 // Unbind operation
                 if ( isChecked( unbindOperationCheckbox ) )
                 {
-                    logOperations.add( LogOperation.UNBIND );
+                    logOperations.add( LogOperationEnum.UNBIND );
                 }
             }
         }
