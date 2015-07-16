@@ -32,11 +32,15 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+import org.apache.directory.studio.openldap.common.ui.model.OverlayTypeEnum;
 import org.apache.directory.studio.openldap.config.editor.dialogs.overlays.AccessLogOverlayConfigurationBlock;
 import org.apache.directory.studio.openldap.config.editor.dialogs.overlays.AuditLogOverlayConfigurationBlock;
 import org.apache.directory.studio.openldap.config.editor.dialogs.overlays.MemberOfOverlayConfigurationBlock;
@@ -57,7 +61,9 @@ import org.apache.directory.studio.openldap.config.model.overlay.OlcValSortConfi
 
 
 /**
- * The OverlayDialog is used to edit the configuration of an overlay.
+ * The OverlayDialog is used to edit the configuration of an overlay. The user will
+ * select the overlay to configure in a Combo :
+ * 
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -80,17 +86,15 @@ public class OverlayDialog extends Dialog
 
     // UI widgets
     private Combo overlayTypeCombo;
-    private ComboViewer overlayTypeComboViewer;
     private Composite configurationComposite;
     private Composite configurationInnerComposite;
 
     // Listeners
-    private ISelectionChangedListener overlayTypeComboViewerSelectionChangedListener = new ISelectionChangedListener()
+    private SelectionListener overlayTypeComboViewerSelectionChangedListener = new SelectionAdapter()
     {
-        public void selectionChanged( SelectionChangedEvent event )
+        public void widgetSelected( SelectionEvent event )
         {
-            OverlayType type = ( OverlayType ) ( ( StructuredSelection ) overlayTypeComboViewer.getSelection() )
-                .getFirstElement();
+            OverlayTypeEnum type = OverlayTypeEnum.getOverlay( overlayTypeCombo.getText() );
 
             switch ( type )
             {
@@ -98,35 +102,42 @@ public class OverlayDialog extends Dialog
                     overlay = new OlcAuditlogConfig();
                     configurationBlock = new AuditLogOverlayConfigurationBlock( instance, ( OlcAuditlogConfig ) overlay );
                     break;
+                    
                 case MEMBER_OF:
                     overlay = new OlcMemberOf();
                     configurationBlock = new MemberOfOverlayConfigurationBlock( instance, browserConnection,
                         ( OlcMemberOf ) overlay );
                     break;
+                    
                 case PASSWORD_POLICY:
                     overlay = new OlcPPolicyConfig();
                     configurationBlock = new PasswordPolicyOverlayConfigurationBlock( instance, browserConnection,
                         ( OlcPPolicyConfig ) overlay );
                     break;
+                    
                 case REFERENTIAL_INTEGRITY:
                     overlay = new OlcRefintConfig();
                     configurationBlock = new ReferentialIntegrityOverlayConfigurationBlock( instance,
                         browserConnection, ( OlcRefintConfig ) overlay );
                     break;
+                    
                 case REWRITE_REMAP:
                     overlay = new OlcRwmConfig();
                     configurationBlock = new RewriteRemapOverlayConfigurationBlock( instance,
                         browserConnection, ( OlcRwmConfig ) overlay );
                     break;
+                    
                 case SYNC_PROV:
                     overlay = new OlcSyncProvConfig();
                     configurationBlock = new SyncProvOverlayConfigurationBlock( instance, ( OlcSyncProvConfig ) overlay );
                     break;
+                    
                 case VALUE_SORTING:
                     overlay = new OlcValSortConfig();
                     configurationBlock = new ValueSortingOverlayConfigurationBlock( instance, browserConnection,
                         ( OlcValSortConfig ) overlay );
                     break;
+                    
                 case ACCESS_LOG:
                 default:
                     overlay = new OlcAccessLogConfig();
@@ -188,7 +199,7 @@ public class OverlayDialog extends Dialog
     {
         if ( overlay != null )
         {
-            return NLS.bind( "{0} Overlay Configuration", getOverlayDisplayName( overlay ) );
+            return NLS.bind( "{0} Overlay Configuration", getOverlayType( overlay ) );
         }
         else
         {
@@ -242,7 +253,7 @@ public class OverlayDialog extends Dialog
             // Select the correct value on the combo viewer (if required)
             if ( allowOverlayTypeSelection )
             {
-                overlayTypeComboViewer.setSelection( new StructuredSelection( OverlayType.ACCESS_LOG ) );
+                overlayTypeCombo.setText( OverlayTypeEnum.ACCESS_LOG.getName() );
             }
         }
 
@@ -252,10 +263,11 @@ public class OverlayDialog extends Dialog
         // Adding the listener on the combo viewer  (if required)
         if ( allowOverlayTypeSelection )
         {
-            overlayTypeComboViewer.addSelectionChangedListener( overlayTypeComboViewerSelectionChangedListener );
+            overlayTypeCombo.addSelectionListener( overlayTypeComboViewerSelectionChangedListener );
         }
 
         applyDialogFont( composite );
+        
         return composite;
     }
 
@@ -270,74 +282,7 @@ public class OverlayDialog extends Dialog
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 2, 1 );
         BaseWidgetUtils.createLabel( composite, "Type:", 1 );
 
-        overlayTypeCombo = new Combo( composite, SWT.READ_ONLY | SWT.SINGLE );
-        overlayTypeCombo.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        overlayTypeComboViewer = new ComboViewer( overlayTypeCombo );
-        overlayTypeComboViewer.setContentProvider( new ArrayContentProvider() );
-        overlayTypeComboViewer.setLabelProvider( new LabelProvider()
-        {
-            public String getText( Object element )
-            {
-                if ( element instanceof OverlayType )
-                {
-                    OverlayType overlayType = ( OverlayType ) element;
-
-                    return getOverlayDisplayName( overlayType );
-                }
-
-                return super.getText( element );
-            }
-        } );
-        OverlayType[] databaseTypes = new OverlayType[]
-            {
-                OverlayType.ACCESS_LOG,
-                OverlayType.AUDIT_LOG,
-                OverlayType.MEMBER_OF,
-                OverlayType.PASSWORD_POLICY,
-                OverlayType.REFERENTIAL_INTEGRITY,
-                OverlayType.REWRITE_REMAP,
-                OverlayType.SYNC_PROV,
-                OverlayType.VALUE_SORTING
-        };
-        overlayTypeComboViewer.setInput( databaseTypes );
-    }
-
-
-    /**
-     * Gets the overlay display name.
-     *
-     * @param overlayType the overlay type
-     * @return the display name
-     */
-    public static String getOverlayDisplayName( OverlayType overlayType )
-    {
-        switch ( overlayType )
-        {
-            case ACCESS_LOG:
-                return "Access Log";
-            case AUDIT_LOG:
-                return "Audit Log";
-            case MEMBER_OF:
-                return "Member Of";
-            case PASSWORD_POLICY:
-                return "Password Policy";
-            case REFERENTIAL_INTEGRITY:
-                return "Referential Integrity";
-            case REWRITE_REMAP:
-                return "Rewrite/Remap";
-            case SYNC_PROV:
-                return "Sync Prov (Replication)";
-            case VALUE_SORTING:
-                return "Value Sorting";
-        }
-
-        return "Unknown";
-    }
-
-
-    public static String getOverlayDisplayName( OlcOverlayConfig overlay )
-    {
-        return getOverlayDisplayName( getOverlayType( overlay ) );
+        overlayTypeCombo = BaseWidgetUtils.createCombo( composite, OverlayTypeEnum.getNames(), 1, 1 );
     }
 
 
@@ -347,39 +292,39 @@ public class OverlayDialog extends Dialog
      * @param overlay the overlay
      * @return the overlay type
      */
-    public static OverlayType getOverlayType( OlcOverlayConfig overlay )
+    public static OverlayTypeEnum getOverlayType( OlcOverlayConfig overlay )
     {
         if ( overlay instanceof OlcAccessLogConfig )
         {
-            return OverlayType.ACCESS_LOG;
+            return OverlayTypeEnum.ACCESS_LOG;
         }
         else if ( overlay instanceof OlcAuditlogConfig )
         {
-            return OverlayType.AUDIT_LOG;
+            return OverlayTypeEnum.AUDIT_LOG;
         }
         else if ( overlay instanceof OlcMemberOf )
         {
-            return OverlayType.MEMBER_OF;
+            return OverlayTypeEnum.MEMBER_OF;
         }
         else if ( overlay instanceof OlcPPolicyConfig )
         {
-            return OverlayType.PASSWORD_POLICY;
+            return OverlayTypeEnum.PASSWORD_POLICY;
         }
         else if ( overlay instanceof OlcRefintConfig )
         {
-            return OverlayType.REFERENTIAL_INTEGRITY;
+            return OverlayTypeEnum.REFERENTIAL_INTEGRITY;
         }
         else if ( overlay instanceof OlcRwmConfig )
         {
-            return OverlayType.REWRITE_REMAP;
+            return OverlayTypeEnum.REWRITE_REMAP;
         }
         else if ( overlay instanceof OlcSyncProvConfig )
         {
-            return OverlayType.SYNC_PROV;
+            return OverlayTypeEnum.SYNC_PROV;
         }
         else if ( overlay instanceof OlcValSortConfig )
         {
-            return OverlayType.VALUE_SORTING;
+            return OverlayTypeEnum.VALUE_SORTING;
         }
 
         return null;

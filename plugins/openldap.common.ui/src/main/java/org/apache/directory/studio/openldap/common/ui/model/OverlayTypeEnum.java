@@ -52,7 +52,7 @@ public enum OverlayTypeEnum
     VALUE_SORTING( "Value Sorting" ),
     
     /** Unknown */
-    NONE( "" );
+    UNKNOWN( "" );
     
     /** The Overlay name */
     private String name;
@@ -71,6 +71,26 @@ public enum OverlayTypeEnum
     public String getName()
     {
         return name;
+    }
+
+    
+    /**
+     * Return an instance of OverlayTypeEnum from a String
+     * 
+     * @param name The overlay's name
+     * @return The associated OverlayTypeEnum
+     */
+    public static OverlayTypeEnum getOverlay( String name )
+    {
+        for ( OverlayTypeEnum overlay : values() )
+        {
+            if ( overlay.name.equalsIgnoreCase( name ) )
+            {
+                return overlay;
+            }
+        }
+        
+        return UNKNOWN;
     }
 
     

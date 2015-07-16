@@ -46,7 +46,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Spinner;
 import org.apache.directory.studio.openldap.common.ui.dialogs.AttributeDialog;
-import org.apache.directory.studio.openldap.common.ui.model.LogOperation;
+import org.apache.directory.studio.openldap.common.ui.model.LogOperationEnum;
 import org.apache.directory.studio.openldap.common.ui.widgets.EntryWidget;
 import org.apache.directory.studio.openldap.common.ui.widgets.LogOperationsWidget;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPlugin;
@@ -199,10 +199,10 @@ public class AccessLogOverlayConfigurationBlock extends AbstractOverlayDialogCon
         logOperationsWidget = new LogOperationsWidget();
         logOperationsWidget.create( logOperationsGroup );
         logOperationsWidget.getControl().setLayoutData( new GridData( SWT.BEGINNING, SWT.CENTER, false, false, 2, 1 ) );
-        List<LogOperation> logOperations = new ArrayList<LogOperation>();
-        logOperations.add( LogOperation.ADD );
-        logOperations.add( LogOperation.ABANDON );
-        logOperations.add( LogOperation.SESSION );
+        List<LogOperationEnum> logOperations = new ArrayList<LogOperationEnum>();
+        logOperations.add( LogOperationEnum.ADD );
+        logOperations.add( LogOperationEnum.ABANDON );
+        logOperations.add( LogOperationEnum.SESSION );
         logOperationsWidget.setInput( logOperations );
     }
 
@@ -488,9 +488,9 @@ public class AccessLogOverlayConfigurationBlock extends AbstractOverlayDialogCon
     private List<String> getAccessLogOperationsValues()
     {
         List<String> accessLogOperations = new ArrayList<String>();
-        List<LogOperation> logOperations = logOperationsWidget.getSelectedOperationsList();
+        List<LogOperationEnum> logOperations = logOperationsWidget.getSelectedOperationsList();
 
-        for ( LogOperation logOperation : logOperations )
+        for ( LogOperationEnum logOperation : logOperations )
         {
             // Converting log operation to string
             accessLogOperations.add( logOperation.toString() );
@@ -505,14 +505,14 @@ public class AccessLogOverlayConfigurationBlock extends AbstractOverlayDialogCon
      *
      * @return the access log operations
      */
-    private List<LogOperation> getAccessLogOperations( List<String> logOperationsValues )
+    private List<LogOperationEnum> getAccessLogOperations( List<String> logOperationsValues )
     {
-        List<LogOperation> logOperations = new ArrayList<LogOperation>();
+        List<LogOperationEnum> logOperations = new ArrayList<LogOperationEnum>();
 
         for ( String logOperationValue : logOperationsValues )
         {
             // Converting log operation from a string
-            LogOperation logOperation = LogOperation.fromString( logOperationValue );
+            LogOperationEnum logOperation = LogOperationEnum.fromString( logOperationValue );
 
             if ( logOperation != null )
             {
