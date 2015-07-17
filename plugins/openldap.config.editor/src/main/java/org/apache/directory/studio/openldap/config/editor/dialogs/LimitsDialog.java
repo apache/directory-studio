@@ -42,7 +42,8 @@ import org.apache.directory.studio.ldapbrowser.core.utils.SchemaObjectLoader;
 import org.apache.directory.studio.openldap.common.ui.model.DnSpecStyleEnum;
 import org.apache.directory.studio.openldap.common.ui.model.DnSpecTypeEnum;
 import org.apache.directory.studio.openldap.common.ui.model.LimitSelectorEnum;
-import org.apache.directory.studio.openldap.config.editor.wrappers.LimitsDecorator;
+import org.apache.directory.studio.openldap.config.editor.wrappers.LimitDecorator;
+import org.apache.directory.studio.openldap.config.editor.wrappers.LimitWrapper;
 import org.apache.directory.studio.openldap.config.editor.wrappers.LimitsWrapper;
 
 
@@ -126,7 +127,7 @@ public class LimitsDialog extends AddEditDialog<LimitsWrapper>
     private Text groupPatternText;
 
     /** The (time/size)Limit parameter */
-    private TableWidget<LimitsWrapper> limitsTableWidget;
+    private TableWidget<LimitWrapper> limitsTableWidget;
 
     /** The resulting Limits Text */
     private Text limitsText;
@@ -518,8 +519,8 @@ public class LimitsDialog extends AddEditDialog<LimitsWrapper>
         // The Limits table
         BaseWidgetUtils.createLabel( selectorGroup, "Limits :", 1 );
         
-        limitsTableWidget = new TableWidget<LimitsWrapper>( 
-            new LimitsDecorator( parent.getShell() , "Limit") );
+        limitsTableWidget = new TableWidget<LimitWrapper>( 
+            new LimitDecorator( parent.getShell() , "Limit") );
 
         limitsTableWidget.createOrderedWidgetWithEdit( selectorGroup, null );
         limitsTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
