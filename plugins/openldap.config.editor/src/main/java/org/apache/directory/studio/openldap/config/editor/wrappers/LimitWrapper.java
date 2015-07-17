@@ -82,4 +82,11 @@ public interface LimitWrapper extends Comparable<LimitWrapper>
      * @return The Limit's type
      */
     String getType();
+    
+    
+    /**
+     * Tells if the LimitWrapper instance is valid
+     * @return True if this is a valid instance
+     */
+    boolean isValid();
 }

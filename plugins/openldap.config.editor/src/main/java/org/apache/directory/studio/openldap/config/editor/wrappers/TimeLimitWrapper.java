@@ -45,7 +45,7 @@ public class TimeLimitWrapper extends AbstractLimitWrapper
     /**
      * Create a TimeLimitWrapper instance
      */
-    private TimeLimitWrapper()
+    protected TimeLimitWrapper()
     {
         super();
     }
