@@ -106,46 +106,78 @@ public class LimitsWrapper implements Cloneable, Comparable<LimitsWrapper>
             String lowerCaseLimits = limitsStr.toLowerCase();
             int pos = 0;
             
-            // Process the selector
-            if ( lowerCaseLimits.startsWith( LimitSelectorEnum.ANY.getName() ) )
+            // It's ordered : process the prefix
+            if ( Strings.isCharASCII( lowerCaseLimits, pos, '{' ) )
             {
-                selector = LimitSelectorEnum.ANY;
-                pos += LimitSelectorEnum.ANY.getName().length();
-            }
-            if ( lowerCaseLimits.startsWith( LimitSelectorEnum.ANONYMOUS.getName() ) )
-            {
-                selector = LimitSelectorEnum.ANONYMOUS;
-                pos += LimitSelectorEnum.ANONYMOUS.getName().length();
-            }
-            else if ( lowerCaseLimits.startsWith( LimitSelectorEnum.USERS.getName() ) )
-            {
-                selector = LimitSelectorEnum.USERS;
-                pos += LimitSelectorEnum.USERS.getName().length();
-            }
-            else if ( lowerCaseLimits.startsWith( LimitSelectorEnum.DNSPEC.getName() ) )
-            {
-                selector = LimitSelectorEnum.DNSPEC;
-                pos += LimitSelectorEnum.DNSPEC.getName().length();
+                pos++;
+                prefix = 0;
                 
-                // parse the type
-                pos = parseDnSpec( lowerCaseLimits, pos );
-                
-                if ( pos == ERROR )
+                while ( pos < lowerCaseLimits.length() )
                 {
-                    isValid = false;
+                    char c = lowerCaseLimits.charAt( pos );
+                    
+                    if ( ( c >= '0' ) && ( c <= '9' ) )
+                    {
+                        prefix = prefix * 10 + ( c - '0' );
+                        pos++;
+                    }
+                    else if ( c == '}' )
+                    {
+                        pos++;
+                        break;
+                    }
+                    else
+                    {
+                        isValid = false;
+                        break;
+                    }
                 }
             }
-            else if ( lowerCaseLimits.startsWith( LimitSelectorEnum.GROUP.getName() ) )
+            
+            if ( isValid )
             {
-                selector = LimitSelectorEnum.GROUP;
-                pos += LimitSelectorEnum.GROUP.getName().length();
-                
-                pos = parseGroup( lowerCaseLimits, pos );
-                
-                if ( pos == ERROR )
+                lowerCaseLimits = lowerCaseLimits.substring( pos );
+                // Process the selector
+                if ( lowerCaseLimits.startsWith( LimitSelectorEnum.ANY.getName() ) )
                 {
-                    // This is an error
-                    isValid = false;
+                    selector = LimitSelectorEnum.ANY;
+                    pos += LimitSelectorEnum.ANY.getName().length();
+                }
+                if ( lowerCaseLimits.startsWith( LimitSelectorEnum.ANONYMOUS.getName() ) )
+                {
+                    selector = LimitSelectorEnum.ANONYMOUS;
+                    pos += LimitSelectorEnum.ANONYMOUS.getName().length();
+                }
+                else if ( lowerCaseLimits.startsWith( LimitSelectorEnum.USERS.getName() ) )
+                {
+                    selector = LimitSelectorEnum.USERS;
+                    pos += LimitSelectorEnum.USERS.getName().length();
+                }
+                else if ( lowerCaseLimits.startsWith( LimitSelectorEnum.DNSPEC.getName() ) )
+                {
+                    selector = LimitSelectorEnum.DNSPEC;
+                    pos += LimitSelectorEnum.DNSPEC.getName().length();
+                    
+                    // parse the type
+                    pos = parseDnSpec( lowerCaseLimits, pos );
+                    
+                    if ( pos == ERROR )
+                    {
+                        isValid = false;
+                    }
+                }
+                else if ( lowerCaseLimits.startsWith( LimitSelectorEnum.GROUP.getName() ) )
+                {
+                    selector = LimitSelectorEnum.GROUP;
+                    pos += LimitSelectorEnum.GROUP.getName().length();
+                    
+                    pos = parseGroup( lowerCaseLimits, pos );
+                    
+                    if ( pos == ERROR )
+                    {
+                        // This is an error
+                        isValid = false;
+                    }
                 }
             }
             
@@ -423,7 +455,7 @@ public class LimitsWrapper implements Cloneable, Comparable<LimitsWrapper>
                 return ERROR;
             }
             
-            TimeLimitWrapper timeLimitWrapper = new TimeLimitWrapper( limitStr.substring( 0, i ) );
+            OrderedTimeLimitWrapper timeLimitWrapper = new OrderedTimeLimitWrapper( limitStr.substring( 0, i ) );
             
             if ( timeLimitWrapper.isValid() )
             {
@@ -451,7 +483,7 @@ public class LimitsWrapper implements Cloneable, Comparable<LimitsWrapper>
                 return ERROR;
             }
             
-            SizeLimitWrapper sizeLimitWrapper = new SizeLimitWrapper( limitStr.substring( 0, i ) );
+            OrderedSizeLimitWrapper sizeLimitWrapper = new OrderedSizeLimitWrapper( limitStr.substring( 0, i ) );
             
             if ( sizeLimitWrapper.isValid() )
             {

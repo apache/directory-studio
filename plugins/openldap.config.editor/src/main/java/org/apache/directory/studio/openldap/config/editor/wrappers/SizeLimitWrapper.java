@@ -70,7 +70,7 @@ public class SizeLimitWrapper extends AbstractLimitWrapper
     /**
      * Create a SizeLimitWrapper instance
      */
-    private SizeLimitWrapper()
+    protected SizeLimitWrapper()
     {
         super();
     }

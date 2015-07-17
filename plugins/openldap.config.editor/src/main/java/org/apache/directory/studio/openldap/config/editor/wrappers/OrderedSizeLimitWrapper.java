@@ -22,13 +22,17 @@ package org.apache.directory.studio.openldap.config.editor.wrappers;
 import org.apache.directory.studio.common.ui.widgets.OrderedElement;
 
 /**
- * This class wraps the TimeLimit parameter :
+ * This class wraps the SizeLimit parameter :
  * <pre>
- * time      ::= 'time' timeLimit time-e
- * time-e    ::= ' time' timeLimit time-e | e
- * timeLimit ::= '.soft=' limit | '.hard=' hardLimit | '=' limit
+ * size      ::= 'size' sizeLimit size-e
+ * size-e    ::= ' size' sizeLimit size-e | e
+ * sizeLimit ::= '.soft=' limit | '.hard=' hardLimit | '.pr=' prLimit | '.prtotal=' prTLimit
+ *                  | '.unchecked=' uLimit | '=' limit
  * limit     ::= 'unlimited' | 'none' | INT
  * hardLimit ::= 'soft' | limit
+ * ulimit    ::= 'disabled' | limit
+ * prLimit   ::= 'noEstimate' | limit
+ * prTLimit  ::= ulimit | 'hard'
  * </pre>
  * 
  * Note : each of the limit is an Integer, so that we can have two states :
@@ -40,32 +44,20 @@ import org.apache.directory.studio.common.ui.widgets.OrderedElement;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class OrderedTimeLimitWrapper extends TimeLimitWrapper implements OrderedElement
+public class OrderedSizeLimitWrapper extends SizeLimitWrapper implements OrderedElement
 {
     /** The prefix, used to order the values */
     private int prefix;
 
+
     /**
-     * Create a TimeLimitWrapper instance
+     * Create a SizeLimitWrapper instance from a String. 
      * 
-     * @param globalLimit The global limit
-     * @param hardLimit The hard limit
-     * @param softLimit The soft limit
+     * @param sizeLimitStr The String that contain the value
      */
-    public OrderedTimeLimitWrapper( Integer globalLimit, Integer hardLimit, Integer softLimit )
+    public OrderedSizeLimitWrapper( String sizeLimitStr )
     {
-        super( globalLimit, hardLimit, softLimit );
-    }
-    
-    
-    /**
-     * Create a TimeLimitWrapper instance from a String. 
-     * 
-     * @param timeLimitStr The String that contain the value
-     */
-    public OrderedTimeLimitWrapper( String timeLimitStr )
-    {
-        super( timeLimitStr );
+        super( sizeLimitStr );
     }
 
 
@@ -105,12 +97,12 @@ public class OrderedTimeLimitWrapper extends TimeLimitWrapper implements Ordered
     {
         prefix++;
     }
-
-
+    
+    
     /**
      * @see Comparable#compareTo()
      */
-    public int compareTo( OrderedTimeLimitWrapper that )
+    public int compareTo( OrderedSizeLimitWrapper that )
     {
         if ( that == null )
         {
@@ -157,9 +149,9 @@ public class OrderedTimeLimitWrapper extends TimeLimitWrapper implements Ordered
             return true;
         }
         
-        if ( that instanceof OrderedTimeLimitWrapper )
+        if ( that instanceof OrderedSizeLimitWrapper )
         {
-            OrderedTimeLimitWrapper thatInstance = (OrderedTimeLimitWrapper)that;
+            OrderedSizeLimitWrapper thatInstance = (OrderedSizeLimitWrapper)that;
             
             if ( prefix != thatInstance.prefix )
             {

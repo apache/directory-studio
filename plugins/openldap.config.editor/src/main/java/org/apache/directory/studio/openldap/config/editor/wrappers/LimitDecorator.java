@@ -20,15 +20,28 @@
 package org.apache.directory.studio.openldap.config.editor.wrappers;
 
 import org.apache.directory.studio.common.ui.TableDecorator;
+import org.apache.directory.studio.openldap.config.editor.dialogs.LimitsDialog;
+import org.apache.directory.studio.openldap.config.editor.dialogs.SizeTimeLimitDialog;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * A decorator for the TimeLimitWrapper class.
  *  
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class LimitDecorator<E> extends TableDecorator<E>
+public class LimitDecorator extends TableDecorator<LimitWrapper>
 {
+    /**
+     * Create a new instance of LimitDecorator
+     * @param parentShell The parent Shell
+     */
+    public LimitDecorator( Shell parentShell, String title )
+    {
+        setDialog( new SizeTimeLimitDialog( parentShell ) );
+    }
+    
+    
     /**
      * Construct the label for a TimeLimit. It can be one of :
      * 
@@ -52,5 +65,13 @@ public abstract class LimitDecorator<E> extends TableDecorator<E>
     public Image getImage( Object element )
     {
         return null;
+    }
+
+
+    @Override
+    public int compare( LimitWrapper e1, LimitWrapper e2 )
+    {
+        // TODO Auto-generated method stub
+        return 0;
     };
 }
