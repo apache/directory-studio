@@ -36,4 +36,13 @@ public interface OrderedElement
      * Move an element down in the list of elements, increasing its prefix
      */
     void decrementPrefix();
+    
+    
+    /**
+     * Set the prefix to a given value
+     * 
+     * @param prefix The value to set
+     * @param prefix
+     */
+    void setPrefix( int prefix );
 }

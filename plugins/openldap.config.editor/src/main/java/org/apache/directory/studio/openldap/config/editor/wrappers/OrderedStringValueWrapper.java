@@ -36,7 +36,7 @@ public class OrderedStringValueWrapper implements Cloneable, Comparable<OrderedS
     private boolean caseSensitive = true;
 
     /** The prefix, used to order the values */
-    private int prefix;
+    private Integer prefix;
     
     /**
      * Creates a new instance of StringValueWrapper.
@@ -172,9 +172,12 @@ public class OrderedStringValueWrapper implements Cloneable, Comparable<OrderedS
         {
             OrderedStringValueWrapper thatInstance = (OrderedStringValueWrapper)that;
             
-            if ( prefix != thatInstance.prefix )
+            if ( prefix != null )
             {
-                return false;
+                if ( prefix != thatInstance.prefix )
+                {
+                    return false;
+                }
             }
             
             if ( caseSensitive )
