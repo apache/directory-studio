@@ -795,7 +795,14 @@ public class TableWidget<E> extends AbstractWidget
                         elements.add( editPosition, newElement );
                     }
                 }
+                else
+                {
+                    // Remove the original element
+                    elements.remove( selectedElement );
 
+                    elements.add( editPosition, newElement );
+                }
+                
                 elementTableViewer.refresh();
                 elementTableViewer.setSelection( new StructuredSelection( newElement.toString() ) );
 
