@@ -166,12 +166,6 @@ public class OrderedStringValueDialog extends AddEditDialog<OrderedStringValueWr
                 stringValue.setText( editedElement.getValue() );
             }
         }
-        
-        // Create the prefix if it's a Add : set it to the selected position atm
-        if ( isAdd() )
-        { 
-            editedElement.setPrefix( getSelectedPosition() );
-        }
     }
 
 
@@ -188,29 +182,6 @@ public class OrderedStringValueDialog extends AddEditDialog<OrderedStringValueWr
     {
         OrderedStringValueWrapper newElement = (OrderedStringValueWrapper)editedElement.clone();
         setEditedElement( newElement );
-    }
-    
-    
-    @Override
-    public void okPressed()
-    {
-        // We have to check the prefix. If it was an Add, we might have a duplicated prefix. If so, we have to 
-        // increment the second one and all the following ones
-        if ( isAdd() )
-        { 
-            int position = getSelectedPosition();
-
-            for ( int i = getElements().size() - 1; i >= position ; i-- )
-            {
-                OrderedStringValueWrapper value = getElements().get( i );
-                
-                value.setPrefix( value.getPrefix() + 1 );
-            }
-            
-            getElements().add( position, getEditedElement() );
-        }
-        
-        super.okPressed();
     }
 
     
