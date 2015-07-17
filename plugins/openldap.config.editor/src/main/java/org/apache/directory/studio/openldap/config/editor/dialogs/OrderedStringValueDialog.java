@@ -200,14 +200,14 @@ public class OrderedStringValueDialog extends AddEditDialog<OrderedStringValueWr
         { 
             int position = getSelectedPosition();
 
-            for ( int i = getElements().size() - 1; i > position ; i-- )
+            for ( int i = getElements().size() - 1; i >= position ; i-- )
             {
                 OrderedStringValueWrapper value = getElements().get( i );
                 
                 value.setPrefix( value.getPrefix() + 1 );
             }
             
-            getElements().add( position + 1, getEditedElement() );
+            getElements().add( position, getEditedElement() );
         }
         
         super.okPressed();
