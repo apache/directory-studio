@@ -499,27 +499,27 @@ public class SsfDialog extends AddEditDialog<SsfWrapper>
         featureCombo = BaseWidgetUtils.createCombo( ssfEditGroup, features, 0, 2 );
         
         // No-protection checkbox
-        strengthCheckbox[0] = BaseWidgetUtils.createCheckbox( ssfEditGroup, SsfStrengthEnum.NO_PROTECTION.getText(), 1 );
+        strengthCheckbox[0] = BaseWidgetUtils.createCheckbox( ssfEditGroup, SsfStrengthEnum.NO_PROTECTION.getName(), 1 );
         BaseWidgetUtils.createLabel( ssfEditGroup, TABULATION, 1 );
         
         // Integrity checkbox
-        strengthCheckbox[1] = BaseWidgetUtils.createCheckbox( ssfEditGroup, SsfStrengthEnum.INTEGRITY_CHECK.getText(), 1 );
+        strengthCheckbox[1] = BaseWidgetUtils.createCheckbox( ssfEditGroup, SsfStrengthEnum.INTEGRITY_CHECK.getName(), 1 );
         BaseWidgetUtils.createLabel( ssfEditGroup, TABULATION, 1 );
         
         // DES checkbox
-        strengthCheckbox[2] = BaseWidgetUtils.createCheckbox( ssfEditGroup, SsfStrengthEnum.DES.getText(), 1 );
+        strengthCheckbox[2] = BaseWidgetUtils.createCheckbox( ssfEditGroup, SsfStrengthEnum.DES.getName(), 1 );
         BaseWidgetUtils.createLabel( ssfEditGroup, TABULATION, 1 );
         
         // 3DES checkbox
-        strengthCheckbox[3] = BaseWidgetUtils.createCheckbox( ssfEditGroup, SsfStrengthEnum.THREE_DES.getText(), 1 );
+        strengthCheckbox[3] = BaseWidgetUtils.createCheckbox( ssfEditGroup, SsfStrengthEnum.THREE_DES.getName(), 1 );
         BaseWidgetUtils.createLabel( ssfEditGroup, TABULATION, 1 );
         
         // AES-128 checkbox
-        strengthCheckbox[4] = BaseWidgetUtils.createCheckbox( ssfEditGroup, SsfStrengthEnum.AES_128.getText(), 1 );
+        strengthCheckbox[4] = BaseWidgetUtils.createCheckbox( ssfEditGroup, SsfStrengthEnum.AES_128.getName(), 1 );
         BaseWidgetUtils.createLabel( ssfEditGroup, TABULATION, 1 );
         
         // AES-256 checkbox
-        strengthCheckbox[5] = BaseWidgetUtils.createCheckbox( ssfEditGroup, SsfStrengthEnum.AES_256.getText(), 1 );
+        strengthCheckbox[5] = BaseWidgetUtils.createCheckbox( ssfEditGroup, SsfStrengthEnum.AES_256.getName(), 1 );
         BaseWidgetUtils.createLabel( ssfEditGroup, TABULATION, 1 );
         
         // Other Text
