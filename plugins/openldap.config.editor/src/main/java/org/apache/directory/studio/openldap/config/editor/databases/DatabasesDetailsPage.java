@@ -45,7 +45,6 @@ import org.apache.directory.studio.openldap.config.editor.dialogs.SizeLimitDialo
 import org.apache.directory.studio.openldap.config.editor.wrappers.DatabaseWrapper;
 import org.apache.directory.studio.openldap.config.editor.wrappers.DnDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.DnWrapper;
-import org.apache.directory.studio.openldap.config.editor.wrappers.LimitDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.LimitsDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.LimitsWrapper;
 import org.apache.directory.studio.openldap.config.model.OlcOverlayConfig;
@@ -1062,7 +1061,7 @@ public class DatabasesDetailsPage implements IDetailsPage
      */
     private String getOverlayText( OlcOverlayConfig overlay )
     {
-        return OverlayDialog.getOverlayDisplayName( overlay );
+        return OverlayDialog.getOverlayType( overlay ).getName();
     }
 
 
