@@ -73,6 +73,9 @@ public class TableWidget<E> extends AbstractWidget
 {
     /** The element list */
     private List<E> elements = new ArrayList<E>();
+    
+    /** The current selection index, if any */
+    private int currentSelection;
 
     /** A flag set to tell if we have a Edit button */
     private boolean hasEdit;
@@ -111,26 +114,36 @@ public class TableWidget<E> extends AbstractWidget
         {
             if ( isEnabled )
             {
-                StructuredSelection selection = ( StructuredSelection ) elementTableViewer.getSelection();
-    
-                if ( hasEdit )
+                int selectionLine = elementTableViewer.getTable().getSelectionIndex();
+
+                if ( selectionLine == currentSelection )
                 {
-                    editButton.setEnabled( !selection.isEmpty() );
+                    // We have selected the line twice, deselect the line
+                    elementTableViewer.getTable().deselect( selectionLine );
+                    currentSelection = -1;
                 }
-                
-                deleteButton.setEnabled( !selection.isEmpty() );
-                
-                if ( isOrdered )
+                else
                 {
-                    int selectionLine = elementTableViewer.getTable().getSelectionIndex();
-    
-                    // We can't enable the UP button when we don't have any element in the table,
-                    // or when we have only one, or when the selection is the first one in the table
-                    upButton.setEnabled( !selection.isEmpty() && ( elements.size() > 1 ) && ( selectionLine > 0 ) );
+                    currentSelection = selectionLine;
+                    StructuredSelection selection = ( StructuredSelection ) elementTableViewer.getSelection();
+        
+                    if ( hasEdit )
+                    {
+                        editButton.setEnabled( !selection.isEmpty() );
+                    }
                     
-                    // We can't enable the DOWN button when we don't have any element in the table,
-                    // or when we have only one element, or when the selected element is the last one
-                    downButton.setEnabled( !selection.isEmpty() && ( elements.size() > 1 ) && ( selectionLine < elements.size() - 1 ) );
+                    deleteButton.setEnabled( !selection.isEmpty() );
+                    
+                    if ( isOrdered )
+                    {
+                        // We can't enable the UP button when we don't have any element in the table,
+                        // or when we have only one, or when the selection is the first one in the table
+                        upButton.setEnabled( !selection.isEmpty() && ( elements.size() > 1 ) && ( selectionLine > 0 ) );
+                        
+                        // We can't enable the DOWN button when we don't have any element in the table,
+                        // or when we have only one element, or when the selected element is the last one
+                        downButton.setEnabled( !selection.isEmpty() && ( elements.size() > 1 ) && ( selectionLine < elements.size() - 1 ) );
+                    }
                 }
             }
         }
@@ -208,6 +221,7 @@ public class TableWidget<E> extends AbstractWidget
     public TableWidget( TableDecorator<E> decorator )
     {
         this.decorator = decorator;
+        currentSelection = -1;
     }
 
 
@@ -676,17 +690,11 @@ public class TableWidget<E> extends AbstractWidget
         
         // Inject the position if we have a selected value
         StructuredSelection selection = ( StructuredSelection ) elementTableViewer.getSelection();
+        int insertionPos = elements.size();
         
         if ( !selection.isEmpty() )
         {
-            int insertionPos = elementTableViewer.getTable().getSelectionIndex();
-            
-            dialog.setSelectedPosition( insertionPos );
-        }
-        else
-        {
-            // The element will be added at the end of the table
-            dialog.setSelectedPosition( elements.size() );
+            insertionPos = elementTableViewer.getTable().getSelectionIndex();
         }
 
         // Open the Dialog, and process the addition if it went fine
@@ -701,17 +709,15 @@ public class TableWidget<E> extends AbstractWidget
                 
                 if ( isOrdered )
                 { 
-                    // The table is ordered, find the right position to insert the element
-                    for ( E element : elements )
+                    // The table is ordered, insert the element at the right position
+                    ((OrderedElement)newElement).setPrefix( insertionPos );
+                    elements.add( insertionPos, newElement );
+                    
+                    // Move up the following elements
+                    for ( int i = insertionPos + 1; i < elements.size(); i++ )
                     {
-                        if ( decorator.compare( element, newElement ) > 0 )
-                        {
-                            break;
-                        }
-                        else
-                        {
-                            pos++;
-                        }
+                        E element = elements.get( i );
+                        ((OrderedElement)element).incrementPrefix();
                     }
                 }
                 else
@@ -725,9 +731,10 @@ public class TableWidget<E> extends AbstractWidget
                     {
                         pos = elementTableViewer.getTable().getSelectionIndex() + 1;
                     }
+
+                    elements.add( pos, newElement );
                 }
                 
-                elements.add( pos, newElement );
                 elementTableViewer.refresh();
                 elementTableViewer.setSelection( new StructuredSelection( elementStr ) );
             }
@@ -821,9 +828,26 @@ public class TableWidget<E> extends AbstractWidget
 
         if ( !selection.isEmpty() )
         {
-            E selectedElement = ( E ) selection.getFirstElement();
-
-            elements.remove( selectedElement );
+            // If the table is ordered, we need to decrement the prefix of all the following elements
+            if ( isOrdered )
+            { 
+                int selectedPosition = elementTableViewer.getTable().getSelectionIndex();
+                
+                for ( int i = selectedPosition + 1; i < elements.size(); i++ )
+                {
+                    E nextElement = elements.get( i );
+                    ((OrderedElement)nextElement).decrementPrefix();
+                    elements.set( i - 1, nextElement );
+                }
+                
+                elements.remove( elements.size() - 1 );
+            }
+            else
+            {
+                int selectedPosition = elementTableViewer.getTable().getSelectionIndex();
+                elements.remove( selectedPosition );
+            }
+            
             elementTableViewer.refresh();
             notifyListeners();
         }
