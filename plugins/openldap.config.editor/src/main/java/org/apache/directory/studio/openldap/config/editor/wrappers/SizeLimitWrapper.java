@@ -273,13 +273,20 @@ public class SizeLimitWrapper extends AbstractLimitWrapper
                     {
                         pos += integer.length();
                         
-                        Integer value = Integer.valueOf( integer );
-                        
-                        if ( value > UNLIMITED )
-                        {
-                            slw.globalLimit = value;
+                        try
+                        { 
+                            Integer value = Integer.valueOf( integer );
+                            
+                            if ( value > UNLIMITED )
+                            {
+                                slw.globalLimit = value;
+                            }
+                            else
+                            {
+                                return false;
+                            }
                         }
-                        else
+                        catch ( NumberFormatException nfe )
                         {
                             return false;
                         }
@@ -319,11 +326,20 @@ public class SizeLimitWrapper extends AbstractLimitWrapper
                     if ( integer != null )
                     {
                         pos += integer.length();
-                        Integer value =  Integer.valueOf( integer );
                         
-                        if ( value >= UNLIMITED )
+                        try
+                        
                         {
-                            slw.hardLimit = value;
+                            Integer value =  Integer.valueOf( integer );
+                            
+                            if ( value >= UNLIMITED )
+                            {
+                                slw.hardLimit = value;
+                            }
+                        }
+                        catch ( NumberFormatException nfe )
+                        {
+                            return false;
                         }
                     }
                     else
@@ -355,14 +371,21 @@ public class SizeLimitWrapper extends AbstractLimitWrapper
                     
                     if ( integer != null )
                     {
-                        pos += integer.length();
-                        Integer value = Integer.valueOf( integer );
-
-                        if ( value > UNLIMITED )
+                        try
                         {
-                            slw.softLimit = value;
+                            pos += integer.length();
+                            Integer value = Integer.valueOf( integer );
+    
+                            if ( value > UNLIMITED )
+                            {
+                                slw.softLimit = value;
+                            }
+                            else
+                            {
+                                return false;
+                            }
                         }
-                        else
+                        catch ( NumberFormatException nfe )
                         {
                             return false;
                         }
@@ -402,14 +425,21 @@ public class SizeLimitWrapper extends AbstractLimitWrapper
                     
                     if ( integer != null )
                     {
-                        pos += integer.length();
-                        Integer value = Integer.valueOf( integer );
-
-                        if ( value > UNLIMITED )
+                        try
                         {
-                            slw.uncheckedLimit = value;
+                            pos += integer.length();
+                            Integer value = Integer.valueOf( integer );
+    
+                            if ( value > UNLIMITED )
+                            {
+                                slw.uncheckedLimit = value;
+                            }
+                            else
+                            {
+                                return false;
+                            }
                         }
-                        else
+                        catch ( NumberFormatException nfe )
                         {
                             return false;
                         }
@@ -455,14 +485,21 @@ public class SizeLimitWrapper extends AbstractLimitWrapper
                     
                     if ( integer != null )
                     {
-                        pos += integer.length();
-                        Integer value = Integer.valueOf( integer );
-
-                        if ( value > UNLIMITED )
+                        try
                         {
-                            slw.prLimit = value;
+                            pos += integer.length();
+                            Integer value = Integer.valueOf( integer );
+    
+                            if ( value > UNLIMITED )
+                            {
+                                slw.prLimit = value;
+                            }
+                            else
+                            {
+                                return false;
+                            }
                         }
-                        else
+                        catch ( NumberFormatException nfe )
                         {
                             return false;
                         }
@@ -508,14 +545,21 @@ public class SizeLimitWrapper extends AbstractLimitWrapper
                     
                     if ( integer != null )
                     {
-                        pos += integer.length();
-                        Integer value = Integer.valueOf( integer );
-
-                        if ( value > UNLIMITED )
+                        try
                         {
-                            slw.prTotalLimit = value;
+                            pos += integer.length();
+                            Integer value = Integer.valueOf( integer );
+    
+                            if ( value > UNLIMITED )
+                            {
+                                slw.prTotalLimit = value;
+                            }
+                            else
+                            {
+                                return false;
+                            }
                         }
-                        else
+                        catch ( NumberFormatException nfe )
                         {
                             return false;
                         }

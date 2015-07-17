@@ -191,14 +191,21 @@ public class TimeLimitWrapper extends AbstractLimitWrapper
                     if ( integer != null )
                     {
                         pos += integer.length();
-                        
-                        Integer value = Integer.valueOf( integer );
-                        
-                        if ( value > UNLIMITED )
+                     
+                        try
                         {
-                            tlw.globalLimit = value;
+                            Integer value = Integer.valueOf( integer );
+                            
+                            if ( value > UNLIMITED )
+                            {
+                                tlw.globalLimit = value;
+                            }
+                            else
+                            {
+                                return false;
+                            }
                         }
-                        else
+                        catch ( NumberFormatException nfe )
                         {
                             return false;
                         }
@@ -238,11 +245,19 @@ public class TimeLimitWrapper extends AbstractLimitWrapper
                     if ( integer != null )
                     {
                         pos += integer.length();
-                        Integer value =  Integer.valueOf( integer );
                         
-                        if ( value >= UNLIMITED )
+                        try
                         {
-                            tlw.hardLimit = value;
+                            Integer value =  Integer.valueOf( integer );
+                            
+                            if ( value >= UNLIMITED )
+                            {
+                                tlw.hardLimit = value;
+                            }
+                        }
+                        catch ( NumberFormatException nfe )
+                        {
+                            return false;
                         }
                     }
                     else
@@ -275,13 +290,21 @@ public class TimeLimitWrapper extends AbstractLimitWrapper
                     if ( integer != null )
                     {
                         pos += integer.length();
-                        Integer value = Integer.valueOf( integer );
-
-                        if ( value > UNLIMITED )
+                        
+                        try
                         {
-                            tlw.softLimit = value;
+                            Integer value = Integer.valueOf( integer );
+    
+                            if ( value > UNLIMITED )
+                            {
+                                tlw.softLimit = value;
+                            }
+                            else
+                            {
+                                return false;
+                            }
                         }
-                        else
+                        catch ( NumberFormatException nfe )
                         {
                             return false;
                         }
