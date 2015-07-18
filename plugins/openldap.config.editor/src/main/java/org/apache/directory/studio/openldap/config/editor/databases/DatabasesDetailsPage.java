@@ -47,7 +47,8 @@ import org.apache.directory.studio.openldap.config.editor.wrappers.DnDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.DnWrapper;
 import org.apache.directory.studio.openldap.config.editor.wrappers.LimitsDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.LimitsWrapper;
-import org.apache.directory.studio.openldap.config.editor.wrappers.OrderedStringValueWrapper;
+import org.apache.directory.studio.openldap.config.editor.wrappers.TimeLimitDecorator;
+import org.apache.directory.studio.openldap.config.editor.wrappers.TimeLimitWrapper;
 import org.apache.directory.studio.openldap.config.model.OlcOverlayConfig;
 import org.apache.directory.studio.openldap.config.model.database.OlcBdbConfig;
 import org.apache.directory.studio.openldap.config.model.database.OlcDatabaseConfig;
@@ -341,9 +342,11 @@ public class DatabasesDetailsPage implements IDetailsPage
     /** The olcMaxDerefDepth parameter */
     private Text maxDerefDepthText;
 
+    /** The olcTimeLimit Table */
+    private TableWidget<TimeLimitWrapper> timeLimitTableWidget;
+
     /** The olcLimits Table */
     private TableWidget<LimitsWrapper> limitsTableWidget;
-    
 
     /** The olcSchemaDN attribute */
     private EntryWidget schemaDnEntryWidget;
@@ -984,6 +987,18 @@ public class DatabasesDetailsPage implements IDetailsPage
         maxDerefDepthText = BaseWidgetUtils.createIntegerText( toolkit, composite,
             "Specifies the maximum number of aliases to dereference when trying to resolve an entry" );
         maxDerefDepthText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        
+        // The olcTimeLimit parameter
+        Label timeLimitLabel = toolkit.createLabel( composite, 
+            Messages.getString( "OpenLDAPMasterDetail.TimeLimit" ) ); //$NON-NLS-1$
+        timeLimitLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 5, 1 ) );
+        
+        timeLimitTableWidget = new TableWidget<TimeLimitWrapper>( 
+            new TimeLimitDecorator( composite.getShell() ) );
+
+        timeLimitTableWidget.createWidgetWithEdit( composite, toolkit );
+        timeLimitTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 5, 1 ) );
+        addModifyListener( timeLimitTableWidget, timeLimitListener );
 
         // The olcLimits parameter.
         Label limitsLabel = toolkit.createLabel( composite, 
@@ -1365,7 +1380,7 @@ public class DatabasesDetailsPage implements IDetailsPage
             if ( isFrontendDatabase( database ) )
             {
                 databaseTypeComboViewer.getControl().setEnabled( false );
-                suffixDnTableWidget.disable();;
+                suffixDnTableWidget.disable();
                 rootDnEntryWidget.setEnabled( false );
                 rootPasswordWidget.setEnabled( false );
                 //schemaDnEntryWidget.setEnabled( false );
@@ -1387,7 +1402,7 @@ public class DatabasesDetailsPage implements IDetailsPage
             else if ( isConfigDatabase( database ) )
             {
                 databaseTypeComboViewer.getControl().setEnabled( false );
-                suffixDnTableWidget.enable();;
+                suffixDnTableWidget.enable();
                 rootDnEntryWidget.setEnabled( true );
                 rootPasswordWidget.setEnabled( true );
                 //schemaDnEntryWidget.setEnabled( true );
@@ -1409,7 +1424,7 @@ public class DatabasesDetailsPage implements IDetailsPage
             else
             {
                 //databaseTypeComboViewer.getControl().setEnabled( true );
-                suffixDnTableWidget.enable();;
+                suffixDnTableWidget.enable();
                 rootDnEntryWidget.setEnabled( true );
                 rootPasswordWidget.setEnabled( true );
                 //schemaDnEntryWidget.setEnabled( true );
@@ -2086,6 +2101,27 @@ public class DatabasesDetailsPage implements IDetailsPage
             widget.addWidgetModifyListener( listener );
         }
     }
+    
+    
+    /**
+     * The olcTimeLimit listener
+     */
+    private WidgetModifyListener timeLimitListener = new WidgetModifyListener()
+    {
+        public void widgetModified( WidgetModifyEvent e )
+        {
+            List<String> timeLimits = new ArrayList<String>();
+            
+            for ( TimeLimitWrapper timeLimitWrapper : timeLimitTableWidget.getElements() )
+            {
+                timeLimits.add( timeLimitWrapper.toString() );
+            }
+            
+            OlcDatabaseConfig databaseConfig = databaseWrapper.getDatabase();
+
+            databaseConfig.setOlcTimeLimit( timeLimits );
+        }
+    };
     
     
     /**
