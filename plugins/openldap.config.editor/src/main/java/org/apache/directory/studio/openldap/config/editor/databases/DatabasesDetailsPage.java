@@ -1660,9 +1660,19 @@ public class DatabasesDetailsPage implements IDetailsPage
      */
     private void addListeners()
     {
-        addModifyListener( suffixDnTableWidget, dirtyWidgetModifyListener );
+        // The Database general listeners
         addModifyListener( rootDnEntryWidget, dirtyWidgetModifyListener );
         addModifyListener( rootPasswordWidget, dirtyWidgetModifyListener );
+        addModifyListener( suffixDnTableWidget, dirtyWidgetModifyListener );
+
+        // The Database limit listeners
+        addModifyListener( sizeLimitText, dirtyModifyListener );
+        addModifyListener( maxDerefDepthText, dirtyModifyListener );
+        addModifyListener( timeLimitTableWidget, dirtyWidgetModifyListener );
+        addModifyListener( limitsTableWidget, dirtyWidgetModifyListener );
+        
+        
+        // TODO...
         //addModifyListener( schemaDnEntryWidget, dirtyWidgetModifyListener );
         //addModifyListener( readOnlyBooleanWithDefaultWidget, dirtyWidgetModifyListener );
         //addModifyListener( hiddenBooleanWithDefaultWidget, dirtyWidgetModifyListener );
@@ -1700,9 +1710,19 @@ public class DatabasesDetailsPage implements IDetailsPage
      */
     private void removeListeners()
     {
-        removeModifyListener( suffixDnTableWidget, dirtyWidgetModifyListener );
+        // The Database general listeners
         removeModifyListener( rootDnEntryWidget, dirtyWidgetModifyListener );
         removeModifyListener( rootPasswordWidget, dirtyWidgetModifyListener );
+        removeModifyListener( suffixDnTableWidget, dirtyWidgetModifyListener );
+
+        // The Database limit listeners
+        removeModifyListener( sizeLimitText, dirtyModifyListener );
+        removeModifyListener( maxDerefDepthText, dirtyModifyListener );
+        removeModifyListener( timeLimitTableWidget, dirtyWidgetModifyListener );
+        removeModifyListener( limitsTableWidget, dirtyWidgetModifyListener );
+
+        
+        removeModifyListener( suffixDnTableWidget, dirtyWidgetModifyListener );
         //removeModifyListener( schemaDnEntryWidget, dirtyWidgetModifyListener );
         //removeModifyListener( readOnlyBooleanWithDefaultWidget, dirtyWidgetModifyListener );
         //removeModifyListener( hiddenBooleanWithDefaultWidget, dirtyWidgetModifyListener );
@@ -2072,10 +2092,8 @@ public class DatabasesDetailsPage implements IDetailsPage
     /**
      * Adds a modify listener to the given Text.
      *
-     * @param text
-     *      the Text control
-     * @param listener
-     *      the listener
+     * @param text the Text control
+     * @param listener the listener
      */
     protected void addModifyListener( Text text, ModifyListener listener )
     {
@@ -2087,12 +2105,25 @@ public class DatabasesDetailsPage implements IDetailsPage
 
 
     /**
+     * Adds a modify listener to the given TableWidget.
+     *
+     * @param table the Text control
+     * @param listener the listener
+     */
+    protected void addModifyListener( TableWidget<?> tabelWidget, WidgetModifyListener listener )
+    {
+        if ( ( tabelWidget != null ) && ( listener != null ) )
+        {
+            tabelWidget.addWidgetModifyListener( listener );
+        }
+    }
+
+
+    /**
      * Adds a modify listener to the given BrowserWidget.
      *
-     * @param widget
-     *      the widget
-     * @param listener
-     *      the listener
+     * @param widget the widget
+     * @param listener the listener
      */
     protected void addModifyListener( AbstractWidget widget, WidgetModifyListener listener )
     {
@@ -2148,10 +2179,8 @@ public class DatabasesDetailsPage implements IDetailsPage
     /**
      * Adds a selection listener to the given Button.
      *
-     * @param button
-     *      the Button control
-     * @param listener
-     *      the listener
+     * @param button the Button control
+     * @param listener the listener
      */
     protected void addSelectionListener( Button button, SelectionListener listener )
     {
@@ -2165,10 +2194,8 @@ public class DatabasesDetailsPage implements IDetailsPage
     /**
      * Adds a selection changed listener to the given Viewer.
      *
-     * @param viewer
-     *      the Viewer control
-     * @param listener
-     *      the listener
+     * @param viewer the Viewer control
+     * @param listener the listener
      */
     protected void addSelectionChangedListener( Viewer viewer, ISelectionChangedListener listener )
     {
@@ -2182,10 +2209,8 @@ public class DatabasesDetailsPage implements IDetailsPage
     /**
      * Adds a double-click listener to the given Viewer.
      *
-     * @param viewer
-     *      the Viewer control
-     * @param listener
-     *      the listener
+     * @param viewer the Viewer control
+     * @param listener the listener
      */
     protected void addDoubleClickListener( TableViewer viewer, IDoubleClickListener listener )
     {
@@ -2199,10 +2224,8 @@ public class DatabasesDetailsPage implements IDetailsPage
     /**
      * Removes a modify listener to the given Text.
      *
-     * @param text
-     *      the Text control
-     * @param listener
-     *      the listener
+     * @param text the Text control
+     * @param listener the listener
      */
     protected void removeModifyListener( Text text, ModifyListener listener )
     {
@@ -2216,10 +2239,8 @@ public class DatabasesDetailsPage implements IDetailsPage
     /**
      * Adds a modify listener to the given BrowserWidget.
      *
-     * @param widget
-     *      the widget
-     * @param listener
-     *      the listener
+     * @param widget the widget
+     * @param listener the listener
      */
     protected void removeModifyListener( AbstractWidget widget, WidgetModifyListener listener )
     {
@@ -2233,10 +2254,8 @@ public class DatabasesDetailsPage implements IDetailsPage
     /**
      * Removes a selection listener to the given Button.
      *
-     * @param button
-     *      the Button control
-     * @param listener
-     *      the listener
+     * @param button the Button control
+     * @param listener the listener
      */
     protected void removeSelectionListener( Button button, SelectionListener listener )
     {
@@ -2250,10 +2269,8 @@ public class DatabasesDetailsPage implements IDetailsPage
     /**
      * Removes a selection changed listener to the given Button.
      *
-     * @param button
-     *      the Button control
-     * @param listener
-     *      the listener
+     * @param viewer the Viewer
+     * @param listener the listener
      */
     protected void removeSelectionChangedListener( Viewer viewer, ISelectionChangedListener listener )
     {
@@ -2267,10 +2284,8 @@ public class DatabasesDetailsPage implements IDetailsPage
     /**
      * Removes a selection changed listener to the given Button.
      *
-     * @param button
-     *      the Button control
-     * @param listener
-     *      the listener
+     * @param viewer the TableViewer
+     * @param listener the listener
      */
     protected void removeDoubleClickListener( TableViewer viewer, IDoubleClickListener listener )
     {
