@@ -39,8 +39,8 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.apache.directory.studio.openldap.config.editor.wrappers.LimitWrapper;
-import org.apache.directory.studio.openldap.config.editor.wrappers.OrderedSizeLimitWrapper;
-import org.apache.directory.studio.openldap.config.editor.wrappers.OrderedTimeLimitWrapper;
+import org.apache.directory.studio.openldap.config.editor.wrappers.SizeLimitWrapper;
+import org.apache.directory.studio.openldap.config.editor.wrappers.TimeLimitWrapper;
 
 
 /**
@@ -146,7 +146,7 @@ public class SizeTimeLimitDialog extends AddEditDialog<LimitWrapper>
                 {
                     if ( button.getSelection() )
                     {
-                        setEditedElement( new OrderedSizeLimitWrapper( "" ) );
+                        setEditedElement( new SizeLimitWrapper( "" ) );
 
                         // Enable the SizeLimit elements, disable the TimeLimit ones
                         sizeLimitEditButton.setEnabled( true );
@@ -158,7 +158,7 @@ public class SizeTimeLimitDialog extends AddEditDialog<LimitWrapper>
                 }
                 else
                 {
-                    setEditedElement( new OrderedTimeLimitWrapper( "" ) );
+                    setEditedElement( new TimeLimitWrapper( "" ) );
                     
                     // Enable the TimeLimit elements, disable the SizeLimit ones
                     timeLimitEditButton.setEnabled( true );
@@ -231,7 +231,7 @@ public class SizeTimeLimitDialog extends AddEditDialog<LimitWrapper>
             // The String must be a valid SizeLimit
             String sizeLimitStr = sizeLimitText.getText();
             
-            OrderedSizeLimitWrapper sizeLimitWrapper = new OrderedSizeLimitWrapper( sizeLimitStr );
+            SizeLimitWrapper sizeLimitWrapper = new SizeLimitWrapper( sizeLimitStr );
             
             if ( sizeLimitWrapper.isValid() )
             {
@@ -263,7 +263,7 @@ public class SizeTimeLimitDialog extends AddEditDialog<LimitWrapper>
             // The String must be a valid TimeLimit
             String timeLimitStr = timeLimitText.getText();
             
-            OrderedTimeLimitWrapper timeLimitWrapper = new OrderedTimeLimitWrapper( timeLimitStr );
+            TimeLimitWrapper timeLimitWrapper = new TimeLimitWrapper( timeLimitStr );
             
             if ( timeLimitWrapper.isValid() )
             {
@@ -404,7 +404,7 @@ public class SizeTimeLimitDialog extends AddEditDialog<LimitWrapper>
         
         if ( editedElement != null )
         {
-            if ( editedElement instanceof OrderedSizeLimitWrapper )
+            if ( editedElement instanceof SizeLimitWrapper )
             {
                 sizeLimitButton.setSelection( true );
                 

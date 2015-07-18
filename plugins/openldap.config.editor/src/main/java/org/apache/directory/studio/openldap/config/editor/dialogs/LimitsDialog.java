@@ -20,9 +20,14 @@
 package org.apache.directory.studio.openldap.config.editor.dialogs;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.directory.studio.common.ui.AddEditDialog;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.common.ui.widgets.TableWidget;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -45,6 +50,7 @@ import org.apache.directory.studio.openldap.common.ui.model.LimitSelectorEnum;
 import org.apache.directory.studio.openldap.config.editor.wrappers.LimitDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.LimitWrapper;
 import org.apache.directory.studio.openldap.config.editor.wrappers.LimitsWrapper;
+import org.apache.directory.studio.openldap.config.model.database.OlcDatabaseConfig;
 
 
 /**
@@ -307,6 +313,20 @@ public class LimitsDialog extends AddEditDialog<LimitsWrapper>
             limitsText.setText( getEditedElement().toString() );
         }
     };
+    
+    
+    /**
+     * The olcLimits listener
+     */
+    private WidgetModifyListener limitsTableWidgetListener = new WidgetModifyListener()
+    {
+        public void widgetModified( WidgetModifyEvent e )
+        {
+            getEditedElement().setLimits( limitsTableWidget.getElements() );
+            limitsText.setText( getEditedElement().toString() );
+        }
+    };
+    
 
     /**
      * Create a new instance of the LimitsDialog
@@ -522,9 +542,9 @@ public class LimitsDialog extends AddEditDialog<LimitsWrapper>
         limitsTableWidget = new TableWidget<LimitWrapper>( 
             new LimitDecorator( parent.getShell() , "Limit") );
 
-        limitsTableWidget.createOrderedWidgetWithEdit( selectorGroup, null );
+        limitsTableWidget.createWidgetWithEdit( selectorGroup, null );
         limitsTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
-        //addModifyListener( authIdRewriteTableWidget, authIdRewriteListener );
+        limitsTableWidget.addWidgetModifyListener( limitsTableWidgetListener );
     }
 
 

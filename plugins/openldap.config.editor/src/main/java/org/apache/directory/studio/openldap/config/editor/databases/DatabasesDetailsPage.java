@@ -47,6 +47,7 @@ import org.apache.directory.studio.openldap.config.editor.wrappers.DnDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.DnWrapper;
 import org.apache.directory.studio.openldap.config.editor.wrappers.LimitsDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.LimitsWrapper;
+import org.apache.directory.studio.openldap.config.editor.wrappers.OrderedStringValueWrapper;
 import org.apache.directory.studio.openldap.config.model.OlcOverlayConfig;
 import org.apache.directory.studio.openldap.config.model.database.OlcBdbConfig;
 import org.apache.directory.studio.openldap.config.model.database.OlcDatabaseConfig;
@@ -994,7 +995,7 @@ public class DatabasesDetailsPage implements IDetailsPage
 
         limitsTableWidget.createOrderedWidgetWithEdit( composite, toolkit );
         limitsTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 5, 1 ) );
-        //addModifyListener( limitsTableWidget, limitsListener );
+        addModifyListener( limitsTableWidget, limitsListener );
     }
 
 
@@ -2085,6 +2086,27 @@ public class DatabasesDetailsPage implements IDetailsPage
             widget.addWidgetModifyListener( listener );
         }
     }
+    
+    
+    /**
+     * The olcLimits listener
+     */
+    private WidgetModifyListener limitsListener = new WidgetModifyListener()
+    {
+        public void widgetModified( WidgetModifyEvent e )
+        {
+            List<String> limits = new ArrayList<String>();
+            
+            for ( LimitsWrapper limitWrapper : limitsTableWidget.getElements() )
+            {
+                limits.add( limitWrapper.toString() );
+            }
+            
+            OlcDatabaseConfig databaseConfig = databaseWrapper.getDatabase();
+
+            databaseConfig.setOlcLimits( limits );
+        }
+    };
 
 
     /**

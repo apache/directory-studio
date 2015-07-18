@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.api.util.Strings;
+import org.apache.directory.studio.common.ui.widgets.OrderedElement;
 import org.apache.directory.studio.openldap.common.ui.model.DnSpecStyleEnum;
 import org.apache.directory.studio.openldap.common.ui.model.DnSpecTypeEnum;
 import org.apache.directory.studio.openldap.common.ui.model.LimitSelectorEnum;
@@ -50,7 +51,7 @@ import org.apache.directory.studio.openldap.common.ui.model.LimitSelectorEnum;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LimitsWrapper implements Cloneable, Comparable<LimitsWrapper>
+public class LimitsWrapper implements Cloneable, Comparable<LimitsWrapper>, OrderedElement
 {
     /** Prefix, as the Limits are ordered */
     private int prefix;
@@ -455,7 +456,7 @@ public class LimitsWrapper implements Cloneable, Comparable<LimitsWrapper>
                 return ERROR;
             }
             
-            OrderedTimeLimitWrapper timeLimitWrapper = new OrderedTimeLimitWrapper( limitStr.substring( 0, i ) );
+            TimeLimitWrapper timeLimitWrapper = new TimeLimitWrapper( limitStr.substring( 0, i ) );
             
             if ( timeLimitWrapper.isValid() )
             {
@@ -483,7 +484,7 @@ public class LimitsWrapper implements Cloneable, Comparable<LimitsWrapper>
                 return ERROR;
             }
             
-            OrderedSizeLimitWrapper sizeLimitWrapper = new OrderedSizeLimitWrapper( limitStr.substring( 0, i ) );
+            SizeLimitWrapper sizeLimitWrapper = new SizeLimitWrapper( limitStr.substring( 0, i ) );
             
             if ( sizeLimitWrapper.isValid() )
             {
