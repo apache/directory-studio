@@ -33,6 +33,8 @@ import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.openldap.common.ui.model.RequireConditionEnum;
+import org.apache.directory.studio.openldap.common.ui.model.RestrictOperationEnum;
 import org.apache.directory.studio.openldap.common.ui.widgets.BooleanWithDefaultWidget;
 import org.apache.directory.studio.openldap.common.ui.widgets.EntryWidget;
 import org.apache.directory.studio.openldap.common.ui.widgets.PasswordWidget;
@@ -47,6 +49,10 @@ import org.apache.directory.studio.openldap.config.editor.wrappers.DnDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.DnWrapper;
 import org.apache.directory.studio.openldap.config.editor.wrappers.LimitsDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.LimitsWrapper;
+import org.apache.directory.studio.openldap.config.editor.wrappers.RequireConditionDecorator;
+import org.apache.directory.studio.openldap.config.editor.wrappers.RestrictOperationDecorator;
+import org.apache.directory.studio.openldap.config.editor.wrappers.SsfDecorator;
+import org.apache.directory.studio.openldap.config.editor.wrappers.SsfWrapper;
 import org.apache.directory.studio.openldap.config.editor.wrappers.TimeLimitDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.TimeLimitWrapper;
 import org.apache.directory.studio.openldap.config.model.OlcOverlayConfig;
@@ -352,10 +358,20 @@ public class DatabasesDetailsPage implements IDetailsPage
     private EntryWidget schemaDnEntryWidget;
 
     /** The olcReadOnly attribute */
-    private BooleanWithDefaultWidget readOnlyBooleanWithDefaultWidget;
+    private Button readOnlyButton;
 
     /** The olcHidden attribute */
-    private BooleanWithDefaultWidget hiddenBooleanWithDefaultWidget;
+    private Button hiddenButton;
+    
+    /** The olcRequires parameter */
+    private TableWidget<RequireConditionEnum> requireConditionTableWidget;
+
+    /** The olcRestrict parameter */
+    private TableWidget<RestrictOperationEnum> restrictOperationTableWidget;
+    
+    /** The olcSecurity table widget */
+    private TableWidget<SsfWrapper> securityTableWidget;
+
 
     /** The associated overlays */
     private TableViewer overlaysTableViewer;
@@ -631,6 +647,7 @@ public class DatabasesDetailsPage implements IDetailsPage
         }
     };
 
+    
     /** 
      * The modify listener which set the editor dirty 
      **/
@@ -642,6 +659,7 @@ public class DatabasesDetailsPage implements IDetailsPage
         }
     };
     
+    
     /**
      * A modify listener for text zones when they have been modified
      */
@@ -650,6 +668,87 @@ public class DatabasesDetailsPage implements IDetailsPage
         public void modifyText( ModifyEvent e )
         {
             setEditorDirty();
+        }
+    };
+
+    
+    /**
+     * The olcHidden listener
+     */
+    private SelectionListener hiddenButtonSelectionListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            setEditorDirty();
+        }
+    };
+
+    
+    /**
+     * The olcReadOnly listener
+     */
+    private SelectionListener readOnlyButtonSelectionListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            setEditorDirty();
+        }
+    };
+    
+    
+    /**
+     * The olcRequires listener
+     */
+    private WidgetModifyListener requireConditionListener = new WidgetModifyListener()
+    {
+        public void widgetModified( WidgetModifyEvent e )
+        {
+            List<String> requires = new ArrayList<String>();
+            
+            for ( RequireConditionEnum requireCondition : requireConditionTableWidget.getElements() )
+            {
+                requires.add( requireCondition.getName() );
+            }
+            
+            //getConfiguration().getGlobal().setOlcRequires( requires );
+        }
+    };
+    
+    
+    /**
+     * The olcRestrict listener
+     */
+    private WidgetModifyListener restrictOperationListener = new WidgetModifyListener()
+    {
+        public void widgetModified( WidgetModifyEvent e )
+        {
+            List<String> restricts = new ArrayList<String>();
+            
+            for ( RestrictOperationEnum restrictOperation : restrictOperationTableWidget.getElements() )
+            {
+                restricts.add( restrictOperation.getName() );
+            }
+            
+            //getConfiguration().getGlobal().setOlcRestrict( restricts );
+        }
+    };
+    
+    
+    /**
+     * The olcSecurity listener
+     */
+    private WidgetModifyListener securityListener = new WidgetModifyListener()
+    {
+        public void widgetModified( WidgetModifyEvent e )
+        {
+            List<String> ssfWrappers = new ArrayList<String>();
+            
+            for ( SsfWrapper ssfWrapper : securityTableWidget.getElements() )
+            {
+                ssfWrappers.add( ssfWrapper.toString() );
+            }
+            
+            //getConfiguration().getGlobal().setOlcSecurity( ssfWrappers );
         }
     };
 
@@ -692,7 +791,7 @@ public class DatabasesDetailsPage implements IDetailsPage
 
         createGeneralSettingsSection( parent, toolkit );
         createLimitsSettingsSection( parent, toolkit );
-        //createSecuritySettingsSection( parent, toolkit );
+        createSecuritySettingsSection( parent, toolkit );
         //createAccessSettingsSection( parent, toolkit );
         createOverlaySettingsSection( parent, toolkit );
         createReplicationConsumersSettingsSection( parent, toolkit );
@@ -959,7 +1058,7 @@ public class DatabasesDetailsPage implements IDetailsPage
     private void createLimitsSettingsSection( Composite parent, FormToolkit toolkit )
     {
         // Creating the Section
-        Section section = toolkit.createSection( parent, Section.TWISTIE | Section.EXPANDED | Section.TITLE_BAR );
+        Section section = toolkit.createSection( parent, Section.TWISTIE | Section.COMPACT | Section.TITLE_BAR );
         section.setText( Messages.getString( "OpenLDAPMasterDetail.LimitsSettings" ) );
         section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         Composite composite = toolkit.createComposite( section );
@@ -1011,6 +1110,106 @@ public class DatabasesDetailsPage implements IDetailsPage
         limitsTableWidget.createOrderedWidgetWithEdit( composite, toolkit );
         limitsTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 5, 1 ) );
         addModifyListener( limitsTableWidget, limitsListener );
+    }
+    
+    
+    /**
+     * Creates the Security Settings Section. This will expose the following attributes :
+     *   <ul>
+     *     <li>olcHidden(Boolean, SV)</li>
+     *     <li>olcReadOnly(Boolean, SV)</li>
+     *     <li>olcRequires(String, MV, Ordered)</li>
+     *     <li>olcRestrict(Integer, SV)</li>
+     *     <li>olcSecurity</li>
+     *   </ul>
+     * 
+     * <pre>
+     * .----------------------------------------------------.
+     * |V XXXX Database security                            |
+     * +----------------------------------------------------+
+     * | Hidden : [ ]                       Read Only : [ ] |
+     * | Requires :                                         |
+     * |   +------------------------------------+           |
+     * |   |                                    | (Add...)  |
+     * |   |                                    | (Edit...) |
+     * |   |                                    | (Delete)  |
+     * |   +------------------------------------+           |
+     * | Restrict :                                         |
+     * |   +------------------------------------+           |
+     * |   |                                    | (Add...)  |
+     * |   |                                    | (Edit...) |
+     * |   |                                    | (Delete)  |
+     * |   +------------------------------------+           |
+     * | Security Strength Factors :                        |
+     * |   +------------------------------------+           |
+     * |   |                                    | (Add...)  |
+     * |   |                                    | (Edit...) |
+     * |   |                                    | (Delete)  |
+     * |   +------------------------------------+           |
+     * +----------------------------------------------------+
+     * </pre>
+     * 
+     * @param parent the parent composite
+     * @param toolkit the toolkit to use
+     */
+    private void createSecuritySettingsSection( Composite parent, FormToolkit toolkit )
+    {
+        // Creating the Section
+        Section section = toolkit.createSection( parent, Section.TWISTIE | Section.COMPACT | Section.TITLE_BAR );
+        section.setText( Messages.getString( "OpenLDAPMasterDetail.SecuritySettings" ) );
+        section.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        Composite securityComposite = toolkit.createComposite( section );
+        toolkit.paintBordersFor( securityComposite );
+        GridLayout gl = new GridLayout( 4, true );
+        gl.marginRight = 18;
+        securityComposite.setLayout( gl );
+        section.setClient( securityComposite );
+
+        // The OlcHidden button
+        hiddenButton = BaseWidgetUtils.createCheckbox( securityComposite, 
+            Messages.getString( "OpenLDAPMasterDetail.Hidden" ), 2 );
+        hiddenButton.addSelectionListener( hiddenButtonSelectionListener );
+
+        // The OlcReadOnly button
+        readOnlyButton = BaseWidgetUtils.createCheckbox( securityComposite, 
+            Messages.getString( "OpenLDAPMasterDetail.ReadOnly" ), 2 );
+        readOnlyButton.addSelectionListener( readOnlyButtonSelectionListener );
+        
+        // The olcRequires parameter label
+        Label requireConditionLabel = toolkit.createLabel( securityComposite, 
+            Messages.getString( "OpenLDAPMasterDetail.RequireCondition" ) ); //$NON-NLS-1$
+        requireConditionLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, false, 2, 1 ) );
+
+        // The olcRestrict parameter label
+        Label restrictOperationLabel = toolkit.createLabel( securityComposite,
+            Messages.getString( "OpenLDAPMasterDetail.RestrictOperation" ) ); //$NON-NLS-1$
+        restrictOperationLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, false, 2, 1 ) );
+
+        // The olcRequires parameter table
+        requireConditionTableWidget = new TableWidget<RequireConditionEnum>( 
+            new RequireConditionDecorator( securityComposite.getShell() ) );
+
+        requireConditionTableWidget.createWidgetNoEdit( securityComposite, toolkit );
+        requireConditionTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+        addModifyListener( requireConditionTableWidget, requireConditionListener );
+
+        // The olcRestrict parameter table
+        restrictOperationTableWidget = new TableWidget<RestrictOperationEnum>( 
+            new RestrictOperationDecorator( securityComposite.getShell() ) );
+
+        restrictOperationTableWidget.createWidgetNoEdit( securityComposite, toolkit );
+        restrictOperationTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
+        addModifyListener( restrictOperationTableWidget, restrictOperationListener );
+        
+        // The olcSecurity parameter table
+        Label securityLabel = toolkit.createLabel( securityComposite, Messages.getString( "OpenLDAPMasterDetail.Security" ) ); //$NON-NLS-1$
+        securityLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, false, 4, 1 ) );
+        
+        securityTableWidget = new TableWidget<SsfWrapper>( new SsfDecorator( securityComposite.getShell() ) );
+
+        securityTableWidget.createWidgetWithEdit( securityComposite, toolkit );
+        securityTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 4, 1 ) );
+        addModifyListener( securityTableWidget, securityListener );
     }
 
 
