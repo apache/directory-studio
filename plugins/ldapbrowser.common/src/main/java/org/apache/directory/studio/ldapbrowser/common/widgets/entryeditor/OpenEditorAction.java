@@ -124,9 +124,9 @@ public class OpenEditorAction extends AbstractOpenEditorAction
     public boolean isEnabled()
     {
         if ( getSelectedValues().length == 1
-            && getSelectedAttributes().length == 0
-            && viewer.getCellModifier().canModify( getSelectedValues()[0],
-                EntryEditorWidgetTableMetadata.VALUE_COLUMN_NAME ) )
+            && getSelectedAttributes().length == 0 )
+//            && viewer.getCellModifier().canModify( getSelectedValues()[0],
+//                EntryEditorWidgetTableMetadata.VALUE_COLUMN_NAME ) 
         {
             IValueEditor[] alternativeVps = valueEditorManager.getAlternativeValueEditors( getSelectedValues()[0] );
             return Arrays.asList( alternativeVps ).contains( valueEditor )
