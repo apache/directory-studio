@@ -22,6 +22,7 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor;
 
 
 import org.apache.directory.studio.common.ui.widgets.ViewFormWidget;
+import org.apache.directory.studio.valueeditors.ValueEditorManager;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
@@ -104,7 +105,9 @@ public class EntryEditorWidget extends ViewFormWidget
             column.setResizable( true );
 
         }
+        
         viewer.setColumnProperties( EntryEditorWidgetTableMetadata.COLUM_NAMES );
+        
         tree.addControlListener( new ControlAdapter()
         {
             public void controlResized( ControlEvent e )
@@ -127,12 +130,15 @@ public class EntryEditorWidget extends ViewFormWidget
         configuration.getFilter().connect( viewer );
         configuration.getPreferences().connect( viewer );
 
+        // Get the ValueEditorManager
+        ValueEditorManager valueEditorManager = configuration.getValueEditorManager( viewer );
+        
         // setup providers
         viewer.setContentProvider( configuration.getContentProvider( this ) );
-        viewer.setLabelProvider( configuration.getLabelProvider( viewer ) );
+        viewer.setLabelProvider( configuration.getLabelProvider( valueEditorManager, viewer ) );
 
         // set table cell editors
-        viewer.setCellModifier( configuration.getCellModifier( viewer ) );
+        viewer.setCellModifier( configuration.getCellModifier( valueEditorManager ) );
         CellEditor[] editors = new CellEditor[EntryEditorWidgetTableMetadata.COLUM_NAMES.length];
         viewer.setCellEditors( editors );
 

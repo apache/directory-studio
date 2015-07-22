@@ -21,9 +21,6 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesRunnable;
 import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
@@ -76,12 +73,12 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
             String dn = ""; //$NON-NLS-1$
             boolean enabled = true;
 
-            if ( newInput != null && newInput instanceof IEntry )
+            if ( ( newInput != null ) && ( newInput instanceof IEntry ) )
             {
                 IEntry entry = ( IEntry ) newInput;
                 dn = Messages.getString( "EntryEditorWidgetContentProvider.DNLabel" ) + entry.getDn().getName(); //$NON-NLS-1$
             }
-            else if ( newInput != null && newInput instanceof AttributeHierarchy )
+            else if ( ( newInput != null ) && ( newInput instanceof AttributeHierarchy ) )
             {
                 AttributeHierarchy ah = ( AttributeHierarchy ) newInput;
                 dn = Messages.getString( "EntryEditorWidgetContentProvider.DNLabel" ) + ah.getAttribute().getEntry().getDn().getName(); //$NON-NLS-1$
@@ -92,14 +89,16 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
                 enabled = false;
             }
 
-            if ( mainWidget.getInfoText() != null && !mainWidget.getInfoText().isDisposed() )
+            if ( ( mainWidget.getInfoText() != null ) && !mainWidget.getInfoText().isDisposed() )
             {
                 mainWidget.getInfoText().setText( dn );
             }
+            
             if ( mainWidget.getQuickFilterWidget() != null )
             {
                 mainWidget.getQuickFilterWidget().setEnabled( enabled );
             }
+            
             if ( mainWidget.getViewer() != null && !mainWidget.getViewer().getTree().isDisposed() )
             {
                 mainWidget.getViewer().getTree().setEnabled( enabled );
@@ -123,29 +122,32 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
      */
     public Object[] getElements( Object inputElement )
     {
-        if ( inputElement != null && inputElement instanceof IEntry )
+        if ( ( inputElement != null ) && ( inputElement instanceof IEntry ) )
         {
             IEntry entry = ( IEntry ) inputElement;
-
+    
             if ( !entry.isAttributesInitialized() )
             {
                 InitializeAttributesRunnable runnable = new InitializeAttributesRunnable( entry );
                 StudioBrowserJob job = new StudioBrowserJob( runnable );
                 job.execute();
+                
                 return new Object[0];
             }
             else
             {
                 IAttribute[] attributes = entry.getAttributes();
                 Object[] values = getValues( attributes );
+                
                 return values;
             }
         }
-        else if ( inputElement != null && inputElement instanceof AttributeHierarchy )
+        else if ( ( inputElement != null ) && ( inputElement instanceof AttributeHierarchy ) )
         {
             AttributeHierarchy ah = ( AttributeHierarchy ) inputElement;
             IAttribute[] attributes = ah.getAttributes();
             Object[] values = getValues( attributes );
+            
             return values;
         }
         else
@@ -164,28 +166,31 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
      */
     private Object[] getValues( IAttribute[] attributes )
     {
-        List<Object> valueList = new ArrayList<Object>();
+        Object[] values = null;
+        
         if ( attributes != null )
         {
             for ( IAttribute attribute : attributes )
             {
-                IValue[] values = attribute.getValues();
-                if ( preferences == null || !preferences.isUseFolding()
-                    || ( values.length <= preferences.getFoldingThreshold() ) )
+                IValue[] attributeValues = attribute.getValues();
+                
+                if ( ( preferences == null ) || !preferences.isUseFolding()
+                    || ( attributeValues.length <= preferences.getFoldingThreshold() ) )
                 {
-                    for ( IValue value : values )
-                    {
-                        valueList.add( value );
-                    }
+                    values = new Object[attributeValues.length];
+                    
+                    System.arraycopy( attributeValues, 0, values, 0, attributeValues.length );
                 }
                 else
                 {
                     // if folding threshold is exceeded then return the attribute itself
-                    valueList.add( attribute );
+                    values = new Object[1];
+                    values[0] = attribute;
                 }
             }
         }
-        return valueList.toArray();
+        
+        return values;
     }
 
 
@@ -198,8 +203,10 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
         {
             IAttribute attribute = ( IAttribute ) parentElement;
             IValue[] values = attribute.getValues();
+            
             return values;
         }
+        
         return null;
     }
 
@@ -213,6 +220,7 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
         {
             return ( ( IValue ) element ).getAttribute();
         }
+        
         return null;
     }
 
@@ -224,5 +232,4 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
     {
         return ( element instanceof IAttribute );
     }
-
 }
