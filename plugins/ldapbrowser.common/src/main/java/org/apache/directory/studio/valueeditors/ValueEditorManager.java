@@ -126,6 +126,7 @@ public class ValueEditorManager
         // init value editor map
         class2ValueEditors = new HashMap<String, IValueEditor>();
         Collection<IValueEditor> valueEditors = createValueEditors( parent );
+        
         for ( IValueEditor valueEditor : valueEditors )
         {
             class2ValueEditors.put( valueEditor.getClass().getName(), valueEditor );
@@ -634,6 +635,7 @@ public class ValueEditorManager
         Collection<IValueEditor> valueEditors = new ArrayList<IValueEditor>();
 
         Collection<ValueEditorExtension> valueEditorExtensions = getValueEditorExtensions();
+        
         for ( ValueEditorExtension vee : valueEditorExtensions )
         {
             try
@@ -671,12 +673,11 @@ public class ValueEditorManager
         IConfigurationElement[] members = extensionPoint.getConfigurationElements();
 
         // For each extension:
-        for ( int m = 0; m < members.length; m++ )
+        for ( IConfigurationElement member : members )
         {
             ValueEditorExtension proxy = new ValueEditorExtension();
             valueEditorExtensions.add( proxy );
 
-            IConfigurationElement member = members[m];
             IExtension extension = member.getDeclaringExtension();
             String extendingPluginId = extension.getNamespaceIdentifier();
 
@@ -684,25 +685,28 @@ public class ValueEditorManager
             proxy.name = member.getAttribute( NAME );
             String iconPath = member.getAttribute( ICON );
             proxy.icon = AbstractUIPlugin.imageDescriptorFromPlugin( extendingPluginId, iconPath );
+            
             if ( proxy.icon == null )
             {
                 proxy.icon = ImageDescriptor.getMissingImageDescriptor();
             }
+            
             proxy.className = member.getAttribute( CLASS );
 
             IConfigurationElement[] children = member.getChildren();
-            for ( int c = 0; c < children.length; c++ )
+            
+            for ( IConfigurationElement child : children )
             {
-                IConfigurationElement element = children[c];
-                String type = element.getName();
+                String type = child.getName();
+                
                 if ( SYNTAX.equals( type ) )
                 {
-                    String syntaxOID = element.getAttribute( SYNTAX_OID );
+                    String syntaxOID = child.getAttribute( SYNTAX_OID );
                     proxy.syntaxOids.add( syntaxOID );
                 }
                 else if ( ATTRIBUTE.equals( type ) )
                 {
-                    String attributeType = element.getAttribute( ATTRIBUTE_TYPE );
+                    String attributeType = child.getAttribute( ATTRIBUTE_TYPE );
                     proxy.attributeTypes.add( attributeType );
                 }
             }
@@ -718,7 +722,6 @@ public class ValueEditorManager
      */
     public static class ValueEditorExtension
     {
-
         /** The name. */
         public String name = null;
 
@@ -736,6 +739,69 @@ public class ValueEditorManager
 
         /** The configuration element. */
         private IConfigurationElement member = null;
+        
+        
+        /**
+         * @see Object#toString()
+         */
+        public String toString()
+        {
+            StringBuilder sb = new StringBuilder();
+            
+            sb.append( '<' );
+            
+            sb.append( name ).append( ", " );
+            sb.append(  className );
+            
+            if ( ( attributeTypes != null ) && ( attributeTypes.size() > 0 ) )
+            {
+                sb.append( ", {" );
+                boolean isFirst = true;
+                
+                for ( String attributeType : attributeTypes )
+                {
+                    if ( isFirst )
+                    {
+                        isFirst = false;
+                    }
+                    else 
+                    {
+                        sb.append( ", " );
+                    }
+                    
+                    sb.append( attributeType );
+                }
+                
+                sb.append( '}' );
+            }
+            
+            
+            if ( ( syntaxOids != null ) && ( syntaxOids.size() > 0 ) )
+            {
+                sb.append( ", {" );
+                boolean isFirst = true;
+                
+                for ( String syntaxOid : syntaxOids )
+                {
+                    if ( isFirst )
+                    {
+                        isFirst = false;
+                    }
+                    else 
+                    {
+                        sb.append( ", " );
+                    }
+                    
+                    sb.append( syntaxOid );
+                }
+                
+                sb.append( '}' );
+            }
+
+            sb.append( '>' );
+            
+            return sb.toString();
+        }
     }
 
 }
