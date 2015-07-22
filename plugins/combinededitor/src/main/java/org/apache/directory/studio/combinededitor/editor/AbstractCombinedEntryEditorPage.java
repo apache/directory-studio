@@ -45,8 +45,7 @@ public abstract class AbstractCombinedEntryEditorPage implements ICombinedEntryE
     /**
      * Creates a new instance of AbstractTemplateEntryEditorPage.
      *
-     * @param editor
-     *      the associated editor
+     * @param editor the associated editor
      */
     public AbstractCombinedEntryEditorPage( CombinedEntryEditor editor )
     {

@@ -67,8 +67,10 @@ public abstract class CombinedEntryEditor extends EditorPart implements INavigat
 {
     /** The Template Editor page */
     private TemplateEditorPage templateEditorPage;
+    
     /** The Table Editor page */
     private TableEditorPage tableEditorPage;
+    
     /** The LDIF Editor page */
     private LdifEditorPage ldifEditorPage;
 
@@ -77,8 +79,10 @@ public abstract class CombinedEntryEditor extends EditorPart implements INavigat
 
     /** The tab associated with the Template Editor */
     private CTabItem templateEditorTab;
+    
     /** The tab associated with the Table Editor */
     private CTabItem tableEditorTab;
+    
     /** The tab associated with the LDIF Editor */
     private CTabItem ldifEditorTab;
 
@@ -102,10 +106,15 @@ public abstract class CombinedEntryEditor extends EditorPart implements INavigat
         tabFolder = new CTabFolder( parent, SWT.BOTTOM );
 
         // Creating the editor pages and tab items
+        // The Template editor item
         templateEditorPage = new TemplateEditorPage( this );
         templateEditorTab = templateEditorPage.getTabItem();
+        
+        // The Table editor item
         tableEditorPage = new TableEditorPage( this );
         tableEditorTab = tableEditorPage.getTabItem();
+        
+        // The LDIF editor item
         ldifEditorPage = new LdifEditorPage( this );
         ldifEditorTab = ldifEditorPage.getTabItem();
 
@@ -114,45 +123,60 @@ public abstract class CombinedEntryEditor extends EditorPart implements INavigat
 
         // Getting the default editor
         int defaultEditor = store.getInt( CombinedEditorPluginConstants.PREF_DEFAULT_EDITOR );
-        if ( defaultEditor == CombinedEditorPluginConstants.PREF_DEFAULT_EDITOR_TEMPLATE )
+        
+        switch ( defaultEditor )
         {
-            // Getting the boolean indicating if the user wants to auto-switch the template editor
-            boolean autoSwitchToAnotherEditor = store
-                .getBoolean( CombinedEditorPluginConstants.PREF_AUTO_SWITCH_TO_ANOTHER_EDITOR );
-            if ( autoSwitchToAnotherEditor && !canBeHandledWithATemplate() )
-            {
-                int autoSwitchEditor = store.getInt( CombinedEditorPluginConstants.PREF_AUTO_SWITCH_EDITOR );
-                if ( autoSwitchEditor == CombinedEditorPluginConstants.PREF_AUTO_SWITCH_EDITOR_TABLE )
+            case CombinedEditorPluginConstants.PREF_DEFAULT_EDITOR_TEMPLATE :
+                // Getting the boolean indicating if the user wants to auto-switch the template editor
+                boolean autoSwitchToAnotherEditor = store
+                    .getBoolean( CombinedEditorPluginConstants.PREF_AUTO_SWITCH_TO_ANOTHER_EDITOR );
+                
+                if ( autoSwitchToAnotherEditor && !canBeHandledWithATemplate() )
                 {
-                    // Selecting the Table Editor
-                    tabFolder.setSelection( tableEditorTab );
-                    tableEditorPage.init(); // Forcing the initialization of the first tab item, because the listener is not triggered when selecting a tab item programmatically
+                    switch ( store.getInt( CombinedEditorPluginConstants.PREF_AUTO_SWITCH_EDITOR ) )
+                    {
+                        case CombinedEditorPluginConstants.PREF_AUTO_SWITCH_EDITOR_TABLE :
+                            // Selecting the Table Editor
+                            tabFolder.setSelection( tableEditorTab );
+                            // Forcing the initialization of the first tab item, 
+                            // because the listener is not triggered when selecting a tab item programmatically
+                            tableEditorPage.init();
+                            break;
+                            
+                        case  CombinedEditorPluginConstants.PREF_AUTO_SWITCH_EDITOR_LDIF :
+                            // Selecting the LDIF Editor
+                            tabFolder.setSelection( ldifEditorTab );
+                            // Forcing the initialization of the first tab item, 
+                            // because the listener is not triggered when selecting a tab item programmatically
+                            ldifEditorPage.init();
+                    }
                 }
-                else if ( autoSwitchEditor == CombinedEditorPluginConstants.PREF_AUTO_SWITCH_EDITOR_LDIF )
+                else
                 {
-                    // Selecting the LDIF Editor
-                    tabFolder.setSelection( ldifEditorTab );
-                    ldifEditorPage.init(); // Forcing the initialization of the first tab item, because the listener is not triggered when selecting a tab item programmatically
+                    // Selecting the Template Editor
+                    tabFolder.setSelection( templateEditorTab );
+                    // Forcing the initialization of the first tab item, 
+                    // because the listener is not triggered when selecting a tab item programmatically
+                    templateEditorPage.init();
                 }
-            }
-            else
-            {
-                // Selecting the Template Editor
-                tabFolder.setSelection( templateEditorTab );
-                templateEditorPage.init(); // Forcing the initialization of the first tab item, because the listener is not triggered when selecting a tab item programmatically
-            }
-        }
-        else if ( defaultEditor == CombinedEditorPluginConstants.PREF_DEFAULT_EDITOR_TABLE )
-        {
-            // Selecting the Table Editor
-            tabFolder.setSelection( tableEditorTab );
-            tableEditorPage.init(); // Forcing the initialization of the first tab item, because the listener is not triggered when selecting a tab item programmatically
-        }
-        else if ( defaultEditor == CombinedEditorPluginConstants.PREF_DEFAULT_EDITOR_LDIF )
-        {
-            // Selecting the LDIF Editor
-            tabFolder.setSelection( ldifEditorTab );
-            ldifEditorPage.init(); // Forcing the initialization of the first tab item, because the listener is not triggered when selecting a tab item programmatically
+                
+                break;
+            
+            case CombinedEditorPluginConstants.PREF_DEFAULT_EDITOR_TABLE :
+                // Selecting the Table Editor
+                tabFolder.setSelection( tableEditorTab );
+                // Forcing the initialization of the first tab item, 
+                // because the listener is not triggered when selecting a tab item programmatically
+                tableEditorPage.init();
+                
+                break;
+        
+            case CombinedEditorPluginConstants.PREF_DEFAULT_EDITOR_LDIF :
+                // Selecting the LDIF Editor
+                tabFolder.setSelection( ldifEditorTab );
+                // Forcing the initialization of the first tab item, 
+                // because the listener is not triggered when selecting a tab item programmatically
+                ldifEditorPage.init(); 
         }
     }
 
@@ -239,11 +263,9 @@ public abstract class CombinedEntryEditor extends EditorPart implements INavigat
     /**
      * Indicates whether or not the entry can be handled with a (at least) template.
      *
-     * @param entry
-     *      the entry
-     * @return
-     *      <code>true</code> if the entry can be handled with a template,
-     *      <code>false</code> if not.
+     * @param entry the entry
+     * @return <code>true</code> if the entry can be handled with a template,
+     * <code>false</code> if not.
      */
     private boolean canBeHandledWithATemplate( IEntry entry )
     {
@@ -254,16 +276,17 @@ public abstract class CombinedEntryEditor extends EditorPart implements INavigat
     /**
      * Indicates whether or not the input entry can be handled with a (at least) template.
      *
-     * @return
-     *      <code>true</code> if the input entry can be handled with a template,
+     * @return <code>true</code> if the input entry can be handled with a template,
      *      <code>false</code> if not.
      */
     private boolean canBeHandledWithATemplate()
     {
         IEditorInput editorInput = getEditorInput();
+        
         if ( ( editorInput != null ) && ( editorInput instanceof EntryEditorInput ) )
         {
             IEntry entry = ( ( EntryEditorInput ) editorInput ).getResolvedEntry();
+            
             if ( entry != null )
             {
                 return canBeHandledWithATemplate( entry );
@@ -332,6 +355,7 @@ public abstract class CombinedEntryEditor extends EditorPart implements INavigat
     public EntryEditorInput getEntryEditorInput()
     {
         Object editorInput = getEditorInput();
+        
         if ( ( editorInput != null ) && ( editorInput instanceof EntryEditorInput ) )
         {
             return ( EntryEditorInput ) editorInput;
@@ -347,6 +371,7 @@ public abstract class CombinedEntryEditor extends EditorPart implements INavigat
     private void update()
     {
         ICombinedEntryEditorPage selectedPage = getEditorPageFromSelectedTab();
+        
         if ( selectedPage != null )
         {
             selectedPage.update();
@@ -412,6 +437,7 @@ public abstract class CombinedEntryEditor extends EditorPart implements INavigat
             ISearchResult searchResultInput = eei.getSearchResultInput();
             IBookmark bookmarkInput = eei.getBookmarkInput();
             EntryEditorInput dummyInput;
+            
             if ( entryInput != null )
             {
                 dummyInput = new EntryEditorInput( entryInput, null );
@@ -424,6 +450,7 @@ public abstract class CombinedEntryEditor extends EditorPart implements INavigat
             {
                 dummyInput = new EntryEditorInput( bookmarkInput, null );
             }
+            
             setInput( dummyInput );
             firePropertyChange( IEditorPart.PROP_INPUT );
 
@@ -435,46 +462,59 @@ public abstract class CombinedEntryEditor extends EditorPart implements INavigat
             IPreferenceStore store = CombinedEditorPlugin.getDefault().getPreferenceStore();
 
             // Getting the default editor
-            int defaultEditor = store.getInt( CombinedEditorPluginConstants.PREF_DEFAULT_EDITOR );
-            if ( defaultEditor == CombinedEditorPluginConstants.PREF_DEFAULT_EDITOR_TEMPLATE )
+            switch ( store.getInt( CombinedEditorPluginConstants.PREF_DEFAULT_EDITOR ) )
             {
-                // Getting the boolean indicating if the user wants to auto-switch the template editor
-                boolean autoSwitchToAnotherEditor = store
-                    .getBoolean( CombinedEditorPluginConstants.PREF_AUTO_SWITCH_TO_ANOTHER_EDITOR );
-                if ( autoSwitchToAnotherEditor && !canBeHandledWithATemplate() )
-                {
-                    int autoSwitchEditor = store.getInt( CombinedEditorPluginConstants.PREF_AUTO_SWITCH_EDITOR );
-                    if ( autoSwitchEditor == CombinedEditorPluginConstants.PREF_AUTO_SWITCH_EDITOR_TABLE )
+                case CombinedEditorPluginConstants.PREF_DEFAULT_EDITOR_TEMPLATE :
+                    // Getting the boolean indicating if the user wants to auto-switch the template editor
+                    boolean autoSwitchToAnotherEditor = store
+                        .getBoolean( CombinedEditorPluginConstants.PREF_AUTO_SWITCH_TO_ANOTHER_EDITOR );
+                    
+                    if ( autoSwitchToAnotherEditor && !canBeHandledWithATemplate() )
                     {
-                        // Selecting the Table Editor
-                        tabFolder.setSelection( tableEditorTab );
-                        tableEditorPage.init(); // Forcing the initialization of the first tab item, because the listener is not triggered when selecting a tab item programmatically
+                        switch ( store.getInt( CombinedEditorPluginConstants.PREF_AUTO_SWITCH_EDITOR ) )
+                        {
+                            case  CombinedEditorPluginConstants.PREF_AUTO_SWITCH_EDITOR_TABLE :
+                                // Selecting the Table Editor
+                                tabFolder.setSelection( tableEditorTab );
+                                // Forcing the initialization of the first tab item, 
+                                // because the listener is not triggered when selecting a tab item programmatically
+                                tableEditorPage.init();
+                                break;
+                                
+                            case CombinedEditorPluginConstants.PREF_AUTO_SWITCH_EDITOR_LDIF :
+                                // Selecting the LDIF Editor
+                                tabFolder.setSelection( ldifEditorTab );
+                                // Forcing the initialization of the first tab item, 
+                                // because the listener is not triggered when selecting a tab item programmatically
+                                ldifEditorPage.init();
+                        }
                     }
-                    else if ( autoSwitchEditor == CombinedEditorPluginConstants.PREF_AUTO_SWITCH_EDITOR_LDIF )
+                    else
                     {
-                        // Selecting the LDIF Editor
-                        tabFolder.setSelection( ldifEditorTab );
-                        ldifEditorPage.init(); // Forcing the initialization of the first tab item, because the listener is not triggered when selecting a tab item programmatically
+                        // Selecting the Template Editor
+                        tabFolder.setSelection( templateEditorTab );
+                        // Forcing the initialization of the first tab item, 
+                        // because the listener is not triggered when selecting a tab item programmatically
+                        templateEditorPage.init();
                     }
-                }
-                else
-                {
-                    // Selecting the Template Editor
-                    tabFolder.setSelection( templateEditorTab );
-                    templateEditorPage.init(); // Forcing the initialization of the first tab item, because the listener is not triggered when selecting a tab item programmatically
-                }
-            }
-            else if ( defaultEditor == CombinedEditorPluginConstants.PREF_DEFAULT_EDITOR_TABLE )
-            {
-                // Selecting the Table Editor
-                tabFolder.setSelection( tableEditorTab );
-                tableEditorPage.init(); // Forcing the initialization of the first tab item, because the listener is not triggered when selecting a tab item programmatically
-            }
-            else if ( defaultEditor == CombinedEditorPluginConstants.PREF_DEFAULT_EDITOR_LDIF )
-            {
-                // Selecting the LDIF Editor
-                tabFolder.setSelection( ldifEditorTab );
-                ldifEditorPage.init(); // Forcing the initialization of the first tab item, because the listener is not triggered when selecting a tab item programmatically
+                    
+                    break;
+
+                case CombinedEditorPluginConstants.PREF_DEFAULT_EDITOR_TABLE :
+                    // Selecting the Table Editor
+                    tabFolder.setSelection( tableEditorTab );
+                    // Forcing the initialization of the first tab item, 
+                    // because the listener is not triggered when selecting a tab item programmatically
+                    tableEditorPage.init();
+                    break;
+                    
+                case  CombinedEditorPluginConstants.PREF_DEFAULT_EDITOR_LDIF :
+                    // Selecting the LDIF Editor
+                    tabFolder.setSelection( ldifEditorTab );
+                    // Forcing the initialization of the first tab item, 
+                    // because the listener is not triggered when selecting a tab item programmatically
+                    ldifEditorPage.init(); 
+                    break;
             }
 
             // Noticing all pages that the editor input has changed
@@ -488,12 +528,12 @@ public abstract class CombinedEntryEditor extends EditorPart implements INavigat
     /**
      * Gets the {@link ICombinedEntryEditorPage} associated with the selected tab.
      *
-     * @return
-     *      the {@link ICombinedEntryEditorPage} associated with the selected tab
+     * @return the {@link ICombinedEntryEditorPage} associated with the selected tab
      */
     private ICombinedEntryEditorPage getEditorPageFromSelectedTab()
     {
         CTabItem selectedTabItem = getSelectedTabItem();
+        
         if ( selectedTabItem != null )
         {
             // Template Editor Tab
@@ -532,8 +572,7 @@ public abstract class CombinedEntryEditor extends EditorPart implements INavigat
     /**
      * Returns the {@link CTabFolder} associated with the editor.
      *
-     * @return
-     *      the {@link CTabFolder} associated with the editor
+     * @return the {@link CTabFolder} associated with the editor
      */
     public CTabFolder getTabFolder()
     {
@@ -544,8 +583,7 @@ public abstract class CombinedEntryEditor extends EditorPart implements INavigat
     /**
      * Returns the currently selected {@link CTabItem}.
      *
-     * @return
-     *      the currently selected {@link CTabItem}
+     * @return the currently selected {@link CTabItem}
      */
     public CTabItem getSelectedTabItem()
     {
@@ -556,9 +594,8 @@ public abstract class CombinedEntryEditor extends EditorPart implements INavigat
     /**
      * Get the {@link TemplateEditorPage} page.
      *
-     * @return
-     *      the {@link TemplateEditorPage} page
-     */
+     * @return the {@link TemplateEditorPage} page
+     *
     public TemplateEditorPage getTemplateEditorPage()
     {
         return templateEditorPage;
@@ -568,9 +605,8 @@ public abstract class CombinedEntryEditor extends EditorPart implements INavigat
     /**
      * Get the {@link TableEditorPage} page.
      *
-     * @return
-     *      the {@link TableEditorPage} page
-     */
+     * @return the {@link TableEditorPage} page
+     *
     public TableEditorPage getTableEditorPage()
     {
         return tableEditorPage;
@@ -580,11 +616,10 @@ public abstract class CombinedEntryEditor extends EditorPart implements INavigat
     /**
      * Get the {@link LdifEditorPage} page.
      *
-     * @return
-     *      the {@link LdifEditorPage} page
-     */
+     * @return the {@link LdifEditorPage} page
+     *
     public LdifEditorPage getLdifEditorPage()
     {
         return ldifEditorPage;
-    }
+    }*/
 }
