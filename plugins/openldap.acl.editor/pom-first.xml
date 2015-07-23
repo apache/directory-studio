@@ -39,6 +39,7 @@
       <version>${antlr.version}</version>
     </dependency>
   </dependencies> 
+  
   <build>
     <plugins>
       <plugin>
@@ -47,6 +48,7 @@
         <configuration>
           <grammars>*.g</grammars>
         </configuration>
+        
         <executions>
           <execution>
             <goals>
@@ -76,6 +78,7 @@
             </Import-Package>
             <Require-Bundle>
  org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.bundleversion}",
+ org.apache.directory.api.util;bundle-version="${org.apache.directory.api.bundleversion}",
  org.apache.directory.studio.common.core,
  org.apache.directory.studio.common.ui,
  org.apache.directory.studio.connection.core,
