@@ -107,8 +107,8 @@ public abstract class AbstractOpenEditorAction extends BrowserAction implements 
     private void activateEditor()
     {
         if ( !viewer.isCellEditorActive()
-            && getSelectedValues().length == 1
-            && getSelectedAttributes().length == 0
+            && ( getSelectedValues().length == 1 )
+            && ( getSelectedAttributes().length == 0 )
             && viewer.getCellModifier().canModify( getSelectedValues()[0],
                 EntryEditorWidgetTableMetadata.VALUE_COLUMN_NAME ) )
         {

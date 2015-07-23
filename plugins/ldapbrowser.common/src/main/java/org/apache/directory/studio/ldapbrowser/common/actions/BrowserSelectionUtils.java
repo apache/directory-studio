@@ -382,19 +382,23 @@ public abstract class BrowserSelectionUtils extends SelectionUtils
     private static List<Object> getTypes( ISelection selection, Class<?> type )
     {
         List<Object> list = new ArrayList<Object>();
+        
         if ( selection instanceof IStructuredSelection )
         {
             IStructuredSelection structuredSelection = ( IStructuredSelection ) selection;
             Iterator<?> it = structuredSelection.iterator();
+            
             while ( it.hasNext() )
             {
                 Object o = it.next();
+                
                 if ( type.isInstance( o ) )
                 {
                     list.add( o );
                 }
             }
         }
+        
         return list;
     }
 

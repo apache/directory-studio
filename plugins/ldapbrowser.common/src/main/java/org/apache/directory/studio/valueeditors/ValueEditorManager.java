@@ -309,26 +309,30 @@ public class ValueEditorManager
      */
     public IValueEditor getCurrentValueEditor( IValue value )
     {
-        IValueEditor ve = this.getCurrentValueEditor( value.getAttribute().getEntry(), value.getAttribute()
-            .getDescription() );
+        IAttribute attribute = value.getAttribute();
+        IValueEditor ve = getCurrentValueEditor( attribute.getEntry(), attribute.getDescription() );
 
         // special case objectClass: always return entry editor
-        if ( userSelectedValueEditor == null && value.getAttribute().isObjectClassAttribute()
-            && entryValueEditor != null )
+        if ( userSelectedValueEditor == null ) 
         {
-            return entryValueEditor;
-        }
+            if ( attribute.isObjectClassAttribute() && ( entryValueEditor != null ) )
+            {
+                return entryValueEditor;
+            }
 
-        // special case Rdn attribute: always return rename editor
-        if ( userSelectedValueEditor == null && value.isRdnPart() && renameValueEditor != null )
-        {
-            return renameValueEditor;
+            // special case Rdn attribute: always return rename editor
+            if ( value.isRdnPart() && ( renameValueEditor != null ) )
+            {
+                return renameValueEditor;
+            }
         }
 
         // here the value is known, we can check for single-line or multi-line
         if ( ve == defaultStringSingleLineValueEditor )
         {
-            if ( value.getStringValue().indexOf( '\n' ) == -1 && value.getStringValue().indexOf( '\r' ) == -1 )
+            String stringValue = value.getStringValue();
+            
+            if ( ( stringValue.indexOf( '\n' ) == -1 ) && ( stringValue.indexOf( '\r' ) == -1 ) )
             {
                 ve = defaultStringSingleLineValueEditor;
             }

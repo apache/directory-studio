@@ -21,6 +21,9 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesRunnable;
 import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
@@ -166,31 +169,31 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
      */
     private Object[] getValues( IAttribute[] attributes )
     {
-        Object[] values = null;
+        List<Object> valueList = new ArrayList<Object>();
         
         if ( attributes != null )
         {
             for ( IAttribute attribute : attributes )
             {
-                IValue[] attributeValues = attribute.getValues();
+                IValue[] values = attribute.getValues();
                 
-                if ( ( preferences == null ) || !preferences.isUseFolding()
-                    || ( attributeValues.length <= preferences.getFoldingThreshold() ) )
+                if ((  preferences == null ) || !preferences.isUseFolding()
+                    || ( values.length <= preferences.getFoldingThreshold() ) )
                 {
-                    values = new Object[attributeValues.length];
-                    
-                    System.arraycopy( attributeValues, 0, values, 0, attributeValues.length );
+                    for ( IValue value : values )
+                    {
+                        valueList.add( value );
+                    }
                 }
                 else
                 {
                     // if folding threshold is exceeded then return the attribute itself
-                    values = new Object[1];
-                    values[0] = attribute;
+                    valueList.add( attribute );
                 }
             }
         }
         
-        return values;
+        return valueList.toArray();
     }
 
 

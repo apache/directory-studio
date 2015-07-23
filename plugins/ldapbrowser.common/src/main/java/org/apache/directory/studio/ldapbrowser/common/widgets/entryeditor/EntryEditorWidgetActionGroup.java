@@ -133,11 +133,13 @@ public class EntryEditorWidgetActionGroup implements ActionHandlerManager
             openBestValueEditorActionProxy ) );
         IValueEditor[] valueEditors = valueEditorManager.getAllValueEditors();
         openValueEditorActionProxies = new EntryEditorActionProxy[valueEditors.length];
+        
         for ( int i = 0; i < openValueEditorActionProxies.length; i++ )
         {
             openValueEditorActionProxies[i] = new EntryEditorActionProxy( viewer, new OpenEditorAction( viewer,
                 valueEditorManager, valueEditors[i], this ) );
         }
+        
         openValueEditorPreferencesAction = new ValueEditorPreferencesAction();
 
         entryEditorActionMap.put( newValueAction, new EntryEditorActionProxy( viewer, new NewValueAction() ) );

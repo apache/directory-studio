@@ -66,7 +66,7 @@ public class EntryEditorWidgetCellModifier implements ICellModifier
      */
     public boolean canModify( Object element, String property )
     {
-        if ( element != null && element instanceof IValue && valueEditorManager != null )
+        if ( ( element != null ) && ( element instanceof IValue ) && ( valueEditorManager != null ) )
         {
             IValue attributeValue = ( IValue ) element;
 
@@ -74,9 +74,10 @@ public class EntryEditorWidgetCellModifier implements ICellModifier
             {
                 return false;
             }
+            
             if ( EntryEditorWidgetTableMetadata.VALUE_COLUMN_NAME.equals( property ) )
             {
-                return this.valueEditorManager.getCurrentValueEditor( attributeValue ).getRawValue( attributeValue ) != null;
+                return valueEditorManager.getCurrentValueEditor( attributeValue ).getRawValue( attributeValue ) != null;
             }
         }
 

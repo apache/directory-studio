@@ -59,7 +59,6 @@ import org.eclipse.swt.events.TraverseListener;
  */
 public class EntryEditorWidgetUniversalListener implements EntryUpdateListener
 {
-
     /** The tree viewer */
     protected TreeViewer viewer;
 
@@ -109,7 +108,8 @@ public class EntryEditorWidgetUniversalListener implements EntryUpdateListener
         {
             IAttribute[] attributes = BrowserSelectionUtils.getAttributes( viewer.getSelection() );
             IValue[] values = BrowserSelectionUtils.getValues( viewer.getSelection() );
-            if ( attributes.length == 1 && values.length == 0 )
+            
+            if ( ( attributes.length == 1 ) && ( values.length == 0 ) )
             {
                 if ( viewer.getExpandedState( attributes[0] ) )
                 {
@@ -215,8 +215,11 @@ public class EntryEditorWidgetUniversalListener implements EntryUpdateListener
      */
     public void entryUpdated( EntryModificationEvent event )
     {
-        if ( viewer == null || viewer.getTree() == null || viewer.getTree().isDisposed() || viewer.getInput() == null
-            || ( event.getModifiedEntry() != viewer.getInput() && !( event instanceof BulkModificationEvent ) ) )
+        if ( ( viewer == null ) || 
+             ( viewer.getTree() == null ) || 
+             viewer.getTree().isDisposed() || 
+             ( viewer.getInput() == null ) || 
+             ( ( event.getModifiedEntry() != viewer.getInput() ) && !( event instanceof BulkModificationEvent ) ) )
         {
             return;
         }
@@ -242,6 +245,7 @@ public class EntryEditorWidgetUniversalListener implements EntryUpdateListener
         {
             // select another value of the deleted attribute
             ValueDeletedEvent vdEvent = ( ValueDeletedEvent ) event;
+            
             if ( viewer.getSelection().isEmpty() && vdEvent.getDeletedValue().getAttribute().getValueSize() > 0 )
             {
                 viewer.setSelection(
@@ -254,6 +258,7 @@ public class EntryEditorWidgetUniversalListener implements EntryUpdateListener
 
             // select the added value and start editing
             viewer.setSelection( new StructuredSelection( evaEvent.getAddedValue() ), true );
+            
             if ( startEditAction.isEnabled() && viewer.getControl().isFocusControl() )
             {
                 startEditAction.run();
@@ -263,7 +268,8 @@ public class EntryEditorWidgetUniversalListener implements EntryUpdateListener
         {
             // select another value of the deleted attribute
             EmptyValueDeletedEvent evdEvent = ( EmptyValueDeletedEvent ) event;
-            if ( viewer.getSelection().isEmpty() && evdEvent.getDeletedValue().getAttribute().getValueSize() > 0 )
+            
+            if ( viewer.getSelection().isEmpty() && ( evdEvent.getDeletedValue().getAttribute().getValueSize() > 0 ) )
             {
                 viewer.setSelection(
                     new StructuredSelection( evdEvent.getDeletedValue().getAttribute().getValues()[0] ), true );
@@ -313,7 +319,6 @@ public class EntryEditorWidgetUniversalListener implements EntryUpdateListener
             actionGroup.setInput( attributeHierarchy );
             expandFoldedAttributes();
         }
-
     }
 
 
@@ -327,5 +332,4 @@ public class EntryEditorWidgetUniversalListener implements EntryUpdateListener
             viewer.expandAll();
         }
     }
-
 }

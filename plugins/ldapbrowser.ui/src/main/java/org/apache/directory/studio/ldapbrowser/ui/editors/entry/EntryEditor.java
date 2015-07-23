@@ -143,7 +143,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
         configuration = new EntryEditorConfiguration( this );
 
         // create main widget
-        mainWidget = new EntryEditorWidget( this.configuration );
+        mainWidget = new EntryEditorWidget( configuration );
         mainWidget.createWidget( composite );
 
         // create actions and context menu and register global actions
