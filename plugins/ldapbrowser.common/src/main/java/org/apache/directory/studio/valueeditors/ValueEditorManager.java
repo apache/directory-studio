@@ -172,14 +172,17 @@ public class ValueEditorManager
         {
             userSelectedValueEditor = null;
             multiValuedValueEditor.dispose();
+            
             if ( entryValueEditor != null )
             {
                 entryValueEditor.dispose();
             }
+            
             if ( renameValueEditor != null )
             {
                 renameValueEditor.dispose();
             }
+            
             defaultStringSingleLineValueEditor.dispose();
             defaultStringMultiLineValueEditor.dispose();
             defaultBinaryValueEditor.dispose();
@@ -247,19 +250,22 @@ public class ValueEditorManager
         // check attribute preferences
         Map<String, String> attributeValueEditorMap = BrowserCommonActivator.getDefault().getValueEditorsPreferences()
             .getAttributeValueEditorMap();
-        if ( atd.getOid() != null && attributeValueEditorMap.containsKey( Strings.toLowerCase( atd.getOid() ) ) )
+        
+        String oidStr = Strings.toLowerCase( atd.getOid() );
+        
+        if ( atd.getOid() != null && attributeValueEditorMap.containsKey( oidStr ) )
         {
-            return ( IValueEditor ) class2ValueEditors.get( attributeValueEditorMap.get( Strings.toLowerCase( atd
-                .getOid()
-                ) ) );
+            return ( IValueEditor ) class2ValueEditors.get( attributeValueEditorMap.get( oidStr ) );
         }
         List<String> names = atd.getNames();
+        
         for ( String name : names )
         {
-            if ( attributeValueEditorMap.containsKey( Strings.toLowerCase( name ) ) )
+            String nameStr = Strings.toLowerCase( name );
+            
+            if ( attributeValueEditorMap.containsKey( nameStr ) )
             {
-                return ( IValueEditor ) class2ValueEditors
-                    .get( attributeValueEditorMap.get( Strings.toLowerCase( name ) ) );
+                return ( IValueEditor ) class2ValueEditors.get( attributeValueEditorMap.get( nameStr ) );
             }
         }
 
@@ -267,14 +273,17 @@ public class ValueEditorManager
         String syntaxNumericOid = SchemaUtils.getSyntaxNumericOidTransitive( atd, schema );
         Map<String, String> syntaxValueEditorMap = BrowserCommonActivator.getDefault().getValueEditorsPreferences()
             .getSyntaxValueEditorMap();
-        if ( syntaxNumericOid != null && syntaxValueEditorMap.containsKey( Strings.toLowerCase( syntaxNumericOid ) ) )
+        
+        String syntaxtNumericOidStr = Strings.toLowerCase( syntaxNumericOid );
+        
+        if ( ( syntaxNumericOid != null ) && syntaxValueEditorMap.containsKey( syntaxtNumericOidStr ) )
         {
-            return ( IValueEditor ) class2ValueEditors.get( syntaxValueEditorMap.get( Strings
-                .toLowerCase( syntaxNumericOid ) ) );
+            return ( IValueEditor ) class2ValueEditors.get( syntaxValueEditorMap.get( syntaxtNumericOidStr ) );
         }
 
         // return default
         LdapSyntax lsd = schema.getLdapSyntaxDescription( syntaxNumericOid );
+        
         if ( SchemaUtils.isBinary( lsd ) )
         {
             return defaultBinaryValueEditor;
@@ -359,29 +368,29 @@ public class ValueEditorManager
         {
             return null;
         }
-        else if ( userSelectedValueEditor == null && attributeHierarchy.getAttribute().isObjectClassAttribute()
+        else if ( ( userSelectedValueEditor == null ) && attributeHierarchy.getAttribute().isObjectClassAttribute()
             && entryValueEditor != null )
         {
             // special case objectClass: always return entry editor
             return entryValueEditor;
         }
-        else if ( userSelectedValueEditor == entryValueEditor && entryValueEditor != null )
+        else if ( ( userSelectedValueEditor == entryValueEditor ) && ( entryValueEditor != null ) )
         {
             // special case objectClass: always return entry editor
             return entryValueEditor;
         }
-        else if ( attributeHierarchy.size() == 1 && attributeHierarchy.getAttribute().getValueSize() == 0 )
+        else if ( ( attributeHierarchy.size() == 1 ) && ( attributeHierarchy.getAttribute().getValueSize() == 0 ) )
         {
             return getCurrentValueEditor( attributeHierarchy.getAttribute().getEntry(), attributeHierarchy
                 .getAttribute().getDescription() );
         }
-        else if ( attributeHierarchy.size() == 1
-            && attributeHierarchy.getAttribute().getValueSize() == 1
-            && attributeHierarchy.getAttributeDescription().equalsIgnoreCase(
-                attributeHierarchy.getAttribute().getValues()[0].getAttribute().getDescription() ) )
+        else if ( ( attributeHierarchy.size() == 1 ) &&
+                  ( attributeHierarchy.getAttribute().getValueSize() == 1 ) &&
+                  attributeHierarchy.getAttributeDescription().equalsIgnoreCase(
+                      attributeHierarchy.getAttribute().getValues()[0].getAttribute().getDescription() ) )
         {
             // special case Rdn: always return MV-editor
-            if ( userSelectedValueEditor == null && attributeHierarchy.getAttribute().getValues()[0].isRdnPart() )
+            if ( ( userSelectedValueEditor == null ) && attributeHierarchy.getAttribute().getValues()[0].isRdnPart() )
             {
                 if ( renameValueEditor != null )
                 {
@@ -413,6 +422,7 @@ public class ValueEditorManager
     public IValueEditor[] getAlternativeValueEditors( IEntry entry, String attributeName )
     {
         Schema schema = entry.getBrowserConnection().getSchema();
+        
         return getAlternativeValueEditors( schema, attributeName );
     }
 
@@ -525,14 +535,14 @@ public class ValueEditorManager
             }
         }
 
-        if ( ah.size() == 1 && ah.getAttribute().getValueSize() == 0 )
+        if ( ( ah.size() == 1 ) && ( ah.getAttribute().getValueSize() == 0 ) )
         {
             return getAlternativeValueEditors( ah.getAttribute().getEntry(), ah.getAttribute().getDescription() );
         }
-        else if ( ah.size() == 1
-            && ah.getAttribute().getValueSize() == 1
-            && ah.getAttributeDescription().equalsIgnoreCase(
-                ah.getAttribute().getValues()[0].getAttribute().getDescription() ) )
+        else if ( ( ah.size() == 1 ) &&
+                  ( ah.getAttribute().getValueSize() == 1 ) &&
+                  ah.getAttributeDescription().equalsIgnoreCase(
+                      ah.getAttribute().getValues()[0].getAttribute().getDescription() ) )
         {
             return getAlternativeValueEditors( ah.getAttribute().getValues()[0] );
         }
@@ -560,10 +570,12 @@ public class ValueEditorManager
         list.addAll( class2ValueEditors.values() );
 
         list.add( multiValuedValueEditor );
+        
         if ( entryValueEditor != null )
         {
             list.add( entryValueEditor );
         }
+        
         if ( renameValueEditor != null )
         {
             list.add( renameValueEditor );
@@ -807,5 +819,4 @@ public class ValueEditorManager
             return sb.toString();
         }
     }
-
 }
