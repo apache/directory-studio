@@ -48,7 +48,7 @@ public abstract class AbstractOpenEditorAction extends BrowserAction implements 
     protected TreeViewer viewer;
 
     /** The cell editor. */
-    protected CellEditor cellEditor;
+    private CellEditor cellEditor;
 
     /** The actionGroup. */
     protected EntryEditorWidgetActionGroup actionGroup;
@@ -89,6 +89,17 @@ public abstract class AbstractOpenEditorAction extends BrowserAction implements 
     public CellEditor getCellEditor()
     {
         return cellEditor;
+    }
+
+
+    /**
+     * Sets the cell editor.
+     * 
+     * @param cellEditor the cell editor
+     */
+    public void setCellEditor( CellEditor cellEditor )
+    {
+        this.cellEditor = cellEditor;
     }
 
 

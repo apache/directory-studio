@@ -123,7 +123,7 @@ public class OpenBestEditorAction extends AbstractOpenEditorAction
         {
             // update value editor
             bestValueEditor = valueEditorManager.getCurrentValueEditor( getSelectedValues()[0] );
-            super.cellEditor = bestValueEditor.getCellEditor();
+            setCellEditor( bestValueEditor.getCellEditor() );
 
             return true;
         }
@@ -179,7 +179,7 @@ public class OpenBestEditorAction extends AbstractOpenEditorAction
             }
 
             // validate modification of Rdn
-            if ( value.isRdnPart() && ( cellEditor != valueEditorManager.getRenameValueEditor() ) )
+            if ( value.isRdnPart() && ( getCellEditor() != valueEditorManager.getRenameValueEditor() ) )
             {
                 message.append( NLS.bind( Messages.getString( "OpenBestEditorAction.ValueIsRdnPart" ), description ) );//$NON-NLS-1$ 
                 message.append( BrowserCoreConstants.LINE_SEPARATOR );

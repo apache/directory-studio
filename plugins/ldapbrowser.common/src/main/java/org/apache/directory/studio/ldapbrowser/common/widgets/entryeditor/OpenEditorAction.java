@@ -53,7 +53,7 @@ public class OpenEditorAction extends AbstractOpenEditorAction
         EntryEditorWidgetActionGroup actionGroup )
     {
         super( viewer, valueEditorManager, actionGroup );
-        super.cellEditor = valueEditor.getCellEditor();
+        setCellEditor( valueEditor.getCellEditor() );
         this.valueEditor = valueEditor;
     }
 
