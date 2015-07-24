@@ -82,6 +82,7 @@ public class EntryEditorWidgetSorter extends ViewerSorter implements SelectionLi
         viewer.setSorter( this );
 
         TreeColumn[] columns = ( ( TreeViewer ) viewer ).getTree().getColumns();
+        
         for ( int i = 0; i < columns.length; i++ )
         {
             columns[i].addSelectionListener( this );

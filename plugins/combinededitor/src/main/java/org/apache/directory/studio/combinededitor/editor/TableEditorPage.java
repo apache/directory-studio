@@ -48,8 +48,7 @@ public class TableEditorPage extends AbstractCombinedEntryEditorPage
     /**
      * Creates a new instance of TableEditorPage.
      *
-     * @param editor
-     *      the associated editor
+     * @param editor the associated editor
      */
     public TableEditorPage( CombinedEntryEditor editor )
     {
