@@ -81,6 +81,7 @@ public class EntryEditorWidget extends ViewFormWidget
      */
     protected Control createContent( Composite parent )
     {
+        // Create the filter widget
         quickFilterWidget = new EntryEditorWidgetQuickFilterWidget( configuration.getFilter(), this );
         quickFilterWidget.createComposite( parent );
 
@@ -96,7 +97,7 @@ public class EntryEditorWidget extends ViewFormWidget
         viewer = new TreeViewer( tree );
         viewer.setUseHashlookup( true );
 
-        // set tree columns
+        // set tree columns. We have 2 : one for the KEY, one for the Value
         for ( int i = 0; i < EntryEditorWidgetTableMetadata.COLUM_NAMES.length; i++ )
         {
             TreeColumn column = new TreeColumn( tree, SWT.LEFT, i );
@@ -115,10 +116,12 @@ public class EntryEditorWidget extends ViewFormWidget
                 if ( tree.getClientArea().width > 0 )
                 {
                     int width = tree.getClientArea().width - 2 * tree.getBorderWidth();
+                    
                     if ( tree.getVerticalBar().isVisible() )
                     {
                         width -= tree.getVerticalBar().getSize().x;
                     }
+                    
                     tree.getColumn( EntryEditorWidgetTableMetadata.VALUE_COLUMN_INDEX ).setWidth(
                         width - tree.getColumn( EntryEditorWidgetTableMetadata.KEY_COLUMN_INDEX ).getWidth() );
                 }
@@ -143,7 +146,6 @@ public class EntryEditorWidget extends ViewFormWidget
         viewer.setCellEditors( editors );
 
         return tree;
-
     }
 
 
