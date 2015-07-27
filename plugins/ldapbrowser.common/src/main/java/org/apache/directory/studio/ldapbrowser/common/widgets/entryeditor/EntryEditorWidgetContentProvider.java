@@ -76,12 +76,12 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
             String dn = ""; //$NON-NLS-1$
             boolean enabled = true;
 
-            if ( ( newInput != null ) && ( newInput instanceof IEntry ) )
+            if ( newInput instanceof IEntry )
             {
                 IEntry entry = ( IEntry ) newInput;
                 dn = Messages.getString( "EntryEditorWidgetContentProvider.DNLabel" ) + entry.getDn().getName(); //$NON-NLS-1$
             }
-            else if ( ( newInput != null ) && ( newInput instanceof AttributeHierarchy ) )
+            else if ( newInput instanceof AttributeHierarchy )
             {
                 AttributeHierarchy ah = ( AttributeHierarchy ) newInput;
                 dn = Messages.getString( "EntryEditorWidgetContentProvider.DNLabel" ) + ah.getAttribute().getEntry().getDn().getName(); //$NON-NLS-1$
@@ -125,7 +125,7 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
      */
     public Object[] getElements( Object inputElement )
     {
-        if ( ( inputElement != null ) && ( inputElement instanceof IEntry ) )
+        if ( inputElement instanceof IEntry )
         {
             IEntry entry = ( IEntry ) inputElement;
     
@@ -145,7 +145,7 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
                 return values;
             }
         }
-        else if ( ( inputElement != null ) && ( inputElement instanceof AttributeHierarchy ) )
+        else if ( inputElement instanceof AttributeHierarchy )
         {
             AttributeHierarchy ah = ( AttributeHierarchy ) inputElement;
             IAttribute[] attributes = ah.getAttributes();

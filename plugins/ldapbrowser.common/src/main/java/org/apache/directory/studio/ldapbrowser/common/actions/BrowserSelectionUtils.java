@@ -84,7 +84,7 @@ public abstract class BrowserSelectionUtils extends SelectionUtils
         exampleSearch.getSearchParameter().setName( null );
         exampleSearch.setScope( SearchScope.SUBTREE );
 
-        if ( selection != null && !selection.isEmpty() && selection instanceof StructuredSelection )
+        if ( ( selection instanceof StructuredSelection ) && !selection.isEmpty() )
         {
             Object[] objects = ( ( IStructuredSelection ) selection ).toArray();
             Comparator<Object> comparator = new Comparator<Object>()

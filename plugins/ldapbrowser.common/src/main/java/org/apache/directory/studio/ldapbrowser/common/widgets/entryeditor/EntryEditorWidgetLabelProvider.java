@@ -93,7 +93,7 @@ public class EntryEditorWidgetLabelProvider extends LabelProvider implements ITa
      */
     public final String getColumnText( Object obj, int index )
     {
-        if ( obj != null && obj instanceof IValue )
+        if ( obj instanceof IValue )
         {
             IValue value = ( IValue ) obj;
             switch ( index )
@@ -108,7 +108,7 @@ public class EntryEditorWidgetLabelProvider extends LabelProvider implements ITa
                     return ""; //$NON-NLS-1$
             }
         }
-        else if ( obj != null && obj instanceof IAttribute )
+        else if ( obj instanceof IAttribute )
         {
             IAttribute attribute = ( IAttribute ) obj;
             if ( index == EntryEditorWidgetTableMetadata.KEY_COLUMN_INDEX )

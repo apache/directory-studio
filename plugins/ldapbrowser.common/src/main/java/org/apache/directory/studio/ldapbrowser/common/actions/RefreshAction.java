@@ -240,7 +240,7 @@ public class RefreshAction extends BrowserAction
      */
     private IEntry getEntryInput()
     {
-        if ( getInput() != null && getInput() instanceof IEntry )
+        if ( getInput() instanceof IEntry )
         {
             return ( IEntry ) getInput();
         }
@@ -259,7 +259,7 @@ public class RefreshAction extends BrowserAction
      */
     private ISearch getSearchInput()
     {
-        if ( getInput() != null && getInput() instanceof ISearch )
+        if ( getInput() instanceof ISearch )
         {
             return ( ISearch ) getInput();
         }

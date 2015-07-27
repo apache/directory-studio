@@ -63,7 +63,7 @@ public class NewAttributeAction extends BrowserAction
     {
 
         IEntry entry = null;
-        if ( getInput() != null && getInput() instanceof IEntry )
+        if ( getInput() instanceof IEntry )
         {
             entry = ( IEntry ) getInput();
         }
@@ -144,7 +144,7 @@ public class NewAttributeAction extends BrowserAction
             return false;
         }
 
-        return ( ( getInput() != null && getInput() instanceof IEntry ) || getSelectedEntries().length == 1
+        return ( ( getInput() instanceof IEntry ) || getSelectedEntries().length == 1
             || getSelectedAttributes().length > 0 || getSelectedValues().length > 0 );
     }
 }

@@ -88,7 +88,7 @@ public class EntryTransfer extends ByteArrayTransfer
      */
     public void javaToNative( Object object, TransferData transferData )
     {
-        if ( object == null || !( object instanceof IEntry[] ) )
+        if ( !( object instanceof IEntry[] ) )
         {
             return;
         }

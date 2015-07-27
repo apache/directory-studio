@@ -316,7 +316,7 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
             }
 
             // case A: simple filter
-            if ( filter.getFilterComponent() != null && filter.getFilterComponent() instanceof LdapFilterItemComponent )
+            if ( filter.getFilterComponent() instanceof LdapFilterItemComponent )
             {
                 LdapFilterItemComponent fc = ( LdapFilterItemComponent ) filter.getFilterComponent();
 
@@ -364,8 +364,7 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
             }
 
             // case B: extensible filter
-            if ( filter.getFilterComponent() != null
-                && filter.getFilterComponent() instanceof LdapFilterExtensibleComponent )
+            if ( filter.getFilterComponent() instanceof LdapFilterExtensibleComponent )
             {
                 LdapFilterExtensibleComponent fc = ( LdapFilterExtensibleComponent ) filter.getFilterComponent();
 

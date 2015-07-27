@@ -133,9 +133,10 @@ public abstract class AbstractDialogValueEditor extends CellEditor implements IV
      */
     protected final void doSetValue( Object value )
     {
-        if ( value != null && value instanceof IValue.EmptyValue )
+        if ( value instanceof IValue.EmptyValue )
         {
             IValue.EmptyValue emptyValue = ( IValue.EmptyValue ) value;
+            
             if ( emptyValue.isBinary() )
             {
                 value = emptyValue.getBinaryValue();
@@ -145,6 +146,7 @@ public abstract class AbstractDialogValueEditor extends CellEditor implements IV
                 value = emptyValue.getStringValue();
             }
         }
+        
         this.value = value;
     }
 

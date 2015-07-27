@@ -115,7 +115,7 @@ public class EntryEditorPasteAction extends PasteAction
         if ( getInput() instanceof IEntry || getInput() instanceof AttributeHierarchy )
         {
             Object content = this.getFromClipboard( ValuesTransfer.getInstance() );
-            if ( content != null && content instanceof IValue[] )
+            if ( content instanceof IValue[] )
             {
                 IValue[] values = ( IValue[] ) content;
                 return values;

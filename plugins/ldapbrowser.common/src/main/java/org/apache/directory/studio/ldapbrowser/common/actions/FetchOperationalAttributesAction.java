@@ -139,7 +139,7 @@ public class FetchOperationalAttributesAction extends BrowserAction
         {
             entriesList.add( bm.getEntry() );
         }
-        if ( getInput() != null && getInput() instanceof IEntry )
+        if ( getInput() instanceof IEntry )
         {
             // the entry input is usually a cloned entry, lookup the real entry from connection
             IEntry input = ( IEntry ) getInput();

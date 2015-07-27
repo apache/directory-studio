@@ -139,11 +139,7 @@ public abstract class AbstractDialogStringValueEditor extends AbstractDialogValu
      */
     public Object getStringOrBinaryValue( Object rawValue )
     {
-        if ( rawValue == null )
-        {
-            return null;
-        }
-        else if ( rawValue instanceof String )
+        if ( rawValue instanceof String )
         {
             return rawValue;
         }

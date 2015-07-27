@@ -168,11 +168,7 @@ public abstract class AbstractDialogBinaryValueEditor extends AbstractDialogValu
      */
     public Object getStringOrBinaryValue( Object rawValue )
     {
-        if ( rawValue == null )
-        {
-            return null;
-        }
-        else if ( rawValue instanceof byte[] )
+        if ( rawValue instanceof byte[] )
         {
             return rawValue;
         }

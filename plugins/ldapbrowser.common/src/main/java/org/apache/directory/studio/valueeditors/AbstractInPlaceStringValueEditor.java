@@ -230,11 +230,7 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
      */
     public Object getStringOrBinaryValue( Object rawValue )
     {
-        if ( rawValue == null )
-        {
-            return null;
-        }
-        else if ( rawValue instanceof String )
+        if ( rawValue instanceof String )
         {
             return rawValue;
         }

@@ -456,11 +456,11 @@ public class BrowserQuickSearchWidget
         {
             create();
             Object input = browserWidget.getViewer().getInput();
-            if ( input != null && input instanceof IBrowserConnection )
+            if ( input instanceof IBrowserConnection )
             {
                 setInput( ( IBrowserConnection ) input );
             }
-            else if ( input != null && input instanceof IEntry[] )
+            else if ( input instanceof IEntry[] )
             {
                 setInput( ( ( IEntry[] ) input )[0].getBrowserConnection() );
             }
