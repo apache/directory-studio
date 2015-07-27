@@ -63,7 +63,7 @@ public class ConnectionContentProvider implements ITreeContentProvider
      */
     public Object[] getElements( Object inputElement )
     {
-        if ( inputElement != null && inputElement instanceof ConnectionFolderManager )
+        if ( inputElement instanceof ConnectionFolderManager )
         {
             ConnectionFolderManager cfm = ( ConnectionFolderManager ) inputElement;
             ConnectionFolder rootConnectionFolder = cfm.getRootConnectionFolder();
@@ -82,7 +82,7 @@ public class ConnectionContentProvider implements ITreeContentProvider
      */
     public Object[] getChildren( Object parentElement )
     {
-        if ( parentElement != null && parentElement instanceof ConnectionFolder )
+        if ( parentElement instanceof ConnectionFolder )
         {
             List<Object> children = new ArrayList<Object>();
 

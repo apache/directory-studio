@@ -88,7 +88,7 @@ public class ConnectionTransfer extends ByteArrayTransfer
      */
     public void javaToNative( Object object, TransferData transferData )
     {
-        if ( object == null || !( object instanceof Object[] ) )
+        if ( !( object instanceof Object[] ) )
         {
             return;
         }
