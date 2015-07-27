@@ -169,7 +169,7 @@ public class PasteAction extends StudioAction
 
         // first check for Connection objects in the clipboard
         Object content = getFromClipboard( ConnectionTransfer.getInstance() );
-        if ( content != null && content instanceof Object[] )
+        if ( content instanceof Object[] )
         {
             Object[] objects = ( Object[] ) content;
             for ( Object object : objects )
@@ -198,7 +198,7 @@ public class PasteAction extends StudioAction
         List<Connection> connections = new ArrayList<Connection>();
 
         Object content = getFromClipboard( TextTransfer.getInstance() );
-        if ( content != null && content instanceof String )
+        if ( content instanceof String )
         {
             ConnectionParameterPage[] connectionParameterPages = ConnectionParameterPageManager
                 .getConnectionParameterPages();
@@ -242,7 +242,7 @@ public class PasteAction extends StudioAction
         List<ConnectionFolder> folders = new ArrayList<ConnectionFolder>();
 
         Object content = this.getFromClipboard( ConnectionTransfer.getInstance() );
-        if ( content != null && content instanceof Object[] )
+        if ( content instanceof Object[] )
         {
             Object[] objects = ( Object[] ) content;
             for ( Object object : objects )
