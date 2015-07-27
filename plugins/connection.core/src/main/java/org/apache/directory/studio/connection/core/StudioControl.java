@@ -225,10 +225,11 @@ public class StudioControl implements Serializable
      */
     public boolean equals( Object obj )
     {
-        if ( obj == null || !( obj instanceof StudioControl ) )
+        if ( !( obj instanceof StudioControl ) )
         {
             return false;
         }
+        
         StudioControl other = ( StudioControl ) obj;
 
         return this.toString().equals( other.toString() );
