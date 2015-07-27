@@ -71,7 +71,7 @@ public class MaxValueCountValueEditor extends AbstractDialogStringValueEditor
     public boolean openDialog( Shell shell )
     {
         Object value = getValue();
-        if ( value != null && value instanceof MaxValueCountValueEditorRawValueWrapper )
+        if ( value instanceof MaxValueCountValueEditorRawValueWrapper )
         {
             MaxValueCountValueEditorRawValueWrapper wrapper = ( MaxValueCountValueEditorRawValueWrapper ) value;
             MaxValueCountDialog dialog = new MaxValueCountDialog( shell, wrapper.schema, wrapper.type, wrapper.maxCount );
@@ -104,7 +104,7 @@ public class MaxValueCountValueEditor extends AbstractDialogStringValueEditor
         {
             schema = connection.getSchema();
         }
-        if ( schema == null || value == null || !( value instanceof String ) )
+        if ( schema == null || !( value instanceof String ) )
         {
             return null;
         }

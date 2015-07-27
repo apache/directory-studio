@@ -484,7 +484,7 @@ public class ACIItemGrantsAndDenialsComposite extends Composite
          */
         public void modify( Object element, String property, Object value )
         {
-            if ( element != null && element instanceof Item )
+            if ( element instanceof Item )
             {
                 element = ( ( Item ) element ).getData();
             }

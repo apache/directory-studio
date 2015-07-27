@@ -48,7 +48,7 @@ public class AttributeTypeAndValueValueEditor extends AbstractDialogStringValueE
     public boolean openDialog( Shell shell )
     {
         Object value = getValue();
-        if ( value != null && value instanceof AttributeTypeAndValueValueEditorRawValueWrapper )
+        if ( value instanceof AttributeTypeAndValueValueEditorRawValueWrapper )
         {
             AttributeTypeAndValueValueEditorRawValueWrapper wrapper = ( AttributeTypeAndValueValueEditorRawValueWrapper ) value;
             AttributeTypeAndValueDialog dialog = new AttributeTypeAndValueDialog( shell, wrapper.schema,
@@ -83,7 +83,7 @@ public class AttributeTypeAndValueValueEditor extends AbstractDialogStringValueE
         {
             schema = connection.getSchema();
         }
-        if ( schema == null || value == null || !( value instanceof String ) )
+        if ( schema == null || !( value instanceof String ) )
         {
             return null;
         }
