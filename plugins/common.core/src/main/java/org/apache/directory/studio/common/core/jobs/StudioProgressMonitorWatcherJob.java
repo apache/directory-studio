@@ -94,8 +94,7 @@ public class StudioProgressMonitorWatcherJob extends Job
                         break;
                     }
 
-                    if ( spm.getWrappedProgressMonitor() != null
-                        && spm.getWrappedProgressMonitor() instanceof StudioProgressMonitor )
+                    if ( spm.getWrappedProgressMonitor() instanceof StudioProgressMonitor )
                     {
                         spm = ( StudioProgressMonitor ) spm.getWrappedProgressMonitor();
                     }
