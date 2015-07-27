@@ -181,7 +181,7 @@ public class CompoundModification
         IAttribute attribute = oldValue.getAttribute();
 
         boolean modify = false;
-        if ( oldValue != null && newRawValue != null && newRawValue instanceof byte[] )
+        if ( oldValue != null && newRawValue instanceof byte[] )
         {
             byte[] newValue = ( byte[] ) newRawValue;
             if ( !Utils.equals( oldValue.getBinaryValue(), newValue ) )
@@ -189,7 +189,7 @@ public class CompoundModification
                 modify = true;
             }
         }
-        else if ( oldValue != null && newRawValue != null && newRawValue instanceof String )
+        else if ( oldValue != null && newRawValue instanceof String )
         {
 
             String newValue = ( String ) newRawValue;

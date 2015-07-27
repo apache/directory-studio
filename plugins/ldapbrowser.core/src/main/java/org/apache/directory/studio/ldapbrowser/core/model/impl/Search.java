@@ -610,10 +610,7 @@ public class Search implements ISearch
         {
             return true;
         }
-        if ( obj == null )
-        {
-            return false;
-        }
+
         if ( !( obj instanceof Search ) )
         {
             return false;

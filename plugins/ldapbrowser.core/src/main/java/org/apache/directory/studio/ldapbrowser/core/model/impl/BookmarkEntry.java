@@ -69,7 +69,7 @@ public class BookmarkEntry extends DelegateEntry implements ICompareableEntry
     public boolean equals( Object o )
     {
         // check argument
-        if ( o == null || !( o instanceof ICompareableEntry ) )
+        if (!( o instanceof ICompareableEntry ) )
         {
             return false;
         }

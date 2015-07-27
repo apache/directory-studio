@@ -182,7 +182,7 @@ public class ContinuedSearchResultEntry extends DelegateEntry implements IContin
     public boolean equals( Object o )
     {
         // check argument
-        if ( o == null || !( o instanceof ContinuedSearchResultEntry ) )
+        if ( !( o instanceof ContinuedSearchResultEntry ) )
         {
             return false;
         }

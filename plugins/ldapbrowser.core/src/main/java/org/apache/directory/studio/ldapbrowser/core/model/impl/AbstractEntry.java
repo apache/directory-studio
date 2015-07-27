@@ -879,15 +879,23 @@ public abstract class AbstractEntry implements IEntry, ICompareableEntry
     public boolean equals( Object o )
     {
         // check argument
-        if ( o == null || !( o instanceof ICompareableEntry ) )
+        if ( !( o instanceof ICompareableEntry ) )
         {
             return false;
         }
+        
         ICompareableEntry e = ( ICompareableEntry ) o;
 
         // compare dn and connection
-        return getDn() == null ? e.getDn() == null : ( getDn().equals( e.getDn() ) && getBrowserConnection().equals(
-            e.getBrowserConnection() ) );
+        if ( getDn() == null )
+        {
+            return e.getDn() == null;
+        }
+        else
+        {
+            return getDn().equals( e.getDn() ) && 
+                   getBrowserConnection().equals( e.getBrowserConnection() );
+        }
     }
 
 

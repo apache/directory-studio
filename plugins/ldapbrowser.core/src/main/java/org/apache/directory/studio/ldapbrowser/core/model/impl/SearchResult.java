@@ -186,10 +186,7 @@ public class SearchResult implements ISearchResult
         {
             return true;
         }
-        if ( obj == null )
-        {
-            return false;
-        }
+
         if ( !( obj instanceof SearchResult ) )
         {
             return false;
