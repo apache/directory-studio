@@ -23,7 +23,6 @@ package org.apache.directory.studio.valueeditors;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.directory.studio.ldapbrowser.common.wizards.EditEntryWizard;
@@ -46,7 +45,6 @@ import org.eclipse.swt.widgets.Control;
  */
 public class EntryValueEditor extends CellEditor implements IValueEditor
 {
-
     /** The value to handle */
     private Object value;
 
@@ -129,9 +127,12 @@ public class EntryValueEditor extends CellEditor implements IValueEditor
      */
     public void activate()
     {
-        if ( getValue() != null && getValue() instanceof IEntry )
+        Object value = getValue();
+        
+        if ( value instanceof IEntry )
         {
-            IEntry entry = ( IEntry ) getValue();
+            IEntry entry = ( IEntry ) value;
+            
             if ( entry != null )
             {
                 EditEntryWizard wizard = new EditEntryWizard( entry );
@@ -166,26 +167,36 @@ public class EntryValueEditor extends CellEditor implements IValueEditor
     public String getDisplayValue( AttributeHierarchy attributeHierarchy )
     {
         List<IValue> valueList = new ArrayList<IValue>();
+        
         for ( IAttribute attribute : attributeHierarchy )
         {
             valueList.addAll( Arrays.asList( attribute.getValues() ) );
         }
 
         StringBuffer sb = new StringBuffer();
+        
         if ( valueList.size() > 1 )
         {
             sb.append( NLS.bind( Messages.getString( "EntryValueEditor.n_values" ), valueList.size() ) ); //$NON-NLS-1$
         }
-        for ( Iterator<IValue> it = valueList.iterator(); it.hasNext(); )
+        
+        boolean isFirst = true;
+        
+        for ( IValue value : valueList )
         {
-            IValue value = it.next();
+            if ( isFirst )
+            {
+                isFirst = false;
+            }
+            else
+            {
+                sb.append( ", " );
+            }
+            
             IValueEditor vp = getValueEditor( value );
             sb.append( vp.getDisplayValue( value ) );
-            if ( it.hasNext() )
-            {
-                sb.append( ", " ); //$NON-NLS-1$
-            }
         }
+        
         return sb.toString();
     }
 
@@ -198,6 +209,7 @@ public class EntryValueEditor extends CellEditor implements IValueEditor
     public String getDisplayValue( IValue value )
     {
         IValueEditor vp = getValueEditor( value );
+        
         return vp.getDisplayValue( value );
     }
 
@@ -231,6 +243,16 @@ public class EntryValueEditor extends CellEditor implements IValueEditor
         return attributeHierarchy.getEntry();
     }
 
+    
+    /**
+     * {@inheritDoc}
+     * @return
+     */
+    public boolean hasValue( IValue value )
+    {
+        return value.getAttribute().getEntry() != null;
+    }
+    
 
     /**
      * {@inheritDoc}
@@ -288,5 +310,4 @@ public class EntryValueEditor extends CellEditor implements IValueEditor
     {
         return imageDescriptor;
     }
-
 }

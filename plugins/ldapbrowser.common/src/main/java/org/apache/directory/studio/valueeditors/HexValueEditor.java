@@ -45,16 +45,20 @@ public class HexValueEditor extends AbstractDialogBinaryValueEditor
     protected boolean openDialog( Shell shell )
     {
         Object value = getValue();
-        if ( value != null && value instanceof byte[] )
+        
+        if ( value instanceof byte[] )
         {
             byte[] initialData = ( byte[] ) value;
             HexDialog dialog = new HexDialog( shell, initialData );
-            if ( dialog.open() == HexDialog.OK && dialog.getData() != null )
+            
+            if ( ( dialog.open() == HexDialog.OK ) && dialog.getData() != null )
             {
                 setValue( dialog.getData() );
+                
                 return true;
             }
         }
+        
         return false;
     }
 

@@ -92,12 +92,13 @@ public class ActiveDirectoryTimeValueEditor extends AbstractDialogStringValueEdi
     protected boolean openDialog( Shell shell )
     {
         Object value = getValue();
-        if ( value != null && value instanceof String )
+        
+        if ( value instanceof String )
         {
             String s = ( String ) value;
             long adTimeValue = 0;
 
-            if ( !"".equals( s ) ) //$NON-NLS-1$
+            if ( !EMPTY.equals( s ) ) //$NON-NLS-1$
             {
                 // Trying to parse the value
                 try
@@ -132,9 +133,11 @@ public class ActiveDirectoryTimeValueEditor extends AbstractDialogStringValueEdi
 
             // Creating and opening the dialog
             ActiveDirectoryTimeValueDialog dialog = new ActiveDirectoryTimeValueDialog( shell, adTimeValue );
+            
             if ( dialog.open() == ActiveDirectoryTimeValueDialog.OK )
             {
-                setValue( "" + dialog.getValue() ); //$NON-NLS-1$
+                setValue( Long.toString( dialog.getValue() ) ); //$NON-NLS-1$
+                
                 return true;
             }
         }

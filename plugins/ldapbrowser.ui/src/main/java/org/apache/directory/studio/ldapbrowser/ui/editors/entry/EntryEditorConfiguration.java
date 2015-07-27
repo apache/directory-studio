@@ -35,9 +35,8 @@ import org.eclipse.jface.viewers.TreeViewer;
  */
 public class EntryEditorConfiguration extends EntryEditorWidgetConfiguration
 {
-
+    /** The entry editor */
     private EntryEditor entryEditor;
-
 
     /**
      * Creates a new instance of EntryEditorConfiguration.
@@ -64,5 +63,4 @@ public class EntryEditorConfiguration extends EntryEditorWidgetConfiguration
 
         return valueEditorManager;
     }
-
 }

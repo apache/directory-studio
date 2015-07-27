@@ -38,7 +38,6 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class PasswordValueEditor extends AbstractDialogBinaryValueEditor
 {
-
     /**
      * {@inheritDoc}
      * 
@@ -47,20 +46,25 @@ public class PasswordValueEditor extends AbstractDialogBinaryValueEditor
     protected boolean openDialog( Shell shell )
     {
         Object value = getValue();
-        if ( value != null && value instanceof PasswordValueEditorRawValueWrapper )
+        
+        if ( value instanceof PasswordValueEditorRawValueWrapper )
         {
             PasswordValueEditorRawValueWrapper wrapper = ( PasswordValueEditorRawValueWrapper ) value;
-            if ( wrapper.password != null && wrapper.password instanceof byte[] )
+            
+            if ( wrapper.password instanceof byte[] )
             {
                 byte[] pw = ( byte[] ) wrapper.password;
                 PasswordDialog dialog = new PasswordDialog( shell, pw, wrapper.entry );
+                
                 if ( dialog.open() == TextDialog.OK )
                 {
                     setValue( dialog.getNewPassword() );
+                    
                     return true;
                 }
             }
         }
+        
         return false;
     }
 
@@ -83,22 +87,24 @@ public class PasswordValueEditor extends AbstractDialogBinaryValueEditor
         {
             if ( value == null )
             {
-                return "NULL"; //$NON-NLS-1$
+                return NULL; //$NON-NLS-1$
             }
 
-            String password = value.getStringValue();;
+            String password = value.getStringValue();
+            
             if ( password == null )
             {
-                return "NULL"; //$NON-NLS-1$
+                return NULL; //$NON-NLS-1$
             }
             else
             {
                 String text;
-                if ( "".equals( password ) ) //$NON-NLS-1$
+                
+                if ( EMPTY.equals( password ) ) //$NON-NLS-1$
                 {
                     text = Messages.getString( "PasswordValueEditor.EmptyPassword" ); //$NON-NLS-1$
                 }
-                else if ( password.indexOf( '{' ) == 0 && password.indexOf( '}' ) > 0 )
+                else if ( ( password.indexOf( '{' ) == 0  )&& ( password.indexOf( '}' ) > 0 ) )
                 {
                     String hashMethod = password.substring( password.indexOf( '{' ) + 1, password.indexOf( '}' ) );
                     text = NLS.bind(
@@ -153,8 +159,10 @@ public class PasswordValueEditor extends AbstractDialogBinaryValueEditor
     public Object getRawValue( IValue value )
     {
         Object password = super.getRawValue( value );
+        
         return new PasswordValueEditorRawValueWrapper( password, value.getAttribute().getEntry() );
     }
+    
 
     /**
      * The PasswordValueEditorRawValueWrapper is used to pass contextual 
@@ -183,5 +191,4 @@ public class PasswordValueEditor extends AbstractDialogBinaryValueEditor
             this.entry = entry;
         }
     }
-
 }

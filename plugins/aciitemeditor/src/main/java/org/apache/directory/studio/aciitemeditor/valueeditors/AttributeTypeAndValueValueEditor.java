@@ -37,7 +37,7 @@ import org.eclipse.swt.widgets.Shell;
 public class AttributeTypeAndValueValueEditor extends AbstractDialogStringValueEditor
 {
 
-    private static final String EMPTY = ""; //$NON-NLS-1$
+    
 
 
     /**

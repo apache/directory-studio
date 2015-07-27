@@ -77,7 +77,7 @@ public class EntryEditorWidgetCellModifier implements ICellModifier
             
             if ( EntryEditorWidgetTableMetadata.VALUE_COLUMN_NAME.equals( property ) )
             {
-                return valueEditorManager.getCurrentValueEditor( attributeValue ).getRawValue( attributeValue ) != null;
+                return valueEditorManager.getCurrentValueEditor( attributeValue ).hasValue( attributeValue );
             }
         }
 

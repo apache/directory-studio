@@ -33,7 +33,6 @@ import org.eclipse.jface.viewers.Viewer;
  */
 public class EntryEditorActionProxy extends BrowserActionProxy implements ISelectionChangedListener
 {
-
     /**
      * Creates a new instance of EntryEditorActionProxy.
      * 
@@ -44,5 +43,4 @@ public class EntryEditorActionProxy extends BrowserActionProxy implements ISelec
     {
         super( viewer, action );
     }
-
 }

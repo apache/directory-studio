@@ -23,7 +23,6 @@ package org.apache.directory.studio.valueeditors;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
@@ -45,7 +44,6 @@ import org.eclipse.jface.viewers.TextCellEditor;
  */
 public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor implements IValueEditor
 {
-
     /** The name of this value editor */
     private String name;
 
@@ -90,21 +88,29 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
         }
 
         List<IValue> valueList = new ArrayList<IValue>();
+        
         for ( IAttribute attribute : attributeHierarchy )
         {
             valueList.addAll( Arrays.asList( attribute.getValues() ) );
         }
 
         StringBuffer sb = new StringBuffer();
-        for ( Iterator<IValue> it = valueList.iterator(); it.hasNext(); )
+        boolean isFirst = true;
+        
+        for ( IValue value : valueList )
         {
-            IValue value = it.next();
-            sb.append( getDisplayValue( value ) );
-            if ( it.hasNext() )
+            if ( isFirst )
+            {
+                isFirst = false;
+            }
+            else
             {
                 sb.append( ", " ); //$NON-NLS-1$
             }
+
+            sb.append( getDisplayValue( value ) );
         }
+        
         return sb.toString();
     }
 
@@ -116,8 +122,16 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
      */
     public String getDisplayValue( IValue value )
     {
-        Object obj = this.getRawValue( value );
-        return obj == null ? "NULL" : obj.toString(); //$NON-NLS-1$
+        Object obj = getRawValue( value );
+        
+        if ( obj == null ) 
+        {
+            return "NULL";
+        }
+        else
+        {
+            return obj.toString();
+        }
     }
 
 
@@ -130,32 +144,38 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
      */
     public Object getRawValue( AttributeHierarchy attributeHierarchy )
     {
-        if ( attributeHierarchy == null )
+        if ( ( attributeHierarchy != null ) && ( attributeHierarchy.size() == 1 ) )
         {
-            return null;
-        }
-        else if ( attributeHierarchy.size() == 1 && attributeHierarchy.getAttribute().getValueSize() == 0 )
-        {
-            if ( attributeHierarchy.getAttribute().isString() )
+            if ( attributeHierarchy.getAttribute().getValueSize() == 0 )
             {
-                return IValue.EMPTY_STRING_VALUE;
+                if ( attributeHierarchy.getAttribute().isString() )
+                {
+                    return IValue.EMPTY_STRING_VALUE;
+                }
+                else
+                {
+                    return IValue.EMPTY_BINARY_VALUE;
+                }
             }
-            else
+            else if ( attributeHierarchy.getAttribute().getValueSize() == 1 )
             {
-                return IValue.EMPTY_BINARY_VALUE;
+                return getRawValue( attributeHierarchy.getAttribute().getValues()[0] );
             }
         }
-        else if ( attributeHierarchy.size() == 1 && attributeHierarchy.getAttribute().getValueSize() == 1 )
-        {
-            return getRawValue( attributeHierarchy.getAttribute().getValues()[0] );
-        }
-        else
-        {
-            return null;
-        }
+
+        return null;
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public boolean hasValue( IValue value )
+    {
+        return ( value != null ) && ( value.isString() || value.isBinary() );
     }
 
-
+    
     /**
      * {@inheritDoc}
      * 
@@ -164,22 +184,19 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
      */
     public Object getRawValue( IValue value )
     {
-        if ( value == null )
+        if ( value != null )
         {
-            return null;
+            if ( value.isString() )
+            {
+                return value.getStringValue();
+            }
+            else if ( value.isBinary() && isEditable( value.getBinaryValue() ) )
+            {
+                return value.getStringValue();
+            }
         }
-        else if ( value.isString() )
-        {
-            return value.getStringValue();
-        }
-        else if ( value.isBinary() )
-        {
-            return isEditable( value.getBinaryValue() ) ? value.getStringValue() : null;
-        }
-        else
-        {
-            return null;
-        }
+
+        return null;
     }
 
 
@@ -195,7 +212,7 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
 
         for ( int i = 0; i < b.length; i++ )
         {
-            if ( !( b[i] == '\n' || b[i] == '\r' || ( b[i] >= '\u0020' && b[i] <= '\u007F' ) ) )
+            if ( ( b[i] > '\u007F') || ( ( b[i] < '\u0020' ) && ( b[i] != '\n' ) && ( b[i] != '\r' ) ) )
             {
                 return false;
             }
@@ -242,7 +259,14 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
      */
     protected Object doGetValue()
     {
-        return "".equals( text.getText() ) ? null : text.getText(); //$NON-NLS-1$
+        if ( EMPTY.equals( text.getText() ) )
+        {
+            return null;
+        }
+        else
+        {
+            return text.getText();
+        }
     }
 
 
@@ -251,10 +275,11 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
      */
     protected void doSetValue( Object value )
     {
-        if ( value != null && value instanceof IValue.EmptyValue )
+        if ( value instanceof IValue.EmptyValue )
         {
             value = ( ( IValue.EmptyValue ) value ).getStringValue();
         }
+        
         super.doSetValue( value );
     }
 
@@ -293,5 +318,4 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
     {
         return imageDescriptor;
     }
-
 }

@@ -129,6 +129,7 @@ public class OpenEditorAction extends AbstractOpenEditorAction
 //                EntryEditorWidgetTableMetadata.VALUE_COLUMN_NAME ) 
         {
             IValueEditor[] alternativeVps = valueEditorManager.getAlternativeValueEditors( getSelectedValues()[0] );
+            
             return Arrays.asList( alternativeVps ).contains( valueEditor )
                 && valueEditor.getRawValue( getSelectedValues()[0] ) != null;
         }

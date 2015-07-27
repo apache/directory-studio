@@ -107,7 +107,14 @@ public class OpenBestEditorAction extends AbstractOpenEditorAction
      */
     public String getText()
     {
-        return isEnabled() ? bestValueEditor.getValueEditorName() : null;
+        if ( bestValueEditor != null )
+        {
+            return bestValueEditor.getValueEditorName();
+        }
+        else
+        {
+            return null;
+        }
     }
 
 
@@ -129,6 +136,7 @@ public class OpenBestEditorAction extends AbstractOpenEditorAction
         }
         else
         {
+            bestValueEditor = null;
             return false;
         }
     }

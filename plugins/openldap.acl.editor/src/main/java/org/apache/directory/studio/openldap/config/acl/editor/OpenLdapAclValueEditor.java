@@ -20,13 +20,13 @@
 package org.apache.directory.studio.openldap.config.acl.editor;
 
 
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.valueeditors.AbstractDialogStringValueEditor;
 import org.eclipse.swt.widgets.Shell;
-
 import org.apache.directory.studio.openldap.config.acl.OpenLdapAclValueWithContext;
 import org.apache.directory.studio.openldap.config.acl.dialogs.OpenLdapAclDialog;
 
@@ -50,12 +50,13 @@ public class OpenLdapAclValueEditor extends AbstractDialogStringValueEditor
     {
         Object value = getValue();
 
-        if ( value != null && value instanceof OpenLdapAclValueWithContext )
+        if ( ( value != null ) && ( value instanceof OpenLdapAclValueWithContext ) )
         {
             OpenLdapAclValueWithContext context = ( OpenLdapAclValueWithContext ) value;
 
             OpenLdapAclDialog dialog = new OpenLdapAclDialog( shell, context );
-            if ( dialog.open() == OpenLdapAclDialog.OK && !"".equals( dialog.getAclValue() ) ) //$NON-NLS-1$
+            
+            if ( ( dialog.open() == OpenLdapAclDialog.OK)  && !"".equals( dialog.getAclValue() ) ) //$NON-NLS-1$
             {
                 if ( dialog.isHasPrecedence() )
                 {
@@ -71,6 +72,7 @@ public class OpenLdapAclValueEditor extends AbstractDialogStringValueEditor
                 return true;
             }
         }
+        
         return false;
     }
 
@@ -94,13 +96,13 @@ public class OpenLdapAclValueEditor extends AbstractDialogStringValueEditor
         {
             return null;
         }
-        else if ( attributeHierarchy.size() == 1 && attributeHierarchy.getAttribute().getValueSize() == 0 )
+        else if ( ( attributeHierarchy.size() == 1 ) && ( attributeHierarchy.getAttribute().getValueSize() == 0 ) )
         {
             IEntry entry = attributeHierarchy.getAttribute().getEntry();
             IBrowserConnection connection = entry.getBrowserConnection();
             return new OpenLdapAclValueWithContext( connection, entry, false, -1, "" ); //$NON-NLS-1$
         }
-        else if ( attributeHierarchy.size() == 1 && attributeHierarchy.getAttribute().getValueSize() == 1 )
+        else if ( ( attributeHierarchy.size() == 1 ) && ( attributeHierarchy.getAttribute().getValueSize() == 1 ) )
         {
             IEntry entry = attributeHierarchy.getAttribute().getEntry();
             IBrowserConnection connection = entry.getBrowserConnection();
@@ -128,7 +130,8 @@ public class OpenLdapAclValueEditor extends AbstractDialogStringValueEditor
     public Object getRawValue( IValue value )
     {
         Object o = super.getRawValue( value );
-        if ( o != null && o instanceof String )
+        
+        if ( o instanceof String )
         {
             IEntry entry = value.getAttribute().getEntry();
             IBrowserConnection connection = entry.getBrowserConnection();
@@ -136,6 +139,7 @@ public class OpenLdapAclValueEditor extends AbstractDialogStringValueEditor
             int precedence = getPrecedence( v );
             boolean hasPrecedence = ( precedence != -1 );
             String aclValue = getStrippedAclValue( v );
+            
             return new OpenLdapAclValueWithContext( connection, entry, hasPrecedence, precedence, aclValue );
         }
 
@@ -152,24 +156,41 @@ public class OpenLdapAclValueEditor extends AbstractDialogStringValueEditor
     public int getPrecedence( String s )
     {
         // Checking if the acl contains precedence information ("{int}")
-        if ( s.matches( PRECEDENCE_PATTERN ) )
+        if ( Strings.isCharASCII( s, 0, '{' ) )
         {
-            // Getting the index of the starting and closing curly brackets
-            int indexOfStartingCurlyBracket = s.indexOf( '{' );
-            int indexOfClosingCurlyBracket = s.indexOf( '}' );
-
-            try
+            int precedence = 0;
+            int pos = 1;
+            
+            while ( pos < s.length() )
             {
-                // Returning the precedence string as an int
-                return Integer.parseInt( s.substring( indexOfStartingCurlyBracket + 1, indexOfClosingCurlyBracket ) );
+                char c = s.charAt( pos );
+                
+                if ( c == '}' )
+                {
+                    if ( pos == 1 )
+                    {
+                        return -1;
+                    }
+                    else
+                    {
+                        return precedence;
+                    }
+                }
+                
+                if ( ( c >= '0' ) && ( c <= '9' ) )
+                {
+                    precedence = precedence*10 + ( c - '0' );
+                }
+                
+                pos++;
             }
-            catch ( NumberFormatException e )
-            {
-                return -1;
-            }
+            
+            return -1;
         }
-
-        return -1;
+        else
+        {
+            return -1;
+        }
     }
 
 

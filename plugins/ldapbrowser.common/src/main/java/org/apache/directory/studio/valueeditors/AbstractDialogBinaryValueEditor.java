@@ -60,7 +60,7 @@ public abstract class AbstractDialogBinaryValueEditor extends AbstractDialogValu
         {
             if ( value == null )
             {
-                return "NULL"; //$NON-NLS-1$
+                return NULL; //$NON-NLS-1$
             }
             else if ( value.isBinary() )
             {
@@ -87,13 +87,14 @@ public abstract class AbstractDialogBinaryValueEditor extends AbstractDialogValu
     {
         if ( value == null )
         {
-            return "NULL"; //$NON-NLS-1$
+            return NULL; //$NON-NLS-1$
         }
         else if ( value.isBinary() )
         {
             byte[] data = value.getBinaryValue();
             StringBuffer sb = new StringBuffer();
-            for ( int i = 0; data != null && i < data.length && i < 512; i++ )
+            
+            for ( int i = 0; ( data != null ) && ( i < data.length ) && ( i < 512 ); i++ )
             {
                 if ( data[i] > 32 && data[i] < 127 )
                     sb.append( ( char ) data[i] );
@@ -108,7 +109,7 @@ public abstract class AbstractDialogBinaryValueEditor extends AbstractDialogValu
         }
         else
         {
-            return "NULL"; //$NON-NLS-1$
+            return NULL; //$NON-NLS-1$
         }
     }
 

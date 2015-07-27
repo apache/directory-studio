@@ -34,7 +34,6 @@ import org.eclipse.jface.viewers.TreeViewer;
  */
 public class EntryEditorWidgetConfiguration
 {
-
     /** The disposed flag */
     private boolean disposed = false;
 
@@ -240,5 +239,4 @@ public class EntryEditorWidgetConfiguration
 
         return preferences;
     }
-
 }

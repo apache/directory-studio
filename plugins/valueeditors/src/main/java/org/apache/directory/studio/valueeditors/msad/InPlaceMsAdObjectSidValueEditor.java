@@ -48,9 +48,11 @@ public class InPlaceMsAdObjectSidValueEditor extends HexValueEditor
         if ( !showRawValues() )
         {
             Object rawValue = super.getRawValue( value );
+            
             if ( rawValue instanceof byte[] )
             {
                 byte[] bytes = ( byte[] ) rawValue;
+                
                 return convertToString( bytes );
             }
         }
@@ -72,7 +74,7 @@ public class InPlaceMsAdObjectSidValueEditor extends HexValueEditor
          *              little-endian!
          */
 
-        if ( bytes == null || bytes.length < 8 )
+        if ( ( bytes == null ) || ( bytes.length < 8 ) )
         {
             return Messages.getString( "InPlaceMsAdObjectSidValueEditor.InvalidSid" ); //$NON-NLS-1$
         }
@@ -106,6 +108,7 @@ public class InPlaceMsAdObjectSidValueEditor extends HexValueEditor
         for ( int i = 0; i < count; i++ )
         {
             StringBuffer rid = new StringBuffer();
+            
             for ( int k = 3; k >= 0; k-- )
             {
                 rid.append( hex[16 + ( i * 8 ) + ( k * 2 )] );
@@ -119,5 +122,4 @@ public class InPlaceMsAdObjectSidValueEditor extends HexValueEditor
 
         return sb.toString();
     }
-
 }

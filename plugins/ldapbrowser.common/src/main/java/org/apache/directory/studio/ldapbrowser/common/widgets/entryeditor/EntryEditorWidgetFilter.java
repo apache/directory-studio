@@ -53,8 +53,8 @@ public class EntryEditorWidgetFilter extends ViewerFilter
      */
     public EntryEditorWidgetFilter()
     {
-        this.quickFilterAttribute = ""; //$NON-NLS-1$
-        this.quickFilterValue = ""; //$NON-NLS-1$
+        quickFilterAttribute = ""; //$NON-NLS-1$
+        quickFilterValue = ""; //$NON-NLS-1$
     }
 
 

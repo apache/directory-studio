@@ -36,7 +36,6 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class ACIItemValueEditor extends AbstractDialogStringValueEditor
 {
-
     /**
      * The Constructor.
      */
@@ -56,17 +55,21 @@ public class ACIItemValueEditor extends AbstractDialogStringValueEditor
     public boolean openDialog( Shell shell )
     {
         Object value = getValue();
-        if ( value != null && value instanceof ACIItemValueWithContext )
+        
+        if ( value instanceof ACIItemValueWithContext )
         {
             ACIItemValueWithContext context = ( ACIItemValueWithContext ) value;
 
             ACIItemDialog dialog = new ACIItemDialog( shell, context );
-            if ( dialog.open() == ACIItemDialog.OK && !"".equals( dialog.getACIItemValue() ) ) //$NON-NLS-1$
+            
+            if ( ( dialog.open() == ACIItemDialog.OK ) && !EMPTY.equals( dialog.getACIItemValue() ) ) //$NON-NLS-1$
             {
                 setValue( dialog.getACIItemValue() );
+                
                 return true;
             }
         }
+        
         return false;
     }
 
@@ -86,27 +89,26 @@ public class ACIItemValueEditor extends AbstractDialogStringValueEditor
      */
     public Object getRawValue( AttributeHierarchy attributeHierarchy )
     {
-        if ( attributeHierarchy == null )
+        if ( ( attributeHierarchy != null ) && ( attributeHierarchy.size() == 1 ) )
         {
-            return null;
+            if ( attributeHierarchy.getAttribute().getValueSize() == 0 )
+            {
+                IEntry entry = attributeHierarchy.getAttribute().getEntry();
+                IBrowserConnection connection = entry.getBrowserConnection();
+                
+                return new ACIItemValueWithContext( connection, entry, EMPTY ); //$NON-NLS-1$
+            }
+            else if ( attributeHierarchy.getAttribute().getValueSize() == 1 )
+            {
+                IEntry entry = attributeHierarchy.getAttribute().getEntry();
+                IBrowserConnection connection = entry.getBrowserConnection();
+                String value = getDisplayValue( attributeHierarchy );
+                
+                return new ACIItemValueWithContext( connection, entry, value );
+            }
         }
-        else if ( attributeHierarchy.size() == 1 && attributeHierarchy.getAttribute().getValueSize() == 0 )
-        {
-            IEntry entry = attributeHierarchy.getAttribute().getEntry();
-            IBrowserConnection connection = entry.getBrowserConnection();
-            return new ACIItemValueWithContext( connection, entry, "" ); //$NON-NLS-1$
-        }
-        else if ( attributeHierarchy.size() == 1 && attributeHierarchy.getAttribute().getValueSize() == 1 )
-        {
-            IEntry entry = attributeHierarchy.getAttribute().getEntry();
-            IBrowserConnection connection = entry.getBrowserConnection();
-            String value = getDisplayValue( attributeHierarchy );
-            return new ACIItemValueWithContext( connection, entry, value );
-        }
-        else
-        {
-            return null;
-        }
+
+        return null;
     }
 
 
@@ -121,15 +123,16 @@ public class ACIItemValueEditor extends AbstractDialogStringValueEditor
     public Object getRawValue( IValue value )
     {
         Object o = super.getRawValue( value );
-        if ( o != null && o instanceof String )
+        
+        if ( o instanceof String )
         {
             IEntry entry = value.getAttribute().getEntry();
             IBrowserConnection connection = entry.getBrowserConnection();
             String v = ( String ) o;
+            
             return new ACIItemValueWithContext( connection, entry, v );
         }
 
         return null;
     }
-
 }

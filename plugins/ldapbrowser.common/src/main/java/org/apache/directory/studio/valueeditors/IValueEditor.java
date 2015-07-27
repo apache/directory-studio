@@ -85,6 +85,16 @@ public interface IValueEditor
     public abstract Object getRawValue( AttributeHierarchy attributeHierarchy );
 
 
+    
+    
+    /**
+     * Tells if there is a value
+     * 
+     * @return true if there is a value, false if it's null.
+     */
+    boolean hasValue( IValue value );
+    
+
     /**
      * Returns the raw value if this value editor can handle the given 
      * value. The returned value is used as input for the CellEditor 
@@ -185,4 +195,8 @@ public interface IValueEditor
      * 
      */
     public abstract CellEditor getCellEditor();
+
+    // A constant for the emtpy string and null string.
+    static final String EMPTY = ""; //$NON-NLS-1$
+    static final String NULL = "NULL"; //$NON-NLS-1$
 }

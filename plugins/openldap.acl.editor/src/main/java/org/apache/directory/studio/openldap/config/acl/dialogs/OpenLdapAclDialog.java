@@ -192,6 +192,7 @@ public class OpenLdapAclDialog extends Dialog
         composite.setFocus();
 
         applyDialogFont( composite );
+        
         return composite;
     }
 
@@ -214,6 +215,7 @@ public class OpenLdapAclDialog extends Dialog
         // Precendence values
         hasPrecedence = context.isHasPrecedence();
         precedenceValue = context.getPrecedenceValue();
+        
         if ( precedenceValue <= 0 )
         {
             precedenceValue = 1;

@@ -37,7 +37,6 @@ import org.apache.directory.studio.valueeditors.AbstractInPlaceStringValueEditor
  */
 public class InPlaceOidValueEditor extends AbstractInPlaceStringValueEditor
 {
-
     /**
      * {@inheritDoc}
      */
@@ -48,6 +47,7 @@ public class InPlaceOidValueEditor extends AbstractInPlaceStringValueEditor
         if ( !showRawValues() )
         {
             String description = Utils.getOidDescription( displayValue );
+            
             if ( description != null )
             {
                 displayValue = displayValue + " (" + description + ")"; //$NON-NLS-1$ //$NON-NLS-2$
@@ -56,5 +56,4 @@ public class InPlaceOidValueEditor extends AbstractInPlaceStringValueEditor
 
         return displayValue;
     }
-
 }
