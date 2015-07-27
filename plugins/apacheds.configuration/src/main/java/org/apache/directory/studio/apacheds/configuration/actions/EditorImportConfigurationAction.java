@@ -128,7 +128,7 @@ public class EditorImportConfigurationAction extends Action
                     // Getting the input stream for the selected file
                     Object firstResult = dialog.getFirstResult();
                     
-                    if ( ( firstResult != null ) && ( firstResult instanceof IFile ) )
+                    if ( firstResult instanceof IFile )
                     {
                         file = ( ( IFile ) firstResult ).getLocation().toFile();
                     }
