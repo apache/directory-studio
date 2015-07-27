@@ -69,10 +69,12 @@ public class RestrictedByValueEditor extends AbstractDialogStringValueEditor
     public boolean openDialog( Shell shell )
     {
         Object value = getValue();
-        if ( value != null && value instanceof RestrictedByValueEditorRawValueWrapper )
+        
+        if ( value instanceof RestrictedByValueEditorRawValueWrapper )
         {
             RestrictedByValueEditorRawValueWrapper wrapper = ( RestrictedByValueEditorRawValueWrapper ) value;
             RestrictedByDialog dialog = new RestrictedByDialog( shell, wrapper.schema, wrapper.type, wrapper.valuesIn );
+            
             if ( dialog.open() == TextDialog.OK && !EMPTY.equals( dialog.getType() )
                 && !EMPTY.equals( dialog.getValuesIn() ) )
             {
@@ -80,6 +82,7 @@ public class RestrictedByValueEditor extends AbstractDialogStringValueEditor
                 return true;
             }
         }
+        
         return false;
     }
 
@@ -99,11 +102,13 @@ public class RestrictedByValueEditor extends AbstractDialogStringValueEditor
     private Object getRawValue( IBrowserConnection connection, Object value )
     {
         Schema schema = null;
+        
         if ( connection != null )
         {
             schema = connection.getSchema();
         }
-        if ( schema == null || value == null || !( value instanceof String ) )
+        
+        if ( schema == null || !( value instanceof String ) )
         {
             return null;
         }

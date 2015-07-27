@@ -72,7 +72,7 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
     protected boolean openDialog( Shell shell )
     {
         Object value = getValue();
-        if ( value != null && value instanceof SubtreeSpecificationValueWrapper )
+        if ( value instanceof SubtreeSpecificationValueWrapper )
         {
             SubtreeSpecificationValueWrapper wrapper = ( SubtreeSpecificationValueWrapper ) value;
 
@@ -94,7 +94,7 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
     public Object getRawValue( IValue value )
     {
         Object o = super.getRawValue( value );
-        if ( o != null && o instanceof String )
+        if ( o instanceof String )
         {
             IBrowserConnection connection = value.getAttribute().getEntry().getBrowserConnection();
             Dn dn = value.getAttribute().getEntry().getDn();
