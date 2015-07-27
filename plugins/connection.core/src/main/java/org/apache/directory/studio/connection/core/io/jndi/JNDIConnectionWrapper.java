@@ -1238,7 +1238,6 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
 
             // check reconnection
             if ( i == 0
-                && runnable.getException() != null
                 && ( ( runnable.getException() instanceof CommunicationException )
                     || ( runnable.getException() instanceof ServiceUnavailableException ) || ( runnable.getException() instanceof InsufficientResourcesException ) ) )
             {

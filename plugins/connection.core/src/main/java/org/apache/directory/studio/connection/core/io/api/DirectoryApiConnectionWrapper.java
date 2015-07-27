@@ -1107,9 +1107,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
             runAndMonitor( runnable, monitor );
 
             // check reconnection
-            if ( i == 0
-                && runnable.getException() != null
-                && ( ( runnable.getException() instanceof InvalidConnectionException ) ) )
+            if ( ( i == 0 ) && ( ( runnable.getException() instanceof InvalidConnectionException ) ) )
             {
                 doConnect( monitor );
                 doBind( monitor );
