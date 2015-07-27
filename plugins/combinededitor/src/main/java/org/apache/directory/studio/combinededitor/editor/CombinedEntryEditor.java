@@ -283,7 +283,7 @@ public abstract class CombinedEntryEditor extends EditorPart implements INavigat
     {
         IEditorInput editorInput = getEditorInput();
         
-        if ( ( editorInput != null ) && ( editorInput instanceof EntryEditorInput ) )
+        if ( editorInput instanceof EntryEditorInput )
         {
             IEntry entry = ( ( EntryEditorInput ) editorInput ).getResolvedEntry();
             
@@ -356,7 +356,7 @@ public abstract class CombinedEntryEditor extends EditorPart implements INavigat
     {
         Object editorInput = getEditorInput();
         
-        if ( ( editorInput != null ) && ( editorInput instanceof EntryEditorInput ) )
+        if ( editorInput instanceof EntryEditorInput )
         {
             return ( EntryEditorInput ) editorInput;
         }
