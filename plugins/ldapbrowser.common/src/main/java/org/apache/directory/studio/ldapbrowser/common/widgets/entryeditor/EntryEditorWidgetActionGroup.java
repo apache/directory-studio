@@ -82,22 +82,22 @@ public class EntryEditorWidgetActionGroup implements ActionHandlerManager
     protected ValueEditorPreferencesAction openValueEditorPreferencesAction;
 
     /** The Constant newValueAction. */
-    protected final static String newValueAction = "newValueAction"; //$NON-NLS-1$
+    protected final static String NEW_VALUE_ACTION = "newValueAction"; //$NON-NLS-1$
 
     /** The Constant copyAction. */
-    protected final static String copyAction = "copyAction"; //$NON-NLS-1$
+    protected final static String COPY_ACTION = "copyAction"; //$NON-NLS-1$
 
     /** The Constant pasteAction. */
-    protected final static String pasteAction = "pasteAction"; //$NON-NLS-1$
+    protected final static String PASTE_ACTION = "pasteAction"; //$NON-NLS-1$
 
     /** The Constant deleteAction. */
-    protected final static String deleteAction = "deleteAction"; //$NON-NLS-1$
+    protected final static String DELETE_ACTION = "deleteAction"; //$NON-NLS-1$
 
     /** The Constant selectAllAction. */
-    protected final static String selectAllAction = "selectAllAction"; //$NON-NLS-1$
+    protected final static String SELECT_ALL_ACTION = "selectAllAction"; //$NON-NLS-1$
 
     /** The Constant propertyDialogAction. */
-    protected final static String propertyDialogAction = "propertyDialogAction"; //$NON-NLS-1$
+    protected final static String PROPERTY_DIALOG_ACTION = "propertyDialogAction"; //$NON-NLS-1$
 
     /** The entry editor action map. */
     protected Map<String, EntryEditorActionProxy> entryEditorActionMap;
@@ -142,15 +142,17 @@ public class EntryEditorWidgetActionGroup implements ActionHandlerManager
         
         openValueEditorPreferencesAction = new ValueEditorPreferencesAction();
 
-        entryEditorActionMap.put( newValueAction, new EntryEditorActionProxy( viewer, new NewValueAction() ) );
+        entryEditorActionMap.put( NEW_VALUE_ACTION, new EntryEditorActionProxy( viewer, new NewValueAction() ) );
 
-        entryEditorActionMap.put( pasteAction, new EntryEditorActionProxy( viewer, new EntryEditorPasteAction() ) );
-        entryEditorActionMap.put( copyAction, new EntryEditorActionProxy( viewer, new CopyAction(
-            ( BrowserActionProxy ) entryEditorActionMap.get( pasteAction ), valueEditorManager ) ) );
-        entryEditorActionMap.put( deleteAction, new EntryEditorActionProxy( viewer, new DeleteAction() ) );
-        entryEditorActionMap.put( selectAllAction, new EntryEditorActionProxy( viewer, new SelectAllAction( viewer ) ) );
+        entryEditorActionMap.put( PASTE_ACTION, new EntryEditorActionProxy( viewer, new EntryEditorPasteAction() ) );
+        entryEditorActionMap.put( COPY_ACTION, new EntryEditorActionProxy( viewer, new CopyAction(
+            ( BrowserActionProxy ) entryEditorActionMap.get( PASTE_ACTION ), valueEditorManager ) ) );
+        entryEditorActionMap.put( DELETE_ACTION, new EntryEditorActionProxy( viewer, new DeleteAction() ) );
+        entryEditorActionMap.put( SELECT_ALL_ACTION, new EntryEditorActionProxy( viewer, new SelectAllAction( viewer ) ) );
 
-        entryEditorActionMap.put( propertyDialogAction, new EntryEditorActionProxy( viewer, new PropertiesAction() ) );
+        entryEditorActionMap.put( PROPERTY_DIALOG_ACTION, new EntryEditorActionProxy( viewer, new PropertiesAction() ) );
+        
+        //viewer.addSelectionChangedListener( entryEditorListener );
     }
 
 
@@ -208,9 +210,9 @@ public class EntryEditorWidgetActionGroup implements ActionHandlerManager
      */
     public void fillToolBar( IToolBarManager toolBarManager )
     {
-        toolBarManager.add( entryEditorActionMap.get( newValueAction ) );
+        toolBarManager.add( entryEditorActionMap.get( NEW_VALUE_ACTION ) );
         toolBarManager.add( new Separator() );
-        toolBarManager.add( entryEditorActionMap.get( deleteAction ) );
+        toolBarManager.add( entryEditorActionMap.get( DELETE_ACTION ) );
         toolBarManager.add( new Separator() );
         toolBarManager.add( showQuickFilterAction );
         toolBarManager.update( true );
@@ -264,14 +266,14 @@ public class EntryEditorWidgetActionGroup implements ActionHandlerManager
     protected void contextMenuAboutToShow( IMenuManager menuManager )
     {
         // new
-        menuManager.add( entryEditorActionMap.get( newValueAction ) );
+        menuManager.add( entryEditorActionMap.get( NEW_VALUE_ACTION ) );
         menuManager.add( new Separator() );
 
         // copy, paste, delete
-        menuManager.add( entryEditorActionMap.get( copyAction ) );
-        menuManager.add( entryEditorActionMap.get( pasteAction ) );
-        menuManager.add( entryEditorActionMap.get( deleteAction ) );
-        menuManager.add( entryEditorActionMap.get( selectAllAction ) );
+        menuManager.add( entryEditorActionMap.get( COPY_ACTION ) );
+        menuManager.add( entryEditorActionMap.get( PASTE_ACTION ) );
+        menuManager.add( entryEditorActionMap.get( DELETE_ACTION ) );
+        menuManager.add( entryEditorActionMap.get( SELECT_ALL_ACTION ) );
         menuManager.add( new Separator() );
 
         // edit
@@ -279,7 +281,7 @@ public class EntryEditorWidgetActionGroup implements ActionHandlerManager
         menuManager.add( new Separator() );
 
         // properties
-        menuManager.add( entryEditorActionMap.get( propertyDialogAction ) );
+        menuManager.add( entryEditorActionMap.get( PROPERTY_DIALOG_ACTION ) );
     }
 
 
@@ -320,40 +322,40 @@ public class EntryEditorWidgetActionGroup implements ActionHandlerManager
     {
         if ( actionBars != null )
         {
-            actionBars.setGlobalActionHandler( ActionFactory.COPY.getId(), entryEditorActionMap.get( copyAction ) );
-            actionBars.setGlobalActionHandler( ActionFactory.PASTE.getId(), entryEditorActionMap.get( pasteAction ) );
-            actionBars.setGlobalActionHandler( ActionFactory.DELETE.getId(), entryEditorActionMap.get( deleteAction ) );
+            actionBars.setGlobalActionHandler( ActionFactory.COPY.getId(), entryEditorActionMap.get( COPY_ACTION ) );
+            actionBars.setGlobalActionHandler( ActionFactory.PASTE.getId(), entryEditorActionMap.get( PASTE_ACTION ) );
+            actionBars.setGlobalActionHandler( ActionFactory.DELETE.getId(), entryEditorActionMap.get( DELETE_ACTION ) );
             actionBars.setGlobalActionHandler( ActionFactory.SELECT_ALL.getId(), entryEditorActionMap
-                .get( selectAllAction ) );
+                .get( SELECT_ALL_ACTION ) );
             actionBars.setGlobalActionHandler( ActionFactory.PROPERTIES.getId(), entryEditorActionMap
-                .get( propertyDialogAction ) );
+                .get( PROPERTY_DIALOG_ACTION ) );
             actionBars.setGlobalActionHandler( ActionFactory.FIND.getId(), showQuickFilterAction ); // IWorkbenchActionDefinitionIds.FIND_REPLACE
 
             actionBars.updateActionBars();
         }
         else
         {
-            IAction da = entryEditorActionMap.get( deleteAction );
+            IAction da = entryEditorActionMap.get( DELETE_ACTION );
             da.setActionDefinitionId( BrowserCommonConstants.CMD_DELETE );
             ActionUtils.activateActionHandler( da );
 
-            IAction ca = entryEditorActionMap.get( copyAction );
+            IAction ca = entryEditorActionMap.get( COPY_ACTION );
             ca.setActionDefinitionId( BrowserCommonConstants.CMD_COPY );
             ActionUtils.activateActionHandler( ca );
 
-            IAction pa = entryEditorActionMap.get( pasteAction );
+            IAction pa = entryEditorActionMap.get( PASTE_ACTION );
             pa.setActionDefinitionId( BrowserCommonConstants.CMD_PASTE );
             ActionUtils.activateActionHandler( pa );
 
             showQuickFilterAction.setActionDefinitionId( BrowserCommonConstants.CMD_FIND );
             ActionUtils.activateActionHandler( showQuickFilterAction );
 
-            IAction pda = entryEditorActionMap.get( propertyDialogAction );
+            IAction pda = entryEditorActionMap.get( PROPERTY_DIALOG_ACTION );
             pda.setActionDefinitionId( BrowserCommonConstants.CMD_PROPERTIES );
             ActionUtils.activateActionHandler( pda );
         }
 
-        IAction nva = entryEditorActionMap.get( newValueAction );
+        IAction nva = entryEditorActionMap.get( NEW_VALUE_ACTION );
         ActionUtils.activateActionHandler( nva );
         ActionUtils.activateActionHandler( openDefaultValueEditorActionProxy );
     }
@@ -377,18 +379,18 @@ public class EntryEditorWidgetActionGroup implements ActionHandlerManager
         }
         else
         {
-            IAction ca = entryEditorActionMap.get( copyAction );
+            IAction ca = entryEditorActionMap.get( COPY_ACTION );
             ActionUtils.deactivateActionHandler( ca );
-            IAction pa = entryEditorActionMap.get( pasteAction );
+            IAction pa = entryEditorActionMap.get( PASTE_ACTION );
             ActionUtils.deactivateActionHandler( pa );
-            IAction da = entryEditorActionMap.get( deleteAction );
+            IAction da = entryEditorActionMap.get( DELETE_ACTION );
             ActionUtils.deactivateActionHandler( da );
             ActionUtils.deactivateActionHandler( showQuickFilterAction );
-            IAction pda = entryEditorActionMap.get( propertyDialogAction );
+            IAction pda = entryEditorActionMap.get( PROPERTY_DIALOG_ACTION );
             ActionUtils.deactivateActionHandler( pda );
         }
 
-        IAction nva = entryEditorActionMap.get( newValueAction );
+        IAction nva = entryEditorActionMap.get( NEW_VALUE_ACTION );
         ActionUtils.deactivateActionHandler( nva );
         ActionUtils.deactivateActionHandler( openDefaultValueEditorActionProxy );
     }

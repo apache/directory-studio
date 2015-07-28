@@ -153,12 +153,12 @@ public class OpenBestEditorAction extends AbstractOpenEditorAction
             StringBuffer message = new StringBuffer();
             IAttribute attribute = value.getAttribute();
             String description = attribute.getDescription();
+            AttributeType atd = attribute.getAttributeTypeDescription();
 
             if ( value.isEmpty() )
             {
                 // validate single-valued attributes
-                if ( attribute.getValueSize() > 1
-                    && attribute.getAttributeTypeDescription().isSingleValued() )
+                if ( ( attribute.getValueSize() > 1 ) && atd.isSingleValued() )
                 {
                     message.append( NLS.bind( Messages.getString( "OpenBestEditorAction.ValueSingleValued" ), description ) );//$NON-NLS-1$
                     message.append( BrowserCoreConstants.LINE_SEPARATOR );
@@ -168,7 +168,6 @@ public class OpenBestEditorAction extends AbstractOpenEditorAction
                 // validate if value is allowed
                 IEntry entry = attribute.getEntry();
                 Collection<AttributeType> allAtds = SchemaUtils.getAllAttributeTypeDescriptions( entry );
-                AttributeType atd = attribute.getAttributeTypeDescription();
                 
                 if ( !allAtds.contains( atd ) )
                 {
@@ -179,7 +178,7 @@ public class OpenBestEditorAction extends AbstractOpenEditorAction
             }
 
             // validate non-modifiable attributes
-            if ( !SchemaUtils.isModifiable( attribute.getAttributeTypeDescription() ) )
+            if ( !SchemaUtils.isModifiable( atd ) )
             {
                 message.append( NLS.bind( Messages.getString( "OpenBestEditorAction.ValueNotModifiable" ), description ) );//$NON-NLS-1$ 
                 message.append( BrowserCoreConstants.LINE_SEPARATOR );

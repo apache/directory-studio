@@ -40,7 +40,7 @@ import org.eclipse.osgi.util.NLS;
 public class DeleteAllValuesAction extends DeleteAction
 {
 
-    private static Collection<IValue> EMPTY_VALUES = new HashSet<IValue>();
+    private static final Collection<IValue> EMPTY_VALUES = new HashSet<IValue>();
 
 
     /**

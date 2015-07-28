@@ -112,12 +112,14 @@ public class EntryEditorPasteAction extends PasteAction
      */
     private IValue[] getValuesToPaste()
     {
-        if ( getInput() instanceof IEntry || getInput() instanceof AttributeHierarchy )
+        if ( ( getInput() instanceof IEntry ) || ( getInput() instanceof AttributeHierarchy ) )
         {
-            Object content = this.getFromClipboard( ValuesTransfer.getInstance() );
+            Object content = getFromClipboard( ValuesTransfer.getInstance() );
+            
             if ( content instanceof IValue[] )
             {
                 IValue[] values = ( IValue[] ) content;
+                
                 return values;
             }
         }
