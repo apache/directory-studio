@@ -301,9 +301,9 @@ public class BrowserViewActionGroup extends BrowserActionGroup
      */
     public void fillToolBar( IToolBarManager toolBarManager )
     {
-        toolBarManager.add( browserActionMap.get( upAction ) );
+        toolBarManager.add( browserActionMap.get( UP_ACTION ) );
         toolBarManager.add( new Separator() );
-        toolBarManager.add( browserActionMap.get( refreshAction ) );
+        toolBarManager.add( browserActionMap.get( REFRESH_ACTION ) );
         toolBarManager.add( new Separator() );
         toolBarManager.add( collapseAllAction );
         toolBarManager.add( linkWithEditorAction );
@@ -355,7 +355,7 @@ public class BrowserViewActionGroup extends BrowserActionGroup
         leid.setImageDescriptor( leid.getAction().getImageDescriptor() );
         menuManager.add( leid );
         menuManager.add( browserActionMap.get( gotoDnAction ) );
-        menuManager.add( browserActionMap.get( upAction ) );
+        menuManager.add( browserActionMap.get( UP_ACTION ) );
         menuManager.add( new Separator() );
 
         // copy/paste/...
@@ -384,12 +384,12 @@ public class BrowserViewActionGroup extends BrowserActionGroup
         menuManager.add( new Separator() );
 
         // filter, batch
-        menuManager.add( browserActionMap.get( filterChildrenAction ) );
-        if ( ( browserActionMap.get( unfilterChildrenAction ) ).isEnabled() )
+        menuManager.add( browserActionMap.get( FILTER_CHILDREN_ACTION ) );
+        if ( ( browserActionMap.get( UNFILTER_CHILDREN_ACTION ) ).isEnabled() )
         {
-            menuManager.add( browserActionMap.get( unfilterChildrenAction ) );
+            menuManager.add( browserActionMap.get( UNFILTER_CHILDREN_ACTION ) );
         }
-        menuManager.add( browserActionMap.get( openQuickSearchAction ) );
+        menuManager.add( browserActionMap.get( OPEN_QUICK_SEARCH_ACTION ) );
         menuManager.add( new Separator() );
 
         // import/export
@@ -410,7 +410,7 @@ public class BrowserViewActionGroup extends BrowserActionGroup
         menuManager.add( new Separator() );
 
         // refresh
-        menuManager.add( browserActionMap.get( refreshAction ) );
+        menuManager.add( browserActionMap.get( REFRESH_ACTION ) );
         MenuManager fetchMenuManager = new MenuManager( Messages.getString( "BrowserViewActionGroup.Fetch" ) ); //$NON-NLS-1$
         if ( browserActionMap.get( fetchOperationalAttributesAction ).isEnabled() )
         {
@@ -436,7 +436,7 @@ public class BrowserViewActionGroup extends BrowserActionGroup
         menuManager.add( new Separator() );
 
         // properties
-        menuManager.add( browserActionMap.get( propertyDialogAction ) );
+        menuManager.add( browserActionMap.get( PROPERTY_DIALOG_ACTION ) );
     }
 
 

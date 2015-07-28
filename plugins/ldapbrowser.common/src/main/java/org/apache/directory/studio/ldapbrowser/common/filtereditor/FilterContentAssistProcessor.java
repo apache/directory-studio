@@ -69,7 +69,7 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
     IContentProposalProvider
 {
 
-    private static final Comparator<String> nameAndOidComparator = new Comparator<String>()
+    private static final Comparator<String> NAME_AND_OID_COMPARATOR = new Comparator<String>()
     {
         public int compare( String s1, String s2 )
         {
@@ -168,10 +168,10 @@ public class FilterContentAssistProcessor extends TemplateCompletionProcessor im
     {
         this.schema = schema;
 
-        possibleAttributeTypes = new TreeMap<String, AttributeType>( nameAndOidComparator );
+        possibleAttributeTypes = new TreeMap<String, AttributeType>( NAME_AND_OID_COMPARATOR );
         possibleFilterTypes = new LinkedHashMap<String, String>();
-        possibleObjectClasses = new TreeMap<String, ObjectClass>( nameAndOidComparator );
-        possibleMatchingRules = new TreeMap<String, MatchingRule>( nameAndOidComparator );
+        possibleObjectClasses = new TreeMap<String, ObjectClass>( NAME_AND_OID_COMPARATOR );
+        possibleMatchingRules = new TreeMap<String, MatchingRule>( NAME_AND_OID_COMPARATOR );
 
         if ( schema != null )
         {

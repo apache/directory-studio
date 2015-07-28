@@ -239,7 +239,7 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
         entryEditorActionMap.put( fetchOperationalAttributesAction, new EntryEditorActionProxy( viewer,
             new FetchOperationalAttributesAction() ) );
 
-        entryEditorActionMap.put( propertyDialogAction, new EntryEditorActionProxy( viewer,
+        entryEditorActionMap.put( PROPERTY_DIALOG_ACTION, new EntryEditorActionProxy( viewer,
             new EntryEditorPropertiesAction( entryEditor ) ) );
     }
 
@@ -273,10 +273,10 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
     public void fillToolBar( IToolBarManager toolBarManager )
     {
         toolBarManager.add( new Separator() );
-        toolBarManager.add( entryEditorActionMap.get( newValueAction ) );
+        toolBarManager.add( entryEditorActionMap.get( NEW_VALUE_ACTION ) );
         toolBarManager.add( entryEditorActionMap.get( newAttributeAction ) );
         toolBarManager.add( new Separator() );
-        toolBarManager.add( entryEditorActionMap.get( deleteAction ) );
+        toolBarManager.add( entryEditorActionMap.get( DELETE_ACTION ) );
         toolBarManager.add( entryEditorActionMap.get( deleteAllValuesAction ) );
         toolBarManager.add( new Separator() );
         toolBarManager.add( entryEditorActionMap.get( refreshAttributesAction ) );
@@ -321,7 +321,7 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
     {
         // new
         menuManager.add( entryEditorActionMap.get( newAttributeAction ) );
-        menuManager.add( entryEditorActionMap.get( newValueAction ) );
+        menuManager.add( entryEditorActionMap.get( NEW_VALUE_ACTION ) );
         menuManager.add( entryEditorActionMap.get( newSearchAction ) );
         menuManager.add( entryEditorActionMap.get( newBatchOperationAction ) );
         menuManager.add( new Separator() );
@@ -341,10 +341,10 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
         menuManager.add( new Separator() );
 
         // copy, paste, delete
-        menuManager.add( entryEditorActionMap.get( copyAction ) );
-        menuManager.add( entryEditorActionMap.get( pasteAction ) );
-        menuManager.add( entryEditorActionMap.get( deleteAction ) );
-        menuManager.add( entryEditorActionMap.get( selectAllAction ) );
+        menuManager.add( entryEditorActionMap.get( COPY_ACTION ) );
+        menuManager.add( entryEditorActionMap.get( PASTE_ACTION ) );
+        menuManager.add( entryEditorActionMap.get( DELETE_ACTION ) );
+        menuManager.add( entryEditorActionMap.get( SELECT_ALL_ACTION ) );
         MenuManager advancedMenuManager = new MenuManager( Messages.getString( "EntryEditorActionGroup.Advanced" ) ); //$NON-NLS-1$
         advancedMenuManager.add( entryEditorActionMap.get( copyDnAction ) );
         advancedMenuManager.add( entryEditorActionMap.get( copyUrlAction ) );
@@ -385,7 +385,7 @@ public class EntryEditorActionGroup extends EntryEditorWidgetActionGroup
         menuManager.add( new Separator( IWorkbenchActionConstants.MB_ADDITIONS ) );
 
         // properties
-        menuManager.add( entryEditorActionMap.get( propertyDialogAction ) );
+        menuManager.add( entryEditorActionMap.get( PROPERTY_DIALOG_ACTION ) );
     }
 
 

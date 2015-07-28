@@ -55,7 +55,7 @@ public class FilterCharacterPairMatcher implements ICharacterPairMatcher
     public FilterCharacterPairMatcher( ISourceViewer sourceViewer, LdapFilterParser parser )
     {
         this.parser = parser;
-        this.clear();
+        clear();
     }
 
 
