@@ -472,10 +472,10 @@ public class DeleteAction extends BrowserAction
             // check if ALL values of objectClass or a MUST attribute are selected
             if ( !attributeNameToSelectedValuesCountMap.containsKey( atd ) )
             {
-                attributeNameToSelectedValuesCountMap.put( atd, new Integer( 0 ) );
+                attributeNameToSelectedValuesCountMap.put( atd, Integer.valueOf(  0 ) );
             }
             int count = ( attributeNameToSelectedValuesCountMap.get( atd ) ).intValue() + 1;
-            attributeNameToSelectedValuesCountMap.put( atd, new Integer( count ) );
+            attributeNameToSelectedValuesCountMap.put( atd, Integer.valueOf( count ) );
             if ( value.getAttribute().isObjectClassAttribute() && count >= ah.getValueSize() )
             {
                 message.append( Messages.getString( "DeleteAction.DeleteObjectClass" ) ); //$NON-NLS-1$

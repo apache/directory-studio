@@ -271,12 +271,13 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
         int pageSize;
         try
         {
-            pageSize = new Integer( pagedSearchSizeText.getText() ).intValue();
+            pageSize = Integer.valueOf( pagedSearchSizeText.getText() );
         }
         catch ( NumberFormatException e )
         {
             pageSize = 100;
         }
+        
         return pageSize;
     }
 
@@ -847,8 +848,8 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
         String countLimit = ldapUrl.getExtensionValue( X_COUNT_LIMIT );
         try
         {
-            parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_COUNT_LIMIT, new Integer(
-                countLimit ).intValue() );
+            parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_COUNT_LIMIT, 
+                Integer.valueOf( countLimit ) );
         }
         catch ( NumberFormatException e )
         {
@@ -859,8 +860,8 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
         String timeLimit = ldapUrl.getExtensionValue( X_TIME_LIMIT );
         try
         {
-            parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_TIME_LIMIT, new Integer(
-                timeLimit ).intValue() );
+            parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_TIME_LIMIT, 
+                Integer.valueOf( timeLimit ) );
         }
         catch ( NumberFormatException e )
         {
@@ -928,7 +929,7 @@ public class BrowserParameterPage extends AbstractConnectionParameterPage
             try
             {
                 parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH_SIZE,
-                    new Integer( pagedSearchSize ).intValue() );
+                    Integer.valueOf( pagedSearchSize ) );
             }
             catch ( NumberFormatException e )
             {

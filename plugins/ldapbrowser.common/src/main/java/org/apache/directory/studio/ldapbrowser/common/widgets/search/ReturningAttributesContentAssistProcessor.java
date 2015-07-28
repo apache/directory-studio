@@ -86,7 +86,7 @@ public class ReturningAttributesContentAssistProcessor implements ISubjectContro
     {
         if ( proposals == null )
         {
-            proposals = new ArrayList<String>();
+            this.proposals = new ArrayList<String>();
         }
 
         // sort proposals, attributes first

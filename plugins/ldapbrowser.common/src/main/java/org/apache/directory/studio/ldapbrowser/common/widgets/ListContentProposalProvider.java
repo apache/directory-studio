@@ -120,7 +120,7 @@ public class ListContentProposalProvider implements IContentProposalProvider
     {
         if ( proposals == null )
         {
-            proposals = new ArrayList<String>();
+            this.proposals = new ArrayList<String>();
         }
 
         this.proposals = proposals;

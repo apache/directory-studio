@@ -880,7 +880,7 @@ public class SearchPageWrapper extends AbstractWidget
                 int pageSize;
                 try
                 {
-                    pageSize = new Integer( pagedSearchControlSizeText.getText() ).intValue();
+                    pageSize = Integer.valueOf( pagedSearchControlSizeText.getText() );
                 }
                 catch ( NumberFormatException e )
                 {

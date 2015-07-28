@@ -187,7 +187,7 @@ public class LimitWidget extends AbstractWidget
         int countLimit;
         try
         {
-            countLimit = new Integer( countLimitText.getText() ).intValue();
+            countLimit = Integer.valueOf( countLimitText.getText() );
         }
         catch ( NumberFormatException e )
         {
@@ -207,7 +207,7 @@ public class LimitWidget extends AbstractWidget
         int timeLimit;
         try
         {
-            timeLimit = new Integer( timeLimitText.getText() ).intValue();
+            timeLimit = Integer.valueOf( timeLimitText.getText() );
         }
         catch ( NumberFormatException e )
         {
