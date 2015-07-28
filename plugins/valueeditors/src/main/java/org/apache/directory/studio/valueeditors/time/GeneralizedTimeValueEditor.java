@@ -82,7 +82,7 @@ public class GeneralizedTimeValueEditor extends AbstractDialogStringValueEditor
     protected boolean openDialog( Shell shell )
     {
         Object value = getValue();
-        if ( value != null && value instanceof String )
+        if ( value instanceof String )
         {
             String s = ( String ) value;
 

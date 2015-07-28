@@ -50,7 +50,7 @@ public class InPlaceBooleanValueEditor extends AbstractInPlaceStringValueEditor
         {
             String stringValue = ( String ) value;
 
-            if ( "".equals( stringValue ) )
+            if ( EMPTY.equals( stringValue ) )
             {
                 return null;
             }

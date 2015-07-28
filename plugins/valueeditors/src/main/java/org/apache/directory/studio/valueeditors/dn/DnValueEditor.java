@@ -49,7 +49,8 @@ public class DnValueEditor extends AbstractDialogStringValueEditor
     protected boolean openDialog( Shell shell )
     {
         Object value = getValue();
-        if ( value != null && value instanceof DnValueEditorRawValueWrapper )
+        
+        if ( value instanceof DnValueEditorRawValueWrapper )
         {
             DnValueEditorRawValueWrapper wrapper = ( DnValueEditorRawValueWrapper ) value;
             Dn dn;
@@ -116,7 +117,7 @@ public class DnValueEditor extends AbstractDialogStringValueEditor
     public Object getRawValue( IValue value )
     {
         Object o = super.getRawValue( value );
-        if ( o != null && o instanceof String )
+        if ( o instanceof String )
         {
             IBrowserConnection connection = value.getAttribute().getEntry().getBrowserConnection();
             return new DnValueEditorRawValueWrapper( connection, ( String ) o );
