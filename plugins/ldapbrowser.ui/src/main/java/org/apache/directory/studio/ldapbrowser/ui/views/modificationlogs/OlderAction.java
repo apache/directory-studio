@@ -108,7 +108,7 @@ public class OlderAction extends BrowserAction
      */
     public boolean isEnabled()
     {
-        if ( getInput() != null && ( getInput() instanceof ModificationLogsViewInput ) )
+        if ( ( getInput() instanceof ModificationLogsViewInput ) )
         {
             ModificationLogsViewInput input = ( ModificationLogsViewInput ) getInput();
             if ( input.getBrowserConnection().getConnection() != null )

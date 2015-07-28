@@ -22,6 +22,7 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.searchresult;
 
 
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
+import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.eclipse.jface.viewers.ILazyContentProvider;
@@ -126,7 +127,8 @@ public class SearchResultEditorContentProvider implements ILazyContentProvider
         // update state
         String url = ""; //$NON-NLS-1$
         boolean enabled = true;
-        if ( input != null && input instanceof ISearch )
+        
+        if ( input instanceof ISearch )
         {
             ISearch search = ( ISearch ) input;
 
@@ -202,16 +204,19 @@ public class SearchResultEditorContentProvider implements ILazyContentProvider
      */
     public Object[] getElements( Object inputElement )
     {
-        if ( inputElement != null && inputElement instanceof ISearch )
+        if ( inputElement instanceof ISearch )
         {
             ISearch search = ( ISearch ) inputElement;
-            return search.getSearchResults() != null ? search.getSearchResults() : new Object[0];
+            
+            ISearchResult[] results = search.getSearchResults();
+            
+            if ( results != null )
+            {
+                return results;
+            }
         }
-        else
-        {
-            return new Object[]
-                {};
-        }
+
+        return new Object[0];
     }
 
 

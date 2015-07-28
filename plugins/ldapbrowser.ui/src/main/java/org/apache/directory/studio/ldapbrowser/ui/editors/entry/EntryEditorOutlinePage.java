@@ -563,7 +563,7 @@ public class EntryEditorOutlinePage extends ContentOutlinePage
         if ( viewer != null )
         {
             Object o = viewer.getInput();
-            if ( ( o != null ) && ( o instanceof IEntry ) )
+            if (  o instanceof IEntry )
             {
                 return ( IEntry ) o;
             }

@@ -205,7 +205,7 @@ public class LinkWithEditorAction extends Action
             {
                 IEditorPart editor = ( IEditorPart ) part;
                 IEditorInput input = editor.getEditorInput();
-                if ( input != null && input instanceof EntryEditorInput )
+                if ( input instanceof EntryEditorInput )
                 {
                     EntryEditorInput eei = ( EntryEditorInput ) input;
                     IEntry entry = eei.getResolvedEntry();
@@ -214,7 +214,7 @@ public class LinkWithEditorAction extends Action
                         objectToSelect = entry.getBrowserConnection().getConnection();
                     }
                 }
-                else if ( input != null && input instanceof SearchResultEditorInput )
+                else if ( input instanceof SearchResultEditorInput )
                 {
                     SearchResultEditorInput srei = ( SearchResultEditorInput ) input;
                     ISearch search = srei.getSearch();

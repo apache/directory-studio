@@ -873,7 +873,7 @@ public class EntryEditorManager
     {
         IWorkbenchPart part = partRef.getPart( false );
         
-        if ( ( part != null ) && ( part instanceof IEntryEditor ) )
+        if ( part instanceof IEntryEditor )
         {
             IEntryEditor entryEditor = ( IEntryEditor ) part;
             

@@ -378,7 +378,7 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
         for ( IEditorReference ref : activePage.getEditorReferences() )
         {
             IWorkbenchPart part = ref.getPart( false );
-            if ( part != null && part instanceof IEntryEditor )
+            if ( part instanceof IEntryEditor )
             {
                 IEntryEditor editor = ( IEntryEditor ) part;
                 if ( ( editor != null ) && ( editor.getEntryEditorInput() != null )

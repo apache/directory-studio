@@ -150,7 +150,7 @@ public class GotoDnNavigateMenuAction extends LocateInDitAction
         {
             clipboard = new Clipboard( Display.getCurrent() );
             Object contents = clipboard.getContents( TextTransfer.getInstance() );
-            if ( contents != null && contents instanceof String )
+            if ( contents instanceof String )
             {
                 return ( String ) contents;
             }

@@ -77,7 +77,7 @@ public abstract class LocateInDitAction extends BrowserAction
                     {
                     }
                 }
-                if ( targetView != null && targetView instanceof BrowserView )
+                if ( targetView instanceof BrowserView )
                 {
                     ( ( BrowserView ) targetView ).select( entry );
                     PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().activate( targetView );

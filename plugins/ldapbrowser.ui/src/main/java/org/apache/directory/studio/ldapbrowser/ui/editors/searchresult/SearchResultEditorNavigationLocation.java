@@ -100,7 +100,7 @@ public class SearchResultEditorNavigationLocation extends NavigationLocation
     public void restoreLocation()
     {
         IEditorPart editorPart = getEditorPart();
-        if ( editorPart != null && editorPart instanceof SearchResultEditor )
+        if ( editorPart instanceof SearchResultEditor )
         {
             SearchResultEditor searchResultEditor = ( SearchResultEditor ) editorPart;
             searchResultEditor.setInput( ( SearchResultEditorInput ) getInput() );
@@ -158,7 +158,7 @@ public class SearchResultEditorNavigationLocation extends NavigationLocation
     private ISearch getSearch()
     {
         Object editorInput = getInput();
-        if ( editorInput != null && editorInput instanceof SearchResultEditorInput )
+        if ( editorInput instanceof SearchResultEditorInput )
         {
             SearchResultEditorInput searchResultEditorInput = ( SearchResultEditorInput ) editorInput;
             ISearch search = searchResultEditorInput.getSearch();

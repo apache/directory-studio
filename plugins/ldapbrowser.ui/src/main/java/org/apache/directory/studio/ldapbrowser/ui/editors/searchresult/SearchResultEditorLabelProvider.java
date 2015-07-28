@@ -90,7 +90,7 @@ public class SearchResultEditorLabelProvider extends LabelProvider implements IT
      */
     public final String getColumnText( Object obj, int index )
     {
-        if ( obj != null && obj instanceof ISearchResult )
+        if ( obj instanceof ISearchResult )
         {
             String property;
             try

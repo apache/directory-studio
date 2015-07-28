@@ -69,7 +69,7 @@ public class OpenSearchResultAction extends BrowserAction
                 {
                 }
             }
-            if ( targetView != null && targetView instanceof BrowserView )
+            if ( targetView instanceof BrowserView )
             {
                 ( ( BrowserView ) targetView ).select( getSelectedSearchResults()[0] );
                 PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().activate( targetView );

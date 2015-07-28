@@ -79,7 +79,7 @@ public class SearchResultEditorCellModifier implements ICellModifier
      */
     public boolean canModify( Object element, String property )
     {
-        if ( element != null && element instanceof ISearchResult && property != null )
+        if ( element instanceof ISearchResult && property != null )
         {
             ISearchResult result = ( ISearchResult ) element;
             AttributeHierarchy ah = result.getAttributeWithSubtypes( property );
@@ -112,7 +112,7 @@ public class SearchResultEditorCellModifier implements ICellModifier
      */
     public Object getValue( Object element, String property )
     {
-        if ( element != null && element instanceof ISearchResult && property != null )
+        if ( element instanceof ISearchResult && property != null )
         {
             // perform modifications on the clone
             ISearchResult result = cursor.getSelectedSearchResult();
@@ -143,12 +143,12 @@ public class SearchResultEditorCellModifier implements ICellModifier
      */
     public void modify( Object element, String property, Object newRawValue )
     {
-        if ( element != null && element instanceof Item )
+        if ( element instanceof Item )
         {
             element = ( ( Item ) element ).getData();
         }
 
-        if ( element != null && element instanceof ISearchResult && property != null )
+        if ( element instanceof ISearchResult && property != null )
         {
             // perform modifications on the clone
             ISearchResult result = cursor.getSelectedSearchResult();

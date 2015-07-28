@@ -107,7 +107,7 @@ public class LocateEntryInLdapBrowserAction extends Action
             }
         }
 
-        if ( targetView != null && targetView instanceof BrowserView )
+        if ( targetView instanceof BrowserView )
         {
             ( ( BrowserView ) targetView ).select( o );
             PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().activate( targetView );
