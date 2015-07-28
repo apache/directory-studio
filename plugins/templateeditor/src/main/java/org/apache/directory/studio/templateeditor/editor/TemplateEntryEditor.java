@@ -210,7 +210,8 @@ public abstract class TemplateEntryEditor extends EditorPart implements INavigat
     public EntryEditorInput getEntryEditorInput()
     {
         Object editorInput = getEditorInput();
-        if ( ( editorInput != null ) && ( editorInput instanceof EntryEditorInput ) )
+        
+        if ( editorInput instanceof EntryEditorInput )
         {
             return ( EntryEditorInput ) editorInput;
         }

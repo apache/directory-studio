@@ -222,9 +222,11 @@ public class TemplateEntryEditorNavigationLocation extends NavigationLocation
     private EntryEditorInput getEntryEditorInput()
     {
         Object editorInput = getInput();
-        if ( editorInput != null && editorInput instanceof EntryEditorInput )
+        
+        if ( editorInput instanceof EntryEditorInput )
         {
             EntryEditorInput entryEditorInput = ( EntryEditorInput ) editorInput;
+            
             return entryEditorInput;
         }
 
