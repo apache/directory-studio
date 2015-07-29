@@ -33,6 +33,5 @@ public interface WidgetModifyListener
      *
      * @param event
      */
-    public void widgetModified( WidgetModifyEvent event );
-
+    void widgetModified( WidgetModifyEvent event );
 }
