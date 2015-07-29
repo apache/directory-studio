@@ -55,20 +55,8 @@ public class ACIItemTabFolderComposite extends Composite
     /** The tab folder */
     private TabFolder tabFolder;
 
-    /** The visual tab */
-    private TabItem visualTab;
-
-    /** The inner container of the visual tab */
-    private Composite visualContainer;
-
     /** The visual editor composite */
     private ACIItemVisualEditorComposite visualComposite;
-
-    /** Tehe source tab */
-    private TabItem sourceTab;
-
-    /** The inner container of the source tab */
-    private Composite sourceContainer;
 
     /** The source editor composite */
     private ACIItemSourceEditorComposite sourceComposite;
@@ -104,7 +92,8 @@ public class ACIItemTabFolderComposite extends Composite
     {
         tabFolder.addSelectionListener( new SelectionAdapter()
         {
-            public void widgetSelected( SelectionEvent e )
+            @Override
+            public void widgetSelected( SelectionEvent event )
             {
                 tabSelected();
             }
@@ -119,7 +108,7 @@ public class ACIItemTabFolderComposite extends Composite
     private void createSourceTab()
     {
         // create inner container
-        sourceContainer = new Composite( tabFolder, SWT.NONE );
+        Composite sourceContainer = new Composite( tabFolder, SWT.NONE );
         GridLayout layout = new GridLayout();
         layout.marginWidth = layout.marginHeight = 0;
         sourceContainer.setLayout( layout );
@@ -130,7 +119,7 @@ public class ACIItemTabFolderComposite extends Composite
         sourceComposite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
         // create tab
-        sourceTab = new TabItem( tabFolder, SWT.NONE, SOURCE_TAB_INDEX );
+        TabItem sourceTab = new TabItem( tabFolder, SWT.NONE, SOURCE_TAB_INDEX );
         sourceTab.setText( Messages.getString( "ACIItemTabFolderComposite.source.tab" ) ); //$NON-NLS-1$
         sourceTab.setControl( sourceContainer );
     }
@@ -143,7 +132,7 @@ public class ACIItemTabFolderComposite extends Composite
     private void createVisualTab()
     {
         // create inner container
-        visualContainer = new Composite( tabFolder, SWT.NONE );
+        Composite visualContainer = new Composite( tabFolder, SWT.NONE );
         visualContainer.setLayout( new GridLayout() );
         visualContainer.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
@@ -152,7 +141,7 @@ public class ACIItemTabFolderComposite extends Composite
         visualComposite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
         // create tab
-        visualTab = new TabItem( tabFolder, SWT.NONE, VISUAL_TAB_INDEX );
+        TabItem visualTab = new TabItem( tabFolder, SWT.NONE, VISUAL_TAB_INDEX );
         visualTab.setText( Messages.getString( "ACIItemTabFolderComposite.visual.tab" ) ); //$NON-NLS-1$
         visualTab.setControl( visualContainer );
     }

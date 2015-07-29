@@ -67,36 +67,17 @@ import org.eclipse.swt.widgets.Table;
  */
 public class ACIItemProtectedItemsComposite extends Composite
 {
-
     /** The context. */
     private ACIItemValueWithContext context;
 
     /** The inner composite for all the content */
     private Composite composite = null;
 
-    /** The description label */
-    private Label label = null;
-
-    /** The table control for the table viewer */
-    private Table table = null;
-
     /** The table viewer containing all protected items */
     private CheckboxTableViewer tableViewer = null;
 
-    /** The composite containing the buttons */
-    private Composite buttonComposite = null;
-
     /** The edit button */
     private Button editButton = null;
-
-    /** The select all button */
-    private Button selectAllButton = null;
-
-    /** The deselect all button */
-    private Button deselectAllButton = null;
-
-    /** The reverse button */
-    private Button reverseSelectionButton = null;
 
     /** The possible protected items, used as input for the table viewer */
     private ProtectedItemWrapper[] protectedItemWrappers = ProtectedItemWrapperFactory.createProtectedItemWrappers();
@@ -156,7 +137,7 @@ public class ACIItemProtectedItemsComposite extends Composite
         composite.setLayoutData( gridData );
         composite.setLayout( gridLayout );
 
-        label = new Label( composite, SWT.NONE );
+        Label label = new Label( composite, SWT.NONE );
         label.setText( Messages.getString( "ACIItemProtectedItemsComposite.description" ) ); //$NON-NLS-1$
         label.setLayoutData( labelGridData );
 
@@ -178,7 +159,7 @@ public class ACIItemProtectedItemsComposite extends Composite
         tableGridData.horizontalAlignment = GridData.FILL;
         //tableGridData.heightHint = 100;
 
-        table = new Table( composite, SWT.BORDER | SWT.CHECK );
+        Table table = new Table( composite, SWT.BORDER | SWT.CHECK );
         table.setHeaderVisible( false );
         table.setLayoutData( tableGridData );
         table.setLinesVisible( false );
@@ -253,7 +234,7 @@ public class ACIItemProtectedItemsComposite extends Composite
         gridData.grabExcessVerticalSpace = false;
         gridData.verticalAlignment = GridData.FILL;
 
-        buttonComposite = new Composite( composite, SWT.NONE );
+        Composite buttonComposite = new Composite( composite, SWT.NONE );
         buttonComposite.setLayoutData( gridData );
         buttonComposite.setLayout( gridLayout );
 
@@ -269,7 +250,7 @@ public class ACIItemProtectedItemsComposite extends Composite
         } );
         editButton.setEnabled( false );
 
-        selectAllButton = new Button( buttonComposite, SWT.NONE );
+        Button selectAllButton = new Button( buttonComposite, SWT.NONE );
         selectAllButton.setText( Messages.getString( "ACIItemProtectedItemsComposite.selectAll.button" ) ); //$NON-NLS-1$
         selectAllButton.setLayoutData( selectAllButtonGridData );
         selectAllButton.addSelectionListener( new SelectionAdapter()
@@ -281,7 +262,7 @@ public class ACIItemProtectedItemsComposite extends Composite
             }
         } );
 
-        deselectAllButton = new Button( buttonComposite, SWT.NONE );
+        Button deselectAllButton = new Button( buttonComposite, SWT.NONE );
         deselectAllButton.setText( Messages.getString( "ACIItemProtectedItemsComposite.deselectAll.button" ) ); //$NON-NLS-1$
         deselectAllButton.setLayoutData( deselectAllButtonGridData );
         deselectAllButton.addSelectionListener( new SelectionAdapter()
@@ -293,7 +274,7 @@ public class ACIItemProtectedItemsComposite extends Composite
             }
         } );
 
-        reverseSelectionButton = new Button( buttonComposite, SWT.NONE );
+        Button reverseSelectionButton = new Button( buttonComposite, SWT.NONE );
         reverseSelectionButton.setText( Messages.getString( "ACIItemProtectedItemsComposite.revers.button" ) ); //$NON-NLS-1$
         reverseSelectionButton.setLayoutData( reverseSelectionButtonGridData );
         reverseSelectionButton.addSelectionListener( new SelectionAdapter()

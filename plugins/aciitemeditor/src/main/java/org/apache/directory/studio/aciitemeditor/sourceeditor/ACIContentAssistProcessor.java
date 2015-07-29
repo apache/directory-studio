@@ -53,12 +53,13 @@ public class ACIContentAssistProcessor extends TemplateCompletionProcessor
 
         // Add context dependend template proposals
         ICompletionProposal[] templateProposals = super.computeCompletionProposals( viewer, offset );
+        
         if ( templateProposals != null )
         {
             proposalList.addAll( Arrays.asList( templateProposals ) );
         }
 
-        return ( ICompletionProposal[] ) proposalList.toArray( new ICompletionProposal[0] );
+        return ( ICompletionProposal[] ) proposalList.toArray( new ICompletionProposal[proposalList.size()] );
     }
 
 

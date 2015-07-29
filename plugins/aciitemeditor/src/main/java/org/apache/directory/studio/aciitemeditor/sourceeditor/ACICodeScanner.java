@@ -42,24 +42,24 @@ import org.eclipse.jface.text.rules.WordRule;
 public class ACICodeScanner extends RuleBasedScanner
 {
     /** 'identificationTag' keyword */
-    public static final String identificationTagPartition = "identificationTag"; //$NON-NLS-1$
+    public static final String IDENTIFICATION_TAG_PARTITION = "identificationTag"; //$NON-NLS-1$
 
     /** 'precedence' keyword */
-    public static final String precedencePartition = "precedence"; //$NON-NLS-1$
+    public static final String PRECEDENCE_PARTITION = "precedence"; //$NON-NLS-1$
 
     /** 'authenticationLevel' keyword */
-    public static final String authenticationLevelPartition = "authenticationLevel"; //$NON-NLS-1$
+    public static final String AUTHENTICATION_LEVEL_PARTITION = "authenticationLevel"; //$NON-NLS-1$
 
     /** Keywords for the itemOrUserFirst Section */
-    public static final String[] itemOrUserFirstSectionPartition = new String[]
+    public static final String[] ITEM_OR_USER_FIRST_SECTION_PARTITION = new String[]
         { "itemOrUserFirst", "itemFirst", "userFirst" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
     /** Keywords for 'userFirst' section */
-    public static final String[] userSection = new String[]
+    public static final String[] USER_SECTION = new String[]
         { "userClasses", "userPermissions" }; //$NON-NLS-1$ //$NON-NLS-2$
 
     /** Keywords for AciItems values */
-    public static final String[] aciKeywords = new String[]
+    public static final String[] ACI_KEYWORDS = new String[]
         { "protectedItems", //$NON-NLS-1$
             "itemPermissions", //$NON-NLS-1$
             "entry", //$NON-NLS-1$
@@ -87,7 +87,7 @@ public class ACICodeScanner extends RuleBasedScanner
             "strong" }; //$NON-NLS-1$ 
 
     /** Keywords for grant values */
-    public static final String[] aciGrantValues = new String[]
+    public static final String[] ACI_GRANT_VALUES = new String[]
         { "grantAdd", //$NON-NLS-1$
             "grantDiscloseOnError", //$NON-NLS-1$
             "grantRead", //$NON-NLS-1$
@@ -103,7 +103,7 @@ public class ACICodeScanner extends RuleBasedScanner
             "grantInvoke", }; //$NON-NLS-1$
 
     /** Keywords for deny values */
-    public static final String[] aciDenyValues = new String[]
+    public static final String[] ACI_DENY_VALUES = new String[]
         { "denyAdd", //$NON-NLS-1$
             "denyDiscloseOnError", //$NON-NLS-1$
             "denyRead", //$NON-NLS-1$
@@ -160,45 +160,45 @@ public class ACICodeScanner extends RuleBasedScanner
         } ) );
 
         // If the word isn't in the List, returns undefined
-        WordRule wr = new WordRule( new AciWordDetector(), undefined );
+        WordRule worldRule = new WordRule( new AciWordDetector(), undefined );
 
         // Adding Keywords
-        for ( String aciKeyword : aciKeywords )
+        for ( String aciKeyword : ACI_KEYWORDS )
         {
-            wr.addWord( aciKeyword, keyword );
+            worldRule.addWord( aciKeyword, keyword );
         }
 
         // Adding GrantValues
-        for ( String aciGrantValue : aciGrantValues )
+        for ( String aciGrantValue : ACI_GRANT_VALUES )
         {
-            wr.addWord( aciGrantValue, grantValue );
+            worldRule.addWord( aciGrantValue, grantValue );
         }
 
         // Adding DenyValues
-        for ( String aciDenyValue : aciDenyValues )
+        for ( String aciDenyValue : ACI_DENY_VALUES )
         {
-            wr.addWord( aciDenyValue, denyValue );
+            worldRule.addWord( aciDenyValue, denyValue );
         }
 
         // Adding itemOrUserFirstSectionPartition
-        for ( String itemOrUserFirstSectionPartitionValue : itemOrUserFirstSectionPartition )
+        for ( String itemOrUserFirstSectionPartitionValue : ITEM_OR_USER_FIRST_SECTION_PARTITION )
         {
-            wr.addWord( itemOrUserFirstSectionPartitionValue, itemOrUserFirst );
+            worldRule.addWord( itemOrUserFirstSectionPartitionValue, itemOrUserFirst );
         }
 
         // Adding User
-        for ( String userSectionValue : userSection )
+        for ( String userSectionValue : USER_SECTION )
         {
-            wr.addWord( userSectionValue, user );
+            worldRule.addWord( userSectionValue, user );
         }
 
-        wr.addWord( identificationTagPartition, identification );
+        worldRule.addWord( IDENTIFICATION_TAG_PARTITION, identification );
 
-        wr.addWord( precedencePartition, precedence );
+        worldRule.addWord( PRECEDENCE_PARTITION, precedence );
 
-        wr.addWord( authenticationLevelPartition, authenticationLevel );
+        worldRule.addWord( AUTHENTICATION_LEVEL_PARTITION, authenticationLevel );
 
-        rules.add( wr );
+        rules.add( worldRule );
 
         IRule[] param = new IRule[rules.size()];
         rules.toArray( param );

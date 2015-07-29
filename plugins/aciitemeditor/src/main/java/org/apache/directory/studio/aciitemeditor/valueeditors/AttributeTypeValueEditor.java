@@ -48,16 +48,20 @@ public class AttributeTypeValueEditor extends AbstractDialogStringValueEditor
     public boolean openDialog( Shell shell )
     {
         Object value = getValue();
+        
         if ( value instanceof AttributeTypeValueEditorRawValueWrapper )
         {
             AttributeTypeValueEditorRawValueWrapper wrapper = ( AttributeTypeValueEditorRawValueWrapper ) value;
             AttributeTypeDialog dialog = new AttributeTypeDialog( shell, wrapper.schema, wrapper.attributeType );
-            if ( dialog.open() == TextDialog.OK && !EMPTY.equals( dialog.getAttributeType() ) )
+        
+            if ( ( dialog.open() == TextDialog.OK ) && !EMPTY.equals( dialog.getAttributeType() ) )
             {
                 setValue( dialog.getAttributeType() );
+                
                 return true;
             }
         }
+        
         return false;
     }
 
@@ -69,25 +73,33 @@ public class AttributeTypeValueEditor extends AbstractDialogStringValueEditor
      */
     public Object getRawValue( IValue value )
     {
-        return value != null ? getRawValue( value.getAttribute().getEntry().getBrowserConnection(), value
-            .getStringValue() ) : null;
+        if ( value != null )
+        {
+            return getRawValue( value.getAttribute().getEntry().getBrowserConnection(), 
+                                value.getStringValue() );
+        }
+
+        return null;
     }
 
 
     private Object getRawValue( IBrowserConnection connection, Object value )
     {
         Schema schema = null;
+        
         if ( connection != null )
         {
             schema = connection.getSchema();
         }
-        if ( schema == null || !( value instanceof String ) )
+        
+        if ( ( schema == null ) || !( value instanceof String ) )
         {
             return null;
         }
 
         String atValue = ( String ) value;
         AttributeTypeValueEditorRawValueWrapper wrapper = new AttributeTypeValueEditorRawValueWrapper( schema, atValue );
+        
         return wrapper;
     }
 
@@ -122,5 +134,4 @@ public class AttributeTypeValueEditor extends AbstractDialogStringValueEditor
             this.attributeType = attributeType;
         }
     }
-
 }

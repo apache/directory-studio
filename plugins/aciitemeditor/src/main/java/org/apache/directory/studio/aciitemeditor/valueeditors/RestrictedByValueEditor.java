@@ -94,8 +94,13 @@ public class RestrictedByValueEditor extends AbstractDialogStringValueEditor
      */
     public Object getRawValue( IValue value )
     {
-        return value != null ? getRawValue( value.getAttribute().getEntry().getBrowserConnection(), value
-            .getStringValue() ) : null;
+        if ( value != null )
+        {
+            return getRawValue( value.getAttribute().getEntry().getBrowserConnection(), value
+                .getStringValue() );
+        }
+        
+        return null;
     }
 
 
@@ -147,13 +152,13 @@ public class RestrictedByValueEditor extends AbstractDialogStringValueEditor
          * The schema, used in RestrictedByDialog to build the list
          * with possible attribute types.
          */
-        private Schema schema;
+        private final Schema schema;
 
         /** The type, used as initial type. */
-        private String type;
+        private final String type;
 
         /** The values in, used as initial values in. */
-        private String valuesIn;
+        private final String valuesIn;
 
 
         /**
@@ -235,15 +240,6 @@ public class RestrictedByValueEditor extends AbstractDialogStringValueEditor
         /**
          * {@inheritDoc}
          */
-        protected void createButtonsForButtonBar( Composite parent )
-        {
-            super.createButtonsForButtonBar( parent );
-        }
-
-
-        /**
-         * {@inheritDoc}
-         */
         protected void okPressed()
         {
             returnType = typeCombo.getText();
@@ -312,7 +308,5 @@ public class RestrictedByValueEditor extends AbstractDialogStringValueEditor
         {
             return returnValuesIn;
         }
-
     }
-
 }

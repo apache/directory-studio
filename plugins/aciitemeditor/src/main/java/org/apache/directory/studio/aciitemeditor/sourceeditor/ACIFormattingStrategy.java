@@ -36,7 +36,6 @@ import org.eclipse.jface.text.source.ISourceViewer;
  */
 public class ACIFormattingStrategy implements IFormattingStrategy
 {
-
     /** The Constant INDENT_STRING. */
     public static final String INDENT_STRING = "    "; //$NON-NLS-1$
 
@@ -89,7 +88,7 @@ public class ACIFormattingStrategy implements IFormattingStrategy
 
     private String internFormat( String content )
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         // flag to track if a new line was started
         boolean newLineStarted = true;
@@ -104,6 +103,7 @@ public class ACIFormattingStrategy implements IFormattingStrategy
         int indent = 0;
 
         int contentLength = content.length();
+        
         for ( int i = 0; i < contentLength; i++ )
         {
             char c = content.charAt( i );
@@ -111,10 +111,10 @@ public class ACIFormattingStrategy implements IFormattingStrategy
             // track quotes
             if ( c == '"' )
             {
-                inQuotedString = !inQuotedString;
+                inQuotedString ^= true;
             }
 
-            if ( c == '{' && !inQuotedString )
+            if ( ( c == '{' ) && !inQuotedString )
             {
                 // check one-line mode
                 oneLineMode = checkInOneLine( i, content );
@@ -144,13 +144,14 @@ public class ACIFormattingStrategy implements IFormattingStrategy
                     sb.append( NEWLINE );
                     newLineStarted = true;
                     indent++;
+                    
                     for ( int x = 0; x < indent; x++ )
                     {
                         sb.append( INDENT_STRING );
                     }
                 }
             }
-            else if ( c == '}' && !inQuotedString )
+            else if ( ( c == '}' ) && !inQuotedString )
             {
                 if ( oneLineMode )
                 {
@@ -175,6 +176,7 @@ public class ACIFormattingStrategy implements IFormattingStrategy
                     else
                     {
                         sb.append( NEWLINE );
+                        
                         for ( int x = 0; x < indent; x++ )
                         {
                             sb.append( INDENT_STRING );
@@ -187,13 +189,14 @@ public class ACIFormattingStrategy implements IFormattingStrategy
                     // start a new line 
                     sb.append( NEWLINE );
                     newLineStarted = true;
+                    
                     for ( int x = 0; x < indent; x++ )
                     {
                         sb.append( INDENT_STRING );
                     }
                 }
             }
-            else if ( c == ',' && !inQuotedString )
+            else if ( ( c == ',' ) && !inQuotedString )
             {
                 // start new line on comma
                 if ( oneLineMode )
@@ -217,24 +220,18 @@ public class ACIFormattingStrategy implements IFormattingStrategy
             else if ( Character.isWhitespace( c ) )
             {
                 char c1 = 'A';
+                
                 if ( i + 1 < contentLength )
                 {
                     c1 = content.charAt( i + 1 );
                 }
 
-                if ( newLineStarted )
-                {
-                    // ignore space after starting a new line
-                }
-                else if ( c == '\n' || c == '\r' )
-                {
-                    // ignore new lines
-                }
-                else if ( Character.isWhitespace( c1 ) || c1 == '\n' || c1 == '\r' )
-                {
-                    // compress whitespaces
-                }
-                else
+                if ( ( !newLineStarted ) &&
+                     // ignore space after starting a new line
+                     ( c != '\n' ) && ( c != '\r' ) &&
+                     // ignore new lines
+                     !Character.isWhitespace( c1 ) && ( c1 != '\n' ) && ( c1 != '\r' ) )
+                     // compress whitespaces
                 {
                     sb.append( c );
                 }
@@ -278,7 +275,7 @@ public class ACIFormattingStrategy implements IFormattingStrategy
             // track quotes
             if ( c == '"' )
             {
-                inQuote = !inQuote;
+                inQuote ^= true;
             }
 
             // open curly indicates nested expression

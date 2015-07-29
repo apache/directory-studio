@@ -31,15 +31,14 @@ import org.apache.directory.studio.valueeditors.dn.DnValueEditor;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class UserClassWrapperFactory
+public final class UserClassWrapperFactory
 {
-
     /**
      * Creates the user class wrappers.
      *
      * @return the user class wrapper[]
      */
-    public static final UserClassWrapper[] createUserClassWrappers()
+    public static UserClassWrapper[] createUserClassWrappers()
     {
         UserClassWrapper[] userClassWrappers = new UserClassWrapper[]
             {
@@ -75,5 +74,4 @@ public class UserClassWrapperFactory
 
         return userClassWrappers;
     }
-
 }

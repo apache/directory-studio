@@ -63,36 +63,17 @@ import org.eclipse.swt.widgets.Table;
  */
 public class ACIItemUserClassesComposite extends Composite
 {
-
     /** The context. */
     private ACIItemValueWithContext context;
 
     /** The inner composite for all the content */
     private Composite composite = null;
 
-    /** The description label */
-    private Label label = null;
-
-    /** The table control for the table viewer */
-    private Table table = null;
-
     /** The table viewer containing all user classes */
     private CheckboxTableViewer tableViewer = null;
 
-    /** The composite containing the buttons */
-    private Composite buttonComposite = null;
-
     /** The edit button */
     private Button editButton = null;
-
-    /** The select all button */
-    private Button selectAllButton = null;
-
-    /** The deselect all button */
-    private Button deselectAllButton = null;
-
-    /** The reverse button */
-    private Button reverseSelectionButton = null;
 
     /** The possible user classes, used as input for the table viewer */
     private UserClassWrapper[] userClassWrappers = UserClassWrapperFactory.createUserClassWrappers();
@@ -131,7 +112,6 @@ public class ACIItemUserClassesComposite extends Composite
      */
     private void createComposite()
     {
-
         GridData labelGridData = new GridData();
         labelGridData.horizontalSpan = 2;
         labelGridData.verticalAlignment = GridData.CENTER;
@@ -152,12 +132,11 @@ public class ACIItemUserClassesComposite extends Composite
         composite.setLayoutData( gridData );
         composite.setLayout( gridLayout );
 
-        label = new Label( composite, SWT.NONE );
+        Label label = new Label( composite, SWT.NONE );
         label.setText( Messages.getString( "ACIItemUserClassesComposite.description" ) ); //$NON-NLS-1$
         label.setLayoutData( labelGridData );
 
         createTable();
-
         createButtonComposite();
     }
 
@@ -172,9 +151,8 @@ public class ACIItemUserClassesComposite extends Composite
         tableGridData.grabExcessHorizontalSpace = true;
         tableGridData.verticalAlignment = GridData.FILL;
         tableGridData.horizontalAlignment = GridData.FILL;
-        //tableGridData.heightHint = 100;
 
-        table = new Table( composite, SWT.BORDER | SWT.CHECK );
+        Table table = new Table( composite, SWT.BORDER | SWT.CHECK );
         table.setHeaderVisible( false );
         table.setLayoutData( tableGridData );
         table.setLinesVisible( false );
@@ -185,20 +163,25 @@ public class ACIItemUserClassesComposite extends Composite
 
         tableViewer.addSelectionChangedListener( new ISelectionChangedListener()
         {
+            @Override
             public void selectionChanged( SelectionChangedEvent event )
             {
                 userClassSelected();
             }
         } );
+
         tableViewer.addCheckStateListener( new ICheckStateListener()
         {
+            @Override
             public void checkStateChanged( CheckStateChangedEvent event )
             {
                 userClassChecked();
             }
         } );
+        
         tableViewer.addDoubleClickListener( new IDoubleClickListener()
         {
+            @Override
             public void doubleClick( DoubleClickEvent event )
             {
                 if ( editButton.isEnabled() )
@@ -249,52 +232,61 @@ public class ACIItemUserClassesComposite extends Composite
         gridData.grabExcessVerticalSpace = false;
         gridData.verticalAlignment = GridData.FILL;
 
-        buttonComposite = new Composite( composite, SWT.NONE );
+        Composite buttonComposite = new Composite( composite, SWT.NONE );
         buttonComposite.setLayoutData( gridData );
         buttonComposite.setLayout( gridLayout );
 
         editButton = new Button( buttonComposite, SWT.NONE );
         editButton.setText( Messages.getString( "ACIItemUserClassesComposite.edit.button" ) ); //$NON-NLS-1$
         editButton.setLayoutData( editButtonGridData );
+        
         editButton.addSelectionListener( new SelectionAdapter()
         {
-            public void widgetSelected( SelectionEvent e )
+            @Override
+            public void widgetSelected( SelectionEvent event )
             {
                 editUserClass();
             }
         } );
+        
         editButton.setEnabled( false );
 
-        selectAllButton = new Button( buttonComposite, SWT.NONE );
+        Button selectAllButton = new Button( buttonComposite, SWT.NONE );
         selectAllButton.setText( Messages.getString( "ACIItemUserClassesComposite.selectAll.button" ) ); //$NON-NLS-1$
         selectAllButton.setLayoutData( selectAllButtonGridData );
+        
         selectAllButton.addSelectionListener( new SelectionAdapter()
         {
-            public void widgetSelected( SelectionEvent e )
+            @Override
+            public void widgetSelected( SelectionEvent event )
             {
                 tableViewer.setCheckedElements( userClassWrappers );
                 refreshTable();
             }
         } );
 
-        deselectAllButton = new Button( buttonComposite, SWT.NONE );
+        Button deselectAllButton = new Button( buttonComposite, SWT.NONE );
         deselectAllButton.setText( Messages.getString( "ACIItemUserClassesComposite.deselectAll.button" ) ); //$NON-NLS-1$
         deselectAllButton.setLayoutData( deselectAllButtonGridData );
+        
         deselectAllButton.addSelectionListener( new SelectionAdapter()
         {
-            public void widgetSelected( SelectionEvent e )
+            @Override
+            public void widgetSelected( SelectionEvent event )
             {
                 tableViewer.setCheckedElements( new ProtectedItem[0] );
                 refreshTable();
             }
         } );
 
-        reverseSelectionButton = new Button( buttonComposite, SWT.NONE );
+        Button reverseSelectionButton = new Button( buttonComposite, SWT.NONE );
         reverseSelectionButton.setText( Messages.getString( "ACIItemUserClassesComposite.revert.buton" ) ); //$NON-NLS-1$
         reverseSelectionButton.setLayoutData( reverseSelectionButtonGridData );
+        
         reverseSelectionButton.addSelectionListener( new SelectionAdapter()
         {
-            public void widgetSelected( SelectionEvent e )
+            @Override
+            public void widgetSelected( SelectionEvent event )
             {
                 List<Object> elements = new ArrayList<Object>();
                 elements.addAll( Arrays.asList( userClassWrappers ) );
@@ -303,8 +295,8 @@ public class ACIItemUserClassesComposite extends Composite
                 refreshTable();
             }
         } );
-
     }
+    
 
     /**
      * The label provider used for this table viewer.
@@ -313,7 +305,6 @@ public class ACIItemUserClassesComposite extends Composite
      */
     private class UserClassesLabelProvider extends LabelProvider
     {
-
         /**
          * Returns the error icon if the user class is checked and invalid.
          * 
@@ -326,6 +317,7 @@ public class ACIItemUserClassesComposite extends Composite
             if ( element instanceof UserClassWrapper )
             {
                 UserClassWrapper wrapper = ( UserClassWrapper ) element;
+                
                 if ( tableViewer.getChecked( wrapper ) )
                 {
                     try
@@ -416,7 +408,15 @@ public class ACIItemUserClassesComposite extends Composite
     public void setVisible( boolean visible )
     {
         super.setVisible( visible );
-        ( ( GridData ) getLayoutData() ).heightHint = visible ? -1 : 0;
+        
+        if ( visible )
+        {
+            ( ( GridData ) getLayoutData() ).heightHint = -1;
+        }
+        else
+        {
+            ( ( GridData ) getLayoutData() ).heightHint = 0;
+        }
     }
 
 
@@ -426,19 +426,19 @@ public class ACIItemUserClassesComposite extends Composite
      */
     private UserClassWrapper getSelectedUserClassWrapper()
     {
-        UserClassWrapper userClassWrapper = null;
-
         IStructuredSelection selection = ( IStructuredSelection ) tableViewer.getSelection();
+        
         if ( !selection.isEmpty() )
         {
             Object element = selection.getFirstElement();
+            
             if ( element instanceof UserClassWrapper )
             {
-                userClassWrapper = ( UserClassWrapper ) element;
+                return ( UserClassWrapper ) element;
             }
         }
 
-        return userClassWrapper;
+        return null;
     }
 
 
@@ -451,7 +451,7 @@ public class ACIItemUserClassesComposite extends Composite
     {
         UserClassWrapper userClassWrapper = getSelectedUserClassWrapper();
 
-        if ( userClassWrapper == null || !userClassWrapper.isEditable() )
+        if ( ( userClassWrapper == null ) || !userClassWrapper.isEditable() )
         {
             editButton.setEnabled( false );
         }
@@ -480,6 +480,7 @@ public class ACIItemUserClassesComposite extends Composite
         UserClassWrapper userClassWrapper = getSelectedUserClassWrapper();
 
         AbstractDialogStringValueEditor editor = userClassWrapper.getValueEditor();
+        
         if ( editor != null )
         {
             MultiValuedDialog dialog = new MultiValuedDialog( getShell(), userClassWrapper.getDisplayName(),
@@ -497,5 +498,4 @@ public class ACIItemUserClassesComposite extends Composite
     {
         tableViewer.refresh();
     }
-
 }

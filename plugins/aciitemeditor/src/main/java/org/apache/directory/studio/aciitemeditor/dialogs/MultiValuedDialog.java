@@ -74,17 +74,8 @@ public class MultiValuedDialog extends Dialog
     /** The inner composite for all the content */
     private Composite composite = null;
 
-    /** The table control for the table viewer */
-    private Table table = null;
-
     /** The table viewer containing all user classes */
     private TableViewer tableViewer = null;
-
-    /** The composite containing the buttons */
-    private Composite buttonComposite = null;
-
-    /** The add button */
-    private Button addButton = null;
 
     /** The edit button */
     private Button editButton = null;
@@ -174,7 +165,7 @@ public class MultiValuedDialog extends Dialog
         tableGridData.horizontalAlignment = GridData.FILL;
         //tableGridData.heightHint = 100;
 
-        table = new Table( composite, SWT.BORDER );
+        Table table = new Table( composite, SWT.BORDER );
         table.setHeaderVisible( false );
         table.setLayoutData( tableGridData );
         table.setLinesVisible( false );
@@ -233,11 +224,11 @@ public class MultiValuedDialog extends Dialog
         gridData.grabExcessVerticalSpace = false;
         gridData.verticalAlignment = GridData.FILL;
 
-        buttonComposite = new Composite( composite, SWT.NONE );
+        Composite buttonComposite = new Composite( composite, SWT.NONE );
         buttonComposite.setLayoutData( gridData );
         buttonComposite.setLayout( gridLayout );
 
-        addButton = new Button( buttonComposite, SWT.NONE );
+        Button addButton = new Button( buttonComposite, SWT.NONE );
         addButton.setText( Messages.getString( "MultiValuedDialog.button.add" ) ); //$NON-NLS-1$
         addButton.setLayoutData( addButtonGridData );
         addButton.addSelectionListener( new SelectionAdapter()

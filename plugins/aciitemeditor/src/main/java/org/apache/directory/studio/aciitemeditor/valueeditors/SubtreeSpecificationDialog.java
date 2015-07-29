@@ -22,7 +22,6 @@ package org.apache.directory.studio.aciitemeditor.valueeditors;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -72,7 +71,6 @@ import org.eclipse.swt.widgets.Text;
  */
 class SubtreeSpecificationDialog extends Dialog
 {
-
     /** The parser. */
     private final SubtreeSpecificationParser parser = new SubtreeSpecificationParser( null );
 
@@ -102,7 +100,6 @@ class SubtreeSpecificationDialog extends Dialog
     private Spinner minimumSpinner;
     private Spinner maximumSpinner;
     private TableViewer exclusionsTableViewer;
-    private Button exclusionsTableAddButton;
     private Button exclusionsTableEditButton;
     private Button exclusionsTableDeleteButton;
     private Button refinementButton;
@@ -217,7 +214,13 @@ class SubtreeSpecificationDialog extends Dialog
         BaseWidgetUtils.createLabel( composite, Messages.getString( "SubtreeValueEditor.label.base" ), 1 ); //$NON-NLS-1$
 
         Dn base = subtreeSpecification.getBase();
-        Dn suffix = subentryDn != null ? subentryDn.getParent() : null;
+        Dn suffix = null;
+        
+        if ( subentryDn != null ) 
+        {
+            suffix = subentryDn.getParent();
+        }
+        
         entryWidget = new EntryWidget( connection, base, suffix, useLocalName );
         entryWidget.createWidget( composite );
         entryWidget.addWidgetModifyListener( new WidgetModifyListener()
@@ -279,22 +282,10 @@ class SubtreeSpecificationDialog extends Dialog
 
         applyDialogFont( outer );
 
-        initFromInput();
-
         validate();
 
         return outer;
     }
-
-
-    /**
-     * Initializes the Value Editor from the input.
-     */
-    private void initFromInput()
-    {
-
-    }
-
 
     /**
      * Creates the Exclusions Table.
@@ -353,7 +344,7 @@ class SubtreeSpecificationDialog extends Dialog
         buttonGridData.verticalAlignment = GridData.BEGINNING;
         buttonGridData.widthHint = Activator.getButtonWidth( buttonComposite );
 
-        exclusionsTableAddButton = new Button( buttonComposite, SWT.PUSH );
+        Button exclusionsTableAddButton = new Button( buttonComposite, SWT.PUSH );
         exclusionsTableAddButton.setText( Messages.getString( "SubtreeValueEditor.button.add" ) ); //$NON-NLS-1$
         exclusionsTableAddButton.setLayoutData( buttonGridData );
         exclusionsTableAddButton.addSelectionListener( new SelectionAdapter()
@@ -526,28 +517,33 @@ class SubtreeSpecificationDialog extends Dialog
     private String buildSubreeSpecification()
     {
         // build subtree specification tree
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append( "{" ); //$NON-NLS-1$
 
         // Adding base
         Dn base = entryWidget.getDn();
-        if ( base != null && !SubtreeValueEditor.EMPTY.equals( base.toString() ) )
+        
+        if ( ( base != null ) && !SubtreeValueEditor.EMPTY.equals( base.toString() ) )
         {
-            sb.append( " base \"" + base.toString() + "\"," ); //$NON-NLS-1$ //$NON-NLS-2$
+            sb.append( " base \"" );
+            sb.append( base.toString() );
+            sb.append( "\"," ); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         // Adding Minimum
         int minimum = minimumSpinner.getSelection();
+        
         if ( minimum != 0 )
         {
-            sb.append( " minimum " + minimum + "," ); //$NON-NLS-1$ //$NON-NLS-2$
+            sb.append( " minimum " ).append( minimum ).append( ',' ); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         // Adding Maximum
         int maximum = maximumSpinner.getSelection();
+        
         if ( maximum != 0 )
         {
-            sb.append( " maximum " + maximum + "," ); //$NON-NLS-1$ //$NON-NLS-2$
+            sb.append( " maximum " ).append( maximum ).append( ',' ); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
         // Adding Exclusions
@@ -555,14 +551,20 @@ class SubtreeSpecificationDialog extends Dialog
         {
             sb.append( " specificExclusions {" ); //$NON-NLS-1$
 
-            for ( Iterator<String> it = exclusions.iterator(); it.hasNext(); )
+            boolean isFirst = true;
+            
+            for ( String exclusion : exclusions )
             {
-                sb.append( " " + it.next() ); //$NON-NLS-1$
-
-                if ( it.hasNext() )
+                if ( isFirst )
                 {
-                    sb.append( "," ); //$NON-NLS-1$
+                    isFirst = false;
                 }
+                else
+                {
+                    sb.append( ',' );
+                }
+                
+                sb.append( ' ' ).append( exclusion ); //$NON-NLS-1$
             }
 
             sb.append( " }," ); //$NON-NLS-1$

@@ -174,7 +174,6 @@ public class ACIItemSourceEditorComposite extends Composite
      */
     public void setContext( ACIItemValueWithContext context )
     {
-
     }
 
 

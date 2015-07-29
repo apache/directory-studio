@@ -37,15 +37,6 @@ import org.eclipse.swt.widgets.Shell;
 public class ACIItemValueEditor extends AbstractDialogStringValueEditor
 {
     /**
-     * The Constructor.
-     */
-    public ACIItemValueEditor()
-    {
-        super();
-    }
-
-
-    /**
      * Opens the ACI item dialog.
      * 
      * @param shell the shell
@@ -122,15 +113,15 @@ public class ACIItemValueEditor extends AbstractDialogStringValueEditor
      */
     public Object getRawValue( IValue value )
     {
-        Object o = super.getRawValue( value );
+        Object object = super.getRawValue( value );
         
-        if ( o instanceof String )
+        if ( object instanceof String )
         {
             IEntry entry = value.getAttribute().getEntry();
             IBrowserConnection connection = entry.getBrowserConnection();
-            String v = ( String ) o;
+            String valueStr = ( String ) object;
             
-            return new ACIItemValueWithContext( connection, entry, v );
+            return new ACIItemValueWithContext( connection, entry, valueStr );
         }
 
         return null;

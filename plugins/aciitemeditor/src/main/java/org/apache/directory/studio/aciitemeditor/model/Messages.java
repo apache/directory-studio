@@ -29,7 +29,7 @@ import java.util.ResourceBundle;
  *  
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class Messages
+public final class Messages
 {
     /** The resource name */
     private static final ResourceBundle RESOURCE_BUNDLE = 
