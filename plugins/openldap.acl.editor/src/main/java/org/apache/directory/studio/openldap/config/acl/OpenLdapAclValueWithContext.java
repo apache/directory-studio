@@ -20,8 +20,12 @@
 package org.apache.directory.studio.openldap.config.acl;
 
 
+import java.text.ParseException;
+
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.openldap.config.acl.model.AclItem;
+import org.apache.directory.studio.openldap.config.acl.model.OpenLdapAclParser;
 
 
 /**
@@ -38,33 +42,46 @@ public class OpenLdapAclValueWithContext
     /** The entry */
     private IEntry entry;
 
-    /** A flag indicating if precedence is used */
-    private boolean hasPrecedence = false;
-
-    /** The precedence value */
-    private int precedenceValue = -1;
+    /** The precedence value, -1 means no precedence */
+    private int precedence = -1;
 
     /** The ACL value */
     private String aclValue;
+    
+    /** The ACL instance */
+    private AclItem aclItem;
+    
+    /** The ACL parser */
+    private static final OpenLdapAclParser parser = new OpenLdapAclParser();
 
+    static int nb = 0;
 
     /**
      * Creates a new instance of OpenLdapAclValueWithContext.
      * 
      * @param connection the connection
      * @param entry the entry
-     * @param hasPrecedence a flag indicating if precedence is used
-     * @param precedenceValue the precedence value
+     * @param precedence the precedence
      * @param aclValue the ACL value
      */
-    public OpenLdapAclValueWithContext( IBrowserConnection connection, IEntry entry, boolean hasPrecedence,
-        int precedenceValue, String aclValue )
+    public OpenLdapAclValueWithContext( IBrowserConnection connection, IEntry entry, int precedence, String aclValue )
     {
         this.connection = connection;
         this.entry = entry;
-        this.hasPrecedence = hasPrecedence;
-        this.precedenceValue = precedenceValue;
+        this.precedence = precedence;
         this.aclValue = aclValue;
+        
+        System.out.println( "OpenLdapAclValueWithContext" + nb++ );
+        
+        try
+        {
+            aclItem = parser.parse( aclValue );
+        }
+        catch ( ParseException e )
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
 
@@ -98,22 +115,31 @@ public class OpenLdapAclValueWithContext
 
 
     /**
-     * @return the precedence value
+     * @return the precedence
      */
-    public int getPrecedenceValue()
+    public int getPrecedence()
     {
-        return precedenceValue;
+        return precedence;
     }
 
 
     /**
      * @return whether precedence is used or not
      */
-    public boolean isHasPrecedence()
+    public boolean hasPrecedence()
     {
-        return hasPrecedence;
+        return precedence  != -1;
     }
 
+    
+    /**
+     * @return The ACL Item being built
+     */
+    public AclItem getAclItem()
+    {
+        return aclItem;
+    }
+    
 
     /**
      * {@inheritDoc}
@@ -122,16 +148,15 @@ public class OpenLdapAclValueWithContext
     {
         if (  aclValue != null )
         {
-            if ( hasPrecedence )
+            if ( precedence != -1 )
             {
-                return "{" + precedenceValue + "}" + aclValue;
+                return "{" + precedence + "}" + aclValue;
             }
             else
             {
                 return aclValue;
             }
         }
-        
         
         return "";
     }

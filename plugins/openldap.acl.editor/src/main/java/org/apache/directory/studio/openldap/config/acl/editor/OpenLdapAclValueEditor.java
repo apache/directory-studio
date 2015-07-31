@@ -39,10 +39,6 @@ import org.apache.directory.studio.openldap.config.acl.dialogs.OpenLdapAclDialog
  */
 public class OpenLdapAclValueEditor extends AbstractDialogStringValueEditor
 {
-    /** The pattern used to match a precedence prefix ("{int}") */
-    private static final String PRECEDENCE_PATTERN = "^\\{[0-9]+\\}.*$";
-
-
     /**
      * {@inheritDoc}
      */
@@ -50,17 +46,17 @@ public class OpenLdapAclValueEditor extends AbstractDialogStringValueEditor
     {
         Object value = getValue();
 
-        if ( ( value != null ) && ( value instanceof OpenLdapAclValueWithContext ) )
+        if ( value instanceof OpenLdapAclValueWithContext )
         {
             OpenLdapAclValueWithContext context = ( OpenLdapAclValueWithContext ) value;
 
             OpenLdapAclDialog dialog = new OpenLdapAclDialog( shell, context );
             
-            if ( ( dialog.open() == OpenLdapAclDialog.OK)  && !"".equals( dialog.getAclValue() ) ) //$NON-NLS-1$
+            if ( ( dialog.open() == OpenLdapAclDialog.OK ) && !"".equals( dialog.getAclValue() ) ) //$NON-NLS-1$
             {
-                if ( dialog.isHasPrecedence() )
+                if ( dialog.hasPrecedence() )
                 {
-                    String aclValue = "{" + dialog.getPrecedenceValue() + "}" + dialog.getAclValue();
+                    String aclValue = "{" + dialog.getPrecedence() + "}" + dialog.getAclValue();
                     setValue( aclValue );
                 }
                 else
@@ -96,26 +92,32 @@ public class OpenLdapAclValueEditor extends AbstractDialogStringValueEditor
         {
             return null;
         }
-        else if ( ( attributeHierarchy.size() == 1 ) && ( attributeHierarchy.getAttribute().getValueSize() == 0 ) )
+        
+        if ( ( attributeHierarchy.size() == 1 ) && ( attributeHierarchy.getAttribute().getValueSize() == 0 ) )
         {
             IEntry entry = attributeHierarchy.getAttribute().getEntry();
             IBrowserConnection connection = entry.getBrowserConnection();
-            return new OpenLdapAclValueWithContext( connection, entry, false, -1, "" ); //$NON-NLS-1$
+
+            if ( attributeHierarchy.getAttribute().getValueSize() == 0 )
+            {
+                return new OpenLdapAclValueWithContext( connection, entry, -1, "" ); //$NON-NLS-1$
+            }
+            else if ( attributeHierarchy.getAttribute().getValueSize() == 1 )
+            {
+                String valueStr = getDisplayValue( attributeHierarchy );
+                int precedence = getPrecedence( valueStr );
+                String aclValue = valueStr;
+                
+                if ( precedence != -1 )
+                {
+                    aclValue = removePrecedence( valueStr );
+                }
+
+                return new OpenLdapAclValueWithContext( connection, entry, precedence, aclValue );
+            }
         }
-        else if ( ( attributeHierarchy.size() == 1 ) && ( attributeHierarchy.getAttribute().getValueSize() == 1 ) )
-        {
-            IEntry entry = attributeHierarchy.getAttribute().getEntry();
-            IBrowserConnection connection = entry.getBrowserConnection();
-            String value = getDisplayValue( attributeHierarchy );
-            int precedence = getPrecedence( value );
-            boolean hasPrecedence = ( precedence != -1 );
-            String aclValue = getStrippedAclValue( value );
-            return new OpenLdapAclValueWithContext( connection, entry, hasPrecedence, precedence, aclValue );
-        }
-        else
-        {
-            return null;
-        }
+
+        return null;
     }
 
 
@@ -129,18 +131,22 @@ public class OpenLdapAclValueEditor extends AbstractDialogStringValueEditor
      */
     public Object getRawValue( IValue value )
     {
-        Object o = super.getRawValue( value );
+        Object object = super.getRawValue( value );
         
-        if ( o instanceof String )
+        if ( object instanceof String )
         {
             IEntry entry = value.getAttribute().getEntry();
             IBrowserConnection connection = entry.getBrowserConnection();
-            String v = ( String ) o;
-            int precedence = getPrecedence( v );
-            boolean hasPrecedence = ( precedence != -1 );
-            String aclValue = getStrippedAclValue( v );
+            String valueStr = ( String ) object;
+            int precedence = getPrecedence( valueStr );
+            String aclValue = valueStr;
             
-            return new OpenLdapAclValueWithContext( connection, entry, hasPrecedence, precedence, aclValue );
+            if ( precedence != -1 )
+            {
+                aclValue = removePrecedence( valueStr );
+            }
+            
+            return new OpenLdapAclValueWithContext( connection, entry, precedence, aclValue );
         }
 
         return null;
@@ -181,6 +187,11 @@ public class OpenLdapAclValueEditor extends AbstractDialogStringValueEditor
                 {
                     precedence = precedence*10 + ( c - '0' );
                 }
+                else
+                {
+                    // Not a precedence
+                    return -1;
+                }
                 
                 pos++;
             }
@@ -193,25 +204,50 @@ public class OpenLdapAclValueEditor extends AbstractDialogStringValueEditor
         }
     }
 
-
+    
     /**
-     * Gets the stripped ACL value (without precedence).
-     *
-     * @param s the string
-     * @return the stripped ACL value (without precedence).
+     * Return the ACII value withoiut the precedence part
+     * 
+     * @param str The original ACII, with or without precedence
+     * @return The ACII string minus the precedence part
      */
-    public String getStrippedAclValue( String s )
+    public String removePrecedence( String str )
     {
-        // Checking if the acl contains precedence information ("{int}")
-        if ( s.matches( PRECEDENCE_PATTERN ) )
+        if ( Strings.isCharASCII( str, 0, '{' ) )
         {
-            // Getting the index of the closing curly bracket
-            int indexOfClosingCurlyBracket = s.indexOf( '}' );
-
-            // Returning the ACL value
-            return s.substring( indexOfClosingCurlyBracket + 1 );
+            int pos = 1;
+            
+            while ( pos < str.length() )
+            {
+                char c = str.charAt( pos );
+                
+                if ( c == '}' )
+                {
+                    if ( pos == 1 )
+                    {
+                        // We just have {}, return the string
+                        return str;
+                    }
+                    else
+                    {
+                        return str.substring( pos + 1 );
+                    }
+                }
+                
+                if ( ( c < '0' ) && ( c > '9' ) )
+                {
+                    // Not a number, get out
+                    return str;
+                }
+                
+                pos++;
+            }
+            
+            return str;
         }
-
-        return s;
+        else
+        {
+            return str;
+        }
     }
 }

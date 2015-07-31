@@ -27,34 +27,39 @@ package org.apache.directory.studio.openldap.config.acl.model;
  */
 public enum AclWhatClauseDnTypeEnum
 {
-    REGEX,
-    BASE,
-    EXACT,
-    ONE,
-    SUBTREE,
-    CHILDREN;
+    REGEX( "regex" ),
+    BASE( "base" ),
+    BASE_OBJECT( "baseobject" ),
+    EXACT( "exact" ),
+    ONE( "one" ),
+    ONE_LEVEL( "onelevel" ),
+    SUB( "sub" ),
+    SUBTREE( "subtree" ),
+    CHILDREN( "children" );
 
+    /** The interned name */
+    private String name;
+    
+    private AclWhatClauseDnTypeEnum( String name )
+    {
+        this.name = name;
+    }
+    
+    
+    /**
+     * @return The interned name
+     */
+    public String getName()
+    {
+        return name;
+    }
+    
+    
     /**
      * {@inheritDoc}
      */
     public String toString()
     {
-        switch ( this )
-        {
-            case REGEX:
-                return "regex";
-            case BASE:
-                return "base";
-            case EXACT:
-                return "exact";
-            case ONE:
-                return "one";
-            case SUBTREE:
-                return "subtree";
-            case CHILDREN:
-                return "children";
-        }
-
-        return super.toString();
+        return name;
     }
 }

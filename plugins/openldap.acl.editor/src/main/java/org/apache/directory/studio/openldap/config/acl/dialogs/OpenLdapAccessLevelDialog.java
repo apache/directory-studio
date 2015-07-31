@@ -146,7 +146,7 @@ public class OpenLdapAccessLevelDialog extends Dialog
         if ( levelRadioButton.getSelection() )
         {
             Object levelSelection = ( ( StructuredSelection ) levelComboViewer.getSelection() ).getFirstElement();
-            if ( ( levelSelection != null ) && ( levelSelection instanceof AclAccessLevelLevelEnum ) )
+            if ( levelSelection instanceof AclAccessLevelLevelEnum )
             {
                 accessLevel.setLevel( ( AclAccessLevelLevelEnum ) levelSelection );
             }

@@ -44,17 +44,6 @@ import org.apache.directory.studio.openldap.config.acl.model.AclWhatClauseDnType
 public class WhatClauseDnComposite extends AbstractClauseComposite<AclWhatClauseDn> implements
     WhatClauseComposite<AclWhatClauseDn>
 {
-    /** The array of DN what clause types */
-    private static final AclWhatClauseDnTypeEnum[] aclWhatClauseDnTypes = new AclWhatClauseDnTypeEnum[]
-        {
-            AclWhatClauseDnTypeEnum.BASE,
-            AclWhatClauseDnTypeEnum.EXACT,
-            AclWhatClauseDnTypeEnum.ONE,
-            AclWhatClauseDnTypeEnum.SUBTREE,
-            AclWhatClauseDnTypeEnum.CHILDREN,
-            AclWhatClauseDnTypeEnum.REGEX
-    };
-
     /** The entry widget */
     private EntryWidget entryWidget;
 
@@ -96,34 +85,21 @@ public class WhatClauseDnComposite extends AbstractClauseComposite<AclWhatClause
             new String[0], -1, 1 ) );
         whatClauseDnTypeComboViewer.getCombo().setLayoutData( new GridData( SWT.NONE, SWT.NONE, false, false, 2, 1 ) );
         whatClauseDnTypeComboViewer.setContentProvider( new ArrayContentProvider() );
+        
         whatClauseDnTypeComboViewer.setLabelProvider( new LabelProvider()
         {
             public String getText( Object element )
             {
                 if ( element instanceof AclWhatClauseDnTypeEnum )
                 {
-                    AclWhatClauseDnTypeEnum value = ( AclWhatClauseDnTypeEnum ) element;
-                    switch ( value )
-                    {
-                        case BASE:
-                            return "Base";
-                        case EXACT:
-                            return "Exact";
-                        case ONE:
-                            return "One";
-                        case SUBTREE:
-                            return "Subtree";
-                        case CHILDREN:
-                            return "Children";
-                        case REGEX:
-                            return "Regex";
-                    }
+                    return (( AclWhatClauseDnTypeEnum ) element).getName();
                 }
 
                 return super.getText( element );
             }
         } );
-        whatClauseDnTypeComboViewer.setInput( aclWhatClauseDnTypes );
+        
+        whatClauseDnTypeComboViewer.setInput( AclWhatClauseDnTypeEnum.values() );
 
         return composite;
     }

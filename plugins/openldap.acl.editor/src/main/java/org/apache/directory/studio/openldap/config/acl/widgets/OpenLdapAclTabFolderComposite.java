@@ -21,7 +21,6 @@ package org.apache.directory.studio.openldap.config.acl.widgets;
 
 
 import java.text.ParseException;
-import java.util.Arrays;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -34,11 +33,6 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
 import org.apache.directory.studio.openldap.config.acl.OpenLdapAclValueWithContext;
-import org.apache.directory.studio.openldap.config.acl.model.AclItem;
-import org.apache.directory.studio.openldap.config.acl.model.AclWhatClause;
-import org.apache.directory.studio.openldap.config.acl.model.AclWhatClauseStar;
-import org.apache.directory.studio.openldap.config.acl.model.AclWhoClause;
-import org.apache.directory.studio.openldap.config.acl.model.AclWhoClauseStar;
 
 
 /**
@@ -75,6 +69,9 @@ public class OpenLdapAclTabFolderComposite extends Composite
 
     /** The source editor composite */
     private OpenLdapAclSourceEditorComposite sourceComposite;
+    
+    /** The ACL context */
+    private OpenLdapAclValueWithContext context;
 
 
     /**
@@ -83,18 +80,19 @@ public class OpenLdapAclTabFolderComposite extends Composite
      * @param parent
      * @param style
      */
-    public OpenLdapAclTabFolderComposite( Composite parent, int style )
+    public OpenLdapAclTabFolderComposite( Composite parent, OpenLdapAclValueWithContext context, int style )
     {
         super( parent, style );
+        
+        this.context = context;
+        
         GridLayout layout = new GridLayout();
         layout.marginWidth = 0;
         layout.marginHeight = 0;
         setLayout( layout );
 
         createTabFolder();
-
         createVisualTab();
-
         createSourceTab();
 
         initListeners();
@@ -128,7 +126,7 @@ public class OpenLdapAclTabFolderComposite extends Composite
         sourceContainer.setLayout( new FillLayout() );
 
         // create source editor
-        sourceComposite = new OpenLdapAclSourceEditorComposite( sourceContainer, SWT.NONE );
+        sourceComposite = new OpenLdapAclSourceEditorComposite( sourceContainer, context, SWT.NONE );
 
         // create tab
         sourceTab = new TabItem( tabFolder, SWT.NONE, SOURCE_TAB_INDEX );
@@ -149,7 +147,7 @@ public class OpenLdapAclTabFolderComposite extends Composite
         visualContainer.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
         // create the visual ACIItem composite
-        visualComposite = new OpenLdapAclVisualEditorComposite( visualContainer, SWT.NONE );
+        visualComposite = new OpenLdapAclVisualEditorComposite( visualContainer, context, SWT.NONE );
         visualComposite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
         // create tab
@@ -180,81 +178,11 @@ public class OpenLdapAclTabFolderComposite extends Composite
 
         if ( index == SOURCE_TAB_INDEX )
         {
-            // switched to source tab: serialize visual and set to source
-            // on parse error: print message and return to visual tab
-            //            try
-            //            {
-            //                String input = visualComposite.getInput();
-            //                sourceComposite.setInput( input );
-            //            }
-            //            catch ( ParseException pe )
-            //            {
-            //                IStatus status = new Status( IStatus.ERROR, ACIITemConstants.PLUGIN_ID, 1, Messages
-            //                    .getString( "ACIItemTabFolderComposite.error.onVisualEditor" ), pe ); //$NON-NLS-1$
-            //                ErrorDialog.openError( getShell(),
-            //                    Messages.getString( "ACIItemTabFolderComposite.error.title" ), null, status ); //$NON-NLS-1$
-            //                tabFolder.setSelection( VISUAL_TAB_INDEX );
-            //            }
+            sourceComposite.refresh();
         }
         else if ( index == VISUAL_TAB_INDEX )
         {
-            // switched to visual tab: parse source and populate to visual
-            // on parse error: print message and return to source tab
-            //            try
-            //            {
-            //                String input = sourceComposite.getInput();
-            //                visualComposite.setInput( input );
-            //            }
-            //            catch ( ParseException pe )
-            //            {
-            //                IStatus status = new Status( IStatus.ERROR, ACIITemConstants.PLUGIN_ID, 1, Messages
-            //                    .getString( "ACIItemTabFolderComposite.error.onSourceEditor" ), pe ); //$NON-NLS-1$
-            //                ErrorDialog.openError( getShell(),
-            //                    Messages.getString( "ACIItemTabFolderComposite.error.title" ), null, status ); //$NON-NLS-1$
-            //                tabFolder.setSelection( SOURCE_TAB_INDEX );
-            //            }
-        }
-    }
-
-
-    /**
-     * Sets the input to both the source editor and to the visual editor.
-     * If the syntax is invalid the source editor is activated. 
-     *
-     * @param input The string representation of the ACI item
-     */
-    public void setInput( String input )
-    {
-        // Checking if the input is null or empty
-        if ( ( input == null ) || ( "".equals( input ) ) )
-        {
-            // Creating a default ACL instead
-            AclItem defaultAcl = new AclItem( new AclWhatClause( new AclWhatClauseStar() ),
-                Arrays.asList( new AclWhoClause[]
-                    { new AclWhoClauseStar() } ) );
-
-            // Assiging the default ACL as input
-            input = defaultAcl.toString();
-        }
-
-        // Setting the input to the source editor
-        sourceComposite.forceSetInput( input );
-
-        // Setting the input to the visual editor, on parse error switch to source editor
-        try
-        {
-            visualComposite.setInput( input );
-        }
-        catch ( ParseException e )
-        {
-            //            IStatus status = new Status( IStatus.ERROR, ACIITemConstants.PLUGIN_ID, 1, Messages
-            //                .getString( "ACIItemTabFolderComposite.error.onInput" ), pe ); //$NON-NLS-1$
-            //            ErrorDialog.openError( getShell(),
-            //                Messages.getString( "ACIItemTabFolderComposite.error.title" ), null, status ); //$NON-NLS-1$
-            //
-            tabFolder.setSelection( SOURCE_TAB_INDEX );
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            visualComposite.refresh();
         }
     }
 
@@ -270,28 +198,15 @@ public class OpenLdapAclTabFolderComposite extends Composite
     public String getInput() throws ParseException
     {
         int index = tabFolder.getSelectionIndex();
+        
         if ( index == VISUAL_TAB_INDEX )
         {
-            String input = visualComposite.getInput();
-            return input;
+            return visualComposite.getInput();
         }
         else
         {
-            String input = sourceComposite.getInput();
-            return input;
+            return sourceComposite.getInput();
         }
-    }
-
-
-    /**
-     * Sets the context.
-     * 
-     * @param context the context
-     */
-    public void setContext( OpenLdapAclValueWithContext context )
-    {
-        sourceComposite.setContext( context );
-        visualComposite.setContext( context );
     }
 
 

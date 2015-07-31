@@ -21,12 +21,14 @@ package org.apache.directory.studio.openldap.config.acl.widgets.composites;
 
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.swt.widgets.Composite;
+import org.apache.directory.studio.openldap.config.acl.model.AclWhatClause;
 import org.apache.directory.studio.openldap.config.acl.model.AclWhatClauseAttributes;
 import org.apache.directory.studio.openldap.config.acl.widgets.AttributesWidget;
 
@@ -47,7 +49,18 @@ public class WhatClauseAttributesComposite extends AbstractClauseComposite<AclWh
         public void widgetModified( WidgetModifyEvent event )
         {
             getClause().clearAttributes();
-            getClause().addAllAttributes( Arrays.asList( attributesWidget.getAttributes() ) );
+            List<String> attributes = Arrays.asList( attributesWidget.getAttributes() );
+            getClause().addAllAttributes( attributes );
+            AclWhatClause aclWhatClause = context.getAclItem().getWhatClause();
+            AclWhatClauseAttributes whatClauseAttributes = aclWhatClause.getAttributesClause();
+            
+            if ( whatClauseAttributes == null )
+            {
+                whatClauseAttributes = new AclWhatClauseAttributes();
+            }
+            
+            whatClauseAttributes.addAllAttributes( attributes );
+            aclWhatClause.setAttributesClause( whatClauseAttributes );
         }
     };
 
@@ -102,6 +115,7 @@ public class WhatClauseAttributesComposite extends AbstractClauseComposite<AclWh
         if ( attributesWidget != null )
         {
             attributesWidget.setBrowserConnection( connection );
+            
             if ( clause != null )
             {
                 attributesWidget.setInitialAttributes( clause.getAttributes().toArray( new String[0] ) );

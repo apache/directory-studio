@@ -53,5 +53,4 @@ public final class OpenLdapAclEditorPluginConstants
     public static final String IMG_UP = "resources/icons/up.png"; //$NON-NLS-1$
     
     public static final String DIALOGSETTING_KEY_ATTRIBUTES_HISTORY = "attributesHistory"; //$NON-NLS-1$
-
 }

@@ -28,6 +28,8 @@ import java.util.List;
 /**
  * This class represents an ACL (Access Control List) Item for OpenLDAP. 
  * 
+ * An AclItem contains an AclWhatClause and a list of AclWhoClause
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class AclItem

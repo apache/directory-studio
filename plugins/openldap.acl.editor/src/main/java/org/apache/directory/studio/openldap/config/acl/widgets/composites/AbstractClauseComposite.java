@@ -21,6 +21,7 @@ package org.apache.directory.studio.openldap.config.acl.widgets.composites;
 
 
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.openldap.config.acl.OpenLdapAclValueWithContext;
 import org.eclipse.swt.widgets.Composite;
 
 
@@ -39,6 +40,9 @@ public abstract class AbstractClauseComposite<C> implements ClauseComposite<C>
 
     /** The connection */
     protected IBrowserConnection connection;
+    
+    /** The ACL context in use */
+    protected OpenLdapAclValueWithContext context;
 
 
     /**
@@ -129,5 +133,23 @@ public abstract class AbstractClauseComposite<C> implements ClauseComposite<C>
      */
     public void saveWidgetSettings()
     {
+    }
+    
+    
+    /**
+     * @return The ACL context in use
+     */
+    public OpenLdapAclValueWithContext getContext()
+    {
+        return context;
+    }
+    
+    
+    /**
+     * @param context The ACL context in use
+     */
+    public void setContext( OpenLdapAclValueWithContext context )
+    {
+        this.context = context;
     }
 }

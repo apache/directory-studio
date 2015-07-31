@@ -35,6 +35,7 @@ public class AclWhoClauseAnonymous extends AbstractAclWhoClause
         sb.append( "anonymous" );
 
         String whoClauseToString = super.toString();
+        
         if ( whoClauseToString.length() > 0 )
         {
             sb.append( " " );

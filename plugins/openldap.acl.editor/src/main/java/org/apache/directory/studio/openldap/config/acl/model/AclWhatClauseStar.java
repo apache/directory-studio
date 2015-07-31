@@ -20,6 +20,7 @@
 package org.apache.directory.studio.openldap.config.acl.model;
 
 /**
+ * The Acl what-star rule.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

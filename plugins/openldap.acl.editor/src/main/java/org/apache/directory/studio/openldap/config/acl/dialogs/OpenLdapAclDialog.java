@@ -71,19 +71,40 @@ public class OpenLdapAclDialog extends Dialog
     /** The precendence checkbox */
     private Button precedenceCheckbox;
 
-    /** The precendence flag */
-    private boolean hasPrecedence;
-
     /** The precedence spinner */
     private Spinner precedenceSpinner;
 
-    /** The precendence flag */
-    private int precedenceValue;
+    /** The precedence flag */
+    private int precedence;
 
     /** The tab folder composite */
     private OpenLdapAclTabFolderComposite tabFolderComposite;
 
 
+    /**
+     * A listener on the Precedence Checkbox. It will enable or disable the precedence spinner.
+     */
+    private SelectionAdapter precedenceCheckBoxSelectionListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            precedenceSpinner.setEnabled( precedenceCheckbox.getSelection() );
+        }
+    };
+    
+    
+    /**
+     * The precedence spinner modify listener
+     */
+    private ModifyListener precedenceSpinnerModifyListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            precedence = precedenceSpinner.getSelection();
+        }
+    };
+
+    
     /**
      * Creates a new instance of OpenLdapAclDialog.
      * 
@@ -184,8 +205,10 @@ public class OpenLdapAclDialog extends Dialog
         gd.heightHint = convertVerticalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH ) * 4 / 3;
         composite.setLayoutData( gd );
 
-        // Creating UI
+        // Creating UI : first the precedence
         createPrecedenceGroup( composite );
+        
+        // the tab for the source/visual editor 
         createTabFolderComposite( composite );
 
         // Setting default focus on the composite
@@ -198,8 +221,13 @@ public class OpenLdapAclDialog extends Dialog
 
 
     /**
-     * Creates the precedence group.
-     *
+     * Creates the precedence group. We handle the checkbox and the value for precedence.
+     * 
+     * <pre>
+     * +-----------------------------------------+
+     * | [ ] Preference : [---] 8                |
+     * +-----------------------------------------+
+     * </pre>
      * @param parent the parent composite
      */
     private void createPrecedenceGroup( Composite parent )
@@ -213,41 +241,19 @@ public class OpenLdapAclDialog extends Dialog
         precendenceGroup.setLayoutData( gd2 );
 
         // Precendence values
-        hasPrecedence = context.isHasPrecedence();
-        precedenceValue = context.getPrecedenceValue();
+        precedence = context.getPrecedence();
         
-        if ( precedenceValue <= 0 )
-        {
-            precedenceValue = 1;
-        }
-
         // Precedence checkbox
-        precedenceCheckbox = new Button( precendenceGroup, SWT.CHECK );
-        precedenceCheckbox.setText( "Precedence:" ); //$NON-NLS-1$
-        precedenceCheckbox.setSelection( hasPrecedence );
-        precedenceCheckbox.addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent e )
-            {
-                hasPrecedence = precedenceCheckbox.getSelection();
-                precedenceSpinner.setEnabled( hasPrecedence );
-            }
-        } );
+        precedenceCheckbox = BaseWidgetUtils.createCheckbox( precendenceGroup, "Precedence:", 1 );
+        precedenceCheckbox.setSelection( context.hasPrecedence() );
+        precedenceCheckbox.addSelectionListener( precedenceCheckBoxSelectionListener );
 
         // Precedence spinner
         precedenceSpinner = new Spinner( precendenceGroup, SWT.BORDER );
-        precedenceSpinner.setMinimum( 1 );
-        precedenceSpinner.setDigits( 0 );
-        precedenceSpinner.setEnabled( hasPrecedence );
-        precedenceSpinner.setSelection( precedenceValue );
+        precedenceSpinner.setEnabled( context.hasPrecedence() );
+        precedenceSpinner.setSelection( precedence );
         precedenceSpinner.setLayoutData( new GridData( SWT.BEGINNING, SWT.CENTER, true, false ) );
-        precedenceSpinner.addModifyListener( new ModifyListener()
-        {
-            public void modifyText( ModifyEvent e )
-            {
-                precedenceValue = precedenceSpinner.getSelection();
-            }
-        } );
+        precedenceSpinner.addModifyListener( precedenceSpinnerModifyListener );
     }
 
 
@@ -259,15 +265,8 @@ public class OpenLdapAclDialog extends Dialog
     private void createTabFolderComposite( Composite parent )
     {
         // Creating the tab folder composite
-        tabFolderComposite = new OpenLdapAclTabFolderComposite( parent, SWT.NONE );
+        tabFolderComposite = new OpenLdapAclTabFolderComposite( parent, context, SWT.NONE );
         tabFolderComposite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true, 2, 1 ) );
-
-        // Setting context and initial value
-        if ( context != null )
-        {
-            tabFolderComposite.setContext( context );
-            tabFolderComposite.setInput( context.getAclValue() );
-        }
     }
 
 
@@ -285,17 +284,17 @@ public class OpenLdapAclDialog extends Dialog
     /**
      * @return the precedence value
      */
-    public int getPrecedenceValue()
+    public int getPrecedence()
     {
-        return precedenceValue;
+        return precedence;
     }
 
 
     /**
      * @return whether precedence is used or not
      */
-    public boolean isHasPrecedence()
+    public boolean hasPrecedence()
     {
-        return hasPrecedence;
+        return precedence != -1;
     }
 }

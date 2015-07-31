@@ -37,18 +37,19 @@ import org.apache.directory.studio.openldap.config.acl.model.AclWhoClauseStar;
 
 
 /**
+ * The WhoClause widget builder
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class OpenLdapAclWhoClausesBuilderWidget
 {
+    /** The ACL context */
+    private OpenLdapAclValueWithContext context;
+
     /** The visual editor composite */
     protected OpenLdapAclVisualEditorComposite visualEditorComposite;
 
-    /** The list of clauses */
-    private List<AclWhoClause> clauses = new ArrayList<AclWhoClause>();
-
-    /** The list of widgets */
+    /** The list of clause widgets */
     private List<OpenLdapAclWhoClauseWidget> clauseWidgets = new ArrayList<OpenLdapAclWhoClauseWidget>();
 
     /** The list of separators */
@@ -57,15 +58,37 @@ public class OpenLdapAclWhoClausesBuilderWidget
     // UI widgets
     private Group whoGroup;
 
+    
+    /**
+     * A listener for the WhoClause widget
+     */
+    private WidgetModifyListener whoClauseModifyListener = new WidgetModifyListener()
+    {
+        public void widgetModified( WidgetModifyEvent event )
+        {
+            // Getting the source widget
+            OpenLdapAclWhoClauseWidget widget = ( OpenLdapAclWhoClauseWidget ) event.getSource();
+            List<AclWhoClause> whoClauses = context.getAclItem().getWhoClauses();
+
+            // Updating the clause
+            whoClauses.remove( widget.getIndex() );
+            whoClauses.add( widget.getIndex(), widget.getClause() );
+
+            // Adjusting the layout of the visual editor composite
+            visualEditorComposite.layout( true, true );
+        }
+    };
+    
 
     /**
      * Creates a new instance of OpenLdapAclWhoClausesBuilderWidget.
      *
      * @param visualEditorComposite the visual editor composite
      */
-    public OpenLdapAclWhoClausesBuilderWidget( OpenLdapAclVisualEditorComposite visualEditorComposite )
+    public OpenLdapAclWhoClausesBuilderWidget( OpenLdapAclVisualEditorComposite visualEditorComposite, OpenLdapAclValueWithContext context )
     {
         this.visualEditorComposite = visualEditorComposite;
+        this.context = context;
     }
 
 
@@ -109,17 +132,28 @@ public class OpenLdapAclWhoClausesBuilderWidget
     private void createClauseWidgets()
     {
         // Checking the clauses
-        if ( clauses.size() == 0 )
+        List<AclWhoClause> whoClauses = context.getAclItem().getWhoClauses();
+        
+        if ( whoClauses.size() == 0 )
         {
             // Adding at least one default clause
-            clauses.add( new AclWhoClauseStar() );
+            AclWhoClauseStar whoClause = new AclWhoClauseStar();
+            
+            whoClauses.add( whoClause );
         }
 
         // Creating a widget for each clause
-        for ( int i = 0; i < clauses.size(); i++ )
+        boolean isFirst = true;
+        int pos = 0;
+        
+        for ( AclWhoClause whoClause : whoClauses )
         {
-            // Creating a separator (except for the first row
-            if ( i != 0 )
+            // Creating a separator (except for the first row)
+            if ( isFirst )
+            {
+                isFirst = false;
+            }
+            else
             {
                 Label separator = new Label( whoGroup, SWT.SEPARATOR | SWT.HORIZONTAL );
                 separator.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
@@ -127,25 +161,12 @@ public class OpenLdapAclWhoClausesBuilderWidget
             }
 
             // Creating the clause widget
-            OpenLdapAclWhoClauseWidget clauseWidget = new OpenLdapAclWhoClauseWidget( this, clauses.get( i ), i );
+            OpenLdapAclWhoClauseWidget clauseWidget = new OpenLdapAclWhoClauseWidget( this, whoClause, pos );
             clauseWidget.create( whoGroup );
-            clauseWidget.addWidgetModifyListener( new WidgetModifyListener()
-            {
-                public void widgetModified( WidgetModifyEvent event )
-                {
-                    // Getting the source widget
-                    OpenLdapAclWhoClauseWidget widget = ( OpenLdapAclWhoClauseWidget ) event.getSource();
-
-                    // Updating the clause
-                    clauses.remove( widget.getIndex() );
-                    clauses.add( widget.getIndex(), widget.getClause() );
-
-                    // Adjusting the layout of the visual editor composite
-                    visualEditorComposite.layout( true, true );
-                }
-            } );
-
+            
+            clauseWidget.addWidgetModifyListener( whoClauseModifyListener );
             clauseWidgets.add( clauseWidget );
+            pos++;
         }
 
         // Updating button states for specific rows (first, last and the case where there's only one row)
@@ -157,7 +178,7 @@ public class OpenLdapAclWhoClausesBuilderWidget
             widget.getMoveUpButton().setEnabled( false );
             widget.getMoveDownButton().setEnabled( false );
         }
-        else if ( clauseWidgets.size() > 1 )
+        else
         {
             // There are more than 1 row
             OpenLdapAclWhoClauseWidget firstWidget = clauseWidgets.get( 0 );
@@ -191,7 +212,8 @@ public class OpenLdapAclWhoClausesBuilderWidget
     protected void addNewClause( OpenLdapAclWhoClauseWidget widget )
     {
         // Adding a new clause underneath the selected widget
-        clauses.add( widget.getIndex() + 1, new AclWhoClauseStar() );
+        AclWhoClauseStar whoClause = new AclWhoClauseStar();
+        context.getAclItem().getWhoClauses().add( whoClause );
 
         // Refreshing clauses widgets 
         refreshWhoClauseWidgets();
@@ -206,8 +228,10 @@ public class OpenLdapAclWhoClausesBuilderWidget
      */
     protected void deleteClause( OpenLdapAclWhoClauseWidget widget )
     {
+        int deletedIndex = widget.getIndex();
+        
         // Deleting the selected widget
-        clauses.remove( clauses.get( widget.getIndex() ) );
+        context.getAclItem().getWhoClauses().remove( deletedIndex );
 
         // Refreshing clauses widgets 
         refreshWhoClauseWidgets();
@@ -223,7 +247,8 @@ public class OpenLdapAclWhoClausesBuilderWidget
     protected void moveUpClause( OpenLdapAclWhoClauseWidget widget )
     {
         // Swapping clauses
-        swapClauseIndexes( widget.getIndex(), widget.getIndex() - 1 );
+        int index = widget.getIndex();
+        swapClauseIndexes( index, index - 1 );
 
         // Refreshing clauses widgets 
         refreshWhoClauseWidgets();
@@ -239,7 +264,8 @@ public class OpenLdapAclWhoClausesBuilderWidget
     protected void moveDownClause( OpenLdapAclWhoClauseWidget widget )
     {
         // Swapping clauses
-        swapClauseIndexes( widget.getIndex(), widget.getIndex() + 1 );
+        int index = widget.getIndex();
+        swapClauseIndexes( index, index + 1 );
 
         // Refreshing clauses widgets 
         refreshWhoClauseWidgets();
@@ -255,58 +281,27 @@ public class OpenLdapAclWhoClausesBuilderWidget
     private void swapClauseIndexes( int sourceIndex, int destinationIndex )
     {
         // Getting clauses
-        AclWhoClause sourceClause = clauses.get( sourceIndex );
-        AclWhoClause destinationClause = clauses.get( destinationIndex );
+        List<AclWhoClause> whoClauses = context.getAclItem().getWhoClauses();
+        AclWhoClause sourceClause = whoClauses.get( sourceIndex );
+        AclWhoClause destinationClause = whoClauses.get( destinationIndex );
 
         // Swapping clauses
-        clauses.remove( sourceClause );
-        clauses.remove( destinationClause );
-        if ( sourceIndex > destinationIndex )
-        {
-            clauses.add( destinationIndex, sourceClause );
-            clauses.add( sourceIndex, destinationClause );
-        }
-        else
-        {
-            clauses.add( sourceIndex, destinationClause );
-            clauses.add( destinationIndex, sourceClause );
-        }
+        whoClauses.remove( sourceIndex );
+        whoClauses.add(  sourceIndex, destinationClause );
+
+        whoClauses.remove( destinationIndex );
+        whoClauses.add(  destinationIndex, sourceClause );
     }
-
-
+    
+    
     /**
      * Sets the input.
      *
      * @param clauses the who clauses
      */
-    public void setInput( List<AclWhoClause> clauses )
+    public void refresh()
     {
-        this.clauses.clear();
-        this.clauses.addAll( clauses );
-
         refreshWhoClauseWidgets();
-    }
-
-
-    /**
-     * Sets the context.
-     * 
-     * @param context the context
-     */
-    public void setContext( OpenLdapAclValueWithContext context )
-    {
-        System.out.println( "Set Context" );
-    }
-
-
-    /**
-     * Gets the clauses.
-     *
-     * @return the clauses
-     */
-    public List<AclWhoClause> getClauses()
-    {
-        return clauses;
     }
 
 

@@ -20,6 +20,7 @@
 package org.apache.directory.studio.openldap.config.acl.model;
 
 /**
+ * The AclWhoClause.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

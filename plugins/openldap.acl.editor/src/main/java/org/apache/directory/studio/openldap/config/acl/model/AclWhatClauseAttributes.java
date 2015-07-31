@@ -25,7 +25,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * 
+ * The Acl what-attrs clause. 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class AclWhatClauseAttributes
@@ -84,18 +84,27 @@ public class AclWhatClauseAttributes
         StringBuilder sb = new StringBuilder();
 
         // Attrs
-        sb.append( "attrs=" );
+        sb.append( "attrs" );
 
         // Attributes
         if ( ( attributes != null ) && ( attributes.size() > 0 ) )
         {
+            sb.append( '=' );
+            boolean isFirst = true;
+            
             for ( String attribute : attributes )
             {
+                if ( isFirst )
+                {
+                    isFirst = false;
+                }
+                else
+                {
+                    sb.append( ',' );
+                }
+                
                 sb.append( attribute );
-                sb.append( "," );
             }
-
-            sb.deleteCharAt( sb.length() - 1 );
         }
 
         return sb.toString();

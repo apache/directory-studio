@@ -89,6 +89,7 @@ public class OpenLdapAclSourceViewerConfiguration extends SourceViewerConfigurat
         IFormattingStrategy formattingStrategy = new OpenLdapAclFormattingStrategy( sourceViewer );
         formatter.enablePartitionAwareFormatting( false );
         formatter.setFormattingStrategy( formattingStrategy, IDocument.DEFAULT_CONTENT_TYPE );
+        
         return formatter;
     }
 }

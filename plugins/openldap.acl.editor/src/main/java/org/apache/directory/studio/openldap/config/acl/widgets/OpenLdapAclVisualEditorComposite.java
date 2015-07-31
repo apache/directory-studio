@@ -30,7 +30,6 @@ import org.eclipse.swt.widgets.Composite;
 
 import org.apache.directory.studio.openldap.config.acl.OpenLdapAclValueWithContext;
 import org.apache.directory.studio.openldap.config.acl.model.AclItem;
-import org.apache.directory.studio.openldap.config.acl.model.OpenLdapAclParser;
 
 
 /**
@@ -42,13 +41,14 @@ import org.apache.directory.studio.openldap.config.acl.model.OpenLdapAclParser;
  */
 public class OpenLdapAclVisualEditorComposite extends ScrolledComposite
 {
-    private OpenLdapAclVisualEditorComposite instance;
-
-    /** The ACL  */
-    private AclItem acl;
+    /** The ACL context */
+    private OpenLdapAclValueWithContext context;
 
     // UI widgets
+    /** The WHAT clause Widget */
     private OpenLdapAclWhatClauseWidget whatClauseWidget;
+    
+    /** The WHO clause widget */
     private OpenLdapAclWhoClausesBuilderWidget whoClausesBuilderWidget;
 
 
@@ -58,9 +58,11 @@ public class OpenLdapAclVisualEditorComposite extends ScrolledComposite
      * @param parent a widget which will be the parent of the new instance (cannot be null)
      * @param style the style of widget to construct
      */
-    public OpenLdapAclVisualEditorComposite( Composite parent, int style )
+    public OpenLdapAclVisualEditorComposite( Composite parent, OpenLdapAclValueWithContext context, int style )
     {
         super( parent, style | SWT.H_SCROLL | SWT.V_SCROLL );
+        
+        this.context = context;
 
         // Creating the composite
         Composite composite = new Composite( this, SWT.NONE );
@@ -76,8 +78,6 @@ public class OpenLdapAclVisualEditorComposite extends ScrolledComposite
         setExpandHorizontal( true );
         setExpandVertical( true );
         setMinSize( composite.computeSize( SWT.DEFAULT, SWT.DEFAULT ) );
-
-        instance = this;
     }
 
 
@@ -88,7 +88,7 @@ public class OpenLdapAclVisualEditorComposite extends ScrolledComposite
      */
     private void createWhatClauseWidget( Composite parent )
     {
-        whatClauseWidget = new OpenLdapAclWhatClauseWidget( this );
+        whatClauseWidget = new OpenLdapAclWhatClauseWidget( this, context );
         whatClauseWidget.create( parent );
     }
 
@@ -100,31 +100,19 @@ public class OpenLdapAclVisualEditorComposite extends ScrolledComposite
      */
     private void createWhoClausesWidget( Composite parent )
     {
-        whoClausesBuilderWidget = new OpenLdapAclWhoClausesBuilderWidget( this );
+        whoClausesBuilderWidget = new OpenLdapAclWhoClausesBuilderWidget( this, context );
         whoClausesBuilderWidget.create( parent );
     }
 
 
     /**
-     * Sets the input. The given ACI Item string is parsed and
-     * populated to the GUI elements.
-     * 
-     *
-     * @param input The string representation of the ACI item
-     * @throws ParseException if the syntax is invalid
+     * Populate the GUI elements with the Context content. 
      */
-    public void setInput( String input ) throws ParseException
+    public void refresh()
     {
-        // Reseting the previous input
-        acl = null;
-
-        // Parsing the input string
-        OpenLdapAclParser parser = new OpenLdapAclParser();
-        acl = parser.parse( input );
-
         // Setting the input ACL to the widgets
-        whatClauseWidget.setInput( acl.getWhatClause() );
-        whoClausesBuilderWidget.setInput( acl.getWhoClauses() );
+        whatClauseWidget.refresh();
+        whoClausesBuilderWidget.refresh();
     }
 
 
@@ -137,20 +125,9 @@ public class OpenLdapAclVisualEditorComposite extends ScrolledComposite
      */
     public String getInput() throws ParseException
     {
-        AclItem aclItem = new AclItem( whatClauseWidget.getClause(), whoClausesBuilderWidget.getClauses() );
+        AclItem aclItem = new AclItem( context.getAclItem().getWhatClause(), context.getAclItem().getWhoClauses() );
+        
         return aclItem.toString();
-    }
-
-
-    /**
-     * Sets the context.
-     * 
-     * @param context the context
-     */
-    public void setContext( OpenLdapAclValueWithContext context )
-    {
-        whatClauseWidget.setContext( context );
-        whoClausesBuilderWidget.setContext( context );
     }
 
 

@@ -20,6 +20,7 @@
 package org.apache.directory.studio.openldap.config.acl.model;
 
 /**
+ * The ACL what clause.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -161,11 +162,6 @@ public class AclWhatClause
         // Star (*) clause
         if ( starClause != null )
         {
-            if ( !isFirst )
-            {
-                sb.append( " " );
-            }
-
             isFirst = false;
             sb.append( starClause.toString() );
         }
@@ -173,36 +169,45 @@ public class AclWhatClause
         // DN clause
         if ( dnClause != null )
         {
-            if ( !isFirst )
+            if ( isFirst )
+            {
+                isFirst = false;
+            }
+            else
             {
                 sb.append( " " );
             }
 
-            isFirst = false;
             sb.append( dnClause.toString() );
         }
 
         // Filter clause
         if ( filterClause != null )
         {
-            if ( !isFirst )
+            if ( isFirst )
+            {
+                isFirst = false;
+            }
+            else
             {
                 sb.append( " " );
             }
 
-            isFirst = false;
             sb.append( filterClause.toString() );
         }
 
         // Attributes clause
         if ( attributesClause != null )
         {
-            if ( !isFirst )
+            if ( isFirst )
+            {
+                isFirst = false;
+            }
+            else
             {
                 sb.append( " " );
             }
 
-            isFirst = false;
             sb.append( attributesClause.toString() );
         }
 

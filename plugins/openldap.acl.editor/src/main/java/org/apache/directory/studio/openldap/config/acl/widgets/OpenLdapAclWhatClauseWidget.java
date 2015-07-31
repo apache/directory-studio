@@ -39,6 +39,7 @@ import org.apache.directory.studio.openldap.config.acl.widgets.composites.WhatCl
 
 
 /**
+ * The WhatCaluse widget builder
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -49,9 +50,6 @@ public class OpenLdapAclWhatClauseWidget extends AbstractWidget
 
     /** The context */
     private OpenLdapAclValueWithContext context;
-
-    /** The what clause */
-    private AclWhatClause clause;
 
     // UI widgets
     private Composite composite;
@@ -64,6 +62,12 @@ public class OpenLdapAclWhatClauseWidget extends AbstractWidget
     private Button attributesCheckbox;
     private Composite attributesComposite;
     private Composite attributesSubComposite;
+
+    private WhatClauseAttributesComposite attributesClauseComposite;
+
+    private WhatClauseFilterComposite filterClauseComposite;
+
+    private WhatClauseDnComposite dnClauseComposite;
 
     // Listeners
     private SelectionAdapter dnCheckboxListener = new SelectionAdapter()
@@ -83,6 +87,8 @@ public class OpenLdapAclWhatClauseWidget extends AbstractWidget
             visualEditorComposite.layout( true, true );
         }
     };
+    
+    
     private SelectionAdapter filterCheckboxListener = new SelectionAdapter()
     {
         public void widgetSelected( org.eclipse.swt.events.SelectionEvent e )
@@ -100,6 +106,8 @@ public class OpenLdapAclWhatClauseWidget extends AbstractWidget
             visualEditorComposite.layout( true, true );
         }
     };
+    
+    
     private SelectionAdapter attributesCheckboxListener = new SelectionAdapter()
     {
         public void widgetSelected( org.eclipse.swt.events.SelectionEvent e )
@@ -118,21 +126,16 @@ public class OpenLdapAclWhatClauseWidget extends AbstractWidget
         }
     };
 
-    private WhatClauseAttributesComposite attributesClauseComposite;
-
-    private WhatClauseFilterComposite filterClauseComposite;
-
-    private WhatClauseDnComposite dnClauseComposite;
-
 
     /**
      * Creates a new instance of OpenLdapAclWhatClauseWidget.
      * 
      * @param visualEditorComposite the visual editor composite
      */
-    public OpenLdapAclWhatClauseWidget( OpenLdapAclVisualEditorComposite visualEditorComposite )
+    public OpenLdapAclWhatClauseWidget( OpenLdapAclVisualEditorComposite visualEditorComposite, OpenLdapAclValueWithContext context )
     {
         this.visualEditorComposite = visualEditorComposite;
+        this.context = context;
     }
 
 
@@ -174,9 +177,11 @@ public class OpenLdapAclWhatClauseWidget extends AbstractWidget
         dnClauseComposite = new WhatClauseDnComposite( visualEditorComposite );
         dnClauseComposite.createComposite( dnGroup );
 
-        if ( clause.getDnClause() != null )
+        AclWhatClause whatClause = context.getAclItem().getWhatClause();
+        
+        if ( whatClause.getDnClause() != null )
         {
-            dnClauseComposite.setClause( clause.getDnClause() );
+            dnClauseComposite.setClause( whatClause.getDnClause() );
         }
 
         if ( context != null )
@@ -198,9 +203,11 @@ public class OpenLdapAclWhatClauseWidget extends AbstractWidget
         filterClauseComposite = new WhatClauseFilterComposite( visualEditorComposite );
         filterClauseComposite.createComposite( filterGroup );
 
-        if ( clause.getFilterClause() != null )
+        AclWhatClause whatClause = context.getAclItem().getWhatClause();
+
+        if ( whatClause.getFilterClause() != null )
         {
-            filterClauseComposite.setClause( clause.getFilterClause() );
+            filterClauseComposite.setClause( whatClause.getFilterClause() );
         }
 
         if ( context != null )
@@ -221,10 +228,13 @@ public class OpenLdapAclWhatClauseWidget extends AbstractWidget
 
         attributesClauseComposite = new WhatClauseAttributesComposite( visualEditorComposite );
         attributesClauseComposite.createComposite( attributesGroup );
+        attributesClauseComposite.setContext( context );
 
-        if ( clause.getAttributesClause() != null )
+        AclWhatClause whatClause = context.getAclItem().getWhatClause();
+
+        if ( whatClause.getAttributesClause() != null )
         {
-            attributesClauseComposite.setClause( clause.getAttributesClause() );
+            attributesClauseComposite.setClause( whatClause.getAttributesClause() );
         }
 
         if ( context != null )
@@ -260,18 +270,18 @@ public class OpenLdapAclWhatClauseWidget extends AbstractWidget
 
 
     /**
-     * Sets the input.
-     *
-     * @param clause the what clause
+     * Refresh the WhatClause GUI
      */
-    public void setInput( AclWhatClause clause )
+    public void refresh()
     {
-        this.clause = clause;
+        AclWhatClause whatClause = context.getAclItem().getWhatClause();
 
-        if ( clause != null )
+
+        if ( whatClause != null )
         {
             // DN clause
-            AclWhatClauseDn dnClause = clause.getDnClause();
+            AclWhatClauseDn dnClause = whatClause.getDnClause();
+            
             if ( dnClause != null )
             {
                 dnCheckbox.setSelection( true );
@@ -279,7 +289,8 @@ public class OpenLdapAclWhatClauseWidget extends AbstractWidget
             }
 
             // Filter clause
-            AclWhatClauseFilter filterClause = clause.getFilterClause();
+            AclWhatClauseFilter filterClause = whatClause.getFilterClause();
+            
             if ( filterClause != null )
             {
                 filterCheckbox.setSelection( true );
@@ -287,40 +298,14 @@ public class OpenLdapAclWhatClauseWidget extends AbstractWidget
             }
 
             // Attributes clause
-            AclWhatClauseAttributes attributesClause = clause.getAttributesClause();
+            AclWhatClauseAttributes attributesClause = whatClause.getAttributesClause();
+            
             if ( attributesClause != null )
             {
                 attributesCheckbox.setSelection( true );
                 createAttributesComposite();
             }
         }
-    }
-
-
-    /**
-     * Sets the context.
-     * 
-     * @param context the context
-     */
-    public void setContext( OpenLdapAclValueWithContext context )
-    {
-        this.context = context;
-
-        if ( attributesClauseComposite != null )
-        {
-            attributesClauseComposite.setConnection( context.getConnection() );
-        }
-    }
-
-
-    /**
-     * Gets the what clause.
-     *
-     * @return the what clause
-     */
-    public AclWhatClause getClause()
-    {
-        return clause;
     }
 
 

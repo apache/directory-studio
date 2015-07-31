@@ -21,6 +21,7 @@ package org.apache.directory.studio.openldap.config.acl.widgets.composites;
 
 
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.openldap.config.acl.OpenLdapAclValueWithContext;
 import org.eclipse.swt.widgets.Composite;
 
 
@@ -36,7 +37,7 @@ public interface ClauseComposite<C>
      *
      * @param parent the parent composite
      */
-    public Composite createComposite( Composite parent );
+    Composite createComposite( Composite parent );
 
 
     /**
@@ -44,7 +45,7 @@ public interface ClauseComposite<C>
      * 
      *  @return the visual editor composite
      */
-    public Composite getVisualEditorComposite();
+    Composite getVisualEditorComposite();
 
 
     /**
@@ -52,7 +53,7 @@ public interface ClauseComposite<C>
      *
      * @param visualEditorComposite the visual editor composite
      */
-    public void setVisualEditorComposite( Composite visualEditorComposite );
+    void setVisualEditorComposite( Composite visualEditorComposite );
 
 
     /**
@@ -60,7 +61,7 @@ public interface ClauseComposite<C>
      *
      * @return the connection
      */
-    public IBrowserConnection getConnection();
+    IBrowserConnection getConnection();
 
 
     /**
@@ -68,7 +69,7 @@ public interface ClauseComposite<C>
      *
      * @param connection the connection
      */
-    public void setConnection( IBrowserConnection connection );
+    void setConnection( IBrowserConnection connection );
 
 
     /**
@@ -76,7 +77,7 @@ public interface ClauseComposite<C>
      *
      * @return the clause
      */
-    public C getClause();
+    C getClause();
 
 
     /**
@@ -84,11 +85,23 @@ public interface ClauseComposite<C>
      *
      * @param clause the clause
      */
-    public void setClause( C clause );
+    void setClause( C clause );
 
 
     /**
      * Saves widget settings.
      */
-    public void saveWidgetSettings();
+    void saveWidgetSettings();
+    
+    
+    /**
+     * @return The ACL context in use
+     */
+    OpenLdapAclValueWithContext getContext();
+    
+    
+    /**
+     * @param context The ACL context in use
+     */
+    void setContext( OpenLdapAclValueWithContext context );
 }

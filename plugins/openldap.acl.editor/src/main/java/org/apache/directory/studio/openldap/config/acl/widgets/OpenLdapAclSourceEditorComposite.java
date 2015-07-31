@@ -47,13 +47,17 @@ import org.apache.directory.studio.openldap.config.acl.sourceeditor.OpenLdapAclS
  */
 public class OpenLdapAclSourceEditorComposite extends Composite
 {
-
     /** The source editor */
     private SourceViewer sourceEditor;
 
     /** The source editor configuration. */
     private SourceViewerConfiguration configuration;
 
+    /** The ACL context */
+    private OpenLdapAclValueWithContext context;
+
+    /** The ACL parser */
+    private OpenLdapAclParser parser = new OpenLdapAclParser();
 
     /**
      * Creates a new instance of ACIItemSourceEditorComposite.
@@ -61,9 +65,11 @@ public class OpenLdapAclSourceEditorComposite extends Composite
      * @param parent
      * @param style
      */
-    public OpenLdapAclSourceEditorComposite( Composite parent, int style )
+    public OpenLdapAclSourceEditorComposite( Composite parent, OpenLdapAclValueWithContext context, int style )
     {
         super( parent, style );
+        
+        this.context = context;
         setLayout( new FillLayout() );
 
         createSourceEditor();
@@ -101,12 +107,9 @@ public class OpenLdapAclSourceEditorComposite extends Composite
      * @param input the valid string representation of the ACI item
      * @throws ParseException it the syntax check fails.
      */
-    public void setInput( String input ) throws ParseException
+    public void refresh()
     {
-        OpenLdapAclParser parser = new OpenLdapAclParser();
-        parser.parse( input );
-
-        forceSetInput( input );
+        forceSetInput( context.getAclItem().toString() );
     }
 
 
@@ -141,14 +144,15 @@ public class OpenLdapAclSourceEditorComposite extends Composite
         input = input.replaceAll( "\\n", " " ); //$NON-NLS-1$ //$NON-NLS-2$
         input = input.replaceAll( "\\r", " " ); //$NON-NLS-1$ //$NON-NLS-2$
 
-        OpenLdapAclParser parser = new OpenLdapAclParser();
         AclItem aclItem = parser.parse( input );
 
         String acl = "";
+        
         if ( aclItem != null )
         {
             acl = aclItem.toString();
         }
+        
         return acl;
     }
 

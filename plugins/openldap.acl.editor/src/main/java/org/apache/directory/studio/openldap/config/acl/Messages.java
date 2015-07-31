@@ -28,7 +28,7 @@ import java.util.ResourceBundle;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class Messages
+public final class Messages
 {
     private static final String BUNDLE_NAME = "org.apache.directory.studio.openldap.config.acl.messages"; //$NON-NLS-1$
 
