@@ -47,7 +47,7 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
     protected String pluginId;
 
     /** The flag indicating if the work is done */
-    protected boolean done;
+    protected boolean isDone;
 
     /** The list of error statuses */
     protected List<Status> errorStatusList;
@@ -82,7 +82,7 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
     {
         super( monitor );
         this.pluginId = pluginId;
-        done = false;
+        isDone = false;
         CommonCorePlugin.getDefault().getStudioProgressMonitorWatcherJob().addMonitor(this);
         allowMessageReporting = new AtomicBoolean( true );
     }
@@ -91,10 +91,11 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
     /**
      * @see org.eclipse.core.runtime.ProgressMonitorWrapper#setCanceled(boolean)
      */
-    public void setCanceled( boolean b )
+    public void setCanceled( boolean canceled )
     {
-        super.setCanceled( b );
-        if ( b )
+        super.setCanceled( canceled );
+        
+        if ( canceled )
         {
             fireCancelRequested();
         }
@@ -108,7 +109,7 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
     {
         synchronized ( this )
         {
-            done = true;
+            isDone = true;
             super.done();
         }
     }
@@ -125,6 +126,7 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
         {
             cancelListenerList = new ArrayList<CancelListener>();
         }
+        
         if ( !cancelListenerList.contains( listener ) )
         {
             cancelListenerList.add( listener );
@@ -139,22 +141,22 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
      */
     public void removeCancelListener( CancelListener listener )
     {
-        if ( cancelListenerList != null && cancelListenerList.contains( listener ) )
+        if ( ( cancelListenerList != null ) && cancelListenerList.contains( listener ) )
         {
             cancelListenerList.remove( listener );
         }
     }
 
 
-    void fireCancelRequested()
+    /* Package protected */void fireCancelRequested()
     {
         CancelEvent event = new CancelEvent( this );
+        
         if ( cancelListenerList != null )
         {
-            for ( int i = 0; i < cancelListenerList.size(); i++ )
+            for ( CancelListener cancelListener : cancelListenerList )
             {
-                CancelListener listener = cancelListenerList.get( i );
-                listener.cancelRequested( event );
+                cancelListener.cancelRequested( event );
             }
         }
     }
@@ -168,6 +170,7 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
     public void reportProgress( String message )
     {
         boolean doReport = allowMessageReporting.getAndSet( false );
+        
         if ( doReport )
         {
             subTask( message );
@@ -182,7 +185,7 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
      */
     public void reportError( String message )
     {
-        this.reportError( message, null );
+        reportError( message, null );
     }
 
 
@@ -240,78 +243,76 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
      */
     public IStatus getErrorStatus( String message )
     {
-        if ( errorStatusList != null && !errorStatusList.isEmpty() )
+        if ( ( errorStatusList == null ) || errorStatusList.isEmpty() )
         {
+            if ( isCanceled() )
+            {
+                return Status.CANCEL_STATUS;
+            }
+            else
+            {
+                return Status.OK_STATUS;
+            }
+        }
+        else
+        {
+            StringBuilder buffer = new StringBuilder(); 
+            buffer.append( message );
+
             // append status messages to message
             for ( Status status : errorStatusList )
             {
                 String statusMessage = status.getMessage();
                 Throwable exception = status.getException();
-                String exceptionMessage = exception != null ? exception.getMessage() : null;
-
-                // TODO Check if this commented code could be removed
-                //                // Tweak exception message for some well-know exceptions
-                //                Throwable e = exception;
-                //                while ( e != null )
-                //                {
-                //                    if ( e instanceof UnknownHostException )
-                //                    {
-                //                        exceptionMessage = "Unknown Host: " + e.getMessage(); //$NON-NLS-1$
-                //                    }
-                //                    else if ( e instanceof SocketException )
-                //                    {
-                //                        exceptionMessage = e.getMessage() + " (" + exceptionMessage + ")";; //$NON-NLS-1$ //$NON-NLS-2$
-                //                    }
-                //
-                //                    // next cause
-                //                    e = e.getCause();
-                //                }
+                String exceptionMessage = null;
+                
+                if ( exception != null)
+                {
+                    exceptionMessage = exception.getMessage();
+                }
 
                 // append explicit status message
                 if ( !StringUtils.isEmpty( statusMessage ) )
                 {
-                    message += "\n - " + statusMessage; //$NON-NLS-1$
+                    buffer.append( "\n - " ).append(  statusMessage );
                 }
+                
                 // append exception message if different to status message
-                if ( exception != null && exceptionMessage != null && !exceptionMessage.equals( statusMessage ) )
+                if ( (exception != null ) && ( exceptionMessage != null ) && !exceptionMessage.equals( statusMessage ) )
                 {
                     // strip control characters
                     int indexOfAny = StringUtils.indexOfAny( exceptionMessage, "\n\r\t" ); //$NON-NLS-1$
+                    
                     if ( indexOfAny > -1 )
                     {
                         exceptionMessage = exceptionMessage.substring( 0, indexOfAny - 1 );
                     }
-                    message += "\n - " + exceptionMessage; //$NON-NLS-1$
+                    
+                    buffer.append( "\n - " ).append( exceptionMessage ); //$NON-NLS-1$
                 }
             }
 
             // create main status
-            MultiStatus multiStatus = new MultiStatus( pluginId, IStatus.ERROR, message, null );
+            MultiStatus multiStatus = new MultiStatus( pluginId, IStatus.ERROR, buffer.toString(), null );
 
             // append child status
             for ( Status status : errorStatusList )
             {
                 String statusMessage = status.getMessage();
+                
                 if ( status.getException() != null )
                 {
-                    StringWriter sw = new StringWriter();
-                    PrintWriter pw = new PrintWriter( sw );
-                    status.getException().printStackTrace( pw );
-                    statusMessage = sw.toString();
+                    StringWriter stringWriter = new StringWriter();
+                    PrintWriter printWriter = new PrintWriter( stringWriter );
+                    status.getException().printStackTrace( printWriter );
+                    statusMessage = stringWriter.toString();
                 }
+                
                 multiStatus.add( new Status( status.getSeverity(), status.getPlugin(), status.getCode(), statusMessage,
                     status.getException() ) );
             }
 
             return multiStatus;
-        }
-        else if ( isCanceled() )
-        {
-            return Status.CANCEL_STATUS;
-        }
-        else
-        {
-            return Status.OK_STATUS;
         }
     }
 
@@ -327,6 +328,7 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
         {
             return ( Exception ) errorStatusList.get( 0 ).getException();
         }
+        
         return null;
     }
 
@@ -336,8 +338,8 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
      */
     public void reset()
     {
-        this.done = false;
-        this.errorStatusList = null;
+        isDone = false;
+        errorStatusList = null;
     }
 
     /**
@@ -347,6 +349,7 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
      */
     public static class CancelEvent
     {
+        /** The Monitor used by the Cancel Event */
         private IProgressMonitor monitor;
 
 
@@ -372,6 +375,7 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
         }
     }
 
+    
     /**
      * CancelListener.
      *
@@ -379,13 +383,11 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
      */
     public interface CancelListener
     {
-
         /**
          * Cancel requested.
          * 
          * @param event the event
          */
-        public void cancelRequested( CancelEvent event );
+        void cancelRequested( CancelEvent event );
     }
-
 }

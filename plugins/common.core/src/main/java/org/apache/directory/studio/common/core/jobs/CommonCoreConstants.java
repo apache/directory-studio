@@ -29,6 +29,13 @@ package org.apache.directory.studio.common.core.jobs;
  */
 public final class CommonCoreConstants
 {
+
+    /** The plug-in ID */
+    public static final String PLUGIN_ID = "org.apache.directory.studio.common.core"; //$NON-NLS-1$
+
+    /** The Job family ID */
+    public static final String JOB_FAMILY_ID = "org.apache.directory.studio.common.core.jobs.family"; //$NON-NLS-1$
+
     /**
      *  Ensures no construction of this class, also ensures there is no need for final keyword above
      *  (Implicit super constructor is not visible for default constructor),
@@ -37,10 +44,4 @@ public final class CommonCoreConstants
     private CommonCoreConstants()
     {
     }
-
-    /** The plug-in ID */
-    public static final String PLUGIN_ID = "org.apache.directory.studio.common.core"; //$NON-NLS-1$
-
-    /** The Job family ID */
-    public static final String JOB_FAMILY_ID = "org.apache.directory.studio.common.core.jobs.family"; //$NON-NLS-1$
 }

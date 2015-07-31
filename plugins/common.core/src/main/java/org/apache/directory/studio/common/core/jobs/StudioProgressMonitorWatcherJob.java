@@ -45,26 +45,40 @@ public class StudioProgressMonitorWatcherJob extends Job
     private final ConcurrentLinkedQueue<StudioProgressMonitor> monitors;
 
 
+    /**
+     * The constructor
+     */
     public StudioProgressMonitorWatcherJob()
     {
         super( Messages.getString( "StudioProgressMonitor.CheckCancellation" ) );
-        this.running = new AtomicBoolean( true );
-        this.monitors = new ConcurrentLinkedQueue<StudioProgressMonitor>();
+        running = new AtomicBoolean( true );
+        monitors = new ConcurrentLinkedQueue<StudioProgressMonitor>();
     }
 
 
+    /**
+     * Set the running flag to false
+     */
     public void stop()
     {
-        this.running.set( false );
+        running.set( false );
     }
 
 
+    /**
+     * Add a new monitor to the list of monitors being watched
+     * 
+     * @param monitor The monitor to add
+     */
     public void addMonitor( StudioProgressMonitor monitor )
     {
-        this.monitors.add( monitor );
+        monitors.add( monitor );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected IStatus run( IProgressMonitor monitor )
     {
@@ -78,7 +92,7 @@ public class StudioProgressMonitorWatcherJob extends Job
                 do
                 {
                     // reset allow message reporting
-                    if ( !spm.isCanceled() && !spm.done )
+                    if ( !spm.isCanceled() && !spm.isDone )
                     {
                         spm.allowMessageReporting.set( true );
                     }
@@ -88,7 +102,8 @@ public class StudioProgressMonitorWatcherJob extends Job
                     {
                         spm.fireCancelRequested();
                     }
-                    if ( spm.isCanceled() || spm.done )
+                    
+                    if ( spm.isCanceled() || spm.isDone )
                     {
                         it.remove();
                         break;
@@ -114,7 +129,7 @@ public class StudioProgressMonitorWatcherJob extends Job
             {
             }
         }
+        
         return Status.OK_STATUS;
     }
-
 }

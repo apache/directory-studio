@@ -37,8 +37,12 @@ public class CommonCorePlugin extends Plugin
     private StudioProgressMonitorWatcherJob studioProgressMonitorWatcherJob;
 
 
+    /**
+     * The default constructor for this class
+     */
     public CommonCorePlugin()
     {
+        super();
         plugin = this;
     }
 
@@ -46,6 +50,7 @@ public class CommonCorePlugin extends Plugin
     /**
      * @see Plugin#start(org.osgi.framework.BundleContext)
      */
+    @Override
     public void start( BundleContext context ) throws Exception
     {
         super.start( context );
@@ -59,6 +64,7 @@ public class CommonCorePlugin extends Plugin
     /**
      * @see Plugin#stop(org.osgi.framework.BundleContext)
      */
+    @Override
     public void stop( BundleContext context ) throws Exception
     {
         plugin = null;
@@ -82,6 +88,9 @@ public class CommonCorePlugin extends Plugin
     }
 
 
+    /**
+     * @return The watcher job
+     */
     public StudioProgressMonitorWatcherJob getStudioProgressMonitorWatcherJob()
     {
         return studioProgressMonitorWatcherJob;
