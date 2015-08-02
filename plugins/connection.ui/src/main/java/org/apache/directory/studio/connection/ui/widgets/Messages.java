@@ -29,8 +29,16 @@ import java.util.ResourceBundle;
  *  
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class Messages
+public final class Messages
 {
+    /**
+     * Make the constructor private to make this class an utility class
+     */
+    private Messages()
+    {
+    }
+    
+    
     /** The resource name */
     private static final ResourceBundle RESOURCE_BUNDLE = 
         ResourceBundle.getBundle( Messages.class.getPackage().getName() + ".messages" );
