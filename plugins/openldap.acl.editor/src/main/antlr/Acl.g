@@ -104,7 +104,7 @@ INTEGER : DIGIT | ( LDIGIT ( DIGIT )+ );
 
 DOUBLE_QUOTED_STRING : '"'! ( ~'"' )* '"'!;
         
-ATTR_IDENT : ('a'..'z')  ('a'..'z' | DIGIT | '-' | ';' )*;
+ATTR_IDENT : ('a'..'z' | '!' | '@' )  ('a'..'z' | DIGIT | '-' | ';' )*;
 
 OPEN_CURLY : '{';
 
