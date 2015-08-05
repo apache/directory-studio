@@ -25,7 +25,18 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * The Acl what-attrs clause. 
+ * The Acl what-attrs clause.
+ * 
+ * <pre>
+ * attrs ::= attrlist val-e
+ * attrlist ::= attr attr-e
+ * attr-e ::= ',' attr attr-e
+ * attr :: attributeType | '!' objectClass | '@' objectClass | 'entry' | 'children'
+ * val-e ::= 'val' matchingRule style '=' attrval | e
+ * matchingRule ::= '/matchingRule' | e
+ * style ::= 'exact' | 'base' | 'baseobject' | 'regex' | 'one' | 'onelevel' | 'sub' | 'subtree' | 'children'
+ * attrval ::= STRING 
+ * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class AclWhatClauseAttributes
@@ -41,7 +52,11 @@ public class AclWhatClauseAttributes
      */
     public List<String> getAttributes()
     {
-        return attributes;
+        List<String> copyAttributes = new ArrayList<String>( attributes.size() );
+        
+        copyAttributes.addAll( attributes );
+        
+        return copyAttributes;
     }
 
 
