@@ -28,28 +28,27 @@ package org.apache.directory.studio.apacheds.configuration;
 public interface ApacheDS2ConfigurationPluginConstants
 {
     /** The plug-in ID */
-    public static final String PLUGIN_ID = ApacheDS2ConfigurationPlugin.getDefault().getPluginProperties()
+    String PLUGIN_ID = ApacheDS2ConfigurationPlugin.getDefault().getPluginProperties()
         .getString( "Plugin_id" ); //$NON-NLS-1$
 
     // ------
     // IMAGES
     // ------
-    public static final String IMG_EDITOR = "resources/icons/editor.gif"; //$NON-NLS-1$
-    public static final String IMG_EXPORT = "resources/icons/export.gif"; //$NON-NLS-1$
-    public static final String IMG_INDEX = "resources/icons/index.png"; //$NON-NLS-1$
-    public static final String IMG_IMPORT = "resources/icons/import.gif"; //$NON-NLS-1$
-    public static final String IMG_EXTENDED_OPERATION = "resources/icons/extended_operation.gif"; //$NON-NLS-1$
-    public static final String IMG_HORIZONTAL_ORIENTATION = "resources/icons/horizontal_orientation.gif"; //$NON-NLS-1$
-    public static final String IMG_INTERCEPTOR = "resources/icons/interceptor.gif"; //$NON-NLS-1$
-    public static final String IMG_NEW_SERVER_CONFIGURATION_FILE_WIZARD = "resources/icons/new_server_configuration_file_wizard.gif"; //$NON-NLS-1$
-    public static final String IMG_PARTITION = "resources/icons/partition.gif"; //$NON-NLS-1$
-    public static final String IMG_PARTITION_SYSTEM = "resources/icons/partition_system.gif"; //$NON-NLS-1$
-    public static final String IMG_PASSWORD_POLICY = "resources/icons/password_policy.gif"; //$NON-NLS-1$
-    public static final String IMG_PASSWORD_POLICY_DEFAULT = "resources/icons/password_policy_default.gif"; //$NON-NLS-1$
-    public static final String IMG_REPLICATION_CONSUMER = "resources/icons/replication_consumer.gif"; //$NON-NLS-1$
-    public static final String IMG_VERTICAL_ORIENTATION = "resources/icons/vertical_orientation.gif"; //$NON-NLS-1$
+    String IMG_EDITOR = "resources/icons/editor.gif"; //$NON-NLS-1$
+    String IMG_EXPORT = "resources/icons/export.gif"; //$NON-NLS-1$
+    String IMG_INDEX = "resources/icons/index.png"; //$NON-NLS-1$
+    String IMG_IMPORT = "resources/icons/import.gif"; //$NON-NLS-1$
+    String IMG_EXTENDED_OPERATION = "resources/icons/extended_operation.gif"; //$NON-NLS-1$
+    String IMG_HORIZONTAL_ORIENTATION = "resources/icons/horizontal_orientation.gif"; //$NON-NLS-1$
+    String IMG_INTERCEPTOR = "resources/icons/interceptor.gif"; //$NON-NLS-1$
+    String IMG_NEW_SERVER_CONFIGURATION_FILE_WIZARD = "resources/icons/new_server_configuration_file_wizard.gif"; //$NON-NLS-1$
+    String IMG_PARTITION = "resources/icons/partition.gif"; //$NON-NLS-1$
+    String IMG_PARTITION_SYSTEM = "resources/icons/partition_system.gif"; //$NON-NLS-1$
+    String IMG_PASSWORD_POLICY = "resources/icons/password_policy.gif"; //$NON-NLS-1$
+    String IMG_PASSWORD_POLICY_DEFAULT = "resources/icons/password_policy_default.gif"; //$NON-NLS-1$
+    String IMG_REPLICATION_CONSUMER = "resources/icons/replication_consumer.gif"; //$NON-NLS-1$
+    String IMG_VERTICAL_ORIENTATION = "resources/icons/vertical_orientation.gif"; //$NON-NLS-1$
 
-    public static final String CONFIG_LDIF = "config.ldif"; //$NON-NLS-1$
-    public static final String OU_CONFIG_LDIF = "ou=config.ldif"; //$NON-NLS-1$
-
+    String CONFIG_LDIF = "config.ldif"; //$NON-NLS-1$
+    String OU_CONFIG_LDIF = "ou=config.ldif"; //$NON-NLS-1$
 }

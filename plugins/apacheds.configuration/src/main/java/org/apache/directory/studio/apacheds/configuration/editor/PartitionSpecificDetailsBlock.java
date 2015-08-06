@@ -37,7 +37,7 @@ public interface PartitionSpecificDetailsBlock
      * @param parent the parent composite
      * @param toolkit the toolkit
      */
-    public Composite createBlockContent( Composite parent, FormToolkit toolkit );
+    Composite createBlockContent( Composite parent, FormToolkit toolkit );
 
 
     /**
@@ -45,13 +45,13 @@ public interface PartitionSpecificDetailsBlock
      *
      * @return the associated details page.
      */
-    public PartitionDetailsPage getDetailsPage();
+    PartitionDetailsPage getDetailsPage();
 
 
     /**
      * Refreshes the UI based on the input.
      */
-    public void refresh();
+    void refresh();
 
 
     /**

@@ -55,7 +55,7 @@ public final class ProtectedItemWrapperFactory
      * 
      * @return the protected item wrapper[]
      */
-    public static final ProtectedItemWrapper[] createProtectedItemWrappers()
+    public static ProtectedItemWrapper[] createProtectedItemWrappers()
     {
         ProtectedItemWrapper[] protectedItemWrappers = new ProtectedItemWrapper[]
             {

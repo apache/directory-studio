@@ -29,12 +29,10 @@ package org.apache.directory.studio.common.ui.widgets;
  */
 public interface WidgetModifyListener
 {
-
     /**
      * Notified about the modification of a {@link AbstractWidget}.
      * 
      * @param event the event
      */
-    public void widgetModified( WidgetModifyEvent event );
-
+    void widgetModified( WidgetModifyEvent event );
 }

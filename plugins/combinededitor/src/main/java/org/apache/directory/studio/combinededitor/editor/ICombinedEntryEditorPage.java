@@ -33,13 +33,13 @@ public interface ICombinedEntryEditorPage
     /**
      * Disposes any allocated resource.
      */
-    public void dispose();
+    void dispose();
 
 
     /**
      * This method is called when editor input has changed.
      */
-    public void editorInputChanged();
+    void editorInputChanged();
 
 
     /**
@@ -48,7 +48,7 @@ public interface ICombinedEntryEditorPage
      * @return
      *      the associated editor
      */
-    public CombinedEntryEditor getEditor();
+    CombinedEntryEditor getEditor();
 
 
     /**
@@ -57,13 +57,13 @@ public interface ICombinedEntryEditorPage
      * @return
      *      the {@link CTabItem} associated with the editor page
      */
-    public CTabItem getTabItem();
+    CTabItem getTabItem();
 
 
     /**
      * Initializes the control of the page.
      */
-    public void init();
+    void init();
 
 
     /**
@@ -73,7 +73,7 @@ public interface ICombinedEntryEditorPage
      *      <code>true</code> if the editor page has been initialized,
      *      <code>false</code> if not.
      */
-    public boolean isInitialized();
+    boolean isInitialized();
 
 
     /**
@@ -81,11 +81,11 @@ public interface ICombinedEntryEditorPage
      * assign focus to one of the controls contained in the part's
      * parent composite.
      */
-    public void setFocus();
+    void setFocus();
 
 
     /**
      * This method is called when then editor page needs to be updated. 
      */
-    public void update();
+    void update();
 }
