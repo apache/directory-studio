@@ -32,7 +32,6 @@ import org.eclipse.swt.widgets.Composite;
  */
 public abstract class AbstractConnectionParameterPage implements ConnectionParameterPage
 {
-
     /** The page id. */
     protected String pageId;
 
@@ -65,14 +64,6 @@ public abstract class AbstractConnectionParameterPage implements ConnectionParam
 
 
     /**
-     * Creates a new instance of AbstractConnectionParameterPage.
-     */
-    protected AbstractConnectionParameterPage()
-    {
-    }
-
-
-    /**
      * Sets the connection parameter page modify listener.
      * 
      * @param listener the connection parameter page modify listener
@@ -80,7 +71,6 @@ public abstract class AbstractConnectionParameterPage implements ConnectionParam
     public void setConnectionParameterPageModifyListener( ConnectionParameterPageModifyListener listener )
     {
         this.connectionParameterPageModifyListener = listener;
-
     }
 
 
@@ -212,18 +202,24 @@ public abstract class AbstractConnectionParameterPage implements ConnectionParam
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public final void init( Composite parent, ConnectionParameterPageModifyListener listener,
         ConnectionParameter parameter )
     {
         createComposite( parent );
+        
         if ( listener != null )
         {
             setConnectionParameterPageModifyListener( listener );
         }
+        
         if ( parameter != null )
         {
             loadParameters( parameter );
         }
+        
         initListeners();
         connectionPageModified();
     }
@@ -265,5 +261,4 @@ public abstract class AbstractConnectionParameterPage implements ConnectionParam
      * Initializes the listeners.
      */
     protected abstract void initListeners();
-
 }

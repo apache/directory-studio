@@ -36,8 +36,16 @@ import org.eclipse.ui.PlatformUI;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class PasswordsKeyStoreManagerUtils
+public final class PasswordsKeyStoreManagerUtils
 {
+    /**
+     * A private constructor : this is an utility class
+     */
+    private PasswordsKeyStoreManagerUtils()
+    {
+    }
+    
+    
     /**
      * Checks if the passwords keystore is enabled.
      *
@@ -64,6 +72,9 @@ public class PasswordsKeyStoreManagerUtils
 
         PlatformUI.getWorkbench().getDisplay().syncExec( new Runnable()
         {
+            /**
+             * {@inheritDoc}
+             */
             public void run()
             {
                 while ( true )
@@ -105,15 +116,15 @@ public class PasswordsKeyStoreManagerUtils
                     // Creating the message
                     String message = null;
 
-                    if ( checkPasswordException != null )
+                    if ( checkPasswordException == null )
+                    {
+                        message = Messages.getString( "PasswordsKeyStoreManagerUtils.MasterPasswordVerificationFailed" ); //$NON-NLS-1$
+                    }
+                    else
                     {
                         message = Messages
                             .getString( "PasswordsKeyStoreManagerUtils.MasterPasswordVerificationFailedWithException" ) //$NON-NLS-1$
                             + checkPasswordException.getMessage();
-                    }
-                    else
-                    {
-                        message = Messages.getString( "PasswordsKeyStoreManagerUtils.MasterPasswordVerificationFailed" ); //$NON-NLS-1$
                     }
 
                     // We ask the user if he wants to retry to unlock the passwords keystore

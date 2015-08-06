@@ -29,12 +29,19 @@ import java.util.ResourceBundle;
  *  
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class Messages
+public final class Messages
 {
     /** The resource name */
     private static final ResourceBundle RESOURCE_BUNDLE = 
         ResourceBundle.getBundle( Messages.class.getPackage().getName() + ".messages" );
     
+    /**
+     * A private constructor : this is an utility class
+     */
+    private Messages()
+    {
+    }
+
     /**
      * Get back a message from the resource file given a key
      * 

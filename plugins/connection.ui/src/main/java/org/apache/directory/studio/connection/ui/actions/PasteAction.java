@@ -43,8 +43,8 @@ import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IWorkbenchCommandConstants;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
 
 
 /**
@@ -55,28 +55,34 @@ import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
 public class PasteAction extends StudioAction
 {
     /**
-     * Creates a new instance of PasteAction.
-     */
-    public PasteAction()
-    {
-        super();
-    }
-
-
-    /**
      * {@inheritDoc}
      */
     public String getText()
     {
         List<Connection> connections = getConnectionsToPaste();
         List<ConnectionFolder> connectionFolders = getConnectionFoldersToPaste();
-        if ( connections.size() > 0 && connectionFolders.size() == 0 )
+        
+        if ( !connections.isEmpty() && connectionFolders.isEmpty() )
         {
-            return connections.size() > 1 ? Messages.getString( "PasteAction.PasteConnections" ) : Messages.getString( "PasteAction.PasteConnection" ); //$NON-NLS-1$ //$NON-NLS-2$
+            if ( connections.size() > 1 )
+            {
+                return Messages.getString( "PasteAction.PasteConnections" );
+            }
+            else
+            {
+                return Messages.getString( "PasteAction.PasteConnection" ); //$NON-NLS-1$ //$NON-NLS-2$
+            }
         }
-        else if ( connectionFolders.size() > 0 && connections.size() == 0 )
+        else if ( !connectionFolders.isEmpty() && connections.isEmpty() )
         {
-            return connectionFolders.size() > 1 ? Messages.getString( "PasteAction.PasteConnectionFolders" ) : Messages.getString( "PasteAction.PasteConnectionFolder" ); //$NON-NLS-1$ //$NON-NLS-2$
+            if ( connectionFolders.size() > 1 )
+            {
+                return Messages.getString( "PasteAction.PasteConnectionFolders" );
+            }
+            else
+            {
+                return  Messages.getString( "PasteAction.PasteConnectionFolder" ); //$NON-NLS-1$ //$NON-NLS-2$
+            }
         }
         else
         {
@@ -99,7 +105,7 @@ public class PasteAction extends StudioAction
      */
     public String getCommandId()
     {
-        return IWorkbenchActionDefinitionIds.PASTE;
+        return IWorkbenchCommandConstants.EDIT_PASTE;
     }
 
 
@@ -125,6 +131,7 @@ public class PasteAction extends StudioAction
         ConnectionFolder[] selectedFolders = getSelectedConnectionFolders();
         Connection[] selectedConnections = getSelectedConnections();
         ConnectionFolder targetFolder = null;
+        
         if ( selectedFolders.length > 0 )
         {
             targetFolder = selectedFolders[0];
@@ -133,6 +140,7 @@ public class PasteAction extends StudioAction
         {
             targetFolder = connectionFolderManager.getParentConnectionFolder( selectedConnections[0] );
         }
+        
         if ( targetFolder == null )
         {
             targetFolder = connectionFolderManager.getRootConnectionFolder();
@@ -140,6 +148,7 @@ public class PasteAction extends StudioAction
 
         // connections
         List<Connection> connections = getConnectionsToPaste();
+        
         for ( Connection connection : connections )
         {
             Connection newConnection = ( Connection ) connection.clone();
@@ -149,6 +158,7 @@ public class PasteAction extends StudioAction
 
         // connection folders
         List<ConnectionFolder> connectionFolders = getConnectionFoldersToPaste();
+        
         for ( ConnectionFolder connectionFolder : connectionFolders )
         {
             ConnectionFolder newConnectionFolder = ( ConnectionFolder ) connectionFolder.clone();
@@ -169,10 +179,10 @@ public class PasteAction extends StudioAction
 
         // first check for Connection objects in the clipboard
         Object content = getFromClipboard( ConnectionTransfer.getInstance() );
+        
         if ( content instanceof Object[] )
         {
-            Object[] objects = ( Object[] ) content;
-            for ( Object object : objects )
+            for ( Object object : ( Object[] )content )
             {
                 if ( object instanceof Connection )
                 {
@@ -198,25 +208,30 @@ public class PasteAction extends StudioAction
         List<Connection> connections = new ArrayList<Connection>();
 
         Object content = getFromClipboard( TextTransfer.getInstance() );
+        
         if ( content instanceof String )
         {
             ConnectionParameterPage[] connectionParameterPages = ConnectionParameterPageManager
                 .getConnectionParameterPages();
 
             String[] lines = ( ( String ) content ).split( ConnectionCoreConstants.LINE_SEPARATOR );
+            
             for ( String line : lines )
             {
                 line = line.trim();
+                
                 if ( StringUtils.isNotEmpty( line ) )
                 {
                     try
                     {
                         LdapUrl ldapUrl = new LdapUrl( line );
                         ConnectionParameter parameter = new ConnectionParameter();
+                        
                         for ( ConnectionParameterPage connectionParameterPage : connectionParameterPages )
                         {
                             connectionParameterPage.mergeLdapUrlToParameters( ldapUrl, parameter );
                         }
+                        
                         Connection connection = new Connection( parameter );
                         connections.add( connection );
                     }
@@ -242,10 +257,10 @@ public class PasteAction extends StudioAction
         List<ConnectionFolder> folders = new ArrayList<ConnectionFolder>();
 
         Object content = this.getFromClipboard( ConnectionTransfer.getInstance() );
+        
         if ( content instanceof Object[] )
         {
-            Object[] objects = ( Object[] ) content;
-            for ( Object object : objects )
+            for ( Object object : ( Object[] ) content )
             {
                 if ( object instanceof ConnectionFolder )
                 {
@@ -261,23 +276,25 @@ public class PasteAction extends StudioAction
     /**
      * Retrieve the data of the specified type currently available on the system clipboard.
      *
-     * @param dataType
-     *      the transfer agent for the type of data being requested
-     * @return
-     *      the data obtained from the clipboard or null if no data of this type is available
+     * @param dataType the transfer agent for the type of data being requested
+     * @return the data obtained from the clipboard or null if no data of this type is available
      */
     protected Object getFromClipboard( Transfer dataType )
     {
         Clipboard clipboard = null;
+        
         try
         {
             clipboard = new Clipboard( Display.getCurrent() );
+            
             return clipboard.getContents( dataType );
         }
         finally
         {
             if ( clipboard != null )
+            {
                 clipboard.dispose();
+            }
         }
     }
 }

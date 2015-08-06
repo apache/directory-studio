@@ -36,7 +36,6 @@ import org.eclipse.swt.widgets.Menu;
  */
 public class ConnectionConfiguration
 {
-
     /** The disposed flag */
     private boolean disposed = false;
 
@@ -54,21 +53,12 @@ public class ConnectionConfiguration
 
 
     /**
-     * Creates a new instance of ConnectionConfiguration.
-     */
-    public ConnectionConfiguration()
-    {
-    }
-
-
-    /**
      * Disposes this configuration.
      */
     public void dispose()
     {
         if ( !disposed )
         {
-
             if ( contentProvider != null )
             {
                 contentProvider.dispose();
@@ -101,13 +91,14 @@ public class ConnectionConfiguration
      */
     public IMenuManager getContextMenuManager( TreeViewer viewer )
     {
-        if ( this.contextMenuManager == null )
+        if ( contextMenuManager == null )
         {
-            this.contextMenuManager = new MenuManager();
-            Menu menu = this.contextMenuManager.createContextMenu( viewer.getControl() );
+            contextMenuManager = new MenuManager();
+            Menu menu = contextMenuManager.createContextMenu( viewer.getControl() );
             viewer.getControl().setMenu( menu );
         }
-        return this.contextMenuManager;
+        
+        return contextMenuManager;
     }
 
 
@@ -161,5 +152,4 @@ public class ConnectionConfiguration
 
         return sorter;
     }
-
 }

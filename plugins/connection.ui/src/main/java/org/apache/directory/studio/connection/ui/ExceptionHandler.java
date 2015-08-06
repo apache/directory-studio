@@ -65,6 +65,9 @@ public class ExceptionHandler
         {
             Runnable runnable = new Runnable()
             {
+                /**
+                 * {@inheritDoc}
+                 */
                 public void run()
                 {
                     ErrorDialog.openError( Display.getDefault().getActiveShell(), Messages

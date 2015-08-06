@@ -60,6 +60,7 @@ public class ExportCertificateWizard extends Wizard
      */
     public ExportCertificateWizard( X509Certificate certificate )
     {
+        super();
         this.certificate = certificate;
         setWindowTitle( Messages.getString( "ExportCertificateWizard.ExportCertificate" ) ); //$NON-NLS-1$
         setNeedsProgressMonitor( false );
@@ -95,12 +96,13 @@ public class ExportCertificateWizard extends Wizard
 
         try
         {
-            switch ( format )
+            if ( format == CertificateExportFormat.DER )
             {
-                case DER:
-                    return exportAsDerFormat();
-                case PEM:
-                    return exportAsPemFormat();
+                return exportAsDerFormat();
+            }
+            else
+            {
+                return exportAsPemFormat();
             }
         }
         catch ( Exception e )
@@ -111,8 +113,6 @@ public class ExportCertificateWizard extends Wizard
                     e.getMessage() ) );
             return false;
         }
-
-        return false;
     }
 
 

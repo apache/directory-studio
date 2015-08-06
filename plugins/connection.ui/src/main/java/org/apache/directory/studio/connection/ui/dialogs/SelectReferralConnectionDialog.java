@@ -57,19 +57,25 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class SelectReferralConnectionDialog extends Dialog
 {
-
+    /** The dialog title */
     private String title;
 
+    /** The list of available referrals */ 
     private List<String> referralUrls;
 
+    /** The selected connection */
     private Connection selectedConnection;
 
+    /** The connection configuration */
     private ConnectionConfiguration configuration;
 
+    /** The connection listener */
     private ConnectionUniversalListener universalListener;
 
+    /** The connection action group */
     private ConnectionActionGroup actionGroup;
 
+    /** The connection widget */
     private ConnectionWidget mainWidget;
 
 
@@ -116,6 +122,7 @@ public class SelectReferralConnectionDialog extends Dialog
             mainWidget.dispose();
             mainWidget = null;
         }
+        
         return super.close();
     }
 
@@ -158,15 +165,16 @@ public class SelectReferralConnectionDialog extends Dialog
     protected Control createDialogArea( Composite parent )
     {
         Composite composite = ( Composite ) super.createDialogArea( parent );
-        GridLayout gl = new GridLayout();
-        composite.setLayout( gl );
-        GridData gd = new GridData( GridData.FILL_BOTH );
-        gd.widthHint = convertHorizontalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH );
-        gd.heightHint = convertHorizontalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH / 2 );
-        composite.setLayoutData( gd );
+        GridLayout gridLayout = new GridLayout();
+        composite.setLayout( gridLayout );
+        GridData gridData = new GridData( GridData.FILL_BOTH );
+        gridData.widthHint = convertHorizontalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH );
+        gridData.heightHint = convertHorizontalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH / 2 );
+        composite.setLayoutData( gridData );
 
         BaseWidgetUtils.createWrappedLabeledText( composite, Messages
             .getString( "SelectReferralConnectionDialog.SelectConnectionToHandleReferral" ), 1 ); //$NON-NLS-1$
+        
         for ( String url : referralUrls )
         {
             BaseWidgetUtils.createWrappedLabeledText( composite, " - " + url, 1 ); //$NON-NLS-1$
@@ -192,34 +200,46 @@ public class SelectReferralConnectionDialog extends Dialog
 
         mainWidget.getViewer().addSelectionChangedListener( new ISelectionChangedListener()
         {
+            /**
+             * {@inheritDoc}
+             */
             public void selectionChanged( SelectionChangedEvent event )
             {
                 selectedConnection = null;
+                
                 if ( !event.getSelection().isEmpty() )
                 {
-                    Object o = ( ( IStructuredSelection ) event.getSelection() ).getFirstElement();
-                    if ( o instanceof Connection )
+                    Object object = ( ( IStructuredSelection ) event.getSelection() ).getFirstElement();
+                    
+                    if ( object instanceof Connection )
                     {
-                        selectedConnection = ( Connection ) o;
+                        selectedConnection = ( Connection ) object;
                     }
                 }
+                
                 validate();
             }
         } );
 
         mainWidget.getViewer().addDoubleClickListener( new IDoubleClickListener()
         {
+            /**
+             * {@inheritDoc}
+             */
             public void doubleClick( DoubleClickEvent event )
             {
                 selectedConnection = null;
+                
                 if ( !event.getSelection().isEmpty() )
                 {
-                    Object o = ( ( IStructuredSelection ) event.getSelection() ).getFirstElement();
-                    if ( o instanceof Connection )
+                    Object object = ( ( IStructuredSelection ) event.getSelection() ).getFirstElement();
+                    
+                    if ( object instanceof Connection )
                     {
-                        selectedConnection = ( Connection ) o;
+                        selectedConnection = ( Connection ) object;
                     }
                 }
+                
                 validate();
             }
         } );
@@ -227,17 +247,18 @@ public class SelectReferralConnectionDialog extends Dialog
         if ( referralUrls != null )
         {
             Connection[] connections = ConnectionCorePlugin.getDefault().getConnectionManager().getConnections();
-            for ( int i = 0; i < connections.length; i++ )
+            
+            for ( Connection connection : connections )
             {
-                Connection connection = connections[i];
                 LdapUrl connectionUrl = connection.getUrl();
                 String normalizedConnectionUrl = Utils.getSimpleNormalizedUrl( connectionUrl );
+                
                 for ( String url : referralUrls )
                 {
                     try
                     {
-                        if ( url != null
-                            && Utils.getSimpleNormalizedUrl( new LdapUrl( url ) ).equals( normalizedConnectionUrl ) )
+                        if ( ( url != null ) &&
+                             Utils.getSimpleNormalizedUrl( new LdapUrl( url ) ).equals( normalizedConnectionUrl ) )
                         {
                             mainWidget.getViewer().reveal( connection );
                             mainWidget.getViewer().setSelection( new StructuredSelection( connection ), true );
@@ -253,7 +274,6 @@ public class SelectReferralConnectionDialog extends Dialog
         }
 
         applyDialogFont( composite );
-
         validate();
 
         return composite;
@@ -269,5 +289,4 @@ public class SelectReferralConnectionDialog extends Dialog
     {
         return selectedConnection;
     }
-
 }

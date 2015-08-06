@@ -36,7 +36,6 @@ import org.eclipse.ui.fieldassist.ContentAssistCommandAdapter;
  */
 public class ExtendedContentAssistCommandAdapter extends ContentAssistCommandAdapter
 {
-
     /**
      * Creates a new instance of ExtendedContentAssistCommandAdapter 
      * with the following settings:
@@ -66,7 +65,9 @@ public class ExtendedContentAssistCommandAdapter extends ContentAssistCommandAda
         setAutoActivationDelay( 0 );
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void closeProposalPopup()
     {
@@ -74,10 +75,12 @@ public class ExtendedContentAssistCommandAdapter extends ContentAssistCommandAda
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void openProposalPopup()
     {
         super.openProposalPopup();
     }
-
 }

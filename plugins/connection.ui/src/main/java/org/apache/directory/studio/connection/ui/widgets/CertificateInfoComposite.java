@@ -24,19 +24,18 @@ import java.io.IOException;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.naming.NamingException;
-import javax.naming.ldap.LdapName;
-import javax.naming.ldap.Rdn;
 import javax.security.auth.x500.X500Principal;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.bouncycastle.asn1.ASN1Object;
 import org.bouncycastle.x509.extension.X509ExtensionUtil;
@@ -72,10 +71,10 @@ import org.eclipse.swt.widgets.TreeItem;
  */
 public class CertificateInfoComposite extends Composite
 {
-
     /** The default attributes of an X500Principal: CN, L, ST, O, OU, C, STREET, DC, UID */
-    String[] ATTRIBUTES =
-        { "CN", //$NON-NLS-1$
+    private static final String[] ATTRIBUTES =
+        { 
+            "CN", //$NON-NLS-1$
             "L", //$NON-NLS-1$
             "ST", //$NON-NLS-1$
             "O", //$NON-NLS-1$
@@ -96,8 +95,6 @@ public class CertificateInfoComposite extends Composite
     private TabFolder tabFolder;
 
     /** The general tab */
-    private TabItem generalTab;
-
     private Text issuedToCN;
     private Text issuedToO;
     private Text issuedToOU;
@@ -109,10 +106,6 @@ public class CertificateInfoComposite extends Composite
     private Text expiresOn;
     private Text fingerprintSHA1;
     private Text fingerprintMD5;
-
-    /** The details tab */
-    private TabItem detailsTab;
-
     private TreeViewer hierarchyTreeViewer;
     private Tree certificateTree;
     private Text valueText;
@@ -224,7 +217,7 @@ public class CertificateInfoComposite extends Composite
         fingerprintMD5 = BaseWidgetUtils.createLabeledText( fingerprintsComposite, StringUtils.EMPTY, 1 );
 
         // create tab
-        generalTab = new TabItem( tabFolder, SWT.NONE, GENERAL_TAB_INDEX );
+        TabItem generalTab = new TabItem( tabFolder, SWT.NONE, GENERAL_TAB_INDEX );
         generalTab.setText( Messages.getString( "CertificateInfoComposite.General" ) ); //$NON-NLS-1$
         generalTab.setControl( generalContainer );
     }
@@ -267,16 +260,17 @@ public class CertificateInfoComposite extends Composite
         certificateTree.setLayoutData( new GridData( GridData.FILL, GridData.FILL, true, true ) );
         certificateTree.addSelectionListener( new SelectionAdapter()
         {
-            public void widgetSelected( final SelectionEvent e )
+            public void widgetSelected( final SelectionEvent event )
             {
-                TreeItem item = ( TreeItem ) e.item;
-                if ( ( item != null ) && ( item.getData() != null ) )
+                TreeItem item = ( TreeItem ) event.item;
+                
+                if ( ( item == null ) || ( item.getData() == null ) )
                 {
-                    valueText.setText( item.getData().toString() );
+                    valueText.setText( StringUtils.EMPTY );
                 }
                 else
                 {
-                    valueText.setText( StringUtils.EMPTY );
+                    valueText.setText( item.getData().toString() );
                 }
             }
         } );
@@ -296,7 +290,7 @@ public class CertificateInfoComposite extends Composite
         // create tab
         detailsForm.setWeights( new int[]
             { 1, 2, 1 } );
-        detailsTab = new TabItem( tabFolder, SWT.NONE, DETAILS_TAB_INDEX );
+        TabItem detailsTab = new TabItem( tabFolder, SWT.NONE, DETAILS_TAB_INDEX );
         detailsTab.setText( Messages.getString( "CertificateInfoComposite.Details" ) ); //$NON-NLS-1$
         detailsTab.setControl( detailsForm );
     }
@@ -328,6 +322,7 @@ public class CertificateInfoComposite extends Composite
         expiresOn.setText( DateFormatUtils.ISO_DATE_FORMAT.format( certificate.getNotAfter() ) );
 
         byte[] encoded2 = null;
+        
         try
         {
             encoded2 = certificate.getEncoded();
@@ -335,6 +330,7 @@ public class CertificateInfoComposite extends Composite
         catch ( CertificateEncodingException e )
         {
         }
+        
         byte[] md5 = DigestUtils.md5( encoded2 );
         String md5HexString = getHexString( md5 );
         fingerprintMD5.setText( md5HexString );
@@ -345,20 +341,25 @@ public class CertificateInfoComposite extends Composite
         // Details: certificate chain
         CertificateChainItem parentItem = null;
         CertificateChainItem certificateItem = null;
+        
         for ( X509Certificate cert : certificateChain )
         {
             CertificateChainItem item = new CertificateChainItem( cert );
+            
             if ( parentItem != null )
             {
                 item.child = parentItem;
                 parentItem.parent = item;
             }
+            
             if ( certificateItem == null )
             {
                 certificateItem = item;
             }
+        
             parentItem = item;
         }
+        
         hierarchyTreeViewer.setInput( new CertificateChainItem[]
             { parentItem } );
         hierarchyTreeViewer.expandAll();
@@ -377,12 +378,13 @@ public class CertificateInfoComposite extends Composite
         valueText.setText( StringUtils.EMPTY );
 
         IStructuredSelection selection = ( IStructuredSelection ) hierarchyTreeViewer.getSelection();
+        
         if ( selection.size() != 1 )
         {
             return;
         }
 
-        CertificateChainItem certificateItem = ( CertificateChainItem ) selection.getFirstElement();;
+        CertificateChainItem certificateItem = ( CertificateChainItem ) selection.getFirstElement();
         X509Certificate certificate = certificateItem.certificate;
 
         TreeItem rootItem = new TreeItem( certificateTree, SWT.NONE );
@@ -449,6 +451,7 @@ public class CertificateInfoComposite extends Composite
         TreeItem item = new TreeItem( parent, SWT.NONE );
         item.setText( field );
         item.setData( value );
+        
         return item;
     }
 
@@ -465,6 +468,7 @@ public class CertificateInfoComposite extends Composite
                 // try to parse the extension value byte[] to an ASN1 object
                 byte[] extensionValueBin = certificate.getExtensionValue( oid );
                 String extensionValue = null;
+                
                 try
                 {
                     ASN1Object extension = X509ExtensionUtil.fromExtensionValue( extensionValueBin );
@@ -494,16 +498,19 @@ public class CertificateInfoComposite extends Composite
     private String getHexString( byte[] bytes )
     {
         char[] hex = Hex.encodeHex( bytes );
-        StringBuilder sb = new StringBuilder();
+        StringBuilder buffer = new StringBuilder();
+        
         for ( int i = 0; i < hex.length; i++ )
         {
             if ( i % 2 == 0 && i > 0 )
             {
-                sb.append( ':' );
+                buffer.append( ':' );
             }
-            sb.append( Character.toUpperCase( hex[i] ) );
+            
+            buffer.append( Character.toUpperCase( hex[i] ) );
         }
-        return sb.toString();
+        
+        return buffer.toString();
     }
 
 
@@ -523,42 +530,44 @@ public class CertificateInfoComposite extends Composite
         for ( String attribute : ATTRIBUTES )
         {
             map.put( attribute, "-" ); //$NON-NLS-1$
-
         }
 
         // populate map with principal's name
         try
         {
             String name = principal.getName();
-            LdapName dn = new LdapName( name );
-            List<Rdn> rdns = dn.getRdns();
-            for ( Rdn rdn : rdns )
+            Dn dn = new Dn( name );
+            //List<Rdn> rdns = dn.getRdns();
+            
+            for ( Rdn rdn : dn )
             {
                 map.put( rdn.getType().toUpperCase(), rdn.getValue().toString() );
             }
         }
-        catch ( NamingException e )
+        catch ( LdapInvalidDnException lide )
         {
-            map.put( "CN", e.getMessage() ); //$NON-NLS-1$
+            map.put( "CN", lide.getMessage() ); //$NON-NLS-1$
         }
 
         return map;
     }
+    
 
     class HierarchyContentProvider implements ITreeContentProvider
     {
-
         public Object[] getChildren( Object parentElement )
         {
             if ( parentElement instanceof CertificateChainItem )
             {
                 CertificateChainItem item = ( CertificateChainItem ) parentElement;
+                
                 if ( item.child != null )
                 {
                     return new CertificateChainItem[]
                         { item.child };
                 }
             }
+            
             return new Object[0];
         }
 
@@ -568,8 +577,10 @@ public class CertificateInfoComposite extends Composite
             if ( element instanceof CertificateChainItem )
             {
                 CertificateChainItem item = ( CertificateChainItem ) element;
+                
                 return item.parent;
             }
+            
             return null;
         }
 
@@ -586,6 +597,7 @@ public class CertificateInfoComposite extends Composite
             {
                 return ( CertificateChainItem[] ) inputElement;
             }
+            
             return getChildren( inputElement );
         }
 
@@ -616,11 +628,11 @@ public class CertificateInfoComposite extends Composite
         }
     }
 
-    class CertificateChainItem
+    private class CertificateChainItem
     {
-        X509Certificate certificate;
-        CertificateChainItem parent;
-        CertificateChainItem child;
+        private X509Certificate certificate;
+        private CertificateChainItem parent;
+        private CertificateChainItem child;
 
 
         public CertificateChainItem( X509Certificate certificate )

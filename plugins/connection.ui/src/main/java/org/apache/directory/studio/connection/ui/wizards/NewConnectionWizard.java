@@ -45,7 +45,6 @@ import org.eclipse.ui.PlatformUI;
  */
 public class NewConnectionWizard extends Wizard implements INewWizard
 {
-
     /** The wizard pages. */
     private NewConnectionWizardPage[] wizardPages;
 
@@ -61,6 +60,7 @@ public class NewConnectionWizard extends Wizard implements INewWizard
      */
     public NewConnectionWizard()
     {
+        super();
         setWindowTitle( Messages.getString( "NewConnectionWizard.NewLdapConnection" ) ); //$NON-NLS-1$
         setNeedsProgressMonitor( true );
     }
@@ -83,6 +83,7 @@ public class NewConnectionWizard extends Wizard implements INewWizard
     public void init( IWorkbench workbench, IStructuredSelection selection )
     {
         Object firstElement = selection.getFirstElement();
+        
         if ( firstElement instanceof ConnectionFolder )
         {
             selectedConnectionFolder = ( ConnectionFolder ) firstElement;
@@ -108,8 +109,8 @@ public class NewConnectionWizard extends Wizard implements INewWizard
     public void addPages()
     {
         pages = ConnectionParameterPageManager.getConnectionParameterPages();
-
         wizardPages = new NewConnectionWizardPage[pages.length];
+        
         for ( int i = 0; i < pages.length; i++ )
         {
             wizardPages[i] = new NewConnectionWizardPage( this, pages[i] );
@@ -139,13 +140,14 @@ public class NewConnectionWizard extends Wizard implements INewWizard
      */
     public boolean canFinish()
     {
-        for ( int i = 0; i < pages.length; i++ )
+        for ( ConnectionParameterPage page: pages )
         {
-            if ( !pages[i].isValid() )
+            if ( !page.isValid() )
             {
                 return false;
             }
         }
+        
         return true;
     }
 
@@ -157,14 +159,15 @@ public class NewConnectionWizard extends Wizard implements INewWizard
     {
         // get connection parameters from pages and save dialog settings 
         ConnectionParameter connectionParameter = new ConnectionParameter();
-        for ( int i = 0; i < pages.length; i++ )
+
+        for ( ConnectionParameterPage page: pages )
         {
-            pages[i].saveParameters( connectionParameter );
-            pages[i].saveDialogSettings();
+            page.saveParameters( connectionParameter );
+            page.saveDialogSettings();
         }
 
         // create persistent connection
-        final Connection conn = new Connection( connectionParameter );
+        Connection conn = new Connection( connectionParameter );
         ConnectionCorePlugin.getDefault().getConnectionManager().addConnection( conn );
 
         // add connection to folder
@@ -185,11 +188,12 @@ public class NewConnectionWizard extends Wizard implements INewWizard
     public ConnectionParameter getTestConnectionParameters()
     {
         ConnectionParameter connectionParameter = new ConnectionParameter();
-        for ( int i = 0; i < pages.length; i++ )
+
+        for ( ConnectionParameterPage page: pages )
         {
-            pages[i].saveParameters( connectionParameter );
+            page.saveParameters( connectionParameter );
         }
+        
         return connectionParameter;
     }
-
 }

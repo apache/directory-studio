@@ -21,6 +21,8 @@
 package org.apache.directory.studio.connection.ui.dialogs;
 
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.directory.studio.common.ui.CommonUIUtils;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -53,10 +55,13 @@ public class PasswordDialog extends Dialog
     private String message;
 
     /** The input value; the empty string by default */
-    private String value = "";//$NON-NLS-1$
+    private String value = StringUtils.EMPTY;//$NON-NLS-1$
 
     // UI Widgets
+    /** The password Text widget */
     private Text passwordText;
+    
+    /** The Show Password text widget */
     private Button showPasswordCheckbox;
 
 
@@ -76,7 +81,7 @@ public class PasswordDialog extends Dialog
 
         if ( initialValue == null )
         {
-            value = "";//$NON-NLS-1$
+            value = StringUtils.EMPTY;//$NON-NLS-1$
         }
         else
         {
@@ -92,10 +97,7 @@ public class PasswordDialog extends Dialog
     {
         super.configureShell( shell );
 
-        if ( title != null )
-        {
-            shell.setText( title );
-        }
+        shell.setText( CommonUIUtils.getTextValue( title ) );
     }
 
 
@@ -112,9 +114,31 @@ public class PasswordDialog extends Dialog
         {
             value = null;
         }
+        
         super.buttonPressed( buttonId );
     }
 
+    
+    /**
+     * The listener for the ShowPassword checkbox
+     */
+    private SelectionAdapter showPasswordCheckboxListener = new SelectionAdapter()
+    {
+        /**
+         * {@inheritDoc}
+         */
+        public void widgetSelected( SelectionEvent event )
+        {
+            if ( showPasswordCheckbox.getSelection() )
+            {
+                passwordText.setEchoChar( '\0' );
+            }
+            else
+            {
+                passwordText.setEchoChar( '\u2022' );
+            }
+        }
+    };
 
     /**
      * {@inheritDoc}
@@ -149,25 +173,12 @@ public class PasswordDialog extends Dialog
         // Show Password Checkbox
         showPasswordCheckbox = BaseWidgetUtils.createCheckbox( composite,
             Messages.getString( "PasswordDialog.ShowPassword" ), 1 ); //$NON-NLS-1$
-        showPasswordCheckbox.addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent e )
-            {
-                if ( showPasswordCheckbox.getSelection() )
-                {
-                    passwordText.setEchoChar( '\0' );
-                }
-                else
-                {
-                    passwordText.setEchoChar( '\u2022' );
-                }
-            }
-        } );
+        showPasswordCheckbox.addSelectionListener( showPasswordCheckboxListener );
 
         // Setting focus
         passwordText.setFocus();
-
         applyDialogFont( composite );
+        
         return composite;
     }
 

@@ -133,7 +133,7 @@ public class ConnectionsPreferencePage extends PreferencePage implements IWorkbe
 
         useKrb5SystemPropertiesButton.addSelectionListener( new SelectionAdapter()
         {
-            public void widgetSelected( SelectionEvent e )
+            public void widgetSelected( SelectionEvent event )
             {
                 validate();
             }

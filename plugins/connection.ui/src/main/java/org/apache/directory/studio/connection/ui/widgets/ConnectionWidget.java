@@ -71,6 +71,7 @@ public class ConnectionWidget extends ViewFormWidget
      */
     public ConnectionWidget( ConnectionConfiguration configuration, IActionBars actionBars )
     {
+        super();
         this.configuration = configuration;
         this.actionBars = actionBars;
     }
@@ -116,7 +117,6 @@ public class ConnectionWidget extends ViewFormWidget
         if ( actionBars == null )
         {
             return super.getMenuManager();
-
         }
         else
         {
@@ -210,5 +210,4 @@ public class ConnectionWidget extends ViewFormWidget
     {
         return viewer;
     }
-
 }

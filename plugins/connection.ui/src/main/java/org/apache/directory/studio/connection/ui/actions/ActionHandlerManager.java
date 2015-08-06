@@ -31,12 +31,12 @@ public interface ActionHandlerManager
     /**
      * Deactivates global action handlers.
      */
-    public void deactivateGlobalActionHandlers();
+    void deactivateGlobalActionHandlers();
 
 
     /**
      * Activates global action handlers.
      */
-    public void activateGlobalActionHandlers();
+    void activateGlobalActionHandlers();
 
 }

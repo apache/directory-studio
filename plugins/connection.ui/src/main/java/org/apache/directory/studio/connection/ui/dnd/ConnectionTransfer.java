@@ -48,7 +48,7 @@ import org.eclipse.swt.dnd.TransferData;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ConnectionTransfer extends ByteArrayTransfer
+public final class ConnectionTransfer extends ByteArrayTransfer
 {
     /** The Constant TYPENAME. */
     private static final String TYPENAME = ConnectionUIConstants.TYPENAME;
@@ -65,6 +65,7 @@ public class ConnectionTransfer extends ByteArrayTransfer
      */
     private ConnectionTransfer()
     {
+        super();
     }
 
 
@@ -96,6 +97,7 @@ public class ConnectionTransfer extends ByteArrayTransfer
         if ( isSupportedType( transferData ) )
         {
             Object[] objects = ( Object[] ) object;
+            
             try
             {
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -105,15 +107,15 @@ public class ConnectionTransfer extends ByteArrayTransfer
                 {
                     if ( objects[i] instanceof Connection )
                     {
-                        byte[] id = ( ( Connection ) objects[i] ).getConnectionParameter().getId().getBytes();
-                        writeOut.writeInt( id.length );
-                        writeOut.write( id );
+                        byte[] idBytes = ( ( Connection ) objects[i] ).getConnectionParameter().getId().getBytes();
+                        writeOut.writeInt( idBytes.length );
+                        writeOut.write( idBytes );
                     }
                     else if ( objects[i] instanceof ConnectionFolder )
                     {
-                        byte[] id = ( ( ConnectionFolder ) objects[i] ).getId().getBytes();
-                        writeOut.writeInt( id.length );
-                        writeOut.write( id );
+                        byte[] idBytes = ( ( ConnectionFolder ) objects[i] ).getId().getBytes();
+                        writeOut.writeInt( idBytes.length );
+                        writeOut.write( idBytes );
                     }
                 }
 
@@ -143,12 +145,14 @@ public class ConnectionTransfer extends ByteArrayTransfer
         if ( isSupportedType( transferData ) )
         {
             byte[] buffer = ( byte[] ) super.nativeToJava( transferData );
+            
             if ( buffer == null )
             {
                 return null;
             }
 
             List<Object> objectList = new ArrayList<Object>();
+            
             try
             {
                 ByteArrayInputStream in = new ByteArrayInputStream( buffer );
@@ -159,22 +163,24 @@ public class ConnectionTransfer extends ByteArrayTransfer
                     if ( readIn.available() > 1 )
                     {
                         int size = readIn.readInt();
-                        byte[] id = new byte[size];
-                        readIn.read( id );
+                        byte[] idBytes = new byte[size];
+                        readIn.read( idBytes );
                         Connection connection = ConnectionCorePlugin.getDefault().getConnectionManager()
-                            .getConnectionById( new String( id ) );
-                        if ( connection != null )
-                        {
-                            objectList.add( connection );
-                        }
-                        else
+                            .getConnectionById( new String( idBytes ) );
+                        
+                        if ( connection == null )
                         {
                             ConnectionFolder folder = ConnectionCorePlugin.getDefault().getConnectionFolderManager()
-                                .getConnectionFolderById( new String( id ) );
+                                .getConnectionFolderById( new String( idBytes ) );
+                            
                             if ( folder != null )
                             {
                                 objectList.add( folder );
                             }
+                        }
+                        else
+                        {
+                            objectList.add( connection );
                         }
                     }
                 }
@@ -212,5 +218,4 @@ public class ConnectionTransfer extends ByteArrayTransfer
         return new int[]
             { TYPEID };
     }
-
 }

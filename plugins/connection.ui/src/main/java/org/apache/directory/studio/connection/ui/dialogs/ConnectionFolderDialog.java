@@ -35,7 +35,6 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class ConnectionFolderDialog extends InputDialog
 {
-
     /**
      * Creates a new instance of ConnectionFolderDialog.
      * 
@@ -60,5 +59,4 @@ public class ConnectionFolderDialog extends InputDialog
         Composite composite = ( Composite ) super.createDialogArea( parent );
         return composite;
     }
-
 }

@@ -34,6 +34,7 @@ import org.eclipse.jface.viewers.TreeViewer;
  */
 public class CollapseAllAction extends Action
 {
+    /** The Tree viewer */
     protected TreeViewer viewer;
 
 
@@ -46,7 +47,8 @@ public class CollapseAllAction extends Action
     public CollapseAllAction( TreeViewer viewer )
     {
         super(
-            Messages.getString( "CollapseAllAction.CollapseAll" ), ConnectionUIPlugin.getDefault().getImageDescriptor( ConnectionUIConstants.IMG_COLLAPSEALL ) ); //$NON-NLS-1$
+            Messages.getString( "CollapseAllAction.CollapseAll" ), 
+                ConnectionUIPlugin.getDefault().getImageDescriptor( ConnectionUIConstants.IMG_COLLAPSEALL ) ); //$NON-NLS-1$
         super.setToolTipText( getText() );
         super.setEnabled( true );
 

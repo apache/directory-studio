@@ -26,6 +26,7 @@ import org.apache.directory.studio.connection.ui.ConnectionParameterPage;
 import org.apache.directory.studio.connection.ui.ConnectionParameterPageModifyListener;
 import org.apache.directory.studio.connection.ui.ConnectionUIConstants;
 import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
+import org.eclipse.jface.wizard.IWizardContainer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
@@ -39,7 +40,6 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class NewConnectionWizardPage extends WizardPage implements ConnectionParameterPageModifyListener
 {
-
     /** The wizard. */
     private NewConnectionWizard wizard;
 
@@ -87,8 +87,8 @@ public class NewConnectionWizardPage extends WizardPage implements ConnectionPar
     public void createControl( Composite parent )
     {
         Composite composite = new Composite( parent, SWT.NONE );
-        GridLayout gl = new GridLayout( 1, false );
-        composite.setLayout( gl );
+        GridLayout gridLayout = new GridLayout( 1, false );
+        composite.setLayout( gridLayout );
         page.init( composite, this, null );
         setControl( composite );
     }
@@ -114,12 +114,15 @@ public class NewConnectionWizardPage extends WizardPage implements ConnectionPar
         {
             setMessage( null );
         }
+        
         setErrorMessage( page.getErrorMessage() );
         setPageComplete( page.isValid() );
+        
+        IWizardContainer container = getContainer();
 
-        if ( getContainer() != null && getContainer().getCurrentPage() != null )
+        if ( ( container != null ) && ( container.getCurrentPage() != null ) )
         {
-            getContainer().updateButtons();
+            container.updateButtons();
         }
     }
 
@@ -131,5 +134,4 @@ public class NewConnectionWizardPage extends WizardPage implements ConnectionPar
     {
         return wizard.getTestConnectionParameters();
     }
-
 }

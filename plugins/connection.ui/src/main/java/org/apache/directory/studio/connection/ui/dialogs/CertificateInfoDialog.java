@@ -39,7 +39,6 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class CertificateInfoDialog extends Dialog
 {
-
     /** The title. */
     private String title;
 
@@ -62,6 +61,9 @@ public class CertificateInfoDialog extends Dialog
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void configureShell( Shell shell )
     {
@@ -70,6 +72,9 @@ public class CertificateInfoDialog extends Dialog
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void createButtonsForButtonBar( Composite parent )
     {
@@ -77,20 +82,23 @@ public class CertificateInfoDialog extends Dialog
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Control createDialogArea( final Composite parent )
     {
         Composite composite = ( Composite ) super.createDialogArea( parent );
-        GridData gd = new GridData( GridData.FILL_BOTH );
-        gd.widthHint = convertHorizontalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH * 3 / 2 );
-        gd.heightHint = convertVerticalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH );
-        composite.setLayoutData( gd );
+        GridData gridData = new GridData( GridData.FILL_BOTH );
+        gridData.widthHint = convertHorizontalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH * 3 / 2 );
+        gridData.heightHint = convertVerticalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH );
+        composite.setLayoutData( gridData );
 
         CertificateInfoComposite certificateInfoComposite = new CertificateInfoComposite( composite, SWT.NONE );
         certificateInfoComposite.setInput( certificateChain );
 
         applyDialogFont( composite );
+        
         return composite;
     }
-
 }

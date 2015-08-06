@@ -21,6 +21,8 @@
 package org.apache.directory.studio.connection.ui;
 
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.Credentials;
@@ -40,16 +42,15 @@ import org.eclipse.ui.PlatformUI;
  */
 public class UIAuthHandler implements IAuthHandler
 {
-
     /**
      * {@inheritDoc}
      */
     public ICredentials getCredentials( final ConnectionParameter connectionParameter )
     {
         // Checking if the bind principal is null or empty (no authentication)
-        if ( connectionParameter.getBindPrincipal() == null || "".equals( connectionParameter.getBindPrincipal() ) ) //$NON-NLS-1$
+        if ( Strings.isEmpty( connectionParameter.getBindPrincipal() ) ) //$NON-NLS-1$
         {
-            return new Credentials( "", "", connectionParameter ); //$NON-NLS-1$ //$NON-NLS-2$
+            return new Credentials( StringUtils.EMPTY, StringUtils.EMPTY, connectionParameter ); //$NON-NLS-1$ //$NON-NLS-2$
         }
         else
         {
@@ -61,22 +62,18 @@ public class UIAuthHandler implements IAuthHandler
                     .getPasswordsKeyStoreManager();
 
                 // Checking if the keystore is not loaded 
-                if ( !passwordsKeyStoreManager.isLoaded() )
+                // and asking the user to load the keystore
+                if ( !passwordsKeyStoreManager.isLoaded() && !PasswordsKeyStoreManagerUtils.askUserToLoadKeystore() )
                 {
-                    // Asking the user to load the keystore
-                    if ( !PasswordsKeyStoreManagerUtils.askUserToLoadKeystore() )
-                    {
-                        // The user failed to load the keystore and cancelled
-                        return null;
-                    }
+                    // The user failed to load the keystore and cancelled
+                    return null;
                 }
 
                 // Getting the password
                 String password = passwordsKeyStoreManager.getConnectionPassword( connectionParameter.getId() );
 
                 // Checking if the bind password is available (the user chose to store the password)
-                if ( password != null
-                    && !"".equals( password ) ) //$NON-NLS-1$
+                if ( Strings.isEmpty( password ) ) //$NON-NLS-1$
                 {
                     return new Credentials( connectionParameter.getBindPrincipal(),
                         password, connectionParameter );
@@ -91,8 +88,7 @@ public class UIAuthHandler implements IAuthHandler
             else
             {
                 // Checking if the bind password is available (the user chose to store the password)
-                if ( connectionParameter.getBindPassword() != null
-                    && !"".equals( connectionParameter.getBindPassword() ) ) //$NON-NLS-1$
+                if ( !Strings.isEmpty( connectionParameter.getBindPassword() ) )
                 {
                     return new Credentials( connectionParameter.getBindPrincipal(),
                         connectionParameter.getBindPassword(), connectionParameter );
@@ -126,7 +122,8 @@ public class UIAuthHandler implements IAuthHandler
                     NLS.bind(
                         Messages.getString( "UIAuthHandler.EnterPasswordFor" ), new String[] { connectionParameter.getName() } ), //$NON-NLS-1$
                     NLS.bind(
-                        Messages.getString( "UIAuthHandler.PleaseEnterPasswordOfUser" ), connectionParameter.getBindPrincipal() ), "" ); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+                        Messages.getString( "UIAuthHandler.PleaseEnterPasswordOfUser" ), connectionParameter.getBindPrincipal() ), 
+                                    StringUtils.EMPTY ); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 
                 if ( dialog.open() == PasswordDialog.OK )
                 {

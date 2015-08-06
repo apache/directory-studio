@@ -21,6 +21,9 @@
 package org.apache.directory.studio.connection.ui.dialogs;
 
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.directory.api.util.Strings;
+import org.apache.directory.studio.common.ui.CommonUIUtils;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -57,13 +60,22 @@ public class SetupPasswordDialog extends Dialog
     private String message;
 
     /** The input value; the empty string by default */
-    private String value = "";//$NON-NLS-1$
+    private String value = StringUtils.EMPTY;//$NON-NLS-1$
 
     // UI Widgets
+    /** The OK button */
     private Button okButton;
+
+    /** The Password Text */
     private Text passwordText;
+    
+    /** The Show Password Checkbox */
     private Button showPasswordCheckbox;
+    
+    /** The Verify Password Text */
     private Text verifyPasswordText;
+
+    /** The Show Verify Password Checkbox */
     private Button showVerifyPasswordCheckbox;
 
 
@@ -83,7 +95,7 @@ public class SetupPasswordDialog extends Dialog
 
         if ( initialValue == null )
         {
-            value = "";//$NON-NLS-1$
+            value = StringUtils.EMPTY;//$NON-NLS-1$
         }
         else
         {
@@ -99,10 +111,7 @@ public class SetupPasswordDialog extends Dialog
     {
         super.configureShell( shell );
 
-        if ( title != null )
-        {
-            shell.setText( title );
-        }
+        shell.setText( CommonUIUtils.getTextValue( title ) );
     }
 
 
@@ -172,19 +181,25 @@ public class SetupPasswordDialog extends Dialog
         passwordText.setEchoChar( '\u2022' );
         passwordText.addModifyListener( new ModifyListener()
         {
-            public void modifyText( ModifyEvent e )
+            /**
+             * {@inheritDoc}
+             */
+            public void modifyText( ModifyEvent event )
             {
                 validate();
             }
         } );
 
         // Show Password Checkbox
-        BaseWidgetUtils.createLabel( passwordGroup, "", 1 ); //$NON-NLS-1$
+        BaseWidgetUtils.createLabel( passwordGroup, StringUtils.EMPTY, 1 ); //$NON-NLS-1$
         showPasswordCheckbox = BaseWidgetUtils.createCheckbox( passwordGroup,
             Messages.getString( "SetupPasswordDialog.ShowPassword" ), 1 ); //$NON-NLS-1$
         showPasswordCheckbox.addSelectionListener( new SelectionAdapter()
         {
-            public void widgetSelected( SelectionEvent e )
+            /**
+             * {@inheritDoc}
+             */
+            public void widgetSelected( SelectionEvent event )
             {
                 if ( showPasswordCheckbox.getSelection() )
                 {
@@ -203,19 +218,25 @@ public class SetupPasswordDialog extends Dialog
         verifyPasswordText.setEchoChar( '\u2022' );
         verifyPasswordText.addModifyListener( new ModifyListener()
         {
-            public void modifyText( ModifyEvent e )
+            /**
+             * {@inheritDoc}
+             */
+            public void modifyText( ModifyEvent event )
             {
                 validate();
             }
         } );
 
         // Show Verify Password Checkbox
-        BaseWidgetUtils.createLabel( passwordGroup, "", 1 ); //$NON-NLS-1$
+        BaseWidgetUtils.createLabel( passwordGroup, StringUtils.EMPTY, 1 ); //$NON-NLS-1$
         showVerifyPasswordCheckbox = BaseWidgetUtils.createCheckbox( passwordGroup,
             Messages.getString( "SetupPasswordDialog.ShowPassword" ), 1 ); //$NON-NLS-1$
         showVerifyPasswordCheckbox.addSelectionListener( new SelectionAdapter()
         {
-            public void widgetSelected( SelectionEvent e )
+            /**
+             * {@inheritDoc}
+             */
+            public void widgetSelected( SelectionEvent event )
             {
                 if ( showVerifyPasswordCheckbox.getSelection() )
                 {
@@ -255,6 +276,6 @@ public class SetupPasswordDialog extends Dialog
         String password = passwordText.getText();
         String verifyPassword = verifyPasswordText.getText();
 
-        okButton.setEnabled( ( !"".equals( password ) ) && ( password.equals( verifyPassword ) ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        okButton.setEnabled( ( !Strings.isEmpty( password ) ) && ( password.equals( verifyPassword ) ) ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 }

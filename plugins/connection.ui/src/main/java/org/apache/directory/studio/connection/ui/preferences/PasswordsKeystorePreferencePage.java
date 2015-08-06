@@ -24,10 +24,11 @@ package org.apache.directory.studio.connection.ui.preferences;
 import java.io.File;
 import java.io.IOException;
 import java.security.KeyStoreException;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.directory.studio.common.ui.CommonUIUtils;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.Connection;
@@ -72,7 +73,7 @@ public class PasswordsKeystorePreferencePage extends PreferencePage implements I
     private PasswordsKeyStoreManager passwordsKeyStoreManager;
 
     /** The map used to backup connections passwords */
-    private Map<String, String> connectionsPasswordsBackup = new HashMap<String, String>();
+    private Map<String, String> connectionsPasswordsBackup = new ConcurrentHashMap<String, String>();
 
     /** The connection manager */
     private ConnectionManager connectionManager;
@@ -84,7 +85,10 @@ public class PasswordsKeystorePreferencePage extends PreferencePage implements I
     // Listeners
     private SelectionListener enableKeystoreCheckboxListener = new SelectionAdapter()
     {
-        public void widgetSelected( SelectionEvent e )
+        /**
+         * {@inheritDoc}
+         */
+        public void widgetSelected( SelectionEvent event )
         {
             Boolean selected = enableKeystoreCheckbox.getSelection();
 
@@ -117,9 +121,14 @@ public class PasswordsKeystorePreferencePage extends PreferencePage implements I
             updateButtonsEnabledState();
         }
     };
+
+    
     private SelectionListener changeMasterPasswordButtonListener = new SelectionAdapter()
     {
-        public void widgetSelected( SelectionEvent e )
+        /**
+         * {@inheritDoc}
+         */
+        public void widgetSelected( SelectionEvent event )
         {
             changeMasterPassword();
         }
@@ -380,7 +389,7 @@ public class PasswordsKeystorePreferencePage extends PreferencePage implements I
             globalPasswordsKeyStoreManager.reset();
 
             // Looking for connections passwords in the list
-            if ( connectionsPasswordsBackup.size() > 0 )
+            if ( !connectionsPasswordsBackup.isEmpty() )
             {
                 // Adding them to the keystore
                 for ( String connectionId : connectionsPasswordsBackup.keySet() )
@@ -548,15 +557,15 @@ public class PasswordsKeystorePreferencePage extends PreferencePage implements I
                 // Creating the message
                 String message = null;
 
-                if ( checkPasswordException != null )
+                if ( checkPasswordException == null )
+                {
+                    message = Messages.getString( "PasswordsKeystorePreferencePage.MasterPasswordVerificationFailed" ); //$NON-NLS-1$
+                }
+                else
                 {
                     message = Messages
                         .getString( "PasswordsKeystorePreferencePage.MasterPasswordVerificationFailedWithException" ) //$NON-NLS-1$
                         + checkPasswordException.getMessage();
-                }
-                else
-                {
-                    message = Messages.getString( "PasswordsKeystorePreferencePage.MasterPasswordVerificationFailed" ); //$NON-NLS-1$
                 }
 
                 // We ask the user if he wants to retry to unlock the passwords keystore
@@ -617,7 +626,7 @@ public class PasswordsKeystorePreferencePage extends PreferencePage implements I
         {
             // We ask the user to reset his master password
             ResetPasswordDialog resetPasswordDialog = new ResetPasswordDialog( changeMasterPasswordButton.getShell(),
-                "", null, null ); //$NON-NLS-1$
+                StringUtils.EMPTY, null, null ); //$NON-NLS-1$
 
             if ( resetPasswordDialog.open() != ResetPasswordDialog.OK )
             {
@@ -643,15 +652,15 @@ public class PasswordsKeystorePreferencePage extends PreferencePage implements I
             // Creating the message
             String message = null;
 
-            if ( checkPasswordException != null )
+            if ( checkPasswordException == null )
+            {
+                message = Messages.getString( "PasswordsKeystorePreferencePage.MasterPasswordVerificationFailed" ); //$NON-NLS-1$
+            }
+            else
             {
                 message = Messages
                     .getString( "PasswordsKeystorePreferencePage.MasterPasswordVerificationFailedWithException" ) //$NON-NLS-1$
                     + checkPasswordException.getMessage();
-            }
-            else
-            {
-                message = Messages.getString( "PasswordsKeystorePreferencePage.MasterPasswordVerificationFailed" ); //$NON-NLS-1$
             }
 
             // We ask the user if he wants to retry to unlock the passwords keystore

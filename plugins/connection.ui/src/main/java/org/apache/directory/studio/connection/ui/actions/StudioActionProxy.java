@@ -21,6 +21,7 @@
 package org.apache.directory.studio.connection.ui.actions;
 
 
+import org.apache.directory.studio.common.ui.CommonUIUtils;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionFolder;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
@@ -119,7 +120,8 @@ public abstract class StudioActionProxy extends Action implements ISelectionChan
 
 
     /**
-     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionUpdated(org.apache.directory.studio.connection.core.Connection)
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#
+     *          connectionUpdated(org.apache.directory.studio.connection.core.Connection)
      */
     public final void connectionUpdated( Connection connection )
     {
@@ -131,7 +133,8 @@ public abstract class StudioActionProxy extends Action implements ISelectionChan
 
 
     /**
-     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionAdded(org.apache.directory.studio.connection.core.Connection)
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#
+     *          connectionAdded(org.apache.directory.studio.connection.core.Connection)
      */
     public void connectionAdded( Connection connection )
     {
@@ -140,7 +143,8 @@ public abstract class StudioActionProxy extends Action implements ISelectionChan
 
 
     /**
-     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionRemoved(org.apache.directory.studio.connection.core.Connection)
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#
+     *          connectionRemoved(org.apache.directory.studio.connection.core.Connection)
      */
     public void connectionRemoved( Connection connection )
     {
@@ -149,7 +153,8 @@ public abstract class StudioActionProxy extends Action implements ISelectionChan
 
 
     /**
-     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionOpened(org.apache.directory.studio.connection.core.Connection)
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#
+     *          connectionOpened(org.apache.directory.studio.connection.core.Connection)
      */
     public void connectionOpened( Connection connection )
     {
@@ -158,7 +163,8 @@ public abstract class StudioActionProxy extends Action implements ISelectionChan
 
 
     /**
-     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionClosed(org.apache.directory.studio.connection.core.Connection)
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#
+     *          connectionClosed(org.apache.directory.studio.connection.core.Connection)
      */
     public void connectionClosed( Connection connection )
     {
@@ -167,7 +173,8 @@ public abstract class StudioActionProxy extends Action implements ISelectionChan
 
 
     /**
-     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionFolderModified(org.apache.directory.studio.connection.core.ConnectionFolder)
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#
+     *          connectionFolderModified(org.apache.directory.studio.connection.core.ConnectionFolder)
      */
     public void connectionFolderModified( ConnectionFolder connectionFolder )
     {
@@ -176,7 +183,8 @@ public abstract class StudioActionProxy extends Action implements ISelectionChan
 
 
     /**
-     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionFolderAdded(org.apache.directory.studio.connection.core.ConnectionFolder)
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#
+     *          connectionFolderAdded(org.apache.directory.studio.connection.core.ConnectionFolder)
      */
     public void connectionFolderAdded( ConnectionFolder connectionFolder )
     {
@@ -185,7 +193,8 @@ public abstract class StudioActionProxy extends Action implements ISelectionChan
 
 
     /**
-     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionFolderRemoved(org.apache.directory.studio.connection.core.ConnectionFolder)
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#
+     *          connectionFolderRemoved(org.apache.directory.studio.connection.core.ConnectionFolder)
      */
     public void connectionFolderRemoved( ConnectionFolder connectionFolder )
     {
@@ -231,8 +240,8 @@ public abstract class StudioActionProxy extends Action implements ISelectionChan
     {
         if ( !isDisposed() )
         {
-            setText( action.getText() );
-            setToolTipText( action.getText() );
+            setText( CommonUIUtils.getTextValue( action.getText() ) );
+            setToolTipText( CommonUIUtils.getTextValue( action.getText() ) );
             setEnabled( action.isEnabled() );
             setImageDescriptor( action.getImageDescriptor() );
             setChecked( action.isChecked() );
@@ -273,5 +282,4 @@ public abstract class StudioActionProxy extends Action implements ISelectionChan
     {
         return action;
     }
-
 }
