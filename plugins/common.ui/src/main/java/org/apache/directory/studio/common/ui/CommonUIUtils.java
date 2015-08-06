@@ -26,7 +26,6 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
@@ -44,8 +43,7 @@ public class CommonUIUtils
     /**
      * Opens an Error {@link MessageDialog} with the given message.
      *
-     * @param message
-     *      the message
+     * @param message the message
      */
     public static void openErrorDialog( String message )
     {
@@ -56,10 +54,8 @@ public class CommonUIUtils
     /**
      * Opens an Error {@link MessageDialog} with the given title and message.
      *
-     * @param title
-     *      the title
-     * @param message
-     *      the message
+     * @param title the title
+     * @param message the message
      */
     public static void openErrorDialog( String title, String message )
     {
@@ -73,8 +69,7 @@ public class CommonUIUtils
     /**
      * Opens an Information {@link MessageDialog} with the given message.
      *
-     * @param message
-     *      the message
+     * @param message the message
      */
     public static void openInformationDialog( String message )
     {
@@ -85,10 +80,8 @@ public class CommonUIUtils
     /**
      * Opens an Information {@link MessageDialog} with the given title and message.
      *
-     * @param title
-     *      the title
-     * @param message
-     *      the message
+     * @param title the title
+     * @param message the message
      */
     public static void openInformationDialog( String title, String message )
     {
@@ -102,8 +95,7 @@ public class CommonUIUtils
     /**
      * Opens an Warning {@link MessageDialog} with the given message.
      *
-     * @param message
-     *      the message
+     * @param message the message
      */
     public static void openWarningDialog( String message )
     {
@@ -114,10 +106,8 @@ public class CommonUIUtils
     /**
      * Opens an Warning {@link MessageDialog} with the given title and message.
      *
-     * @param title
-     *      the title
-     * @param message
-     *      the message
+     * @param title the title
+     * @param message the message
      */
     public static void openWarningDialog( String title, String message )
     {
@@ -217,5 +207,43 @@ public class CommonUIUtils
         }
         
         return text;
+    }
+    
+    
+    /**
+     * An utility method that return a String which is never null.
+     * 
+     * @param value The incoming value, which can be null
+     * @return The String if it's not null, "" otherwise
+     */
+    public static String getTextValue( String value )
+    {
+        if ( value == null )
+        {
+            return "";
+        }
+        else
+        {
+            return value;
+        }
+    }
+    
+    
+    /**
+     * An utility method that return a String which is never 0.
+     * 
+     * @param value The incoming value, which can be 0
+     * @return The Int value if it's not 0, "" otherwise
+     */
+    public static String getTextValue( int value )
+    {
+        if ( value == 0 )
+        {
+            return "";
+        }
+        else
+        {
+            return Integer.toString( value );
+        }
     }
 }
