@@ -91,8 +91,9 @@ public class AclAttribute
                 else
                 {
                     isAttributeType = true;
-                    this.name = name;
                 }
+
+                this.name = name;
             }
         }
         
@@ -193,5 +194,31 @@ public class AclAttribute
     public boolean isObjectClassNotAllowed()
     {
         return isObjectClassNotAllowed;
+    }
+
+
+    /**
+     * @See Object#toString()
+     */
+    public String toString()
+    {
+        if ( isEntry || isChildren || isAttributeType )
+        {
+            return name;
+        }
+
+        StringBuilder buffer = new StringBuilder();
+        
+        if ( isObjectClass )
+        {
+            buffer.append( '@' );
+        }
+        else
+        {
+            buffer.append( '!' );
+        }
+        
+        buffer.append( name );
+        return buffer.toString();
     }
 }
