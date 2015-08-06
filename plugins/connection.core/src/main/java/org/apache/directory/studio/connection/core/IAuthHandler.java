@@ -29,7 +29,6 @@ package org.apache.directory.studio.connection.core;
  */
 public interface IAuthHandler
 {
-
     /**
      * Gets credentials from this authentication handler. 
      * The credentials are used to bind to the given connection. 
@@ -38,6 +37,5 @@ public interface IAuthHandler
      * @param connectionParameter the connection to bind to
      * @return the credentials, null to cancel the authentication
      */
-    public ICredentials getCredentials( ConnectionParameter connectionParameter );
-
+    ICredentials getCredentials( ConnectionParameter connectionParameter );
 }

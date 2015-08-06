@@ -32,7 +32,6 @@ import java.util.List;
  */
 public interface IReferralHandler
 {
-
     /**
      * Gets the connection from this referral handler.
      * The connection is used to continue a LDAP request.
@@ -42,6 +41,5 @@ public interface IReferralHandler
      * @param referralURLs the referral URLs
      * @return the target connection, null to cancel referral chasing
      */
-    public Connection getReferralConnection( List<String> referralUrls );
-
+    Connection getReferralConnection( List<String> referralUrls );
 }

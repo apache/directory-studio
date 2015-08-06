@@ -43,13 +43,13 @@ public final class LdifInvalidPart implements LdifPart
     }
 
 
-    public final int getOffset()
+    public int getOffset()
     {
         return offset;
     }
 
 
-    public final int getLength()
+    public int getLength()
     {
         return toRawString().length();
     }
@@ -58,19 +58,19 @@ public final class LdifInvalidPart implements LdifPart
     /**
      * @return The raw version of a Invalid part : the invalid String, unchanged
      */
-    public final String toRawString()
+    public String toRawString()
     {
         return unknown;
     }
 
 
-    public final String toFormattedString( LdifFormatParameters formatParameters )
+    public String toFormattedString( LdifFormatParameters formatParameters )
     {
         return unknown;
     }
 
 
-    public final String toString()
+    public String toString()
     {
         String text = toRawString();
         text = LdifUtils.convertNlRcToString( text );
@@ -79,7 +79,7 @@ public final class LdifInvalidPart implements LdifPart
     }
 
 
-    public final boolean isValid()
+    public boolean isValid()
     {
         return false;
     }
@@ -91,7 +91,7 @@ public final class LdifInvalidPart implements LdifPart
     }
 
 
-    public final void adjustOffset( int adjust )
+    public void adjustOffset( int adjust )
     {
         offset += adjust;
     }

@@ -36,17 +36,15 @@ public interface ILdifEditor extends IAdaptable
     /**
      * Gets the LDIF Model
      *
-     * @return
-     *      the LDIF Model
+     * @return the LDIF Model
      */
-    public LdifFile getLdifModel();
+    LdifFile getLdifModel();
 
 
     /**
      * Gets the Connection
      * 
-     * @return
-     *      the Connection
+     * @return the Connection
      */
-    public IBrowserConnection getConnection();
+    IBrowserConnection getConnection();
 }

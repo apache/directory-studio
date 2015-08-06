@@ -33,12 +33,10 @@ import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
  */
 public interface SearchUpdateListener extends EventListener
 {
-
     /**
      * Called when an {@link ISearch} was updated.
      *
      * @param searchUpdateEvent the search update event
      */
-    public void searchUpdated( SearchUpdateEvent searchUpdateEvent );
-
+    void searchUpdated( SearchUpdateEvent searchUpdateEvent );
 }

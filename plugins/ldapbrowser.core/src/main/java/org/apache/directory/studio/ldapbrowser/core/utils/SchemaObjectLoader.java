@@ -57,7 +57,7 @@ public class SchemaObjectLoader
          * @param schemaObjectNamesList the schema object names list
          * @param oidsList the OIDs name list
          */
-        public void add( Schema schema, List<String> schemaObjectNamesList, List<String> oidsList );
+        void add( Schema schema, List<String> schemaObjectNamesList, List<String> oidsList );
     }
     
     

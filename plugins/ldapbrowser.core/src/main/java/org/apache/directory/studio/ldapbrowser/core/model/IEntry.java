@@ -48,7 +48,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * @param childToAdd
      *                the child to add
      */
-    public abstract void addChild( IEntry childToAdd );
+    void addChild( IEntry childToAdd );
 
 
     /**
@@ -57,7 +57,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * @param childToDelete
      *                the child to delete
      */
-    public abstract void deleteChild( IEntry childToDelete );
+    void deleteChild( IEntry childToDelete );
 
 
     /**
@@ -70,7 +70,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      *                 if the attribute is already present in this entry or
      *                 if the attribute's entry isn't this entry.
      */
-    public abstract void addAttribute( IAttribute attributeToAdd ) throws IllegalArgumentException;
+    void addAttribute( IAttribute attributeToAdd ) throws IllegalArgumentException;
 
 
     /**
@@ -81,7 +81,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * @throws IllegalArgumentException
      *                 if the attribute isn't present in this entry.
      */
-    public abstract void deleteAttribute( IAttribute attributeToDelete ) throws IllegalArgumentException;
+    void deleteAttribute( IAttribute attributeToDelete ) throws IllegalArgumentException;
 
 
     /**
@@ -90,7 +90,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * @param isDirectoryEntry
      *                true if this entry exists in directory.
      */
-    public abstract void setDirectoryEntry( boolean isDirectoryEntry );
+    void setDirectoryEntry( boolean isDirectoryEntry );
 
 
     /**
@@ -103,7 +103,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @return true, if this entry is an alias entry
      */
-    public abstract boolean isAlias();
+    boolean isAlias();
 
 
     /**
@@ -114,7 +114,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @param b the alias flag
      */
-    public abstract void setAlias( boolean b );
+    void setAlias( boolean b );
 
 
     /**
@@ -127,7 +127,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @return true, if this entry is a referral entry
      */
-    public abstract boolean isReferral();
+    boolean isReferral();
 
 
     /**
@@ -138,7 +138,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @param b the referral flag
      */
-    public abstract void setReferral( boolean b );
+    void setReferral( boolean b );
 
 
     /**
@@ -151,7 +151,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @return true, if this entry is a subentry entry
      */
-    public abstract boolean isSubentry();
+    boolean isSubentry();
 
 
     /**
@@ -162,7 +162,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @param b the subentry flag
      */
-    public abstract void setSubentry( boolean b );
+    void setSubentry( boolean b );
 
 
     /**
@@ -170,7 +170,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @return the Dn of this entry, never null.
      */
-    public abstract Dn getDn();
+    Dn getDn();
 
 
     /**
@@ -178,7 +178,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @return the Rdn of this entry, never null.
      */
-    public abstract Rdn getRdn();
+    Rdn getRdn();
 
 
     /**
@@ -193,7 +193,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @return true if this entry's attributes are initialized
      */
-    public abstract boolean isAttributesInitialized();
+    boolean isAttributesInitialized();
 
 
     /**
@@ -201,7 +201,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @param b the attributes initialized flag
      */
-    public abstract void setAttributesInitialized( boolean b );
+    void setAttributesInitialized( boolean b );
 
 
     /**
@@ -209,7 +209,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @return true if this entry's attributes should be initialized
      */
-    public abstract boolean isInitOperationalAttributes();
+    boolean isInitOperationalAttributes();
 
 
     /**
@@ -217,7 +217,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @param b the initialize operational attributes flag
      */
-    public abstract void setInitOperationalAttributes( boolean b );
+    void setInitOperationalAttributes( boolean b );
 
 
     /**
@@ -225,7 +225,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @return true if this entry's alias children should be fetched
      */
-    public abstract boolean isFetchAliases();
+    boolean isFetchAliases();
 
 
     /**
@@ -233,7 +233,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @param b the fetch aliases flag
      */
-    public abstract void setFetchAliases( boolean b );
+    void setFetchAliases( boolean b );
 
 
     /**
@@ -241,7 +241,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @return true if this entry's referral children should be fetched
      */
-    public abstract boolean isFetchReferrals();
+    boolean isFetchReferrals();
 
 
     /**
@@ -249,7 +249,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @param b the fetch referral flag
      */
-    public abstract void setFetchReferrals( boolean b );
+    void setFetchReferrals( boolean b );
 
 
     /**
@@ -257,7 +257,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @return true if this entry's sub-entries should be fetched
      */
-    public abstract boolean isFetchSubentries();
+    boolean isFetchSubentries();
 
 
     /**
@@ -265,7 +265,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @param b the fetch sub-entries flag
      */
-    public abstract void setFetchSubentries( boolean b );
+    void setFetchSubentries( boolean b );
 
 
     /**
@@ -276,7 +276,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @return The attributes of the entry or null if no attribute was added yet
      */
-    public abstract IAttribute[] getAttributes();
+    IAttribute[] getAttributes();
 
 
     /**
@@ -286,7 +286,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * @return The attributes of the entry or null if the attribute doesn't
      *         exist or if the attributes aren't initialized
      */
-    public abstract IAttribute getAttribute( String attributeDescription );
+    IAttribute getAttribute( String attributeDescription );
 
 
     /**
@@ -297,7 +297,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * @return The attributes of the entry or null if the attribute doesn't
      *         exist or if the attributes aren't initialized
      */
-    public abstract AttributeHierarchy getAttributeWithSubtypes( String attributeDescription );
+    AttributeHierarchy getAttributeWithSubtypes( String attributeDescription );
 
 
     /**
@@ -312,7 +312,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @return true if this entry's children are initialized
      */
-    public abstract boolean isChildrenInitialized();
+    boolean isChildrenInitialized();
 
 
     /**
@@ -320,7 +320,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @param b the children initialized flag
      */
-    public abstract void setChildrenInitialized( boolean b );
+    void setChildrenInitialized( boolean b );
 
 
     /**
@@ -328,7 +328,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @return true if the entry has children.
      */
-    public abstract boolean hasChildren();
+    boolean hasChildren();
 
 
     /**
@@ -336,7 +336,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @param b the has children hint
      */
-    public abstract void setHasChildrenHint( boolean b );
+    void setHasChildrenHint( boolean b );
 
 
     /**
@@ -347,7 +347,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @return The children of the entry or null if no child was added yet.
      */
-    public abstract IEntry[] getChildren();
+    IEntry[] getChildren();
 
 
     /**
@@ -355,7 +355,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @return The number of children of the entry or -1 if no child was added yet
      */
-    public abstract int getChildrenCount();
+    int getChildrenCount();
 
 
     /**
@@ -365,7 +365,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @return true if this entry has (maybe) more children.
      */
-    public abstract boolean hasMoreChildren();
+    boolean hasMoreChildren();
 
 
     /**
@@ -373,7 +373,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @param b the has more children flag
      */
-    public abstract void setHasMoreChildren( boolean b );
+    void setHasMoreChildren( boolean b );
 
 
     /**
@@ -381,7 +381,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @return the runnable used to fetch the top page of children, null if none
      */
-    public abstract StudioConnectionBulkRunnableWithProgress getTopPageChildrenRunnable();
+    StudioConnectionBulkRunnableWithProgress getTopPageChildrenRunnable();
 
 
     /**
@@ -389,7 +389,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @param moreChildrenRunnable the runnable used to fetch the top page of children
      */
-    public abstract void setTopPageChildrenRunnable( StudioConnectionBulkRunnableWithProgress topPageChildrenRunnable );
+    void setTopPageChildrenRunnable( StudioConnectionBulkRunnableWithProgress topPageChildrenRunnable );
 
 
     /**
@@ -397,7 +397,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @return the runnable used to fetch the next page of children, null if none
      */
-    public abstract StudioConnectionBulkRunnableWithProgress getNextPageChildrenRunnable();
+    StudioConnectionBulkRunnableWithProgress getNextPageChildrenRunnable();
 
 
     /**
@@ -405,7 +405,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @param moreChildrenRunnable the runnable used to fetch the next page of children
      */
-    public abstract void setNextPageChildrenRunnable( StudioConnectionBulkRunnableWithProgress nextPageChildrenRunnable );
+    void setNextPageChildrenRunnable( StudioConnectionBulkRunnableWithProgress nextPageChildrenRunnable );
 
 
     /**
@@ -414,7 +414,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @return true if the entry has a parent entry.
      */
-    public abstract boolean hasParententry();
+    boolean hasParententry();
 
 
     /**
@@ -422,7 +422,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @return the parent entry or null if this entry hasn't a parent.
      */
-    public abstract IEntry getParententry();
+    IEntry getParententry();
 
 
     /**
@@ -430,7 +430,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      *
      * @return the children filter or null if none is set
      */
-    public abstract String getChildrenFilter();
+    String getChildrenFilter();
 
 
     /**
@@ -438,7 +438,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @param filter the children filter
      */
-    public abstract void setChildrenFilter( String filter );
+    void setChildrenFilter( String filter );
 
 
     /**
@@ -446,7 +446,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @return the browser connection of this entry, never null.
      */
-    public abstract IBrowserConnection getBrowserConnection();
+    IBrowserConnection getBrowserConnection();
 
 
     /**
@@ -454,7 +454,7 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @return the  LDAP URL of this entry
      */
-    public abstract LdapUrl getUrl();
+    LdapUrl getUrl();
 
 
     /**
@@ -462,6 +462,5 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      * 
      * @return the object class descriptions of this entry
      */
-    public Collection<ObjectClass> getObjectClassDescriptions();
-
+    Collection<ObjectClass> getObjectClassDescriptions();
 }

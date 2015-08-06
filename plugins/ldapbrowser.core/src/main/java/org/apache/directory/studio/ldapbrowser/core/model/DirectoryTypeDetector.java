@@ -33,5 +33,5 @@ public interface DirectoryTypeDetector
      * @param rootDSE the Root DSE
      * @return the directory type or null if unknown
      */
-    public String detectDirectoryType( IRootDSE rootDSE );
+    String detectDirectoryType( IRootDSE rootDSE );
 }

@@ -34,12 +34,12 @@ public interface LdifEnumeration
     /**
      * @return true if this enumeration has more elements.
      */
-    public boolean hasNext() throws Exception;
+    boolean hasNext() throws Exception;
 
 
     /**
      * 
      * @return the next LDIF container or null if hasNext() returns false.
      */
-    public LdifContainer next() throws Exception;
+    LdifContainer next() throws Exception;
 }

@@ -36,12 +36,11 @@ import org.eclipse.core.runtime.IAdaptable;
 public interface IAttribute extends Serializable, IAdaptable, AttributePropertyPageProvider, EntryPropertyPageProvider,
     ConnectionPropertyPageProvider
 {
-
     /** The options delimiter ';' */
-    public static final String OPTION_DELIMITER = ";"; //$NON-NLS-1$
+    String OPTION_DELIMITER = ";"; //$NON-NLS-1$
 
     /** The language tag prefix 'lang-' */
-    public static final String OPTION_LANG_PREFIX = "lang-"; //$NON-NLS-1$
+    String OPTION_LANG_PREFIX = "lang-"; //$NON-NLS-1$
 
 
     /**
@@ -49,7 +48,7 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
      * 
      * @return the entry of this attribute, never null
      */
-    public abstract IEntry getEntry();
+    IEntry getEntry();
 
 
     /**
@@ -63,7 +62,7 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
      * 
      * @return true if the attribute ist consistent
      */
-    public abstract boolean isConsistent();
+    boolean isConsistent();
 
 
     /**
@@ -72,7 +71,7 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
      * 
      * @return true if this attribute is a must attribute of its entry.
      */
-    public abstract boolean isMustAttribute();
+    boolean isMustAttribute();
 
 
     /**
@@ -81,7 +80,7 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
      * 
      * @return true if this attribute is a may attribute of its entry.
      */
-    public abstract boolean isMayAttribute();
+    boolean isMayAttribute();
 
 
     /**
@@ -90,7 +89,7 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
      * 
      * @return true if this attribute is an operational attribute.
      */
-    public abstract boolean isOperationalAttribute();
+    boolean isOperationalAttribute();
 
 
     /**
@@ -98,7 +97,7 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
      * 
      * @return true if this attribute is the objectClass attribute.
      */
-    public abstract boolean isObjectClassAttribute();
+    boolean isObjectClassAttribute();
 
 
     /**
@@ -106,7 +105,7 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
      * 
      * @return true if the attribute is of type String.
      */
-    public abstract boolean isString();
+    boolean isString();
 
 
     /**
@@ -114,21 +113,21 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
      * 
      * @return true if the attribute is of type byte[].
      */
-    public abstract boolean isBinary();
+    boolean isBinary();
 
 
     /**
      * Adds an empty value.
      * 
      */
-    public abstract void addEmptyValue();
+    void addEmptyValue();
 
 
     /**
      * Removes one empty value if one is present.
      * 
      */
-    public abstract void deleteEmptyValue();
+    void deleteEmptyValue();
 
 
     /**
@@ -141,7 +140,7 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
      *                 if the value is null or if the value's attribute
      *                 isn't this attribute.
      */
-    public abstract void addValue( IValue valueToAdd ) throws IllegalArgumentException;
+    void addValue( IValue valueToAdd ) throws IllegalArgumentException;
 
 
     /**
@@ -153,7 +152,7 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
      *                 if the value is null or if the value's attribute
      *                 isn't this attribute.
      */
-    public abstract void deleteValue( IValue valueToDelete ) throws IllegalArgumentException;
+    void deleteValue( IValue valueToDelete ) throws IllegalArgumentException;
 
 
     /**
@@ -167,7 +166,7 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
      *                 if the value is null or if the value's attribute
      *                 isn't this attribute.
      */
-    public abstract void modifyValue( IValue oldValue, IValue newValue ) throws IllegalArgumentException;
+    void modifyValue( IValue oldValue, IValue newValue ) throws IllegalArgumentException;
 
 
     /**
@@ -175,7 +174,7 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
      * 
      * @return the values of this attribute, may be an empty array, never null.
      */
-    public abstract IValue[] getValues();
+    IValue[] getValues();
 
 
     /**
@@ -183,7 +182,7 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
      * 
      * @return the number of values in this attribute.
      */
-    public abstract int getValueSize();
+    int getValueSize();
 
 
     /**
@@ -192,7 +191,7 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
      * 
      * @return the description of this attribute.
      */
-    public abstract String getDescription();
+    String getDescription();
 
 
     /**
@@ -200,7 +199,7 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
      * 
      * @return the attribute type.
      */
-    public abstract String getType();
+    String getType();
 
 
     /**
@@ -209,7 +208,7 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
      * 
      * @return The binary values
      */
-    public abstract byte[][] getBinaryValues();
+    byte[][] getBinaryValues();
 
 
     /**
@@ -217,7 +216,7 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
      * 
      * @return The first value if one present, null otherwise
      */
-    public abstract String getStringValue();
+    String getStringValue();
 
 
     /**
@@ -226,7 +225,7 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
      * 
      * @return The string values
      */
-    public abstract String[] getStringValues();
+    String[] getStringValues();
 
 
     /**
@@ -240,7 +239,7 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
      *                The attribute to compare, must be of type IAttribute
      * @return true if the argument is equal to this.
      */
-    public abstract boolean equals( Object o );
+    boolean equals( Object o );
 
 
     /**
@@ -249,7 +248,7 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
      * @return the AttributeTypeDescription of this attribute, may be the
      *         default or a dummy
      */
-    public abstract AttributeType getAttributeTypeDescription();
+    AttributeType getAttributeTypeDescription();
 
 
     /**
@@ -257,6 +256,5 @@ public interface IAttribute extends Serializable, IAdaptable, AttributePropertyP
      * 
      * @return the AttributeDescription of this attribute,.
      */
-    public abstract AttributeDescription getAttributeDescription();
-
+    AttributeDescription getAttributeDescription();
 }

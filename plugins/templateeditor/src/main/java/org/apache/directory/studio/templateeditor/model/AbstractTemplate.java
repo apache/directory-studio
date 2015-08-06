@@ -146,7 +146,7 @@ public abstract class AbstractTemplate implements Template
     /**
      * Initializes the fields of the AbstractTemplate.
      */
-    private final void init()
+    private void init()
     {
         auxiliaryObjectClasses = new ArrayList<String>();
     }

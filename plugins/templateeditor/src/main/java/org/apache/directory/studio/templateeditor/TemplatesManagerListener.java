@@ -37,7 +37,7 @@ public interface TemplatesManagerListener
      * @param template
      *      the added template
      */
-    public void templateAdded( Template template );
+    void templateAdded( Template template );
 
 
     /**
@@ -47,7 +47,7 @@ public interface TemplatesManagerListener
      * @param template
      *      the removed template
      */
-    public void templateRemoved( Template template );
+    void templateRemoved( Template template );
 
 
     /**
@@ -56,7 +56,7 @@ public interface TemplatesManagerListener
      * @param template
      *      the enabled template
      */
-    public void templateEnabled( Template template );
+    void templateEnabled( Template template );
 
 
     /**
@@ -65,5 +65,5 @@ public interface TemplatesManagerListener
      * @param template
      *      the disabled template
      */
-    public void templateDisabled( Template template );
+    void templateDisabled( Template template );
 }

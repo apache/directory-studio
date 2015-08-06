@@ -37,7 +37,7 @@ public interface OverlayDialogConfigurationBlock<Overlay extends OlcOverlayConfi
      *
      * @param parent the parent composite
      */
-    public void createBlockContent( Composite parent );
+    void createBlockContent( Composite parent );
 
 
     /**
@@ -45,7 +45,7 @@ public interface OverlayDialogConfigurationBlock<Overlay extends OlcOverlayConfi
      * 
      * @return the dialog
      */
-    public OverlayDialog getDialog();
+    OverlayDialog getDialog();
 
 
     /**
@@ -53,19 +53,19 @@ public interface OverlayDialogConfigurationBlock<Overlay extends OlcOverlayConfi
      *
      * @return the overlay
      */
-    public Overlay getOverlay();
+    Overlay getOverlay();
 
 
     /**
      * Refreshes the UI based on the input.
      */
-    public void refresh();
+    void refresh();
 
 
     /**
      * Saves the data to the overlay.
      */
-    public void save();
+    void save();
 
 
     /**
@@ -73,7 +73,7 @@ public interface OverlayDialogConfigurationBlock<Overlay extends OlcOverlayConfi
      * 
      * @param dialog the dialog
      */
-    public void setDialog( OverlayDialog dialog );
+    void setDialog( OverlayDialog dialog );
 
 
     /**
@@ -81,5 +81,5 @@ public interface OverlayDialogConfigurationBlock<Overlay extends OlcOverlayConfi
      *
      * @param overlay the overlay
      */
-    public void setOverlay( Overlay overlay );
+    void setOverlay( Overlay overlay );
 }

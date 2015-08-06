@@ -38,7 +38,7 @@ public interface LdapServerAdapterConfigurationPage
      * @param parent the parent control
      * @return the created control
      */
-    public Control createControl( Composite parent );
+    Control createControl( Composite parent );
 
 
     /**
@@ -46,7 +46,7 @@ public interface LdapServerAdapterConfigurationPage
      *
      * @return the description
      */
-    public String getDescription();
+    String getDescription();
 
 
     /**
@@ -54,7 +54,7 @@ public interface LdapServerAdapterConfigurationPage
      *
      * @return the error message
      */
-    public String getErrorMessage();
+    String getErrorMessage();
 
 
     /**
@@ -62,7 +62,7 @@ public interface LdapServerAdapterConfigurationPage
      *
      * @return the ID
      */
-    public String getId();
+    String getId();
 
 
     /**
@@ -70,7 +70,7 @@ public interface LdapServerAdapterConfigurationPage
      *
      * @return the {@link ImageDescriptor}
      */
-    public ImageDescriptor getImageDescriptor();
+    ImageDescriptor getImageDescriptor();
 
 
     /**
@@ -78,7 +78,7 @@ public interface LdapServerAdapterConfigurationPage
      *
      * @return the title
      */
-    public String getTitle();
+    String getTitle();
 
 
     /**
@@ -87,7 +87,7 @@ public interface LdapServerAdapterConfigurationPage
      * @return <code>true</code> if the page is complete,
      *         <code>false</code> if not.
      */
-    public boolean isPageComplete();
+    boolean isPageComplete();
 
 
     /**
@@ -95,7 +95,7 @@ public interface LdapServerAdapterConfigurationPage
      *
      * @param ldapServer the LDAP server
      */
-    public void loadConfiguration( LdapServer ldapServer );
+    void loadConfiguration( LdapServer ldapServer );
 
 
     /**
@@ -103,7 +103,7 @@ public interface LdapServerAdapterConfigurationPage
      *
      * @param ldapServer the LDAP server
      */
-    public void saveConfiguration( LdapServer ldapServer );
+    void saveConfiguration( LdapServer ldapServer );
 
 
     /**
@@ -111,11 +111,11 @@ public interface LdapServerAdapterConfigurationPage
      *
      * @param modifyListener the modify listener
      */
-    public void setModifyListener( LdapServerAdapterConfigurationPageModifyListener modifyListener );
+    void setModifyListener( LdapServerAdapterConfigurationPageModifyListener modifyListener );
 
 
     /**
      * Validates the configuration page
      */
-    public void validate();
+    void validate();
 }

@@ -33,7 +33,7 @@ public interface Difference
      * @return
      *      the source Object
      */
-    public Object getSource();
+    Object getSource();
 
 
     /**
@@ -42,7 +42,7 @@ public interface Difference
      * @param source
      *      the source Object
      */
-    public void setSource( Object source );
+    void setSource( Object source );
 
 
     /**
@@ -51,7 +51,7 @@ public interface Difference
      * @return
      *      the destination Object
      */
-    public Object getDestination();
+    Object getDestination();
 
 
     /**
@@ -60,7 +60,7 @@ public interface Difference
      * @param destination
      *      the destination Object
      */
-    public void setDestination( Object destination );
+    void setDestination( Object destination );
 
 
     /**
@@ -69,7 +69,7 @@ public interface Difference
      * @return
      *      the type
      */
-    public DifferenceType getType();
+    DifferenceType getType();
 
 
     /**
@@ -78,5 +78,5 @@ public interface Difference
      * @param type
      *      the type
      */
-    public void setType( DifferenceType type );
+    void setType( DifferenceType type );
 }

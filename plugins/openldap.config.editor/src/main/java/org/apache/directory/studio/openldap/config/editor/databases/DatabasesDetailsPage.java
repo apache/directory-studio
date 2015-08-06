@@ -31,6 +31,7 @@ import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.common.ui.widgets.TableWidget;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
+import org.apache.directory.studio.common.ui.wrappers.StringValueWrapper;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.openldap.common.ui.model.RequireConditionEnum;
@@ -201,14 +202,14 @@ import org.eclipse.ui.forms.widgets.Section;
  * | | Requires :                                         | |
  * | |   +------------------------------------+           | |
  * | |   |                                    | (Add...)  | |
- * | |   |                                    | (Edit...) | |
  * | |   |                                    | (Delete)  | |
+ * | |   |                                    |           | |
  * | |   +------------------------------------+           | |
  * | | Restrict :                                         | |
  * | |   +------------------------------------+           | |
  * | |   |                                    | (Add...)  | |
- * | |   |                                    | (Edit...) | |
  * | |   |                                    | (Delete)  | |
+ * | |   |                                    |           | |
  * | |   +------------------------------------+           | |
  * | | Security Strength Factors :                        | |
  * | |   +------------------------------------+           | |
@@ -357,6 +358,7 @@ public class DatabasesDetailsPage implements IDetailsPage
     /** The olcSchemaDN attribute */
     private EntryWidget schemaDnEntryWidget;
 
+    // The Security UI Widgets
     /** The olcReadOnly attribute */
     private Button readOnlyButton;
 
@@ -371,6 +373,14 @@ public class DatabasesDetailsPage implements IDetailsPage
     
     /** The olcSecurity table widget */
     private TableWidget<SsfWrapper> securityTableWidget;
+    
+    // The Access UI Widgets
+    /** The olcAddContentAcl Button */
+    private Button addContentAclCheckbox;
+
+    /** The olcAcess Table */
+    private TableWidget<StringValueWrapper> aclsTableWidget;
+
 
 
     /** The associated overlays */
@@ -392,9 +402,6 @@ public class DatabasesDetailsPage implements IDetailsPage
     
     /** The olcLastMod flag */
     private BooleanWithDefaultWidget lastModBooleanWithDefaultWidget;
-    
-    /** The olcAddContentAcl flag */
-    private BooleanWithDefaultWidget addContentAclBooleanWithDefaultWidget;
     
     /** The olMonitoring flag */
     private BooleanWithDefaultWidget monitoringBooleanWithDefaultWidget;
@@ -658,6 +665,26 @@ public class DatabasesDetailsPage implements IDetailsPage
             setEditorDirty();
         }
     };
+
+    
+    /** 
+     * The modify listener which set the editor dirty 
+     **/
+    private SelectionListener dirtySelectionListener = new SelectionListener()
+    {
+        
+        @Override
+        public void widgetSelected( SelectionEvent e )
+        {
+            setEditorDirty();
+        }
+        
+        @Override
+        public void widgetDefaultSelected( SelectionEvent e )
+        {
+            // TODO Auto-generated method stub
+        }
+    };
     
     
     /**
@@ -792,7 +819,7 @@ public class DatabasesDetailsPage implements IDetailsPage
         createGeneralSettingsSection( parent, toolkit );
         createLimitsSettingsSection( parent, toolkit );
         createSecuritySettingsSection( parent, toolkit );
-        //createAccessSettingsSection( parent, toolkit );
+        createAccessSettingsSection( parent, toolkit );
         createOverlaySettingsSection( parent, toolkit );
         createReplicationConsumersSettingsSection( parent, toolkit );
         //createOptionsSettingsSection( parent, toolkit );
@@ -920,32 +947,6 @@ public class DatabasesDetailsPage implements IDetailsPage
         schemaDnTextDecoration.setDescriptionText( 
             "Specify the distinguished name for the subschema subentry that controls the entries on this server" );
 
-        // Read Only
-        toolkit.createLabel( composite, "Read Only:" );
-        readOnlyBooleanWithDefaultWidget = new BooleanWithDefaultWidget();
-        readOnlyBooleanWithDefaultWidget.create( composite, toolkit );
-        readOnlyBooleanWithDefaultWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        ControlDecoration readOnlyCheckboxDecoration = new ControlDecoration(
-            readOnlyBooleanWithDefaultWidget.getControl(), SWT.CENTER | SWT.RIGHT );
-        readOnlyCheckboxDecoration.setImage( OpenLdapConfigurationPlugin.getDefault().getImageDescriptor(
-            OpenLdapConfigurationPluginConstants.IMG_INFORMATION ).createImage() );
-        readOnlyCheckboxDecoration.setMarginWidth( 4 );
-        readOnlyCheckboxDecoration
-            .setDescriptionText( "Sets the database into \"read-only\" mode. Any attempts to modify the database will return an \"unwilling to perform\" error." );
-
-        // Hidden
-        toolkit.createLabel( composite, "Hidden:" );
-        hiddenBooleanWithDefaultWidget = new BooleanWithDefaultWidget( false );
-        hiddenBooleanWithDefaultWidget.create( composite, toolkit );
-        hiddenBooleanWithDefaultWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        ControlDecoration hiddenCheckboxDecoration = new ControlDecoration(
-            hiddenBooleanWithDefaultWidget.getControl(), SWT.CENTER | SWT.RIGHT );
-        hiddenCheckboxDecoration.setImage( OpenLdapConfigurationPlugin.getDefault().getImageDescriptor(
-            OpenLdapConfigurationPluginConstants.IMG_INFORMATION ).createImage() );
-        hiddenCheckboxDecoration.setMarginWidth( 4 );
-        hiddenCheckboxDecoration
-            .setDescriptionText( "Sets whether the database will be used to answer queries." );
-        
         // mirrorMode
         toolkit.createLabel( composite, "Mirror Mode:" );
         mirrorModeBooleanWithDefaultWidget = new BooleanWithDefaultWidget();
@@ -960,7 +961,7 @@ public class DatabasesDetailsPage implements IDetailsPage
         mirrorModeCheckboxDecoration
             .setDescriptionText( "Sets the database in MirrorMode. This is only useful in a Multi-Master configuration" );
         
-        // disabled (only in OpenLDAP 2.4.36
+        // disabled (only in OpenLDAP 2.4.36)
         if ( browserConnection.getSchema().hasAttributeTypeDescription( "olcDisabled" ) )
         {
             toolkit.createLabel( composite, "Disabled:" );
@@ -989,19 +990,6 @@ public class DatabasesDetailsPage implements IDetailsPage
             OpenLdapConfigurationPluginConstants.IMG_INFORMATION ).createImage() );
         lastModCheckboxDecoration.setMarginWidth( 4 );
         lastModCheckboxDecoration.setDescriptionText( "Controls whether slapd will automatically maintain the modifiersName, modifyTimestamp, creatorsName, and createTimestamp attributes for entries" );
-        
-        // The olcAddAclContent parameter : Controls whether Add operations will perform ACL checks on the content of the entry being added
-        toolkit.createLabel( composite, "Add Acl Check:" );
-        addContentAclBooleanWithDefaultWidget = new BooleanWithDefaultWidget();
-        addContentAclBooleanWithDefaultWidget.create( composite, toolkit );
-        addContentAclBooleanWithDefaultWidget.setValue( false );
-        addContentAclBooleanWithDefaultWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        ControlDecoration addAclContentCheckboxDecoration = new ControlDecoration(
-            addContentAclBooleanWithDefaultWidget.getControl(), SWT.CENTER | SWT.RIGHT );
-        addAclContentCheckboxDecoration.setImage( OpenLdapConfigurationPlugin.getDefault().getImageDescriptor(
-            OpenLdapConfigurationPluginConstants.IMG_INFORMATION ).createImage() );
-        addAclContentCheckboxDecoration.setMarginWidth( 4 );
-        addAclContentCheckboxDecoration.setDescriptionText( "Controls whether Add operations will perform ACL checks on the content of the entry being added" );
         
         // The olcMonitoring parameter
         toolkit.createLabel( composite, "Monitoring:" );
@@ -1131,14 +1119,14 @@ public class DatabasesDetailsPage implements IDetailsPage
      * | Requires :                                         |
      * |   +------------------------------------+           |
      * |   |                                    | (Add...)  |
-     * |   |                                    | (Edit...) |
      * |   |                                    | (Delete)  |
+     * |   |                                    |           |
      * |   +------------------------------------+           |
      * | Restrict :                                         |
      * |   +------------------------------------+           |
      * |   |                                    | (Add...)  |
-     * |   |                                    | (Edit...) |
      * |   |                                    | (Delete)  |
+     * |   |                                    |           |
      * |   +------------------------------------+           |
      * | Security Strength Factors :                        |
      * |   +------------------------------------+           |
@@ -1213,6 +1201,64 @@ public class DatabasesDetailsPage implements IDetailsPage
     }
 
 
+    /**
+     * Creates the Access Settings Section. This will expose the following attributes :
+     *   <ul>
+     *     <li>olcAccess(String, MV, Ordered)</li>
+     *     <li>olcAddContentAcl(Boolean)</li>
+     *   </ul>
+     * 
+     * <pre>
+     * .----------------------------------------------------.
+     * |V XXXX Database access                              |
+     * +----------------------------------------------------+
+     * | Add content ACL : [ ]                              |
+     * | ACLs :                                             |
+     * |   +------------------------------------+           |
+     * |   |                                    | (Add...)  |
+     * |   |                                    | (Edit...) |
+     * |   |                                    | (Delete)  |
+     * |   |                                    | --------  |
+     * |   |                                    | (Up...)   |
+     * |   |                                    | (Down...) |
+     * |   +------------------------------------+           |
+     * +----------------------------------------------------+
+     * </pre>
+     * 
+     * @param parent the parent composite
+     * @param toolkit the toolkit to use
+     */
+    private void createAccessSettingsSection( Composite parent, FormToolkit toolkit )
+    {
+        // Creating the Section
+        Section accessSection = toolkit.createSection( parent, Section.TWISTIE | Section.COMPACT | Section.TITLE_BAR );
+        accessSection.setText( Messages.getString( "OpenLDAPMasterDetail.AccessSettings" ) );
+        accessSection.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        Composite accessComposite = toolkit.createComposite( accessSection );
+        toolkit.paintBordersFor( accessComposite );
+        GridLayout gl = new GridLayout( 2, true );
+        gl.marginRight = 18;
+        accessComposite.setLayout( gl );
+        accessSection.setClient( accessComposite );
+        
+        // The olcAddContentAcl Button
+        addContentAclCheckbox = BaseWidgetUtils.createCheckbox( accessComposite, "Add Content ACL", 2 );
+        
+        // The olcAccess Table
+        Label aclsLabel = toolkit.createLabel( accessComposite, 
+            Messages.getString( "OpenLDAPMasterDetail.ACLs" ) ); //$NON-NLS-1$
+        aclsLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 4, 1 ) );
+        
+        /*
+        aclsTableWidget = new TableWidget<StringValueWrapper>( 
+            new LimitsDecorator( accessComposite.getShell(), "ACLs" ) );
+
+        aclsTableWidget.createOrderedWidgetWithEdit( accessComposite, toolkit );
+        aclsTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 4, 1 ) );
+        addModifyListener( aclsTableWidget, aclsListener );
+        */
+    }
+    
     /**
      * Creates the Overlay Settings Section
      *
@@ -1883,7 +1929,7 @@ public class DatabasesDetailsPage implements IDetailsPage
         }
 
         addModifyListener( lastModBooleanWithDefaultWidget, dirtyWidgetModifyListener );
-        addModifyListener( addContentAclBooleanWithDefaultWidget, dirtyWidgetModifyListener );
+        addSelectionListener( addContentAclCheckbox, dirtySelectionListener );
         addModifyListener( monitoringBooleanWithDefaultWidget, dirtyWidgetModifyListener );
         //maxDerefDepthText.addModifyListener( dirtyModifyListener );
 
@@ -1933,7 +1979,7 @@ public class DatabasesDetailsPage implements IDetailsPage
         }
 
         removeModifyListener( lastModBooleanWithDefaultWidget, dirtyWidgetModifyListener );
-        removeModifyListener( addContentAclBooleanWithDefaultWidget, dirtyWidgetModifyListener );
+        removeSelectionListener( addContentAclCheckbox, dirtySelectionListener );
         removeModifyListener( monitoringBooleanWithDefaultWidget, dirtyWidgetModifyListener );
         //maxDerefDepthText.removeModifyListener( dirtyModifyListener );
 

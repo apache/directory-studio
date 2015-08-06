@@ -28,20 +28,20 @@ package org.apache.directory.studio.openldap.config;
 public interface OpenLdapConfigurationPluginConstants
 {
     /** The plug-in ID */
-    public static final String PLUGIN_ID = OpenLdapConfigurationPlugin.getDefault().getPluginProperties()
+    String PLUGIN_ID = OpenLdapConfigurationPlugin.getDefault().getPluginProperties()
         .getString( "Plugin_id" ); //$NON-NLS-1$
 
     // ------
     // IMAGES
     // ------
-    public static final String IMG_ATTRIBUTE = "resources/icons/attribute.gif"; //$NON-NLS-1$
-    public static final String IMG_DATABASE = "resources/icons/database.gif"; //$NON-NLS-1$
-    public static final String IMG_DISABLED_DATABASE = "resources/icons/disabledDatabase.gif"; //$NON-NLS-1$
-    public static final String IMG_EDITOR = "resources/icons/editor.gif"; //$NON-NLS-1$
-    public static final String IMG_EXPORT = "resources/icons/export.gif"; //$NON-NLS-1$
-    public static final String IMG_INDEX = "resources/icons/index.png"; //$NON-NLS-1$
-    public static final String IMG_INFORMATION = "resources/icons/information.gif"; //$NON-NLS-1$
-    public static final String IMG_IMPORT = "resources/icons/import.gif"; //$NON-NLS-1$
-    public static final String IMG_OVERLAY = "resources/icons/overlay.gif"; //$NON-NLS-1$
-    public static final String IMG_LDAP_SERVER = "resources/icons/server.gif"; //$NON-NLS-1$
+    String IMG_ATTRIBUTE = "resources/icons/attribute.gif"; //$NON-NLS-1$
+    String IMG_DATABASE = "resources/icons/database.gif"; //$NON-NLS-1$
+    String IMG_DISABLED_DATABASE = "resources/icons/disabledDatabase.gif"; //$NON-NLS-1$
+    String IMG_EDITOR = "resources/icons/editor.gif"; //$NON-NLS-1$
+    String IMG_EXPORT = "resources/icons/export.gif"; //$NON-NLS-1$
+    String IMG_INDEX = "resources/icons/index.png"; //$NON-NLS-1$
+    String IMG_INFORMATION = "resources/icons/information.gif"; //$NON-NLS-1$
+    String IMG_IMPORT = "resources/icons/import.gif"; //$NON-NLS-1$
+    String IMG_OVERLAY = "resources/icons/overlay.gif"; //$NON-NLS-1$
+    String IMG_LDAP_SERVER = "resources/icons/server.gif"; //$NON-NLS-1$
 }

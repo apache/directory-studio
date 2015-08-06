@@ -34,22 +34,22 @@ public interface TemplateWidget
     public static WidgetAlignment DEFAULT_HORIZONTAL_ALIGNMENT = WidgetAlignment.NONE;
 
     /** The default vertical alignment value */
-    public static WidgetAlignment DEFAULT_VERTICAL_ALIGNMENT = WidgetAlignment.NONE;
+    WidgetAlignment DEFAULT_VERTICAL_ALIGNMENT = WidgetAlignment.NONE;
 
     /** The default grab excess horizontal space value */
-    public static boolean DEFAULT_GRAB_EXCESS_HORIZONTAL_SPACE = false;
+    boolean DEFAULT_GRAB_EXCESS_HORIZONTAL_SPACE = false;
 
     /** The default grab excess vertical space value */
-    public static boolean DEFAULT_GRAB_EXCESS_VERTICAL_SPACE = false;
+    boolean DEFAULT_GRAB_EXCESS_VERTICAL_SPACE = false;
 
     /** The default horizontal span value */
-    public static int DEFAULT_HORIZONTAL_SPAN = 1;
+    int DEFAULT_HORIZONTAL_SPAN = 1;
 
     /** The default vertical span value */
-    public static int DEFAULT_VERTICAL_SPAN = 1;
+    int DEFAULT_VERTICAL_SPAN = 1;
 
     /** The default integer value for sizes */
-    public static int DEFAULT_SIZE = -1;
+    int DEFAULT_SIZE = -1;
 
 
     /**
@@ -60,7 +60,7 @@ public interface TemplateWidget
      * @return
      *      <code>true</code> (as per the general contract of the Collection.add method).
      */
-    public boolean addChild( TemplateWidget widget );
+    boolean addChild( TemplateWidget widget );
 
 
     /**
@@ -69,7 +69,7 @@ public interface TemplateWidget
      * @return
      *      the attribute type the widget is associated with
      */
-    public String getAttributeType();
+    String getAttributeType();
 
 
     /**
@@ -78,7 +78,7 @@ public interface TemplateWidget
      * @return
      *      the children
      */
-    public List<TemplateWidget> getChildren();
+    List<TemplateWidget> getChildren();
 
 
     /**
@@ -87,7 +87,7 @@ public interface TemplateWidget
      * @return
      *      the preferred height
      */
-    public int getImageHeight();
+    int getImageHeight();
 
 
     /**
@@ -96,7 +96,7 @@ public interface TemplateWidget
      * @return
      *      how the widget is positioned horizontally
      */
-    public WidgetAlignment getHorizontalAlignment();
+    WidgetAlignment getHorizontalAlignment();
 
 
     /**
@@ -105,7 +105,7 @@ public interface TemplateWidget
      * @return
      *      the number of columns that the widget will take up
      */
-    public int getHorizontalSpan();
+    int getHorizontalSpan();
 
 
     /**
@@ -114,7 +114,7 @@ public interface TemplateWidget
      * @return
      *      the parent element
      */
-    public TemplateWidget getParent();
+    TemplateWidget getParent();
 
 
     /**
@@ -123,7 +123,7 @@ public interface TemplateWidget
      * @return
      *      how the widget is positioned vertically
      */
-    public WidgetAlignment getVerticalAlignment();
+    WidgetAlignment getVerticalAlignment();
 
 
     /**
@@ -132,7 +132,7 @@ public interface TemplateWidget
      * @return
      *      the number of rows that the widget will take up
      */
-    public int getVerticalSpan();
+    int getVerticalSpan();
 
 
     /**
@@ -141,7 +141,7 @@ public interface TemplateWidget
      * @return
      *      the preferred width
      */
-    public int getImageWidth();
+    int getImageWidth();
 
 
     /**
@@ -151,7 +151,7 @@ public interface TemplateWidget
      *      <code>true</code> if the widget has children,
      *      <code>false</code> if not.
      */
-    public boolean hasChildren();
+    boolean hasChildren();
 
 
     /**
@@ -163,7 +163,7 @@ public interface TemplateWidget
      *      enough to fit the remaining horizontal space,
      *      <code>false</code> if not
      */
-    public boolean isGrabExcessHorizontalSpace();
+    boolean isGrabExcessHorizontalSpace();
 
 
     /**
@@ -175,7 +175,7 @@ public interface TemplateWidget
      *      enough to fit the remaining vertical space,
      *      <code>false</code> if not
      */
-    public boolean isGrabExcessVerticalSpace();
+    boolean isGrabExcessVerticalSpace();
 
 
     /**
@@ -184,7 +184,7 @@ public interface TemplateWidget
      * @param attributeType
      *      the attribute type the widget is associated with
      */
-    public void setAttributeType( String attributeType );
+    void setAttributeType( String attributeType );
 
 
     /**
@@ -195,7 +195,7 @@ public interface TemplateWidget
      *      whether the widget will be made wide 
      *      enough to fit the remaining horizontal space
      */
-    public void setGrabExcessHorizontalSpace( boolean grabExcessHorizontalSpace );
+    void setGrabExcessHorizontalSpace( boolean grabExcessHorizontalSpace );
 
 
     /**
@@ -206,7 +206,7 @@ public interface TemplateWidget
      *      whether the widget will be made wide 
      *      enough to fit the remaining vertical space
      */
-    public void setGrabExcessVerticalSpace( boolean grabExcessVerticalSpace );
+    void setGrabExcessVerticalSpace( boolean grabExcessVerticalSpace );
 
 
     /**
@@ -215,7 +215,7 @@ public interface TemplateWidget
      * @param height
      *      the preferred height
      */
-    public void setImageHeight( int height );
+    void setImageHeight( int height );
 
 
     /**
@@ -224,7 +224,7 @@ public interface TemplateWidget
      * @param horizontalAlignment
      *      how the widget is positioned horizontally
      */
-    public void setHorizontalAlignment( WidgetAlignment horizontalAlignment );
+    void setHorizontalAlignment( WidgetAlignment horizontalAlignment );
 
 
     /**
@@ -233,7 +233,7 @@ public interface TemplateWidget
      * @param grabExcessHorizontalSpace
      *      the number of columns that the widget will take up
      */
-    public void setHorizontalSpan( int horizontalSpan );
+    void setHorizontalSpan( int horizontalSpan );
 
 
     /**
@@ -242,7 +242,7 @@ public interface TemplateWidget
      * @param verticalAlignment
      *      how the widget is positioned vertically
      */
-    public void setVerticalAlignment( WidgetAlignment verticalAlignment );
+    void setVerticalAlignment( WidgetAlignment verticalAlignment );
 
 
     /**
@@ -251,7 +251,7 @@ public interface TemplateWidget
      * @param verticalSpan
      *      the number of rows that the widget will take up
      */
-    public void setVerticalSpan( int verticalSpan );
+    void setVerticalSpan( int verticalSpan );
 
 
     /**
@@ -260,5 +260,5 @@ public interface TemplateWidget
      * @param width
      *      the preferred width
      */
-    public void setImageWidth( int width );
+    void setImageWidth( int width );
 }

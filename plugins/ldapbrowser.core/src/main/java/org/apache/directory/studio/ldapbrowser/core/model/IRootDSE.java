@@ -28,13 +28,12 @@ package org.apache.directory.studio.ldapbrowser.core.model;
  */
 public interface IRootDSE extends IEntry
 {
-
     /**
      * Gets the supported extensions.
      * 
      * @return the OIDs of the supported extensions
      */
-    public String[] getSupportedExtensions();
+    String[] getSupportedExtensions();
 
 
     /**
@@ -42,7 +41,7 @@ public interface IRootDSE extends IEntry
      * 
      * @return the OIDs of the the supported controls
      */
-    public String[] getSupportedControls();
+    String[] getSupportedControls();
 
 
     /**
@@ -50,7 +49,7 @@ public interface IRootDSE extends IEntry
      * 
      * @return the OIDs of the the supported features
      */
-    public String[] getSupportedFeatures();
+    String[] getSupportedFeatures();
 
 
     /**
@@ -60,7 +59,7 @@ public interface IRootDSE extends IEntry
      * 
      * @return true, if control is supported
      */
-    public boolean isControlSupported( String oid );
+    boolean isControlSupported( String oid );
 
 
     /**
@@ -70,6 +69,5 @@ public interface IRootDSE extends IEntry
      * 
      * @return true, if feature is supported
      */
-    public boolean isFeatureSupported( String oid );
-
+    boolean isFeatureSupported( String oid );
 }

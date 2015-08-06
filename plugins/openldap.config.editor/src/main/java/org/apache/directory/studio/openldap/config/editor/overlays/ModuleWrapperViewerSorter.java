@@ -31,8 +31,7 @@ public class ModuleWrapperViewerSorter extends ViewerSorter
 {
     public int compare( Viewer viewer, Object e1, Object e2 )
     {
-        if ( ( e1 != null ) && ( e2 != null ) && ( e1 instanceof ModuleWrapper )
-            && ( e2 instanceof ModuleWrapper ) )
+        if ( ( e1 instanceof ModuleWrapper ) && ( e2 instanceof ModuleWrapper ) )
         {
             ModuleWrapper module1 = (ModuleWrapper)e1;
             ModuleWrapper module2 = (ModuleWrapper)e2;

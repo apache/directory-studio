@@ -37,13 +37,12 @@ import org.eclipse.core.runtime.IAdaptable;
 public interface ISearchResult extends Serializable, IAdaptable, EntryPropertyPageProvider,
     ConnectionPropertyPageProvider
 {
-
     /**
      * Returns the Dn of the search result entry.
      * 
      * @return the Dn of the search result entry.
      */
-    public Dn getDn();
+    Dn getDn();
 
 
     /**
@@ -51,7 +50,7 @@ public interface ISearchResult extends Serializable, IAdaptable, EntryPropertyPa
      * 
      * @return the attributes of the search result entry.
      */
-    public IAttribute[] getAttributes();
+    IAttribute[] getAttributes();
 
 
     /**
@@ -61,7 +60,7 @@ public interface ISearchResult extends Serializable, IAdaptable, EntryPropertyPa
      *                the attribute description of the attribute to return
      * @return the attribute with the given description or null.
      */
-    public IAttribute getAttribute( String attributeDescription );
+    IAttribute getAttribute( String attributeDescription );
 
 
     /**
@@ -71,7 +70,7 @@ public interface ISearchResult extends Serializable, IAdaptable, EntryPropertyPa
      *                the description of the attribute to return
      * @return the AttributeHierachie with the given description or null.
      */
-    public AttributeHierarchy getAttributeWithSubtypes( String attributeDescription );
+    AttributeHierarchy getAttributeWithSubtypes( String attributeDescription );
 
 
     /**
@@ -79,7 +78,7 @@ public interface ISearchResult extends Serializable, IAdaptable, EntryPropertyPa
      * 
      * @return the entry
      */
-    public IEntry getEntry();
+    IEntry getEntry();
 
 
     /**
@@ -87,7 +86,7 @@ public interface ISearchResult extends Serializable, IAdaptable, EntryPropertyPa
      * 
      * @return the search
      */
-    public ISearch getSearch();
+    ISearch getSearch();
 
 
     /**
@@ -95,6 +94,5 @@ public interface ISearchResult extends Serializable, IAdaptable, EntryPropertyPa
      * 
      * @param search the search
      */
-    public void setSearch( ISearch search );
-
+    void setSearch( ISearch search );
 }

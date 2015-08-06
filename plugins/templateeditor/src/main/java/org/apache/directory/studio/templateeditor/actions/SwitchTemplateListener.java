@@ -39,5 +39,5 @@ public interface SwitchTemplateListener
      * @param template
      *      the template
      */
-    public void templateSwitched( TemplateEditorWidget templateEditorWidget, Template template );
+    void templateSwitched( TemplateEditorWidget templateEditorWidget, Template template );
 }

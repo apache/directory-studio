@@ -41,7 +41,7 @@ public interface Template
      *      <code>true</code> if the template did not already contain the 
      *      specified element.
      */
-    public boolean addAuxiliaryObjectClass( String objectClass );
+    boolean addAuxiliaryObjectClass( String objectClass );
 
 
     /**
@@ -50,7 +50,7 @@ public interface Template
      * @return
      *      the auxiliary object classes
      */
-    public List<String> getAuxiliaryObjectClasses();
+    List<String> getAuxiliaryObjectClasses();
 
 
     /**
@@ -59,7 +59,7 @@ public interface Template
      * @return
      *      the form
      */
-    public TemplateForm getForm();
+    TemplateForm getForm();
 
 
     /**
@@ -68,7 +68,7 @@ public interface Template
      * @return
      *      the ID
      */
-    public String getId();
+    String getId();
 
 
     /**
@@ -77,7 +77,7 @@ public interface Template
      * @return
      *      the structural object class
      */
-    public String getStructuralObjectClass();
+    String getStructuralObjectClass();
 
 
     /**
@@ -86,7 +86,7 @@ public interface Template
      * @return
      *      the title
      */
-    public String getTitle();
+    String getTitle();
 
 
     /**
@@ -97,7 +97,7 @@ public interface Template
      * @return
      *      <code>true</code> if the template contained the specified element.
      */
-    public boolean removeAuxiliaryObjectClass( String objectClass );
+    boolean removeAuxiliaryObjectClass( String objectClass );
 
 
     /**
@@ -106,7 +106,7 @@ public interface Template
      * @param objectClasses
      *      the auxiliary object classes
      */
-    public void setAuxiliaryObjectClasses( List<String> objectClasses );
+    void setAuxiliaryObjectClasses( List<String> objectClasses );
 
 
     /**
@@ -115,7 +115,7 @@ public interface Template
      * @param form
      *      the form
      */
-    public void setForm( TemplateForm form );
+    void setForm( TemplateForm form );
 
 
     /**
@@ -124,7 +124,7 @@ public interface Template
      * @param id
      *      the ID
      */
-    public void setId( String id );
+    void setId( String id );
 
 
     /**
@@ -133,7 +133,7 @@ public interface Template
      * @param objectClass
      *      the structural object class
      */
-    public void setStructuralObjectClass( String objectClass );
+    void setStructuralObjectClass( String objectClass );
 
 
     /**
@@ -142,5 +142,5 @@ public interface Template
      * @param title
      *      the title
      */
-    public void setTitle( String title );
+    void setTitle( String title );
 }

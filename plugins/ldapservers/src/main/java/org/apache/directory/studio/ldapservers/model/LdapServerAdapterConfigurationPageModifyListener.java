@@ -29,5 +29,5 @@ public interface LdapServerAdapterConfigurationPageModifyListener
     /**
      * Indicates that the configuration page was modified.
      */
-    public void configurationPageModified();
+    void configurationPageModified();
 }

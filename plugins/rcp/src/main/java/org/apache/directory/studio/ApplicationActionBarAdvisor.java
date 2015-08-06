@@ -129,7 +129,6 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor
         newAction.setText( Messages.getString( "ApplicationActionBarAdvisor.new" ) ); //$NON-NLS-1$
 
         newDropDownAction = new NewWizardDropDownAction( window );
-        //        new NavigationHistoryAction( window, false );
 
         openFileAction = new OpenFileAction( window );
         register( openFileAction );

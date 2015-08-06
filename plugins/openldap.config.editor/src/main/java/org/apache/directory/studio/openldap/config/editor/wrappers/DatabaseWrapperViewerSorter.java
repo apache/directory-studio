@@ -33,8 +33,7 @@ public class DatabaseWrapperViewerSorter extends ViewerSorter
 {
     public int compare( Viewer viewer, Object e1, Object e2 )
     {
-        if ( ( e1 != null ) && ( e2 != null ) && ( e1 instanceof DatabaseWrapper )
-            && ( e2 instanceof DatabaseWrapper ) )
+        if ( ( e1 instanceof DatabaseWrapper ) && ( e2 instanceof DatabaseWrapper ) )
         {
             OlcDatabaseConfig database1 = ( ( DatabaseWrapper ) e1 ).getDatabase();
             OlcDatabaseConfig database2 = ( ( DatabaseWrapper ) e2 ).getDatabase();

@@ -36,7 +36,7 @@ public interface ServerConfigurationInput extends IEditorInput
      *
      * @return the original configuration partition
      */
-    public EntryBasedConfigurationPartition getOriginalPartition();
+    EntryBasedConfigurationPartition getOriginalPartition();
 
 
     /**
@@ -44,5 +44,5 @@ public interface ServerConfigurationInput extends IEditorInput
      *
      * @param originalPartition the original configuration 
      */
-    public void setOriginalPartition( EntryBasedConfigurationPartition originalPartition );
+    void setOriginalPartition( EntryBasedConfigurationPartition originalPartition );
 }

@@ -27,13 +27,13 @@ package org.apache.directory.studio.openldap.config.editor.wrappers;
 public interface LimitWrapper extends Comparable<LimitWrapper>
 {
     // Define some of the used constants
-    public static final Integer HARD_SOFT = Integer.valueOf( -3 );
-    public static final Integer UNLIMITED = Integer.valueOf( -1 );
+    Integer HARD_SOFT = Integer.valueOf( -3 );
+    Integer UNLIMITED = Integer.valueOf( -1 );
 
-    public static final String HARD_STR = "hard";
-    public static final String NONE_STR = "none";
-    public static final String SOFT_STR = "soft";
-    public static final String UNLIMITED_STR = "unlimited";
+    String HARD_STR = "hard";
+    String NONE_STR = "none";
+    String SOFT_STR = "soft";
+    String UNLIMITED_STR = "unlimited";
 
     
     /**

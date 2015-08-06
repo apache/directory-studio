@@ -40,13 +40,13 @@ public final class LdifEOFPart implements LdifPart
     }
 
 
-    public final int getOffset()
+    public int getOffset()
     {
         return offset;
     }
 
 
-    public final int getLength()
+    public int getLength()
     {
         return 0;
     }
@@ -55,7 +55,7 @@ public final class LdifEOFPart implements LdifPart
     /**
      * @return The raw version of a EOF part : an empty String
      */
-    public final String toRawString()
+    public String toRawString()
     {
         return ""; //$NON-NLS-1$
     }
@@ -64,31 +64,31 @@ public final class LdifEOFPart implements LdifPart
     /**
      * @return The formatted version of a EOF part : an empty String
      */
-    public final String toFormattedString( LdifFormatParameters formatParameters )
+    public String toFormattedString( LdifFormatParameters formatParameters )
     {
         return ""; //$NON-NLS-1$
     }
 
 
-    public final String toString()
+    public String toString()
     {
         return getClass().getName() + " (" + getOffset() + "," + getLength() + "): ''"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     }
 
 
-    public final boolean isValid()
+    public boolean isValid()
     {
         return true;
     }
 
 
-    public final String getInvalidString()
+    public String getInvalidString()
     {
         return ""; //$NON-NLS-1$
     }
 
 
-    public final void adjustOffset( int adjust )
+    public void adjustOffset( int adjust )
     {
         offset += adjust;
     }

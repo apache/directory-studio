@@ -34,13 +34,13 @@ public interface LdifPart
     /**
      * @return The position of this part in the LDIF file
      */
-    public int getOffset();
+    int getOffset();
 
 
     /**
      * @return The length of this part
      */
-    public int getLength();
+    int getLength();
 
 
     /**
@@ -48,18 +48,17 @@ public interface LdifPart
      * 
      * @return <code>true</code> if the part is valid.
      */
-    public boolean isValid();
+    boolean isValid();
 
 
-    public String getInvalidString();
+    String getInvalidString();
 
 
-    public String toRawString();
+    String toRawString();
 
 
-    public String toFormattedString( LdifFormatParameters formatParameters );
+    String toFormattedString( LdifFormatParameters formatParameters );
 
 
-    public void adjustOffset( int adjust );
-
+    void adjustOffset( int adjust );
 }

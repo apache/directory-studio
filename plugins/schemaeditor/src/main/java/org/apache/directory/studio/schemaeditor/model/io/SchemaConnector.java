@@ -44,7 +44,7 @@ public interface SchemaConnector
      *      true if the SchemaConnector is suitable for the given connection,
      *      false if not
      */
-    public boolean isSuitableConnector( Connection connection, StudioProgressMonitor monitor );
+    boolean isSuitableConnector( Connection connection, StudioProgressMonitor monitor );
 
 
     /**
@@ -57,7 +57,7 @@ public interface SchemaConnector
      *      the progress monitor
      * @throws SchemaConnectorException
      */
-    public void importSchema( Project project, StudioProgressMonitor monitor )
+    void importSchema( Project project, StudioProgressMonitor monitor )
         throws SchemaConnectorException;
 
 
@@ -71,7 +71,7 @@ public interface SchemaConnector
      *      the progress monitor
      * @throws SchemaConnectorException
      */
-    public void exportSchema( Project project, StudioProgressMonitor monitor )
+    void exportSchema( Project project, StudioProgressMonitor monitor )
         throws SchemaConnectorException;
 
 
@@ -81,7 +81,7 @@ public interface SchemaConnector
      * @return
      *      the name
      */
-    public String getName();
+    String getName();
 
 
     /**
@@ -90,7 +90,7 @@ public interface SchemaConnector
      * @param name
      *      the name
      */
-    public void setName( String name );
+    void setName( String name );
 
 
     /**
@@ -99,7 +99,7 @@ public interface SchemaConnector
      * @return
      *      the ID
      */
-    public String getId();
+    String getId();
 
 
     /**
@@ -108,7 +108,7 @@ public interface SchemaConnector
      * @param id
      *      the ID
      */
-    public void setId( String id );
+    void setId( String id );
 
 
     /**
@@ -117,7 +117,7 @@ public interface SchemaConnector
      * @return
      *      the description
      */
-    public String getDescription();
+    String getDescription();
 
 
     /**
@@ -126,5 +126,5 @@ public interface SchemaConnector
      * @param description
      *      the description
      */
-    public void setDescription( String description );
+    void setDescription( String description );
 }

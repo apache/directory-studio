@@ -38,5 +38,5 @@ public interface StudioConnectionBulkRunnableWithProgress extends StudioConnecti
      * 
      * @param monitor the monitor
      */
-    public void runNotification( StudioProgressMonitor monitor );
+    void runNotification( StudioProgressMonitor monitor );
 }

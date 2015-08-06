@@ -28,13 +28,12 @@ package org.apache.directory.studio.connection.core;
  */
 public interface ICredentials
 {
-
     /**
      * Gets the connection parameter.
      * 
      * @return the connection parameter
      */
-    public ConnectionParameter getConnectionParameter();
+    ConnectionParameter getConnectionParameter();
 
 
     /**
@@ -42,7 +41,7 @@ public interface ICredentials
      * 
      * @return the bind principal
      */
-    public String getBindPrincipal();
+    String getBindPrincipal();
 
 
     /**
@@ -50,6 +49,5 @@ public interface ICredentials
      * 
      * @return the bind password
      */
-    public String getBindPassword();
-
+    String getBindPassword();
 }

@@ -33,8 +33,7 @@ public interface SchemaWarning
     /**
      * Gets the source object.
      * 
-     * @return
-     *      the source object
+     * @return the source object
      */
-    public SchemaObject getSource();
+    SchemaObject getSource();
 }

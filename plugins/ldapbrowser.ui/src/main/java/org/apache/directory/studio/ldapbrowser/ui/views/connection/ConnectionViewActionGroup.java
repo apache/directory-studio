@@ -145,18 +145,18 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
     {
 
         // add
-        menuManager.add( ( IAction ) connectionActionMap.get( newConnectionAction ) );
-        menuManager.add( ( IAction ) connectionActionMap.get( newConnectionFolderAction ) );
+        menuManager.add( ( IAction ) connectionActionMap.get( NEW_CONNECTION_ACTION ) );
+        menuManager.add( ( IAction ) connectionActionMap.get( NEW_CONNECTION_FOLDER_ACTION ) );
         menuManager.add( new Separator() );
 
         // open/close
-        if ( ( ( IAction ) connectionActionMap.get( closeConnectionAction ) ).isEnabled() )
+        if ( ( ( IAction ) connectionActionMap.get( CLOSE_CONNECTION_ACTION ) ).isEnabled() )
         {
-            menuManager.add( ( IAction ) connectionActionMap.get( closeConnectionAction ) );
+            menuManager.add( ( IAction ) connectionActionMap.get( CLOSE_CONNECTION_ACTION ) );
         }
-        else if ( ( ( IAction ) connectionActionMap.get( openConnectionAction ) ).isEnabled() )
+        else if ( ( ( IAction ) connectionActionMap.get( OPEN_CONNECTION_ACTION ) ).isEnabled() )
         {
-            menuManager.add( ( IAction ) connectionActionMap.get( openConnectionAction ) );
+            menuManager.add( ( IAction ) connectionActionMap.get( OPEN_CONNECTION_ACTION ) );
         }
         menuManager.add( new Separator() );
 
@@ -165,10 +165,10 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
         menuManager.add( new Separator() );
 
         // copy/paste/...
-        menuManager.add( ( IAction ) connectionActionMap.get( copyConnectionAction ) );
-        menuManager.add( ( IAction ) connectionActionMap.get( pasteConnectionAction ) );
-        menuManager.add( ( IAction ) connectionActionMap.get( deleteConnectionAction ) );
-        menuManager.add( ( IAction ) connectionActionMap.get( renameConnectionAction ) );
+        menuManager.add( ( IAction ) connectionActionMap.get( COPY_CONNECTION_ACTION ) );
+        menuManager.add( ( IAction ) connectionActionMap.get( PASTE_CONNECTION_ACTION ) );
+        menuManager.add( ( IAction ) connectionActionMap.get( DELETE_CONNECTION_ACTION ) );
+        menuManager.add( ( IAction ) connectionActionMap.get( RENAME_CONNECTION_ACTION ) );
         menuManager.add( new Separator() );
 
         // import/export
@@ -197,7 +197,7 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
         menuManager.add( new Separator() );
 
         // properties
-        menuManager.add( ( IAction ) connectionActionMap.get( propertyDialogAction ) );
+        menuManager.add( ( IAction ) connectionActionMap.get( PROPERTY_DIALOG_ACTION ) );
     }
 
 }
