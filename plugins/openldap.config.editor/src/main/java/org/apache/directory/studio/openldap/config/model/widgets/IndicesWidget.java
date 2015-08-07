@@ -20,40 +20,11 @@
 package org.apache.directory.studio.openldap.config.model.widgets;
 
 
-import java.util.ArrayList;
-import java.util.List;
 
-import org.apache.directory.studio.common.ui.widgets.AbstractWidget;
-import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.common.ui.widgets.TableWidget;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPlugin;
-import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginConstants;
-import org.apache.directory.studio.openldap.config.editor.dialogs.DbIndexDialog;
 import org.apache.directory.studio.openldap.config.editor.wrappers.DbIndexDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.DbIndexWrapper;
-import org.apache.directory.studio.openldap.config.model.OlcDbIndex;
 
 
 /**
