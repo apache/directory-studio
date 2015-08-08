@@ -20,9 +20,6 @@
 package org.apache.directory.studio.openldap.config.editor.dialogs;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.directory.studio.common.ui.AddEditDialog;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.common.ui.widgets.TableWidget;
@@ -50,7 +47,6 @@ import org.apache.directory.studio.openldap.common.ui.model.LimitSelectorEnum;
 import org.apache.directory.studio.openldap.config.editor.wrappers.LimitDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.LimitWrapper;
 import org.apache.directory.studio.openldap.config.editor.wrappers.LimitsWrapper;
-import org.apache.directory.studio.openldap.config.model.database.OlcDatabaseConfig;
 
 
 /**

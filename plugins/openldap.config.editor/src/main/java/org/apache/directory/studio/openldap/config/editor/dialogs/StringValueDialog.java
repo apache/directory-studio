@@ -177,6 +177,11 @@ public class StringValueDialog extends AddEditDialog<StringValueWrapper>
     }
 
 
+    /**
+     * Add an Element that will be edited
+     * 
+     * @param editedElement The element to edit
+     */
     public void addNewElement( StringValueWrapper editedElement )
     {
         StringValueWrapper newElement = (StringValueWrapper)editedElement.clone();
