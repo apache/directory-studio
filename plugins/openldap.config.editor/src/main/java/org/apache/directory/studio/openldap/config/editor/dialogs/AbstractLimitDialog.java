@@ -21,7 +21,6 @@ package org.apache.directory.studio.openldap.config.editor.dialogs;
 
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.common.ui.AddEditDialog;
-import org.apache.directory.studio.openldap.config.editor.wrappers.AbstractLimitWrapper;
 import org.apache.directory.studio.openldap.config.editor.wrappers.LimitWrapper;
 import org.apache.directory.studio.openldap.config.editor.wrappers.SizeLimitWrapper;
 import org.apache.directory.studio.openldap.config.editor.wrappers.TimeLimitWrapper;
