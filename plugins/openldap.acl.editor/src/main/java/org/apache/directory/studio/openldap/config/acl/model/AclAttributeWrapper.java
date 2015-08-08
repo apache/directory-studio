@@ -1,11 +1,19 @@
 package org.apache.directory.studio.openldap.config.acl.model;
 
-import org.apache.directory.api.util.Strings;
-
 public class AclAttributeWrapper implements Cloneable, Comparable<AclAttributeWrapper>
 {
     /** The AclAttribute */
     private AclAttribute aclAttribute;
+    
+    /**
+     * Creates a new instance of AclAttributeWrapper.
+     */
+    public AclAttributeWrapper()
+    {
+        // Default to ExtensibleObject
+        aclAttribute = new AclAttribute( "extensibleObject", null );
+    }
+    
     
     /**
      * Creates a new instance of AclAttributeWrapper.
@@ -33,6 +41,15 @@ public class AclAttributeWrapper implements Cloneable, Comparable<AclAttributeWr
     public void setAclAttribute( AclAttribute aclAttribute )
     {
         this.aclAttribute = aclAttribute;
+    }
+
+    
+    /**
+     * @param aclAttribute the aclAttribute to set
+     */
+    public void setAclAttribute( String name )
+    {
+        this.aclAttribute = new AclAttribute( name, null );
     }
 
 
@@ -67,7 +84,10 @@ public class AclAttributeWrapper implements Cloneable, Comparable<AclAttributeWr
         {
             AclAttributeWrapper thatInstance = (AclAttributeWrapper)that;
 
-            return aclAttribute.getName().equalsIgnoreCase( thatInstance.aclAttribute.getName() );
+            return aclAttribute.getName().equalsIgnoreCase( thatInstance.aclAttribute.getName() ) && 
+                   ( aclAttribute.isAttributeType() && thatInstance.aclAttribute.isAttributeType() ||
+                     ( ( aclAttribute.isObjectClass() || aclAttribute.isObjectClassNotAllowed() ) && 
+                         ( thatInstance.aclAttribute.isObjectClass() || thatInstance.aclAttribute.isObjectClassNotAllowed() ) ) );
         }
         else
         {

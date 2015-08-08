@@ -35,6 +35,21 @@ import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPlugin;
  */
 public class AclAttribute
 {
+    /** The special "entry" constant */
+    public static final String ENTRY = "entry";
+    
+    /** The special "children" constant */
+    public static final String CHILDREN = "children";
+    
+    /** The special ExtensibleObject constant*/
+    public static final String EXTENSIBLE_OBJECT = "extensibleObject";
+    
+    /** The prefix for ObjectClass */
+    public static final char OC = '@';
+    
+    /** The prefix for ObjectClass exclusion */
+    public static final char OC_EX = '!';
+    
     /** The AttributeType, if we know about it */
     private AttributeType attributeType;
     
@@ -59,6 +74,21 @@ public class AclAttribute
     /** A flag set when we stored the special 'children' attribute */
     private boolean isChildren = false;
     
+    /** The Connection to the LDAP server */
+    private Connection connection;
+    
+    /**
+     * Create a new AclAttribute with no name
+     * 
+     * @param connection The Connection on the LDAP Server 
+     */
+    public AclAttribute( Connection connection )
+    {
+        this.connection = connection;
+        setName( "" );
+    }
+    
+    
     /**
      * Create a new AclAttribute with specific name
      * 
@@ -66,25 +96,68 @@ public class AclAttribute
      */
     public AclAttribute( String name, Connection connection )
     {
-        if ( !Strings.isEmpty( name ) )
+        this.connection = connection;
+        setName( name );
+    }
+    
+
+    /**
+     * @return the attributeType
+     */
+    public AttributeType getAttributeType()
+    {
+        return attributeType;
+    }
+
+    
+    /**
+     * @return the objectClass
+     */
+    public ObjectClass getObjectClass()
+    {
+        return objectClass;
+    }
+
+    
+    /**
+     * @return the name
+     */
+    public String getName()
+    {
+        return name;
+    }
+
+    
+    /**
+     * @param name the name to set
+     */
+    public void setName( String name )
+    {
+        if ( Strings.isEmpty( name ) )
         {
-            if ( Strings.isCharASCII( name, 0, '!' ) )
+            //The default is externalObject ObjectClass
+            isObjectClass = true;
+            this.name = EXTENSIBLE_OBJECT;
+        }
+        else
+        {
+            if ( Strings.isCharASCII( name, 0, OC ) )
             {
                 isObjectClass = true;
                 this.name = name.substring( 1 );
             }
-            else if ( Strings.isCharASCII( name, 0, '@' ) )
+            else if ( Strings.isCharASCII( name, 0, OC_EX ) )
             {
                 isObjectClassNotAllowed = true;
                 this.name = name.substring( 1 );
             }
             else
             {
-                if ( "entry".equalsIgnoreCase( name ) )
+                if ( ENTRY.equalsIgnoreCase( name ) )
                 {
                     isEntry = true;
                 }
-                else if ( "children".equalsIgnoreCase( name ) )
+                else if ( CHILDREN.equalsIgnoreCase( name ) )
                 {
                     isChildren = true;
                 }
@@ -123,35 +196,8 @@ public class AclAttribute
             }
         }
     }
-    
 
-    /**
-     * @return the attributeType
-     */
-    public AttributeType getAttributeType()
-    {
-        return attributeType;
-    }
 
-    
-    /**
-     * @return the objectClass
-     */
-    public ObjectClass getObjectClass()
-    {
-        return objectClass;
-    }
-
-    
-    /**
-     * @return the name
-     */
-    public String getName()
-    {
-        return name;
-    }
-
-    
     /**
      * @return the isAttributeType
      */
@@ -169,7 +215,7 @@ public class AclAttribute
         return isObjectClass;
     }
 
-    
+
     /**
      * @return the isEntry
      */
@@ -178,7 +224,7 @@ public class AclAttribute
         return isEntry;
     }
 
-    
+
     /**
      * @return the isChildren
      */
@@ -211,11 +257,11 @@ public class AclAttribute
         
         if ( isObjectClass )
         {
-            buffer.append( '@' );
+            buffer.append( OC );
         }
         else
         {
-            buffer.append( '!' );
+            buffer.append( OC_EX );
         }
         
         buffer.append( name );
