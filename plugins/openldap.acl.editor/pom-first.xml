@@ -86,6 +86,7 @@
  org.apache.directory.studio.ldapbrowser.core,
  org.apache.directory.studio.ldapbrowser.common,
  org.apache.directory.studio.valueeditors,
+ org.apache.directory.studio.openldap.config.editor,
  org.eclipse.core.runtime,
  org.eclipse.jface.text,
  org.eclipse.ui,
