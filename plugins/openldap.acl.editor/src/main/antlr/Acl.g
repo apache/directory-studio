@@ -416,7 +416,6 @@ what_attrs_attr_ident
 	:
     token:ATTR_IDENT
     {
-		System.out.println( "Adding attribute ident " + token.getText() );
     	whatClauseAttributes.addAttribute( token.getText() );
     }
 	;
