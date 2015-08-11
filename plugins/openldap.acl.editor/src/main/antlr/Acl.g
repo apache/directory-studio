@@ -62,6 +62,7 @@ tokens
     ID_attrs = "attrs";
     ID_auth = "auth";
     ID_base = "base";
+    ID_base_object = "baseobject";
     ID_break = "break";
     ID_by = "by";
     ID_c = "c";
@@ -79,8 +80,10 @@ tokens
     ID_level = "level";
     ID_m = "m";
     ID_manage = "manage";
+	ID_matchingRule = "matchingRule";
     ID_none = "none";
     ID_one = "one";
+    ID_one_level = "onelevel";
     ID_r = "r";
     ID_read = "read";
     ID_regex = "regex";
@@ -88,11 +91,12 @@ tokens
     ID_search = "search";
     ID_self = "self";
     ID_stop = "stop";
+    ID_sub = "sub";
     ID_subtree = "subtree";
     ID_to = "to";
     ID_users = "users";
-    ID_x = "x";
     ID_w = "w";
+    ID_x = "x";
     ID_write = "write";
 }
 
@@ -176,7 +180,6 @@ options
 parse
 	{
     	log.debug( "entered parse()" );
-    	//System.out.println( "entered parse()" );
 	}
     :
     ( SP )* aclItem ( SP )* EOF
@@ -185,7 +188,6 @@ parse
 aclItem
 	{
 	    log.debug( "entered aclItem()" );
-	    //System.out.println( "entered aclItem()" );
 
     	aclItem = new AclItem();
 	}
@@ -196,7 +198,6 @@ aclItem
 what_star
 {
     log.debug( "entered what_star()" );
-    //System.out.println( "entered what_star()" );
 }
 	:
     STAR
@@ -214,7 +215,6 @@ what_star
 what_dn
 {
     log.debug( "entered what_dn()" );
-    //System.out.println( "entered what_dn()" );
     
     AclWhatClauseDn whatClauseDn = new AclWhatClauseDn();
     
@@ -237,10 +237,10 @@ what_dn
 what_dn_type
 {
     log.debug( "entered what_dn_type()" );
-    //System.out.println( "entered what_dn_type()" );
     
 	AclWhatClause whatClause = aclItem.getWhatClause();
 	AclWhatClauseDn whatClauseDn =  whatClause.getDnClause();
+	
 	if ( whatClauseDn == null )
 	{
     	// Throw an exception ?
@@ -250,37 +250,31 @@ what_dn_type
 	:
 	ID_regex
     {
-    	//System.out.println( "entered ID_regex()" );
     	whatClauseDn.setType( AclWhatClauseDnTypeEnum.REGEX );
     }
     |
     ID_base
     {
-    	//System.out.println( "entered ID_base()" );
     	whatClauseDn.setType( AclWhatClauseDnTypeEnum.BASE );
     }
     |
     ID_exact
     {
-    	//System.out.println( "entered ID_exact()" );
     	whatClauseDn.setType( AclWhatClauseDnTypeEnum.EXACT );
     }
     |
     ID_one
     {
-    	//System.out.println( "entered ID_one()" );
     	whatClauseDn.setType( AclWhatClauseDnTypeEnum.ONE );
     }
     |
     ID_subtree
     {
-    	//System.out.println( "entered ID_subtree()" );
     	whatClauseDn.setType( AclWhatClauseDnTypeEnum.SUBTREE );
     }
     |
     ID_children
     {
-    	//System.out.println( "entered ID_children()" );
     	whatClauseDn.setType( AclWhatClauseDnTypeEnum.CHILDREN );
     }
     ;
@@ -288,7 +282,6 @@ what_dn_type
 what_attrs
 {
     log.debug( "entered what_attrs()" );
-    //System.out.println( "entered what_attrs()" );
     
 	if ( aclItem.getWhatClause().getAttributesClause() == null )
 	{
@@ -300,16 +293,120 @@ what_attrs
 	}
 }
 	:
-	( ID_attrs | ID_attr ) ( SP! )* EQUAL ( SP! )* what_attrs_attr_ident ( SEP what_attrs_attr_ident )*
+	( ID_attrs | ID_attr ) ( SP! )* EQUAL ( SP! )* what_attrs_attr_ident ( SEP what_attrs_attr_ident )* ( SP! )* ( what_attrs_val )?
     ;
-    
-what_attrs_attr_ident
+
+what_attrs_val
 {
-    log.debug( "entered what_attrs_attr_ident()" );
-    //System.out.println( "entered what_attrs_attr_ident()" );
+    log.debug( "entered what_attrs_val()" );
+	
+	AclWhatClause whatClause = aclItem.getWhatClause();
+	AclWhatClauseAttributes whatClauseAttributes =  whatClause.getAttributesClause();
+	
+	if ( whatClauseAttributes == null )
+	{
+		// Throw an exception ?
+		return;
+	}
+}
+	:
+	ID_val ( what_attrs_matchingRule )? ( what_attrs_style )? ( SP! )* EQUAL ( SP! )* token:DOUBLE_QUOTED_STRING 
+	{
+		whatClauseAttributes.setVal( true );
+		whatClauseAttributes.setValue( token.getText() );
+	}
+	;
+
+what_attrs_matchingRule
+{
+    log.debug( "entered what_attrs_matchingRule()" );
     
 	AclWhatClause whatClause = aclItem.getWhatClause();
 	AclWhatClauseAttributes whatClauseAttributes =  whatClause.getAttributesClause();
+	
+	if ( whatClauseAttributes == null )
+	{
+		// Throw an exception ?
+		return;
+	}
+}
+	:
+	SLASH ID_matchingRule
+	{
+		whatClauseAttributes.setMatchingRule( true );
+	}
+	;
+
+what_attrs_style
+{
+    log.debug( "entered what_attrs_style()" );
+    
+	AclWhatClause whatClause = aclItem.getWhatClause();
+	AclWhatClauseAttributes whatClauseAttributes =  whatClause.getAttributesClause();
+	
+	if ( whatClauseAttributes == null )
+	{
+		// Throw an exception ?
+		return;
+	}
+}
+	:
+	DOT 
+	(
+		ID_exact
+		{
+			whatClauseAttributes.setStyle( AclAttributeStyleEnum.EXACT );
+		}
+		|
+		ID_base
+		{
+			whatClauseAttributes.setStyle( AclAttributeStyleEnum.BASE );
+		}
+		|
+		ID_base_object
+		{
+			whatClauseAttributes.setStyle( AclAttributeStyleEnum.BASE_OBJECT );
+		}
+		|
+		ID_regex
+		{
+			whatClauseAttributes.setStyle( AclAttributeStyleEnum.REGEX );
+		}
+		|
+		ID_one
+		{
+			whatClauseAttributes.setStyle( AclAttributeStyleEnum.ONE );
+		}
+		|
+		ID_one_level
+		{
+			whatClauseAttributes.setStyle( AclAttributeStyleEnum.ONE_LEVEL );
+		}
+		|
+		ID_sub
+		{
+			whatClauseAttributes.setStyle( AclAttributeStyleEnum.SUB );
+		}
+		|
+		ID_subtree
+		{
+			whatClauseAttributes.setStyle( AclAttributeStyleEnum.SUBTREE );
+		}
+		|
+		ID_children
+		{
+			whatClauseAttributes.setStyle( AclAttributeStyleEnum.CHILDREN );
+		}
+	)
+	;
+	
+what_attrs_attr_ident
+{
+    log.debug( "entered what_attrs_attr_ident()" );
+    
+	AclWhatClause whatClause = aclItem.getWhatClause();
+	AclWhatClauseAttributes whatClauseAttributes =  whatClause.getAttributesClause();
+	
 	if ( whatClauseAttributes == null )
 	{
 		// Throw an exception ?
@@ -319,14 +416,14 @@ what_attrs_attr_ident
 	:
     token:ATTR_IDENT
     {
-    	//System.out.println( token.getText()  );
+		System.out.println( "Adding attribute ident " + token.getText() );
     	whatClauseAttributes.addAttribute( token.getText() );
-    };
+    }
+	;
 
 what_filter
 {
     log.debug( "entered what_filter()" );
-    //System.out.println( "entered what_filter()" );
     
 	if ( aclItem.getWhatClause().getFilterClause() != null )
 	{
@@ -345,7 +442,6 @@ what_filter
 who
 {
     log.debug( "entered who()" );
-    //System.out.println( "entered who()" );
 }
     :
     ( who_star | who_anonymous | who_users | who_self | who_dn | who_dnattr | who_group | who_ssf | who_transport_ssf | who_tls_ssf | who_sasl_ssf ) ( ( SP )+ who_access_level )? ( ( SP )+  who_control )?
@@ -354,7 +450,6 @@ who
 who_anonymous
 {
     log.debug( "entered who_anonymous()" );
-    //System.out.println( "entered who_anonymous()" );
 }
 	:
     ID_anonymous
@@ -365,7 +460,6 @@ who_anonymous
 who_users
 {
     log.debug( "entered who_users()" );
-    //System.out.println( "entered who_users()" );
 }
 	:
     ID_users
@@ -376,7 +470,6 @@ who_users
 who_self
 {
     log.debug( "entered who_self()" );
-    //System.out.println( "entered who_self()" );
 }
 	:
     ID_self
@@ -387,7 +480,6 @@ who_self
 who_star
 {
     log.debug( "entered who_star()" );
-    //System.out.println( "entered who_star()" );
 }
 	:
     STAR
@@ -398,7 +490,6 @@ who_star
 who_dnattr
 {
     log.debug( "entered who_dnattr()" );
-    //System.out.println( "entered who_dnattr()" );
     
 	AclWhoClauseDnAttr whoClauseDnAttr = new AclWhoClauseDnAttr();
 	aclItem.addWhoClause( whoClauseDnAttr ); 
@@ -412,7 +503,6 @@ who_dnattr
 who_group
 {
     log.debug( "entered who_group()" );
-    //System.out.println( "entered who_group()" );
     
 	AclWhoClauseGroup whoClauseGroup = new AclWhoClauseGroup();
 	aclItem.addWhoClause( whoClauseGroup ); 
@@ -439,10 +529,10 @@ who_group
 who_group_type
 {
     log.debug( "entered who_group_type()" );
-    //System.out.println( "entered who_group_type()" );
     
     List<AclWhoClause> whoClauses = aclItem.getWhoClauses();
     AclWhoClause whoClause = aclItem.getWhoClauses().get( whoClauses.size() - 1 );
+	
     if ( !( whoClause instanceof AclWhoClauseGroup ) )
     {
         // Throw an exception ?
@@ -465,7 +555,6 @@ who_group_type
 who_dn
 {
     log.debug( "entered who_dn()" );
-    //System.out.println( "entered who_dn()" );
     
 	AclWhoClauseDn whoClauseDn = new AclWhoClauseDn();
 	aclItem.addWhoClause( whoClauseDn ); 
@@ -479,10 +568,10 @@ who_dn
 who_dn_type
 {
     log.debug( "entered who_dn_type()" );
-    //System.out.println( "entered who_dn_type()" );
     
     List<AclWhoClause> whoClauses = aclItem.getWhoClauses();
     AclWhoClause whoClause = aclItem.getWhoClauses().get( whoClauses.size() - 1 );
+	
     if ( !( whoClause instanceof AclWhoClauseDn ) )
     {
         // Throw an exception ?
@@ -532,10 +621,10 @@ who_dn_type
 who_dn_modifier
 {
     log.debug( "entered who_dn_modifier()" );
-    //System.out.println( "entered who_dn_modifier()" );
     
     List<AclWhoClause> whoClauses = aclItem.getWhoClauses();
     AclWhoClause whoClause = aclItem.getWhoClauses().get( whoClauses.size() - 1 );
+
     if ( !( whoClause instanceof AclWhoClauseDn ) )
     {
         // Throw an exception ?
@@ -553,9 +642,9 @@ who_dn_modifier
 who_access_level
 {
     log.debug( "entered who_access_level()" );
-    //System.out.println( "entered who_access_level()" );
     
     List<AclWhoClause> whoClauses = aclItem.getWhoClauses();
+
     if ( whoClauses.size() == 0 )
     {
         // Throw an exception ?
@@ -582,9 +671,9 @@ who_access_level
 who_access_level_level
 {
     log.debug( "entered who_access_level_level()" );
-    //System.out.println( "entered who_access_level_level()" );
     
     List<AclWhoClause> whoClauses = aclItem.getWhoClauses();
+
     if ( whoClauses.size() == 0 )
     {
         // Throw an exception ?
@@ -594,6 +683,7 @@ who_access_level_level
     AclWhoClause whoClause = aclItem.getWhoClauses().get( whoClauses.size() - 1 );
     
     AclAccessLevel accessLevel = whoClause.getAccessLevel();
+
     if ( accessLevel == null )
     {
         // Throw an exception ?
@@ -645,7 +735,6 @@ who_access_level_level
 who_access_level_priv
 {
     log.debug( "entered who_access_level_priv()" );
-    //System.out.println( "entered who_access_level_priv()" );
 }
 	:
 	who_access_level_priv_modifier  ( who_access_level_priv_priv )+
@@ -654,9 +743,9 @@ who_access_level_priv
 who_access_level_priv_modifier
 {
     log.debug( "entered who_access_level_priv_modifier()" );
-    //System.out.println( "entered who_access_level_priv_modifier()" );
     
     List<AclWhoClause> whoClauses = aclItem.getWhoClauses();
+
     if ( whoClauses.size() == 0 )
     {
         // Throw an exception ?
@@ -666,6 +755,7 @@ who_access_level_priv_modifier
     AclWhoClause whoClause = aclItem.getWhoClauses().get( whoClauses.size() - 1 );
     
     AclAccessLevel accessLevel = whoClause.getAccessLevel();
+
     if ( accessLevel == null )
     {
         // Throw an exception ?
@@ -692,9 +782,9 @@ who_access_level_priv_modifier
 who_access_level_priv_priv
 {
     log.debug( "entered who_access_level_priv_priv()" );
-    //System.out.println( "entered who_access_level_priv_priv()" );
     
     List<AclWhoClause> whoClauses = aclItem.getWhoClauses();
+
     if ( whoClauses.size() == 0 )
     {
         // Throw an exception ?
@@ -704,6 +794,7 @@ who_access_level_priv_priv
     AclWhoClause whoClause = aclItem.getWhoClauses().get( whoClauses.size() - 1 );
     
     AclAccessLevel accessLevel = whoClause.getAccessLevel();
+
     if ( accessLevel == null )
     {
         // Throw an exception ?
@@ -745,9 +836,9 @@ who_access_level_priv_priv
 who_control
 {
     log.debug( "entered who_control()" );
-    //System.out.println( "entered who_control()" );
     
     List<AclWhoClause> whoClauses = aclItem.getWhoClauses();
+
     if ( whoClauses.size() == 0 )
     {
         // Throw an exception ?
@@ -776,7 +867,6 @@ who_control
 who_ssf
 {
     log.debug( "entered who_ssf()" );
-    //System.out.println( "entered who_ssf()" );
     
 	AclWhoClauseSsf whoClauseSsf = new AclWhoClauseSsf();
 	aclItem.addWhoClause( whoClauseSsf ); 
@@ -791,7 +881,6 @@ who_ssf
 who_transport_ssf
 {
     log.debug( "entered who_transport_ssf()" );
-    //System.out.println( "entered who_transport_ssf()" );
     
 	AclWhoClauseTransportSsf whoClauseTransportSsf = new AclWhoClauseTransportSsf();
 	aclItem.addWhoClause( whoClauseTransportSsf ); 
@@ -806,7 +895,6 @@ who_transport_ssf
 who_tls_ssf
 {
     log.debug( "entered who_tls_ssf()" );
-    //System.out.println( "entered who_tls_ssf()" );
     
 	AclWhoClauseTlsSsf whoClauseTlsSsf = new AclWhoClauseTlsSsf();
 	aclItem.addWhoClause( whoClauseTlsSsf ); 
@@ -821,7 +909,6 @@ who_tls_ssf
 who_sasl_ssf
 {
     log.debug( "entered who_sasl_ssf()" );
-    //System.out.println( "entered who_sasl_ssf()" );
     
 	AclWhoClauseSaslSsf whoClauseSaslSsf = new AclWhoClauseSaslSsf();
 	aclItem.addWhoClause( whoClauseSaslSsf ); 
