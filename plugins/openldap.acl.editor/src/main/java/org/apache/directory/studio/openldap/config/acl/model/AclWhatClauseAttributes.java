@@ -34,27 +34,36 @@ import java.util.List;
  * attr :: attributeType | '!' objectClass | '@' objectClass | 'entry' | 'children'
  * val-e ::= 'val' matchingRule style '=' attrval | e
  * matchingRule ::= '/matchingRule' | e
- * style ::= 'exact' | 'base' | 'baseobject' | 'regex' | 'one' | 'onelevel' | 'sub' | 'subtree' | 'children'
+ * style ::= '.exact' | '.base' | '.baseobject' | '.regex' | '.one' | '.onelevel' | '.sub' | '.subtree' | '.children'
  * attrval ::= STRING 
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class AclWhatClauseAttributes
 {
-    /** The attributes list */
-    private List<String> attributes = new ArrayList<String>();
-
-
+    /** The attributeVal element */
+    private AclAttributeVal aclAttributeVal;
+    
+    
+    /**
+     * Creates an instance of AclWhatClauseAttributes
+     */
+    public AclWhatClauseAttributes()
+    {
+        aclAttributeVal = new AclAttributeVal();
+    }
+    
+    
     /**
      * Gets the attributes list.
      *
      * @return the attributes list
      */
-    public List<String> getAttributes()
+    public List<AclAttribute> getAttributes()
     {
-        List<String> copyAttributes = new ArrayList<String>( attributes.size() );
+        List<AclAttribute> copyAttributes = new ArrayList<AclAttribute>( aclAttributeVal.getAclAttributes().size() );
         
-        copyAttributes.addAll( attributes );
+        copyAttributes.addAll( aclAttributeVal.getAclAttributes() );
         
         return copyAttributes;
     }
@@ -67,18 +76,18 @@ public class AclWhatClauseAttributes
      */
     public void addAttribute( String attribute )
     {
-        attributes.add( attribute );
+        aclAttributeVal.getAclAttributes().add( new AclAttribute( attribute, null ) );
     }
 
 
     /**
      * Adds a {@link Collection} of attributes.
      * 
-     * @param c the {@link Collection} of attributes
+     * @param attributes the {@link Collection} of attributes
      */
-    public void addAllAttributes( Collection<String> c )
+    public void addAllAttributes( Collection<AclAttribute> attributes )
     {
-        attributes.addAll( c );
+        aclAttributeVal.getAclAttributes().addAll(  attributes );
     }
 
 
@@ -87,9 +96,85 @@ public class AclWhatClauseAttributes
      */
     public void clearAttributes()
     {
-        attributes.clear();
+        aclAttributeVal.getAclAttributes().clear();
+    }
+    
+    
+    /**
+     * @return true if the AclWhatClauseAttributes has a val flag
+     */
+    public boolean hasVal()
+    {
+        return aclAttributeVal.hasVal();
+    }
+    
+    
+    /**
+     * Set the val flag
+     * 
+     * @param val The val flag value
+     */
+    public void setVal( boolean val )
+    {
+        aclAttributeVal.setVal( val );
+    }
+    
+    
+    /**
+     * @return true if the AclWhatClauseAttributes has a MatchingRule flag
+     */
+    public boolean hasMatchingRule()
+    {
+        return aclAttributeVal.hasMatchingRule();
+    }
+    
+    
+    /**
+     * set the matchingRule flag
+     */
+    public void setMatchingRule( boolean matchingRule )
+    {
+        aclAttributeVal.setMatchingRule( matchingRule );
     }
 
+    
+    /**
+     * @return The AclAttribute style
+     */
+    public AclAttributeStyleEnum getStyle()
+    {
+        return aclAttributeVal.getStyle();
+    }
+
+    
+    /**
+     * @param style The AttributeVal style
+     */
+    public void setStyle( AclAttributeStyleEnum style )
+    {
+        aclAttributeVal.setStyle( style );
+    }
+
+    
+    /**
+     * @return The AclAttribute value
+     */
+    public String getValue()
+    {
+        return aclAttributeVal.getValue();
+    }
+
+    
+    /**
+     * Sets the AclWhatClauseAttributes value
+     * 
+     * @param value The AttributeVal value
+     */
+    public void setValue( String value )
+    {
+        aclAttributeVal.setValue( value );
+    }
+    
 
     /**
      * {@inheritDoc}
@@ -102,12 +187,12 @@ public class AclWhatClauseAttributes
         sb.append( "attrs" );
 
         // Attributes
-        if ( ( attributes != null ) && ( attributes.size() > 0 ) )
+        if ( ( aclAttributeVal.getAclAttributes() != null ) && ( aclAttributeVal.getAclAttributes().size() > 0 ) )
         {
             sb.append( '=' );
             boolean isFirst = true;
             
-            for ( String attribute : attributes )
+            for ( AclAttribute attribute : aclAttributeVal.getAclAttributes() )
             {
                 if ( isFirst )
                 {
@@ -120,6 +205,26 @@ public class AclWhatClauseAttributes
                 
                 sb.append( attribute );
             }
+        }
+        
+        // The val
+        if ( aclAttributeVal.hasVal() )
+        {
+            sb.append( " val" );
+            
+            if ( aclAttributeVal.hasMatchingRule() )
+            {
+                sb.append( "/matchingRule" );
+            }
+            
+            if ( aclAttributeVal.getStyle() != AclAttributeStyleEnum.NONE )
+            {
+                sb.append( '.' );
+                sb.append( aclAttributeVal.getStyle().getName() );
+            }
+            
+            sb.append( '=' );
+            sb.append( aclAttributeVal.getValue() );
         }
 
         return sb.toString();

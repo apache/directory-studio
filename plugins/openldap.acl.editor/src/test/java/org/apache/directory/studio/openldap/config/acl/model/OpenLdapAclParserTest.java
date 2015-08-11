@@ -30,6 +30,7 @@ import static org.junit.Assert.fail;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.studio.openldap.config.acl.model.AclAttribute;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -529,9 +530,9 @@ public class OpenLdapAclParserTest
         assertNotNull( whatClause );
         AclWhatClauseAttributes whatClauseAttributes = whatClause.getAttributesClause();
         assertNotNull( whatClauseAttributes );
-        List<String> attributesList = whatClauseAttributes.getAttributes();
+        List<AclAttribute> attributesList = whatClauseAttributes.getAttributes();
         assertEquals( 1, attributesList.size() );
-        assertTrue( attributesList.contains( attribute ) );
+        assertEquals( attribute, attributesList.get( 0 ).getName() );
     }
 
 
@@ -552,9 +553,9 @@ public class OpenLdapAclParserTest
         assertNotNull( whatClause );
         AclWhatClauseAttributes whatClauseAttributes = whatClause.getAttributesClause();
         assertNotNull( whatClauseAttributes );
-        List<String> attributesList = whatClauseAttributes.getAttributes();
+        List<AclAttribute> attributesList = whatClauseAttributes.getAttributes();
         assertEquals( 1, attributesList.size() );
-        assertTrue( attributesList.contains( attribute ) );
+        assertEquals( attribute, attributesList.get( 0 ).getName() );
     }
 
 
@@ -575,9 +576,9 @@ public class OpenLdapAclParserTest
         assertNotNull( whatClause );
         AclWhatClauseAttributes whatClauseAttributes = whatClause.getAttributesClause();
         assertNotNull( whatClauseAttributes );
-        List<String> attributesList = whatClauseAttributes.getAttributes();
+        List<AclAttribute> attributesList = whatClauseAttributes.getAttributes();
         assertEquals( 1, attributesList.size() );
-        assertTrue( attributesList.contains( attribute ) );
+        assertEquals( attribute, attributesList.get( 0 ).getName() );
     }
 
 
@@ -602,11 +603,11 @@ public class OpenLdapAclParserTest
         assertNotNull( whatClause );
         AclWhatClauseAttributes whatClauseAttributes = whatClause.getAttributesClause();
         assertNotNull( whatClauseAttributes );
-        List<String> attributesList = whatClauseAttributes.getAttributes();
+        List<AclAttribute> attributesList = whatClauseAttributes.getAttributes();
         assertEquals( 3, attributesList.size() );
-        assertTrue( attributesList.contains( attribute1 ) );
-        assertTrue( attributesList.contains( attribute2 ) );
-        assertTrue( attributesList.contains( attribute3 ) );
+        assertEquals( attribute1, attributesList.get( 0 ).getName() );
+        assertEquals( attribute2, attributesList.get( 1 ).getName() );
+        assertEquals( attribute3, attributesList.get( 2 ).getName() );
     }
 
 
@@ -631,11 +632,11 @@ public class OpenLdapAclParserTest
         assertNotNull( whatClause );
         AclWhatClauseAttributes whatClauseAttributes = whatClause.getAttributesClause();
         assertNotNull( whatClauseAttributes );
-        List<String> attributesList = whatClauseAttributes.getAttributes();
+        List<AclAttribute> attributesList = whatClauseAttributes.getAttributes();
         assertEquals( 3, attributesList.size() );
-        assertTrue( attributesList.contains( attribute1 ) );
-        assertTrue( attributesList.contains( attribute2 ) );
-        assertTrue( attributesList.contains( attribute3 ) );
+        assertEquals( attribute1, attributesList.get( 0 ).getName() );
+        assertEquals( attribute2, attributesList.get( 1 ).getName() );
+        assertEquals( attribute3, attributesList.get( 2 ).getName() );
     }
 
 
@@ -824,9 +825,9 @@ public class OpenLdapAclParserTest
         assertEquals( dnPattern, whatClauseDn.getPattern() );
         AclWhatClauseAttributes whatClauseAttributes = whatClause.getAttributesClause();
         assertNotNull( whatClauseAttributes );
-        List<String> attributesList = whatClauseAttributes.getAttributes();
+        List<AclAttribute> attributesList = whatClauseAttributes.getAttributes();
         assertEquals( 1, attributesList.size() );
-        assertTrue( attributesList.contains( attribute ) );
+        assertEquals( attribute, attributesList.get( 0 ).getName() );
     }
 
 
@@ -856,9 +857,9 @@ public class OpenLdapAclParserTest
         assertEquals( filter, whatClauseFilter.getFilter() );
         AclWhatClauseAttributes whatClauseAttributes = whatClause.getAttributesClause();
         assertNotNull( whatClauseAttributes );
-        List<String> attributesList = whatClauseAttributes.getAttributes();
+        List<AclAttribute> attributesList = whatClauseAttributes.getAttributes();
         assertEquals( 1, attributesList.size() );
-        assertTrue( attributesList.contains( attribute ) );
+        assertEquals( attribute, attributesList.get( 0 ).getName() );
     }
 
 
@@ -883,9 +884,9 @@ public class OpenLdapAclParserTest
         assertEquals( filter, whatClauseFilter.getFilter() );
         AclWhatClauseAttributes whatClauseAttributes = whatClause.getAttributesClause();
         assertNotNull( whatClauseAttributes );
-        List<String> attributesList = whatClauseAttributes.getAttributes();
+        List<AclAttribute> attributesList = whatClauseAttributes.getAttributes();
         assertEquals( 1, attributesList.size() );
-        assertTrue( attributesList.contains( attribute ) );
+        assertEquals( attribute, attributesList.get( 0 ).getName() );
     }
 
 

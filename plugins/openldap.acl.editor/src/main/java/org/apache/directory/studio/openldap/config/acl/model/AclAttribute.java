@@ -23,7 +23,7 @@ import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.util.Strings;
-import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPlugin;
 
 /**
@@ -75,14 +75,14 @@ public class AclAttribute
     private boolean isChildren = false;
     
     /** The Connection to the LDAP server */
-    private Connection connection;
+    private IBrowserConnection connection;
     
     /**
      * Create a new AclAttribute with no name
      * 
      * @param connection The Connection on the LDAP Server 
      */
-    public AclAttribute( Connection connection )
+    public AclAttribute( IBrowserConnection connection )
     {
         this.connection = connection;
         setName( "" );
@@ -94,7 +94,19 @@ public class AclAttribute
      * 
      * @param name The AlcAttribute name
      */
-    public AclAttribute( String name, Connection connection )
+    public AclAttribute( String name )
+    {
+        this.connection = null;
+        setName( name );
+    }
+    
+    
+    /**
+     * Create a new AclAttribute with specific name
+     * 
+     * @param name The AlcAttribute name
+     */
+    public AclAttribute( String name, IBrowserConnection connection )
     {
         this.connection = connection;
         setName( name );
