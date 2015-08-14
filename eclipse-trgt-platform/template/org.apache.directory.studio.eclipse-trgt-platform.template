@@ -19,7 +19,7 @@
   @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
 -->
 <?pde version="3.8"?>
-<target name="Apache Directory Studio Platform" sequenceNumber="183">
+<target name="Apache Directory Studio Platform" sequenceNumber="185">
   <locations>
 
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
@@ -126,7 +126,7 @@
       <unit id="javax.xml.stream" version="1.0.1.v201004272200"/>
       <unit id="org.slf4j.api" version="1.7.2.v20121108-1250"/>
       <unit id="org.slf4j.log4j" version="1.7.2.v20130115-1340"/>
-      <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20140525021250/repository/"/>
+      <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20150124073747/repository/"/>
     </location>
 
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
@@ -140,7 +140,7 @@
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
       <unit id="org.eclipse.babel.nls_eclipse_de.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.babel.nls_eclipse_fr.feature.group" version="0.0.0"/>
-      <repository location="http://download.eclipse.org/technology/babel/update-site/R0.12.1/luna"/>
+      <repository location="http://download.eclipse.org/technology/babel/update-site/R0.13.0/luna"/>
     </location>
 
   </locations>
