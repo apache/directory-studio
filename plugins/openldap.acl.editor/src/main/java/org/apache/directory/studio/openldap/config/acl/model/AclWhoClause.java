@@ -31,7 +31,7 @@ public interface AclWhoClause
      *
      * @return the access level
      */
-    public AclAccessLevel getAccessLevel();
+    AclAccessLevel getAccessLevel();
 
 
     /**
@@ -39,7 +39,7 @@ public interface AclWhoClause
      *
      * @return the control
      */
-    public AclControlEnum getControl();
+    AclControlEnum getControl();
 
 
     /**
@@ -47,7 +47,7 @@ public interface AclWhoClause
      *
      * @param accessLevel the access level
      */
-    public void setAccessLevel( AclAccessLevel accessLevel );
+    void setAccessLevel( AclAccessLevel accessLevel );
 
 
     /**
@@ -55,5 +55,5 @@ public interface AclWhoClause
      *
      * @param accessLevel the control
      */
-    public void setControl( AclControlEnum control );
+    void setControl( AclControlEnum control );
 }
