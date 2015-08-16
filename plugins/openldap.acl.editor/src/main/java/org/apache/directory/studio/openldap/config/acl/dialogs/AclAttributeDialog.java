@@ -6,9 +6,9 @@ import org.apache.directory.studio.common.ui.AddEditDialog;
 import org.apache.directory.studio.common.ui.CommonUIConstants;
 import org.apache.directory.studio.common.ui.CommonUIUtils;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.openldap.config.acl.model.AclAttribute;
-import org.apache.directory.studio.openldap.config.acl.model.AclAttributeWrapper;
+import org.apache.directory.studio.openldap.config.acl.wrapper.AclAttributeWrapper;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -49,7 +49,7 @@ import org.eclipse.swt.widgets.Text;
 public class AclAttributeDialog extends AddEditDialog<AclAttributeWrapper>
 {
     /** The connection to the LDAP server */
-    private Connection connection;
+    private IBrowserConnection connection;
     
     // The UI widgets
     /** The Attribute checkbox */
@@ -272,7 +272,7 @@ public class AclAttributeDialog extends AddEditDialog<AclAttributeWrapper>
      * 
      * @param shell the parent shell
      */
-    public AclAttributeDialog( Shell shell, Connection connection )
+    public AclAttributeDialog( Shell shell, IBrowserConnection connection )
     {
         super( shell );
         //shell.setText( Messages.getString( "AclAttribute.Title" ) );
