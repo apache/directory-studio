@@ -38,19 +38,19 @@ public final class OpenLdapAclEditorPluginConstants
     }
 
     /** The plug-in ID */
-    public static final String PLUGIN_ID = OpenLdapAclEditorPlugin.getDefault().getPluginProperties()
+    public static String PLUGIN_ID = OpenLdapAclEditorPlugin.getDefault().getPluginProperties()
         .getString( "Plugin_id" ); //$NON-NLS-1$
 
     /** The ID for OpenLDAP ACL Template */
-    public static final String TEMPLATE_ID = OpenLdapAclEditorPlugin.getDefault().getPluginProperties()
+    public static String TEMPLATE_ID = OpenLdapAclEditorPlugin.getDefault().getPluginProperties()
         .getString( "CtxType_Template_id" ); //$NON-NLS-1$
 
-    public static final String IMG_ADD = "resources/icons/add.gif"; //$NON-NLS-1$
-    public static final String IMG_DELETE = "resources/icons/delete.gif"; //$NON-NLS-1$
-    public static final String IMG_DOWN = "resources/icons/down.png"; //$NON-NLS-1$
-    public static final String IMG_EDITOR = "resources/icons/editor.gif"; //$NON-NLS-1$
-    public static final String IMG_KEYWORD = "resources/icons/keyword.gif"; //$NON-NLS-1$
-    public static final String IMG_UP = "resources/icons/up.png"; //$NON-NLS-1$
+    public static String IMG_ADD = "resources/icons/add.gif"; //$NON-NLS-1$
+    public static String IMG_DELETE = "resources/icons/delete.gif"; //$NON-NLS-1$
+    public static String IMG_DOWN = "resources/icons/down.png"; //$NON-NLS-1$
+    public static String IMG_EDITOR = "resources/icons/editor.gif"; //$NON-NLS-1$
+    public static String IMG_KEYWORD = "resources/icons/keyword.gif"; //$NON-NLS-1$
+    public static String IMG_UP = "resources/icons/up.png"; //$NON-NLS-1$
     
-    public static final String DIALOGSETTING_KEY_ATTRIBUTES_HISTORY = "attributesHistory"; //$NON-NLS-1$
+    public static String DIALOGSETTING_KEY_ATTRIBUTES_HISTORY = "attributesHistory"; //$NON-NLS-1$
 }
