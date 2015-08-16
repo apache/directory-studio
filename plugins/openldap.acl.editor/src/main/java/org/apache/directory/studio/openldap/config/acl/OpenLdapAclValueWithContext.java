@@ -54,8 +54,6 @@ public class OpenLdapAclValueWithContext
     /** The ACL parser */
     private static final OpenLdapAclParser parser = new OpenLdapAclParser();
 
-    static int nb = 0;
-
     /**
      * Creates a new instance of OpenLdapAclValueWithContext.
      * 
@@ -70,8 +68,6 @@ public class OpenLdapAclValueWithContext
         this.entry = entry;
         this.precedence = precedence;
         this.aclValue = aclValue;
-        
-        System.out.println( "OpenLdapAclValueWithContext" + nb++ );
         
         try
         {
