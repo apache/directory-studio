@@ -19,6 +19,7 @@
  */
 package org.apache.directory.studio.openldap.config.acl.model;
 
+
 /**
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -54,5 +55,23 @@ public enum AclAttributeStyleEnum
     public String getName()
     {
         return name;
+    }
+
+    
+    /**
+     * @return An array with all the Enum value's name
+     */
+    public static String[] getNames()
+    {
+        String[] names = new String[values().length];
+        int pos = 0;
+    
+        for ( AclAttributeStyleEnum AclAttributeStyleEnum : values() )
+        {
+            names[pos] = AclAttributeStyleEnum.name;
+            pos++;
+        }
+        
+        return names;
     }
 }
