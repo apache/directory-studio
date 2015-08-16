@@ -17,10 +17,10 @@
  *   under the License.
  *
  */
-package org.apache.directory.studio.openldap.config.acl.model;
+package org.apache.directory.studio.openldap.config.acl.wrapper;
 
 import org.apache.directory.studio.common.ui.TableDecorator;
-import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.openldap.config.acl.dialogs.AclAttributeDialog;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
@@ -40,7 +40,7 @@ public class AclAttributeDecorator extends TableDecorator<AclAttributeWrapper>
      * @param parentShell The parent Shell
      * @param connection The Connection to the LDAP server
      */
-    public AclAttributeDecorator( Shell parentShell, Connection connection )
+    public AclAttributeDecorator( Shell parentShell, IBrowserConnection connection )
     {
         setDialog( new AclAttributeDialog( parentShell, connection ) );
     }

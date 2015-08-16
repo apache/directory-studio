@@ -17,7 +17,9 @@
  *   under the License.
  *
  */
-package org.apache.directory.studio.openldap.config.acl.model;
+package org.apache.directory.studio.openldap.config.acl.wrapper;
+
+import org.apache.directory.studio.openldap.config.acl.model.AclAttribute;
 
 /**
  * The wrapper around an AclAttribute class.
