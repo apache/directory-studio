@@ -80,7 +80,7 @@ tokens
     ID_level = "level";
     ID_m = "m";
     ID_manage = "manage";
-	ID_matchingRule = "matchingRule";
+    ID_matchingRule = "matchingRule";
     ID_none = "none";
     ID_one = "one";
     ID_one_level = "onelevel";
@@ -114,7 +114,7 @@ OPEN_CURLY : '{';
 
 CLOSE_CURLY : '}';
 
-SP : ' ' | '\t' | '\n' { newline(); } | '\r';
+SP : ( ' ' | '\t' | '\n' { newline(); } | '\r' )+;
 
 SSF : "ssf" EQUAL strength:INTEGER { setText( strength.getText() ); };
 
@@ -138,7 +138,7 @@ MINUS : '-';
 
 SLASH : '/';
 
-FILTER : '(' ( ( '&' (SP)* (FILTER)+ ) | ( '|' (SP)* (FILTER)+ ) | ( '!' (SP)* FILTER ) | FILTER_VALUE ) ')';
+FILTER : '(' ( ( '&' ( SP )? (FILTER)+ ) | ( '|' (SP)? (FILTER)+ ) | ( '!' (SP)? FILTER ) | FILTER_VALUE ) ')';
 
 protected FILTER_VALUE : (options{greedy=true;}: ~( ')' | '(' | '&' | '|' | '!' ) ( ~(')') )* ) ;
 
@@ -173,43 +173,51 @@ options
     
     public AclItem getAclItem()
     {
-    	return aclItem;
+        return aclItem;
     }
 }
 
 parse
-	{
-    	log.debug( "entered parse()" );
-	}
+    {
+        log.debug( "entered parse()" );
+    }
     :
-    ( SP )* aclItem ( SP )* EOF
+    ( SP )? aclItem ( SP )? EOF
     ;
     
 aclItem
-	{
-	    log.debug( "entered aclItem()" );
+    {
+        log.debug( "entered aclItem()" );
 
-    	aclItem = new AclItem();
-	}
+        aclItem = new AclItem();
+    }
     :
-    ( ID_access ( SP )+ )? ID_to ( ( SP )+ (what_star | what_dn | what_attrs | what_filter | ( ID_by ( SP )+ who ) ) )+ 
+    ( ID_access SP )? ID_to ( SP what )+ ( SP ID_by SP who )* 
     ;
-    
+
+what
+    {
+        log.debug( "entered what()" );
+    }
+    :
+    ( what_star | what_dn | what_attrs | what_filter )
+    ;
+
 what_star
 {
     log.debug( "entered what_star()" );
 }
-	:
+    :
     STAR
     {
-    	if ( aclItem.getWhatClause().getStarClause() == null )
-    	{
-			aclItem.getWhatClause().setStarClause( new AclWhatClauseStar() );
-		}
-		else
-		{
-			throw new RecognitionException( "A star (*) what clause already exists in the ACL." );
-		}
+        if ( aclItem.getWhatClause().getStarClause() == null )
+        {
+            aclItem.getWhatClause().setStarClause( new AclWhatClauseStar() );
+        }
+        else
+        {
+            throw new RecognitionException( "A star (*) what clause already exists in the ACL." );
+        }
     };
 
 what_dn
@@ -218,64 +226,64 @@ what_dn
     
     AclWhatClauseDn whatClauseDn = new AclWhatClauseDn();
     
-	if ( aclItem.getWhatClause().getDnClause() == null )
-	{
-		aclItem.getWhatClause().setDnClause( whatClauseDn );
-	}
-	else
-	{
-		throw new RecognitionException( "A DN what clause already exists in the ACL." );
-	}
+    if ( aclItem.getWhatClause().getDnClause() == null )
+    {
+        aclItem.getWhatClause().setDnClause( whatClauseDn );
+    }
+    else
+    {
+        throw new RecognitionException( "A DN what clause already exists in the ACL." );
+    }
 }
-	:
-	ID_dn ( DOT what_dn_type )? ( SP! )* EQUAL ( SP! )* token:DOUBLE_QUOTED_STRING
-	{
-		whatClauseDn.setPattern( token.getText() );
-	}
+    :
+    ID_dn ( DOT what_dn_type )? ( SP )? EQUAL ( SP )? token:DOUBLE_QUOTED_STRING
+    {
+        whatClauseDn.setPattern( token.getText() );
+    }
     ;
     
 what_dn_type
 {
     log.debug( "entered what_dn_type()" );
     
-	AclWhatClause whatClause = aclItem.getWhatClause();
-	AclWhatClauseDn whatClauseDn =  whatClause.getDnClause();
-	
-	if ( whatClauseDn == null )
-	{
-    	// Throw an exception ?
-    	return;
-	}
-}
-	:
-	ID_regex
+    AclWhatClause whatClause = aclItem.getWhatClause();
+    AclWhatClauseDn whatClauseDn =  whatClause.getDnClause();
+    
+    if ( whatClauseDn == null )
     {
-    	whatClauseDn.setType( AclWhatClauseDnTypeEnum.REGEX );
+        // Throw an exception ?
+        return;
+    }
+}
+    :
+    ID_regex
+    {
+        whatClauseDn.setType( AclWhatClauseDnTypeEnum.REGEX );
     }
     |
     ID_base
     {
-    	whatClauseDn.setType( AclWhatClauseDnTypeEnum.BASE );
+        whatClauseDn.setType( AclWhatClauseDnTypeEnum.BASE );
     }
     |
     ID_exact
     {
-    	whatClauseDn.setType( AclWhatClauseDnTypeEnum.EXACT );
+        whatClauseDn.setType( AclWhatClauseDnTypeEnum.EXACT );
     }
     |
     ID_one
     {
-    	whatClauseDn.setType( AclWhatClauseDnTypeEnum.ONE );
+        whatClauseDn.setType( AclWhatClauseDnTypeEnum.ONE );
     }
     |
     ID_subtree
     {
-    	whatClauseDn.setType( AclWhatClauseDnTypeEnum.SUBTREE );
+        whatClauseDn.setType( AclWhatClauseDnTypeEnum.SUBTREE );
     }
     |
     ID_children
     {
-    	whatClauseDn.setType( AclWhatClauseDnTypeEnum.CHILDREN );
+        whatClauseDn.setType( AclWhatClauseDnTypeEnum.CHILDREN );
     }
     ;
 
@@ -283,159 +291,159 @@ what_attrs
 {
     log.debug( "entered what_attrs()" );
     
-	if ( aclItem.getWhatClause().getAttributesClause() == null )
-	{
-		aclItem.getWhatClause().setAttributesClause( new AclWhatClauseAttributes() );
-	}
-	else
-	{
-		throw new RecognitionException( "A attributes what clause already exists in the ACL." );
-	}
+    if ( aclItem.getWhatClause().getAttributesClause() == null )
+    {
+        aclItem.getWhatClause().setAttributesClause( new AclWhatClauseAttributes() );
+    }
+    else
+    {
+        throw new RecognitionException( "A attributes what clause already exists in the ACL." );
+    }
 }
-	:
-	( ID_attrs | ID_attr ) ( SP! )* EQUAL ( SP! )* what_attrs_attr_ident ( SEP what_attrs_attr_ident )* ( SP! )* ( what_attrs_val )?
+    :
+    ( ID_attrs | ID_attr ) ( SP )? EQUAL ( SP )? what_attrs_attr_ident ( SEP what_attrs_attr_ident )* ( SP what_attrs_val )?
     ;
 
 what_attrs_val
 {
     log.debug( "entered what_attrs_val()" );
-	
-	AclWhatClause whatClause = aclItem.getWhatClause();
-	AclWhatClauseAttributes whatClauseAttributes =  whatClause.getAttributesClause();
-	
-	if ( whatClauseAttributes == null )
-	{
-		// Throw an exception ?
-		return;
-	}
+    
+    AclWhatClause whatClause = aclItem.getWhatClause();
+    AclWhatClauseAttributes whatClauseAttributes =  whatClause.getAttributesClause();
+    
+    if ( whatClauseAttributes == null )
+    {
+        // Throw an exception ?
+        return;
+    }
 }
-	:
-	ID_val ( what_attrs_matchingRule )? ( what_attrs_style )? ( SP! )* EQUAL ( SP! )* token:DOUBLE_QUOTED_STRING 
-	{
-		whatClauseAttributes.setVal( true );
-		whatClauseAttributes.setValue( token.getText() );
-	}
-	;
+    :
+    ID_val ( what_attrs_matchingRule )? ( what_attrs_style )? ( SP )? EQUAL ( SP )? token:DOUBLE_QUOTED_STRING 
+    {
+        whatClauseAttributes.setVal( true );
+        whatClauseAttributes.setValue( token.getText() );
+    }
+    ;
 
 what_attrs_matchingRule
 {
     log.debug( "entered what_attrs_matchingRule()" );
     
-	AclWhatClause whatClause = aclItem.getWhatClause();
-	AclWhatClauseAttributes whatClauseAttributes =  whatClause.getAttributesClause();
-	
-	if ( whatClauseAttributes == null )
-	{
-		// Throw an exception ?
-		return;
-	}
+    AclWhatClause whatClause = aclItem.getWhatClause();
+    AclWhatClauseAttributes whatClauseAttributes =  whatClause.getAttributesClause();
+    
+    if ( whatClauseAttributes == null )
+    {
+        // Throw an exception ?
+        return;
+    }
 }
-	:
-	SLASH ID_matchingRule
-	{
-		whatClauseAttributes.setMatchingRule( true );
-	}
-	;
+    :
+    SLASH ID_matchingRule
+    {
+        whatClauseAttributes.setMatchingRule( true );
+    }
+    ;
 
 what_attrs_style
 {
     log.debug( "entered what_attrs_style()" );
     
-	AclWhatClause whatClause = aclItem.getWhatClause();
-	AclWhatClauseAttributes whatClauseAttributes =  whatClause.getAttributesClause();
-	
-	if ( whatClauseAttributes == null )
-	{
-		// Throw an exception ?
-		return;
-	}
+    AclWhatClause whatClause = aclItem.getWhatClause();
+    AclWhatClauseAttributes whatClauseAttributes =  whatClause.getAttributesClause();
+    
+    if ( whatClauseAttributes == null )
+    {
+        // Throw an exception ?
+        return;
+    }
 }
-	:
-	DOT 
-	(
-		ID_exact
-		{
-			whatClauseAttributes.setStyle( AclAttributeStyleEnum.EXACT );
-		}
-		|
-		ID_base
-		{
-			whatClauseAttributes.setStyle( AclAttributeStyleEnum.BASE );
-		}
-		|
-		ID_base_object
-		{
-			whatClauseAttributes.setStyle( AclAttributeStyleEnum.BASE_OBJECT );
-		}
-		|
-		ID_regex
-		{
-			whatClauseAttributes.setStyle( AclAttributeStyleEnum.REGEX );
-		}
-		|
-		ID_one
-		{
-			whatClauseAttributes.setStyle( AclAttributeStyleEnum.ONE );
-		}
-		|
-		ID_one_level
-		{
-			whatClauseAttributes.setStyle( AclAttributeStyleEnum.ONE_LEVEL );
-		}
-		|
-		ID_sub
-		{
-			whatClauseAttributes.setStyle( AclAttributeStyleEnum.SUB );
-		}
-		|
-		ID_subtree
-		{
-			whatClauseAttributes.setStyle( AclAttributeStyleEnum.SUBTREE );
-		}
-		|
-		ID_children
-		{
-			whatClauseAttributes.setStyle( AclAttributeStyleEnum.CHILDREN );
-		}
-	)
-	;
-	
+    :
+    DOT 
+    (
+        ID_exact
+        {
+            whatClauseAttributes.setStyle( AclAttributeStyleEnum.EXACT );
+        }
+        |
+        ID_base
+        {
+            whatClauseAttributes.setStyle( AclAttributeStyleEnum.BASE );
+        }
+        |
+        ID_base_object
+        {
+            whatClauseAttributes.setStyle( AclAttributeStyleEnum.BASE_OBJECT );
+        }
+        |
+        ID_regex
+        {
+            whatClauseAttributes.setStyle( AclAttributeStyleEnum.REGEX );
+        }
+        |
+        ID_one
+        {
+            whatClauseAttributes.setStyle( AclAttributeStyleEnum.ONE );
+        }
+        |
+        ID_one_level
+        {
+            whatClauseAttributes.setStyle( AclAttributeStyleEnum.ONE_LEVEL );
+        }
+        |
+        ID_sub
+        {
+            whatClauseAttributes.setStyle( AclAttributeStyleEnum.SUB );
+        }
+        |
+        ID_subtree
+        {
+            whatClauseAttributes.setStyle( AclAttributeStyleEnum.SUBTREE );
+        }
+        |
+        ID_children
+        {
+            whatClauseAttributes.setStyle( AclAttributeStyleEnum.CHILDREN );
+        }
+    )
+    ;
+    
 what_attrs_attr_ident
 {
     log.debug( "entered what_attrs_attr_ident()" );
     
-	AclWhatClause whatClause = aclItem.getWhatClause();
-	AclWhatClauseAttributes whatClauseAttributes =  whatClause.getAttributesClause();
-	
-	if ( whatClauseAttributes == null )
-	{
-		// Throw an exception ?
-		return;
-	}
+    AclWhatClause whatClause = aclItem.getWhatClause();
+    AclWhatClauseAttributes whatClauseAttributes =  whatClause.getAttributesClause();
+    
+    if ( whatClauseAttributes == null )
+    {
+        // Throw an exception ?
+        return;
+    }
 }
-	:
+    :
     token:ATTR_IDENT
     {
-    	whatClauseAttributes.addAttribute( token.getText() );
+        whatClauseAttributes.addAttribute( token.getText() );
     }
-	;
+    ;
 
 what_filter
 {
     log.debug( "entered what_filter()" );
     
-	if ( aclItem.getWhatClause().getFilterClause() != null )
-	{
-		throw new RecognitionException( "A filter what clause already exists in the ACL." );
-	}
-}
-	:
-	ID_filter ( SP! )* EQUAL ( SP! )* token:FILTER
+    if ( aclItem.getWhatClause().getFilterClause() != null )
     {
-    	AclWhatClauseFilter whatClauseFilter = new AclWhatClauseFilter();
-    	whatClauseFilter.setFilter( token.getText() );
+        throw new RecognitionException( "A filter what clause already exists in the ACL." );
+    }
+}
+    :
+    ID_filter ( SP )? EQUAL ( SP )? token:FILTER
+    {
+        AclWhatClauseFilter whatClauseFilter = new AclWhatClauseFilter();
+        whatClauseFilter.setFilter( token.getText() );
 
-		aclItem.getWhatClause().setFilterClause( whatClauseFilter );
+        aclItem.getWhatClause().setFilterClause( whatClauseFilter );
     };
     
 who
@@ -443,86 +451,86 @@ who
     log.debug( "entered who()" );
 }
     :
-    ( who_star | who_anonymous | who_users | who_self | who_dn | who_dnattr | who_group | who_ssf | who_transport_ssf | who_tls_ssf | who_sasl_ssf ) ( ( SP )+ who_access_level )? ( ( SP )+  who_control )?
+    ( who_star | who_anonymous | who_users | who_self | who_dn | who_dnattr | who_group | who_ssf | who_transport_ssf | who_tls_ssf | who_sasl_ssf ) ( SP who_access_level )? ( SP who_control )?
     ;
 
 who_anonymous
 {
     log.debug( "entered who_anonymous()" );
 }
-	:
+    :
     ID_anonymous
     {
-		aclItem.addWhoClause( new AclWhoClauseAnonymous() );
+        aclItem.addWhoClause( new AclWhoClauseAnonymous() );
     };
 
 who_users
 {
     log.debug( "entered who_users()" );
 }
-	:
+    :
     ID_users
     {
-		aclItem.addWhoClause( new AclWhoClauseUsers() );
+        aclItem.addWhoClause( new AclWhoClauseUsers() );
     };
 
 who_self
 {
     log.debug( "entered who_self()" );
 }
-	:
+    :
     ID_self
     {
-		aclItem.addWhoClause( new AclWhoClauseSelf() );
+        aclItem.addWhoClause( new AclWhoClauseSelf() );
     };
     
 who_star
 {
     log.debug( "entered who_star()" );
 }
-	:
+    :
     STAR
     {
-		aclItem.addWhoClause( new AclWhoClauseStar() );
+        aclItem.addWhoClause( new AclWhoClauseStar() );
     };
     
 who_dnattr
 {
     log.debug( "entered who_dnattr()" );
     
-	AclWhoClauseDnAttr whoClauseDnAttr = new AclWhoClauseDnAttr();
-	aclItem.addWhoClause( whoClauseDnAttr ); 
+    AclWhoClauseDnAttr whoClauseDnAttr = new AclWhoClauseDnAttr();
+    aclItem.addWhoClause( whoClauseDnAttr ); 
 }
-	:
-	ID_dnattr ( SP! )* EQUAL ( SP! )* token:ATTR_IDENT
+    :
+    ID_dnattr ( SP )? EQUAL ( SP )? token:ATTR_IDENT
     {
-		whoClauseDnAttr.setAttribute( token.getText() );
+        whoClauseDnAttr.setAttribute( token.getText() );
     };
     
 who_group
 {
     log.debug( "entered who_group()" );
     
-	AclWhoClauseGroup whoClauseGroup = new AclWhoClauseGroup();
-	aclItem.addWhoClause( whoClauseGroup ); 
+    AclWhoClauseGroup whoClauseGroup = new AclWhoClauseGroup();
+    aclItem.addWhoClause( whoClauseGroup ); 
 }
-	:
-	ID_group ( SLASH objectclass:ATTR_IDENT ( SLASH attrname:ATTR_IDENT )? )? ( DOT who_group_type )? EQUAL pattern:DOUBLE_QUOTED_STRING
+    :
+    ID_group ( SLASH objectclass:ATTR_IDENT ( SLASH attrname:ATTR_IDENT )? )? ( DOT who_group_type )? EQUAL pattern:DOUBLE_QUOTED_STRING
     {
-    	if ( objectclass != null )
-    	{
-			whoClauseGroup.setObjectclass( objectclass.getText() );
-    	}
-    	
-    	if ( attrname != null )
-    	{
-			whoClauseGroup.setAttribute( attrname.getText() );
-    	}
-    	
-    	if ( pattern != null )
-    	{
-			whoClauseGroup.setPattern( pattern.getText() );
-    	}
+        if ( objectclass != null )
+        {
+            whoClauseGroup.setObjectclass( objectclass.getText() );
+        }
+        
+        if ( attrname != null )
+        {
+            whoClauseGroup.setAttribute( attrname.getText() );
+        }
+        
+        if ( pattern != null )
+        {
+            whoClauseGroup.setPattern( pattern.getText() );
+        }
     };
     
 who_group_type
@@ -531,7 +539,7 @@ who_group_type
     
     List<AclWhoClause> whoClauses = aclItem.getWhoClauses();
     AclWhoClause whoClause = aclItem.getWhoClauses().get( whoClauses.size() - 1 );
-	
+    
     if ( !( whoClause instanceof AclWhoClauseGroup ) )
     {
         // Throw an exception ?
@@ -539,15 +547,15 @@ who_group_type
     }
     AclWhoClauseGroup whoClauseGroup =  ( AclWhoClauseGroup ) whoClause;
 }
-	:
-	ID_exact
+    :
+    ID_exact
     {
-    	whoClauseGroup.setType( AclWhoClauseGroupTypeEnum.EXACT );
+        whoClauseGroup.setType( AclWhoClauseGroupTypeEnum.EXACT );
     }
     |
     ID_expand
     {
-    	whoClauseGroup.setType( AclWhoClauseGroupTypeEnum.EXPAND );
+        whoClauseGroup.setType( AclWhoClauseGroupTypeEnum.EXPAND );
     }
     ;
 
@@ -555,13 +563,13 @@ who_dn
 {
     log.debug( "entered who_dn()" );
     
-	AclWhoClauseDn whoClauseDn = new AclWhoClauseDn();
-	aclItem.addWhoClause( whoClauseDn ); 
+    AclWhoClauseDn whoClauseDn = new AclWhoClauseDn();
+    aclItem.addWhoClause( whoClauseDn ); 
 }
-	:
-	ID_dn ( DOT who_dn_type ( SEP who_dn_modifier )? )? ( SP! )* EQUAL ( SP! )* token:DOUBLE_QUOTED_STRING
+    :
+    ID_dn ( DOT who_dn_type ( SEP who_dn_modifier )? )? ( SP )? EQUAL ( SP )? token:DOUBLE_QUOTED_STRING
     {
-		whoClauseDn.setPattern( token.getText() );
+        whoClauseDn.setPattern( token.getText() );
     };
 
 who_dn_type
@@ -570,50 +578,51 @@ who_dn_type
     
     List<AclWhoClause> whoClauses = aclItem.getWhoClauses();
     AclWhoClause whoClause = aclItem.getWhoClauses().get( whoClauses.size() - 1 );
-	
+    
     if ( !( whoClause instanceof AclWhoClauseDn ) )
     {
         // Throw an exception ?
         return;
     }
+    
     AclWhoClauseDn whoClauseDn =  ( AclWhoClauseDn ) whoClause;
 }
-	:
-	ID_regex
+    :
+    ID_regex
     {
-    	whoClauseDn.setType( AclWhoClauseDnTypeEnum.REGEX );
+        whoClauseDn.setType( AclWhoClauseDnTypeEnum.REGEX );
     }
     |
     ID_base
     {
-    	whoClauseDn.setType( AclWhoClauseDnTypeEnum.BASE );
+        whoClauseDn.setType( AclWhoClauseDnTypeEnum.BASE );
     }
     |
     ID_exact
     {
-    	whoClauseDn.setType( AclWhoClauseDnTypeEnum.EXACT );
+        whoClauseDn.setType( AclWhoClauseDnTypeEnum.EXACT );
     }
     |
     ID_one
     {
-    	whoClauseDn.setType( AclWhoClauseDnTypeEnum.ONE );
+        whoClauseDn.setType( AclWhoClauseDnTypeEnum.ONE );
     }
     |
     ID_subtree
     {
-    	whoClauseDn.setType( AclWhoClauseDnTypeEnum.SUBTREE );
+        whoClauseDn.setType( AclWhoClauseDnTypeEnum.SUBTREE );
     }
     |
     ID_children
     {
-    	whoClauseDn.setType( AclWhoClauseDnTypeEnum.CHILDREN );
+        whoClauseDn.setType( AclWhoClauseDnTypeEnum.CHILDREN );
     }
     |
     ID_level OPEN_CURLY token:INTEGER CLOSE_CURLY
     {
-    	AclWhoClauseDnTypeEnum levelType = AclWhoClauseDnTypeEnum.LEVEL;
-    	levelType.setLevel( Integer.valueOf( token.getText() ) );
-    	whoClauseDn.setType( levelType );
+        AclWhoClauseDnTypeEnum levelType = AclWhoClauseDnTypeEnum.LEVEL;
+        levelType.setLevel( Integer.valueOf( token.getText() ) );
+        whoClauseDn.setType( levelType );
     }
     ;
     
@@ -629,12 +638,13 @@ who_dn_modifier
         // Throw an exception ?
         return;
     }
+    
     AclWhoClauseDn whoClauseDn =  ( AclWhoClauseDn ) whoClause;
 }
-	:
-	ID_expand
+    :
+    ID_expand
     {
-    	whoClauseDn.setModifier( AclWhoClauseDnModifierEnum.EXPAND );
+        whoClauseDn.setModifier( AclWhoClauseDnModifierEnum.EXPAND );
     }
     ;
     
@@ -651,22 +661,21 @@ who_access_level
     }
     
     AclWhoClause whoClause = aclItem.getWhoClauses().get( whoClauses.size() - 1 );
-    
     AclAccessLevel accessLevel = new AclAccessLevel();
     whoClause.setAccessLevel( accessLevel );
 }
-	:
-	ID_self ( SP )+ ( who_access_level_level | who_access_level_priv )?
-	{
+    :
+    ID_self SP ( who_access_level_level | who_access_level_priv )?
+    {
         accessLevel.setSelf( true );
-	}
-	|
-	( who_access_level_level | who_access_level_priv )?
-	{
+    }
+    |
+    ( who_access_level_level | who_access_level_priv )?
+    {
         accessLevel.setSelf( false );
-	}
-	;
-	
+    }
+    ;
+    
 who_access_level_level
 {
     log.debug( "entered who_access_level_level()" );
@@ -689,56 +698,56 @@ who_access_level_level
         return;
     }
 }
-	:
-	ID_manage
-	{
+    :
+    ID_manage
+    {
         accessLevel.setLevel( AclAccessLevelLevelEnum.MANAGE );
-	}
-	|
-	ID_write
-	{
+    }
+    |
+    ID_write
+    {
         accessLevel.setLevel( AclAccessLevelLevelEnum.WRITE );
-	}
-	|
-	ID_read
-	{
+    }
+    |
+    ID_read
+    {
         accessLevel.setLevel( AclAccessLevelLevelEnum.READ );
-	}
-	|
-	ID_search
-	{
+    }
+    |
+    ID_search
+    {
         accessLevel.setLevel( AclAccessLevelLevelEnum.SEARCH );
-	}
-	|
-	ID_compare
-	{
+    }
+    |
+    ID_compare
+    {
         accessLevel.setLevel( AclAccessLevelLevelEnum.COMPARE );
-	}
-	|
-	ID_auth
-	{
+    }
+    |
+    ID_auth
+    {
         accessLevel.setLevel( AclAccessLevelLevelEnum.AUTH );
-	}
-	|
-	ID_disclose
-	{
+    }
+    |
+    ID_disclose
+    {
         accessLevel.setLevel( AclAccessLevelLevelEnum.DISCLOSE );
-	}
-	|
-	ID_none
-	{
+    }
+    |
+    ID_none
+    {
         accessLevel.setLevel( AclAccessLevelLevelEnum.NONE );
-	}
-	;
-	
+    }
+    ;
+    
 who_access_level_priv
 {
     log.debug( "entered who_access_level_priv()" );
 }
-	:
-	who_access_level_priv_modifier  ( who_access_level_priv_priv )+
-	;
-	
+    :
+    who_access_level_priv_modifier  ( who_access_level_priv_priv )+
+    ;
+    
 who_access_level_priv_modifier
 {
     log.debug( "entered who_access_level_priv_modifier()" );
@@ -761,23 +770,23 @@ who_access_level_priv_modifier
         return;
     }
 }
-	:
-	EQUAL
-	{
-		accessLevel.setPrivilegeModifier( AclAccessLevelPrivModifierEnum.EQUAL );
-	}
-	|
-	PLUS
-	{
-		accessLevel.setPrivilegeModifier( AclAccessLevelPrivModifierEnum.PLUS );
-	}
-	|
-	MINUS
-	{
-		accessLevel.setPrivilegeModifier( AclAccessLevelPrivModifierEnum.MINUS );
-	}
-	;
-	
+    :
+    EQUAL
+    {
+        accessLevel.setPrivilegeModifier( AclAccessLevelPrivModifierEnum.EQUAL );
+    }
+    |
+    PLUS
+    {
+        accessLevel.setPrivilegeModifier( AclAccessLevelPrivModifierEnum.PLUS );
+    }
+    |
+    MINUS
+    {
+        accessLevel.setPrivilegeModifier( AclAccessLevelPrivModifierEnum.MINUS );
+    }
+    ;
+    
 who_access_level_priv_priv
 {
     log.debug( "entered who_access_level_priv_priv()" );
@@ -800,38 +809,38 @@ who_access_level_priv_priv
         return;
     }
 }
-	:
-	ID_m
-	{
+    :
+    ID_m
+    {
         accessLevel.addPrivilege( AclAccessLevelPrivilegeEnum.MANAGE );
-	}
-	|
-	ID_w
-	{
+    }
+    |
+    ID_w
+    {
         accessLevel.addPrivilege( AclAccessLevelPrivilegeEnum.WRITE );
-	}
-	|
-	ID_r
-	{
+    }
+    |
+    ID_r
+    {
         accessLevel.addPrivilege( AclAccessLevelPrivilegeEnum.READ );
-	}
-	|
-	ID_s
-	{
+    }
+    |
+    ID_s
+    {
         accessLevel.addPrivilege( AclAccessLevelPrivilegeEnum.SEARCH );
-	}
-	|
-	ID_c
-	{
+    }
+    |
+    ID_c
+    {
         accessLevel.addPrivilege( AclAccessLevelPrivilegeEnum.COMPARE );
-	}
-	|
-	ID_x
-	{
+    }
+    |
+    ID_x
+    {
         accessLevel.addPrivilege( AclAccessLevelPrivilegeEnum.AUTHENTICATION );
-	}
-	;
-	
+    }
+    ;
+    
 who_control
 {
     log.debug( "entered who_control()" );
@@ -846,75 +855,75 @@ who_control
     
     AclWhoClause whoClause = aclItem.getWhoClauses().get( whoClauses.size() - 1 );
 }
-	:
-	ID_stop
-	{
+    :
+    ID_stop
+    {
         whoClause.setControl( AclControlEnum.STOP );
-	}
-	|
-	ID_continue
-	{
+    }
+    |
+    ID_continue
+    {
         whoClause.setControl( AclControlEnum.CONTINUE );
-	}
-	|
-	ID_break
-	{
+    }
+    |
+    ID_break
+    {
         whoClause.setControl( AclControlEnum.BREAK );
-	}
-	;
-	
+    }
+    ;
+    
 who_ssf
 {
     log.debug( "entered who_ssf()" );
     
-	AclWhoClauseSsf whoClauseSsf = new AclWhoClauseSsf();
-	aclItem.addWhoClause( whoClauseSsf ); 
+    AclWhoClauseSsf whoClauseSsf = new AclWhoClauseSsf();
+    aclItem.addWhoClause( whoClauseSsf ); 
 }
-	:
-	strength:SSF
-	{
+    :
+    strength:SSF
+    {
         whoClauseSsf.setStrength( Integer.valueOf( strength.getText() ) );
-	}
-	;
-	
+    }
+    ;
+    
 who_transport_ssf
 {
     log.debug( "entered who_transport_ssf()" );
     
-	AclWhoClauseTransportSsf whoClauseTransportSsf = new AclWhoClauseTransportSsf();
-	aclItem.addWhoClause( whoClauseTransportSsf ); 
+    AclWhoClauseTransportSsf whoClauseTransportSsf = new AclWhoClauseTransportSsf();
+    aclItem.addWhoClause( whoClauseTransportSsf ); 
 }
-	:
-	strength:TRANSPORT_SSF
-	{
+    :
+    strength:TRANSPORT_SSF
+    {
         whoClauseTransportSsf.setStrength( Integer.valueOf( strength.getText() ) );
-	}
-	;
-	
+    }
+    ;
+    
 who_tls_ssf
 {
     log.debug( "entered who_tls_ssf()" );
     
-	AclWhoClauseTlsSsf whoClauseTlsSsf = new AclWhoClauseTlsSsf();
-	aclItem.addWhoClause( whoClauseTlsSsf ); 
+    AclWhoClauseTlsSsf whoClauseTlsSsf = new AclWhoClauseTlsSsf();
+    aclItem.addWhoClause( whoClauseTlsSsf ); 
 }
-	:
-	strength:TLS_SSF
-	{
+    :
+    strength:TLS_SSF
+    {
         whoClauseTlsSsf.setStrength( Integer.valueOf( strength.getText() ) );
-	}
-	;
-	
+    }
+    ;
+    
 who_sasl_ssf
 {
     log.debug( "entered who_sasl_ssf()" );
     
-	AclWhoClauseSaslSsf whoClauseSaslSsf = new AclWhoClauseSaslSsf();
-	aclItem.addWhoClause( whoClauseSaslSsf ); 
+    AclWhoClauseSaslSsf whoClauseSaslSsf = new AclWhoClauseSaslSsf();
+    aclItem.addWhoClause( whoClauseSaslSsf ); 
 }
-	:
-	strength:SASL_SSF
-	{
+    :
+    strength:SASL_SSF
+    {
         whoClauseSaslSsf.setStrength( Integer.valueOf( strength.getText() ) );
-	}
-	;
+    }
+    ;
