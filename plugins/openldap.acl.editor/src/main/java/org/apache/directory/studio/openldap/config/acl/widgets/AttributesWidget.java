@@ -23,41 +23,80 @@ package org.apache.directory.studio.openldap.config.acl.widgets;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.studio.common.ui.HistoryUtils;
+import org.apache.directory.studio.common.ui.CommonUIUtils;
 import org.apache.directory.studio.common.ui.widgets.AbstractWidget;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.common.ui.widgets.TableWidget;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.eclipse.jface.bindings.keys.KeyStroke;
-import org.eclipse.jface.fieldassist.ComboContentAdapter;
 import org.eclipse.jface.fieldassist.ContentProposalAdapter;
 import org.eclipse.jface.fieldassist.IContentProposal;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Text;
 import org.apache.directory.studio.openldap.config.acl.OpenLdapAclEditorPlugin;
 import org.apache.directory.studio.openldap.config.acl.OpenLdapAclEditorPluginConstants;
+import org.apache.directory.studio.openldap.config.acl.model.AclAttribute;
+import org.apache.directory.studio.openldap.config.acl.model.AclAttributeStyleEnum;
+import org.apache.directory.studio.openldap.config.acl.model.AclWhatClauseAttributes;
+import org.apache.directory.studio.openldap.config.acl.wrapper.AclAttributeDecorator;
+import org.apache.directory.studio.openldap.config.acl.wrapper.AclAttributeWrapper;
 
 
 /**
+ * A widget used to create an AclWhatClause Attribute :
+ * 
+ * <pre>
+ * ...
+ * | .--------------------------------------------------------. |
+ * | | Attribute list :                                       | |
+ * | | +-------------------------------------------+          | |
+ * | | | abc                                       | (Add)    | |
+ * | | | !def                                      | (Edit)   | |
+ * | | | entry                                     | (Delete) | |
+ * | | +-------------------------------------------+          | |
+ * | | Val : [ ]  MatchingRule : [ ] Style : [--------------] | |
+ * | | Value : [////////////////////////////////////////////] | |
+ * | `--------------------------------------------------------' |
+ * ...
+ * </pre>
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class AttributesWidget extends AbstractWidget
 {
+    /** The Attributes table */
+    private TableWidget<AclAttributeWrapper> attributeTable;
+    
+    /** The WhatAttributes clause */
+    private AclWhatClauseAttributes aclWhatClauseAttributes;
+    
+    /** The checkbox for the Val */
+    private Button valButton;
+    
+    /** The checkbox for the matchingrule */
+    private Button matchingRuleButton;
+    
+    /** The style combo */
+    private Combo styleCombo;
+    
+    /** The Value Text */
+    private Text valueText;
+    
     /** The initial attributes. */
     private String[] initialAttributes;
-
-    /** The attributes combo */
-    private Combo attributesCombo;
 
     /** The proposal provider */
     private AttributesWidgetContentProposalProvider proposalProvider;
@@ -111,6 +150,7 @@ public class AttributesWidget extends AbstractWidget
             }
         }
     };
+    
 
     /** The modify listener */
     private ModifyListener modifyListener = new ModifyListener()
@@ -120,61 +160,149 @@ public class AttributesWidget extends AbstractWidget
             notifyListeners();
         }
     };
+    
+    
+    /** The Val button listener */
+    private SelectionAdapter valButtonListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent event )
+        {
+            // If the Val Button is selected, then the MatchingRule Button, 
+            // the Style Combo and the value Text must be enabled
+            boolean valSelected = valButton.getSelection();
 
-
+            matchingRuleButton.setEnabled( valSelected );
+            styleCombo.setEnabled( valSelected );
+            valueText.setEnabled( valSelected );
+            aclWhatClauseAttributes.setVal( valSelected );
+            
+            // TODO : disable the OK button if Val is set and there is no value
+        }
+    };
+    
+    
+    /** The MatchingRule button listener */
+    private SelectionAdapter matchingRuleButtonListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent event )
+        {
+            aclWhatClauseAttributes.setMatchingRule( matchingRuleButton.getSelection() );
+        }
+    };
+    
+    
+    /** The style combo listener */
+    private SelectionAdapter styleComboListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent event )
+        {
+            aclWhatClauseAttributes.setStyle( AclAttributeStyleEnum.getStyle( styleCombo.getText() ) );
+        }
+    };
+    
+    
     /**
      * Creates the widget.
+     * <pre>
+     * Attribute list :
+     * +-------------------------------------------+
+     * | abc                                       | (Add)   
+     * | !def                                      | (Edit)  
+     * | entry                                     | (Delete)
+     * +-------------------------------------------+         
+     * Val : [ ]  MatchingRule : [ ] Style : [--------------]
+     * Value : [////////////////////////////////////////////]
+     * </pre>
      * 
      * @param parent the parent
      */
-    public void createWidget( Composite parent )
+    public void createWidget( Composite parent, IBrowserConnection connection, AclWhatClauseAttributes clause )
     {
-        // Combo
-        attributesCombo = BaseWidgetUtils.createCombo( parent, new String[0], -1, 1 );
+        Composite composite = BaseWidgetUtils.createColumnContainer( parent, 4, 1 );
         GridData gd = new GridData( GridData.FILL_HORIZONTAL );
         gd.horizontalSpan = 1;
-        gd.widthHint = 200;
-        attributesCombo.setLayoutData( gd );
-        attributesCombo.addVerifyListener( verifyListener );
+        gd.widthHint = 30;
+        composite.setLayoutData( gd );
 
-        // Content assist
-        proposalProvider = new AttributesWidgetContentProposalProvider();
-        proposalAdapter = new ContentProposalAdapter( attributesCombo, new ComboContentAdapter(),
-            proposalProvider, KeyStroke.getInstance( SWT.CTRL, SWT.SPACE ), new char[0] );
-        proposalProvider.setProposalAdapter( proposalAdapter );
-        proposalAdapter.setLabelProvider( labelProvider );
+        // The Attribute table
+        BaseWidgetUtils.createLabel( composite, "Attributes list :", 4 );
+        AclAttributeDecorator decorator = new AclAttributeDecorator( composite.getShell(), connection );
+        attributeTable = new TableWidget<AclAttributeWrapper>( decorator );
+        attributeTable.createWidgetWithEdit( composite, null );
+        attributeTable.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 4, 3 ) );
+        //attributeTable.addWidgetModifyListener( attributeTableListener );
+        
+        // The Val
+        valButton = BaseWidgetUtils.createCheckbox( composite, "Val", 1 );
+        valButton.addSelectionListener( valButtonListener );
+        
+        // The MatchingRule
+        matchingRuleButton = BaseWidgetUtils.createCheckbox( composite, "MatchingRule", 1 );
+        matchingRuleButton.setEnabled( false );
+        matchingRuleButton.addSelectionListener( matchingRuleButtonListener );
+        
+        // The style
+        BaseWidgetUtils.createLabel( composite, "Style :", 1 );
+        styleCombo = BaseWidgetUtils.createCombo( composite, AclAttributeStyleEnum.getNames(), 9, 1 );
+        styleCombo.setEnabled( false );
+        styleCombo.addSelectionListener( styleComboListener );
 
-        // History
-        String[] history = HistoryUtils.load( OpenLdapAclEditorPlugin.getDefault().getDialogSettings(),
-            OpenLdapAclEditorPluginConstants.DIALOGSETTING_KEY_ATTRIBUTES_HISTORY );
-        for ( int i = 0; i < history.length; i++ )
-        {
-            history[i] = history[i];
-        }
-        attributesCombo.setItems( history );
-        attributesCombo.setText( arrayToString( initialAttributes ) );
-        attributesCombo.addModifyListener( modifyListener );
+        // The value
+        BaseWidgetUtils.createLabel( composite, "Value :", 1 );
+        valueText = BaseWidgetUtils.createText( composite, "", 3 );
+        valueText.setEnabled( false );
+        //valueText.addModifyListener( valueTextListener );
+        
+        initWidget( clause );
     }
 
 
+    /**
+     * Initialize the widget with the current value
+     */
+    private void initWidget( AclWhatClauseAttributes clause )
+    {
+        aclWhatClauseAttributes = clause;
+        
+        // Update the table
+        setAttributes( clause.getAttributes() );
+        
+        // The Val button is always enabled
+        valButton.setEnabled( true );
+        
+        if ( clause.hasVal() )
+        {
+            matchingRuleButton.setEnabled( clause.hasMatchingRule() );
+            styleCombo.setEnabled( false );
+            styleCombo.setText( clause.getStyle().getName() );
+            valueText.setEnabled( false );
+            valueText.setText( CommonUIUtils.getTextValue( clause.getValue() ) );
+        }
+        else
+        {
+            matchingRuleButton.setEnabled( false );
+            styleCombo.setEnabled( false );
+            valueText.setEnabled( false );
+        }
+    }
+    
+    
     /**
      * Sets the initial attributes.
      * 
-     * @param initialAttributes the initial attributes
+     * @param aclAttributes the initial attributes
      */
-    public void setInitialAttributes( String[] initialAttributes )
+    private void setAttributes( List<AclAttribute> aclAttributes )
     {
-        this.initialAttributes = initialAttributes;
-        attributesCombo.setText( arrayToString( initialAttributes ) );
-    }
-
-
-    /**
-     * @param browserConnection the browser connection to set
-     */
-    public void setBrowserConnection( IBrowserConnection browserConnection )
-    {
-        proposalProvider.setBrowserConnection( browserConnection );
+        List<AclAttributeWrapper> aclAttributeWrappers = new ArrayList<AclAttributeWrapper>( aclAttributes.size() );
+        
+        for ( AclAttribute aclAttribute: aclAttributes )
+        {
+            AclAttributeWrapper aclAttributeWrapper = new AclAttributeWrapper( aclAttribute );
+            aclAttributeWrappers.add( aclAttributeWrapper );
+        }
+        
+        attributeTable.setElements( aclAttributeWrappers );
     }
 
 
@@ -185,7 +313,6 @@ public class AttributesWidget extends AbstractWidget
      */
     public void setEnabled( boolean b )
     {
-        attributesCombo.setEnabled( b );
     }
 
 
@@ -194,98 +321,17 @@ public class AttributesWidget extends AbstractWidget
      * 
      * @return the attributes
      */
-    public String[] getAttributes()
+    public List<AclAttribute> getAttributes()
     {
-        String s = attributesCombo.getText();
-        return stringToArray( s );
-    }
-
-
-    /**
-     * Saves widget settings.
-     */
-    public void saveWidgetSettings()
-    {
-        HistoryUtils.save( OpenLdapAclEditorPlugin.getDefault().getDialogSettings(),
-            OpenLdapAclEditorPluginConstants.DIALOGSETTING_KEY_ATTRIBUTES_HISTORY,
-            arrayToString( getAttributes() ) );
-    }
-
-
-    /**
-     * Splits the given string into an array. Only the following
-     * characters are kept, all other are used to split the string
-     * and are truncated:
-     * <li>a-z
-     * <li>A-Z
-     * <li>0-9
-     * <li>-
-     * <li>.
-     * <li>;
-     * <li>_
-     * <li>*
-     * <li>+
-     * <li>@
-     * <li>!
-     * 
-     * @param s the string to split
-     * 
-     * @return the array with the splitted string, or null
-     */
-    public static String[] stringToArray( String s )
-    {
-        if ( s == null )
+        List<AclAttributeWrapper> elementList = attributeTable.getElements();
+        
+        List<AclAttribute> result = new ArrayList<AclAttribute>( elementList.size() );
+        
+        for ( AclAttributeWrapper element : elementList )
         {
-            return null;
+            result.add( element.getAclAttribute() );
         }
-        else
-        {
-            List<String> attributeList = new ArrayList<String>();
-
-            StringBuffer temp = new StringBuffer();
-            for ( int i = 0; i < s.length(); i++ )
-            {
-                char c = s.charAt( i );
-
-                if ( ( c >= 'a' && c <= 'z' ) || ( c >= 'A' && c <= 'Z' ) || ( c >= '0' && c <= '9' ) || c == '-'
-                    || c == '.' || c == ';' || c == '_' || c == '*' || c == '+' || c == '@' || c == '!' )
-                {
-                    temp.append( c );
-                }
-                else
-                {
-                    if ( temp.length() > 0 )
-                    {
-                        attributeList.add( temp.toString() );
-                        temp = new StringBuffer();
-                    }
-                }
-            }
-            if ( temp.length() > 0 )
-            {
-                attributeList.add( temp.toString() );
-            }
-
-            return ( String[] ) attributeList.toArray( new String[attributeList.size()] );
-        }
-    }
-
-
-    public static String arrayToString( String[] array )
-    {
-        if ( array == null || array.length == 0 )
-        {
-            return "";
-        }
-        else
-        {
-            StringBuffer sb = new StringBuffer( array[0] );
-            for ( int i = 1; i < array.length; i++ )
-            {
-                sb.append( "," );
-                sb.append( array[i] );
-            }
-            return sb.toString();
-        }
+        
+        return result;
     }
 }

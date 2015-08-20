@@ -28,6 +28,6 @@ import org.apache.directory.studio.openldap.config.acl.model.AclWhoClause;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface WhoClauseComposite<C extends AclWhoClause> extends ClauseComposite<C>
+public interface WhoClauseComposite<C extends AclWhoClause> extends ClauseComposite
 {
 }

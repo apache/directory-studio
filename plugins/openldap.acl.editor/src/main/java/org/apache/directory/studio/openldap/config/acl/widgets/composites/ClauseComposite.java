@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Composite;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface ClauseComposite<C>
+public interface ClauseComposite
 {
     /**
      * Creates the composite.
@@ -70,22 +70,6 @@ public interface ClauseComposite<C>
      * @param connection the connection
      */
     void setConnection( IBrowserConnection connection );
-
-
-    /**
-     * Gets the clause.
-     *
-     * @return the clause
-     */
-    C getClause();
-
-
-    /**
-     * Sets the clause.
-     *
-     * @param clause the clause
-     */
-    void setClause( C clause );
 
 
     /**

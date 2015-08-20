@@ -25,7 +25,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-
+import org.apache.directory.studio.openldap.config.acl.OpenLdapAclValueWithContext;
 import org.apache.directory.studio.openldap.config.acl.model.AclWhoClauseDnAttr;
 
 
@@ -33,21 +33,20 @@ import org.apache.directory.studio.openldap.config.acl.model.AclWhoClauseDnAttr;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class WhoClauseDnAttributeComposite extends AbstractClauseComposite<AclWhoClauseDnAttr> implements
-    WhoClauseComposite<AclWhoClauseDnAttr>
+public class WhoClauseDnAttributeComposite extends AbstractWhoClauseComposite<AclWhoClauseDnAttr>
 {
     private Combo dnAttributeCombo;
 
 
-    public WhoClauseDnAttributeComposite( AclWhoClauseDnAttr clause, Composite visualEditorComposite )
+    public WhoClauseDnAttributeComposite( OpenLdapAclValueWithContext context, AclWhoClauseDnAttr clause, Composite visualEditorComposite )
     {
-        super( clause, visualEditorComposite );
+        super( context, clause, visualEditorComposite );
     }
 
 
-    public WhoClauseDnAttributeComposite( Composite visualEditorComposite )
+    public WhoClauseDnAttributeComposite( OpenLdapAclValueWithContext context, Composite visualEditorComposite )
     {
-        super( new AclWhoClauseDnAttr(), visualEditorComposite );
+        super( context, new AclWhoClauseDnAttr(), visualEditorComposite );
     }
 
 
@@ -91,9 +90,9 @@ public class WhoClauseDnAttributeComposite extends AbstractClauseComposite<AclWh
     {
         if ( dnAttributeCombo != null )
         {
-            if ( clause != null )
+            if ( whoClause != null )
             {
-                dnAttributeCombo.setText( clause.getAttribute() );
+                dnAttributeCombo.setText( whoClause.getAttribute() );
             }
             else
             {

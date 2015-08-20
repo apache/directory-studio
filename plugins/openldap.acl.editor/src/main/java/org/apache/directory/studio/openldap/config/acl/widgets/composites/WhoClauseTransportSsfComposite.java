@@ -21,7 +21,7 @@ package org.apache.directory.studio.openldap.config.acl.widgets.composites;
 
 
 import org.eclipse.swt.widgets.Composite;
-
+import org.apache.directory.studio.openldap.config.acl.OpenLdapAclValueWithContext;
 import org.apache.directory.studio.openldap.config.acl.model.AclWhoClauseTransportSsf;
 
 
@@ -33,14 +33,14 @@ public class WhoClauseTransportSsfComposite extends AbstractWhoClauseCryptoStren
     implements
     WhoClauseComposite<AclWhoClauseTransportSsf>
 {
-    public WhoClauseTransportSsfComposite( AclWhoClauseTransportSsf clause, Composite visualEditorComposite )
+    public WhoClauseTransportSsfComposite( OpenLdapAclValueWithContext context, AclWhoClauseTransportSsf clause, Composite visualEditorComposite )
     {
-        super( clause, visualEditorComposite );
+        super( context, clause, visualEditorComposite );
     }
 
 
-    public WhoClauseTransportSsfComposite( Composite visualEditorComposite )
+    public WhoClauseTransportSsfComposite( OpenLdapAclValueWithContext context, Composite visualEditorComposite )
     {
-        super( new AclWhoClauseTransportSsf(), visualEditorComposite );
+        super( context, new AclWhoClauseTransportSsf(), visualEditorComposite );
     }
 }

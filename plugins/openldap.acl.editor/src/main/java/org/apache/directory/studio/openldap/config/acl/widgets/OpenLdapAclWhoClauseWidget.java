@@ -38,6 +38,7 @@ import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.apache.directory.studio.openldap.config.acl.OpenLdapAclEditorPlugin;
 import org.apache.directory.studio.openldap.config.acl.OpenLdapAclEditorPluginConstants;
+import org.apache.directory.studio.openldap.config.acl.OpenLdapAclValueWithContext;
 import org.apache.directory.studio.openldap.config.acl.dialogs.OpenLdapAccessLevelDialog;
 import org.apache.directory.studio.openldap.config.acl.model.AclAccessLevel;
 import org.apache.directory.studio.openldap.config.acl.model.AclAccessLevelLevelEnum;
@@ -70,6 +71,9 @@ import org.apache.directory.studio.openldap.config.acl.widgets.composites.WhoCla
  */
 public class OpenLdapAclWhoClauseWidget extends AbstractWidget implements SelectionListener
 {
+    /** The ACL context */
+    private OpenLdapAclValueWithContext context;
+
     /** The array of clauses */
     private Object[] clauses = new Object[]
         {
@@ -293,11 +297,13 @@ public class OpenLdapAclWhoClauseWidget extends AbstractWidget implements Select
      * @param builderWidget the parent builder widget
      * @param index the row index
      */
-    public OpenLdapAclWhoClauseWidget( OpenLdapAclWhoClausesBuilderWidget builderWidget, AclWhoClause clause, int index )
+    public OpenLdapAclWhoClauseWidget( OpenLdapAclWhoClausesBuilderWidget builderWidget, 
+                OpenLdapAclValueWithContext context, AclWhoClause clause, int index )
     {
         this.builderWidget = builderWidget;
         this.clause = clause;
         this.index = index;
+        this.context = context;
     }
 
 
@@ -686,7 +692,7 @@ public class OpenLdapAclWhoClauseWidget extends AbstractWidget implements Select
     {
         configurationComposite = BaseWidgetUtils.createColumnContainer( composite, 1, 1 );
 
-        WhoClauseDnComposite composite = new WhoClauseDnComposite( builderWidget.visualEditorComposite );
+        WhoClauseDnComposite composite = new WhoClauseDnComposite( context, builderWidget.visualEditorComposite );
         composite.createComposite( configurationComposite );
     }
 
@@ -698,7 +704,7 @@ public class OpenLdapAclWhoClauseWidget extends AbstractWidget implements Select
     {
         configurationComposite = BaseWidgetUtils.createColumnContainer( composite, 1, 1 );
 
-        WhoClauseDnAttributeComposite composite = new WhoClauseDnAttributeComposite( builderWidget.visualEditorComposite );
+        WhoClauseDnAttributeComposite composite = new WhoClauseDnAttributeComposite( context, builderWidget.visualEditorComposite );
         composite.createComposite( configurationComposite );
     }
 
@@ -710,7 +716,7 @@ public class OpenLdapAclWhoClauseWidget extends AbstractWidget implements Select
     {
         configurationComposite = BaseWidgetUtils.createColumnContainer( composite, 1, 1 );
 
-        WhoClauseGroupComposite composite = new WhoClauseGroupComposite( builderWidget.visualEditorComposite );
+        WhoClauseGroupComposite composite = new WhoClauseGroupComposite( context, builderWidget.visualEditorComposite );
         composite.createComposite( configurationComposite );
     }
 
@@ -722,7 +728,7 @@ public class OpenLdapAclWhoClauseWidget extends AbstractWidget implements Select
     {
         configurationComposite = BaseWidgetUtils.createColumnContainer( composite, 1, 1 );
 
-        WhoClauseSaslSsfComposite composite = new WhoClauseSaslSsfComposite( builderWidget.visualEditorComposite );
+        WhoClauseSaslSsfComposite composite = new WhoClauseSaslSsfComposite( context, builderWidget.visualEditorComposite );
         composite.createComposite( configurationComposite );
     }
 
@@ -734,7 +740,7 @@ public class OpenLdapAclWhoClauseWidget extends AbstractWidget implements Select
     {
         configurationComposite = BaseWidgetUtils.createColumnContainer( composite, 1, 1 );
 
-        WhoClauseSsfComposite composite = new WhoClauseSsfComposite( builderWidget.visualEditorComposite );
+        WhoClauseSsfComposite composite = new WhoClauseSsfComposite( context, builderWidget.visualEditorComposite );
         composite.createComposite( configurationComposite );
     }
 
@@ -746,7 +752,7 @@ public class OpenLdapAclWhoClauseWidget extends AbstractWidget implements Select
     {
         configurationComposite = BaseWidgetUtils.createColumnContainer( composite, 1, 1 );
 
-        WhoClauseTlsSsfComposite composite = new WhoClauseTlsSsfComposite( builderWidget.visualEditorComposite );
+        WhoClauseTlsSsfComposite composite = new WhoClauseTlsSsfComposite( context, builderWidget.visualEditorComposite );
         composite.createComposite( configurationComposite );
     }
 
@@ -759,7 +765,7 @@ public class OpenLdapAclWhoClauseWidget extends AbstractWidget implements Select
         configurationComposite = BaseWidgetUtils.createColumnContainer( composite, 1, 1 );
 
         WhoClauseTransportSsfComposite composite = new WhoClauseTransportSsfComposite(
-            builderWidget.visualEditorComposite );
+            context, builderWidget.visualEditorComposite );
         composite.createComposite( configurationComposite );
     }
 

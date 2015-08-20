@@ -21,24 +21,23 @@ package org.apache.directory.studio.openldap.config.acl.widgets.composites;
 
 
 import org.eclipse.swt.widgets.Composite;
-
+import org.apache.directory.studio.openldap.config.acl.OpenLdapAclValueWithContext;
 import org.apache.directory.studio.openldap.config.acl.model.AclWhoClauseSsf;
 
 /**
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class WhoClauseSsfComposite extends AbstractWhoClauseCryptoStrengthComposite<AclWhoClauseSsf> implements
-    WhoClauseComposite<AclWhoClauseSsf>
+public class WhoClauseSsfComposite extends AbstractWhoClauseCryptoStrengthComposite<AclWhoClauseSsf>
 {
-    public WhoClauseSsfComposite( AclWhoClauseSsf clause, Composite visualEditorComposite )
+    public WhoClauseSsfComposite( OpenLdapAclValueWithContext context, AclWhoClauseSsf clause, Composite visualEditorComposite )
     {
-        super( clause, visualEditorComposite );
+        super( context, clause, visualEditorComposite );
     }
 
 
-    public WhoClauseSsfComposite( Composite visualEditorComposite )
+    public WhoClauseSsfComposite( OpenLdapAclValueWithContext context, Composite visualEditorComposite )
     {
-        super( new AclWhoClauseSsf(), visualEditorComposite );
+        super( context, new AclWhoClauseSsf(), visualEditorComposite );
     }
 }

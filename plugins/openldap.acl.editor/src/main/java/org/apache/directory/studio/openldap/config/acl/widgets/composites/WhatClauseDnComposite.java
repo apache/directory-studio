@@ -33,6 +33,8 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.apache.directory.studio.openldap.config.acl.OpenLdapAclValueWithContext;
+import org.apache.directory.studio.openldap.config.acl.model.AclWhatClause;
 import org.apache.directory.studio.openldap.config.acl.model.AclWhatClauseDn;
 import org.apache.directory.studio.openldap.config.acl.model.AclWhatClauseDnTypeEnum;
 
@@ -41,8 +43,7 @@ import org.apache.directory.studio.openldap.config.acl.model.AclWhatClauseDnType
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class WhatClauseDnComposite extends AbstractClauseComposite<AclWhatClauseDn> implements
-    WhatClauseComposite<AclWhatClauseDn>
+public class WhatClauseDnComposite extends AbstractClauseComposite
 {
     /** The entry widget */
     private EntryWidget entryWidget;
@@ -52,20 +53,20 @@ public class WhatClauseDnComposite extends AbstractClauseComposite<AclWhatClause
     {
         public void widgetModified( WidgetModifyEvent event )
         {
-            getClause().setPattern( entryWidget.getDn().toString() );
+            context.getAclItem().getWhatClause().getDnClause().setPattern( entryWidget.getDn().toString() );
         }
     };
 
 
-    public WhatClauseDnComposite( AclWhatClauseDn clause, Composite visualEditorComposite )
+    public WhatClauseDnComposite( OpenLdapAclValueWithContext context, Composite visualEditorComposite )
     {
-        super( clause, visualEditorComposite );
-    }
-
-
-    public WhatClauseDnComposite( Composite visualEditorComposite )
-    {
-        super( new AclWhatClauseDn(), visualEditorComposite );
+        super( context, visualEditorComposite );
+        AclWhatClause aclWhatClause = context.getAclItem().getWhatClause();
+        
+        if ( aclWhatClause.getDnClause() == null )
+        {
+            aclWhatClause.setDnClause( new AclWhatClauseDn() );
+        }
     }
 
 
@@ -108,16 +109,6 @@ public class WhatClauseDnComposite extends AbstractClauseComposite<AclWhatClause
     /**
      * {@inheritDoc}
      */
-    public void setClause( AclWhatClauseDn clause )
-    {
-        super.setClause( clause );
-        setInput();
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
     public void setConnection( IBrowserConnection connection )
     {
         super.setConnection( connection );
@@ -129,11 +120,11 @@ public class WhatClauseDnComposite extends AbstractClauseComposite<AclWhatClause
     {
         if ( entryWidget != null )
         {
-            if ( clause != null )
+            if ( context.getAclItem().getWhatClause().getDnClause() != null )
             {
                 try
                 {
-                    entryWidget.setInput( connection, new Dn( clause.getPattern() ) );
+                    entryWidget.setInput( connection, new Dn( context.getAclItem().getWhatClause().getDnClause().getPattern() ) );
                 }
                 catch ( LdapInvalidDnException e )
                 {

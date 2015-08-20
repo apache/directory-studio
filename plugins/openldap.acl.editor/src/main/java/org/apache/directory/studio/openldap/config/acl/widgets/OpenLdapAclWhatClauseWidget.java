@@ -39,8 +39,26 @@ import org.apache.directory.studio.openldap.config.acl.widgets.composites.WhatCl
 
 
 /**
- * The WhatCaluse widget builder
+ * The WhatClause widget. It coves all the What possible options :
+ * <ul>
+ * <li>DN</li>
+ * <li>Filter</li>
+ * <li>Attributes</li>
+ * </ul>
+ * The three possible options, when selected, will open new composites dynamically.
  * 
+ * <pre>
+ * </pre>
+ * .---------------------------------------------------------.
+ * |                                                         |
+ * | [ ] DN                                                  |
+ * |                                                         |
+ * | [ ] Filter                                              |
+ * |                                                         |
+ * | [ ] Attributes                                          |
+ * |                                                         |
+ * `---------------------------------------------------------'
+ * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class OpenLdapAclWhatClauseWidget extends AbstractWidget
@@ -108,6 +126,10 @@ public class OpenLdapAclWhatClauseWidget extends AbstractWidget
     };
     
     
+    /**
+     * The listener on the Attributes Checkbox. It creates the Attributes composite
+     * when selected, dispose it when unchecked.
+     */
     private SelectionAdapter attributesCheckboxListener = new SelectionAdapter()
     {
         public void widgetSelected( org.eclipse.swt.events.SelectionEvent e )
@@ -128,19 +150,31 @@ public class OpenLdapAclWhatClauseWidget extends AbstractWidget
 
 
     /**
-     * Creates a new instance of OpenLdapAclWhatClauseWidget.
+     * Creates a new instance of OpenLdapAclWhatClauseWidget. It's just a list of
+     * 3 checkboxes which, when selected, open a new composite dynamically created.
+     * 
+     * <pre>
+     * .---------------------------------------------------------.
+     * |                                                         |
+     * | [ ] DN                                                  |
+     * |                                                         |
+     * | [ ] Filter                                              |
+     * |                                                         |
+     * | [ ] Attributes                                          |
+     * |                                                         |
+     * `---------------------------------------------------------'
+     * </pre>
      * 
      * @param visualEditorComposite the visual editor composite
+     * @param parent The WhatClause parent's composite
+     * @param context the Acl context
      */
-    public OpenLdapAclWhatClauseWidget( OpenLdapAclVisualEditorComposite visualEditorComposite, OpenLdapAclValueWithContext context )
+    public OpenLdapAclWhatClauseWidget( OpenLdapAclVisualEditorComposite visualEditorComposite, 
+        Composite parent, OpenLdapAclValueWithContext context )
     {
         this.visualEditorComposite = visualEditorComposite;
         this.context = context;
-    }
-
-
-    public void create( Composite parent )
-    {
+        
         // Creating the widget base composite
         composite = BaseWidgetUtils.createColumnContainer( parent, 1, 1 );
 
@@ -151,17 +185,17 @@ public class OpenLdapAclWhatClauseWidget extends AbstractWidget
         // DN
         dnCheckbox = BaseWidgetUtils.createCheckbox( whatGroup, "DN", 1 );
         dnComposite = BaseWidgetUtils.createColumnContainer( whatGroup, 1, 1 );
+        dnCheckbox.addSelectionListener( dnCheckboxListener );
 
         // Filter
         filterCheckbox = BaseWidgetUtils.createCheckbox( whatGroup, "Filter", 1 );
         filterComposite = BaseWidgetUtils.createColumnContainer( whatGroup, 1, 1 );
+        filterCheckbox.addSelectionListener( filterCheckboxListener );
 
         // Attributes
         attributesCheckbox = BaseWidgetUtils.createCheckbox( whatGroup, "Attributes", 1 );
         attributesComposite = BaseWidgetUtils.createColumnContainer( whatGroup, 1, 1 );
-
-        // Adding the listeners to the UI widgets
-        addListeners();
+        attributesCheckbox.addSelectionListener( attributesCheckboxListener );
     }
 
 
@@ -174,9 +208,10 @@ public class OpenLdapAclWhatClauseWidget extends AbstractWidget
         dnGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         dnSubComposite = dnGroup;
 
-        dnClauseComposite = new WhatClauseDnComposite( visualEditorComposite );
+        dnClauseComposite = new WhatClauseDnComposite( context, visualEditorComposite );
         dnClauseComposite.createComposite( dnGroup );
 
+        /*
         AclWhatClause whatClause = context.getAclItem().getWhatClause();
         
         if ( whatClause.getDnClause() != null )
@@ -188,6 +223,7 @@ public class OpenLdapAclWhatClauseWidget extends AbstractWidget
         {
             dnClauseComposite.setConnection( context.getConnection() );
         }
+        */
     }
 
 
@@ -200,9 +236,10 @@ public class OpenLdapAclWhatClauseWidget extends AbstractWidget
         filterGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         filterSubComposite = filterGroup;
 
-        filterClauseComposite = new WhatClauseFilterComposite( visualEditorComposite );
+        filterClauseComposite = new WhatClauseFilterComposite( context, visualEditorComposite );
         filterClauseComposite.createComposite( filterGroup );
 
+        /*
         AclWhatClause whatClause = context.getAclItem().getWhatClause();
 
         if ( whatClause.getFilterClause() != null )
@@ -214,6 +251,7 @@ public class OpenLdapAclWhatClauseWidget extends AbstractWidget
         {
             filterClauseComposite.setConnection( context.getConnection() );
         }
+        */
     }
 
 
@@ -222,14 +260,12 @@ public class OpenLdapAclWhatClauseWidget extends AbstractWidget
      */
     private void createAttributesComposite()
     {
-        Group attributesGroup = BaseWidgetUtils.createGroup( attributesComposite, "", 1 );
-        attributesGroup.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        attributesSubComposite = attributesGroup;
+        attributesSubComposite = BaseWidgetUtils.createGroup( attributesComposite, "", 1 );
+        attributesSubComposite.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
-        attributesClauseComposite = new WhatClauseAttributesComposite( visualEditorComposite );
-        attributesClauseComposite.createComposite( attributesGroup );
-        attributesClauseComposite.setContext( context );
+        attributesClauseComposite = new WhatClauseAttributesComposite( visualEditorComposite, attributesSubComposite, context );
 
+        /*
         AclWhatClause whatClause = context.getAclItem().getWhatClause();
 
         if ( whatClause.getAttributesClause() != null )
@@ -241,6 +277,7 @@ public class OpenLdapAclWhatClauseWidget extends AbstractWidget
         {
             attributesClauseComposite.setConnection( context.getConnection() );
         }
+        */
     }
 
 
@@ -259,23 +296,11 @@ public class OpenLdapAclWhatClauseWidget extends AbstractWidget
 
 
     /**
-     * Adds the listeners to the UI widgets.
-     */
-    private void addListeners()
-    {
-        dnCheckbox.addSelectionListener( dnCheckboxListener );
-        filterCheckbox.addSelectionListener( filterCheckboxListener );
-        attributesCheckbox.addSelectionListener( attributesCheckboxListener );
-    }
-
-
-    /**
      * Refresh the WhatClause GUI
      */
     public void refresh()
     {
         AclWhatClause whatClause = context.getAclItem().getWhatClause();
-
 
         if ( whatClause != null )
         {

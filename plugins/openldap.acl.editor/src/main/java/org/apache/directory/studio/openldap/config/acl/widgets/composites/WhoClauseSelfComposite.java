@@ -21,24 +21,23 @@ package org.apache.directory.studio.openldap.config.acl.widgets.composites;
 
 
 import org.eclipse.swt.widgets.Composite;
-
+import org.apache.directory.studio.openldap.config.acl.OpenLdapAclValueWithContext;
 import org.apache.directory.studio.openldap.config.acl.model.AclWhoClauseSelf;
 
 /**
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class WhoClauseSelfComposite extends AbstractClauseComposite<AclWhoClauseSelf> implements
-    WhoClauseComposite<AclWhoClauseSelf>
+public class WhoClauseSelfComposite extends AbstractWhoClauseComposite<AclWhoClauseSelf>
 {
-    public WhoClauseSelfComposite( AclWhoClauseSelf clause, Composite visualEditorComposite )
+    public WhoClauseSelfComposite( OpenLdapAclValueWithContext context, AclWhoClauseSelf clause, Composite visualEditorComposite )
     {
-        super( clause, visualEditorComposite );
+        super( context, clause, visualEditorComposite );
     }
 
 
-    public WhoClauseSelfComposite( Composite visualEditorComposite )
+    public WhoClauseSelfComposite( OpenLdapAclValueWithContext context, Composite visualEditorComposite )
     {
-        super( new AclWhoClauseSelf(), visualEditorComposite );
+        super( context, new AclWhoClauseSelf(), visualEditorComposite );
     }
 }

@@ -21,7 +21,7 @@ package org.apache.directory.studio.openldap.config.acl.widgets.composites;
 
 
 import org.eclipse.swt.widgets.Composite;
-
+import org.apache.directory.studio.openldap.config.acl.OpenLdapAclValueWithContext;
 import org.apache.directory.studio.openldap.config.acl.model.AclWhoClauseAnonymous;
 
 
@@ -29,17 +29,16 @@ import org.apache.directory.studio.openldap.config.acl.model.AclWhoClauseAnonymo
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class WhoClauseAnonymousComposite extends AbstractClauseComposite<AclWhoClauseAnonymous> implements
-    WhoClauseComposite<AclWhoClauseAnonymous>
+public class WhoClauseAnonymousComposite extends AbstractWhoClauseComposite<AclWhoClauseAnonymous>
 {
-    public WhoClauseAnonymousComposite( AclWhoClauseAnonymous clause, Composite visualEditorComposite )
+    public WhoClauseAnonymousComposite( OpenLdapAclValueWithContext context, AclWhoClauseAnonymous clause, Composite visualEditorComposite )
     {
-        super( clause, visualEditorComposite );
+        super( context, clause, visualEditorComposite );
     }
 
 
-    public WhoClauseAnonymousComposite( Composite visualEditorComposite )
+    public WhoClauseAnonymousComposite( OpenLdapAclValueWithContext context, Composite visualEditorComposite )
     {
-        super( new AclWhoClauseAnonymous(), visualEditorComposite );
+        super( context, new AclWhoClauseAnonymous(), visualEditorComposite );
     }
 }

@@ -161,7 +161,7 @@ public class OpenLdapAclWhoClausesBuilderWidget
             }
 
             // Creating the clause widget
-            OpenLdapAclWhoClauseWidget clauseWidget = new OpenLdapAclWhoClauseWidget( this, whoClause, pos );
+            OpenLdapAclWhoClauseWidget clauseWidget = new OpenLdapAclWhoClauseWidget( this, context, whoClause, pos );
             clauseWidget.create( whoGroup );
             
             clauseWidget.addWidgetModifyListener( whoClauseModifyListener );

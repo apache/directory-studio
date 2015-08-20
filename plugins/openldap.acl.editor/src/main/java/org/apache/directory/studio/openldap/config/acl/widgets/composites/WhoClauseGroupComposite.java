@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.ui.forms.events.ExpansionAdapter;
 import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
-
+import org.apache.directory.studio.openldap.config.acl.OpenLdapAclValueWithContext;
 import org.apache.directory.studio.openldap.config.acl.model.AclWhoClauseGroup;
 
 
@@ -42,8 +42,7 @@ import org.apache.directory.studio.openldap.config.acl.model.AclWhoClauseGroup;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class WhoClauseGroupComposite extends AbstractClauseComposite<AclWhoClauseGroup> implements
-    WhoClauseComposite<AclWhoClauseGroup>
+public class WhoClauseGroupComposite extends AbstractWhoClauseComposite<AclWhoClauseGroup>
 {
     /** The expansion listener used on expandable composites */
     private ExpansionAdapter expansionListener = new ExpansionAdapter()
@@ -56,15 +55,15 @@ public class WhoClauseGroupComposite extends AbstractClauseComposite<AclWhoClaus
     };
 
 
-    public WhoClauseGroupComposite( AclWhoClauseGroup clause, Composite visualEditorComposite )
+    public WhoClauseGroupComposite( OpenLdapAclValueWithContext context, AclWhoClauseGroup clause, Composite visualEditorComposite )
     {
-        super( clause, visualEditorComposite );
+        super( context, clause, visualEditorComposite );
     }
 
 
-    public WhoClauseGroupComposite( Composite visualEditorComposite )
+    public WhoClauseGroupComposite( OpenLdapAclValueWithContext context, Composite visualEditorComposite )
     {
-        super( new AclWhoClauseGroup(), visualEditorComposite );
+        super( context, new AclWhoClauseGroup(), visualEditorComposite );
     }
 
 

@@ -26,6 +26,7 @@ import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.FilterWidget;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.swt.widgets.Composite;
+import org.apache.directory.studio.openldap.config.acl.OpenLdapAclValueWithContext;
 import org.apache.directory.studio.openldap.config.acl.model.AclWhatClauseFilter;
 
 
@@ -33,8 +34,7 @@ import org.apache.directory.studio.openldap.config.acl.model.AclWhatClauseFilter
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class WhatClauseFilterComposite extends AbstractClauseComposite<AclWhatClauseFilter> implements
-    WhatClauseComposite<AclWhatClauseFilter>
+public class WhatClauseFilterComposite extends AbstractClauseComposite
 {
     /** The filter widget */
     private FilterWidget filterWidget;
@@ -43,20 +43,14 @@ public class WhatClauseFilterComposite extends AbstractClauseComposite<AclWhatCl
     {
         public void widgetModified( WidgetModifyEvent event )
         {
-            getClause().setFilter( filterWidget.getFilter() );
+            context.getAclItem().getWhatClause().getFilterClause().setFilter( filterWidget.getFilter() );
         }
     };
 
 
-    public WhatClauseFilterComposite( AclWhatClauseFilter clause, Composite visualEditorComposite )
+    public WhatClauseFilterComposite( OpenLdapAclValueWithContext context, Composite visualEditorComposite )
     {
-        super( clause, visualEditorComposite );
-    }
-
-
-    public WhatClauseFilterComposite( Composite visualEditorComposite )
-    {
-        super( new AclWhatClauseFilter(), visualEditorComposite );
+        super( context, visualEditorComposite );
     }
 
 
@@ -76,16 +70,6 @@ public class WhatClauseFilterComposite extends AbstractClauseComposite<AclWhatCl
     /**
      * {@inheritDoc}
      */
-    public void setClause( AclWhatClauseFilter clause )
-    {
-        super.setClause( clause );
-        setInput();
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
     public void setConnection( IBrowserConnection connection )
     {
         super.setConnection( connection );
@@ -98,9 +82,11 @@ public class WhatClauseFilterComposite extends AbstractClauseComposite<AclWhatCl
         if ( filterWidget != null )
         {
             filterWidget.setBrowserConnection( connection );
-            if ( clause != null )
+            AclWhatClauseFilter aclWhatClauseFilter = context.getAclItem().getWhatClause().getFilterClause();
+            
+            if ( aclWhatClauseFilter != null )
             {
-                String filter = clause.getFilter();
+                String filter = aclWhatClauseFilter.getFilter();
                 filterWidget.setFilter( ( filter != null ) ? filter : "" );
             }
             else

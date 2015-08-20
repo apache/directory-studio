@@ -30,11 +30,8 @@ import org.eclipse.swt.widgets.Composite;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class AbstractClauseComposite<C> implements ClauseComposite<C>
+public abstract class AbstractClauseComposite implements ClauseComposite
 {
-    /** The clause */
-    protected C clause;
-
     /** The visual editor composite */
     protected Composite visualEditorComposite;
 
@@ -58,10 +55,11 @@ public abstract class AbstractClauseComposite<C> implements ClauseComposite<C>
      *
      * @param clause the clause
      */
-    public AbstractClauseComposite( C clause, Composite visualEditorComposite )
+    public AbstractClauseComposite( OpenLdapAclValueWithContext context, Composite visualEditorComposite )
     {
-        this.clause = clause;
+        this.context = context;
         this.visualEditorComposite = visualEditorComposite;
+        connection = context.getConnection();
     }
 
 
@@ -107,24 +105,6 @@ public abstract class AbstractClauseComposite<C> implements ClauseComposite<C>
     public void setConnection( IBrowserConnection connection )
     {
         this.connection = connection;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public C getClause()
-    {
-        return clause;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void setClause( C clause )
-    {
-        this.clause = clause;
     }
 
 

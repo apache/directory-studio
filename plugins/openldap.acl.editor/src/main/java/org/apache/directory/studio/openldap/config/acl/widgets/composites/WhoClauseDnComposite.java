@@ -33,6 +33,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.apache.directory.studio.openldap.config.acl.OpenLdapAclValueWithContext;
 import org.apache.directory.studio.openldap.config.acl.model.AclWhatClauseDnTypeEnum;
 import org.apache.directory.studio.openldap.config.acl.model.AclWhoClauseDn;
 import org.apache.directory.studio.openldap.config.acl.model.AclWhoClauseDnTypeEnum;
@@ -41,8 +42,7 @@ import org.apache.directory.studio.openldap.config.acl.model.AclWhoClauseDnTypeE
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class WhoClauseDnComposite extends AbstractClauseComposite<AclWhoClauseDn> implements
-    WhoClauseComposite<AclWhoClauseDn>
+public class WhoClauseDnComposite extends AbstractWhoClauseComposite<AclWhoClauseDn>
 {
     /** The array of DN who clause types */
     private static final AclWhoClauseDnTypeEnum[] aclWhoClauseDnTypes = new AclWhoClauseDnTypeEnum[]
@@ -68,15 +68,15 @@ public class WhoClauseDnComposite extends AbstractClauseComposite<AclWhoClauseDn
     };
 
 
-    public WhoClauseDnComposite( AclWhoClauseDn clause, Composite visualEditorComposite )
+    public WhoClauseDnComposite( OpenLdapAclValueWithContext context, AclWhoClauseDn clause, Composite visualEditorComposite )
     {
-        super( clause, visualEditorComposite );
+        super( context, clause, visualEditorComposite );
     }
 
 
-    public WhoClauseDnComposite( Composite visualEditorComposite )
+    public WhoClauseDnComposite( OpenLdapAclValueWithContext context, Composite visualEditorComposite )
     {
-        super( new AclWhoClauseDn(), visualEditorComposite );
+        super( context, new AclWhoClauseDn(), visualEditorComposite );
     }
 
 
@@ -153,11 +153,11 @@ public class WhoClauseDnComposite extends AbstractClauseComposite<AclWhoClauseDn
     {
         if ( entryWidget != null )
         {
-            if ( clause != null )
+            if ( whoClause != null )
             {
                 try
                 {
-                    entryWidget.setInput( connection, new Dn( clause.getPattern() ) );
+                    entryWidget.setInput( connection, new Dn( whoClause.getPattern() ) );
                 }
                 catch ( LdapInvalidDnException e )
                 {

@@ -21,7 +21,7 @@ package org.apache.directory.studio.openldap.config.acl.widgets.composites;
 
 
 import org.eclipse.swt.widgets.Composite;
-
+import org.apache.directory.studio.openldap.config.acl.OpenLdapAclValueWithContext;
 import org.apache.directory.studio.openldap.config.acl.model.AclWhoClauseStar;
 
 
@@ -29,17 +29,16 @@ import org.apache.directory.studio.openldap.config.acl.model.AclWhoClauseStar;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class WhoClauseStarComposite extends AbstractClauseComposite<AclWhoClauseStar> implements
-    WhoClauseComposite<AclWhoClauseStar>
+public class WhoClauseStarComposite extends AbstractWhoClauseComposite<AclWhoClauseStar>
 {
-    public WhoClauseStarComposite( AclWhoClauseStar clause, Composite visualEditorComposite )
+    public WhoClauseStarComposite( OpenLdapAclValueWithContext context, AclWhoClauseStar clause, Composite visualEditorComposite )
     {
-        super( clause, visualEditorComposite );
+        super( context, clause, visualEditorComposite );
     }
 
 
-    public WhoClauseStarComposite( Composite visualEditorComposite )
+    public WhoClauseStarComposite( OpenLdapAclValueWithContext context, Composite visualEditorComposite )
     {
-        super( new AclWhoClauseStar(), visualEditorComposite );
+        super( context, new AclWhoClauseStar(), visualEditorComposite );
     }
 }

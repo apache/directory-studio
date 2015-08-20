@@ -20,19 +20,54 @@
 package org.apache.directory.studio.openldap.config.acl.widgets.composites;
 
 
-import org.eclipse.swt.widgets.Composite;
 import org.apache.directory.studio.openldap.config.acl.OpenLdapAclValueWithContext;
-import org.apache.directory.studio.openldap.config.acl.model.AclWhatClauseStar;
+import org.eclipse.swt.widgets.Composite;
 
 
 /**
+ * A basic common abstract class implementing {@link ClauseComposite}.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class WhatClauseStarComposite extends AbstractClauseComposite
+public abstract class AbstractWhoClauseComposite<C> extends AbstractClauseComposite
 {
-    public WhatClauseStarComposite( OpenLdapAclValueWithContext context, AclWhatClauseStar clause, Composite visualEditorComposite )
+    /** The Who clause */
+    protected C whoClause;
+
+    /**
+     * Creates a new instance of AbstractClauseComposite.
+     */
+    public AbstractWhoClauseComposite()
+    {
+    }
+
+
+    /**
+     * Creates a new instance of AbstractClauseComposite.
+     *
+     * @param whoClause the clause
+     */
+    public AbstractWhoClauseComposite( OpenLdapAclValueWithContext context, C whoClause, Composite visualEditorComposite )
     {
         super( context, visualEditorComposite );
+        this.whoClause = whoClause;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public C getClause()
+    {
+        return whoClause;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setClause( C clause )
+    {
+        this.whoClause = clause;
     }
 }

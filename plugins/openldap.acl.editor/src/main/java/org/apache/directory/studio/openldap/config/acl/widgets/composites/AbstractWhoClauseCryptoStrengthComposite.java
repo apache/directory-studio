@@ -33,7 +33,7 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Spinner;
-
+import org.apache.directory.studio.openldap.config.acl.OpenLdapAclValueWithContext;
 import org.apache.directory.studio.openldap.config.acl.model.AbstractAclWhoClauseCryptoStrength;
 import org.apache.directory.studio.openldap.config.acl.widgets.AclWhoClauseSsfValuesEnum;
 
@@ -45,7 +45,7 @@ import org.apache.directory.studio.openldap.config.acl.widgets.AclWhoClauseSsfVa
  * @param <C>
  */
 public class AbstractWhoClauseCryptoStrengthComposite<C extends AbstractAclWhoClauseCryptoStrength> extends
-    AbstractClauseComposite<C> implements WhoClauseComposite<C>
+    AbstractWhoClauseComposite<C>
 {
     /** The array of SSF who clause values */
     private static final AclWhoClauseSsfValuesEnum[] aclWhoClauseSsfValues = new AclWhoClauseSsfValuesEnum[]
@@ -76,9 +76,9 @@ public class AbstractWhoClauseCryptoStrengthComposite<C extends AbstractAclWhoCl
      * @param clause the clause
      * @param visualEditorComposite the visual editor composite
      */
-    public AbstractWhoClauseCryptoStrengthComposite( C clause, Composite visualEditorComposite )
+    public AbstractWhoClauseCryptoStrengthComposite( OpenLdapAclValueWithContext context, C clause, Composite visualEditorComposite )
     {
-        super( clause, visualEditorComposite );
+        super( context, clause, visualEditorComposite );
     }
 
 

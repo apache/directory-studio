@@ -59,6 +59,26 @@ public enum AclAttributeStyleEnum
 
     
     /**
+     * Return an instance of AclAttributeStyleEnum from a String
+     * 
+     * @param name The feature's name
+     * @return The associated AclAttributeStyleEnum
+     */
+    public static AclAttributeStyleEnum getStyle( String name )
+    {
+        for ( AclAttributeStyleEnum style : values() )
+        {
+            if ( style.name.equalsIgnoreCase( name ) )
+            {
+                return style;
+            }
+        }
+        
+        return NONE;
+    }
+
+    
+    /**
      * @return An array with all the Enum value's name
      */
     public static String[] getNames()

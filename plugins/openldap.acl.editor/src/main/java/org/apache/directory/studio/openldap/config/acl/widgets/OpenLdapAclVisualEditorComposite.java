@@ -37,6 +37,26 @@ import org.apache.directory.studio.openldap.config.acl.model.AclItem;
  * <p>
  * It extends ScrolledComposite.
  * 
+ * <pre>
+ * .----------------(##Visual Editor##|  Source  )----------------.
+ * |                                                              |
+ * |  Access to "What"                                            |
+ * | .----------------------------------------------------------. |
+ * | |                                                          | |
+ * ...
+ * | |                                                          | |
+ * | `----------------------------------------------------------' |
+ * |  Access to "Who"                                             |
+ * | .----------------------------------------------------------. |
+ * | |                                                          | |
+ * ...
+ * | |                                                          | |
+ * | `----------------------------------------------------------' |
+ * |                                                              |
+ * |                                                              |
+ * `--------------------------------------------------------------'
+ * </pre>
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class OpenLdapAclVisualEditorComposite extends ScrolledComposite
@@ -53,8 +73,23 @@ public class OpenLdapAclVisualEditorComposite extends ScrolledComposite
 
 
     /**
-     * Creates a new instance of OpenLdapAclVisualEditorComposite.
+     * Creates a new instance of OpenLdapAclVisualEditorComposite. It contains
+     * the WhatClause and WhoClause widgets :
      *
+     * <pre>
+     *  Access to "What"
+     * .----------------------------------------------------------.
+     * |                                                          |
+     * ...
+     * |                                                          |
+     * `----------------------------------------------------------'
+     *  Access to "Who"
+     * .----------------------------------------------------------.
+     * |                                                          |
+     * ...
+     * |                                                          |
+     * `----------------------------------------------------------'
+     * </pre>
      * @param parent a widget which will be the parent of the new instance (cannot be null)
      * @param style the style of widget to construct
      */
@@ -65,43 +100,22 @@ public class OpenLdapAclVisualEditorComposite extends ScrolledComposite
         this.context = context;
 
         // Creating the composite
-        Composite composite = new Composite( this, SWT.NONE );
-        composite.setLayout( new GridLayout() );
-        composite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+        Composite visualEditorComposite = new Composite( this, SWT.NONE );
+        visualEditorComposite.setLayout( new GridLayout() );
+        visualEditorComposite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
-        // Creating the widgets
-        createWhatClauseWidget( composite );
-        createWhoClausesWidget( composite );
+        // Creating the WhatClause widget
+        whatClauseWidget = new OpenLdapAclWhatClauseWidget( this, visualEditorComposite, context );
+
+        // Creating the WhoClause widget
+        whoClausesBuilderWidget = new OpenLdapAclWhoClausesBuilderWidget( this, context );
+        whoClausesBuilderWidget.create( visualEditorComposite );
 
         // Configuring the composite
-        setContent( composite );
+        setContent( visualEditorComposite );
         setExpandHorizontal( true );
         setExpandVertical( true );
-        setMinSize( composite.computeSize( SWT.DEFAULT, SWT.DEFAULT ) );
-    }
-
-
-    /**
-     * Creates the "What" clause widget.
-     *
-     * @param parent the parent composite
-     */
-    private void createWhatClauseWidget( Composite parent )
-    {
-        whatClauseWidget = new OpenLdapAclWhatClauseWidget( this, context );
-        whatClauseWidget.create( parent );
-    }
-
-
-    /**
-     * Creates the "Who" clauses widget.
-     *
-     * @param parent the parent composite
-     */
-    private void createWhoClausesWidget( Composite parent )
-    {
-        whoClausesBuilderWidget = new OpenLdapAclWhoClausesBuilderWidget( this, context );
-        whoClausesBuilderWidget.create( parent );
+        setMinSize( visualEditorComposite.computeSize( SWT.DEFAULT, SWT.DEFAULT ) );
     }
 
 
