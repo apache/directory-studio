@@ -20,8 +20,8 @@
 package org.apache.directory.studio.openldap.config.editor.dialogs;
 
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import org.apache.directory.studio.common.ui.AddEditDialog;
@@ -176,9 +176,9 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
 
             try
             {
-                URL newUrl = new URL( listenerText.getText() );
+                URI newUri = new URI( listenerText.getText() );
 
-                getEditedElement().setListener( newUrl );
+                getEditedElement().setListener( newUri );
                 listenerText.setForeground( display.getSystemColor( SWT.COLOR_BLACK ) );
                 tcpBufferText.setText( getEditedElement().toString() );
                 
@@ -193,7 +193,7 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
                     okButton.setEnabled( false );
                 }
             }
-            catch ( MalformedURLException mue )
+            catch ( URISyntaxException mue )
             {
                 listenerText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
                 tcpBufferText.setText( getEditedElement().toString() );
@@ -381,7 +381,7 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
         {
             sizeText.setText( Long.toString( editedElement.getSize() ) );
             
-            URL listener =  editedElement.getListener();
+            URI listener =  editedElement.getListener();
             
             if ( listener == null )
             {

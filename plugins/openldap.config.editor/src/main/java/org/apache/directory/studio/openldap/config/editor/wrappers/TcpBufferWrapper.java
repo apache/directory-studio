@@ -20,6 +20,8 @@
 package org.apache.directory.studio.openldap.config.editor.wrappers;
 
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.apache.directory.api.util.Strings;
@@ -58,7 +60,7 @@ public class TcpBufferWrapper implements Cloneable, Comparable<TcpBufferWrapper>
     }
     
     /** The TCP listener (optional) */
-    private URL listener;
+    private URI listener;
 
     /** The type of TCP buffer (either read or write, or both ) (optional) */
     private TcpTypeEnum tcpType;
@@ -83,9 +85,9 @@ public class TcpBufferWrapper implements Cloneable, Comparable<TcpBufferWrapper>
         {
             try
             {
-                listener = new URL( url );
+                listener = new URI( url );
             }
-            catch ( MalformedURLException e )
+            catch ( URISyntaxException e )
             {
                 e.printStackTrace();
             }
@@ -121,9 +123,9 @@ public class TcpBufferWrapper implements Cloneable, Comparable<TcpBufferWrapper>
                     
                     try
                     {
-                        this.setListener( new URL( urlStr ) );
+                        this.setListener( new URI( urlStr ) );
                     }
-                    catch ( MalformedURLException e )
+                    catch ( URISyntaxException e )
                     {
                         e.printStackTrace();
                     }
@@ -174,7 +176,7 @@ public class TcpBufferWrapper implements Cloneable, Comparable<TcpBufferWrapper>
     /**
      * @return the listener
      */
-    public URL getListener()
+    public URI getListener()
     {
         return listener;
     }
@@ -183,7 +185,7 @@ public class TcpBufferWrapper implements Cloneable, Comparable<TcpBufferWrapper>
     /**
      * @param listener the listener to set
      */
-    public void setListener( URL listener )
+    public void setListener( URI listener )
     {
         this.listener = listener;
     }
