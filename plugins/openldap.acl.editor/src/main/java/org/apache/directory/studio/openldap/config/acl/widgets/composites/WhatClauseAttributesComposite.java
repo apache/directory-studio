@@ -20,14 +20,9 @@
 package org.apache.directory.studio.openldap.config.acl.widgets.composites;
 
 
-import java.util.List;
-
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
-import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.eclipse.swt.widgets.Composite;
 import org.apache.directory.studio.openldap.config.acl.OpenLdapAclValueWithContext;
-import org.apache.directory.studio.openldap.config.acl.model.AclAttribute;
 import org.apache.directory.studio.openldap.config.acl.model.AclWhatClause;
 import org.apache.directory.studio.openldap.config.acl.model.AclWhatClauseAttributes;
 import org.apache.directory.studio.openldap.config.acl.widgets.AttributesWidget;
