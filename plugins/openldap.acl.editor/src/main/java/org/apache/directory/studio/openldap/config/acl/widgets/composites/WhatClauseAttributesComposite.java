@@ -20,17 +20,12 @@
 package org.apache.directory.studio.openldap.config.acl.widgets.composites;
 
 
-import java.util.Arrays;
 import java.util.List;
 
-import org.apache.directory.api.ldap.model.schema.AttributeType;
-import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
-import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
 import org.apache.directory.studio.openldap.config.acl.OpenLdapAclValueWithContext;
 import org.apache.directory.studio.openldap.config.acl.model.AclAttribute;
 import org.apache.directory.studio.openldap.config.acl.model.AclWhatClause;
@@ -61,43 +56,6 @@ public class WhatClauseAttributesComposite extends AbstractClauseComposite
 {
     /** The attributes widget */
     private AttributesWidget attributesWidget;
-
-    /** 
-     * The modify listener. We update the AclWhatClause attributes with what's inside the 
-     * Attribute widget (ie, we add the new attributes).
-     * Note that some attributes might be prefixed by '!' or '@'.
-     **/
-    private WidgetModifyListener modifyListener = new WidgetModifyListener()
-    {
-        public void widgetModified( WidgetModifyEvent event )
-        {
-            // Get the clause attributes and convert them to attributeTypes
-            List<AclAttribute> existingAttributes = null;//getClause().getAttributes();
-            //List<AttributeType> existingAttributeType = convertToAttributeTypes( existingAttributes );
-            
-            // Get the added attributes
-            List<AclAttribute> attributes = attributesWidget.getAttributes();
-            
-            //getClause().addAllAttributes( attributes );
-            AclWhatClause aclWhatClause = context.getAclItem().getWhatClause();
-            AclWhatClauseAttributes whatClauseAttributes = aclWhatClause.getAttributesClause();
-            
-            if ( whatClauseAttributes == null )
-            {
-                whatClauseAttributes = new AclWhatClauseAttributes();
-            }
-            else 
-            {
-                for ( AclAttribute attribute : whatClauseAttributes.getAttributes() )
-                {
-                }
-            }
-            
-            whatClauseAttributes.addAllAttributes( attributes );
-            aclWhatClause.setAttributesClause( whatClauseAttributes );
-        }
-    };
-
 
     /**
      * Create a WhatClauseAttributesComposite instance
@@ -136,7 +94,6 @@ public class WhatClauseAttributesComposite extends AbstractClauseComposite
         // The Attribute widget
         BaseWidgetUtils.createLabel( whatComposite, "", 1 );
         attributesWidget = new AttributesWidget();
-        attributesWidget.createWidget( whatComposite, connection, aclWhatClause.getAttributesClause() );
-        attributesWidget.addWidgetModifyListener( modifyListener );
+        attributesWidget.createWidget( context, whatComposite, connection, aclWhatClause.getAttributesClause() );
     }
 }
