@@ -24,6 +24,7 @@ import java.text.ParseException;
 
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.openldap.config.acl.dialogs.OpenLdapAclDialog;
 import org.apache.directory.studio.openldap.config.acl.model.AclItem;
 import org.apache.directory.studio.openldap.config.acl.model.OpenLdapAclParser;
 
@@ -51,6 +52,9 @@ public class OpenLdapAclValueWithContext
     /** The ACL instance */
     private AclItem aclItem;
     
+    /** A reference to the ACL dialog */
+    private OpenLdapAclDialog aclDialog;
+
     /** The ACL parser */
     private static final OpenLdapAclParser parser = new OpenLdapAclParser();
 
@@ -136,6 +140,25 @@ public class OpenLdapAclValueWithContext
         return aclItem;
     }
     
+
+    
+    /**
+     * @return the aclDialog
+     */
+    public OpenLdapAclDialog getAclDialog()
+    {
+        return aclDialog;
+    }
+
+
+    /**
+     * @param aclDialog the aclDialog to set
+     */
+    public void setAclDialog( OpenLdapAclDialog aclDialog )
+    {
+        this.aclDialog = aclDialog;
+    }
+
 
     /**
      * {@inheritDoc}
