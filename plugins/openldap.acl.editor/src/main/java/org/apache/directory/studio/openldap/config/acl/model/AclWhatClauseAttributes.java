@@ -223,8 +223,9 @@ public class AclWhatClauseAttributes
                 sb.append( aclAttributeVal.getStyle().getName() );
             }
             
-            sb.append( '=' );
+            sb.append( "=\"" );
             sb.append( aclAttributeVal.getValue() );
+            sb.append( '"' );
         }
 
         return sb.toString();
