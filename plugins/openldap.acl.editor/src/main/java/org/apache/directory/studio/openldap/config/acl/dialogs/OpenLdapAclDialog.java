@@ -116,6 +116,7 @@ public class OpenLdapAclDialog extends Dialog
         super( parentShell );
         super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
         this.context = context;
+        context.setAclDialog( this );
     }
 
 
@@ -192,6 +193,15 @@ public class OpenLdapAclDialog extends Dialog
             ErrorDialog.openError( getShell(), "Syntax Error", null, status );
         }
     }
+    
+    
+    /**
+     * Return the OK button instance
+     */
+    public Button getOKButton()
+    {
+        return getButton( IDialogConstants.OK_ID );
+    }
 
 
     /**
@@ -225,7 +235,7 @@ public class OpenLdapAclDialog extends Dialog
      * 
      * <pre>
      * +-----------------------------------------+
-     * | [ ] Preference : [---] 8                |
+     * | [ ] Precedence : [---] 8                |
      * +-----------------------------------------+
      * </pre>
      * @param parent the parent composite
