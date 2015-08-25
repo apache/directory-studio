@@ -89,6 +89,6 @@ public class WhatClauseAttributesComposite extends AbstractClauseComposite
         // The Attribute widget
         BaseWidgetUtils.createLabel( whatComposite, "", 1 );
         attributesWidget = new AttributesWidget();
-        attributesWidget.createWidget( context, whatComposite, connection, aclWhatClause.getAttributesClause() );
+        attributesWidget.createWidget( whatComposite, connection, aclWhatClause.getAttributesClause() );
     }
 }
