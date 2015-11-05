@@ -141,10 +141,10 @@ public class LogOperationsWidget extends AbstractWidget
         allOperationsCheckbox = BaseWidgetUtils.createCheckbox( composite, "All operations", 3 );
 
         // Write Operations Checkbox
-        writeOperationsCheckbox = BaseWidgetUtils.createCheckbox( composite, "Read operations", 1 );
+        writeOperationsCheckbox = BaseWidgetUtils.createCheckbox( composite, "Write operations", 1 );
 
         // Read Operations Checkbox
-        readOperationsCheckbox = BaseWidgetUtils.createCheckbox( composite, "Write operations", 1 );
+        readOperationsCheckbox = BaseWidgetUtils.createCheckbox( composite, "Read operations", 1 );
 
         // Session Operations Checkbox
         sessionOperationsCheckbox = BaseWidgetUtils.createCheckbox( composite, "Session operations", 1 );
