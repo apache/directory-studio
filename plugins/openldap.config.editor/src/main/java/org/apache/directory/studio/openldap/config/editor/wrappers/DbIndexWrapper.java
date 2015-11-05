@@ -96,6 +96,7 @@ public class DbIndexWrapper implements Cloneable, Comparable<DbIndexWrapper>
                 if ( "default".equalsIgnoreCase( attrStr ) )
                 {
                     isDefault = true;
+                    startPos = pos + 1;
                     break;
                 }
                 
@@ -113,7 +114,7 @@ public class DbIndexWrapper implements Cloneable, Comparable<DbIndexWrapper>
             }
         }
         
-        // If the 'default' special attribute si presetn, we can discard all the other attributes
+        // If the 'default' special attribute is present, we can discard all the other attributes
         if ( isDefault )
         {
             attributes.clear();
@@ -136,16 +137,26 @@ public class DbIndexWrapper implements Cloneable, Comparable<DbIndexWrapper>
                     // Check if we have this indexType
                     DbIndexTypeEnum indexType = DbIndexTypeEnum.getIndexType( indexTypeName );
                     
-                    if ( indexType == DbIndexTypeEnum.NONE )
-                    {
-                        // This is an error, ignore it.
-                    }
-                    else
+                    if ( indexType != DbIndexTypeEnum.NONE )
                     {
                         indexTypes.add( indexType );
                     }
                     
                     startPos = pos + 1;
+                }
+            }
+            
+            if ( pos != startPos )
+            {
+                // Search for the index type
+                String indexTypeName = indexStr.substring( startPos, pos );
+                
+                // Check if we have this indexType
+                DbIndexTypeEnum indexType = DbIndexTypeEnum.getIndexType( indexTypeName );
+                
+                if ( indexType != DbIndexTypeEnum.NONE )
+                {
+                    indexTypes.add( indexType );
                 }
             }
         }
@@ -296,12 +307,12 @@ public class DbIndexWrapper implements Cloneable, Comparable<DbIndexWrapper>
     {
         StringBuilder sb = new StringBuilder();
         
-        // first, the Attribute, if it's not dafault
+        // first, the Attribute, if it's not default
         if ( isDefault )
         {
             if ( indexTypes.size() == 0 )
             {
-                // No types either ? retrun a blank String
+                // No types either ? return a blank String
                 return "";
             }
             
