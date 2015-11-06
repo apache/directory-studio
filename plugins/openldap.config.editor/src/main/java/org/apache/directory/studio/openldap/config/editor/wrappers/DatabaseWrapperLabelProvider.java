@@ -22,7 +22,6 @@ package org.apache.directory.studio.openldap.config.editor.wrappers;
 import java.util.List;
 
 import org.apache.directory.api.ldap.model.name.Dn;
-import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.common.ui.CommonUIConstants;
 import org.apache.directory.studio.openldap.common.ui.model.DatabaseTypeEnum;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPlugin;
@@ -143,16 +142,16 @@ public class DatabaseWrapperLabelProvider extends StyledCellLabelProvider
         if ( database != null )
         {
             String databaseType = OpenLdapConfigurationPluginUtils.stripOrderingPrefix( database.getOlcDatabase() );
-
-            DatabaseTypeEnum databasetype = DatabaseTypeEnum.valueOf( Strings.toUpperCase( databaseType ) );
+            
+            DatabaseTypeEnum databasetype = DatabaseTypeEnum.getDatabaseType( databaseType );
             
             if ( databaseType != null )
             {
-                return databasetype.getName();
+                return databasetype.name();
             }
             else
             {
-                return DatabaseTypeEnum.NONE.getName();
+                return DatabaseTypeEnum.NONE.name();
             }
         }
 
