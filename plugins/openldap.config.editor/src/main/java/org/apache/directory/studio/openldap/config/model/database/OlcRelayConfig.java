@@ -21,7 +21,7 @@ package org.apache.directory.studio.openldap.config.model.database;
 
 
 import org.apache.directory.api.ldap.model.name.Dn;
-import org.apache.directory.studio.openldap.config.editor.databases.DatabaseTypeEnum;
+import org.apache.directory.studio.openldap.common.ui.model.DatabaseTypeEnum;
 import org.apache.directory.studio.openldap.config.model.ConfigurationElement;
 
 

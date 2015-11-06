@@ -24,10 +24,10 @@ import java.util.List;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.common.ui.CommonUIConstants;
+import org.apache.directory.studio.openldap.common.ui.model.DatabaseTypeEnum;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPlugin;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginConstants;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginUtils;
-import org.apache.directory.studio.openldap.config.editor.databases.DatabaseTypeEnum;
 import org.apache.directory.studio.openldap.config.model.database.OlcDatabaseConfig;
 import org.eclipse.jface.viewers.StyledCellLabelProvider;
 import org.eclipse.jface.viewers.StyledString;
@@ -102,8 +102,11 @@ public class DatabaseWrapperLabelProvider extends StyledCellLabelProvider
         if ( element instanceof DatabaseWrapper ) 
         {
             DatabaseWrapper database = (DatabaseWrapper) element;
+            OlcDatabaseConfig databaseConfig = database.getDatabase();
+            String databaseType = getDatabaseType( databaseConfig );
+            String databaseSuffix = getSuffix( databaseConfig );
 
-            String databaseName = getDatabaseType( database.getDatabase() ) + " (" + getSuffix( database.getDatabase() ) + ")";
+            String databaseName = new StringBuilder( databaseType ).append( " (" ).append( databaseSuffix ).append( ")" ).toString();
             
             // the olcDisabled AT is only present in 2.5
             // TODO : check with the schemaManager

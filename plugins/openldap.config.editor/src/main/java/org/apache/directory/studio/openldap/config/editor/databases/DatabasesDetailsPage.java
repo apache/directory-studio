@@ -34,6 +34,7 @@ import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.common.ui.wrappers.StringValueWrapper;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.openldap.common.ui.model.DatabaseTypeEnum;
 import org.apache.directory.studio.openldap.common.ui.model.RequireConditionEnum;
 import org.apache.directory.studio.openldap.common.ui.model.RestrictOperationEnum;
 import org.apache.directory.studio.openldap.common.ui.widgets.BooleanWithDefaultWidget;
@@ -327,7 +328,7 @@ public class DatabasesDetailsPage implements IDetailsPage
     // UI widgets
     private Composite parentComposite;
     private FormToolkit toolkit;
-    private ComboViewer databaseTypeComboViewer;
+    //private ComboViewer databaseTypeComboViewer;
     
     // UI General sesstings widgets
     /** The olcSuffixDN attribute */
@@ -566,7 +567,7 @@ public class DatabasesDetailsPage implements IDetailsPage
 
     /**
      * The listener that manage the specific database parameters
-     */
+     *
     private ISelectionChangedListener databaseTypeComboViewerSelectionChangedListener = new ISelectionChangedListener()
     {
         public void selectionChanged( SelectionChangedEvent event )
@@ -1624,7 +1625,7 @@ public class DatabasesDetailsPage implements IDetailsPage
             // the two specific Database (Frontend and Config)
             if ( isFrontendDatabase( database ) )
             {
-                databaseTypeComboViewer.getControl().setEnabled( false );
+                //databaseTypeComboViewer.getControl().setEnabled( false );
                 suffixDnTableWidget.disable();
                 rootDnEntryWidget.setEnabled( false );
                 rootPasswordWidget.setEnabled( false );
@@ -1646,7 +1647,7 @@ public class DatabasesDetailsPage implements IDetailsPage
             }
             else if ( isConfigDatabase( database ) )
             {
-                databaseTypeComboViewer.getControl().setEnabled( false );
+                //databaseTypeComboViewer.getControl().setEnabled( false );
                 suffixDnTableWidget.enable();
                 rootDnEntryWidget.setEnabled( true );
                 rootPasswordWidget.setEnabled( true );
@@ -1761,16 +1762,16 @@ public class DatabasesDetailsPage implements IDetailsPage
             // OlcHdbConfig Type
             if ( database instanceof OlcHdbConfig )
             {
-                databaseTypeComboViewer.setInput( DatabaseTypeEnum.values() );
-                databaseTypeComboViewer.setSelection( new StructuredSelection( DatabaseTypeEnum.HDB ) );
+                //databaseTypeComboViewer.setInput( DatabaseTypeEnum.values() );
+                //databaseTypeComboViewer.setSelection( new StructuredSelection( DatabaseTypeEnum.HDB ) );
                 databaseSpecificDetailsBlock = new BerkeleyDbDatabaseSpecificDetailsBlock<OlcHdbConfig>( instance,
                     ( OlcHdbConfig ) database, browserConnection );
             }
             // OlcBdbConfig Type
             else if ( database instanceof OlcBdbConfig )
             {
-                databaseTypeComboViewer.setInput( DatabaseTypeEnum.values() );
-                databaseTypeComboViewer.setSelection( new StructuredSelection( DatabaseTypeEnum.BDB ) );
+                //databaseTypeComboViewer.setInput( DatabaseTypeEnum.values() );
+                //databaseTypeComboViewer.setSelection( new StructuredSelection( DatabaseTypeEnum.BDB ) );
                 databaseSpecificDetailsBlock = new BerkeleyDbDatabaseSpecificDetailsBlock<OlcBdbConfig>( instance,
                     ( OlcBdbConfig ) database, browserConnection );
             }
@@ -1785,24 +1786,24 @@ public class DatabasesDetailsPage implements IDetailsPage
             // OlcLdifConfig Type
             else if ( database instanceof OlcLdifConfig )
             {
-                databaseTypeComboViewer.setInput( DatabaseTypeEnum.values() );
-                databaseTypeComboViewer.setSelection( new StructuredSelection( DatabaseTypeEnum.LDIF ) );
+                //databaseTypeComboViewer.setInput( DatabaseTypeEnum.values() );
+                //databaseTypeComboViewer.setSelection( new StructuredSelection( DatabaseTypeEnum.LDIF ) );
                 databaseSpecificDetailsBlock = new LdifDatabaseSpecificDetailsBlock( instance,
                     ( OlcLdifConfig ) database );
             }
             // OlcNullConfig Type
             else if ( database instanceof OlcNullConfig )
             {
-                databaseTypeComboViewer.setInput( DatabaseTypeEnum.values() );
-                databaseTypeComboViewer.setSelection( new StructuredSelection( DatabaseTypeEnum.NULL ) );
+                //databaseTypeComboViewer.setInput( DatabaseTypeEnum.values() );
+                //databaseTypeComboViewer.setSelection( new StructuredSelection( DatabaseTypeEnum.NULL ) );
                 databaseSpecificDetailsBlock = new NullDatabaseSpecificDetailsBlock( instance,
                     ( OlcNullConfig ) database );
             }
             // OlcRelayConfig Type
             else if ( database instanceof OlcRelayConfig )
             {
-                databaseTypeComboViewer.setInput( DatabaseTypeEnum.values() );
-                databaseTypeComboViewer.setSelection( new StructuredSelection( DatabaseTypeEnum.RELAY ) );
+                //databaseTypeComboViewer.setInput( DatabaseTypeEnum.values() );
+                //databaseTypeComboViewer.setSelection( new StructuredSelection( DatabaseTypeEnum.RELAY ) );
                 databaseSpecificDetailsBlock = new RelayDatabaseSpecificDetailsBlock( instance,
                     ( OlcRelayConfig ) database, browserConnection );
             }
@@ -1812,23 +1813,23 @@ public class DatabasesDetailsPage implements IDetailsPage
                 // Looking for the frontend database
                 if ( isFrontendDatabase( database ) )
                 {
-                    databaseTypeComboViewer.setInput( FRONTEND_DATABASE_TYPES );
-                    databaseTypeComboViewer.setSelection( new StructuredSelection( DatabaseTypeEnum.FRONTEND ) );
+                    //databaseTypeComboViewer.setInput( FRONTEND_DATABASE_TYPES );
+                    //databaseTypeComboViewer.setSelection( new StructuredSelection( DatabaseTypeEnum.FRONTEND ) );
                     databaseSpecificDetailsBlock = new FrontendDatabaseSpecificDetailsBlock( instance, database,
                         browserConnection );
                 }
                 // Looking for the config database
                 else if ( isConfigDatabase( database ) )
                 {
-                    databaseTypeComboViewer.setInput( CONFIG_DATABASE_TYPES );
-                    databaseTypeComboViewer.setSelection( new StructuredSelection( DatabaseTypeEnum.CONFIG ) );
+                    //databaseTypeComboViewer.setInput( CONFIG_DATABASE_TYPES );
+                    //databaseTypeComboViewer.setSelection( new StructuredSelection( DatabaseTypeEnum.CONFIG ) );
                     databaseSpecificDetailsBlock = null;
                 }
                 // Any other type of database
                 else
                 {
-                    databaseTypeComboViewer.setInput( DatabaseTypeEnum.values() );
-                    databaseTypeComboViewer.setSelection( new StructuredSelection( DatabaseTypeEnum.NONE ) );
+                    //databaseTypeComboViewer.setInput( DatabaseTypeEnum.values() );
+                    //databaseTypeComboViewer.setSelection( new StructuredSelection( DatabaseTypeEnum.NONE ) );
                     databaseSpecificDetailsBlock = null;
                 }
             }
@@ -1933,7 +1934,7 @@ public class DatabasesDetailsPage implements IDetailsPage
         addModifyListener( monitoringBooleanWithDefaultWidget, dirtyWidgetModifyListener );
         //maxDerefDepthText.addModifyListener( dirtyModifyListener );
 
-        addSelectionChangedListener( databaseTypeComboViewer, databaseTypeComboViewerSelectionChangedListener );
+        //addSelectionChangedListener( databaseTypeComboViewer, databaseTypeComboViewerSelectionChangedListener );
 
         addDoubleClickListener( overlaysTableViewer, overlaysTableViewerDoubleClickListener );
         addSelectionChangedListener( overlaysTableViewer, overlaysTableViewerSelectionChangedListener );
@@ -1983,7 +1984,7 @@ public class DatabasesDetailsPage implements IDetailsPage
         removeModifyListener( monitoringBooleanWithDefaultWidget, dirtyWidgetModifyListener );
         //maxDerefDepthText.removeModifyListener( dirtyModifyListener );
 
-        removeSelectionChangedListener( databaseTypeComboViewer, databaseTypeComboViewerSelectionChangedListener );
+        //removeSelectionChangedListener( databaseTypeComboViewer, databaseTypeComboViewerSelectionChangedListener );
 
         removeDoubleClickListener( overlaysTableViewer, overlaysTableViewerDoubleClickListener );
         removeSelectionChangedListener( overlaysTableViewer, overlaysTableViewerSelectionChangedListener );
