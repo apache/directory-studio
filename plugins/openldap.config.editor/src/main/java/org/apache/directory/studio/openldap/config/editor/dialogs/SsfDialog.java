@@ -90,7 +90,7 @@ import org.eclipse.swt.widgets.Text;
  * | '-------------------------------------------' |
  * |                                               |
  * |  (Cancel)                              (OK)   |
- *-------------------------------------------------+
+ * +-----------------------------------------------+
  * </pre>
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -366,7 +366,7 @@ public class SsfDialog extends AddEditDialog<SsfWrapper>
      * | '-------------------------------------------' |
      * |                                               |
      * |  (Cancel)                              (OK)   |
-     *-------------------------------------------------+
+     * +-----------------------------------------------+
      * </pre>
      */
     protected Control createDialogArea( Composite parent )
