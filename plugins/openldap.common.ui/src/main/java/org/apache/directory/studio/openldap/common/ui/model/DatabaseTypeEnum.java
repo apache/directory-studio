@@ -68,9 +68,6 @@ public enum DatabaseTypeEnum
     /** Hierarchical Berkeley DB */
     HDB("HDB (Hierarchical Berkeley DB)"),
 
-    /** Memory-Mapped DB */
-    MDB("MDB (Memory-Mapped DB)"),
-
     /** LDAP DB*/
     LDAP("LDAP DB"),
 
@@ -79,6 +76,9 @@ public enum DatabaseTypeEnum
 
     /** META DB*/
     META("META DB"),
+
+    /** Memory-Mapped DB */
+    MDB("MDB (Memory-Mapped DB)"),
 
     /** MONITOR DB*/
     MONITOR("MONITOR DB"),
