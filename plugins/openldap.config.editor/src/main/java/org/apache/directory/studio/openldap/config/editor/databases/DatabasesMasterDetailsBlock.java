@@ -26,14 +26,32 @@ import java.util.List;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.openldap.common.ui.model.DatabaseTypeEnum;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginUtils;
 import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
+import org.apache.directory.studio.openldap.config.editor.dialogs.DatabaseTypeDialog;
 import org.apache.directory.studio.openldap.config.editor.pages.DatabasesPage;
 import org.apache.directory.studio.openldap.config.editor.wrappers.DatabaseWrapper;
 import org.apache.directory.studio.openldap.config.editor.wrappers.DatabaseWrapperLabelProvider;
 import org.apache.directory.studio.openldap.config.editor.wrappers.DatabaseWrapperViewerSorter;
+import org.apache.directory.studio.openldap.config.model.database.OlcBdbConfig;
 import org.apache.directory.studio.openldap.config.model.database.OlcDatabaseConfig;
+import org.apache.directory.studio.openldap.config.model.database.OlcDbPerlConfig;
+import org.apache.directory.studio.openldap.config.model.database.OlcDbSocketConfig;
+import org.apache.directory.studio.openldap.config.model.database.OlcHdbConfig;
+import org.apache.directory.studio.openldap.config.model.database.OlcLDAPConfig;
+import org.apache.directory.studio.openldap.config.model.database.OlcLdifConfig;
+import org.apache.directory.studio.openldap.config.model.database.OlcMdbConfig;
+import org.apache.directory.studio.openldap.config.model.database.OlcMetaConfig;
+import org.apache.directory.studio.openldap.config.model.database.OlcMonitorConfig;
+import org.apache.directory.studio.openldap.config.model.database.OlcNdbConfig;
+import org.apache.directory.studio.openldap.config.model.database.OlcNullConfig;
+import org.apache.directory.studio.openldap.config.model.database.OlcPasswdConfig;
+import org.apache.directory.studio.openldap.config.model.database.OlcRelayConfig;
+import org.apache.directory.studio.openldap.config.model.database.OlcShellConfig;
+import org.apache.directory.studio.openldap.config.model.database.OlcSqlConfig;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -106,6 +124,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
 
     /** The button used to add a new Database */
     private Button addButton;
+    private DatabaseTypeDialog databaseTypeDialog;
 
     /** The button used to delete an existing Database */
     private Button deleteButton;
@@ -341,6 +360,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
         // Creating the button(s)
         addButton = toolkit.createButton( client, "Add", SWT.PUSH );
         addButton.setLayoutData( new GridData( SWT.FILL, SWT.BEGINNING, false, false ) );
+        databaseTypeDialog = new DatabaseTypeDialog( addButton.getShell() );
 
         deleteButton = toolkit.createButton( client, "Delete", SWT.PUSH );
         deleteButton.setEnabled( false );
@@ -408,8 +428,91 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
     {
         String newId = getNewId();
 
-        OlcDatabaseConfig database = new OlcDatabaseConfig();
-        database.setOlcDatabase( "{" + getNewOrderingValue() + "}" + newId );
+        OlcDatabaseConfig database = null;
+        DatabaseTypeEnum databaseTypeEnum = DatabaseTypeEnum.NONE;
+        
+        // Open the Dialog, and process the addition if it went fine
+        if ( databaseTypeDialog.open() == Dialog.OK )
+        {
+            databaseTypeEnum = databaseTypeDialog.getDatabaseType();
+            
+            switch ( databaseTypeEnum )
+            {
+                case BDB :
+                    database = new OlcBdbConfig();
+                    break;
+
+                case CONFIG :
+                    //database = new OlcConfig();
+                    break;
+                    
+                    
+                case DB_PERL :
+                    database = new OlcDbPerlConfig();
+                    break;
+                    
+                case DB_SOCKET :
+                    database = new OlcDbSocketConfig();
+                    break;
+                    
+                case FRONTEND :
+                    //database = new OlcFrontendConfig();
+                    break;
+                    
+                case HDB :
+                    database = new OlcHdbConfig();
+                    break;
+                    
+                case LDAP :
+                    database = new OlcLDAPConfig();
+                    break;
+                    
+                case LDIF :
+                    database = new OlcLdifConfig();
+                    break;
+                    
+                case MDB :
+                    database = new OlcMdbConfig();
+                    break;
+                    
+                case META :
+                    database = new OlcMetaConfig();
+                    break;
+                    
+                case MONITOR :
+                    database = new OlcMonitorConfig();
+                    break;
+                    
+                case NDB :
+                    database = new OlcNdbConfig();
+                    break;
+                    
+                case NULL :
+                    database = new OlcNullConfig();
+                    break;
+                    
+                case PASSWD :
+                    database = new OlcPasswdConfig();
+                    break;
+                    
+                case RELAY :
+                    database = new OlcRelayConfig();
+                    break;
+                    
+                case SHELL :
+                    database = new OlcShellConfig();
+                    break;
+                    
+                case SQL :
+                    database = new OlcSqlConfig();
+                    break;
+
+                default :
+                    break;
+            }
+        }
+
+        database.setOlcDatabase( "{" + getNewOrderingValue() + "}" + databaseTypeEnum.name() );
 
         try
         {

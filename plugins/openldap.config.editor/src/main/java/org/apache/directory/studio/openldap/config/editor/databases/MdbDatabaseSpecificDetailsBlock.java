@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.api.util.Strings;
+import org.apache.directory.studio.common.ui.CommonUIConstants;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.common.ui.widgets.TableWidget;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
@@ -35,10 +36,13 @@ import org.apache.directory.studio.openldap.config.model.database.OlcMdbConfig;
 import org.apache.directory.studio.openldap.common.ui.widgets.BooleanWithDefaultWidget;
 import org.apache.directory.studio.openldap.common.ui.widgets.DirectoryBrowserWidget;
 import org.apache.directory.studio.openldap.common.ui.widgets.UnixPermissionsWidget;
+import org.eclipse.jface.resource.FontDescriptor;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
@@ -205,8 +209,12 @@ public class MdbDatabaseSpecificDetailsBlock extends AbstractDatabaseSpecificDet
         databaseConfigurationComposite.setLayout( new GridLayout( 2, false ) );
         databaseConfigurationSection.setClient( databaseConfigurationComposite );
 
-        // Directory Text
-        toolkit.createLabel( databaseConfigurationComposite, Messages.getString( "OpenLDAPMDBConfiguration.Directory" ) );
+        // Directory Text. This is a MUST attribute (it will be red and bold)
+        Label olcDirectory = toolkit.createLabel( databaseConfigurationComposite, Messages.getString( "OpenLDAPMDBConfiguration.Directory" ) );
+        olcDirectory.setForeground( CommonUIConstants.RED_COLOR );
+        FontDescriptor boldDescriptor = FontDescriptor.createFrom( olcDirectory.getFont() ).setStyle( SWT.BOLD );
+        Font boldFont = boldDescriptor.createFont( olcDirectory.getDisplay() );
+        olcDirectory.setFont( boldFont );
         Composite directoryComposite = toolkit.createComposite( databaseConfigurationComposite );
         GridLayout directoryCompositeGridLayout = new GridLayout( 2, false );
         directoryCompositeGridLayout.marginHeight = directoryCompositeGridLayout.marginWidth = 0;
