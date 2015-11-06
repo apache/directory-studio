@@ -81,6 +81,9 @@ public class DatabaseTypeDialog extends Dialog
     // UI widgets
     private Combo databaseTypeCombo;
     
+    /** The selected Database type in the combo */
+    private DatabaseTypeEnum selectedDatabaseType;
+    
     /**
      * The listener in charge of exposing the changes when some buttons are checked
      */
@@ -96,6 +99,7 @@ public class DatabaseTypeDialog extends Dialog
                 Button okButton = getButton( IDialogConstants.OK_ID );
                 
                 DatabaseTypeEnum databaseType = DatabaseTypeEnum.getDatabaseType( databaseTypeCombo.getText() );
+                selectedDatabaseType = databaseType;
                 
                 okButton.setEnabled( databaseType != DatabaseTypeEnum.NONE );
             }
@@ -205,5 +209,14 @@ public class DatabaseTypeDialog extends Dialog
     private void addListeners()
     {
         databaseTypeCombo.addSelectionListener( databaseTypeSelectionListener );
+    }
+    
+    
+    /**
+     * @return The selected DatabaseType
+     */
+    public DatabaseTypeEnum getDatabaseType()
+    {
+        return selectedDatabaseType;
     }
 }
