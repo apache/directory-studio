@@ -492,6 +492,9 @@ public class LogLevelDialog extends Dialog
     }
     
     
+    /**
+     * @return The computed integer that codes for the selected LogLevels
+     */
     public int getLogLevelValue()
     {
         return logLevelValue;

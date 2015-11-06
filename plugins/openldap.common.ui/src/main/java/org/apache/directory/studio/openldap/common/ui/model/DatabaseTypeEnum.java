@@ -152,7 +152,7 @@ public enum DatabaseTypeEnum
     {
         for ( DatabaseTypeEnum databaseType : values() )
         {
-            if ( databaseType.name.equalsIgnoreCase( name ) )
+            if ( name.equalsIgnoreCase( databaseType.name() ) || name.equalsIgnoreCase( databaseType.getName() ) )
             {
                 return databaseType;
             }
