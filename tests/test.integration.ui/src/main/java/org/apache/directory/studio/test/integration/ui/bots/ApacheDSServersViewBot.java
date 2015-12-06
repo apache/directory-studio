@@ -211,7 +211,7 @@ public class ApacheDSServersViewBot
             {
                 return "Server " + serverName + " not started in servers view.";
             }
-        }, 20000 );
+        }, 60000 );
     }
 
 
@@ -241,7 +241,7 @@ public class ApacheDSServersViewBot
             {
                 return "Server " + serverName + " not stopped in servers view.";
             }
-        }, 10000 );
+        }, 30000 );
     }
 
 
