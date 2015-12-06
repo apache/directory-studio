@@ -16,6 +16,8 @@
    <launcherArgs>
       <programArgs>/studio-rcp/resources/icons/linux/studio.xpm
       </programArgs>
+      <vmArgs>-Dosgi.requiredJavaVersion=1.7
+      </vmArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
       </vmArgsMac>
    </launcherArgs>
