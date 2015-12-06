@@ -86,6 +86,14 @@ public class StudioBot
     }
 
 
+    public ConsoleViewBot getConsoleView()
+    {
+        ShowViewsBot showViewsBot = openShowViews();
+        showViewsBot.openView( "General", "Console" );
+        return new ConsoleViewBot();
+    }
+
+
     public void resetLdapPerspective()
     {
         resetPerspective( "org.apache.directory.studio.ldapbrowser.ui.perspective.BrowserPerspective" );

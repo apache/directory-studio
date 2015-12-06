@@ -407,16 +407,19 @@ public class ServerConfigurationEditorUtils
         {
             // create partiton
             AbstractLdifPartition configPartition;
-            
+
             if ( file.getName().equals( ApacheDS2ConfigurationPluginConstants.OU_CONFIG_LDIF ) )
             {
                 File confDir = file.getParentFile();
-                
-                if ( file.exists() )
+                File ouConfigLdifFile = new File( confDir, ApacheDS2ConfigurationPluginConstants.OU_CONFIG_LDIF );
+                File ouConfigDir = new File( confDir, ApacheDS2ConfigurationPluginConstants.OU_CONFIG );
+
+                if ( ouConfigLdifFile.exists() && ouConfigDir.exists() )
                 {
-                    FileUtils.deleteDirectory( confDir );
+                    ouConfigLdifFile.delete();
+                    FileUtils.deleteDirectory( ouConfigDir );
                 }
-                
+
                 configPartition = createMultiFileConfiguration( confDir, schemaManager, dnFactory, cacheService );
             }
             else

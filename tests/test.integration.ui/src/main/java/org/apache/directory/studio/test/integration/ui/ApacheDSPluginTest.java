@@ -21,6 +21,8 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -35,6 +37,7 @@ import org.apache.directory.studio.test.integration.ui.bots.ApacheDSConfiguratio
 import org.apache.directory.studio.test.integration.ui.bots.ApacheDSServersViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionFromServerDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
+import org.apache.directory.studio.test.integration.ui.bots.ConsoleViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.DeleteDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewApacheDSServerWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
@@ -57,6 +60,7 @@ public class ApacheDSPluginTest
     private StudioBot studioBot;
     private ApacheDSServersViewBot serversViewBot;
     private ConnectionsViewBot connectionsViewBot;
+    private ConsoleViewBot consoleViewBot;
 
 
     @Before
@@ -66,6 +70,7 @@ public class ApacheDSPluginTest
         studioBot.resetLdapPerspective();
         serversViewBot = studioBot.getApacheDSServersViewBot();
         connectionsViewBot = studioBot.getConnectionView();
+        consoleViewBot = studioBot.getConsoleView();
     }
 
 
@@ -89,6 +94,10 @@ public class ApacheDSPluginTest
         // Starting the server
         serversViewBot.runServer( serverName );
         serversViewBot.waitForServerStart( serverName );
+
+        // DIRSTUDIO-1077: Check for log output in console to verify logging configuration still works
+        String consoleText = consoleViewBot.getConsoleText();
+        assertThat( consoleText, containsString( "You didn't change the admin password" ) );
 
         // Verifying the connections count is 0
         assertEquals( 0, getBrowserConnectionsCount() );
