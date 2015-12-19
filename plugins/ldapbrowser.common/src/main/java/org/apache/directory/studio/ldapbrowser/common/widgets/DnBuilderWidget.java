@@ -221,7 +221,7 @@ public class DnBuilderWidget extends AbstractWidget implements ModifyListener
                     removeRdnLineListeners( i );
 
                     rdnLineList.get( i ).rdnTypeCombo.setText( ava.getType() );
-                    rdnLineList.get( i ).rdnValueText.setText( ava.getNormValue().getString() );
+                    rdnLineList.get( i ).rdnValueText.setText( (String)ava.getValue().getNormValue() );
 
                     addRdnLineListeners( i );
 
