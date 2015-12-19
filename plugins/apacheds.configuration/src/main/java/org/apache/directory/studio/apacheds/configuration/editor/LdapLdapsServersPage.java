@@ -2113,37 +2113,28 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
             // Check if we have a LDAP transport
             TransportBean transportBean = getLdapTransportBean( TRANSPORT_ID_LDAP );
             
-            if ( transportBean == null )
-            {
-                // No LDAP transport, check the LDAPS transport
-                transportBean = getLdapTransportBean( TRANSPORT_ID_LDAPS );
-            }
-            
-            if ( transportBean != null )
-            {
-                // Ok, process the enabled protocols now
-                List<String> enabledProtocols = transportBean.getEnabledProtocols();
+            // Ok, process the enabled protocols now
+            List<String> enabledProtocols = transportBean.getEnabledProtocols();
                 
-                if ( enabledProtocols != null )
+            if ( enabledProtocols != null )
+            {
+                for ( String enabledProtocol : transportBean.getEnabledProtocols() )
                 {
-                    for ( String enabledProtocol : transportBean.getEnabledProtocols() )
+                    if ( SSL_V3.equalsIgnoreCase( enabledProtocol ) )
                     {
-                        if ( SSL_V3.equalsIgnoreCase( enabledProtocol ) )
-                        {
-                            setSelection( sslv3Checkbox, true );
-                        }
-                        else if ( TLS_V1_0.equalsIgnoreCase( enabledProtocol ) )
-                        {
-                            setSelection( tlsv1_0Checkbox, true );
-                        }
-                        else if ( TLS_V1_1.equalsIgnoreCase( enabledProtocol ) )
-                        {
-                            setSelection( tlsv1_1Checkbox, true );
-                        }
-                        else if ( TLS_V1_2.equalsIgnoreCase( enabledProtocol ) )
-                        {
-                            setSelection( tlsv1_2Checkbox, true );
-                        }
+                        setSelection( sslv3Checkbox, true );
+                    }
+                    else if ( TLS_V1_0.equalsIgnoreCase( enabledProtocol ) )
+                    {
+                        setSelection( tlsv1_0Checkbox, true );
+                    }
+                    else if ( TLS_V1_1.equalsIgnoreCase( enabledProtocol ) )
+                    {
+                        setSelection( tlsv1_1Checkbox, true );
+                    }
+                    else if ( TLS_V1_2.equalsIgnoreCase( enabledProtocol ) )
+                    {
+                        setSelection( tlsv1_2Checkbox, true );
                     }
                 }
             }
