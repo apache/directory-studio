@@ -392,7 +392,8 @@ public class LdapServersUtils
         for ( String library : libraries )
         {
             File destinationLibraryFile = destinationLibrariesPath.append( library ).toFile();
-            if ( !destinationLibraryFile.exists() )
+            boolean newerFileExists = (bundle.getLastModified() > destinationLibraryFile.lastModified());
+            if ( !destinationLibraryFile.exists() || newerFileExists )
             {
                 try
                 {
