@@ -236,7 +236,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
                         IValue[] values = attribute.getValues();
                         for ( int v = 0; v < values.length; v++ )
                         {
-                            if ( values[v].getStringValue().equals( atav.getNormValue().getString() ) )
+                            if ( values[v].getStringValue().equals( atav.getValue().getNormValue() ) )
                             {
                                 attribute.deleteValue( values[v] );
                             }
@@ -295,7 +295,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
                         rdnAttribute = new Attribute( newEntry, atav.getType() );
                         newEntry.addAttribute( rdnAttribute );
                     }
-                    Object rdnValue = atav.getNormValue().getString();
+                    Object rdnValue = atav.getValue().getNormValue();
                     String[] stringValues = rdnAttribute.getStringValues();
                     if ( !Arrays.asList( stringValues ).contains( rdnValue ) )
                     {
