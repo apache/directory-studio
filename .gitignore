@@ -1,6 +1,7 @@
 .classpath
 .project
 .settings
+.pmd
 target/
 META-INF/
 eclipse-target-platform/eclipse-target-platform.target
