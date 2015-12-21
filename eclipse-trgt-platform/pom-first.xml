@@ -35,17 +35,12 @@
   <!-- Step 1: Define the Maven artifacts, that should be added to a P2 repository. -->
   <dependencies>
 
-    <!-- Logging jars -->
+    <!-- Exclude slf4j, reuse org.slf4j.api provided by Eclipse, see DIRSTUDIO-1068 -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
       <version>${org.slf4j.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>log4j-over-slf4j</artifactId>
-      <version>${org.slf4j.version}</version>
+      <scope>provided</scope>
     </dependency>
 
     <!-- Commons jars -->
@@ -71,6 +66,14 @@
       <groupId>commons-pool</groupId>
       <artifactId>commons-pool</artifactId>
       <version>${org.apache.commons.pool.version}</version>
+    </dependency>
+
+
+    <!-- Mina modules -->
+    <dependency>
+      <groupId>org.apache.mina</groupId>
+      <artifactId>mina-core</artifactId>
+      <version>${org.apache.mina.version}</version>
     </dependency>
 
     <!-- LDAP API modules -->
@@ -465,6 +468,7 @@
             </goals>
             <configuration>
               <outputDirectory>${project.basedir}/target/source/plugins</outputDirectory>
+              <excludeScope>provided</excludeScope>
             </configuration>
           </execution>
         </executions>

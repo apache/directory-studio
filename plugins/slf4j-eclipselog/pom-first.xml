@@ -46,7 +46,7 @@
           <instructions>
             <Bundle-SymbolicName>${project.artifactId};singleton:=true</Bundle-SymbolicName>
             <Bundle-Localization>plugin</Bundle-Localization>
-            <Fragment-Host>slf4j.api;bundle-version="[1.7.10,1.7.11)"</Fragment-Host>
+            <Fragment-Host>org.slf4j.api</Fragment-Host>
             
             <Export-Package>org.slf4j.impl</Export-Package>
             
@@ -54,7 +54,6 @@
             </Import-Package>
             
             <Require-Bundle>
- slf4j.api,
  org.slf4j.api,
  org.eclipse.core.runtime
             </Require-Bundle>
