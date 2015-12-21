@@ -266,4 +266,34 @@ public class ImportExportTest extends AbstractLdapTestUnit
         assertEquals( "Only 2 event firings expected when importing LDIF.", 2, fireCount );
     }
 
+
+    /**
+     * Export to CSV and checks that spreadsheet formulas are prefixed with an apostrophe.
+     */
+    @Test
+    public void testExportCsvShouldPrefixFormulaWithApostrophe() throws Exception
+    {
+        URL url = Platform.getInstanceLocation().getURL();
+        final String file = url.getFile() + "ImportExportTest.csv";
+        System.out.println( file );
+
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Wolfgang K\u00f6lbel" );
+
+        // export LDIF
+        ExportWizardBot wizardBot = browserViewBot.openExportCsvWizard();
+        assertTrue( wizardBot.isVisible() );
+        wizardBot.typeReturningAttributes( "cn, description" );
+        wizardBot.clickNextButton();
+        wizardBot.typeFile( file );
+        wizardBot.clickFinishButton();
+        wizardBot.waitTillExportFinished( file, 80 ); // is actually 86 bytes
+
+        List<String> lines = FileUtils.readLines( new File( file ) );
+        // verify that the first line is header
+        assertEquals( "dn,cn,description", lines.get( 0 ) );
+        // verify that the second line is actual content and the formula is prefixed with an apostrophe
+        assertEquals( "\"cn=Wolfgang K\u00f6lbel,ou=users,ou=system\",\"Wolfgang K\u00f6lbel\",\"'=1+1\"",
+            lines.get( 1 ) );
+    }
+
 }

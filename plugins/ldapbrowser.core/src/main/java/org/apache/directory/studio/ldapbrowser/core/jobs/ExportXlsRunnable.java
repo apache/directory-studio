@@ -46,6 +46,7 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
 import org.eclipse.core.runtime.Preferences;
 
 
@@ -151,7 +152,7 @@ public class ExportXlsRunnable implements StudioConnectionRunnableWithProgress
         {
             int cellNum = 0;
             attributeNameMap.put( "dn", cellNum ); //$NON-NLS-1$
-            headerRow.createCell( cellNum ).setCellValue( "dn" ); //$NON-NLS-1$
+            createStringCell( headerRow, cellNum ).setCellValue( "dn" ); //$NON-NLS-1$
         }
 
         // max export
@@ -289,7 +290,7 @@ public class ExportXlsRunnable implements StudioConnectionRunnableWithProgress
         HSSFRow row = sheet.createRow( sheet.getLastRowNum() + 1 );
         if ( exportDn )
         {
-            HSSFCell cell = row.createCell( 0 );
+            HSSFCell cell = createStringCell(row, 0 );
             cell.setCellValue( record.getDnLine().getValueAsString() );
         }
         for ( String attributeName : attributeMap.keySet() )
@@ -300,17 +301,26 @@ public class ExportXlsRunnable implements StudioConnectionRunnableWithProgress
             {
                 int cellNum = headerRowAttributeNameMap.size();
                 headerRowAttributeNameMap.put( attributeName, new Integer( cellNum ) );
-                HSSFCell cell = headerRow.createCell( cellNum );
+                HSSFCell cell = createStringCell( headerRow, cellNum );
                 cell.setCellValue( attributeName );
             }
 
             if ( headerRowAttributeNameMap.containsKey( attributeName ) )
             {
                 int cellNum = headerRowAttributeNameMap.get( attributeName ).shortValue();
-                HSSFCell cell = row.createCell( cellNum );
+                HSSFCell cell = createStringCell( row, cellNum );
                 cell.setCellValue( value );
             }
         }
 
     }
+
+
+    private static HSSFCell createStringCell( HSSFRow row, int cellNum )
+    {
+        HSSFCell cell = row.createCell( cellNum );
+        cell.setCellType( Cell.CELL_TYPE_STRING );
+        return cell;
+    }
+
 }

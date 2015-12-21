@@ -137,6 +137,13 @@ public class BrowserViewBot
     }
 
 
+    public ExportWizardBot openExportCsvWizard()
+    {
+        ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Export", "CSV Export..." );
+        return new ExportWizardBot( ExportWizardBot.EXPORT_CSV_TITLE );
+    }
+
+
     public ImportWizardBot openImportLdifWizard()
     {
         ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Import", "LDIF Import..." );

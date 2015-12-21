@@ -31,6 +31,7 @@ public class ExportWizardBot extends WizardBot
 {
     public static final String EXPORT_LDIF_TITLE = "LDIF Export";
     public static final String EXPORT_DSML_TITLE = "DSML Export";
+    public static final String EXPORT_CSV_TITLE = "CSV Export";
     private String title;
 
 
@@ -50,6 +51,12 @@ public class ExportWizardBot extends WizardBot
     public boolean isVisible()
     {
         return isVisible( title );
+    }
+
+
+    public void typeReturningAttributes( String returningAttributes )
+    {
+        bot.comboBoxWithLabel( "Returning Attributes:" ).setText( returningAttributes );
     }
 
 
