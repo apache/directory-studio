@@ -231,7 +231,7 @@ public class EntryEditorTest extends AbstractLdapTestUnit
             .selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\"" );
         entryEditorBot = studioBot.getEntryEditorBot( "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system" );
         entryEditorBot.activate();
-        assertEquals( 8, entryEditorBot.getAttributeValues().size() );
+        assertEquals( 9, entryEditorBot.getAttributeValues().size() );
 
         // paste value, wait till job is done
         JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__execute_ldif_name );
@@ -239,7 +239,7 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         watcher.waitUntilDone();
 
         // assert pasted value visible in editor
-        assertEquals( 9, entryEditorBot.getAttributeValues().size() );
+        assertEquals( 10, entryEditorBot.getAttributeValues().size() );
         entryEditorBot.getAttributeValues().contains( "uid: bjensen" );
 
         // assert pasted value was written to directory
