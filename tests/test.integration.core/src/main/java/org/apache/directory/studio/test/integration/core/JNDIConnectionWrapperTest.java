@@ -64,7 +64,8 @@ import org.junit.runner.RunWith;
  */
 @RunWith(FrameworkRunner.class)
 @CreateLdapServer(transports =
-    { @CreateTransport(protocol = "LDAP"), @CreateTransport(protocol = "LDAPS") })
+    { @CreateTransport(address = "0.0.0.0", protocol = "LDAP"),
+        @CreateTransport(address = "0.0.0.0", protocol = "LDAPS") })
 public class JNDIConnectionWrapperTest extends AbstractLdapTestUnit
 {
 
