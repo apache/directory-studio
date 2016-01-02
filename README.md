@@ -235,10 +235,10 @@ The update site https://svn.apache.org/repos/asf/directory/site/trunk/content/st
 
 In the following files
 
-* compositeArtifacts--xml.html
-* compositeContent--xml.html
-* product/compositeArtifacts--xml.html
-* product/compositeContent--xml.html
+* `compositeArtifacts--xml.html`
+* `compositeContent--xml.html`
+* `product/compositeArtifacts--xml.html`
+* `product/compositeContent--xml.html`
 
 change the location path to the new release and also update the `p2.timestamp` to the current timestamp milliseconds (hint: `date +%s000`)
 
@@ -246,9 +246,10 @@ change the location path to the new release and also update the `p2.timestamp` t
 
 Update news and download links
 
-* Versions in `lib/path.pm`
-* content/studio/changelog.mdtext
-* content/studio/news.mdtext
+* Versions (2x) in `lib/path.pm`
+* Version in `content/index.mdtext`
+* `content/studio/changelog.mdtext`
+* `content/studio/news.mdtext`
 
 #### User guides
 
