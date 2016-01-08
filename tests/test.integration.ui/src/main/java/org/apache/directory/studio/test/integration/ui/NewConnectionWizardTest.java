@@ -22,6 +22,7 @@ package org.apache.directory.studio.test.integration.ui;
 
 
 import static org.apache.directory.studio.test.integration.ui.Constants.LOCALHOST;
+import static org.apache.directory.studio.test.integration.ui.Constants.LOCALHOST_ADDRESS;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -390,7 +391,7 @@ public class NewConnectionWizardTest extends AbstractLdapTestUnit
         assertNull( "Expected OK", result1 );
 
         // enter connection parameter with IPv4 address
-        wizardBot.typeHost( InetAddress.getLocalHost().getHostAddress() );
+        wizardBot.typeHost( LOCALHOST_ADDRESS );
         wizardBot.typePort( ldapServer.getPort() );
 
         // click "Check Network Parameter" button

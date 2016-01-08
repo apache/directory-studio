@@ -21,6 +21,7 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
+import static org.apache.directory.studio.test.integration.ui.Constants.LOCALHOST;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -81,7 +82,7 @@ public class ReferralDialogTest extends AbstractLdapTestUnit
         entry.setDn( new Dn( "cn=referralDialogTest,ou=system" ) );
         entry.add( "objectClass", "top", "referral", "extensibleObject" );
         entry.add( "cn", "referralDialogTest" );
-        entry.add( "ref", "ldap://localhost:" + ldapServer.getPort() + "/ou=users,ou=system" );
+        entry.add( "ref", "ldap://" + LOCALHOST + ":" + ldapServer.getPort() + "/ou=users,ou=system" );
         service.getAdminSession().add( entry );
 
         // get paths
@@ -90,7 +91,8 @@ public class ReferralDialogTest extends AbstractLdapTestUnit
         referralPath = new String[]
             { "DIT", "Root DSE", "ou=system", "cn=referralDialogTest" };
         targetPath = new String[]
-            { "DIT", "Root DSE", "ou=system", "ldap://localhost:" + ldapServer.getPort() + "/ou=users,ou=system" };
+            { "DIT", "Root DSE", "ou=system",
+                "ldap://" + LOCALHOST + ":" + ldapServer.getPort() + "/ou=users,ou=system" };
     }
 
 

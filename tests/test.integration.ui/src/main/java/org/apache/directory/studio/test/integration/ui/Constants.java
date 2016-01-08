@@ -41,4 +41,19 @@ public final class Constants
         }
     }
 
+    public static final String LOCALHOST_ADDRESS = getLocalHostAddress();
+
+
+    private static String getLocalHostAddress()
+    {
+        try
+        {
+            return InetAddress.getLocalHost().getHostAddress();
+        }
+        catch ( UnknownHostException e )
+        {
+            return "localhost";
+        }
+    }
+
 }

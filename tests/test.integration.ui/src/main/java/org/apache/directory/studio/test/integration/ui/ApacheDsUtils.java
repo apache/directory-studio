@@ -21,6 +21,8 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
+import static org.apache.directory.studio.test.integration.ui.Constants.LOCALHOST;
+
 import java.util.Hashtable;
 
 import javax.naming.Context;
@@ -46,7 +48,7 @@ public class ApacheDsUtils
     {
         Hashtable<String, String> env = new Hashtable<String, String>();
         env.put( Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory" );
-        env.put( Context.PROVIDER_URL, "ldap://localhost:" + ldapServer.getPort() );
+        env.put( Context.PROVIDER_URL, "ldap://" + LOCALHOST + ":" + ldapServer.getPort() );
         env.put( Context.SECURITY_PRINCIPAL, "uid=admin,ou=system" );
         env.put( Context.SECURITY_CREDENTIALS, "secret" );
         env.put( Context.SECURITY_AUTHENTICATION, "simple" );

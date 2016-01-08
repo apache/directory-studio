@@ -21,6 +21,8 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
+import static org.apache.directory.studio.test.integration.ui.Constants.LOCALHOST;
+import static org.apache.directory.studio.test.integration.ui.Constants.LOCALHOST_ADDRESS;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -80,7 +82,7 @@ public class NewEntryWizardTest extends AbstractLdapTestUnit
         entry.setDn( new Dn( "cn=referral,ou=system" ) );
         entry.add( "objectClass", "top", "referral", "extensibleObject" );
         entry.add( "cn", "referralDialogTest" );
-        entry.add( "ref", "ldap://localhost:" + ldapServer.getPort() + "/ou=users,ou=system" );
+        entry.add( "ref", "ldap://"+LOCALHOST+":" + ldapServer.getPort() + "/ou=users,ou=system" );
         service.getAdminSession().add( entry );
 
         studioBot = new StudioBot();
@@ -414,12 +416,13 @@ public class NewEntryWizardTest extends AbstractLdapTestUnit
         wizardBot.setRdnType( 1, "cn" );
         wizardBot.setRdnValue( 1, "loopback" );
         wizardBot.setRdnType( 2, "ipHostNumber" );
-        wizardBot.setRdnValue( 2, "127.0.0.1" );
+        wizardBot.setRdnValue( 2, LOCALHOST_ADDRESS );
         wizardBot.clickNextButton();
 
         wizardBot.clickFinishButton();
 
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "cn=loopback+ipHostNumber=127.0.0.1" ) );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "cn=loopback+ipHostNumber=127.0.0.1" );
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system",
+            "cn=loopback+ipHostNumber=" + LOCALHOST_ADDRESS ) );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "cn=loopback+ipHostNumber=" + LOCALHOST_ADDRESS );
     }
 }

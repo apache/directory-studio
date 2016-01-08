@@ -21,6 +21,8 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
+import static org.apache.directory.studio.test.integration.ui.Constants.LOCALHOST;
+import static org.apache.directory.studio.test.integration.ui.Constants.LOCALHOST_ADDRESS;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -357,7 +359,7 @@ public class BrowserTest extends AbstractLdapTestUnit
     public void testRefreshSearchContinuation() throws Exception
     {
         // preparation: add referral entry and set referral handling
-        String url = "ldap://localhost:" + ldapServer.getPort() + "/ou=users,ou=system";
+        String url = "ldap://" + LOCALHOST + ":" + ldapServer.getPort() + "/ou=users,ou=system";
         Entry refEntry = new DefaultEntry( service.getSchemaManager() );
         refEntry.setDn( new Dn( "cn=referral,ou=system" ) );
         refEntry.add( "objectClass", "top", "referral", "extensibleObject" );
@@ -483,15 +485,16 @@ public class BrowserTest extends AbstractLdapTestUnit
 
         // create entry with multi-valued RDN containing an IP address value
         Entry entry = new DefaultEntry( service.getSchemaManager() );
-        entry.setDn( new Dn( "cn=loopback+ipHostNumber=127.0.0.1,ou=users,ou=system" ) );
+        entry.setDn( new Dn( "cn=loopback+ipHostNumber=" + LOCALHOST_ADDRESS + ",ou=users,ou=system" ) );
         entry.add( "objectClass", "top", "device", "ipHost" );
         entry.add( "cn", "loopback" );
-        entry.add( "ipHostNumber", "127.0.0.1" );
+        entry.add( "ipHostNumber", LOCALHOST_ADDRESS );
         ldapServer.getDirectoryService().getAdminSession().add( entry );
 
         assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users",
-            "cn=loopback+ipHostNumber=127.0.0.1" ) );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=loopback+ipHostNumber=127.0.0.1" );
+            "cn=loopback+ipHostNumber=" + LOCALHOST_ADDRESS ) );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users",
+            "cn=loopback+ipHostNumber=" + LOCALHOST_ADDRESS );
     }
 
 
