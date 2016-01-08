@@ -20,6 +20,8 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
+import static org.apache.directory.studio.test.integration.ui.Constants.LOCALHOST;
+
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionFolder;
@@ -156,7 +158,7 @@ public class ConnectionsViewBot
         ConnectionParameter connectionParameter = new ConnectionParameter();
         connectionParameter.setNetworkProvider( NetworkProvider.JNDI );
         connectionParameter.setName( name );
-        connectionParameter.setHost( "localhost" );
+        connectionParameter.setHost( LOCALHOST );
         connectionParameter.setPort( port );
         connectionParameter.setEncryptionMethod( EncryptionMethod.NONE );
         connectionParameter.setAuthMethod( AuthenticationMethod.SIMPLE );

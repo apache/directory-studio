@@ -21,6 +21,7 @@
 package org.apache.directory.studio.test.integration.core;
 
 
+import static org.apache.directory.studio.test.integration.core.Constants.LOCALHOST;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -72,8 +73,7 @@ import org.junit.runner.RunWith;
  */
 @RunWith(FrameworkRunner.class)
 @CreateLdapServer(transports =
-    { @CreateTransport(address = "0.0.0.0", protocol = "LDAP"),
-        @CreateTransport(address = "0.0.0.0", protocol = "LDAPS") })
+    { @CreateTransport(protocol = "LDAP"), @CreateTransport(protocol = "LDAPS") })
 public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
 {
 
@@ -84,7 +84,7 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
     public void testConnect()
     {
         StudioProgressMonitor monitor = getProgressMonitor();
-        ConnectionParameter connectionParameter = new ConnectionParameter( null, "localhost", ldapServer.getPort(),
+        ConnectionParameter connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(),
             EncryptionMethod.NONE, NetworkProvider.APACHE_DIRECTORY_LDAP_API, AuthenticationMethod.NONE, null, null,
             null, true, null );
         Connection connection = new Connection( connectionParameter );
@@ -116,7 +116,7 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
 
         // invalid port
         monitor = getProgressMonitor();
-        connectionParameter = new ConnectionParameter( null, "localhost", AvailablePortFinder.getNextAvailable(),
+        connectionParameter = new ConnectionParameter( null, LOCALHOST, AvailablePortFinder.getNextAvailable(),
             EncryptionMethod.NONE, NetworkProvider.APACHE_DIRECTORY_LDAP_API, AuthenticationMethod.NONE, null, null,
             null, true, null );
         connection = new Connection( connectionParameter );
@@ -153,7 +153,7 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
     public void testBind()
     {
         StudioProgressMonitor monitor = getProgressMonitor();
-        ConnectionParameter connectionParameter = new ConnectionParameter( null, "localhost", ldapServer.getPort(),
+        ConnectionParameter connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(),
             EncryptionMethod.NONE, NetworkProvider.APACHE_DIRECTORY_LDAP_API, AuthenticationMethod.SIMPLE,
             "uid=admin,ou=system", "secret", null, true, null );
         Connection connection = new Connection( connectionParameter );
@@ -186,7 +186,7 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
 
         // simple auth without principal and credential
         monitor = getProgressMonitor();
-        connectionParameter = new ConnectionParameter( null, "localhost", ldapServer.getPort(), EncryptionMethod.NONE,
+        connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(), EncryptionMethod.NONE,
             NetworkProvider.APACHE_DIRECTORY_LDAP_API, AuthenticationMethod.SIMPLE, "uid=admin", "invalid", null, true,
             null );
         connection = new Connection( connectionParameter );
@@ -200,7 +200,7 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
 
         // simple auth with invalid principal and credential
         monitor = getProgressMonitor();
-        connectionParameter = new ConnectionParameter( null, "localhost", ldapServer.getPort(), EncryptionMethod.NONE,
+        connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(), EncryptionMethod.NONE,
             NetworkProvider.APACHE_DIRECTORY_LDAP_API, AuthenticationMethod.SIMPLE, "uid=admin,ou=system", "bar", null,
             true, null );
         connection = new Connection( connectionParameter );
@@ -227,7 +227,7 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
 
         // simple auth without principal and credential
         monitor = getProgressMonitor();
-        connectionParameter = new ConnectionParameter( null, "localhost", ldapServer.getPort(), EncryptionMethod.NONE,
+        connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(), EncryptionMethod.NONE,
             NetworkProvider.APACHE_DIRECTORY_LDAP_API, AuthenticationMethod.SIMPLE, "uid=admin,ou=system", "secret",
             null, true, null );
         connection = new Connection( connectionParameter );
@@ -251,7 +251,7 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
     public void testInitializeAttributesRunnable() throws Exception
     {
         StudioProgressMonitor monitor = getProgressMonitor();
-        ConnectionParameter connectionParameter = new ConnectionParameter( null, "localhost", ldapServer.getPort(),
+        ConnectionParameter connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(),
             EncryptionMethod.NONE, NetworkProvider.APACHE_DIRECTORY_LDAP_API, AuthenticationMethod.SIMPLE,
             "uid=admin,ou=system", "secret", null, true, null );
         Connection connection = new Connection( connectionParameter );
@@ -272,7 +272,7 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
     public void testConcurrentUseAndCloseOfConnection() throws Exception
     {
         final StudioProgressMonitor monitor = getProgressMonitor();
-        final ConnectionParameter connectionParameter = new ConnectionParameter( null, "localhost",
+        final ConnectionParameter connectionParameter = new ConnectionParameter( null, LOCALHOST,
             ldapServer.getPort(), EncryptionMethod.NONE, NetworkProvider.APACHE_DIRECTORY_LDAP_API,
             AuthenticationMethod.SIMPLE, "uid=admin,ou=system", "secret", null, true, null );
         final Connection connection = new Connection( connectionParameter );
