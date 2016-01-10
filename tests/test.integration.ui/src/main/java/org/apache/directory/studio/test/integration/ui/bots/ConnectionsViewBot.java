@@ -192,4 +192,13 @@ public class ConnectionsViewBot
             connectionManager.removeConnection( connection );
         }
     }
+
+
+    public ApacheDSConfigurationEditorBot openApacheDSConfiguration()
+    {
+        getConnectionsTree().contextMenu( "Open Configuration" ).click();
+        String title = getSelectedConnection() + " - Configuration";
+        return new ApacheDSConfigurationEditorBot( title );
+    }
+
 }

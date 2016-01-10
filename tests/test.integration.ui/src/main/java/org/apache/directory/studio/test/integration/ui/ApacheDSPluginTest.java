@@ -39,6 +39,7 @@ import org.apache.directory.studio.test.integration.ui.bots.ConnectionFromServer
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConsoleViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.DeleteDialogBot;
+import org.apache.directory.studio.test.integration.ui.bots.ModificationLogsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewApacheDSServerWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
 import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
@@ -319,6 +320,81 @@ public class ApacheDSPluginTest
         }
 
         return null;
+    }
+
+
+    /**
+     * Test for DIRSTUDIO-1080: edit the server configuration via remote connection.
+     */
+    @Test
+    public void editRemoteConfig()
+    {
+        String serverName = "EditRemoteConfig";
+        createServer( serverName );
+        setAvailablePorts( serverName );
+
+        // Start the server
+        serversViewBot.runServer( serverName );
+        serversViewBot.waitForServerStart( serverName );
+
+        // Create a connection associated with the server
+        ConnectionFromServerDialogBot connectionFromServerDialogBot = serversViewBot.createConnectionFromServer();
+        connectionFromServerDialogBot.clickOkButton();
+
+        // Open the connection
+        connectionsViewBot.selectConnection( serverName );
+        connectionsViewBot.openSelectedConnection();
+
+        // Open the config editor and load remote config
+        ApacheDSConfigurationEditorBot remoteEditorBot = connectionsViewBot.openApacheDSConfiguration();
+
+        // Remember old ports
+        int oldLdapPort = remoteEditorBot.getLdapPort();
+        int oldLdapsPort = remoteEditorBot.getLdapsPort();
+
+        // Set new ports
+        int newLdapPort = AvailablePortFinder.getNextAvailable( 1024 );
+        remoteEditorBot.setLdapPort( newLdapPort );
+        int newLdapsPort = AvailablePortFinder.getNextAvailable( newLdapPort + 1 );
+        remoteEditorBot.setLdapsPort( newLdapsPort );
+
+        // Save the config editor
+        remoteEditorBot.save();
+        remoteEditorBot.close();
+
+        // Verify new port settings went over the network
+        ModificationLogsViewBot modificationLogsViewBot = studioBot.getModificationLogsViewBot();
+        modificationLogsViewBot.waitForText( "add: ads-systemPort" );
+        String modificationLogsText = modificationLogsViewBot.getModificationLogsText();
+        assertThat( modificationLogsText,
+            containsString( "delete: ads-systemPort\nads-systemPort: " + oldLdapPort + "\n" ) );
+        assertThat( modificationLogsText,
+            containsString( "add: ads-systemPort\nads-systemPort: " + newLdapPort + "\n" ) );
+        assertThat( modificationLogsText,
+            containsString( "delete: ads-systemPort\nads-systemPort: " + oldLdapsPort + "\n" ) );
+        assertThat( modificationLogsText,
+            containsString( "add: ads-systemPort\nads-systemPort: " + newLdapsPort + "\n" ) );
+
+        // Verify new port settings are visible in local config editor
+        ApacheDSConfigurationEditorBot localEditorBot = serversViewBot.openConfigurationEditor( serverName );
+        assertEquals( newLdapPort, localEditorBot.getLdapPort() );
+        assertEquals( newLdapsPort, localEditorBot.getLdapsPort() );
+        localEditorBot.close();
+
+        // Close the connection
+        connectionsViewBot.selectConnection( serverName );
+        connectionsViewBot.closeSelectedConnections();
+
+        // Delete the connection
+        connectionsViewBot.deleteTestConnections();
+
+        // Stopping the server
+        serversViewBot.stopServer( serverName );
+        serversViewBot.waitForServerStop( serverName );
+
+        // Deleting the server
+        DeleteDialogBot deleteDialogBot = serversViewBot.openDeleteServerDialog();
+        deleteDialogBot.clickOkButton();
     }
 
 }

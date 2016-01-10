@@ -96,7 +96,7 @@ public class ApacheDSServersViewBot
     {
         selectServer( serverName );
         ContextMenuHelper.clickContextMenu( getServersTree(), "Open Configuration" );
-        return new ApacheDSConfigurationEditorBot();
+        return new ApacheDSConfigurationEditorBot( "ou=config.ldif" );
     }
 
 

@@ -31,10 +31,10 @@ public class ApacheDSConfigurationEditorBot
     private SWTBotMultiPageEditor editor;
 
 
-    public ApacheDSConfigurationEditorBot()
+    public ApacheDSConfigurationEditorBot( String title )
     {
         SWTWorkbenchBot bot = new SWTWorkbenchBot();
-        editor = bot.multipageEditorByTitle( "ou=config.ldif" );
+        editor = bot.multipageEditorByTitle( title );
         bot.waitUntil( new DefaultCondition()
         {
 
@@ -61,10 +61,24 @@ public class ApacheDSConfigurationEditorBot
     }
 
 
+    public int getLdapPort()
+    {
+        editor.activatePage( "LDAP/LDAPS Servers" );
+        return Integer.parseInt( editor.bot().text( 0 ).getText() );
+    }
+
+
     public void setLdapsPort( int port )
     {
         editor.activatePage( "LDAP/LDAPS Servers" );
         editor.bot().text( 4 ).setText( "" + port );
+    }
+
+
+    public int getLdapsPort()
+    {
+        editor.activatePage( "LDAP/LDAPS Servers" );
+        return Integer.parseInt( editor.bot().text( 4 ).getText() );
     }
 
 
