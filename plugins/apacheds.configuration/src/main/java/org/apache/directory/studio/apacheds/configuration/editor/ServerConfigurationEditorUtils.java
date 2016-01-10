@@ -351,6 +351,7 @@ public class ServerConfigurationEditorUtils
             for ( LdifEntry ldifEntry : modificationsList )
             {
                 modificationsLdif.append( ldifEntry.toString() );
+                modificationsLdif.append( '\n' );
             }
 
             // Getting the browser connection associated with the connection
