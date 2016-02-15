@@ -169,7 +169,7 @@ public class Schema
         {
             LdifParser parser = new LdifParser();
             LdifEnumeration enumeration = parser.parse( reader );
-            if ( enumeration.hasNext() )
+            while ( enumeration.hasNext() )
             {
                 LdifContainer container = enumeration.next();
                 if ( container instanceof LdifContentRecord )
