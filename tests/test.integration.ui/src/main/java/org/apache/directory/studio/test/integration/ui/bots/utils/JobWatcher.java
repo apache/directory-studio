@@ -27,6 +27,7 @@ import org.eclipse.core.runtime.jobs.IJobManager;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 
 
@@ -115,6 +116,6 @@ public class JobWatcher
             {
                 return "Job run too long";
             }
-        } );
+        }, SWTBotPreferences.TIMEOUT * 2 );
     }
 }

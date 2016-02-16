@@ -24,6 +24,7 @@ import java.io.File;
 
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
+import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 
 
@@ -103,7 +104,7 @@ public class ExportWizardBot extends WizardBot
             {
                 return "LDIF File " + file + " not found.";
             }
-        } );
+        }, SWTBotPreferences.TIMEOUT * 2 );
     }
 
 
