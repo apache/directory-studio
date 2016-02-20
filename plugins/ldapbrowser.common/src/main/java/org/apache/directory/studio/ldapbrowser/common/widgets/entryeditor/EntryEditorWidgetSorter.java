@@ -347,20 +347,20 @@ public class EntryEditorWidgetSorter extends ViewerSorter implements SelectionLi
      */
     private int compareValues( IValue value1, IValue value2 )
     {
-        if ( value1.isEmpty() )
+        if ( value1.isEmpty() || value2.isEmpty() )
         {
-            if ( value2.isEmpty() )
-            { 
-                return equal();
-            }
-            else
+            if ( !value1.isEmpty() )
             {
                 return greaterThan();
             }
-        }
-        else if ( !value2.isEmpty() )
-        {
-            return lessThan();
+            else if ( !value2.isEmpty() )
+            {
+                return lessThan();
+            }
+            else
+            {
+                return equal();
+            }
         }
         else
         {
