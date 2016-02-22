@@ -26,6 +26,7 @@ import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.jobs.CheckBindRunnable;
+import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
@@ -34,6 +35,7 @@ import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.valueeditors.ValueEditorsActivator;
 import org.apache.directory.studio.valueeditors.ValueEditorsConstants;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -87,6 +89,9 @@ public class PasswordDialog extends Dialog
             LdapSecurityConstants.HASH_METHOD_SMD5,
             LdapSecurityConstants.HASH_METHOD_PKCS5S2,
             LdapSecurityConstants.HASH_METHOD_CRYPT,
+            LdapSecurityConstants.HASH_METHOD_CRYPT_MD5,
+            LdapSecurityConstants.HASH_METHOD_CRYPT_SHA256,
+            LdapSecurityConstants.HASH_METHOD_CRYPT_SHA512,
             NO_HASH_METHOD };
 
     /** Constant for the Current Password tab */
@@ -656,12 +661,9 @@ public class PasswordDialog extends Dialog
             }
             else
             {
-                MessageDialog dialog = new MessageDialog(
-                    getShell(),
-                    Messages.getString( "PasswordDialog.PasswordVerification" ), getShell().getImage(), //$NON-NLS-1$
-                    Messages.getString( "PasswordDialog.PasswordVerificationFailed" ), MessageDialog.ERROR, new String[] //$NON-NLS-1$
-                        { IDialogConstants.OK_LABEL }, 0 );
-                dialog.open();
+                IStatus status = new Status( IStatus.ERROR, ValueEditorsConstants.PLUGIN_ID, 1,
+                    Messages.getString( "PasswordDialog.PasswordVerificationFailed" ), null ); //$NON-NLS-1$
+                ConnectionUIPlugin.getDefault().getExceptionHandler().handleException( status );
             }
         }
     }
