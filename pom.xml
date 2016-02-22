@@ -75,8 +75,8 @@
     <log4j.log4j.bundleversion>1.2.17</log4j.log4j.bundleversion>
     <net.sf.ehcache.version>2.8.5</net.sf.ehcache.version>
     <net.sf.ehcache.bundleversion>2.8.5</net.sf.ehcache.bundleversion>
-    <org.apache.commons.codec.version>1.8</org.apache.commons.codec.version>
-    <org.apache.commons.codec.bundleversion>1.8.0</org.apache.commons.codec.bundleversion>
+    <org.apache.commons.codec.version>1.10</org.apache.commons.codec.version>
+    <org.apache.commons.codec.bundleversion>1.10.0</org.apache.commons.codec.bundleversion>
     <org.apache.commons.collections.version>3.2.2</org.apache.commons.collections.version>
     <org.apache.commons.collections.bundleversion>3.2.2</org.apache.commons.collections.bundleversion>
     <org.apache.commons.io.version>2.4</org.apache.commons.io.version>
@@ -85,12 +85,12 @@
     <org.apache.commons.lang.bundleversion>2.6.0</org.apache.commons.lang.bundleversion>
     <org.apache.commons.pool.version>1.6</org.apache.commons.pool.version>
     <org.apache.commons.pool.bundleversion>1.6.0</org.apache.commons.pool.bundleversion>
-    <org.apache.directory.api.version>1.0.0-M33</org.apache.directory.api.version>
-    <org.apache.directory.api.bundleversion>1.0.0.M33</org.apache.directory.api.bundleversion>
-    <org.apache.directory.server.version>2.0.0-M21</org.apache.directory.server.version>
-    <org.apache.directory.server.bundleversion>2.0.0.M21</org.apache.directory.server.bundleversion>
-    <org.apache.mina.version>2.0.10</org.apache.mina.version>
-    <org.apache.mina.bundleversion>2.0.10</org.apache.mina.bundleversion>
+    <org.apache.directory.api.version>1.0.0-M34-SNAPSHOT</org.apache.directory.api.version>
+    <org.apache.directory.api.bundleversion>1.0.0.M34-SNAPSHOT</org.apache.directory.api.bundleversion>
+    <org.apache.directory.server.version>2.0.0-M22-SNAPSHOT</org.apache.directory.server.version>
+    <org.apache.directory.server.bundleversion>2.0.0.M22-SNAPSHOT</org.apache.directory.server.bundleversion>
+    <org.apache.mina.version>2.0.13</org.apache.mina.version>
+    <org.apache.mina.bundleversion>2.0.13</org.apache.mina.bundleversion>
     <org.apache.poi.version>3.9</org.apache.poi.version>
     <org.apache.poi.bundleversion>3.9.0</org.apache.poi.bundleversion>
     <org.apache.xmlgraphics.fop.version>1.0</org.apache.xmlgraphics.fop.version>
