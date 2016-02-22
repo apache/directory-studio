@@ -62,7 +62,7 @@ public class Schema extends DefaultSchema
      */
     public Schema( String name )
     {
-        super( name );
+        super( null, name );
     }
 
 

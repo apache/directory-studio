@@ -80,7 +80,7 @@ public class OpenLdapSchemaLoader extends JarLdifSchemaLoader
      */
     private void initializeSchema()
     {
-        Schema schema = new DefaultSchema( OPENLDAPCONFIG_SCHEMA_NAME );
+        Schema schema = new DefaultSchema( null, OPENLDAPCONFIG_SCHEMA_NAME );
         schema.addDependencies( new String[]
             { "system", "core", "apache" } );
         schemaMap.put( schema.getSchemaName(), schema );

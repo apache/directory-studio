@@ -108,7 +108,7 @@ public class ConnectionSchemaLoader extends JarLdifSchemaLoader
      */
     private void initializeSchema()
     {
-        Schema schema = new DefaultSchema( CONNECTION_SCHEMA_NAME );
+        Schema schema = new DefaultSchema( null, CONNECTION_SCHEMA_NAME );
         schema.addDependencies( new String[]
             { "system", "core", "apache" } );
         schemaMap.put( schema.getSchemaName(), schema );
