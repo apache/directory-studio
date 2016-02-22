@@ -21,19 +21,11 @@
 package org.apache.directory.studio.ldapbrowser.core.model;
 
 
-import java.security.Key;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.spec.KeySpec;
-
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
-
 import org.apache.directory.api.ldap.model.constants.LdapSecurityConstants;
+import org.apache.directory.api.ldap.model.password.PasswordDetails;
+import org.apache.directory.api.ldap.model.password.PasswordUtil;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
-import org.apache.directory.studio.ldapbrowser.core.utils.UnixCrypt;
 import org.apache.directory.studio.ldifparser.LdifUtils;
 
 
@@ -63,23 +55,11 @@ import org.apache.directory.studio.ldifparser.LdifUtils;
  */
 public class Password
 {
-    /** The hash method */
-    private LdapSecurityConstants hashMethod;
-
-    /** The hashed password */
-    private byte[] hashedPassword;
-
-    /** The salt */
-    private byte[] salt;
-
-    /** The 'unsupported hash' flag */
-    private boolean isUnsupportedHashMethod = false;
-
-    /** The 'invalid hash' flag */
-    private boolean isInvalidHashValue = false;
-
-    /** The trash, used for unknown hash methods. */
-    private String trash;
+    /** The password, either plain text or in encrypted format */
+    private final byte[] password;
+    
+    /** The password details */
+    private final PasswordDetails passwordDetails;
 
 
     /**
@@ -89,7 +69,15 @@ public class Password
      */
     public Password( byte[] password )
     {
-        this( LdifUtils.utf8decode( password ) );
+        if ( password == null )
+        {
+            throw new IllegalArgumentException( BrowserCoreMessages.model__empty_password );
+        }
+        else
+        {
+            this.password = password;
+            this.passwordDetails = PasswordUtil.splitCredentials( password );
+        }
     }
 
 
@@ -104,87 +92,10 @@ public class Password
         {
             throw new IllegalArgumentException( BrowserCoreMessages.model__empty_password );
         }
-        else if ( ( password.indexOf( '{' ) == 0 ) && ( password.indexOf( '}' ) > 0 ) )
-        {
-            try
-            {
-                // Getting the hash method
-                String hashMethodString = password.substring( password.indexOf( '{' ) + 1, password.indexOf( '}' ) );
-                hashMethod = LdapSecurityConstants.getAlgorithm( hashMethodString );
-
-                // Getting the rest of the hashed password
-                String rest = password.substring( hashMethodString.length() + 2 );
-
-                if ( ( LdapSecurityConstants.HASH_METHOD_SHA == hashMethod )
-                    || ( LdapSecurityConstants.HASH_METHOD_SHA256 == hashMethod )
-                    || ( LdapSecurityConstants.HASH_METHOD_SHA384 == hashMethod )
-                    || ( LdapSecurityConstants.HASH_METHOD_SHA512 == hashMethod )
-                    || ( LdapSecurityConstants.HASH_METHOD_MD5 == hashMethod ) )
-                {
-                    hashedPassword = LdifUtils.base64decodeToByteArray( rest );
-                    salt = null;
-                }
-                else if ( ( LdapSecurityConstants.HASH_METHOD_SSHA == hashMethod )
-                    || ( LdapSecurityConstants.HASH_METHOD_SSHA256 == hashMethod )
-                    || ( LdapSecurityConstants.HASH_METHOD_SSHA384 == hashMethod )
-                    || ( LdapSecurityConstants.HASH_METHOD_SSHA512 == hashMethod )
-                    || ( LdapSecurityConstants.HASH_METHOD_SMD5 == hashMethod )
-                    || ( LdapSecurityConstants.HASH_METHOD_PKCS5S2 == hashMethod ) )
-                {
-                    switch ( hashMethod )
-                    {
-                        case HASH_METHOD_SSHA:
-                            hashedPassword = new byte[20];
-                            break;
-                        case HASH_METHOD_SSHA256:
-                            hashedPassword = new byte[32];
-                            break;
-                        case HASH_METHOD_SSHA384:
-                            hashedPassword = new byte[48];
-                            break;
-                        case HASH_METHOD_SSHA512:
-                            hashedPassword = new byte[64];
-                            break;
-                        case HASH_METHOD_SMD5:
-                            hashedPassword = new byte[16];
-                            break;
-                        case HASH_METHOD_PKCS5S2:
-                            hashedPassword = new byte[20];
-                            break;
-                        default:
-                            break;
-                    }
-
-                    byte[] hashedPasswordWithSalt = LdifUtils.base64decodeToByteArray( rest );
-                    salt = new byte[hashedPasswordWithSalt.length - hashedPassword.length];
-                    split( hashedPasswordWithSalt, hashedPassword, salt );
-                }
-                else if ( LdapSecurityConstants.HASH_METHOD_CRYPT == hashMethod )
-                {
-                    byte[] saltWithPassword = LdifUtils.utf8encode( rest );
-                    salt = new byte[2];
-                    hashedPassword = new byte[saltWithPassword.length - salt.length];
-                    split( saltWithPassword, salt, hashedPassword );
-                }
-                else
-                {
-                    isUnsupportedHashMethod = true;
-                    trash = password;
-                }
-            }
-            catch ( RuntimeException e )
-            {
-                // happens if 'rest' is not valid BASE64
-                isInvalidHashValue = true;
-                trash = password;
-            }
-        }
         else
         {
-            // plain text
-            hashMethod = null;
-            hashedPassword = LdifUtils.utf8encode( password );
-            salt = null;
+            this.password = Strings.getBytesUtf8( password );
+            this.passwordDetails = PasswordUtil.splitCredentials( this.password );
         }
     }
 
@@ -199,65 +110,14 @@ public class Password
      */
     public Password( LdapSecurityConstants hashMethod, String passwordAsPlaintext )
     {
-        // Checking the password as plain text
         if ( passwordAsPlaintext == null )
         {
             throw new IllegalArgumentException( BrowserCoreMessages.model__empty_password );
         }
-
-        // Setting the hash method
-        this.hashMethod = hashMethod;
-
-        // Setting the salt
-        if ( ( LdapSecurityConstants.HASH_METHOD_SSHA == hashMethod )
-            || ( LdapSecurityConstants.HASH_METHOD_SSHA256 == hashMethod )
-            || ( LdapSecurityConstants.HASH_METHOD_SSHA384 == hashMethod )
-            || ( LdapSecurityConstants.HASH_METHOD_SSHA512 == hashMethod )
-            || ( LdapSecurityConstants.HASH_METHOD_SMD5 == hashMethod )
-            || ( LdapSecurityConstants.HASH_METHOD_PKCS5S2 == hashMethod ) )
-        {
-            this.salt = new byte[8];
-            new SecureRandom().nextBytes( this.salt );
-        }
-        else if ( LdapSecurityConstants.HASH_METHOD_CRYPT == hashMethod )
-        {
-            this.salt = new byte[2];
-            SecureRandom sr = new SecureRandom();
-            int i1 = sr.nextInt( 64 );
-            int i2 = sr.nextInt( 64 );
-            this.salt[0] = ( byte ) ( i1 < 12 ? ( i1 + '.' ) : i1 < 38 ? ( i1 + 'A' - 12 ) : ( i1 + 'a' - 38 ) );
-            this.salt[1] = ( byte ) ( i2 < 12 ? ( i2 + '.' ) : i2 < 38 ? ( i2 + 'A' - 12 ) : ( i2 + 'a' - 38 ) );
-        }
         else
         {
-            this.salt = null;
-        }
-
-        // Setting the hashed password
-        if ( hashMethod == null )
-        {
-            this.hashedPassword = LdifUtils.utf8encode( passwordAsPlaintext );
-        }
-        else if ( ( LdapSecurityConstants.HASH_METHOD_SHA == hashMethod )
-            || ( LdapSecurityConstants.HASH_METHOD_SSHA == hashMethod )
-            || ( LdapSecurityConstants.HASH_METHOD_SHA256 == hashMethod )
-            || ( LdapSecurityConstants.HASH_METHOD_SSHA256 == hashMethod )
-            || ( LdapSecurityConstants.HASH_METHOD_SHA384 == hashMethod )
-            || ( LdapSecurityConstants.HASH_METHOD_SSHA384 == hashMethod )
-            || ( LdapSecurityConstants.HASH_METHOD_SHA512 == hashMethod )
-            || ( LdapSecurityConstants.HASH_METHOD_SSHA512 == hashMethod )
-            || ( LdapSecurityConstants.HASH_METHOD_MD5 == hashMethod )
-            || ( LdapSecurityConstants.HASH_METHOD_SMD5 == hashMethod ) )
-        {
-            this.hashedPassword = digest( hashMethod, passwordAsPlaintext, this.salt );
-        }
-        else if ( LdapSecurityConstants.HASH_METHOD_CRYPT == hashMethod )
-        {
-            this.hashedPassword = crypt( passwordAsPlaintext, this.salt );
-        }
-        else if ( LdapSecurityConstants.HASH_METHOD_PKCS5S2 == hashMethod )
-        {
-            this.hashedPassword = generatePbkdf2Hash( passwordAsPlaintext.getBytes(), hashMethod, salt );
+            this.password = PasswordUtil.createStoragePassword( passwordAsPlaintext, hashMethod );
+            this.passwordDetails = PasswordUtil.splitCredentials( this.password );
         }
     }
 
@@ -276,44 +136,7 @@ public class Password
             return false;
         }
 
-        boolean verified = false;
-
-        if ( isInvalidHashValue || isUnsupportedHashMethod )
-        {
-            return false;
-        }
-
-        if ( hashMethod == null )
-        {
-            verified = testPasswordAsPlaintext.equals( LdifUtils.utf8decode( hashedPassword ) );
-        }
-        else if ( ( LdapSecurityConstants.HASH_METHOD_SHA == hashMethod )
-            || ( LdapSecurityConstants.HASH_METHOD_SSHA == hashMethod )
-            || ( LdapSecurityConstants.HASH_METHOD_SHA256 == hashMethod )
-            || ( LdapSecurityConstants.HASH_METHOD_SSHA256 == hashMethod )
-            || ( LdapSecurityConstants.HASH_METHOD_SHA384 == hashMethod )
-            || ( LdapSecurityConstants.HASH_METHOD_SSHA384 == hashMethod )
-            || ( LdapSecurityConstants.HASH_METHOD_SHA512 == hashMethod )
-            || ( LdapSecurityConstants.HASH_METHOD_SSHA512 == hashMethod )
-            || ( LdapSecurityConstants.HASH_METHOD_MD5 == hashMethod )
-            || ( LdapSecurityConstants.HASH_METHOD_SMD5 == hashMethod ) )
-        {
-            byte[] hash = digest( hashMethod, testPasswordAsPlaintext, salt );
-            verified = equals( hash, hashedPassword );
-        }
-        else if ( LdapSecurityConstants.HASH_METHOD_CRYPT == hashMethod )
-        {
-            byte[] crypted = crypt( testPasswordAsPlaintext, salt );
-            verified = equals( crypted, hashedPassword );
-        }
-        else if ( LdapSecurityConstants.HASH_METHOD_PKCS5S2 == hashMethod )
-        {
-            byte[] hash = generatePbkdf2Hash( testPasswordAsPlaintext.getBytes(),
-                LdapSecurityConstants.HASH_METHOD_PKCS5S2, salt );
-            verified = equals( hash, hashedPassword );
-        }
-
-        return verified;
+        return PasswordUtil.compareCredentials( Strings.getBytesUtf8( testPasswordAsPlaintext ), this.password );
     }
 
 
@@ -324,7 +147,7 @@ public class Password
      */
     public LdapSecurityConstants getHashMethod()
     {
-        return hashMethod;
+        return passwordDetails.getAlgorithm();
     }
 
 
@@ -335,7 +158,7 @@ public class Password
      */
     public byte[] getHashedPassword()
     {
-        return hashedPassword;
+        return passwordDetails.getPassword();
     }
 
 
@@ -346,7 +169,7 @@ public class Password
      */
     public String getHashedPasswordAsHexString()
     {
-        return LdifUtils.hexEncode( hashedPassword );
+        return LdifUtils.hexEncode( passwordDetails.getPassword() );
     }
 
 
@@ -357,7 +180,7 @@ public class Password
      */
     public byte[] getSalt()
     {
-        return salt;
+        return passwordDetails.getSalt();
     }
 
 
@@ -368,7 +191,7 @@ public class Password
      */
     public String getSaltAsHexString()
     {
-        return LdifUtils.hexEncode( salt );
+        return LdifUtils.hexEncode( passwordDetails.getSalt() );
     }
 
 
@@ -388,164 +211,7 @@ public class Password
      */
     public String toString()
     {
-        StringBuffer sb = new StringBuffer();
-
-        if ( isUnsupportedHashMethod || isInvalidHashValue )
-        {
-            sb.append( trash );
-        }
-        else if ( LdapSecurityConstants.HASH_METHOD_CRYPT == hashMethod )
-        {
-            sb.append( '{' ).append( hashMethod.getPrefix() ).append( '}' );
-            sb.append( LdifUtils.utf8decode( salt ) );
-            sb.append( LdifUtils.utf8decode( hashedPassword ) );
-        }
-        else if ( hashMethod != null )
-        {
-            sb.append( '{' ).append( hashMethod.getPrefix() ).append( '}' );
-            if ( salt != null )
-            {
-                byte[] hashedPasswordWithSaltBytes = new byte[hashedPassword.length + salt.length];
-                merge( hashedPasswordWithSaltBytes, hashedPassword, salt );
-                sb.append( LdifUtils.base64encode( hashedPasswordWithSaltBytes ) );
-            }
-            else
-            {
-                sb.append( LdifUtils.base64encode( hashedPassword ) );
-            }
-        }
-        else
-        {
-            sb.append( LdifUtils.utf8decode( hashedPassword ) );
-        }
-
-        return sb.toString();
+        return Strings.utf8ToString( password );
     }
 
-
-    private static void split( byte[] all, byte[] left, byte[] right )
-    {
-        System.arraycopy( all, 0, left, 0, left.length );
-        System.arraycopy( all, left.length, right, 0, right.length );
-    }
-
-
-    private static void merge( byte[] all, byte[] left, byte[] right )
-    {
-        System.arraycopy( left, 0, all, 0, left.length );
-        System.arraycopy( right, 0, all, left.length, right.length );
-    }
-
-
-    /**
-     * Checks equality between two byte arrays.
-     *
-     * @param data1 the first byte array
-     * @param data2 the first byte array
-     * @return <code>true</code> if the two byte arrays are equal
-     */
-    private static boolean equals( byte[] data1, byte[] data2 )
-    {
-        if ( data1 == data2 )
-        {
-            return true;
-        }
-
-        if ( data1 == null || data2 == null )
-        {
-            return false;
-        }
-
-        if ( data1.length != data2.length )
-        {
-            return false;
-        }
-
-        for ( int i = 0; i < data1.length; i++ )
-        {
-            if ( data1[i] != data2[i] )
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-
-    /**
-     * Computes the hashed value of a password with the given hash method and optional salt.
-     *
-     * @param hashMethod the hash method
-     * @param password the password
-     * @param salt the optional salt (can be <code>null</code>)
-     * @return the hashed value of the password
-     */
-    private static byte[] digest( LdapSecurityConstants hashMethod, String password, byte[] salt )
-    {
-        // Converting password to byte array
-        byte[] passwordBytes = LdifUtils.utf8encode( password );
-
-        // Getting the message digest associated with the hash method
-        try
-        {
-            MessageDigest digest = MessageDigest.getInstance( hashMethod.getAlgorithm() );
-
-            // Computing the hashed password (salted or not)
-            if ( salt != null )
-            {
-                digest.update( passwordBytes );
-                digest.update( salt );
-                return digest.digest();
-            }
-            else
-            {
-                return digest.digest( passwordBytes );
-            }
-        }
-        catch ( NoSuchAlgorithmException e1 )
-        {
-            return null;
-        }
-    }
-
-
-    /**
-     * Computes the crypt value of a password (with salt).
-     *
-     * @param password the password
-     * @param salt the salt
-     * @return the crypt value of the password
-     */
-    private static byte[] crypt( String password, byte[] salt )
-    {
-        String saltWithCrypted = UnixCrypt.crypt( password, LdifUtils.utf8decode( salt ) );
-        String crypted = saltWithCrypted.substring( 2 );
-        return LdifUtils.utf8encode( crypted );
-    }
-
-
-    /**
-     * generates a hash based on the <a href="http://en.wikipedia.org/wiki/PBKDF2">PKCS5S2 spec</a>
-     * 
-     * @param algorithm the algorithm to use
-     * @param password the credentials
-     * @param salt the optional salt
-     * @return the digested credentials
-     */
-    private static byte[] generatePbkdf2Hash( byte[] credentials, LdapSecurityConstants algorithm, byte[] salt )
-    {
-        try
-        {
-            SecretKeyFactory sk = SecretKeyFactory.getInstance( algorithm.getAlgorithm() );
-            char[] password = Strings.utf8ToString( credentials ).toCharArray();
-            KeySpec keySpec = new PBEKeySpec( password, salt, 1000, 160 );
-            Key key = sk.generateSecret( keySpec );
-            return key.getEncoded();
-        }
-        catch ( Exception e )
-        {
-            throw new RuntimeException( e );
-        }
-    }
 }
