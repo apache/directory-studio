@@ -129,6 +129,13 @@ class EntryEditorWidgetBot
     }
 
 
+    PasswordEditorDialogBot editValueExpectingPasswordEditor( String attributeType, String value )
+    {
+        editValue( attributeType, value );
+        return new PasswordEditorDialogBot();
+    }
+
+
     private SWTBotTreeItem getTreeItem( String attributeType, String value )
     {
         SWTBotTree tree = bot.tree();

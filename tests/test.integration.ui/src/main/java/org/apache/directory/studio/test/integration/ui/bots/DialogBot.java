@@ -22,6 +22,7 @@ package org.apache.directory.studio.test.integration.ui.bots;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 
 
 public abstract class DialogBot
@@ -42,4 +43,27 @@ public abstract class DialogBot
         button.click();
     }
 
+    protected String clickCheckButton( final String label, final String title )
+    {
+        SWTBotShell shell = BotUtils.shell( new Runnable()
+        {
+            public void run()
+            {
+                bot.button( label ).click();
+            }
+        }, "Error", title );
+
+        String shellText = shell.getText();
+        String labelText = bot.label( 1 ).getText(); // label(0) is the image
+        bot.button( "OK" ).click();
+
+        if ( shellText.equals( title ) )
+        {
+            return null;
+        }
+        else
+        {
+            return labelText;
+        }
+    }
 }

@@ -41,4 +41,11 @@ public class NewAttributeWizardBot extends WizardBot
         return new DnEditorDialogBot();
     }
 
+
+    public PasswordEditorDialogBot clickFinishButtonExpectingPasswordEditor()
+    {
+        clickFinishButton();
+        return new PasswordEditorDialogBot();
+    }
+
 }
