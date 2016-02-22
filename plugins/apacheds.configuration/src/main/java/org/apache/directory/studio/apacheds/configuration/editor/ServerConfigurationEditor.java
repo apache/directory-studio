@@ -263,11 +263,17 @@ public class ServerConfigurationEditor extends FormEditor implements IPageChange
      *
      * @param monitor the monitor
      */
-    private void doSavePages( IProgressMonitor monitor )
+    private void doSavePages( final IProgressMonitor monitor )
     {
         if ( partitionsPage != null )
         {
-            partitionsPage.doSave( monitor );
+            Display.getDefault().syncExec( new Runnable()
+            {
+                public void run()
+                {
+                    partitionsPage.doSave( monitor );
+                }
+            } );
         }
     }
 
