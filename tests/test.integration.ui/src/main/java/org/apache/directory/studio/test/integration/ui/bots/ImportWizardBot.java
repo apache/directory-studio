@@ -44,12 +44,6 @@ public class ImportWizardBot extends WizardBot
     }
 
 
-    public boolean isVisible()
-    {
-        return isVisible( title );
-    }
-
-
     public void typeFile( String file )
     {
         bot.comboBox().setText( file );

@@ -19,6 +19,7 @@
  */
 package org.apache.directory.studio.test.integration.ui.bots;
 
+
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
 
@@ -26,16 +27,16 @@ import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
 public class RenameEntryDialogBot extends DialogBot
 {
 
-    public boolean isVisible()
+    public RenameEntryDialogBot()
     {
-        return super.isVisible( "Rename Entry" );
+        super( "Rename Entry" );
     }
 
 
     public void clickOkButton()
     {
         JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__rename_entry_name );
-        super.clickButton( "OK" );
+        super.clickOkButton();
         watcher.waitUntilDone();
     }
 

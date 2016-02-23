@@ -25,21 +25,9 @@ import org.apache.directory.studio.test.integration.ui.bots.utils.TreeBot;
 public class PreferencesBot extends DialogBot
 {
 
-    public boolean isVisible()
+    public PreferencesBot()
     {
-        return super.isVisible( "Preferences" );
-    }
-
-
-    public void clickOkButton()
-    {
-        super.clickButton( "OK" );
-    }
-
-
-    public void clickCancelButton()
-    {
-        super.clickButton( "Cancel" );
+        super( "Preferences" );
     }
 
 

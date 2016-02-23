@@ -28,17 +28,9 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 public abstract class WizardBot extends DialogBot
 {
 
-    private String title;
-
-
-    public WizardBot()
-    {
-    }
-
-
     public WizardBot( String title )
     {
-        this.title = title;
+        super( title );
     }
 
 

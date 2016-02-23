@@ -23,21 +23,9 @@ package org.apache.directory.studio.test.integration.ui.bots;
 public class DnEditorDialogBot extends DialogBot
 {
 
-    public boolean isVisible()
+    public DnEditorDialogBot()
     {
-        return super.isVisible( "DN Editor" );
-    }
-
-
-    public void clickOkButton()
-    {
-        super.clickButton( "OK" );
-    }
-
-
-    public void clickCancelButton()
-    {
-        super.clickButton( "Cancel" );
+        super( "DN Editor" );
     }
 
 

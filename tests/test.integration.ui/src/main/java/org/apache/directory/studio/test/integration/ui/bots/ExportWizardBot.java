@@ -49,12 +49,6 @@ public class ExportWizardBot extends WizardBot
     }
 
 
-    public boolean isVisible()
-    {
-        return isVisible( title );
-    }
-
-
     public void typeReturningAttributes( String returningAttributes )
     {
         bot.comboBoxWithLabel( "Returning Attributes:" ).setText( returningAttributes );

@@ -26,15 +26,9 @@ import org.apache.directory.studio.test.integration.ui.bots.utils.TreeBot;
 public class ShowViewsBot extends DialogBot
 {
 
-    public void clickCancelButton()
+    public ShowViewsBot()
     {
-        super.clickButton( "Cancel" );
-    }
-
-
-    public void clickOkButton()
-    {
-        super.clickButton( "OK" );
+        super( "Show View" );
     }
 
 

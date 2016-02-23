@@ -29,22 +29,50 @@ public abstract class DialogBot
 {
 
     protected SWTWorkbenchBot bot = new SWTWorkbenchBot();
+    protected String title;
 
 
-    protected boolean isVisible( String dialogTitle )
+    protected DialogBot( String title )
     {
-        return bot.shell( dialogTitle ).isVisible();
+        this.title = title;
+    }
+
+
+    public void activate()
+    {
+        bot.shell( title ).setFocus();
+    }
+
+
+    public boolean isVisible()
+    {
+        return bot.shell( title ).isVisible();
+    }
+
+
+    public void clickOkButton()
+    {
+        clickButton( "OK" );
+    }
+
+
+    public void clickCancelButton()
+    {
+        clickButton( "Cancel" );
     }
 
 
     protected void clickButton( final String buttonTitle )
     {
+        activate();
         final SWTBotButton button = bot.button( buttonTitle );
         button.click();
     }
 
+
     protected String clickCheckButton( final String label, final String title )
     {
+        SWTBotShell parentShell = bot.activeShell();
         SWTBotShell shell = BotUtils.shell( new Runnable()
         {
             public void run()
@@ -56,6 +84,7 @@ public abstract class DialogBot
         String shellText = shell.getText();
         String labelText = bot.label( 1 ).getText(); // label(0) is the image
         bot.button( "OK" ).click();
+        parentShell.activate();
 
         if ( shellText.equals( title ) )
         {

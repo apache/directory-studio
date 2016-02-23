@@ -23,7 +23,6 @@ package org.apache.directory.studio.test.integration.ui.bots;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 
 
@@ -65,11 +64,6 @@ public class NewConnectionWizardBot extends WizardBot
         JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__open_connections_name_1 );
         super.clickFinishButton();
         watcher.waitUntilDone();
-    }
-    
-    public boolean isVisible()
-    {
-        return isVisible( TITLE );
     }
 
 

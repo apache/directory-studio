@@ -28,6 +28,7 @@ public class SearchPropertiesDialogBot extends DialogBot
 
     public SearchPropertiesDialogBot()
     {
+        super( "" );
         this.searchPageWrapperBot = new SearchPageWrapperBot( bot );
     }
 
@@ -53,13 +54,13 @@ public class SearchPropertiesDialogBot extends DialogBot
 
     public void clickOkButton()
     {
-        super.clickButton( "OK" );
+        bot.button( "OK" ).click();
     }
 
 
     public void clickCancelButton()
     {
-        super.clickButton( "Cancel" );
+        bot.button( "Cancel" ).click();
     }
 
 }

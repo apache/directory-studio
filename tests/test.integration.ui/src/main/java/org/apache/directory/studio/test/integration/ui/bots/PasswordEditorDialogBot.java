@@ -26,9 +26,9 @@ import org.apache.directory.api.ldap.model.constants.LdapSecurityConstants;
 public class PasswordEditorDialogBot extends DialogBot
 {
 
-    public boolean isVisible()
+    public PasswordEditorDialogBot()
     {
-        return super.isVisible( "Password Editor" );
+        super( "Password Editor" );
     }
 
 

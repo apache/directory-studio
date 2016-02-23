@@ -46,11 +46,6 @@ public class NewEntryWizardBot extends WizardBot
         watcher.waitUntilDone();
     }
 
-    public boolean isVisible()
-    {
-        return isVisible( TITLE );
-    }
-
 
     public void selectCreateEntryFromScratch()
     {

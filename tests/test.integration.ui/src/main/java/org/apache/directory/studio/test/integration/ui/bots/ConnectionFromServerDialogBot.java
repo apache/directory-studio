@@ -25,14 +25,9 @@ public class ConnectionFromServerDialogBot extends DialogBot
     private static final String TITLE = "Connection created";
 
 
-    public void clickOkButton()
+    public ConnectionFromServerDialogBot()
     {
-        bot.shell( TITLE ).bot().button( "OK" ).click();
+        super( TITLE );
     }
 
-
-    public boolean isVisible()
-    {
-        return isVisible( TITLE );
-    }
 }
