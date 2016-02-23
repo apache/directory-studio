@@ -16,6 +16,9 @@
    <launcherArgs>
       <programArgs>/studio-rcp/resources/icons/linux/studio.xpm
       </programArgs>
+      <programArgsLin>--launcher.GTK_version
+2
+      </programArgsLin>
       <vmArgs>-Dosgi.requiredJavaVersion=1.7
       </vmArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
@@ -263,5 +266,12 @@ http://www.apache.org/licenses/
       <property name="org.eclipse.update.reconcile" value="false" />
       <property name="osgi.instance.area.default" value="@user.home/.ApacheDirectoryStudio" />
    </configurations>
+
+   <preferencesInfo>
+      <targetfile overwrite="false"/>
+   </preferencesInfo>
+
+   <cssInfo>
+   </cssInfo>
 
 </product>

@@ -42,9 +42,6 @@
                name="aboutImage"
                value="resources/pictures/product_lg.gif"/>
          <property
-               name="preferenceCustomization"
-               value="plugin_customization.ini"/>
-         <property
                name="windowImages"
                value="resources/icons/window/studio_16x16.png,resources/icons/window/studio_32x32.png,resources/icons/window/studio_48x48.png,resources/icons/window/studio_64x64.png,resources/icons/window/studio_128x128.png"/>
          <property
@@ -62,6 +59,10 @@
          <property
                name="startupProgressRect"
                value="0,280,455,15">
+         </property>
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
          </property>
       </product>
    </extension>

@@ -19,7 +19,7 @@
   @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
 -->
 <?pde version="3.8"?>
-<target name="Apache Directory Studio Platform" sequenceNumber="227">
+<target name="Apache Directory Studio Platform" sequenceNumber="241">
   <locations>
 
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
@@ -106,24 +106,24 @@
     </location>
 
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-      <unit id="org.eclipse.rcp.feature.group" version="4.4.2.v20150204-1700"/>
-      <unit id="org.eclipse.rcp.source.feature.group" version="4.4.2.v20150204-1700"/>
-      <unit id="org.eclipse.platform.feature.group" version="4.4.2.v20150204-1700"/>
-      <unit id="org.eclipse.platform.source.feature.group" version="4.4.2.v20150204-1700"/>
-      <unit id="org.eclipse.jdt.feature.group" version="3.10.1.v20150204-1700"/>
-      <unit id="org.eclipse.jdt.source.feature.group" version="3.10.1.v20150204-1700"/>
-      <unit id="org.eclipse.pde.feature.group" version="3.10.1.v20150204-1700"/>
-      <unit id="org.eclipse.pde.source.feature.group" version="3.10.1.v20150204-1700"/>
-      <unit id="org.eclipse.equinox.p2.user.ui.feature.group" version="2.2.0.v20150129-0838"/>
-      <unit id="org.eclipse.equinox.executable.feature.group" version="3.6.102.v20150204-1316"/>
-      <repository location="http://download.eclipse.org/eclipse/updates/4.4"/>
+      <unit id="org.eclipse.rcp.feature.group" version="4.5.1.v20150904-0015"/>
+      <unit id="org.eclipse.rcp.source.feature.group" version="4.5.1.v20150904-0015"/>
+      <unit id="org.eclipse.platform.feature.group" version="4.5.1.v20150904-0015"/>
+      <unit id="org.eclipse.platform.source.feature.group" version="4.5.1.v20150904-0015"/>
+      <unit id="org.eclipse.jdt.feature.group" version="3.11.1.v20150904-0015"/>
+      <unit id="org.eclipse.jdt.source.feature.group" version="3.11.1.v20150904-0015"/>
+      <unit id="org.eclipse.pde.feature.group" version="3.11.1.v20150904-0345"/>
+      <unit id="org.eclipse.pde.source.feature.group" version="3.11.1.v20150904-0345"/>
+      <unit id="org.eclipse.equinox.p2.user.ui.feature.group" version="2.2.101.v20150826-1318"/>
+      <unit id="org.eclipse.equinox.executable.feature.group" version="3.6.200.v20150602-1417"/>
+      <repository location="http://download.eclipse.org/eclipse/updates/4.5"/>
     </location>
 
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
       <unit id="javax.xml.stream" version="1.0.1.v201004272200"/>
       <unit id="org.slf4j.api" version="1.7.2.v20121108-1250"/>
       <unit id="org.slf4j.log4j" version="1.7.2.v20130115-1340"/>
-      <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20150124073747/repository/"/>
+      <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20151221205849/repository/"/>
     </location>
 
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
@@ -137,7 +137,7 @@
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
       <unit id="org.eclipse.babel.nls_eclipse_de.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.babel.nls_eclipse_fr.feature.group" version="0.0.0"/>
-      <repository location="http://download.eclipse.org/technology/babel/update-site/R0.13.0/luna"/>
+      <repository location="http://download.eclipse.org/technology/babel/update-site/R0.13.1/mars"/>
     </location>
 
   </locations>

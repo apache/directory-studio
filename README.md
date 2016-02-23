@@ -267,3 +267,14 @@ How to search features, plugins, versions in P2 repo?
 <https://stackoverflow.com/questions/10025599/how-to-find-out-which-feature-contains-a-needed-plug-in-on-an-eclipse-download-s>
 
 
+Start OSGi console: 
+
+    ss p2.console
+    felix:start -t 999
+
+
+List all IUs within a repository:
+
+    provliu http://download.eclipse.org/eclipse/updates/4.5/ *
+
+

@@ -47,6 +47,7 @@
           </filesets>
         </configuration>
       </plugin>
+
       <!-- Add legal files to META-INF directory -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -56,6 +57,34 @@
         </configuration>
       </plugin>
 
+      <!-- Copy legal files to target directory -->
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-legal-files</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${basedir}/target</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${basedir}/../</directory>
+                  <includes>
+                    <include>LICENSE.txt</include>
+                    <include>NOTICE.txt</include>
+                  </includes>
+                  <filtering>false</filtering>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Package the products -->
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-p2-director-plugin</artifactId>

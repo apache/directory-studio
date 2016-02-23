@@ -245,7 +245,6 @@ http://www.apache.org/licenses/
       <import plugin="org.eclipse.equinox.p2.operations"/>
       <import plugin="org.eclipse.equinox.p2.publisher.eclipse"/>
       <import plugin="org.eclipse.equinox.p2.publisher"/>
-      <import plugin="org.eclipse.equinox.p2.ql"/>
       <import plugin="org.eclipse.equinox.p2.reconciler.dropins"/>
       <import plugin="org.eclipse.equinox.p2.repository"/>
       <import plugin="org.eclipse.equinox.p2.repository.tools"/>
@@ -1068,22 +1067,6 @@ http://www.apache.org/licenses/
 
    <plugin
          id="org.eclipse.equinox.p2.publisher.nl_fr"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.equinox.p2.ql.nl_de"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.equinox.p2.ql.nl_fr"
          download-size="0"
          install-size="0"
          version="0.0.0"
