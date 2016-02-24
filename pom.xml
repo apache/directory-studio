@@ -96,8 +96,8 @@
     <org.apache.xmlgraphics.fop.version>1.0</org.apache.xmlgraphics.fop.version>
     <org.slf4j.version>1.7.10</org.slf4j.version>
     <org.slf4j.bundleversion>1.7.10</org.slf4j.bundleversion>
-    <org.xpp3.version>1.1.0.4c</org.xpp3.version>
-    <org.xpp3.bundleversion>1.1.0.4c</org.xpp3.bundleversion>
+    <org.xpp3.version>1.1.4.c</org.xpp3.version>
+    <org.xpp3.bundleversion>1.1.4.c</org.xpp3.bundleversion>
     <xerces.xercesimpl.version>2.11.0</xerces.xercesimpl.version>
     <xerces.xercesimpl.bundleversion>2.11.0</xerces.xercesimpl.bundleversion>
 
