@@ -20,40 +20,13 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import org.apache.directory.api.util.Network;
 
 
 public final class Constants
 {
-    public static final String LOCALHOST = getLocalHost();
+    public static final String LOCALHOST = Network.LOOPBACK_HOSTNAME;
 
-
-    private static String getLocalHost()
-    {
-        try
-        {
-            return InetAddress.getLocalHost().getHostName();
-        }
-        catch ( UnknownHostException e )
-        {
-            return "localhost";
-        }
-    }
-
-    public static final String LOCALHOST_ADDRESS = getLocalHostAddress();
-
-
-    private static String getLocalHostAddress()
-    {
-        try
-        {
-            return InetAddress.getLocalHost().getHostAddress();
-        }
-        catch ( UnknownHostException e )
-        {
-            return "localhost";
-        }
-    }
+    public static final String LOCALHOST_ADDRESS = Network.LOOPBACK.getHostAddress();
 
 }
