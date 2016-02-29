@@ -59,7 +59,6 @@
             <Import-Package>
  org.apache.commons.lang,
  org.apache.commons.lang.time,
- org.apache.commons.io,
  org.apache.commons.codec.binary,
  org.apache.commons.codec.digest,
  org.bouncycastle.asn1,

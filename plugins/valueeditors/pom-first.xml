@@ -56,8 +56,7 @@
             <Import-Package>
  org.apache.commons.lang,
  org.apache.commons.codec,
- org.apache.commons.codec.binary,
- org.apache.commons.io
+ org.apache.commons.codec.binary
             </Import-Package>
             
             <Require-Bundle>

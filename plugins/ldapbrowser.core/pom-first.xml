@@ -128,7 +128,6 @@
  
             <Import-Package>
  org.apache.commons.lang,
- org.apache.commons.io,
  org.apache.commons.collections,
  org.apache.commons.codec.digest,
  org.dom4j,

@@ -66,8 +66,7 @@
  org.apache.directory.studio.ldapbrowser.ui.wizards</Export-Package>
  
             <Import-Package>
- org.apache.commons.lang,
- org.apache.commons.io
+ org.apache.commons.lang
             </Import-Package>
             
             <Require-Bundle>
