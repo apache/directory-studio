@@ -20,7 +20,7 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import org.apache.directory.api.ldap.codec.protocol.mina.LdapProtocolCodecActivator;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
@@ -37,7 +37,10 @@ public class Activator extends Plugin
     public void start( BundleContext context ) throws Exception
     {
         super.start( context );
-        LdapProtocolCodecActivator.lazyStart();
+
+        // Nasty hack to get the API bundles started. DO NOT REMOVE
+        Platform.getBundle( "org.apache.directory.api.ldap.codec.core" ).start();
+        Platform.getBundle( "org.apache.directory.api.ldap.net.mina" ).start();
     }
 
 

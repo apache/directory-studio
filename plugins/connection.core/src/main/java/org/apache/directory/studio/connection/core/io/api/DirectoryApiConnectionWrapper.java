@@ -43,7 +43,6 @@ import javax.security.auth.login.Configuration;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.directory.api.ldap.codec.api.DefaultConfigurableBinaryAttributeDetector;
-import org.apache.directory.api.ldap.codec.protocol.mina.LdapProtocolCodecActivator;
 import org.apache.directory.api.ldap.model.cursor.SearchCursor;
 import org.apache.directory.api.ldap.model.entry.AttributeUtils;
 import org.apache.directory.api.ldap.model.entry.DefaultModification;
@@ -146,13 +145,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     public DirectoryApiConnectionWrapper( Connection connection )
     {
         this.connection = connection;
-
-        // Nasty hack to get the 'org.apache.directory.api.ldap.protocol.codec'
-        // bundle started.
-        // Instantiating one of this bundle class will trigger the start of the bundle
-        // thanks to the lazy activation policy
-        // DO NOT REMOVE
-        LdapProtocolCodecActivator.lazyStart();
     }
 
 

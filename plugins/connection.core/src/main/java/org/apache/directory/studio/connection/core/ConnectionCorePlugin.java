@@ -141,6 +141,10 @@ public class ConnectionCorePlugin extends Plugin
         {
             sessionTrustStoreManager = StudioKeyStoreManager.createMemoryKeyStoreManager();
         }
+
+        // Nasty hack to get the API bundles started. DO NOT REMOVE
+        Platform.getBundle( "org.apache.directory.api.ldap.codec.core" ).start();
+        Platform.getBundle( "org.apache.directory.api.ldap.net.mina" ).start();
     }
 
 
