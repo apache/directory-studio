@@ -358,17 +358,22 @@ public class EntryEditorManager
                 for ( IEditorReference ref : activePage.getEditorReferences() )
                 {
                     IEntryEditor editor = getEntryEditor( ref );
-                    IEntry resolvedEntry = editor.getEntryEditorInput().getResolvedEntry();
+                    EntryEditorInput entryEditorInput = editor.getEntryEditorInput();
                     
-                    if ( ( editor != null ) && ( resolvedEntry != null ) )
+                    if ( entryEditorInput != null )
                     {
-                        IBrowserConnection bc = resolvedEntry.getBrowserConnection();
-                        Dn dn = resolvedEntry.getDn();
-                        
-                        if ( bc.getEntryFromCache( dn ) == null )
-                        {
-                            editorReferences.add( ref );
-                        }
+                    	IEntry resolvedEntry = entryEditorInput.getResolvedEntry();
+	                    
+	                    if ( ( editor != null ) && ( resolvedEntry != null ) )
+	                    {
+	                        IBrowserConnection bc = resolvedEntry.getBrowserConnection();
+	                        Dn dn = resolvedEntry.getDn();
+	                        
+	                        if ( bc.getEntryFromCache( dn ) == null )
+	                        {
+	                            editorReferences.add( ref );
+	                        }
+	                    }
                     }
                 }
 
