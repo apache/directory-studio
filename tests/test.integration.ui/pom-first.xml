@@ -102,7 +102,6 @@
  org.eclipse.ui</Require-Bundle>
             
             <Import-Package>org.apache.commons.lang,
- org.apache.commons.io,
  org.apache.commons.codec.digest,
  org.apache.http.conn.ssl,
  org.apache.log4j,

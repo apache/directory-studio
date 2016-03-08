@@ -57,12 +57,6 @@
     </dependency>
 
     <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-      <version>${org.apache.commons.io.version}</version>
-    </dependency>
-
-    <dependency>
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
       <version>${org.apache.commons.lang.version}</version>

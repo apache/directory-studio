@@ -26,9 +26,10 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
+import org.apache.directory.api.util.FileUtils;
 import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
 import org.apache.directory.studio.test.integration.ui.bots.CertificateValidationPreferencePageBot;
 import org.apache.directory.studio.test.integration.ui.bots.PreferencesBot;
@@ -96,7 +97,7 @@ public class PreferencesTest extends AbstractLdapTestUnit
         // click OK, this should write the property to the file
         preferencesBot.clickOkButton();
         assertTrue( file.exists() );
-        List<String> lines = FileUtils.readLines( file );
+        List<String> lines = FileUtils.readLines( file, StandardCharsets.UTF_8 );
         assertTrue( lines.contains( "validateCertificates=false" ) );
 
         // open dialog again, check that certificate validation checkbox is not selected

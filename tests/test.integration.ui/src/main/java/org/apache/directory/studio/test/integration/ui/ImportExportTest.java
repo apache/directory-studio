@@ -28,10 +28,11 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
+import org.apache.directory.api.util.FileUtils;
+import org.apache.directory.api.util.IOUtils;
 import org.apache.directory.server.annotations.CreateLdapServer;
 import org.apache.directory.server.annotations.CreateTransport;
 import org.apache.directory.server.core.annotations.ApplyLdifFiles;
@@ -117,7 +118,7 @@ public class ImportExportTest extends AbstractLdapTestUnit
         wizardBot.clickFinishButton();
         wizardBot.waitTillExportFinished( file, 200 ); // is actually 217 bytes
 
-        List<String> lines = FileUtils.readLines( new File( file ) );
+        List<String> lines = FileUtils.readLines( new File( file ), StandardCharsets.UTF_8 );
         // verify that the first line of exported LDIF is "version: 1"
         assertEquals( "LDIF must start with version: 1", lines.get( 0 ), "version: 1" );
         // verify that the third line of exported LDIF is the Base64 encoded DN
@@ -170,7 +171,7 @@ public class ImportExportTest extends AbstractLdapTestUnit
         wizardBot.waitTillExportFinished( file, 500 ); // is actually 542 bytes
 
         // verify that exported DSML contains the Base64 encoded DN
-        String content = FileUtils.readFileToString( new File( file ), "UTF-8" );
+        String content = FileUtils.readFileToString( new File( file ), StandardCharsets.UTF_8 );
         assertTrue( "DSML must contain DN with umlaut.",
             content.contains( "dn=\"cn=Wolfgang K\u00f6lbel,ou=users,ou=system\"" ) );
 
@@ -220,7 +221,7 @@ public class ImportExportTest extends AbstractLdapTestUnit
         URL url = Platform.getInstanceLocation().getURL();
         String file = url.getFile() + "ImportContextEntry.ldif";
         String data = "dn:dc=example,dc=com\nobjectClass:top\nobjectClass:domain\ndc:example\n\n";
-        FileUtils.writeStringToFile( new File( file ), data );
+        FileUtils.writeStringToFile( new File( file ), data, StandardCharsets.UTF_8, false );
         ImportWizardBot importWizardBot = browserViewBot.openImportLdifWizard();
         importWizardBot.typeFile( file );
         importWizardBot.clickFinishButton();
@@ -244,8 +245,8 @@ public class ImportExportTest extends AbstractLdapTestUnit
         URL url = Platform.getInstanceLocation().getURL();
         String destFile = url.getFile() + "ImportDontUpdateUiTest.ldif";
         InputStream is = getClass().getResourceAsStream( "ImportExportTest_ImportDontUpdateUI.ldif" );
-        String ldifContent = IOUtils.toString( is );
-        FileUtils.writeStringToFile( new File( destFile ), ldifContent );
+        String ldifContent = IOUtils.toString( is, StandardCharsets.UTF_8 );
+        FileUtils.writeStringToFile( new File( destFile ), ldifContent, StandardCharsets.UTF_8, false );
 
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
         browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
@@ -288,7 +289,7 @@ public class ImportExportTest extends AbstractLdapTestUnit
         wizardBot.clickFinishButton();
         wizardBot.waitTillExportFinished( file, 80 ); // is actually 86 bytes
 
-        List<String> lines = FileUtils.readLines( new File( file ) );
+        List<String> lines = FileUtils.readLines( new File( file ), StandardCharsets.UTF_8 );
         // verify that the first line is header
         assertEquals( "dn,cn,description", lines.get( 0 ) );
         // verify that the second line is actual content and the formula is prefixed with an apostrophe
