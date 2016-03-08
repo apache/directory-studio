@@ -23,6 +23,8 @@ package org.apache.directory.studio.test.integration.ui;
 
 import static org.apache.directory.studio.test.integration.ui.Constants.LOCALHOST;
 import static org.apache.directory.studio.test.integration.ui.Constants.LOCALHOST_ADDRESS;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -33,7 +35,6 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.math.BigInteger;
-import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -431,17 +432,18 @@ public class NewConnectionWizardTest extends AbstractLdapTestUnit
         assertNotNull( "Expected Error", result1 );
         assertTrue( "'Connection refused' message must occur in error message", result1.contains( "Connection refused" ) );
 
-        // TODO: disabled till DIRAPI-230 is fixed
         // enter connection parameter with invalid host name
-        //        String hostname = "qwertzuiop.asdfghjkl.yxcvbnm";
-        //        wizardBot.typeHost( hostname );
-        //        wizardBot.typePort( ldapServer.getPort() );
-        //
-        //        // click "Check Network Parameter" button and get the result
-        //        String result2 = wizardBot.clickCheckNetworkParameterButton();
-        //        assertNotNull( "Expected Error", result2 );
-        //        assertTrue( "'Unknown Host' message must occur in error message", result2.contains( "Unknown Host" ) );
-        //        assertTrue( "Unknown host name must occur in error message", result2.contains( hostname ) );
+        String hostname = "qwertzuiop.asdfghjkl.yxcvbnm";
+        wizardBot.typeHost( hostname );
+        wizardBot.typePort( ldapServer.getPort() );
+
+        // click "Check Network Parameter" button and get the result
+        String result2 = wizardBot.clickCheckNetworkParameterButton();
+        System.out.println( result2 );
+        assertNotNull( "Expected Error", result2 );
+        assertThat( "'could not be resolved' message must occur in error message", result2,
+            containsString( "could not be resolved" ) );
+        assertThat( "Unknown host name must occur in error message", result2, containsString( hostname ) );
 
         // disabled this test because it does not work properly
         // as it depends from the network connection settings.
