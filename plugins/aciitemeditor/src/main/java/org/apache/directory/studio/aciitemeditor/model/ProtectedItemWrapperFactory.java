@@ -47,7 +47,7 @@ import org.apache.directory.studio.valueeditors.integer.IntegerValueEditor;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ProtectedItemWrapperFactory
+public final class ProtectedItemWrapperFactory
 {
 
     /**
@@ -55,7 +55,7 @@ public class ProtectedItemWrapperFactory
      * 
      * @return the protected item wrapper[]
      */
-    public static final ProtectedItemWrapper[] createProtectedItemWrappers()
+    public static ProtectedItemWrapper[] createProtectedItemWrappers()
     {
         ProtectedItemWrapper[] protectedItemWrappers = new ProtectedItemWrapper[]
             {

@@ -42,15 +42,6 @@ import org.eclipse.ui.PlatformUI;
 public class NewConnectionAction extends StudioAction
 {
     /**
-     * Creates a new instance of NewConnectionAction.
-     */
-    public NewConnectionAction()
-    {
-        super();
-    }
-
-
-    /**
      * {@inheritDoc}
      */
     public void run()

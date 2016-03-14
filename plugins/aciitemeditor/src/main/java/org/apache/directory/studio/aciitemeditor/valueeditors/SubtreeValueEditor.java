@@ -36,8 +36,6 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class SubtreeValueEditor extends AbstractDialogStringValueEditor
 {
-    static final String EMPTY = ""; //$NON-NLS-1$
-
     private boolean refinementOrFilterVisible;
 
     private boolean useLocalName;
@@ -72,7 +70,7 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
     protected boolean openDialog( Shell shell )
     {
         Object value = getValue();
-        if ( value != null && value instanceof SubtreeSpecificationValueWrapper )
+        if ( value instanceof SubtreeSpecificationValueWrapper )
         {
             SubtreeSpecificationValueWrapper wrapper = ( SubtreeSpecificationValueWrapper ) value;
 
@@ -89,12 +87,13 @@ public class SubtreeValueEditor extends AbstractDialogStringValueEditor
 
 
     /**
-     * @see org.apache.directory.studio.valueeditors.AbstractDialogStringValueEditor#getRawValue(org.apache.directory.studio.ldapbrowser.core.model.IValue)
+     * @see org.apache.directory.studio.valueeditors.AbstractDialogStringValueEditor#getRawValue(
+     *          org.apache.directory.studio.ldapbrowser.core.model.IValue)
      */
     public Object getRawValue( IValue value )
     {
         Object o = super.getRawValue( value );
-        if ( o != null && o instanceof String )
+        if ( o instanceof String )
         {
             IBrowserConnection connection = value.getAttribute().getEntry().getBrowserConnection();
             Dn dn = value.getAttribute().getEntry().getDn();

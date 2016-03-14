@@ -27,12 +27,10 @@ package org.apache.directory.studio.connection.core.event;
  */
 public interface EventRunner
 {
-
     /**
      * Executes the given {@link EventRunnable}.
      *
      * @param runnable the event runnable to run
      */
-    public void execute( EventRunnable runnable );
-
+    void execute( EventRunnable runnable );
 }

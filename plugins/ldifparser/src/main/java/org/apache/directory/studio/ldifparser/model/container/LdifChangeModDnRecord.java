@@ -21,8 +21,7 @@
 package org.apache.directory.studio.ldifparser.model.container;
 
 
-import java.util.Iterator;
-
+import org.apache.directory.studio.ldifparser.model.LdifPart;
 import org.apache.directory.studio.ldifparser.model.lines.LdifChangeTypeLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifDeloldrdnLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifDnLine;
@@ -30,17 +29,13 @@ import org.apache.directory.studio.ldifparser.model.lines.LdifNewrdnLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifNewsuperiorLine;
 
 
+/**
+ * A LDIF container for LDIF moddn change records
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class LdifChangeModDnRecord extends LdifChangeRecord
 {
-
-    private static final long serialVersionUID = 4439094400671169207L;
-
-
-    protected LdifChangeModDnRecord()
-    {
-    }
-
-
     public LdifChangeModDnRecord( LdifDnLine dn )
     {
         super( dn );
@@ -50,35 +45,43 @@ public class LdifChangeModDnRecord extends LdifChangeRecord
     public void setNewrdn( LdifNewrdnLine newrdn )
     {
         if ( newrdn == null )
+        {
             throw new IllegalArgumentException( "null argument" ); //$NON-NLS-1$
-        this.parts.add( newrdn );
+        }
+
+        ldifParts.add( newrdn );
     }
 
 
     public void setDeloldrdn( LdifDeloldrdnLine deloldrdn )
     {
         if ( deloldrdn == null )
+        {
             throw new IllegalArgumentException( "null argument" ); //$NON-NLS-1$
-        this.parts.add( deloldrdn );
+        }
+
+        ldifParts.add( deloldrdn );
     }
 
 
     public void setNewsuperior( LdifNewsuperiorLine newsuperior )
     {
         if ( newsuperior == null )
+        {
             throw new IllegalArgumentException( "null argument" ); //$NON-NLS-1$
-        this.parts.add( newsuperior );
+        }
+
+        ldifParts.add( newsuperior );
     }
 
 
     public LdifNewrdnLine getNewrdnLine()
     {
-        for ( Iterator it = this.parts.iterator(); it.hasNext(); )
+        for ( LdifPart part : ldifParts )
         {
-            Object o = it.next();
-            if ( o instanceof LdifNewrdnLine )
+            if ( part instanceof LdifNewrdnLine )
             {
-                return ( LdifNewrdnLine ) o;
+                return ( LdifNewrdnLine ) part;
             }
         }
 
@@ -88,12 +91,11 @@ public class LdifChangeModDnRecord extends LdifChangeRecord
 
     public LdifDeloldrdnLine getDeloldrdnLine()
     {
-        for ( Iterator it = this.parts.iterator(); it.hasNext(); )
+        for ( Object part : ldifParts )
         {
-            Object o = it.next();
-            if ( o instanceof LdifDeloldrdnLine )
+            if ( part instanceof LdifDeloldrdnLine )
             {
-                return ( LdifDeloldrdnLine ) o;
+                return ( LdifDeloldrdnLine ) part;
             }
         }
 
@@ -103,12 +105,11 @@ public class LdifChangeModDnRecord extends LdifChangeRecord
 
     public LdifNewsuperiorLine getNewsuperiorLine()
     {
-        for ( Iterator it = this.parts.iterator(); it.hasNext(); )
+        for ( Object part : ldifParts )
         {
-            Object o = it.next();
-            if ( o instanceof LdifNewsuperiorLine )
+            if ( part instanceof LdifNewsuperiorLine )
             {
-                return ( LdifNewsuperiorLine ) o;
+                return ( LdifNewsuperiorLine ) part;
             }
         }
 
@@ -120,6 +121,7 @@ public class LdifChangeModDnRecord extends LdifChangeRecord
     {
         LdifChangeModDnRecord record = new LdifChangeModDnRecord( LdifDnLine.create( dn ) );
         record.setChangeType( LdifChangeTypeLine.createModDn() );
+
         return record;
     }
 
@@ -131,17 +133,17 @@ public class LdifChangeModDnRecord extends LdifChangeRecord
             return false;
         }
 
-        return this.getNewrdnLine() != null && this.getDeloldrdnLine() != null;
+        return ( getNewrdnLine() != null ) && ( getDeloldrdnLine() != null );
     }
 
 
     public String getInvalidString()
     {
-        if ( this.getNewrdnLine() == null )
+        if ( getNewrdnLine() == null )
         {
             return "Missing new Rdn";
         }
-        else if ( this.getDeloldrdnLine() == null )
+        else if ( getDeloldrdnLine() == null )
         {
             return "Missing delete old Rdn";
         }
@@ -150,5 +152,4 @@ public class LdifChangeModDnRecord extends LdifChangeRecord
             return super.getInvalidString();
         }
     }
-
 }

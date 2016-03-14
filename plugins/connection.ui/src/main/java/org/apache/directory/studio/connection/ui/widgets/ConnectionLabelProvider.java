@@ -21,6 +21,7 @@
 package org.apache.directory.studio.connection.ui.widgets;
 
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionFolder;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
@@ -38,7 +39,6 @@ import org.eclipse.swt.graphics.Image;
  */
 public class ConnectionLabelProvider extends LabelProvider
 {
-
     /**
      * {@inheritDoc}
      * 
@@ -50,11 +50,14 @@ public class ConnectionLabelProvider extends LabelProvider
         if ( obj instanceof ConnectionFolder )
         {
             ConnectionFolder folder = ( ConnectionFolder ) obj;
+            
             return folder.getName();
         }
+        
         if ( obj instanceof Connection )
         {
             Connection conn = ( Connection ) obj;
+            
             if ( conn.getEncryptionMethod() == EncryptionMethod.LDAPS )
             {
                 return conn.getName() + " (LDAPS)"; //$NON-NLS-1$
@@ -68,13 +71,13 @@ public class ConnectionLabelProvider extends LabelProvider
                 return conn.getName();
             }
         }
-        else if ( obj != null )
+        else if ( obj == null )
         {
-            return obj.toString();
+            return StringUtils.EMPTY; //$NON-NLS-1$
         }
         else
         {
-            return ""; //$NON-NLS-1$
+            return obj.toString();
         }
     }
 
@@ -93,6 +96,7 @@ public class ConnectionLabelProvider extends LabelProvider
         else if ( obj instanceof Connection )
         {
             Connection conn = ( Connection ) obj;
+            
             if ( ( conn.getEncryptionMethod() == EncryptionMethod.LDAPS )
                 || ( conn.getEncryptionMethod() == EncryptionMethod.START_TLS ) )
             {
@@ -112,5 +116,4 @@ public class ConnectionLabelProvider extends LabelProvider
             return null;
         }
     }
-
 }

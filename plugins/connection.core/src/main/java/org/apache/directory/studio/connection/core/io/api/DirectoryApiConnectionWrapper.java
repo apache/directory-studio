@@ -43,13 +43,14 @@ import javax.security.auth.login.Configuration;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.directory.api.ldap.codec.api.DefaultConfigurableBinaryAttributeDetector;
-import org.apache.directory.api.ldap.codec.protocol.mina.LdapProtocolCodecActivator;
 import org.apache.directory.api.ldap.model.cursor.SearchCursor;
 import org.apache.directory.api.ldap.model.entry.AttributeUtils;
 import org.apache.directory.api.ldap.model.entry.DefaultModification;
 import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.entry.ModificationOperation;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
+import org.apache.directory.api.ldap.model.filter.ExprNode;
+import org.apache.directory.api.ldap.model.filter.FilterParser;
 import org.apache.directory.api.ldap.model.message.AddRequest;
 import org.apache.directory.api.ldap.model.message.AddRequestImpl;
 import org.apache.directory.api.ldap.model.message.AddResponse;
@@ -73,11 +74,11 @@ import org.apache.directory.api.ldap.model.message.SearchRequest;
 import org.apache.directory.api.ldap.model.message.SearchRequestImpl;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
-import org.apache.directory.ldap.client.api.CramMd5Request;
-import org.apache.directory.ldap.client.api.DigestMd5Request;
-import org.apache.directory.ldap.client.api.GssApiRequest;
 import org.apache.directory.ldap.client.api.LdapConnectionConfig;
 import org.apache.directory.ldap.client.api.LdapNetworkConnection;
+import org.apache.directory.ldap.client.api.SaslCramMd5Request;
+import org.apache.directory.ldap.client.api.SaslDigestMd5Request;
+import org.apache.directory.ldap.client.api.SaslGssApiRequest;
 import org.apache.directory.ldap.client.api.exception.InvalidConnectionException;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
@@ -144,13 +145,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     public DirectoryApiConnectionWrapper( Connection connection )
     {
         this.connection = connection;
-
-        // Nasty hack to get the 'org.apache.directory.api.ldap.protocol.codec'
-        // bundle started.
-        // Instantiating one of this bundle class will trigger the start of the bundle
-        // thanks to the lazy activation policy
-        // DO NOT REMOVE
-        LdapProtocolCodecActivator.lazyStart();
     }
 
 
@@ -189,6 +183,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
             || ( connection.getEncryptionMethod() == EncryptionMethod.START_TLS ) )
         {
             ldapConnectionConfig.setUseSsl( connection.getEncryptionMethod() == EncryptionMethod.LDAPS );
+            ldapConnectionConfig.setUseTls( connection.getEncryptionMethod() == EncryptionMethod.START_TLS );
 
             try
             {
@@ -228,12 +223,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     if ( !connected )
                     {
                         throw new Exception( Messages.DirectoryApiConnectionWrapper_UnableToConnect );
-                    }
-
-                    // Start TLS
-                    if ( connection.getConnectionParameter().getEncryptionMethod() == ConnectionParameter.EncryptionMethod.START_TLS )
-                    {
-                        ldapConnection.startTls();
                     }
                 }
                 catch ( Exception e )
@@ -283,7 +272,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         {
             try
             {
-                ldapConnection.unBind();
                 ldapConnection.close();
             }
             catch ( Exception e )
@@ -371,7 +359,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                             // CRAM-MD5 Authentication
                             else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_CRAM_MD5 )
                             {
-                                CramMd5Request cramMd5Request = new CramMd5Request();
+                                SaslCramMd5Request cramMd5Request = new SaslCramMd5Request();
                                 cramMd5Request.setUsername( bindPrincipal );
                                 cramMd5Request.setCredentials( bindPassword );
                                 cramMd5Request
@@ -386,7 +374,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                             // DIGEST-MD5 Authentication
                             else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_DIGEST_MD5 )
                             {
-                                DigestMd5Request digestMd5Request = new DigestMd5Request();
+                                SaslDigestMd5Request digestMd5Request = new SaslDigestMd5Request();
                                 digestMd5Request.setUsername( bindPrincipal );
                                 digestMd5Request.setCredentials( bindPassword );
                                 digestMd5Request.setRealmName( connection.getConnectionParameter().getSaslRealm() );
@@ -402,7 +390,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                             // GSSAPI Authentication
                             else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_GSSAPI )
                             {
-                                GssApiRequest gssApiRequest = new GssApiRequest();
+                                SaslGssApiRequest gssApiRequest = new SaslGssApiRequest();
 
                                 Preferences preferences = ConnectionCorePlugin.getDefault().getPluginPreferences();
                                 boolean useKrb5SystemProperties = preferences
@@ -439,6 +427,8 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                                                 .getKrb5KdcHost() );
                                             gssApiRequest.setKdcPort( connection.getConnectionParameter()
                                                 .getKrb5KdcPort() );
+                                            break;
+                                        default:
                                             break;
                                     }
                                 }
@@ -526,7 +516,8 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     // Preparing the search request
                     SearchRequest request = new SearchRequestImpl();
                     request.setBase( new Dn( searchBase ) );
-                    request.setFilter( filter );
+                    ExprNode node = FilterParser.parse( filter, true );
+                    request.setFilter( node );
                     request.setScope( convertSearchScope( searchControls ) );
                     if ( searchControls.getReturningAttributes() != null )
                     {
@@ -1108,9 +1099,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
             runAndMonitor( runnable, monitor );
 
             // check reconnection
-            if ( i == 0
-                && runnable.getException() != null
-                && ( ( runnable.getException() instanceof InvalidConnectionException ) ) )
+            if ( ( i == 0 ) && ( ( runnable.getException() instanceof InvalidConnectionException ) ) )
             {
                 doConnect( monitor );
                 doBind( monitor );

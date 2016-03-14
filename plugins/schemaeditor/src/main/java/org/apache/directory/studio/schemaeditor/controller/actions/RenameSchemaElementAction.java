@@ -127,7 +127,8 @@ public class RenameSchemaElementAction extends Action implements IWorkbenchWindo
                 // OBJECT CLASS
                 else if ( selectedElement instanceof ObjectClassWrapper )
                 {
-                    MutableObjectClass objectClass = ( ( ObjectClassWrapper ) selectedElement ).getObjectClass();
+                    MutableObjectClass objectClass = ( MutableObjectClass ) ( ( ObjectClassWrapper ) selectedElement )
+                        .getObjectClass();
 
                     RenameObjectClassDialog dialog = new RenameObjectClassDialog( objectClass.getNames() );
                     if ( dialog.open() == RenameObjectClassDialog.OK )

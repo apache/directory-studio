@@ -27,19 +27,11 @@ import org.apache.directory.studio.ldifparser.LdifUtils;
 
 public class LdifControlLine extends LdifValueLineBase
 {
-
-    private static final long serialVersionUID = -3961159214439218610L;
-
     private String rawCriticality;
 
     private String rawControlValueType;
 
     private String rawControlValue;
-
-
-    protected LdifControlLine()
-    {
-    }
 
 
     public LdifControlLine( int offset, String rawControlSpec, String rawControlType, String rawOid,
@@ -90,76 +82,76 @@ public class LdifControlLine extends LdifValueLineBase
 
     public String getRawCriticality()
     {
-        return getNonNull( this.rawCriticality );
+        return getNonNull( rawCriticality );
     }
 
 
     public String getUnfoldedCriticality()
     {
-        return unfold( this.getRawCriticality() );
+        return unfold( getRawCriticality() );
     }
 
 
     public boolean isCritical()
     {
-        return this.getUnfoldedCriticality().endsWith( "true" ); //$NON-NLS-1$
+        return getUnfoldedCriticality().endsWith( "true" ); //$NON-NLS-1$
     }
 
 
     public String getRawControlValueType()
     {
-        return getNonNull( this.rawControlValueType );
+        return getNonNull( rawControlValueType );
     }
 
 
     public String getUnfoldedControlValueType()
     {
-        return unfold( this.getRawControlValueType() );
+        return unfold( getRawControlValueType() );
     }
 
 
     public String getRawControlValue()
     {
-        return getNonNull( this.rawControlValue );
+        return getNonNull( rawControlValue );
     }
 
 
     public String getUnfoldedControlValue()
     {
-        return unfold( this.getRawControlValue() );
+        return unfold( getRawControlValue() );
     }
 
 
     public String toRawString()
     {
-        return this.getRawControlSpec() + this.getRawControlType() + this.getRawOid() + this.getRawCriticality()
-            + this.getRawControlValueType() + this.getRawControlValue() + this.getRawNewLine();
+        return getRawControlSpec() + getRawControlType() + getRawOid() + getRawCriticality()
+            + getRawControlValueType() + getRawControlValue() + getRawNewLine();
     }
 
 
     public boolean isValid()
     {
-        return this.getUnfoldedControlSpec().length() > 0
-            && this.getUnfoldedControlType().length() > 0
-            && this.getUnfoldedOid().length() > 0
-            && ( this.rawCriticality == null || this.getUnfoldedCriticality().endsWith( "true" ) || this //$NON-NLS-1$
+        return getUnfoldedControlSpec().length() > 0
+            && getUnfoldedControlType().length() > 0
+            && getUnfoldedOid().length() > 0
+            && ( rawCriticality == null || getUnfoldedCriticality().endsWith( "true" ) || this //$NON-NLS-1$
                 .getUnfoldedCriticality().endsWith( "false" ) ) //$NON-NLS-1$
-            && ( ( this.rawControlValueType == null && this.rawControlValue == null ) || ( this.rawControlValueType != null && this.rawControlValue != null ) )
-            && this.getUnfoldedNewLine().length() > 0;
+            && ( ( rawControlValueType == null && rawControlValue == null ) || ( rawControlValueType != null && rawControlValue != null ) )
+            && getUnfoldedNewLine().length() > 0;
     }
 
 
     public String getInvalidString()
     {
-        if ( this.getUnfoldedControlSpec().length() == 0 )
+        if ( getUnfoldedControlSpec().length() == 0 )
         {
             return "Missing 'control'";
         }
-        else if ( this.getUnfoldedOid().length() == 0 )
+        else if ( getUnfoldedOid().length() == 0 )
         {
             return "Missing OID";
         }
-        else if ( ( this.rawCriticality != null && !this.getUnfoldedCriticality().endsWith( "true" ) && !this //$NON-NLS-1$
+        else if ( ( rawCriticality != null && !getUnfoldedCriticality().endsWith( "true" ) && !this //$NON-NLS-1$
             .getUnfoldedCriticality().endsWith( "false" ) ) ) //$NON-NLS-1$
         {
             return "Invalid criticality, must be 'true' or 'false'";
@@ -195,13 +187,13 @@ public class LdifControlLine extends LdifValueLineBase
 
     public final Object getControlValueAsObject()
     {
-        if ( this.isControlValueTypeSafe() )
+        if ( isControlValueTypeSafe() )
         {
-            return this.getUnfoldedControlValue();
+            return getUnfoldedControlValue();
         }
-        else if ( this.isControlValueTypeBase64() )
+        else if ( isControlValueTypeBase64() )
         {
-            return LdifUtils.base64decodeToByteArray( this.getUnfoldedControlValue() );
+            return LdifUtils.base64decodeToByteArray( getUnfoldedControlValue() );
         }
         else
         {
@@ -212,13 +204,13 @@ public class LdifControlLine extends LdifValueLineBase
 
     public boolean isControlValueTypeBase64()
     {
-        return this.getUnfoldedControlValueType().startsWith( "::" ); //$NON-NLS-1$
+        return getUnfoldedControlValueType().startsWith( "::" ); //$NON-NLS-1$
     }
 
 
     public boolean isControlValueTypeSafe()
     {
-        return this.getUnfoldedControlValueType().startsWith( ":" ) && !this.isControlValueTypeBase64(); //$NON-NLS-1$
+        return getUnfoldedControlValueType().startsWith( ":" ) && !isControlValueTypeBase64(); //$NON-NLS-1$
     }
 
 

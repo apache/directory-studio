@@ -65,7 +65,7 @@ import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
 import javax.security.sasl.Sasl;
 
-import org.apache.commons.io.FileUtils;
+import org.apache.directory.api.util.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.directory.api.ldap.model.constants.SaslQoP;
 import org.apache.directory.api.ldap.model.constants.SaslSecurityStrength;
@@ -1238,7 +1238,6 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
 
             // check reconnection
             if ( i == 0
-                && runnable.getException() != null
                 && ( ( runnable.getException() instanceof CommunicationException )
                     || ( runnable.getException() instanceof ServiceUnavailableException ) || ( runnable.getException() instanceof InsufficientResourcesException ) ) )
             {

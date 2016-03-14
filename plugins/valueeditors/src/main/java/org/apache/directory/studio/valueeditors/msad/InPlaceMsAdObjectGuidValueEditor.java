@@ -54,9 +54,11 @@ public class InPlaceMsAdObjectGuidValueEditor extends HexValueEditor
         if ( !showRawValues() )
         {
             Object rawValue = super.getRawValue( value );
+            
             if ( rawValue instanceof byte[] )
             {
                 byte[] bytes = ( byte[] ) rawValue;
+            
                 return convertToString( bytes );
             }
         }
@@ -67,7 +69,7 @@ public class InPlaceMsAdObjectGuidValueEditor extends HexValueEditor
 
     String convertToString( byte[] bytes )
     {
-        if ( bytes == null || bytes.length != 16 )
+        if ((  bytes == null ) || ( bytes.length != 16 ) )
         {
             return Messages.getString( "InPlaceMsAdObjectGuidValueEditor.InvalidGuid" ); //$NON-NLS-1$
         }
@@ -90,7 +92,7 @@ public class InPlaceMsAdObjectGuidValueEditor extends HexValueEditor
         sb.append( '-' );
         sb.append( hex, 20, 12 );
         sb.append( '}' );
+        
         return Strings.toLowerCase( sb.toString() );
     }
-
 }

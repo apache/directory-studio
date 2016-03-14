@@ -445,7 +445,7 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
             Attribute attribute = attributes.get( atav.getType() );
             if ( attribute != null )
             {
-                attribute.remove( atav.getNormValue().getString() );
+                attribute.remove( atav.getValue().getNormValue() );
                 if ( attribute.size() == 0 )
                 {
                     attributes.remove( atav.getType() );
@@ -463,9 +463,9 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
                 attribute = new BasicAttribute( atav.getType() );
                 attributes.put( attribute );
             }
-            if ( !attribute.contains( atav.getNormValue().getString() ) )
+            if ( !attribute.contains( atav.getValue().getNormValue() ) )
             {
-                attribute.add( atav.getNormValue().getString() );
+                attribute.add( atav.getValue().getNormValue() );
             }
         }
     }

@@ -27,10 +27,10 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.widgets.DnBuilderWidget;
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.jface.dialogs.Dialog;
@@ -162,7 +162,7 @@ public class RenameEntryDialog extends Dialog implements WidgetModifyListener
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener#widgetModified(org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent)
+     * @see org.apache.directory.studio.common.ui.widgets.WidgetModifyListener#widgetModified(org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent)
      */
     public void widgetModified( WidgetModifyEvent event )
     {

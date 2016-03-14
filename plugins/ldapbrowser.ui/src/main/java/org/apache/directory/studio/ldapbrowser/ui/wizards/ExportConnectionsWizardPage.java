@@ -24,9 +24,9 @@ package org.apache.directory.studio.ldapbrowser.ui.wizards;
 import java.io.File;
 
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.common.widgets.FileBrowserWidget;
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.eclipse.jface.wizard.WizardPage;
@@ -136,7 +136,7 @@ public class ExportConnectionsWizardPage extends WizardPage
         BaseWidgetUtils.createLabel( composite, Messages.getString( "ExportConnectionsWizardPage.ToFile" ), 1 ); //$NON-NLS-1$
         fileBrowserWidget = new FileBrowserWidget(
             Messages.getString( "ExportConnectionsWizardPage.ChooseFile" ), new String[] //$NON-NLS-1$
-            { "lbc" }, FileBrowserWidget.TYPE_SAVE ); //$NON-NLS-1$
+            { "*.lbc", "*" }, FileBrowserWidget.TYPE_SAVE ); //$NON-NLS-1$
         fileBrowserWidget.createWidget( composite );
         fileBrowserWidget.addWidgetModifyListener( new WidgetModifyListener()
         {

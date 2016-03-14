@@ -26,6 +26,11 @@ public class CertificateValidationPreferencePageBot extends DialogBot
     private static final String VALIDATE_CERTIFICATES_FOR_SECURE_LDAP_CONNECTIONS = "Validate certificates for secure LDAP connections";
 
 
+    public CertificateValidationPreferencePageBot()
+    {
+        super( "Preferences" );
+    }
+
     public void clickApplyButton()
     {
         super.clickButton( "Apply" );

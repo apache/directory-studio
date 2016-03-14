@@ -114,16 +114,18 @@ public class ListContentProposalProvider implements IContentProposalProvider
     /**
      * Sets the possible strings.
      * 
-     * @param proposals the possible strings
+     * @param newProposals the possible strings
      */
-    public void setProposals( List<String> proposals )
+    public void setProposals( List<String> newProposals )
     {
-        if ( proposals == null )
+        if ( newProposals == null )
         {
-            proposals = new ArrayList<String>();
+            this.proposals = new ArrayList<String>();
         }
-
-        this.proposals = proposals;
+        else
+        {
+            this.proposals = newProposals;
+        }
     }
 
 }

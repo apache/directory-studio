@@ -179,12 +179,26 @@ public class NewAttributeTypeContentWizardPage extends AbstractWizardPage
                 {
                     LdapSyntax syntax = ( LdapSyntax ) element;
 
+                    // Getting description (and name for backward compatibility)
+                    String description = syntax.getDescription();
                     String name = syntax.getName();
-                    if ( name != null )
+
+                    if ( ( description != null ) || ( name != null ) )
                     {
-                        return NLS
-                            .bind(
-                                Messages.getString( "NewAttributeTypeContentWizardPage.NameOID" ), new String[] { name, syntax.getOid() } ); //$NON-NLS-1$
+                        if ( description != null )
+                        {
+                            // Using description
+                            return NLS
+                                .bind(
+                                    Messages.getString( "NewAttributeTypeContentWizardPage.NameOID" ), new String[] { description, syntax.getOid() } ); //$NON-NLS-1$
+                        }
+                        else
+                        {
+                            // Using name (for backward compatibility)
+                            return NLS
+                                .bind(
+                                    Messages.getString( "NewAttributeTypeContentWizardPage.NameOID" ), new String[] { name, syntax.getOid() } ); //$NON-NLS-1$
+                        }
                     }
                     else
                     {
@@ -262,24 +276,21 @@ public class NewAttributeTypeContentWizardPage extends AbstractWizardPage
                 {
                     if ( ( o1 instanceof LdapSyntax ) && ( o2 instanceof LdapSyntax ) )
                     {
-                        List<String> o1Names = ( ( LdapSyntax ) o1 ).getNames();
-                        List<String> o2Names = ( ( LdapSyntax ) o2 ).getNames();
+                        String o1description = ( ( LdapSyntax ) o1 ).getDescription();
+                        String o2description = ( ( LdapSyntax ) o2 ).getDescription();
 
-                        // Comparing the First Name
-                        if ( ( o1Names != null ) && ( o2Names != null ) )
+                        String o1Name = ( ( LdapSyntax ) o1 ).getName();
+                        String o2Name = ( ( LdapSyntax ) o2 ).getName();
+
+                        // Comparing by description
+                        if ( ( o1description != null ) && ( o2description != null ) )
                         {
-                            if ( ( o1Names.size() > 0 ) && ( o2Names.size() > 0 ) )
-                            {
-                                return o1Names.get( 0 ).compareToIgnoreCase( o2Names.get( 0 ) );
-                            }
-                            else if ( ( o1Names.size() == 0 ) && ( o2Names.size() > 0 ) )
-                            {
-                                return "".compareToIgnoreCase( o2Names.get( 0 ) ); //$NON-NLS-1$
-                            }
-                            else if ( ( o1Names.size() > 0 ) && ( o2Names.size() == 0 ) )
-                            {
-                                return o1Names.get( 0 ).compareToIgnoreCase( "" ); //$NON-NLS-1$
-                            }
+                            return o1description.compareToIgnoreCase( o2description );
+                        }
+                        // Comparing by name
+                        else if ( ( o1Name != null ) && ( o2Name != null ) )
+                        {
+                            return o1Name.compareToIgnoreCase( o2Name );
                         }
                     }
                     else if ( ( o1 instanceof String ) && ( o2 instanceof LdapSyntax ) )

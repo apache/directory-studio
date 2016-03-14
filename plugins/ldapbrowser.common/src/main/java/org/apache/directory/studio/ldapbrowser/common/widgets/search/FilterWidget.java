@@ -21,14 +21,15 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.search;
 
 
+import org.apache.directory.api.ldap.model.constants.LdapConstants;
 import org.apache.directory.studio.common.ui.HistoryUtils;
+import org.apache.directory.studio.common.ui.widgets.AbstractWidget;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.ui.widgets.ExtendedContentAssistCommandAdapter;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.FilterDialog;
 import org.apache.directory.studio.ldapbrowser.common.filtereditor.FilterContentAssistProcessor;
-import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterParser;
 import org.eclipse.jface.fieldassist.ComboContentAdapter;
@@ -52,7 +53,7 @@ import org.eclipse.swt.widgets.Composite;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class FilterWidget extends BrowserWidget
+public class FilterWidget extends AbstractWidget
 {
     /** The filter combo. */
     private Combo filterCombo;
@@ -175,7 +176,7 @@ public class FilterWidget extends BrowserWidget
         filterCombo.setItems( history );
 
         // initial values
-        filterCombo.setText( initalFilter == null ? "(objectClass=*)" : initalFilter ); //$NON-NLS-1$
+        filterCombo.setText( initalFilter == null ? LdapConstants.OBJECT_CLASS_STAR : initalFilter ); //$NON-NLS-1$
     }
 
 

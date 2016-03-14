@@ -30,7 +30,7 @@ import java.util.EventObject;
  */
 public class WidgetModifyEvent extends EventObject
 {
-
+    /** Serialization UUID */
     private static final long serialVersionUID = 2421335730580648878L;
 
 
@@ -43,5 +43,4 @@ public class WidgetModifyEvent extends EventObject
     {
         super( source );
     }
-
 }

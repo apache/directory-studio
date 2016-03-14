@@ -22,8 +22,8 @@ package org.apache.directory.studio.ldapbrowser.ui.wizards;
 
 
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.SearchPageWrapper;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.widgets.Composite;

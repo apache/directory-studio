@@ -24,6 +24,7 @@ package org.apache.directory.studio.ldapbrowser.common.dialogs.preferences;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -196,14 +197,9 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
         for ( IBrowserConnection browserConnection : connections )
         {
             Schema schema = browserConnection.getSchema();
-            createAttributeMaps( schema );
+            createAttributeMapsAndArray( schema );
         }
-        createAttributeMaps( Schema.DEFAULT_SCHEMA );
-        attributeTypesAndOids = new String[attributeNames2AtdMap.size() + attributeOid2AtdMap.size()];
-        System.arraycopy( attributeNames2AtdMap.keySet().toArray(), 0, attributeTypesAndOids, 0, attributeNames2AtdMap
-            .size() );
-        System.arraycopy( attributeOid2AtdMap.keySet().toArray(), 0, attributeTypesAndOids, attributeNames2AtdMap
-            .size(), attributeOid2AtdMap.size() );
+        createAttributeMapsAndArray( Schema.DEFAULT_SCHEMA );
 
         // init available syntaxes
         syntaxOid2LsdMap = new TreeMap<String, LdapSyntax>();
@@ -211,11 +207,9 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
         for ( IBrowserConnection browserConnection : connections )
         {
             Schema schema = browserConnection.getSchema();
-            createSyntaxMaps( schema );
+            createSyntaxMapsAndArray( schema );
         }
-        createSyntaxMaps( Schema.DEFAULT_SCHEMA );
-        syntaxDescsAndOids = new String[syntaxOid2LsdMap.size()];
-        System.arraycopy( syntaxOid2LsdMap.keySet().toArray(), 0, syntaxDescsAndOids, 0, syntaxOid2LsdMap.size() );
+        createSyntaxMapsAndArray( Schema.DEFAULT_SCHEMA );
 
         // create attribute contents
         // BaseWidgetUtils.createSpacer(composite, 1);
@@ -243,33 +237,65 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
     }
 
 
-    private void createAttributeMaps( Schema schema )
+    /**
+     * Creates the attribute maps and array.
+     *
+     * @param schema the schema
+     */
+    private void createAttributeMapsAndArray( Schema schema )
     {
+        List<String> attributeTypesList = new ArrayList<String>();
+        List<String> oidsList = new ArrayList<String>();
+
         Collection<AttributeType> atds = schema.getAttributeTypeDescriptions();
+
         for ( AttributeType atd : atds )
         {
             attributeOid2AtdMap.put( atd.getOid(), atd );
+            oidsList.add( atd.getOid() );
 
             for ( String name : atd.getNames() )
             {
-                attributeNames2AtdMap.put( name, atd );
+                attributeNames2AtdMap.put( name.toLowerCase(), atd );
+                attributeTypesList.add( name );
             }
         }
+
+        Collections.sort( attributeTypesList );
+        Collections.sort( oidsList );
+
+        List<String> attributeTypesAndOidsList = new ArrayList<String>();
+        attributeTypesAndOidsList.addAll( attributeTypesList );
+        attributeTypesAndOidsList.addAll( oidsList );
+
+        attributeTypesAndOids = attributeTypesAndOidsList.toArray( new String[0] );
     }
 
 
-    private void createSyntaxMaps( Schema schema )
+    /**
+     * Create the syntax maps and array.
+     *
+     * @param schema the schema
+     */
+    private void createSyntaxMapsAndArray( Schema schema )
     {
+        List<String> syntaxDescsAndOidsList = new ArrayList<String>();
+
         Collection<LdapSyntax> lsds = schema.getLdapSyntaxDescriptions();
+
         for ( LdapSyntax lsd : lsds )
         {
             syntaxOid2LsdMap.put( lsd.getOid(), lsd );
+            syntaxDescsAndOidsList.add( lsd.getOid() );
 
             if ( lsd.getDescription() != null )
             {
                 syntaxDesc2LsdMap.put( lsd.getDescription(), lsd );
             }
         }
+
+        Collections.sort( syntaxDescsAndOidsList );
+        syntaxDescsAndOids = syntaxDescsAndOidsList.toArray( new String[0] );
     }
 
 
@@ -571,14 +597,14 @@ public class ValueEditorsPreferencePage extends PreferencePage implements IWorkb
                 {
                     if ( relation.getAttributeNumericOidOrType() != null )
                     {
-                        if ( attributeNames2AtdMap.containsKey( relation.getAttributeNumericOidOrType() ) )
+                        if ( attributeNames2AtdMap.containsKey( relation.getAttributeNumericOidOrType().toLowerCase() ) )
                         {
                             AttributeType atd = ( AttributeType ) attributeNames2AtdMap
-                                .get( relation.getAttributeNumericOidOrType() );
+                                .get( relation.getAttributeNumericOidOrType().toLowerCase() );
                             String s = atd.getOid();
                             for ( String name : atd.getNames() )
                             {
-                                if ( !relation.getAttributeNumericOidOrType().equals( name ) )
+                                if ( !relation.getAttributeNumericOidOrType().equalsIgnoreCase( name ) )
                                 {
                                     s += ", " + name; //$NON-NLS-1$
                                 }

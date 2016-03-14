@@ -45,17 +45,20 @@ public class ImageValueEditor extends AbstractDialogBinaryValueEditor
     {
         Object value = getValue();
 
-        if ( value != null && value instanceof byte[] )
+        if ( value instanceof byte[] )
         {
             byte[] currentImageData = ( byte[] ) value;
 
             ImageDialog dialog = new ImageDialog( shell, currentImageData, SWT.IMAGE_JPEG );
-            if ( dialog.open() == ImageDialog.OK && dialog.getNewImageRawData() != null )
+            
+            if ( ( dialog.open() == ImageDialog.OK ) && ( dialog.getNewImageRawData() != null ) )
             {
                 setValue( dialog.getNewImageRawData() );
+                
                 return true;
             }
         }
+        
         return false;
     }
 
@@ -76,12 +79,13 @@ public class ImageValueEditor extends AbstractDialogBinaryValueEditor
         {
             if ( value == null )
             {
-                return "NULL"; //$NON-NLS-1$
+                return NULL; //$NON-NLS-1$
             }
             else if ( value.isBinary() )
             {
                 byte[] data = value.getBinaryValue();
                 String text = ImageDialog.getImageInfo( data );
+                
                 return text;
             }
             else
@@ -90,5 +94,4 @@ public class ImageValueEditor extends AbstractDialogBinaryValueEditor
             }
         }
     }
-
 }

@@ -34,7 +34,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IValue;
  */
 public abstract class AbstractDialogStringValueEditor extends AbstractDialogValueEditor
 {
-
     /**
      * Creates a new instance of AbstractDialogStringValueEditor.
      */
@@ -51,8 +50,16 @@ public abstract class AbstractDialogStringValueEditor extends AbstractDialogValu
      */
     public String getDisplayValue( IValue value )
     {
-        Object obj = this.getRawValue( value );
-        return obj == null ? "NULL" : obj.toString(); //$NON-NLS-1$
+        Object obj = getRawValue( value );
+        
+        if ( obj == null )
+        {
+            return NULL;
+        }
+        else
+        {
+            return obj.toString();
+        }
     }
 
 
@@ -91,9 +98,9 @@ public abstract class AbstractDialogStringValueEditor extends AbstractDialogValu
         {
             return value.getStringValue();
         }
-        else if ( value.isBinary() )
+        else if ( value.isBinary() && isEditable( value.getBinaryValue() ) )
         {
-            return isEditable( value.getBinaryValue() ) ? value.getStringValue() : null;
+            return value.getStringValue();
         }
         else
         {
@@ -114,7 +121,7 @@ public abstract class AbstractDialogStringValueEditor extends AbstractDialogValu
 
         for ( int i = 0; i < b.length; i++ )
         {
-            if ( !( b[i] == '\n' || b[i] == '\r' || ( b[i] >= '\u0020' && b[i] <= '\u007F' ) ) )
+            if ( ( b[i] > '\u007F' ) || ( ( b[i] < '\u0020' ) && ( b[i] != '\n' ) && ( b[i] != '\r' ) ) )
             {
                 return false;
             }
@@ -132,11 +139,7 @@ public abstract class AbstractDialogStringValueEditor extends AbstractDialogValu
      */
     public Object getStringOrBinaryValue( Object rawValue )
     {
-        if ( rawValue == null )
-        {
-            return null;
-        }
-        else if ( rawValue instanceof String )
+        if ( rawValue instanceof String )
         {
             return rawValue;
         }
@@ -145,5 +148,4 @@ public abstract class AbstractDialogStringValueEditor extends AbstractDialogValu
             return null;
         }
     }
-
 }

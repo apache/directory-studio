@@ -139,9 +139,11 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor
     private void activateProxyService()
     {
         Bundle bundle = Platform.getBundle( "org.eclipse.ui.ide" ); //$NON-NLS-1$
+        
         if ( bundle != null )
         {
-            ServiceReference ref = bundle.getBundleContext().getServiceReference( IProxyService.class.getName() );
+            ServiceReference<?> ref = bundle.getBundleContext().getServiceReference( IProxyService.class.getName() );
+        
             if ( ref != null )
             {
                 bundle.getBundleContext().getService( ref );

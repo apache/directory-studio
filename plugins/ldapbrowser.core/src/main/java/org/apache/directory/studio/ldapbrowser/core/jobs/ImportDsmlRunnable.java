@@ -39,14 +39,14 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.dsmlv2.DsmlDecorator;
 import org.apache.directory.api.dsmlv2.Dsmlv2Parser;
-import org.apache.directory.api.dsmlv2.reponse.AddResponseDsml;
-import org.apache.directory.api.dsmlv2.reponse.BatchResponseDsml;
-import org.apache.directory.api.dsmlv2.reponse.BindResponseDsml;
-import org.apache.directory.api.dsmlv2.reponse.CompareResponseDsml;
-import org.apache.directory.api.dsmlv2.reponse.DelResponseDsml;
-import org.apache.directory.api.dsmlv2.reponse.ExtendedResponseDsml;
-import org.apache.directory.api.dsmlv2.reponse.ModDNResponseDsml;
-import org.apache.directory.api.dsmlv2.reponse.ModifyResponseDsml;
+import org.apache.directory.api.dsmlv2.response.AddResponseDsml;
+import org.apache.directory.api.dsmlv2.response.BatchResponseDsml;
+import org.apache.directory.api.dsmlv2.response.BindResponseDsml;
+import org.apache.directory.api.dsmlv2.response.CompareResponseDsml;
+import org.apache.directory.api.dsmlv2.response.DelResponseDsml;
+import org.apache.directory.api.dsmlv2.response.ExtendedResponseDsml;
+import org.apache.directory.api.dsmlv2.response.ModDNResponseDsml;
+import org.apache.directory.api.dsmlv2.response.ModifyResponseDsml;
 import org.apache.directory.api.dsmlv2.request.BatchRequestDsml;
 import org.apache.directory.api.dsmlv2.request.Dsmlv2Grammar;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
@@ -299,7 +299,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
                 processDelRequest( ( DeleteRequest ) request, batchResponseDsml, monitor );
                 break;
             case EXTENDED_REQUEST:
-                processExtendedRequest( ( ExtendedRequest<?> ) request, batchResponseDsml, monitor );
+                processExtendedRequest( ( ExtendedRequest ) request, batchResponseDsml, monitor );
                 break;
             case MODIFY_REQUEST:
                 processModifyRequest( ( ModifyRequest ) request, batchResponseDsml, monitor );
@@ -465,7 +465,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
      * @param batchResponseDsml
      *      the DSML batch response (can be <code>null</code>)
      */
-    private void processExtendedRequest( ExtendedRequest<?> request, BatchResponseDsml batchResponseDsml,
+    private void processExtendedRequest( ExtendedRequest request, BatchResponseDsml batchResponseDsml,
         StudioProgressMonitor monitor )
     {
         // We can not support extended requests at the moment,

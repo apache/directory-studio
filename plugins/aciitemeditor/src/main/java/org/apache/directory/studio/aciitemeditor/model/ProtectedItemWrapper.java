@@ -60,7 +60,7 @@ import org.eclipse.osgi.util.NLS;
 public class ProtectedItemWrapper
 {
     /** This map contains all possible protected item identifiers */
-    public static final Map<Class<? extends ProtectedItem>, String> classToIdentifierMap;
+    public static final Map<Class<? extends ProtectedItem>, String> CLASS_TO_IDENTIFIER_MAP;
     static
     {
         Map<Class<? extends ProtectedItem>, String> map = new HashMap<Class<? extends ProtectedItem>, String>();
@@ -76,11 +76,11 @@ public class ProtectedItemWrapper
         map.put( MaxImmSubItem.class, "maxImmSub" ); //$NON-NLS-1$
         map.put( RestrictedByItem.class, "restrictedBy" ); //$NON-NLS-1$
         map.put( ClassesItem.class, "classes" ); //$NON-NLS-1$
-        classToIdentifierMap = Collections.unmodifiableMap( map );
+        CLASS_TO_IDENTIFIER_MAP = Collections.unmodifiableMap( map );
     }
 
     /** This map contains all protected item display values */
-    public static final Map<Class<? extends ProtectedItem>, String> classToDisplayMap;
+    public static final Map<Class<? extends ProtectedItem>, String> CLASS_TO_DISPLAY_MAP;
     static
     {
         Map<Class<? extends ProtectedItem>, String> map = new HashMap<Class<? extends ProtectedItem>, String>();
@@ -106,7 +106,7 @@ public class ProtectedItemWrapper
         map.put( RestrictedByItem.class, Messages
             .getString( "ProtectedItemWrapper.protectedItem.restrictedBy.label" ) ); //$NON-NLS-1$
         map.put( ClassesItem.class, Messages.getString( "ProtectedItemWrapper.protectedItem.classes.label" ) ); //$NON-NLS-1$
-        classToDisplayMap = Collections.unmodifiableMap( map );
+        CLASS_TO_DISPLAY_MAP = Collections.unmodifiableMap( map );
     }
 
     /** A dummy ACI to check syntax of the protectedItemValue */
@@ -121,32 +121,32 @@ public class ProtectedItemWrapper
     private List<String> values;
 
     /** The value prefix, prepended to the value. */
-    private String valuePrefix;
+    private final String valuePrefix;
 
     /** The value suffix, appended to the value. */
-    private String valueSuffix;
+    private final String valueSuffix;
 
     /** The value editor, null means no value. */
     private AbstractDialogStringValueEditor valueEditor;
 
     /** The multivalued. */
-    private boolean isMultivalued;
+    private final boolean multivalued;
 
 
     /**
      * Creates a new instance of ProtectedItemWrapper.
      * 
      * @param clazz the java class of the UserClass
-     * @param isMultivalued the is multivalued
+     * @param multivalued if it's a multiple value
      * @param valuePrefix the identifier
-     * @param valueSuffix the dislpay name
+     * @param valueSuffix the display name
      * @param valueEditor the value editor
      */
-    public ProtectedItemWrapper( Class<? extends ProtectedItem> clazz, boolean isMultivalued, String valuePrefix,
+    public ProtectedItemWrapper( Class<? extends ProtectedItem> clazz, boolean multivalued, String valuePrefix,
         String valueSuffix, AbstractDialogStringValueEditor valueEditor )
     {
         this.clazz = clazz;
-        this.isMultivalued = isMultivalued;
+        this.multivalued = multivalued;
         this.valuePrefix = valuePrefix;
         this.valueSuffix = valueSuffix;
         this.valueEditor = valueEditor;
@@ -203,78 +203,83 @@ public class ProtectedItemWrapper
 
         // switch on userClass type
         // no value in ProtectedItem.Entry, ProtectedItem.AllUserAttributeTypes and ProtectedItem.AllUserAttributeTypesAndValues
-        if ( item.getClass() == AttributeTypeItem.class )
+        if ( item instanceof AttributeTypeItem )
         {
             AttributeTypeItem at = ( AttributeTypeItem ) item;
+            
             for ( Iterator<AttributeType> it = at.iterator(); it.hasNext(); )
             {
                 AttributeType attributeType = it.next();
                 values.add( attributeType.getName() );
             }
         }
-        else if ( item.getClass() == AllAttributeValuesItem.class )
+        else if ( item instanceof AllAttributeValuesItem )
         {
             AllAttributeValuesItem aav = ( AllAttributeValuesItem ) item;
+            
             for ( Iterator<AttributeType> it = aav.iterator(); it.hasNext(); )
             {
                 AttributeType attributeType = it.next();
                 values.add( attributeType.toString() );
             }
         }
-        else if ( item.getClass() == AttributeValueItem.class )
+        else if ( item instanceof AttributeValueItem )
         {
             AttributeValueItem av = ( AttributeValueItem ) item;
+            
             for ( Iterator<Attribute> it = av.iterator(); it.hasNext(); )
             {
                 Attribute entryAttribute = it.next();
                 values.add( entryAttribute.getId() + "=" + entryAttribute.get() ); //$NON-NLS-1$
             }
         }
-        else if ( item.getClass() == SelfValueItem.class )
+        else if ( item instanceof SelfValueItem )
         {
             SelfValueItem sv = ( SelfValueItem ) item;
+            
             for ( Iterator<AttributeType> it = sv.iterator(); it.hasNext(); )
             {
                 AttributeType attributeType = it.next();
                 values.add( attributeType.toString() );
             }
         }
-        else if ( item.getClass() == RangeOfValuesItem.class )
+        else if ( item instanceof RangeOfValuesItem )
         {
             RangeOfValuesItem rov = ( RangeOfValuesItem ) item;
             values.add( rov.getRefinement().toString() );
         }
-        else if ( item.getClass() == MaxValueCountItem.class )
+        else if ( item instanceof MaxValueCountItem )
         {
             MaxValueCountItem mvc = ( MaxValueCountItem ) item;
+            
             for ( Iterator<MaxValueCountElem> it = mvc.iterator(); it.hasNext(); )
             {
                 MaxValueCountElem mvci = it.next();
                 values.add( mvci.toString() );
             }
         }
-        else if ( item.getClass() == MaxImmSubItem.class )
+        else if ( item instanceof MaxImmSubItem )
         {
             MaxImmSubItem mis = ( MaxImmSubItem ) item;
             values.add( Integer.toString( mis.getValue() ) );
         }
-        else if ( item.getClass() == RestrictedByItem.class )
+        else if ( item instanceof RestrictedByItem )
         {
             RestrictedByItem rb = ( RestrictedByItem ) item;
+            
             for ( Iterator<RestrictedByElem> it = rb.iterator(); it.hasNext(); )
             {
                 RestrictedByElem rbe = it.next();
                 values.add( rbe.toString() );
             }
         }
-        else if ( item.getClass() == ClassesItem.class )
+        else if ( item instanceof ClassesItem )
         {
             ClassesItem classes = ( ClassesItem ) item;
             StringBuilder sb = new StringBuilder();
             classes.getClasses().printRefinementToBuffer( sb );
             values.add( sb.toString() );
         }
-
     }
 
 
@@ -286,11 +291,13 @@ public class ProtectedItemWrapper
     public String toString()
     {
         String flatValue = getFlatValue();
+        
         if ( flatValue.length() > 0 )
         {
             flatValue = flatValue.replace( '\r', ' ' );
             flatValue = flatValue.replace( '\n', ' ' );
             flatValue = ": " + flatValue; //$NON-NLS-1$
+            
             if ( flatValue.length() > 40 )
             {
                 String temp = flatValue;
@@ -316,7 +323,8 @@ public class ProtectedItemWrapper
             return ""; //$NON-NLS-1$
         }
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
+        
         if ( isMultivalued() )
         {
             sb.append( "{ " ); //$NON-NLS-1$
@@ -358,7 +366,7 @@ public class ProtectedItemWrapper
      */
     public String getDisplayName()
     {
-        return classToDisplayMap.get( clazz );
+        return CLASS_TO_DISPLAY_MAP.get( clazz );
     }
 
 
@@ -369,7 +377,7 @@ public class ProtectedItemWrapper
      */
     public String getIdentifier()
     {
-        return classToIdentifierMap.get( clazz );
+        return CLASS_TO_IDENTIFIER_MAP.get( clazz );
     }
 
 
@@ -413,6 +421,6 @@ public class ProtectedItemWrapper
      */
     public boolean isMultivalued()
     {
-        return isMultivalued;
+        return multivalued;
     }
 }

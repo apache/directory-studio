@@ -24,17 +24,13 @@ package org.apache.directory.studio.ldifparser.model.container;
 import org.apache.directory.studio.ldifparser.model.lines.LdifCommentLine;
 
 
+/**
+ * A LDIF container for LDIF comments
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class LdifCommentContainer extends LdifContainer
 {
-
-    private static final long serialVersionUID = 5193234573866495240L;
-
-
-    protected LdifCommentContainer()
-    {
-    }
-
-
     public LdifCommentContainer( LdifCommentLine comment )
     {
         super( comment );
@@ -44,21 +40,16 @@ public class LdifCommentContainer extends LdifContainer
     public void addComment( LdifCommentLine comment )
     {
         if ( comment == null )
+        {
             throw new IllegalArgumentException( "null argument" ); //$NON-NLS-1$
-        this.parts.add( comment );
+        }
+
+        ldifParts.add( comment );
     }
 
 
     public boolean isValid()
     {
-        if ( !super.isAbstractValid() )
-        {
-            return false;
-        }
-
-        // return getLastPart() instanceof LdifCommentLine &&
-        // getLastPart().isValid();
-        return true;
+        return super.isAbstractValid();
     }
-
 }

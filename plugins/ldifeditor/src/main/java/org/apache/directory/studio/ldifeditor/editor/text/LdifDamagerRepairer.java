@@ -51,7 +51,6 @@ import org.apache.directory.studio.ldifparser.model.lines.LdifModSpecTypeLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifNewrdnLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifNewsuperiorLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifVersionLine;
-
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.text.DocumentEvent;
@@ -72,8 +71,9 @@ import org.eclipse.swt.graphics.RGB;
 
 public class LdifDamagerRepairer implements IPresentationDamager, IPresentationRepairer
 {
-
     private ILdifEditor editor;
+
+    private Map<String, Object> textAttributeKeyToValueMap;
 
 
     // private IDocument document;
@@ -102,30 +102,23 @@ public class LdifDamagerRepairer implements IPresentationDamager, IPresentationR
     {
 
         LdifFile ldifModel = this.editor.getLdifModel();
-        LdifContainer[] allContainers = ldifModel.getContainers();
-        List containerList = new ArrayList();
-        for ( int i = 0; i < allContainers.length; i++ )
+        List<LdifContainer> allContainers = ldifModel.getContainers();
+        List<LdifContainer> containerList = new ArrayList<LdifContainer>();
+        
+        for ( LdifContainer ldifContainer : allContainers )
         {
-            LdifContainer container = allContainers[i];
-            Region containerRegion = new Region( container.getOffset(), container.getLength() );
+            Region containerRegion = new Region( ldifContainer.getOffset(), ldifContainer.getLength() );
+            
             if ( TextUtilities.overlaps( containerRegion, damage ) )
             {
-                containerList.add( container );
+                containerList.add( ldifContainer );
             }
         }
+        
         LdifContainer[] containers = ( LdifContainer[] ) containerList
             .toArray( new LdifContainer[containerList.size()] );
         this.highlight( containers, presentation, damage );
-
-        // LdifFile ldifModel = this.editor.getLdifModel();
-        // System.out.println(ldifModel.toRawString());
-        // LdifContainer[] allContainers = ldifModel.getContainers();
-        // this.highlight(allContainers, presentation, null);
-
     }
-
-    private Map textAttributeKeyToValueMap;
-
 
     private TextAttribute geTextAttribute( String key )
     {
@@ -173,7 +166,7 @@ public class LdifDamagerRepairer implements IPresentationDamager, IPresentationR
     {
         if ( textAttributeKeyToValueMap == null )
         {
-            textAttributeKeyToValueMap = new HashMap();
+            textAttributeKeyToValueMap = new HashMap<String, Object>();
         }
         textAttributeKeyToValueMap.put( key + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_RGB_SUFFIX, rgb );
         textAttributeKeyToValueMap.put( key + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_STYLE_SUFFIX,
@@ -185,8 +178,7 @@ public class LdifDamagerRepairer implements IPresentationDamager, IPresentationR
     {
 
         // TextAttribute DEFAULT_TEXT_ATTRIBUTE = new
-        // TextAttribute(Activator.getDefault().getColor(new RGB(0, 0,
-        // 0)));
+        // TextAttribute(Activator.getDefault().getColor(CommonUIConstants.COLOR_BLACK));
 
         TextAttribute COMMENT_TEXT_ATTRIBUTE = geTextAttribute( LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_COMMENT );
         TextAttribute KEYWORD_TEXT_ATTRIBUTE = geTextAttribute( LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_KEYWORD );

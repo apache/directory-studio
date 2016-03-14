@@ -32,11 +32,10 @@ import org.apache.directory.studio.connection.core.ConnectionParameter;
  */
 public interface ConnectionParameterPageModifyListener
 {
-
     /**
      * Indicates that the connection parameter page was modified.
      */
-    public void connectionParameterPageModified();
+    void connectionParameterPageModified();
 
 
     /**
@@ -44,5 +43,5 @@ public interface ConnectionParameterPageModifyListener
      * 
      * @return the test connection parameters
      */
-    public ConnectionParameter getTestConnectionParameters();
+    ConnectionParameter getTestConnectionParameters();
 }

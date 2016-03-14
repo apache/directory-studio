@@ -21,9 +21,9 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.search;
 
 
+import org.apache.directory.studio.common.ui.widgets.AbstractWidget;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.SelectBrowserConnectionDialog;
-import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -39,7 +39,7 @@ import org.eclipse.swt.widgets.Text;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class BrowserConnectionWidget extends BrowserWidget
+public class BrowserConnectionWidget extends AbstractWidget
 {
 
     /** The connection text, displays the selected connection */

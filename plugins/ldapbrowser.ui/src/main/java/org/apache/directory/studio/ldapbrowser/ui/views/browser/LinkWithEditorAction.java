@@ -179,12 +179,12 @@ public class LinkWithEditorAction extends Action
             {
                 IEditorPart editor = ( IEditorPart ) part;
                 IEditorInput input = editor.getEditorInput();
-                if ( input != null && input instanceof EntryEditorInput )
+                if ( input instanceof EntryEditorInput )
                 {
                     EntryEditorInput eei = ( EntryEditorInput ) input;
                     objectToSelect = eei.getInput();
                 }
-                else if ( input != null && input instanceof SearchResultEditorInput )
+                else if ( input instanceof SearchResultEditorInput )
                 {
                     SearchResultEditorInput srei = ( SearchResultEditorInput ) input;
                     objectToSelect = srei.getSearch();

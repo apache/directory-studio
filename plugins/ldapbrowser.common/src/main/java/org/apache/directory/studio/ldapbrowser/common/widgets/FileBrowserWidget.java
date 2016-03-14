@@ -24,6 +24,7 @@ package org.apache.directory.studio.ldapbrowser.common.widgets;
 import java.io.File;
 
 import org.apache.directory.studio.common.ui.HistoryUtils;
+import org.apache.directory.studio.common.ui.widgets.AbstractWidget;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
@@ -45,7 +46,7 @@ import org.eclipse.swt.widgets.FileDialog;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class FileBrowserWidget extends BrowserWidget
+public class FileBrowserWidget extends AbstractWidget
 {
     /** The Constant TYPE_OPEN is used to create a Open file dialog. */
     public static final int TYPE_OPEN = SWT.OPEN;

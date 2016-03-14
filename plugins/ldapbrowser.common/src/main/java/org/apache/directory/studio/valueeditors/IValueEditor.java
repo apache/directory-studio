@@ -49,7 +49,7 @@ public interface IValueEditor
      * @param attributeHierarchy the attribute hierarchy
      * @return the string representation of the attribute hierarchy
      */
-    public abstract String getDisplayValue( AttributeHierarchy attributeHierarchy );
+    String getDisplayValue( AttributeHierarchy attributeHierarchy );
 
 
     /**
@@ -61,7 +61,7 @@ public interface IValueEditor
      * @param value the value
      * @return the string representation of the value
      */
-    public abstract String getDisplayValue( IValue value );
+    String getDisplayValue( IValue value );
 
 
     /**
@@ -82,8 +82,18 @@ public interface IValueEditor
      * @param attributeHierarchy the attribute hierarchy
      * @return the raw value of the attribute hierarchy or null
      */
-    public abstract Object getRawValue( AttributeHierarchy attributeHierarchy );
+    Object getRawValue( AttributeHierarchy attributeHierarchy );
 
+
+    
+    
+    /**
+     * Tells if there is a value
+     * 
+     * @return true if there is a value, false if it's null.
+     */
+    boolean hasValue( IValue value );
+    
 
     /**
      * Returns the raw value if this value editor can handle the given 
@@ -100,7 +110,7 @@ public interface IValueEditor
      * @param value the value
      * @return the raw value of the value or null
      */
-    public abstract Object getRawValue( IValue value );
+    Object getRawValue( IValue value );
 
 
     /**
@@ -114,7 +124,7 @@ public interface IValueEditor
      * @param rawValue the raw value return from cell editor
      * @return the String or byte[] value
      */
-    public abstract Object getStringOrBinaryValue( Object rawValue );
+    Object getStringOrBinaryValue( Object rawValue );
 
 
     /**
@@ -123,7 +133,7 @@ public interface IValueEditor
      * 
      * @return the editors name
      */
-    public abstract String getValueEditorName();
+    String getValueEditorName();
 
 
     /**
@@ -135,7 +145,7 @@ public interface IValueEditor
      *
      * @param name the editors name
      */
-    public abstract void setValueEditorName( String name );
+    void setValueEditorName( String name );
 
 
     /**
@@ -144,7 +154,7 @@ public interface IValueEditor
      * 
      * @return the editors image
      */
-    public abstract ImageDescriptor getValueEditorImageDescriptor();
+    ImageDescriptor getValueEditorImageDescriptor();
 
 
     /**
@@ -156,7 +166,7 @@ public interface IValueEditor
      *
      * @param imageDescriptor the editors image
      */
-    public abstract void setValueEditorImageDescriptor( ImageDescriptor imageDescriptor );
+    void setValueEditorImageDescriptor( ImageDescriptor imageDescriptor );
 
 
     /**
@@ -164,13 +174,13 @@ public interface IValueEditor
      * 
      * @param parent the parent control
      */
-    public abstract void create( Composite parent );
+    void create( Composite parent );
 
 
     /**
      * Disposes of this value editor and frees any associated SWT resources.
      */
-    public abstract void dispose();
+    void dispose();
 
 
     /**
@@ -184,5 +194,9 @@ public interface IValueEditor
      * @return the JFace CellEditor
      * 
      */
-    public abstract CellEditor getCellEditor();
+    CellEditor getCellEditor();
+
+    // A constant for the emtpy string and null string.
+    String EMPTY = ""; //$NON-NLS-1$
+    String NULL = "NULL"; //$NON-NLS-1$
 }

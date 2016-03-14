@@ -33,6 +33,7 @@ import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
+import org.apache.directory.studio.schemaeditor.PluginUtils;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener;
 import org.apache.directory.studio.schemaeditor.model.Schema;
@@ -49,7 +50,6 @@ import org.apache.directory.studio.schemaeditor.view.editors.attributetype.Attri
 import org.apache.directory.studio.schemaeditor.view.editors.attributetype.AttributeTypeEditorInput;
 import org.apache.directory.studio.schemaeditor.view.editors.schema.SchemaEditor;
 import org.apache.directory.studio.schemaeditor.view.editors.schema.SchemaEditorInput;
-import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
@@ -330,7 +330,7 @@ public class ObjectClassEditorOverviewPage extends AbstractObjectClassEditorPage
             }
             catch ( PartInitException exception )
             {
-                Logger.getLogger( ObjectClassEditorOverviewPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                PluginUtils.logError( "error when opening the editor", exception ); //$NON-NLS-1$
             }
         }
     };
@@ -404,7 +404,7 @@ public class ObjectClassEditorOverviewPage extends AbstractObjectClassEditorPage
                     }
                     catch ( PartInitException exception )
                     {
-                        Logger.getLogger( ObjectClassEditorOverviewPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                        PluginUtils.logError( "error when opening the editor", exception ); //$NON-NLS-1$
                     }
                 }
             }
@@ -550,7 +550,7 @@ public class ObjectClassEditorOverviewPage extends AbstractObjectClassEditorPage
                     }
                     catch ( PartInitException exception )
                     {
-                        Logger.getLogger( ObjectClassEditorOverviewPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                        PluginUtils.logError( "error when opening the editor", exception ); //$NON-NLS-1$
                     }
                 }
             }
@@ -690,7 +690,7 @@ public class ObjectClassEditorOverviewPage extends AbstractObjectClassEditorPage
                     }
                     catch ( PartInitException exception )
                     {
-                        Logger.getLogger( ObjectClassEditorOverviewPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                        PluginUtils.logError( "error when opening the editor", exception ); //$NON-NLS-1$
                     }
                 }
             }

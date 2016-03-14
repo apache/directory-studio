@@ -27,12 +27,10 @@ package org.apache.directory.studio.ldapservers.model;
  */
 public interface LdapServerListener
 {
-
     /**
      * This method is called when the server is changed.
      *
-     * @param event
-     *      the server event
+     * @param event the server event
      */
-    public void serverChanged( LdapServerEvent event );
+    void serverChanged( LdapServerEvent event );
 }

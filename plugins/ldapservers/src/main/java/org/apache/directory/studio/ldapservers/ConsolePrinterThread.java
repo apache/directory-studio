@@ -29,13 +29,29 @@ import java.io.IOException;
 import org.eclipse.ui.console.MessageConsoleStream;
 
 
+/**
+ * This class implements a thread used to print in the console the contents of a file.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class ConsolePrinterThread extends Thread
 {
+    /** The flag to stop the console printer */
     private boolean stop = false;
+
+    /** The file to read */
     private File file;
+
+    /** The console stream */
     private MessageConsoleStream consoleStream;
 
 
+    /**
+     * Creates a new instance of ConsolePrinterThread.
+     *
+     * @param file the file to read
+     * @param consoleStream the console stream
+     */
     public ConsolePrinterThread( File file, MessageConsoleStream consoleStream )
     {
         this.file = file;
@@ -52,21 +68,34 @@ public class ConsolePrinterThread extends Thread
         {
             try
             {
+                // Opening the file reader
                 BufferedReader reader = new BufferedReader( new FileReader( file ) );
-                String line = null;
 
                 while ( !stop )
                 {
-                    line = reader.readLine();
+                    // Checking if the console stream is closed
+                    if ( consoleStream.isClosed() )
+                    {
+                        // We need to exit
+                        break;
+                    }
+                    
+                    // Getting the next line to print
+                    String line = reader.readLine();
+
+                    // Checking the line
                     if ( line != null )
                     {
+                        // Writing the line to the console and moving the next
                         consoleStream.println( line );
                         continue;
                     }
 
+                    // Waiting
                     sleep( 1000 );
                 }
 
+                // Closing the file reader
                 reader.close();
             }
             catch ( FileNotFoundException e )
@@ -79,8 +108,7 @@ public class ConsolePrinterThread extends Thread
             }
             catch ( IOException e )
             {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                // Nothing to do
             }
         }
     }

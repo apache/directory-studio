@@ -37,9 +37,8 @@ import org.eclipse.jface.viewers.IStructuredSelection;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class SelectionUtils
+public class SelectionUtils
 {
-
     /**
      * Gets the Strings contained in the given selection.
      *
@@ -49,6 +48,7 @@ public abstract class SelectionUtils
     public static String[] getProperties( ISelection selection )
     {
         List<Object> list = getTypes( selection, String.class );
+        
         return list.toArray( new String[list.size()] );
     }
 
@@ -63,19 +63,23 @@ public abstract class SelectionUtils
     private static List<Object> getTypes( ISelection selection, Class<?> type )
     {
         List<Object> list = new ArrayList<Object>();
+        
         if ( selection instanceof IStructuredSelection )
         {
             IStructuredSelection structuredSelection = ( IStructuredSelection ) selection;
-            Iterator<?> it = structuredSelection.iterator();
-            while ( it.hasNext() )
+            Iterator<?> iterator = structuredSelection.iterator();
+            
+            while ( iterator.hasNext() )
             {
-                Object o = it.next();
-                if ( type.isInstance( o ) )
+                Object object = iterator.next();
+                
+                if ( type.isInstance( object ) )
                 {
-                    list.add( o );
+                    list.add( object );
                 }
             }
         }
+        
         return list;
     }
 
@@ -89,6 +93,7 @@ public abstract class SelectionUtils
     public static Connection[] getConnections( ISelection selection )
     {
         List<Object> list = getTypes( selection, Connection.class );
+        
         return list.toArray( new Connection[list.size()] );
     }
 
@@ -102,6 +107,7 @@ public abstract class SelectionUtils
     public static ConnectionFolder[] getConnectionFolders( ISelection selection )
     {
         List<Object> list = getTypes( selection, ConnectionFolder.class );
+        
         return list.toArray( new ConnectionFolder[list.size()] );
     }
 
@@ -115,6 +121,7 @@ public abstract class SelectionUtils
     public static Object[] getObjects( ISelection selection )
     {
         List<Object> list = getTypes( selection, Object.class );
+        
         return list.toArray( new Object[list.size()] );
     }
 }

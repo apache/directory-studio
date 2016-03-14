@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+  
+  http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!--
+  @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+-->
+<template
+	id="inetOrgPerson-edit"
+	title="InetOrgPerson - Edit">
+	<objectClasses>
+		<structural>inetOrgPerson</structural>
+	</objectClasses>
+	<form>
+		<composite numberOfColumns="2" horizontalAlignment="fill"
+			grabExcessHorizontalSpace="true">
+			<composite horizontalAlignment="fill"
+				grabExcessHorizontalSpace="true">
+				<!-- GENERAL INFORMATION -->
+				<section title="General Information" numberOfColumns="2"
+					equalColumns="true" horizontalAlignment="fill"
+					grabExcessHorizontalSpace="true">
+					<label value="First Name:" />
+					<label value="Last Name:" />
+
+					<textfield attributeType="gn" horizontalAlignment="fill"
+						grabExcessHorizontalSpace="true" />
+					<textfield attributeType="sn" horizontalAlignment="fill"
+						grabExcessHorizontalSpace="true" />
+
+					<label value="" height="1" />
+					<label value="" height="1" />
+
+					<label value="Company:" />
+					<label value="Job Title:" />
+
+					<textfield attributeType="o" horizontalAlignment="fill"
+						grabExcessHorizontalSpace="true" />
+					<textfield attributeType="title" horizontalAlignment="fill"
+						grabExcessHorizontalSpace="true" />
+
+					<label value="" height="1" />
+					<label value="" height="1" />
+				</section>
+				<!-- Email Address List -->
+				<section title="Email Address List" numberOfColumns="2"
+					equalColumns="false" horizontalAlignment="fill"
+					grabExcessHorizontalSpace="true">
+					<label value="Work:" />
+					<textfield attributeType="mail" horizontalAlignment="fill"
+						grabExcessHorizontalSpace="true" />
+					<label value="" height="1" />
+					<label value="" height="1" />
+				</section>
+				<!-- Telephone Number List -->
+				<section title="Telephone Number List" numberOfColumns="2"
+					equalColumns="false" horizontalAlignment="fill"
+					grabExcessHorizontalSpace="true">
+					<label value="Work:" />
+					<textfield attributeType="telephoneNumber"
+						horizontalAlignment="fill" grabExcessHorizontalSpace="true" />
+					<label value="Mobile:" />
+					<textfield attributeType="mobile" horizontalAlignment="fill"
+						grabExcessHorizontalSpace="true" />
+					<label value="" height="1" />
+					<label value="" height="1" />
+				</section>
+				<!-- Address List -->
+				<section title="Address List" numberOfColumns="2"
+					equalColumns="false" horizontalAlignment="fill"
+					grabExcessHorizontalSpace="true">
+					<label value="Work:" />
+					<textfield numberOfRows="3" attributeType="postalAddress"
+						horizontalAlignment="fill" grabExcessHorizontalSpace="true"
+						verticalAlignment="fill" grabExcessVerticalSpace="true"
+						dollarSignIsNewLine="true" />
+					<label value="" height="1" />
+					<label value="" height="1" />
+				</section>
+			</composite>
+			<composite>
+				<!-- PICTURE -->
+				<section title="Picture" horizontalAlignment="fill"
+					grabExcessHorizontalSpace="true">
+					<image attributeType="jpegPhoto" horizontalAlignment="fill"
+						grabExcessHorizontalSpace="true" imageWidth="150" width="190"/>
+				</section>
+				<!-- PASSWORD -->
+				<section title="Password" horizontalAlignment="fill"
+					grabExcessHorizontalSpace="true">
+					<password attributeType="userPassword"
+						horizontalAlignment="fill" grabExcessHorizontalSpace="true" />
+					<label value="" height="1" />
+				</section>
+				<!-- NOTES -->
+				<section title="Notes" horizontalAlignment="fill"
+					grabExcessHorizontalSpace="true">
+					<textfield attributeType="description" numberOfRows="8" width="150"
+						horizontalAlignment="fill" grabExcessHorizontalSpace="true" />
+				</section>
+			</composite>
+		</composite>
+		<section title="Account Information" numberOfColumns="2"
+			equalColumns="false" horizontalAlignment="fill"
+			grabExcessHorizontalSpace="true">
+			<label value="Creation Date:" verticalAlignment="center" />
+			<date attributeType="createTimeStamp" format="EEEE dd MMMM yyyy  HH:mm:ss z"
+				horizontalAlignment="fill" grabExcessHorizontalSpace="true" />
+
+			<label value="Last Modification Date:" verticalAlignment="center" />
+			<date attributeType="modifyTimeStamp" format="EEEE dd MMMM yyyy  HH:mm:ss z"
+				horizontalAlignment="fill" grabExcessHorizontalSpace="true" />
+		</section>
+	</form>
+</template>

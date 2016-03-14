@@ -38,6 +38,8 @@ import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ConnectionUIPlugin extends AbstractUIPlugin
 {
@@ -59,6 +61,7 @@ public class ConnectionUIPlugin extends AbstractUIPlugin
      */
     public ConnectionUIPlugin()
     {
+        super();
         plugin = this;
     }
 
@@ -80,9 +83,10 @@ public class ConnectionUIPlugin extends AbstractUIPlugin
             eventRunner = new UiThreadEventRunner();
         }
 
-        ConnectionCorePlugin.getDefault().setAuthHandler( new UIAuthHandler() );
-        ConnectionCorePlugin.getDefault().setReferralHandler( new ConnectionUIReferralHandler() );
-        ConnectionCorePlugin.getDefault().setCertificateHandler( new ConnectionUICertificateHandler() );
+        ConnectionCorePlugin defaultPlugin = ConnectionCorePlugin.getDefault();
+        defaultPlugin.setAuthHandler( new UIAuthHandler() );
+        defaultPlugin.setReferralHandler( new ConnectionUIReferralHandler() );
+        defaultPlugin.setCertificateHandler( new ConnectionUICertificateHandler() );
     }
 
 
@@ -132,8 +136,7 @@ public class ConnectionUIPlugin extends AbstractUIPlugin
      * Use this method to get SWT images. Use the IMG_ constants from
      * BrowserWidgetsConstants for the key.
      *
-     * @param key
-     *                The key (relative path to the image in filesystem)
+     * @param key The key (relative path to the image in filesystem)
      * @return The image descriptor or null
      */
     public ImageDescriptor getImageDescriptor( String key )
@@ -141,15 +144,14 @@ public class ConnectionUIPlugin extends AbstractUIPlugin
         if ( key != null )
         {
             URL url = FileLocator.find( getBundle(), new Path( key ), null );
+            
             if ( url != null )
+            {
                 return ImageDescriptor.createFromURL( url );
-            else
-                return null;
+            }
         }
-        else
-        {
-            return null;
-        }
+
+        return null;
     }
 
 
@@ -161,22 +163,24 @@ public class ConnectionUIPlugin extends AbstractUIPlugin
      * Note: Don't dispose the returned SWT Image. It is disposed
      * automatically when the plugin is stopped.
      *
-     * @param key
-     *                The key (relative path to the image in filesystem)
+     * @param key he key (relative path to the image in filesystem)
      * @return The SWT Image or null
      */
     public Image getImage( String key )
     {
         Image image = getImageRegistry().get( key );
+        
         if ( image == null )
         {
-            ImageDescriptor id = getImageDescriptor( key );
-            if ( id != null )
+            ImageDescriptor imageDescriptor = getImageDescriptor( key );
+            
+            if ( imageDescriptor != null )
             {
-                image = id.createImage();
+                image = imageDescriptor.createImage();
                 getImageRegistry().put( key, image );
             }
         }
+        
         return image;
     }
 
@@ -195,8 +199,7 @@ public class ConnectionUIPlugin extends AbstractUIPlugin
     /**
      * Gets the plugin properties.
      *
-     * @return
-     *      the plugin properties
+     * @return the plugin properties
      */
     public PropertyResourceBundle getPluginProperties()
     {

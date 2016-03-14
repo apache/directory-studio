@@ -106,15 +106,6 @@ public class AttributeTypeAndValueDialog extends Dialog
     /**
      * {@inheritDoc}
      */
-    protected void createButtonsForButtonBar( Composite parent )
-    {
-        super.createButtonsForButtonBar( parent );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
     protected void okPressed()
     {
         returnAttributeType = attributeTypeCombo.getText();

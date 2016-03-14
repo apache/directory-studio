@@ -68,6 +68,7 @@ public class StudioJob<T extends StudioRunnableWithProgress> extends Job
                     {
                         StudioBulkRunnableWithProgress bulkRunnable = ( StudioBulkRunnableWithProgress ) runnable;
                         suspendEventFiringInCurrentThread();
+                        
                         try
                         {
                             bulkRunnable.run( monitor );
@@ -76,6 +77,7 @@ public class StudioJob<T extends StudioRunnableWithProgress> extends Job
                         {
                             resumeEventFiringInCurrentThread();
                         }
+                        
                         bulkRunnable.runNotification( monitor );
                     }
                     else
@@ -107,7 +109,6 @@ public class StudioJob<T extends StudioRunnableWithProgress> extends Job
         {
             return Status.OK_STATUS;
         }
-
     }
 
 
@@ -153,27 +154,26 @@ public class StudioJob<T extends StudioRunnableWithProgress> extends Job
             String[] myLockedObjectsIdentifiers = getLockIdentifiers( myLockedObjects );
 
             Job[] jobs = getJobManager().find( null );
-            for ( int i = 0; i < jobs.length; i++ )
+            
+            for ( Job job : jobs )
             {
-                Job job = jobs[i];
                 if ( job instanceof StudioJob )
                 {
                     @SuppressWarnings("unchecked")
                     StudioJob<StudioRunnableWithProgress> otherJob = ( StudioJob<StudioRunnableWithProgress> ) job;
+                    
                     for ( StudioRunnableWithProgress otherRunnable : otherJob.runnables )
                     {
-                        if ( runnable.getClass() == otherRunnable.getClass() && runnable != otherRunnable )
+                        if ( ( runnable.getClass() == otherRunnable.getClass() ) && ( runnable != otherRunnable ) )
                         {
                             Object[] otherLockedObjects = otherRunnable.getLockedObjects();
                             String[] otherLockedObjectIdentifiers = getLockIdentifiers( otherLockedObjects );
 
-                            for ( int j = 0; j < otherLockedObjectIdentifiers.length; j++ )
+                            for ( String other : otherLockedObjectIdentifiers )
                             {
-                                String other = otherLockedObjectIdentifiers[j];
-                                for ( int k = 0; k < myLockedObjectsIdentifiers.length; k++ )
+                                for ( String myLockedObjectIdentifier : myLockedObjectsIdentifiers )
                                 {
-                                    String my = myLockedObjectsIdentifiers[k];
-                                    if ( other.startsWith( my ) || my.startsWith( other ) )
+                                    if ( other.startsWith( myLockedObjectIdentifier ) || myLockedObjectIdentifier.startsWith( other ) )
                                     {
                                         return false;
                                     }
@@ -184,6 +184,7 @@ public class StudioJob<T extends StudioRunnableWithProgress> extends Job
                 }
             }
         }
+        
         return super.shouldSchedule();
     }
 
@@ -191,18 +192,18 @@ public class StudioJob<T extends StudioRunnableWithProgress> extends Job
     /**
      * Gets the string identifiers for the given objects.
      *
-     * @param objects
-     *      the objects
-     * @return
-     *      the string identifiers associated with the objects
+     * @param objects the objects
+     * @return the string identifiers associated with the objects
      */
-    protected String[] getLockIdentifiers( Object[] objects )
+    protected String[] getLockIdentifiers( Object... objects )
     {
         String[] identifiers = new String[objects.length];
+        
         for ( int i = 0; i < identifiers.length; i++ )
         {
             identifiers[i] = getLockIdentifier( objects[i] );
         }
+        
         return identifiers;
     }
 
@@ -210,14 +211,19 @@ public class StudioJob<T extends StudioRunnableWithProgress> extends Job
     /**
      * Gets the generic lock identifier for an object.
      *
-     * @param object
-     *      the object
-     * @return
-     *      the lock identifier for the object
+     * @param object the object
+     * @return the lock identifier for the object
      */
     private String getLockIdentifier( Object object )
     {
-        return ( object != null ? object.toString() : "null" ); //$NON-NLS-1$
+        if ( object == null )
+        {
+            return "null";
+        }
+        else
+        {
+            return object.toString();
+        }
     }
 
 
@@ -233,8 +239,7 @@ public class StudioJob<T extends StudioRunnableWithProgress> extends Job
     /**
      * Get the object corresponding to the family of the Job.
      *
-     * @return
-     *      the object corresponding to the family of the Job
+     * @return the object corresponding to the family of the Job
      */
     public Object getFamily()
     {

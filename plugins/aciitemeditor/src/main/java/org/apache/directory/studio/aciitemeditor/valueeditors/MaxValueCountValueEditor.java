@@ -71,7 +71,7 @@ public class MaxValueCountValueEditor extends AbstractDialogStringValueEditor
     public boolean openDialog( Shell shell )
     {
         Object value = getValue();
-        if ( value != null && value instanceof MaxValueCountValueEditorRawValueWrapper )
+        if ( value instanceof MaxValueCountValueEditorRawValueWrapper )
         {
             MaxValueCountValueEditorRawValueWrapper wrapper = ( MaxValueCountValueEditorRawValueWrapper ) value;
             MaxValueCountDialog dialog = new MaxValueCountDialog( shell, wrapper.schema, wrapper.type, wrapper.maxCount );
@@ -92,8 +92,15 @@ public class MaxValueCountValueEditor extends AbstractDialogStringValueEditor
      */
     public Object getRawValue( IValue value )
     {
-        return value != null ? getRawValue( value.getAttribute().getEntry().getBrowserConnection(), value
-            .getStringValue() ) : null;
+        if ( value != null )
+        {
+            return getRawValue( value.getAttribute().getEntry().getBrowserConnection(), 
+                                value.getStringValue() );
+        }
+        else
+        {
+            return null;
+        }
     }
 
 
@@ -104,7 +111,7 @@ public class MaxValueCountValueEditor extends AbstractDialogStringValueEditor
         {
             schema = connection.getSchema();
         }
-        if ( schema == null || value == null || !( value instanceof String ) )
+        if ( schema == null || !( value instanceof String ) )
         {
             return null;
         }
@@ -223,15 +230,6 @@ public class MaxValueCountValueEditor extends AbstractDialogStringValueEditor
             super.configureShell( shell );
             shell.setText( Messages.getString( "MaxValueCountValueEditor.title" ) ); //$NON-NLS-1$
             shell.setImage( Activator.getDefault().getImage( Messages.getString( "MaxValueCountValueEditor.icon" ) ) ); //$NON-NLS-1$
-        }
-
-
-        /**
-         * {@inheritDoc}
-         */
-        protected void createButtonsForButtonBar( Composite parent )
-        {
-            super.createButtonsForButtonBar( parent );
         }
 
 

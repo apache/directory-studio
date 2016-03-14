@@ -80,13 +80,17 @@ public class ReturningAttributesContentAssistProcessor implements ISubjectContro
     /**
      * Sets the possible attribute types.
      * 
-     * @param proposals the possible strings
+     * @param newProposals the possible strings
      */
-    public void setProposals( List<String> proposals )
+    public void setProposals( List<String> newProposals )
     {
-        if ( proposals == null )
+        if ( newProposals == null )
         {
             proposals = new ArrayList<String>();
+        }
+        else
+        {
+            proposals = newProposals;
         }
 
         // sort proposals, attributes first
@@ -125,7 +129,6 @@ public class ReturningAttributesContentAssistProcessor implements ISubjectContro
             }
         };
         Collections.sort( proposals, comparator );
-        this.proposals = proposals;
 
         // set auto activation characters
         Set<Character> characterSet = new HashSet<Character>();

@@ -86,6 +86,7 @@ public final class BrowserCommonConstants
     public static final String PREFERENCE_BROWSER_CONTAINER_ENTRIES_FIRST = "browserContainerEntriesFirst"; //$NON-NLS-1$
     public static final String PREFERENCE_BROWSER_META_ENTRIES_LAST = "browserMetaEntriesLast"; //$NON-NLS-1$
     public static final String PREFERENCE_BROWSER_SHOW_QUICK_SEARCH = "browserShowQuickSearch"; //$NON-NLS-1$
+    public static final String PREFERENCE_BROWSER_QUICK_SEARCH_SUBTREE_SCOPE = "browserQuickSearchSubtreeScope"; //$NON-NLS-1$
     public static final String PREFERENCE_BROWSER_SHOW_DIT = "browserShowDIT"; //$NON-NLS-1$
     public static final String PREFERENCE_BROWSER_SHOW_SEARCHES = "browserShowSearches"; //$NON-NLS-1$
     public static final String PREFERENCE_BROWSER_SHOW_BOOKMARKS = "browserShowBookmarks"; //$NON-NLS-1$

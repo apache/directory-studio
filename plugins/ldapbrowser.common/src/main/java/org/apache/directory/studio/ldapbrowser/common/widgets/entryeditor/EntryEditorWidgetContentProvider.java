@@ -76,12 +76,12 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
             String dn = ""; //$NON-NLS-1$
             boolean enabled = true;
 
-            if ( newInput != null && newInput instanceof IEntry )
+            if ( newInput instanceof IEntry )
             {
                 IEntry entry = ( IEntry ) newInput;
                 dn = Messages.getString( "EntryEditorWidgetContentProvider.DNLabel" ) + entry.getDn().getName(); //$NON-NLS-1$
             }
-            else if ( newInput != null && newInput instanceof AttributeHierarchy )
+            else if ( newInput instanceof AttributeHierarchy )
             {
                 AttributeHierarchy ah = ( AttributeHierarchy ) newInput;
                 dn = Messages.getString( "EntryEditorWidgetContentProvider.DNLabel" ) + ah.getAttribute().getEntry().getDn().getName(); //$NON-NLS-1$
@@ -92,14 +92,16 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
                 enabled = false;
             }
 
-            if ( mainWidget.getInfoText() != null && !mainWidget.getInfoText().isDisposed() )
+            if ( ( mainWidget.getInfoText() != null ) && !mainWidget.getInfoText().isDisposed() )
             {
                 mainWidget.getInfoText().setText( dn );
             }
+            
             if ( mainWidget.getQuickFilterWidget() != null )
             {
                 mainWidget.getQuickFilterWidget().setEnabled( enabled );
             }
+            
             if ( mainWidget.getViewer() != null && !mainWidget.getViewer().getTree().isDisposed() )
             {
                 mainWidget.getViewer().getTree().setEnabled( enabled );
@@ -123,29 +125,32 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
      */
     public Object[] getElements( Object inputElement )
     {
-        if ( inputElement != null && inputElement instanceof IEntry )
+        if ( inputElement instanceof IEntry )
         {
             IEntry entry = ( IEntry ) inputElement;
-
+    
             if ( !entry.isAttributesInitialized() )
             {
                 InitializeAttributesRunnable runnable = new InitializeAttributesRunnable( entry );
                 StudioBrowserJob job = new StudioBrowserJob( runnable );
                 job.execute();
+                
                 return new Object[0];
             }
             else
             {
                 IAttribute[] attributes = entry.getAttributes();
                 Object[] values = getValues( attributes );
+                
                 return values;
             }
         }
-        else if ( inputElement != null && inputElement instanceof AttributeHierarchy )
+        else if ( inputElement instanceof AttributeHierarchy )
         {
             AttributeHierarchy ah = ( AttributeHierarchy ) inputElement;
             IAttribute[] attributes = ah.getAttributes();
             Object[] values = getValues( attributes );
+            
             return values;
         }
         else
@@ -165,12 +170,14 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
     private Object[] getValues( IAttribute[] attributes )
     {
         List<Object> valueList = new ArrayList<Object>();
+        
         if ( attributes != null )
         {
             for ( IAttribute attribute : attributes )
             {
                 IValue[] values = attribute.getValues();
-                if ( preferences == null || !preferences.isUseFolding()
+                
+                if ((  preferences == null ) || !preferences.isUseFolding()
                     || ( values.length <= preferences.getFoldingThreshold() ) )
                 {
                     for ( IValue value : values )
@@ -185,6 +192,7 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
                 }
             }
         }
+        
         return valueList.toArray();
     }
 
@@ -198,8 +206,10 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
         {
             IAttribute attribute = ( IAttribute ) parentElement;
             IValue[] values = attribute.getValues();
+            
             return values;
         }
+        
         return null;
     }
 
@@ -213,6 +223,7 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
         {
             return ( ( IValue ) element ).getAttribute();
         }
+        
         return null;
     }
 
@@ -224,5 +235,4 @@ public class EntryEditorWidgetContentProvider implements ITreeContentProvider
     {
         return ( element instanceof IAttribute );
     }
-
 }

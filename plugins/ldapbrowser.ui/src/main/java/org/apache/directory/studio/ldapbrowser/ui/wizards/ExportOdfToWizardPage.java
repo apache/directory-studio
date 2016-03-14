@@ -42,7 +42,7 @@ public class ExportOdfToWizardPage extends ExportBaseToPage
 
     /** The extensions used by ODF files */
     private static final String[] EXTENSIONS = new String[]
-        { "*.ods", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
+        { "*.ods", "*" }; //$NON-NLS-1$ //$NON-NLS-2$
 
 
     /**

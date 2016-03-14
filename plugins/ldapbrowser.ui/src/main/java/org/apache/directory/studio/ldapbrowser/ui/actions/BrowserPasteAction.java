@@ -291,7 +291,7 @@ public class BrowserPasteAction extends PasteAction
         {
 
             Object content = this.getFromClipboard( EntryTransfer.getInstance() );
-            if ( content != null && content instanceof IEntry[] )
+            if ( content instanceof IEntry[] )
             {
                 IEntry[] entries = ( IEntry[] ) content;
                 return entries;
@@ -316,7 +316,7 @@ public class BrowserPasteAction extends PasteAction
             && ( getSelectedSearches().length + getSelectedBrowserViewCategories().length > 0 ) )
         {
             Object content = this.getFromClipboard( SearchTransfer.getInstance() );
-            if ( content != null && content instanceof ISearch[] )
+            if ( content instanceof ISearch[] )
             {
                 ISearch[] searches = ( ISearch[] ) content;
                 return searches;
@@ -344,7 +344,7 @@ public class BrowserPasteAction extends PasteAction
                 + getSelectedBookmarks().length + getSelectedSearches().length + getSelectedConnections().length == 0 && ( getSelectedSearchResults().length == 1 ) ) )
         {
             Object content = this.getFromClipboard( ValuesTransfer.getInstance() );
-            if ( content != null && content instanceof IValue[] )
+            if ( content instanceof IValue[] )
             {
                 IValue[] values = ( IValue[] ) content;
                 return values;

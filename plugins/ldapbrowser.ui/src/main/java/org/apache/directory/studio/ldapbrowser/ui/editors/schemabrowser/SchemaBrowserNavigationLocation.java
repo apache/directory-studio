@@ -150,13 +150,16 @@ public class SchemaBrowserNavigationLocation extends NavigationLocation
     public void restoreLocation()
     {
         IEditorPart editorPart = getEditorPart();
-        if ( editorPart != null && editorPart instanceof SchemaBrowser )
+        
+        if ( editorPart instanceof SchemaBrowser )
         {
             SchemaBrowser schemaBrowser = ( SchemaBrowser ) editorPart;
             Object input = getInput();
-            if ( input != null && input instanceof SchemaBrowserInput )
+            
+            if ( input instanceof SchemaBrowserInput )
             {
                 SchemaBrowserInput sbi = ( SchemaBrowserInput ) input;
+                
                 if ( sbi.getConnection() != null && sbi.getSchemaElement() != null )
                 {
                     schemaBrowser.setInput( sbi );
@@ -215,12 +218,13 @@ public class SchemaBrowserNavigationLocation extends NavigationLocation
      */
     private AbstractSchemaObject getSchemaElement()
     {
-
         Object editorInput = getInput();
-        if ( editorInput != null && editorInput instanceof SchemaBrowserInput )
+        
+        if ( editorInput instanceof SchemaBrowserInput )
         {
             SchemaBrowserInput schemaBrowserInput = ( SchemaBrowserInput ) editorInput;
             AbstractSchemaObject schemaElement = schemaBrowserInput.getSchemaElement();
+            
             if ( schemaElement != null )
             {
                 return schemaElement;
@@ -238,11 +242,12 @@ public class SchemaBrowserNavigationLocation extends NavigationLocation
      */
     private IBrowserConnection getConnection()
     {
-
         Object editorInput = getInput();
-        if ( editorInput != null && editorInput instanceof SchemaBrowserInput )
+        
+        if ( editorInput instanceof SchemaBrowserInput )
         {
             SchemaBrowserInput schemaBrowserInput = ( SchemaBrowserInput ) editorInput;
+            
             return schemaBrowserInput.getConnection();
         }
 

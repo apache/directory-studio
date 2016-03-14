@@ -59,35 +59,17 @@ import org.eclipse.swt.widgets.Text;
  */
 public class ACIItemGeneralComposite extends Composite
 {
-    /** The inner composite for all the content */
-    private Composite composite = null;
-
-    /** The identification tag label */
-    private Label identificationTagLabel = null;
-
     /** The identification tag text field */
     private Text identificationTagText = null;
 
-    /** The precedence label */
-    private Label precedenceLabel = null;
-
     /** The spinner to select a valid precedence between 0 and 255 */
     private Spinner precedenceSpinner = null;
-
-    /** The authentication level label */
-    private Label authenticationLevelLabel = null;
-
-    /** The combo to select a valid uthentication level */
-    private Combo authenticationLevelCombo = null;
 
     /** 
      * The combo viewer is attached to authenticationLevelCombo to work with
      * AuthenticationLevel objects rather than Strings 
      */
     private ComboViewer authenticationLevelComboViewer = null;
-
-    /** The user or item first label */
-    private Label userOrItemFirstLabel = null;
 
     /** The user first radio button */
     private Button userFirstRadioButton = null;
@@ -159,11 +141,11 @@ public class ACIItemGeneralComposite extends Composite
         gridData.grabExcessHorizontalSpace = true;
         gridData.verticalAlignment = GridData.CENTER;
 
-        composite = new Composite( this, SWT.NONE );
+        Composite composite = new Composite( this, SWT.NONE );
         composite.setLayout( gridLayout );
         composite.setLayoutData( gridData );
 
-        identificationTagLabel = new Label( composite, SWT.NONE );
+        Label identificationTagLabel = new Label( composite, SWT.NONE );
         identificationTagLabel.setText( Messages.getString( "ACIItemGeneralComposite.idTag.label" ) ); //$NON-NLS-1$
         identificationTagText = new Text( composite, SWT.BORDER );
         identificationTagText.setLayoutData( identificationTagGridData );
@@ -175,7 +157,7 @@ public class ACIItemGeneralComposite extends Composite
             }
         } );
 
-        precedenceLabel = new Label( composite, SWT.NONE );
+        Label precedenceLabel = new Label( composite, SWT.NONE );
         precedenceLabel.setText( Messages.getString( "ACIItemGeneralComposite.precedence.label" ) ); //$NON-NLS-1$
         precedenceSpinner = new Spinner( composite, SWT.BORDER );
         precedenceSpinner.setMinimum( 0 );
@@ -193,9 +175,10 @@ public class ACIItemGeneralComposite extends Composite
             }
         } );
 
-        authenticationLevelLabel = new Label( composite, SWT.NONE );
+        Label authenticationLevelLabel = new Label( composite, SWT.NONE );
         authenticationLevelLabel.setText( Messages.getString( "ACIItemGeneralComposite.authLevel.label" ) ); //$NON-NLS-1$
-        authenticationLevelCombo = new Combo( composite, SWT.READ_ONLY );
+        
+        Combo authenticationLevelCombo = new Combo( composite, SWT.READ_ONLY );
         authenticationLevelCombo.setLayoutData( authenticationLevelGridData );
         AuthenticationLevel[] authenticationLevels = new AuthenticationLevel[3];
         authenticationLevels[0] = AuthenticationLevel.NONE;
@@ -214,7 +197,7 @@ public class ACIItemGeneralComposite extends Composite
             }
         } );
 
-        userOrItemFirstLabel = new Label( composite, SWT.NONE );
+        Label userOrItemFirstLabel = new Label( composite, SWT.NONE );
         userOrItemFirstLabel.setText( Messages.getString( "ACIItemGeneralComposite.userOrItemFirst.label" ) ); //$NON-NLS-1$
         userFirstRadioButton = new Button( composite, SWT.RADIO );
         userFirstRadioButton.setText( Messages.getString( "ACIItemGeneralComposite.userFirst.label" ) ); //$NON-NLS-1$
@@ -246,8 +229,12 @@ public class ACIItemGeneralComposite extends Composite
     public void addWidgetModifyListener( WidgetModifyListener listener )
     {
         checkWidget();
+        
         if ( listener == null )
+        {
             SWT.error( SWT.ERROR_NULL_ARGUMENT );
+        }
+        
         listenerList.add( listener );
     }
 
@@ -260,8 +247,12 @@ public class ACIItemGeneralComposite extends Composite
     public void removeWidgetModifyListener( WidgetModifyListener listener )
     {
         checkWidget();
+        
         if ( listener == null )
+        {
             SWT.error( SWT.ERROR_NULL_ARGUMENT );
+        }
+        
         listenerList.remove( listener );
     }
 

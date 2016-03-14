@@ -21,9 +21,11 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
+import static org.apache.directory.studio.test.integration.ui.Constants.LOCALHOST;
+import static org.apache.directory.studio.test.integration.ui.Constants.LOCALHOST_ADDRESS;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -32,7 +34,6 @@ import org.apache.directory.server.annotations.CreateLdapServer;
 import org.apache.directory.server.annotations.CreateTransport;
 import org.apache.directory.server.core.annotations.ApplyLdifFiles;
 import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
-import org.apache.directory.server.core.integ.FrameworkRunner;
 import org.apache.directory.api.ldap.model.entry.DefaultEntry;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.name.Dn;
@@ -51,6 +52,7 @@ import org.apache.directory.studio.test.integration.ui.bots.ModificationLogsView
 import org.apache.directory.studio.test.integration.ui.bots.ReferralDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.SearchLogsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
+import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.junit.After;
@@ -65,11 +67,11 @@ import org.junit.runner.RunWith;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-@RunWith(FrameworkRunner.class)
+@RunWith(FrameworkRunnerWithScreenshotCaptureListener.class)
 @CreateLdapServer(transports =
     { @CreateTransport(protocol = "LDAP") })
-@ApplyLdifFiles(
-    { "org/apache/directory/studio/test/integration/ui/BrowserTest.ldif" })
+@ApplyLdifFiles( clazz = BrowserTest.class,
+    value = "org/apache/directory/studio/test/integration/ui/BrowserTest.ldif" )
 public class BrowserTest extends AbstractLdapTestUnit
 {
     private StudioBot studioBot;
@@ -87,8 +89,6 @@ public class BrowserTest extends AbstractLdapTestUnit
         studioBot = new StudioBot();
         studioBot.resetLdapPerspective();
         connectionsViewBot = studioBot.getConnectionView();
-        System.out.println( connectionsViewBot );
-        System.out.println( ldapServer );
         connection = connectionsViewBot.createTestConnection( "BrowserTest", ldapServer.getPort() );
         browserViewBot = studioBot.getBrowserView();
         searchLogsViewBot = studioBot.getSearchLogsViewBot();
@@ -359,7 +359,7 @@ public class BrowserTest extends AbstractLdapTestUnit
     public void testRefreshSearchContinuation() throws Exception
     {
         // preparation: add referral entry and set referral handling
-        String url = "ldap://localhost:" + ldapServer.getPort() + "/ou=users,ou=system";
+        String url = "ldap://" + LOCALHOST + ":" + ldapServer.getPort() + "/ou=users,ou=system";
         Entry refEntry = new DefaultEntry( service.getSchemaManager() );
         refEntry.setDn( new Dn( "cn=referral,ou=system" ) );
         refEntry.add( "objectClass", "top", "referral", "extensibleObject" );
@@ -485,15 +485,16 @@ public class BrowserTest extends AbstractLdapTestUnit
 
         // create entry with multi-valued RDN containing an IP address value
         Entry entry = new DefaultEntry( service.getSchemaManager() );
-        entry.setDn( new Dn( "cn=loopback+ipHostNumber=127.0.0.1,ou=users,ou=system" ) );
+        entry.setDn( new Dn( "cn=loopback+ipHostNumber=" + LOCALHOST_ADDRESS + ",ou=users,ou=system" ) );
         entry.add( "objectClass", "top", "device", "ipHost" );
         entry.add( "cn", "loopback" );
-        entry.add( "ipHostNumber", "127.0.0.1" );
+        entry.add( "ipHostNumber", LOCALHOST_ADDRESS );
         ldapServer.getDirectoryService().getAdminSession().add( entry );
 
         assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users",
-            "cn=loopback+ipHostNumber=127.0.0.1" ) );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=loopback+ipHostNumber=127.0.0.1" );
+            "cn=loopback+ipHostNumber=" + LOCALHOST_ADDRESS ) );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users",
+            "cn=loopback+ipHostNumber=" + LOCALHOST_ADDRESS );
     }
 
 

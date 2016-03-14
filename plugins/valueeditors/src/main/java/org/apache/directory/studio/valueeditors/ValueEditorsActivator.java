@@ -88,8 +88,7 @@ public class ValueEditorsActivator extends AbstractUIPlugin
      * Use this method to get SWT images. Use the IMG_ constants from
      * ValueEditorConstants for the key.
      * 
-     * @param key
-     *                The key (relative path to the image im filesystem)
+     * @param key The key (relative path to the image im filesystem)
      * @return The image discriptor or null
      */
     public ImageDescriptor getImageDescriptor( String key )
@@ -97,10 +96,15 @@ public class ValueEditorsActivator extends AbstractUIPlugin
         if ( key != null )
         {
             URL url = FileLocator.find( getBundle(), new Path( key ), null );
+            
             if ( url != null )
+            {
                 return ImageDescriptor.createFromURL( url );
+            }
             else
+            {
                 return null;
+            }
         }
         else
         {
@@ -117,23 +121,25 @@ public class ValueEditorsActivator extends AbstractUIPlugin
      * Note: Don't dispose the returned SWT Image. It is disposed
      * automatically when the plugin is stopped.
      * 
-     * @param key
-     *                The key (relative path to the image im filesystem)
+     * @param key The key (relative path to the image im filesystem)
      * @return The SWT Image or null
      * @see ValueEditorsConstants
      */
     public Image getImage( String key )
     {
         Image image = getImageRegistry().get( key );
+        
         if ( image == null )
         {
             ImageDescriptor id = getImageDescriptor( key );
+            
             if ( id != null )
             {
                 image = id.createImage();
                 getImageRegistry().put( key, image );
             }
         }
+        
         return image;
     }
 

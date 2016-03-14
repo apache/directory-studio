@@ -44,7 +44,6 @@ import org.eclipse.ui.IPersistableElement;
  */
 public class EntryEditorInput implements IEditorInput
 {
-
     /** The entry input */
     private IEntry entry;
 
@@ -56,6 +55,9 @@ public class EntryEditorInput implements IEditorInput
 
     /** The entry editor extension. */
     private EntryEditorExtension extension;
+    
+    /** The resolved entry, based on the entry, searchResult and bookmark */
+    private IEntry resolvedEntry;
 
 
     /**
@@ -94,6 +96,9 @@ public class EntryEditorInput implements IEditorInput
     }
 
 
+    /**
+     * The private constructor, which is called by all the public constructors.
+     */
     private EntryEditorInput( IEntry entry, ISearchResult searchResult, IBookmark bookmark,
         EntryEditorExtension extension )
     {
@@ -101,6 +106,24 @@ public class EntryEditorInput implements IEditorInput
         this.searchResult = searchResult;
         this.bookmark = bookmark;
         this.extension = extension;
+        
+        if ( entry != null )
+        {
+            resolvedEntry = entry;
+        }
+        else if ( searchResult != null )
+        {
+            resolvedEntry = searchResult.getEntry();
+        }
+        else if ( bookmark != null )
+        {
+            resolvedEntry = bookmark.getEntry();
+        }
+
+        if ( resolvedEntry != null )
+        {
+            resolvedEntry = resolvedEntry.getBrowserConnection().getEntryFromCache( resolvedEntry.getDn() );
+        }
     }
 
 
@@ -131,16 +154,15 @@ public class EntryEditorInput implements IEditorInput
      */
     public String getName()
     {
-        IEntry entry = getResolvedEntry();
-        if ( entry != null )
+        if ( resolvedEntry != null )
         {
-            if ( entry instanceof RootDSE )
+            if ( resolvedEntry instanceof RootDSE )
             {
                 return Messages.getString( "EntryEditorNavigationLocation.RootDSE" ); //$NON-NLS-1$
             }
             else
             {
-                return entry.getDn().getName();
+                return resolvedEntry.getDn().getName();
             }
         }
 
@@ -153,11 +175,11 @@ public class EntryEditorInput implements IEditorInput
      */
     public String getToolTipText()
     {
-        IEntry entry = getResolvedEntry();
-        if ( entry != null )
+        if ( resolvedEntry != null )
         {
-            IBrowserConnection connection = entry.getBrowserConnection();
-            if ( connection != null && connection.getConnection() != null )
+            IBrowserConnection connection = resolvedEntry.getBrowserConnection();
+            
+            if ( ( connection != null ) && ( connection.getConnection() != null ) )
             {
                 return getName() + " - " + connection.getConnection().getName();//$NON-NLS-1$
             }
@@ -204,36 +226,13 @@ public class EntryEditorInput implements IEditorInput
 
     /**
      * Gets the resolved entry, either the entry input itself
-     * or the entry behind the search result intput or the entry behind 
+     * or the entry behind the search result input or the entry behind 
      * the bookmark input.
      * 
      * @return the resolved entry
      */
     public IEntry getResolvedEntry()
     {
-        IEntry resolvedEntry;
-        if ( entry != null )
-        {
-            resolvedEntry = entry;
-        }
-        else if ( searchResult != null )
-        {
-            resolvedEntry = searchResult.getEntry();
-        }
-        else if ( bookmark != null )
-        {
-            resolvedEntry = bookmark.getEntry();
-        }
-        else
-        {
-            resolvedEntry = null;
-        }
-
-        if ( resolvedEntry != null )
-        {
-            resolvedEntry = resolvedEntry.getBrowserConnection().getEntryFromCache( resolvedEntry.getDn() );
-        }
-
         return resolvedEntry;
     }
 
@@ -246,7 +245,6 @@ public class EntryEditorInput implements IEditorInput
      */
     public IEntry getSharedWorkingCopy( IEntryEditor editor )
     {
-        IEntry resolvedEntry = getResolvedEntry();
         if ( resolvedEntry != null )
         {
             return BrowserUIPlugin.getDefault().getEntryEditorManager().getSharedWorkingCopy( resolvedEntry, editor );
@@ -265,7 +263,8 @@ public class EntryEditorInput implements IEditorInput
     public boolean isSharedWorkingCopyDirty( IEntryEditor editor )
     {
         boolean dirty = BrowserUIPlugin.getDefault().getEntryEditorManager().isSharedWorkingCopyDirty(
-            getResolvedEntry(), editor );
+            resolvedEntry, editor );
+        
         return dirty;
     }
 
@@ -282,7 +281,8 @@ public class EntryEditorInput implements IEditorInput
     public IStatus saveSharedWorkingCopy( boolean handleError, IEntryEditor editor )
     {
         IStatus status = BrowserUIPlugin.getDefault().getEntryEditorManager().saveSharedWorkingCopy(
-            getResolvedEntry(), handleError, editor );
+            resolvedEntry, handleError, editor );
+        
         return status;
     }
 
@@ -294,7 +294,7 @@ public class EntryEditorInput implements IEditorInput
      */
     public void resetSharedWorkingCopy( IEntryEditor editor )
     {
-        BrowserUIPlugin.getDefault().getEntryEditorManager().resetSharedWorkingCopy( getResolvedEntry(), editor );
+        BrowserUIPlugin.getDefault().getEntryEditorManager().resetSharedWorkingCopy( resolvedEntry, editor );
     }
 
 
@@ -368,7 +368,14 @@ public class EntryEditorInput implements IEditorInput
         }
         else if ( extension.isMultiWindow() )
         {
-            return getResolvedEntry() == null ? 0 : getResolvedEntry().getDn().hashCode();
+            if ( resolvedEntry == null )
+            {
+                return 0;
+            }
+            else
+            {
+                return resolvedEntry.getDn().hashCode();
+            }
         }
         else
         {
@@ -415,4 +422,16 @@ public class EntryEditorInput implements IEditorInput
         }
     }
 
+    
+    /**
+     * @see Object#toString()
+     */
+    public String toString()
+    {
+        StringBuilder sb = new StringBuilder();
+        
+        sb.append( resolvedEntry );
+        
+        return sb.toString();
+    }
 }

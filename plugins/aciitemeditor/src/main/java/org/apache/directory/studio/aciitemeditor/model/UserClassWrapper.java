@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -47,9 +46,8 @@ import org.eclipse.osgi.util.NLS;
  */
 public class UserClassWrapper
 {
-
     /** This map contains all possible user class identifiers */
-    public static final Map<Class<? extends UserClass>, String> classToIdentifierMap;
+    public static final Map<Class<? extends UserClass>, String> CLASS_TO_IDENTIFIER_MAP;
     static
     {
         Map<Class<? extends UserClass>, String> map = new HashMap<Class<? extends UserClass>, String>();
@@ -59,11 +57,11 @@ public class UserClassWrapper
         map.put( UserClass.Name.class, "name" ); //$NON-NLS-1$
         map.put( UserClass.UserGroup.class, "userGroup" ); //$NON-NLS-1$
         map.put( UserClass.Subtree.class, "subtree" ); //$NON-NLS-1$
-        classToIdentifierMap = Collections.unmodifiableMap( map );
+        CLASS_TO_IDENTIFIER_MAP = Collections.unmodifiableMap( map );
     }
 
     /** This map contains all user class display values */
-    public static final Map<Class<? extends UserClass>, String> classToDisplayMap;
+    public static final Map<Class<? extends UserClass>, String> CLASS_TO_DISPLAY_MAP;
     static
     {
         Map<Class<? extends UserClass>, String> map = new HashMap<Class<? extends UserClass>, String>();
@@ -73,7 +71,7 @@ public class UserClassWrapper
         map.put( UserClass.Name.class, Messages.getString( "UserClassWrapper.userClass.name.label" ) ); //$NON-NLS-1$
         map.put( UserClass.UserGroup.class, Messages.getString( "UserClassWrapper.userClass.userGroup.label" ) ); //$NON-NLS-1$
         map.put( UserClass.Subtree.class, Messages.getString( "UserClassWrapper.userClass.subtree.label" ) ); //$NON-NLS-1$
-        classToDisplayMap = Collections.unmodifiableMap( map );
+        CLASS_TO_DISPLAY_MAP = Collections.unmodifiableMap( map );
     }
 
     /** A dummy ACI to check syntax of the userClassValue. */
@@ -85,16 +83,16 @@ public class UserClassWrapper
     private final Class<? extends UserClass> clazz;
 
     /** The user class values, may be empty. */
-    private List<String> values;
+    private final List<String> values;
 
     /** The value prefix, prepended to the value. */
-    private String valuePrefix;
+    private final String valuePrefix;
 
     /** The value suffix, appended to the value. */
-    private String valueSuffix;
+    private final String valueSuffix;
 
     /** The value editor, null means no value. */
-    private AbstractDialogStringValueEditor valueEditor;
+    private final AbstractDialogStringValueEditor valueEditor;
 
 
     /**
@@ -134,6 +132,7 @@ public class UserClassWrapper
         spec = spec.replaceAll( "#values#", flatValue ); //$NON-NLS-1$
         ACIItemParser parser = new ACIItemParser( null );
         UserFirstACIItem aci = null;
+        
         try
         {
             aci = ( UserFirstACIItem ) parser.parse( spec );
@@ -144,7 +143,9 @@ public class UserClassWrapper
                 Messages.getString( "UserClassWrapper.error.message" ), new String[] { getIdentifier(), flatValue } ); //$NON-NLS-1$
             throw new ParseException( msg, 0 );
         }
+        
         UserClass userClass = ( UserClass ) aci.getUserClasses().iterator().next();
+        
         return userClass;
     }
 
@@ -189,8 +190,7 @@ public class UserClassWrapper
             {
                 StringBuilder buffer = new StringBuilder();
                 subtreeSpecification.toString( buffer );
-                String s = buffer.toString();
-                values.add( s );
+                values.add( buffer.toString() );
             }
         }
     }
@@ -229,26 +229,35 @@ public class UserClassWrapper
      */
     private String getFlatValue()
     {
-        if ( valueEditor == null || values.isEmpty() )
+        if ( ( valueEditor == null ) || values.isEmpty() )
         {
             return ""; //$NON-NLS-1$
         }
 
-        StringBuffer sb = new StringBuffer();
-        sb.append( "{ " ); //$NON-NLS-1$
-        for ( Iterator<String> it = values.iterator(); it.hasNext(); )
+        StringBuilder buffer = new StringBuilder();
+        buffer.append( "{ " ); //$NON-NLS-1$
+        
+        boolean isFirst = true;
+        
+        for ( String value : values )
         {
-            sb.append( valuePrefix );
-            String value = it.next();
-            sb.append( value );
-            sb.append( valueSuffix );
-            if ( it.hasNext() )
+            if ( isFirst )
             {
-                sb.append( ", " ); //$NON-NLS-1$
+                isFirst = false;
             }
+            else
+            {
+                buffer.append( ", " ); //$NON-NLS-1$
+            }
+            
+            buffer.append( valuePrefix );
+            buffer.append( value );
+            buffer.append( valueSuffix );
         }
-        sb.append( " }" ); //$NON-NLS-1$
-        return sb.toString();
+        
+        buffer.append( " }" ); //$NON-NLS-1$
+        
+        return buffer.toString();
     }
 
 
@@ -270,7 +279,7 @@ public class UserClassWrapper
      */
     public String getDisplayName()
     {
-        return classToDisplayMap.get( clazz );
+        return CLASS_TO_DISPLAY_MAP.get( clazz );
     }
 
 
@@ -281,7 +290,7 @@ public class UserClassWrapper
      */
     public String getIdentifier()
     {
-        return classToIdentifierMap.get( clazz );
+        return CLASS_TO_IDENTIFIER_MAP.get( clazz );
     }
 
 

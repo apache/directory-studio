@@ -33,12 +33,10 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
  */
 public interface BrowserConnectionUpdateListener extends EventListener
 {
-
     /**
      * Called when an {@link IBrowserConnection} was updated.
      *
      * @param browserConnectionUpdateEvent the browser connection update event
      */
-    public void browserConnectionUpdated( BrowserConnectionUpdateEvent browserConnectionUpdateEvent );
-
+    void browserConnectionUpdated( BrowserConnectionUpdateEvent browserConnectionUpdateEvent );
 }

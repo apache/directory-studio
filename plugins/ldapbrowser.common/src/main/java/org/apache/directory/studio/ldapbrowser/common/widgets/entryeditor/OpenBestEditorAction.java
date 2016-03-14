@@ -25,6 +25,7 @@ import java.util.Collection;
 
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
+import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
@@ -106,7 +107,14 @@ public class OpenBestEditorAction extends AbstractOpenEditorAction
      */
     public String getText()
     {
-        return isEnabled() ? bestValueEditor.getValueEditorName() : null;
+        if ( bestValueEditor != null )
+        {
+            return bestValueEditor.getValueEditorName();
+        }
+        else
+        {
+            return null;
+        }
     }
 
 
@@ -122,12 +130,13 @@ public class OpenBestEditorAction extends AbstractOpenEditorAction
         {
             // update value editor
             bestValueEditor = valueEditorManager.getCurrentValueEditor( getSelectedValues()[0] );
-            super.cellEditor = bestValueEditor.getCellEditor();
+            setCellEditor( bestValueEditor.getCellEditor() );
 
             return true;
         }
         else
         {
+            bestValueEditor = null;
             return false;
         }
     }
@@ -138,50 +147,48 @@ public class OpenBestEditorAction extends AbstractOpenEditorAction
     {
         boolean ok = true;
 
-        if ( getSelectedValues().length == 1 && getSelectedAttributes().length == 0 )
+        if ( ( getSelectedValues().length == 1 ) && ( getSelectedAttributes().length == 0 ) )
         {
             IValue value = getSelectedValues()[0];
             StringBuffer message = new StringBuffer();
+            IAttribute attribute = value.getAttribute();
+            String description = attribute.getDescription();
+            AttributeType atd = attribute.getAttributeTypeDescription();
 
             if ( value.isEmpty() )
             {
                 // validate single-valued attributes
-                if ( value.getAttribute().getValueSize() > 1
-                    && value.getAttribute().getAttributeTypeDescription().isSingleValued() )
+                if ( ( attribute.getValueSize() > 1 ) && atd.isSingleValued() )
                 {
-                    message.append( NLS.bind( Messages.getString( "OpenBestEditorAction.ValueSingleValued" ), //$NON-NLS-1$
-                        value.getAttribute().getDescription() ) );
+                    message.append( NLS.bind( Messages.getString( "OpenBestEditorAction.ValueSingleValued" ), description ) );//$NON-NLS-1$
                     message.append( BrowserCoreConstants.LINE_SEPARATOR );
                     message.append( BrowserCoreConstants.LINE_SEPARATOR );
                 }
 
                 // validate if value is allowed
-                IEntry entry = value.getAttribute().getEntry();
+                IEntry entry = attribute.getEntry();
                 Collection<AttributeType> allAtds = SchemaUtils.getAllAttributeTypeDescriptions( entry );
-                AttributeType atd = value.getAttribute().getAttributeTypeDescription();
+                
                 if ( !allAtds.contains( atd ) )
                 {
-                    message.append( NLS.bind( Messages.getString( "OpenBestEditorAction.AttributeNotInSubSchema" ), //$NON-NLS-1$
-                        value.getAttribute().getDescription() ) );
+                    message.append( NLS.bind( Messages.getString( "OpenBestEditorAction.AttributeNotInSubSchema" ), description ) );//$NON-NLS-1$
                     message.append( BrowserCoreConstants.LINE_SEPARATOR );
                     message.append( BrowserCoreConstants.LINE_SEPARATOR );
                 }
             }
 
             // validate non-modifiable attributes
-            if ( !SchemaUtils.isModifiable( value.getAttribute().getAttributeTypeDescription() ) )
+            if ( !SchemaUtils.isModifiable( atd ) )
             {
-                message.append( NLS.bind( Messages.getString( "OpenBestEditorAction.ValueNotModifiable" ), //$NON-NLS-1$ 
-                    value.getAttribute().getDescription() ) );
+                message.append( NLS.bind( Messages.getString( "OpenBestEditorAction.ValueNotModifiable" ), description ) );//$NON-NLS-1$ 
                 message.append( BrowserCoreConstants.LINE_SEPARATOR );
                 message.append( BrowserCoreConstants.LINE_SEPARATOR );
             }
 
             // validate modification of Rdn
-            if ( value.isRdnPart() && cellEditor != valueEditorManager.getRenameValueEditor() )
+            if ( value.isRdnPart() && ( getCellEditor() != valueEditorManager.getRenameValueEditor() ) )
             {
-                message.append( NLS.bind( Messages.getString( "OpenBestEditorAction.ValueIsRdnPart" ), //$NON-NLS-1$ 
-                    value.getAttribute().getDescription() ) );
+                message.append( NLS.bind( Messages.getString( "OpenBestEditorAction.ValueIsRdnPart" ), description ) );//$NON-NLS-1$ 
                 message.append( BrowserCoreConstants.LINE_SEPARATOR );
                 message.append( BrowserCoreConstants.LINE_SEPARATOR );
             }
@@ -196,6 +203,7 @@ public class OpenBestEditorAction extends AbstractOpenEditorAction
                 {
                     message.append( Messages.getString( "OpenBestEditorAction.EditValueQuestion" ) ); //$NON-NLS-1$
                 }
+                
                 ok = MessageDialog.openConfirm( getShell(), getText(), message.toString() );
             }
 
@@ -207,10 +215,9 @@ public class OpenBestEditorAction extends AbstractOpenEditorAction
             {
                 if ( value.isEmpty() )
                 {
-                    value.getAttribute().deleteEmptyValue();
+                    attribute.deleteEmptyValue();
                 }
             }
         }
     }
-
 }

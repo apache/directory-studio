@@ -20,6 +20,10 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
+import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
+
+
 public class ImportWizardBot extends WizardBot
 {
     public static final String IMPORT_LDIF_TITLE = "LDIF Import";
@@ -27,21 +31,44 @@ public class ImportWizardBot extends WizardBot
     private String title;
 
 
-    public ImportWizardBot( String title )
+    public ImportWizardBot()
     {
-        this.title = title;
+        this( "Import" );
     }
 
 
-    public boolean isVisible()
+    public ImportWizardBot( String title )
     {
-        return isVisible( title );
+        super( title );
+        this.title = title;
     }
 
 
     public void typeFile( String file )
     {
         bot.comboBox().setText( file );
+    }
+
+
+    @Override
+    public void clickFinishButton()
+    {
+        JobWatcher watcher = null;
+        if ( IMPORT_LDIF_TITLE.equals( title ) )
+        {
+            watcher = new JobWatcher( BrowserCoreMessages.jobs__import_ldif_name );
+        }
+        else if ( IMPORT_DSML_TITLE.equals( title ) )
+        {
+            watcher = new JobWatcher( BrowserCoreMessages.jobs__import_dsml_name );
+        }
+
+        super.clickFinishButton();
+
+        if ( watcher != null )
+        {
+            watcher.waitUntilDone();
+        }
     }
 
 }

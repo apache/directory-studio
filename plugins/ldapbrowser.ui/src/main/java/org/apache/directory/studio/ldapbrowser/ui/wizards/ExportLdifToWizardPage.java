@@ -42,7 +42,7 @@ public class ExportLdifToWizardPage extends ExportBaseToPage
 
     /** The extensions used by LDIF files */
     private static final String[] EXTENSIONS = new String[]
-        { "*.ldif", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
+        { "*.ldif", "*" }; //$NON-NLS-1$ //$NON-NLS-2$
 
 
     /**

@@ -19,6 +19,8 @@
  */
 package org.apache.directory.studio.test.integration.ui.bots;
 
+import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
+
 
 public class DeleteDialogBot extends DialogBot
 {
@@ -26,24 +28,19 @@ public class DeleteDialogBot extends DialogBot
     public static final String DELETE_ENTRIES_TITLE = "Delete Entries";
     public static final String DELETE_VALUE_TITLE = "Delete Value";
     public static final String DELETE_SERVER = "Delete Server";
-    private String title;
 
 
     public DeleteDialogBot( String title )
     {
-        this.title = title;
-    }
-
-
-    public boolean isVisible()
-    {
-        return super.isVisible( title );
+        super( title );
     }
 
 
     public void clickOkButton()
     {
-        super.clickButton( "OK" );
+        JobWatcher watcher = new JobWatcher( title );
+        super.clickOkButton();
+        watcher.waitUntilDone();
     }
 
 

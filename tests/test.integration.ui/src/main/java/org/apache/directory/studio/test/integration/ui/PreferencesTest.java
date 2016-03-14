@@ -21,19 +21,20 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
+import org.apache.directory.api.util.FileUtils;
 import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
-import org.apache.directory.server.core.integ.FrameworkRunner;
 import org.apache.directory.studio.test.integration.ui.bots.CertificateValidationPreferencePageBot;
 import org.apache.directory.studio.test.integration.ui.bots.PreferencesBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
+import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.eclipse.core.runtime.Platform;
 import org.junit.After;
 import org.junit.Before;
@@ -47,7 +48,7 @@ import org.junit.runner.RunWith;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-@RunWith(FrameworkRunner.class)
+@RunWith(FrameworkRunnerWithScreenshotCaptureListener.class)
 public class PreferencesTest extends AbstractLdapTestUnit
 {
     private StudioBot studioBot;
@@ -96,7 +97,7 @@ public class PreferencesTest extends AbstractLdapTestUnit
         // click OK, this should write the property to the file
         preferencesBot.clickOkButton();
         assertTrue( file.exists() );
-        List<String> lines = FileUtils.readLines( file );
+        List<String> lines = FileUtils.readLines( file, StandardCharsets.UTF_8 );
         assertTrue( lines.contains( "validateCertificates=false" ) );
 
         // open dialog again, check that certificate validation checkbox is not selected

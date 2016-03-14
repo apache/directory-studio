@@ -21,14 +21,15 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
+import static org.apache.directory.studio.test.integration.ui.Constants.LOCALHOST;
+import static org.apache.directory.studio.test.integration.ui.Constants.LOCALHOST_ADDRESS;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.apache.directory.server.annotations.CreateLdapServer;
 import org.apache.directory.server.annotations.CreateTransport;
 import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
-import org.apache.directory.server.core.integ.FrameworkRunner;
 import org.apache.directory.api.ldap.model.entry.DefaultEntry;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.name.Dn;
@@ -40,6 +41,7 @@ import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewEntryWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.ReferralDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
+import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
 import org.junit.After;
@@ -54,7 +56,7 @@ import org.junit.runner.RunWith;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-@RunWith(FrameworkRunner.class)
+@RunWith(FrameworkRunnerWithScreenshotCaptureListener.class)
 @CreateLdapServer(transports =
     { @CreateTransport(protocol = "LDAP") })
 public class NewEntryWizardTest extends AbstractLdapTestUnit
@@ -80,8 +82,8 @@ public class NewEntryWizardTest extends AbstractLdapTestUnit
         entry.setDn( new Dn( "cn=referral,ou=system" ) );
         entry.add( "objectClass", "top", "referral", "extensibleObject" );
         entry.add( "cn", "referralDialogTest" );
-        entry.add( "ref", "ldap://localhost:" + ldapServer.getPort() + "/ou=users,ou=system" );
-        ldapServer.getDirectoryService().getAdminSession().add( entry );
+        entry.add( "ref", "ldap://"+LOCALHOST+":" + ldapServer.getPort() + "/ou=users,ou=system" );
+        service.getAdminSession().add( entry );
 
         studioBot = new StudioBot();
         studioBot.resetLdapPerspective();
@@ -414,12 +416,13 @@ public class NewEntryWizardTest extends AbstractLdapTestUnit
         wizardBot.setRdnType( 1, "cn" );
         wizardBot.setRdnValue( 1, "loopback" );
         wizardBot.setRdnType( 2, "ipHostNumber" );
-        wizardBot.setRdnValue( 2, "127.0.0.1" );
+        wizardBot.setRdnValue( 2, LOCALHOST_ADDRESS );
         wizardBot.clickNextButton();
 
         wizardBot.clickFinishButton();
 
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "cn=loopback+ipHostNumber=127.0.0.1" ) );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "cn=loopback+ipHostNumber=127.0.0.1" );
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system",
+            "cn=loopback+ipHostNumber=" + LOCALHOST_ADDRESS ) );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "cn=loopback+ipHostNumber=" + LOCALHOST_ADDRESS );
     }
 }

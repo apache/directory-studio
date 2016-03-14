@@ -25,13 +25,13 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.directory.studio.ldifparser.model.LdifEOFPart;
 import org.apache.directory.studio.ldifparser.model.LdifEnumeration;
 import org.apache.directory.studio.ldifparser.model.LdifFile;
 import org.apache.directory.studio.ldifparser.model.LdifInvalidPart;
+import org.apache.directory.studio.ldifparser.model.LdifPart;
 import org.apache.directory.studio.ldifparser.model.container.LdifChangeAddRecord;
 import org.apache.directory.studio.ldifparser.model.container.LdifChangeDeleteRecord;
 import org.apache.directory.studio.ldifparser.model.container.LdifChangeModDnRecord;
@@ -68,16 +68,24 @@ public class LdifParser
 
     public LdifParser()
     {
-        this.scanner = new LdifScanner();
+        scanner = new LdifScanner();
     }
 
 
+    /**
+     * Parse a Ldif String. It will be stored in a LdifFile.
+     * 
+     * @param ldif The String to parse
+     * @return The resulting LdifFile
+     */
     public LdifFile parse( String ldif )
     {
         LdifFile model = new LdifFile();
+        
         if ( ldif != null )
         {
-            LdifEnumeration enumeration = this.parse( new StringReader( ldif ) );
+            LdifEnumeration enumeration = parse( new StringReader( ldif ) );
+            
             try
             {
                 while ( enumeration.hasNext() )
@@ -90,19 +98,19 @@ public class LdifParser
             {
             }
         }
+        
         return model;
     }
 
 
     public LdifEnumeration parse( Reader ldifReader )
     {
-
-        this.scanner.setLdif( ldifReader );
+        scanner.setLdif( ldifReader );
 
         LdifEnumeration enumeration = new LdifEnumeration()
         {
 
-            private List containerList = new ArrayList();
+            private List<LdifContainer> containerList = new ArrayList<LdifContainer>();
 
             private boolean headerParsed = false;
 
@@ -115,7 +123,6 @@ public class LdifParser
             {
                 if ( containerList.isEmpty() )
                 {
-
                     LdifFile model = new LdifFile();
 
                     // parse header
@@ -128,23 +135,11 @@ public class LdifParser
                     }
 
                     // parse body (in a loop)
-                    if ( headerParsed && !bodyParsed )
-                    {
-                        // parse comment lines
-                        if ( !checkAndParseComment( model ) )
-                        {
-                            // parse record
-                            if ( !checkAndParseRecord( model ) )
-                            {
-                                // parse unknown
-                                if ( !checkAndParseOther( model ) )
-                                {
-                                    // end of body
-                                    bodyParsed = true;
-                                }
-                            }
-                        }
-                    }
+                    bodyParsed = ( headerParsed && 
+                        !bodyParsed && 
+                        !checkAndParseComment( model ) &&   // parse comment lines
+                        !checkAndParseRecord( model ) &&    // parse record
+                        !checkAndParseOther( model ) );      // parse unknown
 
                     // parse footer
                     if ( headerParsed && bodyParsed && !footerParsed )
@@ -153,10 +148,10 @@ public class LdifParser
                         footerParsed = true;
                     }
 
-                    LdifContainer[] containers = model.getContainers();
-                    this.containerList.addAll( Arrays.asList( containers ) );
-                    return !containerList.isEmpty() && !( containers[0] instanceof LdifEOFContainer );
-
+                    List<LdifContainer> containers = model.getContainers();
+                    containerList.addAll( containers );
+                    
+                    return !containerList.isEmpty() && !( containers.get( 0 ) instanceof LdifEOFContainer );
                 }
                 else
                 {
@@ -169,7 +164,7 @@ public class LdifParser
             {
                 if ( hasNext() )
                 {
-                    return ( LdifContainer ) this.containerList.remove( 0 );
+                    return containerList.remove( 0 );
                 }
                 else
                 {
@@ -182,77 +177,6 @@ public class LdifParser
     }
 
 
-    // public LdifEnumeration parse(Reader ldifReader) {
-    //		
-    // this.scanner.setLdif(ldifReader);
-    //		
-    // LdifEnumeration enumeration = new LdifEnumeration(){
-    //
-    // private List containerList = new ArrayList();
-    //			
-    // public boolean
-    // hasNext(org.apache.directory.studio.ldapbrowser.core.jobs.ExtendedProgressMonitor
-    // monitor) {
-    // if(containerList.isEmpty()) {
-    // LdifFile model = parseFile();
-    // LdifContainer[] containers = model.getContainers();
-    // this.containerList.addAll(Arrays.asList(containers));
-    // return !containerList.isEmpty() && !(containers[0] instanceof
-    // LdifEOFContainer);
-    // }
-    // else {
-    // return true;
-    // }
-    // }
-    //
-    // public LdifContainer
-    // next(org.apache.directory.studio.ldapbrowser.core.jobs.ExtendedProgressMonitor
-    // monitor) {
-    // if(hasNext(monitor)) {
-    // return (LdifContainer)this.containerList.remove(0);
-    // }
-    // else {
-    // return null;
-    // }
-    // }
-    // };
-    //		
-    // return enumeration;
-    // }
-    //
-    // private LdifFile parseFile() {
-    //
-    // LdifFile model = new LdifFile();
-    //		
-    // // start comment-version-comment
-    // checkAndParseComment(model);
-    // checkAndParseVersion(model);
-    // checkAndParseComment(model);
-    //		
-    // parseRecords(model);
-    //		
-    // checkAndParseComment(model);
-    //		
-    // return model;
-    // }
-    //
-    // private void parseRecords(LdifFile model) {
-    // do {
-    // // parse comment lines
-    // if(!checkAndParseComment(model)) {
-    // // parse record
-    // if(!checkAndParseRecord(model)) {
-    // // parse unknown
-    // if(!checkAndParseOther(model)) {
-    // return;
-    // }
-    // }
-    // }
-    // }
-    // while(true);
-    //		
-    // }
-
     /**
      * Checks for version line. If version line is present it is parsed and
      * added to the given model.
@@ -263,9 +187,9 @@ public class LdifParser
      */
     private boolean checkAndParseRecord( LdifFile model )
     {
-
         // record starts with dn-spec
-        LdifToken dnSpecToken = this.scanner.matchDnSpec();
+        LdifToken dnSpecToken = scanner.matchDnSpec();
+        
         if ( dnSpecToken == null )
         {
             return false;
@@ -275,21 +199,25 @@ public class LdifParser
         LdifToken dnValueTypeToken = null;
         LdifToken dnToken = null;
         LdifToken dnSepToken = null;
-        dnValueTypeToken = this.scanner.matchValueType();
+        dnValueTypeToken = scanner.matchValueType();
+        
         if ( dnValueTypeToken != null )
         {
-            dnToken = this.scanner.matchValue();
+            dnToken = scanner.matchValue();
+            
             if ( dnToken != null )
             {
-                dnSepToken = this.scanner.matchSep();
+                dnSepToken = scanner.matchSep();
             }
         }
+        
         LdifDnLine dnLine = new LdifDnLine( dnSpecToken.getOffset(), getValueOrNull( dnSpecToken ),
             getValueOrNull( dnValueTypeToken ), getValueOrNull( dnToken ), getValueOrNull( dnSepToken ) );
         LdifToken dnErrorToken = null;
+        
         if ( dnSepToken == null )
         {
-            dnErrorToken = this.scanner.matchCleanupLine();
+            dnErrorToken = scanner.matchCleanupLine();
         }
 
         // save comment lines after dns
@@ -299,27 +227,32 @@ public class LdifParser
         // first check keywords 'control' and 'changetype'
         LdifControlLine controlLine = getControlLine();
         LdifChangeTypeLine changeTypeLine = getChangeTypeLine();
+        
         if ( controlLine != null || changeTypeLine != null )
         {
-
             LdifChangeRecord record = null;
 
             // save all parts before changetype line
-            List partList = new ArrayList();
+            List<LdifPart> partList = new ArrayList<LdifPart>();
+            
             if ( dnErrorToken != null )
             {
                 partList.add( new LdifInvalidPart( dnErrorToken.getOffset(), dnErrorToken.getValue() ) );
             }
-            for ( int i = 0; i < commentLines.length; i++ )
+            
+            for ( LdifCommentLine ldifCommentLine : commentLines )
             {
-                partList.add( commentLines[i] );
+                partList.add( ldifCommentLine );
             }
+            
             if ( controlLine != null )
             {
                 partList.add( controlLine );
+                
                 if ( !controlLine.isValid() )
                 {
-                    LdifToken errorToken = this.cleanupLine();
+                    LdifToken errorToken = cleanupLine();
+                    
                     if ( errorToken != null )
                     {
                         partList.add( new LdifInvalidPart( errorToken.getOffset(), errorToken.getValue() ) );
@@ -332,18 +265,22 @@ public class LdifParser
             {
 
                 commentLines = getCommentLines();
-                for ( int i = 0; i < commentLines.length; i++ )
+                
+                for ( LdifCommentLine ldifCommentLine : commentLines )
                 {
-                    partList.add( commentLines[i] );
+                    partList.add( ldifCommentLine );
                 }
 
                 controlLine = getControlLine();
+                
                 if ( controlLine != null )
                 {
                     partList.add( controlLine );
+                    
                     if ( !controlLine.isValid() )
                     {
-                        LdifToken errorToken = this.cleanupLine();
+                        LdifToken errorToken = cleanupLine();
+                        
                         if ( errorToken != null )
                         {
                             partList.add( new LdifInvalidPart( errorToken.getOffset(), errorToken.getValue() ) );
@@ -362,10 +299,12 @@ public class LdifParser
                     record = new LdifChangeAddRecord( dnLine );
                     append( record, partList );
                     record.setChangeType( changeTypeLine );
+                    
                     if ( !changeTypeLine.isValid() )
                     {
                         this.cleanupLine( record );
                     }
+                    
                     parseAttrValRecord( record );
                 }
                 else if ( changeTypeLine.isDelete() )
@@ -373,10 +312,12 @@ public class LdifParser
                     record = new LdifChangeDeleteRecord( dnLine );
                     append( record, partList );
                     record.setChangeType( changeTypeLine );
+                    
                     if ( !changeTypeLine.isValid() )
                     {
                         this.cleanupLine( record );
                     }
+                    
                     parseChangeDeleteRecord( record );
                 }
                 else if ( changeTypeLine.isModify() )
@@ -384,10 +325,12 @@ public class LdifParser
                     record = new LdifChangeModifyRecord( dnLine );
                     append( record, partList );
                     record.setChangeType( changeTypeLine );
+                    
                     if ( !changeTypeLine.isValid() )
                     {
                         this.cleanupLine( record );
                     }
+                    
                     parseChangeModifyRecord( ( LdifChangeModifyRecord ) record );
                 }
                 else if ( changeTypeLine.isModDn() )
@@ -395,10 +338,12 @@ public class LdifParser
                     record = new LdifChangeModDnRecord( dnLine );
                     append( record, partList );
                     record.setChangeType( changeTypeLine );
+                    
                     if ( !changeTypeLine.isValid() )
                     {
                         this.cleanupLine( record );
                     }
+                    
                     parseChangeModDnRecord( ( LdifChangeModDnRecord ) record );
                 }
                 else
@@ -406,6 +351,7 @@ public class LdifParser
                     record = new LdifChangeRecord( dnLine );
                     append( record, partList );
                     record.setChangeType( changeTypeLine );
+                    
                     if ( !changeTypeLine.isValid() )
                     {
                         this.cleanupLine( record );
@@ -424,14 +370,17 @@ public class LdifParser
         {
             // match attr-val-record
             LdifContentRecord record = new LdifContentRecord( dnLine );
+            
             if ( dnErrorToken != null )
             {
                 record.addInvalid( new LdifInvalidPart( dnErrorToken.getOffset(), dnErrorToken.getValue() ) );
             }
-            for ( int i = 0; i < commentLines.length; i++ )
+            
+            for ( LdifCommentLine ldifCommentLine : commentLines )
             {
-                record.addComment( commentLines[i] );
+                record.addComment( ldifCommentLine );
             }
+            
             parseAttrValRecord( record );
             model.addContainer( record );
         }
@@ -440,17 +389,24 @@ public class LdifParser
     }
 
 
-    private void append( LdifChangeRecord record, List partList )
+    private void append( LdifChangeRecord record, List<LdifPart> partList )
     {
-        for ( Iterator it = partList.iterator(); it.hasNext(); )
+        for ( LdifPart ldifPart : partList )
         {
-            Object o = it.next();
-            if ( o instanceof LdifCommentLine )
-                record.addComment( ( LdifCommentLine ) o );
-            if ( o instanceof LdifControlLine )
-                record.addControl( ( LdifControlLine ) o );
-            if ( o instanceof LdifInvalidPart )
-                record.addInvalid( ( LdifInvalidPart ) o );
+            if ( ldifPart instanceof LdifCommentLine )
+            { 
+                record.addComment( ( LdifCommentLine ) ldifPart );
+            }
+            
+            if ( ldifPart instanceof LdifControlLine )
+            {
+                record.addControl( ( LdifControlLine ) ldifPart );
+            }
+            
+            if ( ldifPart instanceof LdifInvalidPart )
+            {
+                record.addInvalid( ( LdifInvalidPart ) ldifPart );
+            }
         }
     }
 
@@ -492,29 +448,34 @@ public class LdifParser
             LdifToken newrdnSpecToken = null;
             LdifToken deleteoldrdnSpecToken = null;
             LdifToken newsuperiorSpecToken = null;
+            
             if ( !newrdnRead )
             {
-                newrdnSpecToken = this.scanner.matchNewrdnSpec();
+                newrdnSpecToken = scanner.matchNewrdnSpec();
             }
+            
             if ( !deleteoldrdnRead && newrdnSpecToken == null )
             {
-                deleteoldrdnSpecToken = this.scanner.matchDeleteoldrdnSpec();
+                deleteoldrdnSpecToken = scanner.matchDeleteoldrdnSpec();
             }
+            
             if ( !newsuperiorRead && newrdnSpecToken == null && newsuperiorSpecToken == null )
             {
-                newsuperiorSpecToken = this.scanner.matchNewsuperiorSpec();
+                newsuperiorSpecToken = scanner.matchNewsuperiorSpec();
             }
+            
 
             if ( newrdnSpecToken != null )
             {
                 // read newrdn line
                 newrdnRead = true;
-                LdifToken newrdnValueTypeToken = this.scanner.matchValueType();
-                LdifToken newrdnValueToken = this.scanner.matchValue();
+                LdifToken newrdnValueTypeToken = scanner.matchValueType();
+                LdifToken newrdnValueToken = scanner.matchValue();
                 LdifToken newrdnSepToken = null;
+                
                 if ( newrdnValueTypeToken != null || newrdnValueToken != null )
                 {
-                    newrdnSepToken = this.scanner.matchSep();
+                    newrdnSepToken = scanner.matchSep();
                 }
 
                 LdifNewrdnLine newrdnLine = new LdifNewrdnLine( newrdnSpecToken.getOffset(),
@@ -524,19 +485,20 @@ public class LdifParser
 
                 if ( newrdnSepToken == null )
                 {
-                    this.cleanupLine( record );
+                    cleanupLine( record );
                 }
             }
             else if ( deleteoldrdnSpecToken != null )
             {
                 // read deleteoldrdnline
                 deleteoldrdnRead = true;
-                LdifToken deleteoldrdnValueTypeToken = this.scanner.matchValueType();
-                LdifToken deleteoldrdnValueToken = this.scanner.matchValue();
+                LdifToken deleteoldrdnValueTypeToken = scanner.matchValueType();
+                LdifToken deleteoldrdnValueToken = scanner.matchValue();
                 LdifToken deleteoldrdnSepToken = null;
+                
                 if ( deleteoldrdnValueTypeToken != null || deleteoldrdnValueToken != null )
                 {
-                    deleteoldrdnSepToken = this.scanner.matchSep();
+                    deleteoldrdnSepToken = scanner.matchSep();
                 }
 
                 LdifDeloldrdnLine deloldrdnLine = new LdifDeloldrdnLine( deleteoldrdnSpecToken.getOffset(),
@@ -546,19 +508,20 @@ public class LdifParser
 
                 if ( deleteoldrdnSepToken == null )
                 {
-                    this.cleanupLine( record );
+                    cleanupLine( record );
                 }
             }
             else if ( newsuperiorSpecToken != null )
             {
                 // read newsuperior line
                 newsuperiorRead = true;
-                LdifToken newsuperiorValueTypeToken = this.scanner.matchValueType();
-                LdifToken newsuperiorValueToken = this.scanner.matchValue();
+                LdifToken newsuperiorValueTypeToken = scanner.matchValueType();
+                LdifToken newsuperiorValueToken = scanner.matchValue();
                 LdifToken newsuperiorSepToken = null;
+                
                 if ( newsuperiorValueTypeToken != null || newsuperiorValueToken != null )
                 {
-                    newsuperiorSepToken = this.scanner.matchSep();
+                    newsuperiorSepToken = scanner.matchSep();
                 }
 
                 LdifNewsuperiorLine newsuperiorLine = new LdifNewsuperiorLine( newsuperiorSpecToken.getOffset(),
@@ -588,7 +551,6 @@ public class LdifParser
 
     private void parseChangeModifyRecord( LdifChangeModifyRecord record )
     {
-
         do
         {
             if ( checkAndParseEndOfRecord( record ) )
@@ -597,22 +559,26 @@ public class LdifParser
             }
 
             // match mod type
-            LdifToken modSpecTypeSpecToken = this.scanner.matchModTypeSpec();
+            LdifToken modSpecTypeSpecToken = scanner.matchModTypeSpec();
+            
             if ( modSpecTypeSpecToken != null )
             {
                 // read mod type line
                 LdifToken modSpecTypeValueTypeToken = null;
                 LdifToken modSpecTypeAttributeDescriptionToken = null;
                 LdifToken sepToken = null;
-                modSpecTypeValueTypeToken = this.scanner.matchValueType();
+                modSpecTypeValueTypeToken = scanner.matchValueType();
+                
                 if ( modSpecTypeValueTypeToken != null )
                 {
-                    modSpecTypeAttributeDescriptionToken = this.scanner.matchAttributeDescription();
+                    modSpecTypeAttributeDescriptionToken = scanner.matchAttributeDescription();
+                    
                     if ( modSpecTypeAttributeDescriptionToken != null )
                     {
-                        sepToken = this.scanner.matchSep();
+                        sepToken = scanner.matchSep();
                     }
                 }
+                
                 LdifModSpecTypeLine modSpecTypeLine = new LdifModSpecTypeLine( modSpecTypeSpecToken.getOffset(),
                     getValueOrNull( modSpecTypeSpecToken ), getValueOrNull( modSpecTypeValueTypeToken ),
                     getValueOrNull( modSpecTypeAttributeDescriptionToken ), getValueOrNull( sepToken ) );
@@ -632,6 +598,7 @@ public class LdifParser
                 do
                 {
                     LdifAttrValLine line = this.getAttrValLine();
+                    
                     if ( line != null )
                     {
                         modSpec.addAttrVal( line );
@@ -656,10 +623,11 @@ public class LdifParser
                 checkAndParseComment( record );
 
                 // read sep line
-                LdifToken modSpecSepToken = this.scanner.matchModSep();
+                LdifToken modSpecSepToken = scanner.matchModSep();
+                
                 if ( modSpecSepToken != null )
                 {
-                    LdifToken modSpecSepSepToken = this.scanner.matchSep();
+                    LdifToken modSpecSepSepToken = scanner.matchSep();
                     LdifModSpecSepLine modSpecSepLine = new LdifModSpecSepLine( modSpecSepToken.getOffset(),
                         getValueOrNull( modSpecSepToken ), getValueOrNull( modSpecSepSepToken ) );
                     modSpec.finish( modSpecSepLine );
@@ -680,7 +648,6 @@ public class LdifParser
 
     private void parseAttrValRecord( LdifRecord record )
     {
-
         do
         {
             if ( checkAndParseEndOfRecord( record ) )
@@ -690,6 +657,7 @@ public class LdifParser
 
             // check attr-val line
             LdifAttrValLine line = this.getAttrValLine();
+            
             if ( line != null )
             {
                 if ( record instanceof LdifContentRecord )
@@ -714,33 +682,6 @@ public class LdifParser
                     return;
                 }
             }
-
-            //			
-            // // check comment line
-            // if(lineStartToken == null) {
-            // lineStartToken = this.scanner.matchComment();
-            // if(lineStartToken != null) {
-            // LdifToken sepToken = this.scanner.matchSep();
-            // record.addComment(new
-            // LdifCommentLine(lineStartToken.getOffset(),
-            // getValueOrNull(lineStartToken), getValueOrNull(sepToken)));
-            // }
-            // }
-            //			
-            // // unknown line
-            // if(lineStartToken == null) {
-            // lineStartToken = this.scanner.matchOther();
-            // if(lineStartToken != null) {
-            // record.addOther(new
-            // LdifInvalidPart(lineStartToken.getOffset(),
-            // lineStartToken.getValue()));
-            // }
-            // }
-
-            // // end of file
-            // if(lineStartToken == null) {
-            // return;
-            // }
         }
         while ( true );
     }
@@ -749,36 +690,42 @@ public class LdifParser
     private boolean checkAndParseEndOfRecord( LdifRecord record )
     {
         // check end of record
-        LdifToken eorSepToken = this.scanner.matchSep();
+        LdifToken eorSepToken = scanner.matchSep();
+        
         if ( eorSepToken != null )
         {
             record.finish( new LdifSepLine( eorSepToken.getOffset(), getValueOrNull( eorSepToken ) ) );
+            
             return true;
         }
 
         // check end of file
-        LdifToken eofToken = this.scanner.matchEOF();
+        LdifToken eofToken = scanner.matchEOF();
+        
         if ( eofToken != null )
         {
             record.finish( new LdifEOFPart( eofToken.getOffset() ) );
             return true;
         }
+        
         return false;
     }
 
 
     private boolean checkAndParseComment( LdifRecord record )
     {
-        LdifToken commentToken = this.scanner.matchComment();
+        LdifToken commentToken = scanner.matchComment();
+        
         if ( commentToken != null )
         {
             while ( commentToken != null )
             {
-                LdifToken sepToken = this.scanner.matchSep();
+                LdifToken sepToken = scanner.matchSep();
                 record.addComment( new LdifCommentLine( commentToken.getOffset(), getValueOrNull( commentToken ),
                     getValueOrNull( sepToken ) ) );
-                commentToken = this.scanner.matchComment();
+                commentToken = scanner.matchComment();
             }
+            
             return true;
         }
         else
@@ -790,7 +737,8 @@ public class LdifParser
 
     private boolean checkAndParseOther( LdifRecord record )
     {
-        LdifToken otherToken = this.scanner.matchOther();
+        LdifToken otherToken = scanner.matchOther();
+        
         if ( otherToken != null )
         {
             record.addInvalid( new LdifInvalidPart( otherToken.getOffset(), otherToken.getValue() ) );
@@ -813,20 +761,22 @@ public class LdifParser
      */
     private boolean checkAndParseVersion( LdifFile model )
     {
-        LdifToken versionSpecToken = this.scanner.matchVersionSpec();
+        LdifToken versionSpecToken = scanner.matchVersionSpec();
+        
         if ( versionSpecToken != null )
         {
 
             LdifToken versionTypeToken = null;
             LdifToken versionToken = null;
             LdifToken sepToken = null;
-            versionTypeToken = this.scanner.matchValueType();
+            versionTypeToken = scanner.matchValueType();
+            
             if ( versionTypeToken != null )
             {
-                versionToken = this.scanner.matchNumber();
+                versionToken = scanner.matchNumber();
                 if ( versionToken != null )
                 {
-                    sepToken = this.scanner.matchSep();
+                    sepToken = scanner.matchSep();
                 }
             }
 
@@ -861,15 +811,13 @@ public class LdifParser
      */
     private boolean checkAndParseComment( LdifFile model )
     {
-        LdifToken sepToken = this.scanner.matchSep();
-        LdifToken commentToken = this.scanner.matchComment();
+        LdifToken sepToken = scanner.matchSep();
+        LdifToken commentToken = scanner.matchComment();
 
         if ( sepToken != null || commentToken != null )
         {
-
             while ( sepToken != null || commentToken != null )
             {
-
                 if ( sepToken != null )
                 {
                     LdifSepLine sepLine = new LdifSepLine( sepToken.getOffset(), getValueOrNull( sepToken ) );
@@ -880,9 +828,10 @@ public class LdifParser
                 if ( commentToken != null )
                 {
                     LdifCommentContainer commentContainer = null;
+                    
                     while ( commentToken != null )
                     {
-                        LdifToken commentSepToken = this.scanner.matchSep();
+                        LdifToken commentSepToken = scanner.matchSep();
                         LdifCommentLine commentLine = new LdifCommentLine( commentToken.getOffset(),
                             getValueOrNull( commentToken ), getValueOrNull( commentSepToken ) );
 
@@ -895,13 +844,14 @@ public class LdifParser
                             commentContainer.addComment( commentLine );
                         }
 
-                        commentToken = this.scanner.matchComment();
+                        commentToken = scanner.matchComment();
                     }
+                    
                     model.addContainer( commentContainer );
                 }
 
-                sepToken = this.scanner.matchSep();
-                commentToken = this.scanner.matchComment();
+                sepToken = scanner.matchSep();
+                commentToken = scanner.matchComment();
             }
 
             return true;
@@ -923,12 +873,14 @@ public class LdifParser
      */
     private boolean checkAndParseOther( LdifFile model )
     {
-        LdifToken token = this.scanner.matchOther();
+        LdifToken token = scanner.matchOther();
+        
         if ( token != null )
         {
             LdifInvalidPart unknownLine = new LdifInvalidPart( token.getOffset(), getValueOrNull( token ) );
             LdifInvalidContainer otherContainer = new LdifInvalidContainer( unknownLine );
             model.addContainer( otherContainer );
+            
             return true;
         }
         else
@@ -940,8 +892,8 @@ public class LdifParser
 
     private LdifControlLine getControlLine()
     {
-
-        LdifToken controlSpecToken = this.scanner.matchControlSpec();
+        LdifToken controlSpecToken = scanner.matchControlSpec();
+        
         if ( controlSpecToken != null )
         {
             LdifToken controlTypeToken = null;
@@ -950,19 +902,22 @@ public class LdifParser
             LdifToken valueTypeToken = null;
             LdifToken valueToken = null;
             LdifToken sepToken = null;
-            controlTypeToken = this.scanner.matchValueType();
+            controlTypeToken = scanner.matchValueType();
+            
             if ( controlTypeToken != null )
             {
-                oidToken = this.scanner.matchOid();
+                oidToken = scanner.matchOid();
                 if ( oidToken != null )
                 {
-                    criticalityToken = this.scanner.matchCriticality();
-                    valueTypeToken = this.scanner.matchValueType();
+                    criticalityToken = scanner.matchCriticality();
+                    valueTypeToken = scanner.matchValueType();
+                    
                     if ( valueTypeToken != null )
                     {
-                        valueToken = this.scanner.matchValue();
+                        valueToken = scanner.matchValue();
                     }
-                    sepToken = this.scanner.matchSep();
+                    
+                    sepToken = scanner.matchSep();
                 }
             }
 
@@ -980,20 +935,22 @@ public class LdifParser
 
     private LdifChangeTypeLine getChangeTypeLine()
     {
-
-        LdifToken changeTypeSpecToken = this.scanner.matchChangeTypeSpec();
+        LdifToken changeTypeSpecToken = scanner.matchChangeTypeSpec();
+        
         if ( changeTypeSpecToken != null )
         {
             LdifToken changeTypeTypeToken = null;
             LdifToken changeTypeToken = null;
             LdifToken sepToken = null;
-            changeTypeTypeToken = this.scanner.matchValueType();
+            changeTypeTypeToken = scanner.matchValueType();
+            
             if ( changeTypeTypeToken != null )
             {
-                changeTypeToken = this.scanner.matchChangeType();
+                changeTypeToken = scanner.matchChangeType();
+                
                 if ( changeTypeToken != null )
                 {
-                    sepToken = this.scanner.matchSep();
+                    sepToken = scanner.matchSep();
                 }
             }
 
@@ -1010,19 +967,22 @@ public class LdifParser
 
     private LdifAttrValLine getAttrValLine()
     {
-        LdifToken attrToken = this.scanner.matchAttributeDescription();
+        LdifToken attrToken = scanner.matchAttributeDescription();
+        
         if ( attrToken != null )
         {
             LdifToken valueTypeToken = null;
             LdifToken valueToken = null;
             LdifToken sepToken = null;
-            valueTypeToken = this.scanner.matchValueType();
+            valueTypeToken = scanner.matchValueType();
+            
             if ( valueTypeToken != null )
             {
-                valueToken = this.scanner.matchValue();
+                valueToken = scanner.matchValue();
+                
                 if ( valueToken != null )
                 {
-                    sepToken = this.scanner.matchSep();
+                    sepToken = scanner.matchSep();
                 }
             }
 
@@ -1038,23 +998,26 @@ public class LdifParser
 
     private LdifCommentLine[] getCommentLines()
     {
-        List list = new ArrayList( 1 );
-        LdifToken commentToken = this.scanner.matchComment();
+        List<LdifCommentLine> list = new ArrayList<LdifCommentLine>( 1 );
+        LdifToken commentToken = scanner.matchComment();
+        
         while ( commentToken != null )
         {
-            LdifToken sepToken = this.scanner.matchSep();
+            LdifToken sepToken = scanner.matchSep();
             list
                 .add( new LdifCommentLine( commentToken.getOffset(), commentToken.getValue(), getValueOrNull( sepToken ) ) );
 
-            commentToken = this.scanner.matchComment();
+            commentToken = scanner.matchComment();
         }
-        return ( LdifCommentLine[] ) list.toArray( new LdifCommentLine[list.size()] );
+        
+        return list.toArray( new LdifCommentLine[list.size()] );
     }
 
 
     private void cleanupLine( LdifContainer container )
     {
-        LdifToken errorToken = this.scanner.matchCleanupLine();
+        LdifToken errorToken = scanner.matchCleanupLine();
+        
         if ( errorToken != null )
         {
             container.addInvalid( new LdifInvalidPart( errorToken.getOffset(), errorToken.getValue() ) );
@@ -1064,7 +1027,7 @@ public class LdifParser
 
     private LdifToken cleanupLine()
     {
-        LdifToken errorToken = this.scanner.matchCleanupLine();
+        LdifToken errorToken = scanner.matchCleanupLine();
         return errorToken;
     }
 

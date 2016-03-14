@@ -103,7 +103,6 @@ public class RefreshAction extends BrowserAction
      */
     public boolean isEnabled()
     {
-        return getInput() != null && ( getInput() instanceof SearchLogsViewInput );
+        return getInput() instanceof SearchLogsViewInput;
     }
-
 }

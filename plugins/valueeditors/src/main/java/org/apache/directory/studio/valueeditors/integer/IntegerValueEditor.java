@@ -43,7 +43,7 @@ public class IntegerValueEditor extends AbstractDialogStringValueEditor
     {
         Object value = getValue();
 
-        if ( value != null && value instanceof String )
+        if ( value instanceof String )
         {
             BigDecimal integer = null;
             boolean isNewOrMalformedValue = false;

@@ -48,10 +48,12 @@ public class InPlaceUuidValueEditor extends HexValueEditor
         if ( !showRawValues() )
         {
             Object rawValue = super.getRawValue( value );
+            
             if ( rawValue instanceof byte[] )
             {
                 byte[] bytes = ( byte[] ) rawValue;
                 String string = Strings.utf8ToString( bytes );
+                
                 if ( string.matches( UUID_REGEX ) || Strings.isEmpty( string ) )
                 {
                     return string;
@@ -85,6 +87,7 @@ public class InPlaceUuidValueEditor extends HexValueEditor
         sb.append( hex, 16, 4 );
         sb.append( '-' );
         sb.append( hex, 20, 12 );
+        
         return Strings.toLowerCase( sb.toString() );
     }
 }

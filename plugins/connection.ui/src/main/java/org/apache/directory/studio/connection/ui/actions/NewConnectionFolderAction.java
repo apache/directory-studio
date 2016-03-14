@@ -21,12 +21,12 @@
 package org.apache.directory.studio.connection.ui.actions;
 
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionFolder;
 import org.apache.directory.studio.connection.ui.ConnectionUIConstants;
 import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.apache.directory.studio.connection.ui.dialogs.ConnectionFolderDialog;
-import org.apache.directory.studio.connection.ui.dialogs.CredentialsDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
@@ -39,22 +39,15 @@ import org.eclipse.ui.PlatformUI;
 public class NewConnectionFolderAction extends StudioAction
 {
     /**
-     * Creates a new instance of NewConnectionFolderAction.
-     */
-    public NewConnectionFolderAction()
-    {
-        super();
-    }
-
-
-    /**
      * {@inheritDoc}
      */
     public void run()
     {
         ConnectionFolderDialog dialog = new ConnectionFolderDialog(
             PlatformUI.getWorkbench().getDisplay().getActiveShell(),
-            Messages.getString( "NewConnectionFolderAction.NewConnectionFolder" ), Messages.getString( "NewConnectionFolderAction.NeterNameNewFolder" ), "", null ); //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
+            Messages.getString( "NewConnectionFolderAction.NewConnectionFolder" ), 
+                Messages.getString( "NewConnectionFolderAction.NeterNameNewFolder" ), StringUtils.EMPTY, null ); //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
+        
         if ( dialog.open() == ConnectionFolderDialog.OK )
         {
             String name = dialog.getValue();
@@ -62,7 +55,8 @@ public class NewConnectionFolderAction extends StudioAction
             ConnectionCorePlugin.getDefault().getConnectionFolderManager().addConnectionFolder( folder );
 
             ConnectionFolder[] folders = getSelectedConnectionFolders();
-            if ( folders != null && folders.length > 0 )
+            
+            if ( ( folders != null ) && ( folders.length > 0 ) )
             {
                 folders[0].addSubFolderId( folder.getId() );
             }
@@ -72,7 +66,6 @@ public class NewConnectionFolderAction extends StudioAction
                     .addSubFolderId( folder.getId() );
             }
         }
-
     }
 
 

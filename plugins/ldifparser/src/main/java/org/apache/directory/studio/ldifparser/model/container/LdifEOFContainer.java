@@ -24,17 +24,13 @@ package org.apache.directory.studio.ldifparser.model.container;
 import org.apache.directory.studio.ldifparser.model.LdifEOFPart;
 
 
+/**
+ * A LDIF container for the LDIF EOF
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class LdifEOFContainer extends LdifContainer
 {
-
-    private static final long serialVersionUID = -570235244832982061L;
-
-
-    protected LdifEOFContainer()
-    {
-    }
-
-
     public LdifEOFContainer( LdifEOFPart eofPart )
     {
         super( eofPart );
@@ -45,5 +41,4 @@ public class LdifEOFContainer extends LdifContainer
     {
         return getLastPart() instanceof LdifEOFPart;
     }
-
 }

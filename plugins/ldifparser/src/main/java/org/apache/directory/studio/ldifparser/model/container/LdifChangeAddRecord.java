@@ -22,25 +22,21 @@ package org.apache.directory.studio.ldifparser.model.container;
 
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
+import org.apache.directory.studio.ldifparser.model.LdifPart;
 import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifChangeTypeLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifDnLine;
 
 
+/**
+ * A LDIF container for LDIF add change records
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class LdifChangeAddRecord extends LdifChangeRecord
 {
-
-    private static final long serialVersionUID = -8976783000053951136L;
-
-
-    protected LdifChangeAddRecord()
-    {
-    }
-
-
     public LdifChangeAddRecord( LdifDnLine dn )
     {
         super( dn );
@@ -50,23 +46,27 @@ public class LdifChangeAddRecord extends LdifChangeRecord
     public void addAttrVal( LdifAttrValLine attrVal )
     {
         if ( attrVal == null )
+        {
             throw new IllegalArgumentException( "null argument" ); //$NON-NLS-1$
-        this.parts.add( attrVal );
+        }
+
+        ldifParts.add( attrVal );
     }
 
 
     public LdifAttrValLine[] getAttrVals()
     {
-        List l = new ArrayList();
-        for ( Iterator it = this.parts.iterator(); it.hasNext(); )
+        List<LdifAttrValLine> ldifAttrValLines = new ArrayList<LdifAttrValLine>();
+
+        for ( LdifPart part : ldifParts )
         {
-            Object o = it.next();
-            if ( o instanceof LdifAttrValLine )
+            if ( part instanceof LdifAttrValLine )
             {
-                l.add( o );
+                ldifAttrValLines.add( ( LdifAttrValLine ) part );
             }
         }
-        return ( LdifAttrValLine[] ) l.toArray( new LdifAttrValLine[l.size()] );
+
+        return ldifAttrValLines.toArray( new LdifAttrValLine[ldifAttrValLines.size()] );
     }
 
 
@@ -74,6 +74,7 @@ public class LdifChangeAddRecord extends LdifChangeRecord
     {
         LdifChangeAddRecord record = new LdifChangeAddRecord( LdifDnLine.create( dn ) );
         record.setChangeType( LdifChangeTypeLine.createAdd() );
+
         return record;
     }
 
@@ -84,7 +85,15 @@ public class LdifChangeAddRecord extends LdifChangeRecord
         {
             return false;
         }
-        return getAttrVals().length > 0;
-    }
 
+        for ( LdifPart part : ldifParts )
+        {
+            if ( part instanceof LdifAttrValLine )
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

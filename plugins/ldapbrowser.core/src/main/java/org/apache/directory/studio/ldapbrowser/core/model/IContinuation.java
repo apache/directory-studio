@@ -32,7 +32,7 @@ import org.apache.directory.api.ldap.model.url.LdapUrl;
 public interface IContinuation
 {
 
-    public enum State
+    enum State
     {
         /** The search continuation URL is unresolved.*/
         UNRESOLVED,

@@ -84,7 +84,7 @@ public abstract class BrowserSelectionUtils extends SelectionUtils
         exampleSearch.getSearchParameter().setName( null );
         exampleSearch.setScope( SearchScope.SUBTREE );
 
-        if ( selection != null && !selection.isEmpty() && selection instanceof StructuredSelection )
+        if ( ( selection instanceof StructuredSelection ) && !selection.isEmpty() )
         {
             Object[] objects = ( ( IStructuredSelection ) selection ).toArray();
             Comparator<Object> comparator = new Comparator<Object>()
@@ -382,19 +382,20 @@ public abstract class BrowserSelectionUtils extends SelectionUtils
     private static List<Object> getTypes( ISelection selection, Class<?> type )
     {
         List<Object> list = new ArrayList<Object>();
+        
         if ( selection instanceof IStructuredSelection )
         {
             IStructuredSelection structuredSelection = ( IStructuredSelection ) selection;
-            Iterator<?> it = structuredSelection.iterator();
-            while ( it.hasNext() )
+            
+            for ( Object element : structuredSelection.toArray() )
             {
-                Object o = it.next();
-                if ( type.isInstance( o ) )
+                if ( type.isInstance( element ) )
                 {
-                    list.add( o );
+                    list.add( element );
                 }
             }
         }
+        
         return list;
     }
 

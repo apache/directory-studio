@@ -24,9 +24,9 @@ package org.apache.directory.studio.ldapbrowser.ui.wizards;
 import java.io.File;
 
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.common.widgets.FileBrowserWidget;
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.BrowserConnectionWidget;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
@@ -56,7 +56,11 @@ public class ImportLdifMainWizardPage extends WizardPage
 
     /** The valid extension. */
     private static final String[] EXTENSIONS = new String[]
-        { "*.ldif", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
+        { "*.ldif", "*" }; //$NON-NLS-1$ //$NON-NLS-2$
+
+    /** The valid log extension. */
+    private static final String[] LOG_EXTENSIONS = new String[]
+        { "*.ldif.log", "*" }; //$NON-NLS-1$ //$NON-NLS-2$
 
     /** The wizard. */
     private ImportLdifWizard wizard;
@@ -175,6 +179,8 @@ public class ImportLdifMainWizardPage extends WizardPage
 
         if ( wizard.getImportConnection() == null )
         {
+            setErrorMessage( Messages
+                .getString( "ImportLdifMainWizardPage.ErrorNoConnectionSelected" ) ); //$NON-NLS-1$
             ok = false;
         }
 
@@ -281,7 +287,7 @@ public class ImportLdifMainWizardPage extends WizardPage
 
         BaseWidgetUtils.createRadioIndent( loggingContainer, 1 );
         logFileBrowserWidget = new FileBrowserWidget(
-            Messages.getString( "ImportLdifMainWizardPage.SelectLogFile" ), null, FileBrowserWidget.TYPE_SAVE ); //$NON-NLS-1$
+            Messages.getString( "ImportLdifMainWizardPage.SelectLogFile" ), LOG_EXTENSIONS, FileBrowserWidget.TYPE_SAVE ); //$NON-NLS-1$
         logFileBrowserWidget.createWidget( loggingContainer );
         logFileBrowserWidget.addWidgetModifyListener( new WidgetModifyListener()
         {

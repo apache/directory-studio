@@ -41,18 +41,21 @@ import org.eclipse.jface.viewers.TreeViewer;
  */
 public class ConnectionUniversalListener implements ConnectionUpdateListener
 {
-
     /** The tree viewer */
     protected TreeViewer viewer;
 
     /** This listener expands/collapses a connection folder when double clicking */
     private IDoubleClickListener viewerDoubleClickListener = new IDoubleClickListener()
     {
+        /**
+         * {@InheritDoc}
+         */
         public void doubleClick( DoubleClickEvent event )
         {
             if ( event.getSelection() instanceof IStructuredSelection )
             {
                 Object obj = ( ( IStructuredSelection ) event.getSelection() ).getFirstElement();
+                
                 if ( obj instanceof ConnectionFolder )
                 {
                     if ( viewer.getExpandedState( obj ) )
@@ -97,7 +100,8 @@ public class ConnectionUniversalListener implements ConnectionUpdateListener
 
 
     /**
-     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionUpdated(org.apache.directory.studio.connection.core.Connection)
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#
+     *          connectionUpdated(org.apache.directory.studio.connection.core.Connection)
      */
     public void connectionUpdated( Connection connection )
     {
@@ -109,11 +113,13 @@ public class ConnectionUniversalListener implements ConnectionUpdateListener
 
 
     /**
-     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionAdded(org.apache.directory.studio.connection.core.Connection)
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#
+     *          connectionAdded(org.apache.directory.studio.connection.core.Connection)
      */
     public void connectionAdded( Connection connection )
     {
         connectionUpdated( connection );
+        
         if ( viewer != null )
         {
             viewer.setSelection( new StructuredSelection( connection ), true );
@@ -122,7 +128,8 @@ public class ConnectionUniversalListener implements ConnectionUpdateListener
 
 
     /**
-     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionRemoved(org.apache.directory.studio.connection.core.Connection)
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#
+     *          connectionRemoved(org.apache.directory.studio.connection.core.Connection)
      */
     public void connectionRemoved( Connection connection )
     {
@@ -131,7 +138,8 @@ public class ConnectionUniversalListener implements ConnectionUpdateListener
 
 
     /**
-     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionOpened(org.apache.directory.studio.connection.core.Connection)
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#
+     *          connectionOpened(org.apache.directory.studio.connection.core.Connection)
      */
     public void connectionOpened( Connection connection )
     {
@@ -140,7 +148,8 @@ public class ConnectionUniversalListener implements ConnectionUpdateListener
 
 
     /**
-     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionClosed(org.apache.directory.studio.connection.core.Connection)
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#
+     *          connectionClosed(org.apache.directory.studio.connection.core.Connection)
      */
     public void connectionClosed( Connection connection )
     {
@@ -149,7 +158,8 @@ public class ConnectionUniversalListener implements ConnectionUpdateListener
 
 
     /**
-     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionFolderModified(org.apache.directory.studio.connection.core.ConnectionFolder)
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#
+     *          connectionFolderModified(org.apache.directory.studio.connection.core.ConnectionFolder)
      */
     public void connectionFolderModified( ConnectionFolder connectionFolder )
     {
@@ -158,7 +168,8 @@ public class ConnectionUniversalListener implements ConnectionUpdateListener
 
 
     /**
-     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionFolderAdded(org.apache.directory.studio.connection.core.ConnectionFolder)
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#
+     *          connectionFolderAdded(org.apache.directory.studio.connection.core.ConnectionFolder)
      */
     public void connectionFolderAdded( ConnectionFolder connectionFolder )
     {
@@ -171,11 +182,11 @@ public class ConnectionUniversalListener implements ConnectionUpdateListener
 
 
     /**
-     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#connectionFolderRemoved(org.apache.directory.studio.connection.core.ConnectionFolder)
+     * @see org.apache.directory.studio.connection.core.event.ConnectionUpdateListener#
+     *          connectionFolderRemoved(org.apache.directory.studio.connection.core.ConnectionFolder)
      */
     public void connectionFolderRemoved( ConnectionFolder connectionFolder )
     {
         connectionUpdated( null );
     }
-
 }

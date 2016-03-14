@@ -345,8 +345,7 @@ public class ImportExportAction extends BrowserAction
      */
     protected IBrowserConnection getConnectionInput()
     {
-
-        if ( getInput() != null && ( getInput() instanceof IBrowserConnection ) )
+        if ( getInput() instanceof IBrowserConnection )
         {
             return ( IBrowserConnection ) getInput();
         }

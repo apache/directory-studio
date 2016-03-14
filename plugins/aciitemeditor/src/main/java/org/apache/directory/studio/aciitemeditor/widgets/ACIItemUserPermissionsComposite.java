@@ -22,7 +22,6 @@ package org.apache.directory.studio.aciitemeditor.widgets;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.directory.api.ldap.aci.GrantAndDenial;
@@ -58,27 +57,17 @@ import org.eclipse.swt.widgets.Table;
  */
 public class ACIItemUserPermissionsComposite extends Composite
 {
-
     /** The context. */
     private ACIItemValueWithContext context;
 
     /** The inner composite for all the content */
     private Composite composite = null;
 
-    /** The description label */
-    private Label label = null;
-
-    /** The table control for the table viewer */
-    private Table table = null;
-
     /** The table viewer containing all user classes */
     private TableViewer tableViewer = null;
 
-    /** The composite containing the buttons */
-    private Composite buttonComposite = null;
-
     /** The add button */
-    private Button addButton = null;
+    //private Button addButton = null;
 
     /** The edit button */
     private Button editButton = null;
@@ -87,7 +76,7 @@ public class ACIItemUserPermissionsComposite extends Composite
     private Button deleteButton = null;
 
     /** The selected user permissions, also input of the table viewer */
-    List<UserPermissionWrapper> userPermissionWrappers = new ArrayList<UserPermissionWrapper>();
+    private List<UserPermissionWrapper> userPermissionWrappers = new ArrayList<UserPermissionWrapper>();
 
     /**
      * UserPermissionWrapper are used as input of the table viewer.
@@ -124,52 +113,76 @@ public class ACIItemUserPermissionsComposite extends Composite
             }
             else
             {
-                StringBuffer buffer = new StringBuffer();
+                StringBuilder buffer = new StringBuilder();
+                
                 if ( ( userPermission.getPrecedence() != null ) && ( userPermission.getPrecedence() > -1 ) )
                 {
                     buffer.append( '(' );
                     buffer.append( userPermission.getPrecedence() );
-                    buffer.append( ')' );
-                    buffer.append( ' ' );
+                    buffer.append( ") " );
                 }
-                for ( Iterator<ProtectedItem> it = ( ( Collection<ProtectedItem> ) userPermission.getProtectedItems() )
-                    .iterator(); it.hasNext(); )
-                {
-                    ProtectedItem item = it.next();
-                    String s = ProtectedItemWrapper.classToDisplayMap.get( item.getClass() );
-                    buffer.append( s );
 
-                    if ( it.hasNext() )
+                boolean isFirst = true;
+                
+                for ( ProtectedItem item : userPermission.getProtectedItems() )
+                {
+                    if ( isFirst )
+                    {
+                        isFirst = false;
+                    }
+                    else
                     {
                         buffer.append( ',' );
                     }
+
+                    buffer.append( ProtectedItemWrapper.CLASS_TO_DISPLAY_MAP.get( item.getClass() ) );
                 }
-                buffer.append( ':' );
-                buffer.append( ' ' );
-                for ( Iterator<GrantAndDenial> it = ( ( Collection<GrantAndDenial> ) userPermission
-                    .getGrantsAndDenials() ).iterator(); it.hasNext(); )
+                
+                buffer.append( ": " );
+
+                isFirst = true;
+                
+                for ( GrantAndDenial gd : userPermission.getGrantsAndDenials() )
                 {
-                    GrantAndDenial gd = it.next();
-                    buffer.append( gd.isGrant() ? '+' : '-' );
+                    if ( isFirst )
+                    {
+                        isFirst = false;
+                    }
+                    else
+                    {
+                        buffer.append( ',' );
+                    }
+
+                    if ( gd.isGrant() )
+                    {
+                        buffer.append( '+' );
+                    }
+                    else
+                    {
+                        buffer.append( '-' );
+                    }
+
                     buffer.append( gd.getMicroOperation().getName() );
-
-                    if ( it.hasNext() )
-                    {
-                        buffer.append( ',' );
-                    }
                 }
 
-                String s = buffer.toString();
-                s = s.replace( '\r', ' ' );
-                s = s.replace( '\n', ' ' );
-                if ( s.length() > 50 )
+                String result = buffer.toString();
+                result = result.replace( '\r', ' ' );
+                result = result.replace( '\n', ' ' );
+                
+                if ( buffer.length() > 50 )
                 {
-                    String temp = s;
-                    s = temp.substring( 0, 25 );
-                    s = s + "..."; //$NON-NLS-1$
-                    s = s + temp.substring( temp.length() - 25, temp.length() );
+                    buffer.setLength( 0 );
+                    
+                    buffer.append( result.substring( 0, 25 ) );
+                    buffer.append( "..." );
+                    buffer.append( result.substring( result.length() - 25, result.length() ) );
+                    
+                    return buffer.toString();
                 }
-                return s;
+                else
+                {
+                    return result;
+                }
             }
         }
     }
@@ -208,7 +221,6 @@ public class ACIItemUserPermissionsComposite extends Composite
      */
     private void createComposite()
     {
-
         GridData labelGridData = new GridData();
         labelGridData.horizontalSpan = 2;
         labelGridData.verticalAlignment = GridData.CENTER;
@@ -229,12 +241,11 @@ public class ACIItemUserPermissionsComposite extends Composite
         composite.setLayoutData( gridData );
         composite.setLayout( gridLayout );
 
-        label = new Label( composite, SWT.NONE );
+        Label label = new Label( composite, SWT.NONE );
         label.setText( Messages.getString( "ACIItemUserPermissionsComposite.descripton" ) ); //$NON-NLS-1$
         label.setLayoutData( labelGridData );
 
         createTable();
-
         createButtonComposite();
     }
 
@@ -251,7 +262,7 @@ public class ACIItemUserPermissionsComposite extends Composite
         tableGridData.horizontalAlignment = GridData.FILL;
         //tableGridData.heightHint = 100;
 
-        table = new Table( composite, SWT.BORDER );
+        Table table = new Table( composite, SWT.BORDER );
         table.setHeaderVisible( false );
         table.setLayoutData( tableGridData );
         table.setLinesVisible( false );
@@ -262,6 +273,7 @@ public class ACIItemUserPermissionsComposite extends Composite
 
         tableViewer.addSelectionChangedListener( new ISelectionChangedListener()
         {
+            @Override
             public void selectionChanged( SelectionChangedEvent event )
             {
                 userPermissionSelected();
@@ -270,6 +282,7 @@ public class ACIItemUserPermissionsComposite extends Composite
 
         tableViewer.addDoubleClickListener( new IDoubleClickListener()
         {
+            @Override
             public void doubleClick( DoubleClickEvent event )
             {
                 editUserPermission();
@@ -311,16 +324,18 @@ public class ACIItemUserPermissionsComposite extends Composite
         gridData.grabExcessVerticalSpace = false;
         gridData.verticalAlignment = GridData.FILL;
 
-        buttonComposite = new Composite( composite, SWT.NONE );
+        Composite buttonComposite = new Composite( composite, SWT.NONE );
         buttonComposite.setLayoutData( gridData );
         buttonComposite.setLayout( gridLayout );
 
-        addButton = new Button( buttonComposite, SWT.NONE );
+        Button addButton = new Button( buttonComposite, SWT.NONE );
         addButton.setText( Messages.getString( "ACIItemUserPermissionsComposite.add.button" ) ); //$NON-NLS-1$
         addButton.setLayoutData( addButtonGridData );
+        
         addButton.addSelectionListener( new SelectionAdapter()
         {
-            public void widgetSelected( SelectionEvent e )
+            @Override
+            public void widgetSelected( SelectionEvent event )
             {
                 addUserPermission();
             }
@@ -329,25 +344,31 @@ public class ACIItemUserPermissionsComposite extends Composite
         editButton = new Button( buttonComposite, SWT.NONE );
         editButton.setText( Messages.getString( "ACIItemUserPermissionsComposite.edit.button" ) ); //$NON-NLS-1$
         editButton.setLayoutData( editButtonGridData );
+        
         editButton.addSelectionListener( new SelectionAdapter()
         {
-            public void widgetSelected( SelectionEvent e )
+            @Override
+            public void widgetSelected( SelectionEvent event )
             {
                 editUserPermission();
             }
         } );
+        
         editButton.setEnabled( false );
 
         deleteButton = new Button( buttonComposite, SWT.NONE );
         deleteButton.setText( Messages.getString( "ACIItemUserPermissionsComposite.delete.button" ) ); //$NON-NLS-1$
         deleteButton.setLayoutData( deleteButtonGridData );
+        
         deleteButton.addSelectionListener( new SelectionAdapter()
         {
-            public void widgetSelected( SelectionEvent e )
+            @Override
+            public void widgetSelected( SelectionEvent event )
             {
                 deleteUserPermission();
             }
         } );
+        
         deleteButton.setEnabled( false );
 
     }
@@ -361,7 +382,15 @@ public class ACIItemUserPermissionsComposite extends Composite
     public void setVisible( boolean visible )
     {
         super.setVisible( visible );
-        ( ( GridData ) getLayoutData() ).heightHint = visible ? -1 : 0;
+        
+        if ( visible )
+        {
+            ( ( GridData ) getLayoutData() ).heightHint = -1;
+        }
+        else
+        {
+            ( ( GridData ) getLayoutData() ).heightHint = 0;
+        }
     }
 
 
@@ -420,19 +449,19 @@ public class ACIItemUserPermissionsComposite extends Composite
      */
     private UserPermissionWrapper getSelectedUserPermissionWrapper()
     {
-        UserPermissionWrapper userPermissionWrapper = null;
-
         IStructuredSelection selection = ( IStructuredSelection ) tableViewer.getSelection();
+        
         if ( !selection.isEmpty() )
         {
             Object element = selection.getFirstElement();
+            
             if ( element instanceof UserPermissionWrapper )
             {
-                userPermissionWrapper = ( UserPermissionWrapper ) element;
+                return ( UserPermissionWrapper ) element;
             }
         }
 
-        return userPermissionWrapper;
+        return null;
     }
 
 
@@ -443,7 +472,8 @@ public class ACIItemUserPermissionsComposite extends Composite
     private void addUserPermission()
     {
         UserPermissionDialog dialog = new UserPermissionDialog( getShell(), null, context );
-        if ( dialog.open() == UserPermissionDialog.OK && dialog.getUserPermission() != null )
+        
+        if ( ( dialog.open() == UserPermissionDialog.OK ) && ( dialog.getUserPermission() != null ) )
         {
             UserPermissionWrapper userPermissionWrapper = new UserPermissionWrapper( dialog.getUserPermission() );
             userPermissionWrappers.add( userPermissionWrapper );
@@ -460,10 +490,12 @@ public class ACIItemUserPermissionsComposite extends Composite
     private void editUserPermission()
     {
         UserPermissionWrapper oldUserPermissionWrapper = getSelectedUserPermissionWrapper();
+        
         if ( oldUserPermissionWrapper != null )
         {
             UserPermissionDialog dialog = new UserPermissionDialog( getShell(),
                 oldUserPermissionWrapper.userPermission, context );
+            
             if ( dialog.open() == UserPermissionDialog.OK )
             {
                 oldUserPermissionWrapper.userPermission = dialog.getUserPermission();
@@ -479,6 +511,7 @@ public class ACIItemUserPermissionsComposite extends Composite
     private void deleteUserPermission()
     {
         UserPermissionWrapper userPermissionWrapper = getSelectedUserPermissionWrapper();
+        
         if ( userPermissionWrapper != null )
         {
             userPermissionWrappers.remove( userPermissionWrapper );
@@ -506,5 +539,4 @@ public class ACIItemUserPermissionsComposite extends Composite
             deleteButton.setEnabled( true );
         }
     }
-
 }

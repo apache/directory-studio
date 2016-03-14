@@ -88,7 +88,8 @@ public class ConnectionsPreferencePage extends PreferencePage implements IWorkbe
         BaseWidgetUtils.createSpacer( composite, 1 );
 
         Group defaultNetworkProviderGroup = BaseWidgetUtils.createGroup(
-            BaseWidgetUtils.createColumnContainer( composite, 1, 1 ), Messages.getString("ConnectionsPreferencePage.DefaultNetworkProvider"), 1 ); //$NON-NLS-1$
+            BaseWidgetUtils.createColumnContainer( composite, 1, 1 ),
+            Messages.getString( "ConnectionsPreferencePage.DefaultNetworkProvider" ), 1 ); //$NON-NLS-1$
         NetworkProvider defaultNetworkProvider = ConnectionCorePlugin.getDefault().getDefaultNetworkProvider();
         String[] networkProviders = new String[]
             { "Apache Directory LDAP Client API", "JNDI (Java Naming and Directory Interface)" }; //$NON-NLS-1$ //$NON-NLS-2$
@@ -132,7 +133,7 @@ public class ConnectionsPreferencePage extends PreferencePage implements IWorkbe
 
         useKrb5SystemPropertiesButton.addSelectionListener( new SelectionAdapter()
         {
-            public void widgetSelected( SelectionEvent e )
+            public void widgetSelected( SelectionEvent event )
             {
                 validate();
             }

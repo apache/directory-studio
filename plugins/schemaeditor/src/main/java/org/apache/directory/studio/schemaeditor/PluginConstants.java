@@ -46,64 +46,64 @@ public final class PluginConstants
     public static final String PLUGIN_ID = Activator.getDefault().getPluginProperties().getString( "Plugin_id" ); //$NON-NLS-1$
 
     /** The Schema Editor perspective ID */
-    public static final String PERSPECTIVE_SCHEMA_EDITOR_ID = Activator.getDefault().getPluginProperties().getString(
-        "Perspective_SchemaEditor_id" ); //$NON-NLS-1$
+    public static final String PERSPECTIVE_SCHEMA_EDITOR_ID = Activator.getDefault().getPluginProperties()
+        .getString( "Perspective_SchemaEditor_id" ); //$NON-NLS-1$
 
     /** The LDAP Browser perspective ID */
-    public static final String PERSPECTIVE_LDAP_BROWSER_ID = Activator.getDefault().getPluginProperties().getString(
-        "Perspective_LdapBrowser_id" ); //$NON-NLS-1$
+    public static final String PERSPECTIVE_LDAP_BROWSER_ID = Activator.getDefault().getPluginProperties()
+        .getString( "Perspective_LdapBrowser_id" ); //$NON-NLS-1$
 
     /** The top left folder ID */
-    public static final String PERSPECTIVE_TOP_LEFT_FOLDER_ID = Activator.getDefault().getPluginProperties().getString(
-        "Perspective_TopLeftFolder_id" ); //$NON-NLS-1$
+    public static final String PERSPECTIVE_TOP_LEFT_FOLDER_ID = Activator.getDefault().getPluginProperties()
+        .getString( "Perspective_TopLeftFolder_id" ); //$NON-NLS-1$
 
     /** The bottom folder ID */
-    public static final String PERSPECTIVE_BOTTOM_FOLDER_ID = Activator.getDefault().getPluginProperties().getString(
-        "Perspective_BottomFolder_id" ); //$NON-NLS-1$
+    public static final String PERSPECTIVE_BOTTOM_FOLDER_ID = Activator.getDefault().getPluginProperties()
+        .getString( "Perspective_BottomFolder_id" ); //$NON-NLS-1$
 
     /** The Attribute Type Editor ID */
-    public static final String EDITOR_ATTRIBUTE_TYPE_ID = Activator.getDefault().getPluginProperties().getString(
-        "Editor_AttributeTypeEditor_id" ); //$NON-NLS-1$
+    public static final String EDITOR_ATTRIBUTE_TYPE_ID = Activator.getDefault().getPluginProperties()
+        .getString( "Editor_AttributeTypeEditor_id" ); //$NON-NLS-1$
 
     /** The Object Class Editor ID */
-    public static final String EDITOR_OBJECT_CLASS_ID = Activator.getDefault().getPluginProperties().getString(
-        "Editor_ObjectClassEditor_id" ); //$NON-NLS-1$
+    public static final String EDITOR_OBJECT_CLASS_ID = Activator.getDefault().getPluginProperties()
+        .getString( "Editor_ObjectClassEditor_id" ); //$NON-NLS-1$
 
     /** The Schema Editor ID */
-    public static final String EDITOR_SCHEMA_ID = Activator.getDefault().getPluginProperties().getString(
-        "Editor_SchemaEditor_id" ); //$NON-NLS-1$
+    public static final String EDITOR_SCHEMA_ID = Activator.getDefault().getPluginProperties()
+        .getString( "Editor_SchemaEditor_id" ); //$NON-NLS-1$
 
     /** The Hierarchy View Preference Page ID */
-    public static final String PREF_PAGE_HIERARCHY_VIEW_ID = Activator.getDefault().getPluginProperties().getString(
-        "PrefPage_HierarchyView_id" ); //$NON-NLS-1$
+    public static final String PREF_PAGE_HIERARCHY_VIEW_ID = Activator.getDefault().getPluginProperties()
+        .getString( "PrefPage_HierarchyView_id" ); //$NON-NLS-1$
 
     /** The Schema View Preference Page ID */
-    public static final String PREF_PAGE_SCHEMA_VIEW_ID = Activator.getDefault().getPluginProperties().getString(
-        "PrefPage_SchemaView_id" ); //$NON-NLS-1$
+    public static final String PREF_PAGE_SCHEMA_VIEW_ID = Activator.getDefault().getPluginProperties()
+        .getString( "PrefPage_SchemaView_id" ); //$NON-NLS-1$
 
     /** The Search View Preference Page ID */
-    public static final String PREF_PAGE_SEARCH_VIEW_ID = Activator.getDefault().getPluginProperties().getString(
-        "PrefPage_SearchView_id" ); //$NON-NLS-1$
+    public static final String PREF_PAGE_SEARCH_VIEW_ID = Activator.getDefault().getPluginProperties()
+        .getString( "PrefPage_SearchView_id" ); //$NON-NLS-1$
 
     /** The Hierarchy View ID */
-    public static final String VIEW_HIERARCHY_VIEW_ID = Activator.getDefault().getPluginProperties().getString(
-        "View_HierarchyView_id" ); //$NON-NLS-1$
+    public static final String VIEW_HIERARCHY_VIEW_ID = Activator.getDefault().getPluginProperties()
+        .getString( "View_HierarchyView_id" ); //$NON-NLS-1$
 
     /** The Problems View ID */
-    public static final String VIEW_PROBLEMS_VIEW_ID = Activator.getDefault().getPluginProperties().getString(
-        "View_ProblemsView_id" ); //$NON-NLS-1$
+    public static final String VIEW_PROBLEMS_VIEW_ID = Activator.getDefault().getPluginProperties()
+        .getString( "View_ProblemsView_id" ); //$NON-NLS-1$
 
     /** The Projects View ID */
-    public static final String VIEW_PROJECTS_VIEW_ID = Activator.getDefault().getPluginProperties().getString(
-        "View_ProjectsView_id" ); //$NON-NLS-1$
+    public static final String VIEW_PROJECTS_VIEW_ID = Activator.getDefault().getPluginProperties()
+        .getString( "View_ProjectsView_id" ); //$NON-NLS-1$
 
     /** The Schema View ID */
-    public static final String VIEW_SCHEMA_VIEW_ID = Activator.getDefault().getPluginProperties().getString(
-        "View_SchemaView_id" ); //$NON-NLS-1$
+    public static final String VIEW_SCHEMA_VIEW_ID = Activator.getDefault().getPluginProperties()
+        .getString( "View_SchemaView_id" ); //$NON-NLS-1$
 
     /** The Search View ID */
-    public static final String VIEW_SEARCH_VIEW_ID = Activator.getDefault().getPluginProperties().getString(
-        "View_SearchView_id" ); //$NON-NLS-1$
+    public static final String VIEW_SEARCH_VIEW_ID = Activator.getDefault().getPluginProperties()
+        .getString( "View_SearchView_id" ); //$NON-NLS-1$
 
     /** The New Attribute Type Wizard ID */
     public static final String NEW_WIZARD_NEW_ATTRIBUTE_TYPE_WIZARD = Activator.getDefault().getPluginProperties()
@@ -114,12 +114,12 @@ public final class PluginConstants
         .getString( "NewWizard_NewObjectClassWizard_id" ); //$NON-NLS-1$
 
     /** The New Project Wizard ID */
-    public static final String NEW_WIZARD_NEW_PROJECT_WIZARD = Activator.getDefault().getPluginProperties().getString(
-        "NewWizard_NewProjectWizard_id" ); //$NON-NLS-1$
+    public static final String NEW_WIZARD_NEW_PROJECT_WIZARD = Activator.getDefault().getPluginProperties()
+        .getString( "NewWizard_NewProjectWizard_id" ); //$NON-NLS-1$
 
     /** The New Schema Wizard ID */
-    public static final String NEW_WIZARD_NEW_SCHEMA_WIZARD = Activator.getDefault().getPluginProperties().getString(
-        "NewWizard_NewSchemaWizard_id" ); //$NON-NLS-1$
+    public static final String NEW_WIZARD_NEW_SCHEMA_WIZARD = Activator.getDefault().getPluginProperties()
+        .getString( "NewWizard_NewSchemaWizard_id" ); //$NON-NLS-1$
 
     // Images
     public static final String IMG_ATTRIBUTE_TYPE = "resources/icons/attribute_type.gif"; //$NON-NLS-1$
@@ -198,26 +198,26 @@ public final class PluginConstants
     public static final String IMG_WARNING_32X32 = "resources/icons/warning_32x32.png"; //$NON-NLS-1$
 
     // Commands
-    public static final String CMD_DELETE_PROJECT = Activator.getDefault().getPluginProperties().getString(
-        "Cmd_DeleteProject_id" ); //$NON-NLS-1$
-    public static final String CMD_DELETE_SCHEMA_ELEMENT = Activator.getDefault().getPluginProperties().getString(
-        "Cmd_DeleteSchemaElement_id" ); //$NON-NLS-1$
-    public static final String CMD_OPEN_ELEMENT = Activator.getDefault().getPluginProperties().getString(
-        "Cmd_OpenElement_id" ); //$NON-NLS-1$
-    public static final String CMD_OPEN_TYPE_HIERARCHY = Activator.getDefault().getPluginProperties().getString(
-        "Cmd_OpenTypeHierarchy_id" ); //$NON-NLS-1$
-    public static final String CMD_NEW_ATTRIBUTE_TYPE = Activator.getDefault().getPluginProperties().getString(
-        "Cmd_NewAttributeType_id" ); //$NON-NLS-1$
-    public static final String CMD_NEW_OBJECT_CLASS = Activator.getDefault().getPluginProperties().getString(
-        "Cmd_NewObjectClass_id" ); //$NON-NLS-1$
-    public static final String CMD_NEW_PROJECT = Activator.getDefault().getPluginProperties().getString(
-        "Cmd_NewProject_id" ); //$NON-NLS-1$
-    public static final String CMD_NEW_SCHEMA = Activator.getDefault().getPluginProperties().getString(
-        "Cmd_NewSchema_id" ); //$NON-NLS-1$
-    public static final String CMD_RENAME_PROJECT = Activator.getDefault().getPluginProperties().getString(
-        "Cmd_RenameProject_id" ); //$NON-NLS-1$
-    public static final String CMD_RENAME_SCHEMA_ELEMENT = Activator.getDefault().getPluginProperties().getString(
-        "Cmd_RenameSchemaElement_id" ); //$NON-NLS-1$
+    public static final String CMD_DELETE_PROJECT = Activator.getDefault().getPluginProperties()
+        .getString( "Cmd_DeleteProject_id" ); //$NON-NLS-1$
+    public static final String CMD_DELETE_SCHEMA_ELEMENT = Activator.getDefault().getPluginProperties()
+        .getString( "Cmd_DeleteSchemaElement_id" ); //$NON-NLS-1$
+    public static final String CMD_OPEN_ELEMENT = Activator.getDefault().getPluginProperties()
+        .getString( "Cmd_OpenElement_id" ); //$NON-NLS-1$
+    public static final String CMD_OPEN_TYPE_HIERARCHY = Activator.getDefault().getPluginProperties()
+        .getString( "Cmd_OpenTypeHierarchy_id" ); //$NON-NLS-1$
+    public static final String CMD_NEW_ATTRIBUTE_TYPE = Activator.getDefault().getPluginProperties()
+        .getString( "Cmd_NewAttributeType_id" ); //$NON-NLS-1$
+    public static final String CMD_NEW_OBJECT_CLASS = Activator.getDefault().getPluginProperties()
+        .getString( "Cmd_NewObjectClass_id" ); //$NON-NLS-1$
+    public static final String CMD_NEW_PROJECT = Activator.getDefault().getPluginProperties()
+        .getString( "Cmd_NewProject_id" ); //$NON-NLS-1$
+    public static final String CMD_NEW_SCHEMA = Activator.getDefault().getPluginProperties()
+        .getString( "Cmd_NewSchema_id" ); //$NON-NLS-1$
+    public static final String CMD_RENAME_PROJECT = Activator.getDefault().getPluginProperties()
+        .getString( "Cmd_RenameProject_id" ); //$NON-NLS-1$
+    public static final String CMD_RENAME_SCHEMA_ELEMENT = Activator.getDefault().getPluginProperties()
+        .getString( "Cmd_RenameSchemaElement_id" ); //$NON-NLS-1$
 
     // Preferences - DifferencesWidget
     /** The preferences ID for DifferencesWidget Grouping */

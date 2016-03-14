@@ -45,13 +45,12 @@ import org.eclipse.core.runtime.IAdaptable;
  */
 public interface IBrowserConnection extends Serializable, IAdaptable, ConnectionPropertyPageProvider
 {
-
     /**
      * Enum for the modify mode of attributes
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
      */
-    public enum ModifyMode
+    enum ModifyMode
     {
         /** Default mode */
         DEFAULT(0),
@@ -110,7 +109,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
      */
-    public enum ModifyOrder
+    enum ModifyOrder
     {
         /** Delete first */
         DELETE_FIRST(0),
@@ -160,57 +159,56 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
     }
 
     /** The key for the connection parameter "Get Base DNs from Root DSE". */
-    public static String CONNECTION_PARAMETER_FETCH_BASE_DNS = "ldapbrowser.fetchBaseDns"; //$NON-NLS-1$
+    String CONNECTION_PARAMETER_FETCH_BASE_DNS = "ldapbrowser.fetchBaseDns"; //$NON-NLS-1$
 
     /** The key for the connection parameter "Base Dn". */
-    public static String CONNECTION_PARAMETER_BASE_DN = "ldapbrowser.baseDn"; //$NON-NLS-1$
+    String CONNECTION_PARAMETER_BASE_DN = "ldapbrowser.baseDn"; //$NON-NLS-1$
 
     /** The key for the connection parameter "Count Limit". */
-    public static String CONNECTION_PARAMETER_COUNT_LIMIT = "ldapbrowser.countLimit"; //$NON-NLS-1$
+    String CONNECTION_PARAMETER_COUNT_LIMIT = "ldapbrowser.countLimit"; //$NON-NLS-1$
 
     /** The key for the connection parameter "Time Limit". */
-    public static String CONNECTION_PARAMETER_TIME_LIMIT = "ldapbrowser.timeLimit"; //$NON-NLS-1$
+    String CONNECTION_PARAMETER_TIME_LIMIT = "ldapbrowser.timeLimit"; //$NON-NLS-1$
 
     /** The key for the connection parameter "Alias Dereferencing". */
-    public static String CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD = "ldapbrowser.aliasesDereferencingMethod"; //$NON-NLS-1$
+    String CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD = "ldapbrowser.aliasesDereferencingMethod"; //$NON-NLS-1$
 
     /** The key for the connection parameter "Referrals Handling". */
-    public static String CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD = "ldapbrowser.referralsHandlingMethod"; //$NON-NLS-1$
+    String CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD = "ldapbrowser.referralsHandlingMethod"; //$NON-NLS-1$
 
     /** The key for the connection parameter "Fetch Operational Attributes. */
-    public static String CONNECTION_PARAMETER_FETCH_OPERATIONAL_ATTRIBUTES = "ldapbrowser.fetchOperationalAttributes"; //$NON-NLS-1$
+    String CONNECTION_PARAMETER_FETCH_OPERATIONAL_ATTRIBUTES = "ldapbrowser.fetchOperationalAttributes"; //$NON-NLS-1$
 
     /** The key for the connection parameter "Fetch Sub-entries". */
-    public static String CONNECTION_PARAMETER_FETCH_SUBENTRIES = "ldapbrowser.fetchSubentries"; //$NON-NLS-1$
+    String CONNECTION_PARAMETER_FETCH_SUBENTRIES = "ldapbrowser.fetchSubentries"; //$NON-NLS-1$
 
     /** The key for the connection parameter "Paged Search". */
-    public static String CONNECTION_PARAMETER_PAGED_SEARCH = "ldapbrowser.pagedSearch"; //$NON-NLS-1$
+    String CONNECTION_PARAMETER_PAGED_SEARCH = "ldapbrowser.pagedSearch"; //$NON-NLS-1$
 
     /** The key for the connection parameter "Paged Search Size". */
-    public static String CONNECTION_PARAMETER_PAGED_SEARCH_SIZE = "ldapbrowser.pagedSearchSize"; //$NON-NLS-1$
+    String CONNECTION_PARAMETER_PAGED_SEARCH_SIZE = "ldapbrowser.pagedSearchSize"; //$NON-NLS-1$
 
     /** The key for the connection parameter "Paged Search Scroll Mode". */
-    public static String CONNECTION_PARAMETER_PAGED_SEARCH_SCROLL_MODE = "ldapbrowser.pagedSearchScrollMode"; //$NON-NLS-1$
+    String CONNECTION_PARAMETER_PAGED_SEARCH_SCROLL_MODE = "ldapbrowser.pagedSearchScrollMode"; //$NON-NLS-1$
 
     /** The key for the connection parameter "Modify Mode for attributes with equality matching rule". */
-    public static String CONNECTION_PARAMETER_MODIFY_MODE = "ldapbrowser.modifyMode"; //$NON-NLS-1$
+    String CONNECTION_PARAMETER_MODIFY_MODE = "ldapbrowser.modifyMode"; //$NON-NLS-1$
 
     /** The key for the connection parameter "Modify Mode for attributes without equality matching rule". */
-    public static String CONNECTION_PARAMETER_MODIFY_MODE_NO_EMR = "ldapbrowser.modifyModeNoEMR"; //$NON-NLS-1$
+    String CONNECTION_PARAMETER_MODIFY_MODE_NO_EMR = "ldapbrowser.modifyModeNoEMR"; //$NON-NLS-1$
 
     /** The key for the connection parameter "Modify add delete order". */
-    public static String CONNECTION_PARAMETER_MODIFY_ORDER = "ldapbrowser.modifyOrder"; //$NON-NLS-1$
+    String CONNECTION_PARAMETER_MODIFY_ORDER = "ldapbrowser.modifyOrder"; //$NON-NLS-1$
 
     /** The key for the connection parameter "Use ManageDsaIT Control" */
-    public static String CONNECTION_PARAMETER_MANAGE_DSA_IT = "ldapbrowser.manageDsaIT"; //$NON-NLS-1$
-
+    String CONNECTION_PARAMETER_MANAGE_DSA_IT = "ldapbrowser.manageDsaIT"; //$NON-NLS-1$
 
     /**
      * Gets the URL of this connection.
      * 
      * @return the URL of this connection
      */
-    public abstract LdapUrl getUrl();
+    LdapUrl getUrl();
 
 
     /**
@@ -220,7 +218,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * @return true, if the base DNs are fetched from Root DSE, 
      *         false, if the base Dn is defined manually
      */
-    public abstract boolean isFetchBaseDNs();
+    boolean isFetchBaseDNs();
 
 
     /**
@@ -230,7 +228,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * @param fetchBaseDNs true to get the base DNs from Root DSE,
      *                     false to define one manually
      */
-    public abstract void setFetchBaseDNs( boolean fetchBaseDNs );
+    void setFetchBaseDNs( boolean fetchBaseDNs );
 
 
     /**
@@ -238,7 +236,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @return the manually defined base ND
      */
-    public abstract Dn getBaseDN();
+    Dn getBaseDN();
 
 
     /**
@@ -246,7 +244,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @param baseDn the new base Dn
      */
-    public abstract void setBaseDN( Dn baseDn );
+    void setBaseDN( Dn baseDn );
 
 
     /**
@@ -254,7 +252,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @return the count limit
      */
-    public abstract int getCountLimit();
+    int getCountLimit();
 
 
     /**
@@ -262,7 +260,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @param countLimit the new count limit
      */
-    public abstract void setCountLimit( int countLimit );
+    void setCountLimit( int countLimit );
 
 
     /**
@@ -270,7 +268,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @return the aliases dereferencing method
      */
-    public abstract AliasDereferencingMethod getAliasesDereferencingMethod();
+    AliasDereferencingMethod getAliasesDereferencingMethod();
 
 
     /**
@@ -278,7 +276,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @param aliasesDereferencingMethod the new aliases dereferencing method
      */
-    public abstract void setAliasesDereferencingMethod( AliasDereferencingMethod aliasesDereferencingMethod );
+    void setAliasesDereferencingMethod( AliasDereferencingMethod aliasesDereferencingMethod );
 
 
     /**
@@ -286,7 +284,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @return the referrals handling method
      */
-    public abstract ReferralHandlingMethod getReferralsHandlingMethod();
+    ReferralHandlingMethod getReferralsHandlingMethod();
 
 
     /**
@@ -294,7 +292,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @param referralsHandlingMethod the new referrals handling method
      */
-    public abstract void setReferralsHandlingMethod( ReferralHandlingMethod referralsHandlingMethod );
+    void setReferralsHandlingMethod( ReferralHandlingMethod referralsHandlingMethod );
 
 
     /**
@@ -302,7 +300,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @return the time limit
      */
-    public abstract int getTimeLimit();
+    int getTimeLimit();
 
 
     /**
@@ -310,7 +308,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @param timeLimit the new time limit
      */
-    public abstract void setTimeLimit( int timeLimit );
+    void setTimeLimit( int timeLimit );
 
 
     /**
@@ -318,7 +316,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @return the true if subentries should be fetched
      */
-    public abstract boolean isFetchSubentries();
+    boolean isFetchSubentries();
 
 
     /**
@@ -326,7 +324,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @param fetchSubentries true to fetch subentries
      */
-    public abstract void setFetchSubentries( boolean fetchSubentries );
+    void setFetchSubentries( boolean fetchSubentries );
 
 
     /**
@@ -334,7 +332,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @return true if ManageDsaIT control should be used
      */
-    public abstract boolean isManageDsaIT();
+    boolean isManageDsaIT();
 
 
     /**
@@ -342,7 +340,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @param manageDsaIT true to use ManageDsaIT control
      */
-    public abstract void setManageDsaIT( boolean manageDsaIT );
+    void setManageDsaIT( boolean manageDsaIT );
 
 
     /**
@@ -350,7 +348,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @return the true if operational attributes should be fetched
      */
-    public abstract boolean isFetchOperationalAttributes();
+    boolean isFetchOperationalAttributes();
 
 
     /**
@@ -358,7 +356,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @param fetchSubentries true to fetch operational attributes
      */
-    public abstract void setFetchOperationalAttributes( boolean fetchOperationalAttributes );
+    void setFetchOperationalAttributes( boolean fetchOperationalAttributes );
 
 
     /**
@@ -366,7 +364,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @return the true if paged search should be used
      */
-    public abstract boolean isPagedSearch();
+    boolean isPagedSearch();
 
 
     /**
@@ -374,7 +372,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @param pagedSearch true to use paged search
      */
-    public abstract void setPagedSearch( boolean pagedSearch );
+    void setPagedSearch( boolean pagedSearch );
 
 
     /**
@@ -382,7 +380,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @return the paged search size
      */
-    public abstract int getPagedSearchSize();
+    int getPagedSearchSize();
 
 
     /**
@@ -390,7 +388,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @param pagedSearchSize the new paged search size
      */
-    public abstract void setPagedSearchSize( int pagedSearchSize );
+    void setPagedSearchSize( int pagedSearchSize );
 
 
     /**
@@ -398,7 +396,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @return the true if paged search scroll mode should be used
      */
-    public abstract boolean isPagedSearchScrollMode();
+    boolean isPagedSearchScrollMode();
 
 
     /**
@@ -406,7 +404,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @param pagedSearch true to use paged search scroll mode
      */
-    public abstract void setPagedSearchScrollMode( boolean pagedSearchScrollMode );
+    void setPagedSearchScrollMode( boolean pagedSearchScrollMode );
 
 
     /**
@@ -414,7 +412,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @return the modify mode for attributes
      */
-    public abstract ModifyMode getModifyMode();
+    ModifyMode getModifyMode();
 
 
     /**
@@ -422,7 +420,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @param mode the modify mode for attributes
      */
-    public abstract void setModifyMode( ModifyMode mode );
+    void setModifyMode( ModifyMode mode );
 
 
     /**
@@ -430,7 +428,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @return the modify mode for attributes without equality matching rule
      */
-    public abstract ModifyMode getModifyModeNoEMR();
+    ModifyMode getModifyModeNoEMR();
 
 
     /**
@@ -438,7 +436,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @param mode the modify mode for attributes without equality matching rule
      */
-    public abstract void setModifyModeNoEMR( ModifyMode mode );
+    void setModifyModeNoEMR( ModifyMode mode );
 
 
     /**
@@ -446,7 +444,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @return the modify add/delete order
      */
-    public abstract ModifyOrder getModifyAddDeleteOrder();
+    ModifyOrder getModifyAddDeleteOrder();
 
 
     /**
@@ -454,7 +452,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @param mode the modify add/delete order
      */
-    public abstract void setModifyAddDeleteOrder( ModifyOrder mode );
+    void setModifyAddDeleteOrder( ModifyOrder mode );
 
 
     /**
@@ -462,7 +460,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @return the root DSE
      */
-    public abstract IRootDSE getRootDSE();
+    IRootDSE getRootDSE();
 
 
     /**
@@ -470,7 +468,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @return the schema, never null
      */
-    public abstract Schema getSchema();
+    Schema getSchema();
 
 
     /**
@@ -478,7 +476,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @param schema the new schema
      */
-    public abstract void setSchema( Schema schema );
+    void setSchema( Schema schema );
 
 
     /**
@@ -486,7 +484,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @return the search manager
      */
-    public abstract SearchManager getSearchManager();
+    SearchManager getSearchManager();
 
 
     /**
@@ -494,7 +492,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @return the bookmark manager
      */
-    public abstract BookmarkManager getBookmarkManager();
+    BookmarkManager getBookmarkManager();
 
 
     /**
@@ -504,7 +502,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @return the entry from cache or null if the entry isn't cached
      */
-    public abstract IEntry getEntryFromCache( Dn dn );
+    IEntry getEntryFromCache( Dn dn );
 
 
     /**
@@ -512,7 +510,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @return the connection
      */
-    public abstract Connection getConnection();
+    Connection getConnection();
 
 
     /**
@@ -520,7 +518,7 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @param entry the entry to cache
      */
-    public void cacheEntry( IEntry entry );
+    void cacheEntry( IEntry entry );
 
 
     /**
@@ -528,12 +526,11 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
      * 
      * @param entry the entry to remove from cache
      */
-    public abstract void uncacheEntryRecursive( IEntry entry );
+    void uncacheEntryRecursive( IEntry entry );
 
 
     /**
      * Clears all caches.
      */
-    public abstract void clearCaches();
-
+    void clearCaches();
 }

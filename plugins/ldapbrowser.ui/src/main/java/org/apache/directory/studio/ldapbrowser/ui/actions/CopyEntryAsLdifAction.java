@@ -90,64 +90,72 @@ public class CopyEntryAsLdifAction extends CopyEntryAsAction
      */
     public void serialializeEntries( IEntry[] entries, StringBuffer text )
     {
-
         String lineSeparator = BrowserCorePlugin.getDefault().getPluginPreferences().getString(
             BrowserCoreConstants.PREFERENCE_LDIF_LINE_SEPARATOR );
 
-        Set returningAttributesSet = null;
+        Set<String> returningAttributesSet = null;
+        
         if ( this.mode == MODE_RETURNING_ATTRIBUTES_ONLY && getSelectedSearchResults().length > 0
             && getSelectedEntries().length + getSelectedBookmarks().length + getSelectedSearches().length == 0 )
         {
-            returningAttributesSet = new HashSet( Arrays.asList( getSelectedSearchResults()[0].getSearch()
+            returningAttributesSet = new HashSet<String>( Arrays.asList( getSelectedSearchResults()[0].getSearch()
                 .getReturningAttributes() ) );
         }
         else if ( this.mode == MODE_RETURNING_ATTRIBUTES_ONLY && getSelectedSearches().length == 1 )
         {
-            returningAttributesSet = new HashSet( Arrays.asList( getSelectedSearches()[0].getReturningAttributes() ) );
+            returningAttributesSet = new HashSet<String>( Arrays.asList( getSelectedSearches()[0].getReturningAttributes() ) );
         }
 
-        for ( int e = 0; entries != null && e < entries.length; e++ )
+        boolean isFirst = true;
+        
+        for ( IEntry entry : entries )
         {
-
-            serializeDn( entries[e].getDn(), text );
+            if ( isFirst )
+            {
+                isFirst = false;
+            }
+            else
+            {
+                text.append( lineSeparator );
+            }
+            
+            serializeDn( entry.getDn(), text );
 
             if ( this.mode != MODE_DN_ONLY )
             {
-
-                List valueList = new ArrayList();
-                IAttribute[] attributes = entries[e].getAttributes();
+                List<IValue> valueList = new ArrayList<IValue>();
+                IAttribute[] attributes = entry.getAttributes();
+                
                 if ( attributes != null )
                 {
-                    for ( int i = 0; i < attributes.length; i++ )
+                    for ( IAttribute attribute : attributes )
                     {
-
-                        if ( returningAttributesSet != null
-                            && !returningAttributesSet.contains( attributes[i].getType() ) )
-                            continue;
-
-                        if ( attributes[i].isOperationalAttribute() && this.mode != MODE_INCLUDE_OPERATIONAL_ATTRIBUTES )
-                            continue;
-
-                        IValue[] values = attributes[i].getValues();
-                        for ( int k = 0; k < values.length; k++ )
+                        if ( ( returningAttributesSet != null ) && !returningAttributesSet.contains( attribute.getType() ) )
                         {
-                            valueList.add( values[k] );
+                            continue;
+                        }
+
+                        if ((  attribute.isOperationalAttribute() ) && ( this.mode != MODE_INCLUDE_OPERATIONAL_ATTRIBUTES ) )
+                        {
+                            continue;
+                        }
+
+                        for ( IValue value : attribute.getValues() )
+                        {
+                            valueList.add( value );
                         }
                     }
                 }
+                
                 IValue[] values = ( IValue[] ) valueList.toArray( new IValue[valueList.size()] );
 
-                AttributeComparator comparator = new AttributeComparator( entries[e] );
+                AttributeComparator comparator = new AttributeComparator( entry );
                 Arrays.sort( values, comparator );
 
-                for ( int i = 0; i < values.length; i++ )
+                for ( IValue value : values )
                 {
-                    serializeValue( values[i], text );
+                    serializeValue( value, text );
                 }
-            }
-            if ( e < entries.length )
-            {
-                text.append( lineSeparator );
             }
         }
     }

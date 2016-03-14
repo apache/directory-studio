@@ -22,6 +22,7 @@ package org.apache.directory.studio.schemaeditor.model.io;
 
 import java.util.List;
 
+import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.schemaeditor.model.Project;
 import org.apache.directory.studio.schemaeditor.model.ProjectType;
 import org.apache.directory.studio.schemaeditor.model.Schema;
@@ -128,11 +129,21 @@ public class ProjectsExporter
             // If project is an Online Schema Project
             if ( type.equals( ProjectType.ONLINE ) )
             {
-                // Connection Name
-                element.addAttribute( CONNECTION_TAG, project.getConnection().getId() );
+                // Connection ID
+                Connection connection = project.getConnection();
 
-                // Connection Name
-                element.addAttribute( SCHEMA_CONNECTOR_TAG, project.getSchemaConnector().getId() );
+                if ( connection != null )
+                {
+                    element.addAttribute( CONNECTION_TAG, connection.getId() );
+                }
+
+                // Schema Connection ID
+                SchemaConnector schemaConnector = project.getSchemaConnector();
+
+                if ( schemaConnector != null )
+                {
+                    element.addAttribute( SCHEMA_CONNECTOR_TAG, project.getSchemaConnector().getId() );
+                }
 
                 // Schema Backup
                 Element schemaBackupElement = element.addElement( SCHEMA_BACKUP_TAG );

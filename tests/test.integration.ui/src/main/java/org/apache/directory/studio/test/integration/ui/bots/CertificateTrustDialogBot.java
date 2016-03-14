@@ -28,10 +28,9 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotLabel;
 
 public class CertificateTrustDialogBot extends DialogBot
 {
-
-    public boolean isVisible()
+    public CertificateTrustDialogBot()
     {
-        return super.isVisible( "Certificate Trust" );
+        super( "Certificate Trust" );
     }
 
 
@@ -97,12 +96,6 @@ public class CertificateTrustDialogBot extends DialogBot
         }
 
         return messages;
-    }
-
-
-    public void clickOkButton()
-    {
-        super.clickButton( "OK" );
     }
 
 

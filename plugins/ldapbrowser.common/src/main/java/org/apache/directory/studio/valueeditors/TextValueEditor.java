@@ -41,7 +41,7 @@ public class TextValueEditor extends AbstractDialogStringValueEditor
     public boolean openDialog( Shell shell )
     {
         Object value = getValue();
-        if ( value != null && value instanceof String )
+        if ( value instanceof String )
         {
             TextDialog dialog = new TextDialog( shell, ( String ) value );
             if ( dialog.open() == TextDialog.OK && !"".equals( dialog.getText() ) ) //$NON-NLS-1$

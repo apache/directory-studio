@@ -66,7 +66,7 @@ public class EntryEditorWidgetCellModifier implements ICellModifier
      */
     public boolean canModify( Object element, String property )
     {
-        if ( element != null && element instanceof IValue && valueEditorManager != null )
+        if ( ( element instanceof IValue ) && ( valueEditorManager != null ) )
         {
             IValue attributeValue = ( IValue ) element;
 
@@ -74,9 +74,10 @@ public class EntryEditorWidgetCellModifier implements ICellModifier
             {
                 return false;
             }
+            
             if ( EntryEditorWidgetTableMetadata.VALUE_COLUMN_NAME.equals( property ) )
             {
-                return this.valueEditorManager.getCurrentValueEditor( attributeValue ).getRawValue( attributeValue ) != null;
+                return valueEditorManager.getCurrentValueEditor( attributeValue ).hasValue( attributeValue );
             }
         }
 
@@ -89,7 +90,7 @@ public class EntryEditorWidgetCellModifier implements ICellModifier
      */
     public Object getValue( Object element, String property )
     {
-        if ( element != null && element instanceof IValue && valueEditorManager != null )
+        if ( ( element instanceof IValue ) && ( valueEditorManager != null ) )
         {
             IValue attributeValue = ( IValue ) element;
             Object returnValue;
@@ -120,12 +121,12 @@ public class EntryEditorWidgetCellModifier implements ICellModifier
      */
     public void modify( Object element, String property, Object newRawValue )
     {
-        if ( element != null && element instanceof Item )
+        if ( element instanceof Item )
         {
             element = ( ( Item ) element ).getData();
         }
 
-        if ( newRawValue != null && element != null && element instanceof IValue && valueEditorManager != null )
+        if ( ( newRawValue != null ) && ( element instanceof IValue ) && ( valueEditorManager != null ) )
         {
             IValue oldValue = ( IValue ) element;
 

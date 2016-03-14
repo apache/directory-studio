@@ -272,9 +272,7 @@ public class LdapServersUtils
         // Creating a new editable launch configuration
         ILaunchConfigurationType type = DebugPlugin.getDefault().getLaunchManager()
             .getLaunchConfigurationType( IJavaLaunchConfigurationConstants.ID_JAVA_APPLICATION );
-        ILaunchConfigurationWorkingCopy workingCopy = type.newInstance( null,
-            NLS.bind( Messages.getString( "LdapServersUtils.Starting" ), new String[] //$NON-NLS-1$
-                { server.getName() } ) );
+        ILaunchConfigurationWorkingCopy workingCopy = type.newInstance( null, server.getId() );
 
         // Setting the JRE container path attribute
         workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_JRE_CONTAINER_PATH, vmInstall
@@ -394,7 +392,8 @@ public class LdapServersUtils
         for ( String library : libraries )
         {
             File destinationLibraryFile = destinationLibrariesPath.append( library ).toFile();
-            if ( !destinationLibraryFile.exists() )
+            boolean newerFileExists = (bundle.getLastModified() > destinationLibraryFile.lastModified());
+            if ( !destinationLibraryFile.exists() || newerFileExists )
             {
                 try
                 {

@@ -258,7 +258,7 @@ public class XMLSchemaFileImporter
      * @return
      *      the name of the file.
      */
-    private static final String getNameFromPath( String path )
+    private static String getNameFromPath( String path )
     {
         File file = new File( path );
         String fileName = file.getName();

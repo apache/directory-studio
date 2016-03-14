@@ -21,7 +21,7 @@
 package org.apache.directory.studio.connection.ui;
 
 
-import org.apache.directory.studio.common.core.jobs.StudioBulkRunnableWithProgress;
+import org.apache.commons.lang.StringUtils;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
@@ -46,7 +46,6 @@ import org.eclipse.ui.PlatformUI;
  */
 public class RunnableContextRunner
 {
-
     /**
      * Executes the given job within the given runnable context.
      * 
@@ -71,17 +70,19 @@ public class RunnableContextRunner
 
                 // ensure that connections are opened
                 Connection[] connections = runnable.getConnections();
+                
                 if ( connections != null )
                 {
                     for ( Connection connection : connections )
                     {
-                        if ( connection != null && !connection.getConnectionWrapper().isConnected() )
+                        if ( ( connection != null ) && !connection.getConnectionWrapper().isConnected() )
                         {
                             spm[0].setTaskName( Messages.bind( Messages.jobs__open_connections_task, new String[]
                                 { connection.getName() } ) );
                             spm[0].worked( 1 );
 
                             connection.getConnectionWrapper().connect( spm[0] );
+                            
                             if ( connection.getConnectionWrapper().isConnected() )
                             {
                                 connection.getConnectionWrapper().bind( spm[0] );
@@ -94,6 +95,7 @@ public class RunnableContextRunner
                                 {
                                     listener.connectionOpened( connection, spm[0] );
                                 }
+                                
                                 ConnectionEventRegistry.fireConnectionOpened( connection, this );
                             }
                         }
@@ -108,6 +110,7 @@ public class RunnableContextRunner
                         {
                             StudioConnectionBulkRunnableWithProgress bulkRunnable = ( StudioConnectionBulkRunnableWithProgress ) runnable;
                             ConnectionEventRegistry.suspendEventFiringInCurrentThread();
+                            
                             try
                             {
                                 bulkRunnable.run( spm[0] );
@@ -116,6 +119,7 @@ public class RunnableContextRunner
                             {
                                 ConnectionEventRegistry.resumeEventFiringInCurrentThread();
                             }
+                            
                             bulkRunnable.runNotification( spm[0] );
                         }
                         else
@@ -147,16 +151,16 @@ public class RunnableContextRunner
                 .getExceptionHandler()
                 .handleException(
                     new Status( IStatus.ERROR, ConnectionUIConstants.PLUGIN_ID, IStatus.ERROR,
-                        ex.getMessage() != null ? ex.getMessage() : "", ex ) ); //$NON-NLS-1$
+                        ex.getMessage() != null ? ex.getMessage() : StringUtils.EMPTY, ex ) ); //$NON-NLS-1$
         }
 
         IStatus status = spm[0].getErrorStatus( runnable.getErrorMessage() );
-        if ( handleError && !spm[0].isCanceled() && !status.isOK() )
+        
+        if ( ( handleError && !spm[0].isCanceled() ) && !status.isOK() )
         {
             ConnectionUIPlugin.getDefault().getExceptionHandler().handleException( status );
         }
 
         return status;
     }
-
 }

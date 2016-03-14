@@ -86,6 +86,7 @@ public class BrowserCommonPreferencesInitializer extends AbstractPreferenceIniti
         Collection<AttributeValueEditorRelation> avprs = new ArrayList<AttributeValueEditorRelation>();
         Collection<SyntaxValueEditorRelation> svprs = new ArrayList<SyntaxValueEditorRelation>();
         Collection<ValueEditorExtension> valueEditorExtensions = ValueEditorManager.getValueEditorExtensions();
+        
         for ( ValueEditorExtension vee : valueEditorExtensions )
         {
             for ( String attributeType : vee.attributeTypes )
@@ -93,12 +94,14 @@ public class BrowserCommonPreferencesInitializer extends AbstractPreferenceIniti
                 AttributeValueEditorRelation aver = new AttributeValueEditorRelation( attributeType, vee.className );
                 avprs.add( aver );
             }
+            
             for ( String syntaxOid : vee.syntaxOids )
             {
                 SyntaxValueEditorRelation sver = new SyntaxValueEditorRelation( syntaxOid, vee.className );
                 svprs.add( sver );
             }
         }
+        
         BrowserCommonActivator.getDefault().getValueEditorsPreferences().setDefaultAttributeValueEditorRelations(
             avprs.toArray( new AttributeValueEditorRelation[0] ) );
         BrowserCommonActivator.getDefault().getValueEditorsPreferences().setDefaultSyntaxValueEditorRelations(

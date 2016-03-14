@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+  
+  http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!--
+  @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.apache.directory.studio</groupId>
+    <artifactId>org.apache.directory.studio.parent</artifactId>
+    <version>2.0.0-SNAPSHOT</version>
+    <relativePath>../</relativePath>
+  </parent>
+  
+  <artifactId>org.apache.directory.studio.p2repositories-parent</artifactId>
+  <name>Apache Directory Studio P2 Repositories</name>
+  <packaging>pom</packaging>
+
+  <description />
+
+  <modules>
+    <module>dependencies</module>
+    <module>eclipse</module>
+<!--     <module>product</module> -->
+  </modules>
+
+  <build>
+    <plugins>
+      <!-- Clean META-INF directory with legal files -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-clean-plugin</artifactId>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>${basedir}/META-INF</directory>
+            </fileset>
+          </filesets>
+        </configuration>
+      </plugin>
+
+      <!-- Create the P2 repository -->
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-p2-repository-plugin</artifactId>
+        <version>${tycho.version}</version>
+        <configuration>
+          <includeAllDependencies>false</includeAllDependencies>
+          <createArtifactRepository>true</createArtifactRepository>
+          <compress>true</compress>
+          <profileProperties>
+            <macosx-bundled>true</macosx-bundled>
+          </profileProperties>
+        </configuration>
+      </plugin>
+
+      <!-- Include LICENSE.txt, NOTICE.txt, and p2.index files in P2 repositories -->
+      <!-- Don't add META-INF/LICENSE and META-INF/NOTICE into P2 repositories -->
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-resources</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <inherited>true</inherited>
+            <configuration>
+              <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${basedir}/../..</directory>
+                  <includes>
+                    <include>LICENSE.txt</include>
+                    <include>NOTICE.txt</include>
+                  </includes>
+                </resource>
+                <resource>
+                  <directory>${basedir}/..</directory>
+                  <includes>
+                    <include>p2.index</include>
+                  </includes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+          <execution>
+            <id>default-resources</id>
+            <phase>none</phase>
+            <goals>
+              <goal>resources</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>default-testResources</id>
+            <phase>none</phase>
+            <goals>
+              <goal>testResources</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Legal files are put to different folders, don't know how to verify. -->
+      <plugin>
+        <groupId>org.apache.geronimo.genesis.plugins</groupId>
+        <artifactId>tools-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>verify-legal-files</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>verify-legal-files</goal>
+            </goals>
+            <configuration>
+              <strict>false</strict>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    
+      <!-- Skip install of applications, it's just a waste of space. -->
+      <plugin>
+        <artifactId>maven-install-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+       </configuration>
+      </plugin>
+      <!-- Skip deployment of applications, it's just a waste of space. -->
+      <plugin>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+       </configuration>
+      </plugin>
+      <!-- Skip source plugin during release. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <phase>none</phase>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

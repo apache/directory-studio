@@ -355,7 +355,7 @@ public class Attribute implements IAttribute
     public boolean equals( Object o )
     {
         // check argument
-        if ( o == null || !( o instanceof IAttribute ) )
+        if ( !( o instanceof IAttribute ) )
         {
             return false;
         }

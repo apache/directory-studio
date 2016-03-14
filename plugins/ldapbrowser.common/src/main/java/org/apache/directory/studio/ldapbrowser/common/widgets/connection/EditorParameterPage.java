@@ -314,8 +314,8 @@ public class EditorParameterPage extends AbstractConnectionParameterPage
         String modifyMode = ldapUrl.getExtensionValue( X_MODIFY_MODE );
         try
         {
-            parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_MODIFY_MODE, new Integer(
-                modifyMode ).intValue() );
+            parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_MODIFY_MODE, 
+                Integer.valueOf( modifyMode ) );
         }
         catch ( NumberFormatException e )
         {
@@ -327,8 +327,8 @@ public class EditorParameterPage extends AbstractConnectionParameterPage
         String modifyModeNoEMR = ldapUrl.getExtensionValue( X_MODIFY_MODE_NO_EMR );
         try
         {
-            parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_MODIFY_MODE_NO_EMR, new Integer(
-                modifyModeNoEMR ).intValue() );
+            parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_MODIFY_MODE_NO_EMR, 
+                Integer.valueOf( modifyModeNoEMR ) );
         }
         catch ( NumberFormatException e )
         {
@@ -340,8 +340,8 @@ public class EditorParameterPage extends AbstractConnectionParameterPage
         String modifyOrder = ldapUrl.getExtensionValue( X_MODIFY_ORDER );
         try
         {
-            parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_MODIFY_ORDER, new Integer(
-                modifyOrder ).intValue() );
+            parameter.setExtendedIntProperty( IBrowserConnection.CONNECTION_PARAMETER_MODIFY_ORDER, 
+                Integer.valueOf( modifyOrder ) );
         }
         catch ( NumberFormatException e )
         {

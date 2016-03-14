@@ -19,44 +19,59 @@
   under the License.
 -->
 <plugin>
-   <extension
-         point="org.eclipse.ui.editors">
-      <editor
-            class="org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor"
-            default="true"
-            icon="resources/icons/editor.gif"
-            id="%Editor_ServerConfigurationEditor_id"
-            name="%Editor_ServerConfigurationEditor_name">
-         <contentTypeBinding
-               contentTypeId="%ContentType_ServerConfiguration_id">
-         </contentTypeBinding>
-      </editor>
-   </extension>
-   <extension
-         point="org.eclipse.core.contenttype.contentTypes">
-      <content-type
-            base-type="org.eclipse.core.runtime.xml"
-            describer="org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationContentDescriber"
-            file-extensions="xml"
-            file-names="server.xml"
-            id="%ContentType_ServerConfiguration_id"
-            name="%ContentType_ServerConfiguration_name"
-            priority="normal">
-      </content-type>
-   </extension>
-   <extension
-         point="org.eclipse.ui.newWizards">
-      <category
-            id="%NewWizards_Category_id"
-            name="%NewWizards_Category_name" />
-      <wizard
-            canFinishEarly="false"
-            category="%NewWizards_Category_id"
-            class="org.apache.directory.studio.apacheds.configuration.wizards.NewApacheDSConfigurationFileWizard"
-            hasPages="true"
-            icon="resources/icons/editor_new.gif"
-            id="%NewWizards_NewApacheDSConfigurationFileWizard_id"
-            name="%NewWizards_NewApacheDSConfigurationFileWizard_name"
-            project="false"/>
-   </extension>
+  <extension point="org.eclipse.ui.editors">
+    <editor
+        class="org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor"
+        default="false"
+        icon="resources/icons/editor.gif"
+        id="%Editor_ServerConfigurationEditor_id"
+        name="%Editor_ServerConfigurationEditor_name">
+      <contentTypeBinding contentTypeId="%ContentType_ServerConfiguration_id"/>
+    </editor>
+  </extension>
+   
+  <extension point="org.eclipse.core.contenttype.contentTypes">
+    <content-type
+        describer="org.apache.directory.studio.apacheds.configuration.ApacheDS2ConfigurationContentDescriber"
+        file-names="config.ldif"
+        id="%ContentType_ServerConfiguration_id"
+        name="%ContentType_ServerConfiguration_name"/>
+  </extension>
+   
+  <extension point="org.eclipse.ui.popupMenus">
+    <objectContribution
+        objectClass="org.apache.directory.studio.connection.core.Connection"
+        id="org.apache.directory.studio.connection.core.Connection">
+      <action
+          class="org.apache.directory.studio.apacheds.configuration.actions.OpenConfigurationAction"
+          enablesFor="1"
+          id="%OpenConfigurationAction_id"
+          label="%OpenConfigurationAction_label"
+          icon="resources/icons/editor.gif"/>
+      <visibility>
+        <and>
+          <objectState name="vendorName" value="Apache Software Foundation"/>
+            <or>
+              <objectState name="vendorVersion" value="2.0.0"/>
+              <!-- Special case to handle ApacheDS servers launched via Eclipse -->
+              <!--<objectState name="vendorVersion" value="${project.version}" /> -->
+            </or>
+        </and>
+      </visibility>
+    </objectContribution>
+  </extension>
+ 
+ <!-- Add a new entry to create an ApacheDS  configuration in the New menu -->  
+ <extension point="org.eclipse.ui.newWizards">
+  <category id="%NewWizards_Category_id" name="%NewWizards_Category_name" />
+  <wizard
+      canFinishEarly="true"
+      category="%NewWizards_Category_id"
+      class="org.apache.directory.studio.apacheds.configuration.wizards.NewApacheDSConfigurationFileWizard"
+      hasPages="false"
+      icon="resources/icons/editor_new.gif"
+      id="%NewWizards_NewApacheDSConfigurationFileWizard_id"
+      name="%NewWizards_NewApacheDSConfigurationFileWizard_name"
+      project="false"/>
+ </extension>
 </plugin>

@@ -46,7 +46,6 @@ import org.eclipse.swt.widgets.Shell;
  */
 public abstract class AbstractDialogValueEditor extends CellEditor implements IValueEditor
 {
-
     /** The value to handle */
     private Object value;
 
@@ -58,8 +57,7 @@ public abstract class AbstractDialogValueEditor extends CellEditor implements IV
 
     /** The image of this value editor */
     private ImageDescriptor imageDescriptor;
-
-
+    
     /**
      * 
      * Creates a new instance of AbstractDialogEditor.
@@ -135,9 +133,10 @@ public abstract class AbstractDialogValueEditor extends CellEditor implements IV
      */
     protected final void doSetValue( Object value )
     {
-        if ( value != null && value instanceof IValue.EmptyValue )
+        if ( value instanceof IValue.EmptyValue )
         {
             IValue.EmptyValue emptyValue = ( IValue.EmptyValue ) value;
+            
             if ( emptyValue.isBinary() )
             {
                 value = emptyValue.getBinaryValue();
@@ -147,6 +146,7 @@ public abstract class AbstractDialogValueEditor extends CellEditor implements IV
                 value = emptyValue.getStringValue();
             }
         }
+        
         this.value = value;
     }
 
@@ -205,7 +205,7 @@ public abstract class AbstractDialogValueEditor extends CellEditor implements IV
     {
         if ( attributeHierarchy == null )
         {
-            return "NULL"; //$NON-NLS-1$
+            return NULL; //$NON-NLS-1$
         }
 
         List<IValue> valueList = new ArrayList<IValue>();
@@ -253,6 +253,15 @@ public abstract class AbstractDialogValueEditor extends CellEditor implements IV
         {
             return null;
         }
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public boolean hasValue( IValue value )
+    {
+        return ( value != null ) && ( value.isString() || value.isBinary() );
     }
 
 

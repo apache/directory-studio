@@ -21,6 +21,12 @@
 package org.apache.directory.studio.test.integration.core;
 
 
+import static org.apache.directory.studio.test.integration.core.Constants.LOCALHOST;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.net.ConnectException;
 import java.net.UnknownHostException;
 
@@ -31,7 +37,10 @@ import javax.naming.NamingException;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 
-import org.apache.directory.server.unit.AbstractServerTest;
+import org.apache.directory.server.annotations.CreateLdapServer;
+import org.apache.directory.server.annotations.CreateTransport;
+import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
+import org.apache.directory.server.core.integ.FrameworkRunner;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -42,7 +51,10 @@ import org.apache.directory.studio.connection.core.ConnectionParameter.Encryptio
 import org.apache.directory.studio.connection.core.ConnectionParameter.NetworkProvider;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
 import org.apache.directory.studio.connection.core.io.jndi.JNDIConnectionWrapper;
+import org.apache.mina.util.AvailablePortFinder;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 
 /**
@@ -51,24 +63,21 @@ import org.eclipse.core.runtime.NullProgressMonitor;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class JNDIConnectionWrapperTest extends AbstractServerTest
+@RunWith(FrameworkRunner.class)
+@CreateLdapServer(transports =
+    { @CreateTransport(protocol = "LDAP"),
+        @CreateTransport(protocol = "LDAPS") })
+public class JNDIConnectionWrapperTest extends AbstractLdapTestUnit
 {
-    /**
-     * Initialize the server.
-     */
-    public void setUp() throws Exception
-    {
-        super.setUp();
-    }
-
 
     /**
      * Tests connecting to the server.
      */
+    @Test
     public void testConnect()
     {
         StudioProgressMonitor monitor = getProgressMonitor();
-        ConnectionParameter connectionParameter = new ConnectionParameter( null, "localhost", ldapServer.getPort(),
+        ConnectionParameter connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(),
             EncryptionMethod.NONE, NetworkProvider.JNDI, AuthenticationMethod.NONE, null, null, null, true, null );
         Connection connection = new Connection( connectionParameter );
         ConnectionWrapper connectionWrapper = connection.getConnectionWrapper();
@@ -89,6 +98,7 @@ public class JNDIConnectionWrapperTest extends AbstractServerTest
     /**
      * Test failed connections to the server.
      */
+    @Test
     public void testConnectFailures()
     {
         StudioProgressMonitor monitor = null;
@@ -98,7 +108,7 @@ public class JNDIConnectionWrapperTest extends AbstractServerTest
 
         // invalid port
         monitor = getProgressMonitor();
-        connectionParameter = new ConnectionParameter( null, "localhost", ldapServer.getPort() + 1,
+        connectionParameter = new ConnectionParameter( null, LOCALHOST, AvailablePortFinder.getNextAvailable(),
             EncryptionMethod.NONE, NetworkProvider.JNDI, AuthenticationMethod.NONE, null, null, null, true, null );
         connection = new Connection( connectionParameter );
         connectionWrapper = connection.getConnectionWrapper();
@@ -129,10 +139,11 @@ public class JNDIConnectionWrapperTest extends AbstractServerTest
     /**
      * Test binding to the server.
      */
+    @Test
     public void testBind()
     {
         StudioProgressMonitor monitor = getProgressMonitor();
-        ConnectionParameter connectionParameter = new ConnectionParameter( null, "localhost", ldapServer.getPort(),
+        ConnectionParameter connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(),
             EncryptionMethod.NONE, NetworkProvider.JNDI, AuthenticationMethod.SIMPLE, "uid=admin,ou=system", "secret",
             null, true, null );
         Connection connection = new Connection( connectionParameter );
@@ -155,6 +166,7 @@ public class JNDIConnectionWrapperTest extends AbstractServerTest
     /**
      * Test failed binds to the server.
      */
+    @Test
     public void testBindFailures()
     {
         StudioProgressMonitor monitor = null;
@@ -164,9 +176,8 @@ public class JNDIConnectionWrapperTest extends AbstractServerTest
 
         // simple auth without principal and credential
         monitor = getProgressMonitor();
-        connectionParameter = new ConnectionParameter( null, "localhost", ldapServer.getPort(),
-            EncryptionMethod.NONE, NetworkProvider.JNDI, AuthenticationMethod.SIMPLE, "uid=admin", "invalid", null,
-            true, null );
+        connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(), EncryptionMethod.NONE,
+            NetworkProvider.JNDI, AuthenticationMethod.SIMPLE, "uid=admin", "invalid", null, true, null );
         connection = new Connection( connectionParameter );
         connectionWrapper = connection.getConnectionWrapper();
         connectionWrapper.connect( monitor );
@@ -177,9 +188,8 @@ public class JNDIConnectionWrapperTest extends AbstractServerTest
 
         // simple auth with invalid principal and credential
         monitor = getProgressMonitor();
-        connectionParameter = new ConnectionParameter( null, "localhost", ldapServer.getPort(),
-            EncryptionMethod.NONE, NetworkProvider.JNDI, AuthenticationMethod.SIMPLE, "uid=admin,ou=system", "bar",
-            null, true, null );
+        connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(), EncryptionMethod.NONE,
+            NetworkProvider.JNDI, AuthenticationMethod.SIMPLE, "uid=admin,ou=system", "bar", null, true, null );
         connection = new Connection( connectionParameter );
         connectionWrapper = connection.getConnectionWrapper();
         connectionWrapper.connect( monitor );
@@ -193,6 +203,7 @@ public class JNDIConnectionWrapperTest extends AbstractServerTest
     /**
      * Test searching.
      */
+    @Test
     public void testSearch()
     {
         StudioProgressMonitor monitor = null;
@@ -202,9 +213,8 @@ public class JNDIConnectionWrapperTest extends AbstractServerTest
 
         // simple auth without principal and credential
         monitor = getProgressMonitor();
-        connectionParameter = new ConnectionParameter( null, "localhost", ldapServer.getPort(),
-            EncryptionMethod.NONE, NetworkProvider.JNDI, AuthenticationMethod.SIMPLE, "uid=admin,ou=system", "secret",
-            null, true, null );
+        connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(), EncryptionMethod.NONE,
+            NetworkProvider.JNDI, AuthenticationMethod.SIMPLE, "uid=admin,ou=system", "secret", null, true, null );
         connection = new Connection( connectionParameter );
         connectionWrapper = connection.getConnectionWrapper();
         connectionWrapper.connect( monitor );
@@ -216,15 +226,6 @@ public class JNDIConnectionWrapperTest extends AbstractServerTest
         NamingEnumeration<SearchResult> result = connectionWrapper.search( "ou=system", "objectClass=*",
             searchControls, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, null, monitor, null );
         assertNotNull( result );
-    }
-
-
-    /**
-     * Shutdown the server.
-     */
-    public void tearDown() throws Exception
-    {
-        super.tearDown();
     }
 
 

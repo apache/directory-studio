@@ -22,6 +22,7 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor;
 
 
 import org.apache.directory.studio.common.ui.widgets.ViewFormWidget;
+import org.apache.directory.studio.valueeditors.ValueEditorManager;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
@@ -80,6 +81,7 @@ public class EntryEditorWidget extends ViewFormWidget
      */
     protected Control createContent( Composite parent )
     {
+        // Create the filter widget
         quickFilterWidget = new EntryEditorWidgetQuickFilterWidget( configuration.getFilter(), this );
         quickFilterWidget.createComposite( parent );
 
@@ -95,7 +97,7 @@ public class EntryEditorWidget extends ViewFormWidget
         viewer = new TreeViewer( tree );
         viewer.setUseHashlookup( true );
 
-        // set tree columns
+        // set tree columns. We have 2 : one for the KEY, one for the Value
         for ( int i = 0; i < EntryEditorWidgetTableMetadata.COLUM_NAMES.length; i++ )
         {
             TreeColumn column = new TreeColumn( tree, SWT.LEFT, i );
@@ -104,7 +106,9 @@ public class EntryEditorWidget extends ViewFormWidget
             column.setResizable( true );
 
         }
+        
         viewer.setColumnProperties( EntryEditorWidgetTableMetadata.COLUM_NAMES );
+        
         tree.addControlListener( new ControlAdapter()
         {
             public void controlResized( ControlEvent e )
@@ -112,10 +116,12 @@ public class EntryEditorWidget extends ViewFormWidget
                 if ( tree.getClientArea().width > 0 )
                 {
                     int width = tree.getClientArea().width - 2 * tree.getBorderWidth();
+                    
                     if ( tree.getVerticalBar().isVisible() )
                     {
                         width -= tree.getVerticalBar().getSize().x;
                     }
+                    
                     tree.getColumn( EntryEditorWidgetTableMetadata.VALUE_COLUMN_INDEX ).setWidth(
                         width - tree.getColumn( EntryEditorWidgetTableMetadata.KEY_COLUMN_INDEX ).getWidth() );
                 }
@@ -127,17 +133,19 @@ public class EntryEditorWidget extends ViewFormWidget
         configuration.getFilter().connect( viewer );
         configuration.getPreferences().connect( viewer );
 
+        // Get the ValueEditorManager
+        ValueEditorManager valueEditorManager = configuration.getValueEditorManager( viewer );
+        
         // setup providers
         viewer.setContentProvider( configuration.getContentProvider( this ) );
-        viewer.setLabelProvider( configuration.getLabelProvider( viewer ) );
+        viewer.setLabelProvider( configuration.getLabelProvider( valueEditorManager, viewer ) );
 
         // set table cell editors
-        viewer.setCellModifier( configuration.getCellModifier( viewer ) );
+        viewer.setCellModifier( configuration.getCellModifier( valueEditorManager ) );
         CellEditor[] editors = new CellEditor[EntryEditorWidgetTableMetadata.COLUM_NAMES.length];
         viewer.setCellEditors( editors );
 
         return tree;
-
     }
 
 

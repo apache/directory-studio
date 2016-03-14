@@ -19,25 +19,15 @@
  */
 package org.apache.directory.studio.test.integration.ui.bots;
 
+import org.apache.directory.studio.test.integration.ui.bots.utils.TreeBot;
+
 
 public class PreferencesBot extends DialogBot
 {
 
-    public boolean isVisible()
+    public PreferencesBot()
     {
-        return super.isVisible( "Preferences" );
-    }
-
-
-    public void clickOkButton()
-    {
-        super.clickButton( "OK" );
-    }
-
-
-    public void clickCancelButton()
-    {
-        super.clickButton( "Cancel" );
+        super( "Preferences" );
     }
 
 
@@ -46,6 +36,13 @@ public class PreferencesBot extends DialogBot
         bot.tree().getTreeItem( "Apache Directory Studio" ).select().expand().getNode( "Connections" ).select()
             .expand().getNode( "Certificate Validation" ).select();
         return new CertificateValidationPreferencePageBot();
+    }
+
+
+    public boolean pageExists( String... path )
+    {
+        TreeBot treeBot = new TreeBot( bot.tree() );
+        return treeBot.exists( path );
     }
 
 }

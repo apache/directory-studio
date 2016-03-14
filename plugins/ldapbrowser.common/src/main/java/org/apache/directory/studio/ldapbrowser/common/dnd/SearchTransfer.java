@@ -87,7 +87,7 @@ public class SearchTransfer extends ByteArrayTransfer
      */
     public void javaToNative( Object object, TransferData transferData )
     {
-        if ( object == null || !( object instanceof ISearch[] ) )
+        if ( !( object instanceof ISearch[] ) )
         {
             return;
         }

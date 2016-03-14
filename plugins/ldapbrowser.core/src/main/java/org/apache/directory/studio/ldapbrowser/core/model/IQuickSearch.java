@@ -29,12 +29,10 @@ package org.apache.directory.studio.ldapbrowser.core.model;
  */
 public interface IQuickSearch extends ISearch
 {
-
     /**
      * Gets the search base entry.
      * 
      * @return the search base entry
      */
-    public IEntry getSearchBaseEntry();
-
+    IEntry getSearchBaseEntry();
 }

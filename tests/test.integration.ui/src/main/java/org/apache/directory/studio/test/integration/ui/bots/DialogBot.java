@@ -21,49 +21,78 @@ package org.apache.directory.studio.test.integration.ui.bots;
 
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.waits.ICondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 
 
 public abstract class DialogBot
 {
 
     protected SWTWorkbenchBot bot = new SWTWorkbenchBot();
+    protected String title;
 
 
-    protected boolean isVisible( String dialogTitle )
+    protected DialogBot( String title )
     {
-        return bot.shell( dialogTitle ).isVisible();
+        this.title = title;
+    }
+
+
+    public void activate()
+    {
+        bot.shell( title ).setFocus();
+    }
+
+
+    public boolean isVisible()
+    {
+        return bot.shell( title ).isVisible();
+    }
+
+
+    public void clickOkButton()
+    {
+        clickButton( "OK" );
+    }
+
+
+    public void clickCancelButton()
+    {
+        clickButton( "Cancel" );
     }
 
 
     protected void clickButton( final String buttonTitle )
     {
+        activate();
         final SWTBotButton button = bot.button( buttonTitle );
-        if ( !button.isEnabled() )
-        {
-            bot.waitUntil( new ICondition()
-            {
-
-                public boolean test() throws Exception
-                {
-                    return button.isEnabled();
-                }
-
-
-                public void init( SWTBot bot )
-                {
-                }
-
-
-                public String getFailureMessage()
-                {
-                    return "Button " + buttonTitle + " is not enabled!";
-                }
-            } );
-        }
         button.click();
     }
 
+
+    protected String clickCheckButton( final String label, final String title )
+    {
+        SWTBotShell parentShell = bot.activeShell();
+        SWTBotShell shell = BotUtils.shell( new Runnable()
+        {
+            public void run()
+            {
+                bot.button( label ).click();
+            }
+        }, "Error", title );
+
+        String shellText = shell.getText();
+        String labelText = bot.label( 1 ).getText(); // label(0) is the image
+        bot.button( "OK" ).click();
+        parentShell.activate();
+
+        if ( shellText.equals( title ) )
+        {
+            return null;
+        }
+        else
+        {
+            return labelText;
+        }
+    }
 }

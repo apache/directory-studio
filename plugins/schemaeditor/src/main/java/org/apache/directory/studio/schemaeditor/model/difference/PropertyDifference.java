@@ -33,7 +33,7 @@ public interface PropertyDifference extends Difference
      * @return
      *      the old value
      */
-    public Object getOldValue();
+    Object getOldValue();
 
 
     /**
@@ -42,7 +42,7 @@ public interface PropertyDifference extends Difference
      * @param oldValue
      *      the old value
      */
-    public void setOldValue( Object oldValue );
+    void setOldValue( Object oldValue );
 
 
     /**
@@ -51,7 +51,7 @@ public interface PropertyDifference extends Difference
      * @return
      *      the new value
      */
-    public Object getNewValue();
+    Object getNewValue();
 
 
     /**
@@ -60,5 +60,5 @@ public interface PropertyDifference extends Difference
      * @param newValue
      *      the new value
      */
-    public void setNewValue( Object newValue );
+    void setNewValue( Object newValue );
 }

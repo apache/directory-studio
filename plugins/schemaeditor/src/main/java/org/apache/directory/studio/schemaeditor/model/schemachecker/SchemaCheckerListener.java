@@ -31,5 +31,5 @@ public interface SchemaCheckerListener
     /**
      * This methods is called when the SchemaChecker is updated.
      */
-    public void schemaCheckerUpdated();
+    void schemaCheckerUpdated();
 }

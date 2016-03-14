@@ -41,25 +41,25 @@ public abstract class LdifNonEmptyLineBase extends LdifLineBase
 
     public String getRawLineStart()
     {
-        return getNonNull( this.rawLineStart );
+        return getNonNull( rawLineStart );
     }
 
 
     public String getUnfoldedLineStart()
     {
-        return unfold( this.getRawLineStart() );
+        return unfold( getRawLineStart() );
     }
 
 
     public boolean isValid()
     {
-        return super.isValid() && this.rawLineStart != null;
+        return super.isValid() && rawLineStart != null;
     }
 
 
     public String getInvalidString()
     {
-        if ( this.rawLineStart == null )
+        if ( rawLineStart == null )
         {
             return "Missing line start";
         }
@@ -72,7 +72,7 @@ public abstract class LdifNonEmptyLineBase extends LdifLineBase
 
     public String toRawString()
     {
-        return this.getRawLineStart() + this.getRawNewLine();
+        return getRawLineStart() + getRawNewLine();
     }
 
 

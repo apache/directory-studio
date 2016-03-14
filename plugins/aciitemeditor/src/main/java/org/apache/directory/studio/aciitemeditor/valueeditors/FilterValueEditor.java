@@ -48,7 +48,7 @@ public class FilterValueEditor extends AbstractDialogStringValueEditor
     public boolean openDialog( Shell shell )
     {
         Object value = getValue();
-        if ( value != null && value instanceof FilterValueEditorRawValueWrapper )
+        if ( value instanceof FilterValueEditorRawValueWrapper )
         {
             FilterValueEditorRawValueWrapper wrapper = ( FilterValueEditorRawValueWrapper ) value;
             FilterWidgetDialog dialog = new FilterWidgetDialog( shell, Messages
@@ -71,14 +71,21 @@ public class FilterValueEditor extends AbstractDialogStringValueEditor
      */
     public Object getRawValue( IValue value )
     {
-        return value != null ? getRawValue( value.getAttribute().getEntry().getBrowserConnection(), value
-            .getStringValue() ) : null;
+        if ( value != null )
+        {
+            return getRawValue( value.getAttribute().getEntry().getBrowserConnection(), 
+                                value.getStringValue() );
+        }
+        else
+        {
+            return null;
+        }
     }
 
 
     private Object getRawValue( IBrowserConnection connection, Object value )
     {
-        if ( connection == null || value == null || !( value instanceof String ) )
+        if ( connection == null || !( value instanceof String ) )
         {
             return null;
         }

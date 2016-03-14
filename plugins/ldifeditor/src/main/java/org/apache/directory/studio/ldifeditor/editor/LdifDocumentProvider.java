@@ -137,18 +137,19 @@ public class LdifDocumentProvider extends AbstractDocumentProvider implements ID
             // get containers to replace (from changeOffset till
             // changeOffset+replacedTextLength, check end of record)
             List<LdifContainer> oldContainerList = new ArrayList<LdifContainer>();
-            LdifContainer[] containers = this.ldifModel.getContainers();
-            for ( int i = 0; i < containers.length; i++ )
+            List<LdifContainer> containers = ldifModel.getContainers();
+            
+            for ( int i = 0; i < containers.size(); i++ )
             {
+                LdifContainer ldifContainer = containers.get( i );
 
-                Region containerRegion = new Region( containers[i].getOffset(), containers[i].getLength() );
+                Region containerRegion = new Region( containers.get( i ).getOffset(), containers.get( i ).getLength() );
 
-                boolean changeOffsetAtEOF = i == containers.length - 1
+                boolean changeOffsetAtEOF = i == containers.size() - 1
                     && changeOffset >= containerRegion.getOffset() + containerRegion.getLength();
 
                 if ( TextUtilities.overlaps( containerRegion, changeRegion ) || changeOffsetAtEOF )
                 {
-
                     // remember index
                     int index = i;
 
@@ -156,9 +157,11 @@ public class LdifDocumentProvider extends AbstractDocumentProvider implements ID
                     i--;
                     for ( ; i >= 0; i-- )
                     {
-                        if ( !containers[i].isValid() || !( containers[i] instanceof LdifRecord ) )
+                        ldifContainer = containers.get( i );
+                        
+                        if ( !ldifContainer.isValid() || !( ldifContainer instanceof LdifRecord ) )
                         {
-                            oldContainerList.add( 0, containers[i] );
+                            oldContainerList.add( 0, ldifContainer );
                         }
                         else
                         {
@@ -168,12 +171,14 @@ public class LdifDocumentProvider extends AbstractDocumentProvider implements ID
 
                     // add all overlapping containers
                     i = index;
-                    for ( ; i < containers.length; i++ )
+                    for ( ; i < containers.size(); i++ )
                     {
-                        containerRegion = new Region( containers[i].getOffset(), containers[i].getLength() );
+                        ldifContainer = containers.get( i );
+                        containerRegion = new Region( ldifContainer.getOffset(), ldifContainer.getLength() );
+                        
                         if ( TextUtilities.overlaps( containerRegion, changeRegion ) || changeOffsetAtEOF )
                         {
-                            oldContainerList.add( containers[i] );
+                            oldContainerList.add( ldifContainer );
                         }
                         else
                         {
@@ -182,12 +187,14 @@ public class LdifDocumentProvider extends AbstractDocumentProvider implements ID
                     }
 
                     // add invalid containers and non-records after overlap
-                    for ( ; i < containers.length; i++ )
+                    for ( ; i < containers.size(); i++ )
                     {
-                        if ( !containers[i].isValid() || !( containers[i] instanceof LdifRecord )
+                        ldifContainer = containers.get( i );
+
+                        if ( !ldifContainer.isValid() || !( ldifContainer instanceof LdifRecord )
                             || !( oldContainerList.get( oldContainerList.size() - 1 ) instanceof LdifRecord ) )
                         {
-                            oldContainerList.add( containers[i] );
+                            oldContainerList.add( ldifContainer );
                         }
                         else
                         {
@@ -196,6 +203,7 @@ public class LdifDocumentProvider extends AbstractDocumentProvider implements ID
                     }
                 }
             }
+            
             LdifContainer[] oldContainers = ( LdifContainer[] ) oldContainerList
                 .toArray( new LdifContainer[oldContainerList.size()] );
             int oldCount = oldContainers.length;
@@ -210,11 +218,11 @@ public class LdifDocumentProvider extends AbstractDocumentProvider implements ID
 
             // parse partion content to containers (offset=0)
             LdifFile newModel = this.ldifParser.parse( textToParse );
-            LdifContainer[] newContainers = newModel.getContainers();
+            List<LdifContainer> newContainers = newModel.getContainers();
 
             // replace old containers with new containers
             // must adjust offsets of all following containers in model
-            this.ldifModel.replace( oldContainers, newContainers );
+            ldifModel.replace( oldContainers, newContainers );
 
         }
         catch ( Exception e )

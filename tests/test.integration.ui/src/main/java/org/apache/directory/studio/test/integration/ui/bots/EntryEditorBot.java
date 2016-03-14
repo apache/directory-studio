@@ -101,6 +101,12 @@ public class EntryEditorBot
     }
 
 
+    public PasswordEditorDialogBot editValueExpectingPasswordEditor( String attributeType, String value )
+    {
+        return editorBot.editValueExpectingPasswordEditor( attributeType, value );
+    }
+
+
     public void deleteValue( String attributeType, String value )
     {
         editorBot.deleteValue( attributeType, value );

@@ -87,11 +87,12 @@ public abstract class AbstractOpenValueEditorAction extends AbstractLdifAction
                 cellEditor.activate();
                 Object newValue = cellEditor.getValue();
 
-                if ( newValue != null && newValue instanceof String || newValue instanceof byte[] )
+                if ( ( newValue instanceof String ) || ( newValue instanceof byte[] ) )
                 {
                     IDocument document = editor.getDocumentProvider().getDocument( editor.getEditorInput() );
 
                     LdifValueLineBase newLine;
+                    
                     if ( line instanceof LdifControlLine )
                     {
                         LdifControlLine oldControlLine = ( LdifControlLine ) line;

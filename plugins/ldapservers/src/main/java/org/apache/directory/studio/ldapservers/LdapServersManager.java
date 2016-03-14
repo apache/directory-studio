@@ -32,7 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.FileUtils;
+import org.apache.directory.api.util.FileUtils;
 import org.apache.directory.studio.common.ui.CommonUIUtils;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
 import org.eclipse.core.runtime.IPath;

@@ -26,8 +26,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
+import org.apache.directory.api.util.FileUtils;
+import org.apache.directory.api.util.IOUtils;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.io.jndi.LdifSearchLogger;
 import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;

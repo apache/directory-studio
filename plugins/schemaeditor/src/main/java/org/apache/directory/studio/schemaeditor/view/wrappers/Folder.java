@@ -74,6 +74,8 @@ public class Folder extends AbstractTreeNode
             case WARNING:
                 name = Messages.getString( "Folder.Warnings" ); //$NON-NLS-1$
                 break;
+            default:
+                break;
         }
     }
 

@@ -60,15 +60,17 @@ public class DifferencesWidgetPropertiesLabelProvider extends LabelProvider
         if ( element instanceof PropertyDifference )
         {
             PropertyDifference propertyDifference = ( PropertyDifference ) element;
+
             switch ( propertyDifference.getType() )
             {
                 case ADDED:
                     return Activator.getDefault().getImage( PluginConstants.IMG_DIFFERENCE_PROPERTY_ADD );
-
                 case MODIFIED:
                     return Activator.getDefault().getImage( PluginConstants.IMG_DIFFERENCE_PROPERTY_MODIFY );
                 case REMOVED:
                     return Activator.getDefault().getImage( PluginConstants.IMG_DIFFERENCE_PROPERTY_REMOVE );
+                default:
+                    break;
             }
         }
 
@@ -85,6 +87,7 @@ public class DifferencesWidgetPropertiesLabelProvider extends LabelProvider
         if ( element instanceof AliasDifference )
         {
             AliasDifference diff = ( AliasDifference ) element;
+
             switch ( diff.getType() )
             {
                 case ADDED:
@@ -95,33 +98,42 @@ public class DifferencesWidgetPropertiesLabelProvider extends LabelProvider
                     return NLS
                         .bind(
                             Messages.getString( "DifferencesWidgetPropertiesLabelProvider.RemoveAlias" ), new Object[] { diff.getOldValue() } ); //$NON-NLS-1$
+                default:
+                    break;
             }
         }
         else if ( element instanceof ClassTypeDifference )
         {
             ClassTypeDifference diff = ( ClassTypeDifference ) element;
+
             switch ( diff.getType() )
             {
                 case MODIFIED:
                     return NLS
                         .bind(
                             Messages.getString( "DifferencesWidgetPropertiesLabelProvider.ModifiedClassType" ), new Object[] { diff.getNewValue(), diff.getOldValue() } ); //$NON-NLS-1$
+                default:
+                    break;
             }
         }
         else if ( element instanceof CollectiveDifference )
         {
             CollectiveDifference diff = ( CollectiveDifference ) element;
+
             switch ( diff.getType() )
             {
                 case MODIFIED:
                     return NLS
                         .bind(
                             Messages.getString( "DifferencesWidgetPropertiesLabelProvider.ModifiedCollective" ), new Object[] { diff.getNewValue(), diff.getOldValue() } ); //$NON-NLS-1$
+                default:
+                    break;
             }
         }
         else if ( element instanceof DescriptionDifference )
         {
             DescriptionDifference diff = ( DescriptionDifference ) element;
+
             switch ( diff.getType() )
             {
                 case ADDED:
@@ -136,11 +148,14 @@ public class DifferencesWidgetPropertiesLabelProvider extends LabelProvider
                     return NLS
                         .bind(
                             Messages.getString( "DifferencesWidgetPropertiesLabelProvider.RemovedDescription" ), new Object[] { diff.getOldValue() } ); //$NON-NLS-1$
+                default:
+                    break;
             }
         }
         else if ( element instanceof EqualityDifference )
         {
             EqualityDifference diff = ( EqualityDifference ) element;
+
             switch ( diff.getType() )
             {
                 case ADDED:
@@ -155,11 +170,14 @@ public class DifferencesWidgetPropertiesLabelProvider extends LabelProvider
                     return NLS
                         .bind(
                             Messages.getString( "DifferencesWidgetPropertiesLabelProvider.RemovedMatchingRule" ), new Object[] { diff.getOldValue() } ); //$NON-NLS-1$
+                default:
+                    break;
             }
         }
         else if ( element instanceof MandatoryATDifference )
         {
             MandatoryATDifference diff = ( MandatoryATDifference ) element;
+
             switch ( diff.getType() )
             {
                 case ADDED:
@@ -171,11 +189,14 @@ public class DifferencesWidgetPropertiesLabelProvider extends LabelProvider
                         .bind(
                             Messages
                                 .getString( "DifferencesWidgetPropertiesLabelProvider.RemovedMandatoryAttributeType" ), new Object[] { diff.getOldValue() } ); //$NON-NLS-1$
+                default:
+                    break;
             }
         }
         else if ( element instanceof NoUserModificationDifference )
         {
             NoUserModificationDifference diff = ( NoUserModificationDifference ) element;
+
             switch ( diff.getType() )
             {
                 case MODIFIED:
@@ -183,22 +204,28 @@ public class DifferencesWidgetPropertiesLabelProvider extends LabelProvider
                         .bind(
                             Messages
                                 .getString( "DifferencesWidgetPropertiesLabelProvider.ModifiedNoUserModificationValue" ), new Object[] { diff.getNewValue(), diff.getOldValue() } ); //$NON-NLS-1$
+                default:
+                    break;
             }
         }
         else if ( element instanceof ObsoleteDifference )
         {
             ObsoleteDifference diff = ( ObsoleteDifference ) element;
+
             switch ( diff.getType() )
             {
                 case MODIFIED:
                     return NLS
                         .bind(
                             Messages.getString( "DifferencesWidgetPropertiesLabelProvider.ModifiedObsoleteValue" ), new Object[] { diff.getNewValue(), diff.getOldValue() } ); //$NON-NLS-1$
+                default:
+                    break;
             }
         }
         else if ( element instanceof OptionalATDifference )
         {
             OptionalATDifference diff = ( OptionalATDifference ) element;
+
             switch ( diff.getType() )
             {
                 case ADDED:
@@ -210,11 +237,14 @@ public class DifferencesWidgetPropertiesLabelProvider extends LabelProvider
                         .bind(
                             Messages
                                 .getString( "DifferencesWidgetPropertiesLabelProvider.RemovedOptionalAttributeType" ), new Object[] { diff.getOldValue() } ); //$NON-NLS-1$
+                default:
+                    break;
             }
         }
         else if ( element instanceof OrderingDifference )
         {
             OrderingDifference diff = ( OrderingDifference ) element;
+
             switch ( diff.getType() )
             {
                 case ADDED:
@@ -230,22 +260,28 @@ public class DifferencesWidgetPropertiesLabelProvider extends LabelProvider
                     return NLS
                         .bind(
                             Messages.getString( "DifferencesWidgetPropertiesLabelProvider.RemovedOrderingMatchingRule" ), new Object[] { diff.getOldValue() } ); //$NON-NLS-1$
+                default:
+                    break;
             }
         }
         else if ( element instanceof SingleValueDifference )
         {
             SingleValueDifference diff = ( SingleValueDifference ) element;
+
             switch ( diff.getType() )
             {
                 case MODIFIED:
                     return NLS
                         .bind(
                             Messages.getString( "DifferencesWidgetPropertiesLabelProvider.ModifiedSingleValueValue" ), new Object[] { diff.getNewValue(), diff.getOldValue() } ); //$NON-NLS-1$
+                default:
+                    break;
             }
         }
         else if ( element instanceof SubstringDifference )
         {
             SubstringDifference diff = ( SubstringDifference ) element;
+
             switch ( diff.getType() )
             {
                 case ADDED:
@@ -262,11 +298,14 @@ public class DifferencesWidgetPropertiesLabelProvider extends LabelProvider
                         .bind(
                             Messages
                                 .getString( "DifferencesWidgetPropertiesLabelProvider.RemovedSubstringMatchingRule" ), new Object[] { diff.getOldValue() } ); //$NON-NLS-1$
+                default:
+                    break;
             }
         }
         else if ( element instanceof SuperiorATDifference )
         {
             SuperiorATDifference diff = ( SuperiorATDifference ) element;
+
             switch ( diff.getType() )
             {
                 case ADDED:
@@ -281,11 +320,14 @@ public class DifferencesWidgetPropertiesLabelProvider extends LabelProvider
                     return NLS
                         .bind(
                             Messages.getString( "DifferencesWidgetPropertiesLabelProvider.RemovedSuperior" ), new Object[] { diff.getOldValue() } ); //$NON-NLS-1$
+                default:
+                    break;
             }
         }
         else if ( element instanceof SuperiorOCDifference )
         {
             SuperiorOCDifference diff = ( SuperiorOCDifference ) element;
+
             switch ( diff.getType() )
             {
                 case ADDED:
@@ -296,6 +338,8 @@ public class DifferencesWidgetPropertiesLabelProvider extends LabelProvider
                     return NLS
                         .bind(
                             Messages.getString( "DifferencesWidgetPropertiesLabelProvider.RemovedSuperior" ), new Object[] { diff.getOldValue() } ); //$NON-NLS-1$
+                default:
+                    break;
             }
         }
         else if ( element instanceof SyntaxDifference )
@@ -315,6 +359,8 @@ public class DifferencesWidgetPropertiesLabelProvider extends LabelProvider
                     return NLS
                         .bind(
                             Messages.getString( "DifferencesWidgetPropertiesLabelProvider.RemovedSyntax" ), new Object[] { diff.getOldValue() } ); //$NON-NLS-1$
+                default:
+                    break;
             }
         }
         else if ( element instanceof SyntaxLengthDifference )
@@ -334,6 +380,8 @@ public class DifferencesWidgetPropertiesLabelProvider extends LabelProvider
                     return NLS
                         .bind(
                             Messages.getString( "DifferencesWidgetPropertiesLabelProvider.RemovedSyntaxLength" ), new Object[] { diff.getOldValue() } ); //$NON-NLS-1$
+                default:
+                    break;
             }
         }
         else if ( element instanceof UsageDifference )
@@ -345,6 +393,8 @@ public class DifferencesWidgetPropertiesLabelProvider extends LabelProvider
                     return NLS
                         .bind(
                             Messages.getString( "DifferencesWidgetPropertiesLabelProvider.ModifiedUsage" ), new Object[] { diff.getNewValue(), diff.getOldValue() } ); //$NON-NLS-1$
+                default:
+                    break;
             }
         }
 

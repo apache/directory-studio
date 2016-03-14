@@ -21,6 +21,7 @@
 package org.apache.directory.studio.connection.ui.actions;
 
 
+import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.jobs.CloseConnectionsRunnable;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionJob;
 import org.apache.directory.studio.connection.ui.ConnectionUIConstants;
@@ -37,15 +38,6 @@ public class CloseConnectionAction extends StudioAction
 {
 
     /**
-     * Creates a new instance of CloseConnectionAction.
-     */
-    public CloseConnectionAction()
-    {
-        super();
-    }
-
-
-    /**
      * @see org.apache.directory.studio.connection.ui.actions.StudioAction#run()
      */
     public void run()
@@ -59,7 +51,14 @@ public class CloseConnectionAction extends StudioAction
      */
     public String getText()
     {
-        return getSelectedConnections().length > 1 ? Messages.getString( "CloseConnectionAction.CloseConnections" ) : Messages.getString( "CloseConnectionAction.CloseConnection" ); //$NON-NLS-1$ //$NON-NLS-2$
+        if ( getSelectedConnections().length > 1 )
+        {
+            return Messages.getString( "CloseConnectionAction.CloseConnections" );
+        }
+        else
+        {
+            return Messages.getString( "CloseConnectionAction.CloseConnection" ); //$NON-NLS-1$ //$NON-NLS-2$
+        }
     }
 
 
@@ -87,14 +86,16 @@ public class CloseConnectionAction extends StudioAction
     public boolean isEnabled()
     {
         boolean canClose = false;
-        for ( int i = 0; i < getSelectedConnections().length; i++ )
+        
+        for ( Connection connection : getSelectedConnections() )
         {
-            if ( getSelectedConnections()[i].getConnectionWrapper().isConnected() )
+            if ( connection.getConnectionWrapper().isConnected() )
             {
                 canClose = true;
                 break;
             }
         }
+        
         return getSelectedConnections().length > 0 && canClose;
     }
 }

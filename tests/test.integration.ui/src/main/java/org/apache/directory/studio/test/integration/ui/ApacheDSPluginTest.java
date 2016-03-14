@@ -21,26 +21,32 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.apache.directory.studio.apacheds.model.ServersHandler;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionFolder;
 import org.apache.directory.studio.connection.core.ConnectionFolderManager;
 import org.apache.directory.studio.connection.core.ConnectionManager;
+import org.apache.directory.studio.ldapservers.LdapServersManager;
+import org.apache.directory.studio.test.integration.ui.bots.ApacheDSConfigurationEditorBot;
 import org.apache.directory.studio.test.integration.ui.bots.ApacheDSServersViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionFromServerDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
+import org.apache.directory.studio.test.integration.ui.bots.ConsoleViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.DeleteDialogBot;
+import org.apache.directory.studio.test.integration.ui.bots.ModificationLogsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewApacheDSServerWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
+import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
+import org.apache.mina.util.AvailablePortFinder;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 
 /**
@@ -49,11 +55,13 @@ import org.junit.Test;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
+@RunWith(FrameworkRunnerWithScreenshotCaptureListener.class)
 public class ApacheDSPluginTest
 {
     private StudioBot studioBot;
     private ApacheDSServersViewBot serversViewBot;
     private ConnectionsViewBot connectionsViewBot;
+    private ConsoleViewBot consoleViewBot;
 
 
     @Before
@@ -63,6 +71,7 @@ public class ApacheDSPluginTest
         studioBot.resetLdapPerspective();
         serversViewBot = studioBot.getApacheDSServersViewBot();
         connectionsViewBot = studioBot.getConnectionView();
+        consoleViewBot = studioBot.getConsoleView();
     }
 
 
@@ -70,13 +79,73 @@ public class ApacheDSPluginTest
      * Run the following tests:
      * <ul>
      *      <li>Creates a new server</li>
-     *      <li>Runs the server</li>
-     *      <li>Stops the server (after waiting for the server to be completely started)</li>
+     *      <li>Starts the server</li>
+     *      <li>Creates and uses a connection</li>
+     *      <li>Stops the server</li>
      *      <li>Deletes the server</li>
      * </ul>
      */
     @Test
-    public void serverCreationStartStopAndDeletion()
+    public void serverCreationStartCreateConnectionStopAndDeletion()
+    {
+        String serverName = "ServerCreationStartCreateConnectionStopAndDeletion";
+        createServer( serverName );
+        setAvailablePorts( serverName );
+
+        // Starting the server
+        serversViewBot.runServer( serverName );
+        serversViewBot.waitForServerStart( serverName );
+
+        // DIRSTUDIO-1077: Check for log output in console to verify logging configuration still works
+        String consoleText = consoleViewBot.getConsoleText();
+        assertThat( consoleText, containsString( "You didn't change the admin password" ) );
+
+        // Verifying the connections count is 0
+        assertEquals( 0, getBrowserConnectionsCount() );
+
+        // Creating a connection associated with the server
+        ConnectionFromServerDialogBot connectionFromServerDialogBot = serversViewBot.createConnectionFromServer();
+        assertTrue( connectionFromServerDialogBot.isVisible() );
+        connectionFromServerDialogBot.clickOkButton();
+
+        // Verifying the connections count is now 1
+        assertEquals( 1, getBrowserConnectionsCount() );
+
+        // Opening the connection
+        connectionsViewBot.selectConnection( serverName );
+        connectionsViewBot.openSelectedConnection();
+
+        // Getting the associated connection object
+        Connection connection = getBrowserConnection();
+
+        // Checking if the connection is open
+        assertTrue( connection.getConnectionWrapper().isConnected() );
+
+        // Closing the connection
+        connectionsViewBot.selectConnection( serverName );
+        connectionsViewBot.closeSelectedConnections();
+
+        // Checking if the connection is closed
+        assertFalse( connection.getConnectionWrapper().isConnected() );
+
+        // Deleting the connection
+        connectionsViewBot.deleteTestConnections();
+
+        // Stopping the server
+        serversViewBot.stopServer( serverName );
+        serversViewBot.waitForServerStop( serverName );
+
+        // Deleting the server
+        DeleteDialogBot deleteDialogBot = serversViewBot.openDeleteServerDialog();
+        deleteDialogBot.clickOkButton();
+
+        // Verifying the servers count is back to 0
+        assertEquals( 0, getCoreServersCount() );
+        assertEquals( 0, serversViewBot.getServersCount() );
+    }
+
+
+    private void createServer( String serverName )
     {
         // Showing view
         serversViewBot.show();
@@ -92,7 +161,7 @@ public class ApacheDSPluginTest
         assertFalse( wizardBot.isFinishButtonEnabled() );
 
         // Filling fields of the wizard
-        String serverName = "NewServerWizardTest";
+        wizardBot.selectApacheDS200();
         wizardBot.typeServerName( serverName );
 
         // Verifying the wizard can now be finished
@@ -105,22 +174,6 @@ public class ApacheDSPluginTest
         // Verifying the servers count is now 1
         assertEquals( 1, getCoreServersCount() );
         assertEquals( 1, serversViewBot.getServersCount() );
-
-        // Starting the server
-        serversViewBot.runServer( serverName );
-        serversViewBot.waitForServerStart( serverName );
-
-        // Stopping the server
-        serversViewBot.stopServer( serverName );
-        serversViewBot.waitForServerStop( serverName );
-
-        // Deleting the server
-        DeleteDialogBot deleteDialogBot = serversViewBot.openDeleteServerDialog();
-        deleteDialogBot.clickOkButton();
-
-        // Verifying the servers count is back to 0
-        assertEquals( 0, getCoreServersCount() );
-        assertEquals( 0, serversViewBot.getServersCount() );
     }
 
 
@@ -146,6 +199,7 @@ public class ApacheDSPluginTest
 
         // Filling fields of the wizard
         String serverName = "NewServerWizardTest";
+        wizardBot.selectApacheDS200();
         wizardBot.typeServerName( serverName );
 
         // Verifying the wizard can now be finished
@@ -166,6 +220,7 @@ public class ApacheDSPluginTest
         assertFalse( wizardBot.isFinishButtonEnabled() );
 
         // Filling fields of the wizard
+        wizardBot.selectApacheDS200();
         wizardBot.typeServerName( serverName );
 
         // Verifying the wizard can't be finished (because a server with
@@ -188,87 +243,18 @@ public class ApacheDSPluginTest
     }
 
 
-    /**
-     * Checks the creation of a connection from a server.
-     */
-    @Test
-    public void connectionCreationFromServer()
+    private void setAvailablePorts( String serverName )
     {
-        // Showing view
-        serversViewBot.show();
+        ApacheDSConfigurationEditorBot editorBot = serversViewBot.openConfigurationEditor( serverName );
 
-        // Verifying the servers count is 0
-        assertEquals( 0, getCoreServersCount() );
-        assertEquals( 0, serversViewBot.getServersCount() );
+        int ldapPort = AvailablePortFinder.getNextAvailable( 1024 );
+        editorBot.setLdapPort( ldapPort );
 
-        // Opening wizard
-        NewApacheDSServerWizardBot wizardBot = serversViewBot.openNewServerWizard();
+        int ldapsPort = AvailablePortFinder.getNextAvailable( ldapPort + 1 );
+        editorBot.setLdapsPort( ldapsPort );
 
-        // Verifying the wizard can't be finished yet
-        assertFalse( wizardBot.isFinishButtonEnabled() );
-
-        // Filling fields of the wizard
-        String serverName = "NewServerWizardTest";
-        wizardBot.typeServerName( serverName );
-
-        // Verifying the wizard can now be finished
-        assertTrue( wizardBot.isFinishButtonEnabled() );
-
-        // Closing wizard
-        wizardBot.clickFinishButton();
-        serversViewBot.waitForServer( serverName );
-
-        // Verifying the servers count is now 1
-        assertEquals( 1, getCoreServersCount() );
-        assertEquals( 1, serversViewBot.getServersCount() );
-
-        // Starting the server
-        serversViewBot.runServer( serverName );
-        serversViewBot.waitForServerStart( serverName );
-
-        // Verifying the connections count is 0
-        assertEquals( 0, getBrowserConnectionsCount() );
-
-        // Creating a connection associated with the server
-        ConnectionFromServerDialogBot connectionFromServerDialogBot = serversViewBot.createConnectionFromServer();
-        connectionFromServerDialogBot.clickOkButton();
-
-        // Verifying the connections count is now 1
-        assertEquals( 1, getBrowserConnectionsCount() );
-
-        // Opening the connection
-        connectionsViewBot.selectConnection( serverName );
-        connectionsViewBot.openSelectedConnection();
-
-        // Getting the associated connection object
-        Connection connection = getBrowserConnection();
-
-        // Checking if the connection is open
-        waitForConnectionOpened( connection );
-        assertTrue( connection.getConnectionWrapper().isConnected() );
-
-        // Closing the connection
-        connectionsViewBot.selectConnection( serverName );
-        connectionsViewBot.closeSelectedConnections();
-
-        // Checking if the connection is closed
-        waitForConnectionClosed( connection );
-        assertFalse( connection.getConnectionWrapper().isConnected() );
-
-        // Deleting the connection
-        connectionsViewBot.deleteTestConnections();
-
-        // Stopping the server
-        serversViewBot.stopServer( serverName );
-        serversViewBot.waitForServerStop( serverName );
-
-        // Deleting the server
-        DeleteDialogBot deleteDialogBot = serversViewBot.openDeleteServerDialog();
-        deleteDialogBot.clickOkButton();
-
-        // Verifying the servers count is back to 0
-        assertEquals( 0, getCoreServersCount() );
-        assertEquals( 0, serversViewBot.getServersCount() );
+        editorBot.save();
+        editorBot.close();
     }
 
 
@@ -278,9 +264,9 @@ public class ApacheDSPluginTest
      * @return
      *      the servers count found in the core of the plugin
      */
-    public int getCoreServersCount()
+    private int getCoreServersCount()
     {
-        ServersHandler serversHandler = ServersHandler.getDefault();
+        LdapServersManager serversHandler = LdapServersManager.getDefault();
         if ( serversHandler != null )
         {
             return serversHandler.getServersList().size();
@@ -296,7 +282,7 @@ public class ApacheDSPluginTest
      * @return
      *      the connections count found in the LDAP Browser
      */
-    public int getBrowserConnectionsCount()
+    private int getBrowserConnectionsCount()
     {
         ConnectionFolderManager connectionFolderManager = ConnectionCorePlugin.getDefault()
             .getConnectionFolderManager();
@@ -319,7 +305,7 @@ public class ApacheDSPluginTest
      * @return
      *      the connections count found in the LDAP Browser
      */
-    public Connection getBrowserConnection()
+    private Connection getBrowserConnection()
     {
         ConnectionFolderManager connectionFolderManager = ConnectionCorePlugin.getDefault()
             .getConnectionFolderManager();
@@ -338,49 +324,77 @@ public class ApacheDSPluginTest
 
 
     /**
-     * Waits until the given connection is opened.
-     *
-     * @param connection
-     *      the connection
+     * Test for DIRSTUDIO-1080: edit the server configuration via remote connection.
      */
-    public void waitForConnectionOpened( final Connection connection )
+    @Test
+    public void editRemoteConfig()
     {
-        new SWTWorkbenchBot().waitUntil( new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return connection.getConnectionWrapper().isConnected();
-            }
+        String serverName = "EditRemoteConfig";
+        createServer( serverName );
+        setAvailablePorts( serverName );
 
+        // Start the server
+        serversViewBot.runServer( serverName );
+        serversViewBot.waitForServerStart( serverName );
 
-            public String getFailureMessage()
-            {
-                return "Connection " + connection.getName() + " not opened in connections view.";
-            }
-        } );
+        // Create a connection associated with the server
+        ConnectionFromServerDialogBot connectionFromServerDialogBot = serversViewBot.createConnectionFromServer();
+        connectionFromServerDialogBot.clickOkButton();
+
+        // Open the connection
+        connectionsViewBot.selectConnection( serverName );
+        connectionsViewBot.openSelectedConnection();
+
+        // Open the config editor and load remote config
+        ApacheDSConfigurationEditorBot remoteEditorBot = connectionsViewBot.openApacheDSConfiguration();
+
+        // Remember old ports
+        int oldLdapPort = remoteEditorBot.getLdapPort();
+        int oldLdapsPort = remoteEditorBot.getLdapsPort();
+
+        // Set new ports
+        int newLdapPort = AvailablePortFinder.getNextAvailable( 1024 );
+        remoteEditorBot.setLdapPort( newLdapPort );
+        int newLdapsPort = AvailablePortFinder.getNextAvailable( newLdapPort + 1 );
+        remoteEditorBot.setLdapsPort( newLdapsPort );
+
+        // Save the config editor
+        remoteEditorBot.save();
+        remoteEditorBot.close();
+
+        // Verify new port settings went over the network
+        ModificationLogsViewBot modificationLogsViewBot = studioBot.getModificationLogsViewBot();
+        modificationLogsViewBot.waitForText( "add: ads-systemPort" );
+        String modificationLogsText = modificationLogsViewBot.getModificationLogsText();
+        assertThat( modificationLogsText,
+            containsString( "delete: ads-systemPort\nads-systemPort: " + oldLdapPort + "\n" ) );
+        assertThat( modificationLogsText,
+            containsString( "add: ads-systemPort\nads-systemPort: " + newLdapPort + "\n" ) );
+        assertThat( modificationLogsText,
+            containsString( "delete: ads-systemPort\nads-systemPort: " + oldLdapsPort + "\n" ) );
+        assertThat( modificationLogsText,
+            containsString( "add: ads-systemPort\nads-systemPort: " + newLdapsPort + "\n" ) );
+
+        // Verify new port settings are visible in local config editor
+        ApacheDSConfigurationEditorBot localEditorBot = serversViewBot.openConfigurationEditor( serverName );
+        assertEquals( newLdapPort, localEditorBot.getLdapPort() );
+        assertEquals( newLdapsPort, localEditorBot.getLdapsPort() );
+        localEditorBot.close();
+
+        // Close the connection
+        connectionsViewBot.selectConnection( serverName );
+        connectionsViewBot.closeSelectedConnections();
+
+        // Delete the connection
+        connectionsViewBot.deleteTestConnections();
+
+        // Stopping the server
+        serversViewBot.stopServer( serverName );
+        serversViewBot.waitForServerStop( serverName );
+
+        // Deleting the server
+        DeleteDialogBot deleteDialogBot = serversViewBot.openDeleteServerDialog();
+        deleteDialogBot.clickOkButton();
     }
 
-
-    /**
-     * Waits until the given connection is closed.
-     *
-     * @param connection
-     *      the connection
-     */
-    public void waitForConnectionClosed( final Connection connection )
-    {
-        new SWTWorkbenchBot().waitUntil( new DefaultCondition()
-        {
-            public boolean test() throws Exception
-            {
-                return !connection.getConnectionWrapper().isConnected();
-            }
-
-
-            public String getFailureMessage()
-            {
-                return "Connection " + connection.getName() + " not closed in connections view.";
-            }
-        } );
-    }
 }

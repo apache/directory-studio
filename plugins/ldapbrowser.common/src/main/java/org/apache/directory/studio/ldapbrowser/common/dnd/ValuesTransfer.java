@@ -88,7 +88,7 @@ public class ValuesTransfer extends ByteArrayTransfer
      */
     public void javaToNative( Object object, TransferData transferData )
     {
-        if ( object == null || !( object instanceof IValue[] ) )
+        if ( !( object instanceof IValue[] ) )
         {
             return;
         }

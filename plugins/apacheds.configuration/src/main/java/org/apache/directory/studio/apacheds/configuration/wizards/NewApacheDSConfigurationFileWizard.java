@@ -20,27 +20,13 @@
 package org.apache.directory.studio.apacheds.configuration.wizards;
 
 
-import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPlugin;
-import org.apache.directory.studio.apacheds.configuration.editor.NonExistingServerConfigurationInput;
+import org.apache.directory.studio.apacheds.configuration.editor.NewServerConfigurationInput;
 import org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor;
-import org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration;
-import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO;
-import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIOException;
-import org.apache.directory.studio.apacheds.configuration.model.v150.ServerXmlIOV150;
-import org.apache.directory.studio.apacheds.configuration.model.v151.ServerXmlIOV151;
-import org.apache.directory.studio.apacheds.configuration.model.v152.ServerXmlIOV152;
-import org.apache.directory.studio.apacheds.configuration.model.v153.ServerXmlIOV153;
-import org.apache.directory.studio.apacheds.configuration.model.v154.ServerXmlIOV154;
-import org.apache.directory.studio.apacheds.configuration.model.v155.ServerXmlIOV155;
-import org.apache.directory.studio.apacheds.configuration.model.v156.ServerXmlIOV156;
-import org.apache.directory.studio.apacheds.configuration.model.v157.ServerXmlIOV157;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
@@ -52,20 +38,12 @@ import org.eclipse.ui.PlatformUI;
  */
 public class NewApacheDSConfigurationFileWizard extends Wizard implements INewWizard
 {
-    /** The window */
-    private IWorkbenchWindow window;
-
-    /** The page */
-    private NewApacheDSConfigurationFileWizardPage page;
-
-
     /**
      * {@inheritDoc}
      */
     public void addPages()
     {
-        page = new NewApacheDSConfigurationFileWizardPage();
-        addPage( page );
+        // This wizard has no page
     }
 
 
@@ -76,73 +54,15 @@ public class NewApacheDSConfigurationFileWizard extends Wizard implements INewWi
     {
         try
         {
-            // Getting the default server configuration for the target version
-            ServerConfiguration serverConfiguration = null;
-            ServerXmlIO serverXmlIO = null;
-            switch ( page.getTargetVersion() )
-            {
-                case VERSION_1_5_7:
-                    serverXmlIO = new ServerXmlIOV157();
-                    serverConfiguration = serverXmlIO.parse( ApacheDSConfigurationPlugin.class
-                        .getResourceAsStream( "default-server-1.5.7.xml" ) ); //$NON-NLS-1$
-                    break;
-                case VERSION_1_5_6:
-                    serverXmlIO = new ServerXmlIOV156();
-                    serverConfiguration = serverXmlIO.parse( ApacheDSConfigurationPlugin.class
-                        .getResourceAsStream( "default-server-1.5.6.xml" ) ); //$NON-NLS-1$
-                    break;
-                case VERSION_1_5_5:
-                    serverXmlIO = new ServerXmlIOV155();
-                    serverConfiguration = serverXmlIO.parse( ApacheDSConfigurationPlugin.class
-                        .getResourceAsStream( "default-server-1.5.5.xml" ) ); //$NON-NLS-1$
-                    break;
-                case VERSION_1_5_4:
-                    serverXmlIO = new ServerXmlIOV154();
-                    serverConfiguration = serverXmlIO.parse( ApacheDSConfigurationPlugin.class
-                        .getResourceAsStream( "default-server-1.5.4.xml" ) ); //$NON-NLS-1$
-                    break;
-                case VERSION_1_5_3:
-                    serverXmlIO = new ServerXmlIOV153();
-                    serverConfiguration = serverXmlIO.parse( ApacheDSConfigurationPlugin.class
-                        .getResourceAsStream( "default-server-1.5.3.xml" ) ); //$NON-NLS-1$
-                    break;
-                case VERSION_1_5_2:
-                    serverXmlIO = new ServerXmlIOV152();
-                    serverConfiguration = serverXmlIO.parse( ApacheDSConfigurationPlugin.class
-                        .getResourceAsStream( "default-server-1.5.2.xml" ) ); //$NON-NLS-1$
-                    break;
-                case VERSION_1_5_1:
-                    serverXmlIO = new ServerXmlIOV151();
-                    serverConfiguration = serverXmlIO.parse( ApacheDSConfigurationPlugin.class
-                        .getResourceAsStream( "default-server-1.5.1.xml" ) ); //$NON-NLS-1$
-                    break;
-                case VERSION_1_5_0:
-                    serverXmlIO = new ServerXmlIOV150();
-                    serverConfiguration = serverXmlIO.parse( ApacheDSConfigurationPlugin.class
-                        .getResourceAsStream( "default-server-1.5.0.xml" ) ); //$NON-NLS-1$
-                    break;
-                default:
-                    serverXmlIO = new ServerXmlIOV156();
-                    serverConfiguration = serverXmlIO.parse( ApacheDSConfigurationPlugin.class
-                        .getResourceAsStream( "default-server-1.5.6.xml" ) ); //$NON-NLS-1$
-                    break;
-            }
-
-            IWorkbenchPage page = window.getActivePage();
-            page.openEditor( new NonExistingServerConfigurationInput( serverConfiguration ),
-                ServerConfigurationEditor.ID );
+            IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+            page.openEditor( new NewServerConfigurationInput(), ServerConfigurationEditor.ID );
         }
         catch ( PartInitException e )
         {
+            // Should never happen
             return false;
         }
-        catch ( ServerXmlIOException e )
-        {
-            MessageDialog.openError( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-                Messages.getString( "NewApacheDSConfigurationFileWizard.Error" ), //$NON-NLS-1$
-                Messages.getString( "NewApacheDSConfigurationFileWizard.ErrorReadingFile" ) + e.getMessage() ); //$NON-NLS-1$
-            return false;
-        }
+
         return true;
     }
 
@@ -152,6 +72,5 @@ public class NewApacheDSConfigurationFileWizard extends Wizard implements INewWi
      */
     public void init( IWorkbench workbench, IStructuredSelection selection )
     {
-        window = workbench.getActiveWorkbenchWindow();
     }
 }

@@ -33,13 +33,13 @@ import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.widgets.DnBuilderWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.ListContentProposalProvider;
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.jobs.ReadEntryRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
@@ -186,10 +186,11 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
 
             boolean hasSelectedEntry = wizard.getSelectedEntry() != null;
             boolean newEntryParentDnNotNullOrEmpty = !Dn.isNullOrEmpty( newEntry.getDn().getParent() );
-            boolean newEntryDnEqualsSelectedEntryDn = newEntry.getDn().equals( wizard.getSelectedEntry().getDn() );
 
             if ( hasSelectedEntry )
             {
+                boolean newEntryDnEqualsSelectedEntryDn = newEntry.getDn().equals( wizard.getSelectedEntry().getDn() );
+
                 if ( newEntryDnEqualsSelectedEntryDn && newEntryParentDnNotNullOrEmpty )
                 {
                     parentDn = newEntry.getDn().getParent();
@@ -235,7 +236,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
                         IValue[] values = attribute.getValues();
                         for ( int v = 0; v < values.length; v++ )
                         {
-                            if ( values[v].getStringValue().equals( atav.getNormValue().getString() ) )
+                            if ( values[v].getStringValue().equals( atav.getValue().getNormValue() ) )
                             {
                                 attribute.deleteValue( values[v] );
                             }
@@ -294,7 +295,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
                         rdnAttribute = new Attribute( newEntry, atav.getType() );
                         newEntry.addAttribute( rdnAttribute );
                     }
-                    Object rdnValue = atav.getNormValue().getString();
+                    Object rdnValue = atav.getValue().getNormValue();
                     String[] stringValues = rdnAttribute.getStringValues();
                     if ( !Arrays.asList( stringValues ).contains( rdnValue ) )
                     {

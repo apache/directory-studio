@@ -21,6 +21,7 @@
 package org.apache.directory.studio.connection.ui.actions;
 
 
+import org.apache.directory.studio.common.ui.CommonUIUtils;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionFolder;
 import org.eclipse.jface.action.Action;
@@ -96,9 +97,9 @@ public abstract class StudioAction implements IWorkbenchWindowActionDelegate
         setSelectedConnections( SelectionUtils.getConnections( selection ) );
         setSelectedConnectionFolders( SelectionUtils.getConnectionFolders( selection ) );
 
-        action.setEnabled( this.isEnabled() );
-        action.setText( this.getText() );
-        action.setToolTipText( this.getText() );
+        action.setEnabled( isEnabled() );
+        action.setText( CommonUIUtils.getTextValue( getText() ) );
+        action.setToolTipText( CommonUIUtils.getTextValue( getText() ) );
     }
 
 
@@ -129,8 +130,7 @@ public abstract class StudioAction implements IWorkbenchWindowActionDelegate
     /**
      * Returns the command identifier.
      *
-     * @return
-     *      the command identifier
+     * @return the command identifier
      */
     public abstract String getCommandId();
 
@@ -196,8 +196,7 @@ public abstract class StudioAction implements IWorkbenchWindowActionDelegate
     /**
      * Returns the current active shell
      *
-     * @return
-     *      the current active shell
+     * @return the current active shell
      */
     protected Shell getShell()
     {
@@ -208,8 +207,7 @@ public abstract class StudioAction implements IWorkbenchWindowActionDelegate
     /**
      * Gets the selected Connections.
      *
-     * @return
-     *      the selected Connections
+     * @return the selected Connections
      */
     public Connection[] getSelectedConnections()
     {
@@ -220,8 +218,7 @@ public abstract class StudioAction implements IWorkbenchWindowActionDelegate
     /**
      * Sets the selected Connections.
      *
-     * @param selectedConnections
-     *      the selected Connections to set
+     * @param selectedConnections the selected Connections to set
      */
     public void setSelectedConnections( Connection[] selectedConnections )
     {
@@ -232,8 +229,7 @@ public abstract class StudioAction implements IWorkbenchWindowActionDelegate
     /**
      * Gets the selected connection folders.
      *
-     * @return
-     *      the selected connection folders
+     * @return the selected connection folders
      */
     public ConnectionFolder[] getSelectedConnectionFolders()
     {
@@ -256,8 +252,7 @@ public abstract class StudioAction implements IWorkbenchWindowActionDelegate
     /**
      * Gets the input.
      *
-     * @return
-     *      the input
+     * @return the input
      */
     public Object getInput()
     {
@@ -268,12 +263,10 @@ public abstract class StudioAction implements IWorkbenchWindowActionDelegate
     /**
      * Sets the input.
      *
-     * @param input
-     *      the input to set
+     * @param input the input to set
      */
     public void setInput( Object input )
     {
         this.input = input;
     }
-
 }

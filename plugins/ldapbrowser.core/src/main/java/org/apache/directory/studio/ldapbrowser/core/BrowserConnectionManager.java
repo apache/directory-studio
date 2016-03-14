@@ -38,7 +38,7 @@ import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.io.FileUtils;
+import org.apache.directory.api.util.FileUtils;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionFolder;
@@ -300,8 +300,7 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
      */
     public void browserConnectionUpdated( BrowserConnectionUpdateEvent browserConnectionUpdateEvent )
     {
-        if ( browserConnectionUpdateEvent.getDetail() == BrowserConnectionUpdateEvent.Detail.BROWSER_CONNECTION_OPENED
-            || browserConnectionUpdateEvent.getDetail() == BrowserConnectionUpdateEvent.Detail.SCHEMA_UPDATED )
+        if ( browserConnectionUpdateEvent.getDetail() == BrowserConnectionUpdateEvent.Detail.SCHEMA_UPDATED )
         {
             saveSchema( browserConnectionUpdateEvent.getBrowserConnection() );
         }
@@ -411,6 +410,11 @@ public class BrowserConnectionManager implements ConnectionUpdateListener, Brows
      */
     private void saveSchema( IBrowserConnection browserConnection )
     {
+        if ( browserConnection == null )
+        {
+            return;
+        }
+
         try
         {
             String filename = getSchemaCacheFileName( browserConnection.getConnection().getId() );

@@ -22,24 +22,20 @@ package org.apache.directory.studio.ldifparser.model.container;
 
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
+import org.apache.directory.studio.ldifparser.model.LdifPart;
 import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifDnLine;
 
 
+/**
+ * A LDIF container for content records
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class LdifContentRecord extends LdifRecord
 {
-
-    private static final long serialVersionUID = -1410857864284794069L;
-
-
-    protected LdifContentRecord()
-    {
-    }
-
-
     public LdifContentRecord( LdifDnLine dn )
     {
         super( dn );
@@ -49,23 +45,43 @@ public class LdifContentRecord extends LdifRecord
     public void addAttrVal( LdifAttrValLine attrVal )
     {
         if ( attrVal == null )
+        {
             throw new IllegalArgumentException( "null argument" ); //$NON-NLS-1$
-        this.parts.add( attrVal );
+        }
+
+        ldifParts.add( attrVal );
     }
 
 
     public LdifAttrValLine[] getAttrVals()
     {
-        List l = new ArrayList();
-        for ( Iterator it = this.parts.iterator(); it.hasNext(); )
+        List<LdifAttrValLine> ldifAttrValLines = new ArrayList<LdifAttrValLine>();
+
+        for ( LdifPart ldifPart : ldifParts )
         {
-            Object o = it.next();
-            if ( o instanceof LdifAttrValLine )
+            if ( ldifPart instanceof LdifAttrValLine )
             {
-                l.add( o );
+                ldifAttrValLines.add( ( LdifAttrValLine ) ldifPart );
             }
         }
-        return ( LdifAttrValLine[] ) l.toArray( new LdifAttrValLine[l.size()] );
+
+        return ldifAttrValLines.toArray( new LdifAttrValLine[ldifAttrValLines.size()] );
+    }
+
+
+    private int getSize()
+    {
+        int size = 0;
+
+        for ( LdifPart ldifPart : ldifParts )
+        {
+            if ( ldifPart instanceof LdifAttrValLine )
+            {
+                size++;
+            }
+        }
+
+        return size;
     }
 
 
@@ -81,17 +97,21 @@ public class LdifContentRecord extends LdifRecord
         {
             return false;
         }
-        return getAttrVals().length > 0;
+
+        return getSize() > 0;
 
     }
 
 
     public String getInvalidString()
     {
-        if ( !( getAttrVals().length > 0 ) )
-            return "Record must contain attribute value lines";
-        else
+        if ( getSize() > 0 )
+        {
             return super.getInvalidString();
+        }
+        else
+        {
+            return "Record must contain attribute value lines";
+        }
     }
-
 }

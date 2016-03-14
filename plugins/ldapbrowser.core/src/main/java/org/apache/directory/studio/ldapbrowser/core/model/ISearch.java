@@ -24,6 +24,7 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 import java.io.Serializable;
 import java.util.List;
 
+import org.apache.directory.api.ldap.model.constants.LdapConstants;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.url.LdapUrl;
@@ -44,30 +45,29 @@ import org.eclipse.core.runtime.IAdaptable;
  */
 public interface ISearch extends Serializable, IAdaptable, SearchPropertyPageProvider, ConnectionPropertyPageProvider
 {
-
     /** Constant for empty search base */
-    public static final Dn EMPTY_SEARCH_BASE = new Dn(); //$NON-NLS-1$
+    Dn EMPTY_SEARCH_BASE = new Dn(); //$NON-NLS-1$
 
     /** Constant for no returning attributes, an empty array */
-    public static final String[] NO_ATTRIBUTES = new String[0];
+    String[] NO_ATTRIBUTES = new String[0];
 
     /** True filter (objectClass=*) */
-    public static final String FILTER_TRUE = "(objectClass=*)"; //$NON-NLS-1$
+    String FILTER_TRUE = LdapConstants.OBJECT_CLASS_STAR;
 
     /** False filter (!(objectClass=*)) */
-    public static final String FILTER_FALSE = "(!(objectClass=*))"; //$NON-NLS-1$
+    String FILTER_FALSE = "(!(objectClass=*))"; //$NON-NLS-1$
 
     /** Filter for fetching subentries (|(objectClass=subentry)(objectClass=ldapSubentry)) */
-    public static final String FILTER_SUBENTRY = "(|(objectClass=subentry)(objectClass=ldapSubentry))"; //$NON-NLS-1$
+    String FILTER_SUBENTRY = "(|(objectClass=subentry)(objectClass=ldapSubentry))"; //$NON-NLS-1$
 
     /** Filter for fetching aliases (objectClass=alias) */
-    public static final String FILTER_ALIAS = "(objectClass=alias)"; //$NON-NLS-1$
+    String FILTER_ALIAS = "(objectClass=alias)"; //$NON-NLS-1$
 
     /** Filter for fetching referrals (objectClass=referral) */
-    public static final String FILTER_REFERRAL = "(objectClass=referral)"; //$NON-NLS-1$
+    String FILTER_REFERRAL = "(objectClass=referral)"; //$NON-NLS-1$
 
     /** Filter for fetching aliases and referrals (|(objectClass=alias)(objectClass=referral)) */
-    public static final String FILTER_ALIAS_OR_REFERRAL = "(|(objectClass=alias)(objectClass=referral))"; //$NON-NLS-1$
+    String FILTER_ALIAS_OR_REFERRAL = "(|(objectClass=alias)(objectClass=referral))"; //$NON-NLS-1$
 
 
     /**
@@ -75,7 +75,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @return the LDAP URL of this search
      */
-    public abstract LdapUrl getUrl();
+    LdapUrl getUrl();
 
 
     /**
@@ -83,7 +83,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @return true, if the hasChildren flag should be initialized
      */
-    public abstract boolean isInitHasChildrenFlag();
+    boolean isInitHasChildrenFlag();
 
 
     /**
@@ -91,7 +91,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @return the controls
      */
-    public abstract List<StudioControl> getControls();
+    List<StudioControl> getControls();
 
 
     /**
@@ -99,7 +99,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @return the response controls
      */
-    public abstract List<StudioControl> getResponseControls();
+    List<StudioControl> getResponseControls();
 
 
     /**
@@ -107,7 +107,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @return the count limit
      */
-    public abstract int getCountLimit();
+    int getCountLimit();
 
 
     /**
@@ -115,7 +115,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @param countLimit the count limit
      */
-    public abstract void setCountLimit( int countLimit );
+    void setCountLimit( int countLimit );
 
 
     /**
@@ -123,7 +123,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @return the filter
      */
-    public abstract String getFilter();
+    String getFilter();
 
 
     /**
@@ -134,7 +134,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @param filter the filter
      */
-    public abstract void setFilter( String filter );
+    void setFilter( String filter );
 
 
     /**
@@ -142,7 +142,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @return the returning attributes
      */
-    public abstract String[] getReturningAttributes();
+    String[] getReturningAttributes();
 
 
     /**
@@ -153,7 +153,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @param returningAttributes the returning attributes
      */
-    public abstract void setReturningAttributes( String[] returningAttributes );
+    void setReturningAttributes( String[] returningAttributes );
 
 
     /**
@@ -161,7 +161,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @return the search scope
      */
-    public abstract SearchScope getScope();
+    SearchScope getScope();
 
 
     /**
@@ -171,7 +171,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @param scope the search scope
      */
-    public abstract void setScope( SearchScope scope );
+    void setScope( SearchScope scope );
 
 
     /**
@@ -180,7 +180,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @return the aliases dereferencing method
      */
-    public abstract Connection.AliasDereferencingMethod getAliasesDereferencingMethod();
+    Connection.AliasDereferencingMethod getAliasesDereferencingMethod();
 
 
     /**
@@ -190,7 +190,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @param aliasesDereferencingMethod the aliases dereferencing method
      */
-    public abstract void setAliasesDereferencingMethod( Connection.AliasDereferencingMethod aliasesDereferencingMethod );
+    void setAliasesDereferencingMethod( Connection.AliasDereferencingMethod aliasesDereferencingMethod );
 
 
     /**
@@ -198,7 +198,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      *  
      * @return the referrals handling method
      */
-    public abstract Connection.ReferralHandlingMethod getReferralsHandlingMethod();
+    Connection.ReferralHandlingMethod getReferralsHandlingMethod();
 
 
     /**
@@ -208,7 +208,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @param referralsHandlingMethod the referrals handling method
      */
-    public abstract void setReferralsHandlingMethod( Connection.ReferralHandlingMethod referralsHandlingMethod );
+    void setReferralsHandlingMethod( Connection.ReferralHandlingMethod referralsHandlingMethod );
 
 
     /**
@@ -216,7 +216,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @return the search base
      */
-    public abstract Dn getSearchBase();
+    Dn getSearchBase();
 
 
     /**
@@ -227,7 +227,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @param searchBase the search base
      */
-    public abstract void setSearchBase( Dn searchBase );
+    void setSearchBase( Dn searchBase );
 
 
     /**
@@ -235,7 +235,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @return the time limit
      */
-    public abstract int getTimeLimit();
+    int getTimeLimit();
 
 
     /**
@@ -245,7 +245,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @param timeLimit the time limit
      */
-    public abstract void setTimeLimit( int timeLimit );
+    void setTimeLimit( int timeLimit );
 
 
     /**
@@ -253,7 +253,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @return the name
      */
-    public abstract String getName();
+    String getName();
 
 
     /**
@@ -263,7 +263,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @param name the name
      */
-    public abstract void setName( String name );
+    void setName( String name );
 
 
     /**
@@ -272,7 +272,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @return the search results
      */
-    public abstract ISearchResult[] getSearchResults();
+    ISearchResult[] getSearchResults();
 
 
     /**
@@ -282,7 +282,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @param searchResults the search results
      */
-    public abstract void setSearchResults( ISearchResult[] searchResults );
+    void setSearchResults( ISearchResult[] searchResults );
 
 
     /**
@@ -290,7 +290,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @return true, if the count limit exceeded
      */
-    public abstract boolean isCountLimitExceeded();
+    boolean isCountLimitExceeded();
 
 
     /**
@@ -300,7 +300,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @param countLimitExceeded the count limit exceeded flag
      */
-    public abstract void setCountLimitExceeded( boolean countLimitExceeded );
+    void setCountLimitExceeded( boolean countLimitExceeded );
 
 
     /**
@@ -308,7 +308,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @return the browser connection
      */
-    public abstract IBrowserConnection getBrowserConnection();
+    IBrowserConnection getBrowserConnection();
 
 
     /**
@@ -318,7 +318,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @param browserConnection the browser connection
      */
-    public abstract void setBrowserConnection( IBrowserConnection browserConnection );
+    void setBrowserConnection( IBrowserConnection browserConnection );
 
 
     /**
@@ -326,7 +326,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @return the cloned search
      */
-    public abstract Object clone();
+    Object clone();
 
 
     /**
@@ -334,7 +334,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @return the search parameter
      */
-    public abstract SearchParameter getSearchParameter();
+    SearchParameter getSearchParameter();
 
 
     /**
@@ -342,7 +342,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @param searchParameter the search parameter
      */
-    public abstract void setSearchParameter( SearchParameter searchParameter );
+    void setSearchParameter( SearchParameter searchParameter );
 
 
     /**
@@ -350,7 +350,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @return the next search runnable, null if none
      */
-    public abstract StudioConnectionBulkRunnableWithProgress getNextSearchRunnable();
+    StudioConnectionBulkRunnableWithProgress getNextSearchRunnable();
 
 
     /**
@@ -358,7 +358,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @param nextSearchRunnable the next search runnable
      */
-    public abstract void setNextPageSearchRunnable( StudioConnectionBulkRunnableWithProgress nextSearchRunnable );
+    void setNextPageSearchRunnable( StudioConnectionBulkRunnableWithProgress nextSearchRunnable );
 
 
     /**
@@ -366,7 +366,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @return the top search runnable, null if none
      */
-    public abstract StudioConnectionBulkRunnableWithProgress getTopSearchRunnable();
+    StudioConnectionBulkRunnableWithProgress getTopSearchRunnable();
 
 
     /**
@@ -374,7 +374,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @param nextSearchRunnable the top search runnable
      */
-    public abstract void setTopPageSearchRunnable( StudioConnectionBulkRunnableWithProgress nextSearchRunnable );
+    void setTopPageSearchRunnable( StudioConnectionBulkRunnableWithProgress nextSearchRunnable );
 
 
     /**
@@ -382,7 +382,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @return the search continuations
      */
-    public abstract SearchContinuation[] getSearchContinuations();
+    SearchContinuation[] getSearchContinuations();
 
 
     /**
@@ -390,6 +390,5 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      *
      * @param the search continuations
      */
-    public abstract void setSearchContinuations( SearchContinuation[] searchContinuations );
-
+    void setSearchContinuations( SearchContinuation[] searchContinuations );
 }

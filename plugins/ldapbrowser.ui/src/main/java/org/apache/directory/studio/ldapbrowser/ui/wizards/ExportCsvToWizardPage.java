@@ -42,8 +42,7 @@ public class ExportCsvToWizardPage extends ExportBaseToPage
 
     /** The extensions used by CSV files */
     private static final String[] EXTENSIONS = new String[]
-        {
-            Messages.getString( "ExportCsvToWizardPage.0" ), Messages.getString( "ExportCsvToWizardPage.1" ), Messages.getString( "ExportCsvToWizardPage.2" ) }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        { "*.csv", "*.txt", "*" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 
     /**

@@ -22,23 +22,48 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.apache.directory.studio</groupId>
-    <artifactId>parent</artifactId>
+    <artifactId>org.apache.directory.studio.parent</artifactId>
     <version>2.0.0-SNAPSHOT</version>
   </parent>
   
-  <artifactId>parent-features</artifactId>
+  <artifactId>org.apache.directory.studio.features-parent</artifactId>
   <name>Apache Directory Studio Feature Plugins</name>
   <packaging>pom</packaging>
 
   <modules>
-    <module>apacheds.configuration.feature</module>
-    <module>apacheds.configuration.v2.feature</module>
     <module>apacheds.feature</module>
     <module>ldapbrowser.feature</module>
-    <module>ldapservers.feature</module>
     <module>ldifeditor.feature</module>
     <module>rcp.feature</module>
     <module>schemaeditor.feature</module>
+    <module>openldap.feature</module>
+    <module>nls.feature</module>
   </modules>
+  
+  <build>
+    <plugins>
+      <!-- Clean META-INF directory with legal files -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-clean-plugin</artifactId>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>${basedir}/META-INF</directory>
+            </fileset>
+          </filesets>
+        </configuration>
+      </plugin>
+
+      <!-- Add legal files to META-INF directory -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-remote-resources-plugin</artifactId>
+        <configuration>
+          <outputDirectory>${basedir}</outputDirectory>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
   
 </project>

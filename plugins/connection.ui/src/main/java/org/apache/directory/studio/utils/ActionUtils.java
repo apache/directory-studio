@@ -21,6 +21,7 @@
 package org.apache.directory.studio.utils;
 
 
+import org.eclipse.core.commands.Command;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.commands.ActionHandler;
@@ -33,9 +34,16 @@ import org.eclipse.ui.commands.ICommandService;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ActionUtils
+public final class ActionUtils
 {
-
+    /**
+     * A private constructor to make this class an utility class we can't instanciate.
+     **/
+    private ActionUtils()
+    {
+    }
+    
+    
     /**
      * Deactivates the action handler, if the handler's action is equal to 
      * the given action.
@@ -46,20 +54,24 @@ public class ActionUtils
     {
         ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
             ICommandService.class );
+        
         if ( commandService != null )
         {
-            IHandler handler = commandService.getCommand( action.getActionDefinitionId() ).getHandler();
+            Command command = commandService.getCommand( action.getActionDefinitionId() );
+            IHandler handler = command.getHandler();
+            
             if ( handler instanceof ActionHandler )
             {
                 ActionHandler actionHandler = ( ActionHandler ) handler;
-                if ( actionHandler != null && actionHandler.getAction() == action )
+                
+                if ( ( actionHandler != null ) && ( actionHandler.getAction() == action ) )
                 {
-                    commandService.getCommand( action.getActionDefinitionId() ).setHandler( null );
+                    command.setHandler( null );
                 }
             }
             else if ( handler != null )
             {
-                commandService.getCommand( action.getActionDefinitionId() ).setHandler( null );
+                command.setHandler( null );
             }
         }
     }
@@ -74,11 +86,11 @@ public class ActionUtils
     {
         ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
             ICommandService.class );
+        
         if ( commandService != null )
         {
             ActionHandler actionHandler = new ActionHandler( action );
             commandService.getCommand( action.getActionDefinitionId() ).setHandler( actionHandler );
         }
     }
-
 }

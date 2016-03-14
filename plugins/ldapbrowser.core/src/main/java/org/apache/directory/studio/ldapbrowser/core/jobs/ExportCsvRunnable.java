@@ -279,9 +279,8 @@ public class ExportCsvRunnable implements StudioConnectionRunnableWithProgress
         StringBuffer sb = new StringBuffer();
         if ( exportDn )
         {
-            sb.append( quoteCharacter );
-            sb.append( record.getDnLine().getValueAsString() );
-            sb.append( quoteCharacter );
+            String value = record.getDnLine().getValueAsString();
+            appendValue( quoteCharacter, sb, value );
 
             if ( attributes == null || attributes.length > 0 )
                 sb.append( attributeDelimiter );
@@ -295,14 +294,7 @@ public class ExportCsvRunnable implements StudioConnectionRunnableWithProgress
             if ( attributeMap.containsKey( oidString ) )
             {
                 String value = attributeMap.get( oidString );
-
-                // escape
-                value = value.replaceAll( quoteCharacter, quoteCharacter + quoteCharacter );
-
-                // always quote
-                sb.append( quoteCharacter );
-                sb.append( value );
-                sb.append( quoteCharacter );
+                appendValue( quoteCharacter, sb, value );
             }
 
             // delimiter
@@ -315,6 +307,24 @@ public class ExportCsvRunnable implements StudioConnectionRunnableWithProgress
         sb.append( lineSeparator );
 
         return sb.toString();
+    }
+
+
+    private static void appendValue( String quoteCharacter, StringBuffer sb, String value )
+    {
+        // escape quote character
+        value = value.replaceAll( quoteCharacter, quoteCharacter + quoteCharacter );
+
+        // prefix values starting with '=' with a single quote to avoid interpretation as formula
+        if ( value.startsWith( "=" ) )
+        {
+            value = "'" + value;
+        }
+
+        // always quote
+        sb.append( quoteCharacter );
+        sb.append( value );
+        sb.append( quoteCharacter );
     }
 
 

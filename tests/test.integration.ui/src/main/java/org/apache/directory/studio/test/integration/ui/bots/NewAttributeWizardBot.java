@@ -23,9 +23,9 @@ package org.apache.directory.studio.test.integration.ui.bots;
 public class NewAttributeWizardBot extends WizardBot
 {
 
-    public boolean isVisible()
+    public NewAttributeWizardBot()
     {
-        return isVisible( "New Attribute" );
+        super( "New Attribute" );
     }
 
 
@@ -39,6 +39,13 @@ public class NewAttributeWizardBot extends WizardBot
     {
         clickFinishButton();
         return new DnEditorDialogBot();
+    }
+
+
+    public PasswordEditorDialogBot clickFinishButtonExpectingPasswordEditor()
+    {
+        clickFinishButton();
+        return new PasswordEditorDialogBot();
     }
 
 }

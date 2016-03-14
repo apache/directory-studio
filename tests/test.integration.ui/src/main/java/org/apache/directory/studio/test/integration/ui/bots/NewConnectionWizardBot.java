@@ -20,14 +20,16 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
+import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 
 
 public class NewConnectionWizardBot extends WizardBot
 {
 
+    private static final String TITLE = "New LDAP Connection";
     private static final String CERTIFICATE_TRUST = "Certificate Trust";
     private static final String CONNECTION_NAME = "Connection name:";
     private static final String HOSTNAME = "Hostname:";
@@ -50,10 +52,18 @@ public class NewConnectionWizardBot extends WizardBot
     private static final String START_TLS_ENCRYPTION = "Use StartTLS extension";
     private static final String LDAPS_ENCRYPTION = "Use SSL encryption (ldaps://)";
 
-
-    public boolean isVisible()
+    
+    public NewConnectionWizardBot()
     {
-        return isVisible( "New LDAP Connection" );
+        super( TITLE );
+    }
+
+    @Override
+    public void clickFinishButton()
+    {
+        JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__open_connections_name_1 );
+        super.clickFinishButton();
+        watcher.waitUntilDone();
     }
 
 
@@ -241,7 +251,7 @@ public class NewConnectionWizardBot extends WizardBot
      */
     public String clickCheckNetworkParameterButton()
     {
-        return clickCheckButton( CHECK_NETWORK_PARAMETER );
+        return clickCheckButton( CHECK_NETWORK_PARAMETER, CHECK_NETWORK_PARAMETER );
     }
 
 
@@ -263,7 +273,7 @@ public class NewConnectionWizardBot extends WizardBot
      */
     public String clickCheckAuthenticationButton()
     {
-        return clickCheckButton( CHECK_AUTHENTICATION );
+        return clickCheckButton( CHECK_AUTHENTICATION, CHECK_AUTHENTICATION );
     }
 
 
@@ -275,31 +285,6 @@ public class NewConnectionWizardBot extends WizardBot
         bot.button( CHECK_AUTHENTICATION ).click();
         bot.shell( CERTIFICATE_TRUST );
         return new CertificateTrustDialogBot();
-    }
-
-
-    private String clickCheckButton( final String label )
-    {
-        SWTBotShell shell = BotUtils.shell( new Runnable()
-        {
-            public void run()
-            {
-                bot.button( label ).click();
-            }
-        }, "Error", label );
-
-        String shellText = shell.getText();
-        String labelText = bot.label( 1 ).getText(); // label(0) is the image
-        bot.button( "OK" ).click();
-
-        if ( shellText.equals( label ) )
-        {
-            return null;
-        }
-        else
-        {
-            return labelText;
-        }
     }
 
 

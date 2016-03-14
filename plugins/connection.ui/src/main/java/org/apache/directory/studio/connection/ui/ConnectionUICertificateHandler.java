@@ -36,7 +36,6 @@ import org.eclipse.ui.PlatformUI;
  */
 public class ConnectionUICertificateHandler implements ICertificateHandler
 {
-
     /**
      * {@inheritDoc}
      */
@@ -47,6 +46,9 @@ public class ConnectionUICertificateHandler implements ICertificateHandler
         final TrustLevel[] trustLevel = new TrustLevel[1];
         PlatformUI.getWorkbench().getDisplay().syncExec( new Runnable()
         {
+            /**
+             * {@inheritDoc}
+             */
             public void run()
             {
                 CertificateTrustDialog dialog = new CertificateTrustDialog( PlatformUI.getWorkbench().getDisplay()
@@ -58,5 +60,4 @@ public class ConnectionUICertificateHandler implements ICertificateHandler
 
         return trustLevel[0];
     }
-
 }

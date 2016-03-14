@@ -158,6 +158,8 @@ public class SchemaEditorSchemaCheckerLabelDecorator extends LabelProvider imple
                 decoration.addOverlay( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_OVERLAY_ERROR ),
                     IDecoration.BOTTOM_LEFT );
                 break;
+            default:
+                break;
         }
     }
 

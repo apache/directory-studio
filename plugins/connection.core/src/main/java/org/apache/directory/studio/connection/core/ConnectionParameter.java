@@ -79,20 +79,31 @@ public class ConnectionParameter
     public enum AuthenticationMethod
     {
         /** No authentication, anonymous bind. */
-        NONE,
+        NONE(0),
 
         /** Simple authentication, simple bind. */
-        SIMPLE,
+        SIMPLE(1),
 
         /** SASL authentication using DIGEST-MD5. */
-        SASL_DIGEST_MD5,
+        SASL_DIGEST_MD5(2),
 
         /** SASL authentication using CRAM-MD5. */
-        SASL_CRAM_MD5,
+        SASL_CRAM_MD5(3),
 
         /** SASL authentication using GSSAPI. */
-        SASL_GSSAPI
+        SASL_GSSAPI(4);
+        
+        private int value;
+        
+        private AuthenticationMethod( int value )
+        {
+            this.value = value;
+        }
 
+        public int getValue()
+        {
+            return value;
+        }
     }
 
     public enum Krb5CredentialConfiguration

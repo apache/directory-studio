@@ -672,7 +672,6 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
                     {
                         atw = new AttributeTypeWrapper( at, root );
                     }
-
                 }
                 else
                 {
@@ -821,7 +820,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      * @param oc
      *      the added object class
      */
-    public void objectClassAdded( MutableObjectClass oc )
+    public void objectClassAdded( ObjectClass oc )
     {
         int presentation = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION );
         if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_FLAT )
@@ -842,7 +841,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      * @param oc
      *      the added object class
      */
-    public void objectClassAddedFlatPresentation( MutableObjectClass oc )
+    public void objectClassAddedFlatPresentation( ObjectClass oc )
     {
         SchemaWrapper schemaWrapper = ( SchemaWrapper ) getWrapper( Activator.getDefault().getSchemaHandler()
             .getSchema( oc.getSchemaName() ) );
@@ -879,7 +878,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      * @param oc
      *      the added object class
      */
-    public void objectClassAddedHierarchicalPresentation( MutableObjectClass oc )
+    public void objectClassAddedHierarchicalPresentation( ObjectClass oc )
     {
         // Removing unattached nodes for "top"
         List<Object> ocChildren = new ArrayList<Object>();
@@ -1014,7 +1013,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      * @param oc
      *      the modified object class
      */
-    public void objectClassModified( MutableObjectClass oc )
+    public void objectClassModified( ObjectClass oc )
     {
         int presentation = store.getInt( PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION );
         if ( presentation == PluginConstants.PREFS_SCHEMA_VIEW_SCHEMA_PRESENTATION_FLAT )
@@ -1048,7 +1047,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
      * @param oc
      *      the modified object class
      */
-    public void objectClassModifiedHierarchicalPresentation( MutableObjectClass oc )
+    public void objectClassModifiedHierarchicalPresentation( ObjectClass oc )
     {
         // Propagating the modification to the hierarchy manager
         hierarchyManager.objectClassModified( oc );
@@ -1083,7 +1082,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
                             if ( child instanceof Folder )
                             {
                                 Folder folder = ( Folder ) child;
-                                if ( folder.getType().equals( FolderType.ATTRIBUTE_TYPE ) )
+                                if ( folder.getType().equals( FolderType.OBJECT_CLASS ) )
                                 {
                                     ocw = new ObjectClassWrapper( oc, folder );
                                     break;
@@ -1095,7 +1094,6 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
                     {
                         ocw = new ObjectClassWrapper( oc, root );
                     }
-
                 }
                 else
                 {
@@ -1256,7 +1254,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
             attributeTypeAddedHierarchicalPresentation( at );
         }
 
-        for ( MutableObjectClass oc : schema.getObjectClasses() )
+        for ( ObjectClass oc : schema.getObjectClasses() )
         {
             objectClassAddedHierarchicalPresentation( oc );
         }
@@ -1350,7 +1348,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
             Folder ocFolder = new Folder( FolderType.OBJECT_CLASS, schemaWrapper );
             schemaWrapper.addChild( ocFolder );
 
-            for ( MutableObjectClass objectClass : schema.getObjectClasses() )
+            for ( ObjectClass objectClass : schema.getObjectClasses() )
             {
                 ObjectClassWrapper ocw = new ObjectClassWrapper( objectClass, ocFolder );
                 ocw.getParent().addChild( ocw );
@@ -1366,7 +1364,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
                 elementsToWrappersMap.put( attributeType, atw );
             }
 
-            for ( MutableObjectClass objectClass : schema.getObjectClasses() )
+            for ( ObjectClass objectClass : schema.getObjectClasses() )
             {
                 ObjectClassWrapper ocw = new ObjectClassWrapper( objectClass, schemaWrapper );
                 ocw.getParent().addChild( ocw );

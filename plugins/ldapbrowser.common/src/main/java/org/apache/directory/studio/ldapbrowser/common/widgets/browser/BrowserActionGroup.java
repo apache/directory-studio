@@ -65,22 +65,22 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
     protected CollapseAllAction collapseAllAction;
 
     /** The Constant upAction. */
-    protected static final String upAction = "upAction"; //$NON-NLS-1$
+    protected static final String UP_ACTION = "upAction"; //$NON-NLS-1$
 
     /** The Constant refreshAction. */
-    protected static final String refreshAction = "refreshAction"; //$NON-NLS-1$
+    protected static final String REFRESH_ACTION = "refreshAction"; //$NON-NLS-1$
 
     /** The Constant filterChildrenAction. */
-    protected static final String filterChildrenAction = "filterChildrenAction"; //$NON-NLS-1$
+    protected static final String FILTER_CHILDREN_ACTION = "filterChildrenAction"; //$NON-NLS-1$
 
     /** The Constant openQuickSearchAction. */
-    protected static final String openQuickSearchAction = "openQuickSearch"; //$NON-NLS-1$
+    protected static final String OPEN_QUICK_SEARCH_ACTION = "openQuickSearch"; //$NON-NLS-1$
 
     /** The Constant unfilterChildrenAction. */
-    protected static final String unfilterChildrenAction = "unfilterChildrenAction"; //$NON-NLS-1$
+    protected static final String UNFILTER_CHILDREN_ACTION = "unfilterChildrenAction"; //$NON-NLS-1$
 
     /** The Constant propertyDialogAction. */
-    protected static final String propertyDialogAction = "propertyDialogAction"; //$NON-NLS-1$
+    protected static final String PROPERTY_DIALOG_ACTION = "propertyDialogAction"; //$NON-NLS-1$
 
     /** The browser action map. */
     protected Map<String, BrowserViewActionProxy> browserActionMap;
@@ -108,14 +108,14 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
         showQuickSearchAction = new ShowQuickSearchAction( mainWidget.getQuickSearchWidget() );
         collapseAllAction = new CollapseAllAction( viewer );
 
-        browserActionMap.put( openQuickSearchAction, new BrowserViewActionProxy( viewer, new OpenQuickSearchAction(
+        browserActionMap.put( OPEN_QUICK_SEARCH_ACTION, new BrowserViewActionProxy( viewer, new OpenQuickSearchAction(
             mainWidget ) ) );
-        browserActionMap.put( upAction, new BrowserViewActionProxy( viewer, new UpAction( viewer ) ) );
-        browserActionMap.put( refreshAction, new BrowserViewActionProxy( viewer, new RefreshAction() ) );
-        browserActionMap.put( filterChildrenAction, new BrowserViewActionProxy( viewer, new FilterChildrenAction() ) );
+        browserActionMap.put( UP_ACTION, new BrowserViewActionProxy( viewer, new UpAction( viewer ) ) );
+        browserActionMap.put( REFRESH_ACTION, new BrowserViewActionProxy( viewer, new RefreshAction() ) );
+        browserActionMap.put( FILTER_CHILDREN_ACTION, new BrowserViewActionProxy( viewer, new FilterChildrenAction() ) );
         browserActionMap
-            .put( unfilterChildrenAction, new BrowserViewActionProxy( viewer, new UnfilterChildrenAction() ) );
-        browserActionMap.put( propertyDialogAction, new BrowserViewActionProxy( viewer, new PropertiesAction() ) );
+            .put( UNFILTER_CHILDREN_ACTION, new BrowserViewActionProxy( viewer, new UnfilterChildrenAction() ) );
+        browserActionMap.put( PROPERTY_DIALOG_ACTION, new BrowserViewActionProxy( viewer, new PropertiesAction() ) );
     }
 
 
@@ -164,9 +164,9 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
      */
     public void fillToolBar( IToolBarManager toolBarManager )
     {
-        toolBarManager.add( browserActionMap.get( upAction ) );
+        toolBarManager.add( browserActionMap.get( UP_ACTION ) );
         toolBarManager.add( new Separator() );
-        toolBarManager.add( browserActionMap.get( refreshAction ) );
+        toolBarManager.add( browserActionMap.get( REFRESH_ACTION ) );
         toolBarManager.add( new Separator() );
         toolBarManager.add( collapseAllAction );
         toolBarManager.update( true );
@@ -208,20 +208,20 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
     public void menuAboutToShow( IMenuManager menuManager )
     {
         // up
-        menuManager.add( browserActionMap.get( upAction ) );
+        menuManager.add( browserActionMap.get( UP_ACTION ) );
         menuManager.add( new Separator() );
 
         // filter
-        menuManager.add( browserActionMap.get( filterChildrenAction ) );
-        if ( ( browserActionMap.get( unfilterChildrenAction ) ).isEnabled() )
+        menuManager.add( browserActionMap.get( FILTER_CHILDREN_ACTION ) );
+        if ( ( browserActionMap.get( UNFILTER_CHILDREN_ACTION ) ).isEnabled() )
         {
-            menuManager.add( browserActionMap.get( unfilterChildrenAction ) );
+            menuManager.add( browserActionMap.get( UNFILTER_CHILDREN_ACTION ) );
         }
-        menuManager.add( browserActionMap.get( openQuickSearchAction ) );
+        menuManager.add( browserActionMap.get( OPEN_QUICK_SEARCH_ACTION ) );
         menuManager.add( new Separator() );
 
         // refresh
-        menuManager.add( browserActionMap.get( refreshAction ) );
+        menuManager.add( browserActionMap.get( REFRESH_ACTION ) );
         menuManager.add( new Separator() );
 
         // additions
@@ -229,7 +229,7 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
         menuManager.add( new Separator() );
 
         // properties
-        menuManager.add( browserActionMap.get( propertyDialogAction ) );
+        menuManager.add( browserActionMap.get( PROPERTY_DIALOG_ACTION ) );
     }
 
 
@@ -241,26 +241,26 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
         if ( actionBars != null )
         {
             actionBars.setGlobalActionHandler( ActionFactory.REFRESH.getId(), ( IAction ) browserActionMap
-                .get( refreshAction ) );
+                .get( REFRESH_ACTION ) );
             actionBars.setGlobalActionHandler( ActionFactory.PROPERTIES.getId(), ( IAction ) browserActionMap
-                .get( propertyDialogAction ) );
+                .get( PROPERTY_DIALOG_ACTION ) );
             actionBars.setGlobalActionHandler( ActionFactory.FIND.getId(), showQuickSearchAction ); // IWorkbenchActionDefinitionIds.FIND_REPLACE
             actionBars.updateActionBars();
         }
         else
         {
-            IAction pda = browserActionMap.get( propertyDialogAction );
+            IAction pda = browserActionMap.get( PROPERTY_DIALOG_ACTION );
             pda.setActionDefinitionId( BrowserCommonConstants.CMD_PROPERTIES );
             ActionUtils.activateActionHandler( pda );
 
-            IAction ra = browserActionMap.get( refreshAction );
+            IAction ra = browserActionMap.get( REFRESH_ACTION );
             ActionUtils.activateActionHandler( ra );
 
             showQuickSearchAction.setActionDefinitionId( BrowserCommonConstants.CMD_FIND );
             ActionUtils.activateActionHandler( showQuickSearchAction );
         }
 
-        IAction ua = browserActionMap.get( upAction );
+        IAction ua = browserActionMap.get( UP_ACTION );
         ActionUtils.activateActionHandler( ua );
     }
 
@@ -278,14 +278,14 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
         }
         else
         {
-            IAction ra = browserActionMap.get( refreshAction );
+            IAction ra = browserActionMap.get( REFRESH_ACTION );
             ActionUtils.deactivateActionHandler( ra );
 
-            IAction pda = browserActionMap.get( propertyDialogAction );
+            IAction pda = browserActionMap.get( PROPERTY_DIALOG_ACTION );
             ActionUtils.deactivateActionHandler( pda );
         }
 
-        IAction ua = browserActionMap.get( upAction );
+        IAction ua = browserActionMap.get( UP_ACTION );
         ActionUtils.deactivateActionHandler( ua );
     }
 

@@ -39,8 +39,8 @@ public class ShowDecoratedValuesAction extends Action
     public ShowDecoratedValuesAction()
     {
         super( Messages.getString( "ShowDecoratedValuesAction.ShowDecoratedValues" ), AS_CHECK_BOX ); //$NON-NLS-1$
-        super.setToolTipText( getText() );
-        super.setEnabled( true );
+        setToolTipText( getText() );
+        setEnabled( true );
 
         super.setChecked( !BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
             BrowserCommonConstants.PREFERENCE_SHOW_RAW_VALUES ) );

@@ -102,7 +102,7 @@ public abstract class BrowserAction extends StudioAction implements IWorkbenchWi
      */
     protected BrowserAction()
     {
-        this.init();
+        init();
     }
 
 
@@ -111,7 +111,7 @@ public abstract class BrowserAction extends StudioAction implements IWorkbenchWi
      */
     public void init( IWorkbenchWindow window )
     {
-        this.init();
+        init();
     }
 
 
@@ -175,8 +175,7 @@ public abstract class BrowserAction extends StudioAction implements IWorkbenchWi
     /**
      * Returns the command identifier.
      *
-     * @return
-     *      the command identifier
+     * @return the command identifier
      */
     public abstract String getCommandId();
 
@@ -208,24 +207,24 @@ public abstract class BrowserAction extends StudioAction implements IWorkbenchWi
      */
     private void init()
     {
-        this.selectedBrowserViewCategories = new BrowserCategory[0];
-        this.selectedEntries = new IEntry[0];
-        this.selectedBrowserEntryPages = new BrowserEntryPage[0];
-        this.selectedSearches = new ISearch[0];
-        this.selectedSearchResults = new ISearchResult[0];
-        this.selectedBrowserSearchResultPages = new BrowserSearchResultPage[0];
-        this.selectedBookmarks = new IBookmark[0];
-        this.selectedAttributes = new IAttribute[0];
-        this.selectedAttributeHierarchies = new AttributeHierarchy[0];
-        this.selectedValues = new IValue[0];
+        selectedBrowserViewCategories = new BrowserCategory[0];
+        selectedEntries = new IEntry[0];
+        selectedBrowserEntryPages = new BrowserEntryPage[0];
+        selectedSearches = new ISearch[0];
+        selectedSearchResults = new ISearchResult[0];
+        selectedBrowserSearchResultPages = new BrowserSearchResultPage[0];
+        selectedBookmarks = new IBookmark[0];
+        selectedAttributes = new IAttribute[0];
+        selectedAttributeHierarchies = new AttributeHierarchy[0];
+        selectedValues = new IValue[0];
 
-        this.selectedLdifModel = null;
-        this.selectedLdifContainers = new LdifContainer[0];
-        this.selectedLdifParts = new LdifPart[0];
+        selectedLdifModel = null;
+        selectedLdifContainers = new LdifContainer[0];
+        selectedLdifParts = new LdifPart[0];
 
-        this.selectedProperties = new String[0];
+        selectedProperties = new String[0];
 
-        this.input = null;
+        input = null;
     }
 
 
@@ -234,32 +233,31 @@ public abstract class BrowserAction extends StudioAction implements IWorkbenchWi
      */
     public void dispose()
     {
-        this.selectedBrowserViewCategories = new BrowserCategory[0];
-        this.selectedEntries = new IEntry[0];
-        this.selectedBrowserEntryPages = new BrowserEntryPage[0];
-        this.selectedSearches = new ISearch[0];
-        this.selectedSearchResults = new ISearchResult[0];
-        this.selectedBrowserSearchResultPages = new BrowserSearchResultPage[0];
-        this.selectedBookmarks = new IBookmark[0];
-        this.selectedAttributes = new IAttribute[0];
-        this.selectedAttributeHierarchies = new AttributeHierarchy[0];
-        this.selectedValues = new IValue[0];
+        selectedBrowserViewCategories = new BrowserCategory[0];
+        selectedEntries = new IEntry[0];
+        selectedBrowserEntryPages = new BrowserEntryPage[0];
+        selectedSearches = new ISearch[0];
+        selectedSearchResults = new ISearchResult[0];
+        selectedBrowserSearchResultPages = new BrowserSearchResultPage[0];
+        selectedBookmarks = new IBookmark[0];
+        selectedAttributes = new IAttribute[0];
+        selectedAttributeHierarchies = new AttributeHierarchy[0];
+        selectedValues = new IValue[0];
 
-        this.selectedLdifModel = null;
-        this.selectedLdifContainers = new LdifContainer[0];
-        this.selectedLdifParts = new LdifPart[0];
+        selectedLdifModel = null;
+        selectedLdifContainers = new LdifContainer[0];
+        selectedLdifParts = new LdifPart[0];
 
-        this.selectedProperties = new String[0];
+        selectedProperties = new String[0];
 
-        this.input = null;
+        input = null;
     }
 
 
     /**
      * Returns the current active shell
      *
-     * @return
-     *      the current active shell
+     * @return the current active shell
      */
     protected Shell getShell()
     {
@@ -270,8 +268,7 @@ public abstract class BrowserAction extends StudioAction implements IWorkbenchWi
     /**
      * Gets the selected Attributes.
      *
-     * @return
-     *      the selected attributes
+     * @return the selected attributes
      */
     public IAttribute[] getSelectedAttributes()
     {
@@ -282,8 +279,7 @@ public abstract class BrowserAction extends StudioAction implements IWorkbenchWi
     /**
      * Sets the selected Attributes.
      *
-     * @param selectedAttributes
-     *      the selected attributes to set
+     * @param selectedAttributes the selected attributes to set
      */
     public void setSelectedAttributes( IAttribute[] selectedAttributes )
     {
@@ -294,8 +290,7 @@ public abstract class BrowserAction extends StudioAction implements IWorkbenchWi
     /**
      * Gets the selected Bookmarks.
      *
-     * @return
-     *      the selected Bookmarks
+     * @return the selected Bookmarks
      */
     public IBookmark[] getSelectedBookmarks()
     {
@@ -306,8 +301,7 @@ public abstract class BrowserAction extends StudioAction implements IWorkbenchWi
     /**
      * Sets the selected Bookmarks.
      *
-     * @param selectedBookmarks
-     *      the selected Bookmarks to set
+     * @param selectedBookmarks the selected Bookmarks to set
      */
     public void setSelectedBookmarks( IBookmark[] selectedBookmarks )
     {
@@ -318,8 +312,7 @@ public abstract class BrowserAction extends StudioAction implements IWorkbenchWi
     /**
      * Gets the selected Browser View categories.
      *
-     * @return
-     *      the selected Browser View categories
+     * @return the selected Browser View categories
      */
     public BrowserCategory[] getSelectedBrowserViewCategories()
     {
@@ -330,8 +323,7 @@ public abstract class BrowserAction extends StudioAction implements IWorkbenchWi
     /**
      * Sets the selected Browser View categories.
      *
-     * @param selectedBrowserViewCategories
-     *      the selected Browser View categories to set
+     * @param selectedBrowserViewCategories the selected Browser View categories to set
      */
     public void setSelectedBrowserViewCategories( BrowserCategory[] selectedBrowserViewCategories )
     {
@@ -353,8 +345,7 @@ public abstract class BrowserAction extends StudioAction implements IWorkbenchWi
     /**
      * Sets the selected Entries.
      *
-     * @param selectedEntries
-     *      the selected Entries to set
+     * @param selectedEntries the selected Entries to set
      */
     public void setSelectedEntries( IEntry[] selectedEntries )
     {
@@ -365,8 +356,7 @@ public abstract class BrowserAction extends StudioAction implements IWorkbenchWi
     /**
      * Gets the selected Searches.
      *
-     * @return
-     *      the selected Searches
+     * @return the selected Searches
      */
     public ISearch[] getSelectedSearches()
     {
@@ -377,8 +367,7 @@ public abstract class BrowserAction extends StudioAction implements IWorkbenchWi
     /**
      * Sets the selected Searches.
      *
-     * @param selectedSearches
-     *      the selected Searches to set
+     * @param selectedSearches the selected Searches to set
      */
     public void setSelectedSearches( ISearch[] selectedSearches )
     {
@@ -389,8 +378,7 @@ public abstract class BrowserAction extends StudioAction implements IWorkbenchWi
     /**
      * Gets the selected Search Results.
      *
-     * @return
-     *      the selected Search Results
+     * @return the selected Search Results
      */
     public ISearchResult[] getSelectedSearchResults()
     {
@@ -401,8 +389,7 @@ public abstract class BrowserAction extends StudioAction implements IWorkbenchWi
     /**
      * Sets the selected Search Results.
      *
-     * @param selectedSearchResults
-     *      the selected Search Results to set
+     * @param selectedSearchResults the selected Search Results to set
      */
     public void setSelectedSearchResults( ISearchResult[] selectedSearchResults )
     {
@@ -413,8 +400,7 @@ public abstract class BrowserAction extends StudioAction implements IWorkbenchWi
     /**
      * Gets the selected Values.
      *
-     * @return
-     *      the selected Values
+     * @return the selected Values
      */
     public IValue[] getSelectedValues()
     {
@@ -425,8 +411,7 @@ public abstract class BrowserAction extends StudioAction implements IWorkbenchWi
     /**
      * Sets the selected Values.
      *
-     * @param selectedValues
-     *      the selected values to set
+     * @param selectedValues the selected values to set
      */
     public void setSelectedValues( IValue[] selectedValues )
     {
@@ -437,8 +422,7 @@ public abstract class BrowserAction extends StudioAction implements IWorkbenchWi
     /**
      * Gets the input.
      *
-     * @return
-     *      the input
+     * @return the input
      */
     public Object getInput()
     {
@@ -449,8 +433,7 @@ public abstract class BrowserAction extends StudioAction implements IWorkbenchWi
     /**
      * Sets the input.
      *
-     * @param input
-     *      the input to set
+     * @param input the input to set
      */
     public void setInput( Object input )
     {
@@ -461,8 +444,7 @@ public abstract class BrowserAction extends StudioAction implements IWorkbenchWi
     /**
      * Gets the selected LDIF Containers.
      *
-     * @return
-     *      the selected LDIF Containers
+     * @return the selected LDIF Containers
      */
     public LdifContainer[] getSelectedLdifContainers()
     {
@@ -473,8 +455,7 @@ public abstract class BrowserAction extends StudioAction implements IWorkbenchWi
     /**
      * Sets the selected LDIF Containers.
      *
-     * @param selectedLdifContainers
-     *      the selected LDIF Containers to set
+     * @param selectedLdifContainers the selected LDIF Containers to set
      */
     public void setSelectedLdifContainers( LdifContainer[] selectedLdifContainers )
     {
@@ -485,8 +466,7 @@ public abstract class BrowserAction extends StudioAction implements IWorkbenchWi
     /**
      * Gets the selected LDIF Model.
      * 
-     * @return
-     *      the selected LDIF Model
+     * @return the selected LDIF Model
      */
     public LdifFile getSelectedLdifModel()
     {
@@ -497,8 +477,7 @@ public abstract class BrowserAction extends StudioAction implements IWorkbenchWi
     /**
      * Sets the selected LDIF Model.
      *
-     * @param selectedLdifModel
-     *      the selected LDIF Model to set
+     * @param selectedLdifModel the selected LDIF Model to set
      */
     public void setSelectedLdifModel( LdifFile selectedLdifModel )
     {
@@ -509,8 +488,7 @@ public abstract class BrowserAction extends StudioAction implements IWorkbenchWi
     /**
      * Gets the selected LDIF Parts.
      *
-     * @return
-     *      the selected LDIF Parts
+     * @return the selected LDIF Parts
      */
     public LdifPart[] getSelectedLdifParts()
     {
@@ -521,8 +499,7 @@ public abstract class BrowserAction extends StudioAction implements IWorkbenchWi
     /**
      * Sets the selected LDIF Parts.
      *
-     * @param selectedLdifParts
-     *      the selected LDIF Parts to set
+     * @param selectedLdifParts the selected LDIF Parts to set
      */
     public void setSelectedLdifParts( LdifPart[] selectedLdifParts )
     {
@@ -533,8 +510,7 @@ public abstract class BrowserAction extends StudioAction implements IWorkbenchWi
     /**
      * Gets the selected Browser Entry Pages.
      *
-     * @return
-     *      the selected Browser Entru Pages
+     * @return the selected Browser Entru Pages
      */
     public BrowserEntryPage[] getSelectedBrowserEntryPages()
     {
@@ -545,8 +521,7 @@ public abstract class BrowserAction extends StudioAction implements IWorkbenchWi
     /**
      * Sets the selected Browser Entry Pages.
      *
-     * @param selectedBrowserEntryPages
-     *      the selected Browser Entry Pages to set
+     * @param selectedBrowserEntryPages the selected Browser Entry Pages to set
      */
     public void setSelectedBrowserEntryPages( BrowserEntryPage[] selectedBrowserEntryPages )
     {
@@ -557,8 +532,7 @@ public abstract class BrowserAction extends StudioAction implements IWorkbenchWi
     /**
      * Gets the selected Browser Search Result Pages.
      *
-     * @return
-     *      the selected Browser Search Result Pages
+     * @return the selected Browser Search Result Pages
      */
     public BrowserSearchResultPage[] getSelectedBrowserSearchResultPages()
     {
@@ -569,8 +543,7 @@ public abstract class BrowserAction extends StudioAction implements IWorkbenchWi
     /**
      * Sets the selected Browser Search Result Pages.
      *
-     * @param selectedBrowserSearchResultPages
-     *      the selected Browser Search result Pages to set
+     * @param selectedBrowserSearchResultPages the selected Browser Search result Pages to set
      */
     public void setSelectedBrowserSearchResultPages( BrowserSearchResultPage[] selectedBrowserSearchResultPages )
     {
@@ -581,8 +554,7 @@ public abstract class BrowserAction extends StudioAction implements IWorkbenchWi
     /**
      * Gets the selected Attribute Hierarchies.
      *
-     * @return
-     *      the selected Attribute Hierarchies
+     * @return the selected Attribute Hierarchies
      */
     public AttributeHierarchy[] getSelectedAttributeHierarchies()
     {
@@ -593,8 +565,7 @@ public abstract class BrowserAction extends StudioAction implements IWorkbenchWi
     /**
      * Sets the selected Attribute Hierarchies.
      *
-     * @param ahs
-     *      the selected Attribute Hierarchies to set
+     * @param ahs the selected Attribute Hierarchies to set
      */
     public void setSelectedAttributeHierarchies( AttributeHierarchy[] ahs )
     {

@@ -36,7 +36,6 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class AddressValueEditor extends AbstractDialogStringValueEditor
 {
-
     /**
      * {@inheritDoc}
      * 
@@ -45,15 +44,19 @@ public class AddressValueEditor extends AbstractDialogStringValueEditor
     protected boolean openDialog( Shell shell )
     {
         Object value = getValue();
-        if ( value != null && value instanceof String )
+        
+        if ( value instanceof String )
         {
             AddressDialog dialog = new AddressDialog( shell, ( String ) value );
-            if ( dialog.open() == AddressDialog.OK && !"".equals( dialog.getAddress() ) ) //$NON-NLS-1$
+            
+            if ( ( dialog.open() == AddressDialog.OK ) && !EMPTY.equals( dialog.getAddress() ) ) //$NON-NLS-1$
             {
                 setValue( dialog.getAddress() );
+                
                 return true;
             }
         }
+        
         return false;
     }
 
@@ -61,7 +64,7 @@ public class AddressValueEditor extends AbstractDialogStringValueEditor
     /**
      * {@inheritDoc}
      * 
-     * This implementatiosn replaces the $ separators by commas.
+     * This implementation replaces the $ separators by commas.
      */
     public String getDisplayValue( IValue value )
     {
@@ -74,5 +77,4 @@ public class AddressValueEditor extends AbstractDialogStringValueEditor
 
         return displayValue;
     }
-
 }

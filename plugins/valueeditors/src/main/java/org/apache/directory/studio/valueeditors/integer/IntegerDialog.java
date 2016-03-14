@@ -196,7 +196,7 @@ public class IntegerDialog extends Dialog
         } );
 
         updateTextValue();
-        
+
         // Setting focus
         text.setFocus();
 

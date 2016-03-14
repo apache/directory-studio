@@ -215,7 +215,7 @@ public class Value implements IValue
     public boolean equals( Object o )
     {
         // check argument
-        if ( o == null || !( o instanceof IValue ) )
+        if ( !( o instanceof IValue ) )
         {
             return false;
         }
@@ -310,7 +310,7 @@ public class Value implements IValue
         {
             Ava ava = atavIterator.next();
             if ( getAttribute().getDescription().equals( ava.getNormType() )
-                && getStringValue().equals( ava.getNormValue().getString() ) )
+                && getStringValue().equals( ava.getValue().getNormValue() ) )
             {
                 return true;
             }

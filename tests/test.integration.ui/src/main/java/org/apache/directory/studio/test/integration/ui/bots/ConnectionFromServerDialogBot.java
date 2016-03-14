@@ -22,8 +22,12 @@ package org.apache.directory.studio.test.integration.ui.bots;
 
 public class ConnectionFromServerDialogBot extends DialogBot
 {
-    public void clickOkButton()
+    private static final String TITLE = "Connection created";
+
+
+    public ConnectionFromServerDialogBot()
     {
-        super.clickButton( "OK" );
+        super( TITLE );
     }
+
 }

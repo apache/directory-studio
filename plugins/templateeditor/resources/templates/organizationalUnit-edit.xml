@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+  
+  http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!--
+  @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+-->
+<template id="organizationalUnit-edit" title="OrganizationalUnit - Edit">
+	<objectClasses>
+		<structural>organizationalUnit</structural>
+	</objectClasses>
+	<form>
+		<composite numberOfColumns="2" equalColumns="false"
+			horizontalAlignment="fill" grabExcessHorizontalSpace="true"
+			verticalAlignment="fill" grabExcessVerticalSpace="true">
+			<!-- GENERAL INFORMATION -->
+			<section title="General Information" numberOfColumns="2"
+				equalColumns="false" horizontalAlignment="fill"
+				grabExcessHorizontalSpace="true">
+
+				<!-- Name -->
+				<label value="Name:" horizontalAlignment="end" width="70" />
+				<textfield attributeType="ou" horizontalAlignment="fill"
+					grabExcessHorizontalSpace="true" />
+
+				<!-- Description -->
+				<label value="Description:" horizontalAlignment="end" />
+				<textfield attributeType="description" numberOfRows="3"
+					horizontalAlignment="fill" grabExcessHorizontalSpace="true" />
+
+			</section>
+
+			<!-- Image -->
+			<image imageWidth="64" imageHeight="64" showSaveAsButton="false"
+				showClearButton="false" showBrowseButton="false">
+				<data>R0lGODlhQABAAOYAAD5imTlbkjtelDxglzFSiTNVjERpoEVqoU+HVEyEUYFVFYRY
+					F1OLWFGJVp11JoNWFh5UJzFTikNnnp53JoBTFRhNIZ94J0Ron5t0JRZLHzJUixtQJPPz883PZ9T
+					Uaf/z0peuW6PAzP7txLTM152xXNrm7qfEzzdZkKy7YMXKZf7xzPfQePzlr8LV373FY/fMcNrXav
+					vhpPnYjdDe5/3quq3I08na47TAYqS2Xt7o8Nbi6/rcmLvR2/jTgt7aa0Jmnfv7+9vb245kHUBln
+					DVWjYxhHD9jmiJXKjJTikV9S4pfGjZsPJJpH5BmHjVXjpRrISlfMTFoOZZuIjpdlEmATjtelT1g
+					l4ZaGDZYjzpwQEJ5SIhcGSVbLZpyJD51RJhwIzhbki1kNcvLy0Non0Bkm+Pj48PDw+/v78/Pz//
+					//wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+					AAAAAAAAAAAAAAACH5BAAAAAAALAAAAABAAEAAAAf/gGmCg4SFhoeIiYqLjI2Oj5CRkpOUlZaXm
+					Jmam5oWnp+goaKfHECcihOpqqusrapBHKeJDrS1tre4tWhnsogYv8DBwsPAu72HXcldH8zNzs8f
+					yl3Gx4Vf118q2tvc3SrYX9TVg1LlUiLo6errIuZS4uNpT/NPNPb3+Pk09E/w40wAmbAYSLCgQRY
+					Bmfir1qRhkxgQI0qcGMNhk4XHhGgUsqOjx48gd2wUgrFXkZNFZKhcybKlDJRFSspSQlNJj5s4c+
+					rsUVOJzFNbgm5ZQbSo0aMrhG75yemK0ysvokqdSvXF0ytMNy3YyrWr169cs2p6QLas2bNoy4rNp
+					KCt27dw/+O6XYuJgt27ePPqvUv3EocgaAILDnyg8AEzYgYPhhVvEBAOZyJLjmygsgExZSZPLtWY
+					0ZjPY/p2LvSj9A/RoweRWU0GdSYAsGPLnk27Nm3Omwbo3s27t+/fvhlvEkC8uPHjyJMjd50ogPP
+					n0KNLny6dOaIT2E8gVsy9O/fsJ6wfckLeCWbN6NOjL+9EvKEC8Au4TxNfPq9NSPIjma9//31NBA
+					RIwHwCDvjfI4YlqOCCC+ImCAMQRijhhBRG6GAhlmWo4YYbCidIAyCGKOKIJIboYSEXpKjiiiy2q
+					CI8CMQo44w01ihjSRLkqOOOPPaoIzwJBCnkkEQWKWRJpv2Qw/+STDbpZA5JwkPFlFT4YOWVWGbp
+					A5VUlDTEl0OUIOaYZJZZAphDwJPEmknA4OabcMYJA5tJlGTEnUbooOeefPapA55GwKPFoFp4YOi
+					hiCbqAaFalCTbDJBGKumkM8gGjxeYetHBppx26mkHmXpRkhWkWmHDqaimqqoNpVoBTxawZpHCrL
+					TWamsKsWZRUhW8VtHCr8AGK2wLvVYBzxLILuHCssw266wLyS5R0hTUTsHDtdhmqy0P1U4BTxTgR
+					nHDuOSWa+4N4UZREhjsgjHCu/DGK+8I7YIBTxj4hoHCvvz26y8K+YZREng1FGzwwQjXAB48UDQM
+					BQ4QRyzxxDg4DEWqSVhkjIUJHHfs8ccmaIwFPFyUzAUJKKes8sokmMxFSUTETEQINNds880hyEw
+					EPEf0fAQIQAct9NAg+HxESfUlrfTS8MEDwdNQRy311FCXpMHVWGet9dZYw7PB12CHLfbYYJcUwd
+					lop6322mjDU8HbcMct99xwl1Tg3XjnHSA8GfTt99+AB+53SX95Z7hiJxZ++OInEvKYepBrduHjk
+					Vd+YWqYZ6755pwbEggAOw==</data>
+			</image>
+		</composite>
+	</form>
+</template>

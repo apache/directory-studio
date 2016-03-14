@@ -45,32 +45,17 @@ import org.eclipse.ui.PlatformUI;
 public class OpenEntryEditorRunnable extends StudioConnectionRunnableWithProgressAdapter implements
     StudioConnectionBulkRunnableWithProgress
 {
+    /** The entries */
     private IEntry[] entries;
+    
+    /** The entries found in a search operation */
     private ISearchResult[] searchResults;
+
+    /** The bookmarked elements */
     private IBookmark[] bookmarks;
+    
+    /** The extensions, if any */
     private EntryEditorExtension extension;
-
-
-    /**
-     * Creates a new instance of OpenEntryEditorRunnable.
-     * <p>
-     * Opens an entry editor from one of the given entries, 
-     * search results or bookmarks.
-     * 
-     * @param entries
-     *      an array of entries
-     * @param searchResults
-     *      an array of search results
-     * @param bookmarks
-     *      an arrays of bookmarks
-     */
-    public OpenEntryEditorRunnable( IEntry[] entries, ISearchResult[] searchResults, IBookmark[] bookmarks )
-    {
-        super();
-        this.entries = entries;
-        this.searchResults = searchResults;
-        this.bookmarks = bookmarks;
-    }
 
 
     /**
@@ -79,14 +64,10 @@ public class OpenEntryEditorRunnable extends StudioConnectionRunnableWithProgres
      * Opens an entry editor with the given entry editor extension and one of 
      * the given entries, search results or bookmarks.
      * 
-     * @param extension
-     *      the entry editor extension
-     * @param entries
-     *      an array of entries
-     * @param searchResults
-     *      an array of search results
-     * @param bookmarks
-     *      an arrays of bookmarks
+     * @param extension the entry editor extension
+     * @param entries an array of entries
+     * @param searchResults an array of search results
+     * @param bookmarks an arrays of bookmarks
      */
     public OpenEntryEditorRunnable( EntryEditorExtension extension, IEntry[] entries, ISearchResult[] searchResults,
         IBookmark[] bookmarks )
@@ -190,6 +171,7 @@ public class OpenEntryEditorRunnable extends StudioConnectionRunnableWithProgres
             if ( entry instanceof IContinuation )
             {
                 IContinuation continuation = ( IContinuation ) entry;
+                
                 if ( continuation.getState() == State.UNRESOLVED )
                 {
                     continuation.resolve();
@@ -224,6 +206,7 @@ public class OpenEntryEditorRunnable extends StudioConnectionRunnableWithProgres
         // Getting the editor's ID and creating the proper editor input
         final String editorId = extension.getEditorId();
         final EntryEditorInput editorInput;
+        
         if ( entries.length == 1 )
         {
             editorInput = new EntryEditorInput( entries[0], extension );

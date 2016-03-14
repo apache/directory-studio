@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.common.filtereditor;
 
 
-import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
+import org.apache.directory.studio.common.ui.CommonUIConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterParser;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterToken;
 import org.eclipse.jface.text.DocumentEvent;
@@ -34,7 +34,6 @@ import org.eclipse.jface.text.presentation.IPresentationDamager;
 import org.eclipse.jface.text.presentation.IPresentationRepairer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
-import org.eclipse.swt.graphics.RGB;
 
 
 /**
@@ -45,23 +44,17 @@ import org.eclipse.swt.graphics.RGB;
 public class FilterDamagerRepairer implements IPresentationDamager, IPresentationRepairer
 {
 
-    private static final TextAttribute DEFAULT_TEXT_ATTRIBUTE = new TextAttribute( BrowserCommonActivator.getDefault()
-        .getColor( new RGB( 0, 0, 0 ) ) );
+    private static final TextAttribute DEFAULT_TEXT_ATTRIBUTE = new TextAttribute( CommonUIConstants.BLACK_COLOR );
 
-    private static final TextAttribute AND_OR_NOT_TEXT_ATTRIBUTE = new TextAttribute( BrowserCommonActivator
-        .getDefault().getColor( new RGB( 0, 127, 0 ) ), null, SWT.BOLD );
+    private static final TextAttribute AND_OR_NOT_TEXT_ATTRIBUTE = new TextAttribute( CommonUIConstants.M_GREEN_COLOR, null, SWT.BOLD );
 
-    private static final TextAttribute ATTRIBUTE_TEXT_ATTRIBUTE = new TextAttribute( BrowserCommonActivator
-        .getDefault().getColor( new RGB( 127, 0, 85 ) ) );
+    private static final TextAttribute ATTRIBUTE_TEXT_ATTRIBUTE = new TextAttribute( CommonUIConstants.M_PURPLE_COLOR );
 
-    private static final TextAttribute FILTER_TYPE_TEXT_ATTRIBUTE = new TextAttribute( BrowserCommonActivator
-        .getDefault().getColor( new RGB( 255, 0, 0 ) ), null, SWT.BOLD );
+    private static final TextAttribute FILTER_TYPE_TEXT_ATTRIBUTE = new TextAttribute( CommonUIConstants.RED_COLOR, null, SWT.BOLD );
 
-    private static final TextAttribute VALUE_TEXT_ATTRIBUTE = new TextAttribute( BrowserCommonActivator.getDefault()
-        .getColor( new RGB( 0, 0, 127 ) ) );
+    private static final TextAttribute VALUE_TEXT_ATTRIBUTE = new TextAttribute( CommonUIConstants.M_BLUE_COLOR );
 
-    private static final TextAttribute PARENTHESIS_TEXT_ATTRIBUTE = new TextAttribute( BrowserCommonActivator
-        .getDefault().getColor( new RGB( 0, 0, 0 ) ), null, SWT.BOLD );
+    private static final TextAttribute PARENTHESIS_TEXT_ATTRIBUTE = new TextAttribute( CommonUIConstants.BLACK_COLOR, null, SWT.BOLD );
 
     /** The filter parser. */
     private LdapFilterParser parser;

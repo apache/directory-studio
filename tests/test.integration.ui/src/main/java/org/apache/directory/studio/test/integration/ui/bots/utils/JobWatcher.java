@@ -27,6 +27,7 @@ import org.eclipse.core.runtime.jobs.IJobManager;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 
 
@@ -61,7 +62,7 @@ public class JobWatcher
             public void done( IJobChangeEvent event )
             {
                 // if the done job has the expected name we are done
-                if ( jobName.equals( event.getJob().getName() ) )
+                if ( event.getJob().getName().startsWith( jobName ) )
                 {
                     done.set( true );
                     jobManager.removeJobChangeListener( listener );
@@ -95,7 +96,7 @@ public class JobWatcher
                 Job[] find = jobManager.find( null );
                 for ( Job job : find )
                 {
-                    if ( jobName.equals( job.getName() ) )
+                    if ( job.getName().startsWith( jobName ) )
                     {
                         running = true;
                         break;
@@ -115,6 +116,6 @@ public class JobWatcher
             {
                 return "Job run too long";
             }
-        } );
+        }, SWTBotPreferences.TIMEOUT * 2 );
     }
 }
