@@ -243,7 +243,7 @@ public class ImportExportTest extends AbstractLdapTestUnit
      * @throws Exception
      */
     @Test
-    public void testImportDontUptateUI() throws Exception
+    public void testImportDoesNotUpdateUI() throws Exception
     {
         URL url = Platform.getInstanceLocation().getURL();
         String destFile = url.getFile() + "ImportDontUpdateUiTest.ldif";
