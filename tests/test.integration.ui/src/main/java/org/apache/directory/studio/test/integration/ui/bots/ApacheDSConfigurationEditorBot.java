@@ -82,6 +82,14 @@ public class ApacheDSConfigurationEditorBot
     }
 
 
+    public void setKeystore( String keyStoreFilePath, String keyStorePassword )
+    {
+        editor.activatePage( "LDAP/LDAPS Servers" );
+        editor.bot().text( 11 ).setText( keyStoreFilePath );
+        editor.bot().text( 12 ).setText( keyStorePassword );
+    }
+
+
     public void save()
     {
         editor.save();
@@ -92,5 +100,6 @@ public class ApacheDSConfigurationEditorBot
     {
         editor.close();
     }
+
 
 }

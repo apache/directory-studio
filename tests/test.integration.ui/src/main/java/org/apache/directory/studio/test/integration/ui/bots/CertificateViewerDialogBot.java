@@ -20,24 +20,17 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
-public class ErrorDialogBot extends DialogBot
+public class CertificateViewerDialogBot extends DialogBot
 {
-
-    public ErrorDialogBot()
+    public CertificateViewerDialogBot()
     {
-        this( "Error" );
+        super( "Certificate Viewer" );
     }
 
 
-    public ErrorDialogBot( String title )
+    public void clickCloseButton()
     {
-        super( title );
-    }
-
-
-    public String getErrorMessage()
-    {
-        return bot.label( 1 ).getText();
+        clickButton( "Close" );
     }
 
 }

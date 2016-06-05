@@ -58,12 +58,19 @@ public class NewConnectionWizardBot extends WizardBot
         super( TITLE );
     }
 
-    @Override
-    public void clickFinishButton()
+
+    public void clickFinishButton( boolean waitTillConnectionOpened )
     {
-        JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__open_connections_name_1 );
+        JobWatcher watcher = null;
+        if ( waitTillConnectionOpened )
+        {
+            watcher = new JobWatcher( BrowserCoreMessages.jobs__open_connections_name_1 );
+        }
         super.clickFinishButton();
-        watcher.waitUntilDone();
+        if ( waitTillConnectionOpened )
+        {
+            watcher.waitUntilDone();
+        }
     }
 
 

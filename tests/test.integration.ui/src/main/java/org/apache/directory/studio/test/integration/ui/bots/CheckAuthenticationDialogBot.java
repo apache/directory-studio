@@ -20,24 +20,12 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
-public class ErrorDialogBot extends DialogBot
+public class CheckAuthenticationDialogBot extends DialogBot
 {
 
-    public ErrorDialogBot()
+    public CheckAuthenticationDialogBot()
     {
-        this( "Error" );
-    }
-
-
-    public ErrorDialogBot( String title )
-    {
-        super( title );
-    }
-
-
-    public String getErrorMessage()
-    {
-        return bot.label( 1 ).getText();
+        super( "Check Authentication" );
     }
 
 }
