@@ -294,7 +294,7 @@ public class CertificateListComposite extends Composite
         buttonContainer.setLayoutData( new GridData( GridData.FILL, GridData.FILL, false, false ) );
 
         // The View Button 
-        Button viewButton = BaseWidgetUtils.createButton( buttonContainer, Messages
+        viewButton = BaseWidgetUtils.createButton( buttonContainer, Messages
             .getString( "CertificateListComposite.ViewButton" ), 1 );//$NON-NLS-1$
         
         viewButton.setEnabled( false );
