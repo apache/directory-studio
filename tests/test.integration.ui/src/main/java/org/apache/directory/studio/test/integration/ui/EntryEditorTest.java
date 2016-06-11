@@ -306,7 +306,6 @@ public class EntryEditorTest extends AbstractLdapTestUnit
 
         // assert value after saved and reloaded from server
         SWTUtils.sleep( 1000 );
-        System.out.println( entryEditorBot.getAttributeValues() );
         assertTrue( entryEditorBot.getAttributeValues().contains( "userPassword: CRYPT-SHA-512 hashed password" ) );
 
         // verify and bind with the correct password
@@ -318,8 +317,6 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         assertNull( pwdEditorBot.clickBindButton() );
 
         // verify and bind with the wrong password
-        pwdEditorBot = entryEditorBot.editValueExpectingPasswordEditor( "userPassword",
-            "CRYPT-SHA-512 hashed password" );
         pwdEditorBot.activateCurrentPasswordTab();
         pwdEditorBot.setVerifyPassword( "Wrong Password" );
         assertEquals( "Password verification failed", pwdEditorBot.clickVerifyButton() );
