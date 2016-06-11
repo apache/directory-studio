@@ -793,8 +793,8 @@ public class EntryEditorManager
         
         if ( referenceCopy != null )
         {
-            EntryEditorUtils.ensureAttributesInitialized( entry );
             EventRegistry.suspendEventFiringInCurrentThread();
+            EntryEditorUtils.ensureAttributesInitialized( entry );
             new CompoundModification().replaceAttributes( entry, referenceCopy, this );
             EventRegistry.resumeEventFiringInCurrentThread();
             oscSharedReferenceCopies.put( entry, referenceCopy );
@@ -816,9 +816,9 @@ public class EntryEditorManager
 
     private void updateAutoSaveSharedReferenceCopy( IEntry entry )
     {
+        EventRegistry.suspendEventFiringInCurrentThread();
         EntryEditorUtils.ensureAttributesInitialized( entry );
         IEntry workingCopy = autoSaveSharedReferenceCopies.get( entry );
-        EventRegistry.suspendEventFiringInCurrentThread();
         new CompoundModification().replaceAttributes( entry, workingCopy, this );
         EventRegistry.resumeEventFiringInCurrentThread();
     }

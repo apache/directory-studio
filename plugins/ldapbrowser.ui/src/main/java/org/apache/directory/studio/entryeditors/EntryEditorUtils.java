@@ -21,8 +21,8 @@
 package org.apache.directory.studio.entryeditors;
 
 
+import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesRunnable;
-import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.eclipse.core.runtime.IStatus;
@@ -45,17 +45,13 @@ public class EntryEditorUtils
      *      the job associated with the attributes initialization, 
      *      or <code>null</code> if the attributes were already initialized
      */
-    public static StudioBrowserJob ensureAttributesInitialized( IEntry entry )
+    public static void ensureAttributesInitialized( IEntry entry )
     {
         if ( !entry.isAttributesInitialized() )
         {
             InitializeAttributesRunnable runnable = new InitializeAttributesRunnable( entry );
-            StudioBrowserJob job = new StudioBrowserJob( runnable );
-            job.execute();
-            return job;
+            RunnableContextRunner.execute( runnable, null, true );
         }
-
-        return null;
     }
 
 
