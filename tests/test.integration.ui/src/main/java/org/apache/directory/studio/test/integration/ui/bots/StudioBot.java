@@ -94,6 +94,18 @@ public class StudioBot
     }
 
 
+    public SchemaProjectsViewBot getSchemaProjectsView()
+    {
+        return new SchemaProjectsViewBot();
+    }
+
+
+    public SchemaSearchViewBot getSchemaSearchView()
+    {
+        return new SchemaSearchViewBot();
+    }
+
+
     public void resetLdapPerspective()
     {
         resetPerspective( "org.apache.directory.studio.ldapbrowser.ui.perspective.BrowserPerspective" );
