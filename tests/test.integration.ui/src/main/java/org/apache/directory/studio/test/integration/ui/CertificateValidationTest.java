@@ -45,7 +45,6 @@ import org.apache.directory.studio.test.integration.ui.bots.NewConnectionWizardB
 import org.apache.directory.studio.test.integration.ui.bots.PreferencesBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
 import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
-import org.apache.mina.util.AvailablePortFinder;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -777,11 +776,9 @@ public class CertificateValidationTest
     {
         ApacheDSConfigurationEditorBot editorBot = serversViewBot.openConfigurationEditor( serverName );
 
-        ldapPort = AvailablePortFinder.getNextAvailable( 1024 );
-        editorBot.setLdapPort( ldapPort );
-
-        ldapsPort = AvailablePortFinder.getNextAvailable( ldapPort + 1 );
-        editorBot.setLdapsPort( ldapsPort );
+        editorBot.setAvailableLdapAndLdapsPort();
+        ldapPort = editorBot.getLdapPort();
+        ldapsPort = editorBot.getLdapsPort();
 
         editorBot.save();
         editorBot.close();

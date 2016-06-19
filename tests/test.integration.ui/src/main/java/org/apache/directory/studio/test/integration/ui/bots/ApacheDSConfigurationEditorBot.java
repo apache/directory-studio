@@ -20,6 +20,7 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
+import org.apache.mina.util.AvailablePortFinder;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotMultiPageEditor;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
@@ -51,6 +52,15 @@ public class ApacheDSConfigurationEditorBot
                 return "ApacheDS configuration editor not ready";
             }
         } );
+    }
+
+
+    public void setAvailableLdapAndLdapsPort()
+    {
+        int ldapPort = AvailablePortFinder.getNextAvailable( 1024 );
+        setLdapPort( ldapPort );
+        int ldapsPort = AvailablePortFinder.getNextAvailable( getLdapPort() + 1 );
+        setLdapsPort( ldapsPort );
     }
 
 

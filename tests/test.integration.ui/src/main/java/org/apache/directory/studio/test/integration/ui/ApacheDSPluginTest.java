@@ -43,7 +43,6 @@ import org.apache.directory.studio.test.integration.ui.bots.ModificationLogsView
 import org.apache.directory.studio.test.integration.ui.bots.NewApacheDSServerWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
 import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
-import org.apache.mina.util.AvailablePortFinder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -247,11 +246,7 @@ public class ApacheDSPluginTest
     {
         ApacheDSConfigurationEditorBot editorBot = serversViewBot.openConfigurationEditor( serverName );
 
-        int ldapPort = AvailablePortFinder.getNextAvailable( 1024 );
-        editorBot.setLdapPort( ldapPort );
-
-        int ldapsPort = AvailablePortFinder.getNextAvailable( ldapPort + 1 );
-        editorBot.setLdapsPort( ldapsPort );
+        editorBot.setAvailableLdapAndLdapsPort();
 
         editorBot.save();
         editorBot.close();
@@ -353,10 +348,9 @@ public class ApacheDSPluginTest
         int oldLdapsPort = remoteEditorBot.getLdapsPort();
 
         // Set new ports
-        int newLdapPort = AvailablePortFinder.getNextAvailable( 1024 );
-        remoteEditorBot.setLdapPort( newLdapPort );
-        int newLdapsPort = AvailablePortFinder.getNextAvailable( newLdapPort + 1 );
-        remoteEditorBot.setLdapsPort( newLdapsPort );
+        remoteEditorBot.setAvailableLdapAndLdapsPort();
+        int newLdapPort = remoteEditorBot.getLdapPort();
+        int newLdapsPort = remoteEditorBot.getLdapsPort();
 
         // Save the config editor
         remoteEditorBot.save();
