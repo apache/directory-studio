@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Apache Directory Studio" uid="org.apache.directory.studio.product" id="org.apache.directory.studio.rcp.product" application="org.apache.directory.studio.rcp.application" version="2.0.0.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="Apache Directory Studio" uid="org.apache.directory.studio.product" id="org.apache.directory.studio.rcp.product" application="org.apache.directory.studio.rcp.application" version="2.0.0.v20160628-M11" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/org.apache.directory.studio.rcp/resources/pictures/product_lg.gif"/>
