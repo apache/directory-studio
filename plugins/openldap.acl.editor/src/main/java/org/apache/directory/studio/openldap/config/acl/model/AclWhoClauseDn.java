@@ -20,13 +20,13 @@
 package org.apache.directory.studio.openldap.config.acl.model;
 
 /**
- * 
+ * The Acl
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class AclWhoClauseDn extends AbstractAclWhoClause
 {
-    /** The type */
-    private AclWhoClauseDnTypeEnum type = AclWhoClauseDnTypeEnum.BASE;
+    /** The type, default to BASE */
+    private AclWhoClauseDnTypeEnum type;
 
     /** The modifier */
     private AclWhoClauseDnModifierEnum modifier;

@@ -30,11 +30,6 @@ public enum AclAttributeStyleEnum
     BASE( "base" ),
     BASE_OBJECT( "baseobject" ),
     REGEX( "regex" ),
-    ONE( "one" ),
-    ONE_LEVEL( "onelevel" ),
-    SUB( "sub" ),
-    SUBTREE( "subtree" ),
-    CHILDREN( "children" ),
     NONE( "---" );
 
     /** The interned name */

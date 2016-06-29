@@ -25,6 +25,9 @@ package org.apache.directory.studio.openldap.config.acl.model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+
 import java.util.List;
 } 
     
@@ -95,6 +98,7 @@ tokens
     ID_subtree = "subtree";
     ID_to = "to";
     ID_users = "users";
+	ID_val = "val";
     ID_w = "w";
     ID_x = "x";
     ID_write = "write";
@@ -108,7 +112,9 @@ INTEGER : DIGIT | ( LDIGIT ( DIGIT )+ );
 
 DOUBLE_QUOTED_STRING : '"'! ( ~'"' )* '"'!;
         
-ATTR_IDENT : ('a'..'z' | '!' | '@' )  ('a'..'z' | DIGIT | '-' | ';' )*;
+//ATTR_IDENT : ('a'..'z' | '!' | '@' )  ('a'..'z' | DIGIT | '-' | ';' )*;
+
+IDENT : ('a'..'z') ('a'..'z' | DIGIT | '-')*;
 
 OPEN_CURLY : '{';
 
@@ -138,7 +144,7 @@ MINUS : '-';
 
 SLASH : '/';
 
-FILTER : '(' ( ( '&' ( SP )? (FILTER)+ ) | ( '|' (SP)? (FILTER)+ ) | ( '!' (SP)? FILTER ) | FILTER_VALUE ) ')';
+FILTER : '(' (SP)? ( ( '&' (SP)? (FILTER)+ ) | ( '|' (SP)? (FILTER)+ ) | ( '!' (SP)? FILTER ) | FILTER_VALUE ) (SP)? ')';
 
 protected FILTER_VALUE : (options{greedy=true;}: ~( ')' | '(' | '&' | '|' | '!' ) ( ~(')') )* ) ;
 
@@ -165,7 +171,6 @@ options
 // ----------------------------------------------------------------------------
 // parser initialization
 // ----------------------------------------------------------------------------
-
 {
     private static final Logger log = LoggerFactory.getLogger( AntlrAclParser.class );
     
@@ -177,275 +182,574 @@ options
     }
 }
 
+// ----------------------------------------------------------------------------
+// The entry rule :
+// <parse> ::= SP? <aclItem> SP? #
+// ----------------------------------------------------------------------------
 parse
     {
         log.debug( "entered parse()" );
+		System.out.println( "entered parse_init()" );
     }
     :
     ( SP )? aclItem ( SP )? EOF
     ;
     
+// ----------------------------------------------------------------------------
+// The initial ACI :
+// <acl> ::= ('access' SP)? SP? 'to' SP (<what>)? ( SP 'by' SP <who> )+
+// The <what> part hould be seen only once, it can be absent and then is
+// equivalent to '*'
+// the <who> part is seen at least once
+// ----------------------------------------------------------------------------
 aclItem
     {
         log.debug( "entered aclItem()" );
+		System.out.println( "entered aclItem()" );
 
         aclItem = new AclItem();
     }
     :
-    ( ID_access SP )? ID_to ( SP what )+ ( SP ID_by SP who )* 
+    ( ID_access SP)? (SP)? ID_to SP (what SP)? ( ID_by SP who )+
+	{
+		if ( aclItem.getWhatClause() == null )
+		{
+			// The 'what' is equivalent to '*'
+			aclItem.setWhatClause( new AclWhatClauseStar() );
+		}
+	}
     ;
 
+// ----------------------------------------------------------------------------
+// The <what> clause. 
+// <what> ::= 'dn' <what-dn> | <what-filter> | <what-attrs> | <what-star> | e
+// This is just a filtering clause
+// ----------------------------------------------------------------------------
 what
     {
         log.debug( "entered what()" );
+		System.out.println( "entered what()" );
     }
     :
-    ( what_star | what_dn | what_attrs | what_filter )
+    ( ID_dn what_dn | what_filter | what_attrs | what_star )
     ;
 
+// ----------------------------------------------------------------------------
+// The catch all 'what' clause. We store an instance of a
+// AclWhatClauseStar in the ACL
+//
+// <what-star> ::= '*'
+// ----------------------------------------------------------------------------
 what_star
-{
-    log.debug( "entered what_star()" );
-}
+	{
+    	log.debug( "entered what_star()" );
+		System.out.println( "entered what_star()" );
+	}
     :
     STAR
     {
-        if ( aclItem.getWhatClause().getStarClause() == null )
-        {
-            aclItem.getWhatClause().setStarClause( new AclWhatClauseStar() );
-        }
-        else
-        {
-            throw new RecognitionException( "A star (*) what clause already exists in the ACL." );
-        }
+        aclItem.setWhatClause( new AclWhatClauseStar() );
     };
 
+// ----------------------------------------------------------------------------
+// The <what-dn> clause. We have three flavors :
+// - the basic style which takes a regex parameter
+// - the scope style that takes a DN parameter
+// - a simple DN
+//
+// <what-dn> ::= <basic-dn-clause | <scope-dn-clause>| SP? '=' SP? DN
+// ----------------------------------------------------------------------------
 what_dn
-{
-    log.debug( "entered what_dn()" );
-    
-    AclWhatClauseDn whatClauseDn = new AclWhatClauseDn();
-    
-    if ( aclItem.getWhatClause().getDnClause() == null )
-    {
-        aclItem.getWhatClause().setDnClause( whatClauseDn );
-    }
-    else
-    {
-        throw new RecognitionException( "A DN what clause already exists in the ACL." );
-    }
-}
+	{
+	    log.debug( "entered what_dn()" );
+		System.out.println( "entered what_dn()" );
+	}
     :
-    ID_dn ( DOT what_dn_type )? ( SP )? EQUAL ( SP )? token:DOUBLE_QUOTED_STRING
-    {
-        whatClauseDn.setPattern( token.getText() );
-    }
+	basic_dn_style
+	|
+	scope_dn_clause
+	|
+	(SP)? EQUAL (SP)? 
+	( 
+		{
+			System.out.println( "what-dn default" );
+		}
+		quoted_token:DOUBLE_QUOTED_STRING 
+	    {
+			AclWhatClauseDn whatClauseDn = new AclWhatClauseDn();
+			String dnString = quoted_token.getText();
+
+			try
+			{
+				new Dn( dnString );
+			}
+			catch ( LdapInvalidDnException lide )
+			{
+				throw new  RecognitionException( "The DN is invalid : " + dnString );
+			}
+			
+			whatClauseDn.setPattern( dnString );
+			aclItem.setWhatClause( whatClauseDn );
+	    }
+		| 
+		string_token:STRING 
+	    {
+			AclWhatClauseDn whatClauseDn = new AclWhatClauseDn();
+			String dnString = string_token.getText();
+			
+			try
+			{
+				new Dn( dnString );
+			}
+			catch ( LdapInvalidDnException lide )
+			{
+				throw new  RecognitionException( "The DN is invalid" + dnString );
+			}
+			
+			whatClauseDn.setPattern( dnString );
+			aclItem.setWhatClause( whatClauseDn );
+	    }
+	)
     ;
-    
-what_dn_type
-{
-    log.debug( "entered what_dn_type()" );
-    
-    AclWhatClause whatClause = aclItem.getWhatClause();
-    AclWhatClauseDn whatClauseDn =  whatClause.getDnClause();
-    
-    if ( whatClauseDn == null )
-    {
-        // Throw an exception ?
-        return;
-    }
-}
+	
+// ----------------------------------------------------------------------------
+// The <basic-dn-style> clause.
+//
+// <basic-dn-clause> ::= <exact-basic-dn-style> | <regex-basic-dn-style>
+//
+// ----------------------------------------------------------------------------
+basic_dn_style
+	{
+	    log.debug( "entered basic_dn_style()" );
+		System.out.println( "entered basic_dn_style()" );
+	}
+	:
+	exact_basic_dn_style | regex_basic_dn_style
+	;
+	
+// ----------------------------------------------------------------------------
+// The <exact-basic-dn-style> clause.
+//
+// <exact-basic-dn-clause> ::= '.' 'exact' SP? '=' SP? DN
+//
+// ----------------------------------------------------------------------------
+exact_basic_dn_style
+	{
+	    log.debug( "entered exact_basic_dn_style()" );
+		System.out.println( "entered basic_dn_style()" );
+		AclWhatClauseDn whatClauseDn = new AclWhatClauseDn();
+		whatClauseDn.setType( AclWhatClauseDnTypeEnum.EXACT );
+	}
+	:
+	DOT
+	(
+		ID_exact (SP)? EQUAL (SP)? 
+		( 
+			quoted_token:DOUBLE_QUOTED_STRING 
+			{
+				String dnString = quoted_token.getText();
+
+				try
+				{
+					new Dn( dnString );
+				}
+				catch ( LdapInvalidDnException lide )
+				{
+					throw new  RecognitionException( "The DN is invalid" + dnString );
+				}
+				
+				whatClauseDn.setPattern( dnString );
+			}
+			| 
+			string_token:STRING 
+			{
+				String dnString = string_token.getText();
+				
+				try
+				{
+					new Dn( dnString );
+				}
+				catch ( LdapInvalidDnException lide )
+				{
+					throw new  RecognitionException( "The DN is invalid" + dnString );
+				}
+				
+				whatClauseDn.setPattern( dnString );
+			}
+		)
+	)
+	{
+		aclItem.setWhatClause( whatClauseDn );
+	}
+	;
+
+// ----------------------------------------------------------------------------
+// The <regex-basic-dn-style> clause.
+//
+// <regex-basic-dn-clause> ::= '.' 'regex' SP? '=' SP? REGEXP
+//
+// ----------------------------------------------------------------------------
+regex_basic_dn_style
+	{
+	    log.debug( "entered regex_basic_dn_style()" );
+		System.out.println( "entered regex_basic_dn_style()" );
+		AclWhatClauseDn whatClauseDn = new AclWhatClauseDn();
+		whatClauseDn.setType( AclWhatClauseDnTypeEnum.REGEX );
+	}
+	:
+	DOT
+	(
+		ID_regex (SP)? EQUAL (SP)? 
+		{
+			System.out.println( "In '='" );
+		}
+		( 
+			quoted_token:DOUBLE_QUOTED_STRING 
+			{
+				whatClauseDn.setPattern( quoted_token.getText() );
+			}
+			| 
+			string_token:STRING 
+			{
+				whatClauseDn.setPattern( string_token.getText() );
+			}
+		)
+	)
+	{
+		aclItem.setWhatClause( whatClauseDn );
+	}
+	;
+
+// ----------------------------------------------------------------------------
+// The <scope-dn-clause> clause.
+//
+// <scope-dn-clause> ::= <scope-dn-style> SP? '=' SP? DN
+// ----------------------------------------------------------------------------
+scope_dn_clause 
+	{
+	    log.debug( "entered scope_dn_clause()" );
+		System.out.println( "entered scope_dn_clause()" );
+		AclWhatClauseDn whatClauseDn = new AclWhatClauseDn();
+	}
+	:
+	scope_dn_style[whatClauseDn]
+	(SP)? EQUAL (SP)? 
+	( 
+		quoted_token:DOUBLE_QUOTED_STRING 
+	    {
+	        whatClauseDn.setPattern( quoted_token.getText() );
+	    }
+		| 
+		string_token:STRING 
+	    {
+	        whatClauseDn.setPattern( string_token.getText() );
+	    }
+	)
+	{
+		aclItem.setWhatClause( whatClauseDn );
+	}
+	;
+
+// ----------------------------------------------------------------------------
+// <scope-dn-style>	::= '.' 'base' | '.' 'baseobject' | '.' 'one' | 
+//						'.' 'onelevel' | '.' 'sub' | '.' 'subtree' | 
+//						'.' 'children'
+// ----------------------------------------------------------------------------
+scope_dn_style [AclWhatClauseDn whatClauseDn]
+	{
+	    log.debug( "entered scope_dn_style()" );
+		System.out.println( "entered scope_dn_style()" );
+	}
     :
-    ID_regex
-    {
-        whatClauseDn.setType( AclWhatClauseDnTypeEnum.REGEX );
-    }
-    |
-    ID_base
-    {
-        whatClauseDn.setType( AclWhatClauseDnTypeEnum.BASE );
-    }
-    |
-    ID_exact
-    {
-        whatClauseDn.setType( AclWhatClauseDnTypeEnum.EXACT );
-    }
-    |
-    ID_one
-    {
-        whatClauseDn.setType( AclWhatClauseDnTypeEnum.ONE );
-    }
-    |
-    ID_subtree
-    {
-        whatClauseDn.setType( AclWhatClauseDnTypeEnum.SUBTREE );
-    }
-    |
-    ID_children
-    {
-        whatClauseDn.setType( AclWhatClauseDnTypeEnum.CHILDREN );
-    }
+	DOT
+	(
+		ID_base
+	    {
+	        whatClauseDn.setType( AclWhatClauseDnTypeEnum.BASE );
+	    }
+	    |
+	    ID_base_object
+	    {
+	        whatClauseDn.setType( AclWhatClauseDnTypeEnum.BASE_OBJECT );
+	    }
+	    |
+	    ID_one
+	    {
+	        whatClauseDn.setType( AclWhatClauseDnTypeEnum.ONE );
+	    }
+	    |
+	    ID_one_level
+	    {
+	        whatClauseDn.setType( AclWhatClauseDnTypeEnum.ONE_LEVEL );
+	    }
+	    |
+	    ID_sub
+	    {
+	        whatClauseDn.setType( AclWhatClauseDnTypeEnum.SUB );
+	    }
+	    |
+	    ID_subtree
+	    {
+	        whatClauseDn.setType( AclWhatClauseDnTypeEnum.SUBTREE );
+	    }
+	    |
+	    ID_children
+	    {
+	        whatClauseDn.setType( AclWhatClauseDnTypeEnum.CHILDREN );
+	    }
+	)
     ;
 
+// ----------------------------------------------------------------------------
+// <what-filter> ::= 'filter' SP? '=' SP? <ldapFilter>
+// ----------------------------------------------------------------------------
+what_filter
+	{
+	    log.debug( "entered what_filter()" );
+	    System.out.println( "entered what_filter()" );
+    
+	    AclWhatClauseFilter whatClauseFilter = new AclWhatClauseFilter();
+	}
+    :
+    ID_filter ( SP )? EQUAL ( SP )? token:FILTER
+    {
+		// TODO : check tah the filter is valid
+        whatClauseFilter.setFilter( token.getText() );
+
+        aclItem.setWhatClause( whatClauseFilter );
+    };
+    
+
+// ----------------------------------------------------------------------------
+// <what-attrs> ::= ( 'attrs' | 'attr' ) SP? '=' SP? <what-attrs-list>
+// ----------------------------------------------------------------------------
 what_attrs
-{
-    log.debug( "entered what_attrs()" );
-    
-    if ( aclItem.getWhatClause().getAttributesClause() == null )
-    {
-        aclItem.getWhatClause().setAttributesClause( new AclWhatClauseAttributes() );
-    }
-    else
-    {
-        throw new RecognitionException( "A attributes what clause already exists in the ACL." );
-    }
-}
+	{
+	    log.debug( "entered what_attrs()" );
+	    System.out.println( "entered what_attrs()" );
+
+	    //AclWhatClauseAttributes whatClauseAttributes = new AclWhatClauseAttributess();
+	}
     :
-    ( ID_attrs | ID_attr ) ( SP )? EQUAL ( SP )? what_attrs_attr_ident ( SEP what_attrs_attr_ident )* ( SP what_attrs_val )?
+    ( ID_attrs | ID_attr ) ( SP )? EQUAL ( SP )? what_attrs_list
     ;
 
-what_attrs_val
-{
-    log.debug( "entered what_attrs_val()" );
-    
-    AclWhatClause whatClause = aclItem.getWhatClause();
-    AclWhatClauseAttributes whatClauseAttributes =  whatClause.getAttributesClause();
-    
-    if ( whatClauseAttributes == null )
-    {
-        // Throw an exception ?
-        return;
-    }
-}
-    :
-    ID_val ( what_attrs_matchingRule )? ( what_attrs_style )? ( SP )? EQUAL ( SP )? token:DOUBLE_QUOTED_STRING 
-    {
-        whatClauseAttributes.setVal( true );
-        whatClauseAttributes.setValue( token.getText() );
-    }
-    ;
+// ----------------------------------------------------------------------------
+// <what-attrs-list>	::= IDENT <attr-val>? | <what_attr> <attr-list>
+// ----------------------------------------------------------------------------
+what_attrs_list
+	{
+	    log.debug( "entered what_attrs_list()" );
+	    System.out.println( "entered what_attrs_list()" );
+		
+	}
+	:
+	(
+		attribute:IDENT ( (attr_val)? | SEP attr_list )
+		{
+			// We are not allowed to have more than one attribute 
+			// if we have a val
+		}
+		|
+		ID_entry
+		|
+		ID_children
+	)
+	;
 
-what_attrs_matchingRule
-{
-    log.debug( "entered what_attrs_matchingRule()" );
-    
-    AclWhatClause whatClause = aclItem.getWhatClause();
-    AclWhatClauseAttributes whatClauseAttributes =  whatClause.getAttributesClause();
-    
-    if ( whatClauseAttributes == null )
-    {
-        // Throw an exception ?
-        return;
-    }
-}
-    :
-    SLASH ID_matchingRule
-    {
-        whatClauseAttributes.setMatchingRule( true );
-    }
-    ;
+// ----------------------------------------------------------------------------
+// <attr_val>	::= SP 'val' <matching-rule>? <attr-val-style> SP? '=' SP? REGEX
+// ----------------------------------------------------------------------------
+attr_val
+	{
+	    log.debug( "entered what_attrs_list()" );
+	    System.out.println( "entered what_attrs_list()" );
+	}
+	:
+	SP ID_val (matching_rule)? (attr_val_style)? (SP)? EQUAL (SP)? REGEX
+	;
 
-what_attrs_style
-{
-    log.debug( "entered what_attrs_style()" );
-    
-    AclWhatClause whatClause = aclItem.getWhatClause();
-    AclWhatClauseAttributes whatClauseAttributes =  whatClause.getAttributesClause();
-    
-    if ( whatClauseAttributes == null )
-    {
-        // Throw an exception ?
-        return;
-    }
-}
-    :
+// ----------------------------------------------------------------------------
+// <matching-rule>	::= '/' IDENT
+// ----------------------------------------------------------------------------
+matching_rule
+	{
+	    log.debug( "entered matching_rule()" );
+	    System.out.println( "entered matching_rule()" );
+	}
+	:
+	SLASH IDENT
+	;
+
+// ----------------------------------------------------------------------------
+// <matching-rule>	::= '/' IDENT
+// ----------------------------------------------------------------------------
+attr_val_style
+	{
+	    log.debug( "entered attr_val_style()" );
+	    System.out.println( "entered attr_val_style()" );
+	}
+	:
     DOT 
     (
         ID_exact
         {
-            whatClauseAttributes.setStyle( AclAttributeStyleEnum.EXACT );
+            //whatClauseAttributes.setStyle( AclAttributeStyleEnum.EXACT );
         }
         |
         ID_base
         {
-            whatClauseAttributes.setStyle( AclAttributeStyleEnum.BASE );
+            //whatClauseAttributes.setStyle( AclAttributeStyleEnum.BASE );
         }
         |
         ID_base_object
         {
-            whatClauseAttributes.setStyle( AclAttributeStyleEnum.BASE_OBJECT );
+            //whatClauseAttributes.setStyle( AclAttributeStyleEnum.BASE_OBJECT );
         }
         |
         ID_regex
         {
-            whatClauseAttributes.setStyle( AclAttributeStyleEnum.REGEX );
-        }
-        |
-        ID_one
-        {
-            whatClauseAttributes.setStyle( AclAttributeStyleEnum.ONE );
-        }
-        |
-        ID_one_level
-        {
-            whatClauseAttributes.setStyle( AclAttributeStyleEnum.ONE_LEVEL );
-        }
-        |
-        ID_sub
-        {
-            whatClauseAttributes.setStyle( AclAttributeStyleEnum.SUB );
-        }
-        |
-        ID_subtree
-        {
-            whatClauseAttributes.setStyle( AclAttributeStyleEnum.SUBTREE );
-        }
-        |
-        ID_children
-        {
-            whatClauseAttributes.setStyle( AclAttributeStyleEnum.CHILDREN );
+            //whatClauseAttributes.setStyle( AclAttributeStyleEnum.REGEX );
         }
     )
-    ;
-    
-what_attrs_attr_ident
-{
-    log.debug( "entered what_attrs_attr_ident()" );
-    
-    AclWhatClause whatClause = aclItem.getWhatClause();
-    AclWhatClauseAttributes whatClauseAttributes =  whatClause.getAttributesClause();
-    
-    if ( whatClauseAttributes == null )
-    {
+	;
+	
+// ----------------------------------------------------------------------------
+// <attr-list> 		::= ( IDENT | 'entry' | 'children' ) ( ',' <attr_list> )*
+// ----------------------------------------------------------------------------
+attr_list
+	{
+	    log.debug( "entered attr_list()" );
+	    System.out.println( "entered attr_list()" );
+	}
+	:
+	(IDENT | ID_entry | ID_children) ( SEP attr_list )*
+	;
+	
+//what_attrs_val
+//{
+//    log.debug( "entered what_attrs_val()" );
+//    
+//    AclWhatClause whatClause = aclItem.getWhatClause();
+//    AclWhatClauseAttributes whatClauseAttributes =  whatClause.getAttributesClause();
+//    
+//    if ( whatClauseAttributes == null )
+//    {
+//        // Throw an exception ?
+//        return;
+//    }
+//}
+//    :
+//    ID_val ( what_attrs_matchingRule )? ( what_attrs_style )? ( SP )? EQUAL ( SP )? token:DOUBLE_QUOTED_STRING 
+//    {
+//        whatClauseAttributes.setVal( true );
+//        whatClauseAttributes.setValue( token.getText() );
+//    }
+//    ;
+
+//what_attrs_matchingRule
+//{
+//    log.debug( "entered what_attrs_matchingRule()" );
+//    
+//    AclWhatClause whatClause = aclItem.getWhatClause();
+//    AclWhatClauseAttributes whatClauseAttributes =  whatClause.getAttributesClause();
+//    
+//    if ( whatClauseAttributes == null )
+//    {
+//        // Throw an exception ?
+//        return;
+//    }
+//}
+//    :
+//    SLASH ID_matchingRule
+//    {
+//        whatClauseAttributes.setMatchingRule( true );
+//    }
+//    ;
+
+//what_attrs_style
+//{
+//    log.debug( "entered what_attrs_style()" );
+//    
+//    AclWhatClause whatClause = aclItem.getWhatClause();
+//    AclWhatClauseAttributes whatClauseAttributes =  whatClause.getAttributesClause();
+//    
+//    if ( whatClauseAttributes == null )
+//    {
         // Throw an exception ?
-        return;
-    }
-}
-    :
-    token:ATTR_IDENT
-    {
-        whatClauseAttributes.addAttribute( token.getText() );
-    }
-    ;
-
-what_filter
-{
-    log.debug( "entered what_filter()" );
+//        return;
+//    }
+//}
+//    :
+//    DOT 
+//    (
+//        ID_exact
+//        {
+//            whatClauseAttributes.setStyle( AclAttributeStyleEnum.EXACT );
+//        }
+//        |
+//        ID_base
+//        {
+//            whatClauseAttributes.setStyle( AclAttributeStyleEnum.BASE );
+//        }
+//        |
+//        ID_base_object
+//        {
+//            whatClauseAttributes.setStyle( AclAttributeStyleEnum.BASE_OBJECT );
+//        }
+//        |
+//        ID_regex
+//        {
+//            whatClauseAttributes.setStyle( AclAttributeStyleEnum.REGEX );
+//        }
+//        |
+//        ID_one
+//        {
+//            whatClauseAttributes.setStyle( AclAttributeStyleEnum.ONE );
+//        }
+//        |
+//        ID_one_level
+//        {
+//            whatClauseAttributes.setStyle( AclAttributeStyleEnum.ONE_LEVEL );
+//        }
+//        |
+//        ID_sub
+//        {
+//            whatClauseAttributes.setStyle( AclAttributeStyleEnum.SUB );
+//        }
+//        |
+//        ID_subtree
+//        {
+//            whatClauseAttributes.setStyle( AclAttributeStyleEnum.SUBTREE );
+//        }
+//        |
+//        ID_children
+//        {
+//            whatClauseAttributes.setStyle( AclAttributeStyleEnum.CHILDREN );
+//        }
+//    )
+//    ;
     
-    if ( aclItem.getWhatClause().getFilterClause() != null )
-    {
-        throw new RecognitionException( "A filter what clause already exists in the ACL." );
-    }
-}
-    :
-    ID_filter ( SP )? EQUAL ( SP )? token:FILTER
-    {
-        AclWhatClauseFilter whatClauseFilter = new AclWhatClauseFilter();
-        whatClauseFilter.setFilter( token.getText() );
+//what_attrs_attr_ident
+//{
+//    log.debug( "entered what_attrs_attr_ident()" );
+//    
+//    AclWhatClause whatClause = aclItem.getWhatClause();
+//    AclWhatClauseAttributes whatClauseAttributes =  whatClause.getAttributesClause();
+//    
+//    if ( whatClauseAttributes == null )
+//    {
+//        // Throw an exception ?
+//        return;
+//    }
+//}
+//    :
+//    token:IDENT
+//    {
+//        whatClauseAttributes.addAttribute( token.getText() );
+//    }
+//    ;
 
-        aclItem.getWhatClause().setFilterClause( whatClauseFilter );
-    };
-    
 who
 {
     log.debug( "entered who()" );
@@ -502,7 +806,7 @@ who_dnattr
     aclItem.addWhoClause( whoClauseDnAttr ); 
 }
     :
-    ID_dnattr ( SP )? EQUAL ( SP )? token:ATTR_IDENT
+    ID_dnattr ( SP )? EQUAL ( SP )? token:IDENT
     {
         whoClauseDnAttr.setAttribute( token.getText() );
     };
@@ -515,7 +819,7 @@ who_group
     aclItem.addWhoClause( whoClauseGroup ); 
 }
     :
-    ID_group ( SLASH objectclass:ATTR_IDENT ( SLASH attrname:ATTR_IDENT )? )? ( DOT who_group_type )? EQUAL pattern:DOUBLE_QUOTED_STRING
+    ID_group ( SLASH objectclass:IDENT ( SLASH attrname:IDENT )? )? ( DOT who_group_type )? EQUAL pattern:DOUBLE_QUOTED_STRING
     {
         if ( objectclass != null )
         {

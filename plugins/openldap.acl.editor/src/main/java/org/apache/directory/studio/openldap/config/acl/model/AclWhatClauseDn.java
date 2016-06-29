@@ -21,13 +21,27 @@ package org.apache.directory.studio.openldap.config.acl.model;
 
 
 /**
- * The  Acl what-dn clause.
+ * The  Acl what-dn clause. It has a type and a pattern.
+ * The type is one of :
+ * <ul>
+ *   <li>base : AclWhatClauseDnTypeEnum.BASE</li>
+ *   <li>baseObject : AclWhatClauseDnTypeEnum.BASE_OBJECT</li>
+ *   <li>one : AclWhatClauseDnTypeEnum.ONE</li>
+ *   <li>oneLevel : AclWhatClauseDnTypeEnum.ONE_LEVEL</li>
+ *   <li>sub/subtree : AclWhatClauseDnTypeEnum.SUB</li>
+ *   <li>subtree : AclWhatClauseDnTypeEnum.SUBTREE</li>
+ *   <li>children : AclWhatClauseDnTypeEnum.CHILDREN</li>
+ *   <li>exact : AclWhatClauseDnTypeEnum.EXACT</li>
+ *   <li>regex : AclWhatClauseDnTypeEnum.REGEX</li>
+ * </ul>
+ * 
+ * The pattern can be a DN or a regexp, depending on the type.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class AclWhatClauseDn
+public class AclWhatClauseDn extends AclWhatClause
 {
-    /** The type */
+    /** The type, default to BASE */
     private AclWhatClauseDnTypeEnum type;
 
     /** The pattern */

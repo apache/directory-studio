@@ -27,8 +27,11 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+
+import antlr.RecognitionException;
 
 import org.apache.directory.studio.openldap.config.acl.model.AclAttribute;
 import org.junit.Ignore;
@@ -40,60 +43,81 @@ import org.junit.Test;
  */
 public class OpenLdapAclParserTest
 {
-    @Test
+    @Test( expected = ParseException.class )
     public void testEmpty() throws Exception
     {
-        try
-        {
-            OpenLdapAclParser parser = new OpenLdapAclParser();
-            parser.parse( "" );
+    	System.out.println( "\n--> testEmpty" );
+        OpenLdapAclParser parser = new OpenLdapAclParser();
+        parser.parse( "" );
 
-            fail();
-        }
-        catch ( Exception e )
-        {
-            // Should happen
-        }
+        fail();
     }
 
 
     @Test
-    public void testWhatStar() throws Exception
+    public void testImpliedWhatStarWithAccess() throws Exception
     {
+    	System.out.println( "\n--> testImpliedWhatStarWithAccess" );
         // Create parser
         OpenLdapAclParser parser = new OpenLdapAclParser();
 
         // Testing the ACL item
-        AclItem aclItem = parser.parse( "access to * by *" );
+        AclItem aclItem = parser.parse( "access   to by *" );
         assertNotNull( aclItem );
 
         // Testing the 'what' clause
         AclWhatClause whatClause = aclItem.getWhatClause();
         assertNotNull( whatClause );
-        assertNotNull( whatClause.getStarClause() );
+        assertTrue( whatClause instanceof AclWhatClauseStar );
+        
+        System.out.println( "<-- ACL:" + aclItem );
     }
 
 
+    @Test
+    public void testWhatStarWithAccess() throws Exception
+    {
+    	System.out.println( "\n--> testWhatStarWithAccess" );
+        // Create parser
+        OpenLdapAclParser parser = new OpenLdapAclParser();
+
+        // Testing the ACL item
+        AclItem aclItem = parser.parse( "access   to * by *" );
+        assertNotNull( aclItem );
+
+        // Testing the 'what' clause
+        AclWhatClause whatClause = aclItem.getWhatClause();
+        assertNotNull( whatClause );
+        assertTrue( whatClause instanceof AclWhatClauseStar );
+        
+        System.out.println( "<-- ACL:" + aclItem );
+    }
+
+    
     @Test
     public void testWhatStarWithoutAccess() throws Exception
     {
+    	System.out.println( "\n--> testWhatStarWithoutAccess" );
         // Create parser
         OpenLdapAclParser parser = new OpenLdapAclParser();
 
         // Testing the ACL item
-        AclItem aclItem = parser.parse( "to * by *" );
+        AclItem aclItem = parser.parse( " to * by *" );
         assertNotNull( aclItem );
 
         // Testing the 'what' clause
         AclWhatClause whatClause = aclItem.getWhatClause();
         assertNotNull( whatClause );
-        assertNotNull( whatClause.getStarClause() );
+        assertTrue( whatClause instanceof AclWhatClauseStar );
+        
+        System.out.println( "<-- ACL:" + aclItem );
     }
 
 
     @Test
     public void testWhatStarWithSpaces() throws Exception
     {
+    	System.out.println( "\n--> testWhatStarWithSpaces" );
         // Create parser
         OpenLdapAclParser parser = new OpenLdapAclParser();
 
@@ -104,31 +128,31 @@ public class OpenLdapAclParserTest
         // Testing the 'what' clause
         AclWhatClause whatClause = aclItem.getWhatClause();
         assertNotNull( whatClause );
-        assertNotNull( whatClause.getStarClause() );
+        assertTrue( whatClause instanceof AclWhatClauseStar );
+        
+        System.out.println( "<-- ACL:" + aclItem );
     }
 
 
-    @Test
+    @Test( expected = ParseException.class )
     public void testWhatTwoStars() throws Exception
     {
-        try
-        {
-            OpenLdapAclParser parser = new OpenLdapAclParser();
-            parser.parse( "to * * by *" );
+    	System.out.println( "\n--> testWhatTwoStars" );
+        OpenLdapAclParser parser = new OpenLdapAclParser();
+        parser.parse( "to * * by *" );
 
-            fail();
-        }
-        catch ( Exception e )
-        {
-            // Should happen
-        }
+        fail();
     }
 
-
+    
+    //-----------------------------------------------------------------------------------------
+    // The WHAT DN rule
+    //-----------------------------------------------------------------------------------------
     @Test
-    public void testWhatDn() throws Exception
+    public void testWhatDnValidDnWithQuote() throws Exception
     {
-        String dnPattern = "dsqdsqdq";
+    	System.out.println( "\n--> testWhatDnValidDnWithQuote" );
+        String dnPattern = "dc=example,dc=com";
 
         // Create parser
         OpenLdapAclParser parser = new OpenLdapAclParser();
@@ -140,12 +164,508 @@ public class OpenLdapAclParserTest
         // Testing the 'what' clause
         AclWhatClause whatClause = aclItem.getWhatClause();
         assertNotNull( whatClause );
-        AclWhatClauseDn whatClauseDn = whatClause.getDnClause();
-        assertNotNull( whatClauseDn );
+        assertTrue( whatClause instanceof AclWhatClauseDn );
+        AclWhatClauseDn whatClauseDn = (AclWhatClauseDn)whatClause;
         assertEquals( dnPattern, whatClauseDn.getPattern() );
+        
+        System.out.println( "<-- ACL:" + aclItem );
+    }
+
+    
+    @Test( expected = ParseException.class )
+    public void testWhatDnStar() throws Exception
+    {
+    	System.out.println( "\n--> testWhatDnStar" );
+        // Create parser
+        OpenLdapAclParser parser = new OpenLdapAclParser();
+
+        // Testing the ACL item
+        parser.parse( "access to dn=* by *" );
+        
+        fail();
+    }
+
+    
+    @Test( expected=ParseException.class)
+    public void testWhatDnValidDnNoQuote() throws Exception
+    {
+    	System.out.println( "\n--> testWhatDnValidDnNoQuote" );
+        String dnPattern = "dc=example,dc=com";
+
+        // Create parser
+        OpenLdapAclParser parser = new OpenLdapAclParser();
+
+        // Testing the ACL item
+        parser.parse( "access to dn=" + dnPattern + "\n by *" );
+        
+        fail();
+    }
+
+    
+    @Test ( expected=ParseException.class)
+    public void testWhatDnBadDn() throws Exception
+    {
+    	System.out.println( "\n--> testWhatDnBadDn" );
+        String dnPattern = "Blah";
+
+        // Create parser
+        OpenLdapAclParser parser = new OpenLdapAclParser();
+
+        // Testing the ACL item
+    	parser.parse( "access to dn=\"" + dnPattern + "\"\n by *" );
+        
+        fail();
+    }
+
+    
+    //-----------------------------------------------------------------------------------------
+    // The basic-dn-style WHAT DN exact
+    //-----------------------------------------------------------------------------------------
+    @Test
+    public void testWhatDnBasicDnExact() throws Exception
+    {
+    	System.out.println( "\n--> testWhatDnBasicDnExact" );
+        String dnPattern = "dc=example,dc=com";
+
+        // Create parser
+        OpenLdapAclParser parser = new OpenLdapAclParser();
+
+        // Testing the ACL item
+        AclItem aclItem = parser.parse( "access to dn.exact=\"" + dnPattern + "\" by *" );
+        assertNotNull( aclItem );
+
+        // Testing the 'what' clause
+        AclWhatClause whatClause = aclItem.getWhatClause();
+        assertNotNull( whatClause );
+        assertTrue( whatClause instanceof AclWhatClauseDn );
+        AclWhatClauseDn whatClauseDn = (AclWhatClauseDn) whatClause;
+
+        // test the content
+        assertEquals( dnPattern, whatClauseDn.getPattern() );
+        assertEquals( AclWhatClauseDnTypeEnum.EXACT, whatClauseDn.getType() );
+
+        System.out.println( "<-- ACL:" + aclItem );
+    }
+    
+    
+    @Test ( expected=ParseException.class)
+    public void testWhatDnBasicDnExactNoQuote() throws Exception
+    {
+    	System.out.println( "\n--> testWhatDnBasicDnExactNoQuote" );
+        String dnPattern = "dc=example,dc=com";
+
+        // Create parser
+        OpenLdapAclParser parser = new OpenLdapAclParser();
+
+        // Testing the ACL item
+        parser.parse( "access to dn.exact=" + dnPattern + " by *" );
+        
+        fail();
+    }
+    
+    
+    @Test ( expected=ParseException.class)
+    public void testWhatDnBasicDnExactBadDn() throws Exception
+    {
+    	System.out.println( "\n--> testWhatDnBasicDnExactBadDn" );
+        String dnPattern = "example";
+
+        // Create parser
+        OpenLdapAclParser parser = new OpenLdapAclParser();
+
+        // Testing the ACL item
+        parser.parse( "access to dn.exact=" + dnPattern + " by *" );
+        
+        fail();
+    }
+    
+    
+    //-----------------------------------------------------------------------------------------
+    // The basic-dn-style WHAT DN regex
+    //-----------------------------------------------------------------------------------------
+    @Test
+    public void testWhatDnBasicDnRegex() throws Exception
+    {
+    	System.out.println( "\n--> testWhatDnBasicDnRegex" );
+        String dnPattern = "dc=*";
+
+        // Create parser
+        OpenLdapAclParser parser = new OpenLdapAclParser();
+
+        // Testing the ACL item
+        AclItem aclItem = parser.parse( "access to dn.regex=\"" + dnPattern + "\" by *" );
+        assertNotNull( aclItem );
+
+        // Testing the 'what' clause
+        AclWhatClause whatClause = aclItem.getWhatClause();
+        assertNotNull( whatClause );
+        assertTrue( whatClause instanceof AclWhatClauseDn );
+        AclWhatClauseDn whatClauseDn = (AclWhatClauseDn) whatClause;
+
+        // test the content
+        assertEquals( dnPattern, whatClauseDn.getPattern() );
+        assertEquals( AclWhatClauseDnTypeEnum.REGEX, whatClauseDn.getType() );
+
+        System.out.println( "<-- ACL:" + aclItem );
+    }
+    
+    
+    @Test( expected=ParseException.class)
+    public void testWhatDnBasicDnRegexNoQuote() throws Exception
+    {
+    	System.out.println( "\n--> testWhatDnBasicDnRegexNoQuote" );
+        String dnPattern = "dc=*,dc=com";
+
+        // Create parser
+        OpenLdapAclParser parser = new OpenLdapAclParser();
+
+        // Testing the ACL item
+        AclItem aclItem = parser.parse( "access to dn.regex=" + dnPattern + " by *" );
+        
+        fail();
+    }
+    
+    
+    //-----------------------------------------------------------------------------------------
+    // The scope-dn-clause WHAT DN regex
+    //-----------------------------------------------------------------------------------------
+    @Test
+    public void testWhatDnScopeOneQuotedDn() throws Exception
+    {
+    	System.out.println( "\n--> testWhatDnScopeOneQuotedDn" );
+        String dnPattern = "dc=example,dc=com";
+
+        // Create parser
+        OpenLdapAclParser parser = new OpenLdapAclParser();
+
+        // Testing the ACL item
+        AclItem aclItem = parser.parse( "access to dn.one=\"" + dnPattern + "\" by *" );
+        assertNotNull( aclItem );
+
+        // Testing the 'what' clause
+        AclWhatClause whatClause = aclItem.getWhatClause();
+        assertNotNull( whatClause );
+        assertTrue( whatClause instanceof AclWhatClauseDn );
+        AclWhatClauseDn whatClauseDn = (AclWhatClauseDn) whatClause;
+
+        // test the content
+        assertEquals( dnPattern, whatClauseDn.getPattern() );
+        assertEquals( AclWhatClauseDnTypeEnum.ONE, whatClauseDn.getType() );
+
+        System.out.println( "<-- ACL:" + aclItem );
+    }
+    
+    
+    @Test
+    public void testWhatDnScopeOneLevelQuotedDn() throws Exception
+    {
+    	System.out.println( "\n--> testWhatDnScopeOneLevelQuotedDn" );
+        String dnPattern = "dc=example,dc=com";
+
+        // Create parser
+        OpenLdapAclParser parser = new OpenLdapAclParser();
+
+        // Testing the ACL item
+        AclItem aclItem = parser.parse( "access to dn.onelevel=\"" + dnPattern + "\" by *" );
+        assertNotNull( aclItem );
+
+        // Testing the 'what' clause
+        AclWhatClause whatClause = aclItem.getWhatClause();
+        assertNotNull( whatClause );
+        assertTrue( whatClause instanceof AclWhatClauseDn );
+        AclWhatClauseDn whatClauseDn = (AclWhatClauseDn) whatClause;
+
+        // test the content
+        assertEquals( dnPattern, whatClauseDn.getPattern() );
+        assertEquals( AclWhatClauseDnTypeEnum.ONE_LEVEL, whatClauseDn.getType() );
+
+        System.out.println( "<-- ACL:" + aclItem );
+    }
+    
+    
+    @Test
+    public void testWhatDnScopeBaseQuotedDn() throws Exception
+    {
+    	System.out.println( "\n--> testWhatDnScopeBaseQuotedDn" );
+        String dnPattern = "dc=example,dc=com";
+
+        // Create parser
+        OpenLdapAclParser parser = new OpenLdapAclParser();
+
+        // Testing the ACL item
+        AclItem aclItem = parser.parse( "access to dn.base=\"" + dnPattern + "\" by *" );
+        assertNotNull( aclItem );
+
+        // Testing the 'what' clause
+        AclWhatClause whatClause = aclItem.getWhatClause();
+        assertNotNull( whatClause );
+        assertTrue( whatClause instanceof AclWhatClauseDn );
+        AclWhatClauseDn whatClauseDn = (AclWhatClauseDn) whatClause;
+
+        // test the content
+        assertEquals( dnPattern, whatClauseDn.getPattern() );
+        assertEquals( AclWhatClauseDnTypeEnum.BASE, whatClauseDn.getType() );
+
+        System.out.println( "<-- ACL:" + aclItem );
+    }
+    
+    
+    @Test
+    public void testWhatDnScopeBaseobjectQuotedDn() throws Exception
+    {
+    	System.out.println( "\n--> testWhatDnScopeBaseobjectQuotedDn" );
+        String dnPattern = "dc=example,dc=com";
+
+        // Create parser
+        OpenLdapAclParser parser = new OpenLdapAclParser();
+
+        // Testing the ACL item
+        AclItem aclItem = parser.parse( "access to dn.baseobject=\"" + dnPattern + "\" by *" );
+        assertNotNull( aclItem );
+
+        // Testing the 'what' clause
+        AclWhatClause whatClause = aclItem.getWhatClause();
+        assertNotNull( whatClause );
+        assertTrue( whatClause instanceof AclWhatClauseDn );
+        AclWhatClauseDn whatClauseDn = (AclWhatClauseDn) whatClause;
+
+        // test the content
+        assertEquals( dnPattern, whatClauseDn.getPattern() );
+        assertEquals( AclWhatClauseDnTypeEnum.BASE_OBJECT, whatClauseDn.getType() );
+
+        System.out.println( "<-- ACL:" + aclItem );
+    }
+    
+    
+    @Test
+    public void testWhatDnScopeSubQuotedDn() throws Exception
+    {
+    	System.out.println( "\n--> testWhatDnScopeSubQuotedDn" );
+        String dnPattern = "dc=example,dc=com";
+
+        // Create parser
+        OpenLdapAclParser parser = new OpenLdapAclParser();
+
+        // Testing the ACL item
+        AclItem aclItem = parser.parse( "access to dn.sub=\"" + dnPattern + "\" by *" );
+        assertNotNull( aclItem );
+
+        // Testing the 'what' clause
+        AclWhatClause whatClause = aclItem.getWhatClause();
+        assertNotNull( whatClause );
+        assertTrue( whatClause instanceof AclWhatClauseDn );
+        AclWhatClauseDn whatClauseDn = (AclWhatClauseDn) whatClause;
+
+        // test the content
+        assertEquals( dnPattern, whatClauseDn.getPattern() );
+        assertEquals( AclWhatClauseDnTypeEnum.SUB, whatClauseDn.getType() );
+
+        System.out.println( "<-- ACL:" + aclItem );
+    }
+    
+    
+    @Test
+    public void testWhatDnScopeSubtreeQuotedDn() throws Exception
+    {
+    	System.out.println( "\n--> testWhatDnScopeSubtreeQuotedDn" );
+        String dnPattern = "dc=example,dc=com";
+
+        // Create parser
+        OpenLdapAclParser parser = new OpenLdapAclParser();
+
+        // Testing the ACL item
+        AclItem aclItem = parser.parse( "access to dn.subtree=\"" + dnPattern + "\" by *" );
+        assertNotNull( aclItem );
+
+        // Testing the 'what' clause
+        AclWhatClause whatClause = aclItem.getWhatClause();
+        assertNotNull( whatClause );
+        assertTrue( whatClause instanceof AclWhatClauseDn );
+        AclWhatClauseDn whatClauseDn = (AclWhatClauseDn) whatClause;
+
+        // test the content
+        assertEquals( dnPattern, whatClauseDn.getPattern() );
+        assertEquals( AclWhatClauseDnTypeEnum.SUBTREE, whatClauseDn.getType() );
+
+        System.out.println( "<-- ACL:" + aclItem );
+    }
+    
+    
+    @Test
+    public void testWhatDnScopeChildrenQuotedDn() throws Exception
+    {
+    	System.out.println( "\n--> testWhatDnScopeChildrenQuotedDn" );
+        String dnPattern = "dc=example,dc=com";
+
+        // Create parser
+        OpenLdapAclParser parser = new OpenLdapAclParser();
+
+        // Testing the ACL item
+        AclItem aclItem = parser.parse( "access to dn.children=\"" + dnPattern + "\" by *" );
+        assertNotNull( aclItem );
+
+        // Testing the 'what' clause
+        AclWhatClause whatClause = aclItem.getWhatClause();
+        assertNotNull( whatClause );
+        assertTrue( whatClause instanceof AclWhatClauseDn );
+        AclWhatClauseDn whatClauseDn = (AclWhatClauseDn) whatClause;
+
+        // test the content
+        assertEquals( dnPattern, whatClauseDn.getPattern() );
+        assertEquals( AclWhatClauseDnTypeEnum.CHILDREN, whatClauseDn.getType() );
+
+        System.out.println( "<-- ACL:" + aclItem );
+    }
+
+    
+    @Test
+    public void testWhatDnScopeOneEmptyDn() throws Exception
+    {
+    	System.out.println( "\n--> testWhatDnScopeOneEmptyDn" );
+
+        // Create parser
+        OpenLdapAclParser parser = new OpenLdapAclParser();
+
+        // Testing the ACL item
+        AclItem aclItem = parser.parse( "access to dn.one=\"\" by *" );
+        assertNotNull( aclItem );
+
+        // Testing the 'what' clause
+        AclWhatClause whatClause = aclItem.getWhatClause();
+        assertNotNull( whatClause );
+        assertTrue( whatClause instanceof AclWhatClauseDn );
+        AclWhatClauseDn whatClauseDn = (AclWhatClauseDn) whatClause;
+
+        // test the content
+        assertEquals( "", whatClauseDn.getPattern() );
+        assertEquals( AclWhatClauseDnTypeEnum.ONE, whatClauseDn.getType() );
+
+        System.out.println( "<-- ACL:" + aclItem );
+    }
+
+    
+    @Test( expected=ParseException.class)
+    public void testWhatDnScopeOneNoQuotedDn() throws Exception
+    {
+    	System.out.println( "\n--> testWhatDnScopeOneNoQuotedDn" );
+        String dnPattern = "dc=example,dc=com";
+
+        // Create parser
+        OpenLdapAclParser parser = new OpenLdapAclParser();
+
+        // Testing the ACL item
+        parser.parse( "access to dn.one=" + dnPattern + " by *" );
+    }
+
+    
+    @Test( expected=ParseException.class)
+    public void testWhatDnScopeOneNoDn() throws Exception
+    {
+    	System.out.println( "\n--> testWhatDnScopeOneNoDn" );
+
+        // Create parser
+        OpenLdapAclParser parser = new OpenLdapAclParser();
+
+        // Testing the ACL item
+        parser.parse( "access to dn.one= by *" );
+    }
+
+    
+    @Test( expected=ParseException.class)
+    public void testWhatDnScopeOneStar() throws Exception
+    {
+    	System.out.println( "\n--> testWhatDnScopeOneStar" );
+
+        // Create parser
+        OpenLdapAclParser parser = new OpenLdapAclParser();
+
+        // Testing the ACL item
+        parser.parse( "access to dn.one=* by *" );
+    }
+    
+    
+    //-----------------------------------------------------------------------------------------
+    // The scope-dn-clause WHAT FILTER 
+    //-----------------------------------------------------------------------------------------
+    @Test
+    public void testWhatFilterSimple() throws Exception
+    {
+    	System.out.println( "\n--> testWhatFilter" );
+        String filter = "(objectclass=*)";
+
+        // Create parser
+        OpenLdapAclParser parser = new OpenLdapAclParser();
+
+        // Testing the ACL item
+        AclItem aclItem = parser.parse( "access to filter=" + filter + " by *" );
+        assertNotNull( aclItem );
+
+        // Testing the 'what' clause
+        AclWhatClause whatClause = aclItem.getWhatClause();
+        assertNotNull( whatClause );
+        assertTrue( whatClause instanceof AclWhatClauseFilter );
+        
+        AclWhatClauseFilter whatClauseFilter = (AclWhatClauseFilter) whatClause;
+
+        // test the content
+        assertEquals( filter, whatClauseFilter.getFilter() );
+
+        System.out.println( "<-- ACL:" + aclItem );
     }
 
 
+    @Test
+    public void testWhatFilterComplex() throws Exception
+    {
+    	System.out.println( "\n--> testWhatFilterComplex" );
+        String filter = "(&(objectclass=*)(cn=test)(!(sn=test)))";
+
+        // Create parser
+        OpenLdapAclParser parser = new OpenLdapAclParser();
+
+        // Testing the ACL item
+        AclItem aclItem = parser.parse( "access to filter=" + filter + " by *" );
+        assertNotNull( aclItem );
+
+        // Testing the 'what' clause
+        AclWhatClause whatClause = aclItem.getWhatClause();
+        assertNotNull( whatClause );
+        assertTrue( whatClause instanceof AclWhatClauseFilter );
+        
+        AclWhatClauseFilter whatClauseFilter = (AclWhatClauseFilter) whatClause;
+
+        // test the content
+        assertEquals( filter, whatClauseFilter.getFilter() );
+
+        System.out.println( "<-- ACL:" + aclItem );
+    }
+
+
+    @Test( expected=ParseException.class)
+    public void testWhatFilterWrongSimple() throws Exception
+    {
+    	System.out.println( "\n--> testWhatFilterWrongSimple" );
+        String filter = "(objectclass=*";
+
+        // Create parser
+        OpenLdapAclParser parser = new OpenLdapAclParser();
+
+        // Testing the ACL item
+        parser.parse( "access to filter=" + filter + " by *" );
+        
+        fail();
+    }
+ 
+
+    
+
+    @Test
+    public void testFail() throws Exception
+    {
+    	fail();
+    }
+    
+    /*
     @Test
     public void testWhatDnWithoutAccess() throws Exception
     {
@@ -164,335 +684,6 @@ public class OpenLdapAclParserTest
         AclWhatClauseDn whatClauseDn = whatClause.getDnClause();
         assertNotNull( whatClauseDn );
         assertEquals( dnPattern, whatClauseDn.getPattern() );
-    }
-
-
-    @Test
-    public void testWhatDnWithSpaces() throws Exception
-    {
-        String dnPattern = "dsqdsqdq";
-
-        // Create parser
-        OpenLdapAclParser parser = new OpenLdapAclParser();
-
-        // Testing the ACL item
-        AclItem aclItem = parser.parse( "   access    to     dn=\"" + dnPattern + "\"    by    *    " );
-        assertNotNull( aclItem );
-
-        // Testing the 'what' clause
-        AclWhatClause whatClause = aclItem.getWhatClause();
-        assertNotNull( whatClause );
-        AclWhatClauseDn whatClauseDn = whatClause.getDnClause();
-        assertNotNull( whatClauseDn );
-        assertEquals( dnPattern, whatClauseDn.getPattern() );
-    }
-
-
-    @Test
-    public void testWhatDnDefaultType() throws Exception
-    {
-        String dnPattern = "dsqdsqdq";
-
-        // Create parser
-        OpenLdapAclParser parser = new OpenLdapAclParser();
-
-        // Testing the ACL item
-        AclItem aclItem = parser.parse( "access to dn=\"" + dnPattern + "\" by *" );
-        assertNotNull( aclItem );
-
-        // Testing the 'what' clause
-        AclWhatClause whatClause = aclItem.getWhatClause();
-        assertNotNull( whatClause );
-        AclWhatClauseDn whatClauseDn = whatClause.getDnClause();
-        assertNotNull( whatClauseDn );
-        assertEquals( dnPattern, whatClauseDn.getPattern() );
-        assertNull( whatClauseDn.getType() );
-    }
-
-
-    @Test
-    public void testWhatDnDefaultTypeWithoutAccess() throws Exception
-    {
-        String dnPattern = "dsqdsqdq";
-
-        // Create parser
-        OpenLdapAclParser parser = new OpenLdapAclParser();
-
-        // Testing the ACL item
-        AclItem aclItem = parser.parse( "to dn=\"" + dnPattern + "\" by *" );
-        assertNotNull( aclItem );
-
-        // Testing the 'what' clause
-        AclWhatClause whatClause = aclItem.getWhatClause();
-        assertNotNull( whatClause );
-        AclWhatClauseDn whatClauseDn = whatClause.getDnClause();
-        assertNotNull( whatClauseDn );
-        assertEquals( dnPattern, whatClauseDn.getPattern() );
-        assertNull( whatClauseDn.getType() );
-    }
-
-
-    @Test
-    public void testWhatDnRegex() throws Exception
-    {
-        String dnPattern = "dsqdsqdq";
-
-        // Create parser
-        OpenLdapAclParser parser = new OpenLdapAclParser();
-
-        // Testing the ACL item
-        AclItem aclItem = parser.parse( "access to dn.regex=\"" + dnPattern + "\" by *" );
-        assertNotNull( aclItem );
-
-        // Testing the 'what' clause
-        AclWhatClause whatClause = aclItem.getWhatClause();
-        assertNotNull( whatClause );
-        AclWhatClauseDn whatClauseDn = whatClause.getDnClause();
-        assertNotNull( whatClauseDn );
-        assertEquals( dnPattern, whatClauseDn.getPattern() );
-        assertEquals( AclWhatClauseDnTypeEnum.REGEX, whatClauseDn.getType() );
-    }
-
-
-    @Test
-    public void testWhatDnRegexWithoutAccess() throws Exception
-    {
-        String dnPattern = "dsqdsqdq";
-
-        // Create parser
-        OpenLdapAclParser parser = new OpenLdapAclParser();
-
-        // Testing the ACL item
-        AclItem aclItem = parser.parse( "to dn.regex=\"" + dnPattern + "\" by *" );
-        assertNotNull( aclItem );
-
-        // Testing the 'what' clause
-        AclWhatClause whatClause = aclItem.getWhatClause();
-        assertNotNull( whatClause );
-        AclWhatClauseDn whatClauseDn = whatClause.getDnClause();
-        assertNotNull( whatClauseDn );
-        assertEquals( dnPattern, whatClauseDn.getPattern() );
-        assertEquals( AclWhatClauseDnTypeEnum.REGEX, whatClauseDn.getType() );
-    }
-
-
-    @Test
-    public void testWhatDnBase() throws Exception
-    {
-        String dnPattern = "dsqdsqdq";
-
-        // Create parser
-        OpenLdapAclParser parser = new OpenLdapAclParser();
-
-        // Testing the ACL item
-        AclItem aclItem = parser.parse( "access to dn.base=\"" + dnPattern + "\" by *" );
-        assertNotNull( aclItem );
-
-        // Testing the 'what' clause
-        AclWhatClause whatClause = aclItem.getWhatClause();
-        assertNotNull( whatClause );
-        AclWhatClauseDn whatClauseDn = whatClause.getDnClause();
-        assertNotNull( whatClauseDn );
-        assertEquals( dnPattern, whatClauseDn.getPattern() );
-        assertEquals( AclWhatClauseDnTypeEnum.BASE, whatClauseDn.getType() );
-    }
-
-
-    @Test
-    public void testWhatDnBaseWithoutAccess() throws Exception
-    {
-        String dnPattern = "dsqdsqdq";
-
-        // Create parser
-        OpenLdapAclParser parser = new OpenLdapAclParser();
-
-        // Testing the ACL item
-        AclItem aclItem = parser.parse( "to dn.base=\"" + dnPattern + "\" by *" );
-        assertNotNull( aclItem );
-
-        // Testing the 'what' clause
-        AclWhatClause whatClause = aclItem.getWhatClause();
-        assertNotNull( whatClause );
-        AclWhatClauseDn whatClauseDn = whatClause.getDnClause();
-        assertNotNull( whatClauseDn );
-        assertEquals( dnPattern, whatClauseDn.getPattern() );
-        assertEquals( AclWhatClauseDnTypeEnum.BASE, whatClauseDn.getType() );
-    }
-
-
-    @Test
-    public void testWhatDnExact() throws Exception
-    {
-        String dnPattern = "dsqdsqdq";
-
-        // Create parser
-        OpenLdapAclParser parser = new OpenLdapAclParser();
-
-        // Testing the ACL item
-        AclItem aclItem = parser.parse( "access to dn.exact=\"" + dnPattern + "\" by *" );
-        assertNotNull( aclItem );
-
-        // Testing the 'what' clause
-        AclWhatClause whatClause = aclItem.getWhatClause();
-        assertNotNull( whatClause );
-        AclWhatClauseDn whatClauseDn = whatClause.getDnClause();
-        assertNotNull( whatClauseDn );
-        assertEquals( dnPattern, whatClauseDn.getPattern() );
-        assertEquals( AclWhatClauseDnTypeEnum.EXACT, whatClauseDn.getType() );
-    }
-
-
-    @Test
-    public void testWhatDnExactWithoutAccess() throws Exception
-    {
-        String dnPattern = "dsqdsqdq";
-
-        // Create parser
-        OpenLdapAclParser parser = new OpenLdapAclParser();
-
-        // Testing the ACL item
-        AclItem aclItem = parser.parse( "to dn.exact=\"" + dnPattern + "\" by *" );
-        assertNotNull( aclItem );
-
-        // Testing the 'what' clause
-        AclWhatClause whatClause = aclItem.getWhatClause();
-        assertNotNull( whatClause );
-        AclWhatClauseDn whatClauseDn = whatClause.getDnClause();
-        assertNotNull( whatClauseDn );
-        assertEquals( dnPattern, whatClauseDn.getPattern() );
-        assertEquals( AclWhatClauseDnTypeEnum.EXACT, whatClauseDn.getType() );
-    }
-
-
-    @Test
-    public void testWhatDnOne() throws Exception
-    {
-        String dnPattern = "dsqdsqdq";
-
-        // Create parser
-        OpenLdapAclParser parser = new OpenLdapAclParser();
-
-        // Testing the ACL item
-        AclItem aclItem = parser.parse( "access to dn.one=\"" + dnPattern + "\" by *" );
-        assertNotNull( aclItem );
-
-        // Testing the 'what' clause
-        AclWhatClause whatClause = aclItem.getWhatClause();
-        assertNotNull( whatClause );
-        AclWhatClauseDn whatClauseDn = whatClause.getDnClause();
-        assertNotNull( whatClauseDn );
-        assertEquals( dnPattern, whatClauseDn.getPattern() );
-        assertEquals( AclWhatClauseDnTypeEnum.ONE, whatClauseDn.getType() );
-    }
-
-
-    @Test
-    public void testWhatDnOneWithoutAccess() throws Exception
-    {
-        String dnPattern = "dsqdsqdq";
-
-        // Create parser
-        OpenLdapAclParser parser = new OpenLdapAclParser();
-
-        // Testing the ACL item
-        AclItem aclItem = parser.parse( "to dn.one=\"" + dnPattern + "\" by *" );
-        assertNotNull( aclItem );
-
-        // Testing the 'what' clause
-        AclWhatClause whatClause = aclItem.getWhatClause();
-        assertNotNull( whatClause );
-        AclWhatClauseDn whatClauseDn = whatClause.getDnClause();
-        assertNotNull( whatClauseDn );
-        assertEquals( dnPattern, whatClauseDn.getPattern() );
-        assertEquals( AclWhatClauseDnTypeEnum.ONE, whatClauseDn.getType() );
-    }
-
-
-    @Test
-    public void testWhatDnSubtree() throws Exception
-    {
-        String dnPattern = "dsqdsqdq";
-
-        // Create parser
-        OpenLdapAclParser parser = new OpenLdapAclParser();
-
-        // Testing the ACL item
-        AclItem aclItem = parser.parse( "access to dn.subtree=\"" + dnPattern + "\" by *" );
-        assertNotNull( aclItem );
-
-        // Testing the 'what' clause
-        AclWhatClause whatClause = aclItem.getWhatClause();
-        assertNotNull( whatClause );
-        AclWhatClauseDn whatClauseDn = whatClause.getDnClause();
-        assertNotNull( whatClauseDn );
-        assertEquals( dnPattern, whatClauseDn.getPattern() );
-        assertEquals( AclWhatClauseDnTypeEnum.SUBTREE, whatClauseDn.getType() );
-    }
-
-
-    @Test
-    public void testWhatDnSubtreeWithoutAccess() throws Exception
-    {
-        String dnPattern = "dsqdsqdq";
-
-        // Create parser
-        OpenLdapAclParser parser = new OpenLdapAclParser();
-
-        // Testing the ACL item
-        AclItem aclItem = parser.parse( "to dn.subtree=\"" + dnPattern + "\" by *" );
-        assertNotNull( aclItem );
-
-        // Testing the 'what' clause
-        AclWhatClause whatClause = aclItem.getWhatClause();
-        assertNotNull( whatClause );
-        AclWhatClauseDn whatClauseDn = whatClause.getDnClause();
-        assertNotNull( whatClauseDn );
-        assertEquals( dnPattern, whatClauseDn.getPattern() );
-        assertEquals( AclWhatClauseDnTypeEnum.SUBTREE, whatClauseDn.getType() );
-    }
-
-
-    @Test
-    public void testWhatDnChildren() throws Exception
-    {
-        String dnPattern = "dsqdsqdq";
-
-        // Create parser
-        OpenLdapAclParser parser = new OpenLdapAclParser();
-
-        // Testing the ACL item
-        AclItem aclItem = parser.parse( "access to dn.children=\"" + dnPattern + "\" by *" );
-        assertNotNull( aclItem );
-
-        // Testing the 'what' clause
-        AclWhatClause whatClause = aclItem.getWhatClause();
-        assertNotNull( whatClause );
-        AclWhatClauseDn whatClauseDn = whatClause.getDnClause();
-        assertNotNull( whatClauseDn );
-        assertEquals( dnPattern, whatClauseDn.getPattern() );
-        assertEquals( AclWhatClauseDnTypeEnum.CHILDREN, whatClauseDn.getType() );
-    }
-
-
-    @Test
-    public void testWhatDnChildrenWithoutAccess() throws Exception
-    {
-        String dnPattern = "dsqdsqdq";
-
-        // Create parser
-        OpenLdapAclParser parser = new OpenLdapAclParser();
-
-        // Testing the ACL item
-        AclItem aclItem = parser.parse( "to dn.children=\"" + dnPattern + "\" by *" );
-        assertNotNull( aclItem );
-
-        // Testing the 'what' clause
-        AclWhatClause whatClause = aclItem.getWhatClause();
-        assertNotNull( whatClause );
-        AclWhatClauseDn whatClauseDn = whatClause.getDnClause();
-        assertNotNull( whatClauseDn );
-        assertEquals( dnPattern, whatClauseDn.getPattern() );
-        assertEquals( AclWhatClauseDnTypeEnum.CHILDREN, whatClauseDn.getType() );
     }
 
 
@@ -654,27 +845,6 @@ public class OpenLdapAclParserTest
         {
             // Should happen
         }
-    }
-
-
-    @Test
-    public void testWhatFilter() throws Exception
-    {
-        String filter = "(objectclass=*)";
-
-        // Create parser
-        OpenLdapAclParser parser = new OpenLdapAclParser();
-
-        // Testing the ACL item
-        AclItem aclItem = parser.parse( "access to filter=" + filter + " by *" );
-        assertNotNull( aclItem );
-
-        // Testing the 'what' clause
-        AclWhatClause whatClause = aclItem.getWhatClause();
-        assertNotNull( whatClause );
-        AclWhatClauseFilter whatClauseFilter = whatClause.getFilterClause();
-        assertNotNull( whatClauseFilter );
-        assertEquals( filter, whatClauseFilter.getFilter() );
     }
 
 
@@ -4370,7 +4540,7 @@ public class OpenLdapAclParserTest
     /**
      * Tests examples given in the following page:
      * http://www.openldap.org/doc/admin24/access-control.html
-     */
+     *
     public void testVerifyOpenLdapDocumentExamples() throws Exception
     {
         // List of string holding all examples
@@ -4422,7 +4592,7 @@ public class OpenLdapAclParserTest
     /**
      * Tests examples given in the following page:
      * http://www.openldap.org/doc/admin24/access-control.html
-     */
+     *
     public void testVerifyOpenLdapDocumentExamplesWithoutAccess() throws Exception
     {
         // List of string holding all examples
@@ -4468,4 +4638,5 @@ public class OpenLdapAclParserTest
             parser.parse( example );
         }
     }
+    */
 }

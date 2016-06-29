@@ -43,8 +43,8 @@ public class AclAttributeVal
     /** The MatchingRule flag */
     private boolean matchingRule;
     
-    /** The value */
-    private String value;
+    /** The regex */
+    private String regex;
 
     /**
      * @return the aclAttributes
