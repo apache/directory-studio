@@ -170,15 +170,18 @@ Also create an empty directory used during the release process and store it in a
     svn checkout https://svn.apache.org/repos/asf/directory/studio/branches/$VERSION branch-$VERSION
     cd branch-$VERSION
 
-#### Set the version
+#### Remove OpenLDAP feature
+
+As long as the `org.apache.directory.studio.openldap.feature` is not ready for release it needs to be removed from `product/org.apache.directory.studio.product`.
+
+#### Set the version and commit
 
     find . -name pom-first.xml | xargs sed -i 's/2.0.0-SNAPSHOT/'$VERSION'/'
     find . -name pom-first.xml | xargs sed -i 's/2.0.0.qualifier/'$VERSION'/'
+    sed -i 's/2.0.0-SNAPSHOT/'$VERSION'/' pom.xml
     mvn -f pom-first.xml clean install
-    mvn org.eclipse.tycho:tycho-versions-plugin:0.22.0:set-version -DnewVersion=$VERSION
-
-#### Commit
-
+    svn revert pom.xml
+    mvn org.eclipse.tycho:tycho-versions-plugin:0.24.0:set-version -DnewVersion=$VERSION
     svn commit -m "Set version number for release $VERSION"
 
 #### Create and checkout tag
@@ -212,13 +215,17 @@ Run the dist script:
 
 Afterwards all distribution packages are located in `target`.
 
+#### Upload the artifacts to SVN
+
+    cd target/$VERSION
+    svn mkdir https://dist.apache.org/repos/dist/dev/directory/studio/$VERSION -m "Create dev area for release $VERSION"
+    svn co https://dist.apache.org/repos/dist/dev/directory/studio/$VERSION .
+    svn add $VERSION
+    svn commit -m "Add release $VERSION"
+
 ### Call the vote
 
-Upload `target/$VERSION` to people.apache.org
-
-    scp -r target/$VERSION people.apache.org:~/public_html/
-
-and start the vote.
+Start the vote.
 
 ### Publish
 
