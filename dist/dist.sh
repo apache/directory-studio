@@ -35,25 +35,10 @@ if [ -e "$TARGET_DIR" ]; then
 fi
 
 echo
-echo "### Creating dist folders"
+echo "### Creating dist folder"
 DIST_DIR=${TARGET_DIR}/${VERSION}
-UPDATE_SITE_DIR=${TARGET_DIR}/update/${VERSION}
 mkdir -p ${DIST_DIR}
-mkdir -p ${UPDATE_SITE_DIR}
 
-echo
-echo "### Copying update sites"
-cp -a ../p2repositories/dependencies/target/repository ${UPDATE_SITE_DIR}/dependencies
-cp -a ../p2repositories/eclipse/target/repository ${UPDATE_SITE_DIR}/eclipse
-
-echo
-echo "### Signing update sites"
-cd ${UPDATE_SITE_DIR}/dependencies
-sh ${WORK_DIR}/sign.sh
-zip -r ${DIST_DIR}/ApacheDirectoryStudio-${VERSION}-p2repository-dependencies.zip *
-cd ${UPDATE_SITE_DIR}/eclipse
-sh ${WORK_DIR}/sign.sh
-zip -r ${DIST_DIR}/ApacheDirectoryStudio-${VERSION}-p2repository.zip *
 
 echo
 echo "### Copying dist files"
@@ -86,6 +71,24 @@ done
 echo
 echo "### Signing dist files"
 sh ${WORK_DIR}/sign.sh
+
+echo
+echo "### Copying update sites"
+UPDATE_SITE_DIR=${TARGET_DIR}/${VERSION}/update
+mkdir -p ${UPDATE_SITE_DIR}
+cd ${WORK_DIR}
+cp -a ../p2repositories/dependencies/target/repository ${UPDATE_SITE_DIR}/dependencies
+cp -a ../p2repositories/eclipse/target/repository ${UPDATE_SITE_DIR}/eclipse
+
+echo
+echo "### Signing update sites"
+cd ${UPDATE_SITE_DIR}/dependencies
+sh ${WORK_DIR}/sign.sh
+zip -r ${DIST_DIR}/ApacheDirectoryStudio-${VERSION}-p2repository-dependencies.zip *
+cd ${UPDATE_SITE_DIR}/eclipse
+sh ${WORK_DIR}/sign.sh
+zip -r ${DIST_DIR}/ApacheDirectoryStudio-${VERSION}-p2repository.zip *
+
 
 echo
 echo "### Success"
