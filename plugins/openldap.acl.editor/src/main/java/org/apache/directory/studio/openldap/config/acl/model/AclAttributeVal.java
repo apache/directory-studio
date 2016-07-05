@@ -45,7 +45,8 @@ public class AclAttributeVal
     
     /** The regex */
     private String regex;
-
+    private String value;
+    
     /**
      * @return the aclAttributes
      */
