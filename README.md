@@ -109,6 +109,12 @@ The build produces binaries for all platforms. Archived versions can be found in
 
 tentative, not fully tested yet...
 
+### Licenses
+
+The root directory contains LICENSE and NOTICE files for the source distribution.
+The product directory contains LICENSE and NOTICE files for the binary distributions, including licenses for bundled dependencies.
+
+
 ### Release artifacts
 
 We release the following artifacts:
