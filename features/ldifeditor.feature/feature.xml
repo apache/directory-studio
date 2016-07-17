@@ -2,7 +2,7 @@
 <feature
       id="org.apache.directory.studio.ldifeditor.feature"
       label="Apache Directory Studio LDIF Editor"
-      version="2.0.0.qualifier"
+      version="2.0.0.v20160717-M11"
       provider-name="Apache Software Foundation"
       plugin="org.apache.directory.studio.ldifeditor"
       image="studio.png">

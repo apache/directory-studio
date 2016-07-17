@@ -178,13 +178,15 @@ Also create an empty directory used during the release process and store it in a
 
 #### Remove OpenLDAP feature
 
-As long as the `org.apache.directory.studio.openldap.feature` is not ready for release it needs to be removed from `product/org.apache.directory.studio.product`.
+As long as the `org.apache.directory.studio.openldap.feature` is not ready for release it needs to be removed from `product/org.apache.directory.studio.product`. Remove the following line :
+
+	<feature id="org.apache.directory.studio.openldap.feature"/>
 
 #### Set the version and commit
 
-    find . -name pom-first.xml | xargs sed -i 's/2.0.0-SNAPSHOT/'$VERSION'/'
-    find . -name pom-first.xml | xargs sed -i 's/2.0.0.qualifier/'$VERSION'/'
-    sed -i 's/2.0.0-SNAPSHOT/'$VERSION'/' pom.xml
+    find . -name pom-first.xml | xargs sed -i i'' 's/2.0.0-SNAPSHOT/$VERSION/'
+    find . -name pom-first.xml | xargs sed -i '' 's/2.0.0.qualifier/$VERSION/'
+    sed -i '' 's/2.0.0-SNAPSHOT/$VERSION/' pom.xml
     mvn -f pom-first.xml clean install
     svn revert pom.xml
     mvn org.eclipse.tycho:tycho-versions-plugin:0.24.0:set-version -DnewVersion=$VERSION
