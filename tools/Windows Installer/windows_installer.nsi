@@ -21,7 +21,8 @@
 # Constants and variables
 #
     !define Application "Apache Directory Studio"
-    !define Version "1.4.0.v20090407"
+    !define Version "STUDIO_VERSION"
+    !define BrandingVersion "BRANDING_VERSION"
     !define Icon "utils\studio-installer.ico"
     !define WelcomeImage "utils\welcome_studio.bmp"
     !define HeaderImage "utils\header_studio.bmp"
@@ -52,7 +53,7 @@
     InstallDir "$PROGRAMFILES\${Application}"
     
     # Branding text
-    BrandingText "${Application} - ${Version}"
+    BrandingText "${Application} - ${BrandingVersion}"
 
     # Activating XPStyle
     XPStyle on
@@ -229,5 +230,5 @@
         
         # Removing registry keys
         DeleteRegKey "${INSTDIR_REG_ROOT}" "${INSTDIR_REG_KEY}"
-        DeleteRegKey "${INSTDIR_REG_ROOT}" "SOFTWARE\${Application}" "InstallDir"
+        DeleteRegKey "${INSTDIR_REG_ROOT}" "SOFTWARE\${Application}"
     SectionEnd
