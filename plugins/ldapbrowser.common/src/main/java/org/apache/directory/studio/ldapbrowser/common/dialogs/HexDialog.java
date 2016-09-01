@@ -109,7 +109,7 @@ public class HexDialog extends Dialog
                 if ( dialog.open() == TextDialog.OK )
                 {
                     String text = dialog.getText();
-                    currentData = text.getBytes();
+                    currentData = text.getBytes( StandardCharsets.UTF_8 );
                     hexText.setText( toFormattedHex( currentData ) );
                 }
             }
