@@ -24,6 +24,7 @@ package org.apache.directory.studio.ldapbrowser.common.dialogs;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 import org.apache.directory.api.util.FileUtils;
 import org.apache.directory.studio.common.ui.CommonUIUtils;
@@ -103,7 +104,7 @@ public class HexDialog extends Dialog
             // Checking if the data is "text-editable"
             if ( isEditable( currentData ) )
             {
-                TextDialog dialog = new TextDialog( getShell(), new String( currentData ) );
+                TextDialog dialog = new TextDialog( getShell(), new String( currentData, StandardCharsets.UTF_8 ) );
 
                 if ( dialog.open() == TextDialog.OK )
                 {
@@ -177,14 +178,7 @@ public class HexDialog extends Dialog
             return false;
         }
 
-        try
-        {
-            return !( new String( b, "UTF-8" ).contains( "\uFFFD" ) );
-        }
-        catch ( UnsupportedEncodingException e )
-        {
-            return false;
-        }
+        return !( new String( b, StandardCharsets.UTF_8 ).contains( "\uFFFD" ) );
     }
 
 
