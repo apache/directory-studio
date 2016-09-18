@@ -22,8 +22,6 @@ A docker image to run Xvfb within a docker container and make an X11 server avai
 
 Used to run Apache Directory Studio UI tests on Jenkins.
 
-Currently the display port (:6, TCP 6006) is hardcoded.
-
 
 ## Build image
 
@@ -38,10 +36,14 @@ Currently the display port (:6, TCP 6006) is hardcoded.
 ## Usage
 
     CONTAINER_NAME="dir-studio-ui-tests-xvfb"
-    docker run -d --name $CONTAINER_NAME -p 6006:6006 apachedirectory/xvfb
-    export DISPLAY=:6
+    for PORT in $(seq 6006 6099); do netstat -tln | grep $PORT || break; done
+    echo "Using TCP port $PORT for Xvfb"
+    export DISPLAY=:$((PORT-6000))
+    echo "Using DISPLAY $DISPLAY"
+    docker run -d --name $CONTAINER_NAME -e DISPLAY=$DISPLAY -p $PORT:$PORT apachedirectory/xvfb
+    xdpyinfo -display $DISPLAY
     mvn clean install -Denable-ui-tests
     docker stop $CONTAINER_NAME
-    docker run $CONTAINER_NAME
+    docker rm $CONTAINER_NAME
 
 

@@ -17,18 +17,11 @@
 #   under the License.
 #
 
-FROM debian:8
+FROM alpine
 
-RUN \
-     apt-get update && \
-     apt-get install -y xvfb openssh-server && \
-     apt-get clean && \
-     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
-     mkdir /var/run/sshd && \
-     ssh-keygen -q -f /root/.ssh/id_rsa -N "" && \
-     cp /root/.ssh/id_rsa.pub /root/.ssh/authorized_keys
+RUN apk add --no-cache xvfb
 
-EXPOSE 6006
+ENV DISPLAY :6
 
-CMD /usr/sbin/sshd && ssh -o StrictHostKeyChecking=no -T -L *:6006:localhost:6000 root@localhost Xvfb :0 -screen 0 1024x768x16
+CMD Xvfb $DISPLAY -ac -listen tcp -screen 0 1024x768x16
 
