@@ -21,7 +21,7 @@
 package org.apache.directory.studio.valueeditors.msad;
 
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 import org.apache.directory.api.util.Strings;
 import org.junit.Test;
@@ -54,7 +54,7 @@ public class InPlaceMsAdObjectGuidValueEditorTest
                 ( byte ) 0xA9,
                 ( byte ) 0xA8 };
         String displayValue = editor.convertToString( bytes );
-        assertEquals( Strings.toLowerCase( "{db78ba89-b85f-447f-bd06-e3a40996a9a8}" ), displayValue ); //$NON-NLS-1$
+        assertEquals( Strings.toLowerCaseAscii( "{db78ba89-b85f-447f-bd06-e3a40996a9a8}" ), displayValue ); //$NON-NLS-1$
     }
 
 
@@ -82,7 +82,7 @@ public class InPlaceMsAdObjectGuidValueEditorTest
                 ( byte ) 0xEE,
                 ( byte ) 0xFF };
         String displayValue = editor.convertToString( bytes );
-        assertEquals( Strings.toLowerCase( "{33221100-5544-7766-8899-AABBCCDDEEFF}" ), displayValue ); //$NON-NLS-1$
+        assertEquals( Strings.toLowerCaseAscii( "{33221100-5544-7766-8899-AABBCCDDEEFF}" ), displayValue ); //$NON-NLS-1$
     }
 
 
