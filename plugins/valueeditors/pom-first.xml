@@ -48,10 +48,20 @@
             <Bundle-Activator>org.apache.directory.studio.valueeditors.ValueEditorsActivator</Bundle-Activator>
             
             <Export-Package>org.apache.directory.studio.valueeditors,
+ org.apache.directory.studio.valueeditors.address,
+ org.apache.directory.studio.valueeditors.administrativerole,
+ org.apache.directory.studio.valueeditors.adtime,
+ org.apache.directory.studio.valueeditors.bool,
+ org.apache.directory.studio.valueeditors.certificate,
  org.apache.directory.studio.valueeditors.dn,
- org.apache.directory.studio.valueeditors.time,
+ org.apache.directory.studio.valueeditors.image,
+ org.apache.directory.studio.valueeditors.integer,
+ org.apache.directory.studio.valueeditors.msad,
+ org.apache.directory.studio.valueeditors.objectclass,
+ org.apache.directory.studio.valueeditors.oid,
  org.apache.directory.studio.valueeditors.password,
- org.apache.directory.studio.valueeditors.integer</Export-Package>
+ org.apache.directory.studio.valueeditors.time,
+ org.apache.directory.studio.valueeditors.uuid</Export-Package>
  
             <Import-Package>
  org.apache.commons.lang,

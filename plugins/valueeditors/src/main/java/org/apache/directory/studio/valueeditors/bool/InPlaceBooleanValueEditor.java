@@ -21,6 +21,8 @@
 package org.apache.directory.studio.valueeditors.bool;
 
 
+import org.apache.directory.api.ldap.model.schema.syntaxCheckers.BooleanSyntaxChecker;
+import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.valueeditors.AbstractInPlaceStringValueEditor;
 
 
@@ -54,18 +56,14 @@ public class InPlaceBooleanValueEditor extends AbstractInPlaceStringValueEditor
             {
                 return null;
             }
-            else if ( "TRUE".equalsIgnoreCase( stringValue )
-                || "T".equalsIgnoreCase( stringValue )
-                || "YES".equalsIgnoreCase( stringValue )
-                || "Y".equalsIgnoreCase( stringValue )
+            else if ( "TRUE".equalsIgnoreCase( stringValue ) || "T".equalsIgnoreCase( stringValue )
+                || "YES".equalsIgnoreCase( stringValue ) || "Y".equalsIgnoreCase( stringValue )
                 || "1".equalsIgnoreCase( stringValue ) )
             {
                 return TRUE;
             }
-            else if ( "FALSE".equalsIgnoreCase( stringValue )
-                || "F".equalsIgnoreCase( stringValue )
-                || "NO".equalsIgnoreCase( stringValue )
-                || "N".equalsIgnoreCase( stringValue )
+            else if ( "FALSE".equalsIgnoreCase( stringValue ) || "F".equalsIgnoreCase( stringValue )
+                || "NO".equalsIgnoreCase( stringValue ) || "N".equalsIgnoreCase( stringValue )
                 || "0".equalsIgnoreCase( stringValue ) )
             {
                 return FALSE;
@@ -74,4 +72,21 @@ public class InPlaceBooleanValueEditor extends AbstractInPlaceStringValueEditor
 
         return value;
     }
+
+
+    @Override
+    public Object getRawValue( IValue value )
+    {
+        Object rawValue = super.getRawValue( value );
+
+        if ( rawValue instanceof String && new BooleanSyntaxChecker().isValidSyntax( rawValue ) )
+        {
+            return rawValue;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
 }

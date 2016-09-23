@@ -71,7 +71,7 @@ public class ObjectClassValueEditor extends AbstractDialogStringValueEditor
     {
         if ( getRawValue( value ) == null )
         {
-            return "NULL"; //$NON-NLS-1$
+            return NULL;
         }
 
         String displayValue = value.getStringValue();

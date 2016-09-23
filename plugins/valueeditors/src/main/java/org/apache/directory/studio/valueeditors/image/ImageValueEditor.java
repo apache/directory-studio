@@ -79,7 +79,7 @@ public class ImageValueEditor extends AbstractDialogBinaryValueEditor
         {
             if ( value == null )
             {
-                return NULL; //$NON-NLS-1$
+                return NULL;
             }
             else if ( value.isBinary() )
             {

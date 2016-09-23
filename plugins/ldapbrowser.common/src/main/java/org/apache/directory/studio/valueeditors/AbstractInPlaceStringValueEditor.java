@@ -84,7 +84,7 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
     {
         if ( attributeHierarchy == null )
         {
-            return "NULL"; //$NON-NLS-1$
+            return NULL;
         }
 
         List<IValue> valueList = new ArrayList<IValue>();
@@ -123,15 +123,7 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
     public String getDisplayValue( IValue value )
     {
         Object obj = getRawValue( value );
-        
-        if ( obj == null ) 
-        {
-            return "NULL";
-        }
-        else
-        {
-            return obj.toString();
-        }
+        return StringValueEditorUtils.getDisplayValue( obj );
     }
 
 
@@ -184,41 +176,7 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
      */
     public Object getRawValue( IValue value )
     {
-        if ( value != null )
-        {
-            if ( value.isString() )
-            {
-                return value.getStringValue();
-            }
-            else if ( value.isBinary() && isEditable( value.getBinaryValue() ) )
-            {
-                return value.getStringValue();
-            }
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Small helper.
-     */
-    private boolean isEditable( byte[] b )
-    {
-        if ( b == null )
-        {
-            return false;
-        }
-
-        for ( int i = 0; i < b.length; i++ )
-        {
-            if ( ( b[i] > '\u007F') || ( ( b[i] < '\u0020' ) && ( b[i] != '\n' ) && ( b[i] != '\r' ) ) )
-            {
-                return false;
-            }
-        }
-
-        return true;
+        return StringValueEditorUtils.getRawValue( value );
     }
 
 
@@ -230,14 +188,7 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
      */
     public Object getStringOrBinaryValue( Object rawValue )
     {
-        if ( rawValue instanceof String )
-        {
-            return rawValue;
-        }
-        else
-        {
-            return null;
-        }
+        return StringValueEditorUtils.getStringOrBinaryValue( rawValue );
     }
 
 
