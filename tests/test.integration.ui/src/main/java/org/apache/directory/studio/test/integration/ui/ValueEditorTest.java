@@ -59,6 +59,24 @@ import org.junit.runners.Parameterized.Parameters;
 public class ValueEditorTest
 {
 
+    private static final String CN = "cn";
+    private static final String USER_PWD = "userPassword";
+
+    private static final String EMPTY_STRING = "";
+    private static final String ASCII = "a-zA+Z0.9";
+    private static final String UNICODE = "a-z\nA+Z\r0.9\t\u00e4\u00f6\u00fc\u00df \u2000\u3000\u5047";
+
+    private static final byte[] EMPTY_BYTES = new byte[0];
+    private static final byte[] UTF8 = UNICODE.getBytes( UTF_8 );
+    private static final byte[] PNG = new byte[]
+        { ( byte ) 0x89, 0x50, 0x4E, 0x47 };
+
+    private static final String TRUE = "TRUE";
+    private static final String FALSE = "FALSE";
+
+    private static final String OID = "1.3.6.1.4.1.1466.20037";
+
+
     @Parameters(name = "{0}")
     public static Object[] data()
     {
@@ -67,73 +85,65 @@ public class ValueEditorTest
                 // InPlaceTextValueEditor 
 
                 { "InPlaceTextValueEditor - empty value",
-                    Data.data().valueEditorClass( InPlaceTextValueEditor.class ).attribute( "cn" )
-                        .rawValue( IValue.EMPTY_STRING_VALUE ).expectedRawValue( "" ).expectedDisplayValue( "" )
-                        .expectedHasValue( true ).expectedStringOrBinaryValue( "" ) },
+                    Data.data().valueEditorClass( InPlaceTextValueEditor.class ).attribute( CN )
+                        .rawValue( IValue.EMPTY_STRING_VALUE ).expectedRawValue( EMPTY_STRING )
+                        .expectedDisplayValue( EMPTY_STRING ).expectedHasValue( true )
+                        .expectedStringOrBinaryValue( EMPTY_STRING ) },
 
                 { "InPlaceTextValueEditor - empty string",
-                    Data.data().valueEditorClass( InPlaceTextValueEditor.class ).attribute( "cn" ).rawValue( "" )
-                        .expectedRawValue( "" ).expectedDisplayValue( "" ).expectedHasValue( true )
-                        .expectedStringOrBinaryValue( "" ) },
+                    Data.data().valueEditorClass( InPlaceTextValueEditor.class ).attribute( CN )
+                        .rawValue( EMPTY_STRING ).expectedRawValue( EMPTY_STRING ).expectedDisplayValue( EMPTY_STRING )
+                        .expectedHasValue( true ).expectedStringOrBinaryValue( EMPTY_STRING ) },
 
                 { "InPlaceTextValueEditor - ascii",
-                    Data.data().valueEditorClass( InPlaceTextValueEditor.class ).attribute( "cn" )
-                        .rawValue( "a-zA+Z0.9" ).expectedRawValue( "a-zA+Z0.9" ).expectedDisplayValue( "a-zA+Z0.9" )
-                        .expectedHasValue( true ).expectedStringOrBinaryValue( "a-zA+Z0.9" ) },
-
-                { "InPlaceTextValueEditor - ascii with newline",
-                    Data.data().valueEditorClass( InPlaceTextValueEditor.class ).attribute( "cn" ).rawValue( "a\nb\rc" )
-                        .expectedRawValue( "a\nb\rc" ).expectedDisplayValue( "a\nb\rc" ).expectedHasValue( true )
-                        .expectedStringOrBinaryValue( "a\nb\rc" ) },
+                    Data.data().valueEditorClass( InPlaceTextValueEditor.class ).attribute( CN ).rawValue( ASCII )
+                        .expectedRawValue( ASCII ).expectedDisplayValue( ASCII ).expectedHasValue( true )
+                        .expectedStringOrBinaryValue( ASCII ) },
 
                 { "InPlaceTextValueEditor - unicode",
-                    Data.data().valueEditorClass( InPlaceTextValueEditor.class ).attribute( "cn" )
-                        .rawValue( "\u00e4\u2000\n\u5047" ).expectedRawValue( "\u00e4\u2000\n\u5047" )
-                        .expectedDisplayValue( "\u00e4\u2000\n\u5047" ).expectedHasValue( true )
-                        .expectedStringOrBinaryValue( "\u00e4\u2000\n\u5047" ) },
+                    Data.data().valueEditorClass( InPlaceTextValueEditor.class ).attribute( CN ).rawValue( UNICODE )
+                        .expectedRawValue( UNICODE ).expectedDisplayValue( UNICODE ).expectedHasValue( true )
+                        .expectedStringOrBinaryValue( UNICODE ) },
 
                 { "InPlaceTextValueEditor - bytearray UTF8",
-                    Data.data().valueEditorClass( InPlaceTextValueEditor.class ).attribute( "userPassword" )
-                        .rawValue( "a\nb\r\u00e4\t\u5047".getBytes( UTF_8 ) ).expectedRawValue( "a\nb\r\u00e4\t\u5047" )
-                        .expectedDisplayValue( "a\nb\r\u00e4\t\u5047" ).expectedHasValue( true )
-                        .expectedStringOrBinaryValue( "a\nb\r\u00e4\t\u5047" ) },
+                    Data.data().valueEditorClass( InPlaceTextValueEditor.class ).attribute( USER_PWD ).rawValue( UTF8 )
+                        .expectedRawValue( UNICODE ).expectedDisplayValue( UNICODE ).expectedHasValue( true )
+                        .expectedStringOrBinaryValue( UNICODE ) },
 
-                { "InPlaceTextValueEditor - bytearray binary", Data.data()
-                    .valueEditorClass( InPlaceTextValueEditor.class ).attribute( "userPassword" ).rawValue( new byte[]
-                        { ( byte ) 0x89, 0x50, 0x4E, 0x47 } )
-                    .expectedRawValue( null ).expectedDisplayValue( IValueEditor.NULL ).expectedHasValue( true )
-                    .expectedStringOrBinaryValue( null ) },
+                { "InPlaceTextValueEditor - bytearray PNG",
+                    Data.data().valueEditorClass( InPlaceTextValueEditor.class ).attribute( USER_PWD ).rawValue( PNG )
+                        .expectedRawValue( null ).expectedDisplayValue( IValueEditor.NULL ).expectedHasValue( true )
+                        .expectedStringOrBinaryValue( null ) },
 
                 // InPlaceBooleanValueEditor 
 
                 { "InPlaceBooleanValueEditor - TRUE",
-                    Data.data().valueEditorClass( InPlaceBooleanValueEditor.class ).attribute( "cn" ).rawValue( "TRUE" )
-                        .expectedRawValue( "TRUE" ).expectedDisplayValue( "TRUE" ).expectedHasValue( true )
-                        .expectedStringOrBinaryValue( "TRUE" ) },
+                    Data.data().valueEditorClass( InPlaceBooleanValueEditor.class ).attribute( CN ).rawValue( TRUE )
+                        .expectedRawValue( TRUE ).expectedDisplayValue( TRUE ).expectedHasValue( true )
+                        .expectedStringOrBinaryValue( TRUE ) },
 
                 { "InPlaceBooleanValueEditor - FALSE",
-                    Data.data().valueEditorClass( InPlaceBooleanValueEditor.class ).attribute( "cn" )
-                        .rawValue( "FALSE" ).expectedRawValue( "FALSE" ).expectedDisplayValue( "FALSE" )
-                        .expectedHasValue( true ).expectedStringOrBinaryValue( "FALSE" ) },
+                    Data.data().valueEditorClass( InPlaceBooleanValueEditor.class ).attribute( CN ).rawValue( FALSE )
+                        .expectedRawValue( FALSE ).expectedDisplayValue( FALSE ).expectedHasValue( true )
+                        .expectedStringOrBinaryValue( FALSE ) },
 
                 { "InPlaceBooleanValueEditor - INVALID",
-                    Data.data().valueEditorClass( InPlaceBooleanValueEditor.class ).attribute( "cn" )
+                    Data.data().valueEditorClass( InPlaceBooleanValueEditor.class ).attribute( CN )
                         .rawValue( "invalid" ).expectedRawValue( null ).expectedDisplayValue( IValueEditor.NULL )
                         .expectedHasValue( true ).expectedStringOrBinaryValue( null ) },
 
                 { "InPlaceBooleanValueEditor - bytearray TRUE",
-                    Data.data().valueEditorClass( InPlaceBooleanValueEditor.class ).attribute( "userPassword" )
-                        .rawValue( "TRUE".getBytes( UTF_8 ) ).expectedRawValue( "TRUE" ).expectedDisplayValue( "TRUE" )
-                        .expectedHasValue( true ).expectedStringOrBinaryValue( "TRUE" ) },
+                    Data.data().valueEditorClass( InPlaceBooleanValueEditor.class ).attribute( USER_PWD )
+                        .rawValue( TRUE.getBytes( UTF_8 ) ).expectedRawValue( TRUE ).expectedDisplayValue( TRUE )
+                        .expectedHasValue( true ).expectedStringOrBinaryValue( TRUE ) },
 
                 { "InPlaceBooleanValueEditor - bytearray FALSE",
-                    Data.data().valueEditorClass( InPlaceBooleanValueEditor.class ).attribute( "userPassword" )
-                        .rawValue( "FALSE".getBytes( UTF_8 ) ).expectedRawValue( "FALSE" )
-                        .expectedDisplayValue( "FALSE" ).expectedHasValue( true )
-                        .expectedStringOrBinaryValue( "FALSE" ) },
+                    Data.data().valueEditorClass( InPlaceBooleanValueEditor.class ).attribute( USER_PWD )
+                        .rawValue( FALSE.getBytes( UTF_8 ) ).expectedRawValue( FALSE ).expectedDisplayValue( FALSE )
+                        .expectedHasValue( true ).expectedStringOrBinaryValue( FALSE ) },
 
                 { "InPlaceBooleanValueEditor - bytearray INVALID",
-                    Data.data().valueEditorClass( InPlaceBooleanValueEditor.class ).attribute( "userPassword" )
+                    Data.data().valueEditorClass( InPlaceBooleanValueEditor.class ).attribute( USER_PWD )
                         .rawValue( "invalid".getBytes( UTF_8 ) ).expectedRawValue( null )
                         .expectedDisplayValue( IValueEditor.NULL ).expectedHasValue( true )
                         .expectedStringOrBinaryValue( null ) },
@@ -141,25 +151,23 @@ public class ValueEditorTest
                 // InPlaceOidValueEditor 
 
                 { "InPlaceOidValueEditor - 1.3.6.1.4.1.1466.20037",
-                    Data.data().valueEditorClass( InPlaceOidValueEditor.class ).attribute( "cn" )
-                        .rawValue( "1.3.6.1.4.1.1466.20037" ).expectedRawValue( "1.3.6.1.4.1.1466.20037" )
-                        .expectedDisplayValue( "1.3.6.1.4.1.1466.20037 (Start TLS)" ).expectedHasValue( true )
-                        .expectedStringOrBinaryValue( "1.3.6.1.4.1.1466.20037" ) },
+                    Data.data().valueEditorClass( InPlaceOidValueEditor.class ).attribute( CN ).rawValue( OID )
+                        .expectedRawValue( OID ).expectedDisplayValue( OID + " (Start TLS)" ).expectedHasValue( true )
+                        .expectedStringOrBinaryValue( OID ) },
 
                 { "InPlaceOidValueEditor - INVALID",
-                    Data.data().valueEditorClass( InPlaceOidValueEditor.class ).attribute( "cn" ).rawValue( "invalid" )
+                    Data.data().valueEditorClass( InPlaceOidValueEditor.class ).attribute( CN ).rawValue( "invalid" )
                         .expectedRawValue( null ).expectedDisplayValue( IValueEditor.NULL ).expectedHasValue( true )
                         .expectedStringOrBinaryValue( null ) },
 
                 { "InPlaceOidValueEditor - bytearray 1.3.6.1.4.1.1466.20037",
-                    Data.data().valueEditorClass( InPlaceOidValueEditor.class ).attribute( "userPassword" )
-                        .rawValue( "1.3.6.1.4.1.1466.20037".getBytes( UTF_8 ) )
-                        .expectedRawValue( "1.3.6.1.4.1.1466.20037" )
-                        .expectedDisplayValue( "1.3.6.1.4.1.1466.20037 (Start TLS)" ).expectedHasValue( true )
-                        .expectedStringOrBinaryValue( "1.3.6.1.4.1.1466.20037" ) },
+                    Data.data().valueEditorClass( InPlaceOidValueEditor.class ).attribute( USER_PWD )
+                        .rawValue( OID.getBytes( UTF_8 ) ).expectedRawValue( OID )
+                        .expectedDisplayValue( OID + " (Start TLS)" ).expectedHasValue( true )
+                        .expectedStringOrBinaryValue( OID ) },
 
                 { "InPlaceOidValueEditor - bytearray INVALID",
-                    Data.data().valueEditorClass( InPlaceOidValueEditor.class ).attribute( "userPassword" )
+                    Data.data().valueEditorClass( InPlaceOidValueEditor.class ).attribute( USER_PWD )
                         .rawValue( "invalid".getBytes( UTF_8 ) ).expectedRawValue( null )
                         .expectedDisplayValue( IValueEditor.NULL ).expectedHasValue( true )
                         .expectedStringOrBinaryValue( null ) },
@@ -167,99 +175,86 @@ public class ValueEditorTest
                 // TextValueEditor
 
                 { "TextValueEditor - empty string value",
-                    Data.data().valueEditorClass( TextValueEditor.class ).attribute( "cn" )
-                        .rawValue( IValue.EMPTY_STRING_VALUE ).expectedRawValue( "" ).expectedDisplayValue( "" )
-                        .expectedHasValue( true ).expectedStringOrBinaryValue( "" ) },
+                    Data.data().valueEditorClass( TextValueEditor.class ).attribute( CN )
+                        .rawValue( IValue.EMPTY_STRING_VALUE ).expectedRawValue( EMPTY_STRING )
+                        .expectedDisplayValue( EMPTY_STRING ).expectedHasValue( true )
+                        .expectedStringOrBinaryValue( EMPTY_STRING ) },
 
                 { "TextValueEditor - empty string",
-                    Data.data().valueEditorClass( TextValueEditor.class ).attribute( "cn" ).rawValue( "" )
-                        .expectedRawValue( "" ).expectedDisplayValue( "" ).expectedHasValue( true )
-                        .expectedStringOrBinaryValue( "" ) },
+                    Data.data().valueEditorClass( TextValueEditor.class ).attribute( CN ).rawValue( EMPTY_STRING )
+                        .expectedRawValue( EMPTY_STRING ).expectedDisplayValue( EMPTY_STRING ).expectedHasValue( true )
+                        .expectedStringOrBinaryValue( EMPTY_STRING ) },
 
                 { "TextValueEditor - ascii",
-                    Data.data().valueEditorClass( TextValueEditor.class ).attribute( "cn" ).rawValue( "a-zA+Z0.9" )
-                        .expectedRawValue( "a-zA+Z0.9" ).expectedDisplayValue( "a-zA+Z0.9" ).expectedHasValue( true )
-                        .expectedStringOrBinaryValue( "a-zA+Z0.9" ) },
-
-                { "TextValueEditor - ascii with newline",
-                    Data.data().valueEditorClass( TextValueEditor.class ).attribute( "cn" ).rawValue( "a\nb\rc" )
-                        .expectedRawValue( "a\nb\rc" ).expectedDisplayValue( "a\nb\rc" ).expectedHasValue( true )
-                        .expectedStringOrBinaryValue( "a\nb\rc" ) },
+                    Data.data().valueEditorClass( TextValueEditor.class ).attribute( CN ).rawValue( ASCII )
+                        .expectedRawValue( ASCII ).expectedDisplayValue( ASCII ).expectedHasValue( true )
+                        .expectedStringOrBinaryValue( ASCII ) },
 
                 { "TextValueEditor - unicode",
-                    Data.data().valueEditorClass( TextValueEditor.class ).attribute( "cn" )
-                        .rawValue( "\u00e4\u2000\n\u5047" ).expectedRawValue( "\u00e4\u2000\n\u5047" )
-                        .expectedDisplayValue( "\u00e4\u2000\n\u5047" ).expectedHasValue( true )
-                        .expectedStringOrBinaryValue( "\u00e4\u2000\n\u5047" ) },
+                    Data.data().valueEditorClass( TextValueEditor.class ).attribute( CN ).rawValue( UNICODE )
+                        .expectedRawValue( UNICODE ).expectedDisplayValue( UNICODE ).expectedHasValue( true )
+                        .expectedStringOrBinaryValue( UNICODE ) },
 
                 { "TextValueEditor - empty binary value",
-                    Data.data().valueEditorClass( TextValueEditor.class ).attribute( "userPassword" )
-                        .rawValue( IValue.EMPTY_BINARY_VALUE ).expectedRawValue( "" ).expectedDisplayValue( "" )
-                        .expectedHasValue( true ).expectedStringOrBinaryValue( "" ) },
+                    Data.data().valueEditorClass( TextValueEditor.class ).attribute( USER_PWD )
+                        .rawValue( IValue.EMPTY_BINARY_VALUE ).expectedRawValue( EMPTY_STRING )
+                        .expectedDisplayValue( EMPTY_STRING ).expectedHasValue( true )
+                        .expectedStringOrBinaryValue( EMPTY_STRING ) },
 
                 { "TextValueEditor - empty bytearray",
-                    Data.data().valueEditorClass( TextValueEditor.class ).attribute( "userPassword" )
-                        .rawValue( new byte[0] ).expectedRawValue( "" ).expectedDisplayValue( "" )
-                        .expectedHasValue( true ).expectedStringOrBinaryValue( "" ) },
+                    Data.data().valueEditorClass( TextValueEditor.class ).attribute( USER_PWD ).rawValue( EMPTY_BYTES )
+                        .expectedRawValue( EMPTY_STRING ).expectedDisplayValue( EMPTY_STRING ).expectedHasValue( true )
+                        .expectedStringOrBinaryValue( EMPTY_STRING ) },
 
                 { "TextValueEditor - bytearray UTF8",
-                    Data.data().valueEditorClass( TextValueEditor.class ).attribute( "userPassword" )
-                        .rawValue( "a\nb\r\u00e4\t\u5047".getBytes( UTF_8 ) ).expectedRawValue( "a\nb\r\u00e4\t\u5047" )
-                        .expectedDisplayValue( "a\nb\r\u00e4\t\u5047" ).expectedHasValue( true )
-                        .expectedStringOrBinaryValue( "a\nb\r\u00e4\t\u5047" ) },
+                    Data.data().valueEditorClass( TextValueEditor.class ).attribute( USER_PWD ).rawValue( UTF8 )
+                        .expectedRawValue( UNICODE ).expectedDisplayValue( UNICODE ).expectedHasValue( true )
+                        .expectedStringOrBinaryValue( UNICODE ) },
 
-                { "TextValueEditor - bytearray binary", Data.data().valueEditorClass( InPlaceTextValueEditor.class )
-                    .attribute( "userPassword" ).rawValue( new byte[]
-                        { ( byte ) 0x89, 0x50, 0x4E, 0x47 } )
-                    .expectedRawValue( null ).expectedDisplayValue( IValueEditor.NULL ).expectedHasValue( true )
-                    .expectedStringOrBinaryValue( null ) },
+                { "TextValueEditor - bytearray PNG",
+                    Data.data().valueEditorClass( InPlaceTextValueEditor.class ).attribute( USER_PWD ).rawValue( PNG )
+                        .expectedRawValue( null ).expectedDisplayValue( IValueEditor.NULL ).expectedHasValue( true )
+                        .expectedStringOrBinaryValue( null ) },
 
                 // HexValueEditor
 
                 { "HexValueEditor - empty string value",
-                    Data.data().valueEditorClass( HexValueEditor.class ).attribute( "cn" )
-                        .rawValue( IValue.EMPTY_STRING_VALUE ).expectedRawValue( new byte[0] )
+                    Data.data().valueEditorClass( HexValueEditor.class ).attribute( CN )
+                        .rawValue( IValue.EMPTY_STRING_VALUE ).expectedRawValue( EMPTY_BYTES )
                         .expectedDisplayValue( "Binary Data (0 Bytes)" ).expectedHasValue( true )
-                        .expectedStringOrBinaryValue( new byte[0] ) },
+                        .expectedStringOrBinaryValue( EMPTY_BYTES ) },
 
                 { "HexValueEditor - empty string",
-                    Data.data().valueEditorClass( HexValueEditor.class ).attribute( "cn" ).rawValue( "" )
-                        .expectedRawValue( new byte[0] ).expectedDisplayValue( "Binary Data (0 Bytes)" )
-                        .expectedHasValue( true ).expectedStringOrBinaryValue( new byte[0] ) },
+                    Data.data().valueEditorClass( HexValueEditor.class ).attribute( CN ).rawValue( EMPTY_STRING )
+                        .expectedRawValue( EMPTY_BYTES ).expectedDisplayValue( "Binary Data (0 Bytes)" )
+                        .expectedHasValue( true ).expectedStringOrBinaryValue( EMPTY_BYTES ) },
 
                 { "HexValueEditor - ascii",
-                    Data.data().valueEditorClass( HexValueEditor.class ).attribute( "cn" ).rawValue( "a-zA+Z0.9" )
-                        .expectedRawValue( "a-zA+Z0.9".getBytes( StandardCharsets.US_ASCII ) )
+                    Data.data().valueEditorClass( HexValueEditor.class ).attribute( CN ).rawValue( ASCII )
+                        .expectedRawValue( ASCII.getBytes( StandardCharsets.US_ASCII ) )
                         .expectedDisplayValue( "Binary Data (9 Bytes)" ).expectedHasValue( true )
-                        .expectedStringOrBinaryValue( "a-zA+Z0.9".getBytes( StandardCharsets.US_ASCII ) ) },
+                        .expectedStringOrBinaryValue( ASCII.getBytes( StandardCharsets.US_ASCII ) ) },
 
                 { "HexValueEditor - empty binary value",
-                    Data.data().valueEditorClass( HexValueEditor.class ).attribute( "userPassword" )
-                        .rawValue( IValue.EMPTY_BINARY_VALUE ).expectedRawValue( new byte[0] )
+                    Data.data().valueEditorClass( HexValueEditor.class ).attribute( USER_PWD )
+                        .rawValue( IValue.EMPTY_BINARY_VALUE ).expectedRawValue( EMPTY_BYTES )
                         .expectedDisplayValue( "Binary Data (0 Bytes)" ).expectedHasValue( true )
-                        .expectedStringOrBinaryValue( new byte[0] ) },
+                        .expectedStringOrBinaryValue( EMPTY_BYTES ) },
 
                 { "HexValueEditor - empty bytearray",
-                    Data.data().valueEditorClass( HexValueEditor.class ).attribute( "userPassword" )
-                        .rawValue( new byte[0] ).expectedRawValue( new byte[0] )
-                        .expectedDisplayValue( "Binary Data (0 Bytes)" ).expectedHasValue( true )
-                        .expectedStringOrBinaryValue( new byte[0] ) },
+                    Data.data().valueEditorClass( HexValueEditor.class ).attribute( USER_PWD ).rawValue( EMPTY_BYTES )
+                        .expectedRawValue( EMPTY_BYTES ).expectedDisplayValue( "Binary Data (0 Bytes)" )
+                        .expectedHasValue( true ).expectedStringOrBinaryValue( EMPTY_BYTES ) },
 
                 { "HexValueEditor - bytearray UTF8",
-                    Data.data().valueEditorClass( HexValueEditor.class ).attribute( "userPassword" )
-                        .rawValue( "a\nb\r\u00e4\t\u5047".getBytes( UTF_8 ) )
-                        .expectedRawValue( "a\nb\r\u00e4\t\u5047".getBytes( UTF_8 ) )
-                        .expectedDisplayValue( "Binary Data (10 Bytes)" ).expectedHasValue( true )
-                        .expectedStringOrBinaryValue( "a\nb\r\u00e4\t\u5047".getBytes( UTF_8 ) ) },
+                    Data.data().valueEditorClass( HexValueEditor.class ).attribute( USER_PWD ).rawValue( UTF8 )
+                        .expectedRawValue( UTF8 ).expectedDisplayValue( "Binary Data (30 Bytes)" )
+                        .expectedHasValue( true ).expectedStringOrBinaryValue( UTF8 ) },
 
-                { "HexValueEditor - bytearray binary", Data.data().valueEditorClass( HexValueEditor.class )
-                    .attribute( "userPassword" ).rawValue( new byte[]
-                        { ( byte ) 0x89, 0x50, 0x4E, 0x47 } )
-                    .expectedRawValue( new byte[]
-                        { ( byte ) 0x89, 0x50, 0x4E, 0x47 } )
-                    .expectedDisplayValue( "Binary Data (4 Bytes)" ).expectedHasValue( true )
-                    .expectedStringOrBinaryValue( new byte[]
-                        { ( byte ) 0x89, 0x50, 0x4E, 0x47 } ) },
+                { "HexValueEditor - bytearray PNG",
+                    Data.data().valueEditorClass( HexValueEditor.class ).attribute( USER_PWD ).rawValue( PNG )
+                        .expectedRawValue( PNG ).expectedDisplayValue( "Binary Data (4 Bytes)" )
+                        .expectedHasValue( true ).expectedStringOrBinaryValue( PNG ) },
 
             };
     }
