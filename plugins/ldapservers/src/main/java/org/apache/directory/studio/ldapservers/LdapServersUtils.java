@@ -193,20 +193,8 @@ public class LdapServersUtils
      *
      * @param server
      *      the server
-     */
-    public static void startConsolePrinterThread( LdapServer server )
-    {
-        startConsolePrinterThread( server, LdapServersManager.getServerFolder( server )
-            .append( "log" ) //$NON-NLS-1$
-            .append( "apacheds.log" ).toFile() );//$NON-NLS-1$
-    }
-
-
-    /**
-     * Starts the console printer thread.
-     *
-     * @param server
-     *      the server
+     * @param serverLogsFile
+     *       the server logs file
      */
     public static void startConsolePrinterThread( LdapServer server, File serverLogsFile )
     {

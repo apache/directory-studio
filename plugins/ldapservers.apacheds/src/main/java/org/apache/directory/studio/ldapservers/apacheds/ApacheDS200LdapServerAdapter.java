@@ -172,7 +172,9 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
             Messages.getString( "ApacheDS200LdapServerAdapter.VerifyingAndCopyingLibraries" ) ); //$NON-NLS-1$
 
         // Starting the console printer thread
-        LdapServersUtils.startConsolePrinterThread( server );
+        LdapServersUtils.startConsolePrinterThread( server, LdapServersManager.getServerFolder( server )
+            .append( "log" ) //$NON-NLS-1$
+            .append( "apacheds.log" ).toFile() );//$NON-NLS-1$
 
         // Launching ApacheDS
         ILaunch launch = launchApacheDS( server );
