@@ -68,6 +68,12 @@ public class LdapServersUtils
      */
     public static void runStartupListenerWatchdog( LdapServer server, int port ) throws Exception
     {
+        // If no protocol is enabled, we pass this and declare the server as started
+        if ( port == 0 )
+        {
+            return;
+        }
+
         // Getting the current time
         long startTime = System.currentTimeMillis();
 
@@ -77,37 +83,12 @@ public class LdapServersUtils
         // Looping until the end of the watchdog if the server is still 'starting'
         while ( ( System.currentTimeMillis() < watchDog ) && ( LdapServerStatus.STARTING == server.getStatus() ) )
         {
-            // Getting the port to test
-            try
+            // Trying to see if the port is available
+            if ( AvailablePortFinder.available( port ) )
             {
-                // If no protocol is enabled, we pass this and 
-                // declare the server as started
-                if ( port != 0 )
-                {
-                    // Trying to see if the port is available
-                    if ( AvailablePortFinder.available( port ) )
-                    {
-                        // The port is still available
-                        throw new Exception();
-                    }
-                }
+                // The port is still available
 
-                // If we pass the creation of the context, it means
-                // the server is correctly started
-
-                // We set the state of the server to 'started'...
-                server.setStatus( LdapServerStatus.STARTED );
-
-                // ... and we exit the thread
-                return;
-            }
-            catch ( Exception e )
-            {
-                // If we get an exception, it means the server is not 
-                // yet started
-
-                // We just wait one second before starting the test once
-                // again
+                // We just wait one second before starting the test once again
                 try
                 {
                     Thread.sleep( 1000 );
@@ -116,6 +97,15 @@ public class LdapServersUtils
                 {
                     // Nothing to do...
                 }
+            }
+            else
+            {
+                // We set the state of the server to 'started'...
+                server.setStatus( LdapServerStatus.STARTED );
+
+                // ... and we exit the thread
+                return;
+
             }
         }
 
