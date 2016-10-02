@@ -50,6 +50,7 @@
             <Export-Package>org.apache.directory.studio.ldapservers,
  org.apache.directory.studio.ldapservers.model,
  org.apache.directory.studio.ldapservers.views,
+ org.apache.directory.studio.ldapservers.jobs,
  org.apache.directory.studio.ldapservers.actions</Export-Package>
  
             <Import-Package>
