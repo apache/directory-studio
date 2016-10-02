@@ -391,4 +391,29 @@ public class ApacheDSPluginTest
         deleteDialogBot.clickOkButton();
     }
 
+
+    /**
+     * Test for DIRSTUDIO-1118: Run repair
+     */
+    @Test
+    public void startAndRepair()
+    {
+        String serverName = "StartAndRepair";
+        createServer( serverName );
+        setAvailablePorts( serverName );
+
+        // Start and repair the server
+        serversViewBot.startAndRepairServer( serverName );
+        serversViewBot.waitForServerStart( serverName );
+
+        // TODO: newer version of ApacheDS may log to console
+
+        // Stopping the server
+        serversViewBot.stopServer( serverName );
+        serversViewBot.waitForServerStop( serverName );
+
+        // Deleting the server
+        DeleteDialogBot deleteDialogBot = serversViewBot.openDeleteServerDialog();
+        deleteDialogBot.clickOkButton();
+    }
 }

@@ -163,6 +163,28 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
      */
     public void start( LdapServer server, StudioProgressMonitor monitor ) throws Exception
     {
+        startOrRepair( server, monitor, false );
+    }
+
+
+    /**
+     * Starts the ApacheDS in "repair" mode
+     *
+     * @param server
+     *      the server
+     * @param monitor
+     *      the progress monitor
+     * @throws Exception
+     *      if an error occurs when starting the server
+     */
+    public void repair( LdapServer server, StudioProgressMonitor monitor ) throws Exception
+    {
+        startOrRepair( server, monitor, true );
+    }
+
+
+    private void startOrRepair( LdapServer server, StudioProgressMonitor monitor, boolean repair ) throws Exception
+    {
         // Getting the bundle associated with the plugin
         Bundle bundle = ApacheDS200Plugin.getDefault().getBundle();
 
@@ -177,7 +199,7 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
             .append( "apacheds.log" ).toFile() );//$NON-NLS-1$
 
         // Launching ApacheDS
-        ILaunch launch = launchApacheDS( server );
+        ILaunch launch = launchApacheDS( server, repair );
 
         // Starting the "terminate" listener thread
         LdapServersUtils.startTerminateListenerThread( server, launch );
@@ -185,17 +207,18 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
         // Running the startup listener watchdog
         LdapServersUtils.runStartupListenerWatchdog( server, getTestingPort( server ) );
     }
-
-
+    
     /**
      * Launches ApacheDS using a launch configuration.
      *
      * @param server
      *      the server
+     * @param repair
+     *      true to launch ApacheDS in repair mode
      * @return
      *      the associated launch
      */
-    public static ILaunch launchApacheDS( LdapServer server )
+    public static ILaunch launchApacheDS( LdapServer server, boolean repair )
         throws Exception
     {
         // Getting the default VM installation
@@ -234,9 +257,18 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
         // The server folder path
         IPath serverFolderPath = LdapServersManager.getServerFolder( server );
 
+        // Creating the program arguments string
+        StringBuffer programArguments = new StringBuffer();
+        programArguments.append( "\"" + serverFolderPath.toOSString() + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+        if ( repair )
+        {
+            programArguments.append( " " );
+            programArguments.append( "\"repair\"" );
+        }
+
         // Setting the program arguments attribute
-        workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, "\"" //$NON-NLS-1$
-            + serverFolderPath.toOSString() + "\"" ); //$NON-NLS-1$
+        workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS,
+            programArguments.toString() );
 
         // Creating the VM arguments string
         StringBuffer vmArguments = new StringBuffer();

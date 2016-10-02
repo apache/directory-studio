@@ -42,6 +42,12 @@
                label="%ActionCreateConnection_label"
                icon="resources/icons/connection_new.gif">
          </action>
+         <action
+               class="org.apache.directory.studio.ldapservers.apacheds.StartAndRepairAction"
+               enablesFor="1"
+               id="%ActionStartAndRepair_id"
+               label="%ActionStartAndRepair_label">
+         </action>
          <visibility>
             <and>
                <objectState

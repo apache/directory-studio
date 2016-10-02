@@ -50,8 +50,6 @@ import org.eclipse.ui.IWorkbenchPart;
  */
 public class CreateConnectionAction implements IObjectActionDelegate
 {
-    private static final String EXTENSION_ID = "org.apache.directory.server.2.0.0"; //$NON-NLS-1$
-
     /** The {@link ServersView} */
     private ServersView view;
 
@@ -71,13 +69,7 @@ public class CreateConnectionAction implements IObjectActionDelegate
                 LdapServer server = ( LdapServer ) selection.getFirstElement();
 
                 // Checking that the server is really an ApacheDS 2.0.0 server
-                if ( !EXTENSION_ID.equalsIgnoreCase( server.getLdapServerAdapterExtension().getId() ) )
-                {
-                    String message = Messages.getString( "CreateConnectionAction.UnableReadServerConfiguration" ) //$NON-NLS-1$
-                        + "\n\n" //$NON-NLS-1$
-                        + Messages.getString( "CreateConnectionAction.NotA200Server" ); //$NON-NLS-1$
-
-                    reportErrorReadingServerConfiguration( view, message );
+                if(!ExtensionUtils.verifyApacheDs200OrPrintError( server, view )) {
                     return;
                 }
 

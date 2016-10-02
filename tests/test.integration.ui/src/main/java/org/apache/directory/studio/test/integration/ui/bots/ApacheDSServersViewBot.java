@@ -137,6 +137,19 @@ public class ApacheDSServersViewBot
         selectServer( serverName );
         ContextMenuHelper.clickContextMenu( getServersTree(), "&Run" );
     }
+    
+    
+    /**
+     * Starts and repairs the server associated with the given name.
+     *
+     * @param serverName
+     *      the name of the server
+     */
+    public void startAndRepairServer( String serverName )
+    {
+        selectServer( serverName );
+        ContextMenuHelper.clickContextMenu( getServersTree(), "Start and Repair" );
+    }
 
 
     /**
