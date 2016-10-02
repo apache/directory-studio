@@ -76,7 +76,8 @@ public class ValueEditorTest
     private static final String TRUE = "TRUE";
     private static final String FALSE = "FALSE";
 
-    private static final String OID = "1.3.6.1.4.1.1466.20037";
+    private static final String NUMERIC_OID = "1.3.6.1.4.1.1466.20037";
+    private static final String DESCR_OID = "a-zA-Z0-9";
 
 
     @Parameters(name = "{0}")
@@ -162,28 +163,33 @@ public class ValueEditorTest
                         .expectedStringOrBinaryValue( null ) },
 
                 /*
-                 * InPlaceOidValueEditor can only handle numeric OIDs
+                 * InPlaceOidValueEditor can only handle OIDs
                  */
 
-                { "InPlaceOidValueEditor - 1.3.6.1.4.1.1466.20037",
-                    Data.data().valueEditorClass( InPlaceOidValueEditor.class ).attribute( CN ).rawValue( OID )
-                        .expectedRawValue( OID ).expectedDisplayValue( OID + " (Start TLS)" ).expectedHasValue( true )
-                        .expectedStringOrBinaryValue( OID ) },
+                { "InPlaceOidValueEditor - numeric OID",
+                    Data.data().valueEditorClass( InPlaceOidValueEditor.class ).attribute( CN ).rawValue( NUMERIC_OID )
+                        .expectedRawValue( NUMERIC_OID ).expectedDisplayValue( NUMERIC_OID + " (Start TLS)" )
+                        .expectedHasValue( true ).expectedStringOrBinaryValue( NUMERIC_OID ) },
+
+                { "InPlaceOidValueEditor - descr OID",
+                    Data.data().valueEditorClass( InPlaceOidValueEditor.class ).attribute( CN ).rawValue( DESCR_OID )
+                        .expectedRawValue( DESCR_OID ).expectedDisplayValue( DESCR_OID ).expectedHasValue( true )
+                        .expectedStringOrBinaryValue( DESCR_OID ) },
 
                 { "InPlaceOidValueEditor - INVALID",
-                    Data.data().valueEditorClass( InPlaceOidValueEditor.class ).attribute( CN ).rawValue( "invalid" )
+                    Data.data().valueEditorClass( InPlaceOidValueEditor.class ).attribute( CN ).rawValue( "in valid" )
                         .expectedRawValue( null ).expectedDisplayValue( IValueEditor.NULL ).expectedHasValue( true )
                         .expectedStringOrBinaryValue( null ) },
 
-                { "InPlaceOidValueEditor - bytearray 1.3.6.1.4.1.1466.20037",
+                { "InPlaceOidValueEditor - bytearray numeric OID",
                     Data.data().valueEditorClass( InPlaceOidValueEditor.class ).attribute( USER_PWD )
-                        .rawValue( OID.getBytes( UTF_8 ) ).expectedRawValue( OID )
-                        .expectedDisplayValue( OID + " (Start TLS)" ).expectedHasValue( true )
-                        .expectedStringOrBinaryValue( OID ) },
+                        .rawValue( NUMERIC_OID.getBytes( UTF_8 ) ).expectedRawValue( NUMERIC_OID )
+                        .expectedDisplayValue( NUMERIC_OID + " (Start TLS)" ).expectedHasValue( true )
+                        .expectedStringOrBinaryValue( NUMERIC_OID ) },
 
                 { "InPlaceOidValueEditor - bytearray INVALID",
                     Data.data().valueEditorClass( InPlaceOidValueEditor.class ).attribute( USER_PWD )
-                        .rawValue( "invalid".getBytes( UTF_8 ) ).expectedRawValue( null )
+                        .rawValue( "in valid".getBytes( UTF_8 ) ).expectedRawValue( null )
                         .expectedDisplayValue( IValueEditor.NULL ).expectedHasValue( true )
                         .expectedStringOrBinaryValue( null ) },
 
