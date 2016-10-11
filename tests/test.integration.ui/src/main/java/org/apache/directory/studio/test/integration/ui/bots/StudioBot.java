@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
+import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
 import org.eclipse.ui.IViewReference;
@@ -228,4 +229,17 @@ public class StudioBot
         new SWTBot().menu( "Window" ).menu( "Show View" ).menu( "Other..." ).click();
         return new ShowViewsBot();
     }
+
+
+    public void navigationHistoryBack()
+    {
+        new SWTBot().activeShell().pressShortcut( Keystrokes.ALT, Keystrokes.LEFT );
+    }
+
+
+    public void navigationHistoryForward()
+    {
+        new SWTBot().activeShell().pressShortcut( Keystrokes.ALT, Keystrokes.RIGHT );
+    }
+
 }

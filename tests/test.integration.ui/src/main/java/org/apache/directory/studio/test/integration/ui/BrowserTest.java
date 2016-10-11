@@ -28,6 +28,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.directory.server.annotations.CreateLdapServer;
@@ -44,6 +45,9 @@ import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Bookmark;
+import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
+import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
+import org.apache.directory.studio.ldapbrowser.ui.editors.entry.EntryEditor;
 import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.DeleteDialogBot;
@@ -55,6 +59,11 @@ import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
 import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
 import org.eclipse.jface.dialogs.ErrorDialog;
+import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
+import org.eclipse.swtbot.swt.finder.results.VoidResult;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IPropertyListener;
+import org.eclipse.ui.PlatformUI;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -539,6 +548,79 @@ public class BrowserTest extends AbstractLdapTestUnit
         Entry entry = ldapServer.getDirectoryService().getAdminSession().lookup(
             new Dn( "uid=user.2,ou=users,ou=system" ) );
         assertTrue( entry.contains( "uid", "user.1" ) );
+    }
+
+
+    /**
+     * Test for DIRSTUDIO-XXX.
+     *
+     * Verify input is set only once when entry is selected.
+     */
+    @Test
+    public void TestSetInputOnlyOnce() throws Exception
+    {
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+
+        // verify link-with-editor is enabled
+        assertTrue( BrowserUIPlugin.getDefault().getPreferenceStore()
+            .getBoolean( BrowserUIConstants.PREFERENCE_BROWSER_LINK_WITH_EDITOR ) );
+
+        // setup counter and listener to record entry editor input changes
+        final AtomicInteger counter = new AtomicInteger();
+        UIThreadRunnable.syncExec( new VoidResult()
+        {
+            public void run()
+            {
+                try
+                {
+                    IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+                        .getActiveEditor();
+                    editor.addPropertyListener( new IPropertyListener()
+                    {
+                        @Override
+                        public void propertyChanged( Object source, int propId )
+                        {
+                            if ( source instanceof EntryEditor && propId == BrowserUIConstants.INPUT_CHANGED )
+                            {
+                                counter.incrementAndGet();
+                            }
+                        }
+                    } );
+                }
+                catch ( Exception e )
+                {
+                    throw new RuntimeException( e );
+                }
+            }
+        } );
+
+        // select 3 different entries, select one twice should not set the input again
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.2" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.2" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.3" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.3" );
+
+        // verify that input was only set 3 times.
+        assertEquals( "Only 3 input changes expected.", 3, counter.get() );
+
+        // reset counter
+        counter.set( 0 );
+
+        // use navigation history to go back and forth, each step should set input only once
+        studioBot.navigationHistoryBack();
+        assertEquals( "uid=user.2", browserViewBot.getSelectedEntry() );
+        studioBot.navigationHistoryBack();
+        assertEquals( "uid=user.1", browserViewBot.getSelectedEntry() );
+        studioBot.navigationHistoryForward();
+        assertEquals( "uid=user.2", browserViewBot.getSelectedEntry() );
+        studioBot.navigationHistoryForward();
+        assertEquals( "uid=user.3", browserViewBot.getSelectedEntry() );
+
+        // verify that input was only set 4 times.
+        assertEquals( "Only 4 input changes expected.", 4, counter.get() );
     }
 
 }

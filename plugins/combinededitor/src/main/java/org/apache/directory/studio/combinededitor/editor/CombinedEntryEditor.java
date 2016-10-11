@@ -23,9 +23,8 @@ package org.apache.directory.studio.combinededitor.editor;
 import org.apache.directory.studio.entryeditors.EntryEditorInput;
 import org.apache.directory.studio.entryeditors.EntryEditorUtils;
 import org.apache.directory.studio.entryeditors.IEntryEditor;
-import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
+import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
@@ -33,7 +32,6 @@ import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.INavigationLocation;
 import org.eclipse.ui.INavigationLocationProvider;
@@ -415,6 +413,15 @@ public abstract class CombinedEntryEditor extends EditorPart implements INavigat
     {
         if ( input instanceof EntryEditorInput )
         {
+            /*
+             * Optimization: no need to set the input again if the same input is already set
+             */
+            if ( getEntryEditorInput() != null
+                && getEntryEditorInput().getResolvedEntry() == ( ( EntryEditorInput ) input ).getResolvedEntry() )
+            {
+                return;
+            }
+
             // If the editor is dirty, let's ask for a save before changing the input
             if ( isDirty() )
             {
@@ -424,39 +431,10 @@ public abstract class CombinedEntryEditor extends EditorPart implements INavigat
                 }
             }
 
-            /*
-             * Workaround to make link-with-editor working for the single-tab editor:
-             * The call of firePropertyChange is used to inform the link-with-editor action.
-             * However firePropertyChange also modifies the navigation history.
-             * Thus, a dummy input with the real entry but a null extension is set.
-             * This avoids to modification of the navigation history.
-             * Afterwards the real input is set.
-             */
-            EntryEditorInput eei = ( EntryEditorInput ) input;
-            IEntry entryInput = eei.getEntryInput();
-            ISearchResult searchResultInput = eei.getSearchResultInput();
-            IBookmark bookmarkInput = eei.getBookmarkInput();
-            EntryEditorInput dummyInput;
-            
-            if ( entryInput != null )
-            {
-                dummyInput = new EntryEditorInput( entryInput, null );
-            }
-            else if ( searchResultInput != null )
-            {
-                dummyInput = new EntryEditorInput( searchResultInput, null );
-            }
-            else
-            {
-                dummyInput = new EntryEditorInput( bookmarkInput, null );
-            }
-            
-            setInput( dummyInput );
-            firePropertyChange( IEditorPart.PROP_INPUT );
-
             // now set the real input and mark history location
             setInput( input );
             getSite().getPage().getNavigationHistory().markLocation( this );
+            firePropertyChange( BrowserUIConstants.INPUT_CHANGED );
 
             // Getting the preference store
             IPreferenceStore store = CombinedEditorPlugin.getDefault().getPreferenceStore();

@@ -27,9 +27,7 @@ import org.apache.directory.studio.entryeditors.IEntryEditor;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidget;
-import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.util.IPropertyChangeListener;
@@ -405,6 +403,15 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
     {
         if ( input instanceof EntryEditorInput )
         {
+            /*
+             * Optimization: no need to set the input again if the same input is already set
+             */
+            if ( getEntryEditorInput() != null
+                && getEntryEditorInput().getResolvedEntry() == ( ( EntryEditorInput ) input ).getResolvedEntry() )
+            {
+                return;
+            }
+
             // If the editor is dirty, let's ask for a save before changing the input
             if ( isDirty() )
             {
@@ -414,37 +421,10 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
                 }
             }
 
-            /*
-             * Workaround to make link-with-editor working for the single-tab editor:
-             * The call of firePropertyChange is used to inform the link-with-editor action.
-             * However firePropertyChange also modifies the navigation history.
-             * Thus, a dummy input with the real entry but a null extension is set.
-             * This avoids to modification of the navigation history.
-             * Afterwards the real input is set.
-             */
-            EntryEditorInput eei = ( EntryEditorInput ) input;
-            IEntry entry = eei.getEntryInput();
-            ISearchResult searchResult = eei.getSearchResultInput();
-            IBookmark bookmark = eei.getBookmarkInput();
-            EntryEditorInput dummyInput;
-            if ( entry != null )
-            {
-                dummyInput = new EntryEditorInput( entry, null );
-            }
-            else if ( searchResult != null )
-            {
-                dummyInput = new EntryEditorInput( searchResult, null );
-            }
-            else
-            {
-                dummyInput = new EntryEditorInput( bookmark, null );
-            }
-            setInput( dummyInput );
-            firePropertyChange( IEditorPart.PROP_INPUT );
-
             // now set the real input and mark history location
             setInput( input );
             getSite().getPage().getNavigationHistory().markLocation( this );
+            firePropertyChange( BrowserUIConstants.INPUT_CHANGED );
         }
     }
 

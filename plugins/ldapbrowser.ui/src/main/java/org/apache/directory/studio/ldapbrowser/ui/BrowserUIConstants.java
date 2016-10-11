@@ -240,4 +240,5 @@ public final class BrowserUIConstants
     public static final String WIZARD_NEW_SEARCH = BrowserUIPlugin.getDefault().getPluginProperties()
         .getString( "NewWizard_NewSearchWizard_id" ); //$NON-NLS-1$
 
+    public static final int INPUT_CHANGED = 1342730831;
 }

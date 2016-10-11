@@ -22,16 +22,11 @@ package org.apache.directory.studio.ldapbrowser.ui.views.browser;
 
 
 import org.apache.directory.studio.entryeditors.EntryEditorInput;
-import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
-import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.apache.directory.studio.ldapbrowser.ui.editors.searchresult.SearchResultEditorInput;
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.IWorkbenchPartReference;
 
 
 /**
@@ -39,79 +34,10 @@ import org.eclipse.ui.IWorkbenchPartReference;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LinkWithEditorAction extends Action
+public class LinkWithEditorAction extends AbstractLinkWithEditorAction
 {
     /** The browser view */
     private BrowserView browserView;
-
-    /** The listener listening on changes on editors */
-    private IPartListener2 editorListener = new IPartListener2()
-    {
-        /**
-         * {@inheritDoc}
-         */
-        public void partBroughtToTop( IWorkbenchPartReference partRef )
-        {
-        }
-
-
-        /**
-         * {@inheritDoc}
-         */
-        public void partActivated( IWorkbenchPartReference partRef )
-        {
-        }
-
-
-        /**
-         * {@inheritDoc}
-         */
-        public void partClosed( IWorkbenchPartReference partRef )
-        {
-        }
-
-
-        /**
-         * {@inheritDoc}
-         */
-        public void partDeactivated( IWorkbenchPartReference partRef )
-        {
-        }
-
-
-        /**
-         * {@inheritDoc}
-         */
-        public void partHidden( IWorkbenchPartReference partRef )
-        {
-        }
-
-
-        /**
-         * {@inheritDoc}
-         */
-        public void partInputChanged( IWorkbenchPartReference partRef )
-        {
-            linkViewWithEditor( partRef.getPart( false ) );
-        }
-
-
-        /**
-         * {@inheritDoc}
-         */
-        public void partOpened( IWorkbenchPartReference partRef )
-        {
-        }
-
-
-        /**
-         * {@inheritDoc}
-         */
-        public void partVisible( IWorkbenchPartReference partRef )
-        {
-            linkViewWithEditor( partRef.getPart( false ) );
-        }
-    };
 
 
     /**
@@ -122,44 +48,9 @@ public class LinkWithEditorAction extends Action
      */
     public LinkWithEditorAction( BrowserView browserView )
     {
-        super( Messages.getString( "LinkWithEditorAction.LinkWithEditor" ), AS_CHECK_BOX ); //$NON-NLS-1$
-        setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor( BrowserUIConstants.IMG_LINK_WITH_EDITOR ) );
-        setEnabled( true );
-        setChecked( BrowserUIPlugin.getDefault().getPreferenceStore().getBoolean(
-            BrowserUIConstants.PREFERENCE_BROWSER_LINK_WITH_EDITOR ) );
+        super( browserView, Messages.getString( "LinkWithEditorAction.LinkWithEditor" ) ); //$NON-NLS-1$
         this.browserView = browserView;
-
-        // Enable the listeners
-        if ( isChecked() )
-        {
-            browserView.getSite().getWorkbenchWindow().getPartService().addPartListener( editorListener );
-        }
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void run()
-    {
-        setChecked( isChecked() );
-        BrowserUIPlugin.getDefault().getPreferenceStore().setValue(
-            BrowserUIConstants.PREFERENCE_BROWSER_LINK_WITH_EDITOR, isChecked() );
-
-        if ( isChecked() )
-        {
-            // Enable the listener
-            browserView.getSite().getWorkbenchWindow().getPartService().addPartListener( editorListener );
-
-            // link
-            IEditorPart activeEditor = browserView.getSite().getWorkbenchWindow().getActivePage().getActiveEditor();
-            linkViewWithEditor( activeEditor );
-        }
-        else
-        {
-            // Disable the listener
-            browserView.getSite().getWorkbenchWindow().getPartService().removePartListener( editorListener );
-        }
+        super.init();
     }
 
 
@@ -168,7 +59,7 @@ public class LinkWithEditorAction extends Action
      *
      * @param partRef the part
      */
-    private void linkViewWithEditor( IWorkbenchPart part )
+    protected void linkViewWithEditor( IWorkbenchPart part )
     {
         if ( part != null && browserView != null
             && part.getSite().getWorkbenchWindow() == browserView.getSite().getWorkbenchWindow() )
@@ -203,21 +94,6 @@ public class LinkWithEditorAction extends Action
                 }
             }
         }
-    }
-
-
-    /**
-     * Disposes this action.
-     */
-    public void dispose()
-    {
-        if ( editorListener != null )
-        {
-            browserView.getSite().getWorkbenchWindow().getPartService().removePartListener( editorListener );
-            editorListener = null;
-        }
-
-        browserView = null;
     }
 
 }

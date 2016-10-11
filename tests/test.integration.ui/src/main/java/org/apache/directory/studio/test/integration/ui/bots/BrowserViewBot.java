@@ -43,6 +43,11 @@ public class BrowserViewBot
     }
 
 
+    public String getSelectedEntry() {
+        return browserBot.getSelectedEntry();
+    }
+
+
     public boolean existsEntry( String... path )
     {
         return browserBot.existsEntry( path );
