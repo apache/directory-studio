@@ -63,7 +63,8 @@ import org.junit.runner.RunWith;
     { @CreateTransport(protocol = "LDAP") })
 public class NewConnectionWizardTest extends AbstractLdapTestUnit
 {
-    @Rule public TestName name = new TestName();
+    @Rule
+    public TestName name = new TestName();
 
     private StudioBot studioBot;
     private ConnectionsViewBot connectionsViewBot;
@@ -225,8 +226,8 @@ public class NewConnectionWizardTest extends AbstractLdapTestUnit
         assertTrue( wizardBot.isDigestMD5AuthenticationSelected() );
         assertTrue( wizardBot.isUserEnabled() );
         assertTrue( wizardBot.isPasswordEnabled() );
-        assertTrue( wizardBot.isRealmEnabled() );
         assertTrue( wizardBot.isSavePasswordEnabled() );
+        assertTrue( wizardBot.isRealmEnabled() );
 
         // select CRAM-MD5
         wizardBot.selectCramMD5Authentication();
@@ -234,8 +235,64 @@ public class NewConnectionWizardTest extends AbstractLdapTestUnit
         assertTrue( wizardBot.isCramMD5AuthenticationSelected() );
         assertTrue( wizardBot.isUserEnabled() );
         assertTrue( wizardBot.isPasswordEnabled() );
-        assertFalse( wizardBot.isRealmEnabled() );
         assertTrue( wizardBot.isSavePasswordEnabled() );
+        assertFalse( wizardBot.isRealmEnabled() );
+
+        // select GSSAPI (Kerberos)
+        wizardBot.selectGssApiAuthentication();
+        // ensure authentication parameter input fields are disabled by default
+        assertTrue( wizardBot.isGssApiAuthenticationSelected() );
+        assertFalse( wizardBot.isUserEnabled() );
+        assertFalse( wizardBot.isPasswordEnabled() );
+        assertFalse( wizardBot.isSavePasswordEnabled() );
+        assertFalse( wizardBot.isRealmEnabled() );
+        // by default "Use native TGT" is selected
+        assertTrue( wizardBot.isUseNativeTgtSelected() );
+        assertFalse( wizardBot.isObtainTgtFromKdcSelected() );
+        assertTrue( wizardBot.isUseNativeSystemConfigurationSelected() );
+        assertFalse( wizardBot.isUseConfigurationFileSelected() );
+        assertFalse( wizardBot.isUseManualConfigurationSelected() );
+        assertFalse( wizardBot.isKerberosRealmEnabled() );
+        assertFalse( wizardBot.isKdcHostEnabled() );
+        assertFalse( wizardBot.isKdcPortEnabled() );
+
+        // select GSSAPI (Kerberos) and "Obtain TGT from KDC"
+        wizardBot.selectObtainTgtFromKdc();
+        // ensure authentication parameter input fields are enabled
+        assertTrue( wizardBot.isGssApiAuthenticationSelected() );
+        assertTrue( wizardBot.isUserEnabled() );
+        assertTrue( wizardBot.isPasswordEnabled() );
+        assertTrue( wizardBot.isSavePasswordEnabled() );
+        assertFalse( wizardBot.isRealmEnabled() );
+        assertFalse( wizardBot.isUseNativeTgtSelected() );
+
+        // select GSSAPI (Kerberos) and "Use configuration file"
+        wizardBot.selectUseConfigurationFile();
+        assertFalse( wizardBot.isUseNativeSystemConfigurationSelected() );
+        assertTrue( wizardBot.isUseConfigurationFileSelected() );
+        assertFalse( wizardBot.isUseManualConfigurationSelected() );
+        assertFalse( wizardBot.isKerberosRealmEnabled() );
+        assertFalse( wizardBot.isKdcHostEnabled() );
+        assertFalse( wizardBot.isKdcPortEnabled() );
+
+        // select GSSAPI (Kerberos) and "Use manual configuration"
+        wizardBot.selectUseManualConfiguration();
+        assertFalse( wizardBot.isUseNativeSystemConfigurationSelected() );
+        assertFalse( wizardBot.isUseConfigurationFileSelected() );
+        assertTrue( wizardBot.isUseManualConfigurationSelected() );
+        assertTrue( wizardBot.isKerberosRealmEnabled() );
+        assertTrue( wizardBot.isKdcHostEnabled() );
+        assertTrue( wizardBot.isKdcPortEnabled() );
+        assertFalse( wizardBot.isNextButtonEnabled() );
+
+        // select GSSAPI (Kerberos) and "Use native system configuration" again
+        wizardBot.selectUseNativeSystemConfiguration();
+        assertTrue( wizardBot.isUseNativeSystemConfigurationSelected() );
+        assertFalse( wizardBot.isUseConfigurationFileSelected() );
+        assertFalse( wizardBot.isUseManualConfigurationSelected() );
+        assertFalse( wizardBot.isKerberosRealmEnabled() );
+        assertFalse( wizardBot.isKdcHostEnabled() );
+        assertFalse( wizardBot.isKdcPortEnabled() );
 
         wizardBot.clickNextButton();
 
@@ -281,7 +338,7 @@ public class NewConnectionWizardTest extends AbstractLdapTestUnit
         wizardBot.typePassword( "secret" );
 
         // finish dialog
-        wizardBot.clickFinishButton(true);
+        wizardBot.clickFinishButton( true );
         connectionsViewBot.waitForConnection( getConnectionName() );
 
         // ensure connection was created
@@ -358,7 +415,8 @@ public class NewConnectionWizardTest extends AbstractLdapTestUnit
         // click "Check Network Parameter" button and get the result
         String result1 = wizardBot.clickCheckNetworkParameterButton();
         assertNotNull( "Expected Error", result1 );
-        assertTrue( "'Connection refused' message must occur in error message", result1.contains( "Connection refused" ) );
+        assertTrue( "'Connection refused' message must occur in error message",
+            result1.contains( "Connection refused" ) );
 
         // enter connection parameter with invalid host name
         String hostname = "qwertzuiop.asdfghjkl.yxcvbnm";
