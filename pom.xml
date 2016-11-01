@@ -116,6 +116,7 @@
     <module>tests</module>
     <module>p2repositories</module>
     <module>product</module>
+    <module>installers</module>
   </modules>
 
   <build>
