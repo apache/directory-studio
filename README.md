@@ -128,12 +128,12 @@ We release the following artifacts:
 * P2 repositories
     * the main features (LDAP Browser, Schema Editor, ApacheDS)
     * dependencies
-* Product archives for
+* Product archives and installers for
     * Linux GTK 32bit tar.gz
     * Linux GTK 64bit tar.gz
-    * Mac OS X 64bit tar.gz
-    * Windows 32bit zip
-    * Windows 64bit zip
+    * Mac OS X 64bit dmg
+    * Windows 32bit exe
+    * Windows 64bit exe
 * Userguides
 
 
@@ -142,7 +142,7 @@ We release the following artifacts:
 Test the release build: rat check, javadoc and source jar generation, GPG signing, userguide generation
 
     mvn -f pom-first.xml clean install
-    mvn -Papache-release -Duserguides clean install
+    mvn -Papache-release,windows,macos -Duserguides clean install
 
 Run UI tests (if possible on all platforms)
 
@@ -200,7 +200,7 @@ As long as the `org.apache.directory.studio.openldap.feature` is not ready for r
 #### Build the release and deploy to staging Nexus repository
 
     mvn -f pom-first.xml clean install
-    mvn -Papache-release -Duserguides -DretryFailedDeploymentCount=3 clean deploy
+    mvn -Papache-release,windows,macos -Duserguides -DretryFailedDeploymentCount=3 clean deploy
 
 #### Close the staging Nexus repository
 
@@ -226,7 +226,7 @@ Afterwards all distribution packages are located in `target`.
     cd target/$VERSION
     svn mkdir https://dist.apache.org/repos/dist/dev/directory/studio/$VERSION -m "Create dev area for release $VERSION"
     svn co https://dist.apache.org/repos/dist/dev/directory/studio/$VERSION .
-    svn add $VERSION
+    svn add *
     svn commit -m "Add release $VERSION"
 
 ### Call the vote
