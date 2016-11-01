@@ -96,10 +96,10 @@ echo
 echo "### Signing update sites"
 cd ${UPDATE_SITE_DIR}/dependencies
 sh ${WORK_DIR}/sign.sh
-zip -r ${DIST_DIR}/ApacheDirectoryStudio-${VERSION}-p2repository-dependencies.zip *
+#zip -r ${DIST_DIR}/ApacheDirectoryStudio-${VERSION}-p2repository-dependencies.zip *
 cd ${UPDATE_SITE_DIR}/eclipse
 sh ${WORK_DIR}/sign.sh
-zip -r ${DIST_DIR}/ApacheDirectoryStudio-${VERSION}-p2repository.zip *
+#zip -r ${DIST_DIR}/ApacheDirectoryStudio-${VERSION}-p2repository.zip *
 
 
 echo
