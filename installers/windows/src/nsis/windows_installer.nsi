@@ -27,7 +27,7 @@
     !define Icon "img\studio-installer.ico"
     !define WelcomeImage "img\welcome_studio.bmp"
     !define HeaderImage "img\header_studio.bmp"
-    !define OutFile "ApacheDirectoryStudio-win32-${architecture}-${version}.exe"
+    !define OutFile "ApacheDirectoryStudio-${version}-win32.win32.${architecture}.exe"
     !define SourceFolder "release"
     !define INSTDIR_REG_ROOT "HKLM"
     !define INSTDIR_REG_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${Application}"
@@ -133,8 +133,8 @@
 #
     # Internationalized strings
     LangString message ${LANG_ENGLISH} "${Application} is already installed.$\n$\nClick 'OK' to remove the previous version$\nor 'Cancel' to cancel this installation."
-    LangString message ${LANG_FRENCH} "${Application} est dï¿½jï¿½ installï¿½.$\n$\nCliquez sur 'OK' pour supprimer la version prï¿½cï¿½dente$\nou sur 'Annuler' pour annuler cette installation."
-    LangString message ${LANG_GERMAN} "${Application} ist bereits installiert.$\n$\nKlicke 'OK' um die frï¿½here Version zu entfernen$\noder 'Abbruch' um die Installation abzubrechen."
+    LangString message ${LANG_FRENCH} "${Application} est déjà installé.$\n$\nCliquez sur 'OK' pour supprimer la version précédente$\nou sur 'Annuler' pour annuler cette installation."
+    LangString message ${LANG_GERMAN} "${Application} ist bereits installiert.$\n$\nKlicke 'OK' um die frühere Version zu entfernen$\noder 'Abbruch' um die Installation abzubrechen."
 
     # onInit function
     Function .onInit

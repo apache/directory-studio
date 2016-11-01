@@ -62,6 +62,10 @@
               <targetPath>${basedir}/target/release</targetPath>
             </resource>
           </resources>
+          <!-- Disable default escape string since maven-resources-plugin 3.0.0, would destroy NSIS variables in windows_installer.nsi -->
+          <escapeString>XXX</escapeString>
+          <!-- Set encoding to ISO-8859/CP1252 -->
+          <encoding>ISO-8859-1</encoding>
         </configuration>
       </plugin>
 
@@ -75,6 +79,9 @@
           <arguments>
             <argument>windows_installer.nsi</argument>
           </arguments>
+          <environmentVariables>
+            <LANG>en_US.ISO-8859-1</LANG>
+          </environmentVariables>
         </configuration>
       </plugin>
     </plugins>
