@@ -40,6 +40,12 @@
         <module>windows</module>
       </modules>
     </profile>
+    <profile>
+      <id>macos</id>
+      <modules>
+        <module>macos</module>
+      </modules>
+    </profile>
   </profiles>
 
   <build>
