@@ -44,7 +44,13 @@ echo
 echo "### Copying dist files"
 cd ${WORK_DIR}
 cp ../target/org.apache.directory.studio.parent-${VERSION}-source-release.zip ${DIST_DIR}/ApacheDirectoryStudio-${VERSION}-src.zip
-cp ../product/target/products/ApacheDirectoryStudio-${VERSION}-*.{zip,tar.gz} ${DIST_DIR}/
+#cp ../product/target/products/ApacheDirectoryStudio-${VERSION}-*.{zip,tar.gz} ${DIST_DIR}/
+cp ../product/target/products/ApacheDirectoryStudio-${VERSION}-linux.gtk.x86_64.tar.gz ${DIST_DIR}/
+cp ../product/target/products/ApacheDirectoryStudio-${VERSION}-linux.gtk.x86.tar.gz ${DIST_DIR}/
+cp ../installers/windows/32bit/target/ApacheDirectoryStudio-${VERSION}-win32.win32.x86.exe ${DIST_DIR}/
+cp ../installers/windows/64bit/target/ApacheDirectoryStudio-${VERSION}-win32.win32.x86_64.exe ${DIST_DIR}/
+cp ../installers/macos/target/ApacheDirectoryStudio-${VERSION}-macosx.cocoa.x86_64.dmg ${DIST_DIR}/
+
 
 echo
 echo "### Checking legal files"
@@ -59,13 +65,19 @@ do
         *.tar.gz)
             cmd="tar -tzvf $file"
             ;;
+        *.exe)
+            continue
+            ;;
+        *.dmg)
+            continue
+            ;;
         *)
             echo "Unknown file type: $file"
             exit 1
             ;;
     esac
-    eval "$cmd" | grep "LICENSE.txt"
-    eval "$cmd" | grep "NOTICE.txt"
+    eval "$cmd" | grep "LICENSE"
+    eval "$cmd" | grep "NOTICE"
 done
 
 echo
