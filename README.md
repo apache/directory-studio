@@ -235,10 +235,13 @@ Start the vote.
 
 ### Publish
 
-After successful vote we can publish the artifacts
+After successful vote publish the artifacts.
 
-* Release artifacts in Nexus
-* Commit distribution packages to https://dist.apache.org/repos/dist/release/directory/studio, the content of `dist/target` can be used as-is.
+Release artifacts in Nexus.
+
+Move distribution packages from `dev` area to `release`:
+
+	svn mv https://dist.apache.org/repos/dist/dev/directory/studio/$VERSION https://dist.apache.org/repos/dist/release/directory/studio/$VERSION -m "Release $VERSION"
 
 Wait 24h for mirror rsync.
 
