@@ -262,8 +262,8 @@ change the location path to the new release and also update the `p2.timestamp` t
 
 Update news and download links
 
-* Versions (2x) in `lib/path.pm`
-* Version in `content/index.mdtext`
+* `lib/path.pm`: `$version_studio` and `$version_studio_name`
+* `content/index.mdtext`: version string
 * `content/studio/changelog.mdtext`
 * `content/studio/news.mdtext`
 
@@ -273,7 +273,7 @@ TODO
 
 #### Cleanup
 
-Delete old releases.
+Delete old releases from `https://dist.apache.org/repos/dist/release/directory/studio/`, ensure they were already archived to `https://archive.apache.org/dist/directory/studio/`.
 
 
 ## Misc tips and tricks
