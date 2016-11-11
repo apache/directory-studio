@@ -132,8 +132,8 @@ We release the following artifacts:
     * Linux GTK 32bit tar.gz
     * Linux GTK 64bit tar.gz
     * Mac OS X 64bit dmg
-    * Windows 32bit exe
-    * Windows 64bit exe
+    * Windows 32bit exe installer and zip
+    * Windows 64bit exe installer and zip
 * Userguides
 
 

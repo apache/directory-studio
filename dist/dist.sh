@@ -45,6 +45,8 @@ echo "### Copying dist files"
 cd ${WORK_DIR}
 cp ../target/org.apache.directory.studio.parent-${VERSION}-source-release.zip ${DIST_DIR}/ApacheDirectoryStudio-${VERSION}-src.zip
 #cp ../product/target/products/ApacheDirectoryStudio-${VERSION}-*.{zip,tar.gz} ${DIST_DIR}/
+cp ../product/target/products/ApacheDirectoryStudio-${VERSION}-win32.win32.x86_64.zip ${DIST_DIR}/
+cp ../product/target/products/ApacheDirectoryStudio-${VERSION}-win32.win32.x86.zip ${DIST_DIR}/
 cp ../product/target/products/ApacheDirectoryStudio-${VERSION}-linux.gtk.x86_64.tar.gz ${DIST_DIR}/
 cp ../product/target/products/ApacheDirectoryStudio-${VERSION}-linux.gtk.x86.tar.gz ${DIST_DIR}/
 cp ../installers/windows/32bit/target/ApacheDirectoryStudio-${VERSION}-win32.win32.x86.exe ${DIST_DIR}/
