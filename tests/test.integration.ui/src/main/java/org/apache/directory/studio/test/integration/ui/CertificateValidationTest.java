@@ -776,7 +776,7 @@ public class CertificateValidationTest
     {
         ApacheDSConfigurationEditorBot editorBot = serversViewBot.openConfigurationEditor( serverName );
 
-        editorBot.setAvailableLdapAndLdapsPort();
+        editorBot.setAvailablePorts();
         ldapPort = editorBot.getLdapPort();
         ldapsPort = editorBot.getLdapsPort();
 

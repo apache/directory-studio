@@ -303,15 +303,33 @@ public class NewConnectionWizardBot extends WizardBot
     }
 
 
+    public void typeKerberosRealm( String realm )
+    {
+        bot.textWithLabel( KERBEROS_REALM ).setText( realm );
+    }
+
+
     public boolean isKdcHostEnabled()
     {
         return bot.textWithLabel( KDC_HOST ).isEnabled();
     }
 
 
+    public void typeKdcHost( String host )
+    {
+        bot.textWithLabel( KDC_HOST ).setText( host );
+    }
+
+
     public boolean isKdcPortEnabled()
     {
         return bot.textWithLabel( KDC_PORT ).isEnabled();
+    }
+
+
+    public void typeKdcPort( int port )
+    {
+        bot.textWithLabel( KDC_PORT ).setText( Integer.toString( port ) );
     }
 
 

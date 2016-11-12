@@ -246,7 +246,7 @@ public class ApacheDSPluginTest
     {
         ApacheDSConfigurationEditorBot editorBot = serversViewBot.openConfigurationEditor( serverName );
 
-        editorBot.setAvailableLdapAndLdapsPort();
+        editorBot.setAvailablePorts();
 
         editorBot.save();
         editorBot.close();
@@ -348,7 +348,7 @@ public class ApacheDSPluginTest
         int oldLdapsPort = remoteEditorBot.getLdapsPort();
 
         // Set new ports
-        remoteEditorBot.setAvailableLdapAndLdapsPort();
+        remoteEditorBot.setAvailablePorts();
         int newLdapPort = remoteEditorBot.getLdapPort();
         int newLdapsPort = remoteEditorBot.getLdapsPort();
 

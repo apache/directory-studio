@@ -1,0 +1,52 @@
+dn: dc=security,dc=example,dc=com
+objectClass: top
+objectClass: domain
+dc: security
+
+dn: ou=services,dc=security,dc=example,dc=com
+objectClass: top
+objectClass: organizationalUnit
+ou: services
+
+dn: ou=users,dc=security,dc=example,dc=com
+objectClass: top
+objectClass: organizationalUnit
+ou: users
+
+dn: uid=hnelson,ou=users,dc=security,dc=example,dc=com
+objectClass: top
+objectClass: krb5KDCEntry
+objectClass: inetOrgPerson
+objectClass: krb5Principal
+objectClass: person
+objectClass: organizationalPerson
+cn: Horatio Nelson
+krb5KeyVersionNumber: 1
+krb5PrincipalName: hnelson@EXAMPLE.COM
+sn: Nelson
+uid: hnelson
+userPassword: secret
+
+dn: uid=ldap,ou=services,dc=security,dc=example,dc=com
+objectClass: top
+objectClass: organizationalUnit
+objectClass: krb5KDCEntry
+objectClass: uidObject
+objectClass: krb5Principal
+krb5KeyVersionNumber: 0
+krb5PrincipalName: ldap/HOSTNAME@EXAMPLE.COM
+uid: ldap
+userPassword: randomKey
+ou: ldap
+
+dn: uid=krbtgt,ou=services,dc=security,dc=example,dc=com
+objectClass: top
+objectClass: organizationalUnit
+objectClass: krb5KDCEntry
+objectClass: uidObject
+objectClass: krb5Principal
+krb5KeyVersionNumber: 0
+krb5PrincipalName: krbtgt/EXAMPLE.COM@EXAMPLE.COM
+uid: krbtgt
+userPassword:: randomkey
+ou: krbtgt
