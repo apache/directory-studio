@@ -34,6 +34,9 @@ public class NewConnectionWizardBot extends WizardBot
     private static final String CONNECTION_NAME = "Connection name:";
     private static final String HOSTNAME = "Hostname:";
     private static final String PORT = "Port:";
+    private static final String PROVIDER = "Provider:";
+    private static final String JNDI = "JNDI (Java Naming and Directory Interface)";
+    private static final String LDAP_API = "Apache Directory LDAP Client API";
     private static final String CHECK_AUTHENTICATION = "Check Authentication";
     private static final String CHECK_NETWORK_PARAMETER = "Check Network Parameter";
     private static final String BASE_DN = "Base DN:";
@@ -101,6 +104,20 @@ public class NewConnectionWizardBot extends WizardBot
     {
         SWTBotCombo portCombo = bot.comboBoxWithLabel( PORT );
         portCombo.setText( Integer.toString( port ) );
+    }
+
+
+    public void selectJndiProvider()
+    {
+        SWTBotCombo providerCombo = bot.comboBoxWithLabel( PROVIDER );
+        providerCombo.setSelection( JNDI );
+    }
+
+
+    public void selectLdapApiProvider()
+    {
+        SWTBotCombo providerCombo = bot.comboBoxWithLabel( PROVIDER );
+        providerCombo.setSelection( LDAP_API );
     }
 
 

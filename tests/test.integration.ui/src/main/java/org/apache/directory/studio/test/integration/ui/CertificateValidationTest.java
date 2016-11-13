@@ -22,6 +22,9 @@ package org.apache.directory.studio.test.integration.ui;
 
 
 import static org.apache.directory.studio.test.integration.ui.Constants.LOCALHOST;
+import static org.hamcrest.CoreMatchers.anyOf;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
@@ -474,7 +477,10 @@ public class CertificateValidationTest
         assertFalse( trustDialogBot.isIssuerUnkown() );
         trustDialogBot.selectDontTrust();
         ErrorDialogBot errorBot = trustDialogBot.clickOkButtonExpectingErrorDialog();
-        assertTrue( errorBot.getErrorMessage().contains( "SSL handshake failed" ) );
+        // LDAP API: SSL handshake failed
+        // JNDI: Untrusted certificate
+        assertThat( errorBot.getErrorMessage(),
+            anyOf( containsString( "SSL handshake failed" ), containsString( "Untrusted certificate" ) ) );
         errorBot.clickOkButton();
 
         wizardBot.clickCancelButton();
@@ -516,7 +522,10 @@ public class CertificateValidationTest
         assertFalse( trustDialogBot.isIssuerUnkown() );
         trustDialogBot.selectDontTrust();
         ErrorDialogBot errorBot = trustDialogBot.clickOkButtonExpectingErrorDialog();
-        assertTrue( errorBot.getErrorMessage().contains( "SSL handshake failed" ) );
+        // LDAP API: SSL handshake failed
+        // JNDI: Untrusted certificate
+        assertThat( errorBot.getErrorMessage(),
+            anyOf( containsString( "SSL handshake failed" ), containsString( "Untrusted certificate" ) ) );
         errorBot.clickOkButton();
 
         wizardBot.clickCancelButton();
@@ -560,7 +569,10 @@ public class CertificateValidationTest
         assertFalse( trustDialogBot.isExpired() );
         trustDialogBot.selectDontTrust();
         ErrorDialogBot errorBot = trustDialogBot.clickOkButtonExpectingErrorDialog();
-        assertTrue( errorBot.getErrorMessage().contains( "SSL handshake failed" ) );
+        // LDAP API: SSL handshake failed
+        // JNDI: Untrusted certificate
+        assertThat( errorBot.getErrorMessage(),
+            anyOf( containsString( "SSL handshake failed" ), containsString( "Untrusted certificate" ) ) );
         errorBot.clickOkButton();
 
         wizardBot.clickCancelButton();

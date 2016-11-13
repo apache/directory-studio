@@ -22,6 +22,8 @@ package org.apache.directory.studio.test.integration.ui.bots;
 
 import static org.apache.directory.studio.test.integration.ui.Constants.LOCALHOST;
 
+import java.util.Random;
+
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionFolder;
@@ -53,7 +55,19 @@ public class ConnectionsViewBot
     public NewConnectionWizardBot openNewConnectionWizard()
     {
         ContextMenuHelper.clickContextMenu( getConnectionsTree(), "New Connection..." );
-        return new NewConnectionWizardBot();
+        NewConnectionWizardBot newConnectionWizardBot = new NewConnectionWizardBot();
+        
+        // choose random network provider to test both, LDAP API and JNDI
+        if ( new Random().nextBoolean() )
+        {
+            newConnectionWizardBot.selectLdapApiProvider();
+        }
+        else
+        {
+            newConnectionWizardBot.selectJndiProvider();
+        }
+
+        return newConnectionWizardBot;
     }
 
 
@@ -156,7 +170,9 @@ public class ConnectionsViewBot
 
         ConnectionManager connectionManager = ConnectionCorePlugin.getDefault().getConnectionManager();
         ConnectionParameter connectionParameter = new ConnectionParameter();
-        connectionParameter.setNetworkProvider( NetworkProvider.JNDI );
+        // choose random network provider to test both, LDAP API and JNDI
+        connectionParameter
+            .setNetworkProvider( NetworkProvider.values()[new Random().nextInt( NetworkProvider.values().length )] );
         connectionParameter.setName( name );
         connectionParameter.setHost( LOCALHOST );
         connectionParameter.setPort( port );

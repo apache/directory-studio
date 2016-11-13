@@ -35,6 +35,7 @@ import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
+import org.apache.directory.studio.connection.core.ConnectionParameter.NetworkProvider;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
@@ -284,6 +285,9 @@ public class NewEntryWizardTest extends AbstractLdapTestUnit
     @Test
     public void testCreateEntryBelowReferralObjectCancel()
     {
+        // TODO: DIRSTUDIO-1129: doesn't work with LDAP API!!!
+        connection.getConnectionParameter().setNetworkProvider( NetworkProvider.JNDI );
+
         // set ManageDsaIT control
         connection.getConnectionParameter().setExtendedIntProperty(
             IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD, ReferralHandlingMethod.IGNORE.ordinal() );
@@ -330,6 +334,9 @@ public class NewEntryWizardTest extends AbstractLdapTestUnit
     @Test
     public void testCreateEntryBelowReferralObjectFollow()
     {
+        // TODO: DIRSTUDIO-1129: doesn't work with LDAP API!!!
+        connection.getConnectionParameter().setNetworkProvider( NetworkProvider.JNDI );
+
         // set ManageDsaIT control
         connection.getConnectionParameter().setExtendedIntProperty(
             IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD, ReferralHandlingMethod.IGNORE.ordinal() );

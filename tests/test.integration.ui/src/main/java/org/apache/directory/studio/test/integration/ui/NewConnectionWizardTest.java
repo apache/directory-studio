@@ -24,6 +24,7 @@ package org.apache.directory.studio.test.integration.ui;
 import static org.apache.directory.studio.test.integration.ui.Constants.LOCALHOST;
 import static org.apache.directory.studio.test.integration.ui.Constants.LOCALHOST_ADDRESS;
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -415,8 +416,10 @@ public class NewConnectionWizardTest extends AbstractLdapTestUnit
         // click "Check Network Parameter" button and get the result
         String result1 = wizardBot.clickCheckNetworkParameterButton();
         assertNotNull( "Expected Error", result1 );
-        assertTrue( "'Connection refused' message must occur in error message",
-            result1.contains( "Connection refused" ) );
+        // LDAP API: Connection refused
+        // JNDI: The connection failed
+        assertThat( result1,
+            anyOf( containsString( "Connection refused" ), containsString( "The connection failed" ) ) );
 
         // enter connection parameter with invalid host name
         String hostname = "qwertzuiop.asdfghjkl.yxcvbnm";
@@ -427,8 +430,10 @@ public class NewConnectionWizardTest extends AbstractLdapTestUnit
         String result2 = wizardBot.clickCheckNetworkParameterButton();
         System.out.println( result2 );
         assertNotNull( "Expected Error", result2 );
-        assertThat( "'could not be resolved' message must occur in error message", result2,
-            containsString( "could not be resolved" ) );
+        // LDAP API: could not be resolved
+        // JNDI: The connection failed
+        assertThat( result2,
+            anyOf( containsString( "could not be resolved" ), containsString( "The connection failed" ) ) );
         assertThat( "Unknown host name must occur in error message", result2, containsString( hostname ) );
 
         // disabled this test because it does not work properly
