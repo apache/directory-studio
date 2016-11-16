@@ -24,6 +24,7 @@ import org.apache.mina.util.AvailablePortFinder;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotMultiPageEditor;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 
 
 public class ApacheDSConfigurationEditorBot
@@ -99,6 +100,13 @@ public class ApacheDSConfigurationEditorBot
     }
 
 
+    public void setLdapAddress( String address )
+    {
+        activateLdapLdapsServersPage();
+        editor.bot().text( 1 ).setText( address );
+    }
+
+
     public boolean isLdapsServerEnabled()
     {
         activateLdapLdapsServersPage();
@@ -117,6 +125,13 @@ public class ApacheDSConfigurationEditorBot
     {
         activateLdapLdapsServersPage();
         return Integer.parseInt( editor.bot().text( 4 ).getText() );
+    }
+
+
+    public void setLdapsAddress( String address )
+    {
+        activateLdapLdapsServersPage();
+        editor.bot().text( 5 ).setText( address );
     }
 
 
@@ -170,6 +185,13 @@ public class ApacheDSConfigurationEditorBot
     }
 
 
+    public void setKerberosAddress( String address )
+    {
+        activateKerberosServerPage();
+        editor.bot().text( 1 ).setText( address );
+    }
+
+
     public int getKerberosPort()
     {
         activateKerberosServerPage();
@@ -188,6 +210,21 @@ public class ApacheDSConfigurationEditorBot
     {
         activateKerberosServerPage();
         editor.bot().text( 5 ).setText( kdcSearchBase );
+    }
+
+
+    public void setRequirePreAuthenticationByEncryptedTimestamp( boolean enable )
+    {
+        activateKerberosServerPage();
+        SWTBotCheckBox checkBox = editor.bot().checkBox( 5 );
+        if ( enable )
+        {
+            checkBox.select();
+        }
+        else
+        {
+            checkBox.deselect();
+        }
     }
 
 

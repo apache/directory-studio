@@ -44,13 +44,15 @@ import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
 import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.eclipse.core.runtime.Platform;
 import org.junit.After;
-import org.junit.AfterClass;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
+
+import sun.security.krb5.Config;
 
 
 /**
@@ -87,13 +89,6 @@ public class GssApiTest
     }
 
 
-    @AfterClass
-    public static void tearDownClass() throws Exception
-    {
-        deleteServer( serverName );
-    }
-
-
     @Before
     public void setUp() throws Exception
     {
@@ -123,6 +118,15 @@ public class GssApiTest
     {
         // create the server
         createServer( serverName );
+
+        try
+        {
+            Config.getInstance().getDefaultRealm();
+        }
+        catch ( Exception e )
+        {
+            Assume.assumeNoException( "Skipping tests as not default realm (/etc/krb5.conf) is configured", e );
+        }
 
         // configure ApacheDS and KDC server
         configureApacheDS( serverName );
@@ -161,6 +165,8 @@ public class GssApiTest
         assertNull( "Expected OK", result );
 
         wizardBot.clickCancelButton();
+
+        deleteServer( serverName );
     }
 
 
