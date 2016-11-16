@@ -30,6 +30,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
+import javax.security.auth.kerberos.KerberosPrincipal;
+
 import org.apache.directory.api.util.FileUtils;
 import org.apache.directory.api.util.IOUtils;
 import org.apache.directory.studio.test.integration.ui.bots.ApacheDSConfigurationEditorBot;
@@ -51,8 +53,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
-
-import sun.security.krb5.Config;
 
 
 /**
@@ -96,6 +96,25 @@ public class GssApiTest
     }
 
 
+    @BeforeClass
+    public static void skipGssApiTestIfNoDefaultRealmIsConfigured()
+    {
+        try
+        {
+            /*
+             * When creating a KerberosPrincipial without realm the default realm is looked up.
+             * If no default realm is defined (e.g. as not /etc/krb5.conf exists) an exception is throws.
+             * The test is skipped in that case as it won't succeed anyway. 
+             */
+            new KerberosPrincipal( "hnelson" );
+        }
+        catch ( IllegalArgumentException e )
+        {
+            Assume.assumeNoException( "Sipping tests as not default realm (/etc/krb5.conf) is configured", e );
+        }
+    }
+
+
     @After
     public void tearDown() throws Exception
     {
@@ -104,6 +123,10 @@ public class GssApiTest
         // stop ApacheDS
         serversViewBot.stopServer( serverName );
         serversViewBot.waitForServerStop( serverName );
+
+        // delete ApacheDS
+        DeleteDialogBot deleteDialogBot = serversViewBot.openDeleteServerDialog();
+        deleteDialogBot.clickOkButton();
     }
 
 
@@ -118,15 +141,6 @@ public class GssApiTest
     {
         // create the server
         createServer( serverName );
-
-        try
-        {
-            Config.getInstance().getDefaultRealm();
-        }
-        catch ( Exception e )
-        {
-            Assume.assumeNoException( "Skipping tests as not default realm (/etc/krb5.conf) is configured", e );
-        }
 
         // configure ApacheDS and KDC server
         configureApacheDS( serverName );
@@ -165,8 +179,6 @@ public class GssApiTest
         assertNull( "Expected OK", result );
 
         wizardBot.clickCancelButton();
-
-        deleteServer( serverName );
     }
 
 
@@ -225,18 +237,6 @@ public class GssApiTest
         importWizardBot.typeFile( destFile );
         importWizardBot.clickFinishButton();
         browserViewBot.waitForEntry( "DIT", "Root DSE", "dc=example,dc=com", "dc=security" );
-    }
-
-
-    private static void deleteServer( String serverName )
-    {
-        // Stopping the server
-        serversViewBot.stopServer( serverName );
-        serversViewBot.waitForServerStop( serverName );
-
-        // Deleting the server
-        DeleteDialogBot deleteDialogBot = serversViewBot.openDeleteServerDialog();
-        deleteDialogBot.clickOkButton();
     }
 
 }
