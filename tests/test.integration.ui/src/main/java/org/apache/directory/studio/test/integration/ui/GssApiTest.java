@@ -22,6 +22,7 @@ package org.apache.directory.studio.test.integration.ui;
 
 
 import static org.apache.directory.studio.test.integration.ui.Constants.LOCALHOST;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import java.io.File;
@@ -137,7 +138,7 @@ public class GssApiTest
 
 
     @Test
-    public void testGssApiObtainTgtAndObtainServiceTicket() throws Exception
+    public void testGssApiObtainTgtAndUseManualConfigurationAndObtainServiceTicket() throws Exception
     {
         // create the server
         createServer( serverName );
@@ -153,12 +154,6 @@ public class GssApiTest
         connectionsViewBot.createTestConnection( "GssApiTest", ldapPort );
         importData();
 
-        // restart ApacheDS
-        // serversViewBot.stopServer( serverName );
-        // serversViewBot.waitForServerStop( serverName );
-        // serversViewBot.runServer( serverName );
-        // serversViewBot.waitForServerStart( serverName );
-
         // connect with GSSAPI authentication
         NewConnectionWizardBot wizardBot = connectionsViewBot.openNewConnectionWizard();
         wizardBot.typeConnectionName( getConnectionName() );
@@ -173,6 +168,49 @@ public class GssApiTest
         wizardBot.typeKerberosRealm( "EXAMPLE.COM" );
         wizardBot.typeKdcHost( LOCALHOST );
         wizardBot.typeKdcPort( kdcPort );
+
+        // check the connection
+        String result = wizardBot.clickCheckAuthenticationButton();
+        assertNull( "Expected OK", result );
+
+        wizardBot.clickCancelButton();
+    }
+
+
+    @Test
+    public void testGssApiUseNativeTgtAndNativeConfigurationAndObtainServiceTicket() throws Exception
+    {
+        // create the server
+        createServer( serverName );
+
+        // configure ApacheDS and KDC server
+        configureApacheDS( serverName );
+
+        // start ApacheDS
+        serversViewBot.runServer( serverName );
+        serversViewBot.waitForServerStart( serverName );
+
+        // import KDC data
+        connectionsViewBot.createTestConnection( "GssApiTest", ldapPort );
+        importData();
+
+        // obtain native TGT
+        String[] cmd =
+            { "/bin/sh", "-c", "echo secret | /usr/bin/kinit hnelson" };
+        Process process = Runtime.getRuntime().exec( cmd );
+        int exitCode = process.waitFor();
+        assertEquals( 0, exitCode );
+
+        // connect with GSSAPI authentication
+        NewConnectionWizardBot wizardBot = connectionsViewBot.openNewConnectionWizard();
+        wizardBot.typeConnectionName( getConnectionName() );
+        wizardBot.typeHost( LOCALHOST );
+        wizardBot.typePort( ldapPort );
+        wizardBot.selectJndiProvider();
+        wizardBot.clickNextButton();
+        wizardBot.selectGssApiAuthentication();
+        wizardBot.selectUserNativeTgt();
+        wizardBot.selectUseNativeSystemConfiguration();
 
         // check the connection
         String result = wizardBot.clickCheckAuthenticationButton();
@@ -207,6 +245,7 @@ public class GssApiTest
         editorBot.enableKerberosServer();
 
         editorBot.setAvailablePorts();
+        editorBot.setKerberosPort( 60088 );
         ldapPort = editorBot.getLdapPort();
         kdcPort = editorBot.getKerberosPort();
 
@@ -225,7 +264,7 @@ public class GssApiTest
     private void importData() throws IOException
     {
         URL url = Platform.getInstanceLocation().getURL();
-        String destFile = url.getFile() + "GssApiTest.ldif";
+        String destFile = url.getFile() + "GssApiTest_" + System.currentTimeMillis() + ".ldif";
         InputStream is = getClass().getResourceAsStream( "GssApiTest.ldif" );
         String ldifContent = IOUtils.toString( is, StandardCharsets.UTF_8 );
         ldifContent = ldifContent.replace( "HOSTNAME", Constants.LOCALHOST );
