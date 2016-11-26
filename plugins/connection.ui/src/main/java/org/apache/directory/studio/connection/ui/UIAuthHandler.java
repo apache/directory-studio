@@ -73,7 +73,7 @@ public class UIAuthHandler implements IAuthHandler
                 String password = passwordsKeyStoreManager.getConnectionPassword( connectionParameter.getId() );
 
                 // Checking if the bind password is available (the user chose to store the password)
-                if ( Strings.isEmpty( password ) ) //$NON-NLS-1$
+                if ( !Strings.isEmpty( password ) ) //$NON-NLS-1$
                 {
                     return new Credentials( connectionParameter.getBindPrincipal(),
                         password, connectionParameter );
