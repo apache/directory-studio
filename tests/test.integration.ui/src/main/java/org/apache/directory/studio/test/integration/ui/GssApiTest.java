@@ -209,7 +209,7 @@ public class GssApiTest
         wizardBot.selectJndiProvider();
         wizardBot.clickNextButton();
         wizardBot.selectGssApiAuthentication();
-        wizardBot.selectUserNativeTgt();
+        wizardBot.selectUseNativeTgt();
         wizardBot.selectUseNativeSystemConfiguration();
 
         // check the connection

@@ -260,7 +260,7 @@ public class NewConnectionWizardBot extends WizardBot
     }
 
 
-    public void selectUserNativeTgt()
+    public void selectUseNativeTgt()
     {
         bot.radio( USE_NATIVE_TGT ).click();
     }
