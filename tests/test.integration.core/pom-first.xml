@@ -51,6 +51,7 @@
  org.apache.directory.server.apacheds-test-framework;bundle-version="${org.apache.directory.server.bundleversion}",
  org.apache.directory.server.annotations;bundle-version="${org.apache.directory.server.bundleversion}",
  org.apache.directory.server.core.annotations;bundle-version="${org.apache.directory.server.bundleversion}",
+ org.apache.directory.server.core.api;bundle-version="${org.apache.directory.server.bundleversion}",
  org.apache.directory.server.protocol.ldap;bundle-version="${org.apache.directory.server.bundleversion}",
  org.apache.directory.api.asn1.api;bundle-version="${org.apache.directory.api.bundleversion}",
  org.apache.directory.api.ldap.client.api;bundle-version="${org.apache.directory.api.bundleversion}",
