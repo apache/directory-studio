@@ -166,6 +166,12 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
             if ( searchResultDone == null )
             {
                 searchResultDone = ( ( SearchCursor ) cursor ).getSearchResultDone();
+                Referral referral = searchResultDone.getLdapResult().getReferral();
+                if ( referralsHandlingMethod != ReferralHandlingMethod.IGNORE && referral != null )
+                {
+                    // Storing the referral for later use
+                    referralsList.add( referral );
+                }
             }
 
             // Are we following referrals manually?

@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Consumer;
 
 import javax.naming.ContextNotEmptyException;
 import javax.naming.NameAlreadyBoundException;
@@ -49,6 +50,7 @@ import org.apache.directory.api.ldap.model.entry.DefaultModification;
 import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.entry.ModificationOperation;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
+import org.apache.directory.api.ldap.model.exception.LdapURLEncodingException;
 import org.apache.directory.api.ldap.model.filter.ExprNode;
 import org.apache.directory.api.ldap.model.filter.FilterParser;
 import org.apache.directory.api.ldap.model.message.AddRequest;
@@ -68,12 +70,14 @@ import org.apache.directory.api.ldap.model.message.ModifyDnResponse;
 import org.apache.directory.api.ldap.model.message.ModifyRequest;
 import org.apache.directory.api.ldap.model.message.ModifyRequestImpl;
 import org.apache.directory.api.ldap.model.message.ModifyResponse;
+import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.message.ResultResponse;
 import org.apache.directory.api.ldap.model.message.SearchRequest;
 import org.apache.directory.api.ldap.model.message.SearchRequestImpl;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.url.LdapUrl;
 import org.apache.directory.ldap.client.api.LdapConnectionConfig;
 import org.apache.directory.ldap.client.api.LdapNetworkConnection;
 import org.apache.directory.ldap.client.api.SaslCramMd5Request;
@@ -94,6 +98,7 @@ import org.apache.directory.studio.connection.core.IJndiLogger;
 import org.apache.directory.studio.connection.core.Messages;
 import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
+import org.apache.directory.studio.connection.core.io.ConnectionWrapperUtils;
 import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
 import org.apache.directory.studio.connection.core.io.StudioTrustManager;
 import org.apache.directory.studio.connection.core.io.jndi.CancelException;
@@ -533,9 +538,8 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
 
                     // Returning the result of the search
                     namingEnumeration = new CursorStudioNamingEnumeration( connection, cursor, searchBase, filter,
-                        searchControls,
-                        aliasesDereferencingMethod, referralsHandlingMethod, controls, requestNum, monitor,
-                        referralsInfo );
+                        searchControls, aliasesDereferencingMethod, referralsHandlingMethod, controls, requestNum,
+                        monitor, referralsInfo );
                 }
                 catch ( Exception e )
                 {
@@ -712,6 +716,16 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     // Performing the modify operation
                     ModifyResponse modifyResponse = ldapConnection.modify( request );
 
+                    // Handle referral
+                    Consumer<ReferralHandlingData> consumer = referralHandlingData -> {
+                        referralHandlingData.connectionWrapper.modifyEntry( referralHandlingData.referralDn,
+                            modificationItems, controls, monitor, referralHandlingData.newReferralsInfo );
+                    };
+                    if ( checkAndHandleReferral( modifyResponse, monitor, referralsInfo, consumer ) )
+                    {
+                        return;
+                    }
+
                     // Checking the response
                     checkResponse( modifyResponse );
                 }
@@ -845,6 +859,16 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     // Performing the rename operation
                     ModifyDnResponse modifyDnResponse = ldapConnection.modifyDn( request );
 
+                    // Handle referral
+                    Consumer<ReferralHandlingData> consumer = referralHandlingData -> {
+                        referralHandlingData.connectionWrapper.renameEntry( oldDn, newDn, deleteOldRdn, controls,
+                            monitor, referralHandlingData.newReferralsInfo );
+                    };
+                    if ( checkAndHandleReferral( modifyDnResponse, monitor, referralsInfo, consumer ) )
+                    {
+                        return;
+                    }
+
                     // Checking the response
                     checkResponse( modifyDnResponse );
                 }
@@ -914,6 +938,16 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     // Performing the add operation
                     AddResponse addResponse = ldapConnection.add( request );
 
+                    // Handle referral
+                    Consumer<ReferralHandlingData> consumer = referralHandlingData -> {
+                        referralHandlingData.connectionWrapper.createEntry( referralHandlingData.referralDn, attributes,
+                            controls, monitor, referralHandlingData.newReferralsInfo );
+                    };
+                    if ( checkAndHandleReferral( addResponse, monitor, referralsInfo, consumer ) )
+                    {
+                        return;
+                    }
+
                     // Checking the response
                     checkResponse( addResponse );
                 }
@@ -981,6 +1015,16 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
 
                     // Performing the delete operation
                     DeleteResponse deleteResponse = ldapConnection.delete( request );
+
+                    // Handle referral
+                    Consumer<ReferralHandlingData> consumer = referralHandlingData -> {
+                        referralHandlingData.connectionWrapper.deleteEntry( referralHandlingData.referralDn, controls,
+                            monitor, referralHandlingData.newReferralsInfo );
+                    };
+                    if ( checkAndHandleReferral( deleteResponse, monitor, referralsInfo, consumer ) )
+                    {
+                        return;
+                    }
 
                     // Checking the response
                     checkResponse( deleteResponse );
@@ -1075,6 +1119,62 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
             namingEnumeration = null;
             exception = null;
             canceled = false;
+        }
+    }
+
+
+    private boolean checkAndHandleReferral( ResultResponse response, StudioProgressMonitor monitor,
+        ReferralsInfo referralsInfo, Consumer<ReferralHandlingData> consumer ) throws LdapURLEncodingException
+    {
+        if ( response == null )
+        {
+            return false;
+        }
+
+        LdapResult ldapResult = response.getLdapResult();
+        if ( ldapResult == null || !ResultCodeEnum.REFERRAL.equals( ldapResult.getResultCode() ) )
+        {
+            return false;
+        }
+
+        if ( referralsInfo == null )
+        {
+            referralsInfo = new ReferralsInfo();
+        }
+
+        Referral referral = ldapResult.getReferral();
+        referralsInfo.addReferral( referral );
+        Referral nextReferral = referralsInfo.getNextReferral();
+
+        Connection referralConnection = ConnectionWrapperUtils.getReferralConnection( nextReferral, monitor, this );
+        if ( referralConnection != null )
+        {
+            List<String> urls = new ArrayList<String>( referral.getLdapUrls() );
+            String referralDn = new LdapUrl( urls.get( 0 ) ).getDn().getName();
+            ReferralHandlingData referralHandlingData = new ReferralHandlingData(
+                referralConnection.getConnectionWrapper(), referralDn, referralsInfo );
+            consumer.accept( referralHandlingData );
+        }
+        else
+        {
+            monitor.setCanceled( true );
+        }
+        return true;
+    }
+
+
+    static class ReferralHandlingData
+    {
+        ConnectionWrapper connectionWrapper;
+        String referralDn;
+        ReferralsInfo newReferralsInfo;
+
+
+        ReferralHandlingData( ConnectionWrapper connectionWrapper, String referralDn, ReferralsInfo newReferralsInfo )
+        {
+            this.connectionWrapper = connectionWrapper;
+            this.referralDn = referralDn;
+            this.newReferralsInfo = newReferralsInfo;
         }
     }
 
