@@ -82,7 +82,7 @@ public class NewEntryWizardTest extends AbstractLdapTestUnit
         Entry entry = new DefaultEntry( service.getSchemaManager() );
         entry.setDn( new Dn( "cn=referral,ou=system" ) );
         entry.add( "objectClass", "top", "referral", "extensibleObject" );
-        entry.add( "cn", "referralDialogTest" );
+        entry.add( "cn", "referral" );
         entry.add( "ref", "ldap://"+LOCALHOST+":" + ldapServer.getPort() + "/ou=users,ou=system" );
         service.getAdminSession().add( entry );
 
