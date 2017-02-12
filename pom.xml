@@ -65,6 +65,9 @@
     <!-- Disable Java8 javadoc linter -->
     <additionalparam>-Xdoclint:none</additionalparam>
 
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+
     <tycho.version>0.24.0</tycho.version>
 
     <!-- Set versions for dependencies -->
@@ -131,8 +134,8 @@
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-compiler-plugin</artifactId>
         <configuration>
-          <source>1.7</source>
-          <target>1.7</target>
+          <source>1.8</source>
+          <target>1.8</target>
         </configuration>
       </plugin>
 
@@ -216,7 +219,16 @@
           <artifactId>target-platform-configuration</artifactId>
           <version>${tycho.version}</version>
         </plugin>
-        
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <source>1.8</source>
+            <target>1.8</target>
+          </configuration>
+        </plugin>
+
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-antrun-plugin</artifactId>
