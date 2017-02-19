@@ -1124,7 +1124,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
 
 
     private boolean checkAndHandleReferral( ResultResponse response, StudioProgressMonitor monitor,
-        ReferralsInfo referralsInfo, Consumer<ReferralHandlingData> consumer ) throws LdapURLEncodingException
+        ReferralsInfo referralsInfo, Consumer<ReferralHandlingData> consumer ) throws NamingException, LdapURLEncodingException
     {
         if ( response == null )
         {
@@ -1139,7 +1139,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
 
         if ( referralsInfo == null )
         {
-            referralsInfo = new ReferralsInfo();
+            referralsInfo = new ReferralsInfo( true );
         }
 
         Referral referral = ldapResult.getReferral();
@@ -1147,18 +1147,18 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         Referral nextReferral = referralsInfo.getNextReferral();
 
         Connection referralConnection = ConnectionWrapperUtils.getReferralConnection( nextReferral, monitor, this );
-        if ( referralConnection != null )
-        {
-            List<String> urls = new ArrayList<String>( referral.getLdapUrls() );
-            String referralDn = new LdapUrl( urls.get( 0 ) ).getDn().getName();
-            ReferralHandlingData referralHandlingData = new ReferralHandlingData(
-                referralConnection.getConnectionWrapper(), referralDn, referralsInfo );
-            consumer.accept( referralHandlingData );
-        }
-        else
+        if ( referralConnection == null )
         {
             monitor.setCanceled( true );
+            return true;
         }
+
+        List<String> urls = new ArrayList<String>( referral.getLdapUrls() );
+        String referralDn = new LdapUrl( urls.get( 0 ) ).getDn().getName();
+        ReferralHandlingData referralHandlingData = new ReferralHandlingData( referralConnection.getConnectionWrapper(),
+            referralDn, referralsInfo );
+        consumer.accept( referralHandlingData );
+
         return true;
     }
 

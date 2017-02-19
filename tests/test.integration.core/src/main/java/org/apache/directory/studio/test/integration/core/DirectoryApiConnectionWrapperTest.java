@@ -22,10 +22,14 @@ package org.apache.directory.studio.test.integration.core;
 
 
 import static org.apache.directory.studio.test.integration.core.Constants.LOCALHOST;
+import static org.hamcrest.CoreMatchers.hasItems;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -33,9 +37,16 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
+import javax.naming.NamingEnumeration;
+import javax.naming.NamingException;
+import javax.naming.directory.SearchControls;
+import javax.naming.directory.SearchResult;
+
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
+import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
+import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.NetworkProvider;
@@ -62,6 +73,27 @@ public class DirectoryApiConnectionWrapperTest extends ConnectionWrapperTestBase
 
 
     // see tests in super class
+
+    @Test
+    public void testSearchContinuationFollowParent() throws NamingException
+    {
+        StudioProgressMonitor monitor = getProgressMonitor();
+        SearchControls searchControls = new SearchControls();
+        searchControls.setSearchScope( SearchControls.SUBTREE_SCOPE );
+        NamingEnumeration<SearchResult> result = getConnectionWrapper( monitor ).search( "ou=referrals,ou=system",
+            "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.FOLLOW, null,
+            monitor, null );
+
+        assertFalse( monitor.isCanceled() );
+        assertFalse( monitor.errorsReported() );
+        assertNotNull( result );
+
+        List<String> dns = consume( result, sr -> sr.getNameInNamespace() );
+        assertEquals( 4, dns.size() );
+        assertThat( dns, hasItems( "ou=referrals,ou=system", "ou=referrals,ou=system", "ou=users,ou=system",
+            "uid=user.1,ou=users,ou=system" ) );
+    }
+
 
     /**
      * Test initializing of Root DSE.

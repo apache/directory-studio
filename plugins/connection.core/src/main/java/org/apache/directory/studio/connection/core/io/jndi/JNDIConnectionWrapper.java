@@ -1538,7 +1538,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
     {
         if ( initialReferralsInfo == null )
         {
-            initialReferralsInfo = new ReferralsInfo();
+            initialReferralsInfo = new ReferralsInfo( true );
         }
 
         Referral referral = handleReferralException( referralException, initialReferralsInfo, null );
