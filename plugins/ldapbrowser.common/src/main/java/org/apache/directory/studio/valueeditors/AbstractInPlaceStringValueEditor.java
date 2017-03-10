@@ -38,7 +38,7 @@ import org.eclipse.jface.viewers.TextCellEditor;
 /**
  * 
  * Abstract base class for value editors that handle string values
- * withing the table or tree control. 
+ * within the table or tree control. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -80,6 +80,7 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
      * This implementation of getDisplayValue() returns a 
      * comma-separated list of all values. 
      */
+    @Override
     public String getDisplayValue( AttributeHierarchy attributeHierarchy )
     {
         if ( attributeHierarchy == null )
@@ -87,14 +88,14 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
             return NULL;
         }
 
-        List<IValue> valueList = new ArrayList<IValue>();
+        List<IValue> valueList = new ArrayList<>();
         
         for ( IAttribute attribute : attributeHierarchy )
         {
             valueList.addAll( Arrays.asList( attribute.getValues() ) );
         }
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         boolean isFirst = true;
         
         for ( IValue value : valueList )
@@ -120,6 +121,7 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
      * 
      * This implementation just returns the raw value
      */
+    @Override
     public String getDisplayValue( IValue value )
     {
         Object obj = getRawValue( value );
@@ -134,6 +136,7 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
      * in attributeHierarchy or calls getRawValue(IValue) if attributeHierarchy
      * contains exactly one value. Otherwise null is returned.
      */
+    @Override
     public Object getRawValue( AttributeHierarchy attributeHierarchy )
     {
         if ( ( attributeHierarchy != null ) && ( attributeHierarchy.size() == 1 ) )
@@ -162,6 +165,7 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean hasValue( IValue value )
     {
         return ( value != null ) && ( value.isString() || value.isBinary() );
@@ -174,6 +178,7 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
      * This implementation returns the string value 
      * of the given value. 
      */
+    @Override
     public Object getRawValue( IValue value )
     {
         return StringValueEditorUtils.getRawValue( value );
@@ -186,6 +191,7 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
      * This implementation always return the string value
      * as String.
      */
+    @Override
     public Object getStringOrBinaryValue( Object rawValue )
     {
         return StringValueEditorUtils.getStringOrBinaryValue( rawValue );
@@ -195,6 +201,7 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
     /**
      * {@inheritDoc}
      */
+    @Override
     public CellEditor getCellEditor()
     {
         return this;
@@ -204,6 +211,7 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
     /**
      * {@inheritDoc}
      */
+    @Override
     protected Object doGetValue()
     {
         if ( EMPTY.equals( text.getText() ) )
@@ -220,20 +228,24 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void doSetValue( Object value )
     {
         if ( value instanceof IValue.EmptyValue )
         {
-            value = ( ( IValue.EmptyValue ) value ).getStringValue();
+            super.doSetValue( ( ( IValue.EmptyValue ) value ).getStringValue() );
         }
-        
-        super.doSetValue( value );
+        else
+        {
+            super.doSetValue( value );
+        }
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setValueEditorName( String name )
     {
         this.name = name;
@@ -243,6 +255,7 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getValueEditorName()
     {
         return name;
@@ -252,6 +265,7 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setValueEditorImageDescriptor( ImageDescriptor imageDescriptor )
     {
         this.imageDescriptor = imageDescriptor;
@@ -261,6 +275,7 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
     /**
      * {@inheritDoc}
      */
+    @Override
     public ImageDescriptor getValueEditorImageDescriptor()
     {
         return imageDescriptor;
