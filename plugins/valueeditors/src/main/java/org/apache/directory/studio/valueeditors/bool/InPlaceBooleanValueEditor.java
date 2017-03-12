@@ -44,33 +44,58 @@ public class InPlaceBooleanValueEditor extends AbstractInPlaceStringValueEditor
     /**
      * {@inheritDoc}
      */
+    @Override
     protected Object doGetValue()
     {
         Object value = super.doGetValue();
 
         if ( value instanceof String )
         {
-            String stringValue = ( String ) value;
-
-            if ( EMPTY.equals( stringValue ) )
+            String stringValue = ( ( String ) value ).toUpperCase();
+            
+            switch ( stringValue )
             {
-                return null;
-            }
-            else if ( "TRUE".equalsIgnoreCase( stringValue ) || "T".equalsIgnoreCase( stringValue )
-                || "YES".equalsIgnoreCase( stringValue ) || "Y".equalsIgnoreCase( stringValue )
-                || "1".equalsIgnoreCase( stringValue ) )
-            {
-                return TRUE;
-            }
-            else if ( "FALSE".equalsIgnoreCase( stringValue ) || "F".equalsIgnoreCase( stringValue )
-                || "NO".equalsIgnoreCase( stringValue ) || "N".equalsIgnoreCase( stringValue )
-                || "0".equalsIgnoreCase( stringValue ) )
-            {
-                return FALSE;
+                case "T" :
+                case "TRUE" :
+                case "Y" :
+                case "YES" :
+                case "1" :
+                case "" :           // Special case : default to TRUE
+                default :
+                    return TRUE;
+                    
+                case "F" :
+                case "FALSE" :
+                case "N" :
+                case "NO" :
+                case "0" :
+                    return FALSE;
             }
         }
 
         return value;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void doSetValue( Object value )
+    {
+        Object v = value;
+        
+        if ( value instanceof IValue.EmptyValue )
+        {
+            v = ( ( IValue.EmptyValue ) value ).getStringValue();
+        }
+        
+        if ( value == null )
+        {
+            v = "TRUE";
+        }
+        
+        super.doSetValue( v );
     }
 
 
@@ -79,14 +104,26 @@ public class InPlaceBooleanValueEditor extends AbstractInPlaceStringValueEditor
     {
         Object rawValue = super.getRawValue( value );
 
-        if ( rawValue instanceof String && new BooleanSyntaxChecker().isValidSyntax( rawValue ) )
+        if ( rawValue instanceof String )
         {
-            return rawValue;
+            String stringValue = ( String ) rawValue;
+            
+            if ( ( stringValue.length() == 0 ) || ( BooleanSyntaxChecker.INSTANCE.isValidSyntax( stringValue ) ) )
+            {
+                return TRUE;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        else if ( rawValue == null )
+        {
+            return TRUE;
         }
         else
         {
             return null;
         }
     }
-
 }
