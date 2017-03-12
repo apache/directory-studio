@@ -21,7 +21,6 @@
 package org.apache.directory.studio.valueeditors.oid;
 
 
-import org.apache.directory.api.ldap.model.schema.syntaxCheckers.NumericOidSyntaxChecker;
 import org.apache.directory.api.ldap.model.schema.syntaxCheckers.OidSyntaxChecker;
 import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
@@ -65,7 +64,7 @@ public class InPlaceOidValueEditor extends AbstractInPlaceStringValueEditor
     {
         Object rawValue = super.getRawValue( value );
 
-        if ( rawValue instanceof String && new OidSyntaxChecker().isValidSyntax( rawValue ) )
+        if ( rawValue instanceof String && OidSyntaxChecker.INSTANCE.isValidSyntax( rawValue ) )
         {
             return rawValue;
         }
