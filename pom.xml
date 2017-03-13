@@ -76,8 +76,8 @@
     <junit.version>4.11</junit.version>
     <log4j.log4j.version>1.2.17</log4j.log4j.version>
     <log4j.log4j.bundleversion>1.2.17</log4j.log4j.bundleversion>
-    <net.sf.ehcache.version>2.8.5</net.sf.ehcache.version>
-    <net.sf.ehcache.bundleversion>2.8.5</net.sf.ehcache.bundleversion>
+    <net.sf.ehcache.version>2.10.3</net.sf.ehcache.version>
+    <net.sf.ehcache.bundleversion>2.10.3</net.sf.ehcache.bundleversion>
     <org.apache.commons.codec.version>1.10</org.apache.commons.codec.version>
     <org.apache.commons.codec.bundleversion>1.10.0</org.apache.commons.codec.bundleversion>
     <org.apache.commons.collections.version>3.2.2</org.apache.commons.collections.version>
