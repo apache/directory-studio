@@ -24,6 +24,7 @@ package org.apache.directory.studio.valueeditors.bool;
 import org.apache.directory.api.ldap.model.schema.syntaxCheckers.BooleanSyntaxChecker;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.valueeditors.AbstractInPlaceStringValueEditor;
+import org.eclipse.jface.viewers.ICellEditorValidator;
 
 
 /**
@@ -40,6 +41,50 @@ public class InPlaceBooleanValueEditor extends AbstractInPlaceStringValueEditor
     /** The 'FALSE' value */
     private static final String FALSE = "FALSE";
 
+    /**
+     * Create a new instance of a InPlaceBooleanValueEditor which sets
+     * a validator.
+     */
+    public InPlaceBooleanValueEditor()
+    {
+        super();
+        
+        setValidator(new ICellEditorValidator()
+        {
+            @Override
+            public String isValid( Object value )
+            {
+                if ( value instanceof String )
+                {
+                    String stringValue = ( ( String ) value ).toUpperCase();
+                    
+                    switch ( stringValue )
+                    {
+                        case "F" :
+                        case "FALSE" :
+                        case "N" :
+                        case "NO" :
+                        case "0" :
+                        case "T" :
+                        case "TRUE" :
+                        case "Y" :
+                        case "YES" :
+                        case "1" :
+                        case "" :           // Special case : default to TRUE
+                            return null;
+
+                        default :
+                            return "Invalid boolean";
+                    }
+                }
+                else
+                {
+                    return "Invalid boolean";
+                }
+            }
+        });
+    }
+
 
     /**
      * {@inheritDoc}
@@ -51,9 +96,9 @@ public class InPlaceBooleanValueEditor extends AbstractInPlaceStringValueEditor
 
         if ( value instanceof String )
         {
-            String stringValue = ( ( String ) value ).toUpperCase();
+            String stringValue = ( String ) value;
             
-            switch ( stringValue )
+            switch ( stringValue.toUpperCase() )
             {
                 case "F" :
                 case "FALSE" :
@@ -71,35 +116,22 @@ public class InPlaceBooleanValueEditor extends AbstractInPlaceStringValueEditor
                     return TRUE;
 
                 default :
-                    return null;
+                    return stringValue;
             }
         }
 
         return value;
     }
 
-
+    
     /**
      * {@inheritDoc}
-     *
+     */
     @Override
-    protected void doSetValue( Object value )
+    public boolean isValueValid() 
     {
-        Object v = value;
-        
-        if ( value instanceof IValue.EmptyValue )
-        {
-            v = ( ( IValue.EmptyValue ) value ).getStringValue();
-        }
-        
-        if ( value == null )
-        {
-            v = "TRUE";
-        }
-        
-        super.doSetValue( v );
+        return doGetValue() != null;
     }
-    */
 
 
     /**
