@@ -38,7 +38,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.INavigationLocation;
 import org.eclipse.ui.INavigationLocationProvider;
@@ -76,6 +75,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
 
     IPropertyChangeListener propertyChangeListener = new IPropertyChangeListener()
     {
+        @Override
         public void propertyChange( org.eclipse.jface.util.PropertyChangeEvent event )
         {
             // set the input again if the auto-save option has been changed
@@ -94,6 +94,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
     /**
      * {@inheritDoc}
      */
+    @Override
     public void init( IEditorSite site, IEditorInput input ) throws PartInitException
     {
         setSite( site );
@@ -105,6 +106,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setInput( IEditorInput input )
     {
         super.setInput( input );
@@ -124,6 +126,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
     /**
      * {@inheritDoc}
      */
+    @Override
     public void createPartControl( Composite parent )
     {
         Composite composite = new Composite( parent, SWT.NONE );
@@ -161,6 +164,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setFocus()
     {
         mainWidget.setFocus();
@@ -170,6 +174,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
     /**
      * {@inheritDoc}
      */
+    @Override
     public Object getAdapter( Class required )
     {
         if ( IContentOutlinePage.class.equals( required ) )
@@ -189,6 +194,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
     /**
      * {@inheritDoc}
      */
+    @Override
     public void dispose()
     {
         if ( configuration != null )
@@ -213,6 +219,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
     /**
      * {@inheritDoc}
      */
+    @Override
     public void doSave( final IProgressMonitor monitor )
     {
         if ( !isAutoSave() )
@@ -226,6 +233,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
     /**
      * {@inheritDoc}
      */
+    @Override
     public void doSaveAs()
     {
     }
@@ -234,6 +242,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isDirty()
     {
         return getEntryEditorInput().isSharedWorkingCopyDirty( this );
@@ -243,6 +252,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isSaveAsAllowed()
     {
         return false;
@@ -307,6 +317,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
     /**
      * {@inheritDoc}
      */
+    @Override
     public INavigationLocation createEmptyNavigationLocation()
     {
         return null;
@@ -316,6 +327,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
     /**
      * {@inheritDoc}
      */
+    @Override
     public INavigationLocation createNavigationLocation()
     {
         return new EntryEditorNavigationLocation( this );
@@ -338,6 +350,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
      * 
      * {@inheritDoc}
      */
+    @Override
     public boolean canHandle( IEntry entry )
     {
         return true;
@@ -347,6 +360,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
     /**
      * {@inheritDoc}
      */
+    @Override
     public EntryEditorInput getEntryEditorInput()
     {
         return EntryEditorUtils.getEntryEditorInput( getEditorInput() );
@@ -356,6 +370,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
     /**
      * {@inheritDoc}
      */
+    @Override
     public void workingCopyModified( Object source )
     {
         if ( mainWidget != null && !mainWidget.getViewer().isCellEditorActive() )
@@ -399,6 +414,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
     /**
      * {@inheritDoc}
      */
+    @Override
     public void showEditorInput( IEditorInput input )
     {
         if ( input instanceof EntryEditorInput )
@@ -413,12 +429,9 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
             }
 
             // If the editor is dirty, let's ask for a save before changing the input
-            if ( isDirty() )
+            if ( isDirty() && !EntryEditorUtils.askSaveSharedWorkingCopyBeforeInputChange( this ) )
             {
-                if ( !EntryEditorUtils.askSaveSharedWorkingCopyBeforeInputChange( this ) )
-                {
-                    return;
-                }
+                return;
             }
 
             // now set the real input and mark history location
@@ -427,5 +440,4 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
             firePropertyChange( BrowserUIConstants.INPUT_CHANGED );
         }
     }
-
 }
