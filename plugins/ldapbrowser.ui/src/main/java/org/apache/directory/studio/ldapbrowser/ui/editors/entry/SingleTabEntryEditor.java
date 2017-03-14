@@ -33,7 +33,6 @@ import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
  */
 public class SingleTabEntryEditor extends EntryEditor
 {
-
     /**
      * Gets the ID of the SingleTabEntryEditor.
      * 
@@ -45,10 +44,13 @@ public class SingleTabEntryEditor extends EntryEditor
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean isAutoSave()
     {
         return BrowserCommonActivator.getDefault().getPreferenceStore().getBoolean(
             BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_AUTOSAVE_SINGLE_TAB );
     }
-
 }
