@@ -55,21 +55,23 @@ public class InPlaceBooleanValueEditor extends AbstractInPlaceStringValueEditor
             
             switch ( stringValue )
             {
-                case "T" :
-                case "TRUE" :
-                case "Y" :
-                case "YES" :
-                case "1" :
-                case "" :           // Special case : default to TRUE
-                default :
-                    return TRUE;
-                    
                 case "F" :
                 case "FALSE" :
                 case "N" :
                 case "NO" :
                 case "0" :
                     return FALSE;
+    
+                case "T" :
+                case "TRUE" :
+                case "Y" :
+                case "YES" :
+                case "1" :
+                case "" :           // Special case : default to TRUE
+                    return TRUE;
+
+                default :
+                    return null;
             }
         }
 
@@ -79,7 +81,7 @@ public class InPlaceBooleanValueEditor extends AbstractInPlaceStringValueEditor
 
     /**
      * {@inheritDoc}
-     */
+     *
     @Override
     protected void doSetValue( Object value )
     {
@@ -97,8 +99,12 @@ public class InPlaceBooleanValueEditor extends AbstractInPlaceStringValueEditor
         
         super.doSetValue( v );
     }
+    */
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Object getRawValue( IValue value )
     {
@@ -110,7 +116,7 @@ public class InPlaceBooleanValueEditor extends AbstractInPlaceStringValueEditor
             
             if ( ( stringValue.length() == 0 ) || ( BooleanSyntaxChecker.INSTANCE.isValidSyntax( stringValue ) ) )
             {
-                return TRUE;
+                return rawValue;
             }
             else
             {
