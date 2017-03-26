@@ -221,14 +221,20 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
             {
                 try
                 {
-                    ldapConnection = new LdapNetworkConnection( ldapConnectionConfig );
+                    // Set lower timeout for connecting
+                    long oldTimeout = ldapConnectionConfig.getTimeout();
+                    ldapConnectionConfig.setTimeout( Math.min( oldTimeout, 5000L ) );
 
                     // Connecting
+                    ldapConnection = new LdapNetworkConnection( ldapConnectionConfig );
                     boolean connected = ldapConnection.connect();
                     if ( !connected )
                     {
                         throw new Exception( Messages.DirectoryApiConnectionWrapper_UnableToConnect );
                     }
+
+                    // Set old timeout again
+                    ldapConnectionConfig.setTimeout( oldTimeout );
                 }
                 catch ( Exception e )
                 {
