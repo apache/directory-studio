@@ -1022,7 +1022,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            setProtocol( tlsv1_0Checkbox.getSelection(), "TLSV1" );
+            setProtocol( tlsv1_0Checkbox.getSelection(), "TLSv1" );
         }
     };
     
@@ -1034,7 +1034,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            setProtocol( tlsv1_1Checkbox.getSelection(), "TLSV1.1" );
+            setProtocol( tlsv1_1Checkbox.getSelection(), "TLSv1.1" );
         }
     };
     
@@ -1046,7 +1046,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            setProtocol( tlsv1_2Checkbox.getSelection(), "TLSV1.2" );
+            setProtocol( tlsv1_2Checkbox.getSelection(), "TLvV1.2" );
         }
     };
 
