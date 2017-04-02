@@ -23,6 +23,7 @@ package org.apache.directory.studio.ldapservers.apacheds;
 
 import org.apache.directory.studio.ldapservers.jobs.StudioLdapServerJob;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
+import org.apache.directory.studio.ldapservers.model.LdapServerStatus;
 import org.apache.directory.studio.ldapservers.views.ServersView;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
@@ -36,7 +37,7 @@ import org.eclipse.ui.IWorkbenchPart;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StartAndRepairAction implements IObjectActionDelegate
+public class RepairAction implements IObjectActionDelegate
 {
     /** The {@link ServersView} */
     private ServersView view;
@@ -45,25 +46,18 @@ public class StartAndRepairAction implements IObjectActionDelegate
     @Override
     public void run( IAction action )
     {
-        if ( view != null )
+        LdapServer server = getSelectedServer();
+        if ( server != null )
         {
-            // Getting the selection
-            StructuredSelection selection = ( StructuredSelection ) view.getViewer().getSelection();
-            if ( ( !selection.isEmpty() ) && ( selection.size() == 1 ) )
+            // Checking that the server is really an ApacheDS 2.0.0 server
+            if ( !ExtensionUtils.verifyApacheDs200OrPrintError( server, view ) )
             {
-                // Getting the server
-                LdapServer server = ( LdapServer ) selection.getFirstElement();
-
-                // Checking that the server is really an ApacheDS 2.0.0 server
-                if ( !ExtensionUtils.verifyApacheDs200OrPrintError( server, view ) )
-                {
-                    return;
-                }
-
-                // Creating and scheduling the job to start the server
-                StudioLdapServerJob job = new StudioLdapServerJob( new StartAndRepairRunnable( server ) );
-                job.schedule();
+                return;
             }
+
+            // Creating and scheduling the job to start the server
+            StudioLdapServerJob job = new StudioLdapServerJob( new RepairRunnable( server ) );
+            job.schedule();
         }
     }
 
@@ -73,7 +67,8 @@ public class StartAndRepairAction implements IObjectActionDelegate
      */
     public void selectionChanged( IAction action, ISelection selection )
     {
-        // Nothing to do
+        LdapServer server = getSelectedServer();
+        action.setEnabled( server != null && server.getStatus() == LdapServerStatus.STOPPED );
     }
 
 
@@ -87,6 +82,24 @@ public class StartAndRepairAction implements IObjectActionDelegate
         {
             view = ( ServersView ) targetPart;
         }
+    }
+
+
+    private LdapServer getSelectedServer()
+    {
+        if ( view != null )
+        {
+            // Getting the selection
+            StructuredSelection selection = ( StructuredSelection ) view.getViewer().getSelection();
+            if ( ( !selection.isEmpty() ) && ( selection.size() == 1 ) )
+            {
+                // Getting the server
+                LdapServer server = ( LdapServer ) selection.getFirstElement();
+                return server;
+            }
+        }
+
+        return null;
     }
 
 }

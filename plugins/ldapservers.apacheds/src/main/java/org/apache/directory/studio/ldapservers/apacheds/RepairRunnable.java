@@ -34,7 +34,7 @@ import org.eclipse.osgi.util.NLS;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StartAndRepairRunnable implements StudioRunnableWithProgress
+public class RepairRunnable implements StudioRunnableWithProgress
 {
     /** The server */
     private LdapServer server;
@@ -46,7 +46,7 @@ public class StartAndRepairRunnable implements StudioRunnableWithProgress
      * @param server
      *            the LDAP Server
      */
-    public StartAndRepairRunnable( LdapServer server )
+    public RepairRunnable( LdapServer server )
     {
         this.server = server;
     }
@@ -57,7 +57,7 @@ public class StartAndRepairRunnable implements StudioRunnableWithProgress
      */
     public String getErrorMessage()
     {
-        return NLS.bind( Messages.getString( "StartAndRepairRunnable.UnableToStartAndRepair" ), new String[] //$NON-NLS-1$
+        return NLS.bind( Messages.getString( "RepairRunnable.UnableToRepair" ), new String[] //$NON-NLS-1$
             { server.getName() } );
     }
 
@@ -77,7 +77,7 @@ public class StartAndRepairRunnable implements StudioRunnableWithProgress
      */
     public String getName()
     {
-        return NLS.bind( Messages.getString( "StartAndRepairRunnable.StartAndRepair" ), new String[] //$NON-NLS-1$
+        return NLS.bind( Messages.getString( "RepairRunnable.Repair" ), new String[] //$NON-NLS-1$
             { server.getName() } );
     }
 
@@ -87,8 +87,8 @@ public class StartAndRepairRunnable implements StudioRunnableWithProgress
      */
     public void run( StudioProgressMonitor monitor )
     {
-        // Setting the status on the server to 'starting'
-        server.setStatus( LdapServerStatus.STARTING );
+        // Setting the status on the server to 'repairing'
+        server.setStatus( LdapServerStatus.REPAIRING );
 
         try
         {

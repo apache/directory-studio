@@ -140,15 +140,15 @@ public class ApacheDSServersViewBot
     
     
     /**
-     * Starts and repairs the server associated with the given name.
+     * Repairs the server associated with the given name.
      *
      * @param serverName
      *      the name of the server
      */
-    public void startAndRepairServer( String serverName )
+    public void repairServer( String serverName )
     {
         selectServer( serverName );
-        ContextMenuHelper.clickContextMenu( getServersTree(), "Start and Repair" );
+        ContextMenuHelper.clickContextMenu( getServersTree(), "Repair" );
     }
 
 

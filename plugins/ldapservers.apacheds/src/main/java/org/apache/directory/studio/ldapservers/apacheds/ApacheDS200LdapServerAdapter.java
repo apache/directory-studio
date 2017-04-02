@@ -44,6 +44,7 @@ import org.apache.directory.studio.ldapservers.LdapServersManager;
 import org.apache.directory.studio.ldapservers.LdapServersUtils;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
 import org.apache.directory.studio.ldapservers.model.LdapServerAdapter;
+import org.apache.directory.studio.ldapservers.model.LdapServerStatus;
 import org.apache.mina.util.AvailablePortFinder;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -179,7 +180,11 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
      */
     public void repair( LdapServer server, StudioProgressMonitor monitor ) throws Exception
     {
+        // repair
         startOrRepair( server, monitor, true );
+
+        // stop the console printer thread
+        LdapServersUtils.stopConsolePrinterThread( server );
     }
 
 
@@ -201,11 +206,34 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
         // Launching ApacheDS
         ILaunch launch = launchApacheDS( server, repair );
 
-        // Starting the "terminate" listener thread
-        LdapServersUtils.startTerminateListenerThread( server, launch );
+        if ( repair )
+        {
+            // Starting the "terminate" listener thread
+            LdapServersUtils.startTerminateListenerThread( server, launch );
 
-        // Running the startup listener watchdog
-        LdapServersUtils.runStartupListenerWatchdog( server, getTestingPort( server ) );
+            // Await termination of the repair action
+            long startTime = System.currentTimeMillis();
+            final long watchDog = startTime + ( 1000 * 60 * 3 ); // 3 minutes
+            while ( ( System.currentTimeMillis() < watchDog ) && ( LdapServerStatus.REPAIRING == server.getStatus() ) )
+            {
+                try
+                {
+                    Thread.sleep( 1000 );
+                }
+                catch ( InterruptedException e1 )
+                {
+                    // Nothing to do...
+                }
+            }
+        }
+        else
+        {
+            // Starting the "terminate" listener thread
+            LdapServersUtils.startTerminateListenerThread( server, launch );
+
+            // Running the startup listener watchdog
+            LdapServersUtils.runStartupListenerWatchdog( server, getTestingPort( server ) );
+        }
     }
     
     /**

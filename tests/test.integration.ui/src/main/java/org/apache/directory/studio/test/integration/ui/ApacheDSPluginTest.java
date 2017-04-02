@@ -396,14 +396,18 @@ public class ApacheDSPluginTest
      * Test for DIRSTUDIO-1118: Run repair
      */
     @Test
-    public void startAndRepair()
+    public void repairAndStartAndStop()
     {
-        String serverName = "StartAndRepair";
+        String serverName = "Repair";
         createServer( serverName );
         setAvailablePorts( serverName );
 
-        // Start and repair the server
-        serversViewBot.startAndRepairServer( serverName );
+        // Repair the server
+        serversViewBot.repairServer( serverName );
+        serversViewBot.waitForServerStop( serverName );
+
+        // Start the server after repair
+        serversViewBot.runServer( serverName );
         serversViewBot.waitForServerStart( serverName );
 
         // TODO: newer version of ApacheDS may log to console

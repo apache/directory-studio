@@ -155,7 +155,8 @@ public class ServersTableViewer extends TreeViewer
                         // If the state is STARTING or STOPPING, we need to
                         // add the server to the list of servers needing
                         // animation and eventually start the animation thread
-                        if ( ( state == LdapServerStatus.STARTING ) || ( state == LdapServerStatus.STOPPING ) )
+                        if ( ( state == LdapServerStatus.STARTING ) || ( state == LdapServerStatus.STOPPING )
+                            || ( state == LdapServerStatus.REPAIRING ) )
                         {
                             boolean startAnimationThread = false;
 
