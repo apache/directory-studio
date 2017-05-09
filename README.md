@@ -25,7 +25,7 @@ Apache Directory Studio is a complete directory tooling platform intended to be 
 
 ### Prerequisites
 
-* JDK 7 or newer
+* JDK 8 or newer
 * Maven 3 or newer
 * Sufficient heap space for Maven: `export MAVEN_OPTS="-Xmx512m"`
 * FIXME: Windows users have to replace the repository location `file://${basedir}/target/repository` in `eclipse-trgt-platform/template/org.apache.directory.studio.eclipse-trgt-platform.template` with the actual path, e.g. `file:///C:/Development/studio/eclipse-trgt-platform/target/repository`
@@ -65,7 +65,11 @@ or on Windows :
 
 ### Build issues
 
-Tycho doesn't handle snapshot dependencies well. The first time a snapshot dependency is used within the build it is cached in `~/.m2/repository/p2`. Afterwards any change in the dependency (e.g. ApacheDS or LDAP API) is the considered unless it is deleted from the cache.
+Tycho doesn't handle snapshot dependencies well. The first time a snapshot dependency is used within the build it is cached in `~/.m2/repository/p2`. Afterwards any change in the dependency (e.g. ApacheDS or LDAP API) is not considered unless it is deleted from the cache.
+
+To delete all Apache Directory related snapshots run:
+
+    rm -rf ~/.m2/repository/p2/osgi/bundle/org.apache.directory.*
 
 
 ## Setup Eclipse workspace
