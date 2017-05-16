@@ -175,8 +175,8 @@ public class UserClassWrapper
         }
         else if ( userClass.getClass() == UserClass.UserGroup.class )
         {
-            UserClass.UserGroup userGrops = ( UserClass.UserGroup ) userClass;
-            Set<Dn> jndiNames = userGrops.getNames();
+            UserClass.UserGroup userGroups = ( UserClass.UserGroup ) userClass;
+            Set<Dn> jndiNames = userGroups.getNames();
             for ( Dn jndiName : jndiNames )
             {
                 values.add( jndiName.toString() );
