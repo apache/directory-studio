@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.apache.directory.project</groupId>
     <artifactId>project</artifactId>
-    <version>38</version>
+    <version>39</version>
     <relativePath />
   </parent>
 
@@ -76,8 +76,8 @@
     <junit.version>4.11</junit.version>
     <log4j.log4j.version>1.2.17</log4j.log4j.version>
     <log4j.log4j.bundleversion>1.2.17</log4j.log4j.bundleversion>
-    <net.sf.ehcache.version>2.10.3</net.sf.ehcache.version>
-    <net.sf.ehcache.bundleversion>2.10.3</net.sf.ehcache.bundleversion>
+    <net.sf.ehcache.version>2.10.4</net.sf.ehcache.version>
+    <net.sf.ehcache.bundleversion>2.10.4</net.sf.ehcache.bundleversion>
     <org.apache.commons.codec.version>1.10</org.apache.commons.codec.version>
     <org.apache.commons.codec.bundleversion>1.10.0</org.apache.commons.codec.bundleversion>
     <org.apache.commons.collections.version>3.2.2</org.apache.commons.collections.version>
@@ -95,8 +95,8 @@
     <org.apache.poi.version>3.9</org.apache.poi.version>
     <org.apache.poi.bundleversion>3.9.0</org.apache.poi.bundleversion>
     <org.apache.xmlgraphics.fop.version>1.0</org.apache.xmlgraphics.fop.version>
-    <org.slf4j.version>1.7.10</org.slf4j.version>
-    <org.slf4j.bundleversion>1.7.10</org.slf4j.bundleversion>
+    <org.slf4j.version>1.7.25</org.slf4j.version>
+    <org.slf4j.bundleversion>1.7.25</org.slf4j.bundleversion>
     <org.xpp3.version>1.1.4.c</org.xpp3.version>
     <org.xpp3.bundleversion>1.1.4.c</org.xpp3.bundleversion>
     <xerces.xercesimpl.version>2.11.0</xerces.xercesimpl.version>
