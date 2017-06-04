@@ -111,7 +111,7 @@ public class GssApiTest
         }
         catch ( IllegalArgumentException e )
         {
-            Assume.assumeNoException( "Sipping tests as not default realm (/etc/krb5.conf) is configured", e );
+            Assume.assumeNoException( "Skipping tests as no default realm (/etc/krb5.conf) is configured", e );
         }
     }
 
@@ -206,7 +206,6 @@ public class GssApiTest
         wizardBot.typeConnectionName( getConnectionName() );
         wizardBot.typeHost( LOCALHOST );
         wizardBot.typePort( ldapPort );
-        wizardBot.selectJndiProvider();
         wizardBot.clickNextButton();
         wizardBot.selectGssApiAuthentication();
         wizardBot.selectUseNativeTgt();
