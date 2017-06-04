@@ -286,7 +286,6 @@ public class RcpAppTest extends AbstractLdapTestUnit
     public void testVisiblePreferencePages() throws Exception
     {
         PreferencesBot prefs = studioBot.openPreferences();
-        bot.sleep( 5000 );
 
         assertTrue( prefs.pageExists( "Apache Directory Studio" ) );
         assertTrue( prefs.pageExists( "Apache Directory Studio", "Connections" ) );
@@ -323,8 +322,11 @@ public class RcpAppTest extends AbstractLdapTestUnit
 
 
     /**
-     * Verify hidden preference pages. Many unwanted prefernce pages are contributed 
-     * by org.eclipse.* plugins, we configured to hide them in rcp/plugin.xml. 
+     * Verify hidden preference pages. Many unwanted preference pages are contributed 
+     * by org.eclipse.* plugins, we configured to hide them in rcp/plugin.xml.
+     * 
+     * Note: This test fails when running from Eclipse IDE and all workspace plugins 
+     * are part of the target platform.
      */
     @Test
     public void testHiddenPreferencePages() throws Exception
