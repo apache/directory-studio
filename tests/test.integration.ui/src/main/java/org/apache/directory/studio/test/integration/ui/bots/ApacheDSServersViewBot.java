@@ -255,6 +255,9 @@ public class ApacheDSServersViewBot
                 return "Server " + serverName + " not stopped in servers view.";
             }
         }, 30000 );
+
+        // Wait a bit more to avoid unknown race conditions...
+        BotUtils.sleep( 1000 );
     }
 
 

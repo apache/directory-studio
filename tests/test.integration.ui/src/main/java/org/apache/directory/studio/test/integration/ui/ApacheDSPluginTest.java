@@ -35,6 +35,7 @@ import org.apache.directory.studio.connection.core.ConnectionManager;
 import org.apache.directory.studio.ldapservers.LdapServersManager;
 import org.apache.directory.studio.test.integration.ui.bots.ApacheDSConfigurationEditorBot;
 import org.apache.directory.studio.test.integration.ui.bots.ApacheDSServersViewBot;
+import org.apache.directory.studio.test.integration.ui.bots.BotUtils;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionFromServerDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConsoleViewBot;

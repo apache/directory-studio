@@ -228,10 +228,13 @@ public class LdapServersUtils
     {
         // Getting the launch
         ILaunch launch = ( ILaunch ) server.removeCustomObject( LdapServersUtils.LAUNCH_CONFIGURATION_CUSTOM_OBJECT );
-        if ( ( launch != null ) && ( !launch.isTerminated() ) )
+        if ( launch != null )
         {
-            // Terminating the launch
-            launch.terminate();
+            if ( ( !launch.isTerminated() ) )
+            {
+                // Terminating the launch
+                launch.terminate();
+            }
         }
         else
         {
