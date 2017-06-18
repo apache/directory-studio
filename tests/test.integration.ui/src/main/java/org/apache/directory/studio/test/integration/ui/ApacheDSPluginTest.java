@@ -407,6 +407,9 @@ public class ApacheDSPluginTest
         serversViewBot.repairServer( serverName );
         serversViewBot.waitForServerStop( serverName );
 
+        // Wait a bit more after repair, another weird race condition...
+        BotUtils.sleep( 5000 );
+
         // Start the server after repair
         serversViewBot.runServer( serverName );
         serversViewBot.waitForServerStart( serverName );
