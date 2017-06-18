@@ -20,6 +20,8 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
+import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
 import org.apache.mina.util.AvailablePortFinder;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotMultiPageEditor;
@@ -230,7 +232,9 @@ public class ApacheDSConfigurationEditorBot
 
     public void save()
     {
+        JobWatcher watcher = new JobWatcher( "Save Configuration" );
         editor.save();
+        watcher.waitUntilDone();
     }
 
 
