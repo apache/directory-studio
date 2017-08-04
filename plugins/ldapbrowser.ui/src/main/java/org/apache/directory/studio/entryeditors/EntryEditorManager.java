@@ -108,23 +108,24 @@ public class EntryEditorManager
     public static final String PRIORITIES_SEPARATOR = ","; //$NON-NLS-1$
 
     /** The list of entry editors */
-    private Map<String, EntryEditorExtension> entryEditorExtensions = new HashMap<String, EntryEditorExtension>();
+    private Map<String, EntryEditorExtension> entryEditorExtensions = new HashMap<>();
 
     /** The shared reference copies for open-save-close editors; original entry -> reference copy */
-    private Map<IEntry, IEntry> oscSharedReferenceCopies = new HashMap<IEntry, IEntry>();
+    private Map<IEntry, IEntry> oscSharedReferenceCopies = new HashMap<>();
 
     /** The shared working copies for open-save-close editors; original entry -> working copy */
-    private Map<IEntry, IEntry> oscSharedWorkingCopies = new HashMap<IEntry, IEntry>();
+    private Map<IEntry, IEntry> oscSharedWorkingCopies = new HashMap<>();
 
     /** The shared reference copies for auto-save editors; original entry -> reference copy */
-    private Map<IEntry, IEntry> autoSaveSharedReferenceCopies = new HashMap<IEntry, IEntry>();
+    private Map<IEntry, IEntry> autoSaveSharedReferenceCopies = new HashMap<>();
 
     /** The shared working copies for auto-save editors; original entry -> working copy */
-    private Map<IEntry, IEntry> autoSaveSharedWorkingCopies = new HashMap<IEntry, IEntry>();
+    private Map<IEntry, IEntry> autoSaveSharedWorkingCopies = new HashMap<>();
 
     /** The comparator for entry editors */
     private Comparator<EntryEditorExtension> entryEditorComparator = new Comparator<EntryEditorExtension>()
     {
+        @Override
         public int compare( EntryEditorExtension o1, EntryEditorExtension o2 )
         {
             if ( o1 == null )
@@ -163,6 +164,7 @@ public class EntryEditorManager
     /** The listener for workbench part update */
     private IPartListener2 partListener = new IPartListener2()
     {
+        @Override
         public void partActivated( IWorkbenchPartReference partRef )
         {
             cleanupCopies( partRef.getPage() );
@@ -222,38 +224,45 @@ public class EntryEditorManager
         }
 
 
+        @Override
         public void partOpened( IWorkbenchPartReference partRef )
         {
         }
 
 
+        @Override
         public void partClosed( IWorkbenchPartReference partRef )
         {
             cleanupCopies( partRef.getPage() );
         }
 
 
+        @Override
         public void partInputChanged( IWorkbenchPartReference partRef )
         {
             cleanupCopies( partRef.getPage() );
         }
 
 
+        @Override
         public void partHidden( IWorkbenchPartReference partRef )
         {
         }
 
 
+        @Override
         public void partDeactivated( IWorkbenchPartReference partRef )
         {
         }
 
 
+        @Override
         public void partBroughtToTop( IWorkbenchPartReference partRef )
         {
         }
 
 
+        @Override
         public void partVisible( IWorkbenchPartReference partRef )
         {
         }
@@ -262,6 +271,7 @@ public class EntryEditorManager
     /** The listener for entry update */
     private EntryUpdateListener entryUpdateListener = new EntryUpdateListener()
     {
+        @Override
         public void entryUpdated( EntryModificationEvent event )
         {
             IEntry modifiedEntry = event.getModifiedEntry();
@@ -353,32 +363,35 @@ public class EntryEditorManager
                 // check all editors: if the input does not exist any more then close the editor
                 IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
                 // Collecting editor references to close
-                List<IEditorReference> editorReferences = new ArrayList<IEditorReference>();
+                List<IEditorReference> editorReferences = new ArrayList<>();
                 
                 for ( IEditorReference ref : activePage.getEditorReferences() )
                 {
                     IEntryEditor editor = getEntryEditor( ref );
-                    EntryEditorInput entryEditorInput = editor.getEntryEditorInput();
-                    
-                    if ( entryEditorInput != null )
+                    if ( editor != null )
                     {
-                    	IEntry resolvedEntry = entryEditorInput.getResolvedEntry();
-	                    
-	                    if ( ( editor != null ) && ( resolvedEntry != null ) )
-	                    {
-	                        IBrowserConnection bc = resolvedEntry.getBrowserConnection();
-	                        Dn dn = resolvedEntry.getDn();
-	                        
-	                        if ( bc.getEntryFromCache( dn ) == null )
-	                        {
-	                            editorReferences.add( ref );
-	                        }
-	                    }
+                        EntryEditorInput entryEditorInput = editor.getEntryEditorInput();
+
+                        if ( entryEditorInput != null )
+                        {
+                            IEntry resolvedEntry = entryEditorInput.getResolvedEntry();
+
+                            if ( ( editor != null ) && ( resolvedEntry != null ) )
+                            {
+                                IBrowserConnection bc = resolvedEntry.getBrowserConnection();
+                                Dn dn = resolvedEntry.getDn();
+
+                                if ( bc.getEntryFromCache( dn ) == null )
+                                {
+                                    editorReferences.add( ref );
+                                }
+                            }
+                        }
                     }
                 }
 
                 // Closing the corresponding editor references
-                if ( editorReferences.size() > 0 )
+                if ( !editorReferences.isEmpty() )
                 {
                     activePage.closeEditors( editorReferences.toArray( new IEditorReference[0] ), false );
                 }
@@ -463,16 +476,18 @@ public class EntryEditorManager
     /** The listener for connection update */
     private ConnectionUpdateListener connectionUpdateListener = new ConnectionUpdateAdapter()
     {
+        @Override
         public void connectionClosed( Connection connection )
         {
             closeEditorsBelongingToConnection( connection );
-        };
+        }
 
 
+        @Override
         public void connectionRemoved( Connection connection )
         {
             closeEditorsBelongingToConnection( connection );
-        };
+        }
     };
 
 
@@ -507,7 +522,7 @@ public class EntryEditorManager
      */
     private void initEntryEditorExtensions()
     {
-        entryEditorExtensions = new HashMap<String, EntryEditorExtension>();
+        entryEditorExtensions = new HashMap<>();
 
         IExtensionRegistry registry = Platform.getExtensionRegistry();
         IExtensionPoint extensionPoint = registry.getExtensionPoint( BrowserUIConstants.ENTRY_EDITOR_EXTENSION_POINT );
@@ -621,7 +636,7 @@ public class EntryEditorManager
         Collection<EntryEditorExtension> entryEditorExtensions = getEntryEditorExtensions();
 
         // Creating the sorted entry editors list
-        ArrayList<EntryEditorExtension> sortedEntryEditorsList = new ArrayList<EntryEditorExtension>(
+        ArrayList<EntryEditorExtension> sortedEntryEditorsList = new ArrayList<>(
             entryEditorExtensions.size() );
 
         // Adding the remaining entry editors
@@ -650,7 +665,7 @@ public class EntryEditorManager
             .getEntryEditorExtensions();
 
         // Creating the sorted entry editors list
-        Collection<EntryEditorExtension> sortedEntryEditorsList = new ArrayList<EntryEditorExtension>(
+        Collection<EntryEditorExtension> sortedEntryEditorsList = new ArrayList<>(
             entryEditorExtensions.size() );
 
         // Getting the user's priorities
@@ -665,7 +680,7 @@ public class EntryEditorManager
             {
 
                 // Creating a map where entry editors are accessible via their ID
-                Map<String, EntryEditorExtension> entryEditorsMap = new HashMap<String, EntryEditorExtension>();
+                Map<String, EntryEditorExtension> entryEditorsMap = new HashMap<>();
                 
                 for ( EntryEditorExtension entryEditorExtension : entryEditorExtensions )
                 {
@@ -690,7 +705,7 @@ public class EntryEditorManager
             // We are then adding them at the end of the sorted list.
 
             // Creating a list of remaining entry editors
-            List<EntryEditorExtension> remainingEntryEditors = new ArrayList<EntryEditorExtension>();
+            List<EntryEditorExtension> remainingEntryEditors = new ArrayList<>();
             
             for ( EntryEditorExtension entryEditorExtension : entryEditorExtensions )
             {
@@ -729,7 +744,7 @@ public class EntryEditorManager
             IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
             // Collecting editor references to close
-            List<IEditorReference> editorReferences = new ArrayList<IEditorReference>();
+            List<IEditorReference> editorReferences = new ArrayList<>();
             
             for ( IEditorReference ref : activePage.getEditorReferences() )
             {
@@ -747,7 +762,7 @@ public class EntryEditorManager
             }
 
             // Closing the corresponding editor references
-            if ( editorReferences.size() > 0 )
+            if ( !editorReferences.isEmpty() )
             {
                 activePage.closeEditors( editorReferences.toArray( new IEditorReference[0] ), false );
             }
@@ -793,8 +808,8 @@ public class EntryEditorManager
         
         if ( referenceCopy != null )
         {
-            EntryEditorUtils.ensureAttributesInitialized( entry );
             EventRegistry.suspendEventFiringInCurrentThread();
+            EntryEditorUtils.ensureAttributesInitialized( entry );
             new CompoundModification().replaceAttributes( entry, referenceCopy, this );
             EventRegistry.resumeEventFiringInCurrentThread();
             oscSharedReferenceCopies.put( entry, referenceCopy );
@@ -816,9 +831,9 @@ public class EntryEditorManager
 
     private void updateAutoSaveSharedReferenceCopy( IEntry entry )
     {
+        EventRegistry.suspendEventFiringInCurrentThread();
         EntryEditorUtils.ensureAttributesInitialized( entry );
         IEntry workingCopy = autoSaveSharedReferenceCopies.get( entry );
-        EventRegistry.suspendEventFiringInCurrentThread();
         new CompoundModification().replaceAttributes( entry, workingCopy, this );
         EventRegistry.resumeEventFiringInCurrentThread();
     }
@@ -834,7 +849,7 @@ public class EntryEditorManager
 
     private List<IEntryEditor> getOscEditors( IEntry workingCopy )
     {
-        List<IEntryEditor> oscEditors = new ArrayList<IEntryEditor>();
+        List<IEntryEditor> oscEditors = new ArrayList<>();
         IEditorReference[] editorReferences = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
             .getEditorReferences();
         
@@ -855,7 +870,7 @@ public class EntryEditorManager
 
     private List<IEntryEditor> getAutoSaveEditors( IEntry workingCopy )
     {
-        List<IEntryEditor> autoSaveEditors = new ArrayList<IEntryEditor>();
+        List<IEntryEditor> autoSaveEditors = new ArrayList<>();
         IEditorReference[] editorReferences = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
             .getEditorReferences();
         
@@ -880,9 +895,7 @@ public class EntryEditorManager
         
         if ( part instanceof IEntryEditor )
         {
-            IEntryEditor entryEditor = ( IEntryEditor ) part;
-            
-            return entryEditor;
+            return ( IEntryEditor ) part;
         }
         
         return null;
@@ -898,8 +911,7 @@ public class EntryEditorManager
             
             if ( part == activeEditor )
             {
-                IWorkbenchPartReference reference = part.getSite().getPage().getReference( part );
-                return reference;
+                return part.getSite().getPage().getReference( part );
             }
         }
         
@@ -1066,8 +1078,8 @@ public class EntryEditorManager
     private void cleanupCopies( IWorkbenchPage page )
     {
         // cleanup unused copies (OSC + auto-save)
-        Set<IEntry> oscEntries = new HashSet<IEntry>();
-        Set<IEntry> autoSaveEntries = new HashSet<IEntry>();
+        Set<IEntry> oscEntries = new HashSet<>();
+        Set<IEntry> autoSaveEntries = new HashSet<>();
         IEditorReference[] editorReferences = page.getEditorReferences();
         
         for ( IEditorReference ref : editorReferences )

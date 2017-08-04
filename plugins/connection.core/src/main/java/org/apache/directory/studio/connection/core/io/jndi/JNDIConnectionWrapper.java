@@ -355,9 +355,8 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     NamingEnumeration<SearchResult> result = searchCtx.search( JNDIConnectionWrapper
                         .getSaveJndiName( searchBase ), filter, searchControls );
                     namingEnumeration = new JndiStudioNamingEnumeration( connection, searchCtx, result, null,
-                        searchBase,
-                        filter, searchControls, aliasesDereferencingMethod, referralsHandlingMethod, controls,
-                        requestNum, monitor, referralsInfo );
+                        searchBase, filter, searchControls, aliasesDereferencingMethod, referralsHandlingMethod,
+                        controls, requestNum, monitor, referralsInfo );
                 }
                 catch ( PartialResultException e )
                 {
@@ -1539,7 +1538,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
     {
         if ( initialReferralsInfo == null )
         {
-            initialReferralsInfo = new ReferralsInfo();
+            initialReferralsInfo = new ReferralsInfo( true );
         }
 
         Referral referral = handleReferralException( referralException, initialReferralsInfo, null );

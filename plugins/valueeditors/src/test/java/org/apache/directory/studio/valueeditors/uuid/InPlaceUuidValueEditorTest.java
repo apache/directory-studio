@@ -21,7 +21,7 @@
 package org.apache.directory.studio.valueeditors.uuid;
 
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 import org.apache.directory.api.util.Strings;
 import org.junit.Test;
@@ -54,7 +54,7 @@ public class InPlaceUuidValueEditorTest
                 ( byte ) 0x30,
                 ( byte ) 0xc8 };
         String displayValue = editor.convertToString( bytes );
-        assertEquals( Strings.toLowerCase( "6ba7b810-9dad-11d1-80b4-00c04fd430c8" ), displayValue ); //$NON-NLS-1$
+        assertEquals( Strings.toLowerCaseAscii( "6ba7b810-9dad-11d1-80b4-00c04fd430c8" ), displayValue ); //$NON-NLS-1$
     }
 
 
@@ -82,7 +82,7 @@ public class InPlaceUuidValueEditorTest
                 ( byte ) 0xEE,
                 ( byte ) 0xFF };
         String displayValue = editor.convertToString( bytes );
-        assertEquals( Strings.toLowerCase( "00112233-4455-6677-8899-AABBCCDDEEFF" ), displayValue ); //$NON-NLS-1$
+        assertEquals( Strings.toLowerCaseAscii( "00112233-4455-6677-8899-AABBCCDDEEFF" ), displayValue ); //$NON-NLS-1$
     }
 
 

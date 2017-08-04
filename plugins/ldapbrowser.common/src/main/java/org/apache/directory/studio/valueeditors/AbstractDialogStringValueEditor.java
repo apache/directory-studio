@@ -26,7 +26,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 
 
 /**
- * 
  * Abstract base class for value editors that handle string values
  * in a dialog. 
  *
@@ -51,15 +50,7 @@ public abstract class AbstractDialogStringValueEditor extends AbstractDialogValu
     public String getDisplayValue( IValue value )
     {
         Object obj = getRawValue( value );
-        
-        if ( obj == null )
-        {
-            return NULL;
-        }
-        else
-        {
-            return obj.toString();
-        }
+        return StringValueEditorUtils.getDisplayValue( obj );
     }
 
 
@@ -90,44 +81,7 @@ public abstract class AbstractDialogStringValueEditor extends AbstractDialogValu
      */
     public Object getRawValue( IValue value )
     {
-        if ( value == null )
-        {
-            return null;
-        }
-        else if ( value.isString() )
-        {
-            return value.getStringValue();
-        }
-        else if ( value.isBinary() && isEditable( value.getBinaryValue() ) )
-        {
-            return value.getStringValue();
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-
-    /**
-     * Small helper.
-     */
-    private boolean isEditable( byte[] b )
-    {
-        if ( b == null )
-        {
-            return false;
-        }
-
-        for ( int i = 0; i < b.length; i++ )
-        {
-            if ( ( b[i] > '\u007F' ) || ( ( b[i] < '\u0020' ) && ( b[i] != '\n' ) && ( b[i] != '\r' ) ) )
-            {
-                return false;
-            }
-        }
-
-        return true;
+        return StringValueEditorUtils.getRawValue( value );
     }
 
 
@@ -139,13 +93,6 @@ public abstract class AbstractDialogStringValueEditor extends AbstractDialogValu
      */
     public Object getStringOrBinaryValue( Object rawValue )
     {
-        if ( rawValue instanceof String )
-        {
-            return rawValue;
-        }
-        else
-        {
-            return null;
-        }
+        return StringValueEditorUtils.getStringOrBinaryValue( rawValue );
     }
 }

@@ -87,8 +87,8 @@
                 <resource>
                   <directory>${basedir}/../..</directory>
                   <includes>
-                    <include>LICENSE.txt</include>
-                    <include>NOTICE.txt</include>
+                    <include>LICENSE</include>
+                    <include>NOTICE</include>
                   </includes>
                 </resource>
                 <resource>

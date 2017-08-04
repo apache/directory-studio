@@ -45,12 +45,14 @@ public class ReferralDialogBot extends DialogBot
 
     public void selectConnection( String connectionName )
     {
+        activate();
         bot.tree().select( connectionName );
     }
 
 
     public String getSelectedConnection()
     {
+        activate();
         TableCollection selection = bot.tree().selection();
         if ( selection != null && selection.rowCount() == 1 )
         {

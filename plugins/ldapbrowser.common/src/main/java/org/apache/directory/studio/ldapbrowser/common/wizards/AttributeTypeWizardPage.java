@@ -108,7 +108,6 @@ public class AttributeTypeWizardPage extends WizardPage
         super( pageName );
         super.setTitle( Messages.getString( "AttributeTypeWizardPage.AttributeType" ) ); //$NON-NLS-1$
         super.setDescription( Messages.getString( "AttributeTypeWizardPage.AttributeTypeDescription" ) ); //$NON-NLS-1$
-        // super.setImageDescriptor(BrowserUIPlugin.getDefault().getImageDescriptor(BrowserUIConstants.IMG_ATTRIBUTE_WIZARD));
         super.setPageComplete( false );
 
         this.wizard = wizard;
@@ -126,13 +125,13 @@ public class AttributeTypeWizardPage extends WizardPage
         possibleAttributeTypesSubschemaOnly = names.toArray( new String[0] );
         Arrays.sort( possibleAttributeTypesSubschemaOnly );
 
-        Set<String> set = new HashSet<String>( Arrays.asList( possibleAttributeTypesSubschemaOnly ) );
+        Set<String> set = new HashSet<>( Arrays.asList( possibleAttributeTypesSubschemaOnly ) );
         IAttribute[] existingAttributes = initialEntry.getAttributes();
         for ( int i = 0; existingAttributes != null && i < existingAttributes.length; i++ )
         {
             set.remove( existingAttributes[i].getDescription() );
         }
-        possibleAttributeTypesSubschemaOnlyAndExistingHidden = ( String[] ) set.toArray( new String[set.size()] );
+        possibleAttributeTypesSubschemaOnlyAndExistingHidden = set.toArray( new String[set.size()] );
         Arrays.sort( possibleAttributeTypesSubschemaOnlyAndExistingHidden );
 
         String attributeDescription = initialAttributeDescription;
@@ -158,9 +157,11 @@ public class AttributeTypeWizardPage extends WizardPage
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setVisible( boolean visible )
     {
         super.setVisible( visible );
+
         if ( visible )
         {
             validate();
@@ -171,6 +172,7 @@ public class AttributeTypeWizardPage extends WizardPage
     /**
      * {@inheritDoc}
      */
+    @Override
     public void createControl( Composite parent )
     {
         Composite composite = new Composite( parent, SWT.NONE );
@@ -208,6 +210,7 @@ public class AttributeTypeWizardPage extends WizardPage
         // attribute type listener
         attributeTypeCombo.addModifyListener( new ModifyListener()
         {
+            @Override
             public void modifyText( ModifyEvent e )
             {
                 validate();
@@ -217,6 +220,7 @@ public class AttributeTypeWizardPage extends WizardPage
         // filter listener
         showSubschemAttributesOnlyButton.addSelectionListener( new SelectionAdapter()
         {
+            @Override
             public void widgetSelected( SelectionEvent e )
             {
                 updateFilter();
@@ -225,6 +229,7 @@ public class AttributeTypeWizardPage extends WizardPage
         } );
         hideExistingAttributesButton.addSelectionListener( new SelectionAdapter()
         {
+            @Override
             public void widgetSelected( SelectionEvent e )
             {
                 updateFilter();
@@ -280,7 +285,7 @@ public class AttributeTypeWizardPage extends WizardPage
      */
     String getAttributeType()
     {
-        if ( attributeTypeCombo == null | attributeTypeCombo.isDisposed() )
+        if ( attributeTypeCombo == null || attributeTypeCombo.isDisposed() )
         {
             return ""; //$NON-NLS-1$
         }

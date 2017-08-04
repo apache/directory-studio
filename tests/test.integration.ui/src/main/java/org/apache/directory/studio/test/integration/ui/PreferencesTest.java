@@ -21,17 +21,22 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.security.cert.X509Certificate;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.directory.api.util.FileUtils;
 import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.test.integration.ui.bots.CertificateValidationPreferencePageBot;
+import org.apache.directory.studio.test.integration.ui.bots.CertificateViewerDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.PreferencesBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
 import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
@@ -112,6 +117,58 @@ public class PreferencesTest extends AbstractLdapTestUnit
         // click OK, this should remove the property file as only defaults are set
         preferencesBot.clickOkButton();
         assertFalse( file.exists() );
+    }
+
+
+    /**
+     * Test for DIRSTUDIO-1095
+     * (NullPointerException on certificates preference page).
+     */
+    @Test
+    public void testCertificatValidationPage() throws Exception
+    {
+        // verify there is no certificate yet.
+        PreferencesBot preferencesBot = studioBot.openPreferences();
+        CertificateValidationPreferencePageBot pageBot = preferencesBot.openCertificatValidationPage();
+        pageBot.activatePermanentTab();
+        assertEquals( 0, pageBot.getCertificateCount() );
+        pageBot.activateTemporaryTab();
+        assertEquals( 0, pageBot.getCertificateCount() );
+        preferencesBot.clickCancelButton();
+
+        // add a certificate (not possible via native file dialog)
+        Date startDate = new Date( System.currentTimeMillis() - 1000 );
+        Date endDate = new Date( System.currentTimeMillis() + 1000 );
+        X509Certificate certificate = CertificateUtils.createCertificate( "cn=localhost", "cn=localhost", startDate,
+            endDate, CertificateUtils.createKeyPair() );
+        ConnectionCorePlugin.getDefault().getPermanentTrustStoreManager().addCertificate( certificate );
+
+        // verify there is one certificate now
+        preferencesBot = studioBot.openPreferences();
+        pageBot = preferencesBot.openCertificatValidationPage();
+        pageBot.activatePermanentTab();
+        assertEquals( 1, pageBot.getCertificateCount() );
+        pageBot.activateTemporaryTab();
+        assertEquals( 0, pageBot.getCertificateCount() );
+
+        // view the certificate
+        pageBot.activatePermanentTab();
+        pageBot.selectCertificate( 0 );
+        CertificateViewerDialogBot certificateViewerDialogBot = pageBot.clickViewButton();
+        assertTrue( certificateViewerDialogBot.isVisible() );
+        certificateViewerDialogBot.clickCloseButton();
+
+        // delete the certificate
+        pageBot.clickRemoveButton();
+
+        // verify there is no certificate left
+        pageBot.activatePermanentTab();
+        assertEquals( 0, pageBot.getCertificateCount() );
+        pageBot.activateTemporaryTab();
+        assertEquals( 0, pageBot.getCertificateCount() );
+        assertEquals( 0, ConnectionCorePlugin.getDefault().getPermanentTrustStoreManager().getCertificates().length );
+        assertEquals( 0, ConnectionCorePlugin.getDefault().getSessionTrustStoreManager().getCertificates().length );
+        preferencesBot.clickCancelButton();
     }
 
 }

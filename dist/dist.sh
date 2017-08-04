@@ -35,31 +35,24 @@ if [ -e "$TARGET_DIR" ]; then
 fi
 
 echo
-echo "### Creating dist folders"
+echo "### Creating dist folder"
 DIST_DIR=${TARGET_DIR}/${VERSION}
-UPDATE_SITE_DIR=${TARGET_DIR}/update/${VERSION}
 mkdir -p ${DIST_DIR}
-mkdir -p ${UPDATE_SITE_DIR}
 
-echo
-echo "### Copying update sites"
-cp -a ../p2repositories/dependencies/target/repository ${UPDATE_SITE_DIR}/dependencies
-cp -a ../p2repositories/eclipse/target/repository ${UPDATE_SITE_DIR}/eclipse
-
-echo
-echo "### Signing update sites"
-cd ${UPDATE_SITE_DIR}/dependencies
-sh ${WORK_DIR}/sign.sh
-zip -r ${DIST_DIR}/ApacheDirectoryStudio-${VERSION}-p2repository-dependencies.zip *
-cd ${UPDATE_SITE_DIR}/eclipse
-sh ${WORK_DIR}/sign.sh
-zip -r ${DIST_DIR}/ApacheDirectoryStudio-${VERSION}-p2repository.zip *
 
 echo
 echo "### Copying dist files"
 cd ${WORK_DIR}
 cp ../target/org.apache.directory.studio.parent-${VERSION}-source-release.zip ${DIST_DIR}/ApacheDirectoryStudio-${VERSION}-src.zip
-cp ../product/target/products/ApacheDirectoryStudio-${VERSION}-*.{zip,tar.gz} ${DIST_DIR}/
+#cp ../product/target/products/ApacheDirectoryStudio-${VERSION}-*.{zip,tar.gz} ${DIST_DIR}/
+cp ../product/target/products/ApacheDirectoryStudio-${VERSION}-win32.win32.x86_64.zip ${DIST_DIR}/
+cp ../product/target/products/ApacheDirectoryStudio-${VERSION}-win32.win32.x86.zip ${DIST_DIR}/
+cp ../product/target/products/ApacheDirectoryStudio-${VERSION}-linux.gtk.x86_64.tar.gz ${DIST_DIR}/
+cp ../product/target/products/ApacheDirectoryStudio-${VERSION}-linux.gtk.x86.tar.gz ${DIST_DIR}/
+cp ../installers/windows/32bit/target/ApacheDirectoryStudio-${VERSION}-win32.win32.x86.exe ${DIST_DIR}/
+cp ../installers/windows/64bit/target/ApacheDirectoryStudio-${VERSION}-win32.win32.x86_64.exe ${DIST_DIR}/
+cp ../installers/macos/target/ApacheDirectoryStudio-${VERSION}-macosx.cocoa.x86_64.dmg ${DIST_DIR}/
+
 
 echo
 echo "### Checking legal files"
@@ -74,18 +67,42 @@ do
         *.tar.gz)
             cmd="tar -tzvf $file"
             ;;
+        *.exe)
+            continue
+            ;;
+        *.dmg)
+            continue
+            ;;
         *)
             echo "Unknown file type: $file"
             exit 1
             ;;
     esac
-    eval "$cmd" | grep "LICENSE.txt"
-    eval "$cmd" | grep "NOTICE.txt"
+    eval "$cmd" | grep "LICENSE"
+    eval "$cmd" | grep "NOTICE"
 done
 
 echo
 echo "### Signing dist files"
 sh ${WORK_DIR}/sign.sh
+
+echo
+echo "### Copying update sites"
+UPDATE_SITE_DIR=${TARGET_DIR}/${VERSION}/update
+mkdir -p ${UPDATE_SITE_DIR}
+cd ${WORK_DIR}
+cp -a ../p2repositories/dependencies/target/repository ${UPDATE_SITE_DIR}/dependencies
+cp -a ../p2repositories/eclipse/target/repository ${UPDATE_SITE_DIR}/eclipse
+
+echo
+echo "### Signing update sites"
+cd ${UPDATE_SITE_DIR}/dependencies
+sh ${WORK_DIR}/sign.sh
+#zip -r ${DIST_DIR}/ApacheDirectoryStudio-${VERSION}-p2repository-dependencies.zip *
+cd ${UPDATE_SITE_DIR}/eclipse
+sh ${WORK_DIR}/sign.sh
+#zip -r ${DIST_DIR}/ApacheDirectoryStudio-${VERSION}-p2repository.zip *
+
 
 echo
 echo "### Success"

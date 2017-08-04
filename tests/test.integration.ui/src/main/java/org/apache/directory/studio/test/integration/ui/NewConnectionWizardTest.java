@@ -24,55 +24,29 @@ package org.apache.directory.studio.test.integration.ui;
 import static org.apache.directory.studio.test.integration.ui.Constants.LOCALHOST;
 import static org.apache.directory.studio.test.integration.ui.Constants.LOCALHOST_ADDRESS;
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.math.BigInteger;
 import java.net.UnknownHostException;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.KeyStore;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.cert.Certificate;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.security.auth.x500.X500Principal;
 
 import org.apache.directory.server.annotations.CreateLdapServer;
 import org.apache.directory.server.annotations.CreateTransport;
-import org.apache.directory.server.core.api.CoreSession;
 import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
-import org.apache.directory.api.ldap.model.entry.Entry;
-import org.apache.directory.api.ldap.model.entry.Modification;
-import org.apache.directory.api.ldap.model.message.ModifyRequest;
-import org.apache.directory.api.ldap.model.message.ModifyRequestImpl;
-import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionManager;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
-import org.apache.directory.studio.test.integration.ui.bots.CertificateTrustDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
-import org.apache.directory.studio.test.integration.ui.bots.ErrorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewConnectionWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
 import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
-import org.bouncycastle.x509.X509V1CertificateGenerator;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -90,31 +64,12 @@ import org.junit.runner.RunWith;
     { @CreateTransport(protocol = "LDAP") })
 public class NewConnectionWizardTest extends AbstractLdapTestUnit
 {
-    @Rule public TestName name = new TestName();
-
-    private File ksFile;
+    @Rule
+    public TestName name = new TestName();
 
     private StudioBot studioBot;
     private ConnectionsViewBot connectionsViewBot;
     private NewConnectionWizardBot wizardBot;
-
-
-    @Before
-    public void setUpLdaps() throws Exception
-    {
-        // TODO: setup LDAPS
-        //        if ( ldapsService == null )
-        //        {
-        //            ldapsService = new LdapServer();
-        //            ldapsService.setDirectoryService( ldapService.getDirectoryService() );
-        //            int port = AvailablePortFinder.getNextAvailable( ldapService.getPort() + 10 );
-        //            ldapsService.setTcpTransport( new TcpTransport( port ) );
-        //            ldapsService.setEnabled( true );
-        //            ldapsService.setEnableLdaps( true );
-        //            ldapsService.setConfidentialityRequired( true );
-        //            ldapsService.start();
-        //        }
-    }
 
 
     @Before
@@ -138,31 +93,6 @@ public class NewConnectionWizardTest extends AbstractLdapTestUnit
         studioBot = null;
         connectionsViewBot = null;
         wizardBot = null;
-
-        // delete old key store
-        if ( ksFile != null && ksFile.exists() )
-        {
-            ksFile.delete();
-        }
-
-        // delete custom trust stores
-        X509Certificate[] permanentCertificates = ConnectionCorePlugin.getDefault().getPermanentTrustStoreManager()
-            .getCertificates();
-        for ( X509Certificate certificate : permanentCertificates )
-        {
-            ConnectionCorePlugin.getDefault().getPermanentTrustStoreManager().removeCertificate( certificate );
-        }
-        X509Certificate[] temporaryCertificates = ConnectionCorePlugin.getDefault().getSessionTrustStoreManager()
-            .getCertificates();
-        for ( X509Certificate certificate : temporaryCertificates )
-        {
-            ConnectionCorePlugin.getDefault().getSessionTrustStoreManager().removeCertificate( certificate );
-        }
-
-        // delete custom JNDI key store settings
-        System.getProperties().remove( "javax.net.ssl.trustStore" );
-        System.getProperties().remove( "javax.net.ssl.keyStore" );
-        System.getProperties().remove( "javax.net.ssl.keyStorePassword" );
     }
 
 
@@ -297,8 +227,8 @@ public class NewConnectionWizardTest extends AbstractLdapTestUnit
         assertTrue( wizardBot.isDigestMD5AuthenticationSelected() );
         assertTrue( wizardBot.isUserEnabled() );
         assertTrue( wizardBot.isPasswordEnabled() );
-        assertTrue( wizardBot.isRealmEnabled() );
         assertTrue( wizardBot.isSavePasswordEnabled() );
+        assertTrue( wizardBot.isRealmEnabled() );
 
         // select CRAM-MD5
         wizardBot.selectCramMD5Authentication();
@@ -306,8 +236,64 @@ public class NewConnectionWizardTest extends AbstractLdapTestUnit
         assertTrue( wizardBot.isCramMD5AuthenticationSelected() );
         assertTrue( wizardBot.isUserEnabled() );
         assertTrue( wizardBot.isPasswordEnabled() );
-        assertFalse( wizardBot.isRealmEnabled() );
         assertTrue( wizardBot.isSavePasswordEnabled() );
+        assertFalse( wizardBot.isRealmEnabled() );
+
+        // select GSSAPI (Kerberos)
+        wizardBot.selectGssApiAuthentication();
+        // ensure authentication parameter input fields are disabled by default
+        assertTrue( wizardBot.isGssApiAuthenticationSelected() );
+        assertFalse( wizardBot.isUserEnabled() );
+        assertFalse( wizardBot.isPasswordEnabled() );
+        assertFalse( wizardBot.isSavePasswordEnabled() );
+        assertFalse( wizardBot.isRealmEnabled() );
+        // by default "Use native TGT" is selected
+        assertTrue( wizardBot.isUseNativeTgtSelected() );
+        assertFalse( wizardBot.isObtainTgtFromKdcSelected() );
+        assertTrue( wizardBot.isUseNativeSystemConfigurationSelected() );
+        assertFalse( wizardBot.isUseConfigurationFileSelected() );
+        assertFalse( wizardBot.isUseManualConfigurationSelected() );
+        assertFalse( wizardBot.isKerberosRealmEnabled() );
+        assertFalse( wizardBot.isKdcHostEnabled() );
+        assertFalse( wizardBot.isKdcPortEnabled() );
+
+        // select GSSAPI (Kerberos) and "Obtain TGT from KDC"
+        wizardBot.selectObtainTgtFromKdc();
+        // ensure authentication parameter input fields are enabled
+        assertTrue( wizardBot.isGssApiAuthenticationSelected() );
+        assertTrue( wizardBot.isUserEnabled() );
+        assertTrue( wizardBot.isPasswordEnabled() );
+        assertTrue( wizardBot.isSavePasswordEnabled() );
+        assertFalse( wizardBot.isRealmEnabled() );
+        assertFalse( wizardBot.isUseNativeTgtSelected() );
+
+        // select GSSAPI (Kerberos) and "Use configuration file"
+        wizardBot.selectUseConfigurationFile();
+        assertFalse( wizardBot.isUseNativeSystemConfigurationSelected() );
+        assertTrue( wizardBot.isUseConfigurationFileSelected() );
+        assertFalse( wizardBot.isUseManualConfigurationSelected() );
+        assertFalse( wizardBot.isKerberosRealmEnabled() );
+        assertFalse( wizardBot.isKdcHostEnabled() );
+        assertFalse( wizardBot.isKdcPortEnabled() );
+
+        // select GSSAPI (Kerberos) and "Use manual configuration"
+        wizardBot.selectUseManualConfiguration();
+        assertFalse( wizardBot.isUseNativeSystemConfigurationSelected() );
+        assertFalse( wizardBot.isUseConfigurationFileSelected() );
+        assertTrue( wizardBot.isUseManualConfigurationSelected() );
+        assertTrue( wizardBot.isKerberosRealmEnabled() );
+        assertTrue( wizardBot.isKdcHostEnabled() );
+        assertTrue( wizardBot.isKdcPortEnabled() );
+        assertFalse( wizardBot.isNextButtonEnabled() );
+
+        // select GSSAPI (Kerberos) and "Use native system configuration" again
+        wizardBot.selectUseNativeSystemConfiguration();
+        assertTrue( wizardBot.isUseNativeSystemConfigurationSelected() );
+        assertFalse( wizardBot.isUseConfigurationFileSelected() );
+        assertFalse( wizardBot.isUseManualConfigurationSelected() );
+        assertFalse( wizardBot.isKerberosRealmEnabled() );
+        assertFalse( wizardBot.isKdcHostEnabled() );
+        assertFalse( wizardBot.isKdcPortEnabled() );
 
         wizardBot.clickNextButton();
 
@@ -353,7 +339,7 @@ public class NewConnectionWizardTest extends AbstractLdapTestUnit
         wizardBot.typePassword( "secret" );
 
         // finish dialog
-        wizardBot.clickFinishButton();
+        wizardBot.clickFinishButton( true );
         connectionsViewBot.waitForConnection( getConnectionName() );
 
         // ensure connection was created
@@ -430,7 +416,10 @@ public class NewConnectionWizardTest extends AbstractLdapTestUnit
         // click "Check Network Parameter" button and get the result
         String result1 = wizardBot.clickCheckNetworkParameterButton();
         assertNotNull( "Expected Error", result1 );
-        assertTrue( "'Connection refused' message must occur in error message", result1.contains( "Connection refused" ) );
+        // LDAP API: Connection refused
+        // JNDI: The connection failed
+        assertThat( result1,
+            anyOf( containsString( "Connection refused" ), containsString( "The connection failed" ) ) );
 
         // enter connection parameter with invalid host name
         String hostname = "qwertzuiop.asdfghjkl.yxcvbnm";
@@ -441,8 +430,10 @@ public class NewConnectionWizardTest extends AbstractLdapTestUnit
         String result2 = wizardBot.clickCheckNetworkParameterButton();
         System.out.println( result2 );
         assertNotNull( "Expected Error", result2 );
-        assertThat( "'could not be resolved' message must occur in error message", result2,
-            containsString( "could not be resolved" ) );
+        // LDAP API: could not be resolved
+        // JNDI: The connection failed
+        assertThat( result2,
+            anyOf( containsString( "could not be resolved" ), containsString( "The connection failed" ) ) );
         assertThat( "Unknown host name must occur in error message", result2, containsString( hostname ) );
 
         // disabled this test because it does not work properly
@@ -511,687 +502,4 @@ public class NewConnectionWizardTest extends AbstractLdapTestUnit
         wizardBot.clickCancelButton();
     }
 
-
-    /**
-     * Tests StartTLS with an valid certificate. This is simulated
-     * by putting the self-signed certificate into a temporary key store
-     * and using this key store for JNDI
-     */
-    @Test
-    @Ignore
-    // till DIRSERVER-1373 is fixed
-    public void testStartTlsCertificateValidationOK() throws Exception
-    {
-        // prepare certificate
-        Date startDate = new Date( System.currentTimeMillis() - YEAR_MILLIS );
-        Date endDate = new Date( System.currentTimeMillis() + YEAR_MILLIS );
-        updateCertificate( "cn=localhost", "cn=localhost", startDate, endDate );
-
-        // prepare key store
-        installKeyStoreWithCertificate();
-
-        // let JNDI use the key store
-        System.setProperty( "javax.net.ssl.trustStore", ksFile.getAbsolutePath() );
-        System.setProperty( "javax.net.ssl.keyStore", ksFile.getAbsolutePath() );
-        System.setProperty( "javax.net.ssl.keyStorePassword", "changeit" );
-
-        // enter connection parameter
-        wizardBot.typeConnectionName( getConnectionName() );
-        wizardBot.typeHost( LOCALHOST );
-        wizardBot.typePort( ldapServer.getPort() );
-        wizardBot.selectStartTlsEncryption();
-
-        // check the certificate, should be OK
-        String result = wizardBot.clickCheckNetworkParameterButton();
-        assertNull( "Expected OK, valid and trusted certificate", result );
-
-        // enter correct authentication parameter
-        wizardBot.clickNextButton();
-        wizardBot.typeUser( "uid=admin,ou=system" );
-        wizardBot.typePassword( "secret" );
-
-        // check the certificate again, should be OK
-        String result2 = wizardBot.clickCheckAuthenticationButton();
-        assertNull( "Expected OK, valid and trusted certificate", result2 );
-
-        wizardBot.clickCancelButton();
-    }
-
-
-    /**
-     * Tests StartTLS with an expired certificate.
-     */
-    @Test
-    @Ignore
-    // till DIRSERVER-1373 is fixed
-    public void testStartTlsCertificateValidationExpired() throws Exception
-    {
-        // prepare certificate
-        Date startDate = new Date( System.currentTimeMillis() - YEAR_MILLIS - YEAR_MILLIS );
-        Date endDate = new Date( System.currentTimeMillis() - YEAR_MILLIS );
-        updateCertificate( "cn=localhost", "cn=localhost", startDate, endDate );
-
-        // enter connection parameter
-        wizardBot.typeConnectionName( getConnectionName() );
-        wizardBot.typeHost( LOCALHOST );
-        wizardBot.typePort( ldapServer.getPort() );
-        wizardBot.selectStartTlsEncryption();
-
-        // check the certificate, expecting the trust dialog
-        CertificateTrustDialogBot trustDialogBot = wizardBot
-            .clickCheckNetworkParameterButtonExpectingCertificateTrustDialog();
-        assertTrue( trustDialogBot.isSelfSigned() );
-        assertTrue( trustDialogBot.isExpired() );
-        assertFalse( trustDialogBot.isNotYetValid() );
-        assertFalse( trustDialogBot.isHostNameMismatch() );
-        assertFalse( trustDialogBot.isIssuerUnkown() );
-        trustDialogBot.selectDontTrust();
-        ErrorDialogBot errorBot = trustDialogBot.clickOkButtonExpectingErrorDialog();
-        assertTrue( errorBot.getErrorMessage().contains( "Untrusted certificate" ) );
-        errorBot.clickOkButton();
-
-        wizardBot.clickCancelButton();
-    }
-
-
-    /**
-     * Tests SSL with an not yet valid certificate.
-     */
-    @Test
-    @Ignore
-    // till DIRSERVER-1373 is fixed
-    public void testStartTlsCertificateValidationNotYetValid() throws Exception
-    {
-        // prepare certificate
-        Date startDate = new Date( System.currentTimeMillis() + YEAR_MILLIS );
-        Date endDate = new Date( System.currentTimeMillis() + YEAR_MILLIS + YEAR_MILLIS );
-        updateCertificate( "cn=localhost", "cn=localhost", startDate, endDate );
-
-        // enter connection parameter
-        wizardBot.typeConnectionName( getConnectionName() );
-        wizardBot.typeHost( LOCALHOST );
-        wizardBot.typePort( ldapServer.getPort() );
-        wizardBot.selectStartTlsEncryption();
-
-        // check the certificate, expecting the trust dialog
-        CertificateTrustDialogBot trustDialogBot = wizardBot
-            .clickCheckNetworkParameterButtonExpectingCertificateTrustDialog();
-        assertTrue( trustDialogBot.isSelfSigned() );
-        assertTrue( trustDialogBot.isNotYetValid() );
-        assertFalse( trustDialogBot.isExpired() );
-        assertFalse( trustDialogBot.isHostNameMismatch() );
-        assertFalse( trustDialogBot.isIssuerUnkown() );
-        trustDialogBot.selectDontTrust();
-        ErrorDialogBot errorBot = trustDialogBot.clickOkButtonExpectingErrorDialog();
-        assertTrue( errorBot.getErrorMessage().contains( "Untrusted certificate" ) );
-        errorBot.clickOkButton();
-
-        wizardBot.clickCancelButton();
-    }
-
-
-    /**
-     * Tests StartTLS with an invalid certificate (unknown issuer).
-     */
-    @Test
-    @Ignore
-    // till DIRSERVER-1373 is fixed
-    public void testStartTlsCertificateValidationIssuerUnknown() throws Exception
-    {
-        // prepare certificate
-        Date startDate = new Date( System.currentTimeMillis() - YEAR_MILLIS );
-        Date endDate = new Date( System.currentTimeMillis() + YEAR_MILLIS );
-        updateCertificate( "cn=TheUnknownStuntman", "cn=localhost", startDate, endDate );
-
-        // enter connection parameter
-        wizardBot.typeConnectionName( getConnectionName() );
-        wizardBot.typeHost( LOCALHOST );
-        wizardBot.typePort( ldapServer.getPort() );
-        wizardBot.selectStartTlsEncryption();
-
-        // check the certificate, expecting the trust dialog
-        CertificateTrustDialogBot trustDialogBot = wizardBot
-            .clickCheckNetworkParameterButtonExpectingCertificateTrustDialog();
-        assertTrue( trustDialogBot.isIssuerUnkown() );
-        assertFalse( trustDialogBot.isHostNameMismatch() );
-        assertFalse( trustDialogBot.isSelfSigned() );
-        assertFalse( trustDialogBot.isNotYetValid() );
-        assertFalse( trustDialogBot.isExpired() );
-        trustDialogBot.selectDontTrust();
-        ErrorDialogBot errorBot = trustDialogBot.clickOkButtonExpectingErrorDialog();
-        assertTrue( errorBot.getErrorMessage().contains( "Untrusted certificate" ) );
-        errorBot.clickOkButton();
-
-        wizardBot.clickCancelButton();
-    }
-
-
-    /**
-     * Tests StartTLS with an certificate, where the certificate's host name
-     * doesn't match the server's host name (localhost)
-     */
-    @Test
-    @Ignore
-    // till DIRSERVER-1373 is fixed
-    public void testStartTlsCertificateValidationHostnameMismatch() throws Exception
-    {
-        // prepare certificate
-        Date startDate = new Date( System.currentTimeMillis() - YEAR_MILLIS );
-        Date endDate = new Date( System.currentTimeMillis() + YEAR_MILLIS );
-        updateCertificate( "cn=TheUnknownStuntman", "cn=ldap.example.com", startDate, endDate );
-
-        // enter connection parameter and authentication parameter
-        wizardBot.typeConnectionName( getConnectionName() );
-        wizardBot.typeHost( LOCALHOST );
-        wizardBot.typePort( ldapServer.getPort() );
-        wizardBot.selectStartTlsEncryption();
-        wizardBot.clickNextButton();
-        wizardBot.typeUser( "uid=admin,ou=system" );
-        wizardBot.typePassword( "secret" );
-
-        // check the certificate, expecting the trust dialog
-        CertificateTrustDialogBot trustDialogBot = wizardBot
-            .clickCheckAuthenticationButtonExpectingCertificateTrustDialog();
-        assertTrue( trustDialogBot.isHostNameMismatch() );
-        assertTrue( trustDialogBot.isIssuerUnkown() );
-        assertFalse( trustDialogBot.isSelfSigned() );
-        assertFalse( trustDialogBot.isNotYetValid() );
-        assertFalse( trustDialogBot.isExpired() );
-        trustDialogBot.selectDontTrust();
-        ErrorDialogBot errorBot = trustDialogBot.clickOkButtonExpectingErrorDialog();
-        assertTrue( errorBot.getErrorMessage().contains( "Untrusted certificate" ) );
-        errorBot.clickOkButton();
-
-        wizardBot.clickCancelButton();
-    }
-
-
-    /**
-     * Tests that when selecting "Don't trust" the certificate is not trusted
-     * and not added to any key store.
-     *
-     * @throws Exception
-     */
-    @Test
-    @Ignore
-    // till DIRSERVER-1373 is fixed
-    public void testStartTlsCertificateDontTrust() throws Exception
-    {
-        // prepare certificate
-        Date startDate = new Date( System.currentTimeMillis() - YEAR_MILLIS );
-        Date endDate = new Date( System.currentTimeMillis() + YEAR_MILLIS );
-        updateCertificate( "cn=TheUnknownStuntman", "cn=localhost", startDate, endDate );
-
-        // enter connection parameter and authentication parameter
-        wizardBot.typeConnectionName( getConnectionName() );
-        wizardBot.typeHost( LOCALHOST );
-        wizardBot.typePort( ldapServer.getPort() );
-        wizardBot.selectStartTlsEncryption();
-
-        // check trust, expect trust dialog, select don't trust
-        CertificateTrustDialogBot trustDialogBot = wizardBot
-            .clickCheckNetworkParameterButtonExpectingCertificateTrustDialog();
-        assertTrue( trustDialogBot.isVisible() );
-        trustDialogBot.selectDontTrust();
-        ErrorDialogBot errorBot = trustDialogBot.clickOkButtonExpectingErrorDialog();
-        errorBot.clickOkButton();
-
-        // check trust again, expect trust dialog, select don't trust
-        trustDialogBot = wizardBot.clickCheckNetworkParameterButtonExpectingCertificateTrustDialog();
-        assertTrue( trustDialogBot.isVisible() );
-        trustDialogBot.selectDontTrust();
-        errorBot = trustDialogBot.clickOkButtonExpectingErrorDialog();
-        errorBot.clickOkButton();
-
-        // certificate must not be added to a trust store
-        assertEquals( 0, ConnectionCorePlugin.getDefault().getPermanentTrustStoreManager().getCertificates().length );
-        assertEquals( 0, ConnectionCorePlugin.getDefault().getSessionTrustStoreManager().getCertificates().length );
-
-        // enter authentication parameter
-        wizardBot.clickNextButton();
-        wizardBot.typeUser( "uid=admin,ou=system" );
-        wizardBot.typePassword( "secret" );
-
-        // check trust again, expect trust dialog, select don't trust
-        trustDialogBot = wizardBot.clickCheckAuthenticationButtonExpectingCertificateTrustDialog();
-        assertTrue( trustDialogBot.isVisible() );
-        trustDialogBot.selectDontTrust();
-        errorBot = trustDialogBot.clickOkButtonExpectingErrorDialog();
-        errorBot.clickOkButton();
-
-        // click finish, that opens the connection
-        wizardBot.clickFinishButton();
-
-        // expecting trust dialog again.
-        trustDialogBot = new CertificateTrustDialogBot();
-        assertTrue( trustDialogBot.isVisible() );
-        trustDialogBot.selectDontTrust();
-        errorBot = trustDialogBot.clickOkButtonExpectingErrorDialog();
-        errorBot.clickOkButton();
-
-        assertEquals( 0, ConnectionCorePlugin.getDefault().getPermanentTrustStoreManager().getCertificates().length );
-        assertEquals( 0, ConnectionCorePlugin.getDefault().getSessionTrustStoreManager().getCertificates().length );
-    }
-
-
-    /**
-     * Tests that when selecting "Trust temporary" the certificate is trusted
-     * and added to the session key store.
-     *
-     * @throws Exception
-     */
-    @Test
-    @Ignore
-    // till DIRSERVER-1373 is fixed
-    public void testStartTlsCertificateTrustTemporary() throws Exception
-    {
-        // prepare certificate
-        Date startDate = new Date( System.currentTimeMillis() - YEAR_MILLIS );
-        Date endDate = new Date( System.currentTimeMillis() + YEAR_MILLIS );
-        updateCertificate( "cn=TheUnknownStuntman", "cn=localhost2", startDate, endDate );
-
-        // enter connection parameter and authentication parameter
-        wizardBot.typeConnectionName( getConnectionName() );
-        wizardBot.typeHost( LOCALHOST );
-        wizardBot.typePort( ldapServer.getPort() );
-        wizardBot.selectStartTlsEncryption();
-        wizardBot.clickNextButton();
-        wizardBot.typeUser( "uid=admin,ou=system" );
-        wizardBot.typePassword( "secret" );
-
-        // check trust, expect trust dialog, select trust temporary
-        CertificateTrustDialogBot trustDialogBot = wizardBot
-            .clickCheckAuthenticationButtonExpectingCertificateTrustDialog();
-        assertTrue( trustDialogBot.isVisible() );
-        trustDialogBot.selectTrustTemporary();
-        trustDialogBot.clickOkButton();
-
-        // TODO: expect ok dialog
-        trustDialogBot.clickOkButton();
-
-        // certificate must be added to the temporary trust store
-        assertEquals( 0, ConnectionCorePlugin.getDefault().getPermanentTrustStoreManager().getCertificates().length );
-        assertEquals( 1, ConnectionCorePlugin.getDefault().getSessionTrustStoreManager().getCertificates().length );
-
-        // check trust again, now the certificate is already trusted
-        String result = wizardBot.clickCheckAuthenticationButton();
-        assertNull( "Expected OK, valid and trusted certificate", result );
-
-        wizardBot.clickCancelButton();
-    }
-
-
-    /**
-     * Tests that when selecting "Trust permanent" the certificate is trusted
-     * and added to the permanent key store.
-     *
-     * @throws Exception
-     */
-    @Test
-    @Ignore
-    // till DIRSERVER-1373 is fixed
-    public void testStartTlsCertificateTrustPermanent() throws Exception
-    {
-        // prepare certificate
-        Date startDate = new Date( System.currentTimeMillis() - YEAR_MILLIS );
-        Date endDate = new Date( System.currentTimeMillis() + YEAR_MILLIS );
-        updateCertificate( "cn=TheUnknownStuntman", "cn=localhost3", startDate, endDate );
-
-        // enter connection parameter and authentication parameter
-        wizardBot.typeConnectionName( getConnectionName() );
-        wizardBot.typeHost( LOCALHOST );
-        wizardBot.typePort( ldapServer.getPort() );
-        wizardBot.selectStartTlsEncryption();
-
-        // check trust, expect trust dialog, select trust temporary
-        CertificateTrustDialogBot trustDialogBot = wizardBot
-            .clickCheckNetworkParameterButtonExpectingCertificateTrustDialog();
-        assertTrue( trustDialogBot.isVisible() );
-        trustDialogBot.selectTrustPermanent();
-        trustDialogBot.clickOkButton();
-
-        // TODO: expect ok dialog
-        trustDialogBot.clickOkButton();
-
-        // certificate must be added to the temporary trust store
-        assertEquals( 1, ConnectionCorePlugin.getDefault().getPermanentTrustStoreManager().getCertificates().length );
-        assertEquals( 0, ConnectionCorePlugin.getDefault().getSessionTrustStoreManager().getCertificates().length );
-
-        // check trust again, now the certificate is already trusted
-        String result = wizardBot.clickCheckNetworkParameterButton();
-        assertNull( "Expected OK, valid and trusted certificate", result );
-
-        wizardBot.clickCancelButton();
-    }
-
-
-    /**
-     * Tests ldaps:// with an valid certificate. This is simulated
-     * by putting the self-signed certificate into a temporary key store
-     * and using this key store for JNDI
-     */
-    @Test
-    @Ignore
-    // till DIRSERVER-1373 is fixed
-    public void testLdapsCertificateValidationOK() throws Exception
-    {
-        // prepare certificate
-        Date startDate = new Date( System.currentTimeMillis() - YEAR_MILLIS );
-        Date endDate = new Date( System.currentTimeMillis() + YEAR_MILLIS );
-        updateCertificate( "cn=localhost", "cn=localhost", startDate, endDate );
-
-        // prepare key store
-        installKeyStoreWithCertificate();
-
-        // let JNDI use the key store
-        System.setProperty( "javax.net.ssl.trustStore", ksFile.getAbsolutePath() );
-        System.setProperty( "javax.net.ssl.keyStore", ksFile.getAbsolutePath() );
-        System.setProperty( "javax.net.ssl.keyStorePassword", "changeit" );
-
-        // enter connection parameter and authentication parameter
-        wizardBot.typeConnectionName( getConnectionName() );
-        wizardBot.typeHost( LOCALHOST );
-        wizardBot.typePort( ldapServer.getPortSSL() );
-        wizardBot.selectLdapsEncryption();
-        wizardBot.clickNextButton();
-        wizardBot.typeUser( "uid=admin,ou=system" );
-        wizardBot.typePassword( "secret" );
-
-        // check the certificate, should be OK
-        String result = wizardBot.clickCheckAuthenticationButton();
-        assertNull( "Expected OK, valid and trusted certificate", result );
-
-        wizardBot.clickCancelButton();
-    }
-
-
-    @Test
-    @Ignore
-    // till DIRSERVER-1373 is fixed
-    public void testLdapsCertificateValidationNotOK() throws Exception
-    {
-        // prepare certificate
-        Date startDate = new Date( System.currentTimeMillis() + YEAR_MILLIS );
-        Date endDate = new Date( System.currentTimeMillis() + YEAR_MILLIS + YEAR_MILLIS );
-        updateCertificate( "cn=localhost", "cn=localhost", startDate, endDate );
-
-        // enter connection parameter and authentication parameter
-        wizardBot.typeConnectionName( getConnectionName() );
-        wizardBot.typeHost( LOCALHOST );
-        wizardBot.typePort( ldapServer.getPortSSL() );
-        wizardBot.selectLdapsEncryption();
-        wizardBot.clickNextButton();
-        wizardBot.typeUser( "uid=admin,ou=system" );
-        wizardBot.typePassword( "secret" );
-
-        // check the certificate, expecting the trust dialog
-        CertificateTrustDialogBot trustDialogBot = wizardBot
-            .clickCheckAuthenticationButtonExpectingCertificateTrustDialog();
-        assertTrue( trustDialogBot.isSelfSigned() );
-        assertTrue( trustDialogBot.isNotYetValid() );
-        assertFalse( trustDialogBot.isExpired() );
-        assertFalse( trustDialogBot.isHostNameMismatch() );
-        assertFalse( trustDialogBot.isIssuerUnkown() );
-        trustDialogBot.selectDontTrust();
-        ErrorDialogBot errorBot = trustDialogBot.clickOkButtonExpectingErrorDialog();
-        assertTrue( errorBot.getErrorMessage().contains( "failed" ) );
-        errorBot.clickOkButton();
-
-        wizardBot.clickCancelButton();
-    }
-
-
-    /**
-     * Tests that when selecting "Don't trust" the certificate is not trusted
-     * and not added to any key store.
-     *
-     * @throws Exception
-     */
-    @Test
-    @Ignore
-    // till DIRSERVER-1373 is fixed
-    public void testLdapsCertificateDontTrust() throws Exception
-    {
-        // prepare certificate
-        Date startDate = new Date( System.currentTimeMillis() - YEAR_MILLIS );
-        Date endDate = new Date( System.currentTimeMillis() + YEAR_MILLIS );
-        updateCertificate( "cn=TheUnknownStuntman", "cn=localhost4", startDate, endDate );
-
-        // enter connection parameter and authentication parameter
-        wizardBot.typeConnectionName( getConnectionName() );
-        wizardBot.typeHost( LOCALHOST );
-        wizardBot.typePort( ldapServer.getPortSSL() );
-        wizardBot.selectLdapsEncryption();
-        wizardBot.clickNextButton();
-        wizardBot.typeUser( "uid=admin,ou=system" );
-        wizardBot.typePassword( "secret" );
-
-        // check trust, expect trust dialog, select don't trust
-        CertificateTrustDialogBot trustDialogBot = wizardBot
-            .clickCheckAuthenticationButtonExpectingCertificateTrustDialog();
-        assertTrue( trustDialogBot.isVisible() );
-        trustDialogBot.selectDontTrust();
-        ErrorDialogBot errorBot = trustDialogBot.clickOkButtonExpectingErrorDialog();
-        errorBot.clickOkButton();
-
-        // check trust again, expect trust dialog, select don't trust
-        trustDialogBot = wizardBot.clickCheckAuthenticationButtonExpectingCertificateTrustDialog();
-        assertTrue( trustDialogBot.isVisible() );
-        trustDialogBot.selectDontTrust();
-        errorBot = trustDialogBot.clickOkButtonExpectingErrorDialog();
-        errorBot.clickOkButton();
-
-        // certificate must not be added to a trust store
-        assertEquals( 0, ConnectionCorePlugin.getDefault().getPermanentTrustStoreManager().getCertificates().length );
-        assertEquals( 0, ConnectionCorePlugin.getDefault().getSessionTrustStoreManager().getCertificates().length );
-
-        // click finish, that opens the connection
-        wizardBot.clickFinishButton();
-
-        // expecting trust dialog again.
-        trustDialogBot = new CertificateTrustDialogBot();
-        assertTrue( trustDialogBot.isVisible() );
-        trustDialogBot.selectDontTrust();
-        errorBot = trustDialogBot.clickOkButtonExpectingErrorDialog();
-        errorBot.clickOkButton();
-
-        assertEquals( 0, ConnectionCorePlugin.getDefault().getPermanentTrustStoreManager().getCertificates().length );
-        assertEquals( 0, ConnectionCorePlugin.getDefault().getSessionTrustStoreManager().getCertificates().length );
-    }
-
-
-    /**
-     * Tests that when selecting "Trust temporary" the certificate is trusted
-     * and added to the session key store.
-     *
-     * @throws Exception
-     */
-    @Test
-    @Ignore
-    // till DIRSERVER-1373 is fixed
-    public void testLdapsCertificateTrustTemporary() throws Exception
-    {
-        // prepare certificate
-        Date startDate = new Date( System.currentTimeMillis() - YEAR_MILLIS );
-        Date endDate = new Date( System.currentTimeMillis() + YEAR_MILLIS );
-        updateCertificate( "cn=TheUnknownStuntman", "cn=localhost5", startDate, endDate );
-
-        // enter connection parameter and authentication parameter
-        wizardBot.typeConnectionName( getConnectionName() );
-        wizardBot.typeHost( LOCALHOST );
-        wizardBot.typePort( ldapServer.getPortSSL() );
-        wizardBot.selectLdapsEncryption();
-        wizardBot.clickNextButton();
-        wizardBot.typeUser( "uid=admin,ou=system" );
-        wizardBot.typePassword( "secret" );
-
-        // check trust, expect trust dialog, select trust temporary
-        CertificateTrustDialogBot trustDialogBot = wizardBot
-            .clickCheckAuthenticationButtonExpectingCertificateTrustDialog();
-        assertTrue( trustDialogBot.isVisible() );
-        trustDialogBot.selectTrustTemporary();
-        trustDialogBot.clickOkButton();
-
-        // TODO: expect ok dialog
-        trustDialogBot.clickOkButton();
-
-        // certificate must be added to the temporary trust store
-        assertEquals( 0, ConnectionCorePlugin.getDefault().getPermanentTrustStoreManager().getCertificates().length );
-        assertEquals( 1, ConnectionCorePlugin.getDefault().getSessionTrustStoreManager().getCertificates().length );
-
-        // check trust again, now the certificate is already trusted
-        String result = wizardBot.clickCheckAuthenticationButton();
-        assertNull( "Expected OK, valid and trusted certificate", result );
-
-        wizardBot.clickCancelButton();
-    }
-
-
-    /**
-     * Tests that when selecting "Trust permanent" the certificate is trusted
-     * and added to the permanent key store.
-     *
-     * @throws Exception
-     */
-    @Test
-    @Ignore
-    // till DIRSERVER-1373 is fixed
-    public void testLdapsCertificateTrustPermanent() throws Exception
-    {
-        // prepare certificate
-        Date startDate = new Date( System.currentTimeMillis() - YEAR_MILLIS );
-        Date endDate = new Date( System.currentTimeMillis() + YEAR_MILLIS );
-        updateCertificate( "cn=TheUnknownStuntman", "cn=localhost6", startDate, endDate );
-
-        // enter connection parameter and authentication parameter
-        wizardBot.typeConnectionName( getConnectionName() );
-        wizardBot.typeHost( LOCALHOST );
-        wizardBot.typePort( ldapServer.getPortSSL() );
-        wizardBot.selectLdapsEncryption();
-        wizardBot.clickNextButton();
-        wizardBot.typeUser( "uid=admin,ou=system" );
-        wizardBot.typePassword( "secret" );
-
-        // check trust, expect trust dialog, select trust temporary
-        CertificateTrustDialogBot trustDialogBot = wizardBot
-            .clickCheckAuthenticationButtonExpectingCertificateTrustDialog();
-        assertTrue( trustDialogBot.isVisible() );
-        trustDialogBot.selectTrustPermanent();
-        trustDialogBot.clickOkButton();
-
-        // TODO: expect ok dialog
-        trustDialogBot.clickOkButton();
-
-        // certificate must be added to the temporary trust store
-        assertEquals( 1, ConnectionCorePlugin.getDefault().getPermanentTrustStoreManager().getCertificates().length );
-        assertEquals( 0, ConnectionCorePlugin.getDefault().getSessionTrustStoreManager().getCertificates().length );
-
-        // check trust again, now the certificate is already trusted
-        String result = wizardBot.clickCheckAuthenticationButton();
-        assertNull( "Expected OK, valid and trusted certificate", result );
-
-        wizardBot.clickCancelButton();
-    }
-
-    /*
-     * Eventually we have to make several of these parameters configurable,
-     * however note to pass export restrictions we must use a key size of
-     * 512 or less here as the default.  Users can configure this setting
-     * later based on their own legal situations.  This is required to
-     * classify ApacheDS in the ECCN 5D002 category.  Please see the following
-     * page for more information:
-     *
-     *    http://www.apache.org/dev/crypto.html
-     *
-     * Also ApacheDS must be classified on the following page:
-     *
-     *    http://www.apache.org/licenses/exports
-     */
-    private static final int KEY_SIZE = 512;
-    private static final long YEAR_MILLIS = 365L * 24L * 3600L * 1000L;
-    private static final String PRIVATE_KEY_AT = "privateKey";
-    private static final String PUBLIC_KEY_AT = "publicKey";
-    private static final String KEY_ALGORITHM_AT = "keyAlgorithm";
-    private static final String PRIVATE_KEY_FORMAT_AT = "privateKeyFormat";
-    private static final String PUBLIC_KEY_FORMAT_AT = "publicKeyFormat";
-    private static final String USER_CERTIFICATE_AT = "userCertificate";
-    private static final String PRINCIPAL = "uid=admin,ou=system";
-
-
-    /**
-     *
-     */
-    private void updateCertificate( String issuerDN, String subjectDN, Date startDate, Date expiryDate )
-        throws Exception
-    {
-        Dn dn = new Dn( PRINCIPAL );
-        List<Modification> modifications = new ArrayList<Modification>();
-
-        // Get old key algorithm
-        Entry entry = service.getAdminSession().lookup( dn );
-        String keyAlgo = entry.get( KEY_ALGORITHM_AT ).getString();
-
-        // Generate key pair
-        KeyPairGenerator generator = KeyPairGenerator.getInstance( keyAlgo );
-        generator.initialize( KEY_SIZE );
-        KeyPair keypair = generator.genKeyPair();
-
-        // Generate the private key attributes
-        PrivateKey privateKey = keypair.getPrivate();
-
-        // Generate public key
-        PublicKey publicKey = keypair.getPublic();
-
-        // Generate the self-signed certificate
-        BigInteger serialNumber = BigInteger.valueOf( System.currentTimeMillis() );
-        X509V1CertificateGenerator certGen = new X509V1CertificateGenerator();
-        X500Principal issuerName = new X500Principal( issuerDN );
-        X500Principal subjectName = new X500Principal( subjectDN );
-        certGen.setSerialNumber( serialNumber );
-        certGen.setIssuerDN( issuerName );
-        certGen.setNotBefore( startDate );
-        certGen.setNotAfter( expiryDate );
-        certGen.setSubjectDN( subjectName );
-        certGen.setPublicKey( publicKey );
-        certGen.setSignatureAlgorithm( "SHA1With" + keyAlgo );
-        X509Certificate cert = certGen.generate( privateKey, "BC" );
-
-        // Write the modifications
-        ModifyRequest request = new ModifyRequestImpl();
-        request.setName( dn );
-        request.replace( PRIVATE_KEY_AT, privateKey.getEncoded() );
-        request.replace( PRIVATE_KEY_FORMAT_AT, privateKey.getFormat() );
-        request.replace( PUBLIC_KEY_AT, publicKey.getEncoded() );
-        request.replace( PUBLIC_KEY_FORMAT_AT, publicKey.getFormat() );
-        request.replace( USER_CERTIFICATE_AT, cert.getEncoded() );
-        service.getAdminSession().modify( dn, modifications );
-
-        // TODO: activate when DIRSERVER-1373 is fixed
-        //ldapService.reloadSslContext();
-        //ldapsService.reloadSslContext();
-    }
-
-
-    private void installKeyStoreWithCertificate() throws Exception
-    {
-        if ( ksFile != null && ksFile.exists() )
-        {
-            ksFile.delete();
-        }
-        ksFile = File.createTempFile( "testStore", "ks" );
-
-        CoreSession session = service.getAdminSession();
-        Entry entry = session.lookup( new Dn( "uid=admin,ou=system" ), new String[]
-            { USER_CERTIFICATE_AT } );
-        byte[] userCertificate = entry.get( USER_CERTIFICATE_AT ).getBytes();
-        assertNotNull( userCertificate );
-
-        ByteArrayInputStream in = new ByteArrayInputStream( userCertificate );
-        CertificateFactory factory = CertificateFactory.getInstance( "X.509" );
-        Certificate cert = factory.generateCertificate( in );
-        KeyStore ks = KeyStore.getInstance( KeyStore.getDefaultType() );
-        ks.load( null, null );
-        ks.setCertificateEntry( "apacheds", cert );
-        ks.store( new FileOutputStream( ksFile ), "changeit".toCharArray() );
-    }
 }

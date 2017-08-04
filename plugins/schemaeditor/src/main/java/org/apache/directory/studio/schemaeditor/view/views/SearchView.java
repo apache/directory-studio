@@ -869,8 +869,10 @@ public class SearchView extends ViewPart
         {
             for ( String string : list )
             {
-                return pattern.matcher( string ).matches();
-
+                if ( pattern.matcher( string ).matches() )
+                {
+                    return true;
+                }
             }
         }
 

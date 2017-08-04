@@ -86,7 +86,7 @@ public class LdapNotFilterComponent extends LdapFilterComponent
         {
             return Messages.LdapNotFilterComponent_MissingNotCharacter;
         }
-        else if ( filterList == null || filterList.isEmpty() )
+        else if ( filterList.isEmpty() )
         {
             return Messages.LdapNotFilterComponent_MissingFilterExpression;
         }

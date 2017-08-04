@@ -24,10 +24,11 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
+import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
@@ -91,6 +92,18 @@ public class StudioBot
         ShowViewsBot showViewsBot = openShowViews();
         showViewsBot.openView( "General", "Console" );
         return new ConsoleViewBot();
+    }
+
+
+    public SchemaProjectsViewBot getSchemaProjectsView()
+    {
+        return new SchemaProjectsViewBot();
+    }
+
+
+    public SchemaSearchViewBot getSchemaSearchView()
+    {
+        return new SchemaSearchViewBot();
     }
 
 
@@ -183,15 +196,16 @@ public class StudioBot
 
     public NewWizardBot openNewWizard()
     {
-        try
-        {
-            // In IDE
-            new SWTBot().menu( "File" ).menu( "New" ).menu( "Other..." ).click();
-        }
-        catch ( WidgetNotFoundException wnfe )
+        SWTBotMenu file = new SWTBot().menu( "File" );
+        if ( file.menuItems().contains( "New" ) )
         {
             // In RCP application
-            new SWTBot().menu( "File" ).menu( "New..." ).click();
+            file.menu( "New" ).menu( "Other..." ).click();
+        }
+        else
+        {
+            // In IDE
+            file.menu( "New..." ).click();
         }
         return new NewWizardBot();
     }
@@ -216,4 +230,17 @@ public class StudioBot
         new SWTBot().menu( "Window" ).menu( "Show View" ).menu( "Other..." ).click();
         return new ShowViewsBot();
     }
+
+
+    public void navigationHistoryBack()
+    {
+        new SWTBot().activeShell().pressShortcut( Keystrokes.ALT, Keystrokes.LEFT );
+    }
+
+
+    public void navigationHistoryForward()
+    {
+        new SWTBot().activeShell().pressShortcut( Keystrokes.ALT, Keystrokes.RIGHT );
+    }
+
 }

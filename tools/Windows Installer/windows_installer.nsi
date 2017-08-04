@@ -20,7 +20,7 @@
 #
 # Constants and variables
 #
-    !define Application "Apache Directory Studio"
+    !define Application "ApacheDirectoryStudio"
     !define Version "1.4.0.v20090407"
     !define Icon "utils\studio-installer.ico"
     !define WelcomeImage "utils\welcome_studio.bmp"
@@ -187,13 +187,13 @@
         WriteRegStr "${INSTDIR_REG_ROOT}" "SOFTWARE\${Application}" "InstallDir" $INSTDIR
 
         # Creating directories in the start menu
-        CreateDirectory "$SMPROGRAMS\Apache Directory Studio"
+        CreateDirectory "$SMPROGRAMS\ApacheDirectoryStudio"
         
         # Creating a shortcut to the application
-        CreateShortCut "$SMPROGRAMS\Apache Directory Studio\Apache Directory Studio.lnk" "$INSTDIR\Apache Directory Studio.exe" "" "$INSTDIR\Apache Directory Studio.exe" 0
+        CreateShortCut "$SMPROGRAMS\ApacheDirectoryStudio\ApacheDirectoryStudio.lnk" "$INSTDIR\ApacheDirectoryStudio.exe" "" "$INSTDIR\ApacheDirectoryStudio.exe" 0
         
         # Creating an internet shortcut to the documentation
-        WriteINIStr "$SMPROGRAMS\Apache Directory Studio\Documentation.url" "InternetShortcut" "URL" "http://directory.apache.org/studio/users-guide.html"
+        WriteINIStr "$SMPROGRAMS\ApacheDirectoryStudio\Documentation.url" "InternetShortcut" "URL" "http://directory.apache.org/studio/users-guide.html"
 
         # Configuring registries for the uninstaller
         WriteRegStr "${INSTDIR_REG_ROOT}" "${INSTDIR_REG_KEY}" "DisplayName" "${Application} - (remove only)"
@@ -206,7 +206,7 @@
         WriteUninstaller "$INSTDIR\Uninstall.exe"
         
         # Creating a shortcut to the uninstaller
-        CreateShortCut "$SMPROGRAMS\Apache Directory Studio\Uninstall.lnk" "$INSTDIR\Uninstall.exe" "" "$INSTDIR\Uninstall.exe" 0
+        CreateShortCut "$SMPROGRAMS\ApacheDirectoryStudio\Uninstall.lnk" "$INSTDIR\Uninstall.exe" "" "$INSTDIR\Uninstall.exe" 0
         
         # Closing uninstall log
         !insertmacro UNINSTALL.LOG_CLOSE_INSTALL
@@ -225,7 +225,7 @@
         !insertmacro UNINSTALL.LOG_END_UNINSTALL
         
         # Remove shortcuts and folders in the start menu
-        RMDir /r "$SMPROGRAMS\Apache Directory Studio"
+        RMDir /r "$SMPROGRAMS\ApacheDirectoryStudio"
         
         # Removing registry keys
         DeleteRegKey "${INSTDIR_REG_ROOT}" "${INSTDIR_REG_KEY}"

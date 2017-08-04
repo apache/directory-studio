@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotLabel;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 
 
 public class CertificateTrustDialogBot extends DialogBot
@@ -125,14 +126,15 @@ public class CertificateTrustDialogBot extends DialogBot
 
     public ErrorDialogBot clickOkButtonExpectingErrorDialog()
     {
-        BotUtils.shell( new Runnable()
+        SWTBotShell shell = BotUtils.shell( new Runnable()
         {
             public void run()
             {
                 clickOkButton();
             }
         }, "Error", "Problem Occurred" );
+        String shellText = shell.getText();
 
-        return new ErrorDialogBot();
+        return new ErrorDialogBot(shellText);
     }
 }

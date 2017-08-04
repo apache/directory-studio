@@ -53,7 +53,7 @@ public class WhatClauseDnComposite extends AbstractClauseComposite
     {
         public void widgetModified( WidgetModifyEvent event )
         {
-            context.getAclItem().getWhatClause().getDnClause().setPattern( entryWidget.getDn().toString() );
+            ((AclWhatClauseDn)context.getAclItem().getWhatClause()).setPattern( entryWidget.getDn().toString() );
         }
     };
 
@@ -61,11 +61,11 @@ public class WhatClauseDnComposite extends AbstractClauseComposite
     public WhatClauseDnComposite( OpenLdapAclValueWithContext context, Composite visualEditorComposite )
     {
         super( context, visualEditorComposite );
-        AclWhatClause aclWhatClause = context.getAclItem().getWhatClause();
+        AclWhatClause whatClause = context.getAclItem().getWhatClause();
         
-        if ( aclWhatClause.getDnClause() == null )
+        if ( whatClause == null )
         {
-            aclWhatClause.setDnClause( new AclWhatClauseDn() );
+            context.getAclItem().setWhatClause( new AclWhatClauseDn() );
         }
     }
 
@@ -120,11 +120,11 @@ public class WhatClauseDnComposite extends AbstractClauseComposite
     {
         if ( entryWidget != null )
         {
-            if ( context.getAclItem().getWhatClause().getDnClause() != null )
+            if ( context.getAclItem().getWhatClause() != null )
             {
                 try
                 {
-                    entryWidget.setInput( connection, new Dn( context.getAclItem().getWhatClause().getDnClause().getPattern() ) );
+                    entryWidget.setInput( connection, new Dn( ((AclWhatClauseDn)context.getAclItem().getWhatClause()).getPattern() ) );
                 }
                 catch ( LdapInvalidDnException e )
                 {

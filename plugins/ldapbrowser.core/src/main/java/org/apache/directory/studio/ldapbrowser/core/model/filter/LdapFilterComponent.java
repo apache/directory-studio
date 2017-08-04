@@ -23,7 +23,6 @@ package org.apache.directory.studio.ldapbrowser.core.model.filter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterToken;
@@ -44,7 +43,7 @@ public abstract class LdapFilterComponent
     protected LdapFilterToken startToken;
 
     /** The filter list. */
-    protected List<LdapFilter> filterList;
+    protected final List<LdapFilter> filterList;
 
 
     /**
@@ -162,9 +161,8 @@ public abstract class LdapFilterComponent
             return false;
         }
 
-        for ( Iterator<LdapFilter> it = filterList.iterator(); it.hasNext(); )
+        for ( LdapFilter filter : filterList )
         {
-            LdapFilter filter = it.next();
             if ( filter == null || !filter.isValid() )
             {
                 return false;
@@ -200,9 +198,8 @@ public abstract class LdapFilterComponent
         else
         {
             List<LdapFilter> invalidFilterList = new ArrayList<LdapFilter>();
-            for ( Iterator<LdapFilter> it = filterList.iterator(); it.hasNext(); )
+            for ( LdapFilter filter : filterList )
             {
-                LdapFilter filter = it.next();
                 if ( filter != null )
                 {
                     invalidFilterList.addAll( Arrays.asList( filter.getInvalidFilters() ) );
@@ -226,9 +223,8 @@ public abstract class LdapFilterComponent
         {
             tokenList.add( startToken );
         }
-        for ( Iterator<LdapFilter> it = filterList.iterator(); it.hasNext(); )
+        for ( LdapFilter filter : filterList )
         {
-            LdapFilter filter = it.next();
             if ( filter != null )
             {
                 tokenList.addAll( Arrays.asList( filter.getTokens() ) );
@@ -259,11 +255,10 @@ public abstract class LdapFilterComponent
         {
             return parent;
         }
-        else if ( filterList != null || !filterList.isEmpty() )
+        else if ( !filterList.isEmpty() )
         {
-            for ( Iterator<LdapFilter> it = filterList.iterator(); it.hasNext(); )
+            for ( LdapFilter filter : filterList )
             {
-                LdapFilter filter = it.next();
                 if ( filter != null && filter.getFilter( offset ) != null )
                 {
                     return filter.getFilter( offset );

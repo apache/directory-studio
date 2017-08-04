@@ -113,6 +113,12 @@ class BrowserWidgetBot
     }
 
 
+    String getSelectedEntry()
+    {
+        return getTree().selection().get( 0 ).get( 0 );
+    }
+
+
     private SWTBotTreeItem getEntry( String... path )
     {
         SWTBotTree browserTree = bot.tree();

@@ -40,6 +40,8 @@ import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
 import org.apache.directory.server.core.api.partition.Partition;
 import org.apache.directory.server.core.partition.impl.avl.AvlPartition;
 import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
@@ -49,6 +51,7 @@ import org.apache.directory.studio.test.integration.ui.bots.ImportWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
 import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Preferences;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -240,7 +243,7 @@ public class ImportExportTest extends AbstractLdapTestUnit
      * @throws Exception
      */
     @Test
-    public void testImportDontUptateUI() throws Exception
+    public void testImportDoesNotUpdateUI() throws Exception
     {
         URL url = Platform.getInstanceLocation().getURL();
         String destFile = url.getFile() + "ImportDontUpdateUiTest.ldif";
@@ -274,13 +277,17 @@ public class ImportExportTest extends AbstractLdapTestUnit
     @Test
     public void testExportCsvShouldPrefixFormulaWithApostrophe() throws Exception
     {
+        // set CSV encoding explicit to UTF-8, otherwise platform default encoding would be used
+        Preferences store = BrowserCorePlugin.getDefault().getPluginPreferences();
+        store.setDefault( BrowserCoreConstants.PREFERENCE_FORMAT_CSV_ENCODING, "UTF-8" );
+
         URL url = Platform.getInstanceLocation().getURL();
         final String file = url.getFile() + "ImportExportTest.csv";
         System.out.println( file );
 
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Wolfgang K\u00f6lbel" );
 
-        // export LDIF
+        // export CSV
         ExportWizardBot wizardBot = browserViewBot.openExportCsvWizard();
         assertTrue( wizardBot.isVisible() );
         wizardBot.typeReturningAttributes( "cn, description" );

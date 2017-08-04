@@ -48,9 +48,9 @@ public class UIAuthHandler implements IAuthHandler
     public ICredentials getCredentials( final ConnectionParameter connectionParameter )
     {
         // Checking if the bind principal is null or empty (no authentication)
-        if ( Strings.isEmpty( connectionParameter.getBindPrincipal() ) ) //$NON-NLS-1$
+        if ( Strings.isEmpty( connectionParameter.getBindPrincipal() ) )
         {
-            return new Credentials( StringUtils.EMPTY, StringUtils.EMPTY, connectionParameter ); //$NON-NLS-1$ //$NON-NLS-2$
+            return new Credentials( StringUtils.EMPTY, StringUtils.EMPTY, connectionParameter );
         }
         else
         {
@@ -73,7 +73,7 @@ public class UIAuthHandler implements IAuthHandler
                 String password = passwordsKeyStoreManager.getConnectionPassword( connectionParameter.getId() );
 
                 // Checking if the bind password is available (the user chose to store the password)
-                if ( Strings.isEmpty( password ) ) //$NON-NLS-1$
+                if ( !Strings.isEmpty( password ) )
                 {
                     return new Credentials( connectionParameter.getBindPrincipal(),
                         password, connectionParameter );

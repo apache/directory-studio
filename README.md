@@ -25,7 +25,7 @@ Apache Directory Studio is a complete directory tooling platform intended to be 
 
 ### Prerequisites
 
-* JDK 7 or newer
+* JDK 8 or newer
 * Maven 3 or newer
 * Sufficient heap space for Maven: `export MAVEN_OPTS="-Xmx512m"`
 * FIXME: Windows users have to replace the repository location `file://${basedir}/target/repository` in `eclipse-trgt-platform/template/org.apache.directory.studio.eclipse-trgt-platform.template` with the actual path, e.g. `file:///C:/Development/studio/eclipse-trgt-platform/target/repository`
@@ -65,7 +65,11 @@ or on Windows :
 
 ### Build issues
 
-Tycho doesn't handle snapshot dependencies well. The first time a snapshot dependency is used within the build it is cached in `~/.m2/repository/p2`. Afterwards any change in the dependency (e.g. ApacheDS or LDAP API) is the considered unless it is deleted from the cache.
+Tycho doesn't handle snapshot dependencies well. The first time a snapshot dependency is used within the build it is cached in `~/.m2/repository/p2`. Afterwards any change in the dependency (e.g. ApacheDS or LDAP API) is not considered unless it is deleted from the cache.
+
+To delete all Apache Directory related snapshots run:
+
+    rm -rf ~/.m2/repository/p2/osgi/bundle/org.apache.directory.*
 
 
 ## Setup Eclipse workspace
@@ -109,6 +113,12 @@ The build produces binaries for all platforms. Archived versions can be found in
 
 tentative, not fully tested yet...
 
+### Licenses
+
+The root directory contains LICENSE and NOTICE files for the source distribution.
+The product directory contains LICENSE and NOTICE files for the binary distributions, including licenses for bundled dependencies.
+
+
 ### Release artifacts
 
 We release the following artifacts:
@@ -122,12 +132,12 @@ We release the following artifacts:
 * P2 repositories
     * the main features (LDAP Browser, Schema Editor, ApacheDS)
     * dependencies
-* Product archives for
+* Product archives and installers for
     * Linux GTK 32bit tar.gz
     * Linux GTK 64bit tar.gz
-    * Mac OS X 64bit tar.gz
-    * Windows 32bit zip
-    * Windows 64bit zip
+    * Mac OS X 64bit dmg
+    * Windows 32bit exe installer and zip
+    * Windows 64bit exe installer and zip
 * Userguides
 
 
@@ -136,7 +146,7 @@ We release the following artifacts:
 Test the release build: rat check, javadoc and source jar generation, GPG signing, userguide generation
 
     mvn -f pom-first.xml clean install
-    mvn -Papache-release -Duserguides clean install
+    mvn -Papache-release,windows,macos -Duserguides clean install
 
 Run UI tests (if possible on all platforms)
 
@@ -170,15 +180,18 @@ Also create an empty directory used during the release process and store it in a
     svn checkout https://svn.apache.org/repos/asf/directory/studio/branches/$VERSION branch-$VERSION
     cd branch-$VERSION
 
-#### Set the version
+#### Remove OpenLDAP feature
+
+As long as the `org.apache.directory.studio.openldap.feature` is not ready for release it needs to be removed from `product/org.apache.directory.studio.product`.
+
+#### Set the version and commit
 
     find . -name pom-first.xml | xargs sed -i 's/2.0.0-SNAPSHOT/'$VERSION'/'
     find . -name pom-first.xml | xargs sed -i 's/2.0.0.qualifier/'$VERSION'/'
+    sed -i 's/2.0.0-SNAPSHOT/'$VERSION'/' pom.xml
     mvn -f pom-first.xml clean install
-    mvn org.eclipse.tycho:tycho-versions-plugin:0.22.0:set-version -DnewVersion=$VERSION
-
-#### Commit
-
+    svn revert pom.xml
+    mvn org.eclipse.tycho:tycho-versions-plugin:0.24.0:set-version -DnewVersion=$VERSION
     svn commit -m "Set version number for release $VERSION"
 
 #### Create and checkout tag
@@ -191,7 +204,7 @@ Also create an empty directory used during the release process and store it in a
 #### Build the release and deploy to staging Nexus repository
 
     mvn -f pom-first.xml clean install
-    mvn -Papache-release -Duserguides -DretryFailedDeploymentCount=3 clean deploy
+    mvn -Papache-release,windows,macos -Duserguides -DretryFailedDeploymentCount=3 clean deploy
 
 #### Close the staging Nexus repository
 
@@ -212,20 +225,27 @@ Run the dist script:
 
 Afterwards all distribution packages are located in `target`.
 
+#### Upload the artifacts to SVN
+
+    cd target/$VERSION
+    svn mkdir https://dist.apache.org/repos/dist/dev/directory/studio/$VERSION -m "Create dev area for release $VERSION"
+    svn co https://dist.apache.org/repos/dist/dev/directory/studio/$VERSION .
+    svn add *
+    svn commit -m "Add release $VERSION"
+
 ### Call the vote
 
-Upload `target/$VERSION` to people.apache.org
-
-    scp -r target/$VERSION people.apache.org:~/public_html/
-
-and start the vote.
+Start the vote.
 
 ### Publish
 
-After successful vote we can publish the artifacts
+After successful vote publish the artifacts.
 
-* Release artifacts in Nexus
-* Commit distribution packages to https://dist.apache.org/repos/dist/release/directory/studio, the content of `dist/target` can be used as-is.
+Release artifacts in Nexus.
+
+Move distribution packages from `dev` area to `release`:
+
+	svn mv https://dist.apache.org/repos/dist/dev/directory/studio/$VERSION https://dist.apache.org/repos/dist/release/directory/studio/$VERSION -m "Release $VERSION"
 
 Wait 24h for mirror rsync.
 
@@ -246,8 +266,8 @@ change the location path to the new release and also update the `p2.timestamp` t
 
 Update news and download links
 
-* Versions (2x) in `lib/path.pm`
-* Version in `content/index.mdtext`
+* `lib/path.pm`: `$version_studio` and `$version_studio_name`
+* `content/index.mdtext`: version string
 * `content/studio/changelog.mdtext`
 * `content/studio/news.mdtext`
 
@@ -257,7 +277,7 @@ TODO
 
 #### Cleanup
 
-Delete old releases.
+Delete old releases from `https://dist.apache.org/repos/dist/release/directory/studio/`, ensure they were already archived to `https://archive.apache.org/dist/directory/studio/`.
 
 
 ## Misc tips and tricks

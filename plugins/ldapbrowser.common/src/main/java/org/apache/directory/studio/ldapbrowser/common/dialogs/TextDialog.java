@@ -40,7 +40,6 @@ import org.eclipse.swt.widgets.Text;
  */
 public class TextDialog extends Dialog
 {
-
     /** The dialog title. */
     private static final String DIALOG_TITLE = Messages.getString( "TextDialog.TextEditor" ); //$NON-NLS-1$
 
@@ -72,6 +71,7 @@ public class TextDialog extends Dialog
     /**
      * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
      */
+    @Override
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
@@ -83,6 +83,7 @@ public class TextDialog extends Dialog
     /**
      * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
      */
+    @Override
     protected void createButtonsForButtonBar( Composite parent )
     {
         createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false );
@@ -93,6 +94,7 @@ public class TextDialog extends Dialog
     /**
      * @see org.eclipse.jface.dialogs.Dialog#okPressed()
      */
+    @Override
     protected void okPressed()
     {
         returnValue = text.getText();
@@ -103,6 +105,7 @@ public class TextDialog extends Dialog
     /**
      * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
+    @Override
     protected Control createDialogArea( Composite parent )
     {
         // create composite
@@ -121,6 +124,7 @@ public class TextDialog extends Dialog
         text.setLayoutData( gd );
 
         applyDialogFont( composite );
+        
         return composite;
     }
 
@@ -134,5 +138,4 @@ public class TextDialog extends Dialog
     {
         return returnValue;
     }
-
 }

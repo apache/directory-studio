@@ -46,7 +46,6 @@ public class AclItem
      */
     public AclItem()
     {
-        whatClause = new AclWhatClause();
     }
 
 
@@ -175,6 +174,7 @@ public class AclItem
                 {
                     sb.append( " " );
                 }
+                
                 sb.append( "by " );
                 sb.append( whoClause.toString() );
             }

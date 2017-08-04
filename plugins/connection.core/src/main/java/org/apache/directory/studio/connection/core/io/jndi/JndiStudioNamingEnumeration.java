@@ -148,6 +148,10 @@ public class JndiStudioNamingEnumeration extends AbstractStudioNamingEnumeration
             {
                 done = true;
                 logResultDoneException = re;
+                if ( referralsInfo == null )
+                {
+                    referralsInfo = new ReferralsInfo( false );
+                }
                 referralsInfo = JNDIConnectionWrapper.handleReferralException( re, referralsInfo );
                 if ( referralsInfo.hasMoreReferrals() )
                 {
@@ -263,7 +267,7 @@ public class JndiStudioNamingEnumeration extends AbstractStudioNamingEnumeration
     }
 
 
-    private boolean checkReferral()
+    private boolean checkReferral() throws NamingException
     {
         try
         {
@@ -281,18 +285,24 @@ public class JndiStudioNamingEnumeration extends AbstractStudioNamingEnumeration
             {
                 delegate = new NamingEnumeration<SearchResult>()
                 {
-
-                    List<String> urls = new ArrayList<String>();
+                    List<String> urls;
+                    
+                    private NamingEnumeration<SearchResult> init() throws NamingException
                     {
-                        while ( referralsInfo.hasMoreReferrals() )
+                        urls = new ArrayList<String>();
                         {
-                            Referral referral = referralsInfo.getNextReferral();
-                            for ( IJndiLogger logger : ConnectionCorePlugin.getDefault().getJndiLoggers() )
+                            while ( referralsInfo.hasMoreReferrals() )
                             {
-                                logger.logSearchResultReference( connection, referral, referralsInfo, requestNum, null );
+                                Referral referral = referralsInfo.getNextReferral();
+                                for ( IJndiLogger logger : ConnectionCorePlugin.getDefault().getJndiLoggers() )
+                                {
+                                    logger.logSearchResultReference( connection, referral, referralsInfo, requestNum,
+                                        null );
+                                }
+                                urls.addAll( referral.getLdapUrls() );
                             }
-                            urls.addAll( referral.getLdapUrls() );
                         }
+                        return this;
                     }
 
 
@@ -338,7 +348,7 @@ public class JndiStudioNamingEnumeration extends AbstractStudioNamingEnumeration
                         urls.clear();
                         referralsInfo = null;
                     }
-                };
+                }.init();
             }
             else if ( referralsHandlingMethod == ReferralHandlingMethod.FOLLOW )
             {

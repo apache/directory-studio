@@ -68,7 +68,7 @@ public class LdapOrFilterComponent extends LdapFilterComponent
         {
             return Messages.LdapOrFilterComponent_MissingOrCharacter;
         }
-        else if ( filterList == null || filterList.isEmpty() )
+        else if ( filterList.isEmpty() )
         {
             return Messages.LdapOrFilterComponent_MissingFilters;
         }

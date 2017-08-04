@@ -137,6 +137,19 @@ public class ApacheDSServersViewBot
         selectServer( serverName );
         ContextMenuHelper.clickContextMenu( getServersTree(), "&Run" );
     }
+    
+    
+    /**
+     * Repairs the server associated with the given name.
+     *
+     * @param serverName
+     *      the name of the server
+     */
+    public void repairServer( String serverName )
+    {
+        selectServer( serverName );
+        ContextMenuHelper.clickContextMenu( getServersTree(), "Repair" );
+    }
 
 
     /**
@@ -242,6 +255,9 @@ public class ApacheDSServersViewBot
                 return "Server " + serverName + " not stopped in servers view.";
             }
         }, 30000 );
+
+        // Wait a bit more to avoid unknown race conditions...
+        BotUtils.sleep( 1000 );
     }
 
 

@@ -198,5 +198,5 @@ public interface IValueEditor
 
     // A constant for the emtpy string and null string.
     String EMPTY = ""; //$NON-NLS-1$
-    String NULL = "NULL"; //$NON-NLS-1$
+    String NULL = ">>> Error, the configured value editor can not handle this value! <<<"; //$NON-NLS-1$
 }

@@ -27,8 +27,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.common.ui.CommonUIUtils;
@@ -37,21 +35,11 @@ import org.apache.directory.studio.ldapservers.model.LdapServerStatus;
 import org.apache.mina.util.AvailablePortFinder;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
-import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.ILaunchConfigurationType;
-import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.RuntimeProcess;
-import org.eclipse.debug.ui.IDebugUIConstants;
-import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
-import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
-import org.eclipse.jdt.launching.IVMInstall;
-import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.console.MessageConsole;
 import org.osgi.framework.Bundle;
@@ -80,6 +68,12 @@ public class LdapServersUtils
      */
     public static void runStartupListenerWatchdog( LdapServer server, int port ) throws Exception
     {
+        // If no protocol is enabled, we pass this and declare the server as started
+        if ( port == 0 )
+        {
+            return;
+        }
+
         // Getting the current time
         long startTime = System.currentTimeMillis();
 
@@ -89,37 +83,12 @@ public class LdapServersUtils
         // Looping until the end of the watchdog if the server is still 'starting'
         while ( ( System.currentTimeMillis() < watchDog ) && ( LdapServerStatus.STARTING == server.getStatus() ) )
         {
-            // Getting the port to test
-            try
+            // Trying to see if the port is available
+            if ( AvailablePortFinder.available( port ) )
             {
-                // If no protocol is enabled, we pass this and 
-                // declare the server as started
-                if ( port != 0 )
-                {
-                    // Trying to see if the port is available
-                    if ( AvailablePortFinder.available( port ) )
-                    {
-                        // The port is still available
-                        throw new Exception();
-                    }
-                }
+                // The port is still available
 
-                // If we pass the creation of the context, it means
-                // the server is correctly started
-
-                // We set the state of the server to 'started'...
-                server.setStatus( LdapServerStatus.STARTED );
-
-                // ... and we exit the thread
-                return;
-            }
-            catch ( Exception e )
-            {
-                // If we get an exception, it means the server is not 
-                // yet started
-
-                // We just wait one second before starting the test once
-                // again
+                // We just wait one second before starting the test once again
                 try
                 {
                     Thread.sleep( 1000 );
@@ -128,6 +97,15 @@ public class LdapServersUtils
                 {
                     // Nothing to do...
                 }
+            }
+            else
+            {
+                // We set the state of the server to 'started'...
+                server.setStatus( LdapServerStatus.STARTED );
+
+                // ... and we exit the thread
+                return;
+
             }
         }
 
@@ -205,20 +183,8 @@ public class LdapServersUtils
      *
      * @param server
      *      the server
-     */
-    public static void startConsolePrinterThread( LdapServer server )
-    {
-        startConsolePrinterThread( server, LdapServersManager.getServerFolder( server )
-            .append( "log" ) //$NON-NLS-1$
-            .append( "apacheds.log" ).toFile() );//$NON-NLS-1$
-    }
-
-
-    /**
-     * Starts the console printer thread.
-     *
-     * @param server
-     *      the server
+     * @param serverLogsFile
+     *       the server logs file
      */
     public static void startConsolePrinterThread( LdapServer server, File serverLogsFile )
     {
@@ -252,96 +218,6 @@ public class LdapServersUtils
 
 
     /**
-     * Launches ApacheDS using a launch configuration.
-     *
-     * @param server
-     *      the server
-     * @param apacheDsLibrariesFolder
-     *      the ApacheDS libraries folder
-     * @param libraries
-     *      the names of the libraries
-     * @return
-     *      the associated launch
-     */
-    public static ILaunch launchApacheDS( LdapServer server, IPath apacheDsLibrariesFolder, String[] libraries )
-        throws Exception
-    {
-        // Getting the default VM installation
-        IVMInstall vmInstall = JavaRuntime.getDefaultVMInstall();
-
-        // Creating a new editable launch configuration
-        ILaunchConfigurationType type = DebugPlugin.getDefault().getLaunchManager()
-            .getLaunchConfigurationType( IJavaLaunchConfigurationConstants.ID_JAVA_APPLICATION );
-        ILaunchConfigurationWorkingCopy workingCopy = type.newInstance( null, server.getId() );
-
-        // Setting the JRE container path attribute
-        workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_JRE_CONTAINER_PATH, vmInstall
-            .getInstallLocation().toString() );
-
-        // Setting the main type attribute
-        workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME,
-            "org.apache.directory.studio.apacheds.Launcher" ); //$NON-NLS-1$
-
-        // Creating the classpath list
-        List<String> classpath = new ArrayList<String>();
-        for ( String library : libraries )
-        {
-            IRuntimeClasspathEntry libraryClasspathEntry = JavaRuntime
-                .newArchiveRuntimeClasspathEntry( apacheDsLibrariesFolder.append( library ) );
-            libraryClasspathEntry.setClasspathProperty( IRuntimeClasspathEntry.USER_CLASSES );
-
-            classpath.add( libraryClasspathEntry.getMemento() );
-        }
-
-        // Setting the classpath type attribute
-        workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, classpath );
-
-        // Setting the default classpath type attribute to false
-        workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_DEFAULT_CLASSPATH, false );
-
-        // The server folder path
-        IPath serverFolderPath = LdapServersManager.getServerFolder( server );
-
-        // Setting the program arguments attribute
-        workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, "\"" //$NON-NLS-1$
-            + serverFolderPath.toOSString() + "\"" ); //$NON-NLS-1$
-
-        // Creating the VM arguments string
-        StringBuffer vmArguments = new StringBuffer();
-        vmArguments.append( "-Dlog4j.configuration=file:\"" //$NON-NLS-1$
-            + serverFolderPath.append( "conf" ).append( "log4j.properties" ).toOSString() + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        vmArguments.append( " " ); //$NON-NLS-1$
-        vmArguments.append( "-Dapacheds.var.dir=\"" + serverFolderPath.toOSString() + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-        vmArguments.append( " " ); //$NON-NLS-1$
-        vmArguments.append( "-Dapacheds.log.dir=\"" + serverFolderPath.append( "log" ).toOSString() + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        vmArguments.append( " " ); //$NON-NLS-1$
-        vmArguments.append( "-Dapacheds.run.dir=\"" + serverFolderPath.append( "run" ).toOSString() + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        vmArguments.append( " " ); //$NON-NLS-1$
-        vmArguments.append( "-Dapacheds.instance=\"" + server.getName() + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-
-        // Setting the VM arguments attribute
-        workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, vmArguments.toString() );
-
-        // Setting the launch configuration as private
-        workingCopy.setAttribute( IDebugUIConstants.ATTR_PRIVATE, true );
-
-        // Indicating that we don't want any console to show up
-        workingCopy.setAttribute( DebugPlugin.ATTR_CAPTURE_OUTPUT, false );
-
-        // Saving the launch configuration
-        ILaunchConfiguration configuration = workingCopy.doSave();
-
-        // Launching the launch configuration
-        ILaunch launch = configuration.launch( ILaunchManager.RUN_MODE, new NullProgressMonitor() );
-
-        // Storing the launch configuration as a custom object in the LDAP Server for later use
-        server.putCustomObject( LAUNCH_CONFIGURATION_CUSTOM_OBJECT, launch );
-
-        return launch;
-    }
-
-
-    /**
      * Terminates the launch configuration.
      *
      * @param server
@@ -352,10 +228,13 @@ public class LdapServersUtils
     {
         // Getting the launch
         ILaunch launch = ( ILaunch ) server.removeCustomObject( LdapServersUtils.LAUNCH_CONFIGURATION_CUSTOM_OBJECT );
-        if ( ( launch != null ) && ( !launch.isTerminated() ) )
+        if ( launch != null )
         {
-            // Terminating the launch
-            launch.terminate();
+            if ( ( !launch.isTerminated() ) )
+            {
+                // Terminating the launch
+                launch.terminate();
+            }
         }
         else
         {

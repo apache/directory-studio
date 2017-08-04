@@ -44,6 +44,7 @@ import org.apache.directory.studio.ldapservers.LdapServersManager;
 import org.apache.directory.studio.ldapservers.LdapServersUtils;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
 import org.apache.directory.studio.ldapservers.model.LdapServerAdapter;
+import org.apache.directory.studio.ldapservers.model.LdapServerStatus;
 import org.apache.mina.util.AvailablePortFinder;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -83,6 +84,9 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
     private static final String[] libraries = new String[]
         { "apacheds-service.jar" }; //$NON-NLS-1$
 
+    private enum Action {
+        START, REPAIR, STOP;
+    }
 
     /**
      * {@inheritDoc}
@@ -163,6 +167,47 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
      */
     public void start( LdapServer server, StudioProgressMonitor monitor ) throws Exception
     {
+        ILaunch launch = startOrRepair( server, monitor, Action.START );
+
+        // Storing the launch configuration as a custom object in the LDAP Server for later use
+        server.putCustomObject( LdapServersUtils.LAUNCH_CONFIGURATION_CUSTOM_OBJECT, launch );
+
+        // Running the startup listener watchdog
+        LdapServersUtils.runStartupListenerWatchdog( server, getTestingPort( server ) );
+    }
+
+
+    /**
+     * Starts the ApacheDS in "repair" mode
+     *
+     * @param server
+     *      the server
+     * @param monitor
+     *      the progress monitor
+     * @throws Exception
+     *      if an error occurs when starting the server
+     */
+    public void repair( LdapServer server, StudioProgressMonitor monitor ) throws Exception
+    {
+        // repair
+        startOrRepair( server, monitor, Action.REPAIR );
+
+        // Await termination of the repair action
+        long startTime = System.currentTimeMillis();
+        final long watchDog = startTime + ( 1000 * 60 * 3 ); // 3 minutes
+        do
+        {
+            Thread.sleep( 1000 );
+        }
+        while ( ( System.currentTimeMillis() < watchDog ) && ( LdapServerStatus.REPAIRING == server.getStatus() ) );
+
+        // stop the console printer thread
+        LdapServersUtils.stopConsolePrinterThread( server );
+    }
+
+    
+    private ILaunch startOrRepair( LdapServer server, StudioProgressMonitor monitor, Action action ) throws Exception
+    {
         // Getting the bundle associated with the plugin
         Bundle bundle = ApacheDS200Plugin.getDefault().getBundle();
 
@@ -172,28 +217,27 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
             Messages.getString( "ApacheDS200LdapServerAdapter.VerifyingAndCopyingLibraries" ) ); //$NON-NLS-1$
 
         // Starting the console printer thread
-        LdapServersUtils.startConsolePrinterThread( server );
+        LdapServersUtils.startConsolePrinterThread( server, LdapServersManager.getServerFolder( server )
+            .append( "log" ) //$NON-NLS-1$
+            .append( "apacheds.log" ).toFile() );//$NON-NLS-1$
 
         // Launching ApacheDS
-        ILaunch launch = launchApacheDS( server );
+        ILaunch launch = launchApacheDS( server, action );
 
-        // Starting the "terminate" listener thread
-        LdapServersUtils.startTerminateListenerThread( server, launch );
-
-        // Running the startup listener watchdog
-        LdapServersUtils.runStartupListenerWatchdog( server, getTestingPort( server ) );
+        return launch;
     }
-
-
+    
     /**
      * Launches ApacheDS using a launch configuration.
      *
      * @param server
      *      the server
+     * @param repair
+     *      true to launch ApacheDS in repair mode
      * @return
      *      the associated launch
      */
-    public static ILaunch launchApacheDS( LdapServer server )
+    private static ILaunch launchApacheDS( LdapServer server, Action action )
         throws Exception
     {
         // Getting the default VM installation
@@ -232,9 +276,23 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
         // The server folder path
         IPath serverFolderPath = LdapServersManager.getServerFolder( server );
 
+        // Creating the program arguments string
+        StringBuffer programArguments = new StringBuffer();
+        programArguments.append( "\"" + serverFolderPath.toOSString() + "\"" ); //$NON-NLS-1$ //$NON-NLS-2$
+        if ( action == Action.REPAIR )
+        {
+            programArguments.append( " " );
+            programArguments.append( "\"repair\"" );
+        }
+        else if ( action == Action.STOP )
+        {
+            programArguments.append( " " );
+            programArguments.append( "\"stop\"" );
+        }
+
         // Setting the program arguments attribute
-        workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, "\"" //$NON-NLS-1$
-            + serverFolderPath.toOSString() + "\"" ); //$NON-NLS-1$
+        workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS,
+            programArguments.toString() );
 
         // Creating the VM arguments string
         StringBuffer vmArguments = new StringBuffer();
@@ -287,8 +345,8 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
         // Launching the launch configuration
         ILaunch launch = configuration.launch( ILaunchManager.RUN_MODE, new NullProgressMonitor() );
 
-        // Storing the launch configuration as a custom object in the LDAP Server for later use
-        server.putCustomObject( LdapServersUtils.LAUNCH_CONFIGURATION_CUSTOM_OBJECT, launch );
+        // Starting the "terminate" listener thread
+        LdapServersUtils.startTerminateListenerThread( server, launch );
 
         return launch;
     }
@@ -299,6 +357,18 @@ public class ApacheDS200LdapServerAdapter implements LdapServerAdapter
      */
     public void stop( LdapServer server, StudioProgressMonitor monitor ) throws Exception
     {
+        // Graceful stop ApacheDS
+        launchApacheDS( server, Action.STOP );
+
+        // Await termination of the server
+        long startTime = System.currentTimeMillis();
+        final long watchDog = startTime + ( 1000 * 60 * 3 ); // 3 minutes
+        do
+        {
+            Thread.sleep( 1000 );
+        }
+        while ( ( System.currentTimeMillis() < watchDog ) && ( LdapServerStatus.STOPPING == server.getStatus() ) );
+
         // Stopping the console printer thread
         LdapServersUtils.stopConsolePrinterThread( server );
 

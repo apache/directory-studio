@@ -123,7 +123,6 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
         }
     };
 
-    
     /**
      * The Kerberos port listener
      */
@@ -131,20 +130,10 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
     {
         public void modifyText( ModifyEvent e )
         {
-            try
-            {
-                int port = Integer.parseInt( kerberosPortText.getText() );
-                
-                getKdcServerTransportBean().setSystemPort( port );
-            }
-            catch ( NumberFormatException nfe )
-            {
-                System.out.println( "Wrong KDC TCP/UDP Port : it must be an integer" );
-            }
+            setKerberosPort( getDirectoryServiceBean(), kerberosPortText.getText() );
         }
     };
 
-    
     /**
      * The Kerberos address modify listener
      */
@@ -152,11 +141,10 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
     {
         public void modifyText( ModifyEvent e )
         {
-            getKdcServerTransportBean().setTransportAddress( kerberosAddressText.getText() );
+            setKerberosAddress( getDirectoryServiceBean(), kerberosAddressText.getText() );
         }
     };
 
-    
     /**
      * The ChangePassword checkbox listener
      */
@@ -180,16 +168,7 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
     {
         public void modifyText( ModifyEvent e )
         {
-            try
-            {
-                int port = Integer.parseInt( changePasswordPortText.getText() );
-                
-                getChangePasswordServerTransportBean().setSystemPort( port );
-            }
-            catch ( NumberFormatException nfe )
-            {
-                System.out.println( "Wrong ChangePassword TCP Port : it must be an integer" );
-            }
+            setChangePasswordPort( getDirectoryServiceBean(), changePasswordPortText.getText() );
         }
     };
 
@@ -201,7 +180,7 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
     {
         public void modifyText( ModifyEvent e )
         {
-            getChangePasswordServerTransportBean().setTransportAddress( changePasswordAddressText.getText() );
+            setChangePasswordAddress( getDirectoryServiceBean(), changePasswordAddressText.getText() );
         }
     };
 
@@ -609,16 +588,16 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
             setSelection( enableKerberosCheckbox, kdcServerBean.isEnabled() );
             setEnabled( kerberosPortText, enableKerberosCheckbox.getSelection() );
             setEnabled( kerberosAddressText, enableKerberosCheckbox.getSelection() );
-            setText( kerberosPortText, Integer.toString( getKdcServerTransportBean().getSystemPort() ) );
-            setText( kerberosAddressText, getKdcServerTransportBean().getTransportAddress() );
+            setText( kerberosPortText, Integer.toString( kdcServerBean.getTransports()[0].getSystemPort() ) );
+            setText( kerberosAddressText, kdcServerBean.getTransports()[0].getTransportAddress() );
 
             // Change Password Checkbox
             ChangePasswordServerBean changePasswordServerBean = getChangePasswordServerBean();
             setSelection( enableChangePasswordCheckbox, changePasswordServerBean.isEnabled() );
             setEnabled( changePasswordPortText, enableChangePasswordCheckbox.getSelection() );
             setEnabled( changePasswordAddressText, enableChangePasswordCheckbox.getSelection() );
-            setText( changePasswordPortText, Integer.toString( getChangePasswordServerTransportBean().getSystemPort() ) );
-            setText( changePasswordAddressText, getChangePasswordServerTransportBean().getTransportAddress() );
+            setText( changePasswordPortText, Integer.toString( changePasswordServerBean.getTransports()[0].getSystemPort() ) );
+            setText( changePasswordAddressText, changePasswordServerBean.getTransports()[0].getTransportAddress() );
 
             // Kerberos Settings
             setText( primaryKdcRealmText, kdcServerBean.getKrbPrimaryRealm() );
@@ -912,83 +891,6 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
 
 
     /**
-     * Gets the KDC Server Transport bean.
-     * 
-     * @return
-     *       the KDC Server Transport bean
-     */
-    private TransportBean getKdcServerTransportBean()
-    {
-        KdcServerBean kdcServerBean = getKdcServerBean();
-
-        TransportBean transportBean = null;
-
-        // Looking for the transport in the list
-        TransportBean[] kdcServerTransportBeans = kdcServerBean.getTransports();
-        if ( kdcServerTransportBeans != null )
-        {
-            for ( TransportBean kdcServerTransportBean : kdcServerTransportBeans )
-            {
-                if ( ( "tcp".equals( kdcServerTransportBean.getTransportId() ) ) //$NON-NLS-1$
-                    || ( "udp".equals( kdcServerTransportBean.getTransportId() ) ) ) //$NON-NLS-1$
-                {
-                    transportBean = kdcServerTransportBean;
-                    break;
-                }
-            }
-        }
-
-        // No corresponding transport has been found
-        if ( transportBean == null )
-        {
-            transportBean = new TransportBean();
-            transportBean.setTransportId( "tcp" ); // TODO can either 'tcp' or 'udp' //$NON-NLS-1$
-            kdcServerBean.addTransports( transportBean );
-        }
-
-        return transportBean;
-    }
-
-
-    /**
-     * Gets the Change Password Server Transport bean.
-     * 
-     * @return
-     *       the Change Password Server Transport bean
-     */
-    private TransportBean getChangePasswordServerTransportBean()
-    {
-        ChangePasswordServerBean changePasswordServerBean = getChangePasswordServerBean();
-
-        TransportBean transportBean = null;
-
-        // Looking for the transport in the list
-        TransportBean[] changePasswordServerTransportBeans = changePasswordServerBean.getTransports();
-        if ( changePasswordServerTransportBeans != null )
-        {
-            for ( TransportBean changePasswordServerTransportBean : changePasswordServerTransportBeans )
-            {
-                if ( "tcp".equals( changePasswordServerTransportBean.getTransportId() ) ) // TODO can either 'tcp' or 'udp' //$NON-NLS-1$
-                {
-                    transportBean = changePasswordServerTransportBean;
-                    break;
-                }
-            }
-        }
-
-        // No corresponding transport has been found
-        if ( transportBean == null )
-        {
-            transportBean = new TransportBean();
-            transportBean.setTransportId( "tcp" ); // TODO can either 'tcp' or 'udp' //$NON-NLS-1$
-            changePasswordServerBean.addTransports( transportBean );
-        }
-
-        return transportBean;
-    }
-
-
-    /**
      * Gets the Key Derivation Interceptor.
      *
      * @return the Key Derivation Interceptor.
@@ -1011,4 +913,61 @@ public class KerberosServerPage extends ServerConfigurationEditorPage
 
         return null;
     }
+
+
+    public static void setKerberosPort( DirectoryServiceBean directoryServiceBean, String portAsText )
+    {
+        try
+        {
+            int port = Integer.parseInt( portAsText );
+            KdcServerBean kdcServerBean = directoryServiceBean.getKdcServerBean();
+            for ( TransportBean transportBean : kdcServerBean.getTransports() )
+            {
+                transportBean.setSystemPort( port );
+            }
+        }
+        catch ( NumberFormatException nfe )
+        {
+            System.out.println( "Wrong Kerberos TCP/UDP Port : it must be an integer" );
+        }
+    }
+
+
+    private void setKerberosAddress( DirectoryServiceBean directoryServiceBean, String address )
+    {
+        KdcServerBean kdcServerBean = directoryServiceBean.getKdcServerBean();
+        for ( TransportBean transportBean : kdcServerBean.getTransports() )
+        {
+            transportBean.setTransportAddress( address );
+        }
+    }
+
+
+    public static void setChangePasswordPort( DirectoryServiceBean directoryServiceBean, String portAsText )
+    {
+        try
+        {
+            int port = Integer.parseInt( portAsText );
+            ChangePasswordServerBean changePasswordServerBean = directoryServiceBean.getChangePasswordServerBean();
+            for ( TransportBean transportBean : changePasswordServerBean.getTransports() )
+            {
+                transportBean.setSystemPort( port );
+            }
+        }
+        catch ( NumberFormatException nfe )
+        {
+            System.out.println( "Wrong ChangePassword TCP/UDP Port : it must be an integer" );
+        }
+    }
+
+
+    private void setChangePasswordAddress( DirectoryServiceBean directoryServiceBean, String address )
+    {
+        ChangePasswordServerBean changePasswordServerBean = directoryServiceBean.getChangePasswordServerBean();
+        for ( TransportBean transportBean : changePasswordServerBean.getTransports() )
+        {
+            transportBean.setTransportAddress( address );
+        }
+    }
+
 }

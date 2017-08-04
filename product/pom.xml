@@ -57,7 +57,7 @@
         </configuration>
       </plugin>
 
-      <!-- Copy legal files to target directory -->
+      <!-- Copy legal files for MacOSX to target/products, see org.apache.directory.studio.p2.inf -->
       <plugin>
         <artifactId>maven-resources-plugin</artifactId>
         <executions>
@@ -68,13 +68,13 @@
               <goal>copy-resources</goal>
             </goals>
             <configuration>
-              <outputDirectory>${basedir}/target</outputDirectory>
+              <outputDirectory>${basedir}/target/products</outputDirectory>
               <resources>
                 <resource>
-                  <directory>${basedir}/../</directory>
+                  <directory>${basedir}</directory>
                   <includes>
-                    <include>LICENSE.txt</include>
-                    <include>NOTICE.txt</include>
+                    <include>LICENSE</include>
+                    <include>NOTICE</include>
                   </includes>
                   <filtering>false</filtering>
                 </resource>

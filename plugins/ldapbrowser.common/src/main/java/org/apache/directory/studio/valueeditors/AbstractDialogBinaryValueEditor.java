@@ -27,7 +27,6 @@ import org.eclipse.osgi.util.NLS;
 
 
 /**
- * 
  * Abstract base class for value editors that handle binary values
  * in a dialog. 
  *
@@ -58,14 +57,17 @@ public abstract class AbstractDialogBinaryValueEditor extends AbstractDialogValu
         }
         else
         {
-            if ( value == null )
+            Object rawValue = getRawValue( value );
+
+            if ( rawValue == null )
             {
-                return NULL; //$NON-NLS-1$
+                return NULL;
             }
-            else if ( value.isBinary() )
+            else if ( rawValue instanceof byte[] )
             {
-                byte[] data = value.getBinaryValue();
-                return NLS.bind( Messages.getString( "AbstractDialogBinaryValueEditor.BinaryDateNBytes" ), data.length ); //$NON-NLS-1$
+                byte[] data = ( byte[] ) rawValue;
+                return NLS.bind( Messages.getString( "AbstractDialogBinaryValueEditor.BinaryDateNBytes" ), //$NON-NLS-1$
+                    data.length );
             }
             else
             {

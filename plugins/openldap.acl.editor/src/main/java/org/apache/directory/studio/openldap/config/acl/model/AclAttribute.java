@@ -28,7 +28,7 @@ import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPlugin;
 
 /**
  * A class used to store the WhatClause attributes with a qualifier (either '!' or '@').
- * We store either an AttributeType, or an ObjectClass (prefixed with '@' or '¬'), or one
+ * We store either an AttributeType, or an ObjectClass (prefixed with '@' or '!'), or one
  * of the two special values : 'entry' and 'children'
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>

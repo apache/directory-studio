@@ -24,18 +24,12 @@ package org.apache.directory.studio.ldapbrowser.ui.views.connection;
 import org.apache.directory.studio.entryeditors.EntryEditorInput;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
-import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
-import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.apache.directory.studio.ldapbrowser.ui.editors.searchresult.SearchResultEditorInput;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.util.IPropertyChangeListener;
-import org.eclipse.jface.util.PropertyChangeEvent;
+import org.apache.directory.studio.ldapbrowser.ui.views.browser.AbstractLinkWithEditorAction;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.IWorkbenchPartReference;
 
 
 /**
@@ -46,95 +40,10 @@ import org.eclipse.ui.IWorkbenchPartReference;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LinkWithEditorAction extends Action
+public class LinkWithEditorAction extends AbstractLinkWithEditorAction
 {
     /** The connection view */
     private ConnectionView connectionView;
-
-    /** The listener listening on changes on editors */
-    private IPartListener2 editorListener = new IPartListener2()
-    {
-        /**
-         * {@inheritDoc}
-         */
-        public void partBroughtToTop( IWorkbenchPartReference partRef )
-        {
-        }
-
-
-        /**
-         * {@inheritDoc}
-         */
-        public void partActivated( IWorkbenchPartReference partRef )
-        {
-        }
-
-
-        /**
-         * {@inheritDoc}
-         */
-        public void partClosed( IWorkbenchPartReference partRef )
-        {
-        }
-
-
-        /**
-         * {@inheritDoc}
-         */
-        public void partDeactivated( IWorkbenchPartReference partRef )
-        {
-        }
-
-
-        /**
-         * {@inheritDoc}
-         */
-        public void partHidden( IWorkbenchPartReference partRef )
-        {
-        }
-
-
-        /**
-         * {@inheritDoc}
-         */
-        public void partInputChanged( IWorkbenchPartReference partRef )
-        {
-            linkViewWithEditor( partRef.getPart( false ) );
-        }
-
-
-        /**
-         * {@inheritDoc}
-         */
-        public void partOpened( IWorkbenchPartReference partRef )
-        {
-        }
-
-
-        /**
-         * {@inheritDoc}
-         */
-        public void partVisible( IWorkbenchPartReference partRef )
-        {
-            linkViewWithEditor( partRef.getPart( false ) );
-        }
-    };
-
-    /** The listener listening on changes of the link with editor action of the browser view */
-    private IPropertyChangeListener propertyChangeListener = new IPropertyChangeListener()
-    {
-
-        /**
-         * {@inheritDoc}
-         */
-        public void propertyChange( PropertyChangeEvent event )
-        {
-            if ( BrowserUIConstants.PREFERENCE_BROWSER_LINK_WITH_EDITOR.equals( event.getProperty() ) )
-            {
-                run();
-            }
-        }
-    };
 
 
     /**
@@ -145,47 +54,9 @@ public class LinkWithEditorAction extends Action
      */
     public LinkWithEditorAction( ConnectionView connectionView )
     {
-        super( Messages.getString( "LinkWithEditorAction.LinkWithEditor" ), AS_CHECK_BOX ); //$NON-NLS-1$
-
-        super.setImageDescriptor( BrowserUIPlugin.getDefault().getImageDescriptor(
-            BrowserUIConstants.IMG_LINK_WITH_EDITOR ) );
-        super.setEnabled( true );
+        super( connectionView, Messages.getString( "LinkWithEditorAction.LinkWithEditor" ) ); //$NON-NLS-1$
         this.connectionView = connectionView;
-
-        super.setChecked( BrowserUIPlugin.getDefault().getPreferenceStore().getBoolean(
-            BrowserUIConstants.PREFERENCE_BROWSER_LINK_WITH_EDITOR ) );
-
-        // enable the listeners
-        BrowserUIPlugin.getDefault().getPreferenceStore().addPropertyChangeListener( propertyChangeListener );
-        if ( isChecked() )
-        {
-            connectionView.getSite().getWorkbenchWindow().getPartService().addPartListener( editorListener );
-        }
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void run()
-    {
-        setChecked( BrowserUIPlugin.getDefault().getPreferenceStore().getBoolean(
-            BrowserUIConstants.PREFERENCE_BROWSER_LINK_WITH_EDITOR ) );
-
-        if ( isChecked() )
-        {
-            // enable the listeners
-            connectionView.getSite().getWorkbenchWindow().getPartService().addPartListener( editorListener );
-
-            // link
-            IEditorPart activeEditor = connectionView.getSite().getWorkbenchWindow().getActivePage().getActiveEditor();
-            linkViewWithEditor( activeEditor );
-        }
-        else
-        {
-            // dsable the listeners
-            connectionView.getSite().getWorkbenchWindow().getPartService().removePartListener( editorListener );
-        }
+        super.init();
     }
 
 
@@ -194,7 +65,7 @@ public class LinkWithEditorAction extends Action
      *
      * @param partRef the part
      */
-    private void linkViewWithEditor( IWorkbenchPart part )
+    protected void linkViewWithEditor( IWorkbenchPart part )
     {
         if ( part != null && connectionView != null
             && part.getSite().getWorkbenchWindow() == connectionView.getSite().getWorkbenchWindow() )
@@ -237,22 +108,6 @@ public class LinkWithEditorAction extends Action
                 }
             }
         }
-    }
-
-
-    /**
-     * Disposes this action.
-     */
-    public void dispose()
-    {
-        if ( editorListener != null )
-        {
-            connectionView.getSite().getWorkbenchWindow().getPartService().removePartListener( editorListener );
-            BrowserUIPlugin.getDefault().getPreferenceStore().removePropertyChangeListener( propertyChangeListener );
-            editorListener = null;
-        }
-
-        connectionView = null;
     }
 
 }

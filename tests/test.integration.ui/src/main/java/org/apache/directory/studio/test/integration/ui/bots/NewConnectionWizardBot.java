@@ -34,6 +34,9 @@ public class NewConnectionWizardBot extends WizardBot
     private static final String CONNECTION_NAME = "Connection name:";
     private static final String HOSTNAME = "Hostname:";
     private static final String PORT = "Port:";
+    private static final String PROVIDER = "Provider:";
+    private static final String JNDI = "JNDI (Java Naming and Directory Interface)";
+    private static final String LDAP_API = "Apache Directory LDAP Client API";
     private static final String CHECK_AUTHENTICATION = "Check Authentication";
     private static final String CHECK_NETWORK_PARAMETER = "Check Network Parameter";
     private static final String BASE_DN = "Base DN:";
@@ -44,6 +47,7 @@ public class NewConnectionWizardBot extends WizardBot
     private static final String BIND_DN_OR_USER = "Bind DN or user:";
     private static final String CRAM_MD5_SASL = "CRAM-MD5 (SASL)";
     private static final String DIGEST_MD5_SASL = "DIGEST-MD5 (SASL)";
+    private static final String GSS_API_SASL = "GSSAPI (Kerberos)";
     private static final String NO_AUTHENTICATION = "No Authentication";
     private static final String SIMPLE_AUTHENTICATION = "Simple Authentication";
     private static final String AUTHENTICATION_METHOD = "Authentication Method";
@@ -51,19 +55,34 @@ public class NewConnectionWizardBot extends WizardBot
     private static final String NO_ENCRYPTION = "No Encryption";
     private static final String START_TLS_ENCRYPTION = "Use StartTLS extension";
     private static final String LDAPS_ENCRYPTION = "Use SSL encryption (ldaps://)";
+    private static final String USE_NATIVE_TGT = "Use native TGT";
+    private static final String OBTAIN_TGT_FROM_KDC = "Obtain TGT from KDC (provide username and password)";
+    private static final String USE_NATIVE_SYSTEM_CONFIG = "Use native system configuration";
+    private static final String USE_CONFIG_FILE = "Use configuration file:";
+    private static final String USE_MANUAL_CONFIG = "Use following configuration:";
+    private static final String KERBEROS_REALM = "Kerberos Realm:";
+    private static final String KDC_HOST = "KDC Host:";
+    private static final String KDC_PORT = "KDC Port:";
 
-    
+
     public NewConnectionWizardBot()
     {
         super( TITLE );
     }
 
-    @Override
-    public void clickFinishButton()
+
+    public void clickFinishButton( boolean waitTillConnectionOpened )
     {
-        JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__open_connections_name_1 );
+        JobWatcher watcher = null;
+        if ( waitTillConnectionOpened )
+        {
+            watcher = new JobWatcher( BrowserCoreMessages.jobs__open_connections_name_1 );
+        }
         super.clickFinishButton();
-        watcher.waitUntilDone();
+        if ( waitTillConnectionOpened )
+        {
+            watcher.waitUntilDone();
+        }
     }
 
 
@@ -85,6 +104,20 @@ public class NewConnectionWizardBot extends WizardBot
     {
         SWTBotCombo portCombo = bot.comboBoxWithLabel( PORT );
         portCombo.setText( Integer.toString( port ) );
+    }
+
+
+    public void selectJndiProvider()
+    {
+        SWTBotCombo providerCombo = bot.comboBoxWithLabel( PROVIDER );
+        providerCombo.setSelection( JNDI );
+    }
+
+
+    public void selectLdapApiProvider()
+    {
+        SWTBotCombo providerCombo = bot.comboBoxWithLabel( PROVIDER );
+        providerCombo.setSelection( LDAP_API );
     }
 
 
@@ -141,6 +174,20 @@ public class NewConnectionWizardBot extends WizardBot
     {
         SWTBotCombo authMethodCombo = bot.comboBoxInGroup( AUTHENTICATION_METHOD );
         authMethodCombo.setSelection( CRAM_MD5_SASL );
+    }
+
+
+    public boolean isGssApiAuthenticationSelected()
+    {
+        SWTBotCombo authMethodCombo = bot.comboBoxInGroup( AUTHENTICATION_METHOD );
+        return GSS_API_SASL.equals( authMethodCombo.selection() );
+    }
+
+
+    public void selectGssApiAuthentication()
+    {
+        SWTBotCombo authMethodCombo = bot.comboBoxInGroup( AUTHENTICATION_METHOD );
+        authMethodCombo.setSelection( GSS_API_SASL );
     }
 
 
@@ -204,6 +251,102 @@ public class NewConnectionWizardBot extends WizardBot
     public void deselectSavePassword()
     {
         bot.checkBox( SAVE_PASSWORD ).deselect();
+    }
+
+
+    public boolean isUseNativeTgtSelected()
+    {
+        return bot.radio( USE_NATIVE_TGT ).isSelected();
+    }
+
+
+    public void selectUseNativeTgt()
+    {
+        bot.radio( USE_NATIVE_TGT ).click();
+    }
+
+
+    public boolean isObtainTgtFromKdcSelected()
+    {
+        return bot.radio( OBTAIN_TGT_FROM_KDC ).isSelected();
+    }
+
+
+    public void selectObtainTgtFromKdc()
+    {
+        bot.radio( OBTAIN_TGT_FROM_KDC ).click();
+    }
+
+
+    public boolean isUseNativeSystemConfigurationSelected()
+    {
+        return bot.radio( USE_NATIVE_SYSTEM_CONFIG ).isSelected();
+    }
+
+
+    public void selectUseNativeSystemConfiguration()
+    {
+        bot.radio( USE_NATIVE_SYSTEM_CONFIG ).click();
+    }
+
+
+    public boolean isUseConfigurationFileSelected()
+    {
+        return bot.radio( USE_CONFIG_FILE ).isSelected();
+    }
+
+
+    public void selectUseConfigurationFile()
+    {
+        bot.radio( USE_CONFIG_FILE ).click();
+    }
+
+
+    public boolean isUseManualConfigurationSelected()
+    {
+        return bot.radio( USE_MANUAL_CONFIG ).isSelected();
+    }
+
+
+    public void selectUseManualConfiguration()
+    {
+        bot.radio( USE_MANUAL_CONFIG ).click();
+    }
+
+
+    public boolean isKerberosRealmEnabled()
+    {
+        return bot.textWithLabel( KERBEROS_REALM ).isEnabled();
+    }
+
+
+    public void typeKerberosRealm( String realm )
+    {
+        bot.textWithLabel( KERBEROS_REALM ).setText( realm );
+    }
+
+
+    public boolean isKdcHostEnabled()
+    {
+        return bot.textWithLabel( KDC_HOST ).isEnabled();
+    }
+
+
+    public void typeKdcHost( String host )
+    {
+        bot.textWithLabel( KDC_HOST ).setText( host );
+    }
+
+
+    public boolean isKdcPortEnabled()
+    {
+        return bot.textWithLabel( KDC_PORT ).isEnabled();
+    }
+
+
+    public void typeKdcPort( int port )
+    {
+        bot.textWithLabel( KDC_PORT ).setText( Integer.toString( port ) );
     }
 
 

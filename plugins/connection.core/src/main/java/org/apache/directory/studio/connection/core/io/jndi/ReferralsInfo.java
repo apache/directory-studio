@@ -41,16 +41,24 @@ public class ReferralsInfo
 
     private Set<String> processedUrls = new HashSet<String>();
 
+    private boolean throwExceptionOnLoop;
+
+
+    /**
+     * Creates a new instance of ReferralsInfo.
+     *
+     * @param throwExceptionOnLoop if an exception should be thrown when a referral loop is detected.
+     */
+    public ReferralsInfo( boolean throwExceptionOnLoop )
+    {
+        this.throwExceptionOnLoop = throwExceptionOnLoop;
+    }
+
 
     /**
      * Adds the referral entry to the list of referrals to be processed.
      * 
-     * If the URLs are already in the list or if the URL was already processed
-     * a NamingException will be thrown
-     * 
      * @param referral the referral
-     * 
-     * @throws LinkLoopException if a loop was encountered.
      */
     public void addReferral( Referral referral )
     {
@@ -59,19 +67,18 @@ public class ReferralsInfo
 
 
     /**
-     * Gets the next referral URL or null.
+     * Gets the next referral or null.
      * 
-     * @return the next referral URL or null
+     * @return the next referral or null
+     * @throws LinkLoopException 
      */
-    public Referral getNextReferral()
+    public Referral getNextReferral() throws LinkLoopException
     {
+        handleAlreadyProcessedUrls();
         if ( !referralsToProcess.isEmpty() )
         {
             Referral referral = referralsToProcess.removeFirst();
-            for ( String url : referral.getLdapUrls() )
-            {
-                processedUrls.add( url );
-            }
+            processedUrls.addAll( referral.getLdapUrls() );
             return referral;
         }
         else
@@ -85,9 +92,39 @@ public class ReferralsInfo
      * Checks for more referrals.
      * 
      * @return true, if there are more referrals
+     * @throws LinkLoopException 
      */
-    public boolean hasMoreReferrals()
+    public boolean hasMoreReferrals() throws LinkLoopException
     {
+        handleAlreadyProcessedUrls();
         return !referralsToProcess.isEmpty();
     }
+
+
+    private void handleAlreadyProcessedUrls() throws LinkLoopException
+    {
+        while ( !referralsToProcess.isEmpty() )
+        {
+            Referral referral = referralsToProcess.getFirst();
+            boolean alreadyProcessed = referral.getLdapUrls().stream().anyMatch( url -> processedUrls.contains( url ) );
+            if ( alreadyProcessed )
+            {
+                // yes, already processed, remove the current referral and continue with filtering
+                if ( throwExceptionOnLoop )
+                {
+                    throw new LinkLoopException( "Referral " + referral.getLdapUrls() + " already processed" );
+                }
+                else
+                {
+                    referralsToProcess.removeFirst();
+                }
+            }
+            else
+            {
+                // no, not yet processed, done with filtering
+                return;
+            }
+        }
+    }
+
 }

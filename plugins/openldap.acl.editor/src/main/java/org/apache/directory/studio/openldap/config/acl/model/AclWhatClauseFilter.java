@@ -21,10 +21,11 @@ package org.apache.directory.studio.openldap.config.acl.model;
 
 
 /**
+ * The Acl what-filter clause. It stores a Ldap Filter.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class AclWhatClauseFilter
+public class AclWhatClauseFilter extends AclWhatClause
 {
     /** The filter */
     private String filter;

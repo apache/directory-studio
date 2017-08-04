@@ -4,7 +4,8 @@
 .pmd
 target/
 META-INF/
-eclipse-target-platform/eclipse-target-platform.target
+eclipse-trgt-platform/org.apache.directory.studio.eclipse-trgt-platform.target
 plugins/ldapbrowser.core/lib/
 plugins/ldapservers.apacheds/resources/libs/
+tests/test.integration.ui/screenshots
 

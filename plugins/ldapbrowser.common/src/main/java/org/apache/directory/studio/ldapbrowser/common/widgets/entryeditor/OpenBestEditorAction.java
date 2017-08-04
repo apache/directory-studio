@@ -107,7 +107,7 @@ public class OpenBestEditorAction extends AbstractOpenEditorAction
      */
     public String getText()
     {
-        if ( bestValueEditor != null )
+        if ( isEnabled() )
         {
             return bestValueEditor.getValueEditorName();
         }

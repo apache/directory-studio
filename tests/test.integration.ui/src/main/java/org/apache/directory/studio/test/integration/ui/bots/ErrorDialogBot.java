@@ -25,7 +25,13 @@ public class ErrorDialogBot extends DialogBot
 
     public ErrorDialogBot()
     {
-        super("Error");
+        this( "Error" );
+    }
+
+
+    public ErrorDialogBot( String title )
+    {
+        super( title );
     }
 
 

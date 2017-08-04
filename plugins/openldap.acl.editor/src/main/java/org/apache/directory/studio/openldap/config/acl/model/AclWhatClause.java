@@ -26,12 +26,6 @@ package org.apache.directory.studio.openldap.config.acl.model;
  */
 public class AclWhatClause
 {
-    /** The star (*) clause */
-    private AclWhatClauseStar starClause;
-
-    /** The DN clause */
-    private AclWhatClauseDn dnClause;
-
     /** The filter clause */
     private AclWhatClauseFilter filterClause;
 
@@ -47,22 +41,8 @@ public class AclWhatClause
     public AclWhatClause( AclWhatClauseStar starClause, AclWhatClauseDn dnClause, AclWhatClauseFilter filterClause,
         AclWhatClauseAttributes attributesClause )
     {
-        this.starClause = starClause;
-        this.dnClause = dnClause;
         this.filterClause = filterClause;
         this.attributesClause = attributesClause;
-    }
-
-
-    public AclWhatClause( AclWhatClauseStar starClause )
-    {
-        this.starClause = starClause;
-    }
-
-
-    public AclWhatClause( AclWhatClauseDn dnClause )
-    {
-        this.dnClause = dnClause;
     }
 
 
@@ -88,29 +68,11 @@ public class AclWhatClause
 
 
     /**
-     * @return the dnClause
-     */
-    public AclWhatClauseDn getDnClause()
-    {
-        return dnClause;
-    }
-
-
-    /**
      * @return the filterClause
      */
     public AclWhatClauseFilter getFilterClause()
     {
         return filterClause;
-    }
-
-
-    /**
-     * @return the starClause
-     */
-    public AclWhatClauseStar getStarClause()
-    {
-        return starClause;
     }
 
 
@@ -124,93 +86,10 @@ public class AclWhatClause
 
 
     /**
-     * @param dnClause the dnClause to set
-     */
-    public void setDnClause( AclWhatClauseDn dnClause )
-    {
-        this.dnClause = dnClause;
-    }
-
-
-    /**
      * @param filterClause the filterClause to set
      */
     public void setFilterClause( AclWhatClauseFilter filterClause )
     {
         this.filterClause = filterClause;
-    }
-
-
-    /**
-     * @param starClause the starClause to set
-     */
-    public void setStarClause( AclWhatClauseStar starClause )
-    {
-        this.starClause = starClause;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public String toString()
-    {
-        StringBuilder sb = new StringBuilder();
-
-        boolean isFirst = true;
-
-        // Star (*) clause
-        if ( starClause != null )
-        {
-            isFirst = false;
-            sb.append( starClause.toString() );
-        }
-
-        // DN clause
-        if ( dnClause != null )
-        {
-            if ( isFirst )
-            {
-                isFirst = false;
-            }
-            else
-            {
-                sb.append( " " );
-            }
-
-            sb.append( dnClause.toString() );
-        }
-
-        // Filter clause
-        if ( filterClause != null )
-        {
-            if ( isFirst )
-            {
-                isFirst = false;
-            }
-            else
-            {
-                sb.append( " " );
-            }
-
-            sb.append( filterClause.toString() );
-        }
-
-        // Attributes clause
-        if ( attributesClause != null )
-        {
-            if ( isFirst )
-            {
-                isFirst = false;
-            }
-            else
-            {
-                sb.append( " " );
-            }
-
-            sb.append( attributesClause.toString() );
-        }
-
-        return sb.toString();
     }
 }

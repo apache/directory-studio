@@ -218,8 +218,7 @@ public class OverviewPage extends ServerConfigurationEditorPage
             setEnabled( kerberosPortText, enableKerberos );
         }
     };
-    
-    
+
     /**
      * The Kerberos port listener
      */
@@ -227,22 +226,10 @@ public class OverviewPage extends ServerConfigurationEditorPage
     {
         public void modifyText( ModifyEvent e )
         {
-            KdcServerBean kdcServerBean = getDirectoryServiceBean().getKdcServerBean();
-
-            try
-            {
-                int port = Integer.parseInt( kerberosPortText.getText() );
-                
-                kdcServerBean.getTransports()[0].setSystemPort( port );
-            }
-            catch ( NumberFormatException nfe )
-            {
-                System.out.println( "Wrong Kerberos TCP/UDP Port : it must be an integer" );
-            }
+            KerberosServerPage.setKerberosPort( getDirectoryServiceBean(), kerberosPortText.getText() );
         }
     };
-    
-    
+
     /**
      * The ChangePassword server selection adapter 
      */
@@ -256,8 +243,7 @@ public class OverviewPage extends ServerConfigurationEditorPage
             setEnabled( changePasswordPortText, enableChangePassword );
         }
     };
-    
-    
+
     /**
      * The ChangePassword server port listener
      */
@@ -265,22 +251,10 @@ public class OverviewPage extends ServerConfigurationEditorPage
     {
         public void modifyText( ModifyEvent e )
         {
-            ChangePasswordServerBean changePasswordServerBean = getDirectoryServiceBean().getChangePasswordServerBean();
-
-            try
-            {
-                int port = Integer.parseInt( changePasswordPortText.getText() );
-                
-                changePasswordServerBean.getTransports()[0].setSystemPort( port );
-            }
-            catch ( NumberFormatException nfe )
-            {
-                System.out.println( "Wrong ChnagePassword Port : it must be an integer" );
-            }
+            KerberosServerPage.setChangePasswordPort( getDirectoryServiceBean(), changePasswordPortText.getText() );
         }
     };
-    
-    
+
     /**
      * The advanced Kerberos configuration hyperlink
      */
@@ -736,14 +710,15 @@ public class OverviewPage extends ServerConfigurationEditorPage
             KdcServerBean kdcServerBean = KerberosServerPage.getKdcServerBean( directoryServiceBean );
             setSelection( enableKerberosCheckbox, kdcServerBean.isEnabled() );
             setEnabled( kerberosPortText, enableKerberosCheckbox.getSelection() );
-            setText( kerberosPortText, "" + kdcServerBean.getTransports()[0].getSystemPort() ); //$NON-NLS-1$
+            setText( kerberosPortText, Integer.toString( kdcServerBean.getTransports()[0].getSystemPort() ) );
 
             // Change Password Server
             ChangePasswordServerBean changePasswordServerBean = KerberosServerPage
                 .getChangePasswordServerBean( directoryServiceBean );
             setSelection( enableChangePasswordCheckbox, changePasswordServerBean.isEnabled() );
             setEnabled( changePasswordPortText, enableChangePasswordCheckbox.getSelection() );
-            setText( changePasswordPortText, "" + changePasswordServerBean.getTransports()[0].getSystemPort() ); //$NON-NLS-1$
+            setText( changePasswordPortText,
+                Integer.toString( changePasswordServerBean.getTransports()[0].getSystemPort() ) );
 
             // Partitions
             List<PartitionBean> partitions = directoryServiceBean.getPartitions();

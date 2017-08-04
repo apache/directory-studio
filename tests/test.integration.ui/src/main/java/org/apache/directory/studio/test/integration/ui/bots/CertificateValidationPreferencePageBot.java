@@ -31,6 +31,7 @@ public class CertificateValidationPreferencePageBot extends DialogBot
         super( "Preferences" );
     }
 
+
     public void clickApplyButton()
     {
         super.clickButton( "Apply" );
@@ -59,6 +60,43 @@ public class CertificateValidationPreferencePageBot extends DialogBot
         {
             bot.checkBox( VALIDATE_CERTIFICATES_FOR_SECURE_LDAP_CONNECTIONS ).deselect();
         }
+    }
+
+
+    public void activatePermanentTab()
+    {
+        bot.tabItem( "Permanent Trusted" ).activate();
+    }
+
+
+    public void activateTemporaryTab()
+    {
+        bot.tabItem( "Temporary Trusted" ).activate();
+    }
+
+
+    public int getCertificateCount()
+    {
+        return bot.table().rowCount();
+    }
+
+
+    public void selectCertificate( int index )
+    {
+        bot.table().select( index );
+    }
+
+
+    public CertificateViewerDialogBot clickViewButton()
+    {
+        clickButton( "View..." );
+        return new CertificateViewerDialogBot();
+    }
+
+
+    public void clickRemoveButton()
+    {
+        clickButton( "Remove" );
     }
 
 }

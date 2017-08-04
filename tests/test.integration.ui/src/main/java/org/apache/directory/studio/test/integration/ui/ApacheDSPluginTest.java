@@ -35,6 +35,7 @@ import org.apache.directory.studio.connection.core.ConnectionManager;
 import org.apache.directory.studio.ldapservers.LdapServersManager;
 import org.apache.directory.studio.test.integration.ui.bots.ApacheDSConfigurationEditorBot;
 import org.apache.directory.studio.test.integration.ui.bots.ApacheDSServersViewBot;
+import org.apache.directory.studio.test.integration.ui.bots.BotUtils;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionFromServerDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConsoleViewBot;
@@ -43,7 +44,6 @@ import org.apache.directory.studio.test.integration.ui.bots.ModificationLogsView
 import org.apache.directory.studio.test.integration.ui.bots.NewApacheDSServerWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
 import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
-import org.apache.mina.util.AvailablePortFinder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -247,11 +247,7 @@ public class ApacheDSPluginTest
     {
         ApacheDSConfigurationEditorBot editorBot = serversViewBot.openConfigurationEditor( serverName );
 
-        int ldapPort = AvailablePortFinder.getNextAvailable( 1024 );
-        editorBot.setLdapPort( ldapPort );
-
-        int ldapsPort = AvailablePortFinder.getNextAvailable( ldapPort + 1 );
-        editorBot.setLdapsPort( ldapsPort );
+        editorBot.setAvailablePorts();
 
         editorBot.save();
         editorBot.close();
@@ -353,10 +349,9 @@ public class ApacheDSPluginTest
         int oldLdapsPort = remoteEditorBot.getLdapsPort();
 
         // Set new ports
-        int newLdapPort = AvailablePortFinder.getNextAvailable( 1024 );
-        remoteEditorBot.setLdapPort( newLdapPort );
-        int newLdapsPort = AvailablePortFinder.getNextAvailable( newLdapPort + 1 );
-        remoteEditorBot.setLdapsPort( newLdapsPort );
+        remoteEditorBot.setAvailablePorts();
+        int newLdapPort = remoteEditorBot.getLdapPort();
+        int newLdapsPort = remoteEditorBot.getLdapsPort();
 
         // Save the config editor
         remoteEditorBot.save();
@@ -397,4 +392,36 @@ public class ApacheDSPluginTest
         deleteDialogBot.clickOkButton();
     }
 
+
+    /**
+     * Test for DIRSTUDIO-1118: Run repair
+     */
+    @Test
+    public void repairAndStartAndStop()
+    {
+        String serverName = "Repair";
+        createServer( serverName );
+        setAvailablePorts( serverName );
+
+        // Repair the server
+        serversViewBot.repairServer( serverName );
+        serversViewBot.waitForServerStop( serverName );
+
+        // Wait a bit more after repair, another weird race condition...
+        BotUtils.sleep( 5000 );
+
+        // Start the server after repair
+        serversViewBot.runServer( serverName );
+        serversViewBot.waitForServerStart( serverName );
+
+        // TODO: newer version of ApacheDS may log to console
+
+        // Stopping the server
+        serversViewBot.stopServer( serverName );
+        serversViewBot.waitForServerStop( serverName );
+
+        // Deleting the server
+        DeleteDialogBot deleteDialogBot = serversViewBot.openDeleteServerDialog();
+        deleteDialogBot.clickOkButton();
+    }
 }
