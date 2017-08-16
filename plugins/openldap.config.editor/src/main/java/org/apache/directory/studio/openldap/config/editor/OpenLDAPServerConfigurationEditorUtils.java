@@ -21,7 +21,6 @@ package org.apache.directory.studio.openldap.config.editor;
 
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
@@ -159,14 +158,10 @@ public class OpenLDAPServerConfigurationEditorUtils
     {
         if ( directory != null )
         {
-            String[] children = directory.list( new FilenameFilter()
-            {
-                public boolean accept( File dir, String name )
-                {
+            String[] children = directory.list( ( dir, name ) -> 
                     // Only accept visible files (which don't start with a dot).
-                    return !name.startsWith( "." );
-                }
-            } );
+                    !name.startsWith( "." )
+                );
 
             return ( ( children == null ) || ( children.length == 0 ) );
         }
@@ -207,13 +202,7 @@ public class OpenLDAPServerConfigurationEditorUtils
         final DialogResult result = new DialogResult();
 
         // Opening the dialog in the UI thread
-        Display.getDefault().syncExec( new Runnable()
-        {
-            public void run()
-            {
-                result.setResult( dialog.open() );
-            }
-        } );
+        Display.getDefault().syncExec( () -> result.setResult( dialog.open() ) );
 
         return result.getResult();
     }
@@ -258,7 +247,7 @@ public class OpenLDAPServerConfigurationEditorUtils
             .getDefaultConfigurationDn() );
 
         // Creating a tree to store entries
-        DnNode<Entry> tree = new DnNode<Entry>();
+        DnNode<Entry> tree = new DnNode<>();
 
         CsnFactory csnFactory = new CsnFactory( 1 );
 
@@ -289,14 +278,13 @@ public class OpenLDAPServerConfigurationEditorUtils
             entry.addAttribute( "structuralObjectClass", getStructuralObjectClass( entry ) );
 
             // Adding the entry to tree
-            tree.add( entry.getDn().apply( schemaManager ), entry.getEntry() );
+            tree.add( new Dn( schemaManager, entry.getDn() ), entry.getEntry() );
         }
 
         try
         {
             Dn rootDn = ConfigurationUtils.getDefaultConfigurationDn();
-            rootDn.apply( schemaManager );
-            ExpandedLdifUtils.write( tree, rootDn, directory );
+            ExpandedLdifUtils.write( tree, new Dn( schemaManager, rootDn ), directory );
         }
         catch ( ConfigurationException e )
         {

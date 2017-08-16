@@ -121,7 +121,7 @@ public class ConfigurationReader
         List<Entry> configurationEntries = readEntries( configurationDn, input, browserConnection );
 
         // Creating a map to store object created based on their DN
-        Map<Dn, OlcConfig> dnToConfigObjectMap = new HashMap<Dn, OlcConfig>();
+        Map<Dn, OlcConfig> dnToConfigObjectMap = new HashMap<>();
 
         // For each configuration entries we create an associated configuration
         // object and store it in the OpenLDAP configuration
@@ -225,7 +225,7 @@ public class ConfigurationReader
         throws ConfigurationException
     {
         // Creating a map to store object created based on their DN
-        Map<Dn, OlcConfig> dnToConfigObjectMap = new HashMap<Dn, OlcConfig>();
+        Map<Dn, OlcConfig> dnToConfigObjectMap = new HashMap<>();
 
         createConfigurationObjects( tree, configuration, dnToConfigObjectMap );
     }
@@ -342,7 +342,7 @@ public class ConfigurationReader
     public static ObjectClass getHighestStructuralObjectClass( Attribute objectClassAttribute )
         throws ConfigurationException
     {
-        Set<ObjectClass> candidates = new HashSet<ObjectClass>();
+        Set<ObjectClass> candidates = new HashSet<>();
 
         try
         {
@@ -351,10 +351,10 @@ public class ConfigurationReader
             if ( ( objectClassAttribute != null ) && ( schemaManager != null ) )
             {
                 // Create the set of candidates
-                for ( Value<?> objectClassValue : objectClassAttribute )
+                for ( Value objectClassValue : objectClassAttribute )
                 {
                     ObjectClass oc = OpenLDAPServerConfigurationEditorUtils.getObjectClass( schemaManager,
-                        objectClassValue.getString() );
+                        objectClassValue.getValue() );
 
                     if ( ( oc != null ) && ( oc.isStructural() ) )
                     {
@@ -363,10 +363,10 @@ public class ConfigurationReader
                 }
 
                 // Now find the parent OC
-                for ( Value<?> objectClassValue : objectClassAttribute )
+                for ( Value objectClassValue : objectClassAttribute )
                 {
                     ObjectClass oc = OpenLDAPServerConfigurationEditorUtils.getObjectClass( schemaManager,
-                        objectClassValue.getString() );
+                        objectClassValue.getValue() );
 
                     if ( oc != null )
                     {
@@ -405,7 +405,7 @@ public class ConfigurationReader
     public static ObjectClass[] getAuxiliaryObjectClasses( Attribute objectClassAttribute )
         throws ConfigurationException
     {
-        List<ObjectClass> auxiliaryObjectClasses = new ArrayList<ObjectClass>();
+        List<ObjectClass> auxiliaryObjectClasses = new ArrayList<>();
 
         try
         {
@@ -413,10 +413,10 @@ public class ConfigurationReader
 
             if ( ( objectClassAttribute != null ) && ( schemaManager != null ) )
             {
-                for ( Value<?> objectClassValue : objectClassAttribute )
+                for ( Value objectClassValue : objectClassAttribute )
                 {
                     ObjectClass oc = OpenLDAPServerConfigurationEditorUtils.getObjectClass( schemaManager,
-                        objectClassValue.getString() );
+                        objectClassValue.getValue() );
 
                     if ( ( oc != null ) && ( oc.isAuxiliary() ) )
                     {
@@ -446,7 +446,7 @@ public class ConfigurationReader
     public static List<Entry> readEntries( Dn configurationDn, ConnectionServerConfigurationInput input,
         IBrowserConnection browserConnection ) throws Exception
     {
-        List<Entry> foundEntries = new ArrayList<Entry>();
+        List<Entry> foundEntries = new ArrayList<>();
 
         IProgressMonitor progressMonitor = new NullProgressMonitor();
         StudioProgressMonitor monitor = new StudioProgressMonitor( progressMonitor );
@@ -486,7 +486,7 @@ public class ConfigurationReader
         if ( enumeration.hasMore() )
         {
             // Creating the base entry
-            SearchResult searchResult = ( SearchResult ) enumeration.next();
+            SearchResult searchResult =  enumeration.next();
             configEntry = new DefaultEntry( schemaManager, AttributeUtils.toEntry( searchResult.getAttributes(),
                 new Dn( searchResult.getNameInNamespace() ) ) );
         }
@@ -500,7 +500,7 @@ public class ConfigurationReader
 
         // Creating a list to hold the entries that needs to be checked
         // for children and added to the partition
-        List<Entry> entries = new ArrayList<Entry>();
+        List<Entry> entries = new ArrayList<>();
         entries.add( configEntry );
 
         // Looping on the entries list until it's empty
@@ -532,7 +532,7 @@ public class ConfigurationReader
             while ( childrenEnumeration.hasMore() )
             {
                 // Creating the child entry
-                SearchResult searchResult = ( SearchResult ) childrenEnumeration.next();
+                SearchResult searchResult =  childrenEnumeration.next();
                 Entry childEntry = new DefaultEntry( schemaManager, AttributeUtils.toEntry(
                     searchResult.getAttributes(),
                     new Dn( searchResult.getNameInNamespace() ) ) );
@@ -690,7 +690,7 @@ public class ConfigurationReader
                             field.setAccessible( true );
 
                             // loop on the values and inject them in the bean
-                            for ( Value<?> value : attribute )
+                            for ( Value value : attribute )
                             {
                                 readAttributeValue( bean, field, attribute, value );
                             }
@@ -714,13 +714,13 @@ public class ConfigurationReader
      * @param value the value
      * @throws ConfigurationException
      */
-    private static void readAttributeValue( Object bean, Field field, Attribute attribute, Value<?> value )
+    private static void readAttributeValue( Object bean, Field field, Attribute attribute, Value value )
         throws ConfigurationException
     {
         Class<?> type = field.getType();
         String addMethodName = "add" + Character.toUpperCase( field.getName().charAt( 0 ) )
             + field.getName().substring( 1 );
-        String valueStr = value.getString();
+        String valueStr = value.getValue();
 
         try
         {
@@ -814,8 +814,7 @@ public class ConfigurationReader
 
                         Method method = bean.getClass().getMethod( addMethodName, methodParameter.getClass() );
 
-                        method.invoke( bean, new Object[]
-                            { methodParameter } );
+                        method.invoke( bean, methodParameter );
                     }
                 }
             }
@@ -837,18 +836,12 @@ public class ConfigurationReader
 
                         Method method = bean.getClass().getMethod( addMethodName, methodParameter.getClass() );
 
-                        method.invoke( bean, new Object[]
-                            { methodParameter } );
+                        method.invoke( bean, methodParameter );
                     }
                 }
             }
         }
-        catch ( IllegalArgumentException iae )
-        {
-            throw new ConfigurationException( "Cannot store '" + valueStr + "' into attribute "
-                + attribute.getId() );
-        }
-        catch ( IllegalAccessException e )
+        catch ( IllegalArgumentException | IllegalAccessException iae )
         {
             throw new ConfigurationException( "Cannot store '" + valueStr + "' into attribute "
                 + attribute.getId() );

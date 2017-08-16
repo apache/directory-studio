@@ -34,6 +34,7 @@ import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.ldif.LdifEntry;
 import org.apache.directory.api.ldap.model.name.Dn;
@@ -104,7 +105,7 @@ public class ConfigurationWriter
         {
             if ( entries == null )
             {
-                entries = new ArrayList<LdifEntry>();
+                entries = new ArrayList<>();
 
                 // Adding the global configuration
                 addConfigurationBean( configuration.getGlobal(), Dn.EMPTY_DN );
@@ -151,9 +152,9 @@ public class ConfigurationWriter
             entries.add( entry );
 
             // Checking auxiliary object classes
-            List<AuxiliaryObjectClass> auxiliaryObjectClassesList = configurationBean
-                .getAuxiliaryObjectClasses();
-            if ( ( auxiliaryObjectClassesList != null ) && ( auxiliaryObjectClassesList.size() > 0 ) )
+            List<AuxiliaryObjectClass> auxiliaryObjectClassesList = configurationBean.getAuxiliaryObjectClasses();
+            
+            if ( ( auxiliaryObjectClassesList != null ) && auxiliaryObjectClassesList.isEmpty() )
             {
                 for ( AuxiliaryObjectClass auxiliaryObjectClass : auxiliaryObjectClassesList )
                 {
@@ -202,6 +203,7 @@ public class ConfigurationWriter
         {
             // Looping on all fields of the bean
             Field[] fields = beanClass.getDeclaredFields();
+            
             for ( Field field : fields )
             {
                 // Making the field accessible (we get an exception if we don't do that)
@@ -215,20 +217,20 @@ public class ConfigurationWriter
                 {
                     // Looking for the @ConfigurationElement annotation
                     ConfigurationElement configurationElement = field.getAnnotation( ConfigurationElement.class );
+                    
                     if ( configurationElement != null )
                     {
                         // Checking if we have a value for the attribute type
                         String attributeType = configurationElement.attributeType();
+                        
                         if ( ( attributeType != null ) && ( !"".equals( attributeType ) ) )
                         {
                             // Checking if the field is optional and if the default value matches
-                            if ( configurationElement.isOptional() )
+                            if ( configurationElement.isOptional() &&
+                                configurationElement.defaultValue().equalsIgnoreCase( fieldValue.toString() ) )
                             {
-                                if ( configurationElement.defaultValue().equalsIgnoreCase( fieldValue.toString() ) )
-                                {
-                                    // Skipping the addition of the value
-                                    continue;
-                                }
+                                // Skipping the addition of the value
+                                continue;
                             }
 
                             // Adding values to the entry
@@ -263,7 +265,7 @@ public class ConfigurationWriter
      * @throws IllegalArgumentException
      * @throws IllegalAccessException
      */
-    private Dn getDn( OlcConfig bean, Dn parentDn ) throws LdapInvalidDnException, IllegalArgumentException,
+    private Dn getDn( OlcConfig bean, Dn parentDn ) throws LdapInvalidDnException, LdapInvalidAttributeValueException, 
         IllegalAccessException
     {
         // Getting the class of the bean
@@ -304,10 +306,12 @@ public class ConfigurationWriter
                     if ( isMultiple( value.getClass() ) )
                     {
                         Collection<?> values = ( Collection<?> ) value;
-                        if ( values.size() == 0 )
+                        
+                        if ( values.isEmpty() )
                         {
                             continue;
                         }
+                        
                         value = values.toArray()[0];
                     }
 
@@ -397,9 +401,10 @@ public class ConfigurationWriter
     public void writeToFile( File file ) throws ConfigurationException, IOException
     {
         // Writing the file to disk
-        FileWriter writer = new FileWriter( file );
-        writer.append( writeToString() );
-        writer.close();
+        try ( FileWriter writer = new FileWriter( file ) )
+        {
+            writer.append( writeToString() );
+        }
     }
 
 
@@ -493,7 +498,7 @@ public class ConfigurationWriter
             if ( objectClassObject != null )
             {
                 // Building the list of 'objectClass' attribute values
-                Set<String> objectClassAttributeValues = new HashSet<String>();
+                Set<String> objectClassAttributeValues = new HashSet<>();
                 computeObjectClassAttributeValues( objectClassAttributeValues, objectClassObject );
 
                 // Adding values to the entry
@@ -546,7 +551,8 @@ public class ConfigurationWriter
                 objectClassAttributeValues.add( objectClass.getName() );
 
                 List<String> superiors = objectClass.getSuperiorOids();
-                if ( ( superiors != null ) && ( superiors.size() > 0 ) )
+                
+                if ( ( superiors != null ) && !superiors.isEmpty() )
                 {
                     for ( String superior : superiors )
                     {
@@ -590,12 +596,10 @@ public class ConfigurationWriter
             {
                 // Adding each single value separately
                 Collection<?> values = ( Collection<?> ) o;
-                if ( values != null )
+
+                for ( Object value : values )
                 {
-                    for ( Object value : values )
-                    {
-                        addAttributeTypeValue( attributeType, value, entry );
-                    }
+                    addAttributeTypeValue( attributeType, value, entry );
                 }
             }
             else

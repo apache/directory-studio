@@ -30,6 +30,7 @@ import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.api.ldap.model.entry.DefaultEntry;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
@@ -109,8 +110,8 @@ public class ConnectionSchemaLoader extends JarLdifSchemaLoader
     private void initializeSchema()
     {
         Schema schema = new DefaultSchema( null, CONNECTION_SCHEMA_NAME );
-        schema.addDependencies( new String[]
-            { "system", "core", "apache" } );
+        
+        schema.addDependencies( "system", "core", "apache" );
         schemaMap.put( schema.getSchemaName(), schema );
     }
 
@@ -118,6 +119,7 @@ public class ConnectionSchemaLoader extends JarLdifSchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadAttributeTypes( Schema... schemas ) throws LdapException, IOException
     {
         List<Entry> attributeTypes = super.loadAttributeTypes( schemas );
@@ -143,6 +145,7 @@ public class ConnectionSchemaLoader extends JarLdifSchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadObjectClasses( Schema... schemas ) throws LdapException, IOException
     {
         List<Entry> objectClasses = super.loadObjectClasses( schemas );
@@ -256,7 +259,7 @@ public class ConnectionSchemaLoader extends JarLdifSchemaLoader
      * @return the DN associated with the given schema object in the given container.
      * @throws LdapInvalidDnException
      */
-    private Dn getDn( SchemaObject so, String container ) throws LdapInvalidDnException
+    private Dn getDn( SchemaObject so, String container ) throws LdapInvalidDnException, LdapInvalidAttributeValueException
     {
         return Dn.EMPTY_DN
             .add( new Rdn( SchemaConstants.OU_SCHEMA ) )
@@ -269,12 +272,9 @@ public class ConnectionSchemaLoader extends JarLdifSchemaLoader
     /**
      * Adds the values common to all {@link SchemaObject}(s) to the entry.
      *
-     * @param schemaObject
-     *      the schema object
-     * @param objectClassValue
-     *      the value for the objectClass attribute
-     * @param entry
-     *      the entry
+     * @param schemaObject the schema object
+     * @param objectClassValue the value for the objectClass attribute
+     * @param entry the entry
      * @throws LdapException
      */
     private static void addSchemaObjectValues( SchemaObject schemaObject, String objectClassValue, Entry entry )
@@ -300,12 +300,9 @@ public class ConnectionSchemaLoader extends JarLdifSchemaLoader
     /**
      * Adds the objectClass value to the entry.
      *
-     * @param schemaObject
-     *      the schema object
-     * @param objectClassValue
-     *      the value for the objectClass attribute
-     * @param entry
-     *      the entry
+     * @param schemaObject the schema object
+     * @param objectClassValue the value for the objectClass attribute
+     * @param entry the entry
      * @throws LdapException
      */
     private static void addObjectClassValue( SchemaObject schemaObject, String objectClassValue, Entry entry )
@@ -322,15 +319,14 @@ public class ConnectionSchemaLoader extends JarLdifSchemaLoader
     /**
      * Adds the OID value to the entry.
      *
-     * @param schemaObject
-     *      the schema object
-     * @param entry
-     *      the entry
+     * @param schemaObject the schema object
+     * @param entry the entry
      * @throws LdapException
      */
     private static void addOidValue( SchemaObject schemaObject, Entry entry ) throws LdapException
     {
         String oid = schemaObject.getOid();
+        
         if ( !Strings.isEmpty( oid ) )
         {
             Attribute attribute = new DefaultAttribute( M_OID, oid );
@@ -342,16 +338,15 @@ public class ConnectionSchemaLoader extends JarLdifSchemaLoader
     /**
      * Adds the names value to the entry.
      *
-     * @param schemaObject
-     *      the schema object
-     * @param entry
-     *      the entry
+     * @param schemaObject the schema object
+     * @param entry the entry
      * @throws LdapException
      */
     private static void addNamesValue( SchemaObject schemaObject, Entry entry ) throws LdapException
     {
         List<String> names = schemaObject.getNames();
-        if ( ( names != null ) && ( names.size() > 0 ) )
+        
+        if ( ( names != null ) && !names.isEmpty() )
         {
             Attribute attribute = new DefaultAttribute( M_NAME );
             entry.add( attribute );
@@ -367,15 +362,14 @@ public class ConnectionSchemaLoader extends JarLdifSchemaLoader
     /**
      * Adds the description value to the entry.
      *
-     * @param schemaObject
-     *      the schema object
-     * @param entry
-     *      the entry
+     * @param schemaObject the schema object
+     * @param entry the entry
      * @throws LdapException
      */
     private static void addDescriptionValue( SchemaObject schemaObject, Entry entry ) throws LdapException
     {
         String description = schemaObject.getDescription();
+        
         if ( !Strings.isEmpty( description ) )
         {
             Attribute attribute = new DefaultAttribute( M_DESCRIPTION, description );
@@ -387,10 +381,8 @@ public class ConnectionSchemaLoader extends JarLdifSchemaLoader
     /**
      * Adds the obsolete value to the entry.
      *
-     * @param schemaObject
-     *      the schema object
-     * @param entry
-     *      the entry
+     * @param schemaObject the schema object
+     * @param entry the entry
      * @throws LdapException
      */
     private static void addObsoleteValue( SchemaObject schemaObject, Entry entry ) throws LdapException
@@ -406,15 +398,14 @@ public class ConnectionSchemaLoader extends JarLdifSchemaLoader
     /**
      * Adds the superior value.
      *
-     * @param attributeType
-     *      the attribute type
-     * @param entry
-     *      the entry
+     * @param attributeType the attribute type
+     * @param entry the entry
      * @throws LdapException
      */
     private static void addSuperiorValue( AttributeType attributeType, Entry entry ) throws LdapException
     {
         String superior = attributeType.getSuperiorName();
+        
         if ( !Strings.isEmpty( superior ) )
         {
             Attribute attribute = new DefaultAttribute( M_SUP_ATTRIBUTE_TYPE, superior );
@@ -426,15 +417,14 @@ public class ConnectionSchemaLoader extends JarLdifSchemaLoader
     /**
      * Adds the equality matching rule value.
      *
-     * @param attributeType
-     *      the attribute type
-     * @param entry
-     *      the entry
+     * @param attributeType the attribute type
+     * @param entry the entry
      * @throws LdapException
      */
     private static void addEqualityValue( AttributeType attributeType, Entry entry ) throws LdapException
     {
         String equality = attributeType.getEqualityName();
+        
         if ( !Strings.isEmpty( equality ) )
         {
             Attribute attribute = new DefaultAttribute( M_EQUALITY, equality );
@@ -446,15 +436,14 @@ public class ConnectionSchemaLoader extends JarLdifSchemaLoader
     /**
      * Adds the ordering matching rule value.
      *
-     * @param attributeType
-     *      the attribute type
-     * @param entry
-     *      the entry
+     * @param attributeType the attribute type
+     * @param entry the entry
      * @throws LdapException
      */
     private static void addOrderingValue( AttributeType attributeType, Entry entry ) throws LdapException
     {
         String ordering = attributeType.getOrderingName();
+        
         if ( !Strings.isEmpty( ordering ) )
         {
             Attribute attribute = new DefaultAttribute( M_ORDERING, ordering );
@@ -466,15 +455,14 @@ public class ConnectionSchemaLoader extends JarLdifSchemaLoader
     /**
      * Adds the substring matching rule value.
      *
-     * @param attributeType
-     *      the attribute type
-     * @param entry
-     *      the entry
+     * @param attributeType the attribute type
+     * @param entry the entry
      * @throws LdapException
      */
     private static void addSubstrValue( AttributeType attributeType, Entry entry ) throws LdapException
     {
         String substr = attributeType.getSubstringName();
+        
         if ( !Strings.isEmpty( substr ) )
         {
             Attribute attribute = new DefaultAttribute( M_SUBSTR, substr );
@@ -486,24 +474,24 @@ public class ConnectionSchemaLoader extends JarLdifSchemaLoader
     /**
      * Adds the syntax value.
      *
-     * @param attributeType
-     *      the attribute type
-     * @param entry
-     *      the entry
+     * @param attributeType the attribute type
+     * @param entry the entry
      * @throws LdapException
      */
     private static void addSyntaxValue( AttributeType attributeType, Entry entry ) throws LdapException
     {
         String syntax = attributeType.getSyntaxName();
+        
         if ( !Strings.isEmpty( syntax ) )
         {
             Attribute attribute = new DefaultAttribute( M_SYNTAX, syntax );
             entry.add( attribute );
 
             long syntaxLength = attributeType.getSyntaxLength();
+            
             if ( syntaxLength != -1 )
             {
-                attribute = new DefaultAttribute( M_LENGTH, "" + syntaxLength );
+                attribute = new DefaultAttribute( M_LENGTH, Long.toString( syntaxLength ) );
                 entry.add( attribute );
             }
         }
@@ -513,10 +501,8 @@ public class ConnectionSchemaLoader extends JarLdifSchemaLoader
     /**
      * Adds the single value value.
      *
-     * @param attributeType
-     *      the attribute type
-     * @param entry
-     *      the entry
+     * @param attributeType the attribute type
+     * @param entry the entry
      * @throws LdapException
      */
     private static void addSingleValueValue( AttributeType attributeType, Entry entry ) throws LdapException
@@ -532,10 +518,8 @@ public class ConnectionSchemaLoader extends JarLdifSchemaLoader
     /**
      * Adds the collective value.
      *
-     * @param attributeType
-     *      the attribute type
-     * @param entry
-     *      the entry
+     * @param attributeType the attribute type
+     * @param entry the entry
      * @throws LdapException
      */
     private static void addCollectiveValue( AttributeType attributeType, Entry entry ) throws LdapException
@@ -551,10 +535,8 @@ public class ConnectionSchemaLoader extends JarLdifSchemaLoader
     /**
      * Adds the no user modification value.
      *
-     * @param attributeType
-     *      the attribute type
-     * @param entry
-     *      the entry
+     * @param attributeType the attribute type
+     * @param entry the entry
      * @throws LdapException
      */
     private static void addNoUserModificationValue( AttributeType attributeType, Entry entry ) throws LdapException
@@ -570,15 +552,14 @@ public class ConnectionSchemaLoader extends JarLdifSchemaLoader
     /**
      * Adds the usage value.
      *
-     * @param attributeType
-     *      the attribute type
-     * @param entry
-     *      the entry
+     * @param attributeType the attribute type
+     * @param entry the entry
      * @throws LdapException
      */
     private static void addUsageValue( AttributeType attributeType, Entry entry ) throws LdapException
     {
         UsageEnum usage = attributeType.getUsage();
+        
         if ( usage != UsageEnum.USER_APPLICATIONS )
         {
             Attribute attribute = new DefaultAttribute( M_USAGE, usage.render() );
@@ -590,16 +571,15 @@ public class ConnectionSchemaLoader extends JarLdifSchemaLoader
     /**
      * Adds the superiors value.
      *
-     * @param objectClass
-     *      the object class
-     * @param entry
-     *      the entry
+     * @param objectClass the object class
+     * @param entry the entry
      * @throws LdapException
      */
     private static void addSuperiorsValue( ObjectClass objectClass, Entry entry ) throws LdapException
     {
         List<String> superiors = objectClass.getSuperiorOids();
-        if ( ( superiors != null ) && ( superiors.size() > 0 ) )
+        
+        if ( ( superiors != null ) && !superiors.isEmpty() )
         {
             Attribute attribute = new DefaultAttribute( M_SUP_OBJECT_CLASS );
             entry.add( attribute );
@@ -615,15 +595,14 @@ public class ConnectionSchemaLoader extends JarLdifSchemaLoader
     /**
      * Adds class type value.
      *
-     * @param objectClass
-     *      the object class
-     * @param entry
-     *      the entry
+     * @param objectClass the object class
+     * @param entry the entry
      * @throws LdapException
      */
     private static void addClassTypeValue( ObjectClass objectClass, Entry entry ) throws LdapException
     {
         ObjectClassTypeEnum classType = objectClass.getType();
+        
         if ( classType != ObjectClassTypeEnum.STRUCTURAL )
         {
             Attribute attribute = new DefaultAttribute( M_TYPE_OBJECT_CLASS, classType.toString() );
@@ -635,16 +614,15 @@ public class ConnectionSchemaLoader extends JarLdifSchemaLoader
     /**
      * Adds musts value.
      *
-     * @param objectClass
-     *      the object class
-     * @param entry
-     *      the entry
+     * @param objectClass the object class
+     * @param entry the entry
      * @throws LdapException
      */
     private static void addMustsValue( ObjectClass objectClass, Entry entry ) throws LdapException
     {
         List<String> musts = objectClass.getMustAttributeTypeOids();
-        if ( ( musts != null ) && ( musts.size() > 0 ) )
+        
+        if ( ( musts != null ) && !musts.isEmpty() )
         {
             Attribute attribute = new DefaultAttribute( M_MUST );
             entry.add( attribute );
@@ -660,16 +638,15 @@ public class ConnectionSchemaLoader extends JarLdifSchemaLoader
     /**
      * Adds mays value.
      *
-     * @param objectClass
-     *      the object class
-     * @param entry
-     *      the entry
+     * @param objectClass the object class
+     * @param entry the entry
      * @throws LdapException
      */
     private static void addMaysValue( ObjectClass objectClass, Entry entry ) throws LdapException
     {
         List<String> mays = objectClass.getMayAttributeTypeOids();
-        if ( ( mays != null ) && ( mays.size() > 0 ) )
+        
+        if ( ( mays != null ) && !mays.isEmpty() )
         {
             Attribute attribute = new DefaultAttribute( M_MAY );
             entry.add( attribute );
