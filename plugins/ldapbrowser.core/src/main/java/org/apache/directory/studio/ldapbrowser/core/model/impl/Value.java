@@ -310,7 +310,7 @@ public class Value implements IValue
         {
             Ava ava = atavIterator.next();
             if ( getAttribute().getDescription().equals( ava.getNormType() )
-                && getStringValue().equals( ava.getValue().getNormValue() ) )
+                && getStringValue().equals( ava.getValue().getNormalized() ) )
             {
                 return true;
             }

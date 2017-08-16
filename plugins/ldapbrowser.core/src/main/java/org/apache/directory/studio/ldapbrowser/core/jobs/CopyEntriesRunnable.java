@@ -124,7 +124,7 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
      */
     public Object[] getLockedObjects()
     {
-        List<IEntry> l = new ArrayList<IEntry>();
+        List<IEntry> l = new ArrayList<>();
         l.add( parent );
         l.addAll( Arrays.asList( entriesToCopy ) );
         return l.toArray();
@@ -322,7 +322,7 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
                         dialog.setExistingEntry( targetBrowserConnection, newLdapDn );
                         dialog.open();
                         EntryExistsCopyStrategy strategy = dialog.getStrategy();
-                        //                        boolean rememberSelection = dialog.isRememberSelection();
+
                         if ( strategy != null )
                         {
                             dummyMonitor.reset();
@@ -338,7 +338,7 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
 
                                 case OVERWRITE_AND_CONTINUE:
                                     // create modification items
-                                    List<ModificationItem> mis = new ArrayList<ModificationItem>();
+                                    List<ModificationItem> mis = new ArrayList<>();
                                     NamingEnumeration<? extends Attribute> all = newAttributes.getAll();
                                     while ( all.hasMore() )
                                     {
@@ -399,7 +399,7 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
 
                     monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.model__copied_n_entries,
                         new String[]
-                            { "" + numberOfCopiedEntries } ) ); //$NON-NLS-1$
+                            { Integer.toString( numberOfCopiedEntries ) } ) ); //$NON-NLS-1$
 
                     // copy recursively
                     if ( scope == SearchControls.ONELEVEL_SCOPE || scope == SearchControls.SUBTREE_SCOPE )
@@ -445,7 +445,7 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
             Attribute attribute = attributes.get( atav.getType() );
             if ( attribute != null )
             {
-                attribute.remove( atav.getValue().getNormValue() );
+                attribute.remove( atav.getValue().getNormalized() );
                 if ( attribute.size() == 0 )
                 {
                     attributes.remove( atav.getType() );
@@ -463,9 +463,9 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
                 attribute = new BasicAttribute( atav.getType() );
                 attributes.put( attribute );
             }
-            if ( !attribute.contains( atav.getValue().getNormValue() ) )
+            if ( !attribute.contains( atav.getValue().getNormalized() ) )
             {
-                attribute.add( atav.getValue().getNormValue() );
+                attribute.add( atav.getValue().getNormalized() );
             }
         }
     }

@@ -26,7 +26,6 @@ import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.naming.NamingEnumeration;
@@ -111,7 +110,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
     public enum ExportDsmlJobType
     {
         RESPONSE, REQUEST
-    };
+    }
 
 
     /**
@@ -134,7 +133,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
 
         // Adding the name and OID of the 'ref' attribute to the list of returning attributes
         // for handling externals correctly
-        List<String> returningAttributes = new ArrayList<String>( Arrays.asList( searchParameter
+        List<String> returningAttributes = new ArrayList<>( Arrays.asList( searchParameter
             .getReturningAttributes() ) );
         returningAttributes.add( REF_ATTRIBUTETYPE_NAME );
         returningAttributes.add( REF_ATTRIBUTETYPE_OID );
@@ -166,7 +165,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
      */
     public Object[] getLockedObjects()
     {
-        List<String> l = new ArrayList<String>();
+        List<String> l = new ArrayList<>();
         l.add( browserConnection.getUrl() + "_" + DigestUtils.shaHex( exportDsmlFilename ) ); //$NON-NLS-1$
         return l.toArray();
     }
@@ -204,6 +203,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
             // Getting the DSML string associated to the search
             // and the type of answer the user is expecting
             String dsmlExportString = null;
+            
             switch ( type )
             {
                 case RESPONSE:
@@ -213,18 +213,22 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
                     dsmlExportString = processAsDsmlRequest( ne, dummyMonitor );
                     break;
             }
+            
             monitor.worked( 1 );
 
             // Writing the DSML string to the final destination file.
             if ( dsmlExportString != null )
             {
-                FileOutputStream fos = new FileOutputStream( exportDsmlFilename );
-                OutputStreamWriter osw = new OutputStreamWriter( fos, "UTF-8" ); //$NON-NLS-1$
-                BufferedWriter bufferedWriter = new BufferedWriter( osw );
-                bufferedWriter.write( dsmlExportString );
-                bufferedWriter.close();
-                osw.close();
-                fos.close();
+                try ( FileOutputStream fos = new FileOutputStream( exportDsmlFilename ) )
+                {
+                    try ( OutputStreamWriter osw = new OutputStreamWriter( fos, "UTF-8" ) ) //$NON-NLS-1$
+                    {
+                        try ( BufferedWriter bufferedWriter = new BufferedWriter( osw ) )
+                        {
+                            bufferedWriter.write( dsmlExportString );
+                        }
+                    }
+                }
             }
             monitor.worked( 1 );
         }
@@ -238,18 +242,12 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
     /**
      * Processes the {@link NamingEnumeration} as a DSML response.
      *
-     * @param ne
-     *      the naming enumeration
-     * @param monitor 
-     *      the monitor
-     * @return
-     *      the associated DSML
-     * @throws NamingException 
-     * @throws LdapURLEncodingException 
+     * @param ne the naming enumeration
+     * @param monitor the monitor
+     * @return the associated DSML
      * @throws LdapException
      */
-    private String processAsDsmlResponse( StudioNamingEnumeration ne, StudioProgressMonitor monitor )
-        throws NamingException, LdapURLEncodingException, LdapException
+    private String processAsDsmlResponse( StudioNamingEnumeration ne, StudioProgressMonitor monitor ) throws LdapException
     {
         // Creating the batch reponse
         BatchResponseDsml batchResponse = new BatchResponseDsml();
@@ -274,7 +272,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
      * @throws org.apache.directory.api.ldap.model.exception.LdapException
      */
     public static void processAsDsmlResponse( StudioNamingEnumeration ne, BatchResponseDsml batchResponse,
-        StudioProgressMonitor monitor, SearchParameter searchParameter ) throws LdapURLEncodingException, LdapException
+        StudioProgressMonitor monitor, SearchParameter searchParameter ) throws LdapException
     {
         // Creating and adding the search response
         SearchResponseDsml sr = new SearchResponseDsml( codec );
@@ -289,8 +287,8 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
                 // Creating and adding a search result entry or reference for each result
                 while ( ne.hasMore() )
                 {
-                    SearchResult searchResult = ( SearchResult ) ne.next();
-                    sr.addResponse( convertSearchResultToDsml( searchResult, searchParameter ) );
+                    SearchResult searchResult = ne.next();
+                    sr.addResponse( convertSearchResultToDsml( searchResult ) );
 
                     count++;
                     monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__export_progress,
@@ -340,15 +338,12 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
     /**
      * Converts the given {@link SearchResult} to a {@link SearchResultEntryDsml}.
      *
-     * @param searchResult
-     *      the search result
-     * @return
-     *      the associated search result entry DSML
+     * @param searchResult the search result
+     * @return the associated search result entry DSML
      * @throws org.apache.directory.api.ldap.model.exception.LdapException
      */
-    private static DsmlDecorator<? extends Response> convertSearchResultToDsml( SearchResult searchResult,
-        SearchParameter searchParameter )
-        throws LdapException, LdapURLEncodingException
+    private static DsmlDecorator<? extends Response> convertSearchResultToDsml( SearchResult searchResult )
+        throws LdapException
     {
         Entry entry = AttributeUtils.toEntry( searchResult.getAttributes(),
             new Dn( searchResult.getNameInNamespace() ) );
@@ -369,12 +364,10 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
             // Adding references
             if ( refAttribute != null )
             {
-                for ( Iterator<Value<?>> iterator = refAttribute.iterator(); iterator.hasNext(); )
-                {
-                    Value<?> value = ( Value<?> ) iterator.next();
-
-                    srr.addSearchResultReference( new LdapUrl( ( String ) value.getValue() ) );
-                }
+	            	for ( Value value : refAttribute )
+	            	{
+	                srr.addSearchResultReference( new LdapUrl( ( String ) value.getValue() ) );
+	            	}
             }
 
             return srr;
@@ -449,7 +442,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
                 // Creating and adding an add request for each result
                 while ( ne.hasMore() )
                 {
-                    SearchResult searchResult = ( SearchResult ) ne.next();
+                    SearchResult searchResult = ne.next();
                     AddRequestDsml arDsml = convertToAddRequestDsml( searchResult );
                     batchRequest.addRequest( arDsml );
 
