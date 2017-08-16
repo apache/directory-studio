@@ -26,7 +26,6 @@ import java.io.OutputStream;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.directory.api.ldap.model.constants.SaslQoP;
@@ -79,6 +78,7 @@ public class ConnectionIO
     private static final String KRB5_KDC_HOST_TAG = "krb5KdcHost"; //$NON-NLS-1$
     private static final String KRB5_KDC_PORT_TAG = "krb5KdcPort"; //$NON-NLS-1$
     private static final String READ_ONLY_TAG = "readOnly"; //$NON-NLS-1$
+    private static final String TIMEOUT_TAG = "timeout"; //$NON-NLS-1$
 
     private static final String EXTENDED_PROPERTIES_TAG = "extendedProperties"; //$NON-NLS-1$
     private static final String EXTENDED_PROPERTY_TAG = "extendedProperty"; //$NON-NLS-1$
@@ -94,16 +94,13 @@ public class ConnectionIO
     /**
      * Loads the connections using the reader
      *
-     * @param stream
-     *      the FileInputStream
-     * @return
-     *      the connections
-     * @throws ConnectionIOException 
-     *      if an error occurs when converting the document
+     * @param stream the FileInputStream
+     * @return the connections
+     * @throws ConnectionIOException if an error occurs when converting the document
      */
     public static Set<ConnectionParameter> load( InputStream stream ) throws ConnectionIOException
     {
-        Set<ConnectionParameter> connections = new HashSet<ConnectionParameter>();
+        Set<ConnectionParameter> connections = new HashSet<>();
 
         SAXReader saxReader = new SAXReader();
         Document document = null;
@@ -136,12 +133,9 @@ public class ConnectionIO
     /**
      * Reads a connection from the given Element.
      *
-     * @param element
-     *      the element
-     * @return
-     *      the corresponding connection
-     * @throws ConnectionIOException
-     *      if an error occurs when converting values
+     * @param element the element
+     * @return the corresponding connection
+     * @throws ConnectionIOException if an error occurs when converting values
      */
     private static ConnectionParameter readConnection( Element element ) throws ConnectionIOException
     {
@@ -149,6 +143,7 @@ public class ConnectionIO
 
         // ID
         Attribute idAttribute = element.attribute( ID_TAG );
+        
         if ( idAttribute != null )
         {
             connection.setId( idAttribute.getValue() );
@@ -156,6 +151,7 @@ public class ConnectionIO
 
         // Name
         Attribute nameAttribute = element.attribute( NAME_TAG );
+        
         if ( nameAttribute != null )
         {
             connection.setName( nameAttribute.getValue() );
@@ -163,6 +159,7 @@ public class ConnectionIO
 
         // Host        
         Attribute hostAttribute = element.attribute( HOST_TAG );
+        
         if ( hostAttribute != null )
         {
             connection.setHost( hostAttribute.getValue() );
@@ -170,6 +167,7 @@ public class ConnectionIO
 
         // Port
         Attribute portAttribute = element.attribute( PORT_TAG );
+        
         if ( portAttribute != null )
         {
             try
@@ -182,9 +180,26 @@ public class ConnectionIO
                     + "' as int value. Port value :" + portAttribute.getValue() ); //$NON-NLS-1$
             }
         }
+        
+        // Timeout
+        Attribute timeoutAttribute = element.attribute( TIMEOUT_TAG );
+        
+        if ( timeoutAttribute != null )
+        {
+            try
+            {
+                connection.setTimeout( Long.parseLong( timeoutAttribute.getValue() ) );
+            }
+            catch ( NumberFormatException e )
+            {
+                throw new ConnectionIOException( "Unable to parse 'Timeout' of connection '" + connection.getName() //$NON-NLS-1$
+                    + "' as int value. Timeout value :" + timeoutAttribute.getValue() ); //$NON-NLS-1$
+            }
+        }
 
         // Encryption Method
         Attribute encryptionMethodAttribute = element.attribute( ENCRYPTION_METHOD_TAG );
+        
         if ( encryptionMethodAttribute != null )
         {
             try
@@ -201,6 +216,7 @@ public class ConnectionIO
 
         // Network Provider
         Attribute networkProviderAttribute = element.attribute( NETWORK_PROVIDER_TAG );
+        
         if ( networkProviderAttribute != null )
         {
             try
@@ -221,6 +237,7 @@ public class ConnectionIO
 
         // Auth Method
         Attribute authMethodAttribute = element.attribute( AUTH_METHOD_TAG );
+        
         if ( authMethodAttribute != null )
         {
             try
@@ -237,6 +254,7 @@ public class ConnectionIO
 
         // Bind Principal        
         Attribute bindPrincipalAttribute = element.attribute( BIND_PRINCIPAL_TAG );
+        
         if ( bindPrincipalAttribute != null )
         {
             connection.setBindPrincipal( bindPrincipalAttribute.getValue() );
@@ -244,6 +262,7 @@ public class ConnectionIO
 
         // Bind Password
         Attribute bindPasswordAttribute = element.attribute( BIND_PASSWORD_TAG );
+        
         if ( bindPasswordAttribute != null )
         {
             connection.setBindPassword( bindPasswordAttribute.getValue() );
@@ -251,6 +270,7 @@ public class ConnectionIO
 
         // SASL Realm
         Attribute saslRealmAttribute = element.attribute( SASL_REALM_TAG );
+        
         if ( saslRealmAttribute != null )
         {
             connection.setSaslRealm( saslRealmAttribute.getValue() );
@@ -258,6 +278,7 @@ public class ConnectionIO
 
         // SASL Quality of Protection
         Attribute saslQopAttribute = element.attribute( SASL_QOP_TAG );
+        
         if ( saslQopAttribute != null )
         {
             if ( "AUTH_INT_PRIV".equals( saslQopAttribute.getValue() ) ) //$NON-NLS-1$
@@ -282,6 +303,7 @@ public class ConnectionIO
 
         // SASL Security Strength
         Attribute saslSecStrengthAttribute = element.attribute( SASL_SEC_STRENGTH_TAG );
+        
         if ( saslSecStrengthAttribute != null )
         {
             try
@@ -299,6 +321,7 @@ public class ConnectionIO
 
         // SASL Mutual Authentication
         Attribute saslMutualAuthAttribute = element.attribute( SASL_MUTUAL_AUTH_TAG );
+        
         if ( saslMutualAuthAttribute != null )
         {
             connection.setSaslMutualAuthentication( Boolean.parseBoolean( saslMutualAuthAttribute.getValue() ) );
@@ -306,6 +329,7 @@ public class ConnectionIO
 
         // KRB5 Credentials Conf
         Attribute krb5CredentialsConf = element.attribute( KRB5_CREDENTIALS_CONF_TAG );
+        
         if ( krb5CredentialsConf != null )
         {
             try
@@ -323,6 +347,7 @@ public class ConnectionIO
 
         // KRB5 Configuration
         Attribute krb5Config = element.attribute( KRB5_CONFIG_TAG );
+        
         if ( krb5Config != null )
         {
             try
@@ -339,6 +364,7 @@ public class ConnectionIO
 
         // KRB5 Configuration File
         Attribute krb5ConfigFile = element.attribute( KRB5_CONFIG_FILE_TAG );
+        
         if ( krb5ConfigFile != null )
         {
             connection.setKrb5ConfigurationFile( krb5ConfigFile.getValue() );
@@ -346,6 +372,7 @@ public class ConnectionIO
 
         // KRB5 REALM
         Attribute krb5Realm = element.attribute( KRB5_REALM_TAG );
+        
         if ( krb5Realm != null )
         {
             connection.setKrb5Realm( krb5Realm.getValue() );
@@ -353,6 +380,7 @@ public class ConnectionIO
 
         // KRB5 KDC Host
         Attribute krb5KdcHost = element.attribute( KRB5_KDC_HOST_TAG );
+        
         if ( krb5KdcHost != null )
         {
             connection.setKrb5KdcHost( krb5KdcHost.getValue() );
@@ -360,6 +388,7 @@ public class ConnectionIO
 
         // KRB5 KDC Port
         Attribute krb5KdcPort = element.attribute( KRB5_KDC_PORT_TAG );
+        
         if ( krb5KdcPort != null )
         {
             try
@@ -376,6 +405,7 @@ public class ConnectionIO
 
         // Read Only
         Attribute readOnly = element.attribute( READ_ONLY_TAG );
+        
         if ( readOnly != null )
         {
             connection.setReadOnly( Boolean.parseBoolean( readOnly.getValue() ) );
@@ -383,11 +413,12 @@ public class ConnectionIO
 
         // Extended Properties
         Element extendedPropertiesElement = element.element( EXTENDED_PROPERTIES_TAG );
+        
         if ( extendedPropertiesElement != null )
         {
-            for ( Iterator<?> i = extendedPropertiesElement.elementIterator( EXTENDED_PROPERTY_TAG ); i.hasNext(); )
+        		for ( Object elementObject : extendedPropertiesElement.elements( EXTENDED_PROPERTY_TAG ) )
             {
-                Element extendedPropertyElement = ( Element ) i.next();
+                Element extendedPropertyElement = ( Element ) elementObject;
 
                 Attribute keyAttribute = extendedPropertyElement.attribute( KEY_TAG );
                 Attribute valueAttribute = extendedPropertyElement.attribute( VALUE_TAG );
@@ -406,12 +437,9 @@ public class ConnectionIO
     /**
      * Saves the connections using the writer.
      *
-     * @param connections
-     *      the connections
-     * @param stream
-     *      the OutputStream
-     * @throws IOException
-     *      if an I/O error occurs
+     * @param connections the connections
+     * @param stream the OutputStream
+     * @throws IOException if an I/O error occurs
      */
     public static void save( Set<ConnectionParameter> connections, OutputStream stream ) throws IOException
     {
@@ -460,7 +488,7 @@ public class ConnectionIO
         connectionElement.addAttribute( HOST_TAG, connection.getHost() );
 
         // Port
-        connectionElement.addAttribute( PORT_TAG, "" + connection.getPort() ); //$NON-NLS-1$
+        connectionElement.addAttribute( PORT_TAG, Integer.toString( connection.getPort() ) ); //$NON-NLS-1$
 
         // Encryption Method
         connectionElement.addAttribute( ENCRYPTION_METHOD_TAG, connection.getEncryptionMethod().toString() );
@@ -487,7 +515,7 @@ public class ConnectionIO
         connectionElement.addAttribute( SASL_SEC_STRENGTH_TAG, connection.getSaslSecurityStrength().toString() );
 
         // SASL Mutual Authentication
-        connectionElement.addAttribute( SASL_MUTUAL_AUTH_TAG, "" + connection.isSaslMutualAuthentication() ); //$NON-NLS-1$
+        connectionElement.addAttribute( SASL_MUTUAL_AUTH_TAG, Boolean.toString( connection.isSaslMutualAuthentication() ) ); //$NON-NLS-1$
 
         // KRB5 Credentials Conf
         connectionElement.addAttribute( KRB5_CREDENTIALS_CONF_TAG, connection.getKrb5CredentialConfiguration()
@@ -506,20 +534,22 @@ public class ConnectionIO
         connectionElement.addAttribute( KRB5_KDC_HOST_TAG, connection.getKrb5KdcHost() );
 
         // KRB5 KDC Port
-        connectionElement.addAttribute( KRB5_KDC_PORT_TAG, "" + connection.getKrb5KdcPort() ); //$NON-NLS-1$
+        connectionElement.addAttribute( KRB5_KDC_PORT_TAG, Integer.toString( connection.getKrb5KdcPort() ) ); //$NON-NLS-1$
 
         // Read Only
-        connectionElement.addAttribute( READ_ONLY_TAG, "" + connection.isReadOnly() ); //$NON-NLS-1$
+        connectionElement.addAttribute( READ_ONLY_TAG, Boolean.toString( connection.isReadOnly() ) ); //$NON-NLS-1$
+        
+        // Connection timeout
+        connectionElement.addAttribute( TIMEOUT_TAG, Long.toString( connection.getTimeout() ) ); //$NON-NLS-1$
 
         // Extended Properties
         Element extendedPropertiesElement = connectionElement.addElement( EXTENDED_PROPERTIES_TAG );
         Map<String, String> extendedProperties = connection.getExtendedProperties();
+        
         if ( extendedProperties != null )
         {
-            for ( Iterator<Entry<String, String>> iter = extendedProperties.entrySet().iterator(); iter.hasNext(); )
+        	    for ( Map.Entry<String, String> element : extendedProperties.entrySet() )
             {
-                Map.Entry<String, String> element = ( Map.Entry<String, String> ) iter.next();
-
                 Element extendedPropertyElement = extendedPropertiesElement.addElement( EXTENDED_PROPERTY_TAG );
                 extendedPropertyElement.addAttribute( KEY_TAG, element.getKey() );
                 extendedPropertyElement.addAttribute( VALUE_TAG, element.getValue() );
@@ -531,16 +561,13 @@ public class ConnectionIO
     /**
      * Loads the connection folders using the reader
      *
-     * @param stream
-     *      the FileInputStream
-     * @return
-     *      the connection folders
-     * @throws ConnectionIOException 
-     *      if an error occurs when converting the document
+     * @param stream the FileInputStream
+     * @return the connection folders
+     * @throws ConnectionIOException if an error occurs when converting the document
      */
     public static Set<ConnectionFolder> loadConnectionFolders( InputStream stream ) throws ConnectionIOException
     {
-        Set<ConnectionFolder> connectionFolders = new HashSet<ConnectionFolder>();
+        Set<ConnectionFolder> connectionFolders = new HashSet<>();
 
         SAXReader saxReader = new SAXReader();
         Document document = null;
@@ -573,14 +600,10 @@ public class ConnectionIO
     /**
      * Reads a connection folder from the given Element.
      *
-     * @param element
-     *      the element
-     * @return
-     *      the corresponding connection folder
-     * @throws ConnectionIOException
-     *      if an error occurs when converting values
+     * @param element the element
+     * @return the corresponding connection folder
      */
-    private static ConnectionFolder readConnectionFolder( Element element ) throws ConnectionIOException
+    private static ConnectionFolder readConnectionFolder( Element element )
     {
         ConnectionFolder connectionFolder = new ConnectionFolder();
 
@@ -593,6 +616,7 @@ public class ConnectionIO
 
         // Name
         Attribute nameAttribute = element.attribute( NAME_TAG );
+        
         if ( nameAttribute != null )
         {
             connectionFolder.setName( nameAttribute.getValue() );
@@ -600,6 +624,7 @@ public class ConnectionIO
 
         // Connections
         Element connectionsElement = element.element( CONNECTIONS_TAG );
+        
         if ( connectionsElement != null )
         {
             for ( Iterator<?> i = connectionsElement.elementIterator( CONNECTION_TAG ); i.hasNext(); )
@@ -617,6 +642,7 @@ public class ConnectionIO
 
         // Sub-folders
         Element foldersElement = element.element( SUB_FOLDERS_TAG );
+        
         if ( foldersElement != null )
         {
             for ( Iterator<?> i = foldersElement.elementIterator( SUB_FOLDER_TAG ); i.hasNext(); )
@@ -639,12 +665,9 @@ public class ConnectionIO
     /**
      * Saves the connection folders using the writer.
      *
-     * @param connectionFolders
-     *      the connection folders
-     * @param stream
-     *      the OutputStream
-     * @throws IOException
-     *      if an I/O error occurs
+     * @param connectionFolders the connection folders
+     * @param stream the OutputStream
+     * @throws IOException if an I/O error occurs
      */
     public static void saveConnectionFolders( Set<ConnectionFolder> connectionFolders, OutputStream stream )
         throws IOException
@@ -675,10 +698,8 @@ public class ConnectionIO
     /**
      * Adds the given connection folder to the given parent Element.
      *
-     * @param parent
-     *      the parent Element
-     * @param connectionFolder
-     *      the connection folder
+     * @param parent the parent Element
+     * @param connectionFolder the connection folder
      */
     private static void addFolderConnection( Element parent, ConnectionFolder connectionFolder )
     {
@@ -692,6 +713,7 @@ public class ConnectionIO
 
         // Connections
         Element connectionsElement = connectionFolderElement.addElement( CONNECTIONS_TAG );
+        
         for ( String connectionId : connectionFolder.getConnectionIds() )
         {
             Element connectionElement = connectionsElement.addElement( CONNECTION_TAG );
@@ -700,11 +722,11 @@ public class ConnectionIO
 
         // Sub-folders
         Element foldersElement = connectionFolderElement.addElement( SUB_FOLDERS_TAG );
+        
         for ( String folderId : connectionFolder.getSubFolderIds() )
         {
             Element folderElement = foldersElement.addElement( SUB_FOLDER_TAG );
             folderElement.addAttribute( ID_TAG, folderId );
         }
     }
-
 }

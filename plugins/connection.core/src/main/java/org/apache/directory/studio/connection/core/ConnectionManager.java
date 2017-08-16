@@ -73,7 +73,7 @@ public class ConnectionManager implements ConnectionUpdateListener
      */
     public ConnectionManager()
     {
-        this.connectionList = new HashSet<Connection>();
+        this.connectionList = new HashSet<>();
         loadInitializers();
         loadConnections();
         ConnectionEventRegistry.addConnectionUpdateListener( this, ConnectionCorePlugin.getDefault().getEventRunner() );
@@ -180,8 +180,7 @@ public class ConnectionManager implements ConnectionUpdateListener
      */
     public static final String getConnectionStoreFileName()
     {
-        String filename = ConnectionCorePlugin.getDefault().getStateLocation().append( CONNECTIONS_XML ).toOSString();
-        return filename;
+        return ConnectionCorePlugin.getDefault().getStateLocation().append( CONNECTIONS_XML ).toOSString();
     }
 
 
@@ -273,7 +272,7 @@ public class ConnectionManager implements ConnectionUpdateListener
      */
     public Connection[] getConnections()
     {
-        return ( Connection[] ) connectionList.toArray( new Connection[0] );
+        return connectionList.toArray( new Connection[0] );
     }
 
 
@@ -361,7 +360,8 @@ public class ConnectionManager implements ConnectionUpdateListener
      */
     public synchronized void saveConnections()
     {
-        Set<ConnectionParameter> connectionParameters = new HashSet<ConnectionParameter>();
+        Set<ConnectionParameter> connectionParameters = new HashSet<>();
+        
         for ( Connection connection : connectionList )
         {
             connectionParameters.add( connection.getConnectionParameter() );
@@ -383,6 +383,7 @@ public class ConnectionManager implements ConnectionUpdateListener
         // move temp file to good file
         File file = new File( getConnectionStoreFileName() );
         File tempFile = new File( getConnectionStoreFileName() + TEMP_SUFFIX );
+        
         if ( file.exists() )
         {
             file.delete();

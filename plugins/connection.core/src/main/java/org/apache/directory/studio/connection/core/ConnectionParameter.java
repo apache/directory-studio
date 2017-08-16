@@ -91,7 +91,11 @@ public class ConnectionParameter
         SASL_CRAM_MD5(3),
 
         /** SASL authentication using GSSAPI. */
-        SASL_GSSAPI(4);
+        SASL_GSSAPI(4),
+        
+        /** SASL PLAIN authentication */
+        SASL_PLAIN(5);
+        
         
         private int value;
         
@@ -178,6 +182,9 @@ public class ConnectionParameter
 
     /** The extended properties. */
     private Map<String, String> extendedProperties;
+    
+    /** The connection timeout. Default to 30 seconds */
+    private long timeout = 30000L;
 
 
     /**
@@ -185,7 +192,7 @@ public class ConnectionParameter
      */
     public ConnectionParameter()
     {
-        this.extendedProperties = new HashMap<String, String>();
+        this.extendedProperties = new HashMap<>();
     }
 
 
@@ -205,7 +212,7 @@ public class ConnectionParameter
      */
     public ConnectionParameter( String name, String host, int port, EncryptionMethod encryptionMethod,
         NetworkProvider networkProvider, AuthenticationMethod authMethod, String bindPrincipal, String bindPassword,
-        String saslRealm, boolean isReadOnly, Map<String, String> extendedProperties )
+        String saslRealm, boolean isReadOnly, Map<String, String> extendedProperties, long timeout )
     {
         this.id = createId();
         this.name = name;
@@ -218,11 +225,14 @@ public class ConnectionParameter
         this.bindPassword = bindPassword;
         this.saslRealm = saslRealm;
         this.isReadOnly = isReadOnly;
-        this.extendedProperties = new HashMap<String, String>();
+        this.extendedProperties = new HashMap<>();
+
         if ( extendedProperties != null )
         {
             this.extendedProperties.putAll( extendedProperties );
         }
+
+        this.timeout = timeout;
     }
 
 
@@ -755,7 +765,7 @@ public class ConnectionParameter
             String[] array = s.split( ";" ); //$NON-NLS-1$
             if ( ( array != null ) && ( array.length > 0 ) )
             {
-                return new ArrayList<String>( Arrays.asList( array ) );
+                return new ArrayList<>( Arrays.asList( array ) );
             }
         }
 
@@ -771,7 +781,7 @@ public class ConnectionParameter
      */
     public void setExtendedIntProperty( String key, int value )
     {
-        extendedProperties.put( key, new Integer( value ).toString() );
+        extendedProperties.put( key, Integer.toString( value ) );
     }
 
 
@@ -785,9 +795,10 @@ public class ConnectionParameter
     public int getExtendedIntProperty( String key )
     {
         String s = extendedProperties.get( key );
+        
         if ( s != null )
         {
-            return new Integer( s ).intValue();
+            return Integer.parseInt( s );
         }
         else
         {
@@ -804,7 +815,7 @@ public class ConnectionParameter
      */
     public void setExtendedBoolProperty( String key, boolean value )
     {
-        extendedProperties.put( key, Boolean.valueOf( value ).toString() );
+        extendedProperties.put( key, Boolean.toString( value ) );
     }
 
 
@@ -818,14 +829,37 @@ public class ConnectionParameter
     public boolean getExtendedBoolProperty( String key )
     {
         String s = extendedProperties.get( key );
+        
         if ( s != null )
         {
-            return Boolean.valueOf( s ).booleanValue();
+            return Boolean.parseBoolean( s );
         }
         else
         {
             return false;
         }
+    }
+
+
+    /**
+     * Gets the timeout.
+     * 
+     * @return the timeout
+     */
+    public long getTimeout()
+    {
+        return timeout;
+    }
+
+
+    /**
+     * Sets the timeout.
+     * 
+     * @param timeout the timeout
+     */
+    public void setTimeout( long timeout )
+    {
+        this.timeout = timeout;
     }
 
 
