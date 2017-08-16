@@ -236,7 +236,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
                         IValue[] values = attribute.getValues();
                         for ( int v = 0; v < values.length; v++ )
                         {
-                            if ( values[v].getStringValue().equals( atav.getValue().getNormValue() ) )
+                            if ( values[v].getStringValue().equals( atav.getValue().getNormalized() ) )
                             {
                                 attribute.deleteValue( values[v] );
                             }
@@ -295,7 +295,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
                         rdnAttribute = new Attribute( newEntry, atav.getType() );
                         newEntry.addAttribute( rdnAttribute );
                     }
-                    Object rdnValue = atav.getValue().getNormValue();
+                    Object rdnValue = atav.getValue().getNormalized();
                     String[] stringValues = rdnAttribute.getStringValues();
                     if ( !Arrays.asList( stringValues ).contains( rdnValue ) )
                     {
@@ -342,6 +342,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
      * doesn't call {@link #getNextPage()} to avoid unneeded 
      * invokings of {@link ReadEntryRunnable}s.
      */
+    @Override
     public boolean canFlipToNextPage()
     {
         return isPageComplete();
@@ -354,6 +355,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
      * This implementation invokes a {@link ReadEntryRunnable} to check if an
      * entry with the composed Dn already exists.
      */
+    @Override
     public IWizardPage getNextPage()
     {
         if ( !wizard.isNewContextEntry() )
@@ -374,9 +376,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
 
                 if ( parentEntry == null )
                 {
-                    getShell().getDisplay().syncExec( new Runnable()
-                    {
-                        public void run()
+                    getShell().getDisplay().syncExec( () -> 
                         {
                             MessageDialog
                                 .openError( getShell(),
@@ -385,7 +385,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
                                         .bind(
                                             Messages.getString( "NewEntryDnWizardPage.ParentDoesNotExist" ), dnBuilderWidget.getParentDn().toString() ) ); //$NON-NLS-1$
                         }
-                    } );
+                    );
 
                     return null;
                 }
@@ -397,16 +397,14 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
 
                 if ( entry != null )
                 {
-                    getShell().getDisplay().syncExec( new Runnable()
-                    {
-                        public void run()
+                    getShell().getDisplay().syncExec( () ->
                         {
                             MessageDialog
                                 .openError(
                                     getShell(),
                                     Messages.getString( "NewEntryDnWizardPage.Error" ), NLS.bind( Messages.getString( "NewEntryDnWizardPage.EntryAlreadyExists" ), dn.toString() ) ); //$NON-NLS-1$ //$NON-NLS-2$
                         }
-                    } );
+                    );
 
                     return null;
                 }
@@ -428,16 +426,15 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
                 IEntry entry = readEntryRunnable2.getReadEntry();
                 if ( entry != null )
                 {
-                    getShell().getDisplay().syncExec( new Runnable()
-                    {
-                        public void run()
+                    getShell().getDisplay().syncExec( () ->
                         {
                             MessageDialog
                                 .openError(
                                     getShell(),
                                     Messages.getString( "NewEntryDnWizardPage.Error" ), NLS.bind( Messages.getString( "NewEntryDnWizardPage.EntryAlreadyExists" ), dn.toString() ) ); //$NON-NLS-1$ //$NON-NLS-2$
                         }
-                    } );
+                    );
+                    
                     return null;
                 }
             }
@@ -461,13 +458,7 @@ public class NewEntryDnWizardPage extends WizardPage implements WidgetModifyList
             // the combo
             Composite composite = BaseWidgetUtils.createColumnContainer( parent, 1, 1 );
             contextEntryDnCombo = BaseWidgetUtils.createCombo( composite, ArrayUtils.EMPTY_STRING_ARRAY, 0, 1 );
-            contextEntryDnCombo.addModifyListener( new ModifyListener()
-            {
-                public void modifyText( ModifyEvent e )
-                {
-                    validate();
-                }
-            } );
+            contextEntryDnCombo.addModifyListener( event -> validate() );
 
             // attach content proposal behavior
             contextEntryDnComboCPA = new ContentProposalAdapter( contextEntryDnCombo, new ComboContentAdapter(), null,
