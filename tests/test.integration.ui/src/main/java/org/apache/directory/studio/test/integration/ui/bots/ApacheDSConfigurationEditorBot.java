@@ -145,6 +145,62 @@ public class ApacheDSConfigurationEditorBot
     }
 
 
+    public void enableSSLv3()
+    {
+        activateLdapLdapsServersPage();
+        editor.bot().checkBox( 5 ).select();
+    }
+
+
+    public boolean isSSLv3Enabled()
+    {
+        activateLdapLdapsServersPage();
+        return editor.bot().checkBox( 5 ).isChecked();
+    }
+
+
+    public void enableTLSv1()
+    {
+        activateLdapLdapsServersPage();
+        editor.bot().checkBox( 6 ).select();
+    }
+
+
+    public boolean isTLSv1Enabled()
+    {
+        activateLdapLdapsServersPage();
+        return editor.bot().checkBox( 6 ).isChecked();
+    }
+
+
+    public void enableTLSv1_1()
+    {
+        activateLdapLdapsServersPage();
+        editor.bot().checkBox( 7 ).select();
+    }
+
+
+    public boolean isTLSv1_1Enabled()
+    {
+        activateLdapLdapsServersPage();
+        return editor.bot().checkBox( 7 ).isChecked();
+    }
+
+
+    public void enableTLSv1_2()
+    {
+        activateLdapLdapsServersPage();
+        editor.bot().checkBox( 8 ).select();
+    }
+
+
+    public boolean isTLSv1_2Enabled()
+    {
+        activateLdapLdapsServersPage();
+        return editor.bot().checkBox( 8 ).isChecked();
+    }
+
+
     public void setSaslHost( String saslHost )
     {
         activateLdapLdapsServersPage();
