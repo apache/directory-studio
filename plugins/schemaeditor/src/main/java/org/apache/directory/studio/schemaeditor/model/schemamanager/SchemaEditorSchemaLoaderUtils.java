@@ -28,6 +28,7 @@ import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.api.ldap.model.entry.DefaultEntry;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
@@ -224,11 +225,18 @@ public class SchemaEditorSchemaLoaderUtils
      */
     private static Dn getDn( SchemaObject schemaObject, String objectPath ) throws LdapInvalidDnException
     {
-        return Dn.EMPTY_DN
-            .add( new Rdn( SchemaConstants.OU_SCHEMA ) )
-            .add( new Rdn( SchemaConstants.CN_AT, Rdn.escapeValue( schemaObject.getSchemaName() ) ) )
-            .add( new Rdn( objectPath ) )
-            .add( new Rdn( M_OID, schemaObject.getOid() ) );
+		try
+		{	
+		    return Dn.EMPTY_DN
+		        .add( new Rdn( SchemaConstants.OU_SCHEMA ) )
+		        .add( new Rdn( SchemaConstants.CN_AT, Rdn.escapeValue( schemaObject.getSchemaName() ) ) )
+		        .add( new Rdn( objectPath ) )
+		        .add( new Rdn( M_OID, schemaObject.getOid() ) );
+		}
+		catch ( LdapInvalidAttributeValueException liave )
+		{
+			throw new LdapInvalidDnException( liave.getLocalizedMessage(), liave );
+		}
     }
 
 
@@ -317,7 +325,7 @@ public class SchemaEditorSchemaLoaderUtils
     private static void addNamesValue( SchemaObject schemaObject, Entry entry ) throws LdapException
     {
         List<String> names = schemaObject.getNames();
-        if ( ( names != null ) && ( names.size() > 0 ) )
+        if ( ( names != null ) && !names.isEmpty() )
         {
             Attribute attribute = new DefaultAttribute( M_NAME );
             entry.add( attribute );
@@ -469,7 +477,7 @@ public class SchemaEditorSchemaLoaderUtils
             long syntaxLength = attributeType.getSyntaxLength();
             if ( syntaxLength != -1 )
             {
-                attribute = new DefaultAttribute( M_LENGTH, "" + syntaxLength ); //$NON-NLS-1$
+                attribute = new DefaultAttribute( M_LENGTH, Long.toString( syntaxLength) ); //$NON-NLS-1$
                 entry.add( attribute );
             }
         }
@@ -565,7 +573,7 @@ public class SchemaEditorSchemaLoaderUtils
     private static void addSuperiorsValue( ObjectClass objectClass, Entry entry ) throws LdapException
     {
         List<String> superiors = objectClass.getSuperiorOids();
-        if ( ( superiors != null ) && ( superiors.size() > 0 ) )
+        if ( ( superiors != null ) && !superiors.isEmpty() )
         {
             Attribute attribute = new DefaultAttribute( M_SUP_OBJECT_CLASS );
             entry.add( attribute );
@@ -610,7 +618,7 @@ public class SchemaEditorSchemaLoaderUtils
     private static void addMustsValue( ObjectClass objectClass, Entry entry ) throws LdapException
     {
         List<String> musts = objectClass.getMustAttributeTypeOids();
-        if ( ( musts != null ) && ( musts.size() > 0 ) )
+        if ( ( musts != null ) && !musts.isEmpty() )
         {
             Attribute attribute = new DefaultAttribute( M_MUST );
             entry.add( attribute );
@@ -635,7 +643,7 @@ public class SchemaEditorSchemaLoaderUtils
     private static void addMaysValue( ObjectClass objectClass, Entry entry ) throws LdapException
     {
         List<String> mays = objectClass.getMayAttributeTypeOids();
-        if ( ( mays != null ) && ( mays.size() > 0 ) )
+        if ( ( mays != null ) && !mays.isEmpty() )
         {
             Attribute attribute = new DefaultAttribute( M_MAY );
             entry.add( attribute );
