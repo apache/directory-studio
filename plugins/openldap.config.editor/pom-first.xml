@@ -57,14 +57,14 @@
             </Import-Package> 
             
             <Require-Bundle>
- org.apache.directory.server.core.api;bundle-version="${org.apache.directory.server.bundleversion}",
- org.apache.directory.server.ldif.partition;bundle-version="${org.apache.directory.server.bundleversion}",
- org.apache.directory.server.xdbm.partition;bundle-version="${org.apache.directory.server.bundleversion}",
- org.apache.directory.api.asn1.api;bundle-version="${org.apache.directory.api.bundleversion}",
- org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.bundleversion}",
- org.apache.directory.api.ldap.schema;bundle-version="${org.apache.directory.api.bundleversion}",
- org.apache.directory.api.ldap.extras.util;bundle-version="${org.apache.directory.api.bundleversion}",
- org.apache.directory.api.util;bundle-version="${org.apache.directory.api.bundleversion}",
+ org.apache.directory.server.core.api;bundle-version="${org.apache.directory.server.version}",
+ org.apache.directory.server.ldif.partition;bundle-version="${org.apache.directory.server.version}",
+ org.apache.directory.server.xdbm.partition;bundle-version="${org.apache.directory.server.version}",
+ org.apache.directory.api.asn1.api;bundle-version="${org.apache.directory.api.version}",
+ org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.version}",
+ org.apache.directory.api.ldap.schema;bundle-version="${org.apache.directory.api.version}",
+ org.apache.directory.api.ldap.extras.util;bundle-version="${org.apache.directory.api.version}",
+ org.apache.directory.api.util;bundle-version="${org.apache.directory.api.version}",
  org.apache.directory.studio.openldap.common.ui,
  org.apache.directory.studio.openldap.syncrepl,
  org.apache.directory.studio.common.core,
