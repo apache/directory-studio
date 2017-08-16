@@ -424,4 +424,44 @@ public class ApacheDSPluginTest
         DeleteDialogBot deleteDialogBot = serversViewBot.openDeleteServerDialog();
         deleteDialogBot.clickOkButton();
     }
+
+
+    /**
+     * Test for DIRSTUDIO-1120: Checkbox active protocols
+     */
+    @Test
+    public void testSetEnabledProtocols() throws Exception
+    {
+        String serverName = "SetEnabledProtocols";
+        createServer( serverName );
+
+        ApacheDSConfigurationEditorBot editorBot = serversViewBot.openConfigurationEditor( serverName );
+
+        // assert not enabled yet
+        assertFalse( editorBot.isSSLv3Enabled() );
+        assertFalse( editorBot.isTLSv1Enabled() );
+        assertFalse( editorBot.isTLSv1_1Enabled() );
+        assertFalse( editorBot.isTLSv1_2Enabled() );
+
+        // enable
+        editorBot.enableSSLv3();
+        editorBot.enableTLSv1();
+        editorBot.enableTLSv1_1();
+        editorBot.enableTLSv1_2();
+        editorBot.save();
+        editorBot.close();
+
+        // re-open and assert enabled
+        editorBot = serversViewBot.openConfigurationEditor( serverName );
+        assertTrue( editorBot.isSSLv3Enabled() );
+        assertTrue( editorBot.isTLSv1Enabled() );
+        assertTrue( editorBot.isTLSv1_1Enabled() );
+        assertTrue( editorBot.isTLSv1_2Enabled() );
+        editorBot.close();
+
+        // Deleting the server
+        DeleteDialogBot deleteDialogBot = serversViewBot.openDeleteServerDialog();
+        deleteDialogBot.clickOkButton();
+    }
+
 }

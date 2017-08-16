@@ -1010,7 +1010,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            setProtocol( sslv3Checkbox.getSelection(), "SSLv3" );
+            setProtocol( sslv3Checkbox.getSelection(), SSL_V3 );
         }
     };
     
@@ -1022,7 +1022,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            setProtocol( tlsv1_0Checkbox.getSelection(), "TLSv1" );
+            setProtocol( tlsv1_0Checkbox.getSelection(), TLS_V1_0 );
         }
     };
     
@@ -1034,7 +1034,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            setProtocol( tlsv1_1Checkbox.getSelection(), "TLSv1.1" );
+            setProtocol( tlsv1_1Checkbox.getSelection(), TLS_V1_1 );
         }
     };
     
@@ -1046,7 +1046,7 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            setProtocol( tlsv1_2Checkbox.getSelection(), "TLvV1.2" );
+            setProtocol( tlsv1_2Checkbox.getSelection(), TLS_V1_2 );
         }
     };
 
@@ -1359,19 +1359,19 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
 
         // Enabled Protocols
         // SSL V3
-        sslv3Checkbox = toolkit.createButton( composite, "SSLv3", SWT.CHECK ); //$NON-NLS-1$
+        sslv3Checkbox = toolkit.createButton( composite, SSL_V3, SWT.CHECK ); //$NON-NLS-1$
         sslv3Checkbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
 
         // TLS 1.0
-        tlsv1_0Checkbox = toolkit.createButton( composite, "TLSv1", SWT.CHECK ); //$NON-NLS-1$
+        tlsv1_0Checkbox = toolkit.createButton( composite, TLS_V1_0, SWT.CHECK ); //$NON-NLS-1$
         tlsv1_0Checkbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
 
         // TLS 1.1
-        tlsv1_1Checkbox = toolkit.createButton( composite, "TLSv1.1", SWT.CHECK ); //$NON-NLS-1$
+        tlsv1_1Checkbox = toolkit.createButton( composite, TLS_V1_1, SWT.CHECK ); //$NON-NLS-1$
         tlsv1_1Checkbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
         
         // TLS 1.2
-        tlsv1_2Checkbox = toolkit.createButton( composite, "TLSv1.2", SWT.CHECK ); //$NON-NLS-1$
+        tlsv1_2Checkbox = toolkit.createButton( composite, TLS_V1_2, SWT.CHECK ); //$NON-NLS-1$
         tlsv1_2Checkbox.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
     }
 
