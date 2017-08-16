@@ -22,17 +22,14 @@ package org.apache.directory.studio.aciitemeditor.model;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.directory.api.ldap.aci.ACIItemParser;
 import org.apache.directory.api.ldap.aci.UserClass;
 import org.apache.directory.api.ldap.aci.UserFirstACIItem;
-import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.subtree.SubtreeSpecification;
 import org.apache.directory.studio.valueeditors.AbstractDialogStringValueEditor;
 import org.eclipse.osgi.util.NLS;
@@ -48,9 +45,10 @@ public class UserClassWrapper
 {
     /** This map contains all possible user class identifiers */
     public static final Map<Class<? extends UserClass>, String> CLASS_TO_IDENTIFIER_MAP;
+    
     static
     {
-        Map<Class<? extends UserClass>, String> map = new HashMap<Class<? extends UserClass>, String>();
+        Map<Class<? extends UserClass>, String> map = new HashMap<>();
         map.put( UserClass.AllUsers.class, "allUsers" ); //$NON-NLS-1$
         map.put( UserClass.ThisEntry.class, "thisEntry" ); //$NON-NLS-1$
         map.put( UserClass.ParentOfEntry.class, "parentOfEntry" ); //$NON-NLS-1$
@@ -62,9 +60,10 @@ public class UserClassWrapper
 
     /** This map contains all user class display values */
     public static final Map<Class<? extends UserClass>, String> CLASS_TO_DISPLAY_MAP;
+    
     static
     {
-        Map<Class<? extends UserClass>, String> map = new HashMap<Class<? extends UserClass>, String>();
+        Map<Class<? extends UserClass>, String> map = new HashMap<>();
         map.put( UserClass.AllUsers.class, Messages.getString( "UserClassWrapper.userClass.allUsers.label" ) ); //$NON-NLS-1$
         map.put( UserClass.ThisEntry.class, Messages.getString( "UserClassWrapper.userClass.thisEntry.label" ) ); //$NON-NLS-1$
         map.put( UserClass.ParentOfEntry.class, Messages.getString( "UserClassWrapper.userClass.parentOfEntry.label" ) ); //$NON-NLS-1$
@@ -111,7 +110,7 @@ public class UserClassWrapper
         this.valueSuffix = valueSuffix;
         this.valueEditor = valueEditor;
 
-        this.values = new ArrayList<String>();
+        this.values = new ArrayList<>();
     }
 
 
@@ -144,9 +143,7 @@ public class UserClassWrapper
             throw new ParseException( msg, 0 );
         }
         
-        UserClass userClass = ( UserClass ) aci.getUserClasses().iterator().next();
-        
-        return userClass;
+        return aci.getUserClasses().iterator().next();
     }
 
 
@@ -167,26 +164,26 @@ public class UserClassWrapper
         if ( userClass.getClass() == UserClass.Name.class )
         {
             UserClass.Name name = ( UserClass.Name ) userClass;
-            Set<Dn> jndiNames = name.getNames();
-            for ( Dn jndiName : jndiNames )
+            
+            for ( String jndiName : name.getNames() )
             {
-                values.add( jndiName.toString() );
+                values.add( jndiName );
             }
         }
         else if ( userClass.getClass() == UserClass.UserGroup.class )
         {
             UserClass.UserGroup userGroups = ( UserClass.UserGroup ) userClass;
-            Set<Dn> jndiNames = userGroups.getNames();
-            for ( Dn jndiName : jndiNames )
+            
+            for ( String jndiName : userGroups.getNames() )
             {
-                values.add( jndiName.toString() );
+                values.add( jndiName );
             }
         }
         else if ( userClass.getClass() == UserClass.Subtree.class )
         {
             UserClass.Subtree subtree = ( UserClass.Subtree ) userClass;
-            Collection<SubtreeSpecification> subtreeSpecifications = subtree.getSubtreeSpecifications();
-            for ( SubtreeSpecification subtreeSpecification : subtreeSpecifications )
+
+            for ( SubtreeSpecification subtreeSpecification : subtree.getSubtreeSpecifications() )
             {
                 StringBuilder buffer = new StringBuilder();
                 subtreeSpecification.toString( buffer );
@@ -204,11 +201,14 @@ public class UserClassWrapper
     public String toString()
     {
         String flatValue = getFlatValue();
+        StringBuilder sb = new StringBuilder();
+        
         if ( flatValue.length() > 0 )
         {
             flatValue = flatValue.replace( '\r', ' ' );
             flatValue = flatValue.replace( '\n', ' ' );
             flatValue = ": " + flatValue; //$NON-NLS-1$
+            
             if ( flatValue.length() > 40 )
             {
                 String temp = flatValue;
@@ -218,7 +218,7 @@ public class UserClassWrapper
             }
         }
 
-        return getDisplayName() + " " + flatValue; //$NON-NLS-1$
+        return sb.append( getDisplayName() ).append( ' ' ).append( flatValue ).toString(); //$NON-NLS-1$
     }
 
 
@@ -325,5 +325,4 @@ public class UserClassWrapper
     {
         return valueEditor;
     }
-
 }
