@@ -185,7 +185,7 @@ public class PartitionsDiffComputer
     public List<LdifEntry> comparePartitions( Dn baseDn, String[] attributeIds ) throws PartitionsDiffException
     {
         // Creating the list containing all modifications
-        List<LdifEntry> modifications = new ArrayList<LdifEntry>();
+        List<LdifEntry> modifications = new ArrayList<>();
 
         try
         {
@@ -199,11 +199,11 @@ public class PartitionsDiffComputer
 
             // Creating the list containing all the original entries to be processed
             // and adding it the original base entry
-            List<Entry> originalEntries = new ArrayList<Entry>();
+            List<Entry> originalEntries = new ArrayList<>();
             originalEntries.add( originalBaseEntry );
 
             // Looping until all original entries are being processed
-            while ( originalEntries.size() > 0 )
+            while ( !originalEntries.isEmpty() )
             {
                 // Getting the first original entry from the list
                 Entry originalEntry = originalEntries.remove( 0 );
@@ -238,8 +238,8 @@ public class PartitionsDiffComputer
                 if ( modificationEntryChangeType != ChangeType.None )
                 {
                     if ( modificationEntryChangeType == ChangeType.Delete
-                        || ( modificationEntryChangeType == ChangeType.Modify && modificationEntry
-                            .getModifications().size() > 0 ) )
+                        || ( modificationEntryChangeType == ChangeType.Modify && !modificationEntry
+                            .getModifications().isEmpty() ) )
                     {
                         // Adding the modification entry to the list
                         modifications.add( modificationEntry );
@@ -280,11 +280,11 @@ public class PartitionsDiffComputer
 
             // Creating the list containing all the destination entries to be processed
             // and adding it the destination base entry
-            List<Entry> destinationEntries = new ArrayList<Entry>();
+            List<Entry> destinationEntries = new ArrayList<>();
             destinationEntries.add( originalBaseEntry );
 
             // Looping until all destination entries are being processed
-            while ( destinationEntries.size() > 0 )
+            while ( !destinationEntries.isEmpty() )
             {
                 // Getting the first destination entry from the list
                 Entry destinationEntry = destinationEntries.remove( 0 );
@@ -353,7 +353,7 @@ public class PartitionsDiffComputer
     private void compareEntries( Entry originalEntry, Entry destinationEntry, LdifEntry modificationEntry )
     {
         // Creating a list to store the already evaluated attribute type
-        List<AttributeType> evaluatedATs = new ArrayList<AttributeType>();
+        List<AttributeType> evaluatedATs = new ArrayList<>();
 
         // Checking attributes of the original entry
         for ( Attribute originalAttribute : originalEntry )
@@ -400,7 +400,7 @@ public class PartitionsDiffComputer
                     Attribute attribute = new DefaultAttribute( destinationAttributeType );
                     modification.setAttribute( attribute );
 
-                    for ( Value<?> value : destinationAttribute )
+                    for ( Value value : destinationAttribute )
                     {
                         try
                         {
@@ -437,10 +437,10 @@ public class PartitionsDiffComputer
         LdifEntry modificationEntry )
     {
         // Creating a list to store the already evaluated values
-        List<Value<?>> evaluatedValues = new ArrayList<Value<?>>();
+        List<Value> evaluatedValues = new ArrayList<>();
 
         // Checking values of the original attribute
-        for ( Value<?> originalValue : originalAttribute )
+        for ( Value originalValue : originalAttribute )
         {
             if ( !destinationAttribute.contains( originalValue ) )
             {
@@ -472,7 +472,7 @@ public class PartitionsDiffComputer
         }
 
         // Checking values of the destination attribute
-        for ( Value<?> destinationValue : destinationAttribute )
+        for ( Value destinationValue : destinationAttribute )
         {
             if ( !evaluatedValues.contains( destinationValue ) )
             {
