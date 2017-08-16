@@ -74,12 +74,9 @@ public class OpenLDAPServerConfigurationEditorUtils
     /**
      * Performs the "Save as..." action.
      *
-     * @param configuration
-     *      the configuration
-     * @param newInput
-     *      a flag to indicate if a new input is required
-     * @return
-     *      the new input for the editor
+     * @param configuration the configuration
+     * @param newInput a flag to indicate if a new input is required
+     * @return the new input for the editor
      * @throws Exception
      */
     public static IEditorInput saveAs( OpenLdapConfiguration configuration, boolean newInput ) throws Exception
@@ -173,10 +170,8 @@ public class OpenLDAPServerConfigurationEditorUtils
     /**
      * Opens a {@link DirectoryDialog} in the UI thread.
      *
-     * @param dialog
-     *      the directory dialog
-     * @return
-     *      the result of the dialog
+     * @param dialog the directory dialog
+     * @return the result of the dialog
      */
     private static String openDirectoryDialogInUIThread( final DirectoryDialog dialog )
     {
@@ -211,10 +206,8 @@ public class OpenLDAPServerConfigurationEditorUtils
     /**
      * Saves the configuration.
      *
-     * @param configuration
-     *      the configuration
-     * @param directory
-     *      the directory
+     * @param configuration the configuration
+     * @param directory the directory
      * @throws Exception
      */
     public static void saveConfiguration( OpenLdapConfiguration configuration, File directory ) throws Exception
@@ -226,12 +219,9 @@ public class OpenLDAPServerConfigurationEditorUtils
     /**
      * Saves the configuration.
      *
-     * @param browserConnection
-     *      the browser connection
-     * @param configuration
-     *      the configuration
-     * @param directory
-     *      the directory
+     * @param browserConnection the browser connection
+     * @param configurationthe configuration
+     * @param directory the directory
      * @throws Exception
      */
     public static void saveConfiguration( IBrowserConnection browserConnection, OpenLdapConfiguration configuration,
@@ -328,9 +318,7 @@ public class OpenLDAPServerConfigurationEditorUtils
      * @param input the connection server configuration input
      * @param editor the editor
      * @param monitor the monitor
-     * @return
-     *      <code>true</code> if the operation is successful,
-     *      <code>false</code> if not
+     * @return <code>true</code> if the operation is successful, <code>false</code> if not
      * @throws Exception
      */
     public static void saveConfiguration( ConnectionServerConfigurationInput input, OpenLDAPServerConfigurationEditor editor,
