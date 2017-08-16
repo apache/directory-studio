@@ -51,7 +51,6 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ISelection;
@@ -60,13 +59,11 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -134,26 +131,18 @@ public class PartitionDetailsPage implements IDetailsPage
 
     // Listeners
     /** The Text Modify Listener */
-    private ModifyListener textModifyListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    private ModifyListener textModifyListener = event -> 
         {
             commit( true );
             masterDetailsBlock.setEditorDirty();
-        }
-    };
+        };
 
-    private ModifyListener suffixTextModifyListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
-        {
-            autoGenerateContextEntry();
-        }
-    };
+    private ModifyListener suffixTextModifyListener = event -> autoGenerateContextEntry();
 
     /** The Checkbox Selection Listener */
     private SelectionListener checkboxSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             commit( true );
@@ -163,6 +152,7 @@ public class PartitionDetailsPage implements IDetailsPage
 
     private SelectionListener autoGenerateContextEntryCheckboxSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             autoGenerateContextEntry();
@@ -171,26 +161,15 @@ public class PartitionDetailsPage implements IDetailsPage
     };
 
     /** The Selection Changed Listener for the Context Entry Table Viewer */
-    private ISelectionChangedListener contextEntryTableViewerSelectionListener = new ISelectionChangedListener()
-    {
-        public void selectionChanged( SelectionChangedEvent event )
-        {
-            updateContextEntryEnableState();
-        }
-    };
+    private ISelectionChangedListener contextEntryTableViewerSelectionListener = event -> updateContextEntryEnableState();
 
     /** The Double Click Listener for the Indexed Attributes Table Viewer */
-    private IDoubleClickListener contextEntryTableViewerDoubleClickListener = new IDoubleClickListener()
-    {
-        public void doubleClick( DoubleClickEvent event )
-        {
-            editSelectedContextEntry();
-        }
-    };
+    private IDoubleClickListener contextEntryTableViewerDoubleClickListener = event -> editSelectedContextEntry();
 
     /** The Listener for the Add button of the Context Entry Section */
     private SelectionListener contextEntryAddButtonListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             AttributeValueDialog dialog = new AttributeValueDialog( new AttributeValueObject( "", "" ) ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -232,9 +211,7 @@ public class PartitionDetailsPage implements IDetailsPage
         }
     };
 
-    private ISelectionChangedListener partitionTypeComboViewerSelectionChangedListener = new ISelectionChangedListener()
-    {
-        public void selectionChanged( SelectionChangedEvent event )
+    private ISelectionChangedListener partitionTypeComboViewerSelectionChangedListener = event ->
         {
             PartitionType type = ( PartitionType ) ( ( StructuredSelection ) partitionTypeComboViewer.getSelection() )
                 .getFirstElement();
@@ -266,12 +243,12 @@ public class PartitionDetailsPage implements IDetailsPage
                     setEditorDirty();
                 }
             }
-        }
-    };
+        };
 
     /** The Listener for the Edit button of the Context Entry Section */
     private SelectionListener contextEntryEditButtonListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             editSelectedContextEntry();
@@ -281,6 +258,7 @@ public class PartitionDetailsPage implements IDetailsPage
     /** The Listener for the Delete button of the Context Entry Section */
     private SelectionListener contextEntryDeleteButtonListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             StructuredSelection selection = ( StructuredSelection ) contextEntryTableViewer.getSelection();
@@ -303,36 +281,91 @@ public class PartitionDetailsPage implements IDetailsPage
     };
 
     /** The Selection Changed Listener for the Indexed Attributes Table Viewer */
-    private ISelectionChangedListener indexedAttributesTableViewerListener = new ISelectionChangedListener()
-    {
-        public void selectionChanged( SelectionChangedEvent event )
+    private ISelectionChangedListener indexedAttributesTableViewerListener = event -> 
         {
             indexesEditButton.setEnabled( !event.getSelection().isEmpty() );
             indexesDeleteButton.setEnabled( !event.getSelection().isEmpty() );
-        }
-    };
+        };
 
     /** The Double Click Listener for the Indexed Attributes Table Viewer */
-    private IDoubleClickListener indexedAttributesTableViewerDoubleClickListener = new IDoubleClickListener()
-    {
-        public void doubleClick( DoubleClickEvent event )
-        {
-            editSelectedIndex();
-        }
-    };
-
+    private IDoubleClickListener indexedAttributesTableViewerDoubleClickListener = event -> editSelectedIndex();
+    
     /** The Listener for the Add button of the Indexed Attributes Section */
     private SelectionListener indexedAttributeAddButtonListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             addNewIndex();
+        }
+
+
+        /**
+         * Adds a new index and opens the index dialog.
+         */
+        private void addNewIndex()
+        {
+            PartitionType partitionType = ( PartitionType ) ( ( StructuredSelection ) partitionTypeComboViewer
+                .getSelection() ).getFirstElement();
+
+            if ( partitionType != null )
+            {
+                IndexBean newIndex = null;
+
+                // JDBM partition
+                if ( partitionType == PartitionType.JDBM )
+                {
+                    JdbmIndexBean newJdbmIndex = new JdbmIndexBean();
+                    newJdbmIndex.setIndexAttributeId( "" ); //$NON-NLS-1$
+                    newJdbmIndex.setIndexCacheSize( 100 );
+
+                    JdbmIndexDialog dialog = new JdbmIndexDialog( newJdbmIndex );
+                    
+                    if ( JdbmIndexDialog.OK == dialog.open() )
+                    {
+                        newIndex = dialog.getIndex();
+                    }
+                    else
+                    {
+                        // Cancel
+                        return;
+                    }
+                }
+                // Mavibot Partition
+                else if ( partitionType == PartitionType.MAVIBOT )
+                {
+                    MavibotIndexBean newMavibotIndex = new MavibotIndexBean();
+                    newMavibotIndex.setIndexAttributeId( "" ); //$NON-NLS-1$
+
+                    MavibotIndexDialog dialog = new MavibotIndexDialog( newMavibotIndex );
+                    
+                    if ( MavibotIndexDialog.OK == dialog.open() )
+                    {
+                        newIndex = dialog.getIndex();
+                    }
+                    else
+                    {
+                        // Cancel
+                        return;
+                    }
+                }
+
+                // Checking the new index
+                if ( newIndex != null )
+                {
+                    indexesList.add( newIndex );
+                    indexesTableViewer.refresh();
+                    indexesTableViewer.setSelection( new StructuredSelection( newIndex ) );
+                    masterDetailsBlock.setEditorDirty();
+                }
+            }
         }
     };
 
     /** The Listener for the Edit button of the Indexed Attributes Section */
     private SelectionListener indexedAttributeEditButtonListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             editSelectedIndex();
@@ -342,9 +375,35 @@ public class PartitionDetailsPage implements IDetailsPage
     /** The Listener for the Delete button of the Indexed Attributes Section */
     private SelectionListener indexedAttributeDeleteButtonListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             deleteSelectedIndex();
+        }
+
+
+        /**
+         * Deletes the selected index in the indexes table viewer
+         */
+        private void deleteSelectedIndex()
+        {
+            StructuredSelection selection = ( StructuredSelection ) indexesTableViewer.getSelection();
+
+            if ( !selection.isEmpty() )
+            {
+                IndexBean selectedIndex = ( IndexBean ) selection.getFirstElement();
+
+                if ( MessageDialog
+                    .openConfirm( indexesDeleteButton.getShell(),
+                        Messages.getString( "PartitionDetailsPage.ConfirmDelete" ), //$NON-NLS-1$
+                        NLS.bind(
+                            Messages.getString( "PartitionDetailsPage.AreYouSureDeleteIndex" ), selectedIndex.getIndexAttributeId() ) ) ) //$NON-NLS-1$
+                {
+                    indexesList.remove( selectedIndex );
+                    indexesTableViewer.refresh();
+                    masterDetailsBlock.setEditorDirty();
+                }
+            }
         }
     };
 
@@ -468,7 +527,7 @@ public class PartitionDetailsPage implements IDetailsPage
         {
             public Object[] getElements( Object inputElement )
             {
-                List<AttributeValueObject> elements = new ArrayList<AttributeValueObject>();
+                List<AttributeValueObject> elements = new ArrayList<>();
                 Entry entry = ( Entry ) inputElement;
 
                 Iterator<Attribute> attributes = entry.iterator();
@@ -476,11 +535,11 @@ public class PartitionDetailsPage implements IDetailsPage
                 {
                     Attribute attribute = attributes.next();
 
-                    Iterator<Value<?>> values = attribute.iterator();
+                    Iterator<Value> values = attribute.iterator();
                     while ( values.hasNext() )
                     {
-                        Value<?> value = values.next();
-                        elements.add( new AttributeValueObject( attribute.getId(), value.getString() ) );
+                        Value value = values.next();
+                        elements.add( new AttributeValueObject( attribute.getId(), value.getValue() ) );
                     }
                 }
 
@@ -488,11 +547,13 @@ public class PartitionDetailsPage implements IDetailsPage
             }
 
 
+            @Override
             public void dispose()
             {
             }
 
 
+            @Override
             public void inputChanged( Viewer viewer, Object oldInput, Object newInput )
             {
             }
@@ -508,7 +569,7 @@ public class PartitionDetailsPage implements IDetailsPage
                         case 0:
                             return ( ( AttributeValueObject ) element ).getAttribute();
                         case 1:
-                            return ( ( AttributeValueObject ) element ).getValue().toString();
+                            return ( ( AttributeValueObject ) element ).getValue();
                         default:
                             break;
                     }
@@ -678,6 +739,7 @@ public class PartitionDetailsPage implements IDetailsPage
         indexesTableViewer.setContentProvider( new ArrayContentProvider() );
         indexesTableViewer.setLabelProvider( new LabelProvider()
         {
+            @Override
             public String getText( Object element )
             {
                 if ( element instanceof JdbmIndexBean )
@@ -698,6 +760,7 @@ public class PartitionDetailsPage implements IDetailsPage
             }
 
 
+            @Override
             public Image getImage( Object element )
             {
                 if ( element instanceof IndexBean )
@@ -707,7 +770,7 @@ public class PartitionDetailsPage implements IDetailsPage
                 }
 
                 return super.getImage( element );
-            };
+            }
         } );
 
         // Add button
@@ -1128,91 +1191,6 @@ public class PartitionDetailsPage implements IDetailsPage
 
 
     /**
-     * Adds a new index and opens the index dialog.
-     */
-    private void addNewIndex()
-    {
-        PartitionType partitionType = ( PartitionType ) ( ( StructuredSelection ) partitionTypeComboViewer
-            .getSelection() ).getFirstElement();
-
-        if ( partitionType != null )
-        {
-            IndexBean newIndex = null;
-
-            // JDBM partition
-            if ( partitionType == PartitionType.JDBM )
-            {
-                JdbmIndexBean newJdbmIndex = new JdbmIndexBean();
-                newJdbmIndex.setIndexAttributeId( "" ); //$NON-NLS-1$
-                newJdbmIndex.setIndexCacheSize( 100 );
-
-                JdbmIndexDialog dialog = new JdbmIndexDialog( newJdbmIndex );
-                if ( JdbmIndexDialog.OK == dialog.open() )
-                {
-                    newIndex = dialog.getIndex();
-                }
-                else
-                {
-                    // Cancel
-                    return;
-                }
-            }
-            // Mavibot Partition
-            else if ( partitionType == PartitionType.MAVIBOT )
-            {
-                MavibotIndexBean newMavibotIndex = new MavibotIndexBean();
-                newMavibotIndex.setIndexAttributeId( "" ); //$NON-NLS-1$
-
-                MavibotIndexDialog dialog = new MavibotIndexDialog( newMavibotIndex );
-                if ( MavibotIndexDialog.OK == dialog.open() )
-                {
-                    newIndex = dialog.getIndex();
-                }
-                else
-                {
-                    // Cancel
-                    return;
-                }
-            }
-
-            // Checking the new index
-            if ( newIndex != null )
-            {
-                indexesList.add( newIndex );
-                indexesTableViewer.refresh();
-                indexesTableViewer.setSelection( new StructuredSelection( newIndex ) );
-                masterDetailsBlock.setEditorDirty();
-            }
-        }
-    }
-
-
-    /**
-     * Deletes the selected index in the indexes table viewer
-     */
-    private void deleteSelectedIndex()
-    {
-        StructuredSelection selection = ( StructuredSelection ) indexesTableViewer.getSelection();
-
-        if ( !selection.isEmpty() )
-        {
-            IndexBean selectedIndex = ( IndexBean ) selection.getFirstElement();
-
-            if ( MessageDialog
-                .openConfirm( indexesDeleteButton.getShell(),
-                    Messages.getString( "PartitionDetailsPage.ConfirmDelete" ), //$NON-NLS-1$
-                    NLS.bind(
-                        Messages.getString( "PartitionDetailsPage.AreYouSureDeleteIndex" ), selectedIndex.getIndexAttributeId() ) ) ) //$NON-NLS-1$
-            {
-                indexesList.remove( selectedIndex );
-                indexesTableViewer.refresh();
-                masterDetailsBlock.setEditorDirty();
-            }
-        }
-    }
-
-
-    /**
      * Opens a Context Entry Dialog with the selected Attribute Value Object in the
      * Context Entry Table Viewer.
      */
@@ -1302,7 +1280,7 @@ public class PartitionDetailsPage implements IDetailsPage
 
             // Indexes
             List<IndexBean> originalIndexes = original.getIndexes();
-            List<IndexBean> destinationIndexes = new ArrayList<IndexBean>();
+            List<IndexBean> destinationIndexes = new ArrayList<>();
 
             if ( originalIndexes != null )
             {
