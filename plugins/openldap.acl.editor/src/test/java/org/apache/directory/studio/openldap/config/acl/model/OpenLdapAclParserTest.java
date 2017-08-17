@@ -46,7 +46,7 @@ public class OpenLdapAclParserTest
     @Test( expected = ParseException.class )
     public void testEmpty() throws Exception
     {
-    	System.out.println( "\n--> testEmpty" );
+        System.out.println( "\n--> testEmpty" );
         OpenLdapAclParser parser = new OpenLdapAclParser();
         parser.parse( "" );
 
@@ -57,7 +57,7 @@ public class OpenLdapAclParserTest
     @Test
     public void testImpliedWhatStarWithAccess() throws Exception
     {
-    	System.out.println( "\n--> testImpliedWhatStarWithAccess" );
+        System.out.println( "\n--> testImpliedWhatStarWithAccess" );
         // Create parser
         OpenLdapAclParser parser = new OpenLdapAclParser();
 
@@ -77,7 +77,7 @@ public class OpenLdapAclParserTest
     @Test
     public void testWhatStarWithAccess() throws Exception
     {
-    	System.out.println( "\n--> testWhatStarWithAccess" );
+        System.out.println( "\n--> testWhatStarWithAccess" );
         // Create parser
         OpenLdapAclParser parser = new OpenLdapAclParser();
 
@@ -97,7 +97,7 @@ public class OpenLdapAclParserTest
     @Test
     public void testWhatStarWithoutAccess() throws Exception
     {
-    	System.out.println( "\n--> testWhatStarWithoutAccess" );
+        System.out.println( "\n--> testWhatStarWithoutAccess" );
         // Create parser
         OpenLdapAclParser parser = new OpenLdapAclParser();
 
@@ -117,7 +117,7 @@ public class OpenLdapAclParserTest
     @Test
     public void testWhatStarWithSpaces() throws Exception
     {
-    	System.out.println( "\n--> testWhatStarWithSpaces" );
+        System.out.println( "\n--> testWhatStarWithSpaces" );
         // Create parser
         OpenLdapAclParser parser = new OpenLdapAclParser();
 
@@ -137,7 +137,7 @@ public class OpenLdapAclParserTest
     @Test( expected = ParseException.class )
     public void testWhatTwoStars() throws Exception
     {
-    	System.out.println( "\n--> testWhatTwoStars" );
+        System.out.println( "\n--> testWhatTwoStars" );
         OpenLdapAclParser parser = new OpenLdapAclParser();
         parser.parse( "to * * by *" );
 
@@ -151,7 +151,7 @@ public class OpenLdapAclParserTest
     @Test
     public void testWhatDnValidDnWithQuote() throws Exception
     {
-    	System.out.println( "\n--> testWhatDnValidDnWithQuote" );
+        System.out.println( "\n--> testWhatDnValidDnWithQuote" );
         String dnPattern = "dc=example,dc=com";
 
         // Create parser
@@ -175,7 +175,7 @@ public class OpenLdapAclParserTest
     @Test( expected = ParseException.class )
     public void testWhatDnStar() throws Exception
     {
-    	System.out.println( "\n--> testWhatDnStar" );
+        System.out.println( "\n--> testWhatDnStar" );
         // Create parser
         OpenLdapAclParser parser = new OpenLdapAclParser();
 
@@ -189,7 +189,7 @@ public class OpenLdapAclParserTest
     @Test( expected=ParseException.class)
     public void testWhatDnValidDnNoQuote() throws Exception
     {
-    	System.out.println( "\n--> testWhatDnValidDnNoQuote" );
+        System.out.println( "\n--> testWhatDnValidDnNoQuote" );
         String dnPattern = "dc=example,dc=com";
 
         // Create parser
@@ -205,14 +205,14 @@ public class OpenLdapAclParserTest
     @Test ( expected=ParseException.class)
     public void testWhatDnBadDn() throws Exception
     {
-    	System.out.println( "\n--> testWhatDnBadDn" );
+        System.out.println( "\n--> testWhatDnBadDn" );
         String dnPattern = "Blah";
 
         // Create parser
         OpenLdapAclParser parser = new OpenLdapAclParser();
 
         // Testing the ACL item
-    	parser.parse( "access to dn=\"" + dnPattern + "\"\n by *" );
+        parser.parse( "access to dn=\"" + dnPattern + "\"\n by *" );
         
         fail();
     }
@@ -224,7 +224,7 @@ public class OpenLdapAclParserTest
     @Test
     public void testWhatDnBasicDnExact() throws Exception
     {
-    	System.out.println( "\n--> testWhatDnBasicDnExact" );
+        System.out.println( "\n--> testWhatDnBasicDnExact" );
         String dnPattern = "dc=example,dc=com";
 
         // Create parser
@@ -251,7 +251,7 @@ public class OpenLdapAclParserTest
     @Test ( expected=ParseException.class)
     public void testWhatDnBasicDnExactNoQuote() throws Exception
     {
-    	System.out.println( "\n--> testWhatDnBasicDnExactNoQuote" );
+        System.out.println( "\n--> testWhatDnBasicDnExactNoQuote" );
         String dnPattern = "dc=example,dc=com";
 
         // Create parser
@@ -267,7 +267,7 @@ public class OpenLdapAclParserTest
     @Test ( expected=ParseException.class)
     public void testWhatDnBasicDnExactBadDn() throws Exception
     {
-    	System.out.println( "\n--> testWhatDnBasicDnExactBadDn" );
+        System.out.println( "\n--> testWhatDnBasicDnExactBadDn" );
         String dnPattern = "example";
 
         // Create parser
@@ -286,7 +286,7 @@ public class OpenLdapAclParserTest
     @Test
     public void testWhatDnBasicDnRegex() throws Exception
     {
-    	System.out.println( "\n--> testWhatDnBasicDnRegex" );
+        System.out.println( "\n--> testWhatDnBasicDnRegex" );
         String dnPattern = "dc=*";
 
         // Create parser
@@ -313,7 +313,7 @@ public class OpenLdapAclParserTest
     @Test( expected=ParseException.class)
     public void testWhatDnBasicDnRegexNoQuote() throws Exception
     {
-    	System.out.println( "\n--> testWhatDnBasicDnRegexNoQuote" );
+        System.out.println( "\n--> testWhatDnBasicDnRegexNoQuote" );
         String dnPattern = "dc=*,dc=com";
 
         // Create parser
@@ -332,7 +332,7 @@ public class OpenLdapAclParserTest
     @Test
     public void testWhatDnScopeOneQuotedDn() throws Exception
     {
-    	System.out.println( "\n--> testWhatDnScopeOneQuotedDn" );
+        System.out.println( "\n--> testWhatDnScopeOneQuotedDn" );
         String dnPattern = "dc=example,dc=com";
 
         // Create parser
@@ -359,7 +359,7 @@ public class OpenLdapAclParserTest
     @Test
     public void testWhatDnScopeOneLevelQuotedDn() throws Exception
     {
-    	System.out.println( "\n--> testWhatDnScopeOneLevelQuotedDn" );
+        System.out.println( "\n--> testWhatDnScopeOneLevelQuotedDn" );
         String dnPattern = "dc=example,dc=com";
 
         // Create parser
@@ -386,7 +386,7 @@ public class OpenLdapAclParserTest
     @Test
     public void testWhatDnScopeBaseQuotedDn() throws Exception
     {
-    	System.out.println( "\n--> testWhatDnScopeBaseQuotedDn" );
+        System.out.println( "\n--> testWhatDnScopeBaseQuotedDn" );
         String dnPattern = "dc=example,dc=com";
 
         // Create parser
@@ -413,7 +413,7 @@ public class OpenLdapAclParserTest
     @Test
     public void testWhatDnScopeBaseobjectQuotedDn() throws Exception
     {
-    	System.out.println( "\n--> testWhatDnScopeBaseobjectQuotedDn" );
+        System.out.println( "\n--> testWhatDnScopeBaseobjectQuotedDn" );
         String dnPattern = "dc=example,dc=com";
 
         // Create parser
@@ -440,7 +440,7 @@ public class OpenLdapAclParserTest
     @Test
     public void testWhatDnScopeSubQuotedDn() throws Exception
     {
-    	System.out.println( "\n--> testWhatDnScopeSubQuotedDn" );
+        System.out.println( "\n--> testWhatDnScopeSubQuotedDn" );
         String dnPattern = "dc=example,dc=com";
 
         // Create parser
@@ -467,7 +467,7 @@ public class OpenLdapAclParserTest
     @Test
     public void testWhatDnScopeSubtreeQuotedDn() throws Exception
     {
-    	System.out.println( "\n--> testWhatDnScopeSubtreeQuotedDn" );
+        System.out.println( "\n--> testWhatDnScopeSubtreeQuotedDn" );
         String dnPattern = "dc=example,dc=com";
 
         // Create parser
@@ -494,7 +494,7 @@ public class OpenLdapAclParserTest
     @Test
     public void testWhatDnScopeChildrenQuotedDn() throws Exception
     {
-    	System.out.println( "\n--> testWhatDnScopeChildrenQuotedDn" );
+        System.out.println( "\n--> testWhatDnScopeChildrenQuotedDn" );
         String dnPattern = "dc=example,dc=com";
 
         // Create parser
@@ -521,7 +521,7 @@ public class OpenLdapAclParserTest
     @Test
     public void testWhatDnScopeOneEmptyDn() throws Exception
     {
-    	System.out.println( "\n--> testWhatDnScopeOneEmptyDn" );
+        System.out.println( "\n--> testWhatDnScopeOneEmptyDn" );
 
         // Create parser
         OpenLdapAclParser parser = new OpenLdapAclParser();
@@ -547,7 +547,7 @@ public class OpenLdapAclParserTest
     @Test( expected=ParseException.class)
     public void testWhatDnScopeOneNoQuotedDn() throws Exception
     {
-    	System.out.println( "\n--> testWhatDnScopeOneNoQuotedDn" );
+        System.out.println( "\n--> testWhatDnScopeOneNoQuotedDn" );
         String dnPattern = "dc=example,dc=com";
 
         // Create parser
@@ -561,7 +561,7 @@ public class OpenLdapAclParserTest
     @Test( expected=ParseException.class)
     public void testWhatDnScopeOneNoDn() throws Exception
     {
-    	System.out.println( "\n--> testWhatDnScopeOneNoDn" );
+        System.out.println( "\n--> testWhatDnScopeOneNoDn" );
 
         // Create parser
         OpenLdapAclParser parser = new OpenLdapAclParser();
@@ -574,7 +574,7 @@ public class OpenLdapAclParserTest
     @Test( expected=ParseException.class)
     public void testWhatDnScopeOneStar() throws Exception
     {
-    	System.out.println( "\n--> testWhatDnScopeOneStar" );
+        System.out.println( "\n--> testWhatDnScopeOneStar" );
 
         // Create parser
         OpenLdapAclParser parser = new OpenLdapAclParser();
@@ -590,7 +590,7 @@ public class OpenLdapAclParserTest
     @Test
     public void testWhatFilterSimple() throws Exception
     {
-    	System.out.println( "\n--> testWhatFilter" );
+        System.out.println( "\n--> testWhatFilter" );
         String filter = "(objectclass=*)";
 
         // Create parser
@@ -617,7 +617,7 @@ public class OpenLdapAclParserTest
     @Test
     public void testWhatFilterComplex() throws Exception
     {
-    	System.out.println( "\n--> testWhatFilterComplex" );
+        System.out.println( "\n--> testWhatFilterComplex" );
         String filter = "(&(objectclass=*)(cn=test)(!(sn=test)))";
 
         // Create parser
@@ -644,7 +644,7 @@ public class OpenLdapAclParserTest
     @Test( expected=ParseException.class)
     public void testWhatFilterWrongSimple() throws Exception
     {
-    	System.out.println( "\n--> testWhatFilterWrongSimple" );
+        System.out.println( "\n--> testWhatFilterWrongSimple" );
         String filter = "(objectclass=*";
 
         // Create parser
@@ -663,7 +663,7 @@ public class OpenLdapAclParserTest
     @Test
     public void testFail() throws Exception
     {
-    	fail();
+        fail();
     }
     
     /*

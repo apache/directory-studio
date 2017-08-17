@@ -111,7 +111,7 @@ public class ACIItemProtectedItemsComposite extends Composite
 
 
     /**
-     * This method initializes composite	
+     * This method initializes composite
      *
      */
     private void createComposite()
@@ -196,7 +196,7 @@ public class ACIItemProtectedItemsComposite extends Composite
 
 
     /**
-     * This method initializes buttons	
+     * This method initializes buttons
      *
      */
     private void createButtonComposite()

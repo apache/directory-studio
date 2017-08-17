@@ -254,7 +254,7 @@ public abstract class CombinedEntryEditor extends EditorPart implements INavigat
      */
     public boolean canHandle( IEntry entry )
     {
-    	return true;
+        return true;
     }
 
 

@@ -109,7 +109,7 @@ public class ACIItemGeneralComposite extends Composite
 
 
     /**
-     * This method initializes composite	
+     * This method initializes composite
      *
      */
     private void createComposite()

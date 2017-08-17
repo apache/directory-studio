@@ -43,16 +43,16 @@ import org.osgi.framework.ServiceReference;
  * This workbench advisor creates the window advisor, and specifies
  * the perspective id for the initial window.<br />
  * <br />
- * - initialize  		Called first to perform any setup such as parsing the command 
- * line, registering adapters, declaring images, etc..  	IWorkbenchConfigurer<br />
- * - preStartup 		Called after initialization but before the first window is opened. 
- * May be used to set options affecting which editors and views are initially opened. <br />	 
- * - postStartup 		Called after all windows have been opened or restored, but before 
+ * - initialize Called first to perform any setup such as parsing the command 
+ * line, registering adapters, declaring images, etc...  IWorkbenchConfigurer<br />
+ * - preStartup Called after initialization but before the first window is opened. 
+ * May be used to set options affecting which editors and views are initially opened. <br /> 
+ * - postStartup Called after all windows have been opened or restored, but before 
  * the event loop starts. It can be used to start automatic processes and to open tips or 
- * other windows.<br /> 	 
- * - preShutdown 		Called after the event loop has terminated but before any windows 
- * have been closed. 	 <br />
- * - postShutdown 	Called after all windows are closed during Workbench shutdown. 
+ * other windows.<br />
+ * - preShutdown Called after the event loop has terminated but before any windows 
+ * have been closed. <br />
+ * - postShutdown Called after all windows are closed during Workbench shutdown. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

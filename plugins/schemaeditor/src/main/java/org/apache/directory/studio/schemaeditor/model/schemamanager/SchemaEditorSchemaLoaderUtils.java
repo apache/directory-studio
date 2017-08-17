@@ -225,18 +225,18 @@ public class SchemaEditorSchemaLoaderUtils
      */
     private static Dn getDn( SchemaObject schemaObject, String objectPath ) throws LdapInvalidDnException
     {
-		try
-		{	
-		    return Dn.EMPTY_DN
-		        .add( new Rdn( SchemaConstants.OU_SCHEMA ) )
-		        .add( new Rdn( SchemaConstants.CN_AT, Rdn.escapeValue( schemaObject.getSchemaName() ) ) )
-		        .add( new Rdn( objectPath ) )
-		        .add( new Rdn( M_OID, schemaObject.getOid() ) );
-		}
-		catch ( LdapInvalidAttributeValueException liave )
-		{
-			throw new LdapInvalidDnException( liave.getLocalizedMessage(), liave );
-		}
+        try
+        {
+            return Dn.EMPTY_DN
+                .add( new Rdn( SchemaConstants.OU_SCHEMA ) )
+                .add( new Rdn( SchemaConstants.CN_AT, Rdn.escapeValue( schemaObject.getSchemaName() ) ) )
+                .add( new Rdn( objectPath ) )
+                .add( new Rdn( M_OID, schemaObject.getOid() ) );
+        }
+        catch ( LdapInvalidAttributeValueException liave )
+        {
+            throw new LdapInvalidDnException( liave.getLocalizedMessage(), liave );
+        }
     }
 
 

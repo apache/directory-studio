@@ -305,20 +305,20 @@ public class OpenLdapAclWhatClauseWidget extends AbstractWidget
         if ( whatClause != null )
         {
             // DN clause
-        	if ( whatClause instanceof AclWhatClauseDn )
-        	{
+            if ( whatClause instanceof AclWhatClauseDn )
+            {
                 dnCheckbox.setSelection( true );
                 createDnComposite();
-        	}
-        	else if ( whatClause instanceof AclWhatClauseFilter )
-        	{
-        		// Filter clause
+            }
+            else if ( whatClause instanceof AclWhatClauseFilter )
+            {
+                // Filter clause
                 filterCheckbox.setSelection( true );
                 createFilterComposite();
             }
-        	else if ( whatClause instanceof AclWhatClauseAttributes )
-        	{
-        		// Attributes clause
+            else if ( whatClause instanceof AclWhatClauseAttributes )
+            {
+                // Attributes clause
                 attributesCheckbox.setSelection( true );
                 createAttributesComposite();
             }

@@ -28,13 +28,13 @@ import java.util.List;
  * The Acl what-attrs clause. We either have an attribute val clause, or an attribute list clause.  
  * 
  * <pre>
- * <what-attrs>		::= ( 'attrs' | 'attr' ) SP '=' SP <attrs>
- * <attrs>			::= IDENT SP 'val' <mr-e> <attr-val-style> SP? '=' SP? REGEX | <what-attr> <what-attr-list>
- * <attr-val-style>	::= '.' <basic-style> | e
- * <basic-style>	::= 'exact' | 'base' | 'baseobject' | 'regex'
- * <mr-e>			::= '/' IDENT | e
- * <what-attr-list>	::= ',' <what-attr> <what-attr-list> | e
- * <what-attr> 		::= IDENT | '@' IDENT | '!' IDENT | 'entry' | 'children'
+ * <what-attrs>     ::= ( 'attrs' | 'attr' ) SP '=' SP <attrs>
+ * <attrs>          ::= IDENT SP 'val' <mr-e> <attr-val-style> SP? '=' SP? REGEX | <what-attr> <what-attr-list>
+ * <attr-val-style> ::= '.' <basic-style> | e
+ * <basic-style>    ::= 'exact' | 'base' | 'baseobject' | 'regex'
+ * <mr-e>           ::= '/' IDENT | e
+ * <what-attr-list> ::= ',' <what-attr> <what-attr-list> | e
+ * <what-attr>      ::= IDENT | '@' IDENT | '!' IDENT | 'entry' | 'children'
  * </pre>
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
