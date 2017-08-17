@@ -416,7 +416,7 @@ public class ConnectionIO
         
         if ( extendedPropertiesElement != null )
         {
-        		for ( Object elementObject : extendedPropertiesElement.elements( EXTENDED_PROPERTY_TAG ) )
+            for ( Object elementObject : extendedPropertiesElement.elements( EXTENDED_PROPERTY_TAG ) )
             {
                 Element extendedPropertyElement = ( Element ) elementObject;
 
