@@ -144,7 +144,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
     {
         StudioProgressMonitor monitor = getProgressMonitor();
         ConnectionParameter connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(),
-            EncryptionMethod.NONE, NetworkProvider.JNDI, AuthenticationMethod.NONE, null, null, null, true, null );
+            EncryptionMethod.NONE, NetworkProvider.JNDI, AuthenticationMethod.NONE, null, null, null, true, null, 30L );
         Connection connection = new Connection( connectionParameter );
         ConnectionWrapper connectionWrapper = connection.getConnectionWrapper();
 
@@ -175,7 +175,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         // invalid port
         monitor = getProgressMonitor();
         connectionParameter = new ConnectionParameter( null, LOCALHOST, AvailablePortFinder.getNextAvailable(),
-            EncryptionMethod.NONE, provider, AuthenticationMethod.NONE, null, null, null, true, null );
+            EncryptionMethod.NONE, provider, AuthenticationMethod.NONE, null, null, null, true, null, 30L );
         connection = new Connection( connectionParameter );
         connectionWrapper = connection.getConnectionWrapper();
         connectionWrapper.connect( monitor );
@@ -197,7 +197,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         // unknown host
         monitor = getProgressMonitor();
         connectionParameter = new ConnectionParameter( null, "555.555.555.555", ldapServer.getPort(),
-            EncryptionMethod.NONE, provider, AuthenticationMethod.NONE, null, null, null, true, null );
+            EncryptionMethod.NONE, provider, AuthenticationMethod.NONE, null, null, null, true, null, 30L );
         connection = new Connection( connectionParameter );
         connectionWrapper = connection.getConnectionWrapper();
         connectionWrapper.connect( monitor );
@@ -229,7 +229,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         StudioProgressMonitor monitor = getProgressMonitor();
         ConnectionParameter connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(),
             EncryptionMethod.NONE, provider, AuthenticationMethod.SIMPLE, "uid=admin,ou=system", "secret", null, true,
-            null );
+            null, 30L );
         Connection connection = new Connection( connectionParameter );
         ConnectionWrapper connectionWrapper = connection.getConnectionWrapper();
 
@@ -260,7 +260,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         // simple auth without principal and credential
         monitor = getProgressMonitor();
         connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(), EncryptionMethod.NONE,
-            provider, AuthenticationMethod.SIMPLE, "uid=admin", "invalid", null, true, null );
+            provider, AuthenticationMethod.SIMPLE, "uid=admin", "invalid", null, true, null, 30L );
         connection = new Connection( connectionParameter );
         connectionWrapper = connection.getConnectionWrapper();
         connectionWrapper.connect( monitor );
@@ -280,7 +280,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         // simple auth with invalid principal and credential
         monitor = getProgressMonitor();
         connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(), EncryptionMethod.NONE,
-            provider, AuthenticationMethod.SIMPLE, "uid=admin,ou=system", "bar", null, true, null );
+            provider, AuthenticationMethod.SIMPLE, "uid=admin,ou=system", "bar", null, true, null, 30L );
         connection = new Connection( connectionParameter );
         connectionWrapper = connection.getConnectionWrapper();
         connectionWrapper.connect( monitor );
@@ -663,7 +663,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         // simple auth without principal and credential
         ConnectionParameter connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(),
             EncryptionMethod.NONE, provider, AuthenticationMethod.SIMPLE, "uid=admin,ou=system", "secret", null, false,
-            null );
+            null, 30L );
 
         Connection connection = new Connection( connectionParameter );
 
