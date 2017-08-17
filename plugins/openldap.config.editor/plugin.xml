@@ -41,7 +41,10 @@
           label="Open Configuration"
           icon="resources/icons/editor.gif"/>
       <visibility> 
-         <objectState name="serverType" value="OPENLDAP_2_3"/>
+         <or>
+            <objectState name="serverType" value="OPENLDAP_2_3"/>
+            <objectState name="serverType" value="OPENLDAP_2_4"/>
+         </or>
       </visibility>
    </objectContribution>
   </extension>
