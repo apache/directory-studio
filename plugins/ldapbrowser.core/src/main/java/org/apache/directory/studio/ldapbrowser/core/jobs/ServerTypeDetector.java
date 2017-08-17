@@ -34,14 +34,27 @@ import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 public class ServerTypeDetector
 {
     /**
-     * Detects the type of the server.
+     * Detects the type of server we are talking to. We can detect the following servers :
+     * <ul>
+     * <li>ApacheDS</li>
+     * <li>IBM IDS</li>
+     * <li>Netscape</li>
+     * <li>Novell</li>
+     * <li>SUN DS</li>
+     * <li>Microsoft Active Directory</li>
+     * <li>OpenLDAP</li>
+     * <li>Siemens</li>
+     * <li>RedHat 389</li>
+     * </ul>
+     * 
+     * NOTE : We should add detectors for RedHAT i389 and Forgerock OpenDJ
      *
      * @param rootDSE the Root DSE
      * @return the corresponding server type or 'UNKNOWN'
      */
     public static ConnectionServerType detectServerType( IRootDSE rootDSE )
     {
-        ConnectionServerType serverType = ConnectionServerType.UNKNOWN;
+        ConnectionServerType serverType;
 
         IAttribute vnAttribute = rootDSE.getAttribute( "vendorName" ); //$NON-NLS-1$
         IAttribute vvAttribute = rootDSE.getAttribute( "vendorVersion" ); //$NON-NLS-1$
@@ -54,6 +67,7 @@ public class ServerTypeDetector
 
             // ApacheDS
             serverType = detectApacheDS( vendorName );
+            
             if ( !ConnectionServerType.UNKNOWN.equals( serverType ) )
             {
                 return serverType;
@@ -61,6 +75,7 @@ public class ServerTypeDetector
 
             // IBM
             serverType = detectIbm( vendorName, vendorVersion );
+            
             if ( !ConnectionServerType.UNKNOWN.equals( serverType ) )
             {
                 return serverType;
@@ -68,6 +83,7 @@ public class ServerTypeDetector
 
             // Netscape
             serverType = detectNetscape( vendorName, vendorVersion );
+            
             if ( !ConnectionServerType.UNKNOWN.equals( serverType ) )
             {
                 return serverType;
@@ -75,6 +91,7 @@ public class ServerTypeDetector
 
             // Novell
             serverType = detectNovell( vendorName, vendorVersion );
+            
             if ( !ConnectionServerType.UNKNOWN.equals( serverType ) )
             {
                 return serverType;
@@ -82,6 +99,23 @@ public class ServerTypeDetector
 
             // Sun
             serverType = detectSun( vendorName, vendorVersion );
+            
+            if ( !ConnectionServerType.UNKNOWN.equals( serverType ) )
+            {
+                return serverType;
+            }
+
+            // RedHat 389
+            serverType = detectRedHat389( vendorName, vendorVersion );
+            
+            if ( !ConnectionServerType.UNKNOWN.equals( serverType ) )
+            {
+                return serverType;
+            }
+
+            // FrgeRock OpenDJ
+            serverType = detectOpenDJ( vendorName, vendorVersion );
+            
             if ( !ConnectionServerType.UNKNOWN.equals( serverType ) )
             {
                 return serverType;
@@ -90,6 +124,7 @@ public class ServerTypeDetector
 
         // Microsoft
         serverType = detectMicrosoft( rootDSE );
+        
         if ( !ConnectionServerType.UNKNOWN.equals( serverType ) )
         {
             return serverType;
@@ -97,6 +132,7 @@ public class ServerTypeDetector
 
         // OpenLDAP
         serverType = detectOpenLdap( rootDSE );
+        
         if ( !ConnectionServerType.UNKNOWN.equals( serverType ) )
         {
             return serverType;
@@ -104,6 +140,7 @@ public class ServerTypeDetector
 
         // Siemens
         serverType = detectSiemens( rootDSE );
+        
         if ( !ConnectionServerType.UNKNOWN.equals( serverType ) )
         {
             return serverType;
@@ -148,8 +185,8 @@ public class ServerTypeDetector
         if ( vendorName.indexOf( "International Business Machines" ) > -1 ) //$NON-NLS-1$
         {
             // IBM SecureWay Directory
-            String[] iswVersions =
-                { "3.2", "3.2.1", "3.2.2" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            String[] iswVersions = { "3.2", "3.2.1", "3.2.2" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            
             for ( String version : iswVersions )
             {
                 if ( vendorVersion.indexOf( version ) > -1 )
@@ -159,8 +196,8 @@ public class ServerTypeDetector
             }
 
             // IBM Directory Server
-            String[] idsVersions =
-                { "4.1", "5.1" }; //$NON-NLS-1$ //$NON-NLS-2$
+            String[] idsVersions = { "4.1", "5.1" }; //$NON-NLS-1$ //$NON-NLS-2$
+            
             for ( String version : idsVersions )
             {
                 if ( vendorVersion.indexOf( version ) > -1 )
@@ -170,8 +207,8 @@ public class ServerTypeDetector
             }
 
             // IBM Tivoli Directory Server
-            String[] tdsVersions =
-                { "5.2", "6.0", "6.1", "6.2" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            String[] tdsVersions = { "5.2", "6.0", "6.1", "6.2" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            
             for ( String version : tdsVersions )
             {
                 if ( vendorVersion.indexOf( version ) > -1 )
@@ -197,11 +234,9 @@ public class ServerTypeDetector
      */
     private static ConnectionServerType detectMicrosoft( IRootDSE rootDSE )
     {
-        IAttribute rdncAttribute = rootDSE.getAttribute( "rootDomainNamingContext" ); //$NON-NLS-1$
-        if ( rdncAttribute != null )
+        if ( rootDSE.getAttribute( "rootDomainNamingContext" ) != null )
         {
-            IAttribute ffAttribute = rootDSE.getAttribute( "forestFunctionality" ); //$NON-NLS-1$
-            if ( ffAttribute != null )
+            if ( rootDSE.getAttribute( "forestFunctionality" ) != null )
             {
                 return ConnectionServerType.MICROSOFT_ACTIVE_DIRECTORY_2003;
             }
@@ -254,8 +289,9 @@ public class ServerTypeDetector
 
 
     /**
-     * Detects the following Microsoft directory servers:
+     * Detects the following OpenLDAP directory servers:
      * <ul>
+     *   <li>OpenLDAP 2.4</li>
      *   <li>OpenLDAP 2.3</li>
      *   <li>OpenLDAP 2.2</li>
      *   <li>OpenLDAP 2.1</li>
@@ -269,19 +305,34 @@ public class ServerTypeDetector
     private static ConnectionServerType detectOpenLdap( IRootDSE rootDSE )
     {
         IAttribute ocAttribute = rootDSE.getAttribute( "objectClass" ); //$NON-NLS-1$
+        
         if ( ocAttribute != null )
         {
             for ( int i = 0; i < ocAttribute.getStringValues().length; i++ )
             {
                 if ( "OpenLDAProotDSE".equals( ocAttribute.getStringValues()[i] ) ) //$NON-NLS-1$
                 {
-                    IAttribute ccAttribute = rootDSE.getAttribute( "configContext" ); //$NON-NLS-1$
-                    if ( ccAttribute != null )
+                    IAttribute scAttribute = rootDSE.getAttribute( "supportedControl" ); //$NON-NLS-1$
+
+                    // Check for the new "Don't Use Copy" Control (RFC 6171) that has been added in OpenLDAP 2.4
+                    if ( scAttribute != null )
+                    {
+                        for ( int sci = 0; sci < scAttribute.getStringValues().length; sci++ )
+                        {
+                            if ( "1.3.6.1.1.22".equals( scAttribute.getStringValues()[sci] ) ) //$NON-NLS-1$
+                            {
+                                return ConnectionServerType.OPENLDAP_2_4;
+                            }
+                        }
+                    }
+                    
+                    // ConfigContext has been added in OpenLDAP 2.3
+                    if ( rootDSE.getAttribute( "configContext" ) != null )
                     {
                         return ConnectionServerType.OPENLDAP_2_3;
                     }
 
-                    IAttribute scAttribute = rootDSE.getAttribute( "supportedControl" ); //$NON-NLS-1$
+                    // Proxy Auth control has been added in OpenLDAP 2.0
                     if ( scAttribute != null )
                     {
                         for ( int sci = 0; sci < scAttribute.getStringValues().length; sci++ )
@@ -293,7 +344,9 @@ public class ServerTypeDetector
                         }
                     }
 
+                    // Check for the 'Who Am I' extended operation, added in OpenLDAP 2.1
                     IAttribute seAttribute = rootDSE.getAttribute( "supportedExtension" ); //$NON-NLS-1$
+                    
                     if ( seAttribute != null )
                     {
                         for ( int sei = 0; sei < seAttribute.getStringValues().length; sei++ )
@@ -305,7 +358,9 @@ public class ServerTypeDetector
                         }
                     }
 
+                    // The 'Language Tag' feature has been added in OpenLDAP 2.0
                     IAttribute sfAttribute = rootDSE.getAttribute( "supportedFeatures" ); //$NON-NLS-1$
+                    
                     if ( sfAttribute != null )
                     {
                         for ( int sfi = 0; sfi < sfAttribute.getStringValues().length; sfi++ )
@@ -335,6 +390,7 @@ public class ServerTypeDetector
     private static ConnectionServerType detectSiemens( IRootDSE rootDSE )
     {
         IAttribute ssseAttribute = rootDSE.getAttribute( "subSchemaSubentry" ); //$NON-NLS-1$
+        
         if ( ssseAttribute != null )
         {
             for ( int i = 0; i < ssseAttribute.getStringValues().length; i++ )
@@ -364,6 +420,45 @@ public class ServerTypeDetector
         {
             return ConnectionServerType.SUN_DIRECTORY_SERVER;
         }
+        
+        return ConnectionServerType.UNKNOWN;
+    }
+
+
+    /**
+     * Detects RedHat 389 directory server.
+     *
+     * @param vendorName the vendor name
+     * @param vendorVersion the vendor version
+     * @return the corresponding server type or 'UNKNOWN'
+     */
+    private static ConnectionServerType detectRedHat389( String vendorName, String vendorVersion )
+    {
+        if ( vendorName.indexOf( "389 Project" ) > -1 //$NON-NLS-1$
+            || vendorVersion.indexOf( "389-Directory" ) > -1 ) //$NON-NLS-1$
+        {
+            return ConnectionServerType.RED_HAT_389;
+        }
+        
+        return ConnectionServerType.UNKNOWN;
+    }
+
+
+    /**
+     * Detects ForgeRock OpenDJ directory server.
+     *
+     * @param vendorName the vendor name
+     * @param vendorVersion the vendor version
+     * @return the corresponding server type or 'UNKNOWN'
+     */
+    private static ConnectionServerType detectOpenDJ( String vendorName, String vendorVersion )
+    {
+        if ( vendorName.indexOf( "ForgeRock" ) > -1 //$NON-NLS-1$
+            || vendorVersion.indexOf( "OpenDJ" ) > -1 ) //$NON-NLS-1$
+        {
+            return ConnectionServerType.FORGEROCK_OPEN_DJ;
+        }
+        
         return ConnectionServerType.UNKNOWN;
     }
 }
