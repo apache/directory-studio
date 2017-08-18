@@ -23,35 +23,15 @@ objectclass: metaSchema
 objectclass: top
 cn: schema
 
+#------------------------------------------------------------------------------
+# The AttributeTypes
+#------------------------------------------------------------------------------
 dn: ou=attributetypes, cn=openldapconfig, ou=schema
 objectclass: organizationalUnit
 objectclass: top
 ou: attributetypes
 
-dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.78, ou=attributetypes, cn=openldapconfig, ou=schem
- a
-objectclass: metaAttributeType
-objectclass: metaTop
-objectclass: top
-m-oid: 1.3.6.1.4.1.4203.1.12.2.3.0.78
-m-name: olcConfigFile
-m-description: File for slapd configuration directives
-m-equality: caseIgnoreMatch
-m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
-m-singleValue: TRUE
-
-dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.79, ou=attributetypes, cn=openldapconfig, ou=schem
- a
-objectclass: metaAttributeType
-objectclass: metaTop
-objectclass: top
-m-oid: 1.3.6.1.4.1.4203.1.12.2.3.0.79
-m-name: olcConfigDir
-m-description: Directory for slapd configuration backend
-m-equality: caseIgnoreMatch
-m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
-m-singleValue: TRUE
-
+# General config attributeTypes
 dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.1, ou=attributetypes, cn=openldapconfig, ou=schema
 objectclass: metaAttributeType
 objectclass: metaTop
@@ -61,17 +41,6 @@ m-name: olcAccess
 m-description: Access Control List
 m-equality: caseIgnoreMatch
 m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
-
-dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.86, ou=attributetypes, cn=openldapconfig, ou=schem
- a
-objectclass: metaAttributeType
-objectclass: metaTop
-objectclass: top
-m-oid: 1.3.6.1.4.1.4203.1.12.2.3.0.86
-m-name: olcAddContentAcl
-m-description: Check ACLs against content of Add ops
-m-syntax: 1.3.6.1.4.1.1466.115.121.1.7
-m-singleValue: TRUE
 
 dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.2, ou=attributetypes, cn=openldapconfig, ou=schema
 objectclass: metaAttributeType
@@ -94,15 +63,6 @@ m-equality: caseIgnoreMatch
 m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
 m-singleValue: TRUE
 
-dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.5, ou=attributetypes, cn=openldapconfig, ou=schema
-objectclass: metaAttributeType
-objectclass: metaTop
-objectclass: top
-m-oid: 1.3.6.1.4.1.4203.1.12.2.3.0.5
-m-name: olcAttributeOptions
-m-equality: caseIgnoreMatch
-m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
-
 dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.4, ou=attributetypes, cn=openldapconfig, ou=schema
 objectclass: metaAttributeType
 objectclass: metaTop
@@ -112,6 +72,15 @@ m-name: olcAttributeTypes
 m-description: OpenLDAP attributeTypes
 m-equality: caseIgnoreMatch
 m-substr: caseIgnoreSubstringsMatch
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
+
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.5, ou=attributetypes, cn=openldapconfig, ou=schema
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.0.5
+m-name: olcAttributeOptions
+m-equality: caseIgnoreMatch
 m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
 
 dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.6, ou=attributetypes, cn=openldapconfig, ou=schema
@@ -226,16 +195,6 @@ m-equality: caseIgnoreMatch
 m-substr: caseIgnoreSubstringsMatch
 m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
 
-dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.0.20, ou=attributetypes, cn=openldapconfig, ou=sch
- ema
-objectclass: metaAttributeType
-objectclass: metaTop
-objectclass: top
-m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.0.20
-m-name: olcExtraAttrs
-m-equality: caseIgnoreMatch
-m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
-
 dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.17, ou=attributetypes, cn=openldapconfig, ou=schem
  a
 objectclass: metaAttributeType
@@ -243,16 +202,6 @@ objectclass: metaTop
 objectclass: top
 m-oid: 1.3.6.1.4.1.4203.1.12.2.3.0.17
 m-name: olcGentleHUP
-m-syntax: 1.3.6.1.4.1.1466.115.121.1.7
-m-singleValue: TRUE
-
-dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.0.17, ou=attributetypes, cn=openldapconfig, ou=sch
- ema
-objectclass: metaAttributeType
-objectclass: metaTop
-objectclass: top
-m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.0.17
-m-name: olcHidden
 m-syntax: 1.3.6.1.4.1.1466.115.121.1.7
 m-singleValue: TRUE
 
@@ -274,26 +223,6 @@ objectclass: top
 m-oid: 1.3.6.1.4.1.4203.1.12.2.3.0.19
 m-name: olcInclude
 m-supAttributeType: labeledURI
-
-dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.94, ou=attributetypes, cn=openldapconfig, ou=schem
- a
-objectclass: metaAttributeType
-objectclass: metaTop
-objectclass: top
-m-oid: 1.3.6.1.4.1.4203.1.12.2.3.0.94
-m-name: olcIndexHash64
-m-syntax: 1.3.6.1.4.1.1466.115.121.1.7
-m-singleValue: TRUE
-
-dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.95, ou=attributetypes, cn=openldapconfig, ou=schem
- a
-objectclass: metaAttributeType
-objectclass: metaTop
-objectclass: top
-m-oid: 1.3.6.1.4.1.4203.1.12.2.3.0.95
-m-name: olcThreadQueues
-m-syntax: 1.3.6.1.4.1.1466.115.121.1.27
-m-singleValue: TRUE
 
 dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.20, ou=attributetypes, cn=openldapconfig, ou=schem
  a
@@ -335,57 +264,9 @@ m-name: olcIndexSubstrAnyStep
 m-syntax: 1.3.6.1.4.1.1466.115.121.1.27
 m-singleValue: TRUE
 
-dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.84, ou=attributetypes, cn=openldapconfig, ou=schem
- a
-objectclass: metaAttributeType
-objectclass: metaTop
-objectclass: top
-m-oid: 1.3.6.1.4.1.4203.1.12.2.3.0.84
-m-name: olcIndexIntLen
-m-syntax: 1.3.6.1.4.1.1466.115.121.1.27
-m-singleValue: TRUE
-
-dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.0.4, ou=attributetypes, cn=openldapconfig, ou=sche
- ma
-objectclass: metaAttributeType
-objectclass: metaTop
-objectclass: top
-m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.0.4
-m-name: olcLastMod
-m-syntax: 1.3.6.1.4.1.1466.115.121.1.7
-m-singleValue: TRUE
-
-dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.85, ou=attributetypes, cn=openldapconfig, ou=schem
- a
-objectclass: metaAttributeType
-objectclass: metaTop
-objectclass: top
-m-oid: 1.3.6.1.4.1.4203.1.12.2.3.0.85
-m-name: olcLdapSyntaxes
-m-description: OpenLDAP ldapSyntax
-m-equality: caseIgnoreMatch
-m-substr: caseIgnoreSubstringsMatch
-m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
-
-dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.0.5, ou=attributetypes, cn=openldapconfig, ou=sche
- ma
-objectclass: metaAttributeType
-objectclass: metaTop
-objectclass: top
-m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.0.5
-m-name: olcLimits
-m-equality: caseIgnoreMatch
-m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
-
-dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.93, ou=attributetypes, cn=openldapconfig, ou=schem
- a
-objectclass: metaAttributeType
-objectclass: metaTop
-objectclass: top
-m-oid: 1.3.6.1.4.1.4203.1.12.2.3.0.93
-m-name: olcListenerThreads
-m-syntax: 1.3.6.1.4.1.1466.115.121.1.27
-m-singleValue: TRUE
+# 1.3.6.1.4.1.4203.1.12.2.3.0.24 missing
+# 1.3.6.1.4.1.4203.1.12.2.3.0.25 missing
+# 1.3.6.1.4.1.4203.1.12.2.3.0.26 missing
 
 dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.26, ou=attributetypes, cn=openldapconfig, ou=schem
  a
@@ -417,25 +298,7 @@ m-name: olcLogLevel
 m-equality: caseIgnoreMatch
 m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
 
-dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.0.6, ou=attributetypes, cn=openldapconfig, ou=sche
- ma
-objectclass: metaAttributeType
-objectclass: metaTop
-objectclass: top
-m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.0.6
-m-name: olcMaxDerefDepth
-m-syntax: 1.3.6.1.4.1.1466.115.121.1.27
-m-singleValue: TRUE
-
-dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.0.16, ou=attributetypes, cn=openldapconfig, ou=sch
- ema
-objectclass: metaAttributeType
-objectclass: metaTop
-objectclass: top
-m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.0.16
-m-name: olcMirrorMode
-m-syntax: 1.3.6.1.4.1.1466.115.121.1.7
-m-singleValue: TRUE
+# 1.3.6.1.4.1.4203.1.12.2.3.0.29 missing
 
 dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.30, ou=attributetypes, cn=openldapconfig, ou=schem
  a
@@ -455,16 +318,6 @@ objectclass: top
 m-oid: 1.3.6.1.4.1.4203.1.12.2.3.0.31
 m-name: olcModulePath
 m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
-m-singleValue: TRUE
-
-dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.0.18, ou=attributetypes, cn=openldapconfig, ou=sch
- ema
-objectclass: metaAttributeType
-objectclass: metaTop
-objectclass: top
-m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.0.18
-m-name: olcMonitoring
-m-syntax: 1.3.6.1.4.1.1466.115.121.1.7
 m-singleValue: TRUE
 
 dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.32, ou=attributetypes, cn=openldapconfig, ou=schem
@@ -570,15 +423,7 @@ m-name: olcReferral
 m-supAttributeType: labeledURI
 m-singleValue: TRUE
 
-dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.0.7, ou=attributetypes, cn=openldapconfig, ou=sche
- ma
-objectclass: metaAttributeType
-objectclass: metaTop
-objectclass: top
-m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.0.7
-m-name: olcReplica
-m-supAttributeType: labeledURI
-m-equality: caseIgnoreMatch
+# 1.3.6.1.4.1.4203.1.12.2.3.0.42 missing
 
 dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.43, ou=attributetypes, cn=openldapconfig, ou=schem
  a
@@ -650,16 +495,7 @@ m-name: olcReverseLookup
 m-syntax: 1.3.6.1.4.1.1466.115.121.1.7
 m-singleValue: TRUE
 
-dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.0.8, ou=attributetypes, cn=openldapconfig, ou=sche
- ma
-objectclass: metaAttributeType
-objectclass: metaTop
-objectclass: top
-m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.0.8
-m-name: olcRootDN
-m-equality: distinguishedNameMatch
-m-syntax: 1.3.6.1.4.1.1466.115.121.1.12
-m-singleValue: TRUE
+# 1.3.6.1.4.1.4203.1.12.2.3.0.50 missing
 
 dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.51, ou=attributetypes, cn=openldapconfig, ou=schem
  a
@@ -671,25 +507,7 @@ m-name: olcRootDSE
 m-equality: caseIgnoreMatch
 m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
 
-dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.0.9, ou=attributetypes, cn=openldapconfig, ou=sche
- ma
-objectclass: metaAttributeType
-objectclass: metaTop
-objectclass: top
-m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.0.9
-m-name: olcRootPW
-m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
-m-singleValue: TRUE
-
-dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.89, ou=attributetypes, cn=openldapconfig, ou=schem
- a
-objectclass: metaAttributeType
-objectclass: metaTop
-objectclass: top
-m-oid: 1.3.6.1.4.1.4203.1.12.2.3.0.89
-m-name: olcSaslAuxprops
-m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
-m-singleValue: TRUE
+# 1.3.6.1.4.1.4203.1.12.2.3.0.52 missing
 
 dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.53, ou=attributetypes, cn=openldapconfig, ou=schem
  a
@@ -711,6 +529,8 @@ m-name: olcSaslRealm
 m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
 m-singleValue: TRUE
 
+# 1.3.6.1.4.1.4203.1.12.2.3.0.55 missing
+
 dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.56, ou=attributetypes, cn=openldapconfig, ou=schem
  a
 objectclass: metaAttributeType
@@ -720,6 +540,8 @@ m-oid: 1.3.6.1.4.1.4203.1.12.2.3.0.56
 m-name: olcSaslSecProps
 m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
 m-singleValue: TRUE
+
+# 1.3.6.1.4.1.4203.1.12.2.3.0.57 missing
 
 dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.58, ou=attributetypes, cn=openldapconfig, ou=schem
  a
@@ -739,16 +561,6 @@ objectclass: metaTop
 objectclass: top
 m-oid: 1.3.6.1.4.1.4203.1.12.2.3.0.59
 m-name: olcSecurity
-m-equality: caseIgnoreMatch
-m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
-
-dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.81, ou=attributetypes, cn=openldapconfig, ou=schem
- a
-objectclass: metaAttributeType
-objectclass: metaTop
-objectclass: top
-m-oid: 1.3.6.1.4.1.4203.1.12.2.3.0.81
-m-name: olcServerID
 m-equality: caseIgnoreMatch
 m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
 
@@ -782,67 +594,9 @@ m-name: olcSockbufMaxIncomingAuth
 m-syntax: 1.3.6.1.4.1.1466.115.121.1.27
 m-singleValue: TRUE
 
-dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.83, ou=attributetypes, cn=openldapconfig, ou=schem
- a
-objectclass: metaAttributeType
-objectclass: metaTop
-objectclass: top
-m-oid: 1.3.6.1.4.1.4203.1.12.2.3.0.83
-m-name: olcSortVals
-m-description: Attributes whose values will always be sorted
-m-equality: caseIgnoreMatch
-m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
-
-dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.0.15, ou=attributetypes, cn=openldapconfig, ou=sch
- ema
-objectclass: metaAttributeType
-objectclass: metaTop
-objectclass: top
-m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.0.15
-m-name: olcSubordinate
-m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
-m-singleValue: TRUE
-
-dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.0.10, ou=attributetypes, cn=openldapconfig, ou=sch
- ema
-objectclass: metaAttributeType
-objectclass: metaTop
-objectclass: top
-m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.0.10
-m-name: olcSuffix
-m-equality: distinguishedNameMatch
-m-syntax: 1.3.6.1.4.1.1466.115.121.1.12
-
-dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.0.19, ou=attributetypes, cn=openldapconfig, ou=sch
- ema
-objectclass: metaAttributeType
-objectclass: metaTop
-objectclass: top
-m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.0.19
-m-name: olcSyncUseSubentry
-m-description: Store sync context in a subentry
-m-syntax: 1.3.6.1.4.1.1466.115.121.1.7
-m-singleValue: TRUE
-
-dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.0.11, ou=attributetypes, cn=openldapconfig, ou=sch
- ema
-objectclass: metaAttributeType
-objectclass: metaTop
-objectclass: top
-m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.0.11
-m-name: olcSyncrepl
-m-equality: caseIgnoreMatch
-m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
-
-dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.90, ou=attributetypes, cn=openldapconfig, ou=schem
- a
-objectclass: metaAttributeType
-objectclass: metaTop
-objectclass: top
-m-oid: 1.3.6.1.4.1.4203.1.12.2.3.0.90
-m-name: olcTCPBuffer
-m-description: Custom TCP buffer size
-m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
+# 1.3.6.1.4.1.4203.1.12.2.3.0.63 missing
+# 1.3.6.1.4.1.4203.1.12.2.3.0.64 missing
+# 1.3.6.1.4.1.4203.1.12.2.3.0.65 missing
 
 dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.66, ou=attributetypes, cn=openldapconfig, ou=schem
  a
@@ -923,16 +677,6 @@ m-name: olcTLSCRLCheck
 m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
 m-singleValue: TRUE
 
-dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.82, ou=attributetypes, cn=openldapconfig, ou=schem
- a
-objectclass: metaAttributeType
-objectclass: metaTop
-objectclass: top
-m-oid: 1.3.6.1.4.1.4203.1.12.2.3.0.82
-m-name: olcTLSCRLFile
-m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
-m-singleValue: TRUE
-
 dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.74, ou=attributetypes, cn=openldapconfig, ou=schem
  a
 objectclass: metaAttributeType
@@ -953,6 +697,8 @@ m-name: olcTLSVerifyClient
 m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
 m-singleValue: TRUE
 
+# 1.3.6.1.4.1.4203.1.12.2.3.0.76 missing
+
 dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.77, ou=attributetypes, cn=openldapconfig, ou=schem
  a
 objectclass: metaAttributeType
@@ -963,13 +709,27 @@ m-name: olcTLSDHParamFile
 m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
 m-singleValue: TRUE
 
-dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.87, ou=attributetypes, cn=openldapconfig, ou=schem
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.78, ou=attributetypes, cn=openldapconfig, ou=schem
  a
 objectclass: metaAttributeType
 objectclass: metaTop
 objectclass: top
-m-oid: 1.3.6.1.4.1.4203.1.12.2.3.0.87
-m-name: olcTLSProtocolMin
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.0.78
+m-name: olcConfigFile
+m-description: File for slapd configuration directives
+m-equality: caseIgnoreMatch
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
+m-singleValue: TRUE
+
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.79, ou=attributetypes, cn=openldapconfig, ou=schem
+ a
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.0.79
+m-name: olcConfigDir
+m-description: Directory for slapd configuration backend
+m-equality: caseIgnoreMatch
 m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
 m-singleValue: TRUE
 
@@ -982,6 +742,260 @@ m-oid: 1.3.6.1.4.1.4203.1.12.2.3.0.80
 m-name: olcToolThreads
 m-syntax: 1.3.6.1.4.1.1466.115.121.1.27
 m-singleValue: TRUE
+
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.81, ou=attributetypes, cn=openldapconfig, ou=schem
+ a
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.0.81
+m-name: olcServerID
+m-equality: caseIgnoreMatch
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
+
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.82, ou=attributetypes, cn=openldapconfig, ou=schem
+ a
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.0.82
+m-name: olcTLSCRLFile
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
+m-singleValue: TRUE
+
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.83, ou=attributetypes, cn=openldapconfig, ou=schem
+ a
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.0.83
+m-name: olcSortVals
+m-description: Attributes whose values will always be sorted
+m-equality: caseIgnoreMatch
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
+
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.84, ou=attributetypes, cn=openldapconfig, ou=schem
+ a
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.0.84
+m-name: olcIndexIntLen
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.27
+m-singleValue: TRUE
+
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.85, ou=attributetypes, cn=openldapconfig, ou=schem
+ a
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.0.85
+m-name: olcLdapSyntaxes
+m-description: OpenLDAP ldapSyntax
+m-equality: caseIgnoreMatch
+m-substr: caseIgnoreSubstringsMatch
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
+
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.86, ou=attributetypes, cn=openldapconfig, ou=schem
+ a
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.0.86
+m-name: olcAddContentAcl
+m-description: Check ACLs against content of Add ops
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.7
+m-singleValue: TRUE
+
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.87, ou=attributetypes, cn=openldapconfig, ou=schem
+ a
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.0.87
+m-name: olcTLSProtocolMin
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
+m-singleValue: TRUE
+
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.88, ou=attributetypes, cn=openldapconfig, ou=schem
+ a
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.0.88
+m-name: olcWriteTimeout
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.27
+m-singleValue: TRUE
+
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.89, ou=attributetypes, cn=openldapconfig, ou=schem
+ a
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.0.89
+m-name: olcSaslAuxprops
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
+m-singleValue: TRUE
+
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.90, ou=attributetypes, cn=openldapconfig, ou=schem
+ a
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.0.90
+m-name: olcTCPBuffer
+m-description: Custom TCP buffer size
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
+
+# 1.3.6.1.4.1.4203.1.12.2.3.0.91 missing
+# 1.3.6.1.4.1.4203.1.12.2.3.0.92 missing
+
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.93, ou=attributetypes, cn=openldapconfig, ou=schem
+ a
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.0.93
+m-name: olcListenerThreads
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.27
+m-singleValue: TRUE
+
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.94, ou=attributetypes, cn=openldapconfig, ou=schem
+ a
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.0.94
+m-name: olcIndexHash64
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.7
+m-singleValue: TRUE
+
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.95, ou=attributetypes, cn=openldapconfig, ou=schem
+ a
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.0.95
+m-name: olcThreadQueues
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.27
+m-singleValue: TRUE
+
+# DB config attributeTypes
+# MDB
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.0.1, ou=attributetypes, cn=openldapconfig, ou=sche
+ ma
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.0.1
+m-name: olcDbDirectory
+m-description: Directory for database content
+m-equality: caseIgnoreMatch
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
+m-singleValue: TRUE
+
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.0.2, ou=attributetypes, cn=openldapconfig, ou=sche
+ ma
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.0.2
+m-name: olcDbIndex
+m-description: Attribute index parameters
+m-equality: caseIgnoreMatch
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
+
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.0.3, ou=attributetypes, cn=openldapconfig, ou=sche
+ ma
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.0.3
+m-name: olcDbMode
+m-description: Unix permissions of database files
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
+m-singleValue: TRUE
+
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.0.4, ou=attributetypes, cn=openldapconfig, ou=sche
+ ma
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.0.4
+m-name: olcLastMod
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.7
+m-singleValue: TRUE
+
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.0.5, ou=attributetypes, cn=openldapconfig, ou=sche
+ ma
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.0.5
+m-name: olcLimits
+m-equality: caseIgnoreMatch
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
+
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.0.6, ou=attributetypes, cn=openldapconfig, ou=sche
+ ma
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.0.6
+m-name: olcMaxDerefDepth
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.27
+m-singleValue: TRUE
+
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.0.7, ou=attributetypes, cn=openldapconfig, ou=sche
+ ma
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.0.7
+m-name: olcReplica
+m-supAttributeType: labeledURI
+m-equality: caseIgnoreMatch
+
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.0.8, ou=attributetypes, cn=openldapconfig, ou=sche
+ ma
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.0.8
+m-name: olcRootDN
+m-equality: distinguishedNameMatch
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.12
+m-singleValue: TRUE
+
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.0.9, ou=attributetypes, cn=openldapconfig, ou=sche
+ ma
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.0.9
+m-name: olcRootPW
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
+m-singleValue: TRUE
+
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.0.10, ou=attributetypes, cn=openldapconfig, ou=sch
+ ema
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.0.10
+m-name: olcSuffix
+m-equality: distinguishedNameMatch
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.12
+
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.0.11, ou=attributetypes, cn=openldapconfig, ou=sch
+ ema
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.0.11
+m-name: olcSyncrepl
+m-equality: caseIgnoreMatch
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
 
 dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.0.12, ou=attributetypes, cn=openldapconfig, ou=sch
  ema
@@ -1003,49 +1017,82 @@ m-name: olcUpdateRef
 m-supAttributeType: labeledURI
 m-equality: caseIgnoreMatch
 
-dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.0.88, ou=attributetypes, cn=openldapconfig, ou=schem
- a
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.0.14, ou=attributetypes, cn=openldapconfig, ou=sch
+ ema
 objectclass: metaAttributeType
 objectclass: metaTop
 objectclass: top
-m-oid: 1.3.6.1.4.1.4203.1.12.2.3.0.88
-m-name: olcWriteTimeout
-m-syntax: 1.3.6.1.4.1.1466.115.121.1.27
-m-singleValue: TRUE
-
-dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.0.1, ou=attributetypes, cn=openldapconfig, ou=sche
- ma
-objectclass: metaAttributeType
-objectclass: metaTop
-objectclass: top
-m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.0.1
-m-name: olcDbDirectory
-m-description: Directory for database content
-m-equality: caseIgnoreMatch
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.0.14
+m-name: olcDbURI
+m-description: URI (list) for remote DSA
 m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
 m-singleValue: TRUE
 
-dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.8.1, ou=attributetypes, cn=openldapconfig, ou=sche
- ma
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.0.15, ou=attributetypes, cn=openldapconfig, ou=sch
+ ema
 objectclass: metaAttributeType
 objectclass: metaTop
 objectclass: top
-m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.8.1
-m-name: olcDbBindAllowed
-m-description: Allow binds to this database
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.0.15
+m-name: olcSubordinate
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
+m-singleValue: TRUE
+
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.0.16, ou=attributetypes, cn=openldapconfig, ou=sch
+ ema
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.0.16
+m-name: olcMirrorMode
 m-syntax: 1.3.6.1.4.1.1466.115.121.1.7
 m-singleValue: TRUE
 
-dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.5.1, ou=attributetypes, cn=openldapconfig, ou=sche
- ma
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.0.17, ou=attributetypes, cn=openldapconfig, ou=sch
+ ema
 objectclass: metaAttributeType
 objectclass: metaTop
 objectclass: top
-m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.5.1
-m-name: olcRelay
-m-description: Relay DN
-m-syntax: 1.3.6.1.4.1.1466.115.121.1.12
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.0.17
+m-name: olcHidden
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.7
 m-singleValue: TRUE
+
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.0.18, ou=attributetypes, cn=openldapconfig, ou=sch
+ ema
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.0.18
+m-name: olcMonitoring
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.7
+m-singleValue: TRUE
+
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.0.19, ou=attributetypes, cn=openldapconfig, ou=sch
+ ema
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.0.19
+m-name: olcSyncUseSubentry
+m-description: Store sync context in a subentry
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.7
+m-singleValue: TRUE
+
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.0.20, ou=attributetypes, cn=openldapconfig, ou=sch
+ ema
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.0.20
+m-name: olcExtraAttrs
+m-equality: caseIgnoreMatch
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
+
+# 1.3.6.1.4.1.4203.1.12.2.3.2.0.21 missing
+
+# Overlay Config AttributeTypes
+
 
 dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.3.4.1, ou=attributetypes, cn=openldapconfig, ou=sche
  ma
@@ -1123,6 +1170,37 @@ m-name: olcAccessLogBase
 m-description: Operation types to log under a specific branch
 m-equality: caseIgnoreMatch
 m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
+
+
+
+
+
+
+
+
+
+
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.5.1, ou=attributetypes, cn=openldapconfig, ou=sche
+ ma
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.5.1
+m-name: olcRelay
+m-description: Relay DN
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.12
+m-singleValue: TRUE
+
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.8.1, ou=attributetypes, cn=openldapconfig, ou=sche
+ ma
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.8.1
+m-name: olcDbBindAllowed
+m-description: Allow binds to this database
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.7
+m-singleValue: TRUE
 
 dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.3.15.1, ou=attributetypes, cn=openldapconfig, ou=sch
  ema
@@ -1288,17 +1366,6 @@ m-description: IDL cache size in IDLs
 m-syntax: 1.3.6.1.4.1.1466.115.121.1.27
 m-singleValue: TRUE
 
-dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.0.2, ou=attributetypes, cn=openldapconfig, ou=sche
- ma
-objectclass: metaAttributeType
-objectclass: metaTop
-objectclass: top
-m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.0.2
-m-name: olcDbIndex
-m-description: Attribute index parameters
-m-equality: caseIgnoreMatch
-m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
-
 dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.1.7, ou=attributetypes, cn=openldapconfig, ou=sche
  ma
 objectclass: metaAttributeType
@@ -1318,17 +1385,6 @@ objectclass: top
 m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.1.8
 m-name: olcDbLockDetect
 m-description: Deadlock detection algorithm
-m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
-m-singleValue: TRUE
-
-dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.0.3, ou=attributetypes, cn=openldapconfig, ou=sche
- ma
-objectclass: metaAttributeType
-objectclass: metaTop
-objectclass: top
-m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.0.3
-m-name: olcDbMode
-m-description: Unix permissions of database files
 m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
 m-singleValue: TRUE
 
@@ -1352,17 +1408,6 @@ m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.1.10
 m-name: olcDbShmKey
 m-description: Key for shared memory region
 m-syntax: 1.3.6.1.4.1.1466.115.121.1.27
-m-singleValue: TRUE
-
-dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.0.14, ou=attributetypes, cn=openldapconfig, ou=sch
- ema
-objectclass: metaAttributeType
-objectclass: metaTop
-objectclass: top
-m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.0.14
-m-name: olcDbURI
-m-description: URI (list) for remote DSA
-m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
 m-singleValue: TRUE
 
 dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.3.1, ou=attributetypes, cn=openldapconfig, ou=sche
@@ -1788,6 +1833,39 @@ objectclass: top
 m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.12.4
 m-name: olcDbMaxEntrySize
 m-description: Maximum size of an entry in bytes
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.27
+m-singleValue: TRUE
+
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.12.5, ou=attributetypes, cn=openldapconfig, ou=sch
+ ema
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.12.5
+m-name: olcDbRtxnSize
+m-description: Number of entries to process in one read transaction
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.27
+m-singleValue: TRUE
+
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.12.6, ou=attributetypes, cn=openldapconfig, ou=sch
+ ema
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.12.6
+m-name: olcDbMultivalHi
+m-description: Threshold for splitting multivalued attr out of main blob
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.27
+m-singleValue: TRUE
+
+dn: m-oid=1.3.6.1.4.1.4203.1.12.2.3.2.12.7, ou=attributetypes, cn=openldapconfig, ou=sch
+ ema
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.4203.1.12.2.3.2.12.7
+m-name: olcDbMultivalLo
+m-description: Threshold for consolidating multivalued attr back into main blob
 m-syntax: 1.3.6.1.4.1.1466.115.121.1.27
 m-singleValue: TRUE
 
@@ -2781,41 +2859,60 @@ m-name: olcDGAttrPair
 m-description: Member and MemberURL attribute pair
 m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
 
+#------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 dn: ou=comparators, cn=openldapconfig, ou=schema
 objectclass: organizationalUnit
 objectclass: top
 ou: comparators
 
+#------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 dn: ou=ditcontentrules, cn=openldapconfig, ou=schema
 objectclass: organizationalUnit
 objectclass: top
 ou: ditcontentrules
 
+#------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 dn: ou=ditstructurerules, cn=openldapconfig, ou=schema
 objectclass: organizationalUnit
 objectclass: top
 ou: ditstructurerules
 
+#------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 dn: ou=matchingrules, cn=openldapconfig, ou=schema
 objectclass: organizationalUnit
 objectclass: top
 ou: matchingrules
 
+#------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 dn: ou=matchingruleuse, cn=openldapconfig, ou=schema
 objectclass: organizationalUnit
 objectclass: top
 ou: matchingruleuse
 
+#------------------------------------------------------------------------------
+# The NameForms
+#------------------------------------------------------------------------------
 dn: ou=nameforms, cn=openldapconfig, ou=schema
 objectclass: organizationalUnit
 objectclass: top
 ou: nameforms
 
+#------------------------------------------------------------------------------
+# The Normalizers
+#------------------------------------------------------------------------------
 dn: ou=normalizers, cn=openldapconfig, ou=schema
 objectclass: organizationalUnit
 objectclass: top
 ou: normalizers
 
+#------------------------------------------------------------------------------
+# The objectclasses
+#------------------------------------------------------------------------------
 dn: ou=objectclasses, cn=openldapconfig, ou=schema
 objectclass: organizationalUnit
 objectclass: top
@@ -3002,6 +3099,12 @@ m-supObjectClass: olcConfig
 m-may: cn
 m-may: olcModulePath
 m-may: olcModuleLoad
+
+
+
+
+
+
 
 dn: m-oid=1.3.6.1.4.1.4203.1.12.2.4.2.2.1, ou=objectclasses, cn=openldapconfig, ou=schem
  a
@@ -3619,11 +3722,17 @@ m-name: olcTranslucentDatabase
 m-description: Translucent target database configuration
 m-typeObjectClass: AUXILIARY
 
+#------------------------------------------------------------------------------
+# The SyntaxCheckers
+#------------------------------------------------------------------------------
 dn: ou=syntaxcheckers, cn=openldapconfig, ou=schema
 objectclass: organizationalUnit
 objectclass: top
 ou: syntaxcheckers
 
+#------------------------------------------------------------------------------
+# The Syntaxes
+#------------------------------------------------------------------------------
 dn: ou=syntaxes, cn=openldapconfig, ou=schema
 objectclass: organizationalUnit
 objectclass: top
