@@ -92,6 +92,7 @@ public class CloseConnectionAction extends StudioAction
             if ( connection.getConnectionWrapper().isConnected() )
             {
                 canClose = true;
+                
                 break;
             }
         }

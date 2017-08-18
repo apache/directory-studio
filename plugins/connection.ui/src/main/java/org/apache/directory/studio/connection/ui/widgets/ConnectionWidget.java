@@ -80,6 +80,7 @@ public class ConnectionWidget extends ViewFormWidget
     /**
      * {@inheritDoc}
      */
+    @Override
     public void createWidget( Composite parent )
     {
         if ( actionBars == null )
@@ -96,6 +97,7 @@ public class ConnectionWidget extends ViewFormWidget
     /**
      * {@inheritDoc}
      */
+    @Override
     public IToolBarManager getToolBarManager()
     {
         if ( actionBars == null )
@@ -112,6 +114,7 @@ public class ConnectionWidget extends ViewFormWidget
     /**
      * {@inheritDoc}
      */
+    @Override
     public IMenuManager getMenuManager()
     {
         if ( actionBars == null )
@@ -128,6 +131,7 @@ public class ConnectionWidget extends ViewFormWidget
     /**
      * {@inheritDoc}
      */
+    @Override
     public IMenuManager getContextMenuManager()
     {
         if ( actionBars == null )
@@ -187,6 +191,7 @@ public class ConnectionWidget extends ViewFormWidget
     /**
      * {@inheritDoc}
      */
+    @Override
     public void dispose()
     {
         if ( viewer != null )

@@ -26,7 +26,6 @@ import org.apache.directory.studio.connection.core.ConnectionFolder;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.connection.core.event.ConnectionUpdateListener;
 import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
-import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -45,27 +44,21 @@ public class ConnectionUniversalListener implements ConnectionUpdateListener
     protected TreeViewer viewer;
 
     /** This listener expands/collapses a connection folder when double clicking */
-    private IDoubleClickListener viewerDoubleClickListener = new IDoubleClickListener()
+    private IDoubleClickListener viewerDoubleClickListener = event ->
     {
-        /**
-         * {@InheritDoc}
-         */
-        public void doubleClick( DoubleClickEvent event )
+        if ( event.getSelection() instanceof IStructuredSelection )
         {
-            if ( event.getSelection() instanceof IStructuredSelection )
+            Object obj = ( ( IStructuredSelection ) event.getSelection() ).getFirstElement();
+
+            if ( obj instanceof ConnectionFolder )
             {
-                Object obj = ( ( IStructuredSelection ) event.getSelection() ).getFirstElement();
-                
-                if ( obj instanceof ConnectionFolder )
+                if ( viewer.getExpandedState( obj ) )
                 {
-                    if ( viewer.getExpandedState( obj ) )
-                    {
-                        viewer.collapseToLevel( obj, 1 );
-                    }
-                    else if ( ( ( ITreeContentProvider ) viewer.getContentProvider() ).hasChildren( obj ) )
-                    {
-                        viewer.expandToLevel( obj, 1 );
-                    }
+                    viewer.collapseToLevel( obj, 1 );
+                }
+                else if ( ( ( ITreeContentProvider ) viewer.getContentProvider() ).hasChildren( obj ) )
+                {
+                    viewer.expandToLevel( obj, 1 );
                 }
             }
         }
@@ -119,7 +112,7 @@ public class ConnectionUniversalListener implements ConnectionUpdateListener
     public void connectionAdded( Connection connection )
     {
         connectionUpdated( connection );
-        
+
         if ( viewer != null )
         {
             viewer.setSelection( new StructuredSelection( connection ), true );

@@ -58,6 +58,7 @@ public class ExpandAllAction extends Action
     /**
      * {@inheritDoc}
      */
+    @Override
     public void run()
     {
         viewer.expandAll();

@@ -74,6 +74,7 @@ public class ConnectionsPreferencePage extends PreferencePage implements IWorkbe
      */
     public void init( IWorkbench workbench )
     {
+        // Nothing to do
     }
 
 
@@ -133,6 +134,7 @@ public class ConnectionsPreferencePage extends PreferencePage implements IWorkbe
 
         useKrb5SystemPropertiesButton.addSelectionListener( new SelectionAdapter()
         {
+            @Override
             public void widgetSelected( SelectionEvent event )
             {
                 validate();
@@ -156,6 +158,7 @@ public class ConnectionsPreferencePage extends PreferencePage implements IWorkbe
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void performDefaults()
     {
         NetworkProvider defaultdDefaultNetworkProvider = ConnectionCorePlugin.getDefault().getNetworkProvider(
@@ -208,6 +211,7 @@ public class ConnectionsPreferencePage extends PreferencePage implements IWorkbe
         {
             case 1:
                 return ConnectionCoreConstants.PREFERENCE_NETWORK_PROVIDER_JNDI;
+                
             default:
                 return ConnectionCoreConstants.PREFERENCE_NETWORK_PROVIDER_APACHE_DIRECTORY_LDAP_API;
         }

@@ -46,7 +46,7 @@ public class NewConnectionAction extends StudioAction
      */
     public void run()
     {
-        List<Object> selectedObjects = new ArrayList<Object>();
+        List<Object> selectedObjects = new ArrayList<>();
         selectedObjects.addAll( Arrays.asList( getSelectedConnectionFolders() ) );
         selectedObjects.addAll( Arrays.asList( getSelectedConnections() ) );
 

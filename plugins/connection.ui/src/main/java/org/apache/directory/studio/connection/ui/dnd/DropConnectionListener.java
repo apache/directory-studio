@@ -77,6 +77,7 @@ public class DropConnectionListener implements DropTargetListener
      */
     public void dragLeave( DropTargetEvent event )
     {
+        // Nothing to do
     }
 
 
@@ -161,6 +162,7 @@ public class DropConnectionListener implements DropTargetListener
      */
     public void dropAccept( DropTargetEvent event )
     {
+        // Nothing to do
     }
 
 

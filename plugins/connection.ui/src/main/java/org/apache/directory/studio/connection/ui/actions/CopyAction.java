@@ -130,13 +130,13 @@ public class CopyAction extends StudioAction
     {
         Connection[] connections = getSelectedConnections();
         ConnectionFolder[] connectionFolders = getSelectedConnectionFolders();
-        List<Object> objects = new ArrayList<Object>();
+        List<Object> objects = new ArrayList<>();
         objects.addAll( Arrays.asList( connections ) );
         objects.addAll( Arrays.asList( connectionFolders ) );
         String urls = getSelectedConnectionUrls();
 
         // copy to clipboard
-        if ( objects != null )
+        if ( !objects.isEmpty() )
         {
             if ( urls != null && urls.length() > 0 )
             {
@@ -206,8 +206,7 @@ public class CopyAction extends StudioAction
         StringBuilder buffer = new StringBuilder();
 
         Connection[] connections = getSelectedConnections();
-        ConnectionParameterPage[] connectionParameterPages = ConnectionParameterPageManager
-            .getConnectionParameterPages();
+        ConnectionParameterPage[] connectionParameterPages = ConnectionParameterPageManager.getConnectionParameterPages();
         
         for ( Connection connection : connections )
         {

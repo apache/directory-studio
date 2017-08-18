@@ -73,7 +73,7 @@ public class PasswordsKeystorePreferencePage extends PreferencePage implements I
     private PasswordsKeyStoreManager passwordsKeyStoreManager;
 
     /** The map used to backup connections passwords */
-    private Map<String, String> connectionsPasswordsBackup = new ConcurrentHashMap<String, String>();
+    private Map<String, String> connectionsPasswordsBackup = new ConcurrentHashMap<>();
 
     /** The connection manager */
     private ConnectionManager connectionManager;
@@ -88,6 +88,7 @@ public class PasswordsKeystorePreferencePage extends PreferencePage implements I
         /**
          * {@inheritDoc}
          */
+        @Override
         public void widgetSelected( SelectionEvent event )
         {
             Boolean selected = enableKeystoreCheckbox.getSelection();
@@ -128,6 +129,7 @@ public class PasswordsKeystorePreferencePage extends PreferencePage implements I
         /**
          * {@inheritDoc}
          */
+        @Override
         public void widgetSelected( SelectionEvent event )
         {
             changeMasterPassword();
@@ -193,6 +195,7 @@ public class PasswordsKeystorePreferencePage extends PreferencePage implements I
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void contributeButtons( Composite parent )
     {
         // Increasing the number of columns on the parent layout
@@ -286,6 +289,7 @@ public class PasswordsKeystorePreferencePage extends PreferencePage implements I
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void performDefaults()
     {
         removeListeners();
@@ -392,14 +396,14 @@ public class PasswordsKeystorePreferencePage extends PreferencePage implements I
             if ( !connectionsPasswordsBackup.isEmpty() )
             {
                 // Adding them to the keystore
-                for ( String connectionId : connectionsPasswordsBackup.keySet() )
+                for ( Map.Entry<String, String> entry : connectionsPasswordsBackup.entrySet() ) 
                 {
-                    Connection connection = connectionManager.getConnectionById( connectionId );
+                    Connection connection = connectionManager.getConnectionById( entry.getKey() );
 
                     if ( connection != null )
                     {
                         connection.getConnectionParameter().setBindPassword(
-                            connectionsPasswordsBackup.get( connectionId ) );
+                            entry.getValue() );
                     }
                 }
 
@@ -578,7 +582,6 @@ public class PasswordsKeystorePreferencePage extends PreferencePage implements I
                 if ( errorDialog.open() == MessageDialog.CANCEL )
                 {
                     // The user cancelled the action
-                    password = null;
                     return false;
                 }
             }

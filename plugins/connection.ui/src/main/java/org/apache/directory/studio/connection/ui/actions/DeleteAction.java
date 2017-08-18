@@ -188,9 +188,9 @@ public class DeleteAction extends StudioAction
 
     private List<ConnectionFolder> getConnectionsFoldersToDelete()
     {
-        List<ConnectionFolder> selectedFolders = new ArrayList<ConnectionFolder>( Arrays
+        List<ConnectionFolder> selectedFolders = new ArrayList<>( Arrays
             .asList( getSelectedConnectionFolders() ) );
-        List<ConnectionFolder> foldersToDelete = new ArrayList<ConnectionFolder>();
+        List<ConnectionFolder> foldersToDelete = new ArrayList<>();
         
         while ( !selectedFolders.isEmpty() )
         {
@@ -223,10 +223,10 @@ public class DeleteAction extends StudioAction
 
     private List<Connection> getConnectionsToDelete()
     {
-        List<ConnectionFolder> selectedFolders = new ArrayList<ConnectionFolder>( Arrays
+        List<ConnectionFolder> selectedFolders = new ArrayList<>( Arrays
             .asList( getSelectedConnectionFolders() ) );
-        List<Connection> selectedConnections = new ArrayList<Connection>( Arrays.asList( getSelectedConnections() ) );
-        List<Connection> connectionsToDelete = new ArrayList<Connection>( selectedConnections );
+        List<Connection> selectedConnections = new ArrayList<>( Arrays.asList( getSelectedConnections() ) );
+        List<Connection> connectionsToDelete = new ArrayList<>( selectedConnections );
         
         while ( !selectedFolders.isEmpty() )
         {
@@ -277,8 +277,7 @@ public class DeleteAction extends StudioAction
     /**
      * Deletes Connections
      *
-     * @param connectionsToDelete
-     *      the Connections to delete
+     * @param connectionsToDelete the Connections to delete
      */
     private void deleteConnections( List<Connection> connectionsToDelete )
     {
@@ -294,8 +293,7 @@ public class DeleteAction extends StudioAction
     /**
      * Deletes Connection Folders
      *
-     * @param connectionsFoldersToDelete
-     *      the Connection Folders to delete
+     * @param connectionsFoldersToDelete the Connection Folders to delete
      */
     private void deleteConnectionFolders( List<ConnectionFolder> connectionsFoldersToDelete )
     {

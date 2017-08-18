@@ -54,9 +54,9 @@ public class ConnectionFolderDialog extends InputDialog
     /**
      * @see org.eclipse.jface.dialogs.InputDialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
+    @Override
     protected Control createDialogArea( Composite parent )
     {
-        Composite composite = ( Composite ) super.createDialogArea( parent );
-        return composite;
+        return super.createDialogArea( parent );
     }
 }

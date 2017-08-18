@@ -45,6 +45,7 @@ public class ConnectionContentProvider implements ITreeContentProvider
      * @see org.eclipse.jface.viewers.IContentProvider#
      *      inputChanged(org.eclipse.jface.viewers.Viewer, java.lang.Object, java.lang.Object)
      */
+    @Override
     public void inputChanged( Viewer viewer, Object oldInput, Object newInput )
     {
     }
@@ -53,6 +54,7 @@ public class ConnectionContentProvider implements ITreeContentProvider
     /**
      * @see org.eclipse.jface.viewers.IContentProvider#dispose()
      */
+    @Override
     public void dispose()
     {
     }
@@ -67,9 +69,8 @@ public class ConnectionContentProvider implements ITreeContentProvider
         {
             ConnectionFolderManager cfm = ( ConnectionFolderManager ) inputElement;
             ConnectionFolder rootConnectionFolder = cfm.getRootConnectionFolder();
-            Object[] elements = getChildren( rootConnectionFolder );
-            
-            return elements;
+
+            return getChildren( rootConnectionFolder );
         }
         else
         {
@@ -85,7 +86,7 @@ public class ConnectionContentProvider implements ITreeContentProvider
     {
         if ( parentElement instanceof ConnectionFolder )
         {
-            List<Object> children = new ArrayList<Object>();
+            List<Object> children = new ArrayList<>();
 
             ConnectionFolder folder = ( ConnectionFolder ) parentElement;
             List<String> subFolderIds = folder.getSubFolderIds();
@@ -95,7 +96,7 @@ public class ConnectionContentProvider implements ITreeContentProvider
             {
                 ConnectionFolder subFolder = ConnectionCorePlugin.getDefault().getConnectionFolderManager()
                     .getConnectionFolderById( subFolderId );
-                
+
                 if ( subFolder != null )
                 {
                     children.add( subFolder );
@@ -105,7 +106,7 @@ public class ConnectionContentProvider implements ITreeContentProvider
             {
                 Connection conn = ConnectionCorePlugin.getDefault().getConnectionManager().getConnectionById(
                     connectionId );
-                
+
                 if ( conn != null )
                 {
                     children.add( conn );
@@ -114,7 +115,7 @@ public class ConnectionContentProvider implements ITreeContentProvider
 
             return children.toArray();
         }
-        
+
         return null;
     }
 
@@ -147,7 +148,7 @@ public class ConnectionContentProvider implements ITreeContentProvider
     public boolean hasChildren( Object element )
     {
         Object[] children = getChildren( element );
-        
+
         return children != null && children.length > 0;
     }
 

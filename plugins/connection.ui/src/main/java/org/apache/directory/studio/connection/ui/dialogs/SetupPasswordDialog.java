@@ -28,8 +28,6 @@ import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -107,6 +105,7 @@ public class SetupPasswordDialog extends Dialog
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
@@ -118,6 +117,7 @@ public class SetupPasswordDialog extends Dialog
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void createButtonsForButtonBar( Composite parent )
     {
         okButton = createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true );
@@ -130,6 +130,7 @@ public class SetupPasswordDialog extends Dialog
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void buttonPressed( int buttonId )
     {
         if ( buttonId == IDialogConstants.OK_ID )
@@ -147,6 +148,7 @@ public class SetupPasswordDialog extends Dialog
     /**
      * {@inheritDoc}
      */
+    @Override
     protected Control createDialogArea( Composite parent )
     {
         // Composite
@@ -179,16 +181,7 @@ public class SetupPasswordDialog extends Dialog
         BaseWidgetUtils.createLabel( passwordGroup, Messages.getString( "SetupPasswordDialog.PasswordColon" ), 1 ); //$NON-NLS-1$
         passwordText = BaseWidgetUtils.createText( passwordGroup, value, 1 );
         passwordText.setEchoChar( '\u2022' );
-        passwordText.addModifyListener( new ModifyListener()
-        {
-            /**
-             * {@inheritDoc}
-             */
-            public void modifyText( ModifyEvent event )
-            {
-                validate();
-            }
-        } );
+        passwordText.addModifyListener( event -> validate() );
 
         // Show Password Checkbox
         BaseWidgetUtils.createLabel( passwordGroup, StringUtils.EMPTY, 1 ); //$NON-NLS-1$
@@ -199,6 +192,7 @@ public class SetupPasswordDialog extends Dialog
             /**
              * {@inheritDoc}
              */
+            @Override
             public void widgetSelected( SelectionEvent event )
             {
                 if ( showPasswordCheckbox.getSelection() )
@@ -216,16 +210,7 @@ public class SetupPasswordDialog extends Dialog
         BaseWidgetUtils.createLabel( passwordGroup, Messages.getString( "SetupPasswordDialog.VerifyPasswordColon" ), 1 ); //$NON-NLS-1$
         verifyPasswordText = BaseWidgetUtils.createText( passwordGroup, value, 1 );
         verifyPasswordText.setEchoChar( '\u2022' );
-        verifyPasswordText.addModifyListener( new ModifyListener()
-        {
-            /**
-             * {@inheritDoc}
-             */
-            public void modifyText( ModifyEvent event )
-            {
-                validate();
-            }
-        } );
+        verifyPasswordText.addModifyListener( event -> validate() );
 
         // Show Verify Password Checkbox
         BaseWidgetUtils.createLabel( passwordGroup, StringUtils.EMPTY, 1 ); //$NON-NLS-1$
@@ -236,6 +221,7 @@ public class SetupPasswordDialog extends Dialog
             /**
              * {@inheritDoc}
              */
+            @Override
             public void widgetSelected( SelectionEvent event )
             {
                 if ( showVerifyPasswordCheckbox.getSelection() )

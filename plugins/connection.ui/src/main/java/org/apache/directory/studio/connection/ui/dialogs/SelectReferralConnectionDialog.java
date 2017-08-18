@@ -35,11 +35,7 @@ import org.apache.directory.studio.connection.ui.widgets.ConnectionUniversalList
 import org.apache.directory.studio.connection.ui.widgets.ConnectionWidget;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -98,6 +94,7 @@ public class SelectReferralConnectionDialog extends Dialog
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
@@ -108,6 +105,7 @@ public class SelectReferralConnectionDialog extends Dialog
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean close()
     {
         if ( mainWidget != null )
@@ -130,6 +128,7 @@ public class SelectReferralConnectionDialog extends Dialog
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void cancelPressed()
     {
         selectedConnection = null;
@@ -140,6 +139,7 @@ public class SelectReferralConnectionDialog extends Dialog
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void createButtonsForButtonBar( Composite parent )
     {
         Button okButton = createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true );
@@ -162,6 +162,7 @@ public class SelectReferralConnectionDialog extends Dialog
     /**
      * {@inheritDoc}
      */
+    @Override
     protected Control createDialogArea( Composite parent )
     {
         Composite composite = ( Composite ) super.createDialogArea( parent );
@@ -198,12 +199,7 @@ public class SelectReferralConnectionDialog extends Dialog
         // create the listener
         universalListener = new ConnectionUniversalListener( mainWidget.getViewer() );
 
-        mainWidget.getViewer().addSelectionChangedListener( new ISelectionChangedListener()
-        {
-            /**
-             * {@inheritDoc}
-             */
-            public void selectionChanged( SelectionChangedEvent event )
+        mainWidget.getViewer().addSelectionChangedListener( event ->
             {
                 selectedConnection = null;
                 
@@ -218,15 +214,9 @@ public class SelectReferralConnectionDialog extends Dialog
                 }
                 
                 validate();
-            }
-        } );
+            } );
 
-        mainWidget.getViewer().addDoubleClickListener( new IDoubleClickListener()
-        {
-            /**
-             * {@inheritDoc}
-             */
-            public void doubleClick( DoubleClickEvent event )
+        mainWidget.getViewer().addDoubleClickListener( event ->
             {
                 selectedConnection = null;
                 
@@ -241,8 +231,7 @@ public class SelectReferralConnectionDialog extends Dialog
                 }
                 
                 validate();
-            }
-        } );
+            } );
 
         if ( referralUrls != null )
         {

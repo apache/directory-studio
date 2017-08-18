@@ -22,7 +22,6 @@ package org.apache.directory.studio.connection.ui.actions;
 
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.directory.studio.connection.core.Connection;
@@ -62,17 +61,14 @@ public class SelectionUtils
      */
     private static List<Object> getTypes( ISelection selection, Class<?> type )
     {
-        List<Object> list = new ArrayList<Object>();
+        List<Object> list = new ArrayList<>();
         
         if ( selection instanceof IStructuredSelection )
         {
             IStructuredSelection structuredSelection = ( IStructuredSelection ) selection;
-            Iterator<?> iterator = structuredSelection.iterator();
             
-            while ( iterator.hasNext() )
+            for ( Object object : structuredSelection.toList() )
             {
-                Object object = iterator.next();
-                
                 if ( type.isInstance( object ) )
                 {
                     list.add( object );

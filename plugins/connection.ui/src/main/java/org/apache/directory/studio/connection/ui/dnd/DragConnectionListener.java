@@ -86,7 +86,7 @@ public class DragConnectionListener implements DragSourceListener
             
             if ( dragSource.getControl() instanceof Tree )
             {
-                List<Object> objectList = new ArrayList<Object>();
+                List<Object> objectList = new ArrayList<>();
                 
                 if ( selection != null )
                 {
@@ -114,5 +114,6 @@ public class DragConnectionListener implements DragSourceListener
      */
     public void dragFinished( DragSourceEvent event )
     {
+        // Nothing to do
     }
 }

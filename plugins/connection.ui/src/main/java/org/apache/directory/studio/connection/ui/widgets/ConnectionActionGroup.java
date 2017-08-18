@@ -127,7 +127,7 @@ public class ConnectionActionGroup implements ActionHandlerManager, IMenuListene
         collapseAllAction = new CollapseAllAction( viewer );
         expandAllAction = new ExpandAllAction( viewer );
 
-        connectionActionMap = new HashMap<String, ConnectionViewActionProxy>();
+        connectionActionMap = new HashMap<>();
 
         connectionActionMap.put( NEW_CONNECTION_ACTION, new ConnectionViewActionProxy( viewer, this,
             new NewConnectionAction() ) );
@@ -169,9 +169,8 @@ public class ConnectionActionGroup implements ActionHandlerManager, IMenuListene
             for ( Iterator<String> it = connectionActionMap.keySet().iterator(); it.hasNext(); )
             {
                 String key = it.next();
-                ConnectionViewActionProxy action = ( ConnectionViewActionProxy ) this.connectionActionMap.get( key );
+                ConnectionViewActionProxy action = this.connectionActionMap.get( key );
                 action.dispose();
-                action = null;
                 it.remove();
             }
 
@@ -259,11 +258,11 @@ public class ConnectionActionGroup implements ActionHandlerManager, IMenuListene
         menuManager.add( new Separator() );
 
         // open/close
-        if ( ( ( IAction ) connectionActionMap.get( CLOSE_CONNECTION_ACTION ) ).isEnabled() )
+        if ( ( connectionActionMap.get( CLOSE_CONNECTION_ACTION ) ).isEnabled() )
         {
             menuManager.add( ( IAction ) connectionActionMap.get( CLOSE_CONNECTION_ACTION ) );
         }
-        else if ( ( ( IAction ) connectionActionMap.get( OPEN_CONNECTION_ACTION ) ).isEnabled() )
+        else if ( ( connectionActionMap.get( OPEN_CONNECTION_ACTION ) ).isEnabled() )
         {
             menuManager.add( ( IAction ) connectionActionMap.get( OPEN_CONNECTION_ACTION ) );
         }
@@ -292,19 +291,19 @@ public class ConnectionActionGroup implements ActionHandlerManager, IMenuListene
     {
         if ( actionBars == null )
         {
-            IAction copyConnectionAction = ( IAction ) connectionActionMap.get( COPY_CONNECTION_ACTION );
+            IAction copyConnectionAction = connectionActionMap.get( COPY_CONNECTION_ACTION );
             copyConnectionAction.setActionDefinitionId( ConnectionUIConstants.CMD_COPY );
             ActionUtils.activateActionHandler( copyConnectionAction );
 
-            IAction pasteConnectionAction = ( IAction ) connectionActionMap.get( PASTE_CONNECTION_ACTION );
+            IAction pasteConnectionAction = connectionActionMap.get( PASTE_CONNECTION_ACTION );
             pasteConnectionAction.setActionDefinitionId( ConnectionUIConstants.CMD_PASTE );
             ActionUtils.activateActionHandler( pasteConnectionAction );
 
-            IAction deleteConnectionAction = ( IAction ) connectionActionMap.get( DELETE_CONNECTION_ACTION );
+            IAction deleteConnectionAction = connectionActionMap.get( DELETE_CONNECTION_ACTION );
             deleteConnectionAction.setActionDefinitionId( ConnectionUIConstants.CMD_DELETE );
             ActionUtils.activateActionHandler( deleteConnectionAction );
 
-            IAction propertyDialogAction = ( IAction ) connectionActionMap.get( PROPERTY_DIALOG_ACTION );
+            IAction propertyDialogAction = connectionActionMap.get( PROPERTY_DIALOG_ACTION );
             propertyDialogAction.setActionDefinitionId( ConnectionUIConstants.CMD_PROPERTIES );
             ActionUtils.activateActionHandler( propertyDialogAction );
         }
@@ -332,13 +331,13 @@ public class ConnectionActionGroup implements ActionHandlerManager, IMenuListene
     {
         if ( actionBars == null )
         {
-            IAction copyConnectionAction = ( IAction ) connectionActionMap.get( COPY_CONNECTION_ACTION );
+            IAction copyConnectionAction = connectionActionMap.get( COPY_CONNECTION_ACTION );
             ActionUtils.deactivateActionHandler( copyConnectionAction );
-            IAction pasteConnectionAction = ( IAction ) connectionActionMap.get( PASTE_CONNECTION_ACTION );
+            IAction pasteConnectionAction = connectionActionMap.get( PASTE_CONNECTION_ACTION );
             ActionUtils.deactivateActionHandler( pasteConnectionAction );
-            IAction deleteConnectionAction = ( IAction ) connectionActionMap.get( DELETE_CONNECTION_ACTION );
+            IAction deleteConnectionAction = connectionActionMap.get( DELETE_CONNECTION_ACTION );
             ActionUtils.deactivateActionHandler( deleteConnectionAction );
-            IAction propertyDialogAction = ( IAction ) connectionActionMap.get( PROPERTY_DIALOG_ACTION );
+            IAction propertyDialogAction = connectionActionMap.get( PROPERTY_DIALOG_ACTION );
             ActionUtils.deactivateActionHandler( propertyDialogAction );
         }
         else

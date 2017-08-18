@@ -47,8 +47,8 @@ public final class ConnectionParameterPageManager
     private ConnectionParameterPageManager()
     {
     }
-    
-    
+
+
     /**
      * Gets the connection parameter pages by searching for connection parameter page
      * extensions.
@@ -61,13 +61,11 @@ public final class ConnectionParameterPageManager
         IExtensionPoint extensionPoint = registry.getExtensionPoint( ConnectionUIPlugin.getDefault()
             .getPluginProperties().getString( "ExtensionPoint_ConnectionParameterPages_id" ) ); //$NON-NLS-1$
         IConfigurationElement[] members = extensionPoint.getConfigurationElements();
-        final Map<String, ConnectionParameterPage> pageMap = new ConcurrentHashMap<String, ConnectionParameterPage>();
+        final Map<String, ConnectionParameterPage> pageMap = new ConcurrentHashMap<>();
 
         // For each extension: instantiate the page
-        for ( int m = 0; m < members.length; m++ )
+        for ( IConfigurationElement member : members )
         {
-            IConfigurationElement member = members[m];
-            
             try
             {
                 ConnectionParameterPage page = ( ConnectionParameterPage ) member.createExecutableExtension( "class" ); //$NON-NLS-1$
@@ -87,22 +85,20 @@ public final class ConnectionParameterPageManager
                             IStatus.ERROR,
                             ConnectionUIConstants.PLUGIN_ID,
                             1,
-                            Messages.getString( "ConnectionParameterPageManager.UnableCreateConnectionParamPage" ) + member.getAttribute( "class" ), e ) ); //$NON-NLS-1$//$NON-NLS-2$
+                            Messages.getString( "ConnectionParameterPageManager.UnableCreateConnectionParamPage" ) //$NON-NLS-1$
+                                + member.getAttribute( "class" ), //$NON-NLS-1$
+                            e ) );
             }
         }
 
         final ConnectionParameterPage[] pages = pageMap.values().toArray( new ConnectionParameterPage[0] );
-        
-        Comparator<? super ConnectionParameterPage> pageComparator = new Comparator<ConnectionParameterPage>()
-        {
-            /**
-             * {@inheritDoc}
-             */
-            public int compare( ConnectionParameterPage page1, ConnectionParameterPage page2 )
+
+        Comparator<? super ConnectionParameterPage> pageComparator = 
+            ( ConnectionParameterPage page1, ConnectionParameterPage page2 ) ->
             {
                 String dependsOnId1 = page1.getPageDependsOnId();
                 String dependsOnId2 = page2.getPageDependsOnId();
-                
+
                 do
                 {
                     if ( ( dependsOnId1 == null ) && ( dependsOnId2 != null ) )
@@ -123,7 +119,7 @@ public final class ConnectionParameterPageManager
                     }
 
                     ConnectionParameterPage page = pageMap.get( dependsOnId1 );
-                    
+
                     if ( ( page != null ) && !page.getPageDependsOnId().equals( dependsOnId1 ) )
                     {
                         dependsOnId1 = page.getPageDependsOnId();
@@ -137,7 +133,7 @@ public final class ConnectionParameterPageManager
 
                 dependsOnId1 = page1.getPageDependsOnId();
                 dependsOnId2 = page2.getPageDependsOnId();
-                
+
                 do
                 {
                     if ( ( dependsOnId1 == null ) && ( dependsOnId2 != null ) )
@@ -171,9 +167,8 @@ public final class ConnectionParameterPageManager
                 while ( ( dependsOnId2 != null ) && !dependsOnId2.equals( page2.getPageId() ) );
 
                 return 0;
-            }
-        };
-        
+            };
+
         Arrays.sort( pages, pageComparator );
 
         return pages;

@@ -44,18 +44,12 @@ public class ConnectionUICertificateHandler implements ICertificateHandler
     {
         // open dialog
         final TrustLevel[] trustLevel = new TrustLevel[1];
-        PlatformUI.getWorkbench().getDisplay().syncExec( new Runnable()
+        PlatformUI.getWorkbench().getDisplay().syncExec( () ->
         {
-            /**
-             * {@inheritDoc}
-             */
-            public void run()
-            {
-                CertificateTrustDialog dialog = new CertificateTrustDialog( PlatformUI.getWorkbench().getDisplay()
-                    .getActiveShell(), host, certChain, failCauses );
-                dialog.open();
-                trustLevel[0] = dialog.getTrustLevel();
-            }
+            CertificateTrustDialog dialog = new CertificateTrustDialog( PlatformUI.getWorkbench().getDisplay()
+                .getActiveShell(), host, certChain, failCauses );
+            dialog.open();
+            trustLevel[0] = dialog.getTrustLevel();
         } );
 
         return trustLevel[0];

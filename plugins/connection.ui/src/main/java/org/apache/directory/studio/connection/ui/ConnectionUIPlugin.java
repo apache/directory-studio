@@ -69,6 +69,7 @@ public class ConnectionUIPlugin extends AbstractUIPlugin
     /**
      * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
      */
+    @Override
     public void start( BundleContext context ) throws Exception
     {
         super.start( context );
@@ -93,6 +94,7 @@ public class ConnectionUIPlugin extends AbstractUIPlugin
     /**
      * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
      */
+    @Override
     public void stop( BundleContext context ) throws Exception
     {
         plugin = null;
@@ -144,7 +146,7 @@ public class ConnectionUIPlugin extends AbstractUIPlugin
         if ( key != null )
         {
             URL url = FileLocator.find( getBundle(), new Path( key ), null );
-            
+
             if ( url != null )
             {
                 return ImageDescriptor.createFromURL( url );
@@ -169,18 +171,18 @@ public class ConnectionUIPlugin extends AbstractUIPlugin
     public Image getImage( String key )
     {
         Image image = getImageRegistry().get( key );
-        
+
         if ( image == null )
         {
             ImageDescriptor imageDescriptor = getImageDescriptor( key );
-            
+
             if ( imageDescriptor != null )
             {
                 image = imageDescriptor.createImage();
                 getImageRegistry().put( key, image );
             }
         }
-        
+
         return image;
     }
 

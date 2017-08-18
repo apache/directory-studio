@@ -209,17 +209,17 @@ public abstract class AbstractConnectionParameterPage implements ConnectionParam
         ConnectionParameter parameter )
     {
         createComposite( parent );
-        
+
         if ( listener != null )
         {
             setConnectionParameterPageModifyListener( listener );
         }
-        
+
         if ( parameter != null )
         {
             loadParameters( parameter );
         }
-        
+
         initListeners();
         connectionPageModified();
     }

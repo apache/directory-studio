@@ -140,7 +140,6 @@ public class CertificateTrustDialog extends Dialog
         
         for ( ICertificateHandler.FailCause failCause : failCauses )
         {
-            // BaseWidgetUtils.createRadioIndent( failedCauseContainer, 1 );
             switch ( failCause )
             {
                 case SelfSignedCertificate:
@@ -185,6 +184,7 @@ public class CertificateTrustDialog extends Dialog
             /**
              * {@inheritDoc}
              */
+            @Override
             public void widgetSelected( final SelectionEvent event )
             {
                 CertificateTrustDialog.this.trustLevel = ICertificateHandler.TrustLevel.Not;
@@ -200,6 +200,7 @@ public class CertificateTrustDialog extends Dialog
             /**
              * {@inheritDoc}
              */
+            @Override
             public void widgetSelected( final SelectionEvent event )
             {
                 CertificateTrustDialog.this.trustLevel = ICertificateHandler.TrustLevel.Session;
@@ -214,6 +215,7 @@ public class CertificateTrustDialog extends Dialog
             /**
              * {@inheritDoc}
              */
+            @Override
             public void widgetSelected( final SelectionEvent event )
             {
                 CertificateTrustDialog.this.trustLevel = ICertificateHandler.TrustLevel.Permanent;

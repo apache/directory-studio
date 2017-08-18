@@ -45,7 +45,7 @@ import org.eclipse.ui.PlatformUI;
 public class ConnectionUIReferralHandler extends ConnectionUpdateAdapter implements IReferralHandler
 {
     /** The referral URL to referral connection cache. */
-    private Map<String, Connection> referralUrlToReferralConnectionCache = new ConcurrentHashMap<String, Connection>();
+    private Map<String, Connection> referralUrlToReferralConnectionCache = new ConcurrentHashMap<>();
 
 
     /**
@@ -74,7 +74,7 @@ public class ConnectionUIReferralHandler extends ConnectionUpdateAdapter impleme
     public Connection getReferralConnection( final List<String> referralUrls )
     {
         final Connection[] referralConnections = new Connection[1];
-        
+
         try
         {
             // check cache
@@ -88,7 +88,7 @@ public class ConnectionUIReferralHandler extends ConnectionUpdateAdapter impleme
                     Connection referralConnection = referralUrlToReferralConnectionCache.get( normalizedUrl );
                     Connection[] connections = ConnectionCorePlugin.getDefault().getConnectionManager()
                         .getConnections();
-                    
+
                     for ( Connection connection : connections )
                     {
                         if ( connection.equals( referralConnection ) )
@@ -103,22 +103,16 @@ public class ConnectionUIReferralHandler extends ConnectionUpdateAdapter impleme
             }
 
             // open dialog
-            PlatformUI.getWorkbench().getDisplay().syncExec( new Runnable()
+            PlatformUI.getWorkbench().getDisplay().syncExec( () ->
             {
-                /**
-                 * {@inheritDoc}
-                 */
-                public void run()
+                SelectReferralConnectionDialog dialog = new SelectReferralConnectionDialog( PlatformUI
+                    .getWorkbench()
+                    .getDisplay().getActiveShell(), referralUrls );
+
+                if ( dialog.open() == SelectReferralConnectionDialog.OK )
                 {
-                    SelectReferralConnectionDialog dialog = new SelectReferralConnectionDialog( PlatformUI
-                        .getWorkbench()
-                        .getDisplay().getActiveShell(), referralUrls );
-                    
-                    if ( dialog.open() == SelectReferralConnectionDialog.OK )
-                    {
-                        Connection connection = dialog.getReferralConnection();
-                        referralConnections[0] = connection;
-                    }
+                    Connection connection = dialog.getReferralConnection();
+                    referralConnections[0] = connection;
                 }
             } );
 

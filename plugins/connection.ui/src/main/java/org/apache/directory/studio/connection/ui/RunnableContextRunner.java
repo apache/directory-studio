@@ -46,6 +46,11 @@ import org.eclipse.ui.PlatformUI;
  */
 public class RunnableContextRunner
 {
+    private RunnableContextRunner()
+    {
+        // Nothing to do
+    }
+    
     /**
      * Executes the given job within the given runnable context.
      * 
@@ -70,7 +75,7 @@ public class RunnableContextRunner
 
                 // ensure that connections are opened
                 Connection[] connections = runnable.getConnections();
-                
+
                 if ( connections != null )
                 {
                     for ( Connection connection : connections )
@@ -82,7 +87,7 @@ public class RunnableContextRunner
                             spm[0].worked( 1 );
 
                             connection.getConnectionWrapper().connect( spm[0] );
-                            
+
                             if ( connection.getConnectionWrapper().isConnected() )
                             {
                                 connection.getConnectionWrapper().bind( spm[0] );
@@ -95,7 +100,7 @@ public class RunnableContextRunner
                                 {
                                     listener.connectionOpened( connection, spm[0] );
                                 }
-                                
+
                                 ConnectionEventRegistry.fireConnectionOpened( connection, this );
                             }
                         }
@@ -110,7 +115,7 @@ public class RunnableContextRunner
                         {
                             StudioConnectionBulkRunnableWithProgress bulkRunnable = ( StudioConnectionBulkRunnableWithProgress ) runnable;
                             ConnectionEventRegistry.suspendEventFiringInCurrentThread();
-                            
+
                             try
                             {
                                 bulkRunnable.run( spm[0] );
@@ -119,7 +124,7 @@ public class RunnableContextRunner
                             {
                                 ConnectionEventRegistry.resumeEventFiringInCurrentThread();
                             }
-                            
+
                             bulkRunnable.runNotification( spm[0] );
                         }
                         else
@@ -155,7 +160,7 @@ public class RunnableContextRunner
         }
 
         IStatus status = spm[0].getErrorStatus( runnable.getErrorMessage() );
-        
+
         if ( ( handleError && !spm[0].isCanceled() ) && !status.isOK() )
         {
             ConnectionUIPlugin.getDefault().getExceptionHandler().handleException( status );

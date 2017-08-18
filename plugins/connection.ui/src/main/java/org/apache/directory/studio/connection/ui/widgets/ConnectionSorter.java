@@ -59,6 +59,7 @@ public class ConnectionSorter extends ViewerSorter
      * 
      * This method is used to categorize connection folders and connections.
      */
+    @Override
     public int category( Object element )
     {
         if ( element instanceof ConnectionFolder )

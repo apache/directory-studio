@@ -113,22 +113,21 @@ public class UIAuthHandler implements IAuthHandler
     {
         final String[] password = new String[1];
 
-        PlatformUI.getWorkbench().getDisplay().syncExec( new Runnable()
+        PlatformUI.getWorkbench().getDisplay().syncExec( () -> 
         {
-            public void run()
-            {
-                PasswordDialog dialog = new PasswordDialog(
-                    PlatformUI.getWorkbench().getDisplay().getActiveShell(),
-                    NLS.bind(
-                        Messages.getString( "UIAuthHandler.EnterPasswordFor" ), new String[] { connectionParameter.getName() } ), //$NON-NLS-1$
-                    NLS.bind(
-                        Messages.getString( "UIAuthHandler.PleaseEnterPasswordOfUser" ), connectionParameter.getBindPrincipal() ), 
-                                    StringUtils.EMPTY ); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+            PasswordDialog dialog = new PasswordDialog(
+                PlatformUI.getWorkbench().getDisplay().getActiveShell(),
+                NLS.bind(
+                    Messages.getString( "UIAuthHandler.EnterPasswordFor" ), new String[] //$NON-NLS-1$
+                { connectionParameter.getName() } ),
+                NLS.bind(
+                    Messages.getString( "UIAuthHandler.PleaseEnterPasswordOfUser" ),
+                    connectionParameter.getBindPrincipal() ),
+                StringUtils.EMPTY ); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 
-                if ( dialog.open() == PasswordDialog.OK )
-                {
-                    password[0] = dialog.getPassword();
-                }
+            if ( dialog.open() == PasswordDialog.OK )
+            {
+                password[0] = dialog.getPassword();
             }
         } );
 

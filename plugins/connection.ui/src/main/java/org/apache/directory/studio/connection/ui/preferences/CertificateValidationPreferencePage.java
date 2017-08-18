@@ -73,6 +73,7 @@ public class CertificateValidationPreferencePage extends PreferencePage implemen
      */
     public void init( IWorkbench workbench )
     {
+        // Nothing to do
     }
 
 
@@ -123,6 +124,7 @@ public class CertificateValidationPreferencePage extends PreferencePage implemen
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void performDefaults()
     {
         verifyCertificatesButton.setSelection( ConnectionCorePlugin.getDefault().getPluginPreferences()

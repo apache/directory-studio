@@ -79,6 +79,7 @@ public class ExportCertificateWizard extends Wizard
     /**
      * {@inheritDoc}
      */
+    @Override
     public void addPages()
     {
         page = new ExportCertificateWizardPage();
@@ -148,14 +149,17 @@ public class ExportCertificateWizard extends Wizard
         File exportFile = page.getExportFile();
 
         // Exporting the certificate
-        FileOutputStream fos = new FileOutputStream( exportFile );
-        OutputStreamWriter osw = new OutputStreamWriter( fos, Charset.forName( "UTF-8" ) ); //$NON-NLS-1$
-        osw.write( "-----BEGIN CERTIFICATE-----\n" ); //$NON-NLS-1$
-        osw.write( stripLineToNChars( new String( Base64.encodeBase64( certificate.getEncoded() ),
-            Charset.forName( "UTF-8" ) ), 64 ) ); //$NON-NLS-1$
-        osw.write( "\n-----END CERTIFICATE-----\n" ); //$NON-NLS-1$
-        osw.flush();
-        fos.close();
+        try ( FileOutputStream fos = new FileOutputStream( exportFile ) )
+        {
+            try ( OutputStreamWriter osw = new OutputStreamWriter( fos, Charset.forName( "UTF-8" ) ) ) //$NON-NLS-1$
+            {
+                osw.write( "-----BEGIN CERTIFICATE-----\n" ); //$NON-NLS-1$
+                osw.write( stripLineToNChars( new String( Base64.encodeBase64( certificate.getEncoded() ),
+                    Charset.forName( "UTF-8" ) ), 64 ) ); //$NON-NLS-1$
+                osw.write( "\n-----END CERTIFICATE-----\n" ); //$NON-NLS-1$
+                osw.flush();
+            }
+        }
 
         return true;
     }

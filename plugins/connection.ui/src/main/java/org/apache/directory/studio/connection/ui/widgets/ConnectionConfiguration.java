@@ -97,7 +97,7 @@ public class ConnectionConfiguration
             Menu menu = contextMenuManager.createContextMenu( viewer.getControl() );
             viewer.getControl().setMenu( menu );
         }
-        
+
         return contextMenuManager;
     }
 

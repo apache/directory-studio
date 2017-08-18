@@ -175,7 +175,7 @@ public class PasteAction extends StudioAction
      */
     private List<Connection> getConnectionsToPaste()
     {
-        List<Connection> connections = new ArrayList<Connection>();
+        List<Connection> connections = new ArrayList<>();
 
         // first check for Connection objects in the clipboard
         Object content = getFromClipboard( ConnectionTransfer.getInstance() );
@@ -205,7 +205,7 @@ public class PasteAction extends StudioAction
 
     private List<Connection> getConnectionsByLdapUrl()
     {
-        List<Connection> connections = new ArrayList<Connection>();
+        List<Connection> connections = new ArrayList<>();
 
         Object content = getFromClipboard( TextTransfer.getInstance() );
         
@@ -254,7 +254,7 @@ public class PasteAction extends StudioAction
      */
     private List<ConnectionFolder> getConnectionFoldersToPaste()
     {
-        List<ConnectionFolder> folders = new ArrayList<ConnectionFolder>();
+        List<ConnectionFolder> folders = new ArrayList<>();
 
         Object content = this.getFromClipboard( ConnectionTransfer.getInstance() );
         

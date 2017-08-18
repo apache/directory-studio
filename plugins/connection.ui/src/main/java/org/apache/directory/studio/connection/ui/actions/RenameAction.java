@@ -114,12 +114,7 @@ public class RenameAction extends StudioAction
      */
     private void renameConnection( final Connection connection )
     {
-        IInputValidator validator = new IInputValidator()
-        {
-            /**
-             * {@inheritDoc}
-             */
-            public String isValid( String newName )
+        IInputValidator validator = newName ->
             {
                 if ( connection.getName().equals( newName ) )
                 {
@@ -133,8 +128,7 @@ public class RenameAction extends StudioAction
                 {
                     return Messages.getString( "RenameAction.ConnectionAlreadyExists" ); //$NON-NLS-1$
                 }
-            }
-        };
+            };
 
         InputDialog dialog = new InputDialog(
             getShell(),
@@ -154,17 +148,11 @@ public class RenameAction extends StudioAction
     /**
      * Renames a ConnectionFolder.
      *
-     * @param connectionFolder
-     *      the ConnectionFolder to rename
+     * @param connectionFolder the ConnectionFolder to rename
      */
     private void renameConnectionFolder( final ConnectionFolder connectionFolder )
     {
-        IInputValidator validator = new IInputValidator()
-        {
-            /**
-             * {@inheritDoc}
-             */
-            public String isValid( String newName )
+        IInputValidator validator = newName ->
             {
                 if ( connectionFolder.getName().equals( newName ) )
                 {
@@ -179,8 +167,7 @@ public class RenameAction extends StudioAction
                 {
                     return Messages.getString( "RenameAction.ConnectionFolderAlreadyExists" ); //$NON-NLS-1$
                 }
-            }
-        };
+            };
 
         InputDialog dialog = new InputDialog(
             getShell(),

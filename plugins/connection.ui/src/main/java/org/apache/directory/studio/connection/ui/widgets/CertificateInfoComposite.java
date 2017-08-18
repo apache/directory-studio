@@ -40,11 +40,9 @@ import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.bouncycastle.asn1.ASN1Object;
 import org.bouncycastle.x509.extension.X509ExtensionUtil;
 import org.eclipse.jface.resource.JFaceResources;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
@@ -73,7 +71,7 @@ public class CertificateInfoComposite extends Composite
 {
     /** The default attributes of an X500Principal: CN, L, ST, O, OU, C, STREET, DC, UID */
     private static final String[] ATTRIBUTES =
-        { 
+        {
             "CN", //$NON-NLS-1$
             "L", //$NON-NLS-1$
             "ST", //$NON-NLS-1$
@@ -242,13 +240,7 @@ public class CertificateInfoComposite extends Composite
         hierarchyTreeViewer.getTree().setLayoutData( new GridData( GridData.FILL, GridData.FILL, true, true ) );
         hierarchyTreeViewer.setContentProvider( new HierarchyContentProvider() );
         hierarchyTreeViewer.setLabelProvider( new HierarchyLabelProvider() );
-        hierarchyTreeViewer.addSelectionChangedListener( new ISelectionChangedListener()
-        {
-            public void selectionChanged( SelectionChangedEvent event )
-            {
-                populateCertificateTree();
-            }
-        } );
+        hierarchyTreeViewer.addSelectionChangedListener( event -> populateCertificateTree() );
 
         Composite certificateContainer = new Composite( detailsForm, SWT.NONE );
         GridLayout certificateLayout = new GridLayout( 1, false );
@@ -260,10 +252,11 @@ public class CertificateInfoComposite extends Composite
         certificateTree.setLayoutData( new GridData( GridData.FILL, GridData.FILL, true, true ) );
         certificateTree.addSelectionListener( new SelectionAdapter()
         {
+            @Override
             public void widgetSelected( final SelectionEvent event )
             {
                 TreeItem item = ( TreeItem ) event.item;
-                
+
                 if ( ( item == null ) || ( item.getData() == null ) )
                 {
                     valueText.setText( StringUtils.EMPTY );
@@ -322,7 +315,7 @@ public class CertificateInfoComposite extends Composite
         expiresOn.setText( DateFormatUtils.ISO_DATE_FORMAT.format( certificate.getNotAfter() ) );
 
         byte[] encoded2 = null;
-        
+
         try
         {
             encoded2 = certificate.getEncoded();
@@ -330,7 +323,7 @@ public class CertificateInfoComposite extends Composite
         catch ( CertificateEncodingException e )
         {
         }
-        
+
         byte[] md5 = DigestUtils.md5( encoded2 );
         String md5HexString = getHexString( md5 );
         fingerprintMD5.setText( md5HexString );
@@ -341,25 +334,25 @@ public class CertificateInfoComposite extends Composite
         // Details: certificate chain
         CertificateChainItem parentItem = null;
         CertificateChainItem certificateItem = null;
-        
+
         for ( X509Certificate cert : certificateChain )
         {
             CertificateChainItem item = new CertificateChainItem( cert );
-            
+
             if ( parentItem != null )
             {
                 item.child = parentItem;
                 parentItem.parent = item;
             }
-            
+
             if ( certificateItem == null )
             {
                 certificateItem = item;
             }
-        
+
             parentItem = item;
         }
-        
+
         hierarchyTreeViewer.setInput( new CertificateChainItem[]
             { parentItem } );
         hierarchyTreeViewer.expandAll();
@@ -378,7 +371,7 @@ public class CertificateInfoComposite extends Composite
         valueText.setText( StringUtils.EMPTY );
 
         IStructuredSelection selection = ( IStructuredSelection ) hierarchyTreeViewer.getSelection();
-        
+
         if ( selection.size() != 1 )
         {
             return;
@@ -396,11 +389,11 @@ public class CertificateInfoComposite extends Composite
         createTreeItem( certItem,
             Messages.getString( "CertificateInfoComposite.Version" ), String.valueOf( certificate.getVersion() ) ); //$NON-NLS-1$
         createTreeItem( certItem,
-            Messages.getString( "CertificateInfoComposite.SerialNumber" ), certificate.getSerialNumber().toString( 16 ) ); //$NON-NLS-1$
+            Messages.getString( "CertificateInfoComposite.SerialNumber" ), //$NON-NLS-1$
+            certificate.getSerialNumber().toString( 16 ) );
         createTreeItem( certItem,
             Messages.getString( "CertificateInfoComposite.Signature" ), certificate.getSigAlgName() ); //$NON-NLS-1$
 
-        // TODO: formatting
         createTreeItem( certItem,
             Messages.getString( "CertificateInfoComposite.Issuer" ), certificate.getIssuerX500Principal().getName() ); //$NON-NLS-1$
 
@@ -411,7 +404,6 @@ public class CertificateInfoComposite extends Composite
         createTreeItem( validityItem,
             Messages.getString( "CertificateInfoComposite.NotAfter" ), certificate.getNotAfter().toString() ); //$NON-NLS-1$
 
-        // TODO: formatting
         createTreeItem( certItem,
             Messages.getString( "CertificateInfoComposite.Subject" ), certificate.getSubjectX500Principal().getName() ); //$NON-NLS-1$
 
@@ -419,12 +411,14 @@ public class CertificateInfoComposite extends Composite
             .getString( "CertificateInfoComposite.SubjectPublicKeyInfo" ), StringUtils.EMPTY ); //$NON-NLS-1$
         createTreeItem(
             pkiItem,
-            Messages.getString( "CertificateInfoComposite.SubjectPublicKeyAlgorithm" ), certificate.getPublicKey().getAlgorithm() ); //$NON-NLS-1$
-        // TODO: formatting
+            Messages.getString( "CertificateInfoComposite.SubjectPublicKeyAlgorithm" ), //$NON-NLS-1$
+            certificate.getPublicKey().getAlgorithm() );
+
         createTreeItem(
             pkiItem,
-            Messages.getString( "CertificateInfoComposite.SubjectPublicKey" ), new String( Hex.encodeHex( certificate.getPublicKey() //$NON-NLS-1$
-                        .getEncoded() ) ) );
+            Messages.getString( "CertificateInfoComposite.SubjectPublicKey" ), //$NON-NLS-1$
+            new String( Hex.encodeHex( certificate.getPublicKey()
+                .getEncoded() ) ) );
 
         TreeItem extItem = createTreeItem( certItem,
             Messages.getString( "CertificateInfoComposite.Extensions" ), StringUtils.EMPTY ); //$NON-NLS-1$
@@ -433,10 +427,11 @@ public class CertificateInfoComposite extends Composite
 
         createTreeItem( rootItem,
             Messages.getString( "CertificateInfoComposite.SignatureAlgorithm" ), certificate.getSigAlgName() ); //$NON-NLS-1$
-        // TODO: formatting
+
         createTreeItem(
             rootItem,
-            Messages.getString( "CertificateInfoComposite.Signature" ), new String( Hex.encodeHex( certificate.getSignature() ) ) ); //$NON-NLS-1$
+            Messages.getString( "CertificateInfoComposite.Signature" ), //$NON-NLS-1$
+            new String( Hex.encodeHex( certificate.getSignature() ) ) );
 
         rootItem.setExpanded( true );
         certItem.setExpanded( true );
@@ -451,15 +446,17 @@ public class CertificateInfoComposite extends Composite
         TreeItem item = new TreeItem( parent, SWT.NONE );
         item.setText( field );
         item.setData( value );
-        
+
         return item;
     }
 
 
-    private void populateExtensions( final TreeItem extensionsItem, final X509Certificate certificate, boolean critical )
+    private void populateExtensions( final TreeItem extensionsItem, final X509Certificate certificate,
+        boolean critical )
     {
-        Set<String> oids = critical ? certificate.getCriticalExtensionOIDs() : certificate
-            .getNonCriticalExtensionOIDs();
+        Set<String> oids = critical ? certificate.getCriticalExtensionOIDs()
+            : certificate
+                .getNonCriticalExtensionOIDs();
 
         if ( oids != null )
         {
@@ -468,7 +465,7 @@ public class CertificateInfoComposite extends Composite
                 // try to parse the extension value byte[] to an ASN1 object
                 byte[] extensionValueBin = certificate.getExtensionValue( oid );
                 String extensionValue = null;
-                
+
                 try
                 {
                     ASN1Object extension = X509ExtensionUtil.fromExtensionValue( extensionValueBin );
@@ -480,7 +477,8 @@ public class CertificateInfoComposite extends Composite
                 }
 
                 String value = Messages.getString( "CertificateInfoComposite.ExtensionOIDColon" ) + oid + '\n'; //$NON-NLS-1$
-                value += Messages.getString( "CertificateInfoComposite.CriticalColon" ) + Boolean.toString( critical ) + '\n'; //$NON-NLS-1$
+                value += Messages.getString( "CertificateInfoComposite.CriticalColon" ) + Boolean.toString( critical ) //$NON-NLS-1$
+                    + '\n';
                 value += Messages.getString( "CertificateInfoComposite.ExtensionValueColon" ) + extensionValue + '\n'; //$NON-NLS-1$
 
                 // TODO: OID descriptions
@@ -499,17 +497,17 @@ public class CertificateInfoComposite extends Composite
     {
         char[] hex = Hex.encodeHex( bytes );
         StringBuilder buffer = new StringBuilder();
-        
+
         for ( int i = 0; i < hex.length; i++ )
         {
             if ( i % 2 == 0 && i > 0 )
             {
                 buffer.append( ':' );
             }
-            
+
             buffer.append( Character.toUpperCase( hex[i] ) );
         }
-        
+
         return buffer.toString();
     }
 
@@ -524,7 +522,7 @@ public class CertificateInfoComposite extends Composite
      */
     private Map<String, String> getAttributeMap( X500Principal principal )
     {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
 
         // populate map with default values
         for ( String attribute : ATTRIBUTES )
@@ -537,11 +535,10 @@ public class CertificateInfoComposite extends Composite
         {
             String name = principal.getName();
             Dn dn = new Dn( name );
-            //List<Rdn> rdns = dn.getRdns();
-            
+
             for ( Rdn rdn : dn )
             {
-                map.put( rdn.getType().toUpperCase(), rdn.getValue().toString() );
+                map.put( rdn.getType().toUpperCase(), rdn.getValue() );
             }
         }
         catch ( LdapInvalidDnException lide )
@@ -551,7 +548,6 @@ public class CertificateInfoComposite extends Composite
 
         return map;
     }
-    
 
     class HierarchyContentProvider implements ITreeContentProvider
     {
@@ -560,14 +556,14 @@ public class CertificateInfoComposite extends Composite
             if ( parentElement instanceof CertificateChainItem )
             {
                 CertificateChainItem item = ( CertificateChainItem ) parentElement;
-                
+
                 if ( item.child != null )
                 {
                     return new CertificateChainItem[]
                         { item.child };
                 }
             }
-            
+
             return new Object[0];
         }
 
@@ -577,10 +573,10 @@ public class CertificateInfoComposite extends Composite
             if ( element instanceof CertificateChainItem )
             {
                 CertificateChainItem item = ( CertificateChainItem ) element;
-                
+
                 return item.parent;
             }
-            
+
             return null;
         }
 
@@ -597,16 +593,18 @@ public class CertificateInfoComposite extends Composite
             {
                 return ( CertificateChainItem[] ) inputElement;
             }
-            
+
             return getChildren( inputElement );
         }
 
 
+        @Override
         public void dispose()
         {
         }
 
 
+        @Override
         public void inputChanged( Viewer viewer, Object oldInput, Object newInput )
         {
         }

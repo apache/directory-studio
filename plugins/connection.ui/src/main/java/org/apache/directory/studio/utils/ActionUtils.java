@@ -52,7 +52,7 @@ public final class ActionUtils
      */
     public static void deactivateActionHandler( IAction action )
     {
-        ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
+        ICommandService commandService = PlatformUI.getWorkbench().getAdapter(
             ICommandService.class );
         
         if ( commandService != null )
@@ -64,7 +64,7 @@ public final class ActionUtils
             {
                 ActionHandler actionHandler = ( ActionHandler ) handler;
                 
-                if ( ( actionHandler != null ) && ( actionHandler.getAction() == action ) )
+                if ( actionHandler.getAction() == action )
                 {
                     command.setHandler( null );
                 }
@@ -84,7 +84,7 @@ public final class ActionUtils
      */
     public static void activateActionHandler( IAction action )
     {
-        ICommandService commandService = ( ICommandService ) PlatformUI.getWorkbench().getAdapter(
+        ICommandService commandService = PlatformUI.getWorkbench().getAdapter(
             ICommandService.class );
         
         if ( commandService != null )

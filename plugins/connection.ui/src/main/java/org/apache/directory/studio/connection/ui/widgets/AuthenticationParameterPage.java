@@ -51,12 +51,8 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.VerifyEvent;
-import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -88,6 +84,9 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
     /** The URL simple constant */
     private static final String X_AUTH_METHOD_SIMPLE = "Simple"; //$NON-NLS-1$
 
+    /** The URL PLAIN constant */
+    private static final String X_AUTH_METHOD_PLAIN = "PLAIN"; //$NON-NLS-1$
+
     /** The URL DIGEST-MD5 constant */
     private static final String X_AUTH_METHOD_DIGEST_MD5 = "DIGEST-MD5"; //$NON-NLS-1$
 
@@ -108,22 +107,22 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
 
     /** The SASL QOP constant */
     private static final String X_SASL_QOP = "X-SASL-QOP"; //$NON-NLS-1$
-    
+
     /** The SASL QOP AUTH-INT constant */
     private static final String X_SASL_QOP_AUTH_INT = "AUTH-INT"; //$NON-NLS-1$
-    
+
     /** The SASL QOP AUTH-INT PROV constant */
     private static final String X_SASL_QOP_AUTH_INT_PRIV = "AUTH-INT-PRIV"; //$NON-NLS-1$
-    
+
     /** The SASL Security Strength constant */
     private static final String X_SASL_SEC_STRENGTH = "X-SASL-SEC-STRENGTH"; //$NON-NLS-1$
-    
+
     /** The SASL Medium security constant */
     private static final String X_SASL_SEC_STRENGTH_MEDIUM = "MEDIUM"; //$NON-NLS-1$
-    
+
     /** The SASL Low security constant */
     private static final String X_SASL_SEC_STRENGTH_LOW = "LOW"; //$NON-NLS-1$
-    
+
     /** The SASL no-mutual-auth constant */
     private static final String X_SASL_NO_MUTUAL_AUTH = "X-SASL-NO-MUTUAL-AUTH"; //$NON-NLS-1$
 
@@ -145,6 +144,9 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
 
     /** The text widget to input bind password */
     private Text bindPasswordText;
+
+    /** The text widget to input the SASL PLAIN autzid (if selected) */
+    private Text authzidText;
 
     /** The checkbox to choose if the bind password should be saved on disk */
     private Button saveBindPasswordButton;
@@ -183,16 +185,16 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
         {
             case 1:
                 return ConnectionParameter.AuthenticationMethod.SIMPLE;
-                
+
             case 2:
                 return ConnectionParameter.AuthenticationMethod.SASL_DIGEST_MD5;
-                
+
             case 3:
                 return ConnectionParameter.AuthenticationMethod.SASL_CRAM_MD5;
-                
+
             case 4:
                 return ConnectionParameter.AuthenticationMethod.SASL_GSSAPI;
-                
+
             default:
                 return ConnectionParameter.AuthenticationMethod.NONE;
         }
@@ -221,6 +223,17 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
     }
 
 
+    /**
+     * Gets the bind authzid.
+     * 
+     * @return the authzid
+     */
+    private String getAuthzid()
+    {
+        return authzidText.getText();
+    }
+
+
     private String getSaslRealm()
     {
         return saslRealmText.getText();
@@ -233,10 +246,10 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
         {
             case 1:
                 return SaslQoP.AUTH_INT;
-                
+
             case 2:
                 return SaslQoP.AUTH_CONF;
-                
+
             default:
                 return SaslQoP.AUTH;
         }
@@ -249,10 +262,10 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
         {
             case 1:
                 return SaslSecurityStrength.MEDIUM;
-                
+
             case 2:
                 return SaslSecurityStrength.LOW;
-                
+
             default:
                 return SaslSecurityStrength.HIGH;
         }
@@ -292,7 +305,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
     private int getKdcPort()
     {
         String krb5ConfigPort = krb5ConfigManualPortText.getText();
-        
+
         if ( Strings.isEmpty( krb5ConfigPort ) )
         {
             return 0;
@@ -324,9 +337,8 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
     private Connection getTestConnection()
     {
         ConnectionParameter connectionParameter = connectionParameterPageModifyListener.getTestConnectionParameters();
-        Connection conn = new Connection( connectionParameter );
-        
-        return conn;
+
+        return new Connection( connectionParameter );
     }
 
 
@@ -344,14 +356,14 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
         Composite groupComposite = BaseWidgetUtils.createColumnContainer( group1, 1, 1 );
 
         String[] authMethods = new String[]
-        { 
-            Messages.getString( "AuthenticationParameterPage.AnonymousAuthentication" ), //$NON-NLS-1$
-            Messages.getString( "AuthenticationParameterPage.SimpleAuthentication" ), //$NON-NLS-1$
-            Messages.getString( "AuthenticationParameterPage.DigestMD5" ), //$NON-NLS-1$
-            Messages.getString( "AuthenticationParameterPage.CramMD5" ), //$NON-NLS-1$
-            Messages.getString( "AuthenticationParameterPage.GSSAPI" ) //$NON-NLS-1$
-        };
-        
+            {
+                Messages.getString( "AuthenticationParameterPage.AnonymousAuthentication" ), //$NON-NLS-1$
+                Messages.getString( "AuthenticationParameterPage.SimpleAuthentication" ), //$NON-NLS-1$
+                Messages.getString( "AuthenticationParameterPage.DigestMD5" ), //$NON-NLS-1$
+                Messages.getString( "AuthenticationParameterPage.CramMD5" ), //$NON-NLS-1$
+                Messages.getString( "AuthenticationParameterPage.GSSAPI" ) //$NON-NLS-1$
+            };
+
         authenticationMethodCombo = BaseWidgetUtils.createReadonlyCombo( groupComposite, authMethods, 1, 2 );
 
         // Authentication Parameter
@@ -365,6 +377,10 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
         String[] dnHistory = HistoryUtils.load( ConnectionUIPlugin.getDefault().getDialogSettings(),
             ConnectionUIConstants.DIALOGSETTING_KEY_PRINCIPAL_HISTORY );
         bindPrincipalCombo = BaseWidgetUtils.createCombo( composite, dnHistory, -1, 2 );
+
+        BaseWidgetUtils.createLabel( composite, Messages.getString( "AuthenticationParameterPage.Authzid" ), 1 ); //$NON-NLS-1$
+        authzidText = BaseWidgetUtils.createText( composite, "SASL PLAIN only", 2 ); //$NON-NLS-1$
+        authzidText.setEnabled( false );
 
         BaseWidgetUtils.createLabel( composite, Messages.getString( "AuthenticationParameterPage.BindPassword" ), 1 ); //$NON-NLS-1$
         bindPasswordText = BaseWidgetUtils.createPasswordText( composite, StringUtils.EMPTY, 2 ); //$NON-NLS-1$
@@ -417,13 +433,14 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
             /**
              * {@inheritDoc}
              */
+            @Override
             public void expansionStateChanged( ExpansionEvent event )
             {
                 ExpandableComposite excomposite = ( ExpandableComposite ) event.getSource();
                 excomposite.getParent().setSize( excomposite.getParent().computeSize( SWT.DEFAULT, SWT.DEFAULT ) );
             }
         } );
-        
+
         return excomposite;
     }
 
@@ -436,26 +453,26 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
         saslRealmText = BaseWidgetUtils.createCombo( saslComposite, saslHistory, -1, 1 );
 
         BaseWidgetUtils.createLabel( saslComposite, Messages.getString( "AuthenticationParameterPage.SaslQop" ), 1 ); //$NON-NLS-1$
-        
+
         String[] qops = new String[]
-        { 
-            Messages.getString( "AuthenticationParameterPage.SaslQopAuth" ), //$NON-NLS-1$
-            Messages.getString( "AuthenticationParameterPage.SaslQopAuthInt" ), //$NON-NLS-1$
-            Messages.getString( "AuthenticationParameterPage.SaslQopAuthIntPriv" ) //$NON-NLS-1$
-        };
-        
+            {
+                Messages.getString( "AuthenticationParameterPage.SaslQopAuth" ), //$NON-NLS-1$
+                Messages.getString( "AuthenticationParameterPage.SaslQopAuthInt" ), //$NON-NLS-1$
+                Messages.getString( "AuthenticationParameterPage.SaslQopAuthIntPriv" ) //$NON-NLS-1$
+            };
+
         saslQopCombo = BaseWidgetUtils.createReadonlyCombo( saslComposite, qops, 0, 1 );
 
         BaseWidgetUtils.createLabel( saslComposite, Messages
             .getString( "AuthenticationParameterPage.SaslSecurityStrength" ), 1 ); //$NON-NLS-1$
-        
+
         String[] securityStrengths = new String[]
-        { 
-            Messages.getString( "AuthenticationParameterPage.SaslSecurityStrengthHigh" ), //$NON-NLS-1$
-            Messages.getString( "AuthenticationParameterPage.SaslSecurityStrengthMedium" ), //$NON-NLS-1$
-            Messages.getString( "AuthenticationParameterPage.SaslSecurityStrengthLow" ) //$NON-NLS-1$
-        };
-        
+            {
+                Messages.getString( "AuthenticationParameterPage.SaslSecurityStrengthHigh" ), //$NON-NLS-1$
+                Messages.getString( "AuthenticationParameterPage.SaslSecurityStrengthMedium" ), //$NON-NLS-1$
+                Messages.getString( "AuthenticationParameterPage.SaslSecurityStrengthLow" ) //$NON-NLS-1$
+            };
+
         saslSecurityStrengthCombo = BaseWidgetUtils.createReadonlyCombo( saslComposite, securityStrengths, 0, 1 );
 
         saslMutualAuthenticationButton = BaseWidgetUtils.createCheckbox( saslComposite, Messages
@@ -489,7 +506,8 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
         krb5ConfigFileText = BaseWidgetUtils.createText( configComposite, StringUtils.EMPTY, 2 ); //$NON-NLS-1$
         krb5ConfigManualButton = BaseWidgetUtils.createRadiobutton( configComposite, Messages
             .getString( "AuthenticationParameterPage.Krb5ConfigManual" ), 1 ); //$NON-NLS-1$
-        BaseWidgetUtils.createLabel( configComposite, Messages.getString( "AuthenticationParameterPage.Krb5Realm" ), 1 ); //$NON-NLS-1$
+        BaseWidgetUtils.createLabel( configComposite, Messages.getString( "AuthenticationParameterPage.Krb5Realm" ), //$NON-NLS-1$
+            1 );
         krb5ConfigManualRealmText = BaseWidgetUtils.createText( configComposite, StringUtils.EMPTY, 1 ); //$NON-NLS-1$
         BaseWidgetUtils.createSpacer( configComposite, 1 );
         BaseWidgetUtils.createLabel( configComposite,
@@ -522,7 +540,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
         Preferences preferences = ConnectionCorePlugin.getDefault().getPluginPreferences();
         boolean useKrb5SystemProperties = preferences
             .getBoolean( ConnectionCoreConstants.PREFERENCE_USE_KRB5_SYSTEM_PROPERTIES );
-        
+
         if ( krb5Composite != null )
         {
             krb5CredentialConfigurationUseNativeButton.setEnabled( isGssapiEnabled() && !useKrb5SystemProperties );
@@ -541,38 +559,40 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
             krb5ConfigManualPortText.setEnabled( isGssapiEnabled() && krb5ConfigManualButton.getSelection()
                 && !useKrb5SystemProperties );
         }
-        
+
         bindPrincipalCombo.setEnabled( isPrincipalPasswordEnabled() );
         bindPasswordText.setEnabled( isPrincipalPasswordEnabled() && isSaveBindPassword() );
         saveBindPasswordButton.setEnabled( isPrincipalPasswordEnabled() );
         checkPrincipalPasswordAuthButton
             .setEnabled( ( isPrincipalPasswordEnabled() && isSaveBindPassword()
-                && !bindPrincipalCombo.getText().equals( StringUtils.EMPTY ) && !bindPasswordText.getText().equals( StringUtils.EMPTY ) ) || isGssapiEnabled() ); //$NON-NLS-1$ //$NON-NLS-2$
+                && !bindPrincipalCombo.getText().equals( StringUtils.EMPTY )
+                && !bindPasswordText.getText().equals( StringUtils.EMPTY ) ) || isGssapiEnabled() ); //$NON-NLS-1$ //$NON-NLS-2$
 
         // validate input fields
         message = null;
         infoMessage = null;
         errorMessage = null;
-        
+
         if ( isPrincipalPasswordEnabled() )
         {
             if ( isSaveBindPassword() && Strings.isEmpty( bindPasswordText.getText() ) ) //$NON-NLS-1$
             {
                 message = Messages.getString( "AuthenticationParameterPage.PleaseEnterBindPassword" ); //$NON-NLS-1$
             }
-            
+
             if ( Strings.isEmpty( bindPrincipalCombo.getText() ) && !isGssapiEnabled() ) //$NON-NLS-1$
             {
                 message = Messages.getString( "AuthenticationParameterPage.PleaseEnterBindDNOrUser" ); //$NON-NLS-1$
             }
         }
 
-        if ( isSaslRealmTextEnabled() &&Strings.isEmpty( saslRealmText.getText() ) ) //$NON-NLS-1$
+        if ( isSaslRealmTextEnabled() && Strings.isEmpty( saslRealmText.getText() ) ) //$NON-NLS-1$
         {
             infoMessage = Messages.getString( "AuthenticationParameterPage.PleaseEnterSaslRealm" ); //$NON-NLS-1$
         }
 
-        if ( isGssapiEnabled() && krb5ConfigFileButton.getSelection() && Strings.isEmpty( krb5ConfigFileText.getText() ) ) //$NON-NLS-1$
+        if ( isGssapiEnabled() && krb5ConfigFileButton.getSelection()
+            && Strings.isEmpty( krb5ConfigFileText.getText() ) ) //$NON-NLS-1$
         {
             message = Messages.getString( "AuthenticationParameterPage.PleaseEnterKrb5ConfigFile" ); //$NON-NLS-1$
         }
@@ -583,12 +603,12 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
             {
                 message = Messages.getString( "AuthenticationParameterPage.PleaseEnterKrb5Port" ); //$NON-NLS-1$
             }
-            
+
             if ( Strings.isEmpty( krb5ConfigManualHostText.getText() ) ) //$NON-NLS-1$
             {
                 message = Messages.getString( "AuthenticationParameterPage.PleaseEnterKrb5Host" ); //$NON-NLS-1$
             }
-            
+
             if ( Strings.isEmpty( krb5ConfigManualRealmText.getText() ) ) //$NON-NLS-1$
             {
                 message = Messages.getString( "AuthenticationParameterPage.PleaseEnterKrb5Realm" ); //$NON-NLS-1$
@@ -607,8 +627,9 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
         return ( getAuthenticationMethod() == AuthenticationMethod.SIMPLE )
             || ( getAuthenticationMethod() == AuthenticationMethod.SASL_DIGEST_MD5 )
             || ( getAuthenticationMethod() == AuthenticationMethod.SASL_CRAM_MD5 )
-            || ( getAuthenticationMethod() == AuthenticationMethod.SASL_GSSAPI && krb5CredentialConfigurationObtainTgtButton
-                .getSelection() );
+            || ( getAuthenticationMethod() == AuthenticationMethod.SASL_GSSAPI
+                && krb5CredentialConfigurationObtainTgtButton
+                    .getSelection() );
     }
 
 
@@ -621,7 +642,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
     private boolean isSaslEnabled()
     {
         AuthenticationMethod authenticationMethod = getAuthenticationMethod();
-    
+
         return ( authenticationMethod == AuthenticationMethod.SASL_DIGEST_MD5 )
             || ( authenticationMethod == AuthenticationMethod.SASL_CRAM_MD5 )
             || ( authenticationMethod == AuthenticationMethod.SASL_GSSAPI );
@@ -642,7 +663,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
     {
         connectionParameter = parameter;
         AuthenticationMethod authenticationMethod = parameter.getAuthMethod();
-        
+
         int index = authenticationMethod.getValue();
         authenticationMethodCombo.select( index );
         bindPrincipalCombo.setText( CommonUIUtils.getTextValue( parameter.getBindPrincipal() ) );
@@ -668,7 +689,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
         }
 
         bindPasswordText.setText( CommonUIUtils.getTextValue( bindPassword ) );
-        
+
         // The Save Bind Password Button
         saveBindPasswordButton.setSelection( bindPassword != null );
 
@@ -677,48 +698,48 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
 
         // The SASL QOP combo
         int qopIndex;
-        
+
         SaslQoP saslQop = parameter.getSaslQop();
-        
+
         switch ( saslQop )
         {
-            case AUTH_INT :
+            case AUTH_INT:
                 qopIndex = 1;
                 break;
-                
-            case AUTH_CONF :
+
+            case AUTH_CONF:
                 qopIndex = 2;
                 break;
-                
-            default :
+
+            default:
                 qopIndex = 0;
                 break;
         }
 
         saslQopCombo.select( qopIndex );
-        
+
         // The Security Strength
         int securityStrengthIndex;
-        
+
         SaslSecurityStrength securityStrength = parameter.getSaslSecurityStrength();
-        
-        switch ( securityStrength ) 
+
+        switch ( securityStrength )
         {
-            case MEDIUM :
+            case MEDIUM:
                 securityStrengthIndex = 1;
                 break;
-                
-            case LOW :
+
+            case LOW:
                 securityStrengthIndex = 2;
                 break;
-                
-            default :
+
+            default:
                 securityStrengthIndex = 0;
                 break;
         }
 
         saslSecurityStrengthCombo.select( securityStrengthIndex );
-        
+
         // The Mutual Authentication  Button
         saslMutualAuthenticationButton.setSelection( parameter.isSaslMutualAuthentication() );
 
@@ -746,39 +767,23 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
             /**
              * {@inheritDoc}
              */
+            @Override
             public void widgetSelected( SelectionEvent event )
             {
                 connectionPageModified();
             }
         } );
 
-        bindPrincipalCombo.addModifyListener( new ModifyListener()
-        {
-            /**
-             * {@inheritDoc}
-             */
-            public void modifyText( ModifyEvent event )
-            {
-                connectionPageModified();
-            }
-        } );
+        bindPrincipalCombo.addModifyListener( event -> connectionPageModified() );
 
-        bindPasswordText.addModifyListener( new ModifyListener()
-        {
-            /**
-             * {@inheritDoc}
-             */
-            public void modifyText( ModifyEvent event )
-            {
-                connectionPageModified();
-            }
-        } );
+        bindPasswordText.addModifyListener( event -> connectionPageModified() );
 
         saveBindPasswordButton.addSelectionListener( new SelectionAdapter()
         {
             /**
              * {@inheritDoc}
              */
+            @Override
             public void widgetSelected( SelectionEvent event )
             {
                 if ( !saveBindPasswordButton.getSelection() )
@@ -786,7 +791,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
                     // Reseting the previously saved password (if any)
                     bindPasswordText.setText( StringUtils.EMPTY ); //$NON-NLS-1$
                 }
-                
+
                 connectionPageModified();
             }
         } );
@@ -796,12 +801,13 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
             /**
              * {@inheritDoc}
              */
+            @Override
             public void widgetSelected( SelectionEvent event )
             {
                 Connection connection = getTestConnection();
                 CheckBindRunnable runnable = new CheckBindRunnable( connection );
                 IStatus status = RunnableContextRunner.execute( runnable, runnableContext, true );
-                
+
                 if ( status.isOK() )
                 {
                     MessageDialog.openInformation( Display.getDefault().getActiveShell(), Messages
@@ -811,22 +817,14 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
             }
         } );
 
-        saslRealmText.addModifyListener( new ModifyListener()
-        {
-            /**
-             * {@inheritDoc}
-             */
-            public void modifyText( ModifyEvent even )
-            {
-                connectionPageModified();
-            }
-        } );
+        saslRealmText.addModifyListener( event -> connectionPageModified() );
 
         saslQopCombo.addSelectionListener( new SelectionAdapter()
         {
             /**
              * {@inheritDoc}
              */
+            @Override
             public void widgetSelected( SelectionEvent event )
             {
                 connectionPageModified();
@@ -835,6 +833,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
 
         saslSecurityStrengthCombo.addSelectionListener( new SelectionAdapter()
         {
+            @Override
             public void widgetSelected( SelectionEvent event )
             {
                 connectionPageModified();
@@ -846,6 +845,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
             /**
              * {@inheritDoc}
              */
+            @Override
             public void widgetSelected( SelectionEvent event )
             {
                 connectionPageModified();
@@ -857,6 +857,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
             /**
              * {@inheritDoc}
              */
+            @Override
             public void widgetSelected( SelectionEvent event )
             {
                 connectionPageModified();
@@ -865,6 +866,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
 
         krb5CredentialConfigurationObtainTgtButton.addSelectionListener( new SelectionAdapter()
         {
+            @Override
             public void widgetSelected( SelectionEvent event )
             {
                 connectionPageModified();
@@ -876,6 +878,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
             /**
              * {@inheritDoc}
              */
+            @Override
             public void widgetSelected( SelectionEvent event )
             {
                 connectionPageModified();
@@ -887,80 +890,39 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
             /**
              * {@inheritDoc}
              */
+            @Override
             public void widgetSelected( SelectionEvent event )
             {
                 connectionPageModified();
             }
         } );
 
-        krb5ConfigFileText.addModifyListener( new ModifyListener()
-        {
-            /**
-             * {@inheritDoc}
-             */
-            public void modifyText( ModifyEvent event )
-            {
-                connectionPageModified();
-            }
-        } );
+        krb5ConfigFileText.addModifyListener( event -> connectionPageModified() );
 
         krb5ConfigManualButton.addSelectionListener( new SelectionAdapter()
         {
             /**
              * {@inheritDoc}
              */
+            @Override
             public void widgetSelected( SelectionEvent event )
             {
                 connectionPageModified();
             }
         } );
 
-        krb5ConfigManualRealmText.addModifyListener( new ModifyListener()
-        {
-            /**
-             * {@inheritDoc}
-             */
-            public void modifyText( ModifyEvent event )
+        krb5ConfigManualRealmText.addModifyListener( event -> connectionPageModified() );
+
+        krb5ConfigManualHostText.addModifyListener( event -> connectionPageModified() );
+
+        krb5ConfigManualPortText.addVerifyListener( event -> {
+            if ( !event.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
             {
-                connectionPageModified();
+                event.doit = false;
             }
         } );
 
-        krb5ConfigManualHostText.addModifyListener( new ModifyListener()
-        {
-            /**
-             * {@inheritDoc}
-             */
-            public void modifyText( ModifyEvent event )
-            {
-                connectionPageModified();
-            }
-        } );
-
-        krb5ConfigManualPortText.addVerifyListener( new VerifyListener()
-        {
-            /**
-             * {@inheritDoc}
-             */
-            public void verifyText( VerifyEvent event )
-            {
-                if ( !event.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
-                {
-                    event.doit = false;
-                }
-            }
-        } );
-
-        krb5ConfigManualPortText.addModifyListener( new ModifyListener()
-        {
-            /**
-             * {@inheritDoc}
-             */
-            public void modifyText( ModifyEvent event )
-            {
-                connectionPageModified();
-            }
-        } );
+        krb5ConfigManualPortText.addModifyListener( event -> connectionPageModified() );
     }
 
 
@@ -1014,7 +976,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
 
         HistoryUtils.save( dialogSettings, ConnectionUIConstants.DIALOGSETTING_KEY_PRINCIPAL_HISTORY,
             bindPrincipalCombo.getText() );
-        
+
         if ( getAuthenticationMethod().equals( AuthenticationMethod.SASL_DIGEST_MD5 ) )
         {
             HistoryUtils.save( dialogSettings, ConnectionUIConstants.DIALOGSETTING_KEY_REALM_HISTORY,
@@ -1069,34 +1031,38 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
     {
         switch ( parameter.getAuthMethod() )
         {
+            case SASL_PLAIN :
+                ldapUrl.getExtensions().add( new Extension( false, X_AUTH_METHOD, X_AUTH_METHOD_PLAIN ) );
+                break;
+                
             case SASL_CRAM_MD5:
                 ldapUrl.getExtensions().add( new Extension( false, X_AUTH_METHOD, X_AUTH_METHOD_CRAM_MD5 ) );
                 break;
-                
+
             case SASL_DIGEST_MD5:
                 ldapUrl.getExtensions().add( new Extension( false, X_AUTH_METHOD, X_AUTH_METHOD_DIGEST_MD5 ) );
                 break;
-                
+
             case SASL_GSSAPI:
                 ldapUrl.getExtensions().add( new Extension( false, X_AUTH_METHOD, X_AUTH_METHOD_GSSAPI ) );
                 break;
-                
+
             case SIMPLE:
                 if ( StringUtils.isEmpty( parameter.getBindPrincipal() ) )
                 {
                     // default if bind user is present
                     ldapUrl.getExtensions().add( new Extension( false, X_AUTH_METHOD, X_AUTH_METHOD_SIMPLE ) );
                 }
-                
+
                 break;
-                
+
             case NONE:
                 if ( StringUtils.isNotEmpty( parameter.getBindPrincipal() ) )
                 {
                     // default if bind user is absent
                     ldapUrl.getExtensions().add( new Extension( false, X_AUTH_METHOD, X_AUTH_METHOD_ANONYMOUS ) );
                 }
-                
+
                 break;
         }
 
@@ -1112,6 +1078,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
 
         switch ( parameter.getAuthMethod() )
         {
+            case SASL_PLAIN:
             case SASL_CRAM_MD5:
             case SASL_DIGEST_MD5:
             case SASL_GSSAPI:
@@ -1125,11 +1092,11 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
                     case AUTH:
                         // default
                         break;
-                        
+
                     case AUTH_INT:
                         ldapUrl.getExtensions().add( new Extension( false, X_SASL_QOP, X_SASL_QOP_AUTH_INT ) );
                         break;
-                        
+
                     case AUTH_CONF:
                         ldapUrl.getExtensions().add( new Extension( false, X_SASL_QOP, X_SASL_QOP_AUTH_INT_PRIV ) );
                         break;
@@ -1140,12 +1107,12 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
                     case HIGH:
                         // default
                         break;
-                        
+
                     case MEDIUM:
                         ldapUrl.getExtensions().add(
                             new Extension( false, X_SASL_SEC_STRENGTH, X_SASL_SEC_STRENGTH_MEDIUM ) );
                         break;
-                        
+
                     case LOW:
                         ldapUrl.getExtensions().add(
                             new Extension( false, X_SASL_SEC_STRENGTH, X_SASL_SEC_STRENGTH_LOW ) );
@@ -1156,45 +1123,50 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
                 {
                     ldapUrl.getExtensions().add( new Extension( false, X_SASL_NO_MUTUAL_AUTH, null ) );
                 }
+
+                break;
+
+            default:
+                break;
         }
 
-        switch ( parameter.getAuthMethod() )
+        if ( parameter.getAuthMethod() == AuthenticationMethod.SASL_GSSAPI )
         {
-            case SASL_GSSAPI:
-                switch ( parameter.getKrb5CredentialConfiguration() )
-                {
-                    case USE_NATIVE:
-                        // default
-                        break;
-                        
-                    case OBTAIN_TGT:
-                        ldapUrl.getExtensions().add(
-                            new Extension( false, X_KRB5_CREDENTIALS_CONF, X_KRB5_CREDENTIALS_CONF_OBTAIN_TGT ) );
-                        break;
-                }
+            switch ( parameter.getKrb5CredentialConfiguration() )
+            {
+                case USE_NATIVE:
+                    // default
+                    break;
 
-                switch ( parameter.getKrb5Configuration() )
-                {
-                    case DEFAULT:
-                        // default
-                        break;
-                        
-                    case FILE:
-                        ldapUrl.getExtensions().add( new Extension( false, X_KRB5_CONFIG, X_KRB5_CONFIG_FILE ) );
-                        ldapUrl.getExtensions().add(
-                            new Extension( false, X_KRB5_CONFIG_FILE_FILE, parameter.getKrb5ConfigurationFile() ) );
-                        break;
-                        
-                    case MANUAL:
-                        ldapUrl.getExtensions().add( new Extension( false, X_KRB5_CONFIG, X_KRB5_CONFIG_MANUAL ) );
-                        ldapUrl.getExtensions().add(
-                            new Extension( false, X_KRB5_CONFIG_MANUAL_REALM, parameter.getKrb5Realm() ) );
-                        ldapUrl.getExtensions().add(
-                            new Extension( false, X_KRB5_CONFIG_MANUAL_KDC_HOST, parameter.getKrb5KdcHost() ) );
-                        ldapUrl.getExtensions().add(
-                            new Extension( false, X_KRB5_CONFIG_MANUAL_KDC_PORT, Integer.toString( parameter.getKrb5KdcPort() ) ) ); //$NON-NLS-1$
-                        break;
-                }
+                case OBTAIN_TGT:
+                    ldapUrl.getExtensions().add(
+                        new Extension( false, X_KRB5_CREDENTIALS_CONF, X_KRB5_CREDENTIALS_CONF_OBTAIN_TGT ) );
+                    break;
+            }
+
+            switch ( parameter.getKrb5Configuration() )
+            {
+                case DEFAULT:
+                    // default
+                    break;
+
+                case FILE:
+                    ldapUrl.getExtensions().add( new Extension( false, X_KRB5_CONFIG, X_KRB5_CONFIG_FILE ) );
+                    ldapUrl.getExtensions().add(
+                        new Extension( false, X_KRB5_CONFIG_FILE_FILE, parameter.getKrb5ConfigurationFile() ) );
+                    break;
+
+                case MANUAL:
+                    ldapUrl.getExtensions().add( new Extension( false, X_KRB5_CONFIG, X_KRB5_CONFIG_MANUAL ) );
+                    ldapUrl.getExtensions().add(
+                        new Extension( false, X_KRB5_CONFIG_MANUAL_REALM, parameter.getKrb5Realm() ) );
+                    ldapUrl.getExtensions().add(
+                        new Extension( false, X_KRB5_CONFIG_MANUAL_KDC_HOST, parameter.getKrb5KdcHost() ) );
+                    ldapUrl.getExtensions().add(
+                        new Extension( false, X_KRB5_CONFIG_MANUAL_KDC_PORT,
+                            Integer.toString( parameter.getKrb5KdcPort() ) ) ); //$NON-NLS-1$
+                    break;
+            }
         }
     }
 
@@ -1206,12 +1178,12 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
     {
         // bind user and password, none if empty or absent
         String principal = ldapUrl.getExtensionValue( X_BIND_USER );
-        
+
         if ( principal == null )
         {
             principal = StringUtils.EMPTY;
         }
-        
+
         parameter.setBindPrincipal( principal );
 
         String password = ldapUrl.getExtensionValue( X_BIND_PASSWORD );
@@ -1219,7 +1191,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
 
         // auth method, simple if unknown or absent and X-BIND-USER is present, else anonymous 
         String authMethod = ldapUrl.getExtensionValue( X_AUTH_METHOD );
-        
+
         if ( StringUtils.isNotEmpty( authMethod ) && X_AUTH_METHOD_ANONYMOUS.equalsIgnoreCase( authMethod ) )
         {
             parameter.setAuthMethod( ConnectionParameter.AuthenticationMethod.NONE );
@@ -1247,7 +1219,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
 
         // SASL realm, none if empty or absent 
         String saslRealm = ldapUrl.getExtensionValue( X_SASL_REALM );
-        
+
         if ( StringUtils.isNotEmpty( saslRealm ) )
         {
             parameter.setSaslRealm( saslRealm );
@@ -1255,7 +1227,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
 
         // SASL QOP, default to AUTH
         String saslQop = ldapUrl.getExtensionValue( X_SASL_QOP );
-        
+
         if ( StringUtils.isNotEmpty( saslQop ) && X_SASL_QOP_AUTH_INT.equalsIgnoreCase( saslQop ) )
         {
             parameter.setSaslQop( SaslQoP.AUTH_INT );
@@ -1271,8 +1243,9 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
 
         // SASL security strength, default to HIGH
         String saslSecStrength = ldapUrl.getExtensionValue( X_SASL_SEC_STRENGTH );
-        
-        if ( StringUtils.isNotEmpty( saslSecStrength ) && X_SASL_SEC_STRENGTH_MEDIUM.equalsIgnoreCase( saslSecStrength ) )
+
+        if ( StringUtils.isNotEmpty( saslSecStrength )
+            && X_SASL_SEC_STRENGTH_MEDIUM.equalsIgnoreCase( saslSecStrength ) )
         {
             parameter.setSaslSecurityStrength( SaslSecurityStrength.MEDIUM );
         }
@@ -1292,7 +1265,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
 
         // KRB5 credentials
         String krb5CredentialsConf = ldapUrl.getExtensionValue( X_KRB5_CREDENTIALS_CONF );
-       
+
         if ( StringUtils.isNotEmpty( krb5CredentialsConf )
             && X_KRB5_CREDENTIALS_CONF_OBTAIN_TGT.equalsIgnoreCase( krb5CredentialsConf ) )
         {
@@ -1305,7 +1278,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
 
         // KRB5 configuration
         String krb5Config = ldapUrl.getExtensionValue( X_KRB5_CONFIG );
-        
+
         if ( StringUtils.isNotEmpty( krb5Config ) && X_KRB5_CONFIG_FILE.equalsIgnoreCase( krb5Config ) )
         {
             parameter.setKrb5Configuration( Krb5Configuration.FILE );
@@ -1324,7 +1297,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
         parameter.setKrb5KdcHost( ldapUrl.getExtensionValue( X_KRB5_CONFIG_MANUAL_KDC_HOST ) );
 
         String kdcPort = ldapUrl.getExtensionValue( X_KRB5_CONFIG_MANUAL_KDC_PORT );
-        
+
         try
         {
             parameter.setKrb5KdcPort( Integer.valueOf( kdcPort ) );

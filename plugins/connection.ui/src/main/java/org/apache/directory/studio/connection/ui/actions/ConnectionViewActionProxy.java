@@ -44,5 +44,4 @@ public class ConnectionViewActionProxy extends StudioActionProxy
     {
         super( viewer, actionHandlerManager, action );
     }
-
 }

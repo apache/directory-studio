@@ -28,8 +28,6 @@ import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -116,6 +114,7 @@ public class ResetPasswordDialog extends Dialog
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
@@ -127,6 +126,7 @@ public class ResetPasswordDialog extends Dialog
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void createButtonsForButtonBar( Composite parent )
     {
         okButton = createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true );
@@ -139,6 +139,7 @@ public class ResetPasswordDialog extends Dialog
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void buttonPressed( int buttonId )
     {
         if ( buttonId == IDialogConstants.OK_ID )
@@ -159,6 +160,7 @@ public class ResetPasswordDialog extends Dialog
     /**
      * {@inheritDoc}
      */
+    @Override
     protected Control createDialogArea( Composite parent )
     {
         // Composite
@@ -192,16 +194,7 @@ public class ResetPasswordDialog extends Dialog
             Messages.getString( "ResetPasswordDialog.CurrentPasswordColon" ), 1 ); //$NON-NLS-1$
         currentPasswordText = BaseWidgetUtils.createText( currentPasswordGroup, StringUtils.EMPTY, 1 ); //$NON-NLS-1$
         currentPasswordText.setEchoChar( '\u2022' );
-        currentPasswordText.addModifyListener( new ModifyListener()
-        {
-            /**
-             * {@inheritDoc}
-             */
-            public void modifyText( ModifyEvent event )
-            {
-                validate();
-            }
-        } );
+        currentPasswordText.addModifyListener( event -> validate() );
 
         // Show Current Password Checkbox
         BaseWidgetUtils.createLabel( currentPasswordGroup, StringUtils.EMPTY, 1 ); //$NON-NLS-1$
@@ -212,6 +205,7 @@ public class ResetPasswordDialog extends Dialog
             /**
              * {@inheritDoc}
              */
+            @Override
             public void widgetSelected( SelectionEvent event )
             {
                 if ( showCurrentPasswordCheckbox.getSelection() )
@@ -234,16 +228,7 @@ public class ResetPasswordDialog extends Dialog
         BaseWidgetUtils.createLabel( newPasswordGroup, Messages.getString( "ResetPasswordDialog.NewPasswordColon" ), 1 ); //$NON-NLS-1$
         newPasswordText = BaseWidgetUtils.createText( newPasswordGroup, StringUtils.EMPTY, 1 ); //$NON-NLS-1$
         newPasswordText.setEchoChar( '\u2022' );
-        newPasswordText.addModifyListener( new ModifyListener()
-        {
-            /**
-             * {@inheritDoc}
-             */
-            public void modifyText( ModifyEvent event )
-            {
-                validate();
-            }
-        } );
+        newPasswordText.addModifyListener( event -> validate() );
 
         // Show New Password Checkbox
         BaseWidgetUtils.createLabel( newPasswordGroup, StringUtils.EMPTY, 1 ); //$NON-NLS-1$
@@ -254,6 +239,7 @@ public class ResetPasswordDialog extends Dialog
             /**
              * {@inheritDoc}
              */
+            @Override
             public void widgetSelected( SelectionEvent event )
             {
                 if ( showNewPasswordCheckbox.getSelection() )
@@ -272,16 +258,7 @@ public class ResetPasswordDialog extends Dialog
             Messages.getString( "ResetPasswordDialog.VerifyNewPasswordColon" ), 1 ); //$NON-NLS-1$
         verifyNewPasswordText = BaseWidgetUtils.createText( newPasswordGroup, StringUtils.EMPTY, 1 ); //$NON-NLS-1$
         verifyNewPasswordText.setEchoChar( '\u2022' );
-        verifyNewPasswordText.addModifyListener( new ModifyListener()
-        {
-            /**
-             * {@inheritDoc}
-             */
-            public void modifyText( ModifyEvent event )
-            {
-                validate();
-            }
-        } );
+        verifyNewPasswordText.addModifyListener( event -> validate() );
 
         // Show Verify New Password Checkbox
         BaseWidgetUtils.createLabel( newPasswordGroup, StringUtils.EMPTY, 1 ); //$NON-NLS-1$
@@ -292,6 +269,7 @@ public class ResetPasswordDialog extends Dialog
             /**
              * {@inheritDoc}
              */
+            @Override
             public void widgetSelected( SelectionEvent event )
             {
                 if ( showVerifyNewPasswordCheckbox.getSelection() )
@@ -340,11 +318,11 @@ public class ResetPasswordDialog extends Dialog
      */
     private void validate()
     {
-        String currentPassword = currentPasswordText.getText();
-        String newPassword = newPasswordText.getText();
-        String verifyNewPassword = verifyNewPasswordText.getText();
+        String currentPwd = currentPasswordText.getText();
+        String newPwd = newPasswordText.getText();
+        String verifyNewPwd = verifyNewPasswordText.getText();
 
-        okButton.setEnabled( !Strings.isEmpty( currentPassword ) && !Strings.isEmpty( newPassword ) && 
-                newPassword.equals( verifyNewPassword ) && !currentPassword.equals( newPassword ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        okButton.setEnabled( !Strings.isEmpty( currentPwd ) && !Strings.isEmpty( newPwd ) && 
+                newPwd.equals( verifyNewPwd ) && !currentPwd.equals( newPwd ) ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 }

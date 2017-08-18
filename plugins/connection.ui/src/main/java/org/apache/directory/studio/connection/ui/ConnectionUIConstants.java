@@ -111,6 +111,7 @@ public final class ConnectionUIConstants
     public static final String NEW_WIZARD_NEW_CONNECTION = ConnectionUIPlugin.getDefault().getPluginProperties()
         .getString( "NewWizards_NewConnectionWizard_id" ); //$NON-NLS-1$
 
+
     /**
      *  Ensures no construction of this class, also ensures there is no need for final keyword above
      *  (Implicit super constructor is not visible for default constructor),

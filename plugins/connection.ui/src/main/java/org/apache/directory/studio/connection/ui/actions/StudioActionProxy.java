@@ -213,7 +213,6 @@ public abstract class StudioActionProxy extends Action implements ISelectionChan
         {
             action.setInput( input );
             selectionChanged( new SelectionChangedEvent( this.selectionProvider, new StructuredSelection() ) );
-            // updateAction();
         }
     }
 
@@ -252,6 +251,7 @@ public abstract class StudioActionProxy extends Action implements ISelectionChan
     /**
      * @see org.eclipse.jface.action.Action#run()
      */
+    @Override
     public void run()
     {
         if ( !isDisposed() )

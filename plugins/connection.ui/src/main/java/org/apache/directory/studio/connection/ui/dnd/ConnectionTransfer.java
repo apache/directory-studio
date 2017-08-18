@@ -87,6 +87,7 @@ public final class ConnectionTransfer extends ByteArrayTransfer
      * It just converts the id of the connection or connection folder to the platform 
      * specific representation.
      */
+    @Override
     public void javaToNative( Object object, TransferData transferData )
     {
         if ( !( object instanceof Object[] ) )
@@ -98,31 +99,29 @@ public final class ConnectionTransfer extends ByteArrayTransfer
         {
             Object[] objects = ( Object[] ) object;
             
-            try
+            try ( ByteArrayOutputStream out = new ByteArrayOutputStream() )
             {
-                ByteArrayOutputStream out = new ByteArrayOutputStream();
-                DataOutputStream writeOut = new DataOutputStream( out );
-
-                for ( int i = 0; i < objects.length; i++ )
+                try ( DataOutputStream writeOut = new DataOutputStream( out ) )
                 {
-                    if ( objects[i] instanceof Connection )
+                    for ( int i = 0; i < objects.length; i++ )
                     {
-                        byte[] idBytes = ( ( Connection ) objects[i] ).getConnectionParameter().getId().getBytes();
-                        writeOut.writeInt( idBytes.length );
-                        writeOut.write( idBytes );
+                        if ( objects[i] instanceof Connection )
+                        {
+                            byte[] idBytes = ( ( Connection ) objects[i] ).getConnectionParameter().getId().getBytes();
+                            writeOut.writeInt( idBytes.length );
+                            writeOut.write( idBytes );
+                        }
+                        else if ( objects[i] instanceof ConnectionFolder )
+                        {
+                            byte[] idBytes = ( ( ConnectionFolder ) objects[i] ).getId().getBytes();
+                            writeOut.writeInt( idBytes.length );
+                            writeOut.write( idBytes );
+                        }
                     }
-                    else if ( objects[i] instanceof ConnectionFolder )
-                    {
-                        byte[] idBytes = ( ( ConnectionFolder ) objects[i] ).getId().getBytes();
-                        writeOut.writeInt( idBytes.length );
-                        writeOut.write( idBytes );
-                    }
+        
+                    byte[] buffer = out.toByteArray();
+                    super.javaToNative( buffer, transferData );
                 }
-
-                byte[] buffer = out.toByteArray();
-                writeOut.close();
-
-                super.javaToNative( buffer, transferData );
             }
             catch ( IOException e )
             {
@@ -140,6 +139,7 @@ public final class ConnectionTransfer extends ByteArrayTransfer
      * {@link Connection} object or {@link ConnectionFolderManager#getConnectionFolderById(String)}
      * to get the {@link ConnectionFolder} object.
      */
+    @Override
     public Object nativeToJava( TransferData transferData )
     {
         if ( isSupportedType( transferData ) )
@@ -151,42 +151,46 @@ public final class ConnectionTransfer extends ByteArrayTransfer
                 return null;
             }
 
-            List<Object> objectList = new ArrayList<Object>();
+            List<Object> objectList = new ArrayList<>();
             
-            try
+            try ( ByteArrayInputStream in = new ByteArrayInputStream( buffer ) )
             {
-                ByteArrayInputStream in = new ByteArrayInputStream( buffer );
-                DataInputStream readIn = new DataInputStream( in );
-
-                do
+                try ( DataInputStream readIn = new DataInputStream( in ) )
                 {
-                    if ( readIn.available() > 1 )
+                    do
                     {
-                        int size = readIn.readInt();
-                        byte[] idBytes = new byte[size];
-                        readIn.read( idBytes );
-                        Connection connection = ConnectionCorePlugin.getDefault().getConnectionManager()
-                            .getConnectionById( new String( idBytes ) );
-                        
-                        if ( connection == null )
+                        if ( readIn.available() > 1 )
                         {
-                            ConnectionFolder folder = ConnectionCorePlugin.getDefault().getConnectionFolderManager()
-                                .getConnectionFolderById( new String( idBytes ) );
+                            int size = readIn.readInt();
+                            byte[] idBytes = new byte[size];
                             
-                            if ( folder != null )
+                            if ( readIn.read( idBytes ) != size )
                             {
-                                objectList.add( folder );
+                                // We werev'nt able to read the full data : there is something wrong...
+                                return null;
+                            }
+                            
+                            Connection connection = ConnectionCorePlugin.getDefault().getConnectionManager()
+                                .getConnectionById( new String( idBytes ) );
+                            
+                            if ( connection == null )
+                            {
+                                ConnectionFolder folder = ConnectionCorePlugin.getDefault().getConnectionFolderManager()
+                                    .getConnectionFolderById( new String( idBytes ) );
+                                
+                                if ( folder != null )
+                                {
+                                    objectList.add( folder );
+                                }
+                            }
+                            else
+                            {
+                                objectList.add( connection );
                             }
                         }
-                        else
-                        {
-                            objectList.add( connection );
-                        }
                     }
+                    while ( readIn.available() > 1 );
                 }
-                while ( readIn.available() > 1 );
-
-                readIn.close();
             }
             catch ( IOException ex )
             {

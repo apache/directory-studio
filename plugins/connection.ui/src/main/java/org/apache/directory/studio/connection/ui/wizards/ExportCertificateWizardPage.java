@@ -36,8 +36,6 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -102,16 +100,7 @@ public class ExportCertificateWizardPage extends WizardPage
         // Creating the file's text widget
         fileText = BaseWidgetUtils.createText( fileComposite, StringUtils.EMPTY, 1 ); //$NON-NLS-1$
         fileText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
-        fileText.addModifyListener( new ModifyListener()
-        {
-            /**
-             * {@InheritDoc}
-             */
-            public void modifyText( ModifyEvent event )
-            {
-                validate();
-            }
-        } );
+        fileText.addModifyListener( event -> validate() );
 
         // Creating the file's 'Browse' button widget
         Button browseButton = BaseWidgetUtils.createButton( fileComposite,
@@ -121,6 +110,7 @@ public class ExportCertificateWizardPage extends WizardPage
             /**
              * {@inheritDoc}
              */
+            @Override
             public void widgetSelected( SelectionEvent event )
             {
                 chooseExportFile();
@@ -136,6 +126,7 @@ public class ExportCertificateWizardPage extends WizardPage
             /**
              * {@InheritDoc}
              */
+            @Override
             public void widgetSelected( SelectionEvent event )
             {
                 validate();
@@ -155,6 +146,7 @@ public class ExportCertificateWizardPage extends WizardPage
             /**
              * {@InheritDoc}
              */
+            @Override
             public String getText( Object element )
             {
                 if ( element instanceof CertificateExportFormat )

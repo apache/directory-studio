@@ -86,24 +86,25 @@ public class PropertiesAction extends StudioAction
 
         if ( getSelectedConnections().length == 1 )
         {
-            element = ( IAdaptable ) getSelectedConnections()[0];
-            pageId = ConnectionUIPlugin.getDefault().getPluginProperties().getString( "Prop_ConnectionPropertyPage_id" ); //$NON-NLS-1$
+            element = getSelectedConnections()[0];
+            pageId = ConnectionUIPlugin.getDefault().getPluginProperties()
+                .getString( "Prop_ConnectionPropertyPage_id" ); //$NON-NLS-1$
             title = getSelectedConnections()[0].getName();
         }
 
         if ( element != null )
         {
             PreferenceDialog dialog = PreferencesUtil.createPropertyDialogOn( getShell(), element, pageId, null, null );
-            
+
             if ( dialog != null )
             {
                 title = Utils.shorten( title, 30 );
             }
-            
-            dialog.getShell().setText(
-                NLS.bind( Messages.getString( "PropertiesAction.PropertiesFor" ), new String[] { title } ) ); //$NON-NLS-1$
-            dialog.open();
 
+            dialog.getShell().setText(
+                NLS.bind( Messages.getString( "PropertiesAction.PropertiesFor" ), new String[] //$NON-NLS-1$
+                { title } ) );
+            dialog.open();
         }
     }
 }

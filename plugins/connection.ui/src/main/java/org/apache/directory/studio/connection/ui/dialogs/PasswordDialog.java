@@ -43,6 +43,17 @@ import org.eclipse.swt.widgets.Text;
  * The PasswordDialog is used to ask the user for password (credentials).
  * <p>
  * It has a useful checkbox that can show/hide the typed password.
+ * <pre>
+ * .--------------------------------------------------.
+ * |            Enter password for "xxxxx"            |
+ * +--------------------------------------------------+
+ * | Please enter password of user "yyyyyyyyyyyyy"    |
+ * | [----------------------------------------------] |
+ * | [ ] Show password                                |
+ * |                                                  |
+ * |                                (Cancel) (  OK  ) |
+ * .__________________________________________________.
+ * </pre>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -93,6 +104,7 @@ public class PasswordDialog extends Dialog
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
@@ -104,6 +116,7 @@ public class PasswordDialog extends Dialog
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void buttonPressed( int buttonId )
     {
         if ( buttonId == IDialogConstants.OK_ID )
@@ -127,6 +140,7 @@ public class PasswordDialog extends Dialog
         /**
          * {@inheritDoc}
          */
+        @Override
         public void widgetSelected( SelectionEvent event )
         {
             if ( showPasswordCheckbox.getSelection() )
@@ -143,6 +157,7 @@ public class PasswordDialog extends Dialog
     /**
      * {@inheritDoc}
      */
+    @Override
     protected Control createDialogArea( Composite parent )
     {
         // Composite

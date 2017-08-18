@@ -44,8 +44,8 @@ public final class PasswordsKeyStoreManagerUtils
     private PasswordsKeyStoreManagerUtils()
     {
     }
-    
-    
+
+
     /**
      * Checks if the passwords keystore is enabled.
      *
@@ -55,7 +55,8 @@ public final class PasswordsKeyStoreManagerUtils
     public static boolean isPasswordsKeystoreEnabled()
     {
         return ConnectionCorePlugin.getDefault().getPluginPreferences()
-            .getInt( ConnectionCoreConstants.PREFERENCE_CONNECTIONS_PASSWORDS_KEYSTORE ) == ConnectionCoreConstants.PREFERENCE_CONNECTIONS_PASSWORDS_KEYSTORE_ON;
+            .getInt(
+                ConnectionCoreConstants.PREFERENCE_CONNECTIONS_PASSWORDS_KEYSTORE ) == ConnectionCoreConstants.PREFERENCE_CONNECTIONS_PASSWORDS_KEYSTORE_ON;
     }
 
 
@@ -67,79 +68,77 @@ public final class PasswordsKeyStoreManagerUtils
      */
     public static boolean askUserToLoadKeystore()
     {
-        final boolean keystoreLoaded[] = new boolean[1];
+        final boolean[] keystoreLoaded = new boolean[1];
         keystoreLoaded[0] = false;
 
-        PlatformUI.getWorkbench().getDisplay().syncExec( new Runnable()
+        PlatformUI.getWorkbench().getDisplay().syncExec( () ->
         {
-            /**
-             * {@inheritDoc}
-             */
-            public void run()
+            while ( true )
             {
-                while ( true )
+                // Getting the shell
+                Shell shell = PlatformUI.getWorkbench().getDisplay().getActiveShell();
+
+                // We ask the user for the keystore password
+                PasswordDialog passwordDialog = new PasswordDialog( shell, Messages
+                    .getString( "PasswordsKeyStoreManagerUtils.VerifyMasterPassword" ), //$NON-NLS-1$
+                    Messages.getString( "PasswordsKeyStoreManagerUtils.PleaseEnterMasterPassword" ), null ); //$NON-NLS-1$
+
+                if ( passwordDialog.open() == PasswordDialog.CANCEL )
                 {
-                    // Getting the shell
-                    Shell shell = PlatformUI.getWorkbench().getDisplay().getActiveShell();
+                    // The user cancelled the action
+                    keystoreLoaded[0] = false;
+                    return;
+                }
 
-                    // We ask the user for the keystore password
-                    PasswordDialog passwordDialog = new PasswordDialog( shell, Messages
-                        .getString( "PasswordsKeyStoreManagerUtils.VerifyMasterPassword" ), //$NON-NLS-1$
-                        Messages.getString( "PasswordsKeyStoreManagerUtils.PleaseEnterMasterPassword" ), null ); //$NON-NLS-1$
+                // Getting the password
+                String masterPassword = passwordDialog.getPassword();
 
-                    if ( passwordDialog.open() == PasswordDialog.CANCEL )
+                // Checking the password
+                Exception checkPasswordException = null;
+                try
+                {
+                    if ( ConnectionCorePlugin.getDefault().getPasswordsKeyStoreManager()
+                        .checkMasterPassword( masterPassword ) )
                     {
-                        // The user cancelled the action
-                        keystoreLoaded[0] = false;
-                        return;
+                        keystoreLoaded[0] = true;
+                        break;
                     }
+                }
+                catch ( KeyStoreException e )
+                {
+                    checkPasswordException = e;
+                }
 
-                    // Getting the password
-                    String masterPassword = passwordDialog.getPassword();
+                // Creating the message
+                String message = null;
 
-                    // Checking the password
-                    Exception checkPasswordException = null;
-                    try
+                if ( checkPasswordException == null )
+                {
+                    message = Messages
+                        .getString( "PasswordsKeyStoreManagerUtils.MasterPasswordVerificationFailed" ); //$NON-NLS-1$
+                }
+                else
+                {
+                    message = Messages
+                        .getString( "PasswordsKeyStoreManagerUtils.MasterPasswordVerificationFailedWithException" ) //$NON-NLS-1$
+                        + checkPasswordException.getMessage();
+                }
+
+                // We ask the user if he wants to retry to unlock the passwords keystore
+                MessageDialog errorDialog = new MessageDialog(
+                    shell,
+                    Messages.getString( "PasswordsKeyStoreManagerUtils.VerifyMasterPasswordFailed" ), null, message, //$NON-NLS-1$
+                    MessageDialog.ERROR, new String[]
                     {
-                        if ( ConnectionCorePlugin.getDefault().getPasswordsKeyStoreManager()
-                            .checkMasterPassword( masterPassword ) )
-                        {
-                            keystoreLoaded[0] = true;
-                            break;
-                        }
-                    }
-                    catch ( KeyStoreException e )
-                    {
-                        checkPasswordException = e;
-                    }
+                        IDialogConstants.RETRY_LABEL,
+                        IDialogConstants.CANCEL_LABEL },
+                    0 );
 
-                    // Creating the message
-                    String message = null;
-
-                    if ( checkPasswordException == null )
-                    {
-                        message = Messages.getString( "PasswordsKeyStoreManagerUtils.MasterPasswordVerificationFailed" ); //$NON-NLS-1$
-                    }
-                    else
-                    {
-                        message = Messages
-                            .getString( "PasswordsKeyStoreManagerUtils.MasterPasswordVerificationFailedWithException" ) //$NON-NLS-1$
-                            + checkPasswordException.getMessage();
-                    }
-
-                    // We ask the user if he wants to retry to unlock the passwords keystore
-                    MessageDialog errorDialog = new MessageDialog(
-                        shell,
-                        Messages.getString( "PasswordsKeyStoreManagerUtils.VerifyMasterPasswordFailed" ), null, message, MessageDialog.ERROR, new String[] //$NON-NLS-1$
-                            { IDialogConstants.RETRY_LABEL,
-                                IDialogConstants.CANCEL_LABEL }, 0 );
-
-                    if ( errorDialog.open() == MessageDialog.CANCEL )
-                    {
-                        // The user cancelled the action
-                        keystoreLoaded[0] = false;
-                        return;
-                    }
+                if ( errorDialog.open() == MessageDialog.CANCEL )
+                {
+                    // The user cancelled the action
+                    keystoreLoaded[0] = false;
+                    return;
                 }
             }
         } );

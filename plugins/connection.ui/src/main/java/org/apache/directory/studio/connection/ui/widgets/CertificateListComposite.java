@@ -37,14 +37,12 @@ import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.apache.directory.studio.connection.ui.dialogs.CertificateInfoDialog;
 import org.apache.directory.studio.connection.ui.wizards.ExportCertificateWizard;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
@@ -81,59 +79,41 @@ public class CertificateListComposite extends Composite
 {
     /** The KeyStore wrapper */
     private StudioKeyStoreManager keyStoreManager;
-    
+
     /** The table containing the KeyStore elements */
     private TableViewer tableViewer;
-    
+
     /** The View action button */
     private Button viewButton;
 
     /** The Add action button */
     private Button addButton;
-    
+
     /** The Remove action button */
     private Button removeButton;
-    
+
     /** The Export action button */
     private Button exportButton;
 
     /**
      * The listener called when the table selection has changed
      */
-    private ISelectionChangedListener tableViewerSelectionListener = new ISelectionChangedListener()
-    {
-        /**
-         * {@inheritDoc}
-         */
-        public void selectionChanged( SelectionChangedEvent event )
-        {
-            // Enable and disable the button accordingly to the selection :
-            // - 1 line selected : enable remove, view and export
-            // - N lines selected : enable remove, disable view and export
-            // - nothing selected, disable view, remove and exprt
-            viewButton.setEnabled( ( ( IStructuredSelection ) event.getSelection() ).size() == 1 );
-            removeButton.setEnabled( !event.getSelection().isEmpty() );
-            exportButton.setEnabled( ( ( IStructuredSelection ) event.getSelection() ).size() == 1 );
-        }
+    private ISelectionChangedListener tableViewerSelectionListener = event -> {
+        // Enable and disable the button accordingly to the selection :
+        // - 1 line selected : enable remove, view and export
+        // - N lines selected : enable remove, disable view and export
+        // - nothing selected, disable view, remove and exprt
+        viewButton.setEnabled( ( ( IStructuredSelection ) event.getSelection() ).size() == 1 );
+        removeButton.setEnabled( !event.getSelection().isEmpty() );
+        exportButton.setEnabled( ( ( IStructuredSelection ) event.getSelection() ).size() == 1 );
     };
-    
-    
+
     /**
      * The listener called when a line is double-clicked in the table : we will
      * open the Certificate dialog.
      */
-    private IDoubleClickListener tableViewerDoubleClickListener = new IDoubleClickListener()
-    {
-        /**
-         * {@inheritDoc}
-         */
-        public void doubleClick( DoubleClickEvent event )
-        {
-            openCertificate( event.getSelection() );
-        }
-    };
-    
-    
+    private IDoubleClickListener tableViewerDoubleClickListener = event -> openCertificate( event.getSelection() );
+
     /**
      * A selection listener on the View button : we will open the Certificate Dialog
      */
@@ -142,13 +122,13 @@ public class CertificateListComposite extends Composite
         /**
          * {@inheritDoc}
          */
+        @Override
         public void widgetSelected( SelectionEvent event )
         {
             openCertificate( tableViewer.getSelection() );
         }
     };
-    
-    
+
     /**
      * A selection listener on the Add button : we will open the File Dialog
      * and let the user select the KeyStore location to add in the table
@@ -158,6 +138,7 @@ public class CertificateListComposite extends Composite
         /**
          * {@inheritDoc}
          */
+        @Override
         public void widgetSelected( SelectionEvent event )
         {
             // Asking the user for the certificate file
@@ -190,8 +171,7 @@ public class CertificateListComposite extends Composite
             }
         }
     };
-    
-    
+
     /**
      * A selection listener on the Remove button.
      */
@@ -200,15 +180,16 @@ public class CertificateListComposite extends Composite
         /**
          * {@inheritDoc}
          */
+        @Override
         public void widgetSelected( SelectionEvent event )
         {
             IStructuredSelection selection = ( IStructuredSelection ) tableViewer.getSelection();
             Iterator<?> iterator = selection.iterator();
-            
+
             while ( iterator.hasNext() )
             {
                 X509Certificate certificate = ( X509Certificate ) iterator.next();
-                
+
                 try
                 {
                     keyStoreManager.removeCertificate( certificate );
@@ -218,12 +199,11 @@ public class CertificateListComposite extends Composite
                     throw new RuntimeException( ce );
                 }
             }
-            
+
             tableViewer.refresh();
         }
     };
-    
-    
+
     /**
      * A selection listener on the Export button. We will open the Export wizard.
      */
@@ -232,6 +212,7 @@ public class CertificateListComposite extends Composite
         /**
          * {@inheritDoc}
          */
+        @Override
         public void widgetSelected( SelectionEvent event )
         {
             X509Certificate certificate = ( X509Certificate ) ( ( IStructuredSelection ) tableViewer.getSelection() )
@@ -242,7 +223,7 @@ public class CertificateListComposite extends Composite
         }
     };
 
-    
+
     /**
      * Creates a new instance of CertificateInfoComposite.
      *
@@ -296,7 +277,7 @@ public class CertificateListComposite extends Composite
         // The View Button 
         viewButton = BaseWidgetUtils.createButton( buttonContainer, Messages
             .getString( "CertificateListComposite.ViewButton" ), 1 );//$NON-NLS-1$
-        
+
         viewButton.setEnabled( false );
         viewButton.addSelectionListener( viewButtonSelectionListener );
 
@@ -310,7 +291,7 @@ public class CertificateListComposite extends Composite
             .getString( "CertificateListComposite.RemoveButton" ), 1 ); //$NON-NLS-1$
         removeButton.setEnabled( false );
         removeButton.addSelectionListener( removeButtonSelectionListener );
-        
+
         // The export button
         exportButton = BaseWidgetUtils.createButton( buttonContainer, Messages
             .getString( "CertificateListComposite.ExportButton" ), 1 ); //$NON-NLS-1$
@@ -326,7 +307,7 @@ public class CertificateListComposite extends Composite
     {
         CertificateFactory certificateFactory = CertificateFactory.getInstance( "X.509" ); //$NON-NLS-1$
         Certificate certificate = certificateFactory.generateCertificate( new ByteArrayInputStream( data ) );
-        
+
         if ( certificate instanceof X509Certificate )
         {
             return ( X509Certificate ) certificate;
@@ -347,7 +328,6 @@ public class CertificateListComposite extends Composite
         tableViewer.setInput( keyStoreManager );
     }
 
-
     /**
      * This class is used to give back the content of teh Table viewer
      */
@@ -361,11 +341,9 @@ public class CertificateListComposite extends Composite
         {
             if ( inputElement instanceof StudioKeyStoreManager )
             {
-                StudioKeyStoreManager keyStoreManager = ( StudioKeyStoreManager ) inputElement;
-                
                 try
                 {
-                    return keyStoreManager.getCertificates();
+                    return ( ( StudioKeyStoreManager ) inputElement ).getCertificates();
                 }
                 catch ( CertificateException e )
                 {
@@ -373,13 +351,15 @@ public class CertificateListComposite extends Composite
                 }
             }
 
-            return new Object[]{};
+            return new Object[]
+                {};
         }
 
 
         /**
          * {@inheritDoc}
          */
+        @Override
         public void dispose()
         {
         }
@@ -388,13 +368,13 @@ public class CertificateListComposite extends Composite
         /**
          * {@inheritDoc}
          */
+        @Override
         public void inputChanged( Viewer viewer, Object oldInput, Object newInput )
         {
         }
 
     }
 
-    
     /**
      * This helper class is used to decorate the elements in the table : we use the certificate name if any.
      * @author elecharny
@@ -405,6 +385,7 @@ public class CertificateListComposite extends Composite
         /**
          * {@inheritDoc}
          */
+        @Override
         public String getText( Object element )
         {
             if ( element instanceof X509Certificate )
@@ -412,8 +393,8 @@ public class CertificateListComposite extends Composite
                 X509Certificate certificate = ( X509Certificate ) element;
 
                 String certificateName = certificate.getSubjectX500Principal().getName();
-                
-                if ( Strings.isEmpty( certificateName  ) )
+
+                if ( Strings.isEmpty( certificateName ) )
                 {
                     return Messages.getString( "CertificateListComposite.UntitledCertificate" ); //$NON-NLS-1$
                 }
@@ -430,6 +411,7 @@ public class CertificateListComposite extends Composite
         /**
          * {@inheritDoc}
          */
+        @Override
         public Image getImage( Object element )
         {
             if ( element instanceof X509Certificate )
@@ -440,8 +422,8 @@ public class CertificateListComposite extends Composite
             return super.getImage( element );
         }
     }
-    
-    
+
+
     /**
      * A private method that opens the Certificate Dialog
      * @param selection

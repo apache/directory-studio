@@ -57,13 +57,15 @@ public class ExtendedContentAssistCommandAdapter extends ContentAssistCommandAda
         IContentProposalProvider proposalProvider, String commandId, char[] autoActivationCharacters,
         boolean installDecoration )
     {
-        super( control, controlContentAdapter, proposalProvider, commandId, autoActivationCharacters, installDecoration );
+        super( control, controlContentAdapter, proposalProvider, commandId, autoActivationCharacters,
+            installDecoration );
 
         setProposalAcceptanceStyle( ContentProposalAdapter.PROPOSAL_REPLACE );
         setFilterStyle( ContentProposalAdapter.FILTER_NONE );
         setAutoActivationCharacters( null );
         setAutoActivationDelay( 0 );
     }
+
 
     /**
      * {@inheritDoc}

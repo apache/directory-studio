@@ -240,8 +240,7 @@ public abstract class StudioAction implements IWorkbenchWindowActionDelegate
     /**
      * Sets the selected connection folders.
      *
-     * @param selectedConnectionFolders
-     *      the selected connections folders to set
+     * @param selectedConnectionFolders the selected connections folders to set
      */
     public void setSelectedConnectionFolders( ConnectionFolder[] selectedConnectionFolders )
     {
