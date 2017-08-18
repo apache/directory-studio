@@ -56,10 +56,10 @@ public class OpenLdapSchemaLoader extends JarLdifSchemaLoader
         Pattern.CASE_INSENSITIVE );
 
     /** The attribute types entries */
-    private List<Entry> attributeTypesEntries = new ArrayList<Entry>();
+    private List<Entry> attributeTypesEntries = new ArrayList<>();
 
     /** The object classes entries */
-    private List<Entry> objectClassesEntries = new ArrayList<Entry>();
+    private List<Entry> objectClassesEntries = new ArrayList<>();
 
 
     /**
@@ -80,9 +80,8 @@ public class OpenLdapSchemaLoader extends JarLdifSchemaLoader
      */
     private void initializeSchema()
     {
-        Schema schema = new DefaultSchema( null, OPENLDAPCONFIG_SCHEMA_NAME );
-        schema.addDependencies( new String[]
-            { "system", "core", "apache" } );
+        Schema schema = new DefaultSchema( this, OPENLDAPCONFIG_SCHEMA_NAME );
+        schema.addDependencies( "system", "core", "apache" );
         schemaMap.put( schema.getSchemaName(), schema );
     }
 
@@ -90,17 +89,14 @@ public class OpenLdapSchemaLoader extends JarLdifSchemaLoader
     /**
      * Initializes the schema objects.
      *
-     * @throws Exception
+     * @throws LdapException If we weren't able to process the LDIF file
+     * @throws IOException If we had an issue reading the ldif file
      */
-    private void initializeSchemaObjects() throws Exception
+    private void initializeSchemaObjects() throws LdapException, IOException
     {
-        LdifReader ldifReader = null;
-
-        try
+        // Reading the schema file
+        try ( LdifReader ldifReader = new LdifReader( OpenLdapSchemaLoader.class.getResourceAsStream( OPENLDAPCONFIG_SHEMA_LDIF ) ) )
         {
-            // Reading the schema file
-            ldifReader = new LdifReader( OpenLdapSchemaLoader.class.getResourceAsStream( OPENLDAPCONFIG_SHEMA_LDIF ) );
-
             // Looping on all entries
             while ( ldifReader.hasNext() )
             {
@@ -120,20 +116,13 @@ public class OpenLdapSchemaLoader extends JarLdifSchemaLoader
                 }
             }
         }
-        finally
-        {
-            // Closing the LDIF reader
-            if ( ldifReader != null )
-            {
-                ldifReader.close();
-            }
-        }
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadAttributeTypes( Schema... schemas ) throws LdapException, IOException
     {
         // Getting the attribute types from the supertype implementation
@@ -156,6 +145,7 @@ public class OpenLdapSchemaLoader extends JarLdifSchemaLoader
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<Entry> loadObjectClasses( Schema... schemas ) throws LdapException, IOException
     {
         // Getting the object classes from the supertype implementation
