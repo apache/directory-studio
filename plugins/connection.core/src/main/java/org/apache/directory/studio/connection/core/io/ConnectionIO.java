@@ -548,7 +548,7 @@ public class ConnectionIO
         
         if ( extendedProperties != null )
         {
-        	    for ( Map.Entry<String, String> element : extendedProperties.entrySet() )
+            for ( Map.Entry<String, String> element : extendedProperties.entrySet() )
             {
                 Element extendedPropertyElement = extendedPropertiesElement.addElement( EXTENDED_PROPERTY_TAG );
                 extendedPropertyElement.addAttribute( KEY_TAG, element.getKey() );

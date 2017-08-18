@@ -288,7 +288,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         
         for ( String string : binaryAttributes )
         {
-        		sb.append( string ).append( ' ' );
+            sb.append( string ).append( ' ' );
         }
 
         String binaryAttributesString = sb.toString();
@@ -847,11 +847,11 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         }
         else
         {
-        		if ( timeout < 0 )
-        		{
-        			timeout = 0;
-        		}
-        		
+            if ( timeout < 0 )
+            {
+                timeout = 0;
+            }
+            
             environment.put( COM_SUN_JNDI_LDAP_CONNECT_TIMEOUT, Long.toString( timeout ) ); //$NON-NLS-1$
         }
         

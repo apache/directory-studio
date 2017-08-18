@@ -192,7 +192,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         
         if ( timeout < 0 ) 
         {
-        		timeout = 30000L;
+            timeout = 30000L;
         }
         
         ldapConnectionConfig.setTimeout( timeout );
