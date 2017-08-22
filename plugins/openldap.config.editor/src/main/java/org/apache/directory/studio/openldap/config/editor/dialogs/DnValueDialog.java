@@ -27,7 +27,6 @@ import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.openldap.config.editor.wrappers.DnWrapper;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -77,9 +76,7 @@ public class DnValueDialog extends AddEditDialog<DnWrapper>
     /**
      * The listener for the DN Text
      */
-    private ModifyListener dnValueTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    private ModifyListener dnValueTextListener = event ->
         {
             Display display = dnText.getDisplay();
             Button okButton = getButton( IDialogConstants.OK_ID );
@@ -103,13 +100,13 @@ public class DnValueDialog extends AddEditDialog<DnWrapper>
                 okButton.setEnabled( false );
                 dnText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
             }
-        }
-    };
+        };
     
     
     /**
      * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
      */
+    @Override
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
@@ -129,6 +126,7 @@ public class DnValueDialog extends AddEditDialog<DnWrapper>
      * +---------------------------------------+
      * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
+    @Override
     protected Control createDialogArea( Composite parent )
     {
         Composite composite = ( Composite ) super.createDialogArea( parent );
@@ -160,7 +158,7 @@ public class DnValueDialog extends AddEditDialog<DnWrapper>
      */
     protected void initDialog()
     {
-        DnWrapper editedElement = (DnWrapper)getEditedElement();
+        DnWrapper editedElement = getEditedElement();
         
         if ( editedElement != null )
         {

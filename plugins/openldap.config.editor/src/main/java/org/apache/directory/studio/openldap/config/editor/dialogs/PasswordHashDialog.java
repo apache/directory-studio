@@ -76,7 +76,7 @@ public class PasswordHashDialog extends AddEditDialog<PasswordHashEnum>
     private Button[] passwordHashCheckboxes = new Button[9];
     
     /** The already selected hashes */
-    List<PasswordHashEnum> hashes = new ArrayList<PasswordHashEnum>();
+    List<PasswordHashEnum> hashes = new ArrayList<>();
     
     /**
      * Create a new instance of the PasswordHashDialog
@@ -93,6 +93,7 @@ public class PasswordHashDialog extends AddEditDialog<PasswordHashEnum>
     /**
      * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
      */
+    @Override
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
@@ -104,6 +105,7 @@ public class PasswordHashDialog extends AddEditDialog<PasswordHashEnum>
      */
     private SelectionListener checkboxSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             Object object = e.getSource();
@@ -145,6 +147,7 @@ public class PasswordHashDialog extends AddEditDialog<PasswordHashEnum>
      * </pre>
      * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
+    @Override
     protected Control createDialogArea( Composite parent )
     {
         Composite composite = ( Composite ) super.createDialogArea( parent );

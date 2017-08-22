@@ -30,14 +30,14 @@ import org.apache.directory.studio.openldap.config.model.OlcOverlayConfig;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class AbstractOverlayDialogConfigurationBlock<Overlay extends OlcOverlayConfig> implements
-    OverlayDialogConfigurationBlock<Overlay>
+public abstract class AbstractOverlayDialogConfigurationBlock<O extends OlcOverlayConfig> implements
+    OverlayDialogConfigurationBlock<O>
 {
     /** The dialog */
     protected OverlayDialog dialog;
 
     /** The overlay */
-    protected Overlay overlay;
+    protected O overlay;
 
     /** The connection */
     protected IBrowserConnection browserConnection;
@@ -79,7 +79,7 @@ public abstract class AbstractOverlayDialogConfigurationBlock<Overlay extends Ol
     /**
      * {@inheritDoc}
      */
-    public Overlay getOverlay()
+    public O getOverlay()
     {
         return overlay;
     }
@@ -97,7 +97,7 @@ public abstract class AbstractOverlayDialogConfigurationBlock<Overlay extends Ol
     /**
      * {@inheritDoc}
      */
-    public void setOverlay( Overlay overlay )
+    public void setOverlay( O overlay )
     {
         this.overlay = overlay;
     }

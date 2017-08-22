@@ -74,6 +74,7 @@ public class ReplicationSaslDialog extends Dialog
     // Listeners
     private SelectionListener showCredentialsCheckboxListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             if ( showCredentialsCheckbox.getSelection() )
@@ -119,15 +120,14 @@ public class ReplicationSaslDialog extends Dialog
      */
     private SyncRepl createDefaultSyncRepl()
     {
-        SyncRepl syncRepl = new SyncRepl();
-
-        return syncRepl;
+        return new SyncRepl();
     }
 
 
     /**
      * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
      */
+    @Override
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
@@ -138,6 +138,7 @@ public class ReplicationSaslDialog extends Dialog
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void okPressed()
     {
         saveToSyncRepl();
@@ -149,6 +150,7 @@ public class ReplicationSaslDialog extends Dialog
     /**
      * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
+    @Override
     protected Control createDialogArea( Composite parent )
     {
         // Creating the scrolled composite
@@ -191,6 +193,7 @@ public class ReplicationSaslDialog extends Dialog
         saslMechanismComboViewer.setContentProvider( new ArrayContentProvider() );
         saslMechanismComboViewer.setLabelProvider( new LabelProvider()
         {
+            @Override
             public String getText( Object element )
             {
                 if ( element instanceof SaslMechanism )

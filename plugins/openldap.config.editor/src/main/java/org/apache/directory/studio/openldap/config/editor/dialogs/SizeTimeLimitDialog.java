@@ -25,7 +25,6 @@ import org.apache.directory.studio.common.ui.CommonUIConstants;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -136,6 +135,7 @@ public class SizeTimeLimitDialog extends AddEditDialog<LimitWrapper>
      **/ 
     private SelectionListener sizeTimeButtonsSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent event )
         {
             if ( event.getSource() instanceof Button )
@@ -177,6 +177,7 @@ public class SizeTimeLimitDialog extends AddEditDialog<LimitWrapper>
      */
     private SelectionListener sizeLimitEditSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             SizeLimitDialog dialog = new SizeLimitDialog( sizeLimitText.getShell(), sizeLimitText.getText() );
@@ -199,6 +200,7 @@ public class SizeTimeLimitDialog extends AddEditDialog<LimitWrapper>
      */
     private SelectionListener timeLimitEditSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             TimeLimitDialog dialog = new TimeLimitDialog( timeLimitText.getShell(), timeLimitText.getText() );
@@ -216,9 +218,7 @@ public class SizeTimeLimitDialog extends AddEditDialog<LimitWrapper>
     };
 
     
-    protected ModifyListener sizeLimitTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    protected ModifyListener sizeLimitTextListener = event ->
         {
             Button okButton = getButton( IDialogConstants.OK_ID );
 
@@ -244,13 +244,10 @@ public class SizeTimeLimitDialog extends AddEditDialog<LimitWrapper>
                 sizeLimitText.setForeground( CommonUIConstants.RED_COLOR );
                 okButton.setEnabled( false );
             }
-        }
-    };
+        };
 
     
-    protected ModifyListener timeLimitTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    protected ModifyListener timeLimitTextListener = event ->
         {
             Button okButton = getButton( IDialogConstants.OK_ID );
 
@@ -276,8 +273,7 @@ public class SizeTimeLimitDialog extends AddEditDialog<LimitWrapper>
                 timeLimitText.setForeground( CommonUIConstants.RED_COLOR );
                 okButton.setEnabled( false );
             }
-        }
-    };
+        };
     
     /**
      * Create a new instance of the SizeTimeLimitsDialog
@@ -307,6 +303,7 @@ public class SizeTimeLimitDialog extends AddEditDialog<LimitWrapper>
     /**
      * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
      */
+    @Override
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
@@ -325,6 +322,7 @@ public class SizeTimeLimitDialog extends AddEditDialog<LimitWrapper>
      * </pre>
      * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
+    @Override
     protected Control createDialogArea( Composite parent )
     {
         Composite composite = ( Composite ) super.createDialogArea( parent );
@@ -400,7 +398,7 @@ public class SizeTimeLimitDialog extends AddEditDialog<LimitWrapper>
      */
     protected void initDialog()
     {
-        LimitWrapper editedElement = (LimitWrapper)getEditedElement();
+        LimitWrapper editedElement = getEditedElement();
         
         if ( editedElement != null )
         {

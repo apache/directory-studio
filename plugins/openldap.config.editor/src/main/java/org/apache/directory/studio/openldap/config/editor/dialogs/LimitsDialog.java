@@ -23,10 +23,8 @@ package org.apache.directory.studio.openldap.config.editor.dialogs;
 import org.apache.directory.studio.common.ui.AddEditDialog;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.common.ui.widgets.TableWidget;
-import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -184,6 +182,7 @@ public class LimitsDialog extends AddEditDialog<LimitsWrapper>
      **/ 
     private SelectionListener selectorButtonsSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent event )
         {
             if ( event.getSource() instanceof Button )
@@ -244,6 +243,7 @@ public class LimitsDialog extends AddEditDialog<LimitsWrapper>
      */
     private SelectionListener dnSpecTypeComboListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             getEditedElement().setDnSpecType( DnSpecTypeEnum.getType( dnSpecTypeCombo.getText() ) );
@@ -257,6 +257,7 @@ public class LimitsDialog extends AddEditDialog<LimitsWrapper>
      */
     private SelectionListener dnSpecStyleComboListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             getEditedElement().setDnSpecStyle( DnSpecStyleEnum.getStyle( dnSpecStyleCombo.getText() ) );
@@ -270,6 +271,7 @@ public class LimitsDialog extends AddEditDialog<LimitsWrapper>
      */
     private SelectionListener groupAttributeTypeComboListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             getEditedElement().setAttributeType( groupAttributeTypeCombo.getText() );
@@ -283,6 +285,7 @@ public class LimitsDialog extends AddEditDialog<LimitsWrapper>
      */
     private SelectionListener groupObjectClassComboListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             getEditedElement().setObjectClass( groupObjectClassCombo.getText() );
@@ -293,11 +296,9 @@ public class LimitsDialog extends AddEditDialog<LimitsWrapper>
     /**
      * The dnSpecPatternText and groupPatternText listener
      */
-    private ModifyListener patternTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    private ModifyListener patternTextListener = event ->
         {
-            if ( e.getSource() == dnSpecPatternText )
+            if ( event.getSource() == dnSpecPatternText )
             {
                 getEditedElement().setSelectorPattern( dnSpecPatternText.getText() );
             }
@@ -307,21 +308,17 @@ public class LimitsDialog extends AddEditDialog<LimitsWrapper>
             }
             
             limitsText.setText( getEditedElement().toString() );
-        }
-    };
+        };
     
     
     /**
      * The olcLimits listener
      */
-    private WidgetModifyListener limitsTableWidgetListener = new WidgetModifyListener()
-    {
-        public void widgetModified( WidgetModifyEvent e )
+    private WidgetModifyListener limitsTableWidgetListener = event ->
         {
             getEditedElement().setLimits( limitsTableWidget.getElements() );
             limitsText.setText( getEditedElement().toString() );
-        }
-    };
+        };
     
 
     /**
@@ -356,6 +353,7 @@ public class LimitsDialog extends AddEditDialog<LimitsWrapper>
     /**
      * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
      */
+    @Override
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
@@ -403,6 +401,7 @@ public class LimitsDialog extends AddEditDialog<LimitsWrapper>
      * </pre>
      * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
+    @Override
     protected Control createDialogArea( Composite parent )
     {
         Composite composite = ( Composite ) super.createDialogArea( parent );
@@ -535,7 +534,7 @@ public class LimitsDialog extends AddEditDialog<LimitsWrapper>
         // The Limits table
         BaseWidgetUtils.createLabel( selectorGroup, "Limits :", 1 );
         
-        limitsTableWidget = new TableWidget<LimitWrapper>( 
+        limitsTableWidget = new TableWidget<>( 
             new LimitDecorator( parent.getShell() , "Limit") );
 
         limitsTableWidget.createWidgetWithEdit( selectorGroup, null );
@@ -601,7 +600,7 @@ public class LimitsDialog extends AddEditDialog<LimitsWrapper>
      */
     protected void initDialog()
     {
-        LimitsWrapper editedElement = (LimitsWrapper)getEditedElement();
+        LimitsWrapper editedElement = getEditedElement();
         
         if ( editedElement != null )
         {

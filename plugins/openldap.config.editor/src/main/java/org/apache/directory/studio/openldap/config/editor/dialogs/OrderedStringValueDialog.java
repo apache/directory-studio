@@ -24,7 +24,6 @@ import org.apache.directory.studio.common.ui.AddEditDialog;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -80,9 +79,7 @@ public class OrderedStringValueDialog extends AddEditDialog<OrderedStringValueWr
     /**
      * The listener for the String Text
      */
-    private ModifyListener stringValueTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    private ModifyListener stringValueTextListener = event ->
         {
             Button okButton = getButton( IDialogConstants.OK_ID );
             
@@ -94,13 +91,13 @@ public class OrderedStringValueDialog extends AddEditDialog<OrderedStringValueWr
 
             getEditedElement().setValue( stringValue.getText() );
             okButton.setEnabled( true );
-        }
-    };
+        };
     
     
     /**
      * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
      */
+    @Override
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
@@ -120,6 +117,7 @@ public class OrderedStringValueDialog extends AddEditDialog<OrderedStringValueWr
      * +---------------------------------------+
      * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
+    @Override
     protected Control createDialogArea( Composite parent )
     {
         Composite composite = ( Composite ) super.createDialogArea( parent );
@@ -151,7 +149,7 @@ public class OrderedStringValueDialog extends AddEditDialog<OrderedStringValueWr
      */
     protected void initDialog()
     {
-        OrderedStringValueWrapper editedElement = (OrderedStringValueWrapper)getEditedElement();
+        OrderedStringValueWrapper editedElement = getEditedElement();
         
         if ( editedElement != null )
         {
@@ -180,7 +178,7 @@ public class OrderedStringValueDialog extends AddEditDialog<OrderedStringValueWr
 
     public void addNewElement( OrderedStringValueWrapper editedElement )
     {
-        OrderedStringValueWrapper newElement = (OrderedStringValueWrapper)editedElement.clone();
+        OrderedStringValueWrapper newElement = editedElement.clone();
         setEditedElement( newElement );
     }
 

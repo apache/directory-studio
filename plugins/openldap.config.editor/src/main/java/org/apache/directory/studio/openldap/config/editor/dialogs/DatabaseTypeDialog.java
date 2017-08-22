@@ -89,6 +89,7 @@ public class DatabaseTypeDialog extends Dialog
      */
     private SelectionListener databaseTypeSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             Object object = e.getSource();
@@ -122,6 +123,7 @@ public class DatabaseTypeDialog extends Dialog
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
@@ -132,6 +134,7 @@ public class DatabaseTypeDialog extends Dialog
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void okPressed()
     {
         // Do nothing if the selected feature is NONE
@@ -155,6 +158,7 @@ public class DatabaseTypeDialog extends Dialog
      * +-------------------------------------+
      * </pre>
      */
+    @Override
     protected Control createDialogArea( Composite parent )
     {
         Composite composite = ( Composite ) super.createDialogArea( parent );
@@ -180,6 +184,7 @@ public class DatabaseTypeDialog extends Dialog
      * 
      * {@inheritDoc}
      */
+    @Override
     protected Button createButton(Composite parent, int id, String label, boolean defaultButton) 
     {
         Button button = super.createButton( parent, id, label, defaultButton );

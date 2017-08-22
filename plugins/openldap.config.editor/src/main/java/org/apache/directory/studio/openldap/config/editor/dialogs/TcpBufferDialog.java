@@ -28,7 +28,6 @@ import org.apache.directory.studio.common.ui.AddEditDialog;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -104,9 +103,7 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
     /**
      * The listener for the size Text
      */
-    private ModifyListener sizeTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    private ModifyListener sizeTextListener = event ->
         {
             Display display = tcpBufferText.getDisplay();
             Button okButton = getButton( IDialogConstants.OK_ID );
@@ -154,16 +151,13 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
                 tcpBufferText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
                 okButton.setEnabled( false );
             }
-        }
-    };
+        };
     
     
     /**
      * The listener for the URL Text
      */
-    private ModifyListener urlTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    private ModifyListener urlTextListener = event ->
         {
             Display display = tcpBufferText.getDisplay();
             Button okButton = getButton( IDialogConstants.OK_ID );
@@ -200,8 +194,7 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
                 tcpBufferText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
                 okButton.setEnabled( false );
             }
-        }
-    };
+        };
 
 
     /**
@@ -209,6 +202,7 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
      */
     private SelectionListener checkboxSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             Display display = tcpBufferText.getDisplay();
@@ -261,6 +255,7 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
     /**
      * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
      */
+    @Override
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
@@ -286,6 +281,7 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
      * </pre>
      * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
+    @Override
     protected Control createDialogArea( Composite parent )
     {
         Composite composite = ( Composite ) super.createDialogArea( parent );
@@ -375,7 +371,7 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
      */
     protected void initDialog()
     {
-        TcpBufferWrapper editedElement = (TcpBufferWrapper)getEditedElement();
+        TcpBufferWrapper editedElement = getEditedElement();
         
         if ( editedElement != null )
         {
@@ -411,7 +407,7 @@ public class TcpBufferDialog extends AddEditDialog<TcpBufferWrapper>
      */
     protected void addNewElement( TcpBufferWrapper editedElement )
     {
-        TcpBufferWrapper newElement = (TcpBufferWrapper)editedElement.clone();
+        TcpBufferWrapper newElement = editedElement.clone();
         setEditedElement( newElement );
     }
 

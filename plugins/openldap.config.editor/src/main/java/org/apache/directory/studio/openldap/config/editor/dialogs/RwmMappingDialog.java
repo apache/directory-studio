@@ -37,10 +37,8 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
@@ -79,16 +77,9 @@ public class RwmMappingDialog extends Dialog
 
     // Listeners
 
-    private ModifyListener namesComboViewerListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
-        {
-            checkAndUpdateOkButtonEnableState();
-        }
-    };
-    private ISelectionChangedListener typeComboViewerSelectionListener = new ISelectionChangedListener()
-    {
-        public void selectionChanged( SelectionChangedEvent event )
+    private ModifyListener namesComboViewerListener = event -> checkAndUpdateOkButtonEnableState();
+
+    private ISelectionChangedListener typeComboViewerSelectionListener = event ->
         {
             OlcRwmMapValueTypeEnum selectedType = getSelectedType();
 
@@ -111,8 +102,7 @@ public class RwmMappingDialog extends Dialog
             // Restoring the combos text
             localNameComboViewer.getCombo().setText( localNameText );
             foreignNameComboViewer.getCombo().setText( foreignNameText );
-        }
-    };
+        };
 
 
     /**
@@ -170,8 +160,8 @@ public class RwmMappingDialog extends Dialog
      */
     private void initAttributeTypesAndObjectClassesLists()
     {
-        connectionAttributeTypes = new ArrayList<String>();
-        connectionObjectClasses = new ArrayList<String>();
+        connectionAttributeTypes = new ArrayList<>();
+        connectionObjectClasses = new ArrayList<>();
 
         if ( browserConnection != null )
         {
@@ -198,13 +188,7 @@ public class RwmMappingDialog extends Dialog
             }
 
             // Creating a case insensitive comparator
-            Comparator<String> ignoreCaseComparator = new Comparator<String>()
-            {
-                public int compare( String o1, String o2 )
-                {
-                    return o1.compareToIgnoreCase( o2 );
-                }
-            };
+            Comparator<String> ignoreCaseComparator = ( o1, o2 ) -> o1.compareToIgnoreCase( o2 );
 
             // Sorting the lists
             Collections.sort( connectionAttributeTypes, ignoreCaseComparator );
@@ -220,6 +204,7 @@ public class RwmMappingDialog extends Dialog
     /**
      * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
      */
+    @Override
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
@@ -230,6 +215,7 @@ public class RwmMappingDialog extends Dialog
     /**
      * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
      */
+    @Override
     protected void createButtonsForButtonBar( Composite parent )
     {
         okButton = createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true );
@@ -242,6 +228,7 @@ public class RwmMappingDialog extends Dialog
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void okPressed()
     {
         // Type
@@ -278,6 +265,7 @@ public class RwmMappingDialog extends Dialog
     /**
      * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
+    @Override
     protected Control createDialogArea( Composite parent )
     {
         // Creating the dialog composites
@@ -296,6 +284,7 @@ public class RwmMappingDialog extends Dialog
         typeComboViewer.setContentProvider( new ArrayContentProvider() );
         typeComboViewer.setLabelProvider( new LabelProvider()
         {
+            @Override
             public String getText( Object element )
             {
                 if ( element instanceof OlcRwmMapValueTypeEnum )

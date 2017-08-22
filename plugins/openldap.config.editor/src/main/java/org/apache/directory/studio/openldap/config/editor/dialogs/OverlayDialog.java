@@ -86,6 +86,7 @@ public class OverlayDialog extends Dialog
     // Listeners
     private SelectionListener overlayTypeComboViewerSelectionChangedListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent event )
         {
             OverlayTypeEnum type = OverlayTypeEnum.getOverlay( overlayTypeCombo.getText() );
@@ -177,6 +178,7 @@ public class OverlayDialog extends Dialog
     /**
      * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
      */
+    @Override
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
@@ -205,6 +207,7 @@ public class OverlayDialog extends Dialog
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void okPressed()
     {
         if ( configurationBlock != null )
@@ -219,6 +222,7 @@ public class OverlayDialog extends Dialog
     /**
      * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
+    @Override
     protected Control createDialogArea( Composite parent )
     {
         Composite composite = ( Composite ) super.createDialogArea( parent );

@@ -26,7 +26,6 @@ import org.apache.directory.studio.common.ui.AddEditDialog;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -90,9 +89,7 @@ public class ServerIdDialog extends AddEditDialog<ServerIdWrapper>
     /**
      * The listener for the ID Text
      */
-    private ModifyListener idTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    private ModifyListener idTextListener = event ->
         {
             Display display = serverIdText.getDisplay();
             Button okButton = getButton( IDialogConstants.OK_ID );
@@ -143,16 +140,13 @@ public class ServerIdDialog extends AddEditDialog<ServerIdWrapper>
                 serverIdText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
                 okButton.setEnabled( false );
             }
-        }
-    };
+        };
     
     
     /**
      * The listener for the URL Text
      */
-    private ModifyListener urlTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    private ModifyListener urlTextListener = event ->
         {
             Display display = serverIdText.getDisplay();
             Button okButton = getButton( IDialogConstants.OK_ID );
@@ -179,14 +173,13 @@ public class ServerIdDialog extends AddEditDialog<ServerIdWrapper>
                 serverIdText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
                 okButton.setEnabled( false );
             }
-
-        }
-    };
+        };
             
 
     /**
      * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
      */
+    @Override
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
@@ -211,6 +204,7 @@ public class ServerIdDialog extends AddEditDialog<ServerIdWrapper>
      * +---------------------------------------+
      * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
+    @Override
     protected Control createDialogArea( Composite parent )
     {
         Composite composite = ( Composite ) super.createDialogArea( parent );
@@ -293,7 +287,7 @@ public class ServerIdDialog extends AddEditDialog<ServerIdWrapper>
      */
     protected void initDialog()
     {
-        ServerIdWrapper editedElement = (ServerIdWrapper)getEditedElement();
+        ServerIdWrapper editedElement = getEditedElement();
         
         if ( editedElement != null )
         {
@@ -324,7 +318,7 @@ public class ServerIdDialog extends AddEditDialog<ServerIdWrapper>
 
     public void addNewElement( ServerIdWrapper editedElement )
     {
-        ServerIdWrapper newElement = (ServerIdWrapper)editedElement.clone();
+        ServerIdWrapper newElement = editedElement.clone();
         setEditedElement( newElement );
         
     }

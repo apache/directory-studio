@@ -74,7 +74,7 @@ public class RequireConditionDialog extends AddEditDialog<RequireConditionEnum>
     private Button[] requireConditionCheckboxes = new Button[6];
     
     /** The already selected Required Conditions */
-    List<RequireConditionEnum> conditions = new ArrayList<RequireConditionEnum>();
+    List<RequireConditionEnum> conditions = new ArrayList<>();
     
     /**
      * Create a new instance of the RequireConditionDialog
@@ -91,6 +91,7 @@ public class RequireConditionDialog extends AddEditDialog<RequireConditionEnum>
     /**
      * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
      */
+    @Override
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
@@ -103,6 +104,7 @@ public class RequireConditionDialog extends AddEditDialog<RequireConditionEnum>
      */
     private SelectionListener checkboxSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             Object object = e.getSource();
@@ -143,6 +145,7 @@ public class RequireConditionDialog extends AddEditDialog<RequireConditionEnum>
      * </pre>
      * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
+    @Override
     protected Control createDialogArea( Composite parent )
     {
         Composite composite = ( Composite ) super.createDialogArea( parent );

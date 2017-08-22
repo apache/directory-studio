@@ -69,6 +69,7 @@ public class DbConfigurationDialog extends Dialog
     /**
      * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
      */
+    @Override
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
@@ -79,6 +80,7 @@ public class DbConfigurationDialog extends Dialog
     /**
      * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
      */
+    @Override
     protected void createButtonsForButtonBar( Composite parent )
     {
         createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false );
@@ -89,11 +91,12 @@ public class DbConfigurationDialog extends Dialog
     /**
      * @see org.eclipse.jface.dialogs.Dialog#okPressed()
      */
+    @Override
     protected void okPressed()
     {
         if ( ( text.getText() != null ) && ( text.getText().length() > 0 ) )
         {
-            List<String> newConfiguration = new ArrayList<String>();
+            List<String> newConfiguration = new ArrayList<>();
 
             String[] splittedConfiguration = text.getText().split( LINE_SEPARATOR );
             for ( int i = 0; i < splittedConfiguration.length; i++ )
@@ -111,6 +114,7 @@ public class DbConfigurationDialog extends Dialog
     /**
      * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
+    @Override
     protected Control createDialogArea( Composite parent )
     {
         // create composite

@@ -24,7 +24,6 @@ import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -143,6 +142,7 @@ public class SizeLimitDialog extends AbstractLimitDialog<SizeLimitWrapper>
      * the values must be numeric, or "unlimited" or "none" or "soft" (for the hard limit). They
      * also have to be >=0
      */
+    @Override
     protected boolean isValid()
     {
         return super.isValid() && isValidUnchecked() && isValidPr() && isValidPrTotal();
@@ -245,9 +245,7 @@ public class SizeLimitDialog extends AbstractLimitDialog<SizeLimitWrapper>
     /**
      * The listener for the Unchecked Limit Text
      */
-    private ModifyListener uncheckedLimitTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    private ModifyListener uncheckedLimitTextListener = event ->
         {
             Display display = uncheckedLimitText.getDisplay();
             Button okButton = getButton( IDialogConstants.OK_ID );
@@ -261,7 +259,7 @@ public class SizeLimitDialog extends AbstractLimitDialog<SizeLimitWrapper>
                 return;
             }
 
-            SizeLimitWrapper sizeLimitWrapper = (SizeLimitWrapper)getEditedElement();
+            SizeLimitWrapper sizeLimitWrapper = getEditedElement();
             
             // The possible values are : 'unlimited' | 'none' | 'disabled' | INT
             String uncheckedLimitStr = uncheckedLimitText.getText();
@@ -321,16 +319,13 @@ public class SizeLimitDialog extends AbstractLimitDialog<SizeLimitWrapper>
             uncheckedDisabledCheckbox.setSelection( disabled );
             limitText.setText( getEditedElement().toString() );
             okButton.setEnabled( isValid() );
-        }
-    };
+        };
 
     
     /**
      * The listener for the pr Limit Text
      */
-    private ModifyListener prLimitTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    private ModifyListener prLimitTextListener = event ->
         {
             Display display = prLimitText.getDisplay();
             Button okButton = getButton( IDialogConstants.OK_ID );
@@ -343,7 +338,7 @@ public class SizeLimitDialog extends AbstractLimitDialog<SizeLimitWrapper>
                 return;
             }
 
-            SizeLimitWrapper sizeLimitWrapper = (SizeLimitWrapper)getEditedElement();
+            SizeLimitWrapper sizeLimitWrapper = getEditedElement();
 
             // The possible values are : 'unlimited' | 'none' | 'noEstimate' | INT 
             String prLimitStr = prLimitText.getText();
@@ -392,8 +387,7 @@ public class SizeLimitDialog extends AbstractLimitDialog<SizeLimitWrapper>
             prUnlimitedCheckbox.setSelection( unlimited );
             limitText.setText( getEditedElement().toString() );
             okButton.setEnabled( isValid() );
-        }
-    };
+        };
 
     
     
@@ -401,9 +395,7 @@ public class SizeLimitDialog extends AbstractLimitDialog<SizeLimitWrapper>
     /**
      * The listener for the prTotal Limit Text
      */
-    private ModifyListener prTotalLimitTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    private ModifyListener prTotalLimitTextListener = event ->
         {
             Display display = prTotalLimitText.getDisplay();
             Button okButton = getButton( IDialogConstants.OK_ID );
@@ -418,7 +410,7 @@ public class SizeLimitDialog extends AbstractLimitDialog<SizeLimitWrapper>
                 return;
             }
 
-            SizeLimitWrapper sizeLimitWrapper = (SizeLimitWrapper)getEditedElement();
+            SizeLimitWrapper sizeLimitWrapper = getEditedElement();
 
             // The possible values are : 'unlimited' | 'none' | 'disabled' | 'hard' | INT 
             String prTotalLimitStr = prTotalLimitText.getText();
@@ -488,8 +480,7 @@ public class SizeLimitDialog extends AbstractLimitDialog<SizeLimitWrapper>
             prTotalHardCheckbox.setSelection( hard );
             limitText.setText( getEditedElement().toString() );
             okButton.setEnabled( isValid() );
-        }
-    };
+        };
     
     
     /**
@@ -497,12 +488,13 @@ public class SizeLimitDialog extends AbstractLimitDialog<SizeLimitWrapper>
      */
     private SelectionListener uncheckedUnlimitedCheckboxSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             Display display = uncheckedLimitText.getDisplay();
             Button okButton = getButton( IDialogConstants.OK_ID );
 
-            SizeLimitWrapper sizeLimitWrapper = (SizeLimitWrapper)getEditedElement();
+            SizeLimitWrapper sizeLimitWrapper = getEditedElement();
 
             if ( uncheckedUnlimitedCheckbox.getSelection() )
             {
@@ -528,12 +520,13 @@ public class SizeLimitDialog extends AbstractLimitDialog<SizeLimitWrapper>
      */
     private SelectionListener uncheckedDisabledCheckboxSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             Display display = uncheckedLimitText.getDisplay();
             Button okButton = getButton( IDialogConstants.OK_ID );
 
-            SizeLimitWrapper sizeLimitWrapper = (SizeLimitWrapper)getEditedElement();
+            SizeLimitWrapper sizeLimitWrapper = getEditedElement();
 
             if ( uncheckedDisabledCheckbox.getSelection() )
             {
@@ -559,12 +552,13 @@ public class SizeLimitDialog extends AbstractLimitDialog<SizeLimitWrapper>
      */
     private SelectionListener prUnlimitedCheckboxSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             Display display = prLimitText.getDisplay();
             Button okButton = getButton( IDialogConstants.OK_ID );
 
-            SizeLimitWrapper sizeLimitWrapper = (SizeLimitWrapper)getEditedElement();
+            SizeLimitWrapper sizeLimitWrapper = getEditedElement();
 
             if ( prUnlimitedCheckbox.getSelection() )
             {
@@ -589,11 +583,12 @@ public class SizeLimitDialog extends AbstractLimitDialog<SizeLimitWrapper>
      */
     private SelectionListener prNoEstimateCheckboxSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             Button okButton = getButton( IDialogConstants.OK_ID );
 
-            SizeLimitWrapper sizeLimitWrapper = (SizeLimitWrapper)getEditedElement();
+            SizeLimitWrapper sizeLimitWrapper = getEditedElement();
 
             sizeLimitWrapper.setNoEstimate( prNoEstimateCheckbox.getSelection() );
             limitText.setText( getEditedElement().toString() );
@@ -607,12 +602,13 @@ public class SizeLimitDialog extends AbstractLimitDialog<SizeLimitWrapper>
      */
     private SelectionListener prTotalUnlimitedCheckboxSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             Display display = prTotalLimitText.getDisplay();
             Button okButton = getButton( IDialogConstants.OK_ID );
 
-            SizeLimitWrapper sizeLimitWrapper = (SizeLimitWrapper)getEditedElement();
+            SizeLimitWrapper sizeLimitWrapper = getEditedElement();
 
             if ( prTotalUnlimitedCheckbox.getSelection() )
             {
@@ -639,12 +635,13 @@ public class SizeLimitDialog extends AbstractLimitDialog<SizeLimitWrapper>
      */
     private SelectionListener prTotalDisabledCheckboxSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             Display display = prTotalLimitText.getDisplay();
             Button okButton = getButton( IDialogConstants.OK_ID );
 
-            SizeLimitWrapper sizeLimitWrapper = (SizeLimitWrapper)getEditedElement();
+            SizeLimitWrapper sizeLimitWrapper = getEditedElement();
 
             if ( prTotalDisabledCheckbox.getSelection() )
             {
@@ -671,12 +668,13 @@ public class SizeLimitDialog extends AbstractLimitDialog<SizeLimitWrapper>
      */
     private SelectionListener prTotalHardCheckboxSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             Display display = prTotalLimitText.getDisplay();
             Button okButton = getButton( IDialogConstants.OK_ID );
 
-            SizeLimitWrapper sizeLimitWrapper = (SizeLimitWrapper)getEditedElement();
+            SizeLimitWrapper sizeLimitWrapper = getEditedElement();
 
             if ( prTotalHardCheckbox.getSelection() )
             {
@@ -720,6 +718,7 @@ public class SizeLimitDialog extends AbstractLimitDialog<SizeLimitWrapper>
     /**
      * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
      */
+    @Override
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
@@ -755,6 +754,7 @@ public class SizeLimitDialog extends AbstractLimitDialog<SizeLimitWrapper>
      * </pre>
      * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
+    @Override
     protected Control createDialogArea( Composite parent )
     {
         Composite composite = ( Composite ) super.createDialogArea( parent );
@@ -939,12 +939,13 @@ public class SizeLimitDialog extends AbstractLimitDialog<SizeLimitWrapper>
     /**
      * Initializes the UI from the Limit
      */
+    @Override
     protected void initDialog()
     {
         super.initDialog();
         
         // Deal with specific SizeLimit fields
-        LimitWrapper limitWrapper = (LimitWrapper)getEditedElement();
+        LimitWrapper limitWrapper = getEditedElement();
         
         if ( getEditedElement() != null )
         {

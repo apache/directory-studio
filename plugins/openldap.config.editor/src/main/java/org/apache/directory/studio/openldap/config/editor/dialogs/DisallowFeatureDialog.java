@@ -77,7 +77,7 @@ public class DisallowFeatureDialog extends AddEditDialog<DisallowFeatureEnum>
     private Button[] disallowFeatureCheckboxes = new Button[6];
     
     /** The already selected disaallowed features */
-    List<DisallowFeatureEnum> features = new ArrayList<DisallowFeatureEnum>();
+    List<DisallowFeatureEnum> features = new ArrayList<>();
     
     /**
      * Create a new instance of the DisallowFeatureDialog
@@ -94,6 +94,7 @@ public class DisallowFeatureDialog extends AddEditDialog<DisallowFeatureEnum>
     /**
      * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
      */
+    @Override
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
@@ -106,6 +107,7 @@ public class DisallowFeatureDialog extends AddEditDialog<DisallowFeatureEnum>
      */
     private SelectionListener checkboxSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             Object object = e.getSource();
@@ -149,6 +151,7 @@ public class DisallowFeatureDialog extends AddEditDialog<DisallowFeatureEnum>
      * </pre>
      * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
+    @Override
     protected Control createDialogArea( Composite parent )
     {
         Composite composite = ( Composite ) super.createDialogArea( parent );

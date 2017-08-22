@@ -29,7 +29,6 @@ import org.apache.directory.studio.ldapbrowser.common.widgets.search.EntryWidget
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.FilterWidget;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
@@ -40,7 +39,6 @@ import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -98,23 +96,22 @@ public class ReplicationOptionsDialog extends Dialog
     private FilterWidget logFilterWidget;
 
     // Listeners
-    private VerifyListener integerVerifyListener = new VerifyListener()
-    {
-        public void verifyText( VerifyEvent e )
+    private VerifyListener integerVerifyListener = event ->
         {
-            if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
+            if ( !event.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
             {
-                e.doit = false;
+                event.doit = false;
             }
-        }
-    };
+        };
 
     private SelectionListener editRetryButtonListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             // Getting the retry value
             String retryValue = null;
+            
             if ( syncRepl != null )
             {
                 Retry retry = syncRepl.getRetry();
@@ -127,22 +124,19 @@ public class ReplicationOptionsDialog extends Dialog
 
             // Creating and displaying a dialog to edit the retry value
             InputDialog dialog = new InputDialog( editRetryButton.getShell(), "Edit Retry Value", "Specify the retry value as a list of the <retry interval> and <# of retries> pairs:",
-                retryValue, new IInputValidator()
-                {
-                    public String isValid( String newText )
+                retryValue, newText ->
                     {
                         try
                         {
                             Retry.parse( newText );
                         }
-                        catch ( ParseException e )
+                        catch ( ParseException pe )
                         {
-                            return e.getMessage();
+                            return pe.getMessage();
                         }
 
                         return null;
-                    }
-                } );
+                    } );
 
             if ( InputDialog.OK == dialog.open() )
             {
@@ -162,6 +156,7 @@ public class ReplicationOptionsDialog extends Dialog
 
     private SelectionListener enableDeltaSyncReplCheckboxListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             boolean isChecked = enableDeltaSyncReplCheckbox.getSelection();
@@ -204,15 +199,14 @@ public class ReplicationOptionsDialog extends Dialog
      */
     private SyncRepl createDefaultSyncRepl()
     {
-        SyncRepl syncRepl = new SyncRepl();
-
-        return syncRepl;
+        return new SyncRepl();
     }
 
 
     /**
      * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
      */
+    @Override
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
@@ -223,6 +217,7 @@ public class ReplicationOptionsDialog extends Dialog
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void okPressed()
     {
         saveToSyncRepl();
@@ -234,6 +229,7 @@ public class ReplicationOptionsDialog extends Dialog
     /**
      * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
+    @Override
     protected Control createDialogArea( Composite parent )
     {
         // Creating the scrolled composite
@@ -277,6 +273,7 @@ public class ReplicationOptionsDialog extends Dialog
         replicationTypeComboViewer.setContentProvider( new ArrayContentProvider() );
         replicationTypeComboViewer.setLabelProvider( new LabelProvider()
         {
+            @Override
             public String getText( Object element )
             {
                 if ( element instanceof Type )
@@ -437,6 +434,7 @@ public class ReplicationOptionsDialog extends Dialog
         syncDataComboViewer.setContentProvider( new ArrayContentProvider() );
         syncDataComboViewer.setLabelProvider( new LabelProvider()
         {
+            @Override
             public String getText( Object element )
             {
                 if ( element instanceof SyncData )
@@ -521,7 +519,7 @@ public class ReplicationOptionsDialog extends Dialog
 
             if ( sizeLimit != -1 )
             {
-                sizeLimitText.setText( "" + sizeLimit );
+                sizeLimitText.setText( Integer.toString( sizeLimit ) );
             }
 
             // Time Limit
@@ -529,7 +527,7 @@ public class ReplicationOptionsDialog extends Dialog
 
             if ( timeLimit != -1 )
             {
-                timeLimitText.setText( "" + timeLimit );
+                timeLimitText.setText( Integer.toString( timeLimit ) );
             }
 
             // Network Timeout
@@ -537,7 +535,7 @@ public class ReplicationOptionsDialog extends Dialog
 
             if ( networkTimeout != -1 )
             {
-                networkTimeoutText.setText( "" + networkTimeout );
+                networkTimeoutText.setText( Integer.toString( networkTimeout ) );
             }
 
             // Timeout
@@ -545,7 +543,7 @@ public class ReplicationOptionsDialog extends Dialog
 
             if ( timeout != -1 )
             {
-                timeoutText.setText( "" + timeout );
+                timeoutText.setText( Integer.toString( timeout ) );
             }
 
             // Enable Schema Checking

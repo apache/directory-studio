@@ -28,7 +28,6 @@ import org.apache.directory.studio.common.ui.AddEditDialog;
 import org.apache.directory.studio.common.ui.dialogs.AttributeDialog;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.common.ui.widgets.TableWidget;
-import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.common.ui.wrappers.StringValueWrapper;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -109,6 +108,7 @@ public class DbIndexDialog extends AddEditDialog<DbIndexWrapper>
      * */ 
     private SelectionListener attributesCheckboxSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             attributeTable.enable();
@@ -121,9 +121,7 @@ public class DbIndexDialog extends AddEditDialog<DbIndexWrapper>
     /**
      * The attribute table listener
      */
-    private WidgetModifyListener attributeTableListener = new WidgetModifyListener()
-    {
-        public void widgetModified( WidgetModifyEvent e )
+    private WidgetModifyListener attributeTableListener = event ->
         {
             getEditedElement().getAttributes().clear();
             
@@ -133,8 +131,7 @@ public class DbIndexDialog extends AddEditDialog<DbIndexWrapper>
             }
 
             checkAndUpdateOkButtonEnableState();
-        }
-    };
+        };
 
     
     /**
@@ -143,6 +140,7 @@ public class DbIndexDialog extends AddEditDialog<DbIndexWrapper>
      */
     private SelectionListener defaultCheckboxSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             attributeTable.disable();
@@ -157,6 +155,7 @@ public class DbIndexDialog extends AddEditDialog<DbIndexWrapper>
      */
     private SelectionListener typeButtonSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             checkAndUpdateOkButtonEnableState();
@@ -181,7 +180,7 @@ public class DbIndexDialog extends AddEditDialog<DbIndexWrapper>
                     }
                 }
             }
-        };
+        }
     };
 
     
@@ -191,6 +190,7 @@ public class DbIndexDialog extends AddEditDialog<DbIndexWrapper>
      */
     private SelectionListener subCheckboxSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             DbIndexWrapper indexWrapper = getEditedElement();
@@ -228,6 +228,7 @@ public class DbIndexDialog extends AddEditDialog<DbIndexWrapper>
      */
     private SelectionListener subSubCheckboxSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             // Check that we aren't coming from a modification of the SUB button
@@ -401,6 +402,7 @@ public class DbIndexDialog extends AddEditDialog<DbIndexWrapper>
     /**
      * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
      */
+    @Override
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
@@ -433,6 +435,7 @@ public class DbIndexDialog extends AddEditDialog<DbIndexWrapper>
      * </pre>
      * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
+    @Override
     protected Control createDialogArea( Composite parent )
     {
         Composite composite = ( Composite ) super.createDialogArea( parent );
@@ -490,7 +493,7 @@ public class DbIndexDialog extends AddEditDialog<DbIndexWrapper>
         AttributeDialog attributeDialog = new AttributeDialog( parent.getShell() );
         attributeDialog.setAttributeNamesAndOids( attributeLoader.getAttributeNamesAndOids() );
         decorator.setDialog( attributeDialog );
-        attributeTable = new TableWidget<StringValueWrapper>( decorator );
+        attributeTable = new TableWidget<>( decorator );
 
         attributeTable.createWidgetNoEdit( attributesGroup, null );
         attributeTable.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 1, 1 ) );
@@ -618,7 +621,7 @@ public class DbIndexDialog extends AddEditDialog<DbIndexWrapper>
     
     private void initAttributeTable( Set<String> attributes )
     {
-        List<StringValueWrapper> attributeWrappers = new ArrayList<StringValueWrapper>();
+        List<StringValueWrapper> attributeWrappers = new ArrayList<>();
 
         if ( attributes != null )
         {
@@ -637,7 +640,7 @@ public class DbIndexDialog extends AddEditDialog<DbIndexWrapper>
      */
     protected void initDialog()
     {
-        DbIndexWrapper editedElement = (DbIndexWrapper)getEditedElement();
+        DbIndexWrapper editedElement = getEditedElement();
         
         if ( editedElement != null )
         {
@@ -655,7 +658,7 @@ public class DbIndexDialog extends AddEditDialog<DbIndexWrapper>
             // Index types
             Set<DbIndexTypeEnum> indexTypes = editedElement.getTypes();
 
-            if ( ( indexTypes != null ) && ( indexTypes.size() > 0 ) )
+            if ( ( indexTypes != null ) && !indexTypes.isEmpty() )
             {
                 presCheckbox.setSelection( indexTypes.contains( DbIndexTypeEnum.PRES ) );
                 eqCheckbox.setSelection( indexTypes.contains( DbIndexTypeEnum.EQ ) );
@@ -687,7 +690,7 @@ public class DbIndexDialog extends AddEditDialog<DbIndexWrapper>
      */
     protected void addNewElement( DbIndexWrapper editedElement )
     {
-        DbIndexWrapper newElement = (DbIndexWrapper)editedElement.clone();
+        DbIndexWrapper newElement = editedElement.clone();
         setEditedElement( newElement );
     }
 
@@ -706,15 +709,16 @@ public class DbIndexDialog extends AddEditDialog<DbIndexWrapper>
      * 
      * {@inheritDoc}
      */
+    @Override
     protected Button createButton(Composite parent, int id, String label, boolean defaultButton) 
     {
         Button button = super.createButton(parent, id, label, defaultButton);
 
         if ( id == IDialogConstants.OK_ID ) 
         {
-            DbIndexWrapper dbIndexWrapper = (DbIndexWrapper)getEditedElement();
+            DbIndexWrapper dbIndexWrapper = getEditedElement();
 
-            if ( ( dbIndexWrapper == null ) || ( dbIndexWrapper.getAttributes().size() == 0 ) )
+            if ( ( dbIndexWrapper == null ) || dbIndexWrapper.getAttributes().isEmpty() )
             {
                 button.setEnabled( false );
             }
@@ -744,12 +748,12 @@ public class DbIndexDialog extends AddEditDialog<DbIndexWrapper>
                 subAnyCheckbox.getSelection() ||
                 subFinalCheckbox.getSelection() || 
                 noLangCheckbox.getSelection() || 
-                noLangCheckbox.getSelection() ||
+                noTagsCheckbox.getSelection() || 
                 noSubtypesCheckbox.getSelection() );
         }
         else
         {
-            okButton.setEnabled( getEditedElement().getAttributes().size() > 0 );
+            okButton.setEnabled( !getEditedElement().getAttributes().isEmpty() );
         }
     }
 }

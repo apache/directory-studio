@@ -27,7 +27,6 @@ import org.apache.directory.studio.openldap.config.editor.wrappers.SaslSecPropsW
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -116,6 +115,7 @@ public class SaslSecPropsDialog extends Dialog
      */
     private SelectionListener checkboxSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             Object object = e.getSource();
@@ -232,9 +232,7 @@ public class SaslSecPropsDialog extends Dialog
     /**
      * The listener for the minSsf Limit Text
      */
-    private ModifyListener minSsfListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    private ModifyListener minSsfListener = event ->
         {
             Display display = minSsfText.getDisplay();
             Button okButton = getButton( IDialogConstants.OK_ID );
@@ -283,16 +281,13 @@ public class SaslSecPropsDialog extends Dialog
             minSsfText.setForeground( display.getSystemColor( color ) );
             saslSecPropsText.setText( saslSecPropsWrapper.toString() );
             okButton.setEnabled( valid );
-        }
-    };
+        };
 
     
     /**
      * The listener for the maxSsf Limit Text
      */
-    private ModifyListener maxSsfListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    private ModifyListener maxSsfListener = event ->
         {
             Display display = maxSsfText.getDisplay();
             Button okButton = getButton( IDialogConstants.OK_ID );
@@ -341,16 +336,13 @@ public class SaslSecPropsDialog extends Dialog
             maxSsfText.setForeground( display.getSystemColor( color ) );
             saslSecPropsText.setText( saslSecPropsWrapper.toString() );
             okButton.setEnabled( valid );
-        }
-    };
+        };
 
     
     /**
      * The listener for the maxBufSize Limit Text
      */
-    private ModifyListener maxBufSizeListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    private ModifyListener maxBufSizeListener = event ->
         {
             Display display = maxBufSizeText.getDisplay();
             Button okButton = getButton( IDialogConstants.OK_ID );
@@ -399,8 +391,7 @@ public class SaslSecPropsDialog extends Dialog
             maxBufSizeText.setForeground( display.getSystemColor( color ) );
             saslSecPropsText.setText( saslSecPropsWrapper.toString() );
             okButton.setEnabled( valid );
-        }
-    };
+        };
 
 
     /**
@@ -432,6 +423,7 @@ public class SaslSecPropsDialog extends Dialog
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
@@ -442,15 +434,7 @@ public class SaslSecPropsDialog extends Dialog
     /**
      * {@inheritDoc}
      */
-    protected void okPressed()
-    {
-        super.okPressed();
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     protected Control createDialogArea( Composite parent )
     {
         Composite composite = ( Composite ) super.createDialogArea( parent );

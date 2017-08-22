@@ -29,7 +29,6 @@ import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.EntryWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.FilterWidget;
@@ -38,22 +37,18 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
@@ -98,7 +93,7 @@ public class ReplicationConsumerDialog extends Dialog
     /** The connection */
     private IBrowserConnection browserConnection;
 
-    private List<String> attributes = new ArrayList<String>();
+    private List<String> attributes = new ArrayList<>();
 
     // UI widgets
     private Button okButton;
@@ -127,20 +122,15 @@ public class ReplicationConsumerDialog extends Dialog
     private Button attributesOnlyCheckbox;
 
     // Listeners
-    private VerifyListener integerVerifyListener = new VerifyListener()
-    {
-        public void verifyText( VerifyEvent e )
+    private VerifyListener integerVerifyListener = event ->
         {
-            if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
+            if ( !event.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
             {
-                e.doit = false;
+                event.doit = false;
             }
-        }
-    };
+        };
 
-    private ModifyListener replicatIdTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    private ModifyListener replicatIdTextListener = event ->
         {
             String replicaId = replicaIdText.getText();
 
@@ -154,19 +144,13 @@ public class ReplicationConsumerDialog extends Dialog
             }
 
             updateOkButtonEnableState();
-        }
-    };
+        };
 
-    private ISelectionChangedListener replicationTypeComboViewerListener = new ISelectionChangedListener()
-    {
-        public void selectionChanged( SelectionChangedEvent event )
-        {
-            syncRepl.setType( getReplicationType() );
-        }
-    };
+    private ISelectionChangedListener replicationTypeComboViewerListener = event -> syncRepl.setType( getReplicationType() );
 
     private SelectionListener configureReplicationButtonListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             ReplicationOptionsDialog dialog = new ReplicationOptionsDialog( getShell(), syncRepl, browserConnection );
@@ -178,27 +162,16 @@ public class ReplicationConsumerDialog extends Dialog
         }
     };
 
-    private ModifyListener hostTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    private ModifyListener hostTextListener = event ->
         {
             syncRepl.setProvider( getProvider() );
 
             updateOkButtonEnableState();
-        }
-    };
+        };
 
-    private ModifyListener portTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
-        {
-            syncRepl.setProvider( getProvider() );
-        }
-    };
+    private ModifyListener portTextListener = event -> syncRepl.setProvider( getProvider() );
 
-    private ISelectionChangedListener encryptionMethodComboViewerListener = new ISelectionChangedListener()
-    {
-        public void selectionChanged( SelectionChangedEvent event )
+    private ISelectionChangedListener encryptionMethodComboViewerListener = event ->
         {
             syncRepl.setProvider( getProvider() );
 
@@ -214,11 +187,11 @@ public class ReplicationConsumerDialog extends Dialog
             {
                 configureStartTlsButton.setEnabled( true );
             }
-        }
-    };
+        };
 
     private SelectionListener configureStartTlsButtonListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             // TODO
@@ -227,6 +200,7 @@ public class ReplicationConsumerDialog extends Dialog
 
     private SelectionListener authenticationTabFolderListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             // Simple Authentication
@@ -253,12 +227,10 @@ public class ReplicationConsumerDialog extends Dialog
             }
 
             refreshUI();
-        };
+        }
     };
 
-    private ModifyListener bindDnTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    private ModifyListener bindDnTextListener = event ->
         {
             String bindDn = bindDnText.getText();
 
@@ -270,12 +242,9 @@ public class ReplicationConsumerDialog extends Dialog
             {
                 syncRepl.setBindDn( null );
             }
-        }
-    };
+        };
 
-    private ModifyListener credentialsTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    private ModifyListener credentialsTextListener = event ->
         {
             String credentials = credentialsText.getText();
 
@@ -287,11 +256,11 @@ public class ReplicationConsumerDialog extends Dialog
             {
                 syncRepl.setCredentials( null );
             }
-        }
-    };
+        };
 
     private SelectionListener showCredentialsCheckboxListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             if ( showCredentialsCheckbox.getSelection() )
@@ -307,6 +276,7 @@ public class ReplicationConsumerDialog extends Dialog
 
     private SelectionListener configureSaslAuthenticationButtonListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             ReplicationSaslDialog dialog = new ReplicationSaslDialog( getShell(), syncRepl, browserConnection );
@@ -318,9 +288,7 @@ public class ReplicationConsumerDialog extends Dialog
         }
     };
 
-    private WidgetModifyListener searchBaseDnEntryWidgetListener = new WidgetModifyListener()
-    {
-        public void widgetModified( WidgetModifyEvent event )
+    private WidgetModifyListener searchBaseDnEntryWidgetListener = event ->
         {
             Dn searchBaseDn = searchBaseDnEntryWidget.getDn();
 
@@ -334,12 +302,9 @@ public class ReplicationConsumerDialog extends Dialog
             }
 
             updateOkButtonEnableState();
-        }
-    };
+        };
 
-    private WidgetModifyListener filterWidgetListener = new WidgetModifyListener()
-    {
-        public void widgetModified( WidgetModifyEvent event )
+    private WidgetModifyListener filterWidgetListener = event ->
         {
             String filter = filterWidget.getFilter();
 
@@ -351,35 +316,17 @@ public class ReplicationConsumerDialog extends Dialog
             {
                 syncRepl.setFilter( null );
             }
-        }
-    };
+        };
 
-    private ISelectionChangedListener scopeComboViewerListener = new ISelectionChangedListener()
-    {
-        public void selectionChanged( SelectionChangedEvent event )
-        {
-            syncRepl.setScope( getScope() );
-        }
-    };
+    private ISelectionChangedListener scopeComboViewerListener = event -> syncRepl.setScope( getScope() );
 
-    private ISelectionChangedListener attributesTableViewerSelectionChangedListener = new ISelectionChangedListener()
-    {
-        public void selectionChanged( SelectionChangedEvent event )
-        {
-            updateAttributesTableButtonsState();
-        }
-    };
+    private ISelectionChangedListener attributesTableViewerSelectionChangedListener = event -> updateAttributesTableButtonsState();
 
-    private IDoubleClickListener attributesTableViewerDoubleClickListener = new IDoubleClickListener()
-    {
-        public void doubleClick( DoubleClickEvent event )
-        {
-            editAttributeButtonAction();
-        }
-    };
+    private IDoubleClickListener attributesTableViewerDoubleClickListener = event -> editAttributeButtonAction();
 
     private SelectionListener addAttributeButtonListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             addAttributeButtonAction();
@@ -388,6 +335,7 @@ public class ReplicationConsumerDialog extends Dialog
 
     private SelectionListener editAttributeButtonListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             editAttributeButtonAction();
@@ -396,6 +344,7 @@ public class ReplicationConsumerDialog extends Dialog
 
     private SelectionListener deleteAttributeButtonListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             deleteAttributeButtonAction();
@@ -404,10 +353,11 @@ public class ReplicationConsumerDialog extends Dialog
 
     private SelectionListener attributesOnlyCheckboxListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             syncRepl.setAttrsOnly( attributesOnlyCheckbox.getSelection() );
-        };
+        }
     };
 
 
@@ -458,15 +408,14 @@ public class ReplicationConsumerDialog extends Dialog
      */
     private SyncRepl createDefaultSyncRepl()
     {
-        SyncRepl syncRepl = new SyncRepl();
-
-        return syncRepl;
+        return new SyncRepl();
     }
 
 
     /**
      * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
      */
+    @Override
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
@@ -477,6 +426,7 @@ public class ReplicationConsumerDialog extends Dialog
     /**
      * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
      */
+    @Override
     protected void createButtonsForButtonBar( Composite parent )
     {
         okButton = createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true );
@@ -487,17 +437,9 @@ public class ReplicationConsumerDialog extends Dialog
 
 
     /**
-     * {@inheritDoc}
-     */
-    protected void okPressed()
-    {
-        super.okPressed();
-    }
-
-
-    /**
      * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
+    @Override
     protected Control createDialogArea( Composite parent )
     {
         // Creating the scrolled composite
@@ -549,6 +491,7 @@ public class ReplicationConsumerDialog extends Dialog
         replicationTypeComboViewer.setContentProvider( new ArrayContentProvider() );
         replicationTypeComboViewer.setLabelProvider( new LabelProvider()
         {
+            @Override
             public String getText( Object element )
             {
                 if ( element instanceof Type )
@@ -607,6 +550,7 @@ public class ReplicationConsumerDialog extends Dialog
         encryptionMethodComboViewer.setContentProvider( new ArrayContentProvider() );
         encryptionMethodComboViewer.setLabelProvider( new LabelProvider()
         {
+            @Override
             public String getText( Object element )
             {
                 if ( element instanceof EncryptionMethod )
@@ -737,6 +681,7 @@ public class ReplicationConsumerDialog extends Dialog
         scopeComboViewer.setContentProvider( new ArrayContentProvider() );
         scopeComboViewer.setLabelProvider( new LabelProvider()
         {
+            @Override
             public String getText( Object element )
             {
                 if ( element instanceof Scope )
@@ -772,6 +717,7 @@ public class ReplicationConsumerDialog extends Dialog
         attributesTableViewer.setContentProvider( new ArrayContentProvider() );
         attributesTableViewer.setLabelProvider( new LabelProvider()
         {
+            @Override
             public String getText( Object element )
             {
                 if ( SchemaConstants.ALL_OPERATIONAL_ATTRIBUTES.equals( element ) )
@@ -784,9 +730,10 @@ public class ReplicationConsumerDialog extends Dialog
                 }
 
                 return super.getText( element );
-            };
+            }
 
 
+            @Override
             public Image getImage( Object element )
             {
                 return OpenLdapConfigurationPlugin.getDefault().getImage(
@@ -965,7 +912,7 @@ public class ReplicationConsumerDialog extends Dialog
 
                 if ( providerPort != Provider.NO_PORT )
                 {
-                    portText.setText( "" + providerPort );
+                    portText.setText( Integer.toString( providerPort ) );
                 }
                 else
                 {

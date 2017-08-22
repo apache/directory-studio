@@ -24,13 +24,11 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.jface.dialogs.Dialog;
@@ -39,10 +37,8 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
@@ -86,24 +82,11 @@ public class ValueSortingValueDialog extends Dialog
 
     // Listeners
 
-    private ModifyListener attributeComboViewerListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
-        {
-            checkAndUpdateOkButtonEnableState();
-        }
-    };
-    private WidgetModifyListener baseDnEntryWidgetListener = new WidgetModifyListener()
-    {
+    private ModifyListener attributeComboViewerListener = event -> checkAndUpdateOkButtonEnableState();
 
-        public void widgetModified( WidgetModifyEvent event )
-        {
-            checkAndUpdateOkButtonEnableState();
-        }
-    };
-    private ISelectionChangedListener sortMethodComboViewerListener = new ISelectionChangedListener()
-    {
-        public void selectionChanged( SelectionChangedEvent event )
+    private WidgetModifyListener baseDnEntryWidgetListener = event -> checkAndUpdateOkButtonEnableState();
+
+    private ISelectionChangedListener sortMethodComboViewerListener = event ->
         {
             Object selectedSortMethod = getSelectedSortMethod();
 
@@ -116,8 +99,7 @@ public class ValueSortingValueDialog extends Dialog
                 secondarySortMethodComboViewer.getCombo().setEnabled( false );
                 secondarySortMethodComboViewer.setSelection( new StructuredSelection( NONE_OPTION ) );
             }
-        }
-    };
+        };
 
 
     /**
@@ -175,7 +157,7 @@ public class ValueSortingValueDialog extends Dialog
      */
     private void initAttributeTypesList()
     {
-        connectionAttributeTypes = new ArrayList<String>();
+        connectionAttributeTypes = new ArrayList<>();
 
         if ( browserConnection != null )
         {
@@ -191,13 +173,7 @@ public class ValueSortingValueDialog extends Dialog
             }
 
             // Sorting the list
-            Collections.sort( connectionAttributeTypes, new Comparator<String>()
-            {
-                public int compare( String o1, String o2 )
-                {
-                    return o1.compareToIgnoreCase( o2 );
-                }
-            } );
+            Collections.sort( connectionAttributeTypes, ( o1, o2 ) -> o1.compareToIgnoreCase( o2 ) );
         }
     }
 
@@ -205,6 +181,7 @@ public class ValueSortingValueDialog extends Dialog
     /**
      * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
      */
+    @Override
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
@@ -215,6 +192,7 @@ public class ValueSortingValueDialog extends Dialog
     /**
      * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
      */
+    @Override
     protected void createButtonsForButtonBar( Composite parent )
     {
         okButton = createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true );
@@ -227,6 +205,7 @@ public class ValueSortingValueDialog extends Dialog
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void okPressed()
     {
         // Attribute
@@ -266,6 +245,7 @@ public class ValueSortingValueDialog extends Dialog
     /**
      * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
+    @Override
     protected Control createDialogArea( Composite parent )
     {
         // Creating the dialog composites
@@ -494,6 +474,7 @@ public class ValueSortingValueDialog extends Dialog
      */
     private class OlcValSortMethodEnumLabelProvider extends LabelProvider
     {
+        @Override
         public String getText( Object element )
         {
             if ( element instanceof OlcValSortMethodEnum )

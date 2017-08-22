@@ -27,7 +27,6 @@ import org.apache.directory.studio.openldap.common.ui.model.SsfStrengthEnum;
 import org.apache.directory.studio.openldap.config.editor.wrappers.SsfWrapper;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -133,6 +132,7 @@ public class SsfDialog extends AddEditDialog<SsfWrapper>
      */
     private SelectionListener featureSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             Object object = e.getSource();
@@ -192,6 +192,7 @@ public class SsfDialog extends AddEditDialog<SsfWrapper>
      */
     private SelectionListener checkboxSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             Object object = e.getSource();
@@ -204,7 +205,7 @@ public class SsfDialog extends AddEditDialog<SsfWrapper>
                 
                 SsfWrapper ssfWrapper = getEditedElement();
 
-                if ( selectedButton.getSelection() == true )
+                if ( selectedButton.getSelection() )
                 {
                     for ( int i = 0; i < strengthCheckbox.length; i++ )
                     {
@@ -269,9 +270,7 @@ public class SsfDialog extends AddEditDialog<SsfWrapper>
     /**
      * The listener for the other Text
      */
-    private ModifyListener otherTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    private ModifyListener otherTextListener = event ->
         {
             Display display = otherText.getDisplay();
             Button okButton = getButton( IDialogConstants.OK_ID );
@@ -306,8 +305,7 @@ public class SsfDialog extends AddEditDialog<SsfWrapper>
                 ssfText.setText( getEditedElement().toString() );
                 okButton.setEnabled( false );
             }
-        }
-    };
+        };
 
 
     /**
@@ -325,6 +323,7 @@ public class SsfDialog extends AddEditDialog<SsfWrapper>
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
@@ -335,6 +334,7 @@ public class SsfDialog extends AddEditDialog<SsfWrapper>
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void okPressed()
     {
         // Do nothing if the selected feature is NONE
@@ -369,6 +369,7 @@ public class SsfDialog extends AddEditDialog<SsfWrapper>
      * +-----------------------------------------------+
      * </pre>
      */
+    @Override
     protected Control createDialogArea( Composite parent )
     {
         Composite composite = ( Composite ) super.createDialogArea( parent );
@@ -392,13 +393,14 @@ public class SsfDialog extends AddEditDialog<SsfWrapper>
      * 
      * {@inheritDoc}
      */
+    @Override
     protected Button createButton(Composite parent, int id, String label, boolean defaultButton) 
     {
         Button button = super.createButton( parent, id, label, defaultButton );
 
         if ( id == IDialogConstants.OK_ID ) 
         {
-            SsfWrapper ssfWrapper = (SsfWrapper)getEditedElement();
+            SsfWrapper ssfWrapper = getEditedElement();
 
             if ( ssfWrapper != null )
             {
@@ -420,7 +422,7 @@ public class SsfDialog extends AddEditDialog<SsfWrapper>
      */
     protected void initDialog()
     {
-        SsfWrapper ssfWrapper = (SsfWrapper)getEditedElement();
+        SsfWrapper ssfWrapper = getEditedElement();
         
         if ( ssfWrapper != null )
         {

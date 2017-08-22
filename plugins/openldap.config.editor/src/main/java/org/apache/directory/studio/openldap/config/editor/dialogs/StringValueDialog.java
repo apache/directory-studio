@@ -25,7 +25,6 @@ import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.common.ui.wrappers.StringValueWrapper;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -79,9 +78,7 @@ public class StringValueDialog extends AddEditDialog<StringValueWrapper>
     /**
      * The listener for the String Text
      */
-    private ModifyListener stringValueTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    private ModifyListener stringValueTextListener = event ->
         {
             Button okButton = getButton( IDialogConstants.OK_ID );
             
@@ -93,13 +90,13 @@ public class StringValueDialog extends AddEditDialog<StringValueWrapper>
 
             getEditedElement().setValue( stringValue.getText() );
             okButton.setEnabled( true );
-        }
-    };
+        };
     
     
     /**
      * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
      */
+    @Override
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
@@ -119,6 +116,7 @@ public class StringValueDialog extends AddEditDialog<StringValueWrapper>
      * +---------------------------------------+
      * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
+    @Override
     protected Control createDialogArea( Composite parent )
     {
         Composite composite = ( Composite ) super.createDialogArea( parent );
@@ -150,7 +148,7 @@ public class StringValueDialog extends AddEditDialog<StringValueWrapper>
      */
     protected void initDialog()
     {
-        StringValueWrapper editedElement = (StringValueWrapper)getEditedElement();
+        StringValueWrapper editedElement = getEditedElement();
         
         if ( editedElement != null )
         {
@@ -184,7 +182,7 @@ public class StringValueDialog extends AddEditDialog<StringValueWrapper>
      */
     public void addNewElement( StringValueWrapper editedElement )
     {
-        StringValueWrapper newElement = (StringValueWrapper)editedElement.clone();
+        StringValueWrapper newElement = editedElement.clone();
         setEditedElement( newElement );
     }
 

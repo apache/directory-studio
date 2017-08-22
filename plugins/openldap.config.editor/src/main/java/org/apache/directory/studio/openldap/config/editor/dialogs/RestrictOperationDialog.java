@@ -85,7 +85,7 @@ public class RestrictOperationDialog extends AddEditDialog<RestrictOperationEnum
     private Button[] restrictOperationCheckboxes = new Button[16];
     
     /** The already selected Restricted Operations */
-    List<RestrictOperationEnum> operations = new ArrayList<RestrictOperationEnum>();
+    List<RestrictOperationEnum> operations = new ArrayList<>();
     
     /**
      * Create a new instance of the RestrictOperationDialog
@@ -102,6 +102,7 @@ public class RestrictOperationDialog extends AddEditDialog<RestrictOperationEnum
     /**
      * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
      */
+    @Override
     protected void configureShell( Shell shell )
     {
         super.configureShell( shell );
@@ -114,6 +115,7 @@ public class RestrictOperationDialog extends AddEditDialog<RestrictOperationEnum
      */
     private SelectionListener checkboxSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             Object object = e.getSource();
@@ -155,6 +157,7 @@ public class RestrictOperationDialog extends AddEditDialog<RestrictOperationEnum
      * </pre>
      * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
+    @Override
     protected Control createDialogArea( Composite parent )
     {
         Composite composite = ( Composite ) super.createDialogArea( parent );

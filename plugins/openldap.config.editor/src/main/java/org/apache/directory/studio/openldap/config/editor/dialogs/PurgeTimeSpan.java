@@ -192,7 +192,7 @@ public class PurgeTimeSpan
         // Initializing parsing objects
         int position = 0;
         char c;
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         boolean hoursParsed = false;
         boolean minutesParsed = false;
 
@@ -221,7 +221,7 @@ public class PurgeTimeSpan
                         this.days = days;
                     }
 
-                    buffer = new StringBuffer();
+                    buffer = new StringBuilder();
                 }
                 // Colon sign
                 else if ( ':' == c )
@@ -240,7 +240,7 @@ public class PurgeTimeSpan
                         }
 
                         hoursParsed = true;
-                        buffer = new StringBuffer();
+                        buffer = new StringBuilder();
                     }
                     else
                     {
@@ -256,7 +256,7 @@ public class PurgeTimeSpan
                         }
 
                         minutesParsed = true;
-                        buffer = new StringBuffer();
+                        buffer = new StringBuilder();
                     }
                 }
                 else
@@ -428,7 +428,7 @@ public class PurgeTimeSpan
         }
         else
         {
-            return "" + value;
+            return Integer.toString( value );
         }
     }
 

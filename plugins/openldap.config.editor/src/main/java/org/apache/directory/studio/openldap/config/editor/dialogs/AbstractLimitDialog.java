@@ -26,7 +26,6 @@ import org.apache.directory.studio.openldap.config.editor.wrappers.SizeLimitWrap
 import org.apache.directory.studio.openldap.config.editor.wrappers.TimeLimitWrapper;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -184,9 +183,7 @@ public abstract class AbstractLimitDialog<E> extends AddEditDialog<E>
     /**
      * The listener for the Soft Limit Text
      */
-    protected ModifyListener softLimitTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    protected ModifyListener softLimitTextListener = event ->
         {
             Display display = softLimitText.getDisplay();
             Button okButton = getButton( IDialogConstants.OK_ID );
@@ -265,16 +262,13 @@ public abstract class AbstractLimitDialog<E> extends AddEditDialog<E>
             }
             
             okButton.setEnabled( isValid() );
-        }
-    };
+        };
     
     
     /**
      * The listener for the Hard Limit Text
      */
-    protected ModifyListener hardLimitTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    protected ModifyListener hardLimitTextListener = event ->
         {
             Display display = hardLimitText.getDisplay();
             Button okButton = getButton( IDialogConstants.OK_ID );
@@ -348,16 +342,13 @@ public abstract class AbstractLimitDialog<E> extends AddEditDialog<E>
             {
                 okButton.setEnabled( isValid() );
             }
-        }
-    };
+        };
     
     
     /**
      * The listener for the Global Limit Text
      */
-    protected ModifyListener globalLimitTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    protected ModifyListener globalLimitTextListener = event ->
         {
             Display display = globalLimitText.getDisplay();
             Button okButton = getButton( IDialogConstants.OK_ID );
@@ -418,8 +409,7 @@ public abstract class AbstractLimitDialog<E> extends AddEditDialog<E>
             globalLimitText.setForeground( display.getSystemColor( color ) );
             globalUnlimitedCheckbox.setSelection( unlimited );
             okButton.setEnabled( isValid() );
-        }
-    };
+        };
     
     
     /**
@@ -427,6 +417,7 @@ public abstract class AbstractLimitDialog<E> extends AddEditDialog<E>
      */
     protected SelectionListener softUnlimitedCheckboxSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             Display display = softLimitText.getDisplay();
@@ -464,6 +455,7 @@ public abstract class AbstractLimitDialog<E> extends AddEditDialog<E>
      */
     protected SelectionListener hardUnlimitedCheckboxSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             Display display = hardLimitText.getDisplay();
@@ -496,6 +488,7 @@ public abstract class AbstractLimitDialog<E> extends AddEditDialog<E>
      */
     protected SelectionListener hardSoftCheckboxSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             Display display = hardLimitText.getDisplay();
@@ -546,6 +539,7 @@ public abstract class AbstractLimitDialog<E> extends AddEditDialog<E>
      */
     protected SelectionListener globalUnlimitedCheckboxSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             Display display = globalLimitText.getDisplay();
@@ -574,6 +568,7 @@ public abstract class AbstractLimitDialog<E> extends AddEditDialog<E>
      * Construct the new TimeLimit from what we have in the dialog
      * {@inheritDoc}
      */
+    @Override
     protected void okPressed()
     {
         newLimitStr = getEditedElement().toString();
