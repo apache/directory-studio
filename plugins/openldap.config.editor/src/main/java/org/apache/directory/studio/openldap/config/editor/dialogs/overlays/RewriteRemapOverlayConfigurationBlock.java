@@ -26,10 +26,8 @@ import java.util.List;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
@@ -54,7 +52,7 @@ import org.apache.directory.studio.openldap.config.model.overlay.OlcRwmConfig;
 public class RewriteRemapOverlayConfigurationBlock extends AbstractOverlayDialogConfigurationBlock<OlcRwmConfig>
 {
     /** The mappings list */
-    private List<String> mappings = new ArrayList<String>();
+    private List<String> mappings = new ArrayList<>();
 
     // UI widgets
     private TableViewer mappingsTableViewer;
@@ -63,22 +61,14 @@ public class RewriteRemapOverlayConfigurationBlock extends AbstractOverlayDialog
     private Button deleteMappingButton;
 
     // Listeners
-    private ISelectionChangedListener mappingsTableViewerSelectionChangedListener = new ISelectionChangedListener()
-    {
-        public void selectionChanged( SelectionChangedEvent event )
-        {
+    private ISelectionChangedListener mappingsTableViewerSelectionChangedListener =  event ->
             deleteMappingButton.setEnabled( !mappingsTableViewer.getSelection().isEmpty() );
-        }
-    };
-    private IDoubleClickListener mappingsTableViewerDoubleClickListener = new IDoubleClickListener()
-    {
-        public void doubleClick( DoubleClickEvent event )
-        {
-            editMappingButtonAction();
-        }
-    };
+
+    private IDoubleClickListener mappingsTableViewerDoubleClickListener =  event -> editMappingButtonAction();
+
     private SelectionListener addMappingButtonSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             RwmMappingDialog dialog = new RwmMappingDialog( addMappingButton.getShell(), browserConnection, "" );
@@ -94,6 +84,7 @@ public class RewriteRemapOverlayConfigurationBlock extends AbstractOverlayDialog
     };
     private SelectionListener editMappingButtonSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             editMappingButtonAction();
@@ -101,6 +92,7 @@ public class RewriteRemapOverlayConfigurationBlock extends AbstractOverlayDialog
     };
     private SelectionListener deleteMappingButtonSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             StructuredSelection selection = ( StructuredSelection ) mappingsTableViewer.getSelection();
@@ -127,12 +119,15 @@ public class RewriteRemapOverlayConfigurationBlock extends AbstractOverlayDialog
         OlcRwmConfig overlay )
     {
         super( dialog, connection );
+        
         if ( overlay == null )
         {
-            overlay = new OlcRwmConfig();
+            setOverlay( new OlcRwmConfig() );
         }
-
-        setOverlay( overlay );
+        else
+        {
+            setOverlay( overlay );
+        }
     }
 
 

@@ -31,7 +31,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
@@ -65,7 +64,7 @@ import org.apache.directory.studio.openldap.config.model.overlay.OlcAccessLogCon
 public class AccessLogOverlayConfigurationBlock extends AbstractOverlayDialogConfigurationBlock<OlcAccessLogConfig>
 {
     /** The attributes list */
-    private List<String> attributes = new ArrayList<String>();
+    private List<String> attributes = new ArrayList<>();
 
     // UI widgets
     private EntryWidget databaseEntryWidget;
@@ -85,15 +84,12 @@ public class AccessLogOverlayConfigurationBlock extends AbstractOverlayDialogCon
     private Spinner purgeIntervalSecondsSpinner;
 
     // Listeners
-    private ISelectionChangedListener attributesTableViewerSelectionChangedListener = new ISelectionChangedListener()
-    {
-        public void selectionChanged( SelectionChangedEvent event )
-        {
+    private ISelectionChangedListener attributesTableViewerSelectionChangedListener = event ->
             deleteAttributeButton.setEnabled( !attributesTableViewer.getSelection().isEmpty() );
-        }
-    };
-    private SelectionListener addAttributeButtonSelectionListener = new SelectionAdapter()
+
+            private SelectionListener addAttributeButtonSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             AttributeDialog dialog = new AttributeDialog( addAttributeButton.getShell(), browserConnection );
@@ -112,6 +108,7 @@ public class AccessLogOverlayConfigurationBlock extends AbstractOverlayDialogCon
     };
     private SelectionListener deleteAttributeButtonSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             StructuredSelection selection = ( StructuredSelection ) attributesTableViewer.getSelection();
@@ -154,10 +151,12 @@ public class AccessLogOverlayConfigurationBlock extends AbstractOverlayDialogCon
 
         if ( overlay == null )
         {
-            overlay = new OlcAccessLogConfig();
+            setOverlay( new OlcAccessLogConfig() );
         }
-
-        setOverlay( overlay );
+        else
+        {
+            setOverlay( overlay );
+        }
     }
 
 
@@ -199,7 +198,7 @@ public class AccessLogOverlayConfigurationBlock extends AbstractOverlayDialogCon
         logOperationsWidget = new LogOperationsWidget();
         logOperationsWidget.create( logOperationsGroup );
         logOperationsWidget.getControl().setLayoutData( new GridData( SWT.BEGINNING, SWT.CENTER, false, false, 2, 1 ) );
-        List<LogOperationEnum> logOperations = new ArrayList<LogOperationEnum>();
+        List<LogOperationEnum> logOperations = new ArrayList<>();
         logOperations.add( LogOperationEnum.ADD );
         logOperations.add( LogOperationEnum.ABANDON );
         logOperations.add( LogOperationEnum.SESSION );
@@ -229,6 +228,7 @@ public class AccessLogOverlayConfigurationBlock extends AbstractOverlayDialogCon
         attributesTableViewer.setContentProvider( new ArrayContentProvider() );
         attributesTableViewer.setLabelProvider( new LabelProvider()
         {
+            @Override
             public Image getImage( Object element )
             {
                 return OpenLdapConfigurationPlugin.getDefault().getImage(
@@ -369,7 +369,7 @@ public class AccessLogOverlayConfigurationBlock extends AbstractOverlayDialogCon
             //
             List<String> logOperationsValues = overlay.getOlcAccessLogOps();
 
-            if ( ( logOperationsValues != null ) && ( logOperationsValues.size() > 0 ) )
+            if ( ( logOperationsValues != null ) && !logOperationsValues.isEmpty() )
             {
                 logOperationsWidget.setInput( getAccessLogOperations( logOperationsValues ) );
             }
@@ -383,7 +383,7 @@ public class AccessLogOverlayConfigurationBlock extends AbstractOverlayDialogCon
             //
             List<String> attributeValues = overlay.getOlcAccessLogOldAttr();
 
-            if ( ( attributeValues != null ) && ( attributeValues.size() > 0 ) )
+            if ( ( attributeValues != null ) && !attributeValues.isEmpty() )
             {
                 for ( String attribute : attributeValues )
                 {
@@ -487,7 +487,7 @@ public class AccessLogOverlayConfigurationBlock extends AbstractOverlayDialogCon
      */
     private List<String> getAccessLogOperationsValues()
     {
-        List<String> accessLogOperations = new ArrayList<String>();
+        List<String> accessLogOperations = new ArrayList<>();
         List<LogOperationEnum> logOperations = logOperationsWidget.getSelectedOperationsList();
 
         for ( LogOperationEnum logOperation : logOperations )
@@ -507,7 +507,7 @@ public class AccessLogOverlayConfigurationBlock extends AbstractOverlayDialogCon
      */
     private List<LogOperationEnum> getAccessLogOperations( List<String> logOperationsValues )
     {
-        List<LogOperationEnum> logOperations = new ArrayList<LogOperationEnum>();
+        List<LogOperationEnum> logOperations = new ArrayList<>();
 
         for ( String logOperationValue : logOperationsValues )
         {

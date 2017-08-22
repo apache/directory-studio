@@ -52,12 +52,15 @@ public class AuditLogOverlayConfigurationBlock extends AbstractOverlayDialogConf
     public AuditLogOverlayConfigurationBlock( OverlayDialog dialog, OlcAuditlogConfig overlay )
     {
         super( dialog );
+        
         if ( overlay == null )
         {
-            overlay = new OlcAuditlogConfig();
+            setOverlay( new OlcAuditlogConfig() );
         }
-
-        setOverlay( overlay );
+        else
+        {
+            setOverlay( overlay );
+        }
     }
 
 
@@ -85,7 +88,7 @@ public class AuditLogOverlayConfigurationBlock extends AbstractOverlayDialogConf
         {
             List<String> auditLogFilesList = overlay.getOlcAuditlogFile();
 
-            if ( auditLogFilesList != null && auditLogFilesList.size() > 0 )
+            if ( auditLogFilesList != null && !auditLogFilesList.isEmpty() )
             {
                 fileBrowserWidget.setFilename( auditLogFilesList.get( 0 ) );
             }

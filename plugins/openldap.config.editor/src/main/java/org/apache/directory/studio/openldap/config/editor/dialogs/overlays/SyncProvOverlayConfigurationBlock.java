@@ -21,8 +21,6 @@ package org.apache.directory.studio.openldap.config.editor.dialogs.overlays;
 
 
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
-import org.eclipse.swt.events.VerifyEvent;
-import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -57,12 +55,15 @@ public class SyncProvOverlayConfigurationBlock extends AbstractOverlayDialogConf
     public SyncProvOverlayConfigurationBlock( OverlayDialog dialog, OlcSyncProvConfig overlay )
     {
         super( dialog );
+        
         if ( overlay == null )
         {
-            overlay = new OlcSyncProvConfig();
+            setOverlay( new OlcSyncProvConfig() );
         }
-
-        setOverlay( overlay );
+        else
+        {
+            setOverlay( overlay );
+        }
     }
 
 
@@ -107,16 +108,13 @@ public class SyncProvOverlayConfigurationBlock extends AbstractOverlayDialogConf
     {
         Text integerText = BaseWidgetUtils.createText( parent, text, span );
 
-        integerText.addVerifyListener( new VerifyListener()
-        {
-            public void verifyText( VerifyEvent e )
+        integerText.addVerifyListener(  event ->
             {
-                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
+                if ( !event.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
                 {
-                    e.doit = false;
+                    event.doit = false;
                 }
-            }
-        } );
+            } );
 
         GridData gd = new GridData();
         gd.widthHint = 40;
@@ -147,7 +145,7 @@ public class SyncProvOverlayConfigurationBlock extends AbstractOverlayDialogConf
                     {
 
                         int checkpointOperations = Integer.parseInt( checkpointConfigurationElements[0] );
-                        checkpointOperationsText.setText( "" + checkpointOperations );
+                        checkpointOperationsText.setText( Integer.toString( checkpointOperations ) );
                     }
                     catch ( NumberFormatException e )
                     {
@@ -160,7 +158,7 @@ public class SyncProvOverlayConfigurationBlock extends AbstractOverlayDialogConf
                     {
 
                         int checkpointMinutes = Integer.parseInt( checkpointConfigurationElements[1] );
-                        checkpointMinutesText.setText( "" + checkpointMinutes );
+                        checkpointMinutesText.setText( Integer.toString( checkpointMinutes ) );
                     }
                     catch ( NumberFormatException e )
                     {

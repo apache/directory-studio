@@ -61,10 +61,12 @@ public class PasswordPolicyOverlayConfigurationBlock extends AbstractOverlayDial
 
         if ( overlay == null )
         {
-            overlay = new OlcPPolicyConfig();
+            setOverlay( new OlcPPolicyConfig() );
         }
-
-        setOverlay( overlay );
+        else
+        {
+            setOverlay( overlay );
+        }
     }
 
 

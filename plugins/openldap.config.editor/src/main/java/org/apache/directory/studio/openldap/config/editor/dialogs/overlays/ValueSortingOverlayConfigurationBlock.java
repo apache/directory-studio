@@ -26,10 +26,8 @@ import java.util.List;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
@@ -55,7 +53,7 @@ public class ValueSortingOverlayConfigurationBlock extends
     AbstractOverlayDialogConfigurationBlock<OlcValSortConfig>
 {
     /** The value sorts list */
-    private List<String> valueSorts = new ArrayList<String>();
+    private List<String> valueSorts = new ArrayList<>();
 
     // UI widgets
     private TableViewer valueSortsTableViewer;
@@ -64,22 +62,14 @@ public class ValueSortingOverlayConfigurationBlock extends
     private Button deleteValueSortButton;
 
     // Listeners
-    private ISelectionChangedListener valueSortsTableViewerSelectionChangedListener = new ISelectionChangedListener()
-    {
-        public void selectionChanged( SelectionChangedEvent event )
-        {
-            deleteValueSortButton.setEnabled( !valueSortsTableViewer.getSelection().isEmpty() );
-        }
-    };
-    private IDoubleClickListener valueSortsTableViewerDoubleClickListener = new IDoubleClickListener()
-    {
-        public void doubleClick( DoubleClickEvent event )
-        {
-            editValueSortButtonAction();
-        }
-    };
+    private ISelectionChangedListener valueSortsTableViewerSelectionChangedListener =  event ->
+        deleteValueSortButton.setEnabled( !valueSortsTableViewer.getSelection().isEmpty() );
+
+    private IDoubleClickListener valueSortsTableViewerDoubleClickListener =  event -> editValueSortButtonAction();
+
     private SelectionListener addValueSortButtonSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             ValueSortingValueDialog dialog = new ValueSortingValueDialog( addValueSortButton.getShell(),
@@ -96,6 +86,7 @@ public class ValueSortingOverlayConfigurationBlock extends
     };
     private SelectionListener editValueSortButtonSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             editValueSortButtonAction();
@@ -103,6 +94,7 @@ public class ValueSortingOverlayConfigurationBlock extends
     };
     private SelectionListener deleteValueSortButtonSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             StructuredSelection selection = ( StructuredSelection ) valueSortsTableViewer.getSelection();
@@ -129,12 +121,15 @@ public class ValueSortingOverlayConfigurationBlock extends
         OlcValSortConfig overlay )
     {
         super( dialog, connection );
+        
         if ( overlay == null )
         {
-            overlay = new OlcValSortConfig();
+            setOverlay( new OlcValSortConfig() );
         }
-
-        setOverlay( overlay );
+        else
+        {
+            setOverlay( overlay );
+        }
     }
 
 

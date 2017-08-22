@@ -104,10 +104,12 @@ public class MemberOfOverlayConfigurationBlock extends AbstractOverlayDialogConf
 
         if ( overlay == null )
         {
-            overlay = new OlcMemberOf();
+            setOverlay( new OlcMemberOf() );
         }
-
-        setOverlay( overlay );
+        else
+        {
+            setOverlay( overlay );
+        }
 
         init();
     }
@@ -128,8 +130,8 @@ public class MemberOfOverlayConfigurationBlock extends AbstractOverlayDialogConf
      */
     private void initAttributeTypesAndObjectClassesLists()
     {
-        connectionAttributeTypes = new ArrayList<String>();
-        connectionObjectClasses = new ArrayList<String>();
+        connectionAttributeTypes = new ArrayList<>();
+        connectionObjectClasses = new ArrayList<>();
 
         if ( browserConnection != null )
         {
@@ -156,13 +158,7 @@ public class MemberOfOverlayConfigurationBlock extends AbstractOverlayDialogConf
             }
 
             // Creating a case insensitive comparator
-            Comparator<String> ignoreCaseComparator = new Comparator<String>()
-            {
-                public int compare( String o1, String o2 )
-                {
-                    return o1.compareToIgnoreCase( o2 );
-                }
-            };
+            Comparator<String> ignoreCaseComparator = ( o1, o2 ) ->  o1.compareToIgnoreCase( o2 );
 
             // Sorting the lists
             Collections.sort( connectionAttributeTypes, ignoreCaseComparator );
@@ -177,7 +173,7 @@ public class MemberOfOverlayConfigurationBlock extends AbstractOverlayDialogConf
     private void initResultCodesList()
     {
         // Initializing the list
-        resultCodes = new ArrayList<ResultCodeEnum>();
+        resultCodes = new ArrayList<>();
 
         // Adding all result codes to the list
         resultCodes.add( ResultCodeEnum.SUCCESS );
@@ -227,13 +223,7 @@ public class MemberOfOverlayConfigurationBlock extends AbstractOverlayDialogConf
         resultCodes.add( ResultCodeEnum.UNKNOWN );
 
         // Sorting the list
-        Collections.sort( resultCodes, new Comparator<ResultCodeEnum>()
-        {
-            public int compare( ResultCodeEnum o1, ResultCodeEnum o2 )
-            {
-                return Integer.compare( o1.getResultCode(), o2.getResultCode() );
-            }
-        } );
+        Collections.sort( resultCodes, ( o1, o2 ) -> Integer.compare( o1.getResultCode(), o2.getResultCode() ) );
     }
 
 
@@ -281,6 +271,7 @@ public class MemberOfOverlayConfigurationBlock extends AbstractOverlayDialogConf
         danglingReferenceBehaviorComboViewer.setContentProvider( new ArrayContentProvider() );
         danglingReferenceBehaviorComboViewer.setLabelProvider( new LabelProvider()
         {
+            @Override
             public String getText( Object element )
             {
                 if ( element instanceof OlcMemberOfDanglingReferenceBehaviorEnum )
@@ -299,7 +290,7 @@ public class MemberOfOverlayConfigurationBlock extends AbstractOverlayDialogConf
                 }
 
                 return super.getText( element );
-            };
+            }
         } );
         danglingReferenceBehaviorComboViewer.setInput( new OlcMemberOfDanglingReferenceBehaviorEnum[]
             {
@@ -316,6 +307,7 @@ public class MemberOfOverlayConfigurationBlock extends AbstractOverlayDialogConf
         danglingReferenceErrorCodeComboViewer.setContentProvider( new ArrayContentProvider() );
         danglingReferenceErrorCodeComboViewer.setLabelProvider( new LabelProvider()
         {
+            @Override
             public String getText( Object element )
             {
                 if ( element instanceof ResultCodeEnum )
@@ -327,7 +319,7 @@ public class MemberOfOverlayConfigurationBlock extends AbstractOverlayDialogConf
                 }
 
                 return super.getText( element );
-            };
+            }
         } );
         danglingReferenceErrorCodeComboViewer.setInput( resultCodes );
 
@@ -506,7 +498,7 @@ public class MemberOfOverlayConfigurationBlock extends AbstractOverlayDialogConf
             if ( ( danglingReferenceErrorCode != null )
                 && ( !ResultCodeEnum.CONSTRAINT_VIOLATION.equals( danglingReferenceErrorCode ) ) )
             {
-                overlay.setOlcMemberOfDanglingError( danglingReferenceErrorCode.getResultCode() + "" );
+                overlay.setOlcMemberOfDanglingError( Integer.toString( danglingReferenceErrorCode.getResultCode() ) );
             }
             else
             {

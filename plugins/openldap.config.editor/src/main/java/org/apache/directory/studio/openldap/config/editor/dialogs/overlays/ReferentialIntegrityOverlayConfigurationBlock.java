@@ -30,7 +30,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
@@ -62,7 +61,7 @@ public class ReferentialIntegrityOverlayConfigurationBlock extends
     private static final String DEFAULT_MODIFIER_NAME = "cn=Referential Integrity Overlay";
 
     /** The attributes list */
-    private List<String> attributes = new ArrayList<String>();
+    private List<String> attributes = new ArrayList<>();
 
     // UI widgets
     private TableViewer attributesTableViewer;
@@ -72,15 +71,12 @@ public class ReferentialIntegrityOverlayConfigurationBlock extends
     private EntryWidget modifierNameEntryWidget;
 
     // Listeners
-    private ISelectionChangedListener attributesTableViewerSelectionChangedListener = new ISelectionChangedListener()
-    {
-        public void selectionChanged( SelectionChangedEvent event )
-        {
-            deleteAttributeButton.setEnabled( !attributesTableViewer.getSelection().isEmpty() );
-        }
-    };
+    private ISelectionChangedListener attributesTableViewerSelectionChangedListener =  event ->
+        deleteAttributeButton.setEnabled( !attributesTableViewer.getSelection().isEmpty() );
+        
     private SelectionListener addAttributeButtonSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             AttributeDialog dialog = new AttributeDialog( addAttributeButton.getShell(), browserConnection );
@@ -99,6 +95,7 @@ public class ReferentialIntegrityOverlayConfigurationBlock extends
     };
     private SelectionListener deleteAttributeButtonSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             StructuredSelection selection = ( StructuredSelection ) attributesTableViewer.getSelection();
@@ -125,12 +122,15 @@ public class ReferentialIntegrityOverlayConfigurationBlock extends
         OlcRefintConfig overlay )
     {
         super( dialog, connection );
+        
         if ( overlay == null )
         {
-            overlay = new OlcRefintConfig();
+            setOverlay( new OlcRefintConfig() );
         }
-
-        setOverlay( overlay );
+        else
+        {
+            setOverlay( overlay );
+        }
     }
 
 
@@ -154,6 +154,7 @@ public class ReferentialIntegrityOverlayConfigurationBlock extends
         attributesTableViewer.setContentProvider( new ArrayContentProvider() );
         attributesTableViewer.setLabelProvider( new LabelProvider()
         {
+            @Override
             public Image getImage( Object element )
             {
                 return OpenLdapConfigurationPlugin.getDefault().getImage(
@@ -198,7 +199,7 @@ public class ReferentialIntegrityOverlayConfigurationBlock extends
             // Attributes
             List<String> attributeValues = overlay.getOlcRefintAttribute();
 
-            if ( ( attributeValues != null ) && ( attributeValues.size() > 0 ) )
+            if ( ( attributeValues != null ) && attributeValues.isEmpty() )
             {
                 for ( String attribute : attributeValues )
                 {
