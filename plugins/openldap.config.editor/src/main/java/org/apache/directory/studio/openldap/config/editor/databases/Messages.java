@@ -31,6 +31,12 @@ import java.util.ResourceBundle;
  */
 public class Messages
 {
+    private Messages()
+    {
+        // Nothing to do
+    }
+    
+    
     /** The resource name */
     private static final ResourceBundle RESOURCE_BUNDLE = 
         ResourceBundle.getBundle( Messages.class.getPackage().getName() + ".messages" );

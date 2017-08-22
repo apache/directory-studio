@@ -29,7 +29,6 @@ import org.apache.directory.studio.common.ui.CommonUIUtils;
 import org.apache.directory.studio.common.ui.widgets.AbstractWidget;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.common.ui.widgets.TableWidget;
-import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.common.ui.wrappers.StringValueWrapper;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
@@ -72,20 +71,16 @@ import org.apache.directory.studio.openldap.syncrepl.SyncReplParserException;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -296,13 +291,13 @@ import org.eclipse.ui.forms.widgets.Section;
 public class DatabasesDetailsPage implements IDetailsPage
 {
     /** The frontend database type array */
-    private static DatabaseTypeEnum[] FRONTEND_DATABASE_TYPES = new DatabaseTypeEnum[]
-        {
-            DatabaseTypeEnum.FRONTEND
+    private static final DatabaseTypeEnum[] FRONTEND_DATABASE_TYPES = new DatabaseTypeEnum[]
+    {
+        DatabaseTypeEnum.FRONTEND
     };
 
     /** The frontend database type array */
-    private static DatabaseTypeEnum[] CONFIG_DATABASE_TYPES = new DatabaseTypeEnum[]
+    private static final DatabaseTypeEnum[] CONFIG_DATABASE_TYPES = new DatabaseTypeEnum[]
         {
             DatabaseTypeEnum.CONFIG
     };
@@ -438,6 +433,7 @@ public class DatabasesDetailsPage implements IDetailsPage
      */
     private SelectionListener sizeLimitEditSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             SizeLimitDialog dialog = new SizeLimitDialog( sizeLimitText.getShell(), sizeLimitText.getText() );
@@ -458,30 +454,19 @@ public class DatabasesDetailsPage implements IDetailsPage
     /**
      * A listener for changes on the Overlay table 
      */
-    private ISelectionChangedListener overlaysTableViewerSelectionChangedListener = new ISelectionChangedListener()
-    {
-        public void selectionChanged( SelectionChangedEvent event )
-        {
-            updateOverlaysTableButtonsState();
-        }
-    };
+    private ISelectionChangedListener overlaysTableViewerSelectionChangedListener = event -> updateOverlaysTableButtonsState();
 
     /**
      * A listener for selections on the Overlay table 
      */
-    private IDoubleClickListener overlaysTableViewerDoubleClickListener = new IDoubleClickListener()
-    {
-        public void doubleClick( DoubleClickEvent event )
-        {
-            editOverlayButtonAction();
-        }
-    };
+    private IDoubleClickListener overlaysTableViewerDoubleClickListener = event -> editOverlayButtonAction();
 
     /**
      * A listener for the Overlay table Add button 
      */
     private SelectionListener addOverlayButtonListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             addOverlayButtonAction();
@@ -493,6 +478,7 @@ public class DatabasesDetailsPage implements IDetailsPage
      */
     private SelectionListener editOverlayButtonListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             editOverlayButtonAction();
@@ -504,6 +490,7 @@ public class DatabasesDetailsPage implements IDetailsPage
      */
     private SelectionListener deleteOverlayButtonListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             deleteOverlayButtonAction();
@@ -513,30 +500,21 @@ public class DatabasesDetailsPage implements IDetailsPage
     /**
      * A listener for changes on the Replication Consumers table 
      */
-    private ISelectionChangedListener replicationConsumersTableViewerSelectionChangedListener = new ISelectionChangedListener()
-    {
-        public void selectionChanged( SelectionChangedEvent event )
-        {
+    private ISelectionChangedListener replicationConsumersTableViewerSelectionChangedListener = event ->
             updateReplicationConsumersTableButtonsState();
-        }
-    };
 
     /**
      * A listener for selections on the Replication Consumers table 
      */
-    private IDoubleClickListener replicationConsumersTableViewerDoubleClickListener = new IDoubleClickListener()
-    {
-        public void doubleClick( DoubleClickEvent event )
-        {
+    private IDoubleClickListener replicationConsumersTableViewerDoubleClickListener = event ->
             editReplicationConsumerButtonAction();
-        }
-    };
 
     /**
      * A listener for the Replication Consumers table Add button 
      */
     private SelectionListener addReplicationConsumerButtonListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             addReplicationConsumerButtonAction();
@@ -548,6 +526,7 @@ public class DatabasesDetailsPage implements IDetailsPage
      */
     private SelectionListener editReplicationConsumerButtonListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             editReplicationConsumerButtonAction();
@@ -559,6 +538,7 @@ public class DatabasesDetailsPage implements IDetailsPage
      */
     private SelectionListener deleteReplicationConsumerButtonListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             deleteReplicationConsumerButtonAction();
@@ -659,13 +639,7 @@ public class DatabasesDetailsPage implements IDetailsPage
     /** 
      * The modify listener which set the editor dirty 
      **/
-    private WidgetModifyListener dirtyWidgetModifyListener = new WidgetModifyListener()
-    {
-        public void widgetModified( WidgetModifyEvent event )
-        {
-            setEditorDirty();
-        }
-    };
+    private WidgetModifyListener dirtyWidgetModifyListener = event -> setEditorDirty();
 
     
     /** 
@@ -691,13 +665,7 @@ public class DatabasesDetailsPage implements IDetailsPage
     /**
      * A modify listener for text zones when they have been modified
      */
-    protected ModifyListener dirtyModifyListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
-        {
-            setEditorDirty();
-        }
-    };
+    protected ModifyListener dirtyModifyListener = event -> setEditorDirty();
 
     
     /**
@@ -705,6 +673,7 @@ public class DatabasesDetailsPage implements IDetailsPage
      */
     private SelectionListener hiddenButtonSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             setEditorDirty();
@@ -717,6 +686,7 @@ public class DatabasesDetailsPage implements IDetailsPage
      */
     private SelectionListener readOnlyButtonSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             setEditorDirty();
@@ -727,11 +697,9 @@ public class DatabasesDetailsPage implements IDetailsPage
     /**
      * The olcRequires listener
      */
-    private WidgetModifyListener requireConditionListener = new WidgetModifyListener()
-    {
-        public void widgetModified( WidgetModifyEvent e )
+    private WidgetModifyListener requireConditionListener = event ->
         {
-            List<String> requires = new ArrayList<String>();
+            List<String> requires = new ArrayList<>();
             
             for ( RequireConditionEnum requireCondition : requireConditionTableWidget.getElements() )
             {
@@ -739,18 +707,15 @@ public class DatabasesDetailsPage implements IDetailsPage
             }
             
             //getConfiguration().getGlobal().setOlcRequires( requires );
-        }
-    };
+        };
     
     
     /**
      * The olcRestrict listener
      */
-    private WidgetModifyListener restrictOperationListener = new WidgetModifyListener()
-    {
-        public void widgetModified( WidgetModifyEvent e )
+    private WidgetModifyListener restrictOperationListener = event ->
         {
-            List<String> restricts = new ArrayList<String>();
+            List<String> restricts = new ArrayList<>();
             
             for ( RestrictOperationEnum restrictOperation : restrictOperationTableWidget.getElements() )
             {
@@ -758,18 +723,15 @@ public class DatabasesDetailsPage implements IDetailsPage
             }
             
             //getConfiguration().getGlobal().setOlcRestrict( restricts );
-        }
-    };
+        };
     
     
     /**
      * The olcSecurity listener
      */
-    private WidgetModifyListener securityListener = new WidgetModifyListener()
-    {
-        public void widgetModified( WidgetModifyEvent e )
+    private WidgetModifyListener securityListener = event ->
         {
-            List<String> ssfWrappers = new ArrayList<String>();
+            List<String> ssfWrappers = new ArrayList<>();
             
             for ( SsfWrapper ssfWrapper : securityTableWidget.getElements() )
             {
@@ -777,8 +739,7 @@ public class DatabasesDetailsPage implements IDetailsPage
             }
             
             //getConfiguration().getGlobal().setOlcSecurity( ssfWrappers );
-        }
-    };
+        };
 
 
     /**
@@ -919,7 +880,7 @@ public class DatabasesDetailsPage implements IDetailsPage
 
         // Suffix DN. We may have more than one
         toolkit.createLabel( composite, "Suffix:" );
-        suffixDnTableWidget = new TableWidget<DnWrapper>( new DnDecorator( composite.getShell() ) );
+        suffixDnTableWidget = new TableWidget<>( new DnDecorator( composite.getShell() ) );
 
         suffixDnTableWidget.createWidgetWithEdit( composite, toolkit );
         suffixDnTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
@@ -1081,7 +1042,7 @@ public class DatabasesDetailsPage implements IDetailsPage
             Messages.getString( "OpenLDAPMasterDetail.TimeLimit" ) ); //$NON-NLS-1$
         timeLimitLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 5, 1 ) );
         
-        timeLimitTableWidget = new TableWidget<TimeLimitWrapper>( 
+        timeLimitTableWidget = new TableWidget<>( 
             new TimeLimitDecorator( composite.getShell() ) );
 
         timeLimitTableWidget.createWidgetWithEdit( composite, toolkit );
@@ -1093,7 +1054,7 @@ public class DatabasesDetailsPage implements IDetailsPage
             Messages.getString( "OpenLDAPMasterDetail.Limits" ) ); //$NON-NLS-1$
         limitsLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 5, 1 ) );
         
-        limitsTableWidget = new TableWidget<LimitsWrapper>( 
+        limitsTableWidget = new TableWidget<>( 
             new LimitsDecorator( composite.getShell(), "Limits" ) );
 
         limitsTableWidget.createOrderedWidgetWithEdit( composite, toolkit );
@@ -1175,7 +1136,7 @@ public class DatabasesDetailsPage implements IDetailsPage
         restrictOperationLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, false, 2, 1 ) );
 
         // The olcRequires parameter table
-        requireConditionTableWidget = new TableWidget<RequireConditionEnum>( 
+        requireConditionTableWidget = new TableWidget<>( 
             new RequireConditionDecorator( securityComposite.getShell() ) );
 
         requireConditionTableWidget.createWidgetNoEdit( securityComposite, toolkit );
@@ -1183,7 +1144,7 @@ public class DatabasesDetailsPage implements IDetailsPage
         addModifyListener( requireConditionTableWidget, requireConditionListener );
 
         // The olcRestrict parameter table
-        restrictOperationTableWidget = new TableWidget<RestrictOperationEnum>( 
+        restrictOperationTableWidget = new TableWidget<>( 
             new RestrictOperationDecorator( securityComposite.getShell() ) );
 
         restrictOperationTableWidget.createWidgetNoEdit( securityComposite, toolkit );
@@ -1194,7 +1155,7 @@ public class DatabasesDetailsPage implements IDetailsPage
         Label securityLabel = toolkit.createLabel( securityComposite, Messages.getString( "OpenLDAPMasterDetail.Security" ) ); //$NON-NLS-1$
         securityLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, false, 4, 1 ) );
         
-        securityTableWidget = new TableWidget<SsfWrapper>( new SsfDecorator( securityComposite.getShell() ) );
+        securityTableWidget = new TableWidget<>( new SsfDecorator( securityComposite.getShell() ) );
 
         securityTableWidget.createWidgetWithEdit( securityComposite, toolkit );
         securityTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 4, 1 ) );
@@ -1290,6 +1251,7 @@ public class DatabasesDetailsPage implements IDetailsPage
         overlaysTableViewer.setContentProvider( new ArrayContentProvider() );
         overlaysTableViewer.setLabelProvider( new LabelProvider()
         {
+            @Override
             public String getText( Object element )
             {
                 if ( element instanceof OlcOverlayConfig )
@@ -1298,7 +1260,7 @@ public class DatabasesDetailsPage implements IDetailsPage
                 }
 
                 return super.getText( element );
-            };
+            }
         } );
 
         // Creating the buttons
@@ -1382,6 +1344,7 @@ public class DatabasesDetailsPage implements IDetailsPage
         replicationConsumersTableViewer.setContentProvider( new ArrayContentProvider() );
         replicationConsumersTableViewer.setLabelProvider( new LabelProvider()
         {
+            @Override
             public String getText( Object element )
             {
                 if ( element instanceof String )
@@ -1390,7 +1353,7 @@ public class DatabasesDetailsPage implements IDetailsPage
                 }
 
                 return super.getText( element );
-            };
+            }
         } );
 
         // Creating the buttons
@@ -1703,7 +1666,7 @@ public class DatabasesDetailsPage implements IDetailsPage
             suffixDnTableWidget.getElements().clear();
             
             List<Dn> suffixesDnList = database.getOlcSuffix();
-            List<DnWrapper> dnWrappers = new ArrayList<DnWrapper>();
+            List<DnWrapper> dnWrappers = new ArrayList<>();
             
             for ( Dn dn : suffixesDnList )
             {
@@ -2383,11 +2346,9 @@ public class DatabasesDetailsPage implements IDetailsPage
     /**
      * The olcTimeLimit listener
      */
-    private WidgetModifyListener timeLimitListener = new WidgetModifyListener()
-    {
-        public void widgetModified( WidgetModifyEvent e )
+    private WidgetModifyListener timeLimitListener = event ->
         {
-            List<String> timeLimits = new ArrayList<String>();
+            List<String> timeLimits = new ArrayList<>();
             
             for ( TimeLimitWrapper timeLimitWrapper : timeLimitTableWidget.getElements() )
             {
@@ -2397,18 +2358,15 @@ public class DatabasesDetailsPage implements IDetailsPage
             OlcDatabaseConfig databaseConfig = databaseWrapper.getDatabase();
 
             databaseConfig.setOlcTimeLimit( timeLimits );
-        }
-    };
+        };
     
     
     /**
      * The olcLimits listener
      */
-    private WidgetModifyListener limitsListener = new WidgetModifyListener()
-    {
-        public void widgetModified( WidgetModifyEvent e )
+    private WidgetModifyListener limitsListener = event ->
         {
-            List<String> limits = new ArrayList<String>();
+            List<String> limits = new ArrayList<>();
             
             for ( LimitsWrapper limitWrapper : limitsTableWidget.getElements() )
             {
@@ -2418,8 +2376,7 @@ public class DatabasesDetailsPage implements IDetailsPage
             OlcDatabaseConfig databaseConfig = databaseWrapper.getDatabase();
 
             databaseConfig.setOlcLimits( limits );
-        }
-    };
+        };
 
 
     /**

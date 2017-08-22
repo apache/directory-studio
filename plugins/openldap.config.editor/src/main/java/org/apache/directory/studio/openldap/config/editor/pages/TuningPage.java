@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -44,14 +43,10 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
 import org.apache.directory.studio.common.ui.CommonUIUtils;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.common.ui.widgets.TableWidget;
-import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
-import org.apache.directory.studio.common.ui.wrappers.StringValueWrapper;
-import org.apache.directory.studio.openldap.common.ui.model.RequireConditionEnum;
 import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
 import org.apache.directory.studio.openldap.config.editor.dialogs.OverlayDialog;
 import org.apache.directory.studio.openldap.config.editor.dialogs.SizeLimitDialog;
-import org.apache.directory.studio.openldap.config.editor.dialogs.TimeLimitDialog;
 import org.apache.directory.studio.openldap.config.editor.wrappers.LimitWrapper;
 import org.apache.directory.studio.openldap.config.editor.wrappers.TcpBufferDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.TcpBufferWrapper;
@@ -219,9 +214,7 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
     /**
      * The listener for the sockbufMaxIncomingText Text
      */
-    private ModifyListener sockbufMaxIncomingTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    private ModifyListener sockbufMaxIncomingTextListener = event ->
         {
             Display display = sockbufMaxIncomingText.getDisplay();
 
@@ -244,16 +237,13 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
                 // Not even a number
                 sockbufMaxIncomingText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
             }
-        }
-    };
+        };
     
     
     /**
      * The listener for the sockbufMaxIncomingAuthText Text
      */
-    private ModifyListener sockbufMaxIncomingAuthTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    private ModifyListener sockbufMaxIncomingAuthTextListener = event ->
         {
             Display display = sockbufMaxIncomingAuthText.getDisplay();
 
@@ -277,16 +267,13 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
                 // Not even a number
                 sockbufMaxIncomingAuthText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
             }
-        }
-    };
+        };
     
     
     /**
      * The listener for the concurrencyText Text
      */
-    private ModifyListener concurrencyTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    private ModifyListener concurrencyTextListener = event ->
         {
             Display display = concurrencyText.getDisplay();
 
@@ -309,16 +296,13 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
                 // Not even a number
                 concurrencyText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
             }
-        }
-    };
+        };
     
     
     /**
      * The listener for the connMaxPendingText Text
      */
-    private ModifyListener connMaxPendingTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    private ModifyListener connMaxPendingTextListener = event ->
         {
             Display display = connMaxPendingText.getDisplay();
 
@@ -341,16 +325,13 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
                 // Not even a number
                 connMaxPendingText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
             }
-        }
-    };
+        };
     
     
     /**
      * The listener for the connMaxPendingAuthText Text
      */
-    private ModifyListener connMaxPendingAuthTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    private ModifyListener connMaxPendingAuthTextListener = event ->
         {
             Display display = connMaxPendingAuthText.getDisplay();
 
@@ -373,16 +354,13 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
                 // Not even a number
                 connMaxPendingAuthText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
             }
-        }
-    };
+        };
     
     
     /**
      * The listener for the listenerThreadsText Text
      */
-    private ModifyListener listenerThreadsTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    private ModifyListener listenerThreadsTextListener = event ->
         {
             Display display = listenerThreadsText.getDisplay();
 
@@ -405,16 +383,13 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
                 // Not even a number
                 listenerThreadsText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
             }
-        }
-    };
+        };
     
     
     /**
      * The listener for the ThreadsText Text
      */
-    private ModifyListener threadsTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    private ModifyListener threadsTextListener = event ->
         {
             Display display = threadsText.getDisplay();
 
@@ -437,16 +412,13 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
                 // Not even a number
                 threadsText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
             }
-        }
-    };
+        };
     
     
     /**
      * The listener for the ToolThreadsText Text
      */
-    private ModifyListener toolThreadsTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    private ModifyListener toolThreadsTextListener = event ->
         {
             Display display = toolThreadsText.getDisplay();
 
@@ -469,16 +441,13 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
                 // Not even a number
                 toolThreadsText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
             }
-        }
-    };
+        };
     
     
     /**
      * The listener for the IndexIntLenText Text
      */
-    private ModifyListener indexIntLenTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    private ModifyListener indexIntLenTextListener = event ->
         {
             Display display = indexIntLenText.getDisplay();
 
@@ -501,16 +470,13 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
                 // Not even a number
                 indexIntLenText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
             }
-        }
-    };
+        };
     
     
     /**
      * The listener for the IndexSubstrAnyLenText Text
      */
-    private ModifyListener indexSubstrAnyLenTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    private ModifyListener indexSubstrAnyLenTextListener = event ->
         {
             Display display = indexSubstrAnyLenText.getDisplay();
 
@@ -533,16 +499,13 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
                 // Not even a number
                 indexSubstrAnyLenText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
             }
-        }
-    };
+        };
     
     
     /**
      * The listener for the IndexSubstrAnyStepText Text
      */
-    private ModifyListener indexSubstrAnyStepTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    private ModifyListener indexSubstrAnyStepTextListener = event ->
         {
             Display display = indexSubstrAnyStepText.getDisplay();
 
@@ -565,16 +528,13 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
                 // Not even a number
                 indexSubstrAnyStepText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
             }
-        }
-    };
+        };
     
     
     /**
      * The listener for the IndexSubstrIfMaxLenText Text
      */
-    private ModifyListener indexSubstrIfMaxLenTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    private ModifyListener indexSubstrIfMaxLenTextListener = event ->
         {
             Display display = indexSubstrIfMaxLenText.getDisplay();
 
@@ -597,16 +557,13 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
                 // Not even a number
                 indexSubstrIfMaxLenText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
             }
-        }
-    };
+        };
     
     
     /**
      * The listener for the IndexSubstrIfMinLenText Text
      */
-    private ModifyListener indexSubstrIfMinLenTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    private ModifyListener indexSubstrIfMinLenTextListener = event ->
         {
             Display display = indexSubstrIfMinLenText.getDisplay();
 
@@ -629,16 +586,13 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
                 // Not even a number
                 indexSubstrIfMinLenText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
             }
-        }
-    };
+        };
     
     
     /**
      * The listener for the writeTimeout Text
      */
-    private ModifyListener writeTimeoutTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    private ModifyListener writeTimeoutTextListener = event ->
         {
             Display display = writeTimeoutText.getDisplay();
 
@@ -661,16 +615,13 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
                 // Not even a number
                 writeTimeoutText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
             }
-        }
-    };
+        };
     
     
     /**
      * The listener for the idleTimeout Text
      */
-    private ModifyListener idleTimeoutTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    private ModifyListener idleTimeoutTextListener = event ->
         {
             Display display = idleTimeoutText.getDisplay();
 
@@ -693,15 +644,12 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
                 // Not even a number
                 idleTimeoutText.setForeground( display.getSystemColor( SWT.COLOR_RED ) );
             }
-        }
-    };
+        };
     
     
-    private WidgetModifyListener timeLimitTableListener = new WidgetModifyListener()
-    {
-        public void widgetModified( WidgetModifyEvent e )
+    private WidgetModifyListener timeLimitTableListener = event ->
         {
-            List<String> timeLimits = new ArrayList<String>();
+            List<String> timeLimits = new ArrayList<>();
             
             for ( LimitWrapper limitWrapper : timeLimitTableViewer.getElements() )
             {
@@ -709,8 +657,7 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
             }
             
             getConfiguration().getGlobal().setOlcTimeLimit( timeLimits );
-        }
-    };
+        };
     
     
     /**
@@ -718,6 +665,7 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
      */
     private SelectionListener sizeLimitEditSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             SizeLimitDialog dialog = new SizeLimitDialog( sizeLimitText.getShell(), sizeLimitText.getText() );
@@ -737,14 +685,11 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
     
     
     // The listener for the TcpBufferTableWidget
-    private WidgetModifyListener tcpBufferTableWidgetListener = new WidgetModifyListener()
-    {
-        @Override
-        public void widgetModified( WidgetModifyEvent event )
+    private WidgetModifyListener tcpBufferTableWidgetListener = event ->
         {
             // Process the parameter modification
             TableWidget<TcpBufferWrapper> tcpBufferWrapperTable = (TableWidget<TcpBufferWrapper>)event.getSource();
-            List<String> tcpBuffers = new ArrayList<String>();
+            List<String> tcpBuffers = new ArrayList<>();
             
             for ( Object tcpBufferWrapper : tcpBufferWrapperTable.getElements() )
             {
@@ -753,8 +698,7 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
             }
             
             getConfiguration().getGlobal().setOlcTCPBuffer( tcpBuffers );
-        }
-    };
+        };
     
     
     /**
@@ -859,7 +803,7 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
         serverIdLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, false, 2, 1 ) );
 
         // The TCPBuffers widget
-        tcpBufferTableWidget = new TableWidget<TcpBufferWrapper>( new TcpBufferDecorator( networkSectionComposite.getShell() ) );
+        tcpBufferTableWidget = new TableWidget<>( new TcpBufferDecorator( networkSectionComposite.getShell() ) );
 
         tcpBufferTableWidget.createWidgetWithEdit( networkSectionComposite, toolkit );
         tcpBufferTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 4, 1 ) );
@@ -993,8 +937,6 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
         writeTimeoutText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false ) );
         // Attach a listener to check the value
         writeTimeoutText.addModifyListener( writeTimeoutTextListener );
-        //toolkit.createLabel( ldapLimitSectionComposite, "" );
-        //toolkit.createLabel( ldapLimitSectionComposite, "" );
         
         // The olcIdleTimeout parameter.
         toolkit.createLabel( ldapLimitSectionComposite, 
@@ -1003,8 +945,6 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
         idleTimeoutText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, false, false ) );
         // Attach a listener to check the value
         idleTimeoutText.addModifyListener( idleTimeoutTextListener );
-        //toolkit.createLabel( ldapLimitSectionComposite, "" );
-        //toolkit.createLabel( ldapLimitSectionComposite, "" );
         
         // The olcSizeLimit parameter.
         toolkit.createLabel( ldapLimitSectionComposite, 
@@ -1027,25 +967,11 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
         // The olcTimeLimit parameter.
         toolkit.createLabel( ldapLimitSectionComposite, 
             Messages.getString( "OpenLDAPTuningPage.TimeLimit" ) ); //$NON-NLS-1$
-        timeLimitTableViewer = new TableWidget<TimeLimitWrapper>( new TimeLimitDecorator( ldapLimitSectionComposite.getShell() ) );
+        timeLimitTableViewer = new TableWidget<>( new TimeLimitDecorator( ldapLimitSectionComposite.getShell() ) );
 
         timeLimitTableViewer.createWidgetWithEdit( ldapLimitSectionComposite, toolkit );
         timeLimitTableViewer.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 4, 1 ) );
         timeLimitTableViewer.addWidgetModifyListener( timeLimitTableListener );
-
-        /*
-        toolkit.createLabel( ldapLimitSectionComposite, 
-            Messages.getString( "OpenLDAPTuningPage.TimeLimit" ) ); //$NON-NLS-1$
-        timeLimitText = toolkit.createText( ldapLimitSectionComposite, "" );
-        timeLimitText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
-        timeLimitText.setEditable( false );
-
-        // The TimeLimit edit button
-        timeLimitEditButton = BaseWidgetUtils.createButton( ldapLimitSectionComposite, 
-            Messages.getString( "OpenLDAPSecurityPage.Edit" ), 1 );
-        timeLimitEditButton.setLayoutData( new GridData( SWT.RIGHT, SWT.CENTER, false, false ) );
-        timeLimitEditButton.addSelectionListener( timeLimitEditSelectionListener );
-        */
     }
 
     
@@ -1116,7 +1042,7 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
      */
     private List<TcpBufferWrapper> createTcpBufferList( List<String> tcpBufferList )
     {
-        List<TcpBufferWrapper> tcpBufferWrapperList = new ArrayList<TcpBufferWrapper>();
+        List<TcpBufferWrapper> tcpBufferWrapperList = new ArrayList<>();
         
         for ( String tcpBuffer : tcpBufferList )
         {
@@ -1200,9 +1126,9 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
     
             // TimeLimit Text Text
             List<String> timeLimitList = getConfiguration().getGlobal().getOlcTimeLimit();
-            List<TimeLimitWrapper> limitWrappers = new ArrayList<TimeLimitWrapper>();
+            List<TimeLimitWrapper> limitWrappers = new ArrayList<>();
 
-            if ( ( timeLimitList != null ) && ( timeLimitList.size() > 0 ) )
+            if ( ( timeLimitList != null ) && !timeLimitList.isEmpty() )
             {
                 for ( String timeLimit : timeLimitList )
                 {

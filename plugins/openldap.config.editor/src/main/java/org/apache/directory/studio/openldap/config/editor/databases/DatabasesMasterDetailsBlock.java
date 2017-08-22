@@ -33,7 +33,7 @@ import org.apache.directory.studio.openldap.config.editor.dialogs.DatabaseTypeDi
 import org.apache.directory.studio.openldap.config.editor.pages.DatabasesPage;
 import org.apache.directory.studio.openldap.config.editor.wrappers.DatabaseWrapper;
 import org.apache.directory.studio.openldap.config.editor.wrappers.DatabaseWrapperLabelProvider;
-import org.apache.directory.studio.openldap.config.editor.wrappers.DatabaseWrapperViewerSorter;
+import org.apache.directory.studio.openldap.config.editor.wrappers.DatabaseWrapperViewerComparator;
 import org.apache.directory.studio.openldap.config.model.database.OlcBdbConfig;
 import org.apache.directory.studio.openldap.config.model.database.OlcDatabaseConfig;
 import org.apache.directory.studio.openldap.config.model.database.OlcDbPerlConfig;
@@ -55,7 +55,6 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.osgi.util.NLS;
@@ -113,7 +112,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
     private DatabasesDetailsPage detailsPage;
 
     /** The database wrappers */
-    private List<DatabaseWrapper> databaseWrappers = new ArrayList<DatabaseWrapper>();
+    private List<DatabaseWrapper> databaseWrappers = new ArrayList<>();
 
     /** The currently selected object */
     private Object currentSelection;
@@ -140,9 +139,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
      * A listener called when the Database table content has changed. It will enable
      * or disabled button accordingly to the changes.
      */
-    private ISelectionChangedListener viewerSelectionChangedListener = new ISelectionChangedListener()
-    {
-        public void selectionChanged( SelectionChangedEvent event )
+    private ISelectionChangedListener viewerSelectionChangedListener = event ->
         {
             if ( !event.getSelection().isEmpty() )
             {
@@ -173,8 +170,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
                     refreshButtonStates();
                 }
             }
-        }
-    };
+        };
 
     
     /**
@@ -182,6 +178,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
      */
     private SelectionAdapter addButtonSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             addNewDatabase();
@@ -193,6 +190,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
      */
     private SelectionAdapter deleteButtonSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             deleteSelectedDatabase();
@@ -204,6 +202,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
      */
     private SelectionAdapter upButtonSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             moveSelectedDatabaseUp();
@@ -215,6 +214,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
      */
     private SelectionAdapter downButtonSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             moveSelectedDatabaseDown();
@@ -237,6 +237,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
     /**
      * {@inheritDoc}
      */
+    @Override
     public void createContent( IManagedForm managedForm )
     {
         super.createContent( managedForm );
@@ -295,7 +296,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
 
         databaseTableViewer.setContentProvider( new ArrayContentProvider() );
         databaseTableViewer.setLabelProvider( new DatabaseWrapperLabelProvider() );
-        databaseTableViewer.setSorter( new DatabaseWrapperViewerSorter() );
+        databaseTableViewer.setComparator( new DatabaseWrapperViewerComparator() );
         
         // Add a contextual menu to enable/disable a Database. This is a 2.5 feature.
         // TODO : check with the schemaManager

@@ -34,6 +34,7 @@ public class ModuleWrapperLabelProvider extends LabelProvider
     /**
      * Construct the label for a ModuleList. It's the type, followed by the suffixDN.
      */
+    @Override
     public String getText( Object element )
     {
         if ( element instanceof ModuleWrapper )
@@ -42,12 +43,13 @@ public class ModuleWrapperLabelProvider extends LabelProvider
         }
 
         return super.getText( element );
-    };
+    }
 
 
     /**
      * Get the ModuleList image, if it's a ModuleList
      */
+    @Override
     public Image getImage( Object element )
     {
         if ( element instanceof ModuleWrapper )
@@ -57,5 +59,5 @@ public class ModuleWrapperLabelProvider extends LabelProvider
         }
 
         return super.getImage( element );
-    };
+    }
 }

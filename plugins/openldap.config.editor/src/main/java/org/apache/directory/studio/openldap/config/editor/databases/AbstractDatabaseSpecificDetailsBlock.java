@@ -20,11 +20,9 @@
 package org.apache.directory.studio.openldap.config.editor.databases;
 
 
-import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.openldap.config.model.database.OlcDatabaseConfig;
-import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -49,24 +47,13 @@ public abstract class AbstractDatabaseSpecificDetailsBlock<D extends OlcDatabase
     protected IBrowserConnection browserConnection;
 
     // Listeners
-    protected ModifyListener dirtyModifyListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
-        {
-            detailsPage.setEditorDirty();
-        }
-    };
+    protected ModifyListener dirtyModifyListener = event -> detailsPage.setEditorDirty();
     
-    protected WidgetModifyListener dirtyWidgetModifyListener = new WidgetModifyListener()
-    {
-        public void widgetModified( WidgetModifyEvent event )
-        {
-            detailsPage.setEditorDirty();
-        }
-    };
+    protected WidgetModifyListener dirtyWidgetModifyListener = event -> detailsPage.setEditorDirty();
     
     protected SelectionListener dirtySelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             detailsPage.setEditorDirty();

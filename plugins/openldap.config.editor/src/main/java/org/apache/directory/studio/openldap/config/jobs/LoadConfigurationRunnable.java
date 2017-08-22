@@ -96,13 +96,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
             
             if ( configuration != null )
             {
-                Display.getDefault().asyncExec( new Runnable()
-                {
-                    public void run()
-                    {
-                        editor.configurationLoaded( configuration );
-                    }
-                } );
+                Display.getDefault().asyncExec( () -> editor.configurationLoaded( configuration ) );
             }
         }
         catch ( Exception e )
@@ -113,13 +107,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
             // Reporting the error to the editor
             final Exception exception = e;
             
-            Display.getDefault().asyncExec( new Runnable()
-            {
-                public void run()
-                {
-                    editor.configurationLoadFailed( exception );
-                }
-            } );
+            Display.getDefault().asyncExec( () -> editor.configurationLoadFailed( exception ) );
         }
     }
 

@@ -80,6 +80,7 @@ public class BerkeleyDbDatabaseSpecificDetailsBlock<BDB extends OlcBdbConfig> ex
     // Listeners
     private SelectionListener editConfigurationButtonSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             DbConfigurationDialog dialog = new DbConfigurationDialog( editConfigurationButton.getShell(),
@@ -87,7 +88,7 @@ public class BerkeleyDbDatabaseSpecificDetailsBlock<BDB extends OlcBdbConfig> ex
             
             if ( dialog.open() == DbConfigurationDialog.OK )
             {
-                List<String> newConfiguration = new ArrayList<String>();
+                List<String> newConfiguration = new ArrayList<>();
 
                 String[] configurationFromDialog = dialog.getConfiguration();
 

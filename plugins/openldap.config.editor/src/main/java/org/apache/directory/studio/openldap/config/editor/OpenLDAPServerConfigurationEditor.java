@@ -97,6 +97,7 @@ public class OpenLDAPServerConfigurationEditor extends FormEditor implements IPa
     /**
      * {@inheritDoc}
      */
+    @Override
     public void init( IEditorSite site, IEditorInput input ) throws PartInitException
     {
         super.init( site, input );
@@ -114,7 +115,7 @@ public class OpenLDAPServerConfigurationEditor extends FormEditor implements IPa
     private void readConfiguration()
     {
         // Creating and scheduling the job to load the configuration
-        StudioJob<StudioRunnableWithProgress> job = new StudioJob<StudioRunnableWithProgress>(
+        StudioJob<StudioRunnableWithProgress> job = new StudioJob<>(
             new LoadConfigurationRunnable( this ) );
         job.schedule();
     }
@@ -189,7 +190,7 @@ public class OpenLDAPServerConfigurationEditor extends FormEditor implements IPa
         doSavePages( monitor );
 
         // Saving the configuration using a job
-        StudioJob<StudioRunnableWithProgress> job = new StudioJob<StudioRunnableWithProgress>(
+        StudioJob<StudioRunnableWithProgress> job = new StudioJob<>(
             new SaveConfigurationRunnable( this ) );
         job.schedule();
     }
@@ -251,13 +252,7 @@ public class OpenLDAPServerConfigurationEditor extends FormEditor implements IPa
             setDirty( false );
 
             // Updating the title and tooltip texts
-            Display.getDefault().syncExec( new Runnable()
-            {
-                public void run()
-                {
-                    setPartName( getEditorInput().getName() );
-                }
-            } );
+            Display.getDefault().syncExec( () -> setPartName( getEditorInput().getName() ) );
         }
     }
 
@@ -308,6 +303,7 @@ public class OpenLDAPServerConfigurationEditor extends FormEditor implements IPa
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isDirty()
     {
         return dirty;
@@ -323,13 +319,7 @@ public class OpenLDAPServerConfigurationEditor extends FormEditor implements IPa
     {
         this.dirty = dirty;
 
-        Display.getDefault().asyncExec( new Runnable()
-        {
-            public void run()
-            {
-                firePropertyChange( PROP_DIRTY );
-            }
-        } );
+        Display.getDefault().asyncExec( () -> firePropertyChange( PROP_DIRTY ) );
     }
 
 

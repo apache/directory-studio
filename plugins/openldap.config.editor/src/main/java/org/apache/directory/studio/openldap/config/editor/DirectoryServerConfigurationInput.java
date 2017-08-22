@@ -65,6 +65,7 @@ public class DirectoryServerConfigurationInput extends AbstractServerConfigurati
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getToolTipText()
     {
         if ( directory != null )
@@ -79,6 +80,7 @@ public class DirectoryServerConfigurationInput extends AbstractServerConfigurati
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getName()
     {
         if ( directory != null )
@@ -93,6 +95,7 @@ public class DirectoryServerConfigurationInput extends AbstractServerConfigurati
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean exists()
     {
         return directory != null;
@@ -102,6 +105,7 @@ public class DirectoryServerConfigurationInput extends AbstractServerConfigurati
     /**
      * {@inheritDoc}
      */
+    @Override
     public ImageDescriptor getImageDescriptor()
     {
         return OpenLdapConfigurationPlugin.getDefault().getImageDescriptor(

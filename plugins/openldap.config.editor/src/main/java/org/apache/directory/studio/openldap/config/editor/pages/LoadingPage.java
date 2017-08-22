@@ -78,6 +78,7 @@ public class LoadingPage extends FormPage
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void createFormContent( IManagedForm managedForm )
     {
         ScrolledForm form = managedForm.getForm();

@@ -27,7 +27,6 @@ import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.common.ui.CommonUIConstants;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.common.ui.widgets.TableWidget;
-import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.openldap.config.editor.wrappers.DbIndexDecorator;
@@ -127,11 +126,9 @@ public class MdbDatabaseSpecificDetailsBlock extends AbstractDatabaseSpecificDet
     /**
      * The olcAllows listener
      */
-    private WidgetModifyListener indexesListener = new WidgetModifyListener()
-    {
-        public void widgetModified( WidgetModifyEvent e )
+    private WidgetModifyListener indexesListener = event ->
         {
-            List<String> indices = new ArrayList<String>();
+            List<String> indices = new ArrayList<>();
             
             for ( DbIndexWrapper dbIndex : indicesWidget.getElements() )
             {
@@ -139,8 +136,7 @@ public class MdbDatabaseSpecificDetailsBlock extends AbstractDatabaseSpecificDet
             }
             
             database.setOlcDbIndex( indices );
-        }
-    };
+        };
         
     /**
      * Creates a new instance of MdbDatabaseSpecificDetailsBlock.
@@ -254,7 +250,7 @@ public class MdbDatabaseSpecificDetailsBlock extends AbstractDatabaseSpecificDet
         databaseIndexesSection.setClient( databaseIndexesComposite );
 
         // Indices Widget
-        indicesWidget = new TableWidget<DbIndexWrapper>( new DbIndexDecorator( null, browserConnection ) );
+        indicesWidget = new TableWidget<>( new DbIndexDecorator( null, browserConnection ) );
         indicesWidget.createWidgetWithEdit( databaseIndexesComposite, toolkit );
         indicesWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
         
@@ -368,7 +364,7 @@ public class MdbDatabaseSpecificDetailsBlock extends AbstractDatabaseSpecificDet
             modeUnixPermissionsWidget.setValue( mode );
 
             // Indices Text
-            List<DbIndexWrapper> dbIndexWrappers = new ArrayList<DbIndexWrapper>();
+            List<DbIndexWrapper> dbIndexWrappers = new ArrayList<>();
             
             for ( String index : database.getOlcDbIndex() )
             {

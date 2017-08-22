@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -43,7 +42,6 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.common.ui.widgets.TableWidget;
-import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.openldap.common.ui.model.PasswordHashEnum;
 import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
@@ -133,7 +131,7 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
     public static final String ID = SecurityPage.class.getName(); //$NON-NLS-1$
 
     /** The Page Title */
-    private static final String TITLE = Messages.getString( "OpenLDAPSecurityPage.Title" ); //$NON-NLS-1$"Overview";"Security";
+    private static final String TITLE = Messages.getString( "OpenLDAPSecurityPage.Title" ); //$NON-NLS-1$
 
     // UI Controls for the TLS part
     /** The olcTLSCACertificateFile Text */
@@ -233,38 +231,27 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
     /**
      * The olcLocalSSF listener
      */
-    private ModifyListener localSsfListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
+    private ModifyListener localSsfListener = event ->
         {
             if ( !Strings.isEmpty( localSsfText.getText() ) )
             {
                 getConfiguration().getGlobal().setOlcLocalSSF( Integer.valueOf( localSsfText.getText() ) );
             }
-        }
-    };
-    
+        };    
     
     /**
      * The olcPasswordCryptSaltFormat listener
      */
-    private ModifyListener passwordCryptSaltFormatListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
-        {
-            getConfiguration().getGlobal().setOlcPasswordCryptSaltFormat( passwordCryptSaltFormatText.getText() );
-        }
-    };
+    private ModifyListener passwordCryptSaltFormatListener = event ->
+        getConfiguration().getGlobal().setOlcPasswordCryptSaltFormat( passwordCryptSaltFormatText.getText() );
     
     
     /**
      * The olcPasswordHash listener
      */
-    private WidgetModifyListener passwordHashListener = new WidgetModifyListener()
-    {
-        public void widgetModified( WidgetModifyEvent e )
+    private WidgetModifyListener passwordHashListener = event -> 
         {
-            List<String> passwordHashes = new ArrayList<String>();
+            List<String> passwordHashes = new ArrayList<>();
             
             for ( PasswordHashEnum passwordHash : passwordHashTableWidget.getElements() )
             {
@@ -272,18 +259,15 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
             }
             
             getConfiguration().getGlobal().setOlcPasswordHash( passwordHashes );
-        }
-    };
+        };
     
     
     /**
      * The olcSecurity listener
      */
-    private WidgetModifyListener securityListener = new WidgetModifyListener()
-    {
-        public void widgetModified( WidgetModifyEvent e )
+    private WidgetModifyListener securityListener = event ->
         {
-            List<String> ssfWrappers = new ArrayList<String>();
+            List<String> ssfWrappers = new ArrayList<>();
             
             for ( SsfWrapper ssfWrapper : securityTableWidget.getElements() )
             {
@@ -291,80 +275,49 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
             }
             
             getConfiguration().getGlobal().setOlcSecurity( ssfWrappers );
-        }
-    };
+        };
 
     
     /**
      * The olcTlsCertificateFile listener
      */
-    private ModifyListener tlsCertificateFileTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
-        {
-            getConfiguration().getGlobal().setOlcTLSCertificateFile( tlsCertificateFileText.getText() );
-        }
-    };
+    private ModifyListener tlsCertificateFileTextListener = event ->
+        getConfiguration().getGlobal().setOlcTLSCertificateFile( tlsCertificateFileText.getText() );
     
     
     /**
      * The olcTlsCertificateKeyFile listener
      */
-    private ModifyListener tlsCertificateKeyFileTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
-        {
-            getConfiguration().getGlobal().setOlcTLSCertificateKeyFile( tlsCertificateKeyFileText.getText() );
-        }
-    };
+    private ModifyListener tlsCertificateKeyFileTextListener = event ->
+        getConfiguration().getGlobal().setOlcTLSCertificateKeyFile( tlsCertificateKeyFileText.getText() );
     
     
     /**
      * The olcTlsCACertificateFile listener
      */
-    private ModifyListener tlsCaCertificateFileTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
-        {
-            getConfiguration().getGlobal().setOlcTLSCACertificateFile( tlsCaCertificateFileText.getText() );
-        }
-    };
+    private ModifyListener tlsCaCertificateFileTextListener = event ->
+        getConfiguration().getGlobal().setOlcTLSCACertificateFile( tlsCaCertificateFileText.getText() );
     
     
     /**
      * The olcTlsCACertificatePath listener
      */
-    private ModifyListener tlsCaCertificatePathTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
-        {
-            getConfiguration().getGlobal().setOlcTLSCACertificatePath( tlsCaCertificatePathText.getText() );
-        }
-    };
+    private ModifyListener tlsCaCertificatePathTextListener = event ->
+        getConfiguration().getGlobal().setOlcTLSCACertificatePath( tlsCaCertificatePathText.getText() );
     
     
     /**
      * The olcTlsCipherSuite listener
      */
-    private ModifyListener tlsCipherSuiteTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
-        {
-            getConfiguration().getGlobal().setOlcTLSCipherSuite( tlsCipherSuiteText.getText() );
-        }
-    };
+    private ModifyListener tlsCipherSuiteTextListener = event ->
+        getConfiguration().getGlobal().setOlcTLSCipherSuite( tlsCipherSuiteText.getText() );
     
     
     /**
      * The olcTlsCrlFile listener
      */
-    private ModifyListener tlsCrlFileTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
-        {
-            getConfiguration().getGlobal().setOlcTLSCRLFile( tlsCrlFileText.getText() );
-        }
-    };
+    private ModifyListener tlsCrlFileTextListener = event ->
+        getConfiguration().getGlobal().setOlcTLSCRLFile( tlsCrlFileText.getText() );
     
     
     /**
@@ -372,6 +325,7 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
      */
     private SelectionListener tlsCrlCheckComboListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             getConfiguration().getGlobal().setOlcTLSCRLCheck( tlsCrlCheckCombo.getText() );
@@ -382,25 +336,15 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
     /**
      * The olcTlsDhParamFile listener
      */
-    private ModifyListener tlsDhParamFileTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
-        {
-            getConfiguration().getGlobal().setOlcTLSDHParamFile(  tlsDhParamFileText.getText() );
-        }
-    };
+    private ModifyListener tlsDhParamFileTextListener = event ->
+        getConfiguration().getGlobal().setOlcTLSDHParamFile(  tlsDhParamFileText.getText() );
     
     
     /**
      * The olcTlsRandFile listener
      */
-    private ModifyListener tlsRandFileTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
-        {
-            getConfiguration().getGlobal().setOlcTLSRandFile(  tlsRandFileText.getText() );
-        }
-    };
+    private ModifyListener tlsRandFileTextListener = event ->
+        getConfiguration().getGlobal().setOlcTLSRandFile(  tlsRandFileText.getText() );
     
     
     /**
@@ -408,6 +352,7 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
      */
     private SelectionListener tlsProtocolMinComboListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             getConfiguration().getGlobal().setOlcTLSProtocolMin( tlsProtocolMinCombo.getText() );
@@ -420,6 +365,7 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
      */
     private SelectionListener tlsVerifyClientComboListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             getConfiguration().getGlobal().setOlcTLSVerifyClient( tlsVerifyClientCombo.getText() );
@@ -430,37 +376,22 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
     /**
      * The olcSaslAuxProps listener
      */
-    private ModifyListener saslAuxPropsTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
-        {
-            getConfiguration().getGlobal().setOlcSaslAuxprops( saslAuxPropsText.getText() );
-        }
-    };
+    private ModifyListener saslAuxPropsTextListener = event ->
+        getConfiguration().getGlobal().setOlcSaslAuxprops( saslAuxPropsText.getText() );
     
     
     /**
      * The olcSaslHost listener
      */
-    private ModifyListener saslHostTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
-        {
-            getConfiguration().getGlobal().setOlcSaslHost( saslHostText.getText() );
-        }
-    };
+    private ModifyListener saslHostTextListener = event ->
+        getConfiguration().getGlobal().setOlcSaslHost( saslHostText.getText() );
     
     
     /**
      * The olcSaslrealm listener
      */
-    private ModifyListener saslRealmTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
-        {
-            getConfiguration().getGlobal().setOlcSaslRealm( saslRealmText.getText() );
-        }
-    };
+    private ModifyListener saslRealmTextListener = event ->
+        getConfiguration().getGlobal().setOlcSaslRealm( saslRealmText.getText() );
     
     
     /**
@@ -468,6 +399,7 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
      */
     private SelectionListener saslSecPropsEditSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             SaslSecPropsDialog dialog = new SaslSecPropsDialog( saslSecPropsText.getShell(), saslSecPropsText.getText() );
@@ -782,7 +714,7 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
         Label passwordHashLabel = toolkit.createLabel( miscSectionComposite, Messages.getString( "OpenLDAPSecurityPage.PasswordHash" ) ); //$NON-NLS-1$
         passwordHashLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, false, 4, 1 ) );
         
-        passwordHashTableWidget = new TableWidget<PasswordHashEnum>( new PasswordHashDecorator( miscSectionComposite.getShell() ) );
+        passwordHashTableWidget = new TableWidget<>( new PasswordHashDecorator( miscSectionComposite.getShell() ) );
 
         passwordHashTableWidget.createWidgetNoEdit( miscSectionComposite, toolkit );
         passwordHashTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 4, 1 ) );
@@ -798,7 +730,7 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
         Label securityLabel = toolkit.createLabel( miscSectionComposite, Messages.getString( "OpenLDAPSecurityPage.Security" ) ); //$NON-NLS-1$
         securityLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, false, 4, 1 ) );
         
-        securityTableWidget = new TableWidget<SsfWrapper>( new SsfDecorator( miscSectionComposite.getShell() ) );
+        securityTableWidget = new TableWidget<>( new SsfDecorator( miscSectionComposite.getShell() ) );
 
         securityTableWidget.createWidgetWithEdit( miscSectionComposite, toolkit );
         securityTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 4, 1 ) );
@@ -950,7 +882,7 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
 
             // Password Hash Table Widget
             List<String> passwordHashes = global.getOlcPasswordHash();
-            List<PasswordHashEnum> hashes = new ArrayList<PasswordHashEnum>();
+            List<PasswordHashEnum> hashes = new ArrayList<>();
 
             if ( passwordHashes != null )
             {
@@ -964,7 +896,7 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
 
             // Security Table Widget
             List<String> features = global.getOlcSecurity();
-            List<SsfWrapper> ssfWrappers = new ArrayList<SsfWrapper>();
+            List<SsfWrapper> ssfWrappers = new ArrayList<>();
 
             if ( features != null )
             {

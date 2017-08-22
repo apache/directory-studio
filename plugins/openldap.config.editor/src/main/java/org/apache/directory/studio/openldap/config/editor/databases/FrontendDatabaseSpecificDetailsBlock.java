@@ -30,7 +30,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
@@ -69,7 +68,7 @@ public class FrontendDatabaseSpecificDetailsBlock extends AbstractDatabaseSpecif
     private static final String CLEARTEXT = "{CLEARTEXT}";
 
     /** The list of sorted attributes values */
-    private List<String> sortedValuesAttributesList = new ArrayList<String>();
+    private List<String> sortedValuesAttributesList = new ArrayList<>();
 
     // UI Fields
     private EntryWidget defaultSearchBaseEntryWidget;
@@ -85,16 +84,12 @@ public class FrontendDatabaseSpecificDetailsBlock extends AbstractDatabaseSpecif
     private Button deleteSortedValueButton;
 
     // Listeners
-    private ISelectionChangedListener sortedValuesTableViewerSelectionChangedListener = new ISelectionChangedListener()
-    {
-        public void selectionChanged( SelectionChangedEvent event )
-        {
-            deleteSortedValueButton.setEnabled( !sortedValuesTableViewer.getSelection().isEmpty() );
-        }
-    };
+    private ISelectionChangedListener sortedValuesTableViewerSelectionChangedListener = event ->
+        deleteSortedValueButton.setEnabled( !sortedValuesTableViewer.getSelection().isEmpty() );
+        
     private SelectionListener addSortedValueButtonSelectionListener = new SelectionAdapter()
     {
-
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             AttributeDialog dialog = new AttributeDialog( addSortedValueButton.getShell(), browserConnection );
@@ -113,9 +108,10 @@ public class FrontendDatabaseSpecificDetailsBlock extends AbstractDatabaseSpecif
             }
         }
     };
+    
     private SelectionListener deleteSortedValueButtonSelectionListener = new SelectionAdapter()
     {
-
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             StructuredSelection selection = ( StructuredSelection ) sortedValuesTableViewer.getSelection();
@@ -243,6 +239,7 @@ public class FrontendDatabaseSpecificDetailsBlock extends AbstractDatabaseSpecif
         sortedValuesTableViewer.setContentProvider( new ArrayContentProvider() );
         sortedValuesTableViewer.setLabelProvider( new LabelProvider()
         {
+            @Override
             public Image getImage( Object element )
             {
                 return OpenLdapConfigurationPlugin.getDefault().getImage(
@@ -314,7 +311,7 @@ public class FrontendDatabaseSpecificDetailsBlock extends AbstractDatabaseSpecif
                 // Password Hash
                 List<String> passwordHashList = frontendConfig.getOlcPasswordHash();
 
-                if ( ( passwordHashList != null ) && ( passwordHashList.size() > 0 ) )
+                if ( ( passwordHashList != null ) && !passwordHashList.isEmpty() )
                 {
                     shaCheckbox.setSelection( passwordHashList.contains( SHA ) );
                     sshaCheckbox.setSelection( passwordHashList.contains( SSHA ) );
@@ -392,7 +389,7 @@ public class FrontendDatabaseSpecificDetailsBlock extends AbstractDatabaseSpecif
         {
             List<AuxiliaryObjectClass> auxiliaryObjectClassesList = database.getAuxiliaryObjectClasses();
 
-            if ( ( auxiliaryObjectClassesList != null ) && ( auxiliaryObjectClassesList.size() > 0 ) )
+            if ( ( auxiliaryObjectClassesList != null ) && !auxiliaryObjectClassesList.isEmpty() )
             {
                 for ( AuxiliaryObjectClass auxiliaryObjectClass : auxiliaryObjectClassesList )
                 {

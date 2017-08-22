@@ -83,6 +83,7 @@ public class DatabasesPage extends OpenLDAPServerConfigurationEditorPage
     /**
      * {@inheritDoc}
      */
+    @Override
     public void doSave( IProgressMonitor monitor )
     {
         if ( masterDetailsBlock != null )

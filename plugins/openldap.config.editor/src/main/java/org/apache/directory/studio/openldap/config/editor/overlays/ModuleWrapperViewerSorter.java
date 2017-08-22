@@ -20,15 +20,16 @@
 package org.apache.directory.studio.openldap.config.editor.overlays;
 
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerSorter;
+import org.eclipse.jface.viewers.ViewerComparator;
 
 /**
  * This class defines a sorter for a ModuleList wrapper viewer.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ModuleWrapperViewerSorter extends ViewerSorter
+public class ModuleWrapperViewerSorter extends ViewerComparator
 {
+    @Override
     public int compare( Viewer viewer, Object e1, Object e2 )
     {
         if ( ( e1 instanceof ModuleWrapper ) && ( e2 instanceof ModuleWrapper ) )

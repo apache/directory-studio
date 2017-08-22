@@ -22,8 +22,6 @@ package org.apache.directory.studio.openldap.config.jobs;
 
 import java.util.UUID;
 
-import javax.naming.InvalidNameException;
-
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.exception.LdapException;
@@ -40,10 +38,6 @@ import org.apache.directory.server.core.partition.ldif.AbstractLdifPartition;
  */
 public class EntryBasedConfigurationPartition extends AbstractLdifPartition
 {
-    /** The suffix DN */
-    protected Dn suffixDn;
-
-
     /**
      * Creates a new instance of EntryBasedConfigurationPartition.
      *
@@ -60,7 +54,8 @@ public class EntryBasedConfigurationPartition extends AbstractLdifPartition
     /**
      * {@inheritDoc}
      */
-    protected void doInit() throws InvalidNameException, Exception
+    @Override
+    protected void doInit() throws Exception
     {
         setId( "config" );
         setSuffixDn( new Dn( "cn=config" ) );

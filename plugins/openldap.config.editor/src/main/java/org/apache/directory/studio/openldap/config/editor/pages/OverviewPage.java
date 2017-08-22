@@ -26,7 +26,6 @@ import java.util.List;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.common.ui.widgets.TableWidget;
-import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.openldap.common.ui.model.LogLevelEnum;
 import org.apache.directory.studio.openldap.common.ui.dialogs.LogLevelDialog;
@@ -38,7 +37,7 @@ import org.apache.directory.studio.openldap.config.editor.overlays.ModuleWrapper
 import org.apache.directory.studio.openldap.config.editor.pages.OverlaysPage;
 import org.apache.directory.studio.openldap.config.editor.wrappers.DatabaseWrapper;
 import org.apache.directory.studio.openldap.config.editor.wrappers.DatabaseWrapperLabelProvider;
-import org.apache.directory.studio.openldap.config.editor.wrappers.DatabaseWrapperViewerSorter;
+import org.apache.directory.studio.openldap.config.editor.wrappers.DatabaseWrapperViewerComparator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.ServerIdDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.ServerIdWrapper;
 import org.apache.directory.studio.openldap.config.model.OlcGlobal;
@@ -47,7 +46,6 @@ import org.apache.directory.studio.openldap.config.model.database.OlcDatabaseCon
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -125,11 +123,11 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
     public static final String ID = OverviewPage.class.getName(); //$NON-NLS-1$
 
     /** The Page Title */
-    private static final String TITLE = Messages.getString( "OpenLDAPOverviewPage.Title" ); //$NON-NLS-1$"Overview";
+    private static final String TITLE = Messages.getString( "OpenLDAPOverviewPage.Title" ); //$NON-NLS-1$
     
     // UI Controls
     /** The serverID wrapper */
-    private List<ServerIdWrapper> serverIdWrappers = new ArrayList<ServerIdWrapper>();
+    private List<ServerIdWrapper> serverIdWrappers = new ArrayList<>();
     
     /** The Widget used to manage ServerID */
     private TableWidget<ServerIdWrapper> serverIdTableWidget;
@@ -151,7 +149,7 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
     private TableViewer databaseViewer;
 
     /** The database wrappers */
-    private List<DatabaseWrapper> databaseWrappers = new ArrayList<DatabaseWrapper>();
+    private List<DatabaseWrapper> databaseWrappers = new ArrayList<>();
 
     /** This link opens the Databases configuration tab */ 
     private Hyperlink databasesPageLink;
@@ -160,7 +158,7 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
     private TableViewer moduleViewer;
 
     /** The module wrappers */
-    private List<ModuleWrapper> moduleWrappers = new ArrayList<ModuleWrapper>();
+    private List<ModuleWrapper> moduleWrappers = new ArrayList<>();
 
     /** This link opens the Overlays configuration tab */
     private Hyperlink overlaysPageLink;
@@ -181,43 +179,29 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
     /**
      * The olcLogFile listener
      */
-    private ModifyListener logFileTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
-        {
-            getConfiguration().getGlobal().setOlcLogFile( logFileText.getText() );
-        }
-    };
+    private ModifyListener logFileTextListener = event ->
+        getConfiguration().getGlobal().setOlcLogFile( logFileText.getText() );
     
     
     /**
      * The olcConfigDir listener
      */
-    private ModifyListener configDirTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
-        {
-            getConfiguration().getGlobal().setOlcConfigDir( configDirText.getText() );
-        }
-    };
-    
+    private ModifyListener configDirTextListener = event ->
+        getConfiguration().getGlobal().setOlcConfigDir( configDirText.getText() );
+
     
     /**
      * The olcPidFile listener
      */
-    private ModifyListener pidFileTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
-        {
-            getConfiguration().getGlobal().setOlcPidFile( pidFileText.getText() );
-        }
-    };
+    private ModifyListener pidFileTextListener = event ->
+        getConfiguration().getGlobal().setOlcPidFile( pidFileText.getText() );
 
     /**
      * The olcLogLevl listener
      */
     private SelectionListener logLevelEditButtonSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             // Creating and opening a LogLevel dialog
@@ -235,7 +219,7 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
             {
                 logLevelStr = LogLevelEnum.getLogLevelText( dialog.getLogLevelValue() );
                 logLevelText.setText( logLevelStr );
-                List<String> logLevelList = new ArrayList<String>();
+                List<String> logLevelList = new ArrayList<>();
                 logLevelList.add( logLevelStr );
                 getConfiguration().getGlobal().setOlcLogLevel( logLevelList );
             }
@@ -259,6 +243,7 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
      */
     private HyperlinkAdapter databasesPageLinkListener = new HyperlinkAdapter()
     {
+        @Override
         public void linkActivated( HyperlinkEvent e )
         {
             getServerConfigurationEditor().showPage( DatabasesPage.class );
@@ -271,6 +256,7 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
      */
     private HyperlinkAdapter overlaysPageLinkListener = new HyperlinkAdapter()
     {
+        @Override
         public void linkActivated( HyperlinkEvent e )
         {
             getServerConfigurationEditor().showPage( OverlaysPage.class );
@@ -283,6 +269,7 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
      */
     private HyperlinkAdapter securityPageLinkListener = new HyperlinkAdapter()
     {
+        @Override
         public void linkActivated( HyperlinkEvent e )
         {
             getServerConfigurationEditor().showPage( SecurityPage.class );
@@ -295,6 +282,7 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
      */
     private HyperlinkAdapter tuningPageLinkListener = new HyperlinkAdapter()
     {
+        @Override
         public void linkActivated( HyperlinkEvent e )
         {
             getServerConfigurationEditor().showPage( TuningPage.class );
@@ -307,6 +295,7 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
      */
     private HyperlinkAdapter schemaPageLinkListener = new HyperlinkAdapter()
     {
+        @Override
         public void linkActivated( HyperlinkEvent e )
         {
             //getServerConfigurationEditor().showPage( SchemaPage.class );
@@ -319,6 +308,7 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
      */
     private HyperlinkAdapter optionsPageLinkListener = new HyperlinkAdapter()
     {
+        @Override
         public void linkActivated( HyperlinkEvent e )
         {
             getServerConfigurationEditor().showPage( OptionsPage.class );
@@ -327,14 +317,11 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
 
     
     // The listener for the ServerIdTableWidget
-    private WidgetModifyListener serverIdTableWidgetListener = new WidgetModifyListener()
-    {
-        @Override
-        public void widgetModified( WidgetModifyEvent event )
+    private WidgetModifyListener serverIdTableWidgetListener = event ->
         {
             // Process the parameter modification
             TableWidget<ServerIdWrapper> serverIdWrapperTable = (TableWidget<ServerIdWrapper>)event.getSource();
-            List<String> serverIds = new ArrayList<String>();
+            List<String> serverIds = new ArrayList<>();
             
             for ( Object serverIdWrapper : serverIdWrapperTable.getElements() )
             {
@@ -343,8 +330,7 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
             }
             
             getConfiguration().getGlobal().setOlcServerID( serverIds );
-        }
-    };
+        };
 
 
     /**
@@ -460,7 +446,7 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
         serverIdLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, false, 5, 1 ) );
 
         // The ServerID widget
-        serverIdTableWidget = new TableWidget<ServerIdWrapper>( new ServerIdDecorator( section.getShell() ) );
+        serverIdTableWidget = new TableWidget<>( new ServerIdDecorator( section.getShell() ) );
 
         serverIdTableWidget.createWidgetWithEdit( globalSectionComposite, toolkit );
         serverIdTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 5, 1 ) );
@@ -543,7 +529,7 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
         databaseViewer = new TableViewer( table );
         databaseViewer.setContentProvider( new ArrayContentProvider() );
         databaseViewer.setLabelProvider( new DatabaseWrapperLabelProvider() );
-        databaseViewer.setSorter( new DatabaseWrapperViewerSorter() );
+        databaseViewer.setComparator( new DatabaseWrapperViewerComparator() );
 
         // Databases Page Link
         databasesPageLink = toolkit.createHyperlink( databaseComposite,
@@ -602,7 +588,7 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
         moduleViewer = new TableViewer( table );
         moduleViewer.setContentProvider( new ArrayContentProvider() );
         moduleViewer.setLabelProvider( new ModuleWrapperLabelProvider() );
-        moduleViewer.setSorter( new ModuleWrapperViewerSorter() );
+        moduleViewer.setComparator( new ModuleWrapperViewerSorter() );
 
         // Overlays Page Link
         overlaysPageLink = toolkit.createHyperlink( overlayComposite,

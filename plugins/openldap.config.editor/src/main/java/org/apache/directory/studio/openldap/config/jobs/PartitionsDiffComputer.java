@@ -55,6 +55,11 @@ import org.apache.directory.server.core.api.partition.Partition;
  */
 public class PartitionsDiffComputer
 {
+    private PartitionsDiffComputer()
+    {
+        // Nothing to do
+    }
+    
     /**
      * Compute the difference between two partitions :
      * <ul>
@@ -182,7 +187,7 @@ public class PartitionsDiffComputer
         Dn baseDn, String[] attributeIds ) throws PartitionsDiffException
     {
         // Creating the list containing all the modifications
-        List<LdifEntry> modifications = new ArrayList<LdifEntry>();
+        List<LdifEntry> modifications = new ArrayList<>();
 
         try
         {
@@ -196,7 +201,7 @@ public class PartitionsDiffComputer
 
             // Creating the list containing all the original entries to be processed
             // and adding it the original base entry. This is done going down the tree.
-            List<Entry> originalEntries = new ArrayList<Entry>();
+            List<Entry> originalEntries = new ArrayList<>();
             originalEntries.add( originalBaseEntry );
 
             // Looping until all original entries are being processed. We will read all the children,
@@ -204,7 +209,7 @@ public class PartitionsDiffComputer
             // at every iteration. When we have processed all the tree in depth, we should not have 
             // any left entries in the list.
             // We don't dereference aliases and referrals.
-            while ( originalEntries.size() > 0 )
+            while ( !originalEntries.isEmpty() )
             {
                 // Getting the first original entry from the list
                 Entry originalEntry = originalEntries.remove( 0 );
@@ -247,8 +252,7 @@ public class PartitionsDiffComputer
                 if ( modificationEntryChangeType != ChangeType.None )
                 {
                     if ( modificationEntryChangeType == ChangeType.Delete
-                        || ( modificationEntryChangeType == ChangeType.Modify && ldifEntry
-                            .getModifications().size() > 0 ) )
+                        || ( modificationEntryChangeType == ChangeType.Modify && !ldifEntry.getModifications().isEmpty() ) )
                     {
                         // Adding the modification entry to the list
                         modifications.add( ldifEntry );
@@ -282,11 +286,11 @@ public class PartitionsDiffComputer
 
             // Creating the list containing all the destination entries to be processed
             // and adding it the destination base entry
-            List<Entry> modifiedEntries = new ArrayList<Entry>();
+            List<Entry> modifiedEntries = new ArrayList<>();
             modifiedEntries.add( originalBaseEntry );
 
             // Looping until all modified entries are being processed
-            while ( modifiedEntries.size() > 0 )
+            while ( !modifiedEntries.isEmpty() )
             {
                 // Getting the first modification entry from the list
                 Entry modifiedEntry = modifiedEntries.remove( 0 );
@@ -345,7 +349,7 @@ public class PartitionsDiffComputer
      */
     private static List<LdifEntry> deleteEntry( Partition originalPartition, Dn parentDn ) throws LdapException, ParseException, CursorException
     {
-        List<LdifEntry> deletions = new ArrayList<LdifEntry>();
+        List<LdifEntry> deletions = new ArrayList<>();
         
         // Lookup for the children
         SearchOperationContext soc = new SearchOperationContext( null, parentDn,

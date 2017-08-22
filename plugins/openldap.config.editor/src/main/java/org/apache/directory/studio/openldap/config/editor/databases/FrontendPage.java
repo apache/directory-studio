@@ -58,6 +58,7 @@ public class FrontendPage extends FormPage
     /**
      * {@inheritDoc}
      */
+    @Override
     public void doSave( IProgressMonitor monitor )
     {
     }

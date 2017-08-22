@@ -69,5 +69,6 @@ public class OverlaysPage extends OpenLDAPServerConfigurationEditorPage
      */
     public void refreshUI()
     {
+        // Nothing to do
     }
 }

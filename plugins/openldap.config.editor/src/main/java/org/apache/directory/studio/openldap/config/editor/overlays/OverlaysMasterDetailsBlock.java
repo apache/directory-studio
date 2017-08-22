@@ -24,9 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -86,6 +84,7 @@ public class OverlaysMasterDetailsBlock extends MasterDetailsBlock
     /**
      * {@inheritDoc}
      */
+    @Override
     public void createContent( IManagedForm managedForm )
     {
         super.createContent( managedForm );
@@ -128,18 +127,14 @@ public class OverlaysMasterDetailsBlock extends MasterDetailsBlock
         managedForm.addPart( sectionPart );
         
         overlaysTableViewer = new TableViewer( overlaysTable );
-        overlaysTableViewer.addSelectionChangedListener( new ISelectionChangedListener()
-        {
-            public void selectionChanged( SelectionChangedEvent event )
-            {
-                managedForm.fireSelectionChanged( sectionPart, event.getSelection() );
-            }
-        } );
+        overlaysTableViewer.addSelectionChangedListener( event ->
+            managedForm.fireSelectionChanged( sectionPart, event.getSelection() ) );
         
         overlaysTableViewer.setContentProvider( new ArrayContentProvider() );
         
         overlaysTableViewer.setLabelProvider( new LabelProvider()
         {
+            @Override
             public String getText( Object element )
             {
                 if ( element instanceof OlcOverlayConfig )
@@ -150,9 +145,10 @@ public class OverlaysMasterDetailsBlock extends MasterDetailsBlock
                 }
 
                 return super.getText( element );
-            };
+            }
 
 
+            @Override
             public Image getImage( Object element )
             {
                 if ( element instanceof OlcOverlayConfig )
@@ -162,7 +158,7 @@ public class OverlaysMasterDetailsBlock extends MasterDetailsBlock
                 }
 
                 return super.getImage( element );
-            };
+            }
         } );
 
         // Creating the button(s)
@@ -185,7 +181,7 @@ public class OverlaysMasterDetailsBlock extends MasterDetailsBlock
         OpenLdapConfiguration configuration = page.getConfiguration();
 
         List<OlcConfig> configurationElements = configuration.getConfigurationElements();
-        List<OlcOverlayConfig> overlayConfigurationElements = new ArrayList<OlcOverlayConfig>();
+        List<OlcOverlayConfig> overlayConfigurationElements = new ArrayList<>();
         
         for ( OlcConfig configurationElement : configurationElements )
         {

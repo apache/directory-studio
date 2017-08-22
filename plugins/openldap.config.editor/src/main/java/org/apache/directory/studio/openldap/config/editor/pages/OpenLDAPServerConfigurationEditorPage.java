@@ -22,7 +22,6 @@ package org.apache.directory.studio.openldap.config.editor.pages;
 
 import org.apache.directory.studio.common.ui.CommonUIConstants;
 import org.apache.directory.studio.common.ui.widgets.TableWidget;
-import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.openldap.config.actions.EditorExportConfigurationAction;
 import org.apache.directory.studio.openldap.config.actions.EditorImportConfigurationAction;
@@ -33,13 +32,10 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.events.VerifyEvent;
-import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -70,19 +66,14 @@ public abstract class OpenLDAPServerConfigurationEditorPage extends FormPage
     /**
      * A listener used to set the dirty flag when a Text is updated
      */
-    protected ModifyListener dirtyModifyListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
-        {
-            setEditorDirty();
-        }
-    };
+    protected ModifyListener dirtyModifyListener = event -> setEditorDirty();
 
     /**
      * A listener used to set the dirty flag when a widget is selected
      */
     private SelectionListener dirtySelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             setEditorDirty();
@@ -92,13 +83,7 @@ public abstract class OpenLDAPServerConfigurationEditorPage extends FormPage
     /**
      * A listener used to set the dirty flag when a widget is updated
      */
-    protected WidgetModifyListener dirtyWidgetModifyListener = new WidgetModifyListener()
-    {
-        public void widgetModified( WidgetModifyEvent event )
-        {
-            setEditorDirty();
-        }
-    };
+    protected WidgetModifyListener dirtyWidgetModifyListener = event -> setEditorDirty();
 
 
     /**
@@ -154,6 +139,7 @@ public abstract class OpenLDAPServerConfigurationEditorPage extends FormPage
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void createFormContent( IManagedForm managedForm )
     {
         ScrolledForm form = managedForm.getForm();
@@ -221,16 +207,13 @@ public abstract class OpenLDAPServerConfigurationEditorPage extends FormPage
         gd.widthHint = 42;
         portText.setLayoutData( gd );
         
-        portText.addVerifyListener( new VerifyListener()
-        {
-            public void verifyText( VerifyEvent e )
+        portText.addVerifyListener( event ->
             {
-                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
+                if ( !event.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
                 {
-                    e.doit = false;
-                }
-            }
-        } );
+                    event.doit = false;
+                } 
+            } );
         
         portText.setTextLimit( 5 );
 

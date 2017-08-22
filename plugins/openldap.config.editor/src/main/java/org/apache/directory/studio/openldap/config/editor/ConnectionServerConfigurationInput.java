@@ -61,6 +61,7 @@ public class ConnectionServerConfigurationInput extends AbstractServerConfigurat
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getToolTipText()
     {
         return NLS.bind( "{0} - Configuration", connection.getName() );
@@ -70,6 +71,7 @@ public class ConnectionServerConfigurationInput extends AbstractServerConfigurat
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getName()
     {
         return NLS.bind( "{0} - Configuration", connection.getName() );
@@ -79,6 +81,7 @@ public class ConnectionServerConfigurationInput extends AbstractServerConfigurat
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean exists()
     {
         return connection != null;
@@ -103,7 +106,7 @@ public class ConnectionServerConfigurationInput extends AbstractServerConfigurat
             {
                 Connection inputConnection = input.getConnection();
 
-                if ( ( inputConnection != null ) && ( inputConnection != null ) )
+                if ( inputConnection != null )
                 {
                     return inputConnection.equals( connection );
                 }

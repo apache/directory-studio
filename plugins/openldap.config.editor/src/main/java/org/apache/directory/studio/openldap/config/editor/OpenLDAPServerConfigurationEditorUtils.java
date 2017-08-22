@@ -71,6 +71,12 @@ import org.apache.directory.studio.openldap.config.model.io.ConfigurationWriter;
  */
 public class OpenLDAPServerConfigurationEditorUtils
 {
+    private OpenLDAPServerConfigurationEditorUtils()
+    {
+        // Do nothing
+    }
+    
+    
     /**
      * Performs the "Save as..." action.
      *

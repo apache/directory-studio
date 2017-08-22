@@ -87,6 +87,7 @@ public class ErrorPage extends FormPage
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void createFormContent( IManagedForm managedForm )
     {
         ScrolledForm form = managedForm.getForm();
@@ -113,6 +114,7 @@ public class ErrorPage extends FormPage
         detailsButton.setLayoutData( new GridData( SWT.RIGHT, SWT.NONE, false, false ) );
         detailsButton.addSelectionListener( new SelectionAdapter()
         {
+            @Override
             public void widgetSelected( SelectionEvent e )
             {
                 showOrHideDetailsView();

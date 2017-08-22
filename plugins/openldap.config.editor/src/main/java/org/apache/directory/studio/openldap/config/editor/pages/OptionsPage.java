@@ -29,7 +29,6 @@ import java.util.Map;
 import org.apache.directory.studio.common.ui.CommonUIUtils;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.common.ui.widgets.TableWidget;
-import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.common.ui.wrappers.StringValueWrapper;
 import org.apache.directory.studio.openldap.common.ui.model.AllowFeatureEnum;
@@ -48,7 +47,6 @@ import org.apache.directory.studio.openldap.config.editor.wrappers.RestrictOpera
 import org.apache.directory.studio.openldap.config.editor.wrappers.StringValueDecorator;
 import org.apache.directory.studio.openldap.config.model.OlcGlobal;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -210,11 +208,9 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
     /**
      * The olcAllows listener
      */
-    private WidgetModifyListener allowFeatureListener = new WidgetModifyListener()
-    {
-        public void widgetModified( WidgetModifyEvent e )
+    private WidgetModifyListener allowFeatureListener = event ->
         {
-            List<String> allowFeatures = new ArrayList<String>();
+            List<String> allowFeatures = new ArrayList<>();
             
             for ( AllowFeatureEnum allowFeature : allowFeatureTableWidget.getElements() )
             {
@@ -222,18 +218,15 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
             }
             
             getConfiguration().getGlobal().setOlcAllows( allowFeatures );
-        }
-    };
+        };
     
     
     /**
      * The olcDisallows listener
      */
-    private WidgetModifyListener disallowFeatureListener = new WidgetModifyListener()
-    {
-        public void widgetModified( WidgetModifyEvent e )
+    private WidgetModifyListener disallowFeatureListener = event ->
         {
-            List<String> disallowFeatures = new ArrayList<String>();
+            List<String> disallowFeatures = new ArrayList<>();
             
             for ( DisallowFeatureEnum disallowFeature : disallowFeatureTableWidget.getElements() )
             {
@@ -241,18 +234,15 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
             }
             
             getConfiguration().getGlobal().setOlcDisallows( disallowFeatures );
-        }
-    };
+        };
     
     
     /**
      * The olcRequires listener
      */
-    private WidgetModifyListener requireConditionListener = new WidgetModifyListener()
-    {
-        public void widgetModified( WidgetModifyEvent e )
+    private WidgetModifyListener requireConditionListener = event ->
         {
-            List<String> requires = new ArrayList<String>();
+            List<String> requires = new ArrayList<>();
             
             for ( RequireConditionEnum requireCondition : requireConditionTableWidget.getElements() )
             {
@@ -260,18 +250,15 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
             }
             
             getConfiguration().getGlobal().setOlcRequires( requires );
-        }
-    };
+        };
     
     
     /**
      * The olcRestrict listener
      */
-    private WidgetModifyListener restrictOperationListener = new WidgetModifyListener()
-    {
-        public void widgetModified( WidgetModifyEvent e )
+    private WidgetModifyListener restrictOperationListener = event ->
         {
-            List<String> restricts = new ArrayList<String>();
+            List<String> restricts = new ArrayList<>();
             
             for ( RestrictOperationEnum restrictOperation : restrictOperationTableWidget.getElements() )
             {
@@ -279,18 +266,15 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
             }
             
             getConfiguration().getGlobal().setOlcRestrict( restricts );
-        }
-    };
+        };
     
     
     /**
      * The olcAuthIdRewrite listener
      */
-    private WidgetModifyListener authIdRewriteListener = new WidgetModifyListener()
-    {
-        public void widgetModified( WidgetModifyEvent e )
+    private WidgetModifyListener authIdRewriteListener = event ->
         {
-            List<String> authIdRewrites = new ArrayList<String>();
+            List<String> authIdRewrites = new ArrayList<>();
             
             for ( OrderedStringValueWrapper authIdRewrite : authIdRewriteTableWidget.getElements() )
             {
@@ -298,18 +282,15 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
             }
             
             getConfiguration().getGlobal().setOlcAuthIDRewrite( authIdRewrites );
-        }
-    };
+        };
     
     
     /**
      * The olcAuthzRegexp listener
      */
-    private WidgetModifyListener authzRegexpListener = new WidgetModifyListener()
-    {
-        public void widgetModified( WidgetModifyEvent e )
+    private WidgetModifyListener authzRegexpListener = event ->
         {
-            List<String> authzRegexps = new ArrayList<String>();
+            List<String> authzRegexps = new ArrayList<>();
             
             for ( OrderedStringValueWrapper authzRegexp : authzRegexpTableWidget.getElements() )
             {
@@ -317,54 +298,36 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
             }
             
             getConfiguration().getGlobal().setOlcAuthzRegexp( authzRegexps );
-        }
-    };
+        };
     
     
     /**
      * The olcArgsFile listener
      */
-    private ModifyListener argsFileTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
-        {
-            getConfiguration().getGlobal().setOlcArgsFile( argsFileText.getText() );
-        }
-    };
+    private ModifyListener argsFileTextListener = event ->
+        getConfiguration().getGlobal().setOlcArgsFile( argsFileText.getText() );
     
     
     /**
      * The olcPluginFileLog listener
      */
-    private ModifyListener pluginLogFileTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
-        {
-            getConfiguration().getGlobal().setOlcPluginLogFile( pluginLogFileText.getText() );
-        }
-    };
+    private ModifyListener pluginLogFileTextListener = event ->
+        getConfiguration().getGlobal().setOlcPluginLogFile( pluginLogFileText.getText() );
     
     
     /**
      * The olcReferral listener
      */
-    private ModifyListener referralTextListener = new ModifyListener()
-    {
-        public void modifyText( ModifyEvent e )
-        {
-            getConfiguration().getGlobal().setOlcReferral( referralText.getText() );
-        }
-    };
+    private ModifyListener referralTextListener = event ->
+        getConfiguration().getGlobal().setOlcReferral( referralText.getText() );
     
     
     /**
      * The olcRootDSE listener
      */
-    private WidgetModifyListener rootDseTableListener = new WidgetModifyListener()
-    {
-        public void widgetModified( WidgetModifyEvent e )
+    private WidgetModifyListener rootDseTableListener = event ->
         {
-            List<String> rootDses = new ArrayList<String>();
+            List<String> rootDses = new ArrayList<>();
             
             for ( StringValueWrapper rootDse : rootDseTableWidget.getElements() )
             {
@@ -372,8 +335,7 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
             }
             
             getConfiguration().getGlobal().setOlcRootDSE( rootDses );
-        }
-    };
+        };
     
     
     /**
@@ -381,6 +343,7 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
      */
     private SelectionListener authzPolicyComboListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             getConfiguration().getGlobal().setOlcAuthzPolicy( authzPolicyCombo.getText() );
@@ -393,6 +356,7 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
      */
     private SelectionListener gentleHupCheckboxSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             getConfiguration().getGlobal().setOlcGentleHUP( gentleHupCheckbox.getSelection() );
@@ -405,6 +369,7 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
      */
     private SelectionListener readOnlyCheckboxSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             getConfiguration().getGlobal().setOlcReadOnly( readOnlyCheckbox.getSelection() );
@@ -417,6 +382,7 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
      */
     private SelectionListener reverseLookupCheckboxSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             getConfiguration().getGlobal().setOlcReverseLookup( reverseLookupCheckbox.getSelection() );
@@ -543,7 +509,7 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         allowFeatureLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, false, 2, 1 ) );
 
         // The olcAllows parameter table
-        allowFeatureTableWidget = new TableWidget<AllowFeatureEnum>( new AllowFeatureDecorator( composite.getShell() ) );
+        allowFeatureTableWidget = new TableWidget<>( new AllowFeatureDecorator( composite.getShell() ) );
 
         allowFeatureTableWidget.createWidgetNoEdit( composite, toolkit );
         allowFeatureTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
@@ -555,7 +521,7 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         disallowFeatureLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, false, 2, 1 ) );
 
         // The olcDisallows parameter table
-        disallowFeatureTableWidget = new TableWidget<DisallowFeatureEnum>( new DisallowFeatureDecorator( composite.getShell() ) );
+        disallowFeatureTableWidget = new TableWidget<>( new DisallowFeatureDecorator( composite.getShell() ) );
 
         disallowFeatureTableWidget.createWidgetNoEdit( composite, toolkit );
         disallowFeatureTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
@@ -601,7 +567,7 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         requireConditionLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, false, 2, 1 ) );
 
         // The olcRequires parameter table
-        requireConditionTableWidget = new TableWidget<RequireConditionEnum>( new RequireConditionDecorator( composite.getShell() ) );
+        requireConditionTableWidget = new TableWidget<>( new RequireConditionDecorator( composite.getShell() ) );
 
         requireConditionTableWidget.createWidgetNoEdit( composite, toolkit );
         requireConditionTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
@@ -613,7 +579,7 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         restrictOperationLabel.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, false, 2, 1 ) );
 
         // The olcRestrict parameter table
-        restrictOperationTableWidget = new TableWidget<RestrictOperationEnum>( new RestrictOperationDecorator( composite.getShell() ) );
+        restrictOperationTableWidget = new TableWidget<>( new RestrictOperationDecorator( composite.getShell() ) );
 
         restrictOperationTableWidget.createWidgetNoEdit( composite, toolkit );
         restrictOperationTableWidget.getControl().setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false, 2, 1 ) );
@@ -646,7 +612,7 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         Composite composite = createSectionComposite( toolkit, section, 2, false );
 
         // The olcAuthIdRewrite parameter table
-        authIdRewriteTableWidget = new TableWidget<OrderedStringValueWrapper>( 
+        authIdRewriteTableWidget = new TableWidget<>( 
             new OrderedStringValueDecorator( composite.getShell() , "authIdRewrite") );
 
         authIdRewriteTableWidget.createOrderedWidgetWithEdit( composite, toolkit );
@@ -680,7 +646,7 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         Composite composite = createSectionComposite( toolkit, section, 2, false );
 
         // The olcAuthzRegexp parameter table
-        authzRegexpTableWidget = new TableWidget<OrderedStringValueWrapper>( 
+        authzRegexpTableWidget = new TableWidget<>( 
             new OrderedStringValueDecorator( composite.getShell(), "AuthzRegexp" ) );
 
         authzRegexpTableWidget.createOrderedWidgetWithEdit( composite, toolkit );
@@ -746,7 +712,7 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         toolkit.createLabel( composite, "" );
 
         // The olcRootDSE parameter.
-        rootDseTableWidget = new TableWidget<StringValueWrapper>( 
+        rootDseTableWidget = new TableWidget<>( 
             new StringValueDecorator( composite.getShell(), Messages.getString( "OpenLDAPOptionsPage.RootDSE" ) ) );
 
         rootDseTableWidget.createWidgetWithEdit( composite, toolkit );
@@ -825,7 +791,7 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
     private void refreshAllowFeatures( OlcGlobal global )
     {
         List<String> allowedFeatures = global.getOlcAllows();
-        List<AllowFeatureEnum> alloweds = new ArrayList<AllowFeatureEnum>();
+        List<AllowFeatureEnum> alloweds = new ArrayList<>();
 
         if ( allowedFeatures != null )
         {
@@ -842,7 +808,7 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
     private void refreshDisllowFeatures( OlcGlobal global )
     {
         List<String> disallowedFeatures = global.getOlcDisallows();
-        List<DisallowFeatureEnum> disalloweds = new ArrayList<DisallowFeatureEnum>();
+        List<DisallowFeatureEnum> disalloweds = new ArrayList<>();
 
         if ( disallowedFeatures != null )
         {
@@ -859,7 +825,7 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
     private void refreshRequireConditions( OlcGlobal global )
     {
         List<String> requireConditions = global.getOlcRequires();
-        List<RequireConditionEnum> requires = new ArrayList<RequireConditionEnum>();
+        List<RequireConditionEnum> requires = new ArrayList<>();
 
         if ( requireConditions != null )
         {
@@ -876,7 +842,7 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
     private void refreshRestrictOperations( OlcGlobal global )
     {
         List<String> restrictOperations = global.getOlcRestrict();
-        List<RestrictOperationEnum> restricts = new ArrayList<RestrictOperationEnum>();
+        List<RestrictOperationEnum> restricts = new ArrayList<>();
 
         if ( restrictOperations != null )
         {
@@ -900,9 +866,9 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         if ( authIdRewrites != null )
         {
             int nbElements = authIdRewrites.size();
-            List<OrderedStringValueWrapper> rewrites = new ArrayList<OrderedStringValueWrapper>( nbElements );
+            List<OrderedStringValueWrapper> rewrites = new ArrayList<>( nbElements );
             int[] valuePrefixes = new int[nbElements];
-            Map<Integer, String> values = new HashMap<Integer, String>(nbElements);
+            Map<Integer, String> values = new HashMap<>(nbElements);
             int pos = 0;
 
             // First gather the values
@@ -930,7 +896,7 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         else
         {
             // Store an empty list
-            List<OrderedStringValueWrapper> rewrites = new ArrayList<OrderedStringValueWrapper>();
+            List<OrderedStringValueWrapper> rewrites = new ArrayList<>();
             
             authIdRewriteTableWidget.setElements( rewrites );
         }
@@ -944,9 +910,9 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         if ( authzRegexps != null )
         {
             int nbElements = authzRegexps.size();
-            List<OrderedStringValueWrapper> regexps = new ArrayList<OrderedStringValueWrapper>( nbElements );
+            List<OrderedStringValueWrapper> regexps = new ArrayList<>( nbElements );
             int[] valuePrefixes = new int[nbElements];
-            Map<Integer, String> values = new HashMap<Integer, String>(nbElements);
+            Map<Integer, String> values = new HashMap<>(nbElements);
             int pos = 0;
 
             // First gather the values
@@ -974,7 +940,7 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
         else
         {
             // Store an empty list
-            List<OrderedStringValueWrapper> regexps = new ArrayList<OrderedStringValueWrapper>();
+            List<OrderedStringValueWrapper> regexps = new ArrayList<>();
             
             authzRegexpTableWidget.setElements( regexps );
         }
@@ -985,7 +951,7 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
     private void refreshRootDseFiles( OlcGlobal global )
     {
         List<String> rootDses = global.getOlcRootDSE();
-        List<StringValueWrapper> roots = new ArrayList<StringValueWrapper>();
+        List<StringValueWrapper> roots = new ArrayList<>();
 
         if ( rootDses != null )
         {
