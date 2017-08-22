@@ -38,7 +38,7 @@ public class OlcAuditlogConfig extends OlcOverlayConfig
      * Field for the 'olcAuditlogFile' attribute.
      */
     @ConfigurationElement(attributeType = "olcAuditlogFile")
-    private List<String> olcAuditlogFile = new ArrayList<String>();
+    private List<String> olcAuditlogFile = new ArrayList<>();
 
 
     /**
@@ -59,7 +59,7 @@ public class OlcAuditlogConfig extends OlcOverlayConfig
     public OlcAuditlogConfig( OlcAuditlogConfig o )
     {
         super( o );
-        olcAuditlogFile = new ArrayList<String>( olcAuditlogFile );
+        olcAuditlogFile = new ArrayList<>( olcAuditlogFile );
     }
 
 
@@ -102,6 +102,7 @@ public class OlcAuditlogConfig extends OlcOverlayConfig
     /**
      * {@inheritDoc}
      */
+    @Override
     public OlcAuditlogConfig copy()
     {
         return new OlcAuditlogConfig( this );

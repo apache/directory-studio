@@ -35,13 +35,13 @@ public class OlcModuleList extends OlcConfig
      * Field for the 'cn' attribute.
      */
     @ConfigurationElement(attributeType = "cn", isRdn = true)
-    private List<String> cn = new ArrayList<String>();
+    private List<String> cn = new ArrayList<>();
 
     /**
      * Field for the 'olcAllows' attribute.
      */
     @ConfigurationElement(attributeType = "olcModuleLoad")
-    private List<String> olcModuleLoad = new ArrayList<String>();
+    private List<String> olcModuleLoad = new ArrayList<>();
 
     /**
      * Field for the 'olcModulePath' attribute.

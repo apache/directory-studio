@@ -59,8 +59,9 @@ public class OlcNullConfig extends OlcDatabaseConfig
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOlcDatabaseType()
     {
         return DatabaseTypeEnum.NULL.toString().toLowerCase();
-    };
+    }
 }

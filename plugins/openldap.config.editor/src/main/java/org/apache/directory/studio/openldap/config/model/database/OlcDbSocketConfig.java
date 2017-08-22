@@ -44,7 +44,7 @@ public class OlcDbSocketConfig extends OlcDatabaseConfig
      * Field for the 'olcDbSocketExtensions' attribute.
      */
     @ConfigurationElement(attributeType = "olcDbSocketExtensions")
-    private List<String> olcDbSocketExtensions = new ArrayList<String>();
+    private List<String> olcDbSocketExtensions = new ArrayList<>();
 
 
     /**
@@ -104,8 +104,9 @@ public class OlcDbSocketConfig extends OlcDatabaseConfig
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOlcDatabaseType()
     {
         return DatabaseTypeEnum.DB_SOCKET.toString().toLowerCase();
-    };
+    }
 }

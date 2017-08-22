@@ -94,6 +94,7 @@ public enum OlcBdbConfigLockDetectEnum
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString()
     {
         switch ( this )

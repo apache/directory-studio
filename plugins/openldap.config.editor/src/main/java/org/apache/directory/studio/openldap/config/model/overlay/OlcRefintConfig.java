@@ -39,7 +39,7 @@ public class OlcRefintConfig extends OlcOverlayConfig
      * Field for the 'olcRefintAttribute' attribute.
      */
     @ConfigurationElement(attributeType = "olcRefintAttribute")
-    private List<String> olcRefintAttribute = new ArrayList<String>();
+    private List<String> olcRefintAttribute = new ArrayList<>();
 
     /**
      * Field for the 'olcRefintNothing' attribute.
@@ -147,6 +147,7 @@ public class OlcRefintConfig extends OlcOverlayConfig
     /**
      * {@inheritDoc}
      */
+    @Override
     public OlcRefintConfig copy()
     {
         return new OlcRefintConfig( this );

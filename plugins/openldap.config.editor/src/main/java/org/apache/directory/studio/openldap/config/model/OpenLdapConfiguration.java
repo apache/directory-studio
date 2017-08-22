@@ -43,13 +43,13 @@ public class OpenLdapConfiguration
     private OlcGlobal global;
 
     /** The databases list */
-    private List<OlcDatabaseConfig> databases = new ArrayList<OlcDatabaseConfig>();
+    private List<OlcDatabaseConfig> databases = new ArrayList<>();
 
     /** The other configuration elements list*/
-    private List<OlcConfig> configurationElements = new ArrayList<OlcConfig>();
+    private List<OlcConfig> configurationElements = new ArrayList<>();
     
     /** The loaded modules */
-    private List<OlcModuleList> modules = new ArrayList<OlcModuleList>();
+    private List<OlcModuleList> modules = new ArrayList<>();
 
 
     /**

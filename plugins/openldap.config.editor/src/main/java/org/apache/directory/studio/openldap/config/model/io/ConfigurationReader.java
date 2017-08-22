@@ -85,6 +85,12 @@ import org.eclipse.osgi.util.NLS;
  */
 public class ConfigurationReader
 {
+    private ConfigurationReader()
+    {
+        // Nothing to do
+    }
+    
+    
     /** The package name where the model classes are stored */
     private static final String MODEL_PACKAGE_NAME = "org.apache.directory.studio.openldap.config.model";
 

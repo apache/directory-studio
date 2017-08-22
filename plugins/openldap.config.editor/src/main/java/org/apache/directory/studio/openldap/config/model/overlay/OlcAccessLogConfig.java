@@ -51,13 +51,13 @@ public class OlcAccessLogConfig extends OlcOverlayConfig
      * Field for the 'olcAccessLogOldAttr' attribute.
      */
     @ConfigurationElement(attributeType = "olcAccessLogOldAttr")
-    private List<String> olcAccessLogOldAttr = new ArrayList<String>();
+    private List<String> olcAccessLogOldAttr = new ArrayList<>();
 
     /**
      * Field for the 'olcAccessLogOps' attribute.
      */
     @ConfigurationElement(attributeType = "olcAccessLogOps")
-    private List<String> olcAccessLogOps = new ArrayList<String>();
+    private List<String> olcAccessLogOps = new ArrayList<>();
 
     /**
      * Field for the 'olcAccessLogPurge' attribute.
@@ -92,8 +92,8 @@ public class OlcAccessLogConfig extends OlcOverlayConfig
         super( o );
         olcAccessLogDB = o.olcAccessLogDB;
         olcAccessLogOld = o.olcAccessLogOld;
-        olcAccessLogOldAttr = new ArrayList<String>( olcAccessLogOldAttr );
-        olcAccessLogOps = new ArrayList<String>( o.olcAccessLogOps );
+        olcAccessLogOldAttr = new ArrayList<>( olcAccessLogOldAttr );
+        olcAccessLogOps = new ArrayList<>( o.olcAccessLogOps );
         olcAccessLogPurge = o.olcAccessLogPurge;
         olcAccessLogSuccess = o.olcAccessLogSuccess;
     }
@@ -246,6 +246,7 @@ public class OlcAccessLogConfig extends OlcOverlayConfig
     /**
      * {@inheritDoc}
      */
+    @Override
     public OlcAccessLogConfig copy()
     {
         return new OlcAccessLogConfig( this );

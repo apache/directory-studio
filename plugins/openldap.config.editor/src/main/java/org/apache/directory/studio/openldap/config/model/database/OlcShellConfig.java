@@ -35,8 +35,9 @@ public class OlcShellConfig extends OlcDatabaseConfig
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOlcDatabaseType()
     {
         return DatabaseTypeEnum.SHELL.toString().toLowerCase();
-    };
+    }
 }

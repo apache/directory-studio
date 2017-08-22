@@ -155,6 +155,7 @@ public class OlcSyncProvConfig extends OlcOverlayConfig
     /**
      * {@inheritDoc}
      */
+    @Override
     public OlcSyncProvConfig copy()
     {
         return new OlcSyncProvConfig( this );

@@ -47,13 +47,13 @@ public class OlcGlobal extends OlcConfig
      * Field for the 'cn' attribute.
      */
     @ConfigurationElement(attributeType = "cn", isRdn = true)
-    private List<String> cn = new ArrayList<String>();
+    private List<String> cn = new ArrayList<>();
 
     /**
      * Field for the 'olcAllows' attribute.
      */
     @ConfigurationElement(attributeType = "olcAllows")
-    private List<String> olcAllows = new ArrayList<String>();
+    private List<String> olcAllows = new ArrayList<>();
 
     /**
      * Field for the 'olcArgsFile' attribute.
@@ -65,19 +65,19 @@ public class OlcGlobal extends OlcConfig
      * Field for the 'olcAttributeOptions' attribute.
      */
     @ConfigurationElement(attributeType = "olcAttributeOptions")
-    private List<String> olcAttributeOptions = new ArrayList<String>();
+    private List<String> olcAttributeOptions = new ArrayList<>();
 
     /**
      * Field for the 'olcAttributeTypes' attribute.
      */
     @ConfigurationElement(attributeType = "olcAttributeTypes")
-    private List<String> olcAttributeTypes = new ArrayList<String>();
+    private List<String> olcAttributeTypes = new ArrayList<>();
 
     /**
      * Field for the 'olcAuthIDRewrite' attribute.
      */
     @ConfigurationElement(attributeType = "olcAuthIDRewrite")
-    private List<String> olcAuthIDRewrite = new ArrayList<String>();
+    private List<String> olcAuthIDRewrite = new ArrayList<>();
 
     /**
      * Field for the 'olcAuthzPolicy' attribute.
@@ -89,7 +89,7 @@ public class OlcGlobal extends OlcConfig
      * Field for the 'olcAuthzRegexp' attribute.
      */
     @ConfigurationElement(attributeType = "olcAuthzRegexp")
-    private List<String> olcAuthzRegexp = new ArrayList<String>();
+    private List<String> olcAuthzRegexp = new ArrayList<>();
 
     /**
      * Field for the 'olcConcurrency' attribute.
@@ -125,13 +125,13 @@ public class OlcGlobal extends OlcConfig
      * Field for the 'olcDisallows' attribute.
      */
     @ConfigurationElement(attributeType = "olcDisallows")
-    private List<String> olcDisallows = new ArrayList<String>();
+    private List<String> olcDisallows = new ArrayList<>();
 
     /**
      * Field for the 'olcDitContentRules' attribute.
      */
     @ConfigurationElement(attributeType = "olcDitContentRules")
-    private List<String> olcDitContentRules = new ArrayList<String>();
+    private List<String> olcDitContentRules = new ArrayList<>();
 
     /**
      * Field for the 'olcGentleHUP' attribute.
@@ -185,7 +185,7 @@ public class OlcGlobal extends OlcConfig
      * Field for the 'olcLdapSyntaxes' attribute.
      */
     @ConfigurationElement(attributeType = "olcLdapSyntaxes")
-    private List<String> olcLdapSyntaxes = new ArrayList<String>();
+    private List<String> olcLdapSyntaxes = new ArrayList<>();
 
     /**
      * Field for the 'olcListenerThreads' attribute.  (Added in OpenLDAP 2.4.36)
@@ -209,19 +209,19 @@ public class OlcGlobal extends OlcConfig
      * Field for the 'olcLogLevel' attribute.
      */
     @ConfigurationElement(attributeType = "olcLogLevel")
-    private List<String> olcLogLevel = new ArrayList<String>();
+    private List<String> olcLogLevel = new ArrayList<>();
 
     /**
      * Field for the 'olcObjectClasses' attribute.
      */
     @ConfigurationElement(attributeType = "olcObjectClasses")
-    private List<String> olcObjectClasses = new ArrayList<String>();
+    private List<String> olcObjectClasses = new ArrayList<>();
 
     /**
      * Field for the 'olcObjectIdentifier' attribute.
      */
     @ConfigurationElement(attributeType = "olcObjectIdentifier")
-    private List<String> olcObjectIdentifier = new ArrayList<String>();
+    private List<String> olcObjectIdentifier = new ArrayList<>();
 
     /**
      * Field for the 'olcPasswordCryptSaltFormat' attribute.
@@ -233,7 +233,7 @@ public class OlcGlobal extends OlcConfig
      * Field for the 'olcPasswordHash' attribute.
      */
     @ConfigurationElement(attributeType = "olcPasswordHash")
-    private List<String> olcPasswordHash = new ArrayList<String>();
+    private List<String> olcPasswordHash = new ArrayList<>();
 
     /**
      * Field for the 'olcPidFile' attribute.
@@ -269,13 +269,13 @@ public class OlcGlobal extends OlcConfig
      * Field for the 'olcRequires' attribute.
      */
     @ConfigurationElement(attributeType = "olcRequires")
-    private List<String> olcRequires = new ArrayList<String>();
+    private List<String> olcRequires = new ArrayList<>();
 
     /**
      * Field for the 'olcRestrict' attribute.
      */
     @ConfigurationElement(attributeType = "olcRestrict")
-    private List<String> olcRestrict = new ArrayList<String>();
+    private List<String> olcRestrict = new ArrayList<>();
 
     /**
      * Field for the 'olcReverseLookup' attribute.
@@ -329,13 +329,13 @@ public class OlcGlobal extends OlcConfig
      * Field for the 'olcSecurity' attribute.
      */
     @ConfigurationElement(attributeType = "olcSecurity")
-    private List<String> olcSecurity = new ArrayList<String>();
+    private List<String> olcSecurity = new ArrayList<>();
 
     /**
      * Field for the 'olcServerID' attribute.
      */
     @ConfigurationElement(attributeType = "olcServerID")
-    private List<String> olcServerID = new ArrayList<String>();
+    private List<String> olcServerID = new ArrayList<>();
 
     /**
      * Field for the 'olcSizeLimit' attribute.
@@ -359,7 +359,7 @@ public class OlcGlobal extends OlcConfig
      * Field for the 'olcTCPBuffer' attribute. (Added in OpenLDAP 2.4.18)
      */
     @ConfigurationElement(attributeType = "olcTCPBuffer")
-    private List<String> olcTCPBuffer = new ArrayList<String>();
+    private List<String> olcTCPBuffer = new ArrayList<>();
 
     /**
      * Field for the 'olcThreads' attribute. (Added in OpenLDAP 2.4.36)
@@ -377,7 +377,7 @@ public class OlcGlobal extends OlcConfig
      * Field for the 'olcTimeLimit' attribute.
      */
     @ConfigurationElement(attributeType = "olcTimeLimit")
-    private List<String> olcTimeLimit = new ArrayList<String>();
+    private List<String> olcTimeLimit = new ArrayList<>();
 
     /**
      * Field for the 'olcTLSCACertificateFile' attribute.

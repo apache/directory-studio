@@ -62,7 +62,7 @@ public class OlcBdbConfig extends OlcDatabaseConfig
      * Field for the 'olcDbConfig' attribute.
      */
     @ConfigurationElement(attributeType = "olcDbConfig")
-    private List<String> olcDbConfig = new ArrayList<String>();
+    private List<String> olcDbConfig = new ArrayList<>();
 
     /**
      * Field for the 'olcDbCryptFile' attribute.
@@ -98,7 +98,7 @@ public class OlcBdbConfig extends OlcDatabaseConfig
      * Field for the 'olcDbIndex' attribute.
      */
     @ConfigurationElement(attributeType = "olcDbIndex")
-    private List<String> olcDbIndex = new ArrayList<String>();
+    private List<String> olcDbIndex = new ArrayList<>();
 
     /**
      * Field for the 'olcDbLinearIndex' attribute.
@@ -128,7 +128,7 @@ public class OlcBdbConfig extends OlcDatabaseConfig
      * Field for the 'olcDbPageSize' attribute.
      */
     @ConfigurationElement(attributeType = "olcDbPageSize")
-    private List<String> olcDbPageSize = new ArrayList<String>();
+    private List<String> olcDbPageSize = new ArrayList<>();
 
     /**
      * Field for the 'olcDbSearchStack' attribute.
@@ -540,8 +540,9 @@ public class OlcBdbConfig extends OlcDatabaseConfig
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOlcDatabaseType()
     {
         return DatabaseTypeEnum.BDB.toString().toLowerCase();
-    };
+    }
 }

@@ -101,6 +101,7 @@ public class OlcDistProcConfig extends OlcOverlayConfig
     /**
      * {@inheritDoc}
      */
+    @Override
     public OlcDistProcConfig copy()
     {
         return new OlcDistProcConfig( this );

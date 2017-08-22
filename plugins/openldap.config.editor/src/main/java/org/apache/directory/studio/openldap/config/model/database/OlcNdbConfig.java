@@ -35,8 +35,9 @@ public class OlcNdbConfig extends OlcDatabaseConfig
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOlcDatabaseType()
     {
         return DatabaseTypeEnum.NDB.toString().toLowerCase();
-    };
+    }
 }

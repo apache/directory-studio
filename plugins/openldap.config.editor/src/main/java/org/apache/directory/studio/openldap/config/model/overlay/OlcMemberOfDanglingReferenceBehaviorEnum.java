@@ -74,6 +74,7 @@ public enum OlcMemberOfDanglingReferenceBehaviorEnum
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString()
     {
         switch ( this )

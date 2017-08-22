@@ -60,8 +60,9 @@ public class OlcRelayConfig extends OlcDatabaseConfig
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOlcDatabaseType()
     {
         return DatabaseTypeEnum.RELAY.toString().toLowerCase();
-    };
+    }
 }

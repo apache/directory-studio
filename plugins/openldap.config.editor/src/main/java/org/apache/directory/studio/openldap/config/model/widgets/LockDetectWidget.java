@@ -90,6 +90,7 @@ public class LockDetectWidget extends AbstractWidget
         comboViewer.setContentProvider( new ArrayContentProvider() );
         comboViewer.setLabelProvider( new LabelProvider()
         {
+            @Override
             public String getText( Object element )
             {
                 if ( element instanceof NoneObject )
@@ -118,9 +119,7 @@ public class LockDetectWidget extends AbstractWidget
                 return super.getText( element );
             }
         } );
-        comboViewer.addSelectionChangedListener( new ISelectionChangedListener()
-        {
-            public void selectionChanged( SelectionChangedEvent event )
+        comboViewer.addSelectionChangedListener( event ->
             {
                 value = null;
 
@@ -137,8 +136,7 @@ public class LockDetectWidget extends AbstractWidget
                 }
 
                 notifyListeners();
-            }
-        } );
+            } );
         comboViewer.setInput( comboViewerValues );
         comboViewer.setSelection( new StructuredSelection( comboViewerValues[0] ) );
     }

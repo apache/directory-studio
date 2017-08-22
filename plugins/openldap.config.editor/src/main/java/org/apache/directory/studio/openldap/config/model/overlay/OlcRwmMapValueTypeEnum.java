@@ -64,6 +64,7 @@ public enum OlcRwmMapValueTypeEnum
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString()
     {
         switch ( this )

@@ -33,8 +33,9 @@ public class OlcDbPerlConfig extends OlcDatabaseConfig
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOlcDatabaseType()
     {
         return DatabaseTypeEnum.DB_PERL.toString().toLowerCase();
-    };
+    }
 }

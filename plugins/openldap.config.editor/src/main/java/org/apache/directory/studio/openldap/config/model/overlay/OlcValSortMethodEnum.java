@@ -84,6 +84,7 @@ public enum OlcValSortMethodEnum
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString()
     {
         switch ( this )

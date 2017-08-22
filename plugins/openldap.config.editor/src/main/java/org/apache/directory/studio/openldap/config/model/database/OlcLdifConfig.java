@@ -57,8 +57,9 @@ public class OlcLdifConfig extends OlcDatabaseConfig
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOlcDatabaseType()
     {
         return DatabaseTypeEnum.LDIF.toString().toLowerCase();
-    };
+    }
 }

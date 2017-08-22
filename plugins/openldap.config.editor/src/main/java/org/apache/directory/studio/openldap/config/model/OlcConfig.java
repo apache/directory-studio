@@ -37,7 +37,7 @@ public class OlcConfig
     protected Dn parentDn;
 
     /** The list of auxiliary object classes */
-    protected List<AuxiliaryObjectClass> auxiliaryObjectClasses = new ArrayList<AuxiliaryObjectClass>();
+    protected List<AuxiliaryObjectClass> auxiliaryObjectClasses = new ArrayList<>();
 
 
     /**
@@ -59,7 +59,7 @@ public class OlcConfig
      */
     public List<AuxiliaryObjectClass> getAuxiliaryObjectClasses()
     {
-        List<AuxiliaryObjectClass> copy = new ArrayList<AuxiliaryObjectClass>( auxiliaryObjectClasses.size() );
+        List<AuxiliaryObjectClass> copy = new ArrayList<>( auxiliaryObjectClasses.size() );
         copy.addAll( auxiliaryObjectClasses );
 
         return copy;
@@ -109,14 +109,14 @@ public class OlcConfig
     {
         if ( original != null )
         { 
-            List<String> copy = new ArrayList<String>( original.size() );
+            List<String> copy = new ArrayList<>( original.size() );
             copy.addAll( original );
     
             return copy;
         }
         else
         {
-            return new ArrayList<String>();
+            return new ArrayList<>();
         }
     }
 }

@@ -75,7 +75,7 @@ public class OlcDatabaseConfig extends OlcConfig
      * Field for the 'olcAccess' attribute, which is an ordered multi-value String attribute
      */
     @ConfigurationElement(attributeType = "olcAccess")
-    private List<String> olcAccess = new ArrayList<String>();
+    private List<String> olcAccess = new ArrayList<>();
 
 
     /**
@@ -118,7 +118,7 @@ public class OlcDatabaseConfig extends OlcConfig
      * Field for the 'olcLimits' attribute.
      */
     @ConfigurationElement(attributeType = "olcLimits")
-    private List<String> olcLimits = new ArrayList<String>();
+    private List<String> olcLimits = new ArrayList<>();
 
     /**
      * Field for the 'olcMaxDerefDepth' attribute.
@@ -142,7 +142,7 @@ public class OlcDatabaseConfig extends OlcConfig
      * Field for the 'olcPlugin' attribute.
      */
     @ConfigurationElement(attributeType = "olcPlugin")
-    private List<String> olcPlugin = new ArrayList<String>();
+    private List<String> olcPlugin = new ArrayList<>();
 
     /**
      * Field for the 'olcReadOnly' attribute.
@@ -154,7 +154,7 @@ public class OlcDatabaseConfig extends OlcConfig
      * Field for the 'olcReplica' attribute.
      */
     @ConfigurationElement(attributeType = "olcReplica")
-    private List<String> olcReplica = new ArrayList<String>();
+    private List<String> olcReplica = new ArrayList<>();
 
     /**
      * Field for the 'olcReplicaArgsFile' attribute.
@@ -184,13 +184,13 @@ public class OlcDatabaseConfig extends OlcConfig
      * Field for the 'olcRequires' attribute.
      */
     @ConfigurationElement(attributeType = "olcRequires")
-    private List<String> olcRequires = new ArrayList<String>();
+    private List<String> olcRequires = new ArrayList<>();
 
     /**
      * Field for the 'olcRestrict' attribute.
      */
     @ConfigurationElement(attributeType = "olcRestrict")
-    private List<String> olcRestrict = new ArrayList<String>();
+    private List<String> olcRestrict = new ArrayList<>();
 
     /**
      * Field for the 'olcRootDN' attribute.
@@ -214,7 +214,7 @@ public class OlcDatabaseConfig extends OlcConfig
      * Field for the 'olcSecurity' attribute.
      */
     @ConfigurationElement(attributeType = "olcSecurity")
-    private List<String> olcSecurity = new ArrayList<String>();
+    private List<String> olcSecurity = new ArrayList<>();
 
     /**
      * Field for the 'olcSizeLimit' attribute.
@@ -232,13 +232,13 @@ public class OlcDatabaseConfig extends OlcConfig
      * Field for the 'olcSuffix' attribute.
      */
     @ConfigurationElement(attributeType = "olcSuffix")
-    private List<Dn> olcSuffix = new ArrayList<Dn>();
+    private List<Dn> olcSuffix = new ArrayList<>();
 
     /**
      * Field for the 'olcSyncrepl' attribute.
      */
     @ConfigurationElement(attributeType = "olcSyncrepl")
-    private List<String> olcSyncrepl = new ArrayList<String>();
+    private List<String> olcSyncrepl = new ArrayList<>();
 
     /**
      * Field for the 'olcSyncUseSubentry' attribute. (Added in OpenLDAP 2.4.20)
@@ -250,7 +250,7 @@ public class OlcDatabaseConfig extends OlcConfig
      * Field for the 'olcTimeLimit' attribute.
      */
     @ConfigurationElement(attributeType = "olcTimeLimit")
-    private List<String> olcTimeLimit = new ArrayList<String>();
+    private List<String> olcTimeLimit = new ArrayList<>();
 
     /**
      * Field for the 'olcUpdateDN' attribute.
@@ -262,12 +262,12 @@ public class OlcDatabaseConfig extends OlcConfig
      * Field for the 'olcUpdateRef' attribute.
      */
     @ConfigurationElement(attributeType = "olcUpdateRef")
-    private List<String> olcUpdateRef = new ArrayList<String>();
+    private List<String> olcUpdateRef = new ArrayList<>();
     
     /**
      * The overlays list
      */
-    private List<OlcOverlayConfig> overlays = new ArrayList<OlcOverlayConfig>();
+    private List<OlcOverlayConfig> overlays = new ArrayList<>();
 
 
     /**

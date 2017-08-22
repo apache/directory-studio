@@ -151,6 +151,7 @@ public class OlcPBindConfig extends OlcOverlayConfig
     /**
      * {@inheritDoc}
      */
+    @Override
     public OlcPBindConfig copy()
     {
         return new OlcPBindConfig( this );

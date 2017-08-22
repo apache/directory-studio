@@ -64,13 +64,13 @@ public class OlcMdbConfig extends OlcDatabaseConfig
      * Field for the 'olcDbEnvFlags' attribute.
      */
     @ConfigurationElement(attributeType = "olcDbEnvFlags")
-    private List<String> olcDbEnvFlags = new ArrayList<String>();
+    private List<String> olcDbEnvFlags = new ArrayList<>();
 
     /**
      * Field for the 'olcDbIndex' attribute.
      */
     @ConfigurationElement(attributeType = "olcDbIndex")
-    private List<String> olcDbIndex = new ArrayList<String>();
+    private List<String> olcDbIndex = new ArrayList<>();
 
     /**
      * Field for the 'olcDbMaxEntrySize' attribute.
@@ -328,10 +328,11 @@ public class OlcMdbConfig extends OlcDatabaseConfig
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOlcDatabaseType()
     {
         return DatabaseTypeEnum.MDB.toString().toLowerCase();
-    };
+    }
     
     
     /**
@@ -339,7 +340,7 @@ public class OlcMdbConfig extends OlcDatabaseConfig
      */
     public String toString()
     {
-        if ( getOlcSuffix().size() > 0 )
+        if ( !getOlcSuffix().isEmpty() )
         { 
             return getOlcDatabase() + ":" + getOlcSuffix().get( 0 );
         }

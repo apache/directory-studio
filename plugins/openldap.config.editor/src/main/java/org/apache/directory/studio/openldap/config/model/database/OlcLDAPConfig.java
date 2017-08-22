@@ -87,7 +87,7 @@ public class OlcLDAPConfig extends OlcDatabaseConfig
      * Field for the 'olcDbIDAssertAuthzFrom' attribute.
      */
     @ConfigurationElement(attributeType = "olcDbIDAssertAuthzFrom")
-    private List<String> olcDbIDAssertAuthzFrom = new ArrayList<String>();
+    private List<String> olcDbIDAssertAuthzFrom = new ArrayList<>();
 
     /**
      * Field for the 'olcDbIDAssertBind' attribute.
@@ -105,7 +105,7 @@ public class OlcLDAPConfig extends OlcDatabaseConfig
      * Field for the 'olcDbIDAssertPassThru' attribute.
      */
     @ConfigurationElement(attributeType = "olcDbIDAssertPassThru")
-    private List<String> olcDbIDAssertPassThru = new ArrayList<String>();
+    private List<String> olcDbIDAssertPassThru = new ArrayList<>();
 
     /**
      * Field for the 'olcDbIDAssertPasswd' attribute.
@@ -795,8 +795,9 @@ public class OlcLDAPConfig extends OlcDatabaseConfig
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOlcDatabaseType()
     {
         return DatabaseTypeEnum.LDAP.toString().toLowerCase();
-    };
+    }
 }

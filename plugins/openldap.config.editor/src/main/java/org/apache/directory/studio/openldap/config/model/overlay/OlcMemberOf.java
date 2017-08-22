@@ -232,6 +232,7 @@ public class OlcMemberOf extends OlcOverlayConfig
     /**
      * {@inheritDoc}
      */
+    @Override
     public OlcMemberOf copy()
     {
         return new OlcMemberOf( this );

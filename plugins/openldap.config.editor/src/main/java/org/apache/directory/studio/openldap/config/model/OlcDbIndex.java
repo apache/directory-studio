@@ -48,10 +48,10 @@ public class OlcDbIndex
     private boolean isDefault = false;
 
     /** The list of attributes */
-    private List<String> attributes = new ArrayList<String>();
+    private List<String> attributes = new ArrayList<>();
 
     /** The list of index types */
-    private Set<DbIndexTypeEnum> indexTypes = new HashSet<DbIndexTypeEnum>();
+    private Set<DbIndexTypeEnum> indexTypes = new HashSet<>();
 
 
     /**
@@ -75,11 +75,11 @@ public class OlcDbIndex
 
             if ( components.length > 0 )
             {
-                String[] attributes = components[0].split( COMMA_SEPARATOR );
+                String[] attrs = components[0].split( COMMA_SEPARATOR );
 
-                if ( attributes.length > 0 )
+                if ( attrs.length > 0 )
                 {
-                    for ( String attribute : attributes )
+                    for ( String attribute : attrs )
                     {
                         addAttribute( attribute );
                     }
@@ -87,11 +87,11 @@ public class OlcDbIndex
 
                 if ( components.length == 2 )
                 {
-                    String[] indexTypes = components[1].split( COMMA_SEPARATOR );
+                    String[] indexes = components[1].split( COMMA_SEPARATOR );
 
-                    if ( indexTypes.length > 0 )
+                    if ( indexes.length > 0 )
                     {
-                        for ( String indexType : indexTypes )
+                        for ( String indexType : indexes )
                         {
                             DbIndexTypeEnum type = DbIndexTypeEnum.valueOf( indexType );
 
@@ -234,7 +234,7 @@ public class OlcDbIndex
         }
         else
         {
-            if ( attributes.size() > 0 )
+            if ( !attributes.isEmpty() )
             {
                 for ( String attribute : attributes )
                 {
@@ -252,7 +252,7 @@ public class OlcDbIndex
             }
         }
 
-        if ( indexTypes.size() > 0 )
+        if ( !indexTypes.isEmpty() )
         {
             sb.append( SPACE_SEPARATOR );
             isFirst = true;

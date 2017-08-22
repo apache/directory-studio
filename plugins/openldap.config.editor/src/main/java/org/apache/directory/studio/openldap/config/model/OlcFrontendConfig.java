@@ -41,13 +41,13 @@ public class OlcFrontendConfig implements  AuxiliaryObjectClass
      * Field for the 'olcPasswordHash' attribute.
      */
     @ConfigurationElement(attributeType = "olcPasswordHash")
-    private List<String> olcPasswordHash = new ArrayList<String>();
+    private List<String> olcPasswordHash = new ArrayList<>();
 
     /**
      * Field for the 'olcSortVals' attribute.
      */
     @ConfigurationElement(attributeType = "olcSortVals")
-    private List<String> olcSortVals = new ArrayList<String>();
+    private List<String> olcSortVals = new ArrayList<>();
 
 
     /**

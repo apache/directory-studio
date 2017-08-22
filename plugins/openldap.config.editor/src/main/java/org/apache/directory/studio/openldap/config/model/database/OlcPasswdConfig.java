@@ -35,8 +35,9 @@ public class OlcPasswdConfig extends OlcDatabaseConfig
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOlcDatabaseType()
     {
         return DatabaseTypeEnum.PASSWD.toString().toLowerCase();
-    };
+    }
 }

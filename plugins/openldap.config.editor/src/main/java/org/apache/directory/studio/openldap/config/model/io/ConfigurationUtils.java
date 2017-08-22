@@ -42,6 +42,12 @@ import org.eclipse.core.runtime.NullProgressMonitor;
  */
 public class ConfigurationUtils
 {
+    private ConfigurationUtils()
+    {
+        // Nothing to do
+    }
+    
+    
     /** The default OpenLDAP configuration DN */
     public static final String DEFAULT_CONFIG_DN = "cn=config";
 

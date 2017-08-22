@@ -35,8 +35,9 @@ public class OlcMonitorConfig extends OlcDatabaseConfig
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOlcDatabaseType()
     {
         return DatabaseTypeEnum.MONITOR.toString().toLowerCase();
-    };
+    }
 }

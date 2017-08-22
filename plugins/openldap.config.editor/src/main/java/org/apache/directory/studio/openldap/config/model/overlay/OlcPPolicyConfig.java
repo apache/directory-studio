@@ -157,6 +157,7 @@ public class OlcPPolicyConfig extends OlcOverlayConfig
     /**
      * {@inheritDoc}
      */
+    @Override
     public OlcPPolicyConfig copy()
     {
         return new OlcPPolicyConfig( this );

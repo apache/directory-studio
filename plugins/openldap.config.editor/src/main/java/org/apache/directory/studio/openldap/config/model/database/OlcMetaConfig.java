@@ -33,8 +33,9 @@ public class OlcMetaConfig extends OlcDatabaseConfig
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getOlcDatabaseType()
     {
         return DatabaseTypeEnum.META.toString().toLowerCase();
-    };
+    }
 }

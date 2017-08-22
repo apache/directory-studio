@@ -38,7 +38,7 @@ public class OlcRwmConfig extends OlcOverlayConfig
      * Field for the 'olcRwmMap' attribute.
      */
     @ConfigurationElement(attributeType = "olcRwmMap")
-    private List<String> olcRwmMap = new ArrayList<String>();
+    private List<String> olcRwmMap = new ArrayList<>();
 
     /**
      * Field for the 'olcRwmNormalizeMapped' attribute.
@@ -50,7 +50,7 @@ public class OlcRwmConfig extends OlcOverlayConfig
      * Field for the 'olcRwmRewrite' attribute.
      */
     @ConfigurationElement(attributeType = "olcRwmRewrite")
-    private List<String> olcRwmRewrite = new ArrayList<String>();
+    private List<String> olcRwmRewrite = new ArrayList<>();
 
     /**
      * Field for the 'olcRwmTFSupport' attribute.
@@ -200,6 +200,7 @@ public class OlcRwmConfig extends OlcOverlayConfig
     /**
      * {@inheritDoc}
      */
+    @Override
     public OlcRwmConfig copy()
     {
         return new OlcRwmConfig( this );

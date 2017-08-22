@@ -151,6 +151,7 @@ public class OlcChainConfig extends OlcOverlayConfig
     /**
      * {@inheritDoc}
      */
+    @Override
     public OlcChainConfig copy()
     {
         return new OlcChainConfig( this );
