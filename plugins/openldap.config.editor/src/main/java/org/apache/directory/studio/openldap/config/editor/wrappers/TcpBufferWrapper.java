@@ -240,7 +240,7 @@ public class TcpBufferWrapper implements Cloneable, Comparable<TcpBufferWrapper>
         {
             try
             {
-                long size = Long.valueOf( sizeStr );
+                long size = Long.parseLong( sizeStr );
             
                 if ( ( size < 0L ) || ( size > MAX_TCP_BUFFER_SIZE ) )
                 {

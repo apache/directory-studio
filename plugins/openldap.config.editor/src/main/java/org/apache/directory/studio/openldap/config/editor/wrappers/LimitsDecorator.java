@@ -45,26 +45,26 @@ public class LimitsDecorator extends TableDecorator<LimitsWrapper>
      * Construct the label for a Limit.
      * 
      */
+    @Override
     public String getText( Object element )
     {
         if ( element instanceof LimitWrapper )
         {
-            String limitText = ( ( LimitWrapper ) element ).toString();
-
-            return limitText;
+            return element.toString();
         }
 
         return super.getText( element );
-    };
+    }
 
 
     /**
      * Get the image. We have none
      */
+    @Override
     public Image getImage( Object element )
     {
         return null;
-    };
+    }
 
     
     /**

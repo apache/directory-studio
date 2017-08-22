@@ -147,16 +147,13 @@ public class SizeLimitWrapper extends AbstractLimitWrapper
                                 {
                                     softLimit = tmp.softLimit;
                                     
-                                    if ( hardLimit != null )
+                                    if ( ( hardLimit != null ) && ( hardLimit.equals( HARD_SOFT ) || hardLimit.equals( softLimit ) ) )
                                     {
-                                        if ( hardLimit.equals( HARD_SOFT ) || hardLimit.equals( softLimit ) )
-                                        {
-                                            // Special case : we have had a size.hard=soft before,
-                                            // or the hard and soft limit are equals : we set the global limit
-                                            globalLimit = softLimit;
-                                            softLimit = null;
-                                            hardLimit = null;
-                                        }
+                                        // Special case : we have had a size.hard=soft before,
+                                        // or the hard and soft limit are equals : we set the global limit
+                                        globalLimit = softLimit;
+                                        softLimit = null;
+                                        hardLimit = null;
                                     }
                                 }
                                 else if ( tmp.hardLimit != null )
@@ -215,6 +212,7 @@ public class SizeLimitWrapper extends AbstractLimitWrapper
     /**
      * Clear the SizeLimitWrapper (reset all the values to null)
      */
+    @Override
     public void clear()
     {
         super.clear();
@@ -670,6 +668,7 @@ public class SizeLimitWrapper extends AbstractLimitWrapper
     /**
      * @see Object#toString()
      */
+    @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder();

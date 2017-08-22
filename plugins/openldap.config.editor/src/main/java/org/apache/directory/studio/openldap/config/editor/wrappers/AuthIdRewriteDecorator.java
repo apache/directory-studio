@@ -36,33 +36,33 @@ public class AuthIdRewriteDecorator extends TableDecorator<AuthIdRewriteWrapper>
      */
     public AuthIdRewriteDecorator( Shell parentShell )
     {
-        //setDialog( new AuthIdRewriteDialog( parentShell ) );
+        // Nothing to do
     }
 
     /**
      * Construct the label for an AuthIdRewriteWrapper.
      * 
      */
+    @Override
     public String getText( Object element )
     {
         if ( element instanceof AuthIdRewriteWrapper )
         {
-            String authIdRewrite = ( ( AuthIdRewriteWrapper ) element ).toString();
-
-            return authIdRewrite;
+            return element.toString();
         }
 
         return super.getText( element );
-    };
+    }
 
 
     /**
      * Get the image. We have none
      */
+    @Override
     public Image getImage( Object element )
     {
         return null;
-    };
+    }
 
     
     /**

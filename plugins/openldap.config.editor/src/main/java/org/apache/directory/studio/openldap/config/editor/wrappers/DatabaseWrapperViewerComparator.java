@@ -22,15 +22,19 @@ package org.apache.directory.studio.openldap.config.editor.wrappers;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginUtils;
 import org.apache.directory.studio.openldap.config.model.database.OlcDatabaseConfig;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerSorter;
+import org.eclipse.jface.viewers.ViewerComparator;
 
 /**
  * This class defines a sorter for a database wrapper viewer.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class DatabaseWrapperViewerSorter extends ViewerSorter
+public class DatabaseWrapperViewerComparator extends ViewerComparator
 {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public int compare( Viewer viewer, Object e1, Object e2 )
     {
         if ( ( e1 instanceof DatabaseWrapper ) && ( e2 instanceof DatabaseWrapper ) )

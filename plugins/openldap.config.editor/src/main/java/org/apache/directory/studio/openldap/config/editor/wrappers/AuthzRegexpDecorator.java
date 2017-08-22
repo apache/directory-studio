@@ -36,33 +36,33 @@ public class AuthzRegexpDecorator extends TableDecorator<AuthzRegexpWrapper>
      */
     public AuthzRegexpDecorator( Shell parentShell )
     {
-        //setDialog( new AuthzRegexpWrapperDialog( parentShell ) );
+        // Nothing to do
     }
 
     /**
      * Construct the label for an AuthIdRewriteWrapper.
      * 
      */
+    @Override
     public String getText( Object element )
     {
         if ( element instanceof AuthzRegexpWrapper )
         {
-            String authzRegexp = ( ( AuthzRegexpWrapper ) element ).toString();
-
-            return authzRegexp;
+            return element.toString();
         }
 
         return super.getText( element );
-    };
+    }
 
 
     /**
      * Get the image. We have none
      */
+    @Override
     public Image getImage( Object element )
     {
         return null;
-    };
+    }
 
     
     /**

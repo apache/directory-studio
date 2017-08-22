@@ -43,26 +43,26 @@ public class ServerIdDecorator extends TableDecorator<ServerIdWrapper>
     /**
      * Construct the label for a ServerID. It can be a number in [0..999], or an URL
      */
+    @Override
     public String getText( Object element )
     {
         if ( element instanceof ServerIdWrapper )
         {
-            String serverIdtext = ( ( ServerIdWrapper ) element ).toString();
-
-            return serverIdtext;
+            return element.toString();
         }
 
         return super.getText( element );
-    };
+    }
 
 
     /**
      * Get the image. We have none (may be we could add one for URLs ?)
      */
+    @Override
     public Image getImage( Object element )
     {
         return null;
-    };
+    }
 
     
     /**

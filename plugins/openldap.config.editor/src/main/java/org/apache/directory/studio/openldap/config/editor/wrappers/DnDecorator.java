@@ -45,17 +45,16 @@ public class DnDecorator extends TableDecorator<DnWrapper>
      * Construct the label for an DisallowFeature.
      * 
      */
+    @Override
     public String getText( Object element )
     {
         if ( element instanceof DisallowFeatureEnum )
         {
-            String disallowFeature = ( ( DisallowFeatureEnum ) element ).toString();
-
-            return disallowFeature;
+            return element.toString();
         }
 
         return super.getText( element );
-    };
+    }
 
 
     /**
@@ -63,10 +62,11 @@ public class DnDecorator extends TableDecorator<DnWrapper>
      * 
      * {@inheritDoc}
      */
+    @Override
     public Image getImage( Object element )
     {
         return null;
-    };
+    }
 
     
     /**

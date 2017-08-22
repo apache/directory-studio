@@ -172,12 +172,9 @@ public class OrderedStringValueWrapper implements Cloneable, Comparable<OrderedS
         {
             OrderedStringValueWrapper thatInstance = (OrderedStringValueWrapper)that;
             
-            if ( prefix != null )
+            if ( ( prefix != null ) && ( prefix != thatInstance.prefix ) )
             {
-                if ( prefix != thatInstance.prefix )
-                {
-                    return false;
-                }
+                return false;
             }
             
             if ( caseSensitive )

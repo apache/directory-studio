@@ -85,7 +85,7 @@ public class DatabaseWrapperLabelProvider extends StyledCellLabelProvider
         }
 
         return null;
-    };
+    }
     
     
     /**
@@ -168,7 +168,7 @@ public class DatabaseWrapperLabelProvider extends StyledCellLabelProvider
         {
             List<Dn> suffixes = database.getOlcSuffix();
 
-            if ( ( suffixes != null ) && ( suffixes.size() > 0 ) )
+            if ( ( suffixes != null ) && !suffixes.isEmpty() )
             {
                 return suffixes.get( 0 ).toString();
             }

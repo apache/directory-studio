@@ -45,26 +45,26 @@ public class DisallowFeatureDecorator extends TableDecorator<DisallowFeatureEnum
      * Construct the label for an DisallowFeature.
      * 
      */
+    @Override
     public String getText( Object element )
     {
         if ( element instanceof DisallowFeatureEnum )
         {
-            String disallowFeature = ( ( DisallowFeatureEnum ) element ).toString();
-
-            return disallowFeature;
+            return element.toString();
         }
 
         return super.getText( element );
-    };
+    }
 
 
     /**
      * Get the image. We have none
      */
+    @Override
     public Image getImage( Object element )
     {
         return null;
-    };
+    }
 
     
     /**

@@ -45,26 +45,26 @@ public class RestrictOperationDecorator extends TableDecorator<RestrictOperation
      * Construct the label for an RestrictOperation.
      * 
      */
+    @Override
     public String getText( Object element )
     {
         if ( element instanceof RestrictOperationEnum )
         {
-            String restrictOperation = ( ( RestrictOperationEnum ) element ).toString();
-
-            return restrictOperation;
+            return element.toString();
         }
 
         return super.getText( element );
-    };
+    }
 
 
     /**
      * Get the image. We have none
      */
+    @Override
     public Image getImage( Object element )
     {
         return null;
-    };
+    }
 
     
     /**

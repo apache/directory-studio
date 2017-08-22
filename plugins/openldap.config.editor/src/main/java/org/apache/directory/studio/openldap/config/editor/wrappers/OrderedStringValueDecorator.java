@@ -46,24 +46,26 @@ public class OrderedStringValueDecorator extends TableDecorator<OrderedStringVal
      * Construct the label for a String.
      * 
      */
+    @Override
     public String getText( Object element )
     {
         if ( element instanceof StringValueWrapper )
         {
-            return ( ( StringValueWrapper ) element ).toString();
+            return element.toString();
         }
 
         return super.getText( element );
-    };
+    }
 
 
     /**
      * Get the image. We have none
      */
+    @Override
     public Image getImage( Object element )
     {
         return null;
-    };
+    }
 
     
     /**

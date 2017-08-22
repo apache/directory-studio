@@ -44,26 +44,26 @@ public class SsfDecorator extends TableDecorator<SsfWrapper>
      * Construct the label for a SSF. It can be one of :
      * 
      */
+    @Override
     public String getText( Object element )
     {
         if ( element instanceof SsfWrapper )
         {
-            String ssfText = ( ( SsfWrapper ) element ).toString();
-
-            return ssfText;
+            return element.toString();
         }
 
         return super.getText( element );
-    };
+    }
 
 
     /**
      * Get the image. We have none
      */
+    @Override
     public Image getImage( Object element )
     {
         return null;
-    };
+    }
 
     
     /**

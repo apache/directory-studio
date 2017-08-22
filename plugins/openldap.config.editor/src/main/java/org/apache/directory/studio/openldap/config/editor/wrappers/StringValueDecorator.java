@@ -60,6 +60,7 @@ public class StringValueDecorator extends TableDecorator<StringValueWrapper>
      * @param element the Element for which we want the value
      * @return a String representation of the element
      */
+    @Override
     public String getText( Object element )
     {
         if ( element instanceof StringValueWrapper )
@@ -68,7 +69,7 @@ public class StringValueDecorator extends TableDecorator<StringValueWrapper>
         }
 
         return super.getText( element );
-    };
+    }
 
 
     /**
@@ -77,10 +78,11 @@ public class StringValueDecorator extends TableDecorator<StringValueWrapper>
      * @param element The element for which we want the image
      * @return The associated Image, or Null
      */
+    @Override
     public Image getImage( Object element )
     {
         return image;
-    };
+    }
 
     
     /**

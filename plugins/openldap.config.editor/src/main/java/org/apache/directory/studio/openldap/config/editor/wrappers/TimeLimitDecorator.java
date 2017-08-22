@@ -44,26 +44,26 @@ public class TimeLimitDecorator extends TableDecorator<TimeLimitWrapper>
      * Construct the label for a TimeLimit. It can be one of :
      * 
      */
+    @Override
     public String getText( Object element )
     {
         if ( element instanceof TimeLimitWrapper )
         {
-            String timeLimitText = ( ( TimeLimitWrapper ) element ).toString();
-
-            return timeLimitText;
+            return element.toString();
         }
 
         return super.getText( element );
-    };
+    }
 
 
     /**
      * Get the image. We have none (may be we could add one for URLs ?)
      */
+    @Override
     public Image getImage( Object element )
     {
         return null;
-    };
+    }
 
     
     /**

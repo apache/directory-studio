@@ -36,7 +36,7 @@ import org.apache.directory.studio.openldap.common.ui.model.SaslSecPropEnum;
 public class SaslSecPropsWrapper implements Cloneable
 {
     /** The flags for properties with no arguments */
-    private Set<SaslSecPropEnum> flags = new HashSet<SaslSecPropEnum>();
+    private Set<SaslSecPropEnum> flags = new HashSet<>();
 
     /** The value of the minSSF parameter */
     private Integer minSsf;
@@ -108,7 +108,7 @@ public class SaslSecPropsWrapper implements Cloneable
                     
                     try
                     {
-                        int value = Integer.valueOf( Strings.trim( property.substring( pos + 1 ) ) );
+                        int value = Integer.parseInt( Strings.trim( property.substring( pos + 1 ) ) );
                         
                         if ( value >= 0 )
                         {
@@ -203,7 +203,7 @@ public class SaslSecPropsWrapper implements Cloneable
                     
                     try
                     {
-                        int value = Integer.valueOf( Strings.trim( property.substring( pos + 1 ) ) );
+                        int value = Integer.parseInt( Strings.trim( property.substring( pos + 1 ) ) );
                         
                         if ( value < 0 )
                         {

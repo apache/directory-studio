@@ -45,17 +45,16 @@ public class DbIndexDecorator extends TableDecorator<DbIndexWrapper>
      * Construct the label for an DbIndex.
      * 
      */
+    @Override
     public String getText( Object element )
     {
         if ( element instanceof DbIndexWrapper )
         {
-            String dbIndex = ( ( DbIndexWrapper ) element ).toString();
-
-            return dbIndex;
+            return element.toString();
         }
 
         return super.getText( element );
-    };
+    }
 
 
     /**
@@ -63,10 +62,11 @@ public class DbIndexDecorator extends TableDecorator<DbIndexWrapper>
      * 
      * {@inheritDoc}
      */
+    @Override
     public Image getImage( Object element )
     {
         return null;
-    };
+    }
 
     
     /**

@@ -45,26 +45,26 @@ public class RequireConditionDecorator extends TableDecorator<RequireConditionEn
      * Construct the label for an RequireCondition.
      * 
      */
+    @Override
     public String getText( Object element )
     {
         if ( element instanceof RequireConditionEnum )
         {
-            String requireCondition = ( ( RequireConditionEnum ) element ).toString();
-
-            return requireCondition;
+            return element.toString();
         }
 
         return super.getText( element );
-    };
+    }
 
 
     /**
      * Get the image. We have none
      */
+    @Override
     public Image getImage( Object element )
     {
         return null;
-    };
+    }
 
     
     /**

@@ -19,7 +19,6 @@
  */
 package org.apache.directory.studio.openldap.config.editor.wrappers;
 
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
@@ -47,10 +46,7 @@ public class DbIndexWrapper implements Cloneable, Comparable<DbIndexWrapper>
     private boolean isDefault;
 
     /** The set of configured attributes */
-    private Set<String> attributes = new TreeSet<String>( new Comparator<String>()
-        {
-            @Override
-            public int compare( String string1, String string2 )
+    private Set<String> attributes = new TreeSet<>( ( string1, string2 ) ->
             {
                 if ( string1 == null )
                 {
@@ -63,11 +59,10 @@ public class DbIndexWrapper implements Cloneable, Comparable<DbIndexWrapper>
 
                 return string1.compareTo( string2 );
             }
-        }
     );
     
     /** The set of configured attributes */
-    private Set<DbIndexTypeEnum> indexTypes = new TreeSet<DbIndexTypeEnum>();
+    private Set<DbIndexTypeEnum> indexTypes = new TreeSet<>();
         
     /**
      * Build a DbIndexWrapper from a String containing the description of the index.
@@ -101,11 +96,8 @@ public class DbIndexWrapper implements Cloneable, Comparable<DbIndexWrapper>
                 }
                 
                 // Check that it's a valid Attribute
-                //if ( SchemaUtils.isAttributeNameValid( attrStr ) )
-                {
-                    attributes.add( Strings.toLowerCase( attrStr ) );
-                    startPos = pos + 1;
-                }
+                attributes.add( Strings.toLowerCaseAscii( attrStr ) );
+                startPos = pos + 1;
             }
             
             if ( endAttributes )
@@ -218,11 +210,11 @@ public class DbIndexWrapper implements Cloneable, Comparable<DbIndexWrapper>
             DbIndexWrapper clone = (DbIndexWrapper)super.clone();
             
             // Clone the attributes 
-            clone.attributes = new TreeSet<String>();
+            clone.attributes = new TreeSet<>();
             clone.attributes.addAll( attributes );
             
             // Clone the indexTypes
-            clone.indexTypes = new TreeSet<DbIndexTypeEnum>();
+            clone.indexTypes = new TreeSet<>();
             clone.indexTypes.addAll( indexTypes );
             
             return clone;
@@ -310,7 +302,7 @@ public class DbIndexWrapper implements Cloneable, Comparable<DbIndexWrapper>
         // first, the Attribute, if it's not default
         if ( isDefault )
         {
-            if ( indexTypes.size() == 0 )
+            if ( indexTypes.isEmpty() )
             {
                 // No types either ? return a blank String
                 return "";
@@ -340,7 +332,7 @@ public class DbIndexWrapper implements Cloneable, Comparable<DbIndexWrapper>
         // A space before the indexTypes
         sb.append( ' ' );
         
-        if ( indexTypes.size() == 0 )
+        if ( indexTypes.isEmpty() )
         {
             // No type ? Use default
             sb.append( "default" );

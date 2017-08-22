@@ -44,26 +44,26 @@ public class TcpBufferDecorator extends TableDecorator<TcpBufferWrapper>
      * Construct the label for a TCPBuffer.
      * 
      */
+    @Override
     public String getText( Object element )
     {
         if ( element instanceof TcpBufferWrapper )
         {
-            String tcpBufferText = ( ( TcpBufferWrapper ) element ).toString();
-
-            return tcpBufferText;
+            return element.toString();
         }
 
         return super.getText( element );
-    };
+    }
 
 
     /**
      * Get the image. We have none (may be we could add one for URLs ?)
      */
+    @Override
     public Image getImage( Object element )
     {
         return null;
-    };
+    }
 
     
     /**

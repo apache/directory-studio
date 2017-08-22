@@ -75,7 +75,7 @@ public class LimitsWrapper implements Cloneable, Comparable<LimitsWrapper>, Orde
     private String attributeType;
     
     /** The list of limits, as Strings */
-    private List<LimitWrapper> limits = new ArrayList<LimitWrapper>();
+    private List<LimitWrapper> limits = new ArrayList<>();
     
     /** A flag to tell if the limits is valid or not */
     private boolean isValid = true;
