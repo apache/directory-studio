@@ -78,7 +78,7 @@ public class OpenLdapConfigurationPlugin extends AbstractUIPlugin
             schemaManager.loadWithDeps( OpenLdapSchemaLoader.OPENLDAPCONFIG_SCHEMA_NAME );
 
             // Checking if no error occurred when loading the schemas
-            if ( schemaManager.getErrors().size() != 0 )
+            if ( !schemaManager.getErrors().isEmpty() )
             {
                 schemaManager = null;
                 throw new Exception( "Could not load the OpenLDAP schema correctly." );
@@ -86,24 +86,6 @@ public class OpenLdapConfigurationPlugin extends AbstractUIPlugin
         }
 
         return schemaManager;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void start( BundleContext context ) throws Exception
-    {
-        super.start( context );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void stop( BundleContext context ) throws Exception
-    {
-        super.stop( context );
     }
 
 

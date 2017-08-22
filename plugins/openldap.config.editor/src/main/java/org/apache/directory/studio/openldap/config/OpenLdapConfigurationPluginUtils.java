@@ -31,6 +31,12 @@ import org.apache.directory.api.util.Strings;
  */
 public class OpenLdapConfigurationPluginUtils 
 {
+    private OpenLdapConfigurationPluginUtils()
+    {
+        // Nothing to do
+    }
+    
+    
     /**
      * Strips the ordering prefix if the given string contains one.
      *
@@ -297,7 +303,7 @@ public class OpenLdapConfigurationPluginUtils
      */
     public static String getFirstValueString( List<String> values )
     {
-        if ( ( values != null ) && ( values.size() > 0 ) )
+        if ( ( values != null ) && !values.isEmpty() )
         {
             return values.get( 0 );
         }
@@ -314,7 +320,7 @@ public class OpenLdapConfigurationPluginUtils
      */
     public static String getFirstValueDn( List<Dn> values )
     {
-        if ( ( values != null ) && ( values.size() > 0 ) )
+        if ( ( values != null ) && !values.isEmpty() )
         {
             return values.get( 0 ).toString();
         }

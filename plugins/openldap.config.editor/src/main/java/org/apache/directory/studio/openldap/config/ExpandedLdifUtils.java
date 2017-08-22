@@ -47,13 +47,17 @@ import org.apache.directory.studio.openldap.config.model.io.ConfigurationUtils;
  */
 public class ExpandedLdifUtils 
 {
+    private ExpandedLdifUtils()
+    {
+        // Nothing to do
+    }
+    
+    
     /** The LDIF file extension (.ldif) */
     private static final String LDIF_FILE_EXTENSION = ".ldif";
 
     /** A filter used to pick all the LDIF files */
-    private static FileFilter ldifFileFilter = new FileFilter()
-    {
-        public boolean accept( File dir )
+    private static FileFilter ldifFileFilter = dir ->
         {
             if ( dir.getName().endsWith( LDIF_FILE_EXTENSION ) )
             {
@@ -63,8 +67,7 @@ public class ExpandedLdifUtils
             {
                 return false;
             }
-        }
-    };
+        };
 
 
     /**
@@ -76,7 +79,7 @@ public class ExpandedLdifUtils
      */
     public static DnNode<Entry> read( File directory ) throws IOException, LdapException
     {
-        DnNode<Entry> tree = new DnNode<Entry>();
+        DnNode<Entry> tree = new DnNode<>();
 
         readDirectory( directory, Dn.EMPTY_DN, tree );
 
@@ -121,64 +124,65 @@ public class ExpandedLdifUtils
 
             if ( ( ldifFiles != null ) && ( ldifFiles.length != 0 ) )
             {
-                LdifReader ldifReader = new LdifReader();
-
-                // Looping on LDIF files
-                for ( File ldifFile : ldifFiles )
+                try ( LdifReader ldifReader = new LdifReader() )
                 {
-                    // Checking if the LDIF file is a file
-                    if ( !ldifFile.isFile() )
+                    // Looping on LDIF files
+                    for ( File ldifFile : ldifFiles )
                     {
-                        throw new IOException( "Location '" + ldifFile + "' is not a file." );
-                    }
-
-                    // Checking if the LDIF file is readable
-                    if ( !ldifFile.canRead() )
-                    {
-                        throw new IOException( "LDIF file '" + ldifFile + "' can not be read." );
-                    }
-
-                    // Computing the DN of the entry
-                    Dn entryDn = parentDn.add( stripExtension( ldifFile.getName() ) );
-
-                    // Reading the LDIF file
-                    List<LdifEntry> ldifEntries = null;
-
-                    try
-                    {
-                        ldifEntries = ldifReader.parseLdifFile( ldifFile.getAbsolutePath() );
-                    }
-                    finally
-                    {
-                        ldifReader.close();
-                    }
-
-                    // The LDIF file should have only one entry
-                    if ( ( ldifEntries != null ) && ( ldifEntries.size() == 1 ) )
-                    {
-                        // Getting the LDIF entry
-                        LdifEntry ldifEntry = ldifEntries.get( 0 );
-
-                        if ( ldifEntry != null )
+                        // Checking if the LDIF file is a file
+                        if ( !ldifFile.isFile() )
                         {
-                            // Getting the entry
-                            Entry entry = ldifEntry.getEntry();
-
-                            if ( entry != null )
+                            throw new IOException( "Location '" + ldifFile + "' is not a file." );
+                        }
+    
+                        // Checking if the LDIF file is readable
+                        if ( !ldifFile.canRead() )
+                        {
+                            throw new IOException( "LDIF file '" + ldifFile + "' can not be read." );
+                        }
+    
+                        // Computing the DN of the entry
+                        Dn entryDn = parentDn.add( stripExtension( ldifFile.getName() ) );
+    
+                        // Reading the LDIF file
+                        List<LdifEntry> ldifEntries = null;
+    
+                        try
+                        {
+                            ldifEntries = ldifReader.parseLdifFile( ldifFile.getAbsolutePath() );
+                        }
+                        finally
+                        {
+                            ldifReader.close();
+                        }
+    
+                        // The LDIF file should have only one entry
+                        if ( ( ldifEntries != null ) && ( ldifEntries.size() == 1 ) )
+                        {
+                            // Getting the LDIF entry
+                            LdifEntry ldifEntry = ldifEntries.get( 0 );
+    
+                            if ( ldifEntry != null )
                             {
-                                // Refactoring the DN to set the "FULL" DN of the entry
-                                entry.setDn( entryDn );
-
-                                // Creating the new entry node
-                                tree.add( entryDn, entry );
-
-                                // Creating a file without the LDIF extension (corresponding to children directory)
-                                File childrenDirectoryFile = new File( stripExtension( ldifFile.getAbsolutePath() ) );
-
-                                // If the directory exists, recursively read it
-                                if ( childrenDirectoryFile.exists() )
+                                // Getting the entry
+                                Entry entry = ldifEntry.getEntry();
+    
+                                if ( entry != null )
                                 {
-                                    readDirectory( childrenDirectoryFile, entryDn, tree );
+                                    // Refactoring the DN to set the "FULL" DN of the entry
+                                    entry.setDn( entryDn );
+    
+                                    // Creating the new entry node
+                                    tree.add( entryDn, entry );
+    
+                                    // Creating a file without the LDIF extension (corresponding to children directory)
+                                    File childrenDirectoryFile = new File( stripExtension( ldifFile.getAbsolutePath() ) );
+    
+                                    // If the directory exists, recursively read it
+                                    if ( childrenDirectoryFile.exists() )
+                                    {
+                                        readDirectory( childrenDirectoryFile, entryDn, tree );
+                                    }
                                 }
                             }
                         }
@@ -284,19 +288,9 @@ public class ExpandedLdifUtils
             }
 
             // Writing the LDIF file to the disk
-            FileWriter fw = null;
-            try
+            try ( FileWriter fw = new FileWriter( new File( directory, getLdifFilename( entry.getDn() ) ) ) )
             {
-                fw = new FileWriter( new File( directory, getLdifFilename( entry.getDn() ) ) );
                 fw.write( new LdifEntry( entry ).toString() );
-            }
-            finally
-            {
-                // Closing the file write in any case
-                if ( fw != null )
-                {
-                    fw.close();
-                }
             }
 
             // Checking if the entry has children
