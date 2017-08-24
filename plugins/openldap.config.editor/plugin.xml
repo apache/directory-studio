@@ -74,10 +74,10 @@
   </extension>
 
 
- <!-- Add a new entry to create an OpenLDAP  configuration in the New menu -->  
- <extension point="org.eclipse.ui.newWizards">
-  <category id="%NewWizards_Category_id" name="%NewWizards_Category_name" />
-  <wizard
+  <!-- Add a new entry to create an OpenLDAP  configuration in the New menu -->  
+  <extension point="org.eclipse.ui.newWizards">
+    <category id="%NewWizards_Category_id" name="%NewWizards_Category_name" />
+    <wizard
       canFinishEarly="true"
       category="%NewWizards_Category_id"
       class="org.apache.directory.studio.openldap.config.wizards.NewOpenLDAPConfigurationFileWizard"
@@ -86,5 +86,5 @@
       id="%NewWizards_NewOpenLDAPConfigurationFileWizard_id"
       name="%NewWizards_NewOpenLDAPConfigurationFileWizard_name"
       project="false"/>
- </extension>
+  </extension>
 </plugin>

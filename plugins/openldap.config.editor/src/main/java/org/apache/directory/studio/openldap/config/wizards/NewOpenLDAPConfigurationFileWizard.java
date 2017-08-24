@@ -32,7 +32,7 @@ import org.eclipse.ui.PlatformUI;
 
 
 /**
- * This class implements the New ApacheDS Configuration File Wizard.
+ * This class implements the New OpenLDAP Configuration File Wizard.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
