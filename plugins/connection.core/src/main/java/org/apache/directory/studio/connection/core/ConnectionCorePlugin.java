@@ -442,8 +442,7 @@ public class ConnectionCorePlugin extends Plugin
             jndiLoggers = new ArrayList<IJndiLogger>();
 
             IExtensionRegistry registry = Platform.getExtensionRegistry();
-            IExtensionPoint extensionPoint = registry.getExtensionPoint( getPluginProperties().getString(
-                "ExtensionPoint_JndiLogger_id" ) ); //$NON-NLS-1$
+            IExtensionPoint extensionPoint = registry.getExtensionPoint( "org.apache.directory.studio.jndilogger" ); //$NON-NLS-1$
             IConfigurationElement[] members = extensionPoint.getConfigurationElements();
             for ( IConfigurationElement member : members )
             {
@@ -480,8 +479,7 @@ public class ConnectionCorePlugin extends Plugin
             connectionListeners = new ArrayList<IConnectionListener>();
 
             IExtensionRegistry registry = Platform.getExtensionRegistry();
-            IExtensionPoint extensionPoint = registry.getExtensionPoint( getPluginProperties().getString(
-                "ExtensionPoint_ConnectionListener_id" ) ); //$NON-NLS-1$
+            IExtensionPoint extensionPoint = registry.getExtensionPoint( "org.apache.directory.studio.connectionlistener" ); //$NON-NLS-1$
             IConfigurationElement[] members = extensionPoint.getConfigurationElements();
             for ( IConfigurationElement member : members )
             {
