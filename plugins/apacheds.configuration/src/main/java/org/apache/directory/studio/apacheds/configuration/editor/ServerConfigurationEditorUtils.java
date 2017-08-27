@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.apache.directory.api.util.FileUtils;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.csn.CsnFactory;
 import org.apache.directory.api.ldap.model.entry.DefaultEntry;
@@ -100,13 +101,14 @@ public class ServerConfigurationEditorUtils
         if ( isIDE )
         {
             // Asking the user for the location where to 'save as' the file
-            final SaveAsDialog dialog = new SaveAsDialog( shell );
+            SaveAsDialog dialog = new SaveAsDialog( shell );
 
             String inputClassName = input.getClass().getName();
+            
             if ( input instanceof FileEditorInput )
-            // FileEditorInput class is used when the file is opened
-            // from a project in the workspace.
             {
+                // FileEditorInput class is used when the file is opened
+                // from a project in the workspace.
                 dialog.setOriginalFile( ( ( FileEditorInput ) input ).getFile() );
             }
             else if ( input instanceof IPathEditorInput )
@@ -116,11 +118,11 @@ public class ServerConfigurationEditorUtils
             }
             else if ( inputClassName.equals( "org.eclipse.ui.internal.editors.text.JavaFileEditorInput" ) //$NON-NLS-1$
                 || inputClassName.equals( "org.eclipse.ui.ide.FileStoreEditorInput" ) ) //$NON-NLS-1$
-            // The class 'org.eclipse.ui.internal.editors.text.JavaFileEditorInput'
-            // is used when opening a file from the menu File > Open... in Eclipse 3.2.x
-            // The class 'org.eclipse.ui.ide.FileStoreEditorInput' is used when
-            // opening a file from the menu File > Open... in Eclipse 3.3.x
             {
+                // The class 'org.eclipse.ui.internal.editors.text.JavaFileEditorInput'
+                // is used when opening a file from the menu File > Open... in Eclipse 3.2.x
+                // The class 'org.eclipse.ui.ide.FileStoreEditorInput' is used when
+                // opening a file from the menu File > Open... in Eclipse 3.3.x
                 dialog.setOriginalFile( ResourcesPlugin.getWorkspace().getRoot()
                     .getFile( new Path( input.getToolTipText() ) ) );
             }
@@ -247,13 +249,7 @@ public class ServerConfigurationEditorUtils
         final DialogResult result = new DialogResult();
 
         // Opening the dialog in the UI thread
-        Display.getDefault().syncExec( new Runnable()
-        {
-            public void run()
-            {
-                result.setResult( dialog.open() );
-            }
-        } );
+        Display.getDefault().syncExec( () -> result.setResult( dialog.open() ) );
 
         return result.getResult();
     }
@@ -288,14 +284,11 @@ public class ServerConfigurationEditorUtils
         final DialogResult result = new DialogResult();
 
         // Opening the dialog in the UI thread
-        Display.getDefault().syncExec( new Runnable()
-        {
-            public void run()
+        Display.getDefault().syncExec( () ->
             {
                 FileDialog dialog = new FileDialog( shell, SWT.SAVE );
                 result.setResult( dialog.open() );
-            }
-        } );
+            } );
 
         return result.getResult();
     }
@@ -311,8 +304,7 @@ public class ServerConfigurationEditorUtils
      * @throws Exception
      */
     public static void saveConfiguration( ConnectionServerConfigurationInput input, ConfigWriter configWriter,
-        IProgressMonitor monitor )
-        throws Exception
+        IProgressMonitor monitor ) throws Exception
     {
         // Getting the original configuration partition
         EntryBasedConfigurationPartition originalPartition = input.getOriginalPartition();
@@ -510,10 +502,8 @@ public class ServerConfigurationEditorUtils
         PartitionsDiffComputer partitionsDiffComputer = new PartitionsDiffComputer();
         partitionsDiffComputer.setOriginalPartition( originalPartition );
         partitionsDiffComputer.setDestinationPartition( newconfigurationPartition );
-        List<LdifEntry> modificationsList = partitionsDiffComputer.computeModifications( new String[]
+        return partitionsDiffComputer.computeModifications( new String[]
             { SchemaConstants.ALL_USER_ATTRIBUTES } );
-
-        return modificationsList;
     }
 
 
@@ -544,7 +534,7 @@ public class ServerConfigurationEditorUtils
      */
     public static String checkEmptyString( String s )
     {
-        if ( "".equals( s ) )
+        if ( Strings.isEmpty( s ) )
         {
             return null;
         }

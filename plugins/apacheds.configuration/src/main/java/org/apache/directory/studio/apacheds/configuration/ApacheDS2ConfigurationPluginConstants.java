@@ -28,8 +28,7 @@ package org.apache.directory.studio.apacheds.configuration;
 public interface ApacheDS2ConfigurationPluginConstants
 {
     /** The plug-in ID */
-    String PLUGIN_ID = ApacheDS2ConfigurationPlugin.getDefault().getPluginProperties()
-        .getString( "Plugin_id" ); //$NON-NLS-1$
+    String PLUGIN_ID = ApacheDS2ConfigurationPluginConstants.class.getPackage().getName();
 
     // ------
     // IMAGES
