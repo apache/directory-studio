@@ -27,7 +27,7 @@
         icon="resources/icons/editor.gif"
         id="org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor"
         name="%Editor_ServerConfigurationEditor_name">
-      <contentTypeBinding contentTypeId="org.apache.directory.studio.apacheds.configuration.contenttype"/>
+      <contentTypeBinding contentTypeId="%ContentType_ServerConfiguration_id"/>
     </editor>
   </extension>
    
@@ -35,7 +35,7 @@
     <content-type
         describer="org.apache.directory.studio.apacheds.configuration.ApacheDS2ConfigurationContentDescriber"
         file-names="config.ldif"
-        id="org.apache.directory.studio.apacheds.configuration.contenttype"
+        id="%ContentType_ServerConfiguration_id"
         name="%ContentType_ServerConfiguration_name"/>
   </extension>
    
@@ -66,10 +66,10 @@
  
   <!-- Add a new entry to create an ApacheDS  configuration in the New menu -->  
   <extension point="org.eclipse.ui.newWizards">
-    <category id="org.apache.directory.studio.apacheds.newWizards" name="%NewWizards_Category_name" />
+    <category id="%NewWizards_Category_id" name="%NewWizards_Category_name" />
     <wizard
       canFinishEarly="true"
-      category="org.apache.directory.studio.apacheds.newWizards"
+      category="%NewWizards_Category_id"
       class="org.apache.directory.studio.apacheds.configuration.wizards.NewApacheDSConfigurationFileWizard"
       hasPages="false"
       icon="resources/icons/editor_new.gif"
