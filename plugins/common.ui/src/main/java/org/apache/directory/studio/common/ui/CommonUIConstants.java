@@ -42,7 +42,7 @@ public final class CommonUIConstants
     }
 
     /** The plug-in ID */
-    public static final String PLUGIN_ID = CommonUIPlugin.getDefault().getPluginProperties().getString( "Plugin_id" ); //$NON-NLS-1$
+    public static final String PLUGIN_ID = CommonUIConstants.class.getPackage().getName();
 
     /** The pull-down image */
     public static final String IMG_PULLDOWN = "resources/icons/pulldown.gif"; //$NON-NLS-1$
