@@ -31,10 +31,10 @@ public final class CommonCoreConstants
 {
 
     /** The plug-in ID */
-    public static final String PLUGIN_ID = "org.apache.directory.studio.common.core"; //$NON-NLS-1$
+    public static final String PLUGIN_ID = CommonCoreConstants.class.getPackage().getName();
 
     /** The Job family ID */
-    public static final String JOB_FAMILY_ID = "org.apache.directory.studio.common.core.jobs.family"; //$NON-NLS-1$
+    public static final String JOB_FAMILY_ID = PLUGIN_ID + ".family"; //$NON-NLS-1$
 
     /**
      *  Ensures no construction of this class, also ensures there is no need for final keyword above
