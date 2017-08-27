@@ -23,8 +23,8 @@
   <extension point="org.eclipse.ui.preferencePages">
     <page
       class="org.apache.directory.studio.combinededitor.preferences.CombinedEntryEditorPreferencePage"
-      id="%PrefPage_CombinedEntryEditorPreferencePage_id"
-      category="%PrefPage_EntryEditorsPreferencePage_id"
+      id="org.apache.directory.studio.combinededitor.preferences.CombinedEntryEditorPreferencePage"
+      category="org.apache.directory.studio.ldapbrowser.preferences.EntryEditorsPreferencePage"
       name="%PrefPage_CombinedEntryEditorPreferencePage_name">
     </page>
   </extension>

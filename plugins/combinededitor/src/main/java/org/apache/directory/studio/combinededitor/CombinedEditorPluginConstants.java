@@ -28,8 +28,7 @@ package org.apache.directory.studio.combinededitor;
 public interface CombinedEditorPluginConstants
 {
     /** The plug-in ID */
-    String PLUGIN_ID = CombinedEditorPlugin.getDefault().getPluginProperties().getString(
-        "Plugin_id" ); //$NON-NLS-1$
+    String PLUGIN_ID = CombinedEditorPluginConstants.class.getPackage().getName();
 
     // Preferences
     String PREF_DEFAULT_EDITOR = PLUGIN_ID + ".prefs.DefaultEditor"; //$NON-NLS-1$
