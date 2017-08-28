@@ -37,7 +37,7 @@
 
   <extension point="org.eclipse.ui.editors">
     <editor
-      class="org.apache.directory.studio.combinededitor.editor.SingleTabCombinedEntryEditor"
+      class="%Editor_SingleTabCombinedEntryEditor_id"
       default="false"
       icon="resources/icons/editor_single_tab.gif"
       id="%Editor_SingleTabCombinedEntryEditor_id"
@@ -46,7 +46,7 @@
     </editor>
 
     <editor      
-      class="org.apache.directory.studio.combinededitor.editor.MultiTabCombinedEntryEditor"
+      class="%Editor_MultiTabCombinedEntryEditor_id"
       default="false"
       icon="resources/icons/editor_multi_tab.gif"
       id="%Editor_MultiTabCombinedEntryEditor_id"
@@ -57,7 +57,7 @@
    
   <extension point="org.apache.directory.studio.entryeditors">
     <entryEditor
-      class="org.apache.directory.studio.combinededitor.editor.SingleTabCombinedEntryEditor"
+      class="%Editor_SingleTabCombinedEntryEditor_id"
       description="%Editor_SingleTabCombinedEntryEditor_description"
       editorId="%Editor_SingleTabCombinedEntryEditor_id"
       icon="resources/icons/editor_single_tab.gif"
@@ -68,7 +68,7 @@
     </entryEditor>
 
     <entryEditor
-      class="org.apache.directory.studio.combinededitor.editor.MultiTabCombinedEntryEditor"
+      class="%Editor_MultiTabCombinedEntryEditor_id"
       description="%Editor_MultiTabCombinedEntryEditor_description"
       editorId="%Editor_MultiTabCombinedEntryEditor_id"
       icon="resources/icons/editor_multi_tab.gif"
