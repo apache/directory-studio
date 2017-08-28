@@ -30,8 +30,7 @@ package org.apache.directory.studio.connection.ui;
 public final class ConnectionUIConstants
 {
     /** The plug-in ID */
-    public static final String PLUGIN_ID = ConnectionUIPlugin.getDefault().getPluginProperties()
-        .getString( "Plugin_id" ); //$NON-NLS-1$
+    public static final String PLUGIN_ID = ConnectionUIConstants.class.getPackage().getName();
 
     /** The dialog setting key used for the history of host names. */
     public static final String DIALOGSETTING_KEY_HOST_HISTORY = "hostHistory"; //$NON-NLS-1$
@@ -88,24 +87,19 @@ public final class ConnectionUIConstants
     public static final String IMG_CERTIFICATE_EXPORT_WIZARD = "resources/icons/certificate_export_wizard.gif"; //$NON-NLS-1$
 
     /** The connection transfer typename */
-    public static final String TYPENAME = ConnectionUIPlugin.getDefault().getPluginProperties()
-        .getString( "ConnectionTransfert_Typename" ); //$NON-NLS-1$
+    public static final String TYPENAME = "org.apache.directory.studio.ldapbrowser.connection"; //$NON-NLS-1$
 
     /** The COPY command */
-    public static final String CMD_COPY = ConnectionUIPlugin.getDefault().getPluginProperties()
-        .getString( "Cmd_Copy_id" ); //$NON-NLS-1$
+    public static final String CMD_COPY = "org.apache.directory.studio.ldapbrowser.action.copy"; //$NON-NLS-1$
 
     /** The PASTE command */
-    public static final String CMD_PASTE = ConnectionUIPlugin.getDefault().getPluginProperties()
-        .getString( "Cmd_Paste_id" ); //$NON-NLS-1$
+    public static final String CMD_PASTE = "org.apache.directory.studio.ldapbrowser.action.paste"; //$NON-NLS-1$
 
     /** The DELETE command */
-    public static final String CMD_DELETE = ConnectionUIPlugin.getDefault().getPluginProperties()
-        .getString( "Cmd_Delete_id" ); //$NON-NLS-1$
+    public static final String CMD_DELETE = "org.apache.directory.studio.ldapbrowser.action.delete"; //$NON-NLS-1$
 
     /** The PROPERTIES command */
-    public static final String CMD_PROPERTIES = ConnectionUIPlugin.getDefault().getPluginProperties()
-        .getString( "Cmd_Properties_id" ); //$NON-NLS-1$
+    public static final String CMD_PROPERTIES = "org.apache.directory.studio.ldapbrowser.action.properties"; //$NON-NLS-1$
 
     /** The new wizard/new connection connection */
     public static final String NEW_WIZARD_NEW_CONNECTION = ConnectionUIPlugin.getDefault().getPluginProperties()

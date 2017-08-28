@@ -144,7 +144,8 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
         @Override
         public void widgetSelected( SelectionEvent event )
         {
-            String certificateValidationPreferencePageId = "org.apache.directory.studio.connection.preferences.CertificateValidationPreferencePage"; //$NON-NLS-1$
+            String certificateValidationPreferencePageId = ConnectionUIPlugin.getDefault()
+                .getPluginProperties().getString( "PrefPage_CertificateValidationPreferencePage_id" ); //$NON-NLS-1$
 
             PreferenceDialog dialog = PreferencesUtil.createPreferenceDialogOn( Display.getDefault()
                 .getActiveShell(), certificateValidationPreferencePageId, new String[]

@@ -58,8 +58,7 @@ public final class ConnectionParameterPageManager
     public static ConnectionParameterPage[] getConnectionParameterPages()
     {
         IExtensionRegistry registry = Platform.getExtensionRegistry();
-        IExtensionPoint extensionPoint = registry.getExtensionPoint( ConnectionUIPlugin.getDefault()
-            .getPluginProperties().getString( "ExtensionPoint_ConnectionParameterPages_id" ) ); //$NON-NLS-1$
+        IExtensionPoint extensionPoint = registry.getExtensionPoint( "org.apache.directory.studio.connectionparameterpages" ); //$NON-NLS-1$
         IConfigurationElement[] members = extensionPoint.getConfigurationElements();
         final Map<String, ConnectionParameterPage> pageMap = new ConcurrentHashMap<>();
 
