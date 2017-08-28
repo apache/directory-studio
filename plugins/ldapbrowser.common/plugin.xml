@@ -19,303 +19,340 @@
   under the License.
 -->
 <plugin>
-   <extension-point id="org.apache.directory.studio.valueeditors" name="Value Editors" schema="src/main/resources/valueEditors.exsd"/>
+  <extension-point id="org.apache.directory.studio.valueeditors" name="Value Editors" schema="src/main/resources/valueEditors.exsd"/>
 
- <extension
-       point="org.apache.directory.studio.valueeditors">
+  <extension
+      point="org.apache.directory.studio.valueeditors">
     <valueEditor
-          class="org.apache.directory.studio.valueeditors.InPlaceTextValueEditor"
-          icon="resources/icons/inplace_texteditor.gif"
-          name="%ValueEditors_InPlaceTextValueEditor_name"/>
+        class="org.apache.directory.studio.valueeditors.InPlaceTextValueEditor"
+        icon="resources/icons/inplace_texteditor.gif"
+        name="%ValueEditors_InPlaceTextValueEditor_name"/>
+        
     <valueEditor
-          class="org.apache.directory.studio.valueeditors.TextValueEditor"
-          icon="resources/icons/texteditor.gif"
-          name="%ValueEditors_TextValueEditor_name"/>
+        class="org.apache.directory.studio.valueeditors.TextValueEditor"
+        icon="resources/icons/texteditor.gif"
+        name="%ValueEditors_TextValueEditor_name"/>
+        
     <valueEditor
-          class="org.apache.directory.studio.valueeditors.HexValueEditor"
-          icon="resources/icons/hexeditor.gif"
-          name="%ValueEditors_HexValueEditor_name"/>
+        class="org.apache.directory.studio.valueeditors.HexValueEditor"
+        icon="resources/icons/hexeditor.gif"
+        name="%ValueEditors_HexValueEditor_name"/>
   </extension>
   
-   <extension
-         point="org.eclipse.ui.newWizards">
-      <category
-            name="%NewWizards_Category_name"
-            id="%NewWizards_Category_id"/>
-   </extension>  
-
-   <extension
-         point="org.eclipse.core.runtime.preferences">
-      <initializer class="org.apache.directory.studio.ldapbrowser.common.BrowserCommonPreferencesInitializer"/>
-   </extension> 
-
-   <extension
-         point="org.eclipse.ui.preferencePages">
-      <page
-            category="%PrefPage_StudioPage_id"
-            class="org.apache.directory.studio.ldapbrowser.common.dialogs.preferences.MainPreferencePage"
-            id="%PrefPage_MainPreferencePage_id"
-            name="%PrefPage_MainPreferencePage_name">
-         <keywordReference id="%Keyword_LDAP_id"/>
-      </page>
-      <page
-            category="%PrefPage_MainPreferencePage_id"
-            class="org.apache.directory.studio.ldapbrowser.common.dialogs.preferences.AttributesPreferencePage"
-            id="%PrefPage_AttributesPreferencePage_id"
-            name="%PrefPage_AttributesPreferencePage_name">
-         <keywordReference id="%Keyword_LDAP_id"/>
-      </page>
-      <page
-            category="%PrefPage_AttributesPreferencePage_id"
-            class="org.apache.directory.studio.ldapbrowser.common.dialogs.preferences.BinaryAttributesAndSyntaxesPreferencePage"
-            id="%PrefPage_BinaryAttributesAndSyntaxesPreferencePage_id"
-            name="%PrefPage_BinaryAttributesAndSyntaxesPreferencePage_name">
-         <keywordReference id="%Keyword_LDAP_id"/>
-      </page>
-      <page
-            category="%PrefPage_MainPreferencePage_id"
-            class="org.apache.directory.studio.ldapbrowser.common.dialogs.preferences.ValueEditorsPreferencePage"
-            id="%PrefPage_ValueEditorsPreferencePage_id"
-            name="%PrefPage_ValueEditorsPreferencePage_name">
-         <keywordReference id="%Keyword_LDAP_id"/>
-      </page>
-      <page
-            category="%PrefPage_ViewsPreferencePage_id"
-            class="org.apache.directory.studio.ldapbrowser.common.dialogs.preferences.BrowserPreferencePage"
-            id="%PrefPage_BrowserPreferencePage_id"
-            name="%PrefPage_BrowserPreferencePage_name">
-         <keywordReference id="%Keyword_LDAP_id"/>
-      </page>            
-      <page
-            category="%PrefPage_EntryEditorsPreferencePage_id"
-            class="org.apache.directory.studio.ldapbrowser.common.dialogs.preferences.EntryEditorPreferencePage"
-            id="%PrefPage_EntryEditorPreferencePage_id"
-            name="%PrefPage_EntryEditorPreferencePage_name">
-         <keywordReference id="%Keyword_LDAP_id"/>
-      </page>
-      <page
-            category="%PrefPage_MainPreferencePage_id"
-            class="org.apache.directory.studio.ldapbrowser.common.dialogs.preferences.TextFormatsPreferencePage"
-            id="%PrefPage_TextFormatsPreferencePage_id"
-            name="%PrefPage_TextFormatsPreferencePage_name">
-         <keywordReference id="%Keyword_LDAP_id"/>
-         <keywordReference id="%Keyword_LDIF_id"/>
-      </page>    
-      <page
-            category="%PrefPage_MainPreferencePage_id"
-            class="org.apache.directory.studio.ldapbrowser.common.dialogs.preferences.ViewsPreferencePage"
-            id="%PrefPage_ViewsPreferencePage_id"
-            name="%PrefPage_ViewsPreferencePage_name">
-         <keywordReference id="%Keyword_LDAP_id"/>
-         <keywordReference id="%Keyword_LDIF_id"/>
-      </page>            
-   </extension>
-
-   <extension
-         point="org.eclipse.ui.editors.templates">
-      <contextType
-            class="org.eclipse.jface.text.templates.TemplateContextType"
-            name="%CtxType_LdapFilter_Template_name"
-            id="%CtxType_LdapFilter_Template_id"/>
-      <include file="resources/templates/templates.xml"/>
-   </extension>
-
- <extension
-       point="org.eclipse.ui.keywords">
-    <keyword
-          id="%Keyword_Colors_id"
-          label="%Keyword_Colors_label"/>
-    <keyword
-          id="%Keyword_Fonts_id"
-          label="%Keyword_Fonts_label"/>
-    <keyword
-          id="%Keyword_LDAP_id"
-          label="%Keyword_LDAP_label"/>
-    <keyword
-          id="%Keyword_LDIF_id"
-          label="%Keyword_LDIF_label"/>
- </extension>
-
- <extension
-       point="org.eclipse.ui.bindings">
-    <key
-          commandId="%Cmd_AddValue_id"
-          contextId="%Ctx_LdapBrowserWindows_id"
-          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-          sequence="M1++"/>
-    <key
-          commandId="%Cmd_AddAttribute_id"
-          contextId="%Ctx_LdapBrowserWindows_id"
-          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-          sequence="M1+M2++"/>
-    <key
-          commandId="%Cmd_EditAttributeDescription_id"
-          contextId="%Ctx_LdapBrowserWindows_id"
-          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-          sequence="F6"/>  
-    <key
-          commandId="%Cmd_EditValue_id"
-          contextId="%Ctx_LdapBrowserWindows_id"
-          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-          sequence="F7"/>  
-    <key
-          commandId="%Cmd_EditRecord_id"
-          contextId="%Ctx_LdapBrowserWindows_id"
-          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-          sequence="F8"/>
-    <key
-          commandId="%Cmd_LocateInDit_id"
-          contextId="%Ctx_LdapBrowserWindows_id"
-          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-          sequence="F3"/>
-    <key
-          commandId="%Cmd_OpenSearchResult_id"
-          contextId="%Ctx_LdapBrowserWindows_id"
-          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-          sequence="F4"/>
-    <key
-          commandId="%Cmd_Delete_id"
-          contextId="%Ctx_LdapBrowserDialogs_id"
-          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-          sequence="DEL"/>
-    <key
-          commandId="%Cmd_Copy_id"
-          contextId="%Ctx_LdapBrowserDialogs_id"
-          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-          sequence="CTRL+C"/>
-    <key
-          commandId="%Cmd_Paste_id"
-          contextId="%Ctx_LdapBrowserDialogs_id"
-          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-          sequence="CTRL+V"/>
-    <key
-          commandId="%Cmd_Find_id"
-          contextId="%Ctx_LdapBrowserDialogs_id"
-          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-          sequence="CTRL+F"/>
-    <key
-          commandId="%Cmd_Properties_id"
-          contextId="%Ctx_LdapBrowserDialogs_id"
-          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-          sequence="ALT+RETURN"/>
-    <key
-          commandId="%Cmd_AddValue_id"
-          contextId="%Ctx_LdapBrowserDialogs_id"
-          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-          sequence="M1++"/>
-    <key
-          commandId="%Cmd_AddAttribute_id"
-          contextId="%Ctx_LdapBrowserDialogs_id"
-          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-          sequence="M1+M2++"/>
-    <key
-          commandId="%Cmd_EditAttributeDescription_id"
-          contextId="%Ctx_LdapBrowserDialogs_id"
-          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-          sequence="F6"/>  
-    <key
-          commandId="%Cmd_EditValue_id"
-          contextId="%Ctx_LdapBrowserDialogs_id"
-          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-          sequence="F7"/>            
- </extension>
-
- <extension
-       point="org.eclipse.ui.commands">
+  <extension
+      point="org.eclipse.ui.newWizards">
     <category
-          id="%Cmd_Category_id"
-          name="%Cmd_Category_name"/>
+        name="%NewWizards_Category_name"
+        id="%NewWizards_Category_id"/>
+  </extension>  
+
+  <extension
+      point="org.eclipse.core.runtime.preferences">
+    <initializer class="org.apache.directory.studio.ldapbrowser.common.BrowserCommonPreferencesInitializer"/>
+  </extension> 
+
+  <extension
+      point="org.eclipse.ui.preferencePages">
+    <page
+        category="org.apache.directory.studio.StudioPreferencePage"
+        class="org.apache.directory.studio.ldapbrowser.common.dialogs.preferences.MainPreferencePage"
+        id="%PrefPage_MainPreferencePage_id"
+        name="%PrefPage_MainPreferencePage_name">
+      <keywordReference id="%Keyword_LDAP_id"/>
+    </page>
+
+    <page
+        category="%PrefPage_MainPreferencePage_id"
+        class="org.apache.directory.studio.ldapbrowser.common.dialogs.preferences.AttributesPreferencePage"
+        id="%PrefPage_AttributesPreferencePage_id"
+        name="%PrefPage_AttributesPreferencePage_name">
+      <keywordReference id="%Keyword_LDAP_id"/>
+    </page>
+
+    <page
+        category="%PrefPage_AttributesPreferencePage_id"
+        class="org.apache.directory.studio.ldapbrowser.common.dialogs.preferences.BinaryAttributesAndSyntaxesPreferencePage"
+        id="org.apache.directory.studio.ldapbrowser.preferences.BinaryAttributesAndSyntaxesPreferencePage"
+        name="%PrefPage_BinaryAttributesAndSyntaxesPreferencePage_name">
+      <keywordReference id="%Keyword_LDAP_id"/>
+    </page>
+
+    <page
+        category="%PrefPage_MainPreferencePage_id"
+        class="org.apache.directory.studio.ldapbrowser.common.dialogs.preferences.ValueEditorsPreferencePage"
+        id="%PrefPage_ValueEditorsPreferencePage_id"
+        name="%PrefPage_ValueEditorsPreferencePage_name">
+      <keywordReference id="%Keyword_LDAP_id"/>
+    </page>
+
+    <page
+        category="%PrefPage_ViewsPreferencePage_id"
+        class="org.apache.directory.studio.ldapbrowser.common.dialogs.preferences.BrowserPreferencePage"
+        id="org.apache.directory.studio.ldapbrowser.preferences.BrowserPreferencePage"
+        name="%PrefPage_BrowserPreferencePage_name">
+      <keywordReference id="%Keyword_LDAP_id"/>
+    </page>
+
+    <page
+        category="org.apache.directory.studio.ldapbrowser.preferences.EntryEditorsPreferencePage"
+        class="org.apache.directory.studio.ldapbrowser.common.dialogs.preferences.EntryEditorPreferencePage"
+        id="org.apache.directory.studio.ldapbrowser.preferences.EntryEditorPreferencePage"
+        name="%PrefPage_EntryEditorPreferencePage_name">
+      <keywordReference id="%Keyword_LDAP_id"/>
+    </page>
+      
+    <page
+        category="%PrefPage_MainPreferencePage_id"
+        class="org.apache.directory.studio.ldapbrowser.common.dialogs.preferences.TextFormatsPreferencePage"
+        id="org.apache.directory.studio.ldapbrowser.preferences.TextFormatsPreferencePage"
+        name="%PrefPage_TextFormatsPreferencePage_name">
+      <keywordReference id="%Keyword_LDAP_id"/>
+      <keywordReference id="%Keyword_LDIF_id"/>
+    </page>
+      
+    <page
+        category="%PrefPage_MainPreferencePage_id"
+        class="org.apache.directory.studio.ldapbrowser.common.dialogs.preferences.ViewsPreferencePage"
+        id="%PrefPage_ViewsPreferencePage_id"
+        name="%PrefPage_ViewsPreferencePage_name">
+      <keywordReference id="%Keyword_LDAP_id"/>
+      <keywordReference id="%Keyword_LDIF_id"/>
+    </page>
+  </extension>
+
+  <extension
+      point="org.eclipse.ui.editors.templates">
+    <contextType
+        class="org.eclipse.jface.text.templates.TemplateContextType"
+        name="%CtxType_LdapFilter_Template_name"
+        id="%CtxType_LdapFilter_Template_id"/>
+    <include file="resources/templates/templates.xml"/>
+  </extension>
+
+  <extension
+      point="org.eclipse.ui.keywords">
+    <keyword
+        id="org.apache.directory.studio.ldapbrowser.keyword.colors"
+        label="%Keyword_Colors_label"/>
+    <keyword
+        id="org.apache.directory.studio.ldapbrowser.keyword.fonts"
+        label="%Keyword_Fonts_label"/>
+    <keyword
+        id="%Keyword_LDAP_id"
+        label="%Keyword_LDAP_label"/>
+    <keyword
+        id="%Keyword_LDIF_id"
+        label="%Keyword_LDIF_label"/>
+   </extension>
+
+  <extension
+      point="org.eclipse.ui.bindings">
+    <key
+        commandId="%Cmd_AddValue_id"
+        contextId="%Ctx_LdapBrowserWindows_id"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="M1++"/>
+
+    <key
+        commandId="%Cmd_AddAttribute_id"
+        contextId="%Ctx_LdapBrowserWindows_id"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="M1+M2++"/>
+
+    <key
+        commandId="%Cmd_EditAttributeDescription_id"
+        contextId="%Ctx_LdapBrowserWindows_id"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="F6"/>  
+
+    <key
+        commandId="%Cmd_EditValue_id"
+        contextId="%Ctx_LdapBrowserWindows_id"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="F7"/>  
+
+    <key
+        commandId="%Cmd_EditRecord_id"
+        contextId="%Ctx_LdapBrowserWindows_id"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="F8"/>
+
+    <key
+        commandId="%Cmd_LocateInDit_id"
+        contextId="%Ctx_LdapBrowserWindows_id"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="F3"/>
+
+    <key
+        commandId="%Cmd_OpenSearchResult_id"
+        contextId="%Ctx_LdapBrowserWindows_id"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="F4"/>
+
+    <key
+        commandId="%Cmd_Delete_id"
+        contextId="%Ctx_LdapBrowserDialogs_id"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="DEL"/>
+
+    <key
+        commandId="%Cmd_Copy_id"
+        contextId="%Ctx_LdapBrowserDialogs_id"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="CTRL+C"/>
+
+    <key
+        commandId="%Cmd_Paste_id"
+        contextId="%Ctx_LdapBrowserDialogs_id"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="CTRL+V"/>
+
+    <key
+        commandId="%Cmd_Find_id"
+        contextId="%Ctx_LdapBrowserDialogs_id"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="CTRL+F"/>
+
+    <key
+        commandId="%Cmd_Properties_id"
+        contextId="%Ctx_LdapBrowserDialogs_id"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="ALT+RETURN"/>
+
+    <key
+        commandId="%Cmd_AddValue_id"
+        contextId="%Ctx_LdapBrowserDialogs_id"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="M1++"/>
+
+    <key
+        commandId="%Cmd_AddAttribute_id"
+        contextId="%Ctx_LdapBrowserDialogs_id"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="M1+M2++"/>
+
+    <key
+        commandId="%Cmd_EditAttributeDescription_id"
+        contextId="%Ctx_LdapBrowserDialogs_id"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="F6"/>
+
+    <key
+        commandId="%Cmd_EditValue_id"
+        contextId="%Ctx_LdapBrowserDialogs_id"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="F7"/>
+  </extension>
+
+  <extension
+      point="org.eclipse.ui.commands">
+    <category
+        id="%Cmd_Category_id"
+        name="%Cmd_Category_name"/>
+
     <command
-          categoryId="%Cmd_Category_id"
-          description="%Cmd_AddValue_description"
-          id="%Cmd_AddValue_id"
-          name="%Cmd_AddValue_name"/>
+        categoryId="%Cmd_Category_id"
+        description="%Cmd_AddValue_description"
+        id="%Cmd_AddValue_id"
+        name="%Cmd_AddValue_name"/>
+
     <command
-          categoryId="%Cmd_Category_id"
-          description="%Cmd_AddAttribute_description"
-          id="%Cmd_AddAttribute_id"
-          name="%Cmd_AddAttribute_name"/>
+        categoryId="%Cmd_Category_id"
+        description="%Cmd_AddAttribute_description"
+        id="%Cmd_AddAttribute_id"
+        name="%Cmd_AddAttribute_name"/>
+
     <command
-          categoryId="%Cmd_Category_id"
-          description="%Cmd_EditAttributeDescription_description"
-          id="%Cmd_EditAttributeDescription_id"
-          name="%Cmd_EditAttributeDescription_name"/>          
+        categoryId="%Cmd_Category_id"
+        description="%Cmd_EditAttributeDescription_description"
+        id="%Cmd_EditAttributeDescription_id"
+        name="%Cmd_EditAttributeDescription_name"/>
+
     <command
-          categoryId="%Cmd_Category_id"
-          description="%Cmd_EditValue_description"
-          id="%Cmd_EditValue_id"
-          name="%Cmd_EditValue_name"/>          
+        categoryId="%Cmd_Category_id"
+        description="%Cmd_EditValue_description"
+        id="%Cmd_EditValue_id"
+        name="%Cmd_EditValue_name"/>
+
     <command
-          categoryId="%Cmd_Category_id"
-          description="%Cmd_EditRecord_description"
-          id="%Cmd_EditRecord_id"
-          name="%Cmd_EditRecord_name"/>          
+        categoryId="%Cmd_Category_id"
+        description="%Cmd_EditRecord_description"
+        id="%Cmd_EditRecord_id"
+        name="%Cmd_EditRecord_name"/>
+
     <command
-          categoryId="%Cmd_Category_id"
-          description="%Cmd_Delete_description"
-          id="%Cmd_Delete_id"
-          name="%Cmd_Delete_name"/>
+        categoryId="%Cmd_Category_id"
+        description="%Cmd_Delete_description"
+        id="%Cmd_Delete_id"
+        name="%Cmd_Delete_name"/>
+
     <command
-          categoryId="%Cmd_Category_id"
-          description="%Cmd_Copy_description"
-          id="%Cmd_Copy_id"
-          name="%Cmd_Copy_name"/>
+        categoryId="%Cmd_Category_id"
+        description="%Cmd_Copy_description"
+        id="%Cmd_Copy_id"
+        name="%Cmd_Copy_name"/>
+
     <command
-          categoryId="%Cmd_Category_id"
-          description="%Cmd_Paste_description"
-          id="%Cmd_Paste_id"
-          name="%Cmd_Paste_name"/>
+        categoryId="%Cmd_Category_id"
+        description="%Cmd_Paste_description"
+        id="%Cmd_Paste_id"
+        name="%Cmd_Paste_name"/>
+
     <command
-          categoryId="%Cmd_Category_id"
-          description="%Cmd_Find_description"
-          id="%Cmd_Find_id"
-          name="%Cmd_Find_name"/>
+        categoryId="%Cmd_Category_id"
+        description="%Cmd_Find_description"
+        id="%Cmd_Find_id"
+        name="%Cmd_Find_name"/>
+
     <command
-          categoryId="%Cmd_Category_id"
-          description="%Cmd_Properties_description"
-          id="%Cmd_Properties_id"
-          name="%Cmd_Properties_name"/>
+        categoryId="%Cmd_Category_id"
+        description="%Cmd_Properties_description"
+        id="%Cmd_Properties_id"
+        name="%Cmd_Properties_name"/>
+
     <command
-          categoryId="%Cmd_Category_id"
-          description="%Cmd_LocateInDit_description"
-          id="%Cmd_LocateInDit_id"
-          name="%Cmd_LocateInDit_name"/>
+        categoryId="%Cmd_Category_id"
+        description="%Cmd_LocateInDit_description"
+        id="%Cmd_LocateInDit_id"
+        name="%Cmd_LocateInDit_name"/>
+
     <command
-          categoryId="%Cmd_Category_id"
-          description="%Cmd_OpenSearchResult_description"
-          id="%Cmd_OpenSearchResult_id"
-          name="%Cmd_OpenSearchResult_name"/>
- </extension>
+        categoryId="%Cmd_Category_id"
+        description="%Cmd_OpenSearchResult_description"
+        id="%Cmd_OpenSearchResult_id"
+        name="%Cmd_OpenSearchResult_name"/>
+  </extension>
 
 
- <extension
-       point="org.eclipse.ui.contexts">
-       <context
-             description="%Ctx_LdapBrowserWindows_description"
-             id="%Ctx_LdapBrowserWindows_id"
-             name="%Ctx_LdapBrowserWindows_name"
-             parentId="org.eclipse.ui.contexts.window">
-	</context>
-       <context
-             description="%Ctx_LdapBrowserDialogs_description"
-             id="%Ctx_LdapBrowserDialogs_id"
-             name="%Ctx_LdapBrowserDialogs_name"
-             parentId="org.eclipse.ui.contexts.dialog"/>
- </extension>
- <extension
-       point="org.apache.directory.studio.connectionparameterpages">
+  <extension
+      point="org.eclipse.ui.contexts">
+    <context
+        description="%Ctx_LdapBrowserWindows_description"
+        id="%Ctx_LdapBrowserWindows_id"
+        name="%Ctx_LdapBrowserWindows_name"
+        parentId="org.eclipse.ui.contexts.window"/>
+
+    <context
+        description="%Ctx_LdapBrowserDialogs_description"
+        id="%Ctx_LdapBrowserDialogs_id"
+        name="%Ctx_LdapBrowserDialogs_name"
+        parentId="org.eclipse.ui.contexts.dialog"/>
+  </extension>
+
+  <extension
+      point="org.apache.directory.studio.connectionparameterpages">
     <connectionParameterPage
-          class="org.apache.directory.studio.ldapbrowser.common.widgets.connection.BrowserParameterPage"
-          dependsOnId="%ConnectionParameterPage_AuthenticationParameterPage_id"
-          description="%ConnectionParameterPage_BrowserParameterPage_description"
-          id="%ConnectionParameterPage_BrowserParameterPage_id"
-          name="%ConnectionParameterPage_BrowserParameterPage_name"/>
+        class="org.apache.directory.studio.ldapbrowser.common.widgets.connection.BrowserParameterPage"
+        dependsOnId="org.apache.directory.studio.connection.ui.widgets.AuthenticationParameterPage"
+        description="%ConnectionParameterPage_BrowserParameterPage_description"
+        id="%ConnectionParameterPage_BrowserParameterPage_id"
+        name="%ConnectionParameterPage_BrowserParameterPage_name"/>
+        
     <connectionParameterPage
-          class="org.apache.directory.studio.ldapbrowser.common.widgets.connection.EditorParameterPage"
-          dependsOnId="%ConnectionParameterPage_BrowserParameterPage_id"
-          description="%ConnectionParameterPage_EditorParameterPage_description"
-          id="%ConnectionParameterPage_EditorParameterPage_id"
-          name="%ConnectionParameterPage_EditorParameterPage_name"/>
- </extension>
- 
+        class="org.apache.directory.studio.ldapbrowser.common.widgets.connection.EditorParameterPage"
+        dependsOnId="%ConnectionParameterPage_BrowserParameterPage_id"
+        description="%ConnectionParameterPage_EditorParameterPage_description"
+        id="org.apache.directory.studio.ldapbrowser.common.widgets.connection.EditorParameterPage"
+        name="%ConnectionParameterPage_EditorParameterPage_name"/>
+  </extension>
 </plugin>

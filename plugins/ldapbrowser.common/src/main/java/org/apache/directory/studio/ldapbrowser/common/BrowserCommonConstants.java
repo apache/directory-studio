@@ -38,8 +38,7 @@ public final class BrowserCommonConstants
     }
 
     /** The plug-in ID */
-    public static final String PLUGIN_ID = BrowserCommonActivator.getDefault().getPluginProperties()
-        .getString( "Plugin_id" ); //$NON-NLS-1$
+    public static final String PLUGIN_ID = BrowserCommonConstants.class.getPackage().getName();
 
     public static final String CONTEXT_WINDOWS = BrowserCommonActivator.getDefault().getPluginProperties()
         .getString( "Ctx_LdapBrowserWindows_id" ); //$NON-NLS-1$
@@ -64,8 +63,7 @@ public final class BrowserCommonConstants
     public static final String FILTER_TEMPLATE_ID = BrowserCommonActivator.getDefault().getPluginProperties()
         .getString( "CtxType_LdapFilter_Template_id" ); //$NON-NLS-1$
 
-    public static final String EXTENSION_POINT_VALUE_EDITORS = BrowserCommonActivator.getDefault()
-        .getPluginProperties().getString( "ExtensionPoint_ValueEditors_id" ); //$NON-NLS-1$
+    public static final String EXTENSION_POINT_VALUE_EDITORS = "org.apache.directory.studio.valueeditors"; //$NON-NLS-1$
 
     public static final String PREFERENCE_TIME_LIMIT = "timeLimit"; //$NON-NLS-1$
     public static final String PREFERENCE_COUNT_LIMIT = "countLimit"; //$NON-NLS-1$
@@ -205,29 +203,19 @@ public final class BrowserCommonConstants
     public static final String CMD_FIND = BrowserCommonActivator.getDefault().getPluginProperties()
         .getString( "Cmd_Find_id" ); //$NON-NLS-1$
 
-    public static final String PROP_VALUE = BrowserCommonActivator.getDefault().getPluginProperties()
-        .getString( "PropPage_Value_id" ); //$NON-NLS-1$
-    public static final String PROP_ATTRIBUTE = BrowserCommonActivator.getDefault().getPluginProperties()
-        .getString( "PropPage_Attribute_id" ); //$NON-NLS-1$
-    public static final String PROP_SEARCH = BrowserCommonActivator.getDefault().getPluginProperties()
-        .getString( "PropPage_Search_id" ); //$NON-NLS-1$
-    public static final String PROP_BOOKMARK = BrowserCommonActivator.getDefault().getPluginProperties()
-        .getString( "PropPage_Bookmark_id" ); //$NON-NLS-1$
-    public static final String PROP_ENTRY = BrowserCommonActivator.getDefault().getPluginProperties()
-        .getString( "PropPage_Entry_id" ); //$NON-NLS-1$
+    public static final String PROP_VALUE = "org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.ValuePropertyPage"; //$NON-NLS-1$
+    public static final String PROP_ATTRIBUTE = "org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.AttributePropertyPage"; //$NON-NLS-1$
+    public static final String PROP_SEARCH = "org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.SearchPropertyPage"; //$NON-NLS-1$
+    public static final String PROP_BOOKMARK = "org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.BookmarkPropertyPage"; //$NON-NLS-1$
+    public static final String PROP_ENTRY = "org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.EntryPropertyPage"; //$NON-NLS-1$
 
-    public static final String DND_ENTRY_TRANSFER = BrowserCommonActivator.getDefault().getPluginProperties()
-        .getString( "DnD_EntryTransfer" ); //$NON-NLS-1$
-    public static final String DND_SEARCH_TRANSFER = BrowserCommonActivator.getDefault().getPluginProperties()
-        .getString( "DnD_SearchTransfer" ); //$NON-NLS-1$
-    public static final String DND_VALUES_TRANSFER = BrowserCommonActivator.getDefault().getPluginProperties()
-        .getString( "DnD_ValuesTransfer" ); //$NON-NLS-1$
+    public static final String DND_ENTRY_TRANSFER = "org.apache.directory.studio.ldapbrowser.entry"; //$NON-NLS-1$
+    public static final String DND_SEARCH_TRANSFER = "org.apache.directory.studio.ldapbrowser.search"; //$NON-NLS-1$
+    public static final String DND_VALUES_TRANSFER = "org.apache.directory.studio.ldapbrowser.value"; //$NON-NLS-1$
 
-    public static final String WIZARD_ATTRIBUTE_WIZARD = BrowserCommonActivator.getDefault().getPluginProperties()
-        .getString( "Wizard_AttributeWizard_id" ); //$NON-NLS-1$
+    public static final String WIZARD_ATTRIBUTE_WIZARD = PLUGIN_ID + ".wizards.AttributeWizard"; //$NON-NLS-1$
 
-    public static final String WIZARD_NEW_ENTRY_WIZARD = BrowserCommonActivator.getDefault().getPluginProperties()
-        .getString( "NewWizard_NewEntryWizard_id" ); //$NON-NLS-1$
+    public static final String WIZARD_NEW_ENTRY_WIZARD = PLUGIN_ID + ".wizards.NewEntryWizard"; //$NON-NLS-1$
     public static final String WIZARD_NEW_CONTEXT_ENTRY_WIZARD = BrowserCommonActivator.getDefault()
         .getPluginProperties().getString( "NewWizard_NewContextEntryWizard_id" ); //$NON-NLS-1$
 }
