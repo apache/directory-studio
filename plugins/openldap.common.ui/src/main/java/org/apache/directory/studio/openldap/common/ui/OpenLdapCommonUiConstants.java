@@ -38,8 +38,7 @@ public final class OpenLdapCommonUiConstants
     }
 
     /** The plug-in ID */
-    public static final String PLUGIN_ID = OpenLdapCommonUiPlugin.getDefault().getPluginProperties()
-        .getString( "Plugin_id" ); //$NON-NLS-1$
+    public static final String PLUGIN_ID = OpenLdapCommonUiConstants.class.getPackage().getName();
 
     public static final String DIALOGSETTING_KEY_DIRECTORY_HISTORY = "directoryHistory"; //$NON-NLS-1$
 }
