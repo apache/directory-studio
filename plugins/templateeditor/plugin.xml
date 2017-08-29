@@ -48,61 +48,61 @@
     <template file="resources/templates/organizationalUnit-view.xml"/>
     <template file="resources/templates/organizationalUnit-edit.xml"/>
   </extension>
-    
+
   <extension point="org.eclipse.ui.preferencePages">
     <page
-      class="org.apache.directory.studio.templateeditor.view.preferences.TemplateEntryEditorPreferencePage"
-      id="%PrefPage_TemplateEntryEditorPreferencePage_id"
-      category="%PrefPage_EntryEditorsPreferencePage_id"
-      name="%PrefPage_TemplateEntryEditorPreferencePage_name">
+        class="org.apache.directory.studio.templateeditor.view.preferences.TemplateEntryEditorPreferencePage"
+        id="org.apache.directory.studio.templateeditor.view.preferences.TemplateEntryEditorPreferencePage"
+        category="org.apache.directory.studio.ldapbrowser.preferences.EntryEditorsPreferencePage"
+        name="%PrefPage_TemplateEntryEditorPreferencePage_name">
     </page>
   </extension>
-    
+
   <extension point="org.eclipse.equinox.preferences.preferences">
     <initializer class="org.apache.directory.studio.templateeditor.PreferenceInitializer"/>
   </extension>
-   
+
   <extension point="org.eclipse.ui.editors">
     <editor
-      class="org.apache.directory.studio.templateeditor.editor.SingleTabTemplateEntryEditor"
-      default="false"
-      icon="resources/icons/editor_single_tab.gif"
-      id="%Editor_SingleTabTemplateEntryEditor_id"
-      matchingStrategy="org.apache.directory.studio.entryeditors.SingleTabEntryEditorMatchingStrategy"
-      name="%Editor_SingleTabTemplateEntryEditor_shortname">
+        class="org.apache.directory.studio.templateeditor.editor.SingleTabTemplateEntryEditor"
+        default="false"
+        icon="resources/icons/editor_single_tab.gif"
+        id="%Editor_SingleTabTemplateEntryEditor_id"
+        matchingStrategy="org.apache.directory.studio.entryeditors.SingleTabEntryEditorMatchingStrategy"
+        name="%Editor_SingleTabTemplateEntryEditor_shortname">
     </editor>
-	  
+
     <editor
-      class="org.apache.directory.studio.templateeditor.editor.MultiTabTemplateEntryEditor"
-      default="false"
-      icon="resources/icons/editor_multi_tab.gif"
-      id="%Editor_MultiTabTemplateEntryEditor_id"
-      matchingStrategy="org.apache.directory.studio.entryeditors.MultiTabEntryEditorMatchingStrategy"
-      name="%Editor_MultiTabTemplateEntryEditor_shortname">
+        class="org.apache.directory.studio.templateeditor.editor.MultiTabTemplateEntryEditor"
+        default="false"
+        icon="resources/icons/editor_multi_tab.gif"
+        id="%Editor_MultiTabTemplateEntryEditor_id"
+        matchingStrategy="org.apache.directory.studio.entryeditors.MultiTabEntryEditorMatchingStrategy"
+        name="%Editor_MultiTabTemplateEntryEditor_shortname">
     </editor>
   </extension>
    
   <extension point="org.apache.directory.studio.entryeditors">
     <entryEditor
-	  class="org.apache.directory.studio.templateeditor.editor.SingleTabTemplateEntryEditor"
-      description="%Editor_SingleTabTemplateEntryEditor_description"
-      editorId="%Editor_SingleTabTemplateEntryEditor_id"
-      icon="resources/icons/editor_single_tab.gif"
-      id="%Editor_SingleTabTemplateEntryEditor_id"
-      name="%Editor_SingleTabTemplateEntryEditor_fullname"
-      priority="32"
-      multiWindow="false">
+        class="org.apache.directory.studio.templateeditor.editor.SingleTabTemplateEntryEditor"
+        description="%Editor_SingleTabTemplateEntryEditor_description"
+        editorId="%Editor_SingleTabTemplateEntryEditor_id"
+        icon="resources/icons/editor_single_tab.gif"
+        id="%Editor_SingleTabTemplateEntryEditor_id"
+        name="%Editor_SingleTabTemplateEntryEditor_fullname"
+        priority="32"
+        multiWindow="false">
     </entryEditor>
-		
+
     <entryEditor
-      class="org.apache.directory.studio.templateeditor.editor.MultiTabTemplateEntryEditor"
-      description="%Editor_MultiTabTemplateEntryEditor_description"
-      editorId="%Editor_MultiTabTemplateEntryEditor_id"
-      icon="resources/icons/editor_multi_tab.gif"
-      id="%Editor_MultiTabTemplateEntryEditor_id"
-      name="%Editor_MultiTabTemplateEntryEditor_fullname"
-      priority="31"
-      multiWindow="true">
+        class="org.apache.directory.studio.templateeditor.editor.MultiTabTemplateEntryEditor"
+        description="%Editor_MultiTabTemplateEntryEditor_description"
+        editorId="%Editor_MultiTabTemplateEntryEditor_id"
+        icon="resources/icons/editor_multi_tab.gif"
+        id="%Editor_MultiTabTemplateEntryEditor_id"
+        name="%Editor_MultiTabTemplateEntryEditor_fullname"
+        priority="31"
+        multiWindow="true">
     </entryEditor>
   </extension>
 </plugin>

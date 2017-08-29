@@ -28,8 +28,7 @@ package org.apache.directory.studio.templateeditor;
 public interface EntryTemplatePluginConstants
 {
     /** The plug-in ID */
-    String PLUGIN_ID = EntryTemplatePlugin.getDefault().getPluginProperties().getString(
-        "Plugin_id" ); //$NON-NLS-1$
+    String PLUGIN_ID = EntryTemplatePluginConstants.class.getPackage().getName();
 
     // Images
     String IMG_EXPORT_TEMPLATES_WIZARD = "resources/icons/export_templates_wizard.gif"; //$NON-NLS-1$
