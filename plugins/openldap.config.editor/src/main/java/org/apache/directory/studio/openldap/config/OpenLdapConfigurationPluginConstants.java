@@ -28,8 +28,7 @@ package org.apache.directory.studio.openldap.config;
 public interface OpenLdapConfigurationPluginConstants
 {
     /** The plug-in ID */
-    String PLUGIN_ID = OpenLdapConfigurationPlugin.getDefault().getPluginProperties()
-        .getString( "Plugin_id" ); //$NON-NLS-1$
+    String PLUGIN_ID = OpenLdapConfigurationPluginConstants.class.getPackage().getName();
 
     // ------
     // IMAGES

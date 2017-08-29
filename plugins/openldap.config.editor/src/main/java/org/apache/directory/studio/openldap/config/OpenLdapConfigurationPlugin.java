@@ -32,7 +32,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.osgi.framework.BundleContext;
 
 
 /**
@@ -71,6 +70,8 @@ public class OpenLdapConfigurationPlugin extends AbstractUIPlugin
     {
         if ( schemaManager == null )
         {
+            long t0 = System.currentTimeMillis();
+            
             // Initializing the schema manager
             schemaManager = new DefaultSchemaManager( new OpenLdapSchemaLoader() );
 
@@ -83,6 +84,9 @@ public class OpenLdapConfigurationPlugin extends AbstractUIPlugin
                 schemaManager = null;
                 throw new Exception( "Could not load the OpenLDAP schema correctly." );
             }
+            long t1 = System.currentTimeMillis();
+            long delta = t1 - t0;
+            System.out.println( "delta : " + delta );
         }
 
         return schemaManager;
