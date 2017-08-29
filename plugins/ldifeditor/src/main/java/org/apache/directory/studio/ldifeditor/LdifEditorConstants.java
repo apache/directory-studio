@@ -38,8 +38,7 @@ public final class LdifEditorConstants
     }
 
     /** The plug-in ID */
-    public static final String PLUGIN_ID = LdifEditorActivator.getDefault().getPluginProperties()
-        .getString( "Plugin_id" ); //$NON-NLS-1$
+    public static final String PLUGIN_ID = LdifEditorConstants.class.getPackage().getName();
 
     public static final String ACTION_ID_EDIT_RECORD = LdifEditorActivator.getDefault().getPluginProperties()
         .getString( "Cmd_EditRecord_id" ); //$NON-NLS-1$
@@ -47,14 +46,14 @@ public final class LdifEditorConstants
     public static final String ACTION_ID_EDIT_ATTRIBUTE_DESCRIPTION = LdifEditorActivator.getDefault()
         .getPluginProperties().getString( "Cmd_EditAttributeDescription_id" ); //$NON-NLS-1$
 
-    public static final String ACTION_ID_FORMAT_LDIF_DOCUMENT = LdifEditorActivator.getDefault().getPluginProperties()
-        .getString( "Cmd_FormatLdifDocument_id" ); //$NON-NLS-1$
+    public static final String ACTION_ID_FORMAT_LDIF_DOCUMENT = 
+        "org.apache.directory.studio.ldifeditor.editor.actions.FormatLdifDocumentAction"; //$NON-NLS-1$
 
-    public static final String ACTION_ID_FORMAT_LDIF_RECORD = LdifEditorActivator.getDefault().getPluginProperties()
-        .getString( "Cmd_FormatLdifRecord_id" ); //$NON-NLS-1$
+    public static final String ACTION_ID_FORMAT_LDIF_RECORD = 
+        "org.apache.directory.studio.ldifeditor.editor.actions.FormatLdifRecordAction"; //$NON-NLS-1$
 
-    public static final String ACTION_ID_EXECUTE_LDIF = LdifEditorActivator.getDefault().getPluginProperties()
-        .getString( "Cmd_ExecuteLdif_id" ); //$NON-NLS-1$
+    public static final String ACTION_ID_EXECUTE_LDIF = 
+        "org.apache.directory.studio.ldifeditor.editor.ExecuteLdifAction"; //$NON-NLS-1$
 
     public static final String NEW_WIZARD_NEW_LDIF_FILE = LdifEditorActivator.getDefault().getPluginProperties()
         .getString( "NewWizard_NewLdifFileWizard_id" ); //$NON-NLS-1$
@@ -169,12 +168,10 @@ public final class LdifEditorConstants
 
     public static final String IMG_EXECUTE = "resources/icons/execute.gif"; //$NON-NLS-1$
 
-    public static final String LDIF_PARTITIONING = LdifEditorActivator.getDefault().getPluginProperties()
-        .getString( "Ldif_Partitioning_id" ); //$NON-NLS-1$
+    public static final String LDIF_PARTITIONING = "org.apache.directory.studio.ldifeditor.LdifPartitioning"; //$NON-NLS-1$
 
-    public static final String CONTENTASSIST_ACTION = LdifEditorActivator.getDefault().getPluginProperties()
-        .getString( "Action_ContentAssist_id" ); //$NON-NLS-1$
+    public static final String CONTENTASSIST_ACTION = "org.apache.directory.studio.ldapbrowser.ContentAssist"; //$NON-NLS-1$
 
-    public static final String PREFERENCEPAGEID_TEXTFORMATS = LdifEditorActivator.getDefault().getPluginProperties()
-        .getString( "PrefPage_TextFormatsPreferencePage_id" ); //$NON-NLS-1$
+    public static final String PREFERENCEPAGEID_TEXTFORMATS = 
+        "org.apache.directory.studio.ldapbrowser.preferences.TextFormatsPreferencePage"; //$NON-NLS-1$
 }
