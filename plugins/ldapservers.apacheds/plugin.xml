@@ -19,47 +19,49 @@
 -->
 <?eclipse version="3.2"?>
 <plugin>
-   <extension
-         point="org.apache.directory.studio.ldapservers.ldapServerAdapters">
-      <ldapServerAdapter
-            class="org.apache.directory.studio.ldapservers.apacheds.ApacheDS200LdapServerAdapter"
-            id="%LdapServerAdapter_id"
-            name="%LdapServerAdapter_name"
-            vendor="%LdapServerAdapter_vendor"
-            version="%LdapServerAdapter_version">
-      </ldapServerAdapter>
-   </extension>
-   
-   <extension
-         point="org.eclipse.ui.popupMenus">
-      <objectContribution
-            objectClass="org.apache.directory.studio.ldapservers.model.LdapServer"
-            id="org.apache.directory.studio.ldapservers.model.LdapServer">
-         <action
-               class="org.apache.directory.studio.ldapservers.apacheds.CreateConnectionAction"
-               enablesFor="1"
-               id="%ActionCreateConnection_id"
-               label="%ActionCreateConnection_label"
-               icon="resources/icons/connection_new.gif">
-         </action>
-         <action
-               class="org.apache.directory.studio.ldapservers.apacheds.RepairAction"
-               enablesFor="1"
-               id="%ActionRepair_id"
-               label="%ActionRepair_label">
-         </action>
-         <visibility>
-            <and>
-               <objectState
-                     name="isLdapPerspectiveAvailable"
-                     value="true">
-               </objectState>
-               <objectState
-                     name="extensionId"
-                     value="%LdapServerAdapter_id">
-               </objectState>
-            </and>
-         </visibility>
-      </objectContribution>
-   </extension>
+  <extension
+      point="org.apache.directory.studio.ldapservers.ldapServerAdapters">
+    <ldapServerAdapter
+        class="org.apache.directory.studio.ldapservers.apacheds.ApacheDS200LdapServerAdapter"
+        id="%LdapServerAdapter_id"
+        name="%LdapServerAdapter_name"
+        vendor="%LdapServerAdapter_vendor"
+        version="%LdapServerAdapter_version"/>
+  </extension>
+
+  <extension
+      point="org.eclipse.ui.popupMenus">
+    <objectContribution
+        objectClass="org.apache.directory.studio.ldapservers.model.LdapServer"
+        id="org.apache.directory.studio.ldapservers.model.LdapServer">
+      <action
+          class="org.apache.directory.studio.ldapservers.apacheds.CreateConnectionAction"
+          enablesFor="1"
+          id="org.apache.directory.studio.ldapservers.apacheds.CreateConnectionAction"
+          label="%ActionCreateConnection_label"
+          icon="resources/icons/connection_new.gif">
+      </action>
+
+      <action
+          class="org.apache.directory.studio.ldapservers.apacheds.RepairAction"
+          enablesFor="1"
+          id="org.apache.directory.studio.ldapservers.apacheds.RepairAction"
+          label="%ActionRepair_label">
+      </action>
+      
+      <visibility>
+        <and>
+          <objectState
+              name="isLdapPerspectiveAvailable"
+              value="true">
+          </objectState>
+          
+          <objectState
+              name="extensionId"
+              value="%LdapServerAdapter_id">
+          </objectState>
+        </and>
+      </visibility>
+    </objectContribution>
+  </extension>
 </plugin>
