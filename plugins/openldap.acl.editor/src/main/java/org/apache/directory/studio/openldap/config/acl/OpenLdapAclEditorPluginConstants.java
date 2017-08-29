@@ -38,8 +38,7 @@ public final class OpenLdapAclEditorPluginConstants
     }
 
     /** The plug-in ID */
-    public static String PLUGIN_ID = OpenLdapAclEditorPlugin.getDefault().getPluginProperties()
-        .getString( "Plugin_id" ); //$NON-NLS-1$
+    public static final String PLUGIN_ID = OpenLdapAclEditorPluginConstants.class.getPackage().getName();
 
     /** The ID for OpenLDAP ACL Template */
     public static String TEMPLATE_ID = OpenLdapAclEditorPlugin.getDefault().getPluginProperties()

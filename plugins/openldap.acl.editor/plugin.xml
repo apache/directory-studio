@@ -21,9 +21,9 @@
 <plugin>
   <extension point="org.apache.directory.studio.valueeditors">
    <valueEditor
-     class="org.apache.directory.studio.openldap.config.acl.editor.OpenLdapAclValueEditor"
-     icon="resources/icons/editor.gif"
-     name="OpenLDAP ACL Editor">
+       class="org.apache.directory.studio.openldap.config.acl.editor.OpenLdapAclValueEditor"
+       icon="resources/icons/editor.gif"
+       name="OpenLDAP ACL Editor">
      <attribute attributeType="olcAccess" />
    </valueEditor>
   </extension>
@@ -31,8 +31,8 @@
   <extension point="org.eclipse.ui.editors.templates">
    <include file="resources/templates/templates.xml"/>
    <contextType
-     class="org.eclipse.jface.text.templates.TemplateContextType"
-     id="%CtxType_Template_id"
-     name="%CtxType_Template_name"/>
+       class="org.eclipse.jface.text.templates.TemplateContextType"
+       id="%CtxType_Template_id"
+       name="%CtxType_Template_name"/>
   </extension>
 </plugin>
