@@ -38,8 +38,7 @@ public final class ValueEditorsConstants
     }
 
     /** The plug-in ID */
-    public static final String PLUGIN_ID = ValueEditorsActivator.getDefault().getPluginProperties()
-        .getString( "Plugin_id" ); //$NON-NLS-1$
+    public static final String PLUGIN_ID = ValueEditorsConstants.class.getPackage().getName();
 
     /** The relative path to the image editor icon */
     public static final String IMG_IMAGEEDITOR = "resources/icons/imageeditor.gif"; //$NON-NLS-1$
