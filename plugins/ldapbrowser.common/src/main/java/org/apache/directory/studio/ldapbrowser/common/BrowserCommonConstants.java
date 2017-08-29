@@ -216,6 +216,6 @@ public final class BrowserCommonConstants
     public static final String WIZARD_ATTRIBUTE_WIZARD = PLUGIN_ID + ".wizards.AttributeWizard"; //$NON-NLS-1$
 
     public static final String WIZARD_NEW_ENTRY_WIZARD = PLUGIN_ID + ".wizards.NewEntryWizard"; //$NON-NLS-1$
-    public static final String WIZARD_NEW_CONTEXT_ENTRY_WIZARD = BrowserCommonActivator.getDefault()
-        .getPluginProperties().getString( "NewWizard_NewContextEntryWizard_id" ); //$NON-NLS-1$
+    public static final String WIZARD_NEW_CONTEXT_ENTRY_WIZARD = 
+        "org.apache.directory.studio.ldapbrowser.common.wizards.NewContextEntryWizard"; //$NON-NLS-1$
 }
