@@ -388,13 +388,6 @@
 		
 	<template 
 		id="org.apache.directory.studio.aciitemeditor.templates.item" 
-		name="item"
-		context="org.apache.directory.studio.aciitemeditor.templates" 
-		enabled="true"
-		deleted="false">item:${cursor}</template>
-		
-	<template 
-		id="org.apache.directory.studio.aciitemeditor.templates.item" 
 		name="item:"
 		context="org.apache.directory.studio.aciitemeditor.templates" 
 		enabled="true"
