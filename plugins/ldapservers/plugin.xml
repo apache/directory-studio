@@ -19,160 +19,170 @@
 -->
 <?eclipse version="3.2"?>
 <plugin>
-   <extension-point id="ldapServerAdapters" name="LDAP Server Adapters" schema="resources/ldapServerAdapters.exsd"/>
-   
-   <extension
-         point="org.eclipse.ui.views">
-      <category
-            id="org.apache.directory.studio.ldapservers.view.category"
-            name="LDAP Servers" />
+  <extension-point id="ldapServerAdapters" name="LDAP Server Adapters" schema="resources/ldapServerAdapters.exsd"/>
+
+  <extension
+      point="org.eclipse.ui.views">
+    <category
+        id="org.apache.directory.studio.ldapservers.view.category"
+        name="LDAP Servers" />
+    <view
+        category="org.apache.directory.studio.ldapservers.view.category"
+        class="org.apache.directory.studio.ldapservers.views.ServersView"
+        icon="resources/icons/servers_view.gif"
+        id="org.apache.directory.studio.ldapservers.views.ServersView"
+        name="LDAP Servers"/>
+  </extension>
+
+  <extension
+      point="org.eclipse.ui.perspectiveExtensions">
+    <perspectiveExtension
+        targetID="org.apache.directory.studio.ldapbrowser.ui.perspective.BrowserPerspective">
       <view
-            category="org.apache.directory.studio.ldapservers.view.category"
-            class="org.apache.directory.studio.ldapservers.views.ServersView"
-            icon="resources/icons/servers_view.gif"
-            id="org.apache.directory.studio.ldapservers.views.ServersView"
-            name="LDAP Servers"/>
-   </extension>
-   
-   <extension
-         point="org.eclipse.ui.perspectiveExtensions">
-      <perspectiveExtension
-            targetID="org.apache.directory.studio.ldapbrowser.ui.perspective.BrowserPerspective">
-         <view
-               closeable="true"
-               id="org.apache.directory.studio.ldapservers.views.ServersView"
-               minimized="false"
-               moveable="true"
-               relationship="stack"
-               relative="org.apache.directory.studio.ldapbrowser.ui.views.connection.ConnectionView"
-               showTitle="true"
-               visible="true">
-         </view>
-      </perspectiveExtension>
-   </extension>
-   
-   <extension
-         point="org.eclipse.ui.propertyPages">
-      <page
-            class="org.apache.directory.studio.ldapservers.properties.ServerPropertyPage"
-            id="org.apache.directory.studio.ldapservers.properties.ServerPropertyPage"
-            name="Info">
-         <enabledWhen>
-            <instanceof
-                  value="org.apache.directory.studio.ldapservers.model.LdapServer">
-            </instanceof>
-         </enabledWhen>
-      </page>
-      <page
-            class="org.apache.directory.studio.ldapservers.properties.ServerPropertyConfigurationPage"
-            id="org.apache.directory.studio.ldapservers.properties.ServerPropertyConfigurationPage"
-            category="org.apache.directory.studio.ldapservers.properties.ServerPropertyPage"
-            name="Configuration">
-         <enabledWhen>
-            <instanceof
-                  value="org.apache.directory.studio.ldapservers.model.LdapServer">
-            </instanceof>
-         </enabledWhen>
-            <filter name="hasConfigurationPage" value="true"/> 
-      </page>
-   </extension>
-   
-   <extension
-         point="org.eclipse.ui.commands">
-      <category
-            id="%Cmd_Category_id"
-            name="%Cmd_Category_name">
-      </category>
-      <command
-            categoryId="%Cmd_Category_id"
-            description="%Cmd_NewServer_description"
-            id="%Cmd_NewServer_id"
-            name="%Cmd_NewServer_name">
-      </command>
-      <command
-            categoryId="%Cmd_Category_id"
-            description="%Cmd_Delete_description"
-            id="%Cmd_Delete_id"
-            name="%Cmd_Delete_name">
-      </command>
-      <command
-            categoryId="%Cmd_Category_id"
-            description="%Cmd_Rename_description"
-            id="%Cmd_Rename_id"
-            name="%Cmd_Rename_name">
-      </command>
-      <command
-            categoryId="%Cmd_Category_id"
-            description="%Cmd_Start_description"
-            id="%Cmd_Start_id"
-            name="%Cmd_Start_name">
-      </command>
-      <command
-            categoryId="%Cmd_Category_id"
-            description="%Cmd_Stop_description"
-            id="%Cmd_Stop_id"
-            name="%Cmd_Stop_name">
-      </command>
-      <command
-            categoryId="%Cmd_Category_id"
-            description="%Cmd_Properties_description"
-            id="%Cmd_Properties_id"
-            name="%Cmd_Properties_name">
-      </command>
-      <command
-            categoryId="%Cmd_Category_id"
-            description="%Cmd_OpenConfiguration_description"
-            id="%Cmd_OpenConfiguration_id"
-            name="%Cmd_OpenConfiguration_name">
-      </command>
-   </extension>
-   
-   <extension
-         point="org.eclipse.ui.contexts">
-      <context
-            description="%Ctx_ServersView_description"
-            id="%Ctx_ServersView_id"
-            name="%Ctx_ServersView_name"
-            parentId="org.eclipse.ui.contexts.window">
-      </context>
-   </extension>
-   
-   <extension
-         point="org.eclipse.ui.bindings">
-      <key
-            commandId="%Cmd_NewServer_id"
-            contextId="%Ctx_ServersView_id"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M1+E"/>
-      <key
-            commandId="%Cmd_Delete_id"
-            contextId="%Ctx_ServersView_id"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="DEL"/>
-      <key
-            commandId="%Cmd_Rename_id"
-            contextId="%Ctx_ServersView_id"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="F2"/>
-      <key
-            commandId="%Cmd_Start_id"
-            contextId="%Ctx_ServersView_id"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M1+R"/>
-      <key
-            commandId="%Cmd_Stop_id"
-            contextId="%Ctx_ServersView_id"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M1+T"/>
-      <key
-            commandId="%Cmd_Properties_id"
-            contextId="%Ctx_ServersView_id"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="ALT+RETURN"/>
-      <key
-            commandId="%Cmd_OpenConfiguration_id"
-            contextId="%Ctx_ServersView_id"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="F3"/>
-   </extension>
+          closeable="true"
+          id="org.apache.directory.studio.ldapservers.views.ServersView"
+          minimized="false"
+          moveable="true"
+          relationship="stack"
+          relative="org.apache.directory.studio.ldapbrowser.ui.views.connection.ConnectionView"
+          showTitle="true"
+          visible="true">
+      </view>
+    </perspectiveExtension>
+  </extension>
+
+  <extension
+      point="org.eclipse.ui.propertyPages">
+    <page
+        class="org.apache.directory.studio.ldapservers.properties.ServerPropertyPage"
+        id="org.apache.directory.studio.ldapservers.properties.ServerPropertyPage"
+        name="Info">
+      <enabledWhen>
+        <instanceof value="org.apache.directory.studio.ldapservers.model.LdapServer"/>
+      </enabledWhen>
+    </page>
+
+    <page
+        class="org.apache.directory.studio.ldapservers.properties.ServerPropertyConfigurationPage"
+        id="org.apache.directory.studio.ldapservers.properties.ServerPropertyConfigurationPage"
+        category="org.apache.directory.studio.ldapservers.properties.ServerPropertyPage"
+        name="Configuration">
+      <enabledWhen>
+        <instanceof value="org.apache.directory.studio.ldapservers.model.LdapServer"/>
+      </enabledWhen>
+      <filter name="hasConfigurationPage" value="true"/> 
+    </page>
+  </extension>
+
+  <extension
+      point="org.eclipse.ui.commands">
+    <category
+        id="%Cmd_Category_id"
+        name="%Cmd_Category_name">
+    </category>
+    
+    <command
+        categoryId="%Cmd_Category_id"
+        description="%Cmd_NewServer_description"
+        id="%Cmd_NewServer_id"
+        name="%Cmd_NewServer_name">
+    </command>
+
+    <command
+        categoryId="%Cmd_Category_id"
+        description="%Cmd_Delete_description"
+        id="%Cmd_Delete_id"
+        name="%Cmd_Delete_name">
+    </command>
+
+    <command
+        categoryId="%Cmd_Category_id"
+        description="%Cmd_Rename_description"
+        id="%Cmd_Rename_id"
+        name="%Cmd_Rename_name">
+    </command>
+
+    <command
+        categoryId="%Cmd_Category_id"
+        description="%Cmd_Start_description"
+        id="%Cmd_Start_id"
+        name="%Cmd_Start_name">
+    </command>
+
+    <command
+        categoryId="%Cmd_Category_id"
+        description="%Cmd_Stop_description"
+        id="%Cmd_Stop_id"
+        name="%Cmd_Stop_name">
+    </command>
+
+    <command
+        categoryId="%Cmd_Category_id"
+        description="%Cmd_Properties_description"
+        id="%Cmd_Properties_id"
+        name="%Cmd_Properties_name">
+    </command>
+
+    <command
+        categoryId="%Cmd_Category_id"
+        description="%Cmd_OpenConfiguration_description"
+        id="%Cmd_OpenConfiguration_id"
+        name="%Cmd_OpenConfiguration_name">
+    </command>
+  </extension>
+
+  <extension
+      point="org.eclipse.ui.contexts">
+    <context
+        description="%Ctx_ServersView_description"
+        id="%Ctx_ServersView_id"
+        name="%Ctx_ServersView_name"
+        parentId="org.eclipse.ui.contexts.window">
+    </context>
+  </extension>
+
+  <extension
+      point="org.eclipse.ui.bindings">
+    <key
+        commandId="%Cmd_NewServer_id"
+        contextId="%Ctx_ServersView_id"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="M1+E"/>
+
+    <key
+        commandId="%Cmd_Delete_id"
+        contextId="%Ctx_ServersView_id"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="DEL"/>
+
+    <key
+        commandId="%Cmd_Rename_id"
+        contextId="%Ctx_ServersView_id"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="F2"/>
+
+    <key
+        commandId="%Cmd_Start_id"
+        contextId="%Ctx_ServersView_id"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="M1+R"/>
+
+    <key
+        commandId="%Cmd_Stop_id"
+        contextId="%Ctx_ServersView_id"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="M1+T"/>
+
+    <key
+        commandId="%Cmd_Properties_id"
+        contextId="%Ctx_ServersView_id"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="ALT+RETURN"/>
+
+    <key
+        commandId="%Cmd_OpenConfiguration_id"
+        contextId="%Ctx_ServersView_id"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="F3"/>
+  </extension>
 </plugin>

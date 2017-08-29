@@ -20,11 +20,8 @@
 package org.apache.directory.studio.ldapservers.actions;
 
 
-import java.util.PropertyResourceBundle;
-
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
-import org.apache.directory.studio.ldapservers.LdapServersPlugin;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -102,8 +99,7 @@ public class CreateConnectionActionHelper
     {
         for ( IPerspectiveDescriptor perspective : PlatformUI.getWorkbench().getPerspectiveRegistry().getPerspectives() )
         {
-            if ( LdapServersPlugin.getDefault().getPluginProperties()
-                .getString( "Perspective_LdapBrowserPerspective_id" ) //$NON-NLS-1$
+            if ( "org.apache.directory.studio.ldapbrowser.ui.perspective.BrowserPerspective" //$NON-NLS-1$
                 .equalsIgnoreCase( perspective.getId() ) )
             {
                 return perspective;
@@ -123,92 +119,27 @@ public class CreateConnectionActionHelper
      */
     public static boolean isLdapBrowserPluginsAvailable()
     {
-        PropertyResourceBundle properties = LdapServersPlugin.getDefault().getPluginProperties();
-
-        // Connection Core Plugin
-        Bundle connectionCoreBundle = Platform.getBundle( properties.getString( "Plugin_ConnectionCore_id" ) ); //$NON-NLS-1$
-        if ( connectionCoreBundle != null )
+        String[] bundleNames = new String[]
+            {
+                "org.apache.directory.studio.connection.core",          // Connection Core Plugin
+                "org.apache.directory.studio.connection.ui",            // Connection UI Plugin
+                "org.apache.directory.studio.ldapbrowser.common",       // LDAP Browser Common Plugin
+                "org.apache.directory.studio.ldapbrowser.core",         // LDAP Browser Core Plugin
+                "org.apache.directory.studio.ldapbrowser.ui",           // LDAP Browser UI Plugin
+                "org.apache.directory.studio.ldifeditor",               // LDIF Editor Plugin
+                "org.apache.directory.studio.ldifparser"                // LDIF Parser Plugin
+            };
+        
+        for ( String bundleName : bundleNames )
         {
-            // Checking the state of the plugin
-            if ( connectionCoreBundle.getState() == Bundle.UNINSTALLED )
+            Bundle bundle = Platform.getBundle( bundleName );
+            
+            if ( ( bundle == null ) || ( bundle.getState() == Bundle.UNINSTALLED ) )
             {
                 return false;
             }
-
-            // Connection UI Plugin
-            Bundle connectionUiBundle = Platform.getBundle( properties.getString( "Plugin_ConnectionUi_id" ) ); //$NON-NLS-1$
-            if ( connectionUiBundle != null )
-            {
-                // Checking the state of the plugin
-                if ( connectionUiBundle.getState() == Bundle.UNINSTALLED )
-                {
-                    return false;
-                }
-
-                // LDAP Browser Common Plugin
-                Bundle ldapBrowserCommonBundle = Platform.getBundle( properties
-                    .getString( "Plugin_LdapBrowserCommon_id" ) ); //$NON-NLS-1$
-                if ( ldapBrowserCommonBundle != null )
-                {
-                    // Checking the state of the plugin
-                    if ( ldapBrowserCommonBundle.getState() == Bundle.UNINSTALLED )
-                    {
-                        return false;
-                    }
-
-                    // LDAP Browser Core Plugin
-                    Bundle ldapBrowserCoreBundle = Platform.getBundle( properties
-                        .getString( "Plugin_LdapBrowserCore_id" ) ); //$NON-NLS-1$
-                    if ( ldapBrowserCoreBundle != null )
-                    {
-                        // Checking the state of the plugin
-                        if ( ldapBrowserCoreBundle.getState() == Bundle.UNINSTALLED )
-                        {
-                            return false;
-                        }
-
-                        // LDAP Browser UI Plugin
-                        Bundle ldapBrowserUiBundle = Platform.getBundle( properties
-                            .getString( "Plugin_LdapBrowserUi_id" ) ); //$NON-NLS-1$
-                        if ( ldapBrowserUiBundle != null )
-                        {
-                            // Checking the state of the plugin
-                            if ( ldapBrowserUiBundle.getState() == Bundle.UNINSTALLED )
-                            {
-                                return false;
-                            }
-
-                            // LDIF Editor Plugin
-                            Bundle ldifEditorBundle = Platform
-                                .getBundle( properties.getString( "Plugin_LdifEditor_id" ) ); //$NON-NLS-1$
-                            if ( ldifEditorBundle != null )
-                            {
-                                // Checking the state of the plugin
-                                if ( ldifEditorBundle.getState() == Bundle.UNINSTALLED )
-                                {
-                                    return false;
-                                }
-
-                                // LDIF Parser Plugin
-                                Bundle ldifParserBundle = Platform.getBundle( properties
-                                    .getString( "Plugin_LdifParser_id" ) ); //$NON-NLS-1$
-                                if ( ldifParserBundle != null )
-                                {
-                                    // Checking the state of the plugin
-                                    if ( ldifParserBundle.getState() == Bundle.UNINSTALLED )
-                                    {
-                                        return false;
-                                    }
-
-                                    return true;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
         }
-
-        return false;
+        
+        return true;
     }
 }
