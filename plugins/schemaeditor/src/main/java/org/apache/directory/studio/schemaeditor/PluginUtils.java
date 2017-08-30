@@ -469,7 +469,7 @@ public class PluginUtils
         List<SchemaConnector> schemaConnectors = new ArrayList<SchemaConnector>();
 
         IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
-            Activator.getDefault().getPluginProperties().getString( "ExtensionPoint_SchemaConnectors_id" ) ); //$NON-NLS-1$
+            "org.apache.directory.studio.schemaeditor.schemaConnectors" ); //$NON-NLS-1$
         IConfigurationElement[] members = extensionPoint.getConfigurationElements();
 
         if ( members != null )

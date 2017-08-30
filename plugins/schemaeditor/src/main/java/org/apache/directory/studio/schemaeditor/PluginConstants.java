@@ -43,23 +43,23 @@ public final class PluginConstants
     }
 
     /** The plug-in ID */
-    public static final String PLUGIN_ID = Activator.getDefault().getPluginProperties().getString( "Plugin_id" ); //$NON-NLS-1$
+    public static final String PLUGIN_ID = PluginConstants.class.getPackage().getName();
 
     /** The Schema Editor perspective ID */
     public static final String PERSPECTIVE_SCHEMA_EDITOR_ID = Activator.getDefault().getPluginProperties()
         .getString( "Perspective_SchemaEditor_id" ); //$NON-NLS-1$
 
     /** The LDAP Browser perspective ID */
-    public static final String PERSPECTIVE_LDAP_BROWSER_ID = Activator.getDefault().getPluginProperties()
-        .getString( "Perspective_LdapBrowser_id" ); //$NON-NLS-1$
+    public static final String PERSPECTIVE_LDAP_BROWSER_ID = 
+        "org.apache.directory.studio.ldapbrowser.ui.perspective.BrowserPerspective"; //$NON-NLS-1$
 
     /** The top left folder ID */
-    public static final String PERSPECTIVE_TOP_LEFT_FOLDER_ID = Activator.getDefault().getPluginProperties()
-        .getString( "Perspective_TopLeftFolder_id" ); //$NON-NLS-1$
+    public static final String PERSPECTIVE_TOP_LEFT_FOLDER_ID = 
+        "org.apache.directory.studio.schemaeditor.topleftfolder"; //$NON-NLS-1$
 
     /** The bottom folder ID */
-    public static final String PERSPECTIVE_BOTTOM_FOLDER_ID = Activator.getDefault().getPluginProperties()
-        .getString( "Perspective_BottomFolder_id" ); //$NON-NLS-1$
+    public static final String PERSPECTIVE_BOTTOM_FOLDER_ID = 
+        "org.apache.directory.studio.schemaeditor.bottomfolder"; //$NON-NLS-1$
 
     /** The Attribute Type Editor ID */
     public static final String EDITOR_ATTRIBUTE_TYPE_ID = Activator.getDefault().getPluginProperties()
