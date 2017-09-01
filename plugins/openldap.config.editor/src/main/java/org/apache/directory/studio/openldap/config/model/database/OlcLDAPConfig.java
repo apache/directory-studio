@@ -38,181 +38,181 @@ public class OlcLDAPConfig extends OlcDatabaseConfig
     /**
      * Field for the 'olcDbACLAuthcDn' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbACLAuthcDn")
+    @ConfigurationElement(attributeType = "olcDbACLAuthcDn", version="2.4.0")
     private Dn olcDbACLAuthcDn;
 
     /**
      * Field for the 'olcDbACLBind' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbACLBind")
+    @ConfigurationElement(attributeType = "olcDbACLBind", version="2.4.0")
     private String olcDbACLBind;
 
     /**
      * Field for the 'olcDbACLPasswd' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbACLPasswd")
+    @ConfigurationElement(attributeType = "olcDbACLPasswd", version="2.4.0")
     private String olcDbACLPasswd;
 
     /**
      * Field for the 'olcDbCancel' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbCancel")
+    @ConfigurationElement(attributeType = "olcDbCancel", version="2.4.0")
     private String olcDbCancel;
 
     /**
      * Field for the 'olcDbChaseReferrals' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbChaseReferrals")
+    @ConfigurationElement(attributeType = "olcDbChaseReferrals", version="2.4.0")
     private Boolean olcDbChaseReferrals;
 
     /**
      * Field for the 'olcDbConnectionPoolMax' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbConnectionPoolMax")
+    @ConfigurationElement(attributeType = "olcDbConnectionPoolMax", version="2.4.0")
     private Integer olcDbConnectionPoolMax;
 
     /**
      * Field for the 'olcDbConnTtl' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbConnTtl")
+    @ConfigurationElement(attributeType = "olcDbConnTtl", version="2.4.0")
     private String olcDbConnTtl;
 
     /**
      * Field for the 'olcDbIDAssertAuthcDn' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbIDAssertAuthcDn")
+    @ConfigurationElement(attributeType = "olcDbIDAssertAuthcDn", version="2.4.0")
     private Dn olcDbIDAssertAuthcDn;
 
     /**
      * Field for the 'olcDbIDAssertAuthzFrom' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbIDAssertAuthzFrom")
+    @ConfigurationElement(attributeType = "olcDbIDAssertAuthzFrom", version="2.4.0")
     private List<String> olcDbIDAssertAuthzFrom = new ArrayList<>();
 
     /**
      * Field for the 'olcDbIDAssertBind' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbIDAssertBind")
+    @ConfigurationElement(attributeType = "olcDbIDAssertBind", version="2.4.0")
     private String olcDbIDAssertBind;
 
     /**
      * Field for the 'olcDbIDAssertMode' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbIDAssertMode")
+    @ConfigurationElement(attributeType = "olcDbIDAssertMode", version="2.4.0")
     private String olcDbIDAssertMode;
 
     /**
      * Field for the 'olcDbIDAssertPassThru' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbIDAssertPassThru")
+    @ConfigurationElement(attributeType = "olcDbIDAssertPassThru", version="2.4.22")
     private List<String> olcDbIDAssertPassThru = new ArrayList<>();
 
     /**
      * Field for the 'olcDbIDAssertPasswd' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbIDAssertPasswd")
+    @ConfigurationElement(attributeType = "olcDbIDAssertPasswd", version="2.4.0")
     private String olcDbIDAssertPasswd;
 
     /**
      * Field for the 'olcDbIdleTimeout' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbIdleTimeout")
+    @ConfigurationElement(attributeType = "olcDbIdleTimeout", version="2.4.0")
     private String olcDbIdleTimeout;
 
     /**
      * Field for the 'olcDbKeepalive' attribute. (Added in OpenLDAP 2.4.34)
      */
-    @ConfigurationElement(attributeType = "olcDbKeepalive")
+    @ConfigurationElement(attributeType = "olcDbKeepalive", version="2.4.34")
     private String olcDbKeepalive;
 
     /**
      * Field for the 'olcDbNetworkTimeout' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbNetworkTimeout")
+    @ConfigurationElement(attributeType = "olcDbNetworkTimeout", version="2.4.0")
     private String olcDbNetworkTimeout;
 
     /**
      * Field for the 'olcDbNoRefs' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbNoRefs")
+    @ConfigurationElement(attributeType = "olcDbNoRefs", version="2.4.12")
     private Boolean olcDbNoRefs;
 
     /**
      * Field for the 'olcDbNoUndefFilter' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbNoUndefFilter")
+    @ConfigurationElement(attributeType = "olcDbNoUndefFilter", version="2.4.12")
     private Boolean olcDbNoUndefFilter;
 
     /**
      * Field for the 'olcDbOnErr' attribute. (Added in OpenLDAP 2.4.34)
      */
-    @ConfigurationElement(attributeType = "olcDbOnErr")
+    @ConfigurationElement(attributeType = "olcDbOnErr", version="2.4.34")
     private String olcDbOnErr;
 
     /**
      * Field for the 'olcDbProtocolVersion' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbProtocolVersion")
+    @ConfigurationElement(attributeType = "olcDbProtocolVersion", version="2.4.0")
     private Integer olcDbProtocolVersion;
 
     /**
      * Field for the 'olcDbProxyWhoAmI' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbProxyWhoAmI")
+    @ConfigurationElement(attributeType = "olcDbProxyWhoAmI", version="2.4.0")
     private Boolean olcDbProxyWhoAmI;
 
     /**
      * Field for the 'olcDbQuarantine' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbQuarantine")
+    @ConfigurationElement(attributeType = "olcDbQuarantine", version="2.4.0")
     private String olcDbQuarantine;
 
     /**
      * Field for the 'olcDbRebindAsUser' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbRebindAsUser")
+    @ConfigurationElement(attributeType = "olcDbRebindAsUser", version="2.4.0")
     private Boolean olcDbRebindAsUser;
 
     /**
      * Field for the 'olcDbSessionTrackingRequest' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbSessionTrackingRequest")
+    @ConfigurationElement(attributeType = "olcDbSessionTrackingRequest", version="2.4.0")
     private Boolean olcDbSessionTrackingRequest;
 
     /**
      * Field for the 'olcDbSingleConn' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbSingleConn")
+    @ConfigurationElement(attributeType = "olcDbSingleConn", version="2.4.0")
     private Boolean olcDbSingleConn;
 
     /**
      * Field for the 'olcDbStartTLS' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbStartTLS")
+    @ConfigurationElement(attributeType = "olcDbStartTLS", version="2.4.0")
     private String olcDbStartTLS;
 
     /**
      * Field for the 'olcDbTFSupport' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbTFSupport")
+    @ConfigurationElement(attributeType = "olcDbTFSupport", version="2.4.0")
     private String olcDbTFSupport;
 
     /**
      * Field for the 'olcDbTimeout' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbTimeout")
+    @ConfigurationElement(attributeType = "olcDbTimeout", version="2.4.0")
     private String olcDbTimeout;
 
     /**
      * Field for the 'olcDbURI' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbURI")
+    @ConfigurationElement(attributeType = "olcDbURI", version="2.4.0")
     private String olcDbURI;
 
     /**
      * Field for the 'olcDbUseTemporaryConn' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbUseTemporaryConn")
+    @ConfigurationElement(attributeType = "olcDbUseTemporaryConn", version="2.4.0")
     private Boolean olcDbUseTemporaryConn;
 
 

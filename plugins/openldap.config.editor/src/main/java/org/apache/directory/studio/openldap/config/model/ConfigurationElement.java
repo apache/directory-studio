@@ -42,8 +42,7 @@ public @interface ConfigurationElement
     /**
      * Returns the attribute type.
      *
-     * @return
-     *      the attribute type
+     * @return the attribute type
      */
     String attributeType() default "";
 
@@ -51,8 +50,7 @@ public @interface ConfigurationElement
     /**
      * Returns the string value of the default value.
      *
-     * @return
-     *      the string value of the default value
+     * @return the string value of the default value
      */
     String defaultValue() default "";
 
@@ -60,8 +58,7 @@ public @interface ConfigurationElement
     /**
      * Returns true if the qualified field is optional.
      *
-     * @return
-     *      <code>true</code> if the qualified field is optional,
+     * @return <code>true</code> if the qualified field is optional,
      *      <code>false</code> if not.
      */
     boolean isOptional() default true;
@@ -71,10 +68,10 @@ public @interface ConfigurationElement
      * Returns true if of the qualified field (attribute type and value) 
      * is the Rdn of the entry.
      *
-     * @return
-     *      <code>true</code> if of the qualified field (attribute type and value) 
-     * is the Rdn of the entry,
-     *      <code>false</code> if not.
+     * @return <code>true</code> if of the qualified field (attribute type and value) 
+     * is the Rdn of the entry, <code>false</code> if not.
      */
     boolean isRdn() default false;
+    
+    String version();
 }

@@ -37,7 +37,7 @@ public class OlcValSortConfig extends OlcOverlayConfig
     /**
      * Field for the 'olcValSortAttr' attribute.
      */
-    @ConfigurationElement(attributeType = "olcValSortAttr", isOptional = false)
+    @ConfigurationElement(attributeType = "olcValSortAttr", isOptional = false, version="2.4.0")
     private List<String> olcValSortAttr = new ArrayList<>();
 
 

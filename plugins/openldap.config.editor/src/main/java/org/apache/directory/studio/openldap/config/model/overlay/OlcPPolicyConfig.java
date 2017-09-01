@@ -35,25 +35,25 @@ public class OlcPPolicyConfig extends OlcOverlayConfig
     /**
      * Field for the 'olcPPolicyDefault' attribute.
      */
-    @ConfigurationElement(attributeType = "olcPPolicyDefault")
+    @ConfigurationElement(attributeType = "olcPPolicyDefault", version="2.4.0")
     private Dn olcPPolicyDefault;
 
     /**
      * Field for the 'olcPPolicyForwardUpdates' attribute.
      */
-    @ConfigurationElement(attributeType = "olcPPolicyForwardUpdates")
+    @ConfigurationElement(attributeType = "olcPPolicyForwardUpdates", version="2.4.17")
     private Boolean olcPPolicyForwardUpdates;
 
     /**
      * Field for the 'olcPPolicyHashCleartext' attribute.
      */
-    @ConfigurationElement(attributeType = "olcPPolicyHashCleartext")
+    @ConfigurationElement(attributeType = "olcPPolicyHashCleartext", version="2.4.0")
     private Boolean olcPPolicyHashCleartext;
 
     /**
      * Field for the 'olcPPolicyUseLockout' attribute.
      */
-    @ConfigurationElement(attributeType = "olcPPolicyUseLockout")
+    @ConfigurationElement(attributeType = "olcPPolicyUseLockout", version="2.4.0")
     private Boolean olcPPolicyUseLockout;
 
 

@@ -37,109 +37,109 @@ public class OlcBdbConfig extends OlcDatabaseConfig
     /**
      * Field for the 'olcDbDirectory' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbDirectory", isOptional = false)
+    @ConfigurationElement(attributeType = "olcDbDirectory", isOptional = false, version="2.4.0")
     private String olcDbDirectory;
 
     /**
      * Field for the 'olcDbCacheFree' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbCacheFree")
+    @ConfigurationElement(attributeType = "olcDbCacheFree", version="2.4.0")
     private Integer olcDbCacheFree;
 
     /**
      * Field for the 'olcDbCacheSize' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbCacheSize")
+    @ConfigurationElement(attributeType = "olcDbCacheSize", version="2.4.0")
     private Integer olcDbCacheSize;
 
     /**
      * Field for the 'olcDbCheckpoint' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbCheckpoint")
+    @ConfigurationElement(attributeType = "olcDbCheckpoint", version="2.4.0")
     private String olcDbCheckpoint;
 
     /**
      * Field for the 'olcDbConfig' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbConfig")
+    @ConfigurationElement(attributeType = "olcDbConfig", version="2.4.0")
     private List<String> olcDbConfig = new ArrayList<>();
 
     /**
      * Field for the 'olcDbCryptFile' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbCryptFile")
+    @ConfigurationElement(attributeType = "olcDbCryptFile", version="2.4.8")
     private String olcDbCryptFile;
 
     /**
      * Field for the 'olcDbCryptKey' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbCryptKey")
+    @ConfigurationElement(attributeType = "olcDbCryptKey", version="2.4.8")
     private byte[] olcDbCryptKey;
 
     /**
      * Field for the 'olcDbDirtyRead' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbDirtyRead")
+    @ConfigurationElement(attributeType = "olcDbDirtyRead", version="2.4.0")
     private Boolean olcDbDirtyRead;
 
     /**
      * Field for the 'olcDbDNcacheSize' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbDNcacheSize")
+    @ConfigurationElement(attributeType = "olcDbDNcacheSize", version="2.4.0")
     private Integer olcDbDNcacheSize;
 
     /**
      * Field for the 'olcDbIDLcacheSize' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbIDLcacheSize")
+    @ConfigurationElement(attributeType = "olcDbIDLcacheSize", version="2.4.0")
     private Integer olcDbIDLcacheSize;
 
     /**
      * Field for the 'olcDbIndex' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbIndex")
+    @ConfigurationElement(attributeType = "olcDbIndex", version="2.4.0")
     private List<String> olcDbIndex = new ArrayList<>();
 
     /**
      * Field for the 'olcDbLinearIndex' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbLinearIndex")
+    @ConfigurationElement(attributeType = "olcDbLinearIndex", version="2.4.0")
     private Boolean olcDbLinearIndex;
 
     /**
      * Field for the 'olcDbLockDetect' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbLockDetect")
+    @ConfigurationElement(attributeType = "olcDbLockDetect", version="2.4.0")
     private String olcDbLockDetect;
 
     /**
      * Field for the 'olcDbMode' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbMode")
+    @ConfigurationElement(attributeType = "olcDbMode", version="2.4.0")
     private String olcDbMode;
 
     /**
      * Field for the 'olcDbNoSync' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbNoSync")
+    @ConfigurationElement(attributeType = "olcDbNoSync", version="2.4.0")
     private Boolean olcDbNoSync;
 
     /**
      * Field for the 'olcDbPageSize' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbPageSize")
+    @ConfigurationElement(attributeType = "olcDbPageSize", version="2.4.13")
     private List<String> olcDbPageSize = new ArrayList<>();
 
     /**
      * Field for the 'olcDbSearchStack' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbSearchStack")
+    @ConfigurationElement(attributeType = "olcDbSearchStack", version="2.4.0")
     private Integer olcDbSearchStack;
 
     /**
      * Field for the 'olcDbShmKey' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbShmKey")
+    @ConfigurationElement(attributeType = "olcDbShmKey", version="2.4.0")
     private Integer olcDbShmKey;
 
 

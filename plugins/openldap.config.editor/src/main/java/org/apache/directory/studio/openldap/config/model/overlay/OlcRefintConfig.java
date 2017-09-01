@@ -38,19 +38,19 @@ public class OlcRefintConfig extends OlcOverlayConfig
     /**
      * Field for the 'olcRefintAttribute' attribute.
      */
-    @ConfigurationElement(attributeType = "olcRefintAttribute")
+    @ConfigurationElement(attributeType = "olcRefintAttribute", version="2.4.0")
     private List<String> olcRefintAttribute = new ArrayList<>();
 
     /**
      * Field for the 'olcRefintNothing' attribute.
      */
-    @ConfigurationElement(attributeType = "olcRefintNothing")
+    @ConfigurationElement(attributeType = "olcRefintNothing", version="2.4.0")
     private Dn olcRefintNothing;
 
     /**
      * Field for the 'olcRefintModifiersName' attribute.
      */
-    @ConfigurationElement(attributeType = "olcRefintModifiersName")
+    @ConfigurationElement(attributeType = "olcRefintModifiersName", version="2.4.10")
     private Dn olcRefintModifiersName;
 
 

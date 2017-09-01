@@ -37,13 +37,13 @@ public class OlcDbSocketConfig extends OlcDatabaseConfig
     /**
      * Field for the 'olcDbSocketPath' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbSocketPath", isOptional = false)
+    @ConfigurationElement(attributeType = "olcDbSocketPath", isOptional = false, version="2.4.8")
     private String olcDbSocketPath;
 
     /**
      * Field for the 'olcDbSocketExtensions' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbSocketExtensions")
+    @ConfigurationElement(attributeType = "olcDbSocketExtensions", version="2.4.8")
     private List<String> olcDbSocketExtensions = new ArrayList<>();
 
 

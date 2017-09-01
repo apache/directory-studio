@@ -35,43 +35,43 @@ public class OlcMemberOf extends OlcOverlayConfig
     /**
      * Field for the 'olcMemberOfDangling' attribute.
      */
-    @ConfigurationElement(attributeType = "olcMemberOfDangling")
+    @ConfigurationElement(attributeType = "olcMemberOfDangling", version="2.4.0")
     private String olcMemberOfDangling;
 
     /**
      * Field for the 'olcMemberOfDanglingError' attribute.
      */
-    @ConfigurationElement(attributeType = "olcMemberOfDanglingError")
+    @ConfigurationElement(attributeType = "olcMemberOfDanglingError", version="2.4.8")
     private String olcMemberOfDanglingError;
 
     /**
      * Field for the 'olcMemberOfDN' attribute.
      */
-    @ConfigurationElement(attributeType = "olcMemberOfDN")
+    @ConfigurationElement(attributeType = "olcMemberOfDN", version="2.4.0")
     private Dn olcMemberOfDN;
 
     /**
      * Field for the 'olcMemberOfGroupOC' attribute.
      */
-    @ConfigurationElement(attributeType = "olcMemberOfGroupOC")
+    @ConfigurationElement(attributeType = "olcMemberOfGroupOC", version="2.4.0")
     private String olcMemberOfGroupOC;
 
     /**
      * Field for the 'olcMemberOfMemberAD' attribute.
      */
-    @ConfigurationElement(attributeType = "olcMemberOfMemberAD")
+    @ConfigurationElement(attributeType = "olcMemberOfMemberAD", version="2.4.0")
     private String olcMemberOfMemberAD;
 
     /**
      * Field for the 'olcMemberOfMemberOfAD' attribute.
      */
-    @ConfigurationElement(attributeType = "olcMemberOfMemberOfAD")
+    @ConfigurationElement(attributeType = "olcMemberOfMemberOfAD", version="2.4.0")
     private String olcMemberOfMemberOfAD;
 
     /**
      * Field for the 'olcMemberOfRefInt' attribute.
      */
-    @ConfigurationElement(attributeType = "olcMemberOfRefInt")
+    @ConfigurationElement(attributeType = "olcMemberOfRefInt", version="2.4.0")
     private Boolean olcMemberOfRefInt;
 
 

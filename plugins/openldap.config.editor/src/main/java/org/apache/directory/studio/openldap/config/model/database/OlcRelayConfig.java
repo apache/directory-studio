@@ -35,7 +35,7 @@ public class OlcRelayConfig extends OlcDatabaseConfig
     /**
      * Field for the 'olcRelay' attribute.
      */
-    @ConfigurationElement(attributeType = "olcRelay")
+    @ConfigurationElement(attributeType = "olcRelay", version="2.4.0")
     private Dn olcRelay;
 
 

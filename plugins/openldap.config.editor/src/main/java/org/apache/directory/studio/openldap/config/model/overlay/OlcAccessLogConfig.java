@@ -38,37 +38,37 @@ public class OlcAccessLogConfig extends OlcOverlayConfig
     /**
      * Field for the 'olcAccessLogDB' attribute.
      */
-    @ConfigurationElement(attributeType = "olcAccessLogDB", isOptional = false)
+    @ConfigurationElement(attributeType = "olcAccessLogDB", isOptional = false, version="2.4.0")
     private Dn olcAccessLogDB;
 
     /**
      * Field for the 'olcAccessLogOld' attribute.
      */
-    @ConfigurationElement(attributeType = "olcAccessLogOld")
+    @ConfigurationElement(attributeType = "olcAccessLogOld", version="2.4.0")
     private String olcAccessLogOld;
 
     /**
      * Field for the 'olcAccessLogOldAttr' attribute.
      */
-    @ConfigurationElement(attributeType = "olcAccessLogOldAttr")
+    @ConfigurationElement(attributeType = "olcAccessLogOldAttr", version="2.4.0")
     private List<String> olcAccessLogOldAttr = new ArrayList<>();
 
     /**
      * Field for the 'olcAccessLogOps' attribute.
      */
-    @ConfigurationElement(attributeType = "olcAccessLogOps")
+    @ConfigurationElement(attributeType = "olcAccessLogOps", version="2.4.0")
     private List<String> olcAccessLogOps = new ArrayList<>();
 
     /**
      * Field for the 'olcAccessLogPurge' attribute.
      */
-    @ConfigurationElement(attributeType = "olcAccessLogPurge")
+    @ConfigurationElement(attributeType = "olcAccessLogPurge", version="2.4.0")
     private String olcAccessLogPurge;
 
     /**
      * Field for the 'olcAccessLogSuccess' attribute.
      */
-    @ConfigurationElement(attributeType = "olcAccessLogSuccess")
+    @ConfigurationElement(attributeType = "olcAccessLogSuccess", version="2.4.0")
     private Boolean olcAccessLogSuccess;
 
 

@@ -30,25 +30,25 @@ public class OlcPBindConfig extends OlcOverlayConfig
     /**
      * Field for the 'olcDbURI' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbURI", isOptional = false)
+    @ConfigurationElement(attributeType = "olcDbURI", isOptional = false, version="2.4.0")
     private String olcDbURI;
 
     /**
      * Field for the 'olcDbNetworkTimeout' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbNetworkTimeout")
+    @ConfigurationElement(attributeType = "olcDbNetworkTimeout", version="2.4.0")
     private String olcDbNetworkTimeout;
 
     /**
      * Field for the 'olcDbQuarantine' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbQuarantine")
+    @ConfigurationElement(attributeType = "olcDbQuarantine", version="2.4.0")
     private String olcDbQuarantine;
 
     /**
      * Field for the 'olcStartTLS' attribute.
      */
-    @ConfigurationElement(attributeType = "olcStartTLS")
+    @ConfigurationElement(attributeType = "olcStartTLS", version="2.5.0")
     private String olcStartTLS;
 
 

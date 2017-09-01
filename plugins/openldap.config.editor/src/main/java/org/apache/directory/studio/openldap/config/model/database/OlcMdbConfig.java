@@ -51,61 +51,61 @@ public class OlcMdbConfig extends OlcDatabaseConfig
     /**
      * Field for the 'olcDbDirectory' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbDirectory", isOptional = false)
+    @ConfigurationElement(attributeType = "olcDbDirectory", isOptional = false, version="2.4.27")
     private String olcDbDirectory;
 
     /**
      * Field for the 'olcDbCheckpoint' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbCheckpoint")
+    @ConfigurationElement(attributeType = "olcDbCheckpoint", version="2.4.27")
     private String olcDbCheckpoint;
 
     /**
      * Field for the 'olcDbEnvFlags' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbEnvFlags")
+    @ConfigurationElement(attributeType = "olcDbEnvFlags", version="2.4.33")
     private List<String> olcDbEnvFlags = new ArrayList<>();
 
     /**
      * Field for the 'olcDbIndex' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbIndex")
+    @ConfigurationElement(attributeType = "olcDbIndex", version="2.4.27")
     private List<String> olcDbIndex = new ArrayList<>();
 
     /**
      * Field for the 'olcDbMaxEntrySize' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbMaxEntrySize")
+    @ConfigurationElement(attributeType = "olcDbMaxEntrySize", version="2.4.42-2")
     private Integer olcDbMaxEntrySize;
 
     /**
      * Field for the 'olcDbMaxReaders' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbMaxReaders")
+    @ConfigurationElement(attributeType = "olcDbMaxReaders", version="2.4.27")
     private Integer olcDbMaxReaders;
 
     /**
      * Field for the 'olcDbMaxSize' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbMaxSize")
+    @ConfigurationElement(attributeType = "olcDbMaxSize", version="2.4.27")
     private Long olcDbMaxSize;
 
     /**
      * Field for the 'olcDbMode' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbMode")
+    @ConfigurationElement(attributeType = "olcDbMode", version="2.4.27")
     private String olcDbMode;
 
     /**
      * Field for the 'olcDbNoSync' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbNoSync")
+    @ConfigurationElement(attributeType = "olcDbNoSync", version="2.4.27")
     private Boolean olcDbNoSync;
 
     /**
      * Field for the 'olcDbSearchStack' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbSearchStack")
+    @ConfigurationElement(attributeType = "olcDbSearchStack", version="2.4.27")
     private Integer olcDbSearchStack;
 
 

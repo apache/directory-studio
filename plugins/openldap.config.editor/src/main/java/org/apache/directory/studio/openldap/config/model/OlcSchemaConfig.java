@@ -34,37 +34,37 @@ public class OlcSchemaConfig extends OlcConfig
     /**
      * Field for the 'cn' attribute.
      */
-    @ConfigurationElement(attributeType = "cn", isRdn = true)
+    @ConfigurationElement(attributeType = "cn", isRdn = true, version="2.4.0")
     private List<String> cn = new ArrayList<>();
 
     /**
      * Field for the 'olcAttributeTypes' attribute.
      */
-    @ConfigurationElement(attributeType = "olcAttributeTypes")
+    @ConfigurationElement(attributeType = "olcAttributeTypes", version="2.4.0")
     private List<String> olcAttributeTypes = new ArrayList<>();
 
     /**
      * Field for the 'olcDitContentRules' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDitContentRules")
+    @ConfigurationElement(attributeType = "olcDitContentRules", version="2.4.0")
     private List<String> olcDitContentRules = new ArrayList<>();
 
     /**
      * Field for the 'olcLdapSyntaxes' attribute.
      */
-    @ConfigurationElement(attributeType = "olcLdapSyntaxes")
+    @ConfigurationElement(attributeType = "olcLdapSyntaxes", version="2.4.12")
     private List<String> olcLdapSyntaxes = new ArrayList<>();
 
     /**
      * Field for the 'olcObjectClasses' attribute.
      */
-    @ConfigurationElement(attributeType = "olcObjectClasses")
+    @ConfigurationElement(attributeType = "olcObjectClasses", version="2.4.0")
     private List<String> olcObjectClasses = new ArrayList<>();
 
     /**
      * Field for the 'olcObjectIdentifier' attribute.
      */
-    @ConfigurationElement(attributeType = "olcObjectIdentifier")
+    @ConfigurationElement(attributeType = "olcObjectIdentifier", version="2.4.0")
     private List<String> olcObjectIdentifier = new ArrayList<>();
 
 

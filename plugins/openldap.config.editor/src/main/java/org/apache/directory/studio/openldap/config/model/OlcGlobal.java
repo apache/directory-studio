@@ -46,421 +46,421 @@ public class OlcGlobal extends OlcConfig
     /**
      * Field for the 'cn' attribute.
      */
-    @ConfigurationElement(attributeType = "cn", isRdn = true)
+    @ConfigurationElement(attributeType = "cn", isRdn = true, defaultValue="config", isOptional = false, version="2.4.0")
     private List<String> cn = new ArrayList<>();
 
     /**
      * Field for the 'olcAllows' attribute.
      */
-    @ConfigurationElement(attributeType = "olcAllows")
+    @ConfigurationElement(attributeType = "olcAllows", version="2.4.0")
     private List<String> olcAllows = new ArrayList<>();
 
     /**
      * Field for the 'olcArgsFile' attribute.
      */
-    @ConfigurationElement(attributeType = "olcArgsFile")
+    @ConfigurationElement(attributeType = "olcArgsFile", version="2.4.0")
     private String olcArgsFile;
 
     /**
      * Field for the 'olcAttributeOptions' attribute.
      */
-    @ConfigurationElement(attributeType = "olcAttributeOptions")
+    @ConfigurationElement(attributeType = "olcAttributeOptions", version="2.4.0")
     private List<String> olcAttributeOptions = new ArrayList<>();
 
     /**
      * Field for the 'olcAttributeTypes' attribute.
      */
-    @ConfigurationElement(attributeType = "olcAttributeTypes")
+    @ConfigurationElement(attributeType = "olcAttributeTypes", version="2.4.0")
     private List<String> olcAttributeTypes = new ArrayList<>();
 
     /**
      * Field for the 'olcAuthIDRewrite' attribute.
      */
-    @ConfigurationElement(attributeType = "olcAuthIDRewrite")
+    @ConfigurationElement(attributeType = "olcAuthIDRewrite", version="2.4.0")
     private List<String> olcAuthIDRewrite = new ArrayList<>();
 
     /**
      * Field for the 'olcAuthzPolicy' attribute.
      */
-    @ConfigurationElement(attributeType = "olcAuthzPolicy")
+    @ConfigurationElement(attributeType = "olcAuthzPolicy", version="2.4.0")
     private String olcAuthzPolicy;
 
     /**
      * Field for the 'olcAuthzRegexp' attribute.
      */
-    @ConfigurationElement(attributeType = "olcAuthzRegexp")
+    @ConfigurationElement(attributeType = "olcAuthzRegexp", version="2.4.0")
     private List<String> olcAuthzRegexp = new ArrayList<>();
 
     /**
      * Field for the 'olcConcurrency' attribute.
      */
-    @ConfigurationElement(attributeType = "olcConcurrency")
+    @ConfigurationElement(attributeType = "olcConcurrency", version="2.4.0")
     private Integer olcConcurrency;
 
     /**
      * Field for the 'olcConfigDir' attribute.
      */
-    @ConfigurationElement(attributeType = "olcConfigDir")
+    @ConfigurationElement(attributeType = "olcConfigDir", version="2.4.0")
     private String olcConfigDir;
 
     /**
      * Field for the 'olcConfigFile' attribute.
      */
-    @ConfigurationElement(attributeType = "olcConfigFile")
+    @ConfigurationElement(attributeType = "olcConfigFile", version="2.4.0")
     private String olcConfigFile;
 
     /**
      * Field for the 'olcConnMaxPending' attribute.
      */
-    @ConfigurationElement(attributeType = "olcConnMaxPending")
+    @ConfigurationElement(attributeType = "olcConnMaxPending", version="2.4.0")
     private Integer olcConnMaxPending;
 
     /**
      * Field for the 'olcConnMaxPendingAuth' attribute.
      */
-    @ConfigurationElement(attributeType = "olcConnMaxPendingAuth")
+    @ConfigurationElement(attributeType = "olcConnMaxPendingAuth", version="2.4.0")
     private Integer olcConnMaxPendingAuth;
 
     /**
      * Field for the 'olcDisallows' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDisallows")
+    @ConfigurationElement(attributeType = "olcDisallows", version="2.4.0")
     private List<String> olcDisallows = new ArrayList<>();
 
     /**
      * Field for the 'olcDitContentRules' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDitContentRules")
+    @ConfigurationElement(attributeType = "olcDitContentRules", version="2.4.0")
     private List<String> olcDitContentRules = new ArrayList<>();
 
     /**
      * Field for the 'olcGentleHUP' attribute.
      */
-    @ConfigurationElement(attributeType = "olcGentleHUP")
+    @ConfigurationElement(attributeType = "olcGentleHUP", version="2.4.0")
     private Boolean olcGentleHUP;
 
     /**
      * Field for the 'olcIdleTimeout' attribute.
      */
-    @ConfigurationElement(attributeType = "olcIdleTimeout")
+    @ConfigurationElement(attributeType = "olcIdleTimeout", version="2.4.0")
     private Integer olcIdleTimeout;
 
     /**
      * Field for the 'olcIndexHash64' attribute. (Added in OpenLDAP 2.4.34)
      */
-    @ConfigurationElement(attributeType = "olcIndexHash64")
+    @ConfigurationElement(attributeType = "olcIndexHash64", version="2.4.34")
     private Boolean olcIndexHash64;
 
     /**
      * Field for the 'olcIndexIntLen' attribute.
      */
-    @ConfigurationElement(attributeType = "olcIndexIntLen")
+    @ConfigurationElement(attributeType = "olcIndexIntLen", version="2.4.7")
     private Integer olcIndexIntLen;
 
     /**
      * Field for the 'olcIndexSubstrAnyLen' attribute.
      */
-    @ConfigurationElement(attributeType = "olcIndexSubstrAnyLen")
+    @ConfigurationElement(attributeType = "olcIndexSubstrAnyLen", version="2.4.0")
     private Integer olcIndexSubstrAnyLen;
 
     /**
      * Field for the 'olcIndexSubstrAnyStep' attribute.
      */
-    @ConfigurationElement(attributeType = "olcIndexSubstrAnyStep")
+    @ConfigurationElement(attributeType = "olcIndexSubstrAnyStep", version="2.4.0")
     private Integer olcIndexSubstrAnyStep;
 
     /**
      * Field for the 'olcIndexSubstrIfMaxLen' attribute.
      */
-    @ConfigurationElement(attributeType = "olcIndexSubstrIfMaxLen")
+    @ConfigurationElement(attributeType = "olcIndexSubstrIfMaxLen", version="2.4.0")
     private Integer olcIndexSubstrIfMaxLen;
 
     /**
      * Field for the 'olcIndexSubstrIfMinLen' attribute.
      */
-    @ConfigurationElement(attributeType = "olcIndexSubstrIfMinLen")
+    @ConfigurationElement(attributeType = "olcIndexSubstrIfMinLen", version="2.4.0")
     private Integer olcIndexSubstrIfMinLen;
 
     /**
      * Field for the 'olcLdapSyntaxes' attribute.
      */
-    @ConfigurationElement(attributeType = "olcLdapSyntaxes")
+    @ConfigurationElement(attributeType = "olcLdapSyntaxes", version="2.4.12")
     private List<String> olcLdapSyntaxes = new ArrayList<>();
 
     /**
      * Field for the 'olcListenerThreads' attribute.  (Added in OpenLDAP 2.4.36)
      */
-    @ConfigurationElement(attributeType = "olcListenerThreads")
+    @ConfigurationElement(attributeType = "olcListenerThreads", version="2.4.36")
     private Integer olcListenerThreads;
 
     /**
      * Field for the 'olcLocalSSF' attribute.
      */
-    @ConfigurationElement(attributeType = "olcLocalSSF")
+    @ConfigurationElement(attributeType = "olcLocalSSF", version="2.4.0")
     private Integer olcLocalSSF;
 
     /**
      * Field for the 'olcLogFile' attribute.
      */
-    @ConfigurationElement(attributeType = "olcLogFile")
+    @ConfigurationElement(attributeType = "olcLogFile", version="2.4.0")
     private String olcLogFile;
 
     /**
      * Field for the 'olcLogLevel' attribute.
      */
-    @ConfigurationElement(attributeType = "olcLogLevel")
+    @ConfigurationElement(attributeType = "olcLogLevel", version="2.4.0")
     private List<String> olcLogLevel = new ArrayList<>();
 
     /**
      * Field for the 'olcObjectClasses' attribute.
      */
-    @ConfigurationElement(attributeType = "olcObjectClasses")
+    @ConfigurationElement(attributeType = "olcObjectClasses", version="2.4.0")
     private List<String> olcObjectClasses = new ArrayList<>();
 
     /**
      * Field for the 'olcObjectIdentifier' attribute.
      */
-    @ConfigurationElement(attributeType = "olcObjectIdentifier")
+    @ConfigurationElement(attributeType = "olcObjectIdentifier", version="2.4.0")
     private List<String> olcObjectIdentifier = new ArrayList<>();
 
     /**
      * Field for the 'olcPasswordCryptSaltFormat' attribute.
      */
-    @ConfigurationElement(attributeType = "olcPasswordCryptSaltFormat")
+    @ConfigurationElement(attributeType = "olcPasswordCryptSaltFormat", version="2.4.0")
     private String olcPasswordCryptSaltFormat;
 
     /**
      * Field for the 'olcPasswordHash' attribute.
      */
-    @ConfigurationElement(attributeType = "olcPasswordHash")
+    @ConfigurationElement(attributeType = "olcPasswordHash", version="2.4.0")
     private List<String> olcPasswordHash = new ArrayList<>();
 
     /**
      * Field for the 'olcPidFile' attribute.
      */
-    @ConfigurationElement(attributeType = "olcPidFile")
+    @ConfigurationElement(attributeType = "olcPidFile", version="2.4.0")
     private String olcPidFile;
 
     /**
      * Field for the 'olcPluginLogFile' attribute.
      */
-    @ConfigurationElement(attributeType = "olcPluginLogFile")
+    @ConfigurationElement(attributeType = "olcPluginLogFile", version="2.4.0")
     private String olcPluginLogFile;
 
     /**
      * Field for the 'olcReadOnly' attribute.
      */
-    @ConfigurationElement(attributeType = "olcReadOnly")
+    @ConfigurationElement(attributeType = "olcReadOnly", version="2.4.0")
     private Boolean olcReadOnly;
 
     /**
      * Field for the 'olcReferral' attribute.
      */
-    @ConfigurationElement(attributeType = "olcReferral")
+    @ConfigurationElement(attributeType = "olcReferral", version="2.4.0")
     private String olcReferral;
 
     /**
      * Field for the 'olcReplogFile' attribute.
      */
-    @ConfigurationElement(attributeType = "olcReplogFile")
+    @ConfigurationElement(attributeType = "olcReplogFile", version="2.4.0")
     private String olcReplogFile;
 
     /**
      * Field for the 'olcRequires' attribute.
      */
-    @ConfigurationElement(attributeType = "olcRequires")
+    @ConfigurationElement(attributeType = "olcRequires", version="2.4.0")
     private List<String> olcRequires = new ArrayList<>();
 
     /**
      * Field for the 'olcRestrict' attribute.
      */
-    @ConfigurationElement(attributeType = "olcRestrict")
+    @ConfigurationElement(attributeType = "olcRestrict", version="2.4.0")
     private List<String> olcRestrict = new ArrayList<>();
 
     /**
      * Field for the 'olcReverseLookup' attribute.
      */
-    @ConfigurationElement(attributeType = "olcReverseLookup")
+    @ConfigurationElement(attributeType = "olcReverseLookup", version="2.4.0")
     private Boolean olcReverseLookup;
 
     /**
      * Field for the 'olcRootDSE' attribute.
      */
-    @ConfigurationElement(attributeType = "olcRootDSE")
+    @ConfigurationElement(attributeType = "olcRootDSE", version="2.4.0")
     private List<String> olcRootDSE;
 
     /**
      * Field for the 'olcSaslAuxprops' attribute.
      */
-    @ConfigurationElement(attributeType = "olcSaslAuxprops")
+    @ConfigurationElement(attributeType = "olcSaslAuxprops", version="2.4.17")
     private String olcSaslAuxprops;
 
     /**
      * Field for the 'olcSaslAuxpropsDontUseCopy' attribute. (Added in OpenLDAP 2.4.22)
      */
-    @ConfigurationElement(attributeType = "olcSaslAuxpropsDontUseCopy")
+    @ConfigurationElement(attributeType = "olcSaslAuxpropsDontUseCopy", version="2.4.22")
     private String olcSaslAuxpropsDontUseCopy;
 
     /**
      * Field for the 'olcSaslAuxpropsDontUseCopyIgnore' attribute. (Added in OpenLDAP 2.4.22)
      */
-    @ConfigurationElement(attributeType = "olcSaslAuxpropsDontUseCopyIgnore")
+    @ConfigurationElement(attributeType = "olcSaslAuxpropsDontUseCopyIgnore", version="2.4.22")
     private Boolean olcSaslAuxpropsDontUseCopyIgnore;
 
     /**
      * Field for the 'olcSaslHost' attribute.
      */
-    @ConfigurationElement(attributeType = "olcSaslHost")
+    @ConfigurationElement(attributeType = "olcSaslHost", version="2.4.0")
     private String olcSaslHost;
 
     /**
      * Field for the 'olcSaslRealm' attribute.
      */
-    @ConfigurationElement(attributeType = "olcSaslRealm")
+    @ConfigurationElement(attributeType = "olcSaslRealm", version="2.4.0")
     private String olcSaslRealm;
 
     /**
      * Field for the 'olcSaslSecProps' attribute.
      */
-    @ConfigurationElement(attributeType = "olcSaslSecProps")
+    @ConfigurationElement(attributeType = "olcSaslSecProps", version="2.4.0")
     private String olcSaslSecProps;
 
     /**
      * Field for the 'olcSecurity' attribute.
      */
-    @ConfigurationElement(attributeType = "olcSecurity")
+    @ConfigurationElement(attributeType = "olcSecurity", version="2.4.0")
     private List<String> olcSecurity = new ArrayList<>();
 
     /**
      * Field for the 'olcServerID' attribute.
      */
-    @ConfigurationElement(attributeType = "olcServerID")
+    @ConfigurationElement(attributeType = "olcServerID", version="2.4.6")
     private List<String> olcServerID = new ArrayList<>();
 
     /**
      * Field for the 'olcSizeLimit' attribute.
      */
-    @ConfigurationElement(attributeType = "olcSizeLimit")
+    @ConfigurationElement(attributeType = "olcSizeLimit", version="2.4.0")
     private String olcSizeLimit;
 
     /**
      * Field for the 'olcSockbufMaxIncoming' attribute.
      */
-    @ConfigurationElement(attributeType = "olcSockbufMaxIncoming")
+    @ConfigurationElement(attributeType = "olcSockbufMaxIncoming", version="2.4.0")
     private Integer olcSockbufMaxIncoming;
 
     /**
      * Field for the 'olcSockbufMaxIncomingAuth' attribute.
      */
-    @ConfigurationElement(attributeType = "olcSockbufMaxIncomingAuth")
+    @ConfigurationElement(attributeType = "olcSockbufMaxIncomingAuth", version="2.4.0")
     private String olcSockbufMaxIncomingAuth;
 
     /**
      * Field for the 'olcTCPBuffer' attribute. (Added in OpenLDAP 2.4.18)
      */
-    @ConfigurationElement(attributeType = "olcTCPBuffer")
+    @ConfigurationElement(attributeType = "olcTCPBuffer", version="2.4.18")
     private List<String> olcTCPBuffer = new ArrayList<>();
 
     /**
      * Field for the 'olcThreads' attribute. (Added in OpenLDAP 2.4.36)
      */
-    @ConfigurationElement(attributeType = "olcThreads")
+    @ConfigurationElement(attributeType = "olcThreads", version="2.4.0")
     private Integer olcThreads;
 
     /**
      * Field for the 'olcThreadQueues' attribute.
      */
-    @ConfigurationElement(attributeType = "olcThreadQueues")
+    @ConfigurationElement(attributeType = "olcThreadQueues", version="2.4.36")
     private Integer olcThreadQueues;
 
     /**
      * Field for the 'olcTimeLimit' attribute.
      */
-    @ConfigurationElement(attributeType = "olcTimeLimit")
+    @ConfigurationElement(attributeType = "olcTimeLimit", version="2.4.0")
     private List<String> olcTimeLimit = new ArrayList<>();
 
     /**
      * Field for the 'olcTLSCACertificateFile' attribute.
      */
-    @ConfigurationElement(attributeType = "olcTLSCACertificateFile")
+    @ConfigurationElement(attributeType = "olcTLSCACertificateFile", version="2.4.0")
     private String olcTLSCACertificateFile;
 
     /**
      * Field for the 'olcTLSCACertificatePath' attribute.
      */
-    @ConfigurationElement(attributeType = "olcTLSCACertificatePath")
+    @ConfigurationElement(attributeType = "olcTLSCACertificatePath", version="2.4.0")
     private String olcTLSCACertificatePath;
 
     /**
      * Field for the 'olcTLSCertificateFile' attribute.
      */
-    @ConfigurationElement(attributeType = "olcTLSCertificateFile")
+    @ConfigurationElement(attributeType = "olcTLSCertificateFile", version="2.4.0")
     private String olcTLSCertificateFile;
 
     /**
      * Field for the 'olcTLSCertificateKeyFile' attribute.
      */
-    @ConfigurationElement(attributeType = "olcTLSCertificateKeyFile")
+    @ConfigurationElement(attributeType = "olcTLSCertificateKeyFile", version="2.4.0")
     private String olcTLSCertificateKeyFile;
 
     /**
      * Field for the 'olcTLSCipherSuite' attribute.
      */
-    @ConfigurationElement(attributeType = "olcTLSCipherSuite")
+    @ConfigurationElement(attributeType = "olcTLSCipherSuite", version="2.4.0")
     private String olcTLSCipherSuite;
 
     /**
      * Field for the 'olcTLSCRLCheck' attribute.
      */
-    @ConfigurationElement(attributeType = "olcTLSCRLCheck")
+    @ConfigurationElement(attributeType = "olcTLSCRLCheck", version="2.4.0")
     private String olcTLSCRLCheck;
 
     /**
      * Field for the 'olcTLSCRLFile' attribute.
      */
-    @ConfigurationElement(attributeType = "olcTLSCRLFile")
+    @ConfigurationElement(attributeType = "olcTLSCRLFile", version="2.4.6")
     private String olcTLSCRLFile;
 
     /**
      * Field for the 'olcTLSDHParamFile' attribute.
      */
-    @ConfigurationElement(attributeType = "olcTLSDHParamFile")
+    @ConfigurationElement(attributeType = "olcTLSDHParamFile", version="2.4.0")
     private String olcTLSDHParamFile;
 
     /**
      * Field for the 'olcTLSECName' attribute. (Added in OpenLDAP 2.4.41)
      */
-    @ConfigurationElement(attributeType = "olcTLSECName")
+    @ConfigurationElement(attributeType = "olcTLSECName", version="2.5")
     private String olcTLSECName;
 
     /**
      * Field for the 'olcTLSProtocolMin' attribute. (Added in OpenLDAP 2.4.37)
      */
-    @ConfigurationElement(attributeType = "olcTLSProtocolMin")
+    @ConfigurationElement(attributeType = "olcTLSProtocolMin", version="2.4.37")
     private String olcTLSProtocolMin;
 
     /**
      * Field for the 'olcTLSRandFile' attribute.
      */
-    @ConfigurationElement(attributeType = "olcTLSRandFile")
+    @ConfigurationElement(attributeType = "olcTLSRandFile", version="2.4.0")
     private String olcTLSRandFile;
 
     /**
      * Field for the 'olcTLSVerifyClient' attribute.
      */
-    @ConfigurationElement(attributeType = "olcTLSVerifyClient")
+    @ConfigurationElement(attributeType = "olcTLSVerifyClient", version="2.4.0")
     private String olcTLSVerifyClient;
 
     /**
      * Field for the 'olcToolThreads' attribute.
      */
-    @ConfigurationElement(attributeType = "olcToolThreads")
+    @ConfigurationElement(attributeType = "olcToolThreads", version="2.4.0")
     private Integer olcToolThreads;
 
     /**
      * Field for the 'olcWriteTimeout' attribute.
      */
-    @ConfigurationElement(attributeType = "olcWriteTimeout")
+    @ConfigurationElement(attributeType = "olcWriteTimeout", version="2.4.17")
     private Integer olcWriteTimeout;
 
 

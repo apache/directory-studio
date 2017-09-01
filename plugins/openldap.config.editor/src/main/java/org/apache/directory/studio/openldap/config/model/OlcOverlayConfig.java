@@ -28,15 +28,15 @@ package org.apache.directory.studio.openldap.config.model;
 public class OlcOverlayConfig extends OlcConfig
 {
     /**
-     * Field for the 'olcDisabled' attribute. (Added in OpenLDAP 2.4.36)
+     * Field for the 'olcDisabled' attribute. (Added in OpenLDAP 2.5.0)
      */
-    @ConfigurationElement(attributeType = "olcDisabled")
+    @ConfigurationElement(attributeType = "olcDisabled", version="2.5.0")
     private Boolean olcDisabled;
 
     /**
      * Field for the 'olcOverlay' attribute.
      */
-    @ConfigurationElement(attributeType = "olcOverlay", isOptional = false, isRdn = true)
+    @ConfigurationElement(attributeType = "olcOverlay", isOptional = false, isRdn = true, version="2.4.0")
     protected String olcOverlay;
 
 

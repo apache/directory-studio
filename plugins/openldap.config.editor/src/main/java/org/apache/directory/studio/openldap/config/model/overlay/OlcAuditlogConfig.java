@@ -37,7 +37,7 @@ public class OlcAuditlogConfig extends OlcOverlayConfig
     /**
      * Field for the 'olcAuditlogFile' attribute.
      */
-    @ConfigurationElement(attributeType = "olcAuditlogFile")
+    @ConfigurationElement(attributeType = "olcAuditlogFile", version="2.4.0")
     private List<String> olcAuditlogFile = new ArrayList<>();
 
 

@@ -37,25 +37,25 @@ public class OlcRwmConfig extends OlcOverlayConfig
     /**
      * Field for the 'olcRwmMap' attribute.
      */
-    @ConfigurationElement(attributeType = "olcRwmMap")
+    @ConfigurationElement(attributeType = "olcRwmMap", version="2.4.0")
     private List<String> olcRwmMap = new ArrayList<>();
 
     /**
      * Field for the 'olcRwmNormalizeMapped' attribute.
      */
-    @ConfigurationElement(attributeType = "olcRwmNormalizeMapped")
+    @ConfigurationElement(attributeType = "olcRwmNormalizeMapped", version="2.4.0")
     private Boolean olcRwmNormalizeMapped;
 
     /**
      * Field for the 'olcRwmRewrite' attribute.
      */
-    @ConfigurationElement(attributeType = "olcRwmRewrite")
+    @ConfigurationElement(attributeType = "olcRwmRewrite", version="2.4.0")
     private List<String> olcRwmRewrite = new ArrayList<>();
 
     /**
      * Field for the 'olcRwmTFSupport' attribute.
      */
-    @ConfigurationElement(attributeType = "olcRwmTFSupport")
+    @ConfigurationElement(attributeType = "olcRwmTFSupport", version="2.4.0")
     private String olcRwmTFSupport;
 
 

@@ -30,7 +30,7 @@ public class OlcBackendConfig extends OlcConfig
     /**
      * Field for the 'olcBackend' attribute.
      */
-    @ConfigurationElement(attributeType = "olcBackend", isOptional = false)
+    @ConfigurationElement(attributeType = "olcBackend", isOptional = false, version="2.4.0")
     private String olcBackend;
 
 

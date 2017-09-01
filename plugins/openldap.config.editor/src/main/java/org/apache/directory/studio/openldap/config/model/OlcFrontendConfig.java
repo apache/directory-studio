@@ -34,19 +34,19 @@ public class OlcFrontendConfig implements  AuxiliaryObjectClass
     /**
      * Field for the 'olcDefaultSearchBase' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDefaultSearchBase")
+    @ConfigurationElement(attributeType = "olcDefaultSearchBase", version="2.4.0")
     private String olcDefaultSearchBase;
 
     /**
      * Field for the 'olcPasswordHash' attribute.
      */
-    @ConfigurationElement(attributeType = "olcPasswordHash")
+    @ConfigurationElement(attributeType = "olcPasswordHash", version="2.4.0")
     private List<String> olcPasswordHash = new ArrayList<>();
 
     /**
      * Field for the 'olcSortVals' attribute.
      */
-    @ConfigurationElement(attributeType = "olcSortVals")
+    @ConfigurationElement(attributeType = "olcSortVals", version="2.4.6")
     private List<String> olcSortVals = new ArrayList<>();
 
 

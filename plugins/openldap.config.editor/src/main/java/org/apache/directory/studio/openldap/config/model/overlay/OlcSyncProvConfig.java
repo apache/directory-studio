@@ -33,25 +33,25 @@ public class OlcSyncProvConfig extends OlcOverlayConfig
     /**
      * Field for the 'olcSpCheckpoint' attribute.
      */
-    @ConfigurationElement(attributeType = "olcSpCheckpoint")
+    @ConfigurationElement(attributeType = "olcSpCheckpoint", version="2.4.0")
     private String olcSpCheckpoint;
 
     /**
      * Field for the 'olcSpNoPresent' attribute.
      */
-    @ConfigurationElement(attributeType = "olcSpNoPresent", defaultValue = "FALSE")
+    @ConfigurationElement(attributeType = "olcSpNoPresent", defaultValue = "FALSE", version="2.4.0")
     private Boolean olcSpNoPresent = false;
 
     /**
      * Field for the 'olcSpReloadHint' attribute.
      */
-    @ConfigurationElement(attributeType = "olcSpReloadHint", defaultValue = "FALSE")
+    @ConfigurationElement(attributeType = "olcSpReloadHint", defaultValue = "FALSE", version="2.4.0")
     private Boolean olcSpReloadHint = false;
 
     /**
      * Field for the 'olcSpSessionlog' attribute.
      */
-    @ConfigurationElement(attributeType = "olcSpSessionlog")
+    @ConfigurationElement(attributeType = "olcSpSessionlog", version="2.4.0")
     private Integer olcSpSessionlog;
 
 

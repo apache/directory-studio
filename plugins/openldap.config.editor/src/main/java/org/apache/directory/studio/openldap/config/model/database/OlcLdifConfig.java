@@ -32,7 +32,7 @@ public class OlcLdifConfig extends OlcDatabaseConfig
     /**
      * Field for the 'olcDbDirectory' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbDirectory", isOptional = false)
+    @ConfigurationElement(attributeType = "olcDbDirectory", isOptional = false, version="2.4.0")
     private String olcDbDirectory;
 
 

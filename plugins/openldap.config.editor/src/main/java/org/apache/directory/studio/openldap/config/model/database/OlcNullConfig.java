@@ -34,7 +34,7 @@ public class OlcNullConfig extends OlcDatabaseConfig
     /**
      * Field for the 'olcDbBindAllowed' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbBindAllowed")
+    @ConfigurationElement(attributeType = "olcDbBindAllowed", version="2.4.24")
     private Boolean olcDbBindAllowed;
 
 

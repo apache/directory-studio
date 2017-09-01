@@ -30,13 +30,13 @@ public class OlcDistProcConfig extends OlcOverlayConfig
     /**
      * Field for the 'olcChainCacheURI' attribute.
      */
-    @ConfigurationElement(attributeType = "olcChainCacheURI")
+    @ConfigurationElement(attributeType = "olcChainCacheURI", version="2.4.0")
     private Boolean olcChainCacheURI;
 
     /**
      * Field for the 'olcChainingBehavior' attribute.
      */
-    @ConfigurationElement(attributeType = "olcChainingBehavior")
+    @ConfigurationElement(attributeType = "olcChainingBehavior", version="2.4.0")
     private String olcChainingBehavior;
 
 

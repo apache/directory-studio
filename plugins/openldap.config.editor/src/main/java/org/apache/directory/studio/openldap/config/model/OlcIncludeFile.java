@@ -34,19 +34,19 @@ public class OlcIncludeFile extends OlcConfig
     /**
      * Field for the 'cn' attribute.
      */
-    @ConfigurationElement(attributeType = "cn", isRdn = true)
+    @ConfigurationElement(attributeType = "cn", isRdn = true, version="2.4.0")
     private List<String> cn = new ArrayList<>();
 
     /**
      * Field for the 'olcInclude' attribute.
      */
-    @ConfigurationElement(attributeType = "olcInclude", isOptional = false)
+    @ConfigurationElement(attributeType = "olcInclude", isOptional = false, version="2.4.0")
     private List<String> olcInclude = new ArrayList<>();
 
     /**
      * Field for the 'olcRootDSE' attribute.
      */
-    @ConfigurationElement(attributeType = "olcRootDSE")
+    @ConfigurationElement(attributeType = "olcRootDSE", version="2.4.0")
     private List<String> olcRootDSE = new ArrayList<>();
 
 
