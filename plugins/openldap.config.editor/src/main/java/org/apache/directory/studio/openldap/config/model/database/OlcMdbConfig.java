@@ -51,13 +51,13 @@ public class OlcMdbConfig extends OlcDatabaseConfig
     /**
      * Field for the 'olcDbDirectory' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbDirectory", isOptional = false, version="2.4.27")
+    @ConfigurationElement(attributeType = "olcDbDirectory", isOptional = false, version="2.4.0")
     private String olcDbDirectory;
 
     /**
      * Field for the 'olcDbCheckpoint' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbCheckpoint", version="2.4.27")
+    @ConfigurationElement(attributeType = "olcDbCheckpoint", version="2.4.0")
     private String olcDbCheckpoint;
 
     /**
@@ -69,7 +69,7 @@ public class OlcMdbConfig extends OlcDatabaseConfig
     /**
      * Field for the 'olcDbIndex' attribute.
      */
-    @ConfigurationElement(attributeType = "olcDbIndex", version="2.4.27")
+    @ConfigurationElement(attributeType = "olcDbIndex", version="2.4.0")
     private List<String> olcDbIndex = new ArrayList<>();
 
     /**
