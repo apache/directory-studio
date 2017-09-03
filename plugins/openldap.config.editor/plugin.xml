@@ -22,10 +22,10 @@
   <!-- The context menu which will be used to open the OpenLDAP configuration -->
   <extension point="org.eclipse.ui.editors">
     <editor
-        class="org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor"
+        class="org.apache.directory.studio.openldap.config.editor.OpenLdapServerConfigurationEditor"
         default="false"
         icon="resources/icons/editor.gif"
-        id="org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor"
+        id="org.apache.directory.studio.openldap.config.editor.OpenLdapServerConfigurationEditor"
         name="OpenLDAP Configuration Editor">
     </editor>
   </extension>
@@ -82,11 +82,11 @@
     <wizard
         canFinishEarly="true"
         category="%NewWizards_Category_id"
-        class="org.apache.directory.studio.openldap.config.wizards.NewOpenLDAPConfigurationFileWizard"
+        class="org.apache.directory.studio.openldap.config.wizards.NewOpenLdapConfigurationFileWizard"
         hasPages="false"
         icon="resources/icons/editor_new.gif"
-        id="org.apache.directory.studio.openldap.config.wizards.NewOpenLDAPConfigurationFileWizard"
-        name="%NewWizards_NewOpenLDAPConfigurationFileWizard_name"
+        id="%NewWizards_NewOpenLdapConfigurationFileWizard_id"
+        name="%NewWizards_NewOpenLdapConfigurationFileWizard_name"
         project="false"/>
   </extension>
 </plugin>
