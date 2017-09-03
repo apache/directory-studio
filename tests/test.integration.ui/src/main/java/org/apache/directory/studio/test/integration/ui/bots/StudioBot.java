@@ -234,13 +234,27 @@ public class StudioBot
 
     public void navigationHistoryBack()
     {
-        new SWTBot().activeShell().pressShortcut( Keystrokes.ALT, Keystrokes.LEFT );
+        if ( SWTUtils.isMac() )
+        {
+            new SWTBot().activeShell().pressShortcut( Keystrokes.COMMAND, Keystrokes.ALT, Keystrokes.LEFT );
+        }
+        else
+        {
+            new SWTBot().activeShell().pressShortcut( Keystrokes.ALT, Keystrokes.LEFT );
+        }
     }
 
 
     public void navigationHistoryForward()
     {
-        new SWTBot().activeShell().pressShortcut( Keystrokes.ALT, Keystrokes.RIGHT );
+        if ( SWTUtils.isMac() )
+        {
+            new SWTBot().activeShell().pressShortcut( Keystrokes.COMMAND, Keystrokes.ALT, Keystrokes.RIGHT );
+        }
+        else
+        {
+            new SWTBot().activeShell().pressShortcut( Keystrokes.ALT, Keystrokes.RIGHT );
+        }
     }
 
 }
