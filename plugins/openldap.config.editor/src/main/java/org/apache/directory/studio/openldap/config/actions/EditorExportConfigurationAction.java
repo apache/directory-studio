@@ -57,6 +57,7 @@ public class EditorExportConfigurationAction extends Action
     /**
      * {@inheritDoc}
      */
+    @Override
     public ImageDescriptor getImageDescriptor()
     {
         return OpenLdapConfigurationPlugin.getDefault().getImageDescriptor(
@@ -67,6 +68,7 @@ public class EditorExportConfigurationAction extends Action
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getText()
     {
         return "Export Configuration";
@@ -76,11 +78,13 @@ public class EditorExportConfigurationAction extends Action
     /**
      * {@inheritDoc}
      */
+    @Override
     public void run()
     {
         try
         {
-            OpenLDAPServerConfigurationEditorUtils.saveAs( editor.getConfiguration(), false );
+            OpenLDAPServerConfigurationEditorUtils.saveAs( editor.getConfiguration(), editor.getSite()
+                .getShell(), false );
         }
         catch ( Exception e )
         {
