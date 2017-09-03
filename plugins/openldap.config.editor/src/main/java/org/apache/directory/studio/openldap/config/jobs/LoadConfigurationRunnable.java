@@ -29,7 +29,9 @@ import org.eclipse.ui.IEditorInput;
 
 import org.apache.directory.studio.openldap.config.editor.ConnectionServerConfigurationInput;
 import org.apache.directory.studio.openldap.config.editor.DirectoryServerConfigurationInput;
+import org.apache.directory.studio.openldap.config.editor.NewServerConfigurationInput;
 import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
+import org.apache.directory.studio.openldap.config.model.OlcGlobal;
 import org.apache.directory.studio.openldap.config.model.OpenLdapConfiguration;
 import org.apache.directory.studio.openldap.config.model.io.ConfigurationReader;
 
@@ -113,7 +115,8 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
 
 
     /**
-     * Gets the configuration from the input.
+     * Gets the configuration from the input. It may come from an existing connection, 
+     * or from an existing file/directory on the disk, or a brand new configuration
      * 
      * @param input the editor input
      * @param monitor the studio progress monitor
@@ -122,57 +125,28 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
      */
     public OpenLdapConfiguration getConfiguration( IEditorInput input, StudioProgressMonitor monitor ) throws Exception
     {
-        // If the input is a ConnectionServerConfigurationInput, then we 
-        // read the server configuration from the selected connection
         if ( input instanceof ConnectionServerConfigurationInput )
         {
-            return readConfiguration( ( ConnectionServerConfigurationInput ) input, monitor );
+            // If the input is a ConnectionServerConfigurationInput, then we 
+            // read the server configuration from the selected connection
+            ConfigurationReader.readConfiguration( ( ConnectionServerConfigurationInput ) input );
         }
-        // If the input is a DirectoryServerConfigurationInput, then we
-        // read the server configuration from the selected 'slapd.d' directory.
         else if ( input instanceof DirectoryServerConfigurationInput )
         {
-            return readConfiguration( ( DirectoryServerConfigurationInput ) input, monitor );
+            // If the input is a DirectoryServerConfigurationInput, then we
+            // read the server configuration from the selected 'slapd.d' directory.
+            return ConfigurationReader.readConfiguration( ( DirectoryServerConfigurationInput ) input );
         }
-
-        return null;
-    }
-
-
-    /**
-     * Reads the configuration from the given connection.
-     *
-     * @param input the editor input
-     * @param monitor the studio progress monitor
-     * @return the associated configuration bean
-     * @throws Exception
-     */
-    private OpenLdapConfiguration readConfiguration( ConnectionServerConfigurationInput input,
-        StudioProgressMonitor monitor ) throws Exception
-    {
-        if ( input != null )
+        else if ( input instanceof NewServerConfigurationInput )
         {
-            return ConfigurationReader.readConfiguration( input );
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Reads the configuration from the given connection.
-     *
-     * @param input the editor input
-     * @param monitor the studio progress monitor
-     * @return the associated configuration bean
-     * @throws Exception
-     */
-    private OpenLdapConfiguration readConfiguration( DirectoryServerConfigurationInput input,
-        StudioProgressMonitor monitor ) throws Exception
-    {
-        if ( input != null )
-        {
-            return ConfigurationReader.readConfiguration( input );
+            // If the input is a NewServerConfigurationInput, then we only 
+            // need to create a server configuration and return.
+            // The new configuration will be pretty empty, with just
+            // the main container (and the olcGlobal instance
+            OpenLdapConfiguration configuration = new OpenLdapConfiguration();
+            configuration.setGlobal( new OlcGlobal() );
+            
+            return configuration;
         }
 
         return null;
