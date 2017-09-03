@@ -37,6 +37,7 @@ mv DS_Store dmg/.DS_Store
 ln -s /Applications dmg/Applications
 
 # Creating the disk image
+hdiutil create -srcfolder dmg/ -o TMP.dmg
 hdiutil makehybrid -hfs -hfs-volume-name "Apache Directory Studio" -hfs-openfolder dmg/ dmg/ -o TMP.dmg
 hdiutil convert -format UDZO TMP.dmg -o ApacheDirectoryStudio-${version}-macosx.cocoa.x86_64.dmg
 
