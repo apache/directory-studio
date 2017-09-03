@@ -362,7 +362,7 @@ public class OlcGlobal extends OlcConfig
     private List<String> olcTCPBuffer = new ArrayList<>();
 
     /**
-     * Field for the 'olcThreads' attribute. (Added in OpenLDAP 2.4.36)
+     * Field for the 'olcThreads' attribute
      */
     @ConfigurationElement(attributeType = "olcThreads", version="2.4.0")
     private Integer olcThreads;
