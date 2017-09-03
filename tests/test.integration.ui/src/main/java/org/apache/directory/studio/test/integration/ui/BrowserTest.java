@@ -552,12 +552,12 @@ public class BrowserTest extends AbstractLdapTestUnit
 
 
     /**
-     * Test for DIRSTUDIO-XXX.
+     * Test for DIRSTUDIO-1121.
      *
      * Verify input is set only once when entry is selected.
      */
     @Test
-    public void TestSetInputOnlyOnce() throws Exception
+    public void testSetInputOnlyOnce() throws Exception
     {
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
         browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
