@@ -37,7 +37,7 @@ import org.apache.directory.studio.openldap.common.ui.model.DisallowFeatureEnum;
 import org.apache.directory.studio.openldap.common.ui.model.RequireConditionEnum;
 import org.apache.directory.studio.openldap.common.ui.model.RestrictOperationEnum;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginUtils;
-import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
+import org.apache.directory.studio.openldap.config.editor.OpenLdapServerConfigurationEditor;
 import org.apache.directory.studio.openldap.config.editor.wrappers.AllowFeatureDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.DisallowFeatureDecorator;
 import org.apache.directory.studio.openldap.config.editor.wrappers.OrderedStringValueDecorator;
@@ -395,7 +395,7 @@ public class OptionsPage extends OpenLDAPServerConfigurationEditorPage
      *
      * @param editor the associated editor
      */
-    public OptionsPage( OpenLDAPServerConfigurationEditor editor )
+    public OptionsPage( OpenLdapServerConfigurationEditor editor )
     {
         super( editor, ID, TITLE );
     }

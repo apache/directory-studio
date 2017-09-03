@@ -28,7 +28,7 @@ import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.openldap.common.ui.model.DatabaseTypeEnum;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginUtils;
-import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
+import org.apache.directory.studio.openldap.config.editor.OpenLdapServerConfigurationEditor;
 import org.apache.directory.studio.openldap.config.editor.dialogs.DatabaseTypeDialog;
 import org.apache.directory.studio.openldap.config.editor.pages.DatabasesPage;
 import org.apache.directory.studio.openldap.config.editor.wrappers.DatabaseWrapper;
@@ -835,7 +835,7 @@ public class DatabasesMasterDetailsBlock extends MasterDetailsBlock
      */
     public void setEditorDirty()
     {
-        ( ( OpenLDAPServerConfigurationEditor ) page.getEditor() ).setDirty( true );
+        ( ( OpenLdapServerConfigurationEditor ) page.getEditor() ).setDirty( true );
         detailsPage.commit( false );
         databaseTableViewer.refresh();
     }

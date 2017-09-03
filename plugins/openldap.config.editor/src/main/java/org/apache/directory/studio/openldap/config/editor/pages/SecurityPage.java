@@ -44,7 +44,7 @@ import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.common.ui.widgets.TableWidget;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.openldap.common.ui.model.PasswordHashEnum;
-import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
+import org.apache.directory.studio.openldap.config.editor.OpenLdapServerConfigurationEditor;
 import org.apache.directory.studio.openldap.config.editor.dialogs.OverlayDialog;
 import org.apache.directory.studio.openldap.config.editor.dialogs.SaslSecPropsDialog;
 import org.apache.directory.studio.openldap.config.editor.wrappers.PasswordHashDecorator;
@@ -423,7 +423,7 @@ public class SecurityPage extends OpenLDAPServerConfigurationEditorPage
      *
      * @param editor the associated editor
      */
-    public SecurityPage( OpenLDAPServerConfigurationEditor editor )
+    public SecurityPage( OpenLdapServerConfigurationEditor editor )
     {
         super( editor, ID, TITLE );
     }

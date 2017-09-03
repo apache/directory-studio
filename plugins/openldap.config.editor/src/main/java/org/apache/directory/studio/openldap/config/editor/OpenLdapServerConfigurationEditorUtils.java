@@ -51,6 +51,8 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.PlatformUI;
 import org.apache.directory.studio.openldap.config.ExpandedLdifUtils;
@@ -69,13 +71,52 @@ import org.apache.directory.studio.openldap.config.model.io.ConfigurationWriter;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class OpenLDAPServerConfigurationEditorUtils
+public class OpenLdapServerConfigurationEditorUtils
 {
-    private OpenLDAPServerConfigurationEditorUtils()
+    private OpenLdapServerConfigurationEditorUtils()
     {
         // Do nothing
     }
     
+    
+    /**
+     * Opens a {@link FileDialog} in the UI thread.
+     *
+     * @param shell the shell
+     * @return the result of the dialog
+     */
+    private static String openFileDialogInUIThread( final Shell shell )
+    {
+        // Defining our own encapsulating class for the result
+        class DialogResult
+        {
+            private String result;
+
+            public String getResult()
+            {
+                return result;
+            }
+
+
+            public void setResult( String result )
+            {
+                this.result = result;
+            }
+        }
+
+        // Creating an object to hold the result
+        final DialogResult result = new DialogResult();
+
+        // Opening the dialog in the UI thread
+        Display.getDefault().syncExec( () ->
+            {
+                FileDialog dialog = new FileDialog( shell, SWT.SAVE );
+                result.setResult( dialog.open() );
+            } );
+
+        return result.getResult();
+    }
+
     
     /**
      * Performs the "Save as..." action.
@@ -85,60 +126,67 @@ public class OpenLDAPServerConfigurationEditorUtils
      * @return the new input for the editor
      * @throws Exception
      */
-    public static IEditorInput saveAs( OpenLdapConfiguration configuration, boolean newInput ) throws Exception
+    public static IEditorInput saveAs( OpenLdapConfiguration configuration, Shell shell, boolean newInput ) throws Exception
     {
-        // The path of the directory
+        // detect IDE or RCP:
+        // check if perspective org.eclipse.ui.resourcePerspective is available
+        boolean isIDE = CommonUIUtils.isIDEEnvironment();
         String path = null;
 
-        // Creating a dialog for directory selection
-        DirectoryDialog dialog = new DirectoryDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-            .getShell(), SWT.SAVE );
-
-        while ( true )
+        if ( isIDE )
         {
-            // Opening the dialog
-            path = openDirectoryDialogInUIThread( dialog );
+        }
+        else
+        {
+            boolean canOverwrite = false;
 
-            // Checking the returned path
-            if ( path == null )
+            while ( !canOverwrite )
             {
-                // Cancel button has been clicked
-                return null;
+                // Opening the dialog
+                // Open FileDialog
+                path = openFileDialogInUIThread( shell );
+                
+                // Checking the returned path
+                if ( path == null )
+                {
+                    // Cancel button has been clicked
+                    return null;
+                }
+    
+                // Getting the directory indicated by the user
+                final File directory = new File( path );
+    
+                // Checking if the directory exists
+                if ( !directory.exists() )
+                {
+                    CommonUIUtils.openErrorDialog( "The directory does not exist." );
+                    continue;
+                }
+    
+                // Checking if the location is a directory
+                if ( !directory.isDirectory() )
+                {
+                    CommonUIUtils.openErrorDialog( "The location is not a directory." );
+                    continue;
+                }
+    
+                // Checking if the directory is writable
+                if ( !directory.canWrite() )
+                {
+                    CommonUIUtils.openErrorDialog( "The directory is not writable." );
+                    continue;
+                }
+    
+                // Checking if the directory is empty
+                if ( !isEmpty( directory ) )
+                {
+                    CommonUIUtils.openErrorDialog( "The directory is not empty." );
+                    continue;
+                }
+    
+                // The directory meets all requirements
+                break;
             }
-
-            // Getting the directory indicated by the user
-            final File directory = new File( path );
-
-            // Checking if the directory exists
-            if ( !directory.exists() )
-            {
-                CommonUIUtils.openErrorDialog( "The directory does not exist." );
-                continue;
-            }
-
-            // Checking if the location is a directory
-            if ( !directory.isDirectory() )
-            {
-                CommonUIUtils.openErrorDialog( "The location is not a directory." );
-                continue;
-            }
-
-            // Checking if the directory is writable
-            if ( !directory.canWrite() )
-            {
-                CommonUIUtils.openErrorDialog( "The directory is not writable." );
-                continue;
-            }
-
-            // Checking if the directory is empty
-            if ( !isEmpty( directory ) )
-            {
-                CommonUIUtils.openErrorDialog( "The directory is not empty." );
-                continue;
-            }
-
-            // The directory meets all requirements
-            break;
         }
 
         // Saving the file to disk
@@ -327,7 +375,7 @@ public class OpenLDAPServerConfigurationEditorUtils
      * @return <code>true</code> if the operation is successful, <code>false</code> if not
      * @throws Exception
      */
-    public static void saveConfiguration( ConnectionServerConfigurationInput input, OpenLDAPServerConfigurationEditor editor,
+    public static void saveConfiguration( ConnectionServerConfigurationInput input, OpenLdapServerConfigurationEditor editor,
         IProgressMonitor monitor ) throws Exception
     {
         // Getting the browser connection associated with the connection in the input

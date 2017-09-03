@@ -20,6 +20,8 @@
 package org.apache.directory.studio.openldap.config.editor;
 
 
+import org.apache.directory.studio.openldap.config.model.OpenLdapConfigFormat;
+import org.apache.directory.studio.openldap.config.model.OpenLdapVersion;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
@@ -32,6 +34,12 @@ import org.eclipse.ui.IPersistableElement;
  */
 public class NewServerConfigurationInput implements IEditorInput
 {
+    /** The selected version */
+    private OpenLdapVersion openLdapVersion;
+    
+    /** The file format*/
+    private OpenLdapConfigFormat openLdapConfigFormat;
+
     /**
      * {@inheritDoc}
      */
@@ -84,5 +92,41 @@ public class NewServerConfigurationInput implements IEditorInput
     public Object getAdapter( Class adapter )
     {
         return null;
+    }
+
+
+    /**
+     * @return the openLdapVersion
+     */
+    public OpenLdapVersion getOpenLdapVersion()
+    {
+        return openLdapVersion;
+    }
+
+
+    /**
+     * @param openLdapVersion the openLdapVersion to set
+     */
+    public void setOpenLdapVersion( OpenLdapVersion openLdapVersion )
+    {
+        this.openLdapVersion = openLdapVersion;
+    }
+
+
+    /**
+     * @return the openLdapConfigFomat
+     */
+    public OpenLdapConfigFormat getOpenLdapConfigFormat()
+    {
+        return openLdapConfigFormat;
+    }
+
+
+    /**
+     * @param openLdapConfigFomat the openLdapConfigFomat to set
+     */
+    public void setOpenLdapConfigFormat( OpenLdapConfigFormat openLdapConfigFormat )
+    {
+        this.openLdapConfigFormat = openLdapConfigFormat;
     }
 }

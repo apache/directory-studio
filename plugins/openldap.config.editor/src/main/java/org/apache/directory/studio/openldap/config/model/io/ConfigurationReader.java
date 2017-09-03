@@ -63,7 +63,7 @@ import org.apache.directory.studio.openldap.config.ExpandedLdifUtils;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPlugin;
 import org.apache.directory.studio.openldap.config.editor.ConnectionServerConfigurationInput;
 import org.apache.directory.studio.openldap.config.editor.DirectoryServerConfigurationInput;
-import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditorUtils;
+import org.apache.directory.studio.openldap.config.editor.OpenLdapServerConfigurationEditorUtils;
 import org.apache.directory.studio.openldap.config.jobs.EntryBasedConfigurationPartition;
 import org.apache.directory.studio.openldap.config.model.AuxiliaryObjectClass;
 import org.apache.directory.studio.openldap.config.model.ConfigurationElement;
@@ -359,7 +359,7 @@ public class ConfigurationReader
                 // Create the set of candidates
                 for ( Value objectClassValue : objectClassAttribute )
                 {
-                    ObjectClass oc = OpenLDAPServerConfigurationEditorUtils.getObjectClass( schemaManager,
+                    ObjectClass oc = OpenLdapServerConfigurationEditorUtils.getObjectClass( schemaManager,
                         objectClassValue.getValue() );
 
                     if ( ( oc != null ) && ( oc.isStructural() ) )
@@ -371,14 +371,14 @@ public class ConfigurationReader
                 // Now find the parent OC
                 for ( Value objectClassValue : objectClassAttribute )
                 {
-                    ObjectClass oc = OpenLDAPServerConfigurationEditorUtils.getObjectClass( schemaManager,
+                    ObjectClass oc = OpenLdapServerConfigurationEditorUtils.getObjectClass( schemaManager,
                         objectClassValue.getValue() );
 
                     if ( oc != null )
                     {
                         for ( String superiorName : oc.getSuperiorOids() )
                         {
-                            ObjectClass superior = OpenLDAPServerConfigurationEditorUtils.getObjectClass( schemaManager,
+                            ObjectClass superior = OpenLdapServerConfigurationEditorUtils.getObjectClass( schemaManager,
                                 superiorName );
 
                             if ( ( superior != null ) && ( superior.isStructural() )
@@ -421,7 +421,7 @@ public class ConfigurationReader
             {
                 for ( Value objectClassValue : objectClassAttribute )
                 {
-                    ObjectClass oc = OpenLDAPServerConfigurationEditorUtils.getObjectClass( schemaManager,
+                    ObjectClass oc = OpenLdapServerConfigurationEditorUtils.getObjectClass( schemaManager,
                         objectClassValue.getValue() );
 
                     if ( ( oc != null ) && ( oc.isAuxiliary() ) )
@@ -464,7 +464,7 @@ public class ConfigurationReader
         // The DN corresponding to the configuration base
 
         // Creating the configuration partition
-        EntryBasedConfigurationPartition configurationPartition = OpenLDAPServerConfigurationEditorUtils
+        EntryBasedConfigurationPartition configurationPartition = OpenLdapServerConfigurationEditorUtils
             .createConfigurationPartition( schemaManager, configurationDn );
 
         // Opening the connection (if needed)

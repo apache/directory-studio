@@ -19,7 +19,6 @@
  */
 package org.apache.directory.studio.openldap.config;
 
-
 /**
  * This interface contains all the Constants used in the Plugin.
  * 
@@ -43,4 +42,7 @@ public interface OpenLdapConfigurationPluginConstants
     String IMG_IMPORT = "resources/icons/import.gif"; //$NON-NLS-1$
     String IMG_OVERLAY = "resources/icons/overlay.gif"; //$NON-NLS-1$
     String IMG_LDAP_SERVER = "resources/icons/server.gif"; //$NON-NLS-1$
+
+    public static final String WIZARD_NEW_OPENLDAP_CONFIG = OpenLdapConfigurationPlugin.getDefault().getPluginProperties()
+        .getString( "NewWizards_NewOpenLdapConfigurationFileWizard_id" ); //$NON-NLS-1$
 }

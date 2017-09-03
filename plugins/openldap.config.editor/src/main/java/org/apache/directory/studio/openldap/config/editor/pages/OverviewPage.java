@@ -30,7 +30,7 @@ import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.openldap.common.ui.model.LogLevelEnum;
 import org.apache.directory.studio.openldap.common.ui.dialogs.LogLevelDialog;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginUtils;
-import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
+import org.apache.directory.studio.openldap.config.editor.OpenLdapServerConfigurationEditor;
 import org.apache.directory.studio.openldap.config.editor.overlays.ModuleWrapper;
 import org.apache.directory.studio.openldap.config.editor.overlays.ModuleWrapperLabelProvider;
 import org.apache.directory.studio.openldap.config.editor.overlays.ModuleWrapperViewerSorter;
@@ -232,7 +232,7 @@ public class OverviewPage extends OpenLDAPServerConfigurationEditorPage
      *
      * @param editor the associated editor
      */
-    public OverviewPage( OpenLDAPServerConfigurationEditor editor )
+    public OverviewPage( OpenLdapServerConfigurationEditor editor )
     {
         super( editor, ID, TITLE );
     }

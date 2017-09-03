@@ -57,10 +57,10 @@ import org.eclipse.ui.forms.editor.FormEditor;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class OpenLDAPServerConfigurationEditor extends FormEditor implements IPageChangedListener
+public class OpenLdapServerConfigurationEditor extends FormEditor implements IPageChangedListener
 {
     /** The Editor ID */
-    public static final String ID = OpenLDAPServerConfigurationEditor.class.getName();
+    public static final String ID = OpenLdapServerConfigurationEditor.class.getName();
 
     /** The flag indicating if the editor is dirty */
     private boolean dirty = false;
@@ -102,6 +102,11 @@ public class OpenLDAPServerConfigurationEditor extends FormEditor implements IPa
     {
         super.init( site, input );
         setPartName( input.getName() );
+
+        // Checking if the input is a new server configuration file
+        // New server configuration file have a dirty state 
+        // set to true since they are not saved yet
+        setDirty( input instanceof NewServerConfigurationInput );
 
         addPageChangedListener( this );
 
@@ -240,7 +245,7 @@ public class OpenLDAPServerConfigurationEditor extends FormEditor implements IPa
         doSavePages( monitor );
 
         // Saving the configuration as a new file and getting the associated new editor input
-        IEditorInput newInput = OpenLDAPServerConfigurationEditorUtils.saveAs( getConfiguration(), true );
+        IEditorInput newInput = OpenLdapServerConfigurationEditorUtils.saveAs( getConfiguration(), getSite().getShell(), true );
 
         // Checking if the 'save as' is successful 
         if ( newInput != null )

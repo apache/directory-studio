@@ -22,7 +22,7 @@ package org.apache.directory.studio.openldap.config.editor.pages;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
+import org.apache.directory.studio.openldap.config.editor.OpenLdapServerConfigurationEditor;
 import org.apache.directory.studio.openldap.config.editor.overlays.OverlaysMasterDetailsBlock;
 
 
@@ -48,7 +48,7 @@ public class OverlaysPage extends OpenLDAPServerConfigurationEditorPage
      * @param editor
      *      the associated editor
      */
-    public OverlaysPage( OpenLDAPServerConfigurationEditor editor )
+    public OverlaysPage( OpenLdapServerConfigurationEditor editor )
     {
         super( editor, ID, TITLE );
     }

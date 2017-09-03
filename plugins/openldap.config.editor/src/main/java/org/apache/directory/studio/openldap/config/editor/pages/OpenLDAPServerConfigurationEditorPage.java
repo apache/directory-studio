@@ -26,7 +26,7 @@ import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.openldap.config.actions.EditorExportConfigurationAction;
 import org.apache.directory.studio.openldap.config.actions.EditorImportConfigurationAction;
 import org.apache.directory.studio.openldap.config.editor.Messages;
-import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
+import org.apache.directory.studio.openldap.config.editor.OpenLdapServerConfigurationEditor;
 import org.apache.directory.studio.openldap.config.model.OpenLdapConfiguration;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
@@ -91,7 +91,7 @@ public abstract class OpenLDAPServerConfigurationEditorPage extends FormPage
      *
      * @param editor the associated editor
      */
-    public OpenLDAPServerConfigurationEditorPage( OpenLDAPServerConfigurationEditor editor, String id, String title )
+    public OpenLDAPServerConfigurationEditorPage( OpenLdapServerConfigurationEditor editor, String id, String title )
     {
         super( editor, id, title );
     }
@@ -102,9 +102,9 @@ public abstract class OpenLDAPServerConfigurationEditorPage extends FormPage
      *
      * @return the ServerConfigurationEditor object associated with the page
      */
-    public OpenLDAPServerConfigurationEditor getServerConfigurationEditor()
+    public OpenLdapServerConfigurationEditor getServerConfigurationEditor()
     {
-        return ( OpenLDAPServerConfigurationEditor ) getEditor();
+        return ( OpenLdapServerConfigurationEditor ) getEditor();
     }
 
 
@@ -151,7 +151,7 @@ public abstract class OpenLDAPServerConfigurationEditorPage extends FormPage
         FormToolkit toolkit = managedForm.getToolkit();
         toolkit.decorateFormHeading( form.getForm() );
 
-        OpenLDAPServerConfigurationEditor editor = ( OpenLDAPServerConfigurationEditor ) getEditor();
+        OpenLdapServerConfigurationEditor editor = ( OpenLdapServerConfigurationEditor ) getEditor();
 
         IToolBarManager toolbarManager = form.getToolBarManager();
         toolbarManager.add( new EditorImportConfigurationAction( editor ) );

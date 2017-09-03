@@ -30,7 +30,7 @@ import org.eclipse.ui.IEditorInput;
 import org.apache.directory.studio.openldap.config.editor.ConnectionServerConfigurationInput;
 import org.apache.directory.studio.openldap.config.editor.DirectoryServerConfigurationInput;
 import org.apache.directory.studio.openldap.config.editor.NewServerConfigurationInput;
-import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
+import org.apache.directory.studio.openldap.config.editor.OpenLdapServerConfigurationEditor;
 import org.apache.directory.studio.openldap.config.model.OlcGlobal;
 import org.apache.directory.studio.openldap.config.model.OpenLdapConfiguration;
 import org.apache.directory.studio.openldap.config.model.io.ConfigurationReader;
@@ -44,7 +44,7 @@ import org.apache.directory.studio.openldap.config.model.io.ConfigurationReader;
 public class LoadConfigurationRunnable implements StudioRunnableWithProgress
 {
     /** The associated editor */
-    private OpenLDAPServerConfigurationEditor editor;
+    private OpenLdapServerConfigurationEditor editor;
 
 
     /**
@@ -52,7 +52,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
      * 
      * @param editor the editor
      */
-    public LoadConfigurationRunnable( OpenLDAPServerConfigurationEditor editor )
+    public LoadConfigurationRunnable( OpenLdapServerConfigurationEditor editor )
     {
         this.editor = editor;
     }

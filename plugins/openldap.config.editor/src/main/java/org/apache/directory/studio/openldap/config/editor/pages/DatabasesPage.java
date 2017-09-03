@@ -20,7 +20,7 @@
 package org.apache.directory.studio.openldap.config.editor.pages;
 
 
-import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
+import org.apache.directory.studio.openldap.config.editor.OpenLdapServerConfigurationEditor;
 import org.apache.directory.studio.openldap.config.editor.databases.DatabasesMasterDetailsBlock;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.widgets.Composite;
@@ -52,7 +52,7 @@ public class DatabasesPage extends OpenLDAPServerConfigurationEditorPage
      *
      * @param editor the associated editor
      */
-    public DatabasesPage( OpenLDAPServerConfigurationEditor editor )
+    public DatabasesPage( OpenLdapServerConfigurationEditor editor )
     {
         super( editor, ID, TITLE );
     }

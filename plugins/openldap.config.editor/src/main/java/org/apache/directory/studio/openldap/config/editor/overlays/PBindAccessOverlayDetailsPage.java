@@ -89,10 +89,8 @@ public class PBindAccessOverlayDetailsPage implements IDetailsPage
     /**
      * Creates the General Settings Section
      *
-     * @param parent
-     *      the parent composite
-     * @param toolkit
-     *      the toolkit to use
+     * @param parent the parent composite
+     * @param toolkit the toolkit to use
      */
     private void createGeneralSettingsSection( Composite parent, FormToolkit toolkit )
     {
@@ -119,6 +117,7 @@ public class PBindAccessOverlayDetailsPage implements IDetailsPage
     public void selectionChanged( IFormPart part, ISelection selection )
     {
         IStructuredSelection ssel = ( IStructuredSelection ) selection;
+        
         if ( ssel.size() == 1 )
         {
             overlay = ( OlcAccessLogConfig ) ssel.getFirstElement();

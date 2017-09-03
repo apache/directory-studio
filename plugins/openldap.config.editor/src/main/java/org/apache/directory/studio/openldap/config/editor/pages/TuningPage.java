@@ -44,7 +44,7 @@ import org.apache.directory.studio.common.ui.CommonUIUtils;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.common.ui.widgets.TableWidget;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
-import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditor;
+import org.apache.directory.studio.openldap.config.editor.OpenLdapServerConfigurationEditor;
 import org.apache.directory.studio.openldap.config.editor.dialogs.OverlayDialog;
 import org.apache.directory.studio.openldap.config.editor.dialogs.SizeLimitDialog;
 import org.apache.directory.studio.openldap.config.editor.wrappers.LimitWrapper;
@@ -205,7 +205,7 @@ public class TuningPage extends OpenLDAPServerConfigurationEditorPage
      *
      * @param editor the associated editor
      */
-    public TuningPage( OpenLDAPServerConfigurationEditor editor )
+    public TuningPage( OpenLdapServerConfigurationEditor editor )
     {
         super( editor, ID, TITLE );
     }

@@ -41,9 +41,10 @@ import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPlugin;
-import org.apache.directory.studio.openldap.config.editor.OpenLDAPServerConfigurationEditorUtils;
+import org.apache.directory.studio.openldap.config.editor.OpenLdapServerConfigurationEditorUtils;
 import org.apache.directory.studio.openldap.config.model.AuxiliaryObjectClass;
 import org.apache.directory.studio.openldap.config.model.ConfigurationElement;
 import org.apache.directory.studio.openldap.config.model.OlcConfig;
@@ -72,10 +73,8 @@ public class ConfigurationWriter
     /**
      * Creates a new instance of ConfigWriter.
      *
-     * @param browserConnection
-     *      the browser connection
-     * @param configuration
-     *      the configuration
+     * @param browserConnection the browser connection
+     * @param configuration the configuration
      */
     public ConfigurationWriter( IBrowserConnection browserConnection, OpenLdapConfiguration configuration )
     {
@@ -87,8 +86,7 @@ public class ConfigurationWriter
     /**
      * Creates a new instance of ConfigWriter.
      *
-     * @param configuration
-     *      the configuration
+     * @param configuration the configuration
      */
     public ConfigurationWriter( OpenLdapConfiguration configuration )
     {
@@ -154,7 +152,7 @@ public class ConfigurationWriter
             // Checking auxiliary object classes
             List<AuxiliaryObjectClass> auxiliaryObjectClassesList = configurationBean.getAuxiliaryObjectClasses();
             
-            if ( ( auxiliaryObjectClassesList != null ) && auxiliaryObjectClassesList.isEmpty() )
+            if ( ( auxiliaryObjectClassesList != null ) && !auxiliaryObjectClassesList.isEmpty() )
             {
                 for ( AuxiliaryObjectClass auxiliaryObjectClass : auxiliaryObjectClassesList )
                 {
@@ -202,9 +200,7 @@ public class ConfigurationWriter
         if ( ( configurationBean != null ) && ( beanClass != null ) && ( entry != null ) )
         {
             // Looping on all fields of the bean
-            Field[] fields = beanClass.getDeclaredFields();
-            
-            for ( Field field : fields )
+            for ( Field field : beanClass.getDeclaredFields() )
             {
                 // Making the field accessible (we get an exception if we don't do that)
                 field.setAccessible( true );
@@ -223,27 +219,16 @@ public class ConfigurationWriter
                         // Checking if we have a value for the attribute type
                         String attributeType = configurationElement.attributeType();
                         
-                        if ( ( attributeType != null ) && ( !"".equals( attributeType ) ) )
+                        if ( !Strings.isEmpty( attributeType ) )
                         {
-                            // Checking if the field is optional and if the default value matches
-                            if ( configurationElement.isOptional() &&
-                                configurationElement.defaultValue().equalsIgnoreCase( fieldValue.toString() ) )
-                            {
-                                // Skipping the addition of the value
-                                continue;
-                            }
-
-                            // Adding values to the entry
-                            addAttributeTypeValues( configurationElement.attributeType(), fieldValue, entry );
-
-                            continue;
+                            // Adding values to the entry, and if it's empty, add the default value
+                            addAttributeTypeValues( configurationElement, fieldValue, entry );
                         }
-
-                        // Checking if we're dealing with a AdsBaseBean subclass type
-                        if ( OlcConfig.class.isAssignableFrom( fieldClass ) )
+                        
+                        else if ( OlcConfig.class.isAssignableFrom( fieldClass ) )
                         {
+                            // Checking if we're dealing with a AdsBaseBean subclass type
                             addConfigurationBean( ( OlcConfig ) fieldValue, entry.getDn() );
-                            continue;
                         }
                     }
                 }
@@ -255,12 +240,9 @@ public class ConfigurationWriter
     /**
      * Gets the Dn associated with the configuration bean.
      *
-     * @param bean
-     *      the configuration bean
-     * @param parentDn
-     *      the parent dn
-     * @return
-     *      the Dn associated with the configuration bean based on the given base Dn.
+     * @param bean the configuration bean
+     * @param parentDn the parent dn
+     * @return the Dn associated with the configuration bean based on the given base Dn.
      * @throws LdapInvalidDnException
      * @throws IllegalArgumentException
      * @throws IllegalAccessException
@@ -285,8 +267,7 @@ public class ConfigurationWriter
             }
 
             // Looping on all fields of the bean
-            Field[] fields = beanClass.getDeclaredFields();
-            for ( Field field : fields )
+            for ( Field field : beanClass.getDeclaredFields() )
             {
                 // Making the field accessible (we get an exception if we don't do that)
                 field.setAccessible( true );
@@ -294,9 +275,11 @@ public class ConfigurationWriter
                 // Looking for the @ConfigurationElement annotation and
                 // if the field is the Rdn
                 ConfigurationElement configurationElement = field.getAnnotation( ConfigurationElement.class );
+                
                 if ( ( configurationElement != null ) && ( configurationElement.isRdn() ) )
                 {
                     Object value = field.get( bean );
+                    
                     if ( value == null )
                     {
                         continue;
@@ -309,10 +292,21 @@ public class ConfigurationWriter
                         
                         if ( values.isEmpty() )
                         {
-                            continue;
+                            String defaultValue = configurationElement.defaultValue();
+                            
+                            if ( defaultValue != null )
+                            {
+                                value = defaultValue;
+                            }
+                            else
+                            {
+                                continue;
+                            }
                         }
-                        
-                        value = values.toArray()[0];
+                        else
+                        {
+                            value = values.toArray()[0];
+                        }
                     }
 
                     if ( ( bean.getParentDn() != null ) )
@@ -338,14 +332,13 @@ public class ConfigurationWriter
     /**
      * Gets the name of the object class to use for the given bean class.
      *
-     * @param c
-     *      the bean class
-     * @return
-     *      the name of the object class to use for the given bean class
+     * @param clazz the bean class
+     * @return the name of the object class to use for the given bean class
      */
-    private String getObjectClassNameForBean( Class<?> c )
+    private String getObjectClassNameForBean( Class<?> clazz )
     {
-        String classNameWithPackage = getClassNameWithoutPackageName( c );
+        String classNameWithPackage = getClassNameWithoutPackageName( clazz );
+        
         return Character.toLowerCase( classNameWithPackage.charAt( 0 ) ) + classNameWithPackage.substring( 1 );
     }
 
@@ -353,16 +346,15 @@ public class ConfigurationWriter
     /**
      * Gets the class name of the given class stripped from its package name.
      *
-     * @param c
-     *      the class
-     * @return
-     *      the class name of the given class stripped from its package name
+     * @param clazz the class
+     * @return the class name of the given class stripped from its package name
      */
-    private String getClassNameWithoutPackageName( Class<?> c )
+    private String getClassNameWithoutPackageName( Class<?> clazz )
     {
-        String className = c.getName();
+        String className = clazz.getName();
 
         int firstChar = className.lastIndexOf( '.' ) + 1;
+        
         if ( firstChar > 0 )
         {
             return className.substring( firstChar );
@@ -375,12 +367,9 @@ public class ConfigurationWriter
     /**
      * Writes the configuration bean as LDIF to the given file.
      *
-     * @param path
-     *      the output file path
-     * @throws ConfigurationException
-     *      if an error occurs during the conversion to LDIF
-     * @throws IOException
-     *      if an error occurs when writing the file
+     * @param path the output file path
+     * @throws ConfigurationException if an error occurs during the conversion to LDIF
+     * @throws IOException if an error occurs when writing the file
      */
     public void writeToPath( String path ) throws ConfigurationException, IOException
     {
@@ -391,12 +380,9 @@ public class ConfigurationWriter
     /**
      * Writes the configuration bean as LDIF to the given file.
      *
-     * @param file
-     *      the output file
-     * @throws ConfigurationException
-     *      if an error occurs during the conversion to LDIF
-     * @throws IOException
-     *      if an error occurs when writing the file
+     * @param file the output file
+     * @throws ConfigurationException if an error occurs during the conversion to LDIF
+     * @throws IOException if an error occurs when writing the file
      */
     public void writeToFile( File file ) throws ConfigurationException, IOException
     {
@@ -411,11 +397,8 @@ public class ConfigurationWriter
     /**
      * Writes the configuration to a String object.
      *
-     * @return
-     *      a String containing the LDIF 
-     *      representation of the configuration
-     * @throws ConfigurationException
-     *      if an error occurs during the conversion to LDIF
+     * @return a String containing the LDIF representation of the configuration
+     * @throws ConfigurationException if an error occurs during the conversion to LDIF
      */
     public String writeToString() throws ConfigurationException
     {
@@ -425,6 +408,7 @@ public class ConfigurationWriter
         // Building the StringBuilder
         StringBuilder sb = new StringBuilder();
         sb.append( "version: 1\n" );
+        
         for ( LdifEntry entry : entries )
         {
             sb.append( entry.toString() );
@@ -438,19 +422,10 @@ public class ConfigurationWriter
      * Gets the converted LDIF entries from the configuration bean.
      *
      * @param browserConnection the browserConnection
-     * @return
-     *      the list of converted LDIF entries
-     * @throws ConfigurationException
-     *      if an error occurs during the conversion to LDIF
+     * @return the list of converted LDIF entries
+     * @throws ConfigurationException if an error occurs during the conversion to LDIF
      */
-    /**
-     * TODO getConvertedLdifEntries.
-     *
-     * @return
-     * @throws ConfigurationException
-     */
-    public List<LdifEntry> getConvertedLdifEntries()
-        throws ConfigurationException
+    public List<LdifEntry> getConvertedLdifEntries() throws ConfigurationException
     {
         // Converting the configuration bean to a list of LDIF entries
         convertConfigurationBeanToLdifEntries( ConfigurationUtils.getConfigurationDn( browserConnection ) );
@@ -463,10 +438,8 @@ public class ConfigurationWriter
     /**
      * Gets the converted LDIF entries from the configuration bean.
      *
-     * @return
-     *      the list of converted LDIF entries
-     * @throws ConfigurationException
-     *      if an error occurs during the conversion to LDIF
+     * @return the list of converted LDIF entries
+     * @throws ConfigurationException if an error occurs during the conversion to LDIF
      */
     public List<LdifEntry> getConvertedLdifEntries( Dn configurationDn ) throws ConfigurationException
     {
@@ -481,10 +454,8 @@ public class ConfigurationWriter
     /**
      * Adds the computed 'objectClass' attribute for the given entry and object class name.
      *
-     * @param entry
-     *      the entry
-     * @param objectClass
-     *      the object class name
+     * @param entry the entry
+     * @param objectClass the object class name
      * @throws LdapException
      */
     private void addObjectClassAttribute( LdifEntry entry, String objectClass )
@@ -492,7 +463,7 @@ public class ConfigurationWriter
     {
         try
         {
-            ObjectClass objectClassObject = OpenLDAPServerConfigurationEditorUtils.getObjectClass( OpenLdapConfigurationPlugin
+            ObjectClass objectClassObject = OpenLdapServerConfigurationEditorUtils.getObjectClass( OpenLdapConfigurationPlugin
                 .getDefault().getSchemaManager(), objectClass );
 
             if ( objectClassObject != null )
@@ -519,12 +490,9 @@ public class ConfigurationWriter
     /**
      * Recursively computes the 'objectClass' attribute values set.
      *
-     * @param schemaManager
-     *      the schema manager
-     * @param objectClassAttributeValues
-     *      the set containing the values
-     * @param objectClass
-     *      the current object class
+     * @param schemaManager the schema manager
+     * @param objectClassAttributeValues the set containing the values
+     * @param objectClass the current object class
      * @throws LdapException
      */
     private void computeObjectClassAttributeValues( Set<String> objectClassAttributeValues, ObjectClass objectClass )
@@ -534,7 +502,7 @@ public class ConfigurationWriter
         {
             SchemaManager schemaManager = OpenLdapConfigurationPlugin.getDefault().getSchemaManager();
 
-            ObjectClass topObjectClass = OpenLDAPServerConfigurationEditorUtils.getObjectClass( schemaManager,
+            ObjectClass topObjectClass = OpenLdapServerConfigurationEditorUtils.getObjectClass( schemaManager,
                 SchemaConstants.TOP_OC );
 
             if ( topObjectClass != null )
@@ -556,7 +524,7 @@ public class ConfigurationWriter
                 {
                     for ( String superior : superiors )
                     {
-                        ObjectClass superiorObjectClass = OpenLDAPServerConfigurationEditorUtils.getObjectClass( schemaManager,
+                        ObjectClass superiorObjectClass = OpenLdapServerConfigurationEditorUtils.getObjectClass( schemaManager,
                             superior );
                         computeObjectClassAttributeValues( objectClassAttributeValues, superiorObjectClass );
                     }
@@ -577,17 +545,16 @@ public class ConfigurationWriter
     /**
      * Adds values for an attribute type to the given entry.
      *
-     * @param attributeType
-     *      the attribute type
-     * @param value
-     *      the value
-     * @param entry
-     *      the entry
+     * @param attributeType the attribute type
+     * @param value the value
+     * @param entry the entry
      * @throws org.apache.directory.api.ldap.model.exception.LdapException
      */
-    private void addAttributeTypeValues( String attributeType, Object o, LdifEntry entry )
+    private void addAttributeTypeValues( ConfigurationElement configurationElement, Object o, LdifEntry entry )
         throws LdapException
     {
+        String attributeType = configurationElement.attributeType();
+        
         // We don't store a 'null' value
         if ( o != null )
         {
@@ -597,9 +564,20 @@ public class ConfigurationWriter
                 // Adding each single value separately
                 Collection<?> values = ( Collection<?> ) o;
 
-                for ( Object value : values )
+                if ( values.isEmpty() )
                 {
-                    addAttributeTypeValue( attributeType, value, entry );
+                    if ( !configurationElement.isOptional() )
+                    {
+                        // Add the default value
+                        addAttributeTypeValue( attributeType, configurationElement.defaultValue(), entry );
+                    }
+                }
+                else
+                {
+                    for ( Object value : values )
+                    {
+                        addAttributeTypeValue( attributeType, value, entry );
+                    }
                 }
             }
             else
@@ -612,15 +590,46 @@ public class ConfigurationWriter
 
 
     /**
+     * Adds values for an attribute type to the given entry.
+     *
+     * @param attributeType the attribute type
+     * @param value the value
+     * @param entry the entry
+     * @throws org.apache.directory.api.ldap.model.exception.LdapException
+     */
+    private void addAttributeTypeValues( String attributeType, Object object, LdifEntry entry )
+        throws LdapException
+    {
+        // We don't store a 'null' value
+        if ( object != null )
+        {
+            // Is the value multiple?
+            if ( isMultiple( object.getClass() ) )
+            {
+                // Adding each single value separately
+                Collection<?> values = ( Collection<?> ) object;
+
+                for ( Object value : values )
+                {
+                    addAttributeTypeValue( attributeType, value, entry );
+                }
+            }
+            else
+            {
+                // Adding the single value
+                addAttributeTypeValue( attributeType, object, entry );
+            }
+        }
+    }
+
+
+    /**
      * Adds a value, either byte[] or another type (converted into a String 
      * via the Object.toString() method), to the attribute.
      *
-     * @param attributeType
-     *      the attribute type
-     * @param value
-     *      the value
-     * @param entry
-     *      the entry
+     * @param attributeType the attribute type
+     * @param value the value
+     * @param entry the entry
      */
     private void addAttributeTypeValue( String attributeType, Object value, LdifEntry entry ) throws LdapException
     {
@@ -662,11 +671,8 @@ public class ConfigurationWriter
     /**
      * Indicates the given type is multiple.
      *
-     * @param clazz
-     *      the class
-     * @return
-     *      <code>true</code> if the given is multiple,
-     *      <code>false</code> if not.
+     * @param clazz the class
+     * @return <code>true</code> if the given is multiple, <code>false</code> if not.
      */
     private boolean isMultiple( Class<?> clazz )
     {
