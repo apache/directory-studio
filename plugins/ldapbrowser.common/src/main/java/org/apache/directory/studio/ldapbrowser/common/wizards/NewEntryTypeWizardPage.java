@@ -54,6 +54,26 @@ import org.eclipse.swt.widgets.Composite;
 
 /**
  * The NewEntryTypeWizardPage is used to choose the entry creation method.
+ * 
+ * <pre>
+ *   .-------------------------------------------------.
+ *   | o o o              New Entry                    |
+ *   +-------------------------------------------------+
+ *   | Entry Creation Method                           |
+ *   |  Please select the entry creation method        |
+ *   +-------------------------------------------------+
+ *   | (o) Create entry from scratch                   |
+ *   | ( ) Use existing entry as template              |
+ *   |                                                 |
+ *   |    [---------------------------|v] [m] (Browse) |
+ *   |                                                 |
+ *   |                                                 |
+ *   |                                                 |
+ *   |                                                 |
+ *   +-------------------------------------------------+
+ *   | (?)         (< back) (Next >) (cancel) (finish) |
+ *   +-------------------------------------------------+
+ * </pre>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
