@@ -143,6 +143,9 @@ We release the following artifacts:
 
 ### Preparation
 
+Update the copyright year, see <http://svn.apache.org/viewvc?rev=1807191&view=rev>
+for the list of files that need to be changed.
+
 Test the release build: rat check, javadoc and source jar generation, GPG signing, userguide generation
 
     mvn -f pom-first.xml clean install
