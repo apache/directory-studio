@@ -2,7 +2,7 @@
 <feature
       id="org.apache.directory.studio.openldap.feature"
       label="Apache Directory Studio OpenLDAP"
-      version="2.0.0.qualifier"
+      version="2.0.0.v20170904-M13"
       provider-name="Apache Software Foundation"
       image="studio.png">
 

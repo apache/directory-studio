@@ -2,7 +2,7 @@
 <feature
       id="org.apache.directory.studio.ldapbrowser.feature"
       label="Apache Directory Studio LDAP Browser"
-      version="2.0.0.qualifier"
+      version="2.0.0.v20170904-M13"
       provider-name="Apache Software Foundation"
       plugin="org.apache.directory.studio.ldapbrowser.ui"
       image="studio.png">
