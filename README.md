@@ -278,6 +278,14 @@ Update news and download links
 
 Update entry in Eclipse Marketplace: <https://marketplace.eclipse.org/content/apache-directory-studio>
 
+#### Update Apache Reporter
+
+Add release to <https://reporter.apache.org/?directory>
+
+#### Send announce email
+
+Send the release announce email.
+
 #### User guides
 
 TODO
