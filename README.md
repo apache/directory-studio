@@ -274,6 +274,10 @@ Update news and download links
 * `content/studio/changelog.mdtext`
 * `content/studio/news.mdtext`
 
+#### Eclipse Marketplace
+
+Update entry in Eclipse Marketplace: <https://marketplace.eclipse.org/content/apache-directory-studio>
+
 #### User guides
 
 TODO
