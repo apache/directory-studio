@@ -48,6 +48,7 @@ import org.apache.directory.studio.test.integration.ui.bots.NewAttributeWizardBo
 import org.apache.directory.studio.test.integration.ui.bots.PasswordEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.SelectDnDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
+import org.apache.directory.studio.test.integration.ui.bots.TextEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
@@ -348,6 +349,45 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         {
             assertEquals( "-", saltHex );
         }
+    }
+
+
+    /**
+     * DIRSTUDIO-1157: Values cannot be modified by text editor
+     */
+    @Test
+    public void testTestValueEditor() throws Exception
+    {
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Barbara Jensen" );
+
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "cn=Barbara Jensen,ou=users,ou=system" );
+        entryEditorBot.activate();
+        String dn = entryEditorBot.getDnText();
+        assertEquals( "DN: cn=Barbara Jensen,ou=users,ou=system", dn );
+        assertEquals( 8, entryEditorBot.getAttributeValues().size() );
+        assertEquals( "", modificationLogsViewBot.getModificationLogsText() );
+
+        // add description attribute
+        entryEditorBot.activate();
+        NewAttributeWizardBot wizardBot = entryEditorBot.openNewAttributeWizard();
+        assertTrue( wizardBot.isVisible() );
+        wizardBot.typeAttributeType( "description" );
+        wizardBot.clickFinishButton();
+        entryEditorBot.typeValueAndFinish( "testTestValueEditor 1" );
+        assertEquals( 9, entryEditorBot.getAttributeValues().size() );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "description: testTestValueEditor 1" ) );
+        modificationLogsViewBot.waitForText( "add: description\ndescription: testTestValueEditor 1" );
+
+        // edit value with the text editor
+        TextEditorDialogBot textEditorBot = entryEditorBot.editValueWithTextEditor( "description",
+            "testTestValueEditor 1" );
+        assertTrue( textEditorBot.isVisible() );
+        textEditorBot.setText( "testTestValueEditor 2" );
+        textEditorBot.clickOkButton();
+        assertEquals( 9, entryEditorBot.getAttributeValues().size() );
+        assertFalse( entryEditorBot.getAttributeValues().contains( "description: testTestValueEditor 1" ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "description: testTestValueEditor 2" ) );
+        modificationLogsViewBot.waitForText( "replace: description\ndescription: testTestValueEditor 2" );
     }
 
 }
