@@ -107,6 +107,12 @@ public class EntryEditorBot
     }
 
 
+    public TextEditorDialogBot editValueWithTextEditor( String attributeType, String value )
+    {
+        return editorBot.editValueWithTextEditor( attributeType, value );
+    }
+
+
     public void deleteValue( String attributeType, String value )
     {
         editorBot.deleteValue( attributeType, value );

@@ -121,6 +121,15 @@ class EntryEditorWidgetBot
         treeItem.doubleClick();
     }
 
+    
+    void editValueWith( String attributeType, String value, String valueEditorLabel )
+    {
+        cancelEditValue();
+        SWTBotTreeItem treeItem = getTreeItem( attributeType, value );
+        treeItem.select();
+        ContextMenuHelper.clickContextMenu( bot.tree(), "Edit Value With", valueEditorLabel );
+    }
+
 
     DnEditorDialogBot editValueExpectingDnEditor( String attributeType, String value )
     {
@@ -136,6 +145,13 @@ class EntryEditorWidgetBot
     }
 
 
+    TextEditorDialogBot editValueWithTextEditor( String attributeType, String value )
+    {
+        editValueWith( attributeType, value, "^Text Editor$" );
+        return new TextEditorDialogBot();
+    }
+
+    
     private SWTBotTreeItem getTreeItem( String attributeType, String value )
     {
         SWTBotTree tree = bot.tree();

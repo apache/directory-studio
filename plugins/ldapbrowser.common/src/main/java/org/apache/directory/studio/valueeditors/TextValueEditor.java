@@ -45,11 +45,11 @@ public class TextValueEditor extends AbstractDialogStringValueEditor
         if ( value instanceof String )
         {
             TextDialog dialog = new TextDialog( shell, ( String ) value );
-            String text = dialog.getText();
             
-            if ( ( dialog.open() == TextDialog.OK ) && ( text != null ) && ( text.length() != 0 ) )
+            if ( ( dialog.open() == TextDialog.OK ) && ( dialog.getText() != null )
+                && ( dialog.getText().length() != 0 ) )
             {
-                setValue( text );
+                setValue( dialog.getText() );
                 
                 return true;
             }
