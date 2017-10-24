@@ -39,7 +39,6 @@ import org.eclipse.ui.IWorkbenchWindow;
  */
 public class NewSearchWizard extends Wizard implements INewWizard
 {
-
     /** The window. */
     private IWorkbenchWindow window;
 
@@ -49,6 +48,7 @@ public class NewSearchWizard extends Wizard implements INewWizard
      */
     public NewSearchWizard()
     {
+        // Nothing to do
     }
 
 
@@ -87,7 +87,7 @@ public class NewSearchWizard extends Wizard implements INewWizard
     public boolean performFinish()
     {
         NewSearchUI.openSearchDialog( window, SearchPage.getId() );
+        
         return true;
     }
-
 }

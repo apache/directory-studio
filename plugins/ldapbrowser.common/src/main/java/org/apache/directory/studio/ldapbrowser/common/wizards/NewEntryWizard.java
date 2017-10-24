@@ -90,7 +90,6 @@ public class NewEntryWizard extends Wizard implements INewWizard
      */
     public NewEntryWizard()
     {
-        //setWindowTitle( "New Entry" );
         setNeedsProgressMonitor( true );
     }
 
@@ -105,14 +104,13 @@ public class NewEntryWizard extends Wizard implements INewWizard
         return BrowserCommonConstants.WIZARD_NEW_ENTRY_WIZARD;
     }
 
-
     /**
      * {@inheritDoc}
      */
     public void init( IWorkbench workbench, IStructuredSelection selection )
     {
         // determine the currently selected entry
-        Object o = selection.getFirstElement();
+        Object selected = selection.getFirstElement();
 
         if ( isNewContextEntry() )
         {
@@ -123,55 +121,55 @@ public class NewEntryWizard extends Wizard implements INewWizard
             setWindowTitle( Messages.getString( "NewEntryWizard.NewEntry" ) ); //$NON-NLS-1$
         }
 
-        if ( o instanceof IEntry )
+        if ( selected instanceof IEntry )
         {
-            selectedEntry = ( ( IEntry ) o );
+            selectedEntry = ( ( IEntry ) selected );
             selectedConnection = selectedEntry.getBrowserConnection();
         }
-        else if ( o instanceof ISearchResult )
+        else if ( selected instanceof ISearchResult )
         {
-            selectedEntry = ( ( ISearchResult ) o ).getEntry();
+            selectedEntry = ( ( ISearchResult ) selected ).getEntry();
             selectedConnection = selectedEntry.getBrowserConnection();
         }
-        else if ( o instanceof IBookmark )
+        else if ( selected instanceof IBookmark )
         {
-            selectedEntry = ( ( IBookmark ) o ).getEntry();
+            selectedEntry = ( ( IBookmark ) selected ).getEntry();
             selectedConnection = selectedEntry.getBrowserConnection();
         }
-        else if ( o instanceof IAttribute )
+        else if ( selected instanceof IAttribute )
         {
-            selectedEntry = ( ( IAttribute ) o ).getEntry();
+            selectedEntry = ( ( IAttribute ) selected ).getEntry();
             selectedConnection = selectedEntry.getBrowserConnection();
         }
-        else if ( o instanceof IValue )
+        else if ( selected instanceof IValue )
         {
-            selectedEntry = ( ( IValue ) o ).getAttribute().getEntry();
+            selectedEntry = ( ( IValue ) selected ).getAttribute().getEntry();
             selectedConnection = selectedEntry.getBrowserConnection();
         }
-        else if ( o instanceof ISearch )
+        else if ( selected instanceof ISearch )
         {
             selectedEntry = null;
-            selectedConnection = ( ( ISearch ) o ).getBrowserConnection();
+            selectedConnection = ( ( ISearch ) selected ).getBrowserConnection();
         }
-        else if ( o instanceof IBrowserConnection )
+        else if ( selected instanceof IBrowserConnection )
         {
             selectedEntry = null;
-            selectedConnection = ( IBrowserConnection ) o;
+            selectedConnection = ( IBrowserConnection ) selected;
         }
-        else if ( o instanceof BrowserCategory )
+        else if ( selected instanceof BrowserCategory )
         {
             selectedEntry = null;
-            selectedConnection = ( ( BrowserCategory ) o ).getParent();
+            selectedConnection = ( ( BrowserCategory ) selected ).getParent();
         }
-        else if ( o instanceof BrowserSearchResultPage )
+        else if ( selected instanceof BrowserSearchResultPage )
         {
             selectedEntry = null;
-            selectedConnection = ( ( BrowserSearchResultPage ) o ).getSearch().getBrowserConnection();
+            selectedConnection = ( ( BrowserSearchResultPage ) selected ).getSearch().getBrowserConnection();
         }
-        else if ( o instanceof BrowserEntryPage )
+        else if ( selected instanceof BrowserEntryPage )
         {
             selectedEntry = null;
-            selectedConnection = ( ( BrowserEntryPage ) o ).getEntry().getBrowserConnection();
+            selectedConnection = ( ( BrowserEntryPage ) selected ).getEntry().getBrowserConnection();
         }
         else
         {
@@ -186,6 +184,7 @@ public class NewEntryWizard extends Wizard implements INewWizard
                 originalReadOnlyFlag = selectedConnection.getConnection().isReadOnly();
                 selectedConnection.getConnection().setReadOnly( true );
             }
+            
             prototypeEntry = new DummyEntry( new Dn(), selectedConnection );
         }
     }
@@ -233,16 +232,19 @@ public class NewEntryWizard extends Wizard implements INewWizard
                 PlatformUI.getWorkbench().getHelpSystem().setHelp( typePage.getControl(),
                     BrowserCommonConstants.PLUGIN_ID + "." + "tools_newentry_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
             }
+            
             if ( ocPage != null )
             {
                 PlatformUI.getWorkbench().getHelpSystem().setHelp( ocPage.getControl(),
                     BrowserCommonConstants.PLUGIN_ID + "." + "tools_newentry_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
             }
+            
             if ( dnPage != null )
             {
                 PlatformUI.getWorkbench().getHelpSystem().setHelp( dnPage.getControl(),
                     BrowserCommonConstants.PLUGIN_ID + "." + "tools_newentry_wizard" ); //$NON-NLS-1$ //$NON-NLS-2$
             }
+            
             if ( attributePage != null )
             {
                 PlatformUI.getWorkbench().getHelpSystem().setHelp( attributePage.getControl(),
@@ -318,9 +320,11 @@ public class NewEntryWizard extends Wizard implements INewWizard
 
                 CreateEntryRunnable runnable = new CreateEntryRunnable( prototypeEntry, selectedConnection );
                 IStatus status = RunnableContextRunner.execute( runnable, getContainer(), true );
+                
                 if ( !status.isOK() )
                 {
                     selectedConnection.getConnection().setReadOnly( true );
+                    
                     return false;
                 }
                 else

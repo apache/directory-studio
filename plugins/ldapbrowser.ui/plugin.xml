@@ -38,7 +38,13 @@
     </perspectiveExtension>
   </extension>
  
-  <!-- The supported editors -->
+  <!-- The supported editors :    -->
+  <!--  o Single tab              -->
+  <!--  o Single tab LDIF         -->
+  <!--  o Multi tab               -->
+  <!--  o Multi tab LDIF          -->
+  <!--  o Search result           -->
+  <!--  o Browser                 -->
   <extension
       point="org.eclipse.ui.editors">
     <editor
@@ -89,7 +95,11 @@
       name="%Editor_SchemaBrowser_name"/>
   </extension>
   
-  <!-- The supported views -->
+  <!-- The supported views       -->
+  <!--  o Connection             -->
+  <!--  o Browser                -->
+  <!--  o Modification logs      -->
+  <!--  o Search logs tab        -->
   <extension
       point="org.eclipse.ui.views">
     <category
@@ -128,16 +138,30 @@
          name="%View_SearchLogsView_name"/>
   </extension>
   
-  <!-- The new wizards -->
+  <!-- The new wizards           -->
+  <!--  o Batch Operation        -->
+  <!--  o Bookmark               -->
+  <!--  o Context Entry          -->
+  <!--  o Entry                  -->
+  <!--  o Search                 -->
   <extension
       point="org.eclipse.ui.newWizards">
     <wizard
         category="%NewWizards_Category_id"
-        class="org.apache.directory.studio.ldapbrowser.common.wizards.NewEntryWizard"
+        class="org.apache.directory.studio.ldapbrowser.ui.wizards.BatchOperationWizard"
         hasPages="true"
-        icon="resources/icons/entry_add.gif"
-        id="org.apache.directory.studio.ldapbrowser.common.wizards.NewEntryWizard"
-        name="%NewWizard_NewEntryWizard_name"
+        icon="resources/icons/batch.gif"
+        id="%NewWizard_BatchOperationWizard_id"
+        name="%NewWizard_BatchOperationWizard_name"
+        project="false"/>
+
+    <wizard
+        category="%NewWizards_Category_id"
+        class="org.apache.directory.studio.ldapbrowser.ui.wizards.NewBookmarkWizard"
+        hasPages="true"
+        icon="resources/icons/bookmark_add.gif"
+        id="%NewWizard_NewBookmarkWizard_id"
+        name="%NewWizard_NewBookmarkWizard_name"
         project="false"/>
 
     <wizard
@@ -148,7 +172,16 @@
         id="%NewWizard_NewContextEntryWizard_id"
         name="%NewWizard_NewContextEntryWizard_name"
         project="false"/>
-            
+
+    <wizard
+        category="%NewWizards_Category_id"
+        class="org.apache.directory.studio.ldapbrowser.common.wizards.NewEntryWizard"
+        hasPages="true"
+        icon="resources/icons/entry_add.gif"
+        id="org.apache.directory.studio.ldapbrowser.common.wizards.NewEntryWizard"
+        name="%NewWizard_NewEntryWizard_name"
+        project="false"/>
+
     <wizard
         canFinishEarly="true"
         category="%NewWizards_Category_id"
@@ -158,26 +191,11 @@
         id="%NewWizard_NewSearchWizard_id"
         name="%NewWizard_NewSearchWizard_name"
         project="false"/>
-            
-    <wizard
-        category="%NewWizards_Category_id"
-        class="org.apache.directory.studio.ldapbrowser.ui.wizards.NewBookmarkWizard"
-        hasPages="true"
-        icon="resources/icons/bookmark_add.gif"
-        id="%NewWizard_NewBookmarkWizard_id"
-        name="%NewWizard_NewBookmarkWizard_name"
-        project="false"/>
-            
-    <wizard
-        category="%NewWizards_Category_id"
-        class="org.apache.directory.studio.ldapbrowser.ui.wizards.BatchOperationWizard"
-        hasPages="true"
-        icon="resources/icons/batch.gif"
-        id="%NewWizard_BatchOperationWizard_id"
-        name="%NewWizard_BatchOperationWizard_name"
-        project="false"/>
   </extension>
   
+  <!-- The import wizards                                  -->
+  <!--  o LDIF                                  -->
+  <!--  o DSML                                  -->
   <extension
       point="org.eclipse.ui.importWizards">
     <category
@@ -213,7 +231,13 @@
     </wizard>
   </extension>
   
- <extension
+  <!-- The export wizards              -->
+  <!--  o LDIF format                  -->
+  <!--  o DSML format                  -->
+  <!--  o CSV Format                   -->
+  <!--  o Excel format                 -->
+  <!--  o ODF format                   -->
+  <extension
        point="org.eclipse.ui.exportWizards">
     <category
         id="%ExportWizards_Category_id"
@@ -305,6 +329,11 @@
     <initializer class="org.apache.directory.studio.ldapbrowser.ui.BrowserUIPreferencesInitializer"/>
   </extension>
    
+  <!-- The Preference pages    -->
+  <!--  o SearchResult         -->
+  <!--  o Modification logs    -->
+  <!--  o Search logs          -->
+  <!--  o Entry editors        -->
   <extension
        point="org.eclipse.ui.preferencePages">
     <page
@@ -340,6 +369,15 @@
     </page>
   </extension>
 
+
+  <!-- The Property pages    -->
+  <!--  o Attribute          -->
+  <!--  o Bookmark           -->
+  <!--  o Entry              -->
+  <!--  o RootDSE            -->
+  <!--  o Schema             -->
+  <!--  o Search             -->
+  <!--  o Value              -->
   <extension
       point="org.eclipse.ui.propertyPages">
     <page
@@ -408,6 +446,18 @@
     </page>
   </extension>
       
+  <!-- The Actions              -->
+  <!--  o Open Schema Browser   -->
+  <!--  o New Connection        -->
+  <!--  o New Entry             -->
+  <!--  o New Attribute         -->
+  <!--  o New Value             -->
+  <!--  o New Search            -->
+  <!--  o New Bookmark          -->
+  <!--  o New Batch Operation   -->
+  <!--  o New Ldif              -->
+  <!--  o Open encoder/decoder  -->
+  <!--  o Navigate to DN        -->
   <extension
       point="org.eclipse.ui.actionSets">
     <actionSet
@@ -544,6 +594,11 @@
     </decorator>
   </extension>
   
+  <!-- The supported entry editors :    -->
+  <!--  o Single tab                    -->
+  <!--  o Single tab LDIF               -->
+  <!--  o Multi tab                     -->
+  <!--  o Multi tab LDIF                -->
   <extension
       point="org.apache.directory.studio.entryeditors">
     <entryEditor
