@@ -111,7 +111,7 @@ The build produces binaries for all platforms. Archived versions can be found in
 
 ## Release
 
-tentative, not fully tested yet...
+**The release section needs to be updated after git migration!**
 
 ### Licenses
 
