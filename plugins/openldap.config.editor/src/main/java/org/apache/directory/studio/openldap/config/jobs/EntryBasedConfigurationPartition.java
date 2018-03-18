@@ -55,7 +55,7 @@ public class EntryBasedConfigurationPartition extends AbstractLdifPartition
      * {@inheritDoc}
      */
     @Override
-    protected void doInit() throws Exception
+    protected void doInit() throws LdapException
     {
         setId( "config" );
         setSuffixDn( new Dn( "cn=config" ) );

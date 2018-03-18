@@ -22,8 +22,6 @@ package org.apache.directory.studio.apacheds.configuration.jobs;
 
 import java.util.UUID;
 
-import javax.naming.InvalidNameException;
-
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.exception.LdapException;
@@ -56,7 +54,7 @@ public class EntryBasedConfigurationPartition extends AbstractLdifPartition
     /**
      * {@inheritDoc}
      */
-    protected void doInit() throws InvalidNameException, Exception
+    protected void doInit() throws LdapException
     {
         setId( "config" ); //$NON-NLS-1$
         setSuffixDn( new Dn( ServerDNConstants.CONFIG_DN ) ); //$NON-NLS-1$
