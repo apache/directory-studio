@@ -310,6 +310,6 @@ Start OSGi console:
 
 List all IUs within a repository:
 
-    provliu http://download.eclipse.org/eclipse/updates/4.5/ *
+    provliu http://download.eclipse.org/eclipse/updates/4.7/ *
 
 

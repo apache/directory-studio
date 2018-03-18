@@ -49,6 +49,6 @@ public class ShowViewsBot extends DialogBot
     public void openView( String category, String view )
     {
         bot.tree().expandNode( category ).select( view );
-        clickOkButton();
+        clickButton( "Open" );
     }
 }
