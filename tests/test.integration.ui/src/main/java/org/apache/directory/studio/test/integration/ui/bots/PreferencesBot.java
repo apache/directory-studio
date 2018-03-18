@@ -45,4 +45,10 @@ public class PreferencesBot extends DialogBot
         return treeBot.exists( path );
     }
 
+
+    @Override
+    public void clickOkButton()
+    {
+        super.clickButton( "Apply and Close" );
+    }
 }

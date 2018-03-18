@@ -34,7 +34,7 @@ public class SearchDialogBot extends DialogBot
 
     public boolean isVisible()
     {
-        return super.isVisible() && bot.tabItem( "LDAP Search" ).isActive();
+        return super.isVisible() && searchPageWrapperBot.isVisible();
     }
 
 
