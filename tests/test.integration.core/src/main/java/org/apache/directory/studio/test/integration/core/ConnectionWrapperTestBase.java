@@ -689,13 +689,15 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         // simple auth without principal and credential
         ConnectionParameter connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(),
             EncryptionMethod.NONE, provider, AuthenticationMethod.SIMPLE, "uid=admin,ou=system", "secret", null, false,
-            null, 30L );
+            null, 30000L );
 
         Connection connection = new Connection( connectionParameter );
 
         connectionWrapper = connection.getConnectionWrapper();
         connectionWrapper.connect( monitor );
         connectionWrapper.bind( monitor );
+
+        assertTrue( connectionWrapper.isConnected() );
 
         IReferralHandler referralHandler = referralUrls -> {
             return connection;
