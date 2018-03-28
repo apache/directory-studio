@@ -88,8 +88,8 @@
     <org.apache.commons.pool.bundleversion>1.6.0</org.apache.commons.pool.bundleversion>
     <org.apache.directory.api.version>2.0.0.AM1-SNAPSHOT</org.apache.directory.api.version>
     <org.apache.directory.server.version>2.0.0.AM25-SNAPSHOT</org.apache.directory.server.version>
-    <org.apache.mina.version>2.0.17</org.apache.mina.version>
-    <org.apache.mina.bundleversion>2.0.17</org.apache.mina.bundleversion>
+    <org.apache.mina.version>2.0.16</org.apache.mina.version>
+    <org.apache.mina.bundleversion>2.0.16</org.apache.mina.bundleversion>
     <org.apache.poi.version>3.9</org.apache.poi.version>
     <org.apache.poi.bundleversion>3.9.0</org.apache.poi.bundleversion>
     <org.apache.xmlgraphics.fop.version>1.0</org.apache.xmlgraphics.fop.version>
