@@ -42,9 +42,9 @@
   </issueManagement>
 
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/studio/trunk/</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/studio/trunk/</developerConnection>
-    <url>https://svn.apache.org/viewvc/directory/studio/trunk/</url>
+    <connection>scm:git:https://gitbox.apache.org/repos/asf/directory-studio.git</connection>
+    <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/directory-studio.git</developerConnection>
+    <url>https://gitbox.apache.org/repos/asf?p=directory-studio.git;a=tag;h=refs/tags/${project.scm.tag}</url>
   </scm>
 
   <distributionManagement>
