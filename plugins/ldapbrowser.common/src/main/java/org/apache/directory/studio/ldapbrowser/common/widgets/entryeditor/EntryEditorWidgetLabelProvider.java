@@ -145,7 +145,7 @@ public class EntryEditorWidgetLabelProvider extends LabelProvider implements ITa
 
         for ( Object child : contentProvider.getChildren( attribute ) )
         {
-            if ( filter.select( viewer, attribute, child ) )
+            if ( filter.isSelected( viewer, attribute, child ) )
             {
                 count++;
             }

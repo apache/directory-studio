@@ -578,7 +578,7 @@ public class NewEntryObjectclassWizardPage extends WizardPage
         /**
          * {@inheritDoc}
          */
-        public boolean select( Viewer viewer, Object parentElement, Object element )
+        public boolean isSelected( Viewer viewer, Object parentElement, Object element )
         {
             if ( element instanceof ObjectClass )
             {
