@@ -21,7 +21,6 @@
 package org.apache.directory.studio.schemaeditor.view.editors.attributetype;
 
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
@@ -72,6 +71,7 @@ public class AttributeTypeEditorSourceCodePage extends AbstractAttributeTypeEdit
                 OpenLdapSchemaParser parser = new OpenLdapSchemaParser();
                 parser.parse( schemaSourceViewer.getTextWidget().getText() );
                 List<?> attributeTypes = parser.getAttributeTypes();
+                
                 if ( attributeTypes.size() != 1 )
                 {
                     // Throw an exception and return
@@ -81,11 +81,7 @@ public class AttributeTypeEditorSourceCodePage extends AbstractAttributeTypeEdit
                     updateAttributeType( ( AttributeType ) attributeTypes.get( 0 ) );
                 }
             }
-            catch ( IOException e1 )
-            {
-                canLeaveThePage = false;
-            }
-            catch ( ParseException exception )
+            catch ( ParseException e1 )
             {
                 canLeaveThePage = false;
             }

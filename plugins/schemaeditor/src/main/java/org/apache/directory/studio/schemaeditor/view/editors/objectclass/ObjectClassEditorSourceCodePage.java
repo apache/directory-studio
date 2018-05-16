@@ -21,7 +21,6 @@
 package org.apache.directory.studio.schemaeditor.view.editors.objectclass;
 
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
@@ -72,7 +71,7 @@ public class ObjectClassEditorSourceCodePage extends AbstractObjectClassEditorPa
                 OpenLdapSchemaParser parser = new OpenLdapSchemaParser();
                 parser.parse( schemaSourceViewer.getTextWidget().getText() );
 
-                List<?> objectclasses = parser.getObjectClassTypes();
+                List<?> objectclasses = parser.getObjectClasses();
                 if ( objectclasses.size() != 1 )
                 {
                     // TODO Throw an exception and return
@@ -81,10 +80,6 @@ public class ObjectClassEditorSourceCodePage extends AbstractObjectClassEditorPa
                 {
                     updateObjectClass( ( ObjectClass ) objectclasses.get( 0 ) );
                 }
-            }
-            catch ( IOException e1 )
-            {
-                canLeaveThePage = false;
             }
             catch ( ParseException exception )
             {

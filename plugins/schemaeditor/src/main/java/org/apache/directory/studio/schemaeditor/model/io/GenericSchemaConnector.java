@@ -205,7 +205,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                         AttributeTypeDescriptionSchemaParser parser = new AttributeTypeDescriptionSchemaParser();
                         parser.setQuirksMode( true );
 
-                        AttributeType atd = parser.parseAttributeTypeDescription( value );
+                        AttributeType atd = parser.parse( value );
 
                         MutableAttributeType impl = new MutableAttributeType( atd.getOid() );
                         impl.setNames( atd.getNames().toArray( new String[0] ) );
@@ -257,7 +257,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                     {
                         ObjectClassDescriptionSchemaParser parser = new ObjectClassDescriptionSchemaParser();
                         parser.setQuirksMode( true );
-                        ObjectClass ocd = parser.parseObjectClassDescription( value );
+                        ObjectClass ocd = parser.parse( value );
 
                         MutableObjectClass impl = new MutableObjectClass( ocd.getOid() );
                         impl.setNames( ocd.getNames().toArray( new String[0] ) );
@@ -297,7 +297,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                     {
                         LdapSyntaxDescriptionSchemaParser parser = new LdapSyntaxDescriptionSchemaParser();
                         parser.setQuirksMode( true );
-                        LdapSyntax lsd = parser.parseLdapSyntaxDescription( value );
+                        LdapSyntax lsd = parser.parse( value );
 
                         LdapSyntax impl = new LdapSyntax( lsd.getOid() );
                         impl.setDescription( lsd.getDescription() );
@@ -352,7 +352,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                     {
                         MatchingRuleDescriptionSchemaParser parser = new MatchingRuleDescriptionSchemaParser();
                         parser.setQuirksMode( true );
-                        MatchingRule mrd = parser.parseMatchingRuleDescription( value );
+                        MatchingRule mrd = parser.parse( value );
 
                         MutableMatchingRule impl = new MutableMatchingRule( mrd.getOid() );
                         impl.setDescription( mrd.getDescription() );

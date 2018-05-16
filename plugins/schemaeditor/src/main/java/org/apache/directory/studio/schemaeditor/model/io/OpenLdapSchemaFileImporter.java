@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.regex.MatchResult;
 
+import org.apache.directory.api.ldap.model.exception.LdapSchemaException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
@@ -59,16 +60,7 @@ public class OpenLdapSchemaFileImporter
      */
     public static Schema getSchema( InputStream inputStream, String path ) throws OpenLdapSchemaFileImportException
     {
-        OpenLdapSchemaParser parser = null;
-        try
-        {
-            parser = new OpenLdapSchemaParser();
-        }
-        catch ( IOException e )
-        {
-            throw new OpenLdapSchemaFileImportException( NLS.bind( Messages
-                .getString( "OpenLdapSchemaFileImporter.NotReadCorrectly" ), new String[] { path } ), e ); //$NON-NLS-1$
-        }
+        OpenLdapSchemaParser parser = new OpenLdapSchemaParser();
 
         try
         {
@@ -79,7 +71,7 @@ public class OpenLdapSchemaFileImporter
             throw new OpenLdapSchemaFileImportException( NLS.bind( Messages
                 .getString( "OpenLdapSchemaFileImporter.NotReadCorrectly" ), new String[] { path } ), e ); //$NON-NLS-1$
         }
-        catch ( ParseException e )
+        catch ( ParseException | LdapSchemaException e )
         {
             ExceptionMessage exceptionMessage = parseExceptionMessage( e.getMessage() );
             throw new OpenLdapSchemaFileImportException( NLS.bind( Messages
@@ -102,7 +94,7 @@ public class OpenLdapSchemaFileImporter
             schema.addAttributeType( at );
         }
 
-        List<?> ocs = parser.getObjectClassTypes();
+        List<?> ocs = parser.getObjectClasses();
         for ( int i = 0; i < ocs.size(); i++ )
         {
             MutableObjectClass oc = convertObjectClass( ( ObjectClass ) ocs.get( i ) );

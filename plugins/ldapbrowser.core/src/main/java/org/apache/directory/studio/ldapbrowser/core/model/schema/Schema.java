@@ -261,19 +261,19 @@ public class Schema
             {
                 if ( attributeName.equalsIgnoreCase( SchemaConstants.OBJECT_CLASSES_AT ) )
                 {
-                    ObjectClass ocd = ocdPparser.parseObjectClassDescription( value );
+                    ObjectClass ocd = ocdPparser.parse( value );
                     ocd.addExtension( RAW_SCHEMA_DEFINITION_LDIF_VALUE, ldifValues );
                     addObjectClass( ocd );
                 }
                 else if ( attributeName.equalsIgnoreCase( SchemaConstants.ATTRIBUTE_TYPES_AT ) )
                 {
-                    AttributeType atd = atdParser.parseAttributeTypeDescription( value );
+                    AttributeType atd = atdParser.parse( value );
                     atd.addExtension( RAW_SCHEMA_DEFINITION_LDIF_VALUE, ldifValues );
                     addAttributeType( atd );
                 }
                 else if ( attributeName.equalsIgnoreCase( SchemaConstants.LDAP_SYNTAXES_AT ) )
                 {
-                    LdapSyntax lsd = lsdParser.parseLdapSyntaxDescription( value );
+                    LdapSyntax lsd = lsdParser.parse( value );
                     if ( StringUtils.isEmpty( lsd.getDescription() )
                         && Utils.getOidDescription( lsd.getOid() ) != null )
                     {
@@ -284,13 +284,13 @@ public class Schema
                 }
                 else if ( attributeName.equalsIgnoreCase( SchemaConstants.MATCHING_RULES_AT ) )
                 {
-                    MatchingRule mrd = mrdParser.parseMatchingRuleDescription( value );
+                    MatchingRule mrd = mrdParser.parse( value );
                     mrd.addExtension( RAW_SCHEMA_DEFINITION_LDIF_VALUE, ldifValues );
                     addMatchingRule( mrd );
                 }
                 else if ( attributeName.equalsIgnoreCase( SchemaConstants.MATCHING_RULE_USE_AT ) )
                 {
-                    MatchingRuleUse mrud = mrudParser.parseMatchingRuleUseDescription( value );
+                    MatchingRuleUse mrud = mrudParser.parse( value );
                     mrud.addExtension( RAW_SCHEMA_DEFINITION_LDIF_VALUE, ldifValues );
                     addMatchingRuleUse( mrud );
                 }
