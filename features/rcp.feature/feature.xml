@@ -253,7 +253,7 @@ http://www.apache.org/licenses/
          unpack="false"/>
 
    <plugin
-         id="org.apache.commons.pool"
+         id="org.apache.commons.pool2"
          download-size="0"
          install-size="0"
          version="0.0.0"
