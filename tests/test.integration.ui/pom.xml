@@ -118,7 +118,7 @@
             <SWT_GTK3>0</SWT_GTK3>
           </environmentVariables>
           <appArgLine>-nl en -debug debugoptions</appArgLine>
-          <argLine>${os-jvm-flags}</argLine>
+          <argLine>${os-jvm-flags} -Dorg.eclipse.swtbot.search.timeout=10000</argLine>
           <!-- TODO: Run tests in Studio RCP app only, or in full IDE, or both? -->
 <!--           <product>org.eclipse.sdk.ide</product> -->
 <!--           <application>org.eclipse.ui.ide.workbench</application> -->
