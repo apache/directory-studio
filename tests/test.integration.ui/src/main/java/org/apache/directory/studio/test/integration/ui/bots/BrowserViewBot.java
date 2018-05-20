@@ -60,9 +60,9 @@ public class BrowserViewBot
     }
 
 
-    public void selectChildrenOfEnty( String[] children, String... path )
+    public void selectChildrenOfEntry( String[] children, String... path )
     {
-        browserBot.selectChildrenOfEnty( children, path );
+        browserBot.selectChildrenOfEntry( children, path );
     }
 
 

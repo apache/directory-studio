@@ -162,7 +162,7 @@ public class BrowserTest extends AbstractLdapTestUnit
         String[] children = new String[]
             { "uid=user.1", "uid=user.2", "uid=user.3", "uid=user.4", "uid=user.5", "uid=user.6", "uid=user.7",
                 "uid=user.8" };
-        browserViewBot.selectChildrenOfEnty( children, "DIT", "Root DSE", "ou=system", "ou=users" );
+        browserViewBot.selectChildrenOfEntry( children, "DIT", "Root DSE", "ou=system", "ou=users" );
         DeleteDialogBot deleteDialog = browserViewBot.openDeleteDialog();
         deleteDialog.clickOkButton();
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );

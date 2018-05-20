@@ -55,12 +55,12 @@ class BrowserWidgetBot
         // ensure the parent exists
         String[] parentPath = new String[path.length - 1];
         System.arraycopy( path, 0, parentPath, 0, parentPath.length );
-        getEntry( parentPath );
+        getEntry( false, parentPath );
 
         // check if the child exists
         try
         {
-            getEntry( path );
+            getEntry( false, path );
             return true;
         }
         catch ( WidgetNotFoundException e )
@@ -72,21 +72,21 @@ class BrowserWidgetBot
 
     void selectEntry( String... path )
     {
-        SWTBotTreeItem entry = getEntry( path );
+        SWTBotTreeItem entry = getEntry( true, path );
         select( entry );
     }
 
 
-    void selectChildrenOfEnty( String[] children, String... path )
+    void selectChildrenOfEntry( String[] children, String... path )
     {
-        SWTBotTreeItem entry = getEntry( path );
+        SWTBotTreeItem entry = getEntry( true, path );
         entry.select( children );
     }
 
 
     ReferralDialogBot selectEntryExpectingReferralDialog( String... path )
     {
-        SWTBotTreeItem entry = getEntry( path );
+        SWTBotTreeItem entry = getEntry( true, path );
         select( entry );
         return new ReferralDialogBot();
     }
@@ -94,20 +94,20 @@ class BrowserWidgetBot
 
     void expandEntry( String... path )
     {
-        SWTBotTreeItem entry = getEntry( path );
+        SWTBotTreeItem entry = getEntry( true, path );
         expand( entry, true, null );
     }
 
 
     void waitForEntry( String... path )
     {
-        getEntry( path );
+        getEntry( true, path );
     }
 
 
     ReferralDialogBot expandEntryExpectingReferralDialog( String... path )
     {
-        SWTBotTreeItem entry = getEntry( path );
+        SWTBotTreeItem entry = getEntry( false, path );
         expand( entry, false, null );
         return new ReferralDialogBot();
     }
@@ -119,7 +119,7 @@ class BrowserWidgetBot
     }
 
 
-    private SWTBotTreeItem getEntry( String... path )
+    private SWTBotTreeItem getEntry( boolean wait, String... path )
     {
         SWTBotTree browserTree = bot.tree();
         List<String> pathList = new ArrayList<String>( Arrays.asList( path ) );
@@ -136,7 +136,7 @@ class BrowserWidgetBot
             }
             else
             {
-                entry = getChild(entry, node);
+                entry = getChild( entry, node, wait );
             }
 
             if ( !pathList.isEmpty() )
@@ -208,26 +208,30 @@ class BrowserWidgetBot
     }
 
 
-    private SWTBotTreeItem getChild( SWTBotTreeItem entry, String nodeName )
+    private SWTBotTreeItem getChild( SWTBotTreeItem entry, String nodeName, boolean wait )
     {
         // adjust current path, because the label is decorated with the number of children
-        bot.waitUntil( new DefaultCondition()
+        if ( wait )
         {
 
-            @Override
-            public boolean test() throws Exception
+            bot.waitUntil( new DefaultCondition()
             {
-                String adjustedNodeName = adjustNodeName( entry, nodeName );
-                return adjustedNodeName != null;
-            }
+
+                @Override
+                public boolean test() throws Exception
+                {
+                    String adjustedNodeName = adjustNodeName( entry, nodeName );
+                    return adjustedNodeName != null;
+                }
 
 
-            @Override
-            public String getFailureMessage()
-            {
-                return "Node " + nodeName + " not found";
-            }
-        } );
+                @Override
+                public String getFailureMessage()
+                {
+                    return "Node " + nodeName + " not found";
+                }
+            } );
+        }
 
         String adjustedNodeName = adjustNodeName( entry, nodeName );
         return entry.getNode( adjustedNodeName );
