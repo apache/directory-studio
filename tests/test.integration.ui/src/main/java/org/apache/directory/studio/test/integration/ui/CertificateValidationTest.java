@@ -522,10 +522,11 @@ public class CertificateValidationTest
         assertFalse( trustDialogBot.isIssuerUnkown() );
         trustDialogBot.selectDontTrust();
         ErrorDialogBot errorBot = trustDialogBot.clickOkButtonExpectingErrorDialog();
-        // LDAP API: SSL handshake failed
+        // LDAP API: Failed to initialize the SSL context, root cause: TLS handshake failed
         // JNDI: Untrusted certificate
         assertThat( errorBot.getErrorMessage(),
-            anyOf( containsString( "SSL handshake failed" ), containsString( "Untrusted certificate" ) ) );
+            anyOf( containsString( "Failed to initialize the SSL context" ), containsString( "TLS handshake failed" ),
+                containsString( "Untrusted certificate" ) ) );
         errorBot.clickOkButton();
 
         wizardBot.clickCancelButton();
