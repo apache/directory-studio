@@ -150,6 +150,7 @@ public class SearchTest extends AbstractLdapTestUnit
     public void testOnlyOneUiUpdateOnQuickSearch() throws Exception
     {
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system" );
 
         browserViewBot.typeQuickSearchAttributeType( "ou" );
         browserViewBot.typeQuickSearchValue( "*" );
