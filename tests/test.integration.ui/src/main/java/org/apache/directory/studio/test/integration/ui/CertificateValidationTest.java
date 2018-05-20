@@ -476,12 +476,8 @@ public class CertificateValidationTest
         assertFalse( trustDialogBot.isHostNameMismatch() );
         assertFalse( trustDialogBot.isIssuerUnkown() );
         trustDialogBot.selectDontTrust();
-        ErrorDialogBot errorBot = trustDialogBot.clickOkButtonExpectingErrorDialog();
-        // LDAP API: SSL handshake failed
-        // JNDI: Untrusted certificate
-        assertThat( errorBot.getErrorMessage(),
-            anyOf( containsString( "SSL handshake failed" ), containsString( "Untrusted certificate" ) ) );
-        errorBot.clickOkButton();
+
+        clickOkButtonExpectingCertficateErrorDialog( trustDialogBot );
 
         wizardBot.clickCancelButton();
     }
@@ -521,6 +517,15 @@ public class CertificateValidationTest
         assertFalse( trustDialogBot.isHostNameMismatch() );
         assertFalse( trustDialogBot.isIssuerUnkown() );
         trustDialogBot.selectDontTrust();
+
+        clickOkButtonExpectingCertficateErrorDialog( trustDialogBot );
+
+        wizardBot.clickCancelButton();
+    }
+
+
+    private void clickOkButtonExpectingCertficateErrorDialog( CertificateTrustDialogBot trustDialogBot )
+    {
         ErrorDialogBot errorBot = trustDialogBot.clickOkButtonExpectingErrorDialog();
         // LDAP API: Failed to initialize the SSL context, root cause: TLS handshake failed
         // JNDI: Untrusted certificate
@@ -528,8 +533,6 @@ public class CertificateValidationTest
             anyOf( containsString( "Failed to initialize the SSL context" ), containsString( "TLS handshake failed" ),
                 containsString( "Untrusted certificate" ) ) );
         errorBot.clickOkButton();
-
-        wizardBot.clickCancelButton();
     }
 
 
@@ -569,12 +572,8 @@ public class CertificateValidationTest
         assertFalse( trustDialogBot.isNotYetValid() );
         assertFalse( trustDialogBot.isExpired() );
         trustDialogBot.selectDontTrust();
-        ErrorDialogBot errorBot = trustDialogBot.clickOkButtonExpectingErrorDialog();
-        // LDAP API: SSL handshake failed
-        // JNDI: Untrusted certificate
-        assertThat( errorBot.getErrorMessage(),
-            anyOf( containsString( "SSL handshake failed" ), containsString( "Untrusted certificate" ) ) );
-        errorBot.clickOkButton();
+
+        clickOkButtonExpectingCertficateErrorDialog( trustDialogBot );
 
         wizardBot.clickCancelButton();
     }
