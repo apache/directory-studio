@@ -213,4 +213,10 @@ public class BrowserViewBot
         return bot.comboBox( 0 ).isEnabled();
     }
 
+
+    public void waitUntilEntryIsSelected( String label )
+    {
+        browserBot.waitUntilEntryIsSelected( label );
+    }
+
 }

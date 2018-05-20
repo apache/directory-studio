@@ -245,4 +245,26 @@ class BrowserWidgetBot
         return bot.tree();
     }
 
+
+    public void waitUntilEntryIsSelected( String label )
+    {
+        bot.waitUntil( new DefaultCondition()
+        {
+
+            @Override
+            public boolean test() throws Exception
+            {
+                String selectedEntry = getSelectedEntry();
+                return selectedEntry.equals( label );
+            }
+
+
+            @Override
+            public String getFailureMessage()
+            {
+                return "Entry " + label + " was not selected, but " + getSelectedEntry();
+            }
+        } );
+    }
+
 }

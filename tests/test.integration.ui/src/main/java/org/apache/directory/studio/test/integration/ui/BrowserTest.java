@@ -611,13 +611,13 @@ public class BrowserTest extends AbstractLdapTestUnit
 
         // use navigation history to go back and forth, each step should set input only once
         studioBot.navigationHistoryBack();
-        assertEquals( "uid=user.2", browserViewBot.getSelectedEntry() );
+        browserViewBot.waitUntilEntryIsSelected("uid=user.2");
         studioBot.navigationHistoryBack();
-        assertEquals( "uid=user.1", browserViewBot.getSelectedEntry() );
+        browserViewBot.waitUntilEntryIsSelected("uid=user.1");
         studioBot.navigationHistoryForward();
-        assertEquals( "uid=user.2", browserViewBot.getSelectedEntry() );
+        browserViewBot.waitUntilEntryIsSelected("uid=user.2");
         studioBot.navigationHistoryForward();
-        assertEquals( "uid=user.3", browserViewBot.getSelectedEntry() );
+        browserViewBot.waitUntilEntryIsSelected("uid=user.3");
 
         // verify that input was only set 4 times.
         assertEquals( "Only 4 input changes expected.", 4, counter.get() );
