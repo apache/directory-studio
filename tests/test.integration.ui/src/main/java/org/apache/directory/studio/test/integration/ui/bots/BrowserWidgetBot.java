@@ -136,10 +136,7 @@ class BrowserWidgetBot
             }
             else
             {
-                // adjust current path, because the label is decorated with the
-                // number of children
-                node = adjustNodeName( entry, node );
-                entry = entry.getNode( node );
+                entry = getChild(entry, node);
             }
 
             if ( !pathList.isEmpty() )
@@ -211,9 +208,35 @@ class BrowserWidgetBot
     }
 
 
-    private String adjustNodeName( SWTBotTreeItem child, String nodeName )
+    private SWTBotTreeItem getChild( SWTBotTreeItem entry, String nodeName )
     {
-        List<String> nodes = child.getNodes();
+        // adjust current path, because the label is decorated with the number of children
+        bot.waitUntil( new DefaultCondition()
+        {
+
+            @Override
+            public boolean test() throws Exception
+            {
+                String adjustedNodeName = adjustNodeName( entry, nodeName );
+                return adjustedNodeName != null;
+            }
+
+
+            @Override
+            public String getFailureMessage()
+            {
+                return "Node " + nodeName + " not found";
+            }
+        } );
+
+        String adjustedNodeName = adjustNodeName( entry, nodeName );
+        return entry.getNode( adjustedNodeName );
+    }
+
+
+    private String adjustNodeName( SWTBotTreeItem entry, String nodeName )
+    {
+        List<String> nodes = entry.getNodes();
         for ( String node : nodes )
         {
             if ( node.toUpperCase().startsWith( nodeName.toUpperCase() ) )
@@ -221,7 +244,7 @@ class BrowserWidgetBot
                 return node;
             }
         }
-        return nodeName;
+        return null;
     }
 
 
