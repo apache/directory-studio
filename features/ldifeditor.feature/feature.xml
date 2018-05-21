@@ -252,6 +252,13 @@ http://www.apache.org/licenses/
          unpack="false"/>
 
    <plugin
+         id="org.apache.directory.studio.edirectory"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.apache.directory.studio.common.core"
          download-size="0"
          install-size="0"

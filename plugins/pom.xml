@@ -48,6 +48,7 @@
     <module>rcp</module>
     <module>schemaeditor</module>
     <module>valueeditors</module>
+    <module>edirectory</module>
     <module>openldap.common.ui</module>
     <module>openldap.config.editor</module>
     <module>openldap.syncrepl</module>

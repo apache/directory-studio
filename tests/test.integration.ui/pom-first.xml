@@ -79,6 +79,7 @@
  org.apache.directory.studio.common.ui,
  org.apache.directory.studio.connection.core,
  org.apache.directory.studio.connection.ui,
+ org.apache.directory.studio.edirectory,
  org.apache.directory.studio.ldapbrowser.common,
  org.apache.directory.studio.ldapbrowser.core,
  org.apache.directory.studio.ldapbrowser.help,
