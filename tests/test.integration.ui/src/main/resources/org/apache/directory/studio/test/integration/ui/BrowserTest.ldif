@@ -221,3 +221,16 @@ objectClass: person
 cn: #ACL_AD-Projects_Author
 sn: #ACL_AD-Projects_Author
 
+dn: cn=nghZwwtHgxgyvVbTQCYyeY\+O4cc=,ou=users,ou=system
+objectClass: top
+objectClass: person
+cn: nghZwwtHgxgyvVbTQCYyeY+O4cc=
+sn: nghZwwtHgxgyvVbTQCYyeY+O4cc=
+
+dn: cn=nghZwwtHgxgyvVbTQCYyeY+email=,ou=users,ou=system
+objectClass: top
+objectClass: person
+objectClass: extensibleObject
+cn: nghZwwtHgxgyvVbTQCYyeY
+sn: nghZwwtHgxgyvVbTQCYyeY
+email: 

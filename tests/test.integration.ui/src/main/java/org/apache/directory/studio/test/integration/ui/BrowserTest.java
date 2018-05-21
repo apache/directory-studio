@@ -441,6 +441,22 @@ public class BrowserTest extends AbstractLdapTestUnit
 
 
     /**
+     * Test for DIRSTUDIO-1172: Studio doesn't display entries with trailing =.
+     */
+    @Test
+    public void testBrowseDnWithTrailingEqualsCharacter() throws Exception
+    {
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users",
+            "cn=nghZwwtHgxgyvVbTQCYyeY\\+O4cc=" ) );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=nghZwwtHgxgyvVbTQCYyeY\\+O4cc=" );
+
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users",
+            "cn=nghZwwtHgxgyvVbTQCYyeY+email=" ) );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=nghZwwtHgxgyvVbTQCYyeY+email=" );
+    }
+
+
+    /**
      * Test for DIRSTUDIO-597.
      * (Modification sent to the server while browsing through the DIT and refreshing entries)
      *
