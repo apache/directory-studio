@@ -82,6 +82,8 @@
     <org.apache.commons.codec.bundleversion>1.11.0</org.apache.commons.codec.bundleversion>
     <org.apache.commons.collections.version>3.2.2</org.apache.commons.collections.version>
     <org.apache.commons.collections.bundleversion>3.2.2</org.apache.commons.collections.bundleversion>
+    <org.apache.commons.io.version>2.6</org.apache.commons.io.version>
+    <org.apache.commons.io.bundleversion>2.6.0</org.apache.commons.io.bundleversion>
     <org.apache.commons.lang.version>2.6</org.apache.commons.lang.version>
     <org.apache.commons.lang.bundleversion>2.6.0</org.apache.commons.lang.bundleversion>
     <org.apache.commons.pool.version>2.5.0</org.apache.commons.pool.version>

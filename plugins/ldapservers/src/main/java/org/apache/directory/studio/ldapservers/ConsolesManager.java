@@ -91,6 +91,8 @@ public class ConsolesManager
         {
             MessageConsole messageConsole = new MessageConsole( server.getName()
                 + " " + Messages.getString( "ConsolesManager.LdapServer" ), null ); //$NON-NLS-1$ //$NON-NLS-2$
+            // DIRSTUDIO-1148: limit the amount of characters shown in the console
+            messageConsole.setWaterMarks( 70000, 80000 );
             consolesMap.put( server, messageConsole );
 
             ConsolePlugin.getDefault().getConsoleManager().addConsoles( new IConsole[]

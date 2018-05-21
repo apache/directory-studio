@@ -55,6 +55,7 @@
  
             <Import-Package>
  org.apache.commons.collections.map,
+ org.apache.commons.io.input,
  org.apache.mina.util,
  org.dom4j,
  org.dom4j.io,

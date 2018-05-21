@@ -28,6 +28,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 
+import org.apache.commons.io.input.Tailer;
+import org.apache.commons.io.input.TailerListener;
+import org.apache.commons.io.input.TailerListenerAdapter;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.common.ui.CommonUIUtils;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
@@ -42,6 +45,7 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.RuntimeProcess;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.console.MessageConsole;
+import org.eclipse.ui.console.MessageConsoleStream;
 import org.osgi.framework.Bundle;
 
 
@@ -189,17 +193,28 @@ public class LdapServersUtils
     public static void startConsolePrinterThread( LdapServer server, File serverLogsFile )
     {
         MessageConsole messageConsole = ConsolesManager.getDefault().getMessageConsole( server );
-        ConsolePrinterThread consolePrinter = new ConsolePrinterThread( serverLogsFile,
-            messageConsole.newMessageStream() );
-        consolePrinter.start();
+        MessageConsoleStream messageStream = messageConsole.newMessageStream();
 
-        // Storing the console printer as a custom object in the LDAP Server for later use
-        server.putCustomObject( CONSOLE_PRINTER_CUSTOM_OBJECT, consolePrinter );
+        /*
+         * DIRSTUDIO-1148: Tail the log file and update the console.
+         * Tail from end only to avoid overwhelming the system in case the log file is large.
+         */
+        TailerListener l = new TailerListenerAdapter()
+        {
+            public void handle( String line )
+            {
+                messageStream.println( line );
+            };
+        };
+        Tailer tailer = Tailer.create( serverLogsFile, l, 1000L, true );
+
+        // Storing the tailer as a custom object in the LDAP Server for later use
+        server.putCustomObject( CONSOLE_PRINTER_CUSTOM_OBJECT, tailer );
     }
 
 
     /**
-     * Stops the console printer thread.
+     * Stops the tailer thread.
      *
      * @param server
      *      the server
@@ -207,12 +222,12 @@ public class LdapServersUtils
     public static void stopConsolePrinterThread( LdapServer server )
     {
         // Getting the console printer
-        ConsolePrinterThread consolePrinter = ( ConsolePrinterThread ) server
+        Tailer tailer = ( Tailer ) server
             .removeCustomObject( CONSOLE_PRINTER_CUSTOM_OBJECT );
-        if ( ( consolePrinter != null ) && ( consolePrinter.isAlive() ) )
+        if ( tailer != null )
         {
             // Closing the console printer
-            consolePrinter.close();
+            tailer.stop();
         }
     }
 
