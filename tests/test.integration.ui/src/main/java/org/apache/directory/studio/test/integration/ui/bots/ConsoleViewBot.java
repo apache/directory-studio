@@ -22,6 +22,8 @@ package org.apache.directory.studio.test.integration.ui.bots;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
+import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 
 
 public class ConsoleViewBot
@@ -41,6 +43,27 @@ public class ConsoleViewBot
     {
         view.show();
         return view.bot().styledText().getText();
+    }
+
+
+    public void waitForConsoleText( String text )
+    {
+        bot.waitUntil( new DefaultCondition()
+        {
+
+            @Override
+            public boolean test() throws Exception
+            {
+                return getConsoleText().contains( text );
+            }
+
+
+            @Override
+            public String getFailureMessage()
+            {
+                return "Text " + text + " was not found in console";
+            }
+        }, SWTBotPreferences.TIMEOUT * 20 );
     }
 
 }

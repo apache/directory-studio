@@ -44,6 +44,8 @@ import org.apache.directory.studio.test.integration.ui.bots.ModificationLogsView
 import org.apache.directory.studio.test.integration.ui.bots.NewApacheDSServerWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
 import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
+import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -72,6 +74,14 @@ public class ApacheDSPluginTest
         serversViewBot = studioBot.getApacheDSServersViewBot();
         connectionsViewBot = studioBot.getConnectionView();
         consoleViewBot = studioBot.getConsoleView();
+    }
+
+
+    @After
+    public void tearDown() throws Exception
+    {
+        connectionsViewBot.deleteTestConnections();
+        serversViewBot.deleteTestServers();
     }
 
 
@@ -405,10 +415,11 @@ public class ApacheDSPluginTest
 
         // Repair the server
         serversViewBot.repairServer( serverName );
+        consoleViewBot.waitForConsoleText("Database repaired");
         serversViewBot.waitForServerStop( serverName );
 
         // Wait a bit more after repair, another weird race condition...
-        BotUtils.sleep( 5000 );
+        BotUtils.sleep( SWTBotPreferences.TIMEOUT );
 
         // Start the server after repair
         serversViewBot.runServer( serverName );

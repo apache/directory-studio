@@ -20,12 +20,15 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
+import java.util.ArrayList;
+
 import org.apache.directory.studio.ldapservers.LdapServersManager;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
 import org.apache.directory.studio.ldapservers.model.LdapServerStatus;
 import org.apache.directory.studio.test.integration.ui.ContextMenuHelper;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
@@ -224,7 +227,7 @@ public class ApacheDSServersViewBot
             {
                 return "Server " + serverName + " not started in servers view.";
             }
-        }, 60000 );
+        }, SWTBotPreferences.TIMEOUT * 20 );
     }
 
 
@@ -254,7 +257,7 @@ public class ApacheDSServersViewBot
             {
                 return "Server " + serverName + " not stopped in servers view.";
             }
-        }, 30000 );
+        }, SWTBotPreferences.TIMEOUT * 10 );
 
         // Wait a bit more to avoid unknown race conditions...
         BotUtils.sleep( 1000 );
@@ -299,5 +302,15 @@ public class ApacheDSServersViewBot
         }
 
         return 0;
+    }
+
+
+    public void deleteTestServers()
+    {
+        LdapServersManager ldapServersManager = LdapServersManager.getDefault();
+        for ( LdapServer server : new ArrayList<>( ldapServersManager.getServersList() ) )
+        {
+            ldapServersManager.removeServer( server );
+        }
     }
 }
