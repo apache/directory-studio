@@ -234,3 +234,18 @@ objectClass: extensibleObject
 cn: nghZwwtHgxgyvVbTQCYyeY
 sn: nghZwwtHgxgyvVbTQCYyeY
 email: 
+
+dn: l=eu + l=de + l=Berlin + l=Brandenburger Tor, ou=users, ou=system
+objectClass: top
+objectClass: locality
+l: eu
+l: de
+l: Berlin
+l: Brandenburger Tor
+
+dn: cn=A, l=eu + l=de + l=Berlin + l=Brandenburger Tor, ou=users, ou=system
+objectClass: top
+objectClass: person
+cn: user.A
+sn: user.A
+

@@ -426,4 +426,41 @@ public class NewEntryWizardTest extends AbstractLdapTestUnit
             "cn=loopback+ipHostNumber=" + LOCALHOST_ADDRESS ) );
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "cn=loopback+ipHostNumber=" + LOCALHOST_ADDRESS );
     }
+
+
+    /**
+     * Test for DIRSTUDIO-987, DIRSTUDIO-271.
+     *
+     * Create and browse entry with multi-valued RDN with same attribute type.
+     */
+    @Test
+    public void testCreateMvRdnWithSameAttribute()
+    {
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
+
+        NewEntryWizardBot wizardBot = browserViewBot.openNewEntryWizard();
+
+        wizardBot.selectCreateEntryFromScratch();
+        wizardBot.clickNextButton();
+
+        wizardBot.addObjectClasses( "locality" );
+        wizardBot.clickNextButton();
+
+        wizardBot.clickAddRdnButton( 1 );
+        wizardBot.clickAddRdnButton( 2 );
+        wizardBot.setRdnType( 1, "l" );
+        wizardBot.setRdnValue( 1, "eu" );
+        wizardBot.setRdnType( 2, "l" );
+        wizardBot.setRdnValue( 2, "de" );
+        wizardBot.setRdnType( 3, "l" );
+        wizardBot.setRdnValue( 3, "Berlin" );
+        wizardBot.clickNextButton();
+
+        wizardBot.clickFinishButton();
+
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system",
+            "l=eu+l=de+l=Berlin" ) );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "l=eu+l=de+l=Berlin" );
+    }
+
 }

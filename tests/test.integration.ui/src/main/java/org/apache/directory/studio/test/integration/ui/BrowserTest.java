@@ -639,4 +639,50 @@ public class BrowserTest extends AbstractLdapTestUnit
         assertEquals( "Only 4 input changes expected.", 4, counter.get() );
     }
 
+
+    /**
+     * Test for DIRSTUDIO-987, DIRSTUDIO-271.
+     *
+     * Browse and refresh entry with multi-valued RDN with same attribute type.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testBrowseAndRefreshEntryWithMvRdn() throws Exception
+    {
+        // expand parent and verify entry is visible
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users",
+            "l=eu + l=de + l=Berlin + l=Brandenburger Tor" ) );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users",
+            "l=eu + l=de + l=Berlin + l=Brandenburger Tor" );
+
+        // expand entry and verify child is visible
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users",
+            "l=eu + l=de + l=Berlin + l=Brandenburger Tor" );
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users",
+            "l=eu + l=de + l=Berlin + l=Brandenburger Tor", "cn=A" ) );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users",
+            "l=eu + l=de + l=Berlin + l=Brandenburger Tor", "cn=A" );
+
+        // refresh entry and verify child is still visible
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users",
+            "l=eu + l=de + l=Berlin + l=Brandenburger Tor" );
+        browserViewBot.refresh();
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users",
+            "l=eu + l=de + l=Berlin + l=Brandenburger Tor", "cn=A" ) );
+
+        // refresh parent and verify entry is still visible
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        browserViewBot.refresh();
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users",
+            "l=eu + l=de + l=Berlin + l=Brandenburger Tor" ) );
+
+        // expand entry and verify child is visible
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users",
+            "l=eu + l=de + l=Berlin + l=Brandenburger Tor" );
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users",
+            "l=eu + l=de + l=Berlin + l=Brandenburger Tor", "cn=A" ) );
+    }
+
 }
