@@ -457,6 +457,24 @@ public class BrowserTest extends AbstractLdapTestUnit
 
 
     /**
+     * Test for DIRSTUDIO-1151: DN with backslash not displayed
+     */
+    @Test
+    public void testBrowseDnWithBackslash() throws Exception
+    {
+        // expand parent and verify entry is visible
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.0\\,foo" ) );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.0\\,foo" );
+
+        // refresh entry and verify child is still visible
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        browserViewBot.refresh();
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.0\\,foo" ) );
+    }
+
+
+    /**
      * Test for DIRSTUDIO-597.
      * (Modification sent to the server while browsing through the DIT and refreshing entries)
      *

@@ -249,3 +249,11 @@ objectClass: person
 cn: user.A
 sn: user.A
 
+dn: uid=user.0\,foo,ou=users, ou=system
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+sn: bbb
+cn: aaa
+uid: user.0,foo
