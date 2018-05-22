@@ -356,7 +356,7 @@ public class EntryEditorTest extends AbstractLdapTestUnit
      * DIRSTUDIO-1157: Values cannot be modified by text editor
      */
     @Test
-    public void testTestValueEditor() throws Exception
+    public void testTextValueEditor() throws Exception
     {
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Barbara Jensen" );
 
@@ -373,21 +373,21 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         assertTrue( wizardBot.isVisible() );
         wizardBot.typeAttributeType( "description" );
         wizardBot.clickFinishButton();
-        entryEditorBot.typeValueAndFinish( "testTestValueEditor 1" );
+        entryEditorBot.typeValueAndFinish( "testTextValueEditor 1" );
         assertEquals( 9, entryEditorBot.getAttributeValues().size() );
-        assertTrue( entryEditorBot.getAttributeValues().contains( "description: testTestValueEditor 1" ) );
-        modificationLogsViewBot.waitForText( "add: description\ndescription: testTestValueEditor 1" );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "description: testTextValueEditor 1" ) );
+        modificationLogsViewBot.waitForText( "add: description\ndescription: testTextValueEditor 1" );
 
         // edit value with the text editor
         TextEditorDialogBot textEditorBot = entryEditorBot.editValueWithTextEditor( "description",
-            "testTestValueEditor 1" );
+            "testTextValueEditor 1" );
         assertTrue( textEditorBot.isVisible() );
-        textEditorBot.setText( "testTestValueEditor 2" );
+        textEditorBot.setText( "testTextValueEditor 2" );
         textEditorBot.clickOkButton();
         assertEquals( 9, entryEditorBot.getAttributeValues().size() );
-        assertFalse( entryEditorBot.getAttributeValues().contains( "description: testTestValueEditor 1" ) );
-        assertTrue( entryEditorBot.getAttributeValues().contains( "description: testTestValueEditor 2" ) );
-        modificationLogsViewBot.waitForText( "replace: description\ndescription: testTestValueEditor 2" );
+        assertFalse( entryEditorBot.getAttributeValues().contains( "description: testTextValueEditor 1" ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "description: testTextValueEditor 2" ) );
+        modificationLogsViewBot.waitForText( "replace: description\ndescription: testTextValueEditor 2" );
     }
 
 }
