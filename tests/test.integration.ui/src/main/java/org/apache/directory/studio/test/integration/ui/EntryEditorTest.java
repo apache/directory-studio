@@ -249,12 +249,13 @@ public class EntryEditorTest extends AbstractLdapTestUnit
 
         // assert pasted value visible in editor
         assertEquals( 9, entryEditorBot.getAttributeValues().size() );
-        entryEditorBot.getAttributeValues().contains( "uid: bjensen" );
+        assertTrue( "Should contain uid=bjensen: " + entryEditorBot.getAttributeValues(),
+            entryEditorBot.getAttributeValues().contains( "uid: bjensen" ) );
 
         // assert pasted value was written to directory
         Entry entry = service.getAdminSession()
             .lookup( new Dn( "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system" ) );
-        assertTrue( entry.contains( "uid", "bjensen" ) );
+        assertTrue( "Should contain uid=bjensen: " + entry, entry.contains( "uid", "bjensen" ) );
     }
 
 
