@@ -24,6 +24,8 @@ package org.apache.directory.studio;
 import org.apache.directory.studio.preferences.ShutdownPreferencesPage;
 import org.eclipse.core.net.proxy.IProxyService;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.TrayDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -130,6 +132,7 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor
     {
         super.postStartup();
         activateProxyService();
+        removeDefaultJvmSetting();
     }
 
 
@@ -150,4 +153,19 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor
             }
         }
     }
+
+
+    /**
+     * DIRSTUDIO-1188: When launching ApacheDS the first time the same Studio JVM is used and stored in the preferences
+     * (~/.ApacheDirectoryStudio/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.launching.prefs).
+     * Afterwards that JVM is always used when starting ApacheDS, even if the Studio JVM changes. As there is no
+     * "Installed JREs" preference page in the Studio RCP application this setting is always removed so the current
+     * Studio JVM is used to start ApacheDS.
+     */
+    private void removeDefaultJvmSetting()
+    {
+        IEclipsePreferences pref = InstanceScope.INSTANCE.getNode( "org.eclipse.jdt.launching" );
+        pref.remove( "org.eclipse.jdt.launching.PREF_VM_XML" );
+    }
+
 }

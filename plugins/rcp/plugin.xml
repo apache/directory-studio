@@ -369,6 +369,16 @@
         activityId="%RCP_Hide_id"
         isEqualityPattern="true"
         pattern="org.eclipse.equinox.security.ui/org.eclipse.equinox.security.ui.category"/>
+
+    <activityPatternBinding
+        activityId="%RCP_Hide_id"
+        isEqualityPattern="true"
+        pattern="org.eclipse.ui.ide/org.eclipse.e4.ui.importer.wizard"/>
+
+    <activityPatternBinding
+        activityId="%RCP_Hide_id"
+        isEqualityPattern="true"
+        pattern="org.eclipse.ui.ide/org.eclipse.e4.ui.importer.openDirectory.menu"/>
   </extension>
 
   <extension

@@ -626,15 +626,14 @@ public class ConnectionCorePlugin extends Plugin
      */
     public NetworkProvider getNetworkProvider( int networkProviderValue )
     {
-        if ( networkProviderValue == ConnectionCoreConstants.PREFERENCE_NETWORK_PROVIDER_APACHE_DIRECTORY_LDAP_API )
-        {
-            return NetworkProvider.APACHE_DIRECTORY_LDAP_API;
-        }
-        else if ( networkProviderValue == ConnectionCoreConstants.PREFERENCE_NETWORK_PROVIDER_JNDI )
+        if ( networkProviderValue == ConnectionCoreConstants.PREFERENCE_NETWORK_PROVIDER_JNDI
+            && NetworkProvider.JNDI.isSupported() )
         {
             return NetworkProvider.JNDI;
         }
-
-        return NetworkProvider.APACHE_DIRECTORY_LDAP_API;
+        else
+        {
+            return NetworkProvider.APACHE_DIRECTORY_LDAP_API;
+        }
     }
 }

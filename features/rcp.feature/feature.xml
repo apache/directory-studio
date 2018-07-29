@@ -274,7 +274,7 @@ http://www.apache.org/licenses/
          unpack="false"/>
 
    <plugin
-         id="bcprov"
+         id="org.bouncycastle.bcprov"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -328,6 +328,14 @@ http://www.apache.org/licenses/
          download-size="0"
          install-size="0"
          version="0.0.0"/>
+
+<!-- This adds the "Installed JREs" preference page, but also way too much other stuff.
+   <plugin
+         id="org.eclipse.pde.api.tools.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+-->
 
    <plugin
          id="org.apache.directory.api.ldap.client.api"

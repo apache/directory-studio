@@ -70,7 +70,6 @@ import org.apache.directory.studio.connection.core.ConnectionParameter.Encryptio
 import org.apache.directory.studio.connection.core.ConnectionParameter.NetworkProvider;
 import org.apache.directory.studio.connection.core.IReferralHandler;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
-import org.apache.directory.studio.connection.core.io.api.DirectoryApiConnectionWrapper;
 import org.apache.mina.util.AvailablePortFinder;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.After;
@@ -207,13 +206,13 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         connectionWrapper.connect( monitor );
         assertFalse( connectionWrapper.isConnected() );
         assertNotNull( monitor.getException() );
-        if ( provider == NetworkProvider.JNDI )
+        if ( provider == NetworkProvider.JNDI && NetworkProvider.JNDI.isSupported() )
         {
             assertTrue( monitor.getException() instanceof CommunicationException );
             assertNotNull( monitor.getException().getCause() );
             assertTrue( monitor.getException().getCause() instanceof ConnectException );
         }
-        if ( provider == NetworkProvider.APACHE_DIRECTORY_LDAP_API )
+        else
         {
             assertTrue( monitor.getException() instanceof InvalidConnectionException );
             assertNotNull( monitor.getException().getCause() );
@@ -229,13 +228,13 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         connectionWrapper.connect( monitor );
         assertFalse( connectionWrapper.isConnected() );
         assertNotNull( monitor.getException() );
-        if ( provider == NetworkProvider.JNDI )
+        if ( provider == NetworkProvider.JNDI && NetworkProvider.JNDI.isSupported() )
         {
             assertTrue( monitor.getException() instanceof CommunicationException );
             assertNotNull( monitor.getException().getCause() );
             assertTrue( monitor.getException().getCause() instanceof UnknownHostException );
         }
-        if ( provider == NetworkProvider.APACHE_DIRECTORY_LDAP_API )
+        else
         {
             assertTrue( monitor.getException() instanceof InvalidConnectionException );
             assertNotNull( monitor.getException().getCause() );
@@ -293,11 +292,11 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         connectionWrapper.bind( monitor );
         assertFalse( connectionWrapper.isConnected() );
         assertNotNull( monitor.getException() );
-        if ( provider == NetworkProvider.JNDI )
+        if ( provider == NetworkProvider.JNDI && NetworkProvider.JNDI.isSupported() )
         {
             assertTrue( monitor.getException() instanceof NamingException );
         }
-        if ( provider == NetworkProvider.APACHE_DIRECTORY_LDAP_API )
+        else
         {
             assertTrue( monitor.getException() instanceof Exception );
             assertTrue( monitor.getException().getMessage().contains( "error code 49 - INVALID_CREDENTIALS" ) );
@@ -313,11 +312,11 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         connectionWrapper.bind( monitor );
         assertFalse( connectionWrapper.isConnected() );
         assertNotNull( monitor.getException() );
-        if ( provider == NetworkProvider.JNDI )
+        if ( provider == NetworkProvider.JNDI && NetworkProvider.JNDI.isSupported() )
         {
             assertTrue( monitor.getException() instanceof AuthenticationException );
         }
-        if ( provider == NetworkProvider.APACHE_DIRECTORY_LDAP_API )
+        else
         {
             assertTrue( monitor.getException() instanceof Exception );
             assertTrue( monitor.getException().getMessage().contains( "error code 49 - INVALID_CREDENTIALS" ) );

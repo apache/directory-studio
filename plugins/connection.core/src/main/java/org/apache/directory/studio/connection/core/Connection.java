@@ -222,16 +222,15 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
      */
     public ConnectionWrapper getConnectionWrapper()
     {
-        switch ( connectionParameter.getNetworkProvider() )
+        if ( getNetworkProvider() == NetworkProvider.JNDI && NetworkProvider.JNDI.isSupported() )
         {
-            case JNDI:
-                return getJndiConnectionWrapper();
-                
-            case APACHE_DIRECTORY_LDAP_API:
-                return getDirectoryApiConnectionWrapper();
+            return getJndiConnectionWrapper();
         }
+        else
+        {
+            return getDirectoryApiConnectionWrapper();
 
-        return null;
+        }
     }
 
 

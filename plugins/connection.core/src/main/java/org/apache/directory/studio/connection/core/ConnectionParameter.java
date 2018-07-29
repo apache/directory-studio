@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.commons.lang.SystemUtils;
 import org.apache.directory.api.ldap.model.constants.SaslQoP;
 import org.apache.directory.api.ldap.model.constants.SaslSecurityStrength;
 
@@ -69,6 +70,14 @@ public class ConnectionParameter
 
         /** Apache Directory LDAP API */
         APACHE_DIRECTORY_LDAP_API
+        ;
+        public boolean isSupported() {
+            if(this == APACHE_DIRECTORY_LDAP_API) {
+                return true;
+            } else /* JNDI */ {
+                return  SystemUtils.JAVA_VERSION_FLOAT < 9.0f;
+            }
+        }
     }
 
     /**

@@ -58,13 +58,13 @@ public class ConnectionsViewBot
         NewConnectionWizardBot newConnectionWizardBot = new NewConnectionWizardBot();
         
         // choose random network provider to test both, LDAP API and JNDI
-        if ( new Random().nextBoolean() )
+        if ( new Random().nextBoolean() && NetworkProvider.JNDI.isSupported() )
         {
-            newConnectionWizardBot.selectLdapApiProvider();
+            newConnectionWizardBot.selectJndiProvider();
         }
         else
         {
-            newConnectionWizardBot.selectJndiProvider();
+            newConnectionWizardBot.selectLdapApiProvider();
         }
 
         return newConnectionWizardBot;
