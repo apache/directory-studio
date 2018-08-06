@@ -145,9 +145,10 @@ public class CertificateValidationTest
         }
 
         // delete custom Java key store settings
-        System.getProperties().remove( "javax.net.ssl.trustStore" );
-        System.getProperties().remove( "javax.net.ssl.keyStore" );
-        System.getProperties().remove( "javax.net.ssl.keyStorePassword" );
+        System.clearProperty( "javax.net.ssl.trustStore" );
+        System.clearProperty( "javax.net.ssl.trustStorePassword" );
+        System.clearProperty( "javax.net.ssl.keyStore" );
+        System.clearProperty( "javax.net.ssl.keyStorePassword" );
     }
 
 
@@ -175,6 +176,7 @@ public class CertificateValidationTest
 
         // let Java use the key store
         System.setProperty( "javax.net.ssl.trustStore", ksFile.getAbsolutePath() );
+        System.setProperty( "javax.net.ssl.trustStorePassword", "changeit" );
         System.setProperty( "javax.net.ssl.keyStore", ksFile.getAbsolutePath() );
         System.setProperty( "javax.net.ssl.keyStorePassword", "changeit" );
 
@@ -415,6 +417,7 @@ public class CertificateValidationTest
 
         // let Java use the key store
         System.setProperty( "javax.net.ssl.trustStore", ksFile.getAbsolutePath() );
+        System.setProperty( "javax.net.ssl.trustStorePassword", "changeit" );
         System.setProperty( "javax.net.ssl.keyStore", ksFile.getAbsolutePath() );
         System.setProperty( "javax.net.ssl.keyStorePassword", "changeit" );
 

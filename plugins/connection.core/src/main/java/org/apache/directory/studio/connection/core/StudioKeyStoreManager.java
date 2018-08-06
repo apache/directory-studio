@@ -126,7 +126,7 @@ public class StudioKeyStoreManager
         {
             try
             {
-                memoryKeyStore = KeyStore.getInstance( "JKS" ); //$NON-NLS-1$
+                memoryKeyStore = KeyStore.getInstance( KeyStore.getDefaultType() );
                 memoryKeyStore.load( null, null );
             }
             catch ( Exception e )
@@ -147,7 +147,7 @@ public class StudioKeyStoreManager
     {
         try
         {
-            KeyStore fileKeyStore = KeyStore.getInstance( "JKS" ); //$NON-NLS-1$
+            KeyStore fileKeyStore = KeyStore.getInstance( KeyStore.getDefaultType() );
             File file = ConnectionCorePlugin.getDefault().getStateLocation().append( filename ).toFile();
             if ( file.exists() && file.isFile() && file.canRead() )
             {

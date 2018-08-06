@@ -70,6 +70,7 @@ Tycho doesn't handle snapshot dependencies well. The first time a snapshot depen
 To delete all Apache Directory related snapshots run:
 
     rm -rf ~/.m2/repository/p2/osgi/bundle/org.apache.directory.*
+    <workspace>/.metadata/.plugins/org.eclipse.pde.core/.bundle_pool/*
 
 
 ## Setup Eclipse workspace
