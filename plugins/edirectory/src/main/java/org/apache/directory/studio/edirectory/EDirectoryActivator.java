@@ -79,8 +79,8 @@ public class EDirectoryActivator extends AbstractUIPlugin
      * Use this method to get SWT images. Use the IMG_ constants from
      * ValueEditorConstants for the key.
      * 
-     * @param key The key (relative path to the image im filesystem)
-     * @return The image discriptor or null
+     * @param key The key (relative path to the image in filesystem)
+     * @return The image descriptor or null
      */
     public ImageDescriptor getImageDescriptor( String key )
     {
@@ -112,7 +112,7 @@ public class EDirectoryActivator extends AbstractUIPlugin
      * Note: Don't dispose the returned SWT Image. It is disposed
      * automatically when the plugin is stopped.
      * 
-     * @param key The key (relative path to the image im filesystem)
+     * @param key The key (relative path to the image in filesystem)
      * @return The SWT Image or null
      * @see ValueEditorsConstants
      */

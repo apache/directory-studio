@@ -109,8 +109,6 @@
       <syntax syntaxOID="1.3.6.1.1.16.1" />
       <!-- Explicitly list entryUUID because in ApacheDS 1.5.5 it has octetString syntax -->
       <attribute attributeType="entryUUID"/>
-      <!-- Explicitly list attribute for eDirectory -->
-      <attribute attributeType="GUID"/>
     </valueEditor>
 
     <valueEditor
@@ -132,11 +130,6 @@
         icon="resources/icons/certificateeditor.png"
         name="%ValueEditor_CertificateValueEditor_name">
       <syntax syntaxOID="1.3.6.1.4.1.1466.115.121.1.8"/>
-      <!-- Explicitly list attributes for eDirectory -->
-      <attribute attributeType="userCertificate"/>
-      <attribute attributeType="nDSPKIPublicKeyCertificate"/>
-      <attribute attributeType="cACertificate"/>
-      <attribute attributeType="ndsCrossCertificatePair"/>
     </valueEditor>
 
     <valueEditor

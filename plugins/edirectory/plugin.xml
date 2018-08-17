@@ -19,5 +19,57 @@
   under the License.
 -->
 <plugin>
-  
+
+  <extension
+        point="org.apache.directory.studio.valueeditors">
+        
+    <valueEditor
+        class="org.apache.directory.studio.valueeditors.TextValueEditor"
+        icon="resources/icons/texteditor.gif"
+        name="%ValueEditors_TextValueEditor_name">
+      <attribute attributeType="DirXML-ApplicationSchema"/>
+      <attribute attributeType="DirXML-ConfigManifest"/>
+      <attribute attributeType="DirXML-ConfigValues"/>
+      <attribute attributeType="DirXML-Data"/>
+      <attribute attributeType="DirXML-DriverFilter"/>
+      <attribute attributeType="DirXML-DriverStorage"/>
+      <attribute attributeType="DirXML-EngineControlValues"/>
+      <attribute attributeType="DirXML-PersistentData"/>
+      <attribute attributeType="DirXML-pkgExtensions"/>
+      <attribute attributeType="DirXML-pkgInitialState"/>
+      <attribute attributeType="DirXML-ReciprocalAttrMap"/>
+      <attribute attributeType="DirXML-ShimConfigInfo"/>
+      <attribute attributeType="DirXML-SPEntitlementsXML"/>
+      <attribute attributeType="DirXML-uiXMLBig"/>
+      <attribute attributeType="DirXML-uiXMLBigPerReplica"/>
+      <attribute attributeType="srvprvProcessXML"/>
+      <attribute attributeType="srvprvRequestXML"/>
+      <attribute attributeType="XmlData"/>
+    </valueEditor>
+    
+    <valueEditor
+        class="org.apache.directory.studio.valueeditors.image.ImageValueEditor"
+        icon="resources/icons/imageeditor.gif"
+        name="%ValueEditor_ImageValueEditor_name">
+      <attribute attributeType="DirXML-DriverImage"/>
+    </valueEditor>
+    
+    <valueEditor
+        class="org.apache.directory.studio.valueeditors.certificate.CertificateValueEditor"
+        icon="resources/icons/certificateeditor.png"
+        name="%ValueEditor_CertificateValueEditor_name">
+      <attribute attributeType="userCertificate"/>
+      <attribute attributeType="nDSPKIPublicKeyCertificate"/>
+      <attribute attributeType="cACertificate"/>
+      <attribute attributeType="ndsCrossCertificatePair"/>
+    </valueEditor>
+    
+    <valueEditor
+        class="org.apache.directory.studio.valueeditors.uuid.InPlaceUuidValueEditor"
+        icon="resources/icons/entryuuideditor.gif"
+        name="%ValueEditor_InPlaceEntryUUIDValueEditor_name">
+      <attribute attributeType="GUID"/>
+    </valueEditor>
+    
+  </extension>
 </plugin>
