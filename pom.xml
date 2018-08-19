@@ -62,8 +62,8 @@
     <studio.dist.url>${project.distributionManagement.repository.url}</studio.dist.url>
     <distMgmtSiteUrl>scpexe://people.apache.org/www/directory.apache.org/studio/gen-docs/${project.version}</distMgmtSiteUrl>
 
-    <!-- Disable Java8 javadoc linter -->
-    <additionalparam>-Xdoclint:none</additionalparam>
+    <!-- Disable Java 8 Javadoc linter -->
+    <doclint>none</doclint>
 
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
