@@ -51,4 +51,13 @@ public class PreferencesBot extends DialogBot
     {
         super.clickButton( "Apply and Close" );
     }
+
+
+    public PasswordsKeystorePreferencePageBot openPasswordsKeystorePage()
+    {
+        bot.tree().getTreeItem( "Apache Directory Studio" ).select().expand().getNode( "Connections" ).select()
+            .expand().getNode( "Passwords Keystore" ).select();
+        return new PasswordsKeystorePreferencePageBot();
+    }
+
 }

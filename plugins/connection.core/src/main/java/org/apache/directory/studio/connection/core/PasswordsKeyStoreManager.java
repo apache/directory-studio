@@ -97,7 +97,7 @@ public class PasswordsKeyStoreManager
 
         try
         {
-            keystore = KeyStore.getInstance( "JCEKS" ); //$NON-NLS-1$
+            keystore = KeyStore.getInstance( "PKCS12" ); //$NON-NLS-1$
 
             // Getting the keystore file
             File keystoreFile = getKeyStoreFile();
@@ -482,11 +482,17 @@ public class PasswordsKeyStoreManager
     }
 
 
-    public void reload( String masterPassword ) throws KeyStoreException
+    public void unload()
     {
         // Reseting the fields
         this.keystore = null;
         this.masterPassword = null;
+    }
+
+
+    public void reload( String masterPassword ) throws KeyStoreException
+    {
+        unload();
 
         load( masterPassword );
     }

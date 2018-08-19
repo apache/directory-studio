@@ -86,6 +86,17 @@ public class ConnectionsViewBot
     }
 
 
+    public void openSelectedConnectionExpectingVerifyMasterPasswordDialog( String masterPassword )
+    {
+        JobWatcher watcher = new JobWatcher( Messages.jobs__open_connections_name_1 );
+        getConnectionsTree().contextMenu( "Open Connection" ).click();
+        VerifyMasterPasswordDialogBot verifyMasterPasswordDialogBot = new VerifyMasterPasswordDialogBot();
+        verifyMasterPasswordDialogBot.enterMasterPassword( masterPassword );
+        verifyMasterPasswordDialogBot.clickOkButton();
+        watcher.waitUntilDone();
+    }
+
+
     public void closeSelectedConnections()
     {
         JobWatcher watcher = new JobWatcher( Messages.jobs__close_connections_name_1 );

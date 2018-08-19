@@ -23,6 +23,7 @@ package org.apache.directory.studio.connection.ui.preferences;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.security.KeyStoreException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -166,7 +167,7 @@ public class PasswordsKeystorePreferencePage extends PreferencePage implements I
             try
             {
                 // Copying the file
-                FileUtils.copyFile( keystoreFile, getTemporaryKeystoreFile() );
+                Files.copy( keystoreFile.toPath(), getTemporaryKeystoreFile().toPath() );
             }
             catch ( IOException e )
             {
@@ -344,8 +345,8 @@ public class PasswordsKeystorePreferencePage extends PreferencePage implements I
                 // Now, let's copy the temporary keystore as the global keystore
                 try
                 {
-                    FileUtils.copyFile( getTemporaryKeystoreFile(), ConnectionCorePlugin.getDefault()
-                        .getPasswordsKeyStoreManager().getKeyStoreFile() );
+                    Files.copy( getTemporaryKeystoreFile().toPath(), ConnectionCorePlugin.getDefault()
+                        .getPasswordsKeyStoreManager().getKeyStoreFile().toPath() );
                 }
                 catch ( IOException e )
                 {

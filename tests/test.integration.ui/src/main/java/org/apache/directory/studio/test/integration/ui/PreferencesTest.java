@@ -33,12 +33,21 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.directory.api.util.FileUtils;
+import org.apache.directory.server.annotations.CreateLdapServer;
+import org.apache.directory.server.annotations.CreateTransport;
 import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
+import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.connection.core.PasswordsKeyStoreManager;
 import org.apache.directory.studio.test.integration.ui.bots.CertificateValidationPreferencePageBot;
 import org.apache.directory.studio.test.integration.ui.bots.CertificateViewerDialogBot;
+import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
+import org.apache.directory.studio.test.integration.ui.bots.KeepConnectionsPasswordsDialogBot;
+import org.apache.directory.studio.test.integration.ui.bots.PasswordsKeystorePreferencePageBot;
 import org.apache.directory.studio.test.integration.ui.bots.PreferencesBot;
+import org.apache.directory.studio.test.integration.ui.bots.SetupMasterPasswordDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
+import org.apache.directory.studio.test.integration.ui.bots.VerifyMasterPasswordDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.eclipse.core.runtime.Platform;
 import org.junit.After;
@@ -54,9 +63,12 @@ import org.junit.runner.RunWith;
  * @version $Rev$, $Date$
  */
 @RunWith(FrameworkRunnerWithScreenshotCaptureListener.class)
+@CreateLdapServer(transports =
+    { @CreateTransport(protocol = "LDAP") })
 public class PreferencesTest extends AbstractLdapTestUnit
 {
     private StudioBot studioBot;
+    private ConnectionsViewBot connectionsViewBot;
 
 
     @Before
@@ -64,12 +76,14 @@ public class PreferencesTest extends AbstractLdapTestUnit
     {
         studioBot = new StudioBot();
         studioBot.resetLdapPerspective();
+        connectionsViewBot = studioBot.getConnectionView();
     }
 
 
     @After
     public void tearDown() throws Exception
     {
+        connectionsViewBot.deleteTestConnections();
     }
 
 
@@ -169,6 +183,83 @@ public class PreferencesTest extends AbstractLdapTestUnit
         assertEquals( 0, ConnectionCorePlugin.getDefault().getPermanentTrustStoreManager().getCertificates().length );
         assertEquals( 0, ConnectionCorePlugin.getDefault().getSessionTrustStoreManager().getCertificates().length );
         preferencesBot.clickCancelButton();
+    }
+
+
+    /**
+     * Test for DIRSTUDIO-1179
+     * (java.io.IOException: Invalid secret key format after Java update).
+     */
+    @Test
+    public void testConnectionPasswordsKeystore() throws Exception
+    {
+        Connection connection = connectionsViewBot.createTestConnection( "BrowserTest", ldapServer.getPort() );
+        connectionsViewBot.closeSelectedConnections();
+
+        // the global password keystore manager
+        PasswordsKeyStoreManager passwordsKeyStoreManager = ConnectionCorePlugin.getDefault()
+            .getPasswordsKeyStoreManager();
+
+        URL url = Platform.getInstanceLocation().getURL();
+        File file = new File( url.getFile()
+            + ".metadata/.plugins/org.apache.directory.studio.connection.core/passwords.jks" );
+
+        // verify usage of password keystore is disabled
+        assertFalse( file.exists() );
+        PreferencesBot preferencesBot = studioBot.openPreferences();
+        PasswordsKeystorePreferencePageBot pageBot = preferencesBot.openPasswordsKeystorePage();
+        assertFalse( pageBot.isPasswordsKeystoreEnabled() );
+
+        // enable password keystore
+        SetupMasterPasswordDialogBot setupMasterPasswordDialogBot = pageBot.enablePasswordsKeystore();
+        setupMasterPasswordDialogBot.setMasterPassword( "secret12" );
+        setupMasterPasswordDialogBot.clickOkButton();
+
+        // verify usage of password keystore is enabled
+        assertTrue( pageBot.isPasswordsKeystoreEnabled() );
+
+        // apply
+        preferencesBot.clickOkButton();
+
+        // verify passwords keystore file exists and is loaded
+        assertTrue( file.exists() );
+        assertTrue( passwordsKeyStoreManager.isLoaded() );
+
+        // verify connection can be opened because keystore is already loaded
+        connectionsViewBot.selectConnection( connection.getName() );
+        connectionsViewBot.openSelectedConnection();
+        connectionsViewBot.closeSelectedConnections();
+
+        // unload the keystore
+        passwordsKeyStoreManager.unload();
+        assertFalse( passwordsKeyStoreManager.isLoaded() );
+
+        // verify master password prompt when opening the connection
+        connectionsViewBot.selectConnection( connection.getName() );
+        connectionsViewBot.openSelectedConnectionExpectingVerifyMasterPasswordDialog( "secret12" );
+        connectionsViewBot.closeSelectedConnections();
+
+        // disable password keystore, keep connection password
+        preferencesBot = studioBot.openPreferences();
+        pageBot = preferencesBot.openPasswordsKeystorePage();
+        assertTrue( pageBot.isPasswordsKeystoreEnabled() );
+        KeepConnectionsPasswordsDialogBot keepConnectionsPasswordsDialogBot = pageBot.disablePasswordsKeystore();
+        VerifyMasterPasswordDialogBot verifyMasterPasswordDialog = keepConnectionsPasswordsDialogBot.clickYesButtonExpectingVerifyMasterPasswordDialog();
+        verifyMasterPasswordDialog.enterMasterPassword( "secret12" );
+        verifyMasterPasswordDialog.clickOkButton();
+        assertFalse( pageBot.isPasswordsKeystoreEnabled() );
+
+        // apply
+        preferencesBot.clickOkButton();
+
+        // verify passwords keystore file was deleted
+        assertFalse( file.exists() );
+        assertFalse( passwordsKeyStoreManager.isLoaded() );
+
+        // verify connection can be opened and connections password was kept
+        connectionsViewBot.selectConnection( connection.getName() );
+        connectionsViewBot.openSelectedConnection();
+        connectionsViewBot.closeSelectedConnections();
     }
 
 }
