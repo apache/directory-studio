@@ -58,9 +58,7 @@
         class="org.apache.directory.studio.valueeditors.certificate.CertificateValueEditor"
         icon="resources/icons/certificateeditor.png"
         name="%ValueEditor_CertificateValueEditor_name">
-      <attribute attributeType="userCertificate"/>
       <attribute attributeType="nDSPKIPublicKeyCertificate"/>
-      <attribute attributeType="cACertificate"/>
       <attribute attributeType="ndsCrossCertificatePair"/>
     </valueEditor>
     

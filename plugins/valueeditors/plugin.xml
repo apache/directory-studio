@@ -130,6 +130,9 @@
         icon="resources/icons/certificateeditor.png"
         name="%ValueEditor_CertificateValueEditor_name">
       <syntax syntaxOID="1.3.6.1.4.1.1466.115.121.1.8"/>
+      <!-- required for at least Active Directory, Edirectory and Sun DSEE -->
+      <attribute attributeType="userCertificate"/>
+      <attribute attributeType="cACertificate"/>
     </valueEditor>
 
     <valueEditor
