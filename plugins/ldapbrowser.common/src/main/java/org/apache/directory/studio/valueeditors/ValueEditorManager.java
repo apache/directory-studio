@@ -24,6 +24,7 @@ package org.apache.directory.studio.valueeditors;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -682,7 +683,7 @@ public class ValueEditorManager
      */
     public static Collection<ValueEditorExtension> getValueEditorExtensions()
     {
-        Collection<ValueEditorExtension> valueEditorExtensions = new ArrayList<ValueEditorExtension>();
+        Map<String, ValueEditorExtension> valueEditorExtensions = new LinkedHashMap<>();
 
         IExtensionRegistry registry = Platform.getExtensionRegistry();
         IExtensionPoint extensionPoint = registry.getExtensionPoint( EXTENSION_POINT );
@@ -691,30 +692,45 @@ public class ValueEditorManager
         // For each extension:
         for ( IConfigurationElement member : members )
         {
-            ValueEditorExtension proxy = new ValueEditorExtension();
-            valueEditorExtensions.add( proxy );
-
-            IExtension extension = member.getDeclaringExtension();
-            String extendingPluginId = extension.getNamespaceIdentifier();
-
-            proxy.member = member;
-            proxy.name = member.getAttribute( NAME );
+            String className = member.getAttribute( CLASS );
+            String name = member.getAttribute( NAME );
             String iconPath = member.getAttribute( ICON );
-            proxy.icon = AbstractUIPlugin.imageDescriptorFromPlugin( extendingPluginId, iconPath );
-            
-            if ( proxy.icon == null )
+
+            ValueEditorExtension proxy;
+            if ( valueEditorExtensions.containsKey( className ) )
             {
-                proxy.icon = ImageDescriptor.getMissingImageDescriptor();
+                proxy = valueEditorExtensions.get( className );
             }
-            
-            proxy.className = member.getAttribute( CLASS );
+            else
+            {
+                proxy = new ValueEditorExtension();
+                proxy.className = className;
+                proxy.member = member;
+                valueEditorExtensions.put( className, proxy );
+            }
+
+            if ( name != null )
+            {
+                proxy.name = name;
+            }
+
+            if ( iconPath != null )
+            {
+                IExtension extension = member.getDeclaringExtension();
+                String extendingPluginId = extension.getNamespaceIdentifier();
+                proxy.icon = AbstractUIPlugin.imageDescriptorFromPlugin( extendingPluginId, iconPath );
+                if ( proxy.icon == null )
+                {
+                    proxy.icon = ImageDescriptor.getMissingImageDescriptor();
+                }
+            }
 
             IConfigurationElement[] children = member.getChildren();
-            
+
             for ( IConfigurationElement child : children )
             {
                 String type = child.getName();
-                
+
                 if ( SYNTAX.equals( type ) )
                 {
                     String syntaxOID = child.getAttribute( SYNTAX_OID );
@@ -728,7 +744,7 @@ public class ValueEditorManager
             }
         }
 
-        return valueEditorExtensions;
+        return valueEditorExtensions.values();
     }
 
     /**

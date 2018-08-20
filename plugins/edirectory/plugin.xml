@@ -24,9 +24,7 @@
         point="org.apache.directory.studio.valueeditors">
         
     <valueEditor
-        class="org.apache.directory.studio.valueeditors.TextValueEditor"
-        icon="resources/icons/texteditor.gif"
-        name="%ValueEditors_TextValueEditor_name">
+        class="org.apache.directory.studio.valueeditors.TextValueEditor">
       <attribute attributeType="DirXML-ApplicationSchema"/>
       <attribute attributeType="DirXML-ConfigManifest"/>
       <attribute attributeType="DirXML-ConfigValues"/>
@@ -48,24 +46,18 @@
     </valueEditor>
     
     <valueEditor
-        class="org.apache.directory.studio.valueeditors.image.ImageValueEditor"
-        icon="resources/icons/imageeditor.gif"
-        name="%ValueEditor_ImageValueEditor_name">
+        class="org.apache.directory.studio.valueeditors.image.ImageValueEditor">
       <attribute attributeType="DirXML-DriverImage"/>
     </valueEditor>
     
     <valueEditor
-        class="org.apache.directory.studio.valueeditors.certificate.CertificateValueEditor"
-        icon="resources/icons/certificateeditor.png"
-        name="%ValueEditor_CertificateValueEditor_name">
+        class="org.apache.directory.studio.valueeditors.certificate.CertificateValueEditor">
       <attribute attributeType="nDSPKIPublicKeyCertificate"/>
       <attribute attributeType="ndsCrossCertificatePair"/>
     </valueEditor>
     
     <valueEditor
-        class="org.apache.directory.studio.valueeditors.uuid.InPlaceUuidValueEditor"
-        icon="resources/icons/entryuuideditor.gif"
-        name="%ValueEditor_InPlaceEntryUUIDValueEditor_name">
+        class="org.apache.directory.studio.valueeditors.uuid.InPlaceUuidValueEditor">
       <attribute attributeType="GUID"/>
     </valueEditor>
     
