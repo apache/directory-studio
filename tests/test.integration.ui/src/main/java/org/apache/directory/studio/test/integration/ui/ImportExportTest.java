@@ -283,7 +283,6 @@ public class ImportExportTest extends AbstractLdapTestUnit
 
         URL url = Platform.getInstanceLocation().getURL();
         final String file = url.getFile() + "ImportExportTest.csv";
-        System.out.println( file );
 
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Wolfgang K\u00f6lbel" );
 

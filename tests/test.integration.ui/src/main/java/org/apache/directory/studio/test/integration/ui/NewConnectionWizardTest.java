@@ -428,7 +428,6 @@ public class NewConnectionWizardTest extends AbstractLdapTestUnit
 
         // click "Check Network Parameter" button and get the result
         String result2 = wizardBot.clickCheckNetworkParameterButton();
-        System.out.println( result2 );
         assertNotNull( "Expected Error", result2 );
         // LDAP API: could not be resolved
         // JNDI: The connection failed
