@@ -143,11 +143,87 @@ public abstract class LdifLineBase implements LdifPart
 
     protected static String unfold( String s )
     {
-        s = s.replaceAll( "\n\r ", "" ); //$NON-NLS-1$ //$NON-NLS-2$
-        s = s.replaceAll( "\r\n ", "" ); //$NON-NLS-1$ //$NON-NLS-2$
-        s = s.replaceAll( "\n ", "" ); //$NON-NLS-1$ //$NON-NLS-2$
-        s = s.replaceAll( "\r ", "" ); //$NON-NLS-1$ //$NON-NLS-2$
-        return s;
+        char[] newString = s.toCharArray();
+        int pos = 0;
+        int length = newString.length;
+        
+        for ( int i = 0; i < length; i++ )
+        {
+            char c = newString[ i ];
+            
+            if ( c == '\n' )
+            {
+                if ( i + 1 < length )
+                {
+                    switch ( newString[ i + 1 ] )
+                    {
+                        case ' ' :
+                            i++;
+                            break;
+                            
+                        case '\r' :
+                            if ( ( i + 2 < length ) && ( newString[ i + 2 ] == ' ' ) )
+                            {
+                                i += 2;
+                            }
+                            else
+                            {
+                                newString[pos++] = c;
+                                newString[pos++] = '\r';
+                            }
+                            
+                            break;
+                            
+                        default :
+                            newString[pos++] = c;
+                            break;
+                    }
+                }
+                else
+                {
+                    newString[pos++] = c;
+                }
+            }
+            else if ( c == '\r' )
+            {
+                if ( i + 1 < length )
+                {
+                    switch ( newString[ i + 1 ] )
+                    {
+                        case ' ' :
+                            i++;
+                            break;
+                            
+                        case '\n' :
+                            if ( ( i + 2 < length ) && ( newString[ i + 2 ] == ' ' ) )
+                            {
+                                i += 2;
+                            }
+                            else
+                            {
+                                newString[pos++] = c;
+                                newString[pos++] = '\n';
+                            }
+                            
+                            break;
+                            
+                        default :
+                            newString[pos++] = c;
+                            break;
+                    }
+                }
+                else
+                {
+                    newString[pos++] = c;
+                }
+            }
+            else
+            {
+                newString[pos++] = c;
+            }
+        }
+        
+        return new String( newString, 0, pos );
     }
 
 
