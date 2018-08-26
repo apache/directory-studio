@@ -157,18 +157,7 @@ public class SchemaUtils
     {
         public int compare( String s1, String s2 )
         {
-            if ( s1.matches( "[0-9\\.]+" ) && !s2.matches( "[0-9\\.]+" ) ) //$NON-NLS-1$ //$NON-NLS-2$
-            {
-                return 1;
-            }
-            else if ( !s1.matches( "[0-9\\.]+" ) && s2.matches( "[0-9\\.]+" ) ) //$NON-NLS-1$ //$NON-NLS-2$
-            {
-                return -1;
-            }
-            else
-            {
-                return s1.compareToIgnoreCase( s2 );
-            }
+            return s1.compareToIgnoreCase( s2 );
         }
     };
 
