@@ -37,7 +37,9 @@ public class ReferralDialogBot extends DialogBot
 
     public void clickOkButton()
     {
-        JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__init_entries_title_subonly );
+        JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__init_entries_title_subonly,
+            BrowserCoreMessages.jobs__init_entries_title_attonly,
+            BrowserCoreMessages.jobs__create_entry_name_1 );
         super.clickOkButton();
         watcher.waitUntilDone();
     }

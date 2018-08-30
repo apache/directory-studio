@@ -90,7 +90,7 @@ public class NewEntryWizardBot extends WizardBot
     public void typeValueAndFinish( String value )
     {
         widgetBot.isVisisble();
-        widgetBot.typeValueAndFinish( value );
+        widgetBot.typeValueAndFinish( value, false );
     }
 
 

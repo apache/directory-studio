@@ -79,7 +79,7 @@ public class EntryEditorBot
 
     public void typeValueAndFinish( String value )
     {
-        editorBot.typeValueAndFinish( value );
+        editorBot.typeValueAndFinish( value, true );
     }
 
 

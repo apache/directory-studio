@@ -70,10 +70,10 @@ class BrowserWidgetBot
     }
 
 
-    void selectEntry( String... path )
+    void selectEntry( boolean wait, String... path )
     {
         SWTBotTreeItem entry = getEntry( true, path );
-        select( entry );
+        select( entry, wait );
     }
 
 
@@ -87,7 +87,7 @@ class BrowserWidgetBot
     ReferralDialogBot selectEntryExpectingReferralDialog( String... path )
     {
         SWTBotTreeItem entry = getEntry( true, path );
-        select( entry );
+        select( entry, false );
         return new ReferralDialogBot();
     }
 
@@ -172,15 +172,6 @@ class BrowserWidgetBot
             {
                 public boolean test() throws Exception
                 {
-                    //                    if ( nextNode != null )
-                    //                    {
-                    //                        String adjustedNodeName = nextNode != null ? adjustNodeName( entry, nextNode ) : null;
-                    //                        SWTBotTreeItem node = entry.getNode( adjustedNodeName );
-                    //                        if ( node == null )
-                    //                        {
-                    //                            return false;
-                    //                        }
-                    //                    }
                     return !entry.getNodes().contains( "Fetching Entries..." )
                         && !entry.getNodes().contains( "Opening Connection..." );
                 }
@@ -195,16 +186,25 @@ class BrowserWidgetBot
     }
 
 
-    private void select( final SWTBotTreeItem entry )
+    private void select( final SWTBotTreeItem entry, boolean wait )
     {
         if ( !bot.tree().isEnabled() )
         {
             bot.waitUntil( Conditions.widgetIsEnabled( bot.tree() ) );
         }
-        JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__init_entries_title_attonly );
-        entry.click();
-        entry.select();
-        watcher.waitUntilDone();
+        if ( wait )
+        {
+            JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__init_entries_title_attonly,
+                "Open Entry Editor" );
+            entry.click();
+            entry.select();
+            watcher.waitUntilDone();
+        }
+        else
+        {
+            entry.click();
+            entry.select();
+        }
     }
 
 

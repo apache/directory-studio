@@ -21,6 +21,9 @@
 package org.apache.directory.studio.connection.ui;
 
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
@@ -46,17 +49,22 @@ import org.eclipse.ui.PlatformUI;
  */
 public class RunnableContextRunner
 {
+    private static List<Listener> listeners = new LinkedList<>();
+
+
     private RunnableContextRunner()
     {
         // Nothing to do
     }
-    
+
+
     /**
      * Executes the given job within the given runnable context.
      * 
      * @param runnable the runnable to execute
      * @param runnableContext the runnable context or null to create a progress monitor dialog
      * @param handleError true to handle errors
+     * @return the status
      */
     public static IStatus execute( final StudioConnectionRunnableWithProgress runnable,
         IRunnableContext runnableContext, boolean handleError )
@@ -166,6 +174,34 @@ public class RunnableContextRunner
             ConnectionUIPlugin.getDefault().getExceptionHandler().handleException( status );
         }
 
+        notifyDone( runnable, status );
         return status;
     }
+
+    public interface Listener
+    {
+        void done( StudioConnectionRunnableWithProgress runnable, IStatus status );
+    }
+
+
+    public synchronized static void addListener( Listener listener )
+    {
+        listeners.add( listener );
+    }
+
+
+    public synchronized static void removeListener( Listener listener )
+    {
+        listeners.remove( listener );
+    }
+
+
+    public synchronized static void notifyDone( StudioConnectionRunnableWithProgress runnable, IStatus status )
+    {
+        for ( Listener listener : listeners )
+        {
+            listener.done( runnable, status );
+        }
+    }
+
 }

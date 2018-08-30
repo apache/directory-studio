@@ -56,7 +56,9 @@ public class BrowserViewBot
 
     public void selectEntry( String... path )
     {
-        browserBot.selectEntry( path );
+        boolean wait = !"Quick Search".equals( path[path.length - 1] )
+            && !"Searches".equals( path[0] );
+        browserBot.selectEntry( wait, path );
     }
 
 
@@ -74,9 +76,7 @@ public class BrowserViewBot
 
     public void expandEntry( String... path )
     {
-        JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__init_entries_title_subonly );
         browserBot.expandEntry( path );
-        watcher.waitUntilDone();
     }
 
 

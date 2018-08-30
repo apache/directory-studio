@@ -20,12 +20,20 @@
 package org.apache.directory.studio.test.integration.ui.bots.utils;
 
 
+import java.time.Instant;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.apache.directory.studio.common.core.jobs.StudioJob;
+import org.apache.directory.studio.connection.core.jobs.StudioConnectionRunnableWithProgress;
+import org.apache.directory.studio.connection.ui.RunnableContextRunner;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.IJobManager;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
+import org.eclipse.jface.operation.ModalContext;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
@@ -41,9 +49,17 @@ public class JobWatcher
 {
 
     private final AtomicBoolean done = new AtomicBoolean();
-    private final IJobManager jobManager = Job.getJobManager();
-    private final JobChangeAdapter listener;
-    private final String jobName;
+    private final IJobManager jobManager = StudioJob.getJobManager();
+    private final JobChangeAdapter jobChangeListener;
+    private final RunnableContextRunner.Listener runnnableContextRunnerListener;
+    private final List<String> jobNames;
+
+
+    private void removeListeners()
+    {
+        jobManager.removeJobChangeListener( jobChangeListener );
+        RunnableContextRunner.removeListener( runnnableContextRunnerListener );
+    }
 
 
     /**
@@ -51,26 +67,51 @@ public class JobWatcher
      *
      * @param jobName the name of the watched job
      */
-    public JobWatcher( final String jobName )
+    public JobWatcher( final String... jobNames )
     {
-        this.jobName = jobName;
+        this.jobNames = Arrays.asList( jobNames );
+        // System.out.println( "Init for jobs: " + this.jobNames );
 
         // register a job listener that checks if the job is finished
-        listener = new JobChangeAdapter()
+        jobChangeListener = new JobChangeAdapter()
         {
 
             public void done( IJobChangeEvent event )
             {
+                // System.out.println( "Done called: event=" + event.getJob().getName() );
                 // if the done job has the expected name we are done
-                if ( event.getJob().getName().startsWith( jobName ) )
+                for ( String jobName : jobNames )
                 {
-                    done.set( true );
-                    jobManager.removeJobChangeListener( listener );
+                    if ( event.getJob().getName().startsWith( jobName ) )
+                    {
+                        // System.out.println( "Done done: " + jobName );
+                        done.set( true );
+                        removeListeners();
+                    }
                 }
             }
 
         };
-        jobManager.addJobChangeListener( listener );
+        jobManager.addJobChangeListener( jobChangeListener );
+
+        runnnableContextRunnerListener = new RunnableContextRunner.Listener()
+        {
+            @Override
+            public void done( StudioConnectionRunnableWithProgress runnable, IStatus status )
+            {
+                // System.out.println( "Done called: runnable=" + runnable.getName() );
+                for ( String jobName : jobNames )
+                {
+                    if ( runnable.getName().startsWith( jobName ) )
+                    {
+                        // System.out.println( "Done done: " + jobName );
+                        done.set( true );
+                        removeListeners();
+                    }
+                }
+            }
+        };
+        RunnableContextRunner.addListener( runnnableContextRunnerListener );
     }
 
 
@@ -79,6 +120,8 @@ public class JobWatcher
      */
     public void waitUntilDone()
     {
+        // System.out.println( "Wait for jobs: " + jobNames );
+        Instant start = Instant.now();
         SWTBot bot = new SWTBot();
         bot.waitUntil( new DefaultCondition()
         {
@@ -87,24 +130,8 @@ public class JobWatcher
             {
                 if ( done.get() )
                 {
-                    return true;
-                }
-
-                // fallback test to check if the expected job
-                // is scheduled at all, otherwise we assume it is done.
-                boolean running = false;
-                Job[] find = jobManager.find( null );
-                for ( Job job : find )
-                {
-                    if ( job.getName().startsWith( jobName ) )
-                    {
-                        running = true;
-                        break;
-                    }
-                }
-                if ( !running )
-                {
-                    jobManager.removeJobChangeListener( listener );
+                    // System.out.println( "Done is true: " + jobNames );
+                    removeListeners();
                     return true;
                 }
 
@@ -114,7 +141,8 @@ public class JobWatcher
 
             public String getFailureMessage()
             {
-                return "Job run too long";
+                removeListeners();
+                return "Waited for jobs " + jobNames + " to finish";
             }
         }, SWTBotPreferences.TIMEOUT * 2 );
     }

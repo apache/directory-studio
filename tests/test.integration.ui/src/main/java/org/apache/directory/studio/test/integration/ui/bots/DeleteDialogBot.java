@@ -19,6 +19,8 @@
  */
 package org.apache.directory.studio.test.integration.ui.bots;
 
+
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
 
 
@@ -38,9 +40,21 @@ public class DeleteDialogBot extends DialogBot
 
     public void clickOkButton()
     {
-        JobWatcher watcher = new JobWatcher( title );
+        JobWatcher watcher = new JobWatcher( getJobWatcherTitle( title ) );
         super.clickOkButton();
         watcher.waitUntilDone();
+    }
+
+
+    private String getJobWatcherTitle( String dialogTitle )
+    {
+        switch ( dialogTitle )
+        {
+            case DELETE_VALUE_TITLE:
+                return BrowserCoreMessages.jobs__execute_ldif_name;
+            default:
+                return dialogTitle;
+        }
     }
 
 

@@ -77,15 +77,22 @@ class EntryEditorWidgetBot
     }
 
 
-    void typeValueAndFinish( String value )
+    void typeValueAndFinish( String value, boolean wait )
     {
         SWTBotPreferences.KEYBOARD_LAYOUT = "org.eclipse.swtbot.swt.finder.keyboard.EN_US";
         SWTBotText text = bot.text( 1 );
         text.setText( value );
 
-        JobWatcher jobWatcher = new JobWatcher( BrowserCoreMessages.jobs__execute_ldif_name );
-        bot.tree().pressShortcut( Keystrokes.LF );
-        jobWatcher.waitUntilDone();
+        if ( wait )
+        {
+            JobWatcher jobWatcher = new JobWatcher( BrowserCoreMessages.jobs__execute_ldif_name );
+            bot.tree().pressShortcut( Keystrokes.LF );
+            jobWatcher.waitUntilDone();
+        }
+        else
+        {
+            bot.tree().pressShortcut( Keystrokes.LF );
+        }
     }
 
 

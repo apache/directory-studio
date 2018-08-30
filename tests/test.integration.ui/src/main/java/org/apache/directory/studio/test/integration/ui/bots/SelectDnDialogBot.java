@@ -35,7 +35,7 @@ public class SelectDnDialogBot extends DialogBot
 
     public void selectEntry( String... path )
     {
-        browserBot.selectEntry( path );
+        browserBot.selectEntry( false, path );
     }
 
 }
