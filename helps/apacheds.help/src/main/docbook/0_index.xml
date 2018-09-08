@@ -18,7 +18,6 @@
   <!ENTITY tasks_editing_configuration SYSTEM "2.4_editing_configuration.xml">
   <!ENTITY tasks_deleting_server SYSTEM "2.5_deleting_server.xml">
   <!ENTITY reference SYSTEM "3_reference.xml">
-  <!ENTITY releasenotes SYSTEM "4_releasenotes.xml">
 
 ]>
 <!--
@@ -74,6 +73,5 @@
 	&gettingstarted;
 	&tasks;
 	&reference;
-	&releasenotes;
 
 </book>

@@ -74,8 +74,6 @@
   <!ENTITY tasks SYSTEM "3_tasks.xml">
   <!ENTITY reference SYSTEM "4_reference.xml">
   <!ENTITY tipsntricks SYSTEM "5_tipsntricks.xml">
-  <!ENTITY whats_new SYSTEM "6_whats_new.xml">
-  <!ENTITY release_notes SYSTEM "7_release_notes.xml">
   
 ]>
 
@@ -135,7 +133,5 @@
 	&tasks;
 	&reference;
 	&tipsntricks;
-	&whats_new;
-	&release_notes;
 
 </book>

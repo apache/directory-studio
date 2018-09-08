@@ -34,8 +34,6 @@
   <!ENTITY reference_hierarchy_view_preferences SYSTEM "3.1.1_hierarchy_view_preferences.xml">
   <!ENTITY reference_schema_view_preferences SYSTEM "3.1.2_schema_view_preferences.xml">
   <!ENTITY reference_search_view_preferences SYSTEM "3.1.3_search_view_preferences.xml">
-  <!ENTITY whats_new SYSTEM "4_whats_new.xml">
-  <!ENTITY release_notes SYSTEM "5_release_notes.xml">
 
 ]>
 <!--
@@ -90,7 +88,5 @@
 	&gettingstarted;
 	&tasks;
 	&reference;
-	&whats_new;
-	&release_notes;
 	
 </book>

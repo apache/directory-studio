@@ -6,8 +6,7 @@
   <!ENTITY tasks SYSTEM "2_tasks.xml">
   <!ENTITY running SYSTEM "2.1_running.xml">
   <!ENTITY updating SYSTEM "2.2_updating.xml">
-  <!ENTITY inspect_configuration SYSTEM "2.2.1_inspect_configuration.xml">
-  <!ENTITY enabling_disabling_uninstalling_features SYSTEM "2.2.2_enabling_disabling_uninstalling_features.xml">
+  <!ENTITY inspect_configuration SYSTEM "2.2.1_inspecting_configuration.xml">
   <!ENTITY reporting_a_bug SYSTEM "2.3_reporting_a_bug.xml">
   <!ENTITY reference SYSTEM "3_reference.xml">
   <!ENTITY preferences SYSTEM "3.1_preferences.xml">
@@ -18,9 +17,6 @@
   <!ENTITY help_content SYSTEM "3.1.3.1_help_content.xml">
   <!ENTITY install_update SYSTEM "3.1.4_install_update.xml">
   <!ENTITY automatic_updates SYSTEM "3.1.4.1_automatic_updates.xml">
-  <!ENTITY installed_jres SYSTEM "3.1.5_installed_jres.xml">
-  <!ENTITY whats_new SYSTEM "4_whats_new.xml">
-  <!ENTITY release_notes SYSTEM "5_release_notes.xml">
 
 ]>
 <!--
@@ -75,7 +71,5 @@
 	&gettingstarted;
 	&tasks;
 	&reference;
-	&whats_new;
-	&release_notes;
 
 </book>
