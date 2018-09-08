@@ -1,0 +1,14 @@
+version: 1
+
+dn: cn=U0034692,ou=users,ou=system
+sn: Doe
+displayName:: SsO2aG4gRG/DpGXDtg==
+givenName:: SsO2aG4gRG/DpGXDtg==
+objectClass: inetOrgPerson
+uid: MyTestUser
+description: account#oldUserID#ABC123
+description: person#homeEmailAddress#jhon.doe@apache.com
+description:: VGjDtmlzIMOlcyBhIHTDpHN0IHllcw==
+description: Initial import
+description: Good#Stuff
+

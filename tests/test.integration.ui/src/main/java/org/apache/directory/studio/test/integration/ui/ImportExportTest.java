@@ -46,6 +46,7 @@ import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.DeleteDialogBot;
+import org.apache.directory.studio.test.integration.ui.bots.EntryEditorBot;
 import org.apache.directory.studio.test.integration.ui.bots.ExportWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.ImportWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
@@ -303,4 +304,39 @@ public class ImportExportTest extends AbstractLdapTestUnit
             lines.get( 1 ) );
     }
 
+
+    /**
+     * Test for DIRSTUDIO-1160.
+     *
+     * Attributes silently dropped and not imported when import LDIF and provider is Apache Directory LDAP API.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testDIRSTUDIO_1160() throws Exception
+    {
+        URL url = Platform.getInstanceLocation().getURL();
+        String destFile = url.getFile() + "DIRSTUDIO-1160.ldif";
+        InputStream is = getClass().getResourceAsStream( "DIRSTUDIO-1160.ldif" );
+        String ldifContent = IOUtils.toString( is, StandardCharsets.UTF_8 );
+        FileUtils.writeStringToFile( new File( destFile ), ldifContent, StandardCharsets.UTF_8, false );
+
+        // import the LDIF
+        ImportWizardBot importWizardBot = browserViewBot.openImportLdifWizard();
+        importWizardBot.typeFile( destFile );
+        importWizardBot.clickFinishButton();
+
+        Thread.sleep( 10000 );
+        browserViewBot.waitForEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=U0034692" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=U0034692" );
+
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "cn=U0034692,ou=users,ou=system" );
+        entryEditorBot.activate();
+        assertTrue( entryEditorBot.getAttributeValues().contains( "description: Initial import" ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "description: Good#Stuff" ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "description: account#oldUserID#ABC123" ) );
+        assertTrue( entryEditorBot.getAttributeValues()
+            .contains( "description: person#homeEmailAddress#jhon.doe@apache.com" ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "description: Thöis ås a täst yes" ) );
+    }
 }
