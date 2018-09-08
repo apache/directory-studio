@@ -16,12 +16,14 @@
 # specific language governing permissions and limitations
 # under the License.
 
+set -e
+
 # Creating dmg and .background folders
 mkdir dmg
 mkdir -p dmg/.background
 
 # Copy the application
-cp -a ../../../product/target/products/org.apache.directory.studio.product/macosx/cocoa/x86_64/ApacheDirectoryStudio.app dmg/
+tar -xf ../../../product/target/products/ApacheDirectoryStudio-*-macosx.cocoa.x86_64.tar.gz -C dmg
 
 # Copy legal files
 cp dmg/ApacheDirectoryStudio.app/Contents/Eclipse/LICENSE dmg/
@@ -36,9 +38,12 @@ mv DS_Store dmg/.DS_Store
 # Creating symbolic link to Applications folder
 ln -s /Applications dmg/Applications
 
+# Codesign the App with the ASF key, and verify
+codesign --force --deep -s 2GLGAFWEQD dmg/ApacheDirectoryStudio.app
+codesign -dv --verbose=4 dmg/ApacheDirectoryStudio.app
+
 # Creating the disk image
-hdiutil create -srcfolder dmg/ -o TMP.dmg
-hdiutil makehybrid -hfs -hfs-volume-name "Apache Directory Studio" -hfs-openfolder dmg/ dmg/ -o TMP.dmg
+hdiutil create -srcfolder dmg/ -volname "ApacheDirectoryStudio" -o TMP.dmg
 hdiutil convert -format UDZO TMP.dmg -o ApacheDirectoryStudio-${version}-macosx.cocoa.x86_64.dmg
 
 # Cleaning
