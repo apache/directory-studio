@@ -326,7 +326,6 @@ public class ImportExportTest extends AbstractLdapTestUnit
         importWizardBot.typeFile( destFile );
         importWizardBot.clickFinishButton();
 
-        Thread.sleep( 10000 );
         browserViewBot.waitForEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=U0034692" );
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=U0034692" );
 
@@ -337,6 +336,6 @@ public class ImportExportTest extends AbstractLdapTestUnit
         assertTrue( entryEditorBot.getAttributeValues().contains( "description: account#oldUserID#ABC123" ) );
         assertTrue( entryEditorBot.getAttributeValues()
             .contains( "description: person#homeEmailAddress#jhon.doe@apache.com" ) );
-        assertTrue( entryEditorBot.getAttributeValues().contains( "description: Thöis ås a täst yes" ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "description: Th\u00f6is \u00e5s a t\u00e4st yes" ) );
     }
 }
