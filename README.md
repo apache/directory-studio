@@ -192,7 +192,7 @@ As long as the `org.apache.directory.studio.openldap.feature` is not ready for r
     mvn -f pom-first.xml clean install
     git checkout pom.xml
     mvn org.eclipse.tycho:tycho-versions-plugin:1.2.0:set-version -DnewVersion=$VERSION
-    git commit -m "Set version number for release $VERSION"
+    git commit -am "Set version number for release $VERSION"
     git push origin $VERSION-prepare
 
 #### Create the release tag
@@ -216,7 +216,7 @@ Run the actual release within a fresh checkout to ensure no previous build artif
 
 #### Close the staging Nexus repository
 
-See <https://repository.apache.org/#stagingRepositories>.
+See https://repository.apache.org/#stagingRepositories
 
 #### Package and sign distribution packages
 
@@ -240,7 +240,7 @@ Afterwards all distribution packages and user guides are located in `target`.
     svn co https://dist.apache.org/repos/dist/dev/directory/studio/$VERSION .
     svn add *
     svn commit -m "Add release $VERSION"
-    cd ../..
+    cd ../../..
 
 #### Upload the user guides to SVN
 
@@ -249,7 +249,7 @@ Afterwards all distribution packages and user guides are located in `target`.
     svn co https://svn.apache.org/repos/infra/websites/production/directory/content/studio/users-guide/$VERSION .
     svn add *
     svn commit -m "Add release $VERSION"
-    cd ../..
+    cd ../../..
 
 Note: This publishes the user guides directly to the production CMS!
 
