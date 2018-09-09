@@ -46,7 +46,7 @@ Build the main eclipse artifacts using Tycho
 
 #### Use the script  (which runs the two previous commands)
 
-On Linux / Mac OS X :
+On Linux / macOS :
 
     $ ./build.sh
 
@@ -136,7 +136,7 @@ We release the following artifacts:
 * Product archives and installers for
     * Linux GTK 32bit tar.gz
     * Linux GTK 64bit tar.gz
-    * Mac OS X 64bit dmg
+    * maxOS 64bit dmg
     * Windows 32bit exe installer and zip
     * Windows 64bit exe installer and zip
 * Userguides
@@ -147,10 +147,12 @@ We release the following artifacts:
 Update the copyright year, see <http://svn.apache.org/viewvc?rev=1807191&view=rev>
 for the list of files that need to be changed.
 
-Test the release build: rat check, javadoc and source jar generation, GPG signing, userguide generation
+Test the release build: rat check, javadoc and source jar generation, installer generation, GPG signing, userguide generation
 
     mvn -f pom-first.xml clean install
     mvn -Papache-release,windows,macos -Duserguides clean install
+
+Note: During creation of the macOS installer (DMG) the ApacheDirectoryStudio.app is signed with the ASF "Developer ID Application" key. See https://issues.apache.org/jira/browse/INFRA-16978 for the process to get one.
 
 Run UI tests (if possible on all platforms)
 
@@ -173,16 +175,10 @@ Define a variable for later use:
 
     export VERSION=2.0.0.v20150529-M9
 
-Also create an empty directory used during the release process and store it in a variable:
-
-    export RELEASE_DIR=$(pwd)
-
 #### Create and checkout branch
 
-    cd $RELEASE_DIR
-    svn copy https://svn.apache.org/repos/asf/directory/studio/trunk https://svn.apache.org/repos/asf/directory/studio/branches/$VERSION -m "Prepare release $VERSION"
-    svn checkout https://svn.apache.org/repos/asf/directory/studio/branches/$VERSION branch-$VERSION
-    cd branch-$VERSION
+    git checkout -b $VERSION-prepare
+    git push origin $VERSION-prepare
 
 #### Remove OpenLDAP feature
 
@@ -194,16 +190,24 @@ As long as the `org.apache.directory.studio.openldap.feature` is not ready for r
     find . -name pom-first.xml | xargs sed -i 's/2.0.0.qualifier/'$VERSION'/'
     sed -i 's/2.0.0-SNAPSHOT/'$VERSION'/' pom.xml
     mvn -f pom-first.xml clean install
-    svn revert pom.xml
-    mvn org.eclipse.tycho:tycho-versions-plugin:0.24.0:set-version -DnewVersion=$VERSION
-    svn commit -m "Set version number for release $VERSION"
+    git checkout pom.xml
+    mvn org.eclipse.tycho:tycho-versions-plugin:1.2.0:set-version -DnewVersion=$VERSION
+    git commit -m "Set version number for release $VERSION"
+    git push origin $VERSION-prepare
 
-#### Create and checkout tag
+#### Create the release tag
 
-    cd $RELEASE_DIR
-    svn copy https://svn.apache.org/repos/asf/directory/studio/branches/$VERSION https://svn.apache.org/repos/asf/directory/studio/tags/$VERSION -m "Tag release $VERSION"
-    svn checkout https://svn.apache.org/repos/asf/directory/studio/tags/$VERSION tag-$VERSION
-    cd tag-$VERSION
+    git tag $VERSION
+    git push origin $VERSION
+
+#### Clone the repo and checkout the tag into a fresh directory
+
+Run the actual release within a fresh checkout to ensure no previous build artifacts are used.
+
+    mkdir studio-release
+    cd studio-release
+    git clone https://gitbox.apache.org/repos/asf/directory-studio.git .
+    git checkout $VERSION
 
 #### Build the release and deploy to staging Nexus repository
 
@@ -227,15 +231,29 @@ Run the dist script:
     cd dist
     ./dist.sh
 
-Afterwards all distribution packages are located in `target`.
+Afterwards all distribution packages and user guides are located in `target`.
 
-#### Upload the artifacts to SVN
+#### Upload the distribution packages to SVN
 
-    cd target/$VERSION
+    cd target/dist/$VERSION
     svn mkdir https://dist.apache.org/repos/dist/dev/directory/studio/$VERSION -m "Create dev area for release $VERSION"
     svn co https://dist.apache.org/repos/dist/dev/directory/studio/$VERSION .
     svn add *
     svn commit -m "Add release $VERSION"
+    cd ../..
+
+#### Upload the user guides to SVN
+
+    cd target/ug/$VERSION
+    svn mkdir https://svn.apache.org/repos/infra/websites/production/directory/content/studio/users-guide/$VERSION -m "Create user guides area for release $VERSION"
+    svn co https://svn.apache.org/repos/infra/websites/production/directory/content/studio/users-guide/$VERSION .
+    svn add *
+    svn commit -m "Add release $VERSION"
+    cd ../..
+
+Note: This publishes the user guides directly to the production CMS!
+
+Also update the `content/extpaths.txt` and whitelist the new version.
 
 ### Call the vote
 
@@ -286,10 +304,6 @@ Add release to <https://reporter.apache.org/?directory>
 #### Send announce email
 
 Send the release announce email.
-
-#### User guides
-
-TODO
 
 #### Cleanup
 
