@@ -31,4 +31,8 @@
   <name>Apache Directory Studio Apache DS Help</name>
   <packaging>eclipse-plugin</packaging>
 
+  <properties>
+    <pdf.filename>Apache_Directory_Studio_Apache_DS_User_Guide.pdf</pdf.filename>
+  </properties>
+
 </project>

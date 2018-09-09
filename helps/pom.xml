@@ -227,7 +227,7 @@
                       <outputproperty name="encoding" value="iso8859_1" />
                       <outputproperty name="indent" value="es" />
                     </xslt>
-                    <fop format="application/pdf" basedir="target/pdf" fofile="target/pdf/${project.artifactId}.fo" outfile="target/pdf/${project.name}.pdf" />
+                    <fop format="application/pdf" basedir="target/pdf" fofile="target/pdf/${project.artifactId}.fo" outfile="target/pdf/${pdf.filename}" />
 
                     <!-- Create HTML -->
                     <xslt in="target/docbook/documents/0_index.xml" out="target/html/index.html" style="target/docbook/docbook-xsl/html/chunk.xsl">
