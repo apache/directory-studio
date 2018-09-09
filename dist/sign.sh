@@ -27,7 +27,7 @@ if [ -z "$RELEASE_KEY" ]; then
     echo ""
 fi
 
-for FILE in $(find . -maxdepth 2 -not '(' -name "sign.sh" -or -name ".*" -or -name "*.md5" -or -name "*.sha1" -or -name "*.asc" ')' -and -type f) ; do
+for FILE in $(find . -maxdepth 2 -not '(' -name "sign.sh" -or -name ".*" -or -name "*.sha256" -or -name "*.sha512" -or -name "*.asc" ')' -and -type f) ; do
     if [ -f "$FILE.asc" ]; then
         echo "Skipping: $FILE"
         continue
@@ -35,24 +35,24 @@ for FILE in $(find . -maxdepth 2 -not '(' -name "sign.sh" -or -name ".*" -or -na
 
     echo "Signing: $FILE ... "
 
-    # MD5
-    if [ ! -f "$FILE.md5" ];
+    # SHA256
+    if [ ! -f "$FILE.sha256" ];
     then
-        openssl md5 < "$FILE" | cut "-d " -f2 > "$FILE.md5"
-        echo "  - Generated '$FILE.md5'"
+        gpg --default-key "$RELEASE_KEY" --print-md SHA256 "$FILE" > "$FILE".sha256
+        echo "  - Generated '$FILE.sha256'"
     else
-        echo "  - Skipped '$FILE.md5' (file already existing)"
+        echo "  - Skipped '$FILE.sha256' (file already existing)"
     fi
 
-    # SHA1
-    if [ ! -f "$FILE.sha1" ];
+    # SHA512
+    if [ ! -f "$FILE.sha512" ];
     then
-        gpg --default-key "$RELEASE_KEY" --print-md SHA1 "$FILE" > "$FILE".sha1
-        echo "  - Generated '$FILE.sha1'"
+        gpg --default-key "$RELEASE_KEY" --print-md SHA512 "$FILE" > "$FILE".sha512
+        echo "  - Generated '$FILE.sha512'"
     else
-        echo "  - Skipped '$FILE.sha1' (file already existing)"
+        echo "  - Skipped '$FILE.sha512' (file already existing)"
     fi
- 
+
     # ASC
     if [ ! -f "$FILE.asc" ];
     then
