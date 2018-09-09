@@ -55,6 +55,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Preferences;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -312,6 +313,7 @@ public class ImportExportTest extends AbstractLdapTestUnit
      *
      * @throws Exception
      */
+    @Ignore
     @Test
     public void testDIRSTUDIO_1160() throws Exception
     {
