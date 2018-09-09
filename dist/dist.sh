@@ -36,7 +36,7 @@ fi
 
 echo
 echo "### Creating dist folder"
-DIST_DIR=${TARGET_DIR}/${VERSION}
+DIST_DIR=${TARGET_DIR}/dist/${VERSION}
 mkdir -p ${DIST_DIR}
 
 
@@ -88,7 +88,7 @@ sh ${WORK_DIR}/sign.sh
 
 echo
 echo "### Copying update sites"
-UPDATE_SITE_DIR=${TARGET_DIR}/${VERSION}/update
+UPDATE_SITE_DIR=${DIST_DIR}/update
 mkdir -p ${UPDATE_SITE_DIR}
 cd ${WORK_DIR}
 cp -a ../p2repositories/dependencies/target/repository ${UPDATE_SITE_DIR}/dependencies
@@ -102,6 +102,31 @@ sh ${WORK_DIR}/sign.sh
 cd ${UPDATE_SITE_DIR}/eclipse
 sh ${WORK_DIR}/sign.sh
 #zip -r ${DIST_DIR}/ApacheDirectoryStudio-${VERSION}-p2repository.zip *
+
+
+echo
+echo "### Creating user's guide folder"
+UG_DIR=${TARGET_DIR}/ug/${VERSION}
+mkdir -p ${UG_DIR}
+
+echo
+echo "### Copying user's guide files"
+cd ${WORK_DIR}
+mkdir -p ${UG_DIR}/apache_directory_studio
+cp ../helps/rcp.help/target/pdf/*.pdf ${UG_DIR}/
+cp  -a ../helps/rcp.help/target/html/* ${UG_DIR}/apache_directory_studio/
+mkdir -p ${UG_DIR}/apacheds
+cp ../helps/apacheds.help/target/pdf/*.pdf ${UG_DIR}/
+cp  -a ../helps/apacheds.help/target/html/* ${UG_DIR}/apacheds
+mkdir -p ${UG_DIR}/ldap_browser
+cp ../helps/ldapbrowser.help/target/pdf/*.pdf ${UG_DIR}/
+cp  -a ../helps/ldapbrowser.help/target/html/* ${UG_DIR}/ldap_browser
+mkdir -p ${UG_DIR}/ldif_editor
+cp ../helps/ldifeditor.help/target/pdf/*.pdf ${UG_DIR}/
+cp  -a ../helps/ldifeditor.help/target/html/* ${UG_DIR}/ldif_editor
+mkdir -p ${UG_DIR}/schema_editor
+cp ../helps/schemaeditor.help/target/pdf/*.pdf ${UG_DIR}/
+cp  -a ../helps/schemaeditor.help/target/html/* ${UG_DIR}/schema_editor
 
 
 echo
