@@ -23,6 +23,7 @@ package org.apache.directory.studio.ldifparser.parser;
 
 import junit.framework.TestCase;
 
+import org.apache.directory.studio.ldifparser.LdifFormatParameters;
 import org.apache.directory.studio.ldifparser.model.LdifFile;
 
 
@@ -37,6 +38,48 @@ public class LdifParserTest extends TestCase
         LdifFile model = parser.parse( ldif );
 
         assertEquals( 0, model.getRecords().length );
+    }
+
+
+    public void testParseAndFormatWithLdifWindowsLineBreak()
+    {
+        String ldif = ""
+            + "dn: cn=foo,ou=users,ou=system\r\n"
+            + "cn: foo\r\n"
+            + "description: 12345678901234567890123456789012345678901234567890123456789012345\r\n"
+            + " 678901234567890\r\n"
+            + "description:: MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4\r\n"
+            + " OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTAK\r\n";
+
+        LdifParser parser = new LdifParser();
+        LdifFile model = parser.parse( ldif );
+
+        assertEquals( 1, model.getRecords().length );
+
+        LdifFormatParameters formatParameters = new LdifFormatParameters( true, 78, "\r\n" );
+        String formatted = model.toFormattedString( formatParameters );
+        assertEquals( ldif, formatted );
+    }
+
+
+    public void testParseAndFormatWithLdifUnixLineBreak()
+    {
+        String ldif = ""
+            + "dn: cn=foo,ou=users,ou=system\n"
+            + "cn: foo\n"
+            + "description: 12345678901234567890123456789012345678901234567890123456789012345\n"
+            + " 678901234567890\n"
+            + "description:: MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4\n"
+            + " OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTAK\n";
+
+        LdifParser parser = new LdifParser();
+        LdifFile model = parser.parse( ldif );
+
+        assertEquals( 1, model.getRecords().length );
+
+        LdifFormatParameters formatParameters = new LdifFormatParameters( true, 78, "\n" );
+        String formatted = model.toFormattedString( formatParameters );
+        assertEquals( ldif, formatted );
     }
 
 }

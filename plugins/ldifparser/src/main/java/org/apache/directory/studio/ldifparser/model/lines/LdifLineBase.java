@@ -170,6 +170,7 @@ public abstract class LdifLineBase implements LdifPart
                             {
                                 newString[pos++] = c;
                                 newString[pos++] = '\r';
+                                i++;
                             }
                             
                             break;
@@ -203,6 +204,7 @@ public abstract class LdifLineBase implements LdifPart
                             {
                                 newString[pos++] = c;
                                 newString[pos++] = '\n';
+                                i++;
                             }
                             
                             break;
