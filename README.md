@@ -292,10 +292,13 @@ Update news and download links
 * `content/index.mdtext`: version string
 * `content/studio/changelog.mdtext`
 * `content/studio/news.mdtext`
+* `content/studio/users-guide.mdtext`
 
 #### Eclipse Marketplace
 
 Update entry in Eclipse Marketplace: <https://marketplace.eclipse.org/content/apache-directory-studio>
+
+Also test to install the plugins from marketplace.
 
 #### Update Apache Reporter
 
