@@ -48,7 +48,7 @@
         <configuration>
           <filesets>
             <fileset>
-              <directory>${basedir}/META-INF</directory>
+              <directory>${project.basedir}/META-INF</directory>
             </fileset>
           </filesets>
         </configuration>
@@ -85,14 +85,14 @@
               <outputDirectory>${project.build.outputDirectory}</outputDirectory>
               <resources>
                 <resource>
-                  <directory>${basedir}/../..</directory>
+                  <directory>${project.basedir}/..</directory>
                   <includes>
                     <include>LICENSE</include>
                     <include>NOTICE</include>
                   </includes>
                 </resource>
                 <resource>
-                  <directory>${basedir}/..</directory>
+                  <directory>${project.basedir}/..</directory>
                   <includes>
                     <include>p2.index</include>
                   </includes>
