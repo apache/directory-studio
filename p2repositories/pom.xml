@@ -40,6 +40,10 @@
   </modules>
 
   <build>
+    <!--
+    Note: the plugins defined here are meant to be executed within the sub-modules only.
+    Hence some ../ in the configuration. They are configured here to avoid duplication.
+    -->
     <plugins>
       <!-- Clean META-INF directory with legal files -->
       <plugin>
@@ -69,37 +73,29 @@
         </configuration>
       </plugin>
 
-      <!-- Include LICENSE.txt, NOTICE.txt, and p2.index files in P2 repositories -->
+      <!-- Include LICENSE, NOTICE, and p2.index files in P2 repositories -->
       <!-- Don't add META-INF/LICENSE and META-INF/NOTICE into P2 repositories -->
       <plugin>
         <artifactId>maven-resources-plugin</artifactId>
+        <configuration>
+          <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+          <resources>
+            <resource>
+              <directory>${project.basedir}/../..</directory>
+              <includes>
+                <include>LICENSE</include>
+                <include>NOTICE</include>
+              </includes>
+            </resource>
+            <resource>
+              <directory>${project.basedir}/..</directory>
+              <includes>
+                <include>p2.index</include>
+              </includes>
+            </resource>
+          </resources>
+        </configuration>
         <executions>
-          <execution>
-            <id>copy-resources</id>
-            <phase>generate-resources</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <inherited>true</inherited>
-            <configuration>
-              <outputDirectory>${project.build.outputDirectory}</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>${project.basedir}/..</directory>
-                  <includes>
-                    <include>LICENSE</include>
-                    <include>NOTICE</include>
-                  </includes>
-                </resource>
-                <resource>
-                  <directory>${project.basedir}/..</directory>
-                  <includes>
-                    <include>p2.index</include>
-                  </includes>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
           <execution>
             <id>default-resources</id>
             <phase>none</phase>
