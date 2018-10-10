@@ -223,7 +223,6 @@ public class SearchResultEditor extends EditorPart implements INavigationLocatio
     public void createPartControl( Composite parent )
     {
         Composite composite = new Composite( parent, SWT.NONE );
-        composite.setLayoutData( new GridData( GridData.FILL_BOTH ) );
         GridLayout layout = new GridLayout();
         layout.marginWidth = 0;
         layout.marginHeight = 0;

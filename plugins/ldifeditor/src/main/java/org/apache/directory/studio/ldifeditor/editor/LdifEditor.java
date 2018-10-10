@@ -471,7 +471,6 @@ public class LdifEditor extends TextEditor implements ILdifEditor, ConnectionUpd
         {
             // create the toolbar (including connection widget and execute button) on top of the editor 
             Composite composite = new Composite( parent, SWT.NONE );
-            composite.setLayoutData( new GridData( GridData.FILL_BOTH ) );
             GridLayout layout = new GridLayout();
             layout.marginWidth = 0;
             layout.marginHeight = 0;
