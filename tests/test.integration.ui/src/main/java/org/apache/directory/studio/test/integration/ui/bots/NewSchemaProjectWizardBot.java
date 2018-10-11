@@ -34,6 +34,7 @@ public class NewSchemaProjectWizardBot extends WizardBot
 
     public void typeProjectName( String projectName )
     {
+        activate();
         SWTBotText text = bot.textWithLabel( "Project name:" );
         text.setText( projectName );
     }
@@ -41,6 +42,7 @@ public class NewSchemaProjectWizardBot extends WizardBot
 
     public void selectAllSchemas()
     {
+        activate();
         clickButton( "Select All" );
     }
 
