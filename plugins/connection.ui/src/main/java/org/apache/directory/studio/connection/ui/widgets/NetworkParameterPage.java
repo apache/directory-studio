@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 
 package org.apache.directory.studio.connection.ui.widgets;
@@ -66,13 +66,13 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
 /**
  * The NetworkParameterPage is used the edit the network parameters of a
  * connection. This is a tab in the connection property widget :
- * 
+ *
  * <pre>
  * .---------------------------------------------------------------------------.
  * | Connection                                                                |
  * +---------------------------------------------------------------------------+
  * | .---[Network Parameter]|Authentication||Browser Options||Edit Options|--. |
- * | |                                                                       | | 
+ * | |                                                                       | |
  * | | Connection name : [-------------------------------------]             | |
  * | |                                                                       | |
  * | | Network Parameter                                                     | |
@@ -91,11 +91,11 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
  * | | +-------------------------------------------------------------------+ | |
  * | |                                                                       | |
  * | | [] Read-Only (prevents any add, delete, modify or rename operation)   | |
- * | |                                                                       | |  
+ * | |                                                                       | |
  * | +-----------------------------------------------------------------------+ |
  * +---------------------------------------------------------------------------+
  * </pre>
- * 
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class NetworkParameterPage extends AbstractConnectionParameterPage
@@ -159,7 +159,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
 
     /**
      * Gets the connection name.
-     * 
+     *
      * @return the connectio name
      */
     private String getName()
@@ -170,7 +170,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
 
     /**
      * Gets the host name.
-     * 
+     *
      * @return the host name
      */
     private String getHostName()
@@ -181,7 +181,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
 
     /**
      * Gets the port.
-     * 
+     *
      * @return the port
      */
     private int getPort()
@@ -192,7 +192,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
 
     /**
      * Gets the timeout
-     * 
+     *
      * @return The tiemout
      */
     private int getTimeout()
@@ -212,7 +212,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
 
     /**
      * Gets the encyrption method.
-     * 
+     *
      * @return the encyrption method
      */
     private ConnectionParameter.EncryptionMethod getEncyrptionMethod()
@@ -232,8 +232,8 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
 
 
     /**
-     * Gets the network type (JNDI or Apache LDAP API) 
-     * 
+     * Gets the network type (JNDI or Apache LDAP API)
+     *
      * @return the network type
      */
     private ConnectionParameter.NetworkProvider getNetworkProvider()
@@ -248,8 +248,8 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
 
 
     /**
-     * Gets a temporary connection with all connection parameter 
-     * entered in this page. 
+     * Gets a temporary connection with all connection parameter
+     * entered in this page.
      *
      * @return a test connection
      */
@@ -257,7 +257,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
     {
         ConnectionParameter connectionParameter = new ConnectionParameter( null, getHostName(), getPort(),
             getEncyrptionMethod(),
-            getNetworkProvider(), ConnectionParameter.AuthenticationMethod.NONE, null, null, null, true, null, 30 );
+            getNetworkProvider(), ConnectionParameter.AuthenticationMethod.NONE, null, null, null, true, null, 30000L );
 
         return new Connection( connectionParameter );
     }
@@ -265,7 +265,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
 
     /**
      * Gets read only flag.
-     * 
+     *
      * @return the read only flag
      */
     private boolean isReadOnly()
@@ -277,7 +277,8 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
     /**
      * {@inheritDoc}
      */
-    protected void createComposite( Composite parent )
+    @Override
+	protected void createComposite( Composite parent )
     {
         Composite composite = BaseWidgetUtils.createColumnContainer( parent, 1, 1 );
 
@@ -378,7 +379,8 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
     /**
      * {@inheritDoc}
      */
-    protected void validate()
+    @Override
+	protected void validate()
     {
         // set enabled/disabled state of check connection button
         checkConnectionButton.setEnabled( !hostCombo.getText().equals( StringUtils.EMPTY ) &&
@@ -422,7 +424,8 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
     /**
      * {@inheritDoc}
      */
-    protected void loadParameters( ConnectionParameter parameter )
+    @Override
+	protected void loadParameters( ConnectionParameter parameter )
     {
         connectionParameter = parameter;
 
@@ -453,7 +456,8 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
     /**
      * {@inheritDoc}
      */
-    protected void initListeners()
+    @Override
+	protected void initListeners()
     {
         nameText.addModifyListener( event -> connectionPageModified() );
 
@@ -541,7 +545,8 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
     /**
      * {@inheritDoc}
      */
-    public void saveParameters( ConnectionParameter parameter )
+    @Override
+	public void saveParameters( ConnectionParameter parameter )
     {
         parameter.setName( getName() );
         parameter.setHost( getHostName() );
@@ -556,7 +561,8 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
     /**
      * {@inheritDoc}
      */
-    public void saveDialogSettings()
+    @Override
+	public void saveDialogSettings()
     {
         IDialogSettings dialogSettings = ConnectionUIPlugin.getDefault().getDialogSettings();
         HistoryUtils.save( dialogSettings, ConnectionUIConstants.DIALOGSETTING_KEY_HOST_HISTORY, hostCombo.getText() );
@@ -567,7 +573,8 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
     /**
      * {@inheritDoc}
      */
-    public void setFocus()
+    @Override
+	public void setFocus()
     {
         nameText.setFocus();
     }
@@ -576,7 +583,8 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
     /**
      * {@inheritDoc}
      */
-    public boolean areParametersModifed()
+    @Override
+	public boolean areParametersModifed()
     {
         return isReconnectionRequired() || !StringUtils.equals( connectionParameter.getName(), getName() );
     }
@@ -585,7 +593,8 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
     /**
      * {@inheritDoc}
      */
-    public boolean isReconnectionRequired()
+    @Override
+	public boolean isReconnectionRequired()
     {
         return ( connectionParameter == null )
             || ( !StringUtils.equals( connectionParameter.getHost(), getHostName() ) )
@@ -600,7 +609,8 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
     /**
      * {@inheritDoc}
      */
-    public void mergeParametersToLdapURL( ConnectionParameter parameter, LdapUrl ldapUrl )
+    @Override
+	public void mergeParametersToLdapURL( ConnectionParameter parameter, LdapUrl ldapUrl )
     {
         ldapUrl.getExtensions().add( new Extension( false, X_CONNECTION_NAME, parameter.getName() ) );
         ldapUrl.setHost( parameter.getHost() );
@@ -636,7 +646,8 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
     /**
      * {@inheritDoc}
      */
-    public void mergeLdapUrlToParameters( LdapUrl ldapUrl, ConnectionParameter parameter )
+    @Override
+	public void mergeLdapUrlToParameters( LdapUrl ldapUrl, ConnectionParameter parameter )
     {
         // connection name, current date if absent
         String name = ldapUrl.getExtensionValue( X_CONNECTION_NAME );
@@ -654,7 +665,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
         // port
         parameter.setPort( ldapUrl.getPort() );
 
-        // encryption method, none if unknown or absent 
+        // encryption method, none if unknown or absent
         String encryption = ldapUrl.getExtensionValue( X_ENCRYPTION );
 
         if ( StringUtils.isNotEmpty( encryption ) && X_ENCRYPTION_LDAPS.equalsIgnoreCase( encryption ) )
