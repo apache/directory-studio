@@ -825,7 +825,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         // setup connection parameters
         String host = connection.getConnectionParameter().getHost();
         int port = connection.getConnectionParameter().getPort();
-        long timeout = connection.getConnectionParameter().getTimeout();
+        long timeoutMillis = connection.getConnectionParameter().getTimeoutMillis();
 
         useLdaps = connection.getConnectionParameter().getEncryptionMethod() == ConnectionParameter.EncryptionMethod.LDAPS;
         useStartTLS = connection.getConnectionParameter().getEncryptionMethod() == ConnectionParameter.EncryptionMethod.START_TLS;
@@ -845,11 +845,11 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
          */
         if ( !useLdaps )
         {
-            if ( timeout < 0 )
+            if ( timeoutMillis < 0 )
             {
-                timeout = 0;
+                timeoutMillis = 0;
             }
-            environment.put( COM_SUN_JNDI_LDAP_CONNECT_TIMEOUT, Long.toString( timeout ) ); //$NON-NLS-1$
+            environment.put( COM_SUN_JNDI_LDAP_CONNECT_TIMEOUT, Long.toString( timeoutMillis ) ); //$NON-NLS-1$
         }
 
         environment.put( COM_SUN_JNDI_DNS_TIMEOUT_INITIAL, "2000" ); //$NON-NLS-1$

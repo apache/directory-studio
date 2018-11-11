@@ -136,7 +136,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
     private Button readOnlyConnectionCheckbox;
 
     /** A timeout for the connection. Default to 30s */
-    private Text timeoutText;
+    private Text timeoutSecondsText;
 
     /**
      * A listener for the Link data widget. It will open the CertificateValidationPreference dialog.
@@ -191,21 +191,21 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
 
 
     /**
-     * Gets the timeout
+     * Gets the timeout in seconds.
      *
-     * @return The tiemout
+     * @return The timeout in seconds
      */
-    private int getTimeout()
+    private int getTimeoutSeconds()
     {
-        String timeoutString = timeoutText.getText();
+        String timeoutSecondsString = timeoutSecondsText.getText();
 
-        if ( Strings.isEmpty( timeoutString ) )
+        if ( Strings.isEmpty( timeoutSecondsString ) )
         {
             return 30;
         }
         else
         {
-            return Integer.parseInt( timeoutString );
+            return Integer.parseInt( timeoutSecondsString );
         }
     }
 
@@ -310,8 +310,8 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
 
         // The timeout
         BaseWidgetUtils.createLabel( groupComposite, Messages.getString( "NetworkParameterPage.Timeout" ), 2 ); //$NON-NLS-1$
-        timeoutText = BaseWidgetUtils.createText( groupComposite, "30", 1 ); //$NON-NLS-1$
-        timeoutText.setTextLimit( 7 );
+        timeoutSecondsText = BaseWidgetUtils.createText( groupComposite, "30", 1 ); //$NON-NLS-1$
+        timeoutSecondsText.setTextLimit( 7 );
 
         String[] encMethods = new String[]
             {
@@ -406,9 +406,9 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
             message = Messages.getString( "NetworkParameterPage.PleaseEnterConnectionName" ); //$NON-NLS-1$
         }
 
-        if ( Strings.isEmpty( timeoutText.getText() ) ) //$NON-NLS-1$
+        if ( Strings.isEmpty( timeoutSecondsText.getText() ) ) //$NON-NLS-1$
         {
-            timeoutText.setText( "30" );
+            timeoutSecondsText.setText( "30" );
         }
 
         if ( ConnectionCorePlugin.getDefault().getConnectionManager().getConnectionByName( nameText.getText() ) != null
@@ -448,7 +448,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
             || networkProviderCombo.getItemCount() < 2 ? 0
                 : 1 );
         readOnlyConnectionCheckbox.setSelection( parameter.isReadOnly() );
-        timeoutText.setText( Long.toString( parameter.getTimeout() / 1000L ) );
+        timeoutSecondsText.setText( Long.toString( parameter.getTimeoutMillis() / 1000L ) );
 
     }
 
@@ -531,9 +531,9 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
         } );
 
         // The timeout events
-        timeoutText.addModifyListener( event -> connectionPageModified() );
+        timeoutSecondsText.addModifyListener( event -> connectionPageModified() );
 
-        timeoutText.addVerifyListener( event -> {
+        timeoutSecondsText.addVerifyListener( event -> {
             if ( !event.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
             {
                 event.doit = false;
@@ -554,7 +554,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
         parameter.setEncryptionMethod( getEncyrptionMethod() );
         parameter.setNetworkProvider( getNetworkProvider() );
         parameter.setReadOnly( isReadOnly() );
-        parameter.setTimeout( getTimeout() * 1000L );
+        parameter.setTimeoutMillis( getTimeoutSeconds() * 1000L );
     }
 
 
@@ -602,7 +602,7 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
             || ( connectionParameter.getEncryptionMethod() != getEncyrptionMethod() )
             || ( connectionParameter.getNetworkProvider() != getNetworkProvider() )
             || ( connectionParameter.isReadOnly() != isReadOnly() )
-            || ( connectionParameter.getTimeout() != getTimeout() );
+            || ( connectionParameter.getTimeoutMillis() != getTimeoutSeconds() * 1000L );
     }
 
 

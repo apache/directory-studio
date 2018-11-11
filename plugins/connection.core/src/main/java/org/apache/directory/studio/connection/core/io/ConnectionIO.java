@@ -188,7 +188,7 @@ public class ConnectionIO
         {
             try
             {
-                connection.setTimeout( Long.parseLong( timeoutAttribute.getValue() ) );
+                connection.setTimeoutMillis( Long.parseLong( timeoutAttribute.getValue() ) );
             }
             catch ( NumberFormatException e )
             {
@@ -540,7 +540,7 @@ public class ConnectionIO
         connectionElement.addAttribute( READ_ONLY_TAG, Boolean.toString( connection.isReadOnly() ) ); //$NON-NLS-1$
         
         // Connection timeout
-        connectionElement.addAttribute( TIMEOUT_TAG, Long.toString( connection.getTimeout() ) ); //$NON-NLS-1$
+        connectionElement.addAttribute( TIMEOUT_TAG, Long.toString( connection.getTimeoutMillis() ) ); //$NON-NLS-1$
 
         // Extended Properties
         Element extendedPropertiesElement = connectionElement.addElement( EXTENDED_PROPERTIES_TAG );

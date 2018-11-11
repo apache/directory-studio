@@ -188,14 +188,14 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         ldapConnectionConfig.setLdapHost( connection.getHost() );
         ldapConnectionConfig.setLdapPort( connection.getPort() );
         
-        long timeout = connection.getTimeout();
+        long timeoutMillis = connection.getTimeoutMillis();
         
-        if ( timeout < 0 ) 
+        if ( timeoutMillis < 0 )
         {
-            timeout = 30000L;
+            timeoutMillis = 30000L;
         }
         
-        ldapConnectionConfig.setTimeout( timeout );
+        ldapConnectionConfig.setTimeout( timeoutMillis );
         
         binaryAttributeDetector = new DefaultConfigurableBinaryAttributeDetector();
         ldapConnectionConfig.setBinaryAttributeDetector( binaryAttributeDetector );

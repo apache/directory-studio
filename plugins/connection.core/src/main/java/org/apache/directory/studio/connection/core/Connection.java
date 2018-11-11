@@ -209,7 +209,7 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
     {
         ConnectionParameter cp = new ConnectionParameter( getName(), getHost(), getPort(), getEncryptionMethod(),
             getNetworkProvider(), getAuthMethod(), getBindPrincipal(), getBindPassword(), getSaslRealm(), isReadOnly(),
-            getConnectionParameter().getExtendedProperties() , getTimeout() );
+            getConnectionParameter().getExtendedProperties() , getTimeoutMillis() );
 
         return new Connection( cp );
     }
@@ -534,13 +534,13 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
 
 
     /**
-     * Gets the timeout.
+     * Gets the timeout in milliseconds.
      * 
-     * @return the timeout
+     * @return the timeout in milliseconds
      */
-    public long getTimeout()
+    public long getTimeoutMillis()
     {
-        return connectionParameter.getTimeout();
+        return connectionParameter.getTimeoutMillis();
     }
 
 
@@ -653,13 +653,13 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
 
     
     /**
-     * Sets the timeout.
+     * Sets the timeout in milliseconds.
      * 
-     * @param timeout the timeout
+     * @param timeoutMillis the timeout in milliseconds
      */
-    public void setTimeout( long timeout )
+    public void setTimeoutMillis( long timeoutMillis )
     {
-        connectionParameter.setTimeout( timeout );
+        connectionParameter.setTimeoutMillis( timeoutMillis );
         ConnectionEventRegistry.fireConnectionUpdated( this, this );
     }
 

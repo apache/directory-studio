@@ -193,7 +193,7 @@ public class ConnectionParameter
     private Map<String, String> extendedProperties;
     
     /** The connection timeout. Default to 30 seconds */
-    private long timeout = 30000L;
+    private long timeoutMillis = 30000L;
 
 
     /**
@@ -218,10 +218,11 @@ public class ConnectionParameter
      * @param saslRealm the SASL realm
      * @param isReadOnly the read only flag
      * @param extendedProperties the extended properties
+     * @param timeoutMillis the timeout in milliseconds
      */
     public ConnectionParameter( String name, String host, int port, EncryptionMethod encryptionMethod,
         NetworkProvider networkProvider, AuthenticationMethod authMethod, String bindPrincipal, String bindPassword,
-        String saslRealm, boolean isReadOnly, Map<String, String> extendedProperties, long timeout )
+        String saslRealm, boolean isReadOnly, Map<String, String> extendedProperties, long timeoutMillis )
     {
         this.id = createId();
         this.name = name;
@@ -241,7 +242,7 @@ public class ConnectionParameter
             this.extendedProperties.putAll( extendedProperties );
         }
 
-        this.timeout = timeout;
+        this.timeoutMillis = timeoutMillis;
     }
 
 
@@ -851,24 +852,24 @@ public class ConnectionParameter
 
 
     /**
-     * Gets the timeout.
+     * Gets the timeout in milliseconds.
      * 
-     * @return the timeout
+     * @return the timeout in milliseconds
      */
-    public long getTimeout()
+    public long getTimeoutMillis()
     {
-        return timeout;
+        return timeoutMillis;
     }
 
 
     /**
-     * Sets the timeout.
+     * Sets the timeout in milliseconds.
      * 
-     * @param timeout the timeout
+     * @param timeoutMillis the timeout in milliseconds
      */
-    public void setTimeout( long timeout )
+    public void setTimeoutMillis( long timeoutMillis )
     {
-        this.timeout = timeout;
+        this.timeoutMillis = timeoutMillis;
     }
 
 
