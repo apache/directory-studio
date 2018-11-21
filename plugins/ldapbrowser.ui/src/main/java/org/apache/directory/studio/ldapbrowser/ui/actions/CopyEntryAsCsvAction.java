@@ -223,7 +223,7 @@ public class CopyEntryAsCsvAction extends CopyEntryAsAction
 
             if ( attributes.length > 0 )
             {
-                AttributeComparator comparator = new AttributeComparator( entries[0] );
+                AttributeComparator comparator = new AttributeComparator();
                 Arrays.sort( attributes, comparator );
             }
 
@@ -272,7 +272,7 @@ public class CopyEntryAsCsvAction extends CopyEntryAsAction
             for ( int a = 0; returningAttributes != null && a < returningAttributes.length; a++ )
             {
 
-                AttributeComparator comparator = new AttributeComparator( entries[e] );
+                AttributeComparator comparator = new AttributeComparator();
                 AttributeHierarchy ah = entries[e].getAttributeWithSubtypes( returningAttributes[a] );
                 if ( ah != null )
                 {

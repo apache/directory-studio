@@ -25,7 +25,6 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.naming.NamingEnumeration;
@@ -48,6 +47,7 @@ import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
 import org.apache.directory.studio.ldapbrowser.core.utils.AttributeComparator;
@@ -196,17 +196,15 @@ public class ExportLdifRunnable implements StudioConnectionRunnableWithProgress
                 {
                     LdifContentRecord record = ( LdifContentRecord ) container;
                     LdifDnLine dnLine = record.getDnLine();
-                    LdifAttrValLine[] attrValLines = record.getAttrVals();
                     LdifSepLine sepLine = record.getSepLine();
 
                     // sort and format
                     DummyEntry entry = ModelConverter.ldifContentRecordToEntry( record, browserConnection );
-                    AttributeComparator comparator = new AttributeComparator( entry );
-                    Arrays.sort( attrValLines, comparator );
+                    List<IValue> sortedValues = AttributeComparator.toSortedValues( entry );
                     LdifContentRecord newRecord = new LdifContentRecord( dnLine );
-                    for ( int i = 0; i < attrValLines.length; i++ )
+                    for ( IValue value : sortedValues )
                     {
-                        newRecord.addAttrVal( attrValLines[i] );
+                        newRecord.addAttrVal( ModelConverter.valueToLdifAttrValLine( value ) );
                     }
                     newRecord.finish( sepLine );
                     String s = newRecord.toFormattedString( ldifFormatParameters );

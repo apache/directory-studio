@@ -27,8 +27,7 @@ import java.util.Comparator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
-import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
-import org.apache.directory.studio.ldapbrowser.core.model.IValue;
+import org.apache.directory.studio.ldapbrowser.core.utils.AttributeComparator;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
@@ -118,9 +117,9 @@ public class EntryEditorWidgetSorter extends ViewerSorter implements SelectionLi
         {
             Tree tree = viewer.getTree();
             TreeColumn treeColumn = ( ( TreeColumn ) event.widget );
-            
+
             int index = tree.indexOf( treeColumn );
-            
+
             switch ( index )
             {
                 case EntryEditorWidgetTableMetadata.KEY_COLUMN_INDEX:
@@ -134,9 +133,9 @@ public class EntryEditorWidgetSorter extends ViewerSorter implements SelectionLi
                         sortBy = BrowserCoreConstants.SORT_BY_ATTRIBUTE_DESCRIPTION;
                         sortOrder = BrowserCoreConstants.SORT_ORDER_ASCENDING;
                     }
-                    
+
                     break;
-                    
+
                 case EntryEditorWidgetTableMetadata.VALUE_COLUMN_INDEX:
                     if ( sortBy == BrowserCoreConstants.SORT_BY_VALUE )
                     {
@@ -148,13 +147,12 @@ public class EntryEditorWidgetSorter extends ViewerSorter implements SelectionLi
                         sortBy = BrowserCoreConstants.SORT_BY_VALUE;
                         sortOrder = BrowserCoreConstants.SORT_ORDER_ASCENDING;
                     }
-                    
+
                     break;
-                    
-                default:
-                    ;
+
+                default:;
             }
-            
+
             if ( sortOrder == BrowserCoreConstants.SORT_ORDER_NONE )
             {
                 sortBy = BrowserCoreConstants.SORT_BY_NONE;
@@ -180,7 +178,7 @@ public class EntryEditorWidgetSorter extends ViewerSorter implements SelectionLi
         }
     }
 
-    
+
     /**
      * Rotate the sort order. If it was none, change it to ascending. If it was 
      * ascending, change it to descending, and if it was descending, change it to none.
@@ -189,20 +187,20 @@ public class EntryEditorWidgetSorter extends ViewerSorter implements SelectionLi
     {
         switch ( sortOrder )
         {
-            case BrowserCoreConstants.SORT_ORDER_NONE :
+            case BrowserCoreConstants.SORT_ORDER_NONE:
                 sortOrder = BrowserCoreConstants.SORT_ORDER_ASCENDING;
                 break;
-                
-            case BrowserCoreConstants.SORT_ORDER_ASCENDING :
+
+            case BrowserCoreConstants.SORT_ORDER_ASCENDING:
                 sortOrder = BrowserCoreConstants.SORT_ORDER_DESCENDING;
                 break;
-                
-            case BrowserCoreConstants.SORT_ORDER_DESCENDING :
+
+            case BrowserCoreConstants.SORT_ORDER_DESCENDING:
                 sortOrder = BrowserCoreConstants.SORT_ORDER_NONE;
                 break;
         }
     }
-    
+
 
     /**
      * {@inheritDoc}
@@ -225,259 +223,38 @@ public class EntryEditorWidgetSorter extends ViewerSorter implements SelectionLi
      */
     public int compare( Viewer viewer, Object o1, Object o2 )
     {
-        // check o1
-        IAttribute attribute1 = null;
-        IValue value1 = null;
-        
-        if ( o1 instanceof IAttribute )
-        {
-            attribute1 = ( IAttribute ) o1;
-        }
-        else if ( o1 instanceof IValue )
-        {
-            value1 = ( IValue ) o1;
-            attribute1 = value1.getAttribute();
-        }
-
-        // check o2
-        IAttribute attribute2 = null;
-        IValue value2 = null;
-        
-        if ( o2 instanceof IAttribute )
-        {
-            attribute2 = ( IAttribute ) o2;
-        }
-        else if ( o2 instanceof IValue )
-        {
-            value2 = ( IValue ) o2;
-            attribute2 = value2.getAttribute();
-        }
-
-        // compare
-        if ( value1 != null && value2 != null )
-        {
-            if ( getSortByOrDefault() == BrowserCoreConstants.SORT_BY_ATTRIBUTE_DESCRIPTION )
-            {
-                if ( value1.getAttribute() != value2.getAttribute() )
-                {
-                    return compareAttributes( value1.getAttribute(), value2.getAttribute() );
-                }
-                else
-                {
-                    return compareValues( value1, value2 );
-                }
-            }
-            else if ( getSortByOrDefault() == BrowserCoreConstants.SORT_BY_VALUE )
-            {
-                return compareValues( value1, value2 );
-            }
-            else
-            {
-                return equal();
-            }
-        }
-        else if ( ( attribute1 != null ) && ( attribute2 != null ) )
-        {
-            return compareAttributes( attribute1, attribute2 );
-        }
-        else
-        {
-            return equal();
-        }
+        boolean objectClassAndMustAttributesFirst = preferences == null
+            || preferences.isObjectClassAndMustAttributesFirst();
+        boolean operationalAttributesLast = preferences == null || preferences.isOperationalAttributesLast();
+        AttributeComparator comparator = new AttributeComparator( sortBy, getDefaultSortBy(), sortOrder,
+            getDefaultSortOrder(), objectClassAndMustAttributesFirst, operationalAttributesLast );
+        return comparator.compare( o1, o2 );
     }
 
 
-    /**
-     * Compares attribute kind or description.
-     * 
-     * @param attribute1 the attribute1
-     * @param attribute2 the attribute2
-     * 
-     * @return the compare result
-     */
-    private int compareAttributes( IAttribute attribute1, IAttribute attribute2 )
-    {
-        if ( this.sortOrder == BrowserCoreConstants.SORT_ORDER_NONE )
-        {
-            if ( preferences == null || preferences.isObjectClassAndMustAttributesFirst() )
-            {
-                if ( attribute1.isObjectClassAttribute() )
-                {
-                    return lessThan();
-                }
-                else if ( attribute2.isObjectClassAttribute() )
-                {
-                    return greaterThan();
-                }
-
-                if ( attribute1.isMustAttribute() && !attribute2.isMustAttribute() )
-                {
-                    return lessThan();
-                }
-                else if ( attribute2.isMustAttribute() && !attribute1.isMustAttribute() )
-                {
-                    return greaterThan();
-                }
-            }
-            
-            if ( ( preferences == null ) || preferences.isOperationalAttributesLast() )
-            {
-                if ( attribute1.isOperationalAttribute() && !attribute2.isOperationalAttribute() )
-                {
-                    return greaterThan();
-                }
-                else if ( attribute2.isOperationalAttribute() && !attribute1.isOperationalAttribute() )
-                {
-                    return lessThan();
-                }
-            }
-        }
-
-        return compare( attribute1.getDescription(), attribute2.getDescription() );
-    }
-
-
-    /**
-     * Compares values.
-     * 
-     * @param value1 the value1
-     * @param value2 the value2
-     * 
-     * @return the compare result
-     */
-    private int compareValues( IValue value1, IValue value2 )
-    {
-        if ( value1.isEmpty() || value2.isEmpty() )
-        {
-            if ( !value1.isEmpty() )
-            {
-                return greaterThan();
-            }
-            else if ( !value2.isEmpty() )
-            {
-                return lessThan();
-            }
-            else
-            {
-                return equal();
-            }
-        }
-        else
-        {
-            return compare( value1.getStringValue(), value2.getStringValue() );
-        }
-    }
-
-
-    /**
-     * Gets the current sort order or the default sort order from the preferences .
-     * 
-     * @return the current sort order or default sort order
-     */
-    private int getSortOrderOrDefault()
+    private int getDefaultSortOrder()
     {
         if ( preferences == null )
         {
             return BrowserCoreConstants.SORT_ORDER_ASCENDING;
         }
-        else if ( sortOrder == BrowserCoreConstants.SORT_ORDER_NONE )
-        {
-            return preferences.getDefaultSortOrder();
-        }
         else
         {
-            return sortOrder;
+            return preferences.getDefaultSortOrder();
         }
     }
 
 
-    /**
-     * Gets the current sort property or the default sort property from the preferences .
-     * 
-     * @return the current sort property or default sort property
-     */
-    private int getSortByOrDefault()
+    private int getDefaultSortBy()
     {
         if ( preferences == null )
         {
             return BrowserCoreConstants.SORT_BY_ATTRIBUTE_DESCRIPTION;
         }
-        else if ( sortBy == BrowserCoreConstants.SORT_BY_NONE )
+        else
         {
             return preferences.getDefaultSortBy();
         }
-        else
-        {
-            return sortBy;
-        }
     }
 
-
-    /**
-     * Returns +1 or -1, depending on the sort order.
-     *
-     * @return +1 or -1, depending on the sort order
-     */
-    private int lessThan()
-    {
-        if ( getSortOrderOrDefault() == BrowserCoreConstants.SORT_ORDER_ASCENDING )
-        {
-            return -1;
-        }
-        else
-        {
-            return 1;
-        }
-    }
-
-
-    /**
-     * Returns 0.
-     *
-     * @return 0
-     */
-    private int equal()
-    {
-        return 0;
-    }
-
-
-    /**
-     * Returns +1 or -1, depending on the sort order.
-     *
-     * @return +1 or -1, depending on the sort order
-     */
-    private int greaterThan()
-    {
-        if ( getSortOrderOrDefault() == BrowserCoreConstants.SORT_ORDER_ASCENDING )
-        {
-            return 1;
-        }
-        else
-        {
-            return -1;
-        }
-    }
-
-
-    /**
-     * Compares the two strings using the Strings's compareToIgnoreCase method, 
-     * pays attention for the sort order.
-     *
-     * @param s1 the first string to compare
-     * @param s2 the second string to compare
-     * @return a negative integer, zero, or a positive integer
-     * @see java.lang.String#compareToIgnoreCase(String)
-     */
-    private int compare( String s1, String s2 )
-    {
-        if ( getSortOrderOrDefault() == BrowserCoreConstants.SORT_ORDER_ASCENDING )
-        {
-            return s1.compareToIgnoreCase( s2 );
-        }
-        else
-        {
-            return s2.compareToIgnoreCase( s1 );
-        }
-    }
 }

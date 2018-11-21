@@ -149,7 +149,7 @@ public class CopyEntryAsLdifAction extends CopyEntryAsAction
                 
                 IValue[] values = ( IValue[] ) valueList.toArray( new IValue[valueList.size()] );
 
-                AttributeComparator comparator = new AttributeComparator( entry );
+                AttributeComparator comparator = new AttributeComparator();
                 Arrays.sort( values, comparator );
 
                 for ( IValue value : values )

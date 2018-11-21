@@ -21,30 +21,52 @@
 package org.apache.directory.studio.ldapbrowser.core.utils;
 
 
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
-import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
 
 
 public class AttributeComparator implements Comparator<Object>
 {
+    private final int sortBy;
+    private final int defaultSortBy;
+    private final int sortOrder;
+    private final int defaultSortOrder;
+    private final boolean objectClassAndMustAttributesFirst;
+    private final boolean operationalAttributesLast;
 
-    private IEntry dummyEntry;
 
-
-    public AttributeComparator( IEntry entry )
+    public AttributeComparator()
     {
-        this.dummyEntry = entry;
+        this.sortBy = BrowserCoreConstants.SORT_BY_NONE;
+        this.defaultSortBy =BrowserCoreConstants.SORT_BY_ATTRIBUTE_DESCRIPTION;
+        this.sortOrder = BrowserCoreConstants.SORT_ORDER_NONE;
+        this.defaultSortOrder = BrowserCoreConstants.SORT_ORDER_ASCENDING;
+        this.objectClassAndMustAttributesFirst = true;
+        this.operationalAttributesLast = true;
+    }
+
+
+    public AttributeComparator( int sortBy, int defaultSortBy, int sortOrder, int defaultSortOrder, boolean objectClassAndMustAttributesFirst,
+        boolean operationalAttributesLast )
+    {
+        this.sortBy = sortBy;
+        this.defaultSortBy = defaultSortBy;
+        this.sortOrder = sortOrder;
+        this.defaultSortOrder = defaultSortOrder;
+        this.objectClassAndMustAttributesFirst = objectClassAndMustAttributesFirst;
+        this.operationalAttributesLast = operationalAttributesLast;
     }
 
 
     public int compare( Object o1, Object o2 )
     {
-
         IAttribute attribute1 = null;
         IValue value1 = null;
         if ( o1 instanceof IAttribute )
@@ -54,12 +76,6 @@ public class AttributeComparator implements Comparator<Object>
         else if ( o1 instanceof IValue )
         {
             value1 = ( IValue ) o1;
-            attribute1 = value1.getAttribute();
-        }
-        else if ( o1 instanceof LdifAttrValLine )
-        {
-            LdifAttrValLine line1 = ( LdifAttrValLine ) o1;
-            value1 = ModelConverter.ldifAttrValLineToValue( line1, dummyEntry );
             attribute1 = value1.getAttribute();
         }
 
@@ -74,27 +90,21 @@ public class AttributeComparator implements Comparator<Object>
             value2 = ( IValue ) o2;
             attribute2 = value2.getAttribute();
         }
-        else if ( o2 instanceof LdifAttrValLine )
-        {
-            LdifAttrValLine line2 = ( LdifAttrValLine ) o2;
-            value2 = ModelConverter.ldifAttrValLineToValue( line2, dummyEntry );
-            attribute2 = value2.getAttribute();
-        }
 
         if ( value1 != null && value2 != null )
         {
-            if ( this.getSortByOrDefault() == BrowserCoreConstants.SORT_BY_ATTRIBUTE_DESCRIPTION )
+            if ( getSortByOrDefault() == BrowserCoreConstants.SORT_BY_ATTRIBUTE_DESCRIPTION )
             {
                 if ( value1.getAttribute() != value2.getAttribute() )
                 {
-                    return this.compareAttributeNames( value1.getAttribute(), value2.getAttribute() );
+                    return this.compareAttributes( value1.getAttribute(), value2.getAttribute() );
                 }
                 else
                 {
                     return this.compareValues( value1, value2 );
                 }
             }
-            else if ( this.getSortByOrDefault() == BrowserCoreConstants.SORT_BY_VALUE )
+            else if ( getSortByOrDefault() == BrowserCoreConstants.SORT_BY_VALUE )
             {
                 return this.compareValues( value1, value2 );
             }
@@ -105,43 +115,51 @@ public class AttributeComparator implements Comparator<Object>
         }
         else if ( attribute1 != null && attribute2 != null )
         {
-            return this.compareAttributeNames( attribute1, attribute2 );
+            return this.compareAttributes( attribute1, attribute2 );
         }
         else
         {
-            return this.equal();
+            throw new ClassCastException( "Can only compare two values or two attributes" );
         }
     }
 
 
-    private int compareAttributeNames( IAttribute attribute1, IAttribute attribute2 )
+    private int compareAttributes( IAttribute attribute1, IAttribute attribute2 )
     {
+        if ( this.sortOrder == BrowserCoreConstants.SORT_ORDER_NONE )
+        {
+            if ( objectClassAndMustAttributesFirst )
+            {
+                if ( attribute1.isObjectClassAttribute() && !attribute2.isObjectClassAttribute() )
+                {
+                    return lessThan();
+                }
+                else if ( attribute2.isObjectClassAttribute() && !attribute1.isObjectClassAttribute() )
+                {
+                    return greaterThan();
+                }
 
-        if ( attribute1.isObjectClassAttribute() )
-        {
-            return lessThan();
-        }
-        else if ( attribute2.isObjectClassAttribute() )
-        {
-            return greaterThan();
-        }
+                if ( attribute1.isMustAttribute() && !attribute2.isMustAttribute() )
+                {
+                    return lessThan();
+                }
+                else if ( attribute2.isMustAttribute() && !attribute1.isMustAttribute() )
+                {
+                    return greaterThan();
+                }
+            }
 
-        if ( attribute1.isMustAttribute() && !attribute2.isMustAttribute() )
-        {
-            return lessThan();
-        }
-        else if ( attribute2.isMustAttribute() && !attribute1.isMustAttribute() )
-        {
-            return greaterThan();
-        }
-
-        if ( attribute1.isOperationalAttribute() && !attribute2.isOperationalAttribute() )
-        {
-            return greaterThan();
-        }
-        else if ( attribute2.isOperationalAttribute() && !attribute1.isOperationalAttribute() )
-        {
-            return lessThan();
+            if ( operationalAttributesLast )
+            {
+                if ( attribute1.isOperationalAttribute() && !attribute2.isOperationalAttribute() )
+                {
+                    return greaterThan();
+                }
+                else if ( attribute2.isOperationalAttribute() && !attribute1.isOperationalAttribute() )
+                {
+                    return lessThan();
+                }
+            }
         }
 
         return compare( attribute1.getDescription(), attribute2.getDescription() );
@@ -150,7 +168,6 @@ public class AttributeComparator implements Comparator<Object>
 
     private int compareValues( IValue value1, IValue value2 )
     {
-
         if ( value1.isEmpty() && value2.isEmpty() )
         {
             return equal();
@@ -168,22 +185,39 @@ public class AttributeComparator implements Comparator<Object>
         return compare( value1.getStringValue(), value2.getStringValue() );
     }
 
-
-    private int getSortOrderOrDefault()
-    {
-        return BrowserCoreConstants.SORT_ORDER_ASCENDING;
-    }
-
-
+    /**
+     * Gets the current sort by property or the default sort by property (from the preferences).
+     */
     private int getSortByOrDefault()
     {
-        return BrowserCoreConstants.SORT_BY_ATTRIBUTE_DESCRIPTION;
+        if ( sortBy == BrowserCoreConstants.SORT_BY_NONE )
+        {
+            return defaultSortBy;
+        }
+        else
+        {
+            return sortBy;
+        }
     }
 
+    /**
+     * Gets the current sort order or the default sort order (from the preferences).
+     */
+    private int getSortOrderOrDefault()
+    {
+        if ( sortOrder == BrowserCoreConstants.SORT_ORDER_NONE )
+        {
+            return defaultSortOrder;
+        }
+        else
+        {
+            return sortOrder;
+        }
+    }
 
     private int lessThan()
     {
-        return this.getSortOrderOrDefault() == BrowserCoreConstants.SORT_ORDER_ASCENDING ? -1 : 1;
+        return getSortOrderOrDefault() == BrowserCoreConstants.SORT_ORDER_ASCENDING ? -1 : 1;
     }
 
 
@@ -195,14 +229,31 @@ public class AttributeComparator implements Comparator<Object>
 
     private int greaterThan()
     {
-        return this.getSortOrderOrDefault() == BrowserCoreConstants.SORT_ORDER_ASCENDING ? 1 : -1;
+        return getSortOrderOrDefault() == BrowserCoreConstants.SORT_ORDER_ASCENDING ? 1 : -1;
     }
 
 
+    /**
+     * Compares the two strings using the Strings's compareToIgnoreCase method, 
+     * pays attention for the sort order.
+     *
+     * @param s1 the first string to compare
+     * @param s2 the second string to compare
+     * @return a negative integer, zero, or a positive integer
+     * @see java.lang.String#compareToIgnoreCase(String)
+     */
     private int compare( String s1, String s2 )
     {
-        return this.getSortOrderOrDefault() == BrowserCoreConstants.SORT_ORDER_ASCENDING ? s1.compareToIgnoreCase( s2 )
+        return getSortOrderOrDefault() == BrowserCoreConstants.SORT_ORDER_ASCENDING ? s1.compareToIgnoreCase( s2 )
             : s2.compareToIgnoreCase( s1 );
+    }
+
+
+    public static List<IValue> toSortedValues( IEntry entry )
+    {
+        return Arrays.stream( entry.getAttributes() ).flatMap( a -> Arrays.stream( a.getValues() ) )
+            .sorted( new AttributeComparator() )
+            .collect( Collectors.toList() );
     }
 
 }

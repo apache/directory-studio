@@ -21,13 +21,14 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.entry;
 
 
-import java.util.Arrays;
+import java.util.List;
 
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.entryeditors.EntryEditorInput;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
 import org.apache.directory.studio.ldapbrowser.core.utils.AttributeComparator;
 import org.apache.directory.studio.ldapbrowser.core.utils.CompoundModification;
@@ -40,7 +41,7 @@ import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
 import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
 import org.apache.directory.studio.ldifparser.model.container.LdifInvalidContainer;
 import org.apache.directory.studio.ldifparser.model.container.LdifRecord;
-import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifSepLine;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -216,18 +217,14 @@ public class LdifEntryEditorDocumentProvider extends LdifDocumentProvider
 
     private void setDocumentInput( IDocument document, IEntry entry )
     {
-        LdifContentRecord record = ModelConverter.entryToLdifContentRecord( entry );
-
         // sort attribute-value lines
-        AttributeComparator comparator = new AttributeComparator( entry );
-        LdifAttrValLine[] attrValLines = record.getAttrVals();
-        Arrays.sort( attrValLines, comparator );
-        LdifContentRecord newRecord = new LdifContentRecord( record.getDnLine() );
-        for ( LdifAttrValLine attrValLine : attrValLines )
+        List<IValue> sortedValues = AttributeComparator.toSortedValues( entry );
+        LdifContentRecord newRecord = LdifContentRecord.create( entry.getDn().getName() );
+        for ( IValue value : sortedValues )
         {
-            newRecord.addAttrVal( attrValLine );
+            newRecord.addAttrVal( ModelConverter.valueToLdifAttrValLine( value ) );
         }
-        newRecord.finish( record.getSepLine() );
+        newRecord.finish( LdifSepLine.create() );
 
         // format
         String newContent = newRecord.toFormattedString( Utils.getLdifFormatParameters() );
