@@ -29,10 +29,15 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
+import java.io.ByteArrayInputStream;
 import java.net.ConnectException;
 import java.net.UnknownHostException;
 import java.nio.channels.UnresolvedAddressException;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -69,6 +74,7 @@ import org.apache.directory.studio.connection.core.ConnectionParameter.Authentic
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.NetworkProvider;
 import org.apache.directory.studio.connection.core.IReferralHandler;
+import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
 import org.apache.mina.util.AvailablePortFinder;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -344,6 +350,35 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
     }
 
 
+    /**
+     * Test binary attributes.
+     */
+    @Test
+    public void testSearchBinaryAttributes() throws Exception
+    {
+        StudioProgressMonitor monitor = getProgressMonitor();
+        SearchControls searchControls = new SearchControls();
+        searchControls.setSearchScope( SearchControls.OBJECT_SCOPE );
+        NamingEnumeration<SearchResult> result = getConnectionWrapper( monitor ).search( "uid=admin,ou=system",
+            "(objectClass=*)",
+            searchControls, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, null, monitor, null );
+
+        assertNotNull( result );
+        assertTrue( result.hasMore() );
+        SearchResult entry = result.next();
+        assertNotNull( entry );
+
+        Object userCertificateValue = entry.getAttributes().get( "userCertificate" ).get();
+        assertEquals( byte[].class, userCertificateValue.getClass() );
+
+        CertificateFactory cf = CertificateFactory.getInstance( "X.509" ); //$NON-NLS-1$
+        Certificate certificate = cf.generateCertificate( new ByteArrayInputStream( ( byte[] ) userCertificateValue ) );
+        assertTrue( certificate instanceof X509Certificate );
+        X509Certificate x509Certificate = ( X509Certificate ) certificate;
+        assertTrue( x509Certificate.getIssuerDN().getName().contains( "ApacheDS" ) );
+    }
+
+
     @Test
     public void testSearchContinuation_Follow_DirectReferral() throws NamingException
     {
@@ -487,7 +522,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
 
         // create entry under referral
         StudioProgressMonitor monitor = getProgressMonitor();
-        Attributes attributes = AttributeUtils.toAttributes(
+        Attributes attributes = Utils.toAttributes(
             new DefaultEntry( referralDn, "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" ) );
         getConnectionWrapper( monitor ).createEntry( referralDn, attributes, null, monitor, null );
 
@@ -506,7 +541,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
 
         // create entry under referral
         StudioProgressMonitor monitor = getProgressMonitor();
-        Attributes attributes = AttributeUtils.toAttributes(
+        Attributes attributes = Utils.toAttributes(
             new DefaultEntry( referralDn, "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" ) );
         getConnectionWrapper( monitor ).createEntry( referralDn, attributes, null, monitor, null );
 
@@ -524,7 +559,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
 
         // create entry under referral
         StudioProgressMonitor monitor = getProgressMonitor();
-        Attributes attributes = AttributeUtils.toAttributes(
+        Attributes attributes = Utils.toAttributes(
             new DefaultEntry( referralDn, "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" ) );
         getConnectionWrapper( monitor ).createEntry( referralDn, attributes, null, monitor, null );
 

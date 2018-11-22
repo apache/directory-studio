@@ -22,11 +22,18 @@ package org.apache.directory.studio.connection.core;
 
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import javax.naming.directory.Attributes;
+import javax.naming.directory.BasicAttribute;
+import javax.naming.directory.BasicAttributes;
 import javax.naming.directory.SearchControls;
 
+import org.apache.directory.api.ldap.model.entry.Attribute;
+import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.url.LdapUrl;
@@ -375,4 +382,67 @@ public class Utils
             return null;
         }
     }
+
+
+    /**
+     * Converts an {@link Entry} to an {@link Attributes}.
+     *
+     * @param entry
+     *      the {@link Entry} to convert
+     * @return
+     *      the equivalent {@link Attributes}
+     */
+    public static Attributes toAttributes( Entry entry )
+    {
+        if ( entry != null )
+        {
+            Attributes attributes = new BasicAttributes( true );
+
+            // Looping on attributes
+            for ( Iterator<Attribute> attributeIterator = entry.iterator(); attributeIterator.hasNext(); )
+            {
+                Attribute entryAttribute = attributeIterator.next();
+
+                attributes.put( toJndiAttribute( entryAttribute ) );
+            }
+
+            return attributes;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Converts an {@link Attribute} to a JNDI Attribute.
+     *
+     * @param attribute the {@link Attribute} to convert
+     * @return the equivalent JNDI Attribute
+     */
+    public static javax.naming.directory.Attribute toJndiAttribute( Attribute attribute )
+    {
+        if ( attribute != null )
+        {
+            javax.naming.directory.Attribute jndiAttribute = new BasicAttribute( attribute.getUpId() );
+
+            // Looping on values
+            for ( Iterator<Value> valueIterator = attribute.iterator(); valueIterator.hasNext(); )
+            {
+                Value value = valueIterator.next();
+                if ( value.isHumanReadable() )
+                {
+                    jndiAttribute.add( value.getValue() );
+                }
+                else
+                {
+                    jndiAttribute.add( value.getBytes() );
+                }
+            }
+
+            return jndiAttribute;
+        }
+
+        return null;
+    }
+
 }

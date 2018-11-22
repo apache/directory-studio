@@ -53,6 +53,7 @@ import org.apache.directory.studio.connection.core.Connection.AliasDereferencing
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.IJndiLogger;
+import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.connection.core.io.AbstractStudioNamingEnumeration;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapperUtils;
 import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
@@ -277,7 +278,7 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
             {
                 resultEntryCounter++;
                 SearchResult sr = new SearchResult( currentSearchResultEntry.getObjectName().toString(), null,
-                    AttributeUtils.toAttributes( currentSearchResultEntry.getEntry() ) );
+                    Utils.toAttributes( currentSearchResultEntry.getEntry() ) );
                 sr.setNameInNamespace( currentSearchResultEntry.getObjectName().toString() );
 
                 // Converting the SearchResult to a StudioSearchResult

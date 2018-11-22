@@ -28,6 +28,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.directory.server.annotations.CreateLdapServer;
 import org.apache.directory.server.annotations.CreateTransport;
@@ -37,12 +42,15 @@ import org.apache.directory.api.ldap.model.constants.LdapSecurityConstants;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.password.PasswordUtil;
+import org.apache.directory.api.util.FileUtils;
+import org.apache.directory.api.util.IOUtils;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.DnEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.EntryEditorBot;
+import org.apache.directory.studio.test.integration.ui.bots.ImageEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.ModificationLogsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewAttributeWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.PasswordEditorDialogBot;
@@ -51,6 +59,7 @@ import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
 import org.apache.directory.studio.test.integration.ui.bots.TextEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -389,6 +398,58 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         assertFalse( entryEditorBot.getAttributeValues().contains( "description: testTextValueEditor 1" ) );
         assertTrue( entryEditorBot.getAttributeValues().contains( "description: testTextValueEditor 2" ) );
         modificationLogsViewBot.waitForText( "replace: description\ndescription: testTextValueEditor 2" );
+    }
+
+
+    /**
+     * DIRSTUDIO-1199, DIRSTUDIO-1204: Binary attributes
+     */
+    @Test
+    public void testCertificateValueEditor() throws Exception
+    {
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "uid=admin" );
+
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "uid=admin,ou=system" );
+        entryEditorBot.activate();
+
+        assertTrue( entryEditorBot.getAttributeValues()
+            .contains( "userCertificate: X.509v1: CN=ApacheDS,OU=Directory,O=ASF,C=US" ) );
+    }
+
+
+    /**
+     * DIRSTUDIO-1199, DIRSTUDIO-1204: Binary attributes
+     */
+    @Test
+    public void testImageValueEditor() throws Exception
+    {
+        URL url = Platform.getInstanceLocation().getURL();
+        String destFile = url.getFile() + "studio_64x64.jpg";
+        InputStream is = getClass().getResourceAsStream( "studio_64x64.jpg" );
+        byte[] data = IOUtils.toByteArray( is, 2014 );
+        FileUtils.writeByteArrayToFile( new File( destFile ), data );
+
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Barbara Jensen" );
+
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "cn=Barbara Jensen,ou=users,ou=system" );
+        entryEditorBot.activate();
+
+        // add image
+        NewAttributeWizardBot wizardBot = entryEditorBot.openNewAttributeWizard();
+        assertTrue( wizardBot.isVisible() );
+        wizardBot.typeAttributeType( "jpegPhoto" );
+        ImageEditorDialogBot imageEditorBot = wizardBot.clickFinishButtonExpectingImageEditor();
+        assertTrue( imageEditorBot.isVisible() );
+        imageEditorBot.typeFile( destFile );
+        imageEditorBot.clickOkButton();
+
+        // assert value after saved and reloaded from server
+        SWTUtils.sleep( 1000 );
+        for ( String s : entryEditorBot.getAttributeValues() )
+        {
+            System.out.println( s );
+        }
+        assertTrue( entryEditorBot.getAttributeValues().contains( "jpegPhoto: JPEG-Image (64x64 Pixel, 2014 Bytes)" ) );
     }
 
 }

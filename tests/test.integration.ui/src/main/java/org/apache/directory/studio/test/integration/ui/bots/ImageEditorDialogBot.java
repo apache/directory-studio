@@ -20,39 +20,18 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
-public class NewAttributeWizardBot extends WizardBot
+public class ImageEditorDialogBot extends DialogBot
 {
 
-    public NewAttributeWizardBot()
+    public ImageEditorDialogBot()
     {
-        super( "New Attribute" );
+        super( "Image Editor" );
     }
 
 
-    public void typeAttributeType( String text )
+    public void typeFile( String file )
     {
-        bot.comboBox().setText( text );
-    }
-
-
-    public DnEditorDialogBot clickFinishButtonExpectingDnEditor()
-    {
-        clickFinishButton();
-        return new DnEditorDialogBot();
-    }
-
-
-    public PasswordEditorDialogBot clickFinishButtonExpectingPasswordEditor()
-    {
-        clickFinishButton();
-        return new PasswordEditorDialogBot();
-    }
-
-
-    public ImageEditorDialogBot clickFinishButtonExpectingImageEditor()
-    {
-        clickFinishButton();
-        return new ImageEditorDialogBot();
+        bot.text(4).setText( file );
     }
 
 }
