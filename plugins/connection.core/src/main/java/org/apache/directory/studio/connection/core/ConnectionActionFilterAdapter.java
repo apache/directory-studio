@@ -37,7 +37,6 @@ public class ConnectionActionFilterAdapter implements IActionFilter
     private static final String HOST = "host"; //$NON-NLS-1$
     private static final String PORT = "port"; //$NON-NLS-1$
     private static final String ENCRYPTION_METHOD = "encryptionMethod"; //$NON-NLS-1$
-    private static final String NETWORK_PROVIDER = "networkProvider"; //$NON-NLS-1$
     private static final String AUTH_METHOD = "authMethod"; //$NON-NLS-1$
     private static final String BIND_PRINCIPAL = "bindPrincipal"; //$NON-NLS-1$
     private static final String BIND_PASSWORD = "bindPassword"; //$NON-NLS-1$
@@ -117,11 +116,6 @@ public class ConnectionActionFilterAdapter implements IActionFilter
             else if ( ENCRYPTION_METHOD.equals( name ) )
             {
                 return value.equals( connection.getEncryptionMethod().toString() );
-            }
-            // NETWORK PROVIDER
-            else if ( NETWORK_PROVIDER.equals( name ) )
-            {
-                return value.equals( connection.getNetworkProvider().toString() );
             }
             // AUTH METHOD
             else if ( AUTH_METHOD.equals( name ) )

@@ -72,7 +72,6 @@ import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
-import org.apache.directory.studio.connection.core.ConnectionParameter.NetworkProvider;
 import org.apache.directory.studio.connection.core.IReferralHandler;
 import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
@@ -97,14 +96,7 @@ import org.junit.runner.RunWith;
 public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
 {
 
-    protected NetworkProvider provider;
     protected ConnectionWrapper connectionWrapper;
-
-
-    public ConnectionWrapperTestBase( NetworkProvider provider )
-    {
-        this.provider = provider;
-    }
 
 
     @Before
@@ -175,7 +167,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
     {
         StudioProgressMonitor monitor = getProgressMonitor();
         ConnectionParameter connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(),
-            EncryptionMethod.NONE, NetworkProvider.JNDI, AuthenticationMethod.NONE, null, null, null, true, null, 30L );
+            EncryptionMethod.NONE, AuthenticationMethod.NONE, null, null, null, true, null, 30L );
         Connection connection = new Connection( connectionParameter );
         ConnectionWrapper connectionWrapper = connection.getConnectionWrapper();
 
@@ -206,46 +198,28 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         // invalid port
         monitor = getProgressMonitor();
         connectionParameter = new ConnectionParameter( null, LOCALHOST, AvailablePortFinder.getNextAvailable(),
-            EncryptionMethod.NONE, provider, AuthenticationMethod.NONE, null, null, null, true, null, 30L );
+            EncryptionMethod.NONE, AuthenticationMethod.NONE, null, null, null, true, null, 30L );
         connection = new Connection( connectionParameter );
         connectionWrapper = connection.getConnectionWrapper();
         connectionWrapper.connect( monitor );
         assertFalse( connectionWrapper.isConnected() );
         assertNotNull( monitor.getException() );
-        if ( provider == NetworkProvider.JNDI && NetworkProvider.JNDI.isSupported() )
-        {
-            assertTrue( monitor.getException() instanceof CommunicationException );
-            assertNotNull( monitor.getException().getCause() );
-            assertTrue( monitor.getException().getCause() instanceof ConnectException );
-        }
-        else
-        {
-            assertTrue( monitor.getException() instanceof InvalidConnectionException );
-            assertNotNull( monitor.getException().getCause() );
-            assertTrue( monitor.getException().getCause() instanceof ConnectException );
-        }
+        assertTrue( monitor.getException() instanceof InvalidConnectionException );
+        assertNotNull( monitor.getException().getCause() );
+        assertTrue( monitor.getException().getCause() instanceof ConnectException );
 
         // unknown host
         monitor = getProgressMonitor();
         connectionParameter = new ConnectionParameter( null, "555.555.555.555", ldapServer.getPort(),
-            EncryptionMethod.NONE, provider, AuthenticationMethod.NONE, null, null, null, true, null, 30L );
+            EncryptionMethod.NONE, AuthenticationMethod.NONE, null, null, null, true, null, 30L );
         connection = new Connection( connectionParameter );
         connectionWrapper = connection.getConnectionWrapper();
         connectionWrapper.connect( monitor );
         assertFalse( connectionWrapper.isConnected() );
         assertNotNull( monitor.getException() );
-        if ( provider == NetworkProvider.JNDI && NetworkProvider.JNDI.isSupported() )
-        {
-            assertTrue( monitor.getException() instanceof CommunicationException );
-            assertNotNull( monitor.getException().getCause() );
-            assertTrue( monitor.getException().getCause() instanceof UnknownHostException );
-        }
-        else
-        {
-            assertTrue( monitor.getException() instanceof InvalidConnectionException );
-            assertNotNull( monitor.getException().getCause() );
-            assertTrue( monitor.getException().getCause() instanceof UnresolvedAddressException );
-        }
+        assertTrue( monitor.getException() instanceof InvalidConnectionException );
+        assertNotNull( monitor.getException().getCause() );
+        assertTrue( monitor.getException().getCause() instanceof UnresolvedAddressException );
 
         // TODO: SSL, StartTLS
     }
@@ -259,7 +233,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
     {
         StudioProgressMonitor monitor = getProgressMonitor();
         ConnectionParameter connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(),
-            EncryptionMethod.NONE, provider, AuthenticationMethod.SIMPLE, "uid=admin,ou=system", "secret", null, true,
+            EncryptionMethod.NONE, AuthenticationMethod.SIMPLE, "uid=admin,ou=system", "secret", null, true,
             null, 30L );
         Connection connection = new Connection( connectionParameter );
         ConnectionWrapper connectionWrapper = connection.getConnectionWrapper();
@@ -291,42 +265,28 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         // simple auth without principal and credential
         monitor = getProgressMonitor();
         connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(), EncryptionMethod.NONE,
-            provider, AuthenticationMethod.SIMPLE, "uid=admin", "invalid", null, true, null, 30L );
+            AuthenticationMethod.SIMPLE, "uid=admin", "invalid", null, true, null, 30L );
         connection = new Connection( connectionParameter );
         connectionWrapper = connection.getConnectionWrapper();
         connectionWrapper.connect( monitor );
         connectionWrapper.bind( monitor );
         assertFalse( connectionWrapper.isConnected() );
         assertNotNull( monitor.getException() );
-        if ( provider == NetworkProvider.JNDI && NetworkProvider.JNDI.isSupported() )
-        {
-            assertTrue( monitor.getException() instanceof NamingException );
-        }
-        else
-        {
-            assertTrue( monitor.getException() instanceof Exception );
-            assertTrue( monitor.getException().getMessage().contains( "error code 49 - INVALID_CREDENTIALS" ) );
-        }
+        assertTrue( monitor.getException() instanceof Exception );
+        assertTrue( monitor.getException().getMessage().contains( "error code 49 - INVALID_CREDENTIALS" ) );
 
         // simple auth with invalid principal and credential
         monitor = getProgressMonitor();
         connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(), EncryptionMethod.NONE,
-            provider, AuthenticationMethod.SIMPLE, "uid=admin,ou=system", "bar", null, true, null, 30L );
+            AuthenticationMethod.SIMPLE, "uid=admin,ou=system", "bar", null, true, null, 30L );
         connection = new Connection( connectionParameter );
         connectionWrapper = connection.getConnectionWrapper();
         connectionWrapper.connect( monitor );
         connectionWrapper.bind( monitor );
         assertFalse( connectionWrapper.isConnected() );
         assertNotNull( monitor.getException() );
-        if ( provider == NetworkProvider.JNDI && NetworkProvider.JNDI.isSupported() )
-        {
-            assertTrue( monitor.getException() instanceof AuthenticationException );
-        }
-        else
-        {
-            assertTrue( monitor.getException() instanceof Exception );
-            assertTrue( monitor.getException().getMessage().contains( "error code 49 - INVALID_CREDENTIALS" ) );
-        }
+        assertTrue( monitor.getException() instanceof Exception );
+        assertTrue( monitor.getException().getMessage().contains( "error code 49 - INVALID_CREDENTIALS" ) );
     }
 
 
@@ -722,7 +682,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
     {
         // simple auth without principal and credential
         ConnectionParameter connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(),
-            EncryptionMethod.NONE, provider, AuthenticationMethod.SIMPLE, "uid=admin,ou=system", "secret", null, false,
+            EncryptionMethod.NONE, AuthenticationMethod.SIMPLE, "uid=admin,ou=system", "secret", null, false,
             null, 30000L );
 
         Connection connection = new Connection( connectionParameter );

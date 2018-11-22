@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.PropertyResourceBundle;
 
-import org.apache.directory.studio.connection.core.ConnectionParameter.NetworkProvider;
 import org.apache.directory.studio.connection.core.event.CoreEventRunner;
 import org.apache.directory.studio.connection.core.event.EventRunner;
 import org.apache.directory.studio.connection.core.io.jndi.LdifModificationLogger;
@@ -530,44 +529,6 @@ public class ConnectionCorePlugin extends Plugin
 
 
     /**
-     * Gets the default LDAP context factory.
-     * 
-     * Right now the following context factories are supported:
-     * <ul>
-     * <li>com.sun.jndi.ldap.LdapCtxFactory</li>
-     * <li>org.apache.harmony.jndi.provider.ldap.LdapContextFactory</li>
-     * </ul>
-     * 
-     * @return the default LDAP context factory
-     */
-    public String getDefaultLdapContextFactory()
-    {
-        String defaultLdapContextFactory = ""; //$NON-NLS-1$
-
-        try
-        {
-            String sun = "com.sun.jndi.ldap.LdapCtxFactory"; //$NON-NLS-1$
-            Class.forName( sun );
-            defaultLdapContextFactory = sun;
-        }
-        catch ( ClassNotFoundException e )
-        {
-        }
-        try
-        {
-            String apache = "org.apache.harmony.jndi.provider.ldap.LdapContextFactory"; //$NON-NLS-1$
-            Class.forName( apache );
-            defaultLdapContextFactory = apache;
-        }
-        catch ( ClassNotFoundException e )
-        {
-        }
-
-        return defaultLdapContextFactory;
-    }
-
-
-    /**
      * Gets the default KRB5 login module.
      * 
      * Right now the following context factories are supported:
@@ -604,36 +565,4 @@ public class ConnectionCorePlugin extends Plugin
         return defaultKrb5LoginModule;
     }
 
-
-    /**
-     * Gets the default network provider from the preferences store.
-     *
-     * @return the default network provider
-     */
-    public NetworkProvider getDefaultNetworkProvider()
-    {
-        return getNetworkProvider( getPluginPreferences().getInt(
-            ConnectionCoreConstants.PREFERENCE_DEFAULT_NETWORK_PROVIDER ) );
-    }
-
-
-    /**
-     * Gets the network provider associated with the value.
-     *
-     * @param networkProviderValue the network provider value
-     *
-     * @return the network provider
-     */
-    public NetworkProvider getNetworkProvider( int networkProviderValue )
-    {
-        if ( networkProviderValue == ConnectionCoreConstants.PREFERENCE_NETWORK_PROVIDER_JNDI
-            && NetworkProvider.JNDI.isSupported() )
-        {
-            return NetworkProvider.JNDI;
-        }
-        else
-        {
-            return NetworkProvider.APACHE_DIRECTORY_LDAP_API;
-        }
-    }
 }

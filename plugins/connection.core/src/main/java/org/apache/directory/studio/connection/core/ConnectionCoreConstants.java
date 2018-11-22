@@ -55,9 +55,6 @@ public final class ConnectionCoreConstants
     /** The constant used to identify if certificates for secure connections should be validated */
     public static final String PREFERENCE_VALIDATE_CERTIFICATES = "validateCertificates"; //$NON-NLS-1$
 
-    /** The constant used to identify the preferred LDAP context factory */
-    public static final String PREFERENCE_LDAP_CONTEXT_FACTORY = "ldapContextFactory"; //$NON-NLS-1$
-
     /** The constant used to identify the "enable modification logs" preference  */
     public static final String PREFERENCE_MODIFICATIONLOGS_ENABLE = "modificationLogsEnable"; //$NON-NLS-1$
 
@@ -87,15 +84,6 @@ public final class ConnectionCoreConstants
 
     /** The constant used to identify the KRB5 login module class name */
     public static final String PREFERENCE_KRB5_LOGIN_MODULE = "krb5LoginModule"; //$NON-NLS-1$
-
-    /** The constant used to identify the default network provider setting */
-    public static final String PREFERENCE_DEFAULT_NETWORK_PROVIDER = "defaultNetworkProvider"; //$NON-NLS-1$
-
-    /** The constant used to identify the 'JNDI' value for the default network provider setting */
-    public static final int PREFERENCE_NETWORK_PROVIDER_JNDI = 0;
-
-    /** The constant used to identify the 'Apache Directory LDAP API' value for the default provider setting */
-    public static final int PREFERENCE_NETWORK_PROVIDER_APACHE_DIRECTORY_LDAP_API = 1;
 
     /** The constant used to identify if connections passwords should be stored in a keystore */
     public static final String PREFERENCE_CONNECTIONS_PASSWORDS_KEYSTORE = "connectionsPasswordsKeystore"; //$NON-NLS-1$

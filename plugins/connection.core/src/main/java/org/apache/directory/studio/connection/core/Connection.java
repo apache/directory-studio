@@ -28,11 +28,9 @@ import org.apache.directory.studio.connection.core.ConnectionParameter.Authentic
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.Krb5Configuration;
 import org.apache.directory.studio.connection.core.ConnectionParameter.Krb5CredentialConfiguration;
-import org.apache.directory.studio.connection.core.ConnectionParameter.NetworkProvider;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
 import org.apache.directory.studio.connection.core.io.api.DirectoryApiConnectionWrapper;
-import org.apache.directory.studio.connection.core.io.jndi.JNDIConnectionWrapper;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.ui.IActionFilter;
 
@@ -208,7 +206,7 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
     public Object clone()
     {
         ConnectionParameter cp = new ConnectionParameter( getName(), getHost(), getPort(), getEncryptionMethod(),
-            getNetworkProvider(), getAuthMethod(), getBindPrincipal(), getBindPassword(), getSaslRealm(), isReadOnly(),
+            getAuthMethod(), getBindPrincipal(), getBindPassword(), getSaslRealm(), isReadOnly(),
             getConnectionParameter().getExtendedProperties() , getTimeoutMillis() );
 
         return new Connection( cp );
@@ -222,32 +220,7 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
      */
     public ConnectionWrapper getConnectionWrapper()
     {
-        if ( getNetworkProvider() == NetworkProvider.JNDI && NetworkProvider.JNDI.isSupported() )
-        {
-            return getJndiConnectionWrapper();
-        }
-        else
-        {
-            return getDirectoryApiConnectionWrapper();
-
-        }
-    }
-
-
-    /**
-     * Gets the JNDI connection wrapper.
-     *
-     * @return
-     *      the JNDI connection wrapper
-     */
-    private ConnectionWrapper getJndiConnectionWrapper()
-    {
-        if ( !( connectionWrapper instanceof JNDIConnectionWrapper ) )
-        {
-            connectionWrapper = new JNDIConnectionWrapper( this );
-        }
-
-        return connectionWrapper;
+        return getDirectoryApiConnectionWrapper();
     }
 
 
@@ -354,17 +327,6 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
     public EncryptionMethod getEncryptionMethod()
     {
         return connectionParameter.getEncryptionMethod();
-    }
-
-
-    /**
-     * Gets the network provider.
-     * 
-     * @return the network provider
-     */
-    public NetworkProvider getNetworkProvider()
-    {
-        return connectionParameter.getNetworkProvider();
     }
 
 
