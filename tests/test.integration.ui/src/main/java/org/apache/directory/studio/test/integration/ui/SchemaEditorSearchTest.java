@@ -32,7 +32,9 @@ import org.apache.directory.studio.test.integration.ui.bots.NewSchemaProjectWiza
 import org.apache.directory.studio.test.integration.ui.bots.SchemaProjectsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.SchemaSearchViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
+import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
 import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -55,6 +57,13 @@ public class SchemaEditorSearchTest extends AbstractLdapTestUnit
     {
         studioBot = new StudioBot();
         studioBot.resetSchemaPerspective();
+    }
+
+
+    @After
+    public void tearDown() throws Exception
+    {
+        Assertions.genericTearDownAssertions();
     }
 
 

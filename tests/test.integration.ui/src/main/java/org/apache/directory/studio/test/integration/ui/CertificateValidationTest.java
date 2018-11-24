@@ -47,6 +47,7 @@ import org.apache.directory.studio.test.integration.ui.bots.NewApacheDSServerWiz
 import org.apache.directory.studio.test.integration.ui.bots.NewConnectionWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.PreferencesBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
+import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
 import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -149,6 +150,8 @@ public class CertificateValidationTest
         System.clearProperty( "javax.net.ssl.trustStorePassword" );
         System.clearProperty( "javax.net.ssl.keyStore" );
         System.clearProperty( "javax.net.ssl.keyStorePassword" );
+
+        Assertions.genericTearDownAssertions();
     }
 
 

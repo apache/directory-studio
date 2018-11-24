@@ -32,6 +32,7 @@ import org.apache.directory.studio.test.integration.ui.bots.NewWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.PreferencesBot;
 import org.apache.directory.studio.test.integration.ui.bots.ShowViewsBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
+import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
 import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.junit.After;
@@ -65,6 +66,7 @@ public class RcpAppTest extends AbstractLdapTestUnit
     @After
     public void tearDown() throws Exception
     {
+        Assertions.genericTearDownAssertions();
     }
 
 

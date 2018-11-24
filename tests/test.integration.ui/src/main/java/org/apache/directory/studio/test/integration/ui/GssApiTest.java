@@ -44,6 +44,7 @@ import org.apache.directory.studio.test.integration.ui.bots.ImportWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewApacheDSServerWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewConnectionWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
+import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
 import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.eclipse.core.runtime.Platform;
 import org.junit.After;
@@ -128,6 +129,8 @@ public class GssApiTest
         // delete ApacheDS
         DeleteDialogBot deleteDialogBot = serversViewBot.openDeleteServerDialog();
         deleteDialogBot.clickOkButton();
+
+        Assertions.genericTearDownAssertions();
     }
 
 

@@ -35,6 +35,7 @@ import org.apache.directory.studio.test.integration.ui.bots.MoveEntriesDialogBot
 import org.apache.directory.studio.test.integration.ui.bots.RenameEntryDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.SelectDnDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
+import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
 import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.junit.After;
 import org.junit.Before;
@@ -75,6 +76,7 @@ public class RenameEntryDialogTest extends AbstractLdapTestUnit
     public void tearDown() throws Exception
     {
         connectionsViewBot.deleteTestConnections();
+        Assertions.genericTearDownAssertions();
     }
 
 

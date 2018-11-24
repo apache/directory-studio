@@ -27,6 +27,7 @@ import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
 import org.apache.directory.studio.test.integration.ui.bots.LdifEditorBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
+import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
 import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.junit.After;
 import org.junit.Before;
@@ -60,6 +61,7 @@ public class LdifEditorTest extends AbstractLdapTestUnit
     @After
     public void tearDown() throws Exception
     {
+        Assertions.genericTearDownAssertions();
     }
 
 

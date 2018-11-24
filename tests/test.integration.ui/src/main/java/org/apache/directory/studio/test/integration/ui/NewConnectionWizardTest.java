@@ -44,6 +44,7 @@ import org.apache.directory.studio.connection.core.ConnectionParameter.Authentic
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewConnectionWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
+import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
 import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.junit.After;
 import org.junit.Before;
@@ -93,6 +94,7 @@ public class NewConnectionWizardTest extends AbstractLdapTestUnit
         studioBot = null;
         connectionsViewBot = null;
         wizardBot = null;
+        Assertions.genericTearDownAssertions();
     }
 
 

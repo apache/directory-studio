@@ -41,6 +41,7 @@ import org.apache.directory.studio.test.integration.ui.bots.SearchDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.SearchPropertiesDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.SearchResultEditorBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
+import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
 import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
 import org.junit.After;
@@ -84,6 +85,7 @@ public class SearchTest extends AbstractLdapTestUnit
     public void tearDown() throws Exception
     {
         connectionsViewBot.deleteTestConnections();
+        Assertions.genericTearDownAssertions();
     }
 
 
