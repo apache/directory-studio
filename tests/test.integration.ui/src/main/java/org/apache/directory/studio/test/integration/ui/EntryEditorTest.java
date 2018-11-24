@@ -444,10 +444,6 @@ public class EntryEditorTest extends AbstractLdapTestUnit
 
         // assert value after saved and reloaded from server
         SWTUtils.sleep( 1000 );
-        for ( String s : entryEditorBot.getAttributeValues() )
-        {
-            System.out.println( s );
-        }
         assertTrue( entryEditorBot.getAttributeValues().contains( "jpegPhoto: JPEG-Image (64x64 Pixel, 2014 Bytes)" ) );
     }
 

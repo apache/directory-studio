@@ -41,12 +41,13 @@ import java.util.logging.Logger;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
-import javax.naming.directory.Attributes;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SearchControls;
 import javax.naming.ldap.Control;
 
+import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.api.ldap.model.name.Dn;
@@ -266,7 +267,7 @@ public class LdifModificationLogger implements IJndiLogger
     /**
      * {@inheritDoc}
      */
-    public void logChangetypeAdd( Connection connection, final String dn, final Attributes attributes,
+    public void logChangetypeAdd( Connection connection, final Entry entry,
         final Control[] controls, NamingException ex )
     {
         if ( !isModificationLogEnabled() )
@@ -274,47 +275,36 @@ public class LdifModificationLogger implements IJndiLogger
             return;
         }
 
-        try
+        Set<String> maskedAttributes = getMaskedAttributes();
+        LdifChangeAddRecord record = new LdifChangeAddRecord( LdifDnLine.create( entry.getDn().getName() ) );
+        addControlLines( record, controls );
+        record.setChangeType( LdifChangeTypeLine.createAdd() );
+        for ( org.apache.directory.api.ldap.model.entry.Attribute attribute : entry )
         {
-            Set<String> maskedAttributes = getMaskedAttributes();
-            LdifChangeAddRecord record = new LdifChangeAddRecord( LdifDnLine.create( dn ) );
-            addControlLines( record, controls );
-            record.setChangeType( LdifChangeTypeLine.createAdd() );
-            NamingEnumeration<? extends Attribute> attributeEnumeration = attributes.getAll();
-            while ( attributeEnumeration.hasMore() )
+            String attributeName = attribute.getUpId();
+            for ( Value value : attribute )
             {
-                Attribute attribute = attributeEnumeration.next();
-                String attributeName = attribute.getID();
-                NamingEnumeration<?> valueEnumeration = attribute.getAll();
-                while ( valueEnumeration.hasMore() )
+                if ( maskedAttributes.contains( Strings.toLowerCase( attributeName ) ) )
                 {
-                    Object o = valueEnumeration.next();
-
-                    if ( maskedAttributes.contains( Strings.toLowerCase( attributeName ) ) )
+                    record.addAttrVal( LdifAttrValLine.create( attributeName, "**********" ) ); //$NON-NLS-1$
+                }
+                else
+                {
+                    if ( value.isHumanReadable() )
                     {
-                        record.addAttrVal( LdifAttrValLine.create( attributeName, "**********" ) ); //$NON-NLS-1$
+                        record.addAttrVal( LdifAttrValLine.create( attributeName, value.getValue() ) );
                     }
                     else
                     {
-                        if ( o instanceof String )
-                        {
-                            record.addAttrVal( LdifAttrValLine.create( attributeName, ( String ) o ) );
-                        }
-                        if ( o instanceof byte[] )
-                        {
-                            record.addAttrVal( LdifAttrValLine.create( attributeName, ( byte[] ) o ) );
-                        }
+                        record.addAttrVal( LdifAttrValLine.create( attributeName, value.getBytes() ) );
                     }
                 }
             }
-            record.finish( LdifSepLine.create() );
+        }
+        record.finish( LdifSepLine.create() );
 
-            String formattedString = record.toFormattedString( LdifFormatParameters.DEFAULT );
-            log( formattedString, ex, connection );
-        }
-        catch ( NamingException e )
-        {
-        }
+        String formattedString = record.toFormattedString( LdifFormatParameters.DEFAULT );
+        log( formattedString, ex, connection );
     }
 
 

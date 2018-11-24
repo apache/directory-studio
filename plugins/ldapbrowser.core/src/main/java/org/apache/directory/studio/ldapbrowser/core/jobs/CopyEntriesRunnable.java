@@ -39,6 +39,8 @@ import javax.naming.ldap.Control;
 import javax.naming.ldap.ManageReferralControl;
 
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
+import org.apache.directory.api.ldap.model.entry.AttributeUtils;
+import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Ava;
 import org.apache.directory.api.ldap.model.name.Dn;
@@ -311,8 +313,9 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
                 }
 
                 // create entry
+                Entry entry = AttributeUtils.toEntry( newAttributes, newLdapDn );
                 targetBrowserConnection.getConnection().getConnectionWrapper()
-                    .createEntry( newLdapDn.getName(), newAttributes, controls, dummyMonitor, null );
+                    .createEntry( entry, controls, dummyMonitor, null );
 
                 while ( dummyMonitor.errorsReported() )
                 {
@@ -374,8 +377,9 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
                                     newLdapDn = parentDn.add( renamedRdn );
 
                                     // create entry
+                                    entry = AttributeUtils.toEntry( newAttributes, newLdapDn );
                                     targetBrowserConnection.getConnection().getConnectionWrapper()
-                                        .createEntry( newLdapDn.getName(), newAttributes, null, dummyMonitor, null );
+                                        .createEntry( entry, null, dummyMonitor, null );
 
                                     break;
                             }

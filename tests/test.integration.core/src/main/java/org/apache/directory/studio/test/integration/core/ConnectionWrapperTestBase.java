@@ -482,9 +482,8 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
 
         // create entry under referral
         StudioProgressMonitor monitor = getProgressMonitor();
-        Attributes attributes = Utils.toAttributes(
-            new DefaultEntry( referralDn, "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" ) );
-        getConnectionWrapper( monitor ).createEntry( referralDn, attributes, null, monitor, null );
+        Entry entry = new DefaultEntry( referralDn, "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" );
+        getConnectionWrapper( monitor ).createEntry( entry, null, monitor, null );
 
         // should have created target entry
         assertFalse( monitor.isCanceled() );
@@ -501,9 +500,8 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
 
         // create entry under referral
         StudioProgressMonitor monitor = getProgressMonitor();
-        Attributes attributes = Utils.toAttributes(
-            new DefaultEntry( referralDn, "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" ) );
-        getConnectionWrapper( monitor ).createEntry( referralDn, attributes, null, monitor, null );
+        Entry entry = new DefaultEntry( referralDn, "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" );
+        getConnectionWrapper( monitor ).createEntry( entry, null, monitor, null );
 
         // should have created target entry
         assertFalse( monitor.isCanceled() );
@@ -519,9 +517,8 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
 
         // create entry under referral
         StudioProgressMonitor monitor = getProgressMonitor();
-        Attributes attributes = Utils.toAttributes(
-            new DefaultEntry( referralDn, "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" ) );
-        getConnectionWrapper( monitor ).createEntry( referralDn, attributes, null, monitor, null );
+        Entry entry = new DefaultEntry( referralDn, "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" );
+        getConnectionWrapper( monitor ).createEntry( entry, null, monitor, null );
 
         // should not have created target entry
         assertFalse( monitor.isCanceled() );

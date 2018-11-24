@@ -29,6 +29,8 @@ import javax.naming.directory.BasicAttributes;
 import javax.naming.ldap.Control;
 import javax.naming.ldap.ManageReferralControl;
 
+import org.apache.directory.api.ldap.model.entry.AttributeUtils;
+import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioControl;
@@ -221,7 +223,8 @@ public class CreateEntryRunnable implements StudioConnectionBulkRunnableWithProg
                 { new ManageReferralControl( false ) };
         }
 
+        Entry entry = entryToCreate.toEntry();
         browserConnection.getConnection().getConnectionWrapper()
-            .createEntry( dn, jndiAttributes, controls, monitor, null );
+            .createEntry( entry, controls, monitor, null );
     }
 }

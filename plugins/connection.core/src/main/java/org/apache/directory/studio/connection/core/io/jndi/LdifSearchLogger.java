@@ -47,6 +47,7 @@ import javax.naming.directory.SearchControls;
 import javax.naming.ldap.Control;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.api.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.connection.core.Connection;
@@ -255,7 +256,7 @@ public class LdifSearchLogger implements IJndiLogger
     /**
      * {@inheritDoc}
      */
-    public void logChangetypeAdd( Connection connection, final String dn, final Attributes attributes,
+    public void logChangetypeAdd( Connection connection, final Entry entry,
         final Control[] controls, NamingException ex )
     {
         // don't log changetypes

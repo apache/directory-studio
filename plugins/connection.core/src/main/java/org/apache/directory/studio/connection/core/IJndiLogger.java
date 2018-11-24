@@ -21,11 +21,11 @@ package org.apache.directory.studio.connection.core;
 
 
 import javax.naming.NamingException;
-import javax.naming.directory.Attributes;
 import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SearchControls;
 import javax.naming.ldap.Control;
 
+import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo;
@@ -44,12 +44,11 @@ public interface IJndiLogger
      * Logs a changetype:add.
      * 
      * @param connection the connection
-     * @param dn the Dn
-     * @param attributes the attributes
+     * @param entry the entry
      * @param controls the controls
      * @param ex the naming exception if an error occurred, null otherwise
      */
-    void logChangetypeAdd( Connection connection, final String dn, final Attributes attributes,
+    void logChangetypeAdd( Connection connection, final Entry entry,
         final Control[] controls, NamingException ex );
 
 

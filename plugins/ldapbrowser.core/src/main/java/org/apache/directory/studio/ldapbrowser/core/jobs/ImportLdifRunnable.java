@@ -47,6 +47,9 @@ import javax.naming.ldap.BasicControl;
 import javax.naming.ldap.Control;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.directory.api.ldap.model.entry.AttributeUtils;
+import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
@@ -402,7 +405,7 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
      * @throws LdapInvalidDnException
      */
     static void importLdifRecord( IBrowserConnection browserConnection, LdifRecord record, boolean updateIfEntryExists,
-        StudioProgressMonitor monitor ) throws NamingException, LdapInvalidDnException
+        StudioProgressMonitor monitor ) throws NamingException, LdapException
     {
         if ( !record.isValid() )
         {
@@ -461,8 +464,9 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
                 }
             }
 
+            Entry entry = AttributeUtils.toEntry( jndiAttributes, new Dn( dn ) );
             browserConnection.getConnection().getConnectionWrapper()
-                .createEntry( dn, jndiAttributes, getControls( record ), monitor, null );
+                .createEntry( entry, getControls( record ), monitor, null );
 
             if ( monitor.errorsReported() && updateIfEntryExists
                 && monitor.getException() instanceof NameAlreadyBoundException )

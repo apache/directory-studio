@@ -75,7 +75,6 @@ import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
-import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
@@ -361,8 +360,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
         browserConnection
             .getConnection()
             .getConnectionWrapper()
-            .createEntry( entry.getDn().getName(), Utils.toAttributes( entry ), getControls( request ),
-                monitor, null );
+            .createEntry( entry, getControls( request ), monitor, null );
 
         // Creating the response
         if ( batchResponseDsml != null )
