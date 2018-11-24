@@ -888,7 +888,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     /**
      * {@inheritDoc}
      */
-    public void renameEntry( final String oldDn, final String newDn, final boolean deleteOldRdn,
+    public void renameEntry( final Dn oldDn, final Dn newDn, final boolean deleteOldRdn,
         final Control[] controls, final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo )
     {
         if ( connection.isReadOnly() )
@@ -906,11 +906,10 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                 {
                     // Preparing the rename request
                     ModifyDnRequest request = new ModifyDnRequestImpl();
-                    request.setName( new Dn( oldDn ) );
+                    request.setName( oldDn );
                     request.setDeleteOldRdn( deleteOldRdn );
-                    Dn newName = new Dn( newDn );
-                    request.setNewRdn( newName.getRdn() );
-                    request.setNewSuperior( newName.getParent() );
+                    request.setNewRdn( newDn.getRdn() );
+                    request.setNewSuperior( newDn.getParent() );
                     request.addAllControls( convertControls( controls ) );
 
                     // Performing the rename operation

@@ -128,7 +128,7 @@ public interface ConnectionWrapper
      * @param monitor the progress monitor
      * @param referralsInfo the referrals info
      */
-    void renameEntry( final String oldDn, final String newDn, final boolean deleteOldRdn,
+    void renameEntry( final Dn oldDn, final Dn newDn, final boolean deleteOldRdn,
         final Control[] controls, final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo );
 
 

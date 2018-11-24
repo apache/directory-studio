@@ -48,7 +48,6 @@ import javax.naming.ldap.Control;
 
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Value;
-import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
@@ -403,7 +402,7 @@ public class LdifModificationLogger implements IJndiLogger
     /**
      * {@inheritDoc}
      */
-    public void logChangetypeModDn( Connection connection, final String oldDn, final String newDn,
+    public void logChangetypeModDn( Connection connection, final Dn oldDn, final Dn newDn,
         final boolean deleteOldRdn, final Control[] controls, NamingException ex )
     {
         if ( !isModificationLogEnabled() )
@@ -411,26 +410,19 @@ public class LdifModificationLogger implements IJndiLogger
             return;
         }
 
-        try
-        {
-            Dn dn = new Dn( newDn );
-            Rdn newrdn = dn.getRdn();
-            Dn newsuperior = dn.getParent();
+        Rdn newrdn = newDn.getRdn();
+        Dn newsuperior = newDn.getParent();
 
-            LdifChangeModDnRecord record = new LdifChangeModDnRecord( LdifDnLine.create( oldDn ) );
-            addControlLines( record, controls );
-            record.setChangeType( LdifChangeTypeLine.createModDn() );
-            record.setNewrdn( LdifNewrdnLine.create( newrdn.getName() ) );
-            record.setDeloldrdn( deleteOldRdn ? LdifDeloldrdnLine.create1() : LdifDeloldrdnLine.create0() );
-            record.setNewsuperior( LdifNewsuperiorLine.create( newsuperior.getName() ) );
-            record.finish( LdifSepLine.create() );
+        LdifChangeModDnRecord record = new LdifChangeModDnRecord( LdifDnLine.create( oldDn.getName() ) );
+        addControlLines( record, controls );
+        record.setChangeType( LdifChangeTypeLine.createModDn() );
+        record.setNewrdn( LdifNewrdnLine.create( newrdn.getName() ) );
+        record.setDeloldrdn( deleteOldRdn ? LdifDeloldrdnLine.create1() : LdifDeloldrdnLine.create0() );
+        record.setNewsuperior( LdifNewsuperiorLine.create( newsuperior.getName() ) );
+        record.finish( LdifSepLine.create() );
 
-            String formattedString = record.toFormattedString( LdifFormatParameters.DEFAULT );
-            log( formattedString, ex, connection );
-        }
-        catch ( LdapInvalidDnException e )
-        {
-        }
+        String formattedString = record.toFormattedString( LdifFormatParameters.DEFAULT );
+        log( formattedString, ex, connection );
     }
 
 

@@ -539,7 +539,7 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
                 }
 
                 browserConnection.getConnection().getConnectionWrapper()
-                    .renameEntry( dn, newDn.toString(), deleteOldRdn, getControls( modDnRecord ), monitor, null );
+                    .renameEntry( new Dn( dn ), newDn, deleteOldRdn, getControls( modDnRecord ), monitor, null );
             }
         }
     }

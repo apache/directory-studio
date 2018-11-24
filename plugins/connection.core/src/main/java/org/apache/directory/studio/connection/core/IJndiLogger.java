@@ -89,7 +89,7 @@ public interface IJndiLogger
      * @param controls the controls
      * @param ex the naming exception if an error occurred, null otherwise
      */
-    void logChangetypeModDn( Connection connection, final String oldDn, final String newDn,
+    void logChangetypeModDn( Connection connection, final Dn oldDn, final Dn newDn,
         final boolean deleteOldRdn, final Control[] controls, NamingException ex );
 
 

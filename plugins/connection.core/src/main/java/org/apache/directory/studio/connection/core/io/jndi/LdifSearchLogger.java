@@ -287,7 +287,7 @@ public class LdifSearchLogger implements IJndiLogger
     /**
      * {@inheritDoc}
      */
-    public void logChangetypeModDn( Connection connection, final String oldDn, final String newDn,
+    public void logChangetypeModDn( Connection connection, final Dn oldDn, final Dn newDn,
         final boolean deleteOldRdn, final Control[] controls, NamingException ex )
     {
         // don't log changetypes

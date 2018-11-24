@@ -113,6 +113,13 @@ public class BrowserViewBot
     }
 
 
+    public MoveEntriesDialogBot openMoveEntryDialog()
+    {
+        ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Move Entry..." );
+        return new MoveEntriesDialogBot();
+    }
+
+
     public DeleteDialogBot openDeleteDialog()
     {
         if ( browserBot.getTree().selectionCount() == 1 )

@@ -56,6 +56,7 @@ import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.entry.ModificationOperation;
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.exception.LdapURLEncodingException;
 import org.apache.directory.api.ldap.model.message.AddRequest;
 import org.apache.directory.api.ldap.model.message.BindRequest;
@@ -75,6 +76,7 @@ import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
+import org.apache.directory.studio.connection.core.io.LdapRuntimeException;
 import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
@@ -562,11 +564,28 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
     private void processModifyDNRequest( ModifyDnRequest request, BatchResponseDsml batchResponseDsml,
         StudioProgressMonitor monitor )
     {
+        Dn newDn;
+        try
+        {
+            if ( request.isMove() )
+            {
+                newDn = new Dn( request.getNewRdn(), request.getNewSuperior() );
+            }
+            else
+            {
+                newDn = new Dn( request.getNewRdn(), request.getName().getParent() );
+            }
+        }
+        catch ( LdapInvalidDnException e )
+        {
+            throw new LdapRuntimeException( e );
+        }
+
         // Executing the modify Dn request
         browserConnection
             .getConnection()
             .getConnectionWrapper()
-            .renameEntry( request.getName().getName(), request.getNewRdn().getName(), request.getDeleteOldRdn(),
+            .renameEntry( request.getName(), newDn, request.getDeleteOldRdn(),
                 getControls( request ), monitor, null );
 
         // Creating the response

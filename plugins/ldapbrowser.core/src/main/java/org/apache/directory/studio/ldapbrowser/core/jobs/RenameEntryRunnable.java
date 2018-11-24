@@ -289,10 +289,6 @@ public class RenameEntryRunnable implements StudioConnectionBulkRunnableWithProg
     static void renameEntry( IBrowserConnection browserConnection, IEntry entry, Dn newDn,
         StudioProgressMonitor monitor )
     {
-        // DNs
-        String oldDnString = entry.getDn().getName();
-        String newDnString = newDn.getName();
-
         // ManageDsaIT control
         Control[] controls = null;
         if ( entry.isReferral() )
@@ -304,7 +300,7 @@ public class RenameEntryRunnable implements StudioConnectionBulkRunnableWithProg
         if ( browserConnection.getConnection() != null )
         {
             browserConnection.getConnection().getConnectionWrapper()
-                .renameEntry( oldDnString, newDnString, true, controls, monitor, null );
+                .renameEntry( entry.getDn(), newDn, true, controls, monitor, null );
         }
     }
 }
