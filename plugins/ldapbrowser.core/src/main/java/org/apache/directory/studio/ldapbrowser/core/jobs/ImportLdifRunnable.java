@@ -32,23 +32,24 @@ import java.io.Writer;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 import javax.naming.NameAlreadyBoundException;
 import javax.naming.NamingException;
-import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
-import javax.naming.directory.BasicAttribute;
 import javax.naming.directory.BasicAttributes;
-import javax.naming.directory.DirContext;
-import javax.naming.directory.ModificationItem;
 import javax.naming.ldap.BasicControl;
 import javax.naming.ldap.Control;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.directory.api.ldap.model.entry.AttributeUtils;
+import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
+import org.apache.directory.api.ldap.model.entry.DefaultModification;
 import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.entry.Modification;
+import org.apache.directory.api.ldap.model.entry.ModificationOperation;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.name.Dn;
@@ -474,9 +475,9 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
                 // creation failed with Error 68, now try to update the existing entry
                 monitor.reset();
 
-                ModificationItem[] mis = ModelConverter.entryToReplaceModificationItems( dummyEntry );
+                Collection<Modification> modifications = ModelConverter.entryToReplaceModifications( entry );
                 browserConnection.getConnection().getConnectionWrapper()
-                    .modifyEntry( dn, mis, getControls( record ), monitor, null );
+                    .modifyEntry( new Dn( dn ), modifications, getControls( record ), monitor, null );
             }
         }
         else if ( record instanceof LdifChangeDeleteRecord )
@@ -489,34 +490,42 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
         {
             LdifChangeModifyRecord modifyRecord = ( LdifChangeModifyRecord ) record;
             LdifModSpec[] modSpecs = modifyRecord.getModSpecs();
-            ModificationItem[] mis = new ModificationItem[modSpecs.length];
+            Collection<Modification> modifications = new ArrayList<>();
             for ( int ii = 0; ii < modSpecs.length; ii++ )
             {
                 LdifModSpecTypeLine modSpecType = modSpecs[ii].getModSpecType();
                 LdifAttrValLine[] attrVals = modSpecs[ii].getAttrVals();
 
-                Attribute attribute = new BasicAttribute( modSpecType.getUnfoldedAttributeDescription() );
+                DefaultAttribute attribute = new DefaultAttribute( modSpecType.getUnfoldedAttributeDescription() );
                 for ( int x = 0; x < attrVals.length; x++ )
                 {
-                    attribute.add( attrVals[x].getValueAsObject() );
+                    Object valueAsObject = attrVals[x].getValueAsObject();
+                    if ( valueAsObject instanceof String )
+                    {
+                        attribute.add( ( String ) valueAsObject );
+                    }
+                    else if ( valueAsObject instanceof byte[] )
+                    {
+                        attribute.add( ( byte[] ) valueAsObject );
+                    }
                 }
 
                 if ( modSpecType.isAdd() )
                 {
-                    mis[ii] = new ModificationItem( DirContext.ADD_ATTRIBUTE, attribute );
+                    modifications.add( new DefaultModification( ModificationOperation.ADD_ATTRIBUTE, attribute ) );
                 }
                 else if ( modSpecType.isDelete() )
                 {
-                    mis[ii] = new ModificationItem( DirContext.REMOVE_ATTRIBUTE, attribute );
+                    modifications.add( new DefaultModification( ModificationOperation.REMOVE_ATTRIBUTE, attribute ) );
                 }
                 else if ( modSpecType.isReplace() )
                 {
-                    mis[ii] = new ModificationItem( DirContext.REPLACE_ATTRIBUTE, attribute );
+                    modifications.add( new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE, attribute ) );
                 }
             }
 
             browserConnection.getConnection().getConnectionWrapper()
-                .modifyEntry( dn, mis, getControls( modifyRecord ), monitor, null );
+                .modifyEntry( new Dn( dn ), modifications, getControls( modifyRecord ), monitor, null );
         }
         else if ( record instanceof LdifChangeModDnRecord )
         {

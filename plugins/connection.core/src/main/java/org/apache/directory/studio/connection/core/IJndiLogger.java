@@ -20,12 +20,14 @@
 package org.apache.directory.studio.connection.core;
 
 
+import java.util.Collection;
+
 import javax.naming.NamingException;
-import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SearchControls;
 import javax.naming.ldap.Control;
 
 import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -71,12 +73,12 @@ public interface IJndiLogger
      * 
      * @param connection the connection
      * @param dn the Dn
-     * @param modificationItems the modification items
+     * @param modifications the modification items
      * @param ex the naming exception if an error occurred, null otherwise
      * @param controls the controls
      */
-    void logChangetypeModify( Connection connection, final String dn,
-        final ModificationItem[] modificationItems, final Control[] controls, NamingException ex );
+    void logChangetypeModify( Connection connection, final Dn dn,
+        final Collection<Modification> modifications, final Control[] controls, NamingException ex );
 
 
     /**

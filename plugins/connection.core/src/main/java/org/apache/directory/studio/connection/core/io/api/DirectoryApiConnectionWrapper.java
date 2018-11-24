@@ -25,12 +25,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.function.Consumer;
 
 import javax.naming.ContextNotEmptyException;
 import javax.naming.NameAlreadyBoundException;
 import javax.naming.NamingException;
-import javax.naming.directory.Attributes;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SearchControls;
@@ -741,7 +739,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     /**
      * {@inheritDoc}
      */
-    public void modifyEntry( final String dn, final ModificationItem[] modificationItems, final Control[] controls,
+    public void modifyEntry( final Dn dn, final Collection<Modification> modifications, final Control[] controls,
         final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo )
     {
         if ( connection.isReadOnly() )
@@ -759,8 +757,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                 {
                     // Preparing the modify request
                     ModifyRequest request = new ModifyRequestImpl();
-                    request.setName( new Dn( dn ) );
-                    Modification[] modifications = convertModificationItems( modificationItems );
+                    request.setName( dn );
                     if ( modifications != null )
                     {
                         for ( Modification modification : modifications )
@@ -774,9 +771,9 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     ModifyResponse modifyResponse = ldapConnection.modify( request );
 
                     // Handle referral
-                    ReferralHandlingDataConsumer consumer = referralHandlingData -> 
-                        referralHandlingData.connectionWrapper.modifyEntry( referralHandlingData.referralDn,
-                            modificationItems, controls, monitor, referralHandlingData.newReferralsInfo );
+                    ReferralHandlingDataConsumer consumer = referralHandlingData -> referralHandlingData.connectionWrapper
+                        .modifyEntry( new Dn( referralHandlingData.referralDn ), modifications, controls, monitor,
+                            referralHandlingData.newReferralsInfo );
                     
                     if ( checkAndHandleReferral( modifyResponse, monitor, referralsInfo, consumer ) )
                     {
@@ -799,7 +796,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
 
                 for ( IJndiLogger logger : getJndiLoggers() )
                 {
-                    logger.logChangetypeModify( connection, dn, modificationItems, controls, ne );
+                    logger.logChangetypeModify( connection, dn, modifications, controls, ne );
                 }
             }
         };

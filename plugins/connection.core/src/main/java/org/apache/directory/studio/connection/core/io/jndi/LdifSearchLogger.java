@@ -42,12 +42,12 @@ import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
-import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SearchControls;
 import javax.naming.ldap.Control;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.url.LdapUrl;
@@ -277,8 +277,8 @@ public class LdifSearchLogger implements IJndiLogger
     /**
      * {@inheritDoc}
      */
-    public void logChangetypeModify( Connection connection, final String dn,
-        final ModificationItem[] modificationItems, final Control[] controls, NamingException ex )
+    public void logChangetypeModify( Connection connection, final Dn dn,
+        final Collection<Modification> modifications, final Control[] controls, NamingException ex )
     {
         // don't log changetypes
     }

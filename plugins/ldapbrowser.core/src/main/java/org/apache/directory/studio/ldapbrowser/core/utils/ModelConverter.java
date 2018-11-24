@@ -25,12 +25,18 @@ package org.apache.directory.studio.ldapbrowser.core.utils;
  * Utilities to convert between models
  */
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.naming.directory.BasicAttribute;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.ModificationItem;
 
+import org.apache.directory.api.ldap.model.entry.DefaultModification;
+import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.entry.Modification;
+import org.apache.directory.api.ldap.model.entry.ModificationOperation;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.connection.core.StudioControl;
@@ -361,5 +367,15 @@ public class ModelConverter
         }
 
         return mis.toArray( new ModificationItem[mis.size()] );
+    }
+
+    public static Collection<Modification> entryToReplaceModifications( Entry entry )
+    {
+        Collection<Modification> modifications = entry.getAttributes()
+            .stream()
+            .map( attribute -> new DefaultModification(
+                ModificationOperation.REPLACE_ATTRIBUTE, attribute ) )
+            .collect( Collectors.toList() );
+        return modifications;
     }
 }

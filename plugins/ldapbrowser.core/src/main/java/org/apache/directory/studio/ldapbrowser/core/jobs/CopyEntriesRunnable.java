@@ -23,6 +23,7 @@ package org.apache.directory.studio.ldapbrowser.core.jobs;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -31,8 +32,6 @@ import javax.naming.NamingEnumeration;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.BasicAttribute;
-import javax.naming.directory.DirContext;
-import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 import javax.naming.ldap.Control;
@@ -41,6 +40,7 @@ import javax.naming.ldap.ManageReferralControl;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.entry.AttributeUtils;
 import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Ava;
 import org.apache.directory.api.ldap.model.name.Dn;
@@ -58,6 +58,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.utils.JNDIUtils;
+import org.apache.directory.studio.ldapbrowser.core.utils.ModelConverter;
 
 
 /**
@@ -340,25 +341,17 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
                                     break;
 
                                 case OVERWRITE_AND_CONTINUE:
-                                    // create modification items
-                                    List<ModificationItem> mis = new ArrayList<>();
-                                    NamingEnumeration<? extends Attribute> all = newAttributes.getAll();
-                                    while ( all.hasMore() )
-                                    {
-                                        Attribute attribute = all.next();
-                                        ModificationItem mi = new ModificationItem( DirContext.REPLACE_ATTRIBUTE,
-                                            attribute );
-                                        mis.add( mi );
-                                    }
+                                    // create modifications
+                                    Collection<Modification> modifications = ModelConverter
+                                        .entryToReplaceModifications( entry );
 
                                     // modify entry
                                     targetBrowserConnection
                                         .getConnection()
                                         .getConnectionWrapper()
-                                        .modifyEntry( newLdapDn.getName(),
-                                            mis.toArray( new ModificationItem[mis.size()] ), null, dummyMonitor, null );
+                                        .modifyEntry( newLdapDn, modifications, null, dummyMonitor, null );
 
-                                    // force reloading of attributes
+                                    // force reload of attributes
                                     IEntry newEntry = targetBrowserConnection.getEntryFromCache( newLdapDn );
                                     if ( newEntry != null )
                                     {

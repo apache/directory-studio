@@ -30,8 +30,6 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.naming.NamingException;
-import javax.naming.directory.DirContext;
-import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SearchControls;
 import javax.naming.ldap.Control;
 
@@ -39,6 +37,8 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.dsmlv2.DsmlDecorator;
 import org.apache.directory.api.dsmlv2.Dsmlv2Parser;
+import org.apache.directory.api.dsmlv2.request.BatchRequestDsml;
+import org.apache.directory.api.dsmlv2.request.Dsmlv2Grammar;
 import org.apache.directory.api.dsmlv2.response.AddResponseDsml;
 import org.apache.directory.api.dsmlv2.response.BatchResponseDsml;
 import org.apache.directory.api.dsmlv2.response.BindResponseDsml;
@@ -47,14 +47,9 @@ import org.apache.directory.api.dsmlv2.response.DelResponseDsml;
 import org.apache.directory.api.dsmlv2.response.ExtendedResponseDsml;
 import org.apache.directory.api.dsmlv2.response.ModDNResponseDsml;
 import org.apache.directory.api.dsmlv2.response.ModifyResponseDsml;
-import org.apache.directory.api.dsmlv2.request.BatchRequestDsml;
-import org.apache.directory.api.dsmlv2.request.Dsmlv2Grammar;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
-import org.apache.directory.api.ldap.model.entry.AttributeUtils;
 import org.apache.directory.api.ldap.model.entry.Entry;
-import org.apache.directory.api.ldap.model.entry.Modification;
-import org.apache.directory.api.ldap.model.entry.ModificationOperation;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.exception.LdapURLEncodingException;
@@ -495,20 +490,11 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
     private void processModifyRequest( ModifyRequest request, BatchResponseDsml batchResponseDsml,
         StudioProgressMonitor monitor )
     {
-        // Creating the modification items
-        List<ModificationItem> modificationItems = new ArrayList<ModificationItem>();
-        for ( Modification modification : request.getModifications() )
-        {
-            modificationItems.add( new ModificationItem( convertModificationOperation( modification.getOperation() ),
-                AttributeUtils.toJndiAttribute( modification.getAttribute() ) ) );
-        }
-
         // Executing the modify request
         browserConnection
             .getConnection()
             .getConnectionWrapper()
-            .modifyEntry( request.getName().getName(), modificationItems.toArray( new ModificationItem[0] ),
-                getControls( request ), monitor, null );
+            .modifyEntry( request.getName(), request.getModifications(), getControls( request ), monitor, null );
 
         // Creating the response
         if ( batchResponseDsml != null )
@@ -525,30 +511,6 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
         if ( e != null )
         {
             e.setAttributesInitialized( false );
-        }
-    }
-
-
-    /**
-     * Converts the modification operation from Shared LDAP to JNDI
-     *
-     * @param operation
-     *      the Shared LDAP modification operation
-     * @return
-     *      the equivalent modification operation in JNDI
-     */
-    private int convertModificationOperation( ModificationOperation operation )
-    {
-        switch ( operation )
-        {
-            case ADD_ATTRIBUTE:
-                return DirContext.ADD_ATTRIBUTE;
-            case REMOVE_ATTRIBUTE:
-                return DirContext.REMOVE_ATTRIBUTE;
-            case REPLACE_ATTRIBUTE:
-                return DirContext.REPLACE_ATTRIBUTE;
-            default:
-                return 0;
         }
     }
 

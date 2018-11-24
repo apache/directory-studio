@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -38,15 +39,12 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
-import javax.naming.directory.Attribute;
-import javax.naming.directory.DirContext;
-import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SearchControls;
 import javax.naming.ldap.Control;
 
 import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.api.ldap.model.name.Dn;
@@ -331,71 +329,62 @@ public class LdifModificationLogger implements IJndiLogger
     /**
      * {@inheritDoc}
      */
-    public void logChangetypeModify( Connection connection, final String dn,
-        final ModificationItem[] modificationItems, final Control[] controls, NamingException ex )
+    public void logChangetypeModify( Connection connection, final Dn dn,
+        final Collection<Modification> modifications, final Control[] controls, NamingException ex )
     {
         if ( !isModificationLogEnabled() )
         {
             return;
         }
 
-        try
+        Set<String> maskedAttributes = getMaskedAttributes();
+        LdifChangeModifyRecord record = new LdifChangeModifyRecord( LdifDnLine.create( dn.getName() ) );
+        addControlLines( record, controls );
+        record.setChangeType( LdifChangeTypeLine.createModify() );
+        for ( Modification item : modifications )
         {
-            Set<String> maskedAttributes = getMaskedAttributes();
-            LdifChangeModifyRecord record = new LdifChangeModifyRecord( LdifDnLine.create( dn ) );
-            addControlLines( record, controls );
-            record.setChangeType( LdifChangeTypeLine.createModify() );
-            for ( ModificationItem item : modificationItems )
+            String attributeName = item.getAttribute().getUpId();
+            LdifModSpec modSpec;
+            switch ( item.getOperation() )
             {
-                Attribute attribute = item.getAttribute();
-                String attributeDescription = attribute.getID();
-                LdifModSpec modSpec;
-                switch ( item.getModificationOp() )
+                case ADD_ATTRIBUTE:
+                    modSpec = LdifModSpec.createAdd( attributeName );
+                    break;
+                case REMOVE_ATTRIBUTE:
+                    modSpec = LdifModSpec.createDelete( attributeName );
+                    break;
+                case REPLACE_ATTRIBUTE:
+                    modSpec = LdifModSpec.createReplace( attributeName );
+                    break;
+                default:
+                    continue;
+            }
+            for ( Value value : item.getAttribute() )
+            {
+                if ( maskedAttributes.contains( Strings.toLowerCase( attributeName ) ) )
                 {
-                    case DirContext.ADD_ATTRIBUTE:
-                        modSpec = LdifModSpec.createAdd( attributeDescription );
-                        break;
-                    case DirContext.REMOVE_ATTRIBUTE:
-                        modSpec = LdifModSpec.createDelete( attributeDescription );
-                        break;
-                    case DirContext.REPLACE_ATTRIBUTE:
-                        modSpec = LdifModSpec.createReplace( attributeDescription );
-                        break;
-                    default:
-                        continue;
+                    modSpec.addAttrVal( LdifAttrValLine.create( attributeName, "**********" ) ); //$NON-NLS-1$
                 }
-                NamingEnumeration<?> valueEnumeration = attribute.getAll();
-                while ( valueEnumeration.hasMore() )
+                else
                 {
-                    Object o = valueEnumeration.next();
-                    if ( maskedAttributes.contains( Strings.toLowerCase( attributeDescription ) ) )
+                    if ( value.isHumanReadable() )
                     {
-                        modSpec.addAttrVal( LdifAttrValLine.create( attributeDescription, "**********" ) ); //$NON-NLS-1$
+                        modSpec.addAttrVal( LdifAttrValLine.create( attributeName, value.getValue() ) );
                     }
                     else
                     {
-                        if ( o instanceof String )
-                        {
-                            modSpec.addAttrVal( LdifAttrValLine.create( attributeDescription, ( String ) o ) );
-                        }
-                        if ( o instanceof byte[] )
-                        {
-                            modSpec.addAttrVal( LdifAttrValLine.create( attributeDescription, ( byte[] ) o ) );
-                        }
+                        modSpec.addAttrVal( LdifAttrValLine.create( attributeName, value.getBytes() ) );
                     }
                 }
-                modSpec.finish( LdifModSpecSepLine.create() );
-
-                record.addModSpec( modSpec );
             }
-            record.finish( LdifSepLine.create() );
+            modSpec.finish( LdifModSpecSepLine.create() );
 
-            String formattedString = record.toFormattedString( LdifFormatParameters.DEFAULT );
-            log( formattedString, ex, connection );
+            record.addModSpec( modSpec );
         }
-        catch ( NamingException e )
-        {
-        }
+        record.finish( LdifSepLine.create() );
+
+        String formattedString = record.toFormattedString( LdifFormatParameters.DEFAULT );
+        log( formattedString, ex, connection );
     }
 
 

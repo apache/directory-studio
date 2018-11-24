@@ -37,6 +37,7 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
@@ -51,7 +52,10 @@ import javax.naming.directory.SearchResult;
 import org.apache.directory.api.ldap.model.entry.AttributeUtils;
 import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.api.ldap.model.entry.DefaultEntry;
+import org.apache.directory.api.ldap.model.entry.DefaultModification;
 import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.entry.Modification;
+import org.apache.directory.api.ldap.model.entry.ModificationOperation;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.ldap.client.api.exception.InvalidConnectionException;
 import org.apache.directory.server.annotations.CreateLdapServer;
@@ -534,10 +538,10 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
 
         // modify referral entry 
         StudioProgressMonitor monitor = getProgressMonitor();
-        ModificationItem[] modificationItems =
-            { new ModificationItem( DirContext.REPLACE_ATTRIBUTE,
-                AttributeUtils.toJndiAttribute( new DefaultAttribute( "sn", "modified" ) ) ) };
-        getConnectionWrapper( monitor ).modifyEntry( referralDn, modificationItems, null, monitor, null );
+        List<Modification> modifications = Collections.singletonList(
+            new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE,
+                new DefaultAttribute( "sn", "modified" ) ) );
+        getConnectionWrapper( monitor ).modifyEntry( new Dn( referralDn ), modifications, null, monitor, null );
 
         // should have modified the target entry
         assertFalse( monitor.isCanceled() );
@@ -559,10 +563,10 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
 
         // modify referral entry 
         StudioProgressMonitor monitor = getProgressMonitor();
-        ModificationItem[] modificationItems =
-            { new ModificationItem( DirContext.REPLACE_ATTRIBUTE,
-                AttributeUtils.toJndiAttribute( new DefaultAttribute( "sn", "modified" ) ) ) };
-        getConnectionWrapper( monitor ).modifyEntry( referralDn, modificationItems, null, monitor, null );
+        List<Modification> modifications = Collections.singletonList(
+            new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE,
+                new DefaultAttribute( "sn", "modified" ) ) );
+        getConnectionWrapper( monitor ).modifyEntry( new Dn( referralDn ), modifications, null, monitor, null );
 
         // should have modified the target entry
         assertFalse( monitor.isCanceled() );
@@ -584,10 +588,10 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
 
         // modify referral entry 
         StudioProgressMonitor monitor = getProgressMonitor();
-        ModificationItem[] modificationItems =
-            { new ModificationItem( DirContext.REPLACE_ATTRIBUTE,
-                AttributeUtils.toJndiAttribute( new DefaultAttribute( "sn", "modified" ) ) ) };
-        getConnectionWrapper( monitor ).modifyEntry( referralDn, modificationItems, null, monitor, null );
+        List<Modification> modifications = Collections.singletonList(
+            new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE,
+                new DefaultAttribute( "sn", "modified" ) ) );
+        getConnectionWrapper( monitor ).modifyEntry( new Dn( referralDn ), modifications, null, monitor, null );
 
         // should not have modified the target entry
         assertFalse( monitor.isCanceled() );

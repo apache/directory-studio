@@ -22,11 +22,11 @@ package org.apache.directory.studio.connection.core.io;
 
 import java.util.Collection;
 
-import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SearchControls;
 import javax.naming.ldap.Control;
 
 import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -109,12 +109,12 @@ public interface ConnectionWrapper
      * Modifies attributes of an entry.
      * 
      * @param dn the Dn
-     * @param modificationItems the modification items
+     * @param modifications the modification items
      * @param controls the controls
      * @param monitor the progress monitor
      * @param referralsInfo the referrals info
      */
-    void modifyEntry( final String dn, final ModificationItem[] modificationItems, final Control[] controls,
+    void modifyEntry( final Dn dn, final Collection<Modification> modifications, final Control[] controls,
         final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo );
 
 
