@@ -311,7 +311,7 @@ public class LdifModificationLogger implements IJndiLogger
     /**
      * {@inheritDoc}
      */
-    public void logChangetypeDelete( Connection connection, final String dn, final Control[] controls,
+    public void logChangetypeDelete( Connection connection, final Dn dn, final Control[] controls,
         NamingException ex )
     {
         if ( !isModificationLogEnabled() )
@@ -319,7 +319,7 @@ public class LdifModificationLogger implements IJndiLogger
             return;
         }
 
-        LdifChangeDeleteRecord record = new LdifChangeDeleteRecord( LdifDnLine.create( dn ) );
+        LdifChangeDeleteRecord record = new LdifChangeDeleteRecord( LdifDnLine.create( dn.getName() ) );
         addControlLines( record, controls );
         record.setChangeType( LdifChangeTypeLine.createDelete() );
         record.finish( LdifSepLine.create() );

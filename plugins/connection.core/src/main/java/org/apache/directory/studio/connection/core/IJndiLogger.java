@@ -27,6 +27,7 @@ import javax.naming.ldap.Control;
 
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.message.Referral;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo;
 import org.apache.directory.studio.connection.core.io.jndi.StudioSearchResult;
@@ -61,7 +62,7 @@ public interface IJndiLogger
      * @param ex the naming exception if an error occurred, null otherwise
      * 
      */
-    void logChangetypeDelete( Connection connection, final String dn, final Control[] controls,
+    void logChangetypeDelete( Connection connection, final Dn dn, final Control[] controls,
         NamingException ex );
 
 

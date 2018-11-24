@@ -483,7 +483,7 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
         {
             LdifChangeDeleteRecord changeDeleteRecord = ( LdifChangeDeleteRecord ) record;
             browserConnection.getConnection().getConnectionWrapper()
-                .deleteEntry( dn, getControls( changeDeleteRecord ), monitor, null );
+                .deleteEntry( new Dn( dn ), getControls( changeDeleteRecord ), monitor, null );
         }
         else if ( record instanceof LdifChangeModifyRecord )
         {

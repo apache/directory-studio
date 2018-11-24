@@ -380,7 +380,7 @@ public class DeleteEntriesRunnable implements StudioConnectionBulkRunnableWithPr
         if ( browserConnection.getConnection() != null )
         {
             browserConnection.getConnection().getConnectionWrapper()
-                .deleteEntry( dn.getName(), controls, monitor, null );
+                .deleteEntry( dn, controls, monitor, null );
         }
     }
 }

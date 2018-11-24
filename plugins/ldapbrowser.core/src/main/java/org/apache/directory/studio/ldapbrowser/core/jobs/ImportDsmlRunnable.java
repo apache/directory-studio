@@ -427,7 +427,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
     {
         // Executing the del request
         browserConnection.getConnection().getConnectionWrapper()
-            .deleteEntry( request.getName().getName(), getControls( request ), monitor, null );
+            .deleteEntry( request.getName(), getControls( request ), monitor, null );
 
         // Creating the response
         if ( batchResponseDsml != null )

@@ -1051,7 +1051,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     /**
      * {@inheritDoc}
      */
-    public void deleteEntry( final String dn, final Control[] controls, final StudioProgressMonitor monitor,
+    public void deleteEntry( final Dn dn, final Control[] controls, final StudioProgressMonitor monitor,
         final ReferralsInfo referralsInfo )
     {
         if ( connection.isReadOnly() )
@@ -1069,16 +1069,16 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                 {
                     // Preparing the delete request
                     DeleteRequest request = new DeleteRequestImpl();
-                    request.setName( new Dn( dn ) );
+                    request.setName( dn );
                     request.addAllControls( convertControls( controls ) );
 
                     // Performing the delete operation
                     DeleteResponse deleteResponse = ldapConnection.delete( request );
 
                     // Handle referral
-                    ReferralHandlingDataConsumer consumer = referralHandlingData -> 
-                        referralHandlingData.connectionWrapper.deleteEntry( referralHandlingData.referralDn, controls,
-                            monitor, referralHandlingData.newReferralsInfo );
+                    ReferralHandlingDataConsumer consumer = referralHandlingData -> referralHandlingData.connectionWrapper
+                        .deleteEntry( new Dn( referralHandlingData.referralDn ), controls, monitor,
+                            referralHandlingData.newReferralsInfo );
                     
                     if ( checkAndHandleReferral( deleteResponse, monitor, referralsInfo, consumer ) )
                     {

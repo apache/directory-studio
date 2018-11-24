@@ -29,11 +29,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.ByteArrayInputStream;
 import java.net.ConnectException;
-import java.net.UnknownHostException;
 import java.nio.channels.UnresolvedAddressException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
@@ -42,12 +40,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-import javax.naming.AuthenticationException;
-import javax.naming.CommunicationException;
 import javax.naming.LinkLoopException;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
-import javax.naming.directory.Attributes;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SearchControls;
@@ -73,7 +68,6 @@ import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.connection.core.IReferralHandler;
-import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
 import org.apache.mina.util.AvailablePortFinder;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -615,7 +609,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
 
         // delete referral entry 
         StudioProgressMonitor monitor = getProgressMonitor();
-        getConnectionWrapper( monitor ).deleteEntry( referralDn, null, monitor, null );
+        getConnectionWrapper( monitor ).deleteEntry( new Dn( referralDn ), null, monitor, null );
 
         // should have deleted the target entry
         assertFalse( monitor.isCanceled() );
@@ -636,7 +630,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
 
         // delete referral entry 
         StudioProgressMonitor monitor = getProgressMonitor();
-        getConnectionWrapper( monitor ).deleteEntry( referralDn, null, monitor, null );
+        getConnectionWrapper( monitor ).deleteEntry( new Dn( referralDn ), null, monitor, null );
 
         // should have deleted the target entry
         assertFalse( monitor.isCanceled() );
@@ -657,7 +651,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
 
         // delete referral entry 
         StudioProgressMonitor monitor = getProgressMonitor();
-        getConnectionWrapper( monitor ).deleteEntry( referralDn, null, monitor, null );
+        getConnectionWrapper( monitor ).deleteEntry( new Dn( referralDn ), null, monitor, null );
 
         // should not have deleted the target entry
         assertFalse( monitor.isCanceled() );
