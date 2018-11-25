@@ -164,7 +164,7 @@ public class SearchTest extends AbstractLdapTestUnit
 
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "Quick Search" );
 
-        // verify that only one events was fired
+        // verify that only one event was fired
         long fireCount = fireCount1 - fireCount0;
         assertEquals( "Only 1 event firings expected when running quick search.", 1, fireCount );
     }
