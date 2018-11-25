@@ -34,17 +34,16 @@ import javax.naming.directory.SearchResult;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.directory.api.dsmlv2.DsmlDecorator;
+import org.apache.directory.api.dsmlv2.request.AddRequestDsml;
+import org.apache.directory.api.dsmlv2.request.BatchRequestDsml;
 import org.apache.directory.api.dsmlv2.response.BatchResponseDsml;
 import org.apache.directory.api.dsmlv2.response.SearchResponseDsml;
 import org.apache.directory.api.dsmlv2.response.SearchResultDoneDsml;
 import org.apache.directory.api.dsmlv2.response.SearchResultEntryDsml;
 import org.apache.directory.api.dsmlv2.response.SearchResultReferenceDsml;
-import org.apache.directory.api.dsmlv2.request.AddRequestDsml;
-import org.apache.directory.api.dsmlv2.request.BatchRequestDsml;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.model.entry.Attribute;
-import org.apache.directory.api.ldap.model.entry.AttributeUtils;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
@@ -55,7 +54,6 @@ import org.apache.directory.api.ldap.model.message.Response;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.message.SearchResultDone;
 import org.apache.directory.api.ldap.model.message.SearchResultDoneImpl;
-import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
@@ -287,8 +285,8 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
                 // Creating and adding a search result entry or reference for each result
                 while ( ne.hasMore() )
                 {
-                    SearchResult searchResult = ne.next();
-                    sr.addResponse( convertSearchResultToDsml( searchResult ) );
+                    Entry entry = ne.next().getEntry();
+                    sr.addResponse( convertSearchResultToDsml( entry ) );
 
                     count++;
                     monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__export_progress,
@@ -338,16 +336,13 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
     /**
      * Converts the given {@link SearchResult} to a {@link SearchResultEntryDsml}.
      *
-     * @param searchResult the search result
+     * @param entry2 the search result
      * @return the associated search result entry DSML
      * @throws org.apache.directory.api.ldap.model.exception.LdapException
      */
-    private static DsmlDecorator<? extends Response> convertSearchResultToDsml( SearchResult searchResult )
+    private static DsmlDecorator<? extends Response> convertSearchResultToDsml( Entry entry )
         throws LdapException
     {
-        Entry entry = AttributeUtils.toEntry( searchResult.getAttributes(),
-            new Dn( searchResult.getNameInNamespace() ) );
-
         if ( isReferral( entry ) )
         {
             // The search result is a referral
@@ -442,8 +437,8 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
                 // Creating and adding an add request for each result
                 while ( ne.hasMore() )
                 {
-                    SearchResult searchResult = ne.next();
-                    AddRequestDsml arDsml = convertToAddRequestDsml( searchResult );
+                    Entry entry = ne.next().getEntry();
+                    AddRequestDsml arDsml = convertToAddRequestDsml( entry );
                     batchRequest.addRequest( arDsml );
 
                     count++;
@@ -474,18 +469,16 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
     /**
      * Converts the given {@link SearchResult} to an {@link AddRequestDsml}.
      *
-     * @param searchResult
+     * @param entry2
      *      the {@link SearchResult}
      * @return
      *      the associated {@link AddRequestDsml}
      * @throws LdapException
      */
-    private AddRequestDsml convertToAddRequestDsml( SearchResult searchResult )
+    private AddRequestDsml convertToAddRequestDsml( Entry entry )
         throws LdapException
     {
         AddRequestDsml ar = new AddRequestDsml( codec );
-        Entry entry = AttributeUtils.toEntry( searchResult.getAttributes(),
-            new Dn( searchResult.getNameInNamespace() ) );
         ar.setEntry( entry );
 
         return ar;

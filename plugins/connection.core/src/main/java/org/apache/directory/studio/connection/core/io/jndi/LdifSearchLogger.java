@@ -38,10 +38,7 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
-import javax.naming.directory.Attribute;
-import javax.naming.directory.Attributes;
 import javax.naming.directory.SearchControls;
 import javax.naming.ldap.Control;
 
@@ -59,10 +56,7 @@ import org.apache.directory.studio.connection.core.ConnectionManager;
 import org.apache.directory.studio.connection.core.IJndiLogger;
 import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
-import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
-import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifCommentLine;
-import org.apache.directory.studio.ldifparser.model.lines.LdifDnLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifLineBase;
 import org.apache.directory.studio.ldifparser.model.lines.LdifSepLine;
 import org.eclipse.core.runtime.Preferences.IPropertyChangeListener;
@@ -353,61 +347,6 @@ public class LdifSearchLogger implements IJndiLogger
         }
 
         log( formattedString, "SEARCH REQUEST (" + requestNum + ")", ex, connection ); //$NON-NLS-1$ //$NON-NLS-2$
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void logSearchResultEntry( Connection connection, StudioSearchResult studioSearchResult, long requestNum,
-        NamingException ex )
-    {
-        if ( !isSearchResultEntryLogEnabled() )
-        {
-            return;
-        }
-
-        try
-        {
-            String formattedString;
-            if ( studioSearchResult != null )
-            {
-                String dn = studioSearchResult.getNameInNamespace();
-                Attributes attributes = studioSearchResult.getAttributes();
-
-                LdifContentRecord record = new LdifContentRecord( LdifDnLine.create( dn ) );
-                NamingEnumeration<? extends Attribute> attributeEnumeration = attributes.getAll();
-                while ( attributeEnumeration.hasMore() )
-                {
-                    Attribute attribute = attributeEnumeration.next();
-                    String attributeName = attribute.getID();
-                    NamingEnumeration<?> valueEnumeration = attribute.getAll();
-                    while ( valueEnumeration.hasMore() )
-                    {
-                        Object o = valueEnumeration.next();
-                        if ( o instanceof String )
-                        {
-                            record.addAttrVal( LdifAttrValLine.create( attributeName, ( String ) o ) );
-                        }
-                        if ( o instanceof byte[] )
-                        {
-                            record.addAttrVal( LdifAttrValLine.create( attributeName, ( byte[] ) o ) );
-                        }
-                    }
-                }
-                record.finish( LdifSepLine.create() );
-                formattedString = record.toFormattedString( LdifFormatParameters.DEFAULT );
-            }
-            else
-            {
-                formattedString = LdifFormatParameters.DEFAULT.getLineSeparator();
-            }
-
-            log( formattedString, "SEARCH RESULT ENTRY (" + requestNum + ")", ex, connection ); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-        catch ( NamingException e )
-        {
-        }
     }
 
 

@@ -44,12 +44,8 @@ import java.util.function.Function;
 import javax.naming.LinkLoopException;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
-import javax.naming.directory.DirContext;
-import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SearchControls;
-import javax.naming.directory.SearchResult;
 
-import org.apache.directory.api.ldap.model.entry.AttributeUtils;
 import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.api.ldap.model.entry.DefaultEntry;
 import org.apache.directory.api.ldap.model.entry.DefaultModification;
@@ -73,6 +69,7 @@ import org.apache.directory.studio.connection.core.ConnectionParameter.Authentic
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.connection.core.IReferralHandler;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
+import org.apache.directory.studio.connection.core.io.api.StudioSearchResult;
 import org.apache.mina.util.AvailablePortFinder;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.After;
@@ -296,15 +293,14 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
     {
         StudioProgressMonitor monitor = getProgressMonitor();
         SearchControls searchControls = new SearchControls();
-        NamingEnumeration<SearchResult> result = getConnectionWrapper( monitor ).search( "ou=system", "(objectClass=*)",
+        NamingEnumeration<StudioSearchResult> result = getConnectionWrapper( monitor ).search( "ou=system", "(objectClass=*)",
             searchControls, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, null, monitor, null );
 
         assertFalse( monitor.isCanceled() );
         assertFalse( monitor.errorsReported() );
         assertNotNull( result );
         assertTrue( result.hasMore() );
-        SearchResult entry = result.next();
-        assertNotNull( entry );
+        assertNotNull( result.next() );
     }
 
 
@@ -317,16 +313,16 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         StudioProgressMonitor monitor = getProgressMonitor();
         SearchControls searchControls = new SearchControls();
         searchControls.setSearchScope( SearchControls.OBJECT_SCOPE );
-        NamingEnumeration<SearchResult> result = getConnectionWrapper( monitor ).search( "uid=admin,ou=system",
+        NamingEnumeration<StudioSearchResult> result = getConnectionWrapper( monitor ).search( "uid=admin,ou=system",
             "(objectClass=*)",
             searchControls, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, null, monitor, null );
 
         assertNotNull( result );
         assertTrue( result.hasMore() );
-        SearchResult entry = result.next();
+        StudioSearchResult entry = result.next();
         assertNotNull( entry );
 
-        Object userCertificateValue = entry.getAttributes().get( "userCertificate" ).get();
+        Object userCertificateValue = entry.getEntry().get( "userCertificate" ).getBytes();
         assertEquals( byte[].class, userCertificateValue.getClass() );
 
         CertificateFactory cf = CertificateFactory.getInstance( "X.509" ); //$NON-NLS-1$
@@ -342,7 +338,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
     {
         StudioProgressMonitor monitor = getProgressMonitor();
         SearchControls searchControls = new SearchControls();
-        NamingEnumeration<SearchResult> result = getConnectionWrapper( monitor ).search(
+        NamingEnumeration<StudioSearchResult> result = getConnectionWrapper( monitor ).search(
             "cn=referral1,ou=referrals,ou=system", "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER,
             ReferralHandlingMethod.FOLLOW, null, monitor, null );
 
@@ -350,7 +346,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         assertFalse( monitor.errorsReported() );
         assertNotNull( result );
 
-        List<String> dns = consume( result, sr -> sr.getNameInNamespace() );
+        List<String> dns = consume( result, sr -> sr.getDn().getName() );
         assertEquals( 1, dns.size() );
         assertEquals( "uid=user.1,ou=users,ou=system", dns.get( 0 ) );
     }
@@ -362,7 +358,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         StudioProgressMonitor monitor = getProgressMonitor();
         SearchControls searchControls = new SearchControls();
         searchControls.setSearchScope( SearchControls.SUBTREE_SCOPE );
-        NamingEnumeration<SearchResult> result = getConnectionWrapper( monitor ).search(
+        NamingEnumeration<StudioSearchResult> result = getConnectionWrapper( monitor ).search(
             "cn=referral2,ou=referrals,ou=system", "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER,
             ReferralHandlingMethod.FOLLOW, null, monitor, null );
 
@@ -370,7 +366,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         assertFalse( monitor.errorsReported() );
         assertNotNull( result );
 
-        List<String> dns = consume( result, sr -> sr.getNameInNamespace() );
+        List<String> dns = consume( result, sr -> sr.getDn().getName() );
         assertEquals( 2, dns.size() );
         assertThat( dns, hasItems( "ou=users,ou=system", "uid=user.1,ou=users,ou=system" ) );
     }
@@ -382,7 +378,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         StudioProgressMonitor monitor = getProgressMonitor();
         SearchControls searchControls = new SearchControls();
         searchControls.setSearchScope( SearchControls.SUBTREE_SCOPE );
-        NamingEnumeration<SearchResult> result = getConnectionWrapper( monitor ).search(
+        NamingEnumeration<StudioSearchResult> result = getConnectionWrapper( monitor ).search(
             "cn=referral3,ou=referrals,ou=system", "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER,
             ReferralHandlingMethod.FOLLOW, null, monitor, null );
 
@@ -390,7 +386,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         assertFalse( monitor.errorsReported() );
         assertNotNull( result );
 
-        List<String> dns = consume( result, sr -> sr.getNameInNamespace() );
+        List<String> dns = consume( result, sr -> sr.getDn().getName() );
         assertEquals( 3, dns.size() );
         assertThat( dns, hasItems( "ou=referrals,ou=system", "ou=users,ou=system", "uid=user.1,ou=users,ou=system" ) );
     }
@@ -402,7 +398,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         StudioProgressMonitor monitor = getProgressMonitor();
         SearchControls searchControls = new SearchControls();
         searchControls.setSearchScope( SearchControls.SUBTREE_SCOPE );
-        NamingEnumeration<SearchResult> result = getConnectionWrapper( monitor ).search(
+        NamingEnumeration<StudioSearchResult> result = getConnectionWrapper( monitor ).search(
             "cn=referral4a,ou=referrals,ou=system", "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER,
             ReferralHandlingMethod.FOLLOW, null, monitor, null );
 
@@ -410,7 +406,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         assertFalse( monitor.errorsReported() );
         assertNotNull( result );
 
-        List<String> dns = consume( result, sr -> sr.getNameInNamespace() );
+        List<String> dns = consume( result, sr -> sr.getDn().getName() );
         assertEquals( 0, dns.size() );
     }
 
@@ -423,7 +419,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         searchControls.setSearchScope( SearchControls.SUBTREE_SCOPE );
         ConnectionWrapper connectionWrapper = getConnectionWrapper( monitor );
         ConnectionCorePlugin.getDefault().setReferralHandler( null );
-        NamingEnumeration<SearchResult> result = connectionWrapper.search( "ou=referrals,ou=system", "(objectClass=*)",
+        NamingEnumeration<StudioSearchResult> result = connectionWrapper.search( "ou=referrals,ou=system", "(objectClass=*)",
             searchControls, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.FOLLOW_MANUALLY, null, monitor,
             null );
 
@@ -431,7 +427,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         assertFalse( monitor.errorsReported() );
         assertNotNull( result );
 
-        List<String> dns = consume( result, sr -> sr.getNameInNamespace() );
+        List<String> dns = consume( result, sr -> sr.getDn().getName() );
         assertEquals( 6, dns.size() );
         assertThat( dns,
             hasItems( "ou=referrals,ou=system", "ou=users,ou=system", "cn=referral1,ou=referrals,ou=system",
@@ -445,7 +441,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         StudioProgressMonitor monitor = getProgressMonitor();
         SearchControls searchControls = new SearchControls();
         searchControls.setSearchScope( SearchControls.SUBTREE_SCOPE );
-        NamingEnumeration<SearchResult> result = getConnectionWrapper( monitor ).search( "ou=referrals,ou=system",
+        NamingEnumeration<StudioSearchResult> result = getConnectionWrapper( monitor ).search( "ou=referrals,ou=system",
             "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, null,
             monitor, null );
 
@@ -453,19 +449,19 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         assertFalse( monitor.errorsReported() );
         assertNotNull( result );
 
-        List<String> dns = consume( result, sr -> sr.getNameInNamespace() );
+        List<String> dns = consume( result, sr -> sr.getDn().getName() );
         assertEquals( 1, dns.size() );
         assertThat( dns, hasItems( "ou=referrals,ou=system" ) );
     }
 
 
-    protected <T> List<T> consume( NamingEnumeration<SearchResult> result, Function<SearchResult, T> fn )
+    protected <T> List<T> consume( NamingEnumeration<StudioSearchResult> result, Function<StudioSearchResult, T> fn )
         throws NamingException
     {
         List<T> list = new ArrayList<>();
         while ( result.hasMore() )
         {
-            SearchResult sr = result.next();
+            StudioSearchResult sr = result.next();
             list.add( fn.apply( sr ) );
         }
         return list;

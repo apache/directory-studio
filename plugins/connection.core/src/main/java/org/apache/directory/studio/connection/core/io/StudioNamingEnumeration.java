@@ -22,10 +22,10 @@ package org.apache.directory.studio.connection.core.io;
 
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
-import javax.naming.directory.SearchResult;
 import javax.naming.ldap.Control;
 
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.io.api.StudioSearchResult;
 
 
 /**
@@ -33,7 +33,7 @@ import org.apache.directory.studio.connection.core.Connection;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface StudioNamingEnumeration extends NamingEnumeration<SearchResult>
+public interface StudioNamingEnumeration extends NamingEnumeration<StudioSearchResult>
 {
     /**
      * Gets the connection.

@@ -32,7 +32,6 @@ import java.util.Set;
 import javax.naming.ContextNotEmptyException;
 import javax.naming.NamingEnumeration;
 import javax.naming.directory.SearchControls;
-import javax.naming.directory.SearchResult;
 import javax.naming.ldap.BasicControl;
 import javax.naming.ldap.Control;
 import javax.naming.ldap.ManageReferralControl;
@@ -43,6 +42,7 @@ import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.StudioControl;
+import org.apache.directory.studio.connection.core.io.api.StudioSearchResult;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
@@ -295,7 +295,7 @@ public class DeleteEntriesRunnable implements StudioConnectionBulkRunnableWithPr
                 searchControls.setCountLimit( 1000 );
                 searchControls.setReturningAttributes( new String[0] );
                 searchControls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
-                NamingEnumeration<SearchResult> result = browserConnection
+                NamingEnumeration<StudioSearchResult> result = browserConnection
                     .getConnection()
                     .getConnectionWrapper()
                     .search( dn.getName(), ISearch.FILTER_TRUE, searchControls, aliasDereferencingMethod,
@@ -306,8 +306,7 @@ public class DeleteEntriesRunnable implements StudioConnectionBulkRunnableWithPr
                     // delete all child entries
                     while ( !dummyMonitor.isCanceled() && !dummyMonitor.errorsReported() && result.hasMore() )
                     {
-                        SearchResult sr = result.next();
-                        Dn childDn = JNDIUtils.getDn( sr );
+                        Dn childDn = result.next().getDn();
 
                         numberOfDeletedEntries = optimisticDeleteEntryRecursive( browserConnection, childDn, false,
                             false, numberOfDeletedEntries, dummyMonitor, monitor );

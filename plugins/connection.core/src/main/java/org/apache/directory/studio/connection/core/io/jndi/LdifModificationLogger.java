@@ -43,6 +43,7 @@ import javax.naming.NamingException;
 import javax.naming.directory.SearchControls;
 import javax.naming.ldap.Control;
 
+import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.entry.Value;
@@ -276,7 +277,7 @@ public class LdifModificationLogger implements IJndiLogger
         LdifChangeAddRecord record = new LdifChangeAddRecord( LdifDnLine.create( entry.getDn().getName() ) );
         addControlLines( record, controls );
         record.setChangeType( LdifChangeTypeLine.createAdd() );
-        for ( org.apache.directory.api.ldap.model.entry.Attribute attribute : entry )
+        for ( Attribute attribute : entry )
         {
             String attributeName = attribute.getUpId();
             for ( Value value : attribute )
@@ -423,16 +424,6 @@ public class LdifModificationLogger implements IJndiLogger
         long requestNum, NamingException ex )
     {
         // don't log searches
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void logSearchResultEntry( Connection connection, StudioSearchResult studioSearchResult, long requestNum,
-        NamingException ex )
-    {
-        // don't log searches 
     }
 
 

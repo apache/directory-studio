@@ -29,16 +29,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
-import javax.naming.directory.Attribute;
 import javax.naming.directory.SearchControls;
-import javax.naming.directory.SearchResult;
 import javax.naming.ldap.BasicControl;
 import javax.naming.ldap.Control;
 import javax.naming.ldap.PagedResultsResponseControl;
 
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
+import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.url.LdapUrl;
@@ -50,7 +48,7 @@ import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMe
 import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.connection.core.StudioPagedResultsControl;
 import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
-import org.apache.directory.studio.connection.core.io.jndi.StudioSearchResult;
+import org.apache.directory.studio.connection.core.io.api.StudioSearchResult;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
@@ -320,13 +318,13 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
                     // iterate through the search result
                     while ( !monitor.isCanceled() && enumeration != null && enumeration.hasMore() )
                     {
-                        StudioSearchResult sr = ( StudioSearchResult ) enumeration.next();
+                        StudioSearchResult sr = enumeration.next();
                         boolean isContinuedSearchResult = sr.isContinuedSearchResult();
                         LdapUrl searchContinuationUrl = sr.getSearchContinuationUrl();
 
                         if ( searchContinuationUrl == null )
                         {
-                            Dn dn = JNDIUtils.getDn( sr );
+                            Dn dn = sr.getDn();
                             IEntry entry = null;
 
                             Connection resultConnection = sr.getConnection();
@@ -697,18 +695,14 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
      * @param sr the the JNDI search result
      * @param searchParameter the search parameters
      */
-    private static void initFlags( IEntry entry, SearchResult sr, SearchParameter searchParameter )
+    private static void initFlags( IEntry entry, StudioSearchResult sr, SearchParameter searchParameter )
         throws NamingException
     {
-        NamingEnumeration<? extends Attribute> attributeEnumeration = sr.getAttributes().getAll();
-        while ( attributeEnumeration.hasMore() )
+        for ( Attribute attribute : sr.getEntry() )
         {
-            Attribute attribute = attributeEnumeration.next();
-
             if ( attribute != null )
             {
-                String attributeDescription = attribute.getID();
-                NamingEnumeration<?> valueEnumeration = attribute.getAll();
+                String attributeDescription = attribute.getUpId();
                 if ( SchemaConstants.OBJECT_CLASS_AT.equalsIgnoreCase( attributeDescription ) )
                 {
                     if ( entry.getAttribute( attributeDescription ) != null )
@@ -718,12 +712,11 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
                     entry.addAttribute( new org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute( entry,
                         attributeDescription ) );
                 }
-                while ( valueEnumeration.hasMore() )
+                for ( org.apache.directory.api.ldap.model.entry.Value valueObject : attribute )
                 {
-                    Object o = valueEnumeration.next();
-                    if ( o instanceof String )
+                    if ( valueObject.isHumanReadable() )
                     {
-                        String value = ( String ) o;
+                        String value = valueObject.getValue();
 
                         if ( searchParameter.isInitHasChildrenFlag() )
                         {
@@ -789,7 +782,7 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
      * @param sr the JNDI search result
      * @param searchParameter the search parameters
      */
-    private static void fillAttributes( IEntry entry, SearchResult sr, SearchParameter searchParameter )
+    private static void fillAttributes( IEntry entry, StudioSearchResult sr, SearchParameter searchParameter )
         throws NamingException
     {
         if ( searchParameter.getReturningAttributes() == null || searchParameter.getReturningAttributes().length > 0 )
@@ -852,11 +845,9 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
             }
 
             // additional clear old attributes if the record contains the attribute
-            NamingEnumeration<? extends Attribute> attributeEnumeration = sr.getAttributes().getAll();
-            while ( attributeEnumeration.hasMore() )
+            for ( Attribute attribute : sr.getEntry() )
             {
-                Attribute attribute = attributeEnumeration.next();
-                String attributeDescription = attribute.getID();
+                String attributeDescription = attribute.getUpId();
                 IAttribute oldAttribute = entry.getAttribute( attributeDescription );
                 if ( oldAttribute != null )
                 {
@@ -865,13 +856,11 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
             }
 
             // set new attributes and values
-            attributeEnumeration = sr.getAttributes().getAll();
-            while ( attributeEnumeration.hasMore() )
+            for ( Attribute attribute : sr.getEntry() )
             {
-                Attribute attribute = attributeEnumeration.next();
-                String attributeDescription = attribute.getID();
+                String attributeDescription = attribute.getUpId();
 
-                if ( attribute.getAll().hasMore() )
+                if ( attribute.iterator().hasNext() )
                 {
                     IAttribute studioAttribute = null;
                     if ( entry.getAttribute( attributeDescription ) == null )
@@ -885,11 +874,16 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
                         studioAttribute = entry.getAttribute( attributeDescription );
                     }
 
-                    NamingEnumeration<?> valueEnumeration = attribute.getAll();
-                    while ( valueEnumeration.hasMore() )
+                    for ( org.apache.directory.api.ldap.model.entry.Value value : attribute )
                     {
-                        Object value = valueEnumeration.next();
-                        studioAttribute.addValue( new Value( studioAttribute, value ) );
+                        if ( value.isHumanReadable() )
+                        {
+                            studioAttribute.addValue( new Value( studioAttribute, value.getValue() ) );
+                        }
+                        else
+                        {
+                            studioAttribute.addValue( new Value( studioAttribute, value.getBytes() ) );
+                        }
                     }
                 }
             }

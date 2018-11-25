@@ -24,23 +24,18 @@ package org.apache.directory.studio.ldapbrowser.core.jobs;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.naming.NameAlreadyBoundException;
 import javax.naming.NamingEnumeration;
-import javax.naming.directory.Attribute;
-import javax.naming.directory.Attributes;
-import javax.naming.directory.BasicAttribute;
 import javax.naming.directory.SearchControls;
-import javax.naming.directory.SearchResult;
 import javax.naming.ldap.Control;
 import javax.naming.ldap.ManageReferralControl;
 
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
-import org.apache.directory.api.ldap.model.entry.AttributeUtils;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Modification;
+import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Ava;
 import org.apache.directory.api.ldap.model.name.Dn;
@@ -49,6 +44,7 @@ import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
+import org.apache.directory.studio.connection.core.io.api.StudioSearchResult;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
@@ -57,7 +53,6 @@ import org.apache.directory.studio.ldapbrowser.core.jobs.EntryExistsCopyStrategy
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
-import org.apache.directory.studio.ldapbrowser.core.utils.JNDIUtils;
 import org.apache.directory.studio.ldapbrowser.core.utils.ModelConverter;
 
 
@@ -236,7 +231,7 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
                 { new ManageReferralControl( false ) };
         }
 
-        NamingEnumeration<SearchResult> result = entryToCopy
+        NamingEnumeration<StudioSearchResult> result = entryToCopy
             .getBrowserConnection()
             .getConnection()
             .getConnectionWrapper()
@@ -276,7 +271,7 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
      * 
      * @return the number of copied entries
      */
-    static int copyEntryRecursive( IBrowserConnection sourceBrowserConnection, NamingEnumeration<SearchResult> entries,
+    static int copyEntryRecursive( IBrowserConnection sourceBrowserConnection, NamingEnumeration<StudioSearchResult> entries,
         IBrowserConnection targetBrowserConnection, Dn parentDn, Rdn forceNewRdn, int scope,
         int numberOfCopiedEntries, EntryExistsCopyStrategyDialog dialog, StudioProgressMonitor dummyMonitor,
         StudioProgressMonitor monitor )
@@ -286,12 +281,12 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
             while ( !monitor.isCanceled() && entries.hasMore() )
             {
                 // get next entry to copy
-                SearchResult sr = entries.next();
-                Dn oldLdapDn = JNDIUtils.getDn( sr );
+                Entry entry = entries.next().getEntry();
+                Dn oldLdapDn = entry.getDn();
                 Rdn oldRdn = oldLdapDn.getRdn();
 
                 // reuse attributes of the entry to copy
-                Attributes newAttributes = sr.getAttributes();
+//                Attributes newAttributes = sr.getAttributes();
 
                 // compose new Dn
                 Rdn newRdn = oldLdapDn.getRdn();
@@ -302,19 +297,17 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
                 Dn newLdapDn = parentDn.add( newRdn );
 
                 // apply new Rdn to the attributes
-                applyNewRdn( newAttributes, oldRdn, newRdn );
+                applyNewRdn( entry, oldRdn, newRdn );
 
                 // ManageDsaIT control
                 Control[] controls = null;
-                if ( newAttributes.get( SchemaConstants.OBJECT_CLASS_AT ) != null
-                    && newAttributes.get( SchemaConstants.OBJECT_CLASS_AT ).contains( SchemaConstants.REFERRAL_OC ) )
+                if ( entry.hasObjectClass( SchemaConstants.REFERRAL_OC ) )
                 {
                     controls = new Control[]
                         { new ManageReferralControl( false ) };
                 }
 
                 // create entry
-                Entry entry = AttributeUtils.toEntry( newAttributes, newLdapDn );
                 targetBrowserConnection.getConnection().getConnectionWrapper()
                     .createEntry( entry, controls, dummyMonitor, null );
 
@@ -364,13 +357,12 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
                                     Rdn renamedRdn = dialog.getRdn();
 
                                     // apply renamed Rdn to the attributes
-                                    applyNewRdn( newAttributes, newRdn, renamedRdn );
+                                    applyNewRdn( entry, newRdn, renamedRdn );
 
                                     // compose new Dn
                                     newLdapDn = parentDn.add( renamedRdn );
 
                                     // create entry
-                                    entry = AttributeUtils.toEntry( newAttributes, newLdapDn );
                                     targetBrowserConnection.getConnection().getConnectionWrapper()
                                         .createEntry( entry, null, dummyMonitor, null );
 
@@ -406,7 +398,7 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
                         searchControls.setReturningAttributes( new String[]
                             { SchemaConstants.ALL_USER_ATTRIBUTES, SchemaConstants.REF_AT } );
                         searchControls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
-                        NamingEnumeration<SearchResult> childEntries = sourceBrowserConnection
+                        NamingEnumeration<StudioSearchResult> childEntries = sourceBrowserConnection
                             .getConnection()
                             .getConnectionWrapper()
                             .search( oldLdapDn.getName(), ISearch.FILTER_TRUE, searchControls,
@@ -433,37 +425,18 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
     }
 
 
-    private static void applyNewRdn( Attributes attributes, Rdn oldRdn, Rdn newRdn )
+    private static void applyNewRdn( Entry entry, Rdn oldRdn, Rdn newRdn ) throws LdapException
     {
         // remove old Rdn attributes and values
-        for ( Iterator<Ava> it = oldRdn.iterator(); it.hasNext(); )
+        for ( Ava atav : oldRdn )
         {
-            Ava atav = it.next();
-            Attribute attribute = attributes.get( atav.getType() );
-            if ( attribute != null )
-            {
-                attribute.remove( atav.getValue().getNormalized() );
-                if ( attribute.size() == 0 )
-                {
-                    attributes.remove( atav.getType() );
-                }
-            }
+            entry.remove( atav.getAttributeType(), atav.getValue() );
         }
 
         // add new Rdn attributes and values
-        for ( Iterator<Ava> it = newRdn.iterator(); it.hasNext(); )
+        for ( Ava atav : newRdn )
         {
-            Ava atav = it.next();
-            Attribute attribute = attributes.get( atav.getType() );
-            if ( attribute == null )
-            {
-                attribute = new BasicAttribute( atav.getType() );
-                attributes.put( attribute );
-            }
-            if ( !attribute.contains( atav.getValue().getNormalized() ) )
-            {
-                attribute.add( atav.getValue().getNormalized() );
-            }
+            entry.add( atav.getAttributeType(), atav.getValue() );
         }
     }
 }

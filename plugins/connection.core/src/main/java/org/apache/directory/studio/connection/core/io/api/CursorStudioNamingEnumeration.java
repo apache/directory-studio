@@ -27,9 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.naming.NamingException;
-import javax.naming.directory.BasicAttributes;
 import javax.naming.directory.SearchControls;
-import javax.naming.directory.SearchResult;
 import javax.naming.ldap.BasicControl;
 import javax.naming.ldap.Control;
 import javax.naming.ldap.PagedResultsResponseControl;
@@ -39,12 +37,13 @@ import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.model.cursor.CursorException;
 import org.apache.directory.api.ldap.model.cursor.SearchCursor;
-import org.apache.directory.api.ldap.model.entry.AttributeUtils;
+import org.apache.directory.api.ldap.model.entry.DefaultEntry;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.api.ldap.model.message.Response;
 import org.apache.directory.api.ldap.model.message.SearchResultDone;
 import org.apache.directory.api.ldap.model.message.SearchResultEntry;
+import org.apache.directory.api.ldap.model.message.SearchResultEntryImpl;
 import org.apache.directory.api.ldap.model.message.SearchResultReference;
 import org.apache.directory.api.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
@@ -53,12 +52,10 @@ import org.apache.directory.studio.connection.core.Connection.AliasDereferencing
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.IJndiLogger;
-import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.connection.core.io.AbstractStudioNamingEnumeration;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapperUtils;
 import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
 import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo;
-import org.apache.directory.studio.connection.core.io.jndi.StudioSearchResult;
 
 
 /**
@@ -277,12 +274,7 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
             if ( currentSearchResultEntry != null )
             {
                 resultEntryCounter++;
-                SearchResult sr = new SearchResult( currentSearchResultEntry.getObjectName().toString(), null,
-                    Utils.toAttributes( currentSearchResultEntry.getEntry() ) );
-                sr.setNameInNamespace( currentSearchResultEntry.getObjectName().toString() );
-
-                // Converting the SearchResult to a StudioSearchResult
-                StudioSearchResult ssr = new StudioSearchResult( sr, connection, false, null );
+                StudioSearchResult ssr = new StudioSearchResult( currentSearchResultEntry, connection, false, null );
                 return ssr;
             }
 
@@ -297,18 +289,19 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
                     LdapUrl url = new LdapUrl( currentReferralUrlsList.remove( 0 ) );
 
                     // Building the search result
-                    SearchResult searchResult = new SearchResult( url.getDn().getName(), null, new BasicAttributes(),
-                        false );
-                    searchResult.setNameInNamespace( url.getDn().getName() );
+                    SearchResultEntry sre = new SearchResultEntryImpl();
+                    sre.setEntry( new DefaultEntry() );
+                    sre.setObjectName( url.getDn() );
 
-                    return new StudioSearchResult( searchResult, null, false, url );
+                    return new StudioSearchResult( sre, null, false, url );
                 }
             }
             // Are we following referrals automatically?
             else if ( referralsHandlingMethod == ReferralHandlingMethod.FOLLOW )
             {
                 resultEntryCounter++;
-                return new StudioSearchResult( cursorNamingEnumeration.next(), connection, true, null );
+                return new StudioSearchResult( cursorNamingEnumeration.next().getSearchResultEntry(), connection,
+                    true, null );
             }
 
             return null;

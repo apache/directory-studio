@@ -32,7 +32,6 @@ import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo;
-import org.apache.directory.studio.connection.core.io.jndi.StudioSearchResult;
 
 
 /**
@@ -158,18 +157,6 @@ public interface IJndiLogger
     void logSearchRequest( Connection connection, String searchBase, String filter,
         SearchControls searchControls, AliasDereferencingMethod aliasesDereferencingMethod, Control[] controls,
         long requestNum, NamingException namingException );
-
-
-    /**
-     * Logs a search result entry.
-     *
-     * @param connection the connection
-     * @param studioSearchResult the search result
-     * @param requestNum the request number
-     * @param the naming exception if an error occurred, null otherwise
-     */
-    void logSearchResultEntry( Connection connection, StudioSearchResult studioSearchResult, long requestNum,
-        NamingException namingException );
 
 
     /**

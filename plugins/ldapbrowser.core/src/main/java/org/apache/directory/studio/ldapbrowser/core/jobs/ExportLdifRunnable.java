@@ -27,14 +27,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
-import javax.naming.directory.Attribute;
-import javax.naming.directory.SearchResult;
 import javax.naming.ldap.Control;
 import javax.naming.ldap.PagedResultsResponseControl;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.directory.api.ldap.model.entry.Attribute;
+import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
@@ -310,26 +310,22 @@ public class ExportLdifRunnable implements StudioConnectionRunnableWithProgress
 
         public LdifContainer next() throws NamingException, LdapInvalidDnException
         {
-            SearchResult sr = enumeration.next();
-            Dn dn = JNDIUtils.getDn( sr );
+            Entry entry = enumeration.next().getEntry();
+            Dn dn = entry.getDn();
             LdifContentRecord record = LdifContentRecord.create( dn.getName() );
 
-            NamingEnumeration<? extends Attribute> attributeEnumeration = sr.getAttributes().getAll();
-            while ( attributeEnumeration.hasMore() )
+            for ( Attribute attribute : entry )
             {
-                Attribute attribute = attributeEnumeration.next();
-                String attributeName = attribute.getID();
-                NamingEnumeration<?> valueEnumeration = attribute.getAll();
-                while ( valueEnumeration.hasMore() )
+                String attributeName = attribute.getUpId();
+                for ( Value value : attribute )
                 {
-                    Object o = valueEnumeration.next();
-                    if ( o instanceof String )
+                    if ( value.isHumanReadable() )
                     {
-                        record.addAttrVal( LdifAttrValLine.create( attributeName, ( String ) o ) );
+                        record.addAttrVal( LdifAttrValLine.create( attributeName, value.getValue() ) );
                     }
-                    if ( o instanceof byte[] )
+                    else
                     {
-                        record.addAttrVal( LdifAttrValLine.create( attributeName, ( byte[] ) o ) );
+                        record.addAttrVal( LdifAttrValLine.create( attributeName, value.getBytes() ) );
                     }
                 }
             }

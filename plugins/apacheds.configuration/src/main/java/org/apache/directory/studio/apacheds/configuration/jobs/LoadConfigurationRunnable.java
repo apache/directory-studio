@@ -28,26 +28,22 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.directory.SearchResult;
-
 import org.apache.directory.api.ldap.model.constants.LdapConstants;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
-import org.apache.directory.api.ldap.model.entry.AttributeUtils;
-import org.apache.directory.api.ldap.model.entry.DefaultEntry;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapNoSuchObjectException;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
-import org.apache.directory.server.config.ConfigPartitionReader;
 import org.apache.directory.server.config.ConfigPartitionInitializer;
+import org.apache.directory.server.config.ConfigPartitionReader;
 import org.apache.directory.server.config.ReadOnlyConfigurationPartition;
 import org.apache.directory.server.config.beans.ConfigBean;
+import org.apache.directory.server.constants.ServerDNConstants;
 import org.apache.directory.server.core.api.CacheService;
 import org.apache.directory.server.core.api.DnFactory;
 import org.apache.directory.server.core.api.InstanceLayout;
-import org.apache.directory.server.constants.ServerDNConstants;
 import org.apache.directory.server.core.partition.impl.btree.AbstractBTreePartition;
 import org.apache.directory.server.core.partition.ldif.LdifPartition;
 import org.apache.directory.studio.apacheds.configuration.ApacheDS2ConfigurationPlugin;
@@ -63,6 +59,7 @@ import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.IConnectionListener;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
+import org.apache.directory.studio.connection.core.io.api.StudioSearchResult;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.jobs.SearchRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -366,11 +363,10 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
             if ( enumeration.hasMore() )
             {
                 // Creating the 'ou=config' base entry
-                SearchResult searchResult = ( SearchResult ) enumeration.next();
-                configEntry = new DefaultEntry( schemaManager, AttributeUtils.toEntry(
-                    searchResult.getAttributes(), new Dn( searchResult.getNameInNamespace() ) ) );
+                StudioSearchResult searchResult = enumeration.next();
+                configEntry = searchResult.getEntry();
             }
-            
+
             enumeration.close();
 
             // Verifying we found the 'ou=config' base entry
@@ -415,13 +411,9 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
 
                 while ( childrenEnumeration.hasMore() )
                 {
-                    // Creating the child entry
-                    SearchResult searchResult = ( SearchResult ) childrenEnumeration.next();
-                    Entry childEntry = new DefaultEntry( schemaManager, AttributeUtils.toEntry(
-                        searchResult.getAttributes(), new Dn( searchResult.getNameInNamespace() ) ) );
-
                     // Adding the children to the list of entries
-                    entries.add( childEntry );
+                    StudioSearchResult searchResult = childrenEnumeration.next();
+                    entries.add( searchResult.getEntry() );
                 }
                 
                 childrenEnumeration.close();
