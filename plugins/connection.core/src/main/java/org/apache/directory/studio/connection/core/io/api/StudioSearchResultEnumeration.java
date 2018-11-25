@@ -51,9 +51,7 @@ import org.apache.directory.studio.connection.core.Connection.AliasDereferencing
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.IJndiLogger;
-import org.apache.directory.studio.connection.core.io.AbstractStudioNamingEnumeration;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapperUtils;
-import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
 import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo;
 
 
@@ -62,12 +60,25 @@ import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumeration
+public class StudioSearchResultEnumeration
 {
+    private Connection connection;
+
+    private String searchBase;
+    private String filter;
+    private SearchControls searchControls;
+    private AliasDereferencingMethod aliasesDereferencingMethod;
+    private ReferralHandlingMethod referralsHandlingMethod;
+    private Control[] controls;
+    private long requestNum;
+    private StudioProgressMonitor monitor;
+    private ReferralsInfo referralsInfo;
+    private long resultEntryCounter;
+
     private SearchCursor cursor;
     private SearchResultEntry currentSearchResultEntry;
     private List<String> currentReferralUrlsList;
-    private StudioNamingEnumeration cursorNamingEnumeration;
+    private StudioSearchResultEnumeration referralEnumeration;
     private SearchResultDone searchResultDone;
 
     // @TODO: By Alex: temporary fix until things are in order (needs to be fixed)
@@ -88,28 +99,32 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
      * @param monitor the progress monitor
      * @param referralsInfo the referrals info
      */
-    public CursorStudioNamingEnumeration( Connection connection, SearchCursor cursor, String searchBase, String filter,
+    public StudioSearchResultEnumeration( Connection connection, SearchCursor cursor, String searchBase, String filter,
         SearchControls searchControls, AliasDereferencingMethod aliasesDereferencingMethod,
         ReferralHandlingMethod referralsHandlingMethod, Control[] controls, long requestNum,
         StudioProgressMonitor monitor, ReferralsInfo referralsInfo )
     {
-        super( connection, searchBase, filter, searchControls, aliasesDereferencingMethod, referralsHandlingMethod,
-            controls, requestNum, monitor, referralsInfo );
-        this.connection = connection;
-        this.cursor = cursor;
+        //        super( connection, searchBase, filter, searchControls, aliasesDereferencingMethod, referralsHandlingMethod,
+        //            controls, requestNum, monitor, referralsInfo );
 
+        this.connection = connection;
         this.searchBase = searchBase;
         this.filter = filter;
         this.searchControls = searchControls;
         this.aliasesDereferencingMethod = aliasesDereferencingMethod;
         this.referralsHandlingMethod = referralsHandlingMethod;
         this.controls = controls;
+        this.requestNum = requestNum;
         this.monitor = monitor;
+        this.referralsInfo = referralsInfo;
+        this.resultEntryCounter = 0;
 
-        if ( super.referralsInfo == null )
+        if ( referralsInfo == null )
         {
-            super.referralsInfo = new ReferralsInfo( false );
+            this.referralsInfo = new ReferralsInfo( false );
         }
+
+        this.cursor = cursor;
     }
 
 
@@ -199,7 +214,7 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
             // Are we following referrals automatically?
             else if ( referralsHandlingMethod == ReferralHandlingMethod.FOLLOW )
             {
-                if ( ( cursorNamingEnumeration != null ) && ( cursorNamingEnumeration.hasMore() ) )
+                if ( ( referralEnumeration != null ) && ( referralEnumeration.hasMore() ) )
                 {
                     // return true if there's at least one more entry in the current cursor naming enumeration
                     return true;
@@ -216,12 +231,15 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
                     if ( referralConnection != null )
                     {
                         String referralSearchBase = url.getDn() != null && !url.getDn().isEmpty()
-                            ? url.getDn().getName() : searchBase;
+                            ? url.getDn().getName()
+                            : searchBase;
                         String referralFilter = url.getFilter() != null && url.getFilter().length() == 0
-                            ? url.getFilter() : filter;
+                            ? url.getFilter()
+                            : filter;
                         SearchControls referralSearchControls = new SearchControls();
                         referralSearchControls.setSearchScope( url.getScope().getScope() > -1
-                            ? url.getScope().getScope() : searchControls.getSearchScope() );
+                            ? url.getScope().getScope()
+                            : searchControls.getSearchScope() );
                         referralSearchControls
                             .setReturningAttributes( url.getAttributes() != null && url.getAttributes().size() > 0
                                 ? url.getAttributes().toArray( new String[url.getAttributes().size()] )
@@ -231,11 +249,11 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
                         referralSearchControls.setDerefLinkFlag( searchControls.getDerefLinkFlag() );
                         referralSearchControls.setReturningObjFlag( searchControls.getReturningObjFlag() );
 
-                        cursorNamingEnumeration = referralConnection.getConnectionWrapper().search( referralSearchBase,
+                        referralEnumeration = referralConnection.getConnectionWrapper().search( referralSearchBase,
                             referralFilter, referralSearchControls, aliasesDereferencingMethod, referralsHandlingMethod,
                             controls, monitor, referralsInfo );
 
-                        return cursorNamingEnumeration.hasMore();
+                        return referralEnumeration.hasMore();
                     }
                 }
             }
@@ -290,7 +308,7 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
             else if ( referralsHandlingMethod == ReferralHandlingMethod.FOLLOW )
             {
                 resultEntryCounter++;
-                return new StudioSearchResult( cursorNamingEnumeration.next().getSearchResultEntry(), connection,
+                return new StudioSearchResult( referralEnumeration.next().getSearchResultEntry(), connection,
                     true, null );
             }
 

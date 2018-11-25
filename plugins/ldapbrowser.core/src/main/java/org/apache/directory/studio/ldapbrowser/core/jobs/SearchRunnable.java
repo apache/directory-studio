@@ -48,8 +48,8 @@ import org.apache.directory.studio.connection.core.Connection.AliasDereferencing
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.connection.core.StudioPagedResultsControl;
-import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
 import org.apache.directory.studio.connection.core.io.api.StudioSearchResult;
+import org.apache.directory.studio.connection.core.io.api.StudioSearchResultEnumeration;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
@@ -310,7 +310,7 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
                 ArrayList<ISearchResult> searchResultList = new ArrayList<ISearchResult>();
                 ArrayList<SearchContinuation> searchContinuationList = new ArrayList<SearchContinuation>();
 
-                StudioNamingEnumeration enumeration = null;
+                StudioSearchResultEnumeration enumeration = null;
                 // search
                 try
                 {
@@ -453,7 +453,7 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
     }
 
 
-    public static StudioNamingEnumeration search( IBrowserConnection browserConnection, SearchParameter parameter,
+    public static StudioSearchResultEnumeration search( IBrowserConnection browserConnection, SearchParameter parameter,
         StudioProgressMonitor monitor )
     {
         if ( browserConnection == null )
@@ -504,7 +504,7 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
             }
         }
 
-        StudioNamingEnumeration result = browserConnection
+        StudioSearchResultEnumeration result = browserConnection
             .getConnection()
             .getConnectionWrapper()
             .search( searchBase, filter, controls, aliasesDereferencingMethod, referralsHandlingMethod, jndiControls,
@@ -661,7 +661,7 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
                 searchParameter.setReferralsHandlingMethod( browserConnection.getReferralsHandlingMethod() );
                 searchParameter.setInitHasChildrenFlag( true );
                 dummyMonitor.reset();
-                StudioNamingEnumeration enumeration = search( browserConnection, searchParameter, dummyMonitor );
+                StudioSearchResultEnumeration enumeration = search( browserConnection, searchParameter, dummyMonitor );
                 try
                 {
                     if ( enumeration != null && enumeration.hasMore() )

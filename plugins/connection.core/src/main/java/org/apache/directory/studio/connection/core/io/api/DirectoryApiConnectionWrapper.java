@@ -99,7 +99,6 @@ import org.apache.directory.studio.connection.core.Messages;
 import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapperUtils;
-import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
 import org.apache.directory.studio.connection.core.io.StudioTrustManager;
 import org.apache.directory.studio.connection.core.io.jndi.CancelException;
 import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo;
@@ -560,7 +559,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     /**
      * {@inheritDoc}
      */
-    public StudioNamingEnumeration search( final String searchBase, final String filter,
+    public StudioSearchResultEnumeration search( final String searchBase, final String filter,
         final SearchControls searchControls, final AliasDereferencingMethod aliasesDereferencingMethod,
         final ReferralHandlingMethod referralsHandlingMethod, final Control[] controls,
         final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo )
@@ -592,7 +591,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     SearchCursor cursor = ldapConnection.search( request );
 
                     // Returning the result of the search
-                    namingEnumeration = new CursorStudioNamingEnumeration( connection, cursor, searchBase, filter,
+                    searchResultEnumeration = new StudioSearchResultEnumeration( connection, cursor, searchBase, filter,
                         searchControls, aliasesDereferencingMethod, referralsHandlingMethod, controls, requestNum,
                         monitor, referralsInfo );
                 }
@@ -609,7 +608,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
 
                 for ( IJndiLogger logger : getJndiLoggers() )
                 {
-                    if ( namingEnumeration != null )
+                    if ( searchResultEnumeration != null )
                     {
                         logger.logSearchRequest( connection, searchBase, filter, searchControls,
                             aliasesDereferencingMethod, controls, requestNum, ne );
@@ -1128,7 +1127,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
      */
     abstract class InnerRunnable implements Runnable
     {
-        protected StudioNamingEnumeration namingEnumeration = null;
+        protected StudioSearchResultEnumeration searchResultEnumeration = null;
         protected Exception exception = null;
         protected boolean canceled = false;
 
@@ -1149,9 +1148,9 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
          * 
          * @return the result
          */
-        public StudioNamingEnumeration getResult()
+        public StudioSearchResultEnumeration getResult()
         {
-            return namingEnumeration;
+            return searchResultEnumeration;
         }
 
 
@@ -1171,7 +1170,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
          */
         public void reset()
         {
-            namingEnumeration = null;
+            searchResultEnumeration = null;
             exception = null;
             canceled = false;
         }

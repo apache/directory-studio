@@ -72,7 +72,7 @@ import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.io.LdapRuntimeException;
-import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
+import org.apache.directory.studio.connection.core.io.api.StudioSearchResultEnumeration;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
@@ -604,7 +604,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
         if ( batchResponseDsml != null )
         {
             // [Optimization] We're only searching if we need to produce a response
-            StudioNamingEnumeration ne = browserConnection
+            StudioSearchResultEnumeration sre = browserConnection
                 .getConnection()
                 .getConnectionWrapper()
                 .search( request.getBase().getName(), request.getFilter().toString(),
@@ -613,7 +613,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
 
             SearchParameter sp = new SearchParameter();
             sp.setReferralsHandlingMethod( browserConnection.getReferralsHandlingMethod() );
-            ExportDsmlRunnable.processAsDsmlResponse( ne, batchResponseDsml, monitor, sp );
+            ExportDsmlRunnable.processAsDsmlResponse( sre, batchResponseDsml, monitor, sp );
         }
     }
 

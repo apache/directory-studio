@@ -57,7 +57,7 @@ import org.apache.directory.api.ldap.model.message.SearchResultDoneImpl;
 import org.apache.directory.api.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
+import org.apache.directory.studio.connection.core.io.api.StudioSearchResultEnumeration;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -195,7 +195,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
             StudioProgressMonitor dummyMonitor = new StudioProgressMonitor( monitor );
 
             // Searching for the requested entries
-            StudioNamingEnumeration ne = SearchRunnable.search( browserConnection, searchParameter, dummyMonitor );
+            StudioSearchResultEnumeration ne = SearchRunnable.search( browserConnection, searchParameter, dummyMonitor );
             monitor.worked( 1 );
 
             // Getting the DSML string associated to the search
@@ -240,17 +240,17 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
     /**
      * Processes the {@link NamingEnumeration} as a DSML response.
      *
-     * @param ne the naming enumeration
+     * @param sre the search result enumeration
      * @param monitor the monitor
      * @return the associated DSML
      * @throws LdapException
      */
-    private String processAsDsmlResponse( StudioNamingEnumeration ne, StudioProgressMonitor monitor ) throws LdapException
+    private String processAsDsmlResponse( StudioSearchResultEnumeration sre, StudioProgressMonitor monitor ) throws LdapException
     {
         // Creating the batch reponse
         BatchResponseDsml batchResponse = new BatchResponseDsml();
 
-        processAsDsmlResponse( ne, batchResponse, monitor, searchParameter );
+        processAsDsmlResponse( sre, batchResponse, monitor, searchParameter );
 
         // Returning the associated DSML
         return batchResponse.toDsml();
@@ -260,8 +260,8 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
     /**
      * Processes the {@link NamingEnumeration} as a DSML response.
      *
-     * @param ne
-     *      the naming enumeration
+     * @param sre
+     *      the search result enumeration
      * @param monitor 
      *      the monitor
      * @param searchParameter 
@@ -269,7 +269,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
      * @throws LdapURLEncodingException 
      * @throws org.apache.directory.api.ldap.model.exception.LdapException
      */
-    public static void processAsDsmlResponse( StudioNamingEnumeration ne, BatchResponseDsml batchResponse,
+    public static void processAsDsmlResponse( StudioSearchResultEnumeration sre, BatchResponseDsml batchResponse,
         StudioProgressMonitor monitor, SearchParameter searchParameter ) throws LdapException
     {
         // Creating and adding the search response
@@ -283,9 +283,9 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
             if ( !monitor.errorsReported() )
             {
                 // Creating and adding a search result entry or reference for each result
-                while ( ne.hasMore() )
+                while ( sre.hasMore() )
                 {
-                    Entry entry = ne.next().getEntry();
+                    Entry entry = sre.next().getEntry();
                     sr.addResponse( convertSearchResultToDsml( entry ) );
 
                     count++;
@@ -413,8 +413,8 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
     /**
      * Processes the {@link NamingEnumeration} as a DSML request.
      *
-     * @param ne
-     *      the naming enumeration
+     * @param sre
+     *      the search result enumeration
      * @param monitor 
      *      the monitor
      * @return
@@ -422,7 +422,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
      * @throws NamingException 
      * @throws LdapException
      */
-    private String processAsDsmlRequest( StudioNamingEnumeration ne, StudioProgressMonitor monitor )
+    private String processAsDsmlRequest( StudioSearchResultEnumeration sre, StudioProgressMonitor monitor )
         throws NamingException, LdapException
     {
         // Creating the batch request
@@ -435,9 +435,9 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
             if ( !monitor.errorsReported() )
             {
                 // Creating and adding an add request for each result
-                while ( ne.hasMore() )
+                while ( sre.hasMore() )
                 {
-                    Entry entry = ne.next().getEntry();
+                    Entry entry = sre.next().getEntry();
                     AddRequestDsml arDsml = convertToAddRequestDsml( entry );
                     batchRequest.addRequest( arDsml );
 

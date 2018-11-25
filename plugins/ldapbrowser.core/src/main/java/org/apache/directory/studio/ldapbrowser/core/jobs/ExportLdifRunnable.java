@@ -40,7 +40,7 @@ import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.connection.core.StudioPagedResultsControl;
-import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
+import org.apache.directory.studio.connection.core.io.api.StudioSearchResultEnumeration;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
@@ -236,14 +236,14 @@ public class ExportLdifRunnable implements StudioConnectionRunnableWithProgress
     static JndiLdifEnumeration search( IBrowserConnection browserConnection, SearchParameter parameter,
         StudioProgressMonitor monitor )
     {
-        StudioNamingEnumeration result = SearchRunnable.search( browserConnection, parameter, monitor );
+        StudioSearchResultEnumeration result = SearchRunnable.search( browserConnection, parameter, monitor );
         return new JndiLdifEnumeration( result, browserConnection, parameter, monitor );
     }
 
     static class JndiLdifEnumeration implements LdifEnumeration
     {
 
-        private StudioNamingEnumeration enumeration;
+        private StudioSearchResultEnumeration enumeration;
 
         private IBrowserConnection browserConnection;
 
@@ -252,7 +252,7 @@ public class ExportLdifRunnable implements StudioConnectionRunnableWithProgress
         private StudioProgressMonitor monitor;
 
 
-        public JndiLdifEnumeration( StudioNamingEnumeration enumeration, IBrowserConnection browserConnection,
+        public JndiLdifEnumeration( StudioSearchResultEnumeration enumeration, IBrowserConnection browserConnection,
             SearchParameter parameter, StudioProgressMonitor monitor )
         {
             this.enumeration = enumeration;

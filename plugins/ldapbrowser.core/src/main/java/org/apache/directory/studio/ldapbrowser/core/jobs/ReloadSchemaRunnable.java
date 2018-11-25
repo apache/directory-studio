@@ -27,7 +27,7 @@ import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
+import org.apache.directory.studio.connection.core.io.api.StudioSearchResultEnumeration;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.BrowserConnectionUpdateEvent;
@@ -209,7 +209,7 @@ public class ReloadSchemaRunnable implements StudioConnectionBulkRunnableWithPro
             sp.setScope( SearchScope.OBJECT );
             sp.setReturningAttributes( new String[]
                 { SchemaConstants.CREATE_TIMESTAMP_AT, SchemaConstants.MODIFY_TIMESTAMP_AT } );
-            StudioNamingEnumeration enumeration = SearchRunnable.search( browserConnection, sp, monitor );
+            StudioSearchResultEnumeration enumeration = SearchRunnable.search( browserConnection, sp, monitor );
             while ( enumeration != null && enumeration.hasMore() )
             {
                 String createTimestamp = null;
@@ -254,7 +254,7 @@ public class ReloadSchemaRunnable implements StudioConnectionBulkRunnableWithPro
             sp.setScope( SearchScope.OBJECT );
             sp.setReturningAttributes( new String[]
                 { SchemaConstants.SUBSCHEMA_SUBENTRY_AT } );
-            StudioNamingEnumeration enumeration = SearchRunnable.search( browserConnection, sp, monitor );
+            StudioSearchResultEnumeration enumeration = SearchRunnable.search( browserConnection, sp, monitor );
             while ( enumeration != null && enumeration.hasMore() )
             {
                 Entry entry = enumeration.next().getEntry();

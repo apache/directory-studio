@@ -68,8 +68,8 @@ import org.apache.directory.studio.connection.core.ConnectionParameter.Authentic
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.connection.core.IReferralHandler;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
-import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
 import org.apache.directory.studio.connection.core.io.api.StudioSearchResult;
+import org.apache.directory.studio.connection.core.io.api.StudioSearchResultEnumeration;
 import org.apache.mina.util.AvailablePortFinder;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.After;
@@ -293,7 +293,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
     {
         StudioProgressMonitor monitor = getProgressMonitor();
         SearchControls searchControls = new SearchControls();
-        StudioNamingEnumeration result = getConnectionWrapper( monitor ).search( "ou=system", "(objectClass=*)",
+        StudioSearchResultEnumeration result = getConnectionWrapper( monitor ).search( "ou=system", "(objectClass=*)",
             searchControls, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, null, monitor, null );
 
         assertFalse( monitor.isCanceled() );
@@ -313,7 +313,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         StudioProgressMonitor monitor = getProgressMonitor();
         SearchControls searchControls = new SearchControls();
         searchControls.setSearchScope( SearchControls.OBJECT_SCOPE );
-        StudioNamingEnumeration result = getConnectionWrapper( monitor ).search( "uid=admin,ou=system",
+        StudioSearchResultEnumeration result = getConnectionWrapper( monitor ).search( "uid=admin,ou=system",
             "(objectClass=*)",
             searchControls, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, null, monitor, null );
 
@@ -338,7 +338,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
     {
         StudioProgressMonitor monitor = getProgressMonitor();
         SearchControls searchControls = new SearchControls();
-        StudioNamingEnumeration result = getConnectionWrapper( monitor ).search(
+        StudioSearchResultEnumeration result = getConnectionWrapper( monitor ).search(
             "cn=referral1,ou=referrals,ou=system", "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER,
             ReferralHandlingMethod.FOLLOW, null, monitor, null );
 
@@ -358,7 +358,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         StudioProgressMonitor monitor = getProgressMonitor();
         SearchControls searchControls = new SearchControls();
         searchControls.setSearchScope( SearchControls.SUBTREE_SCOPE );
-        StudioNamingEnumeration result = getConnectionWrapper( monitor ).search(
+        StudioSearchResultEnumeration result = getConnectionWrapper( monitor ).search(
             "cn=referral2,ou=referrals,ou=system", "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER,
             ReferralHandlingMethod.FOLLOW, null, monitor, null );
 
@@ -378,7 +378,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         StudioProgressMonitor monitor = getProgressMonitor();
         SearchControls searchControls = new SearchControls();
         searchControls.setSearchScope( SearchControls.SUBTREE_SCOPE );
-        StudioNamingEnumeration result = getConnectionWrapper( monitor ).search(
+        StudioSearchResultEnumeration result = getConnectionWrapper( monitor ).search(
             "cn=referral3,ou=referrals,ou=system", "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER,
             ReferralHandlingMethod.FOLLOW, null, monitor, null );
 
@@ -398,7 +398,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         StudioProgressMonitor monitor = getProgressMonitor();
         SearchControls searchControls = new SearchControls();
         searchControls.setSearchScope( SearchControls.SUBTREE_SCOPE );
-        StudioNamingEnumeration result = getConnectionWrapper( monitor ).search(
+        StudioSearchResultEnumeration result = getConnectionWrapper( monitor ).search(
             "cn=referral4a,ou=referrals,ou=system", "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER,
             ReferralHandlingMethod.FOLLOW, null, monitor, null );
 
@@ -419,7 +419,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         searchControls.setSearchScope( SearchControls.SUBTREE_SCOPE );
         ConnectionWrapper connectionWrapper = getConnectionWrapper( monitor );
         ConnectionCorePlugin.getDefault().setReferralHandler( null );
-        StudioNamingEnumeration result = connectionWrapper.search( "ou=referrals,ou=system", "(objectClass=*)",
+        StudioSearchResultEnumeration result = connectionWrapper.search( "ou=referrals,ou=system", "(objectClass=*)",
             searchControls, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.FOLLOW_MANUALLY, null, monitor,
             null );
 
@@ -441,7 +441,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         StudioProgressMonitor monitor = getProgressMonitor();
         SearchControls searchControls = new SearchControls();
         searchControls.setSearchScope( SearchControls.SUBTREE_SCOPE );
-        StudioNamingEnumeration result = getConnectionWrapper( monitor ).search( "ou=referrals,ou=system",
+        StudioSearchResultEnumeration result = getConnectionWrapper( monitor ).search( "ou=referrals,ou=system",
             "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, null,
             monitor, null );
 
@@ -455,7 +455,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
     }
 
 
-    protected <T> List<T> consume( StudioNamingEnumeration result, Function<StudioSearchResult, T> fn )
+    protected <T> List<T> consume( StudioSearchResultEnumeration result, Function<StudioSearchResult, T> fn )
         throws LdapException
     {
         List<T> list = new ArrayList<>();

@@ -59,8 +59,8 @@ import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.IConnectionListener;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
-import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
 import org.apache.directory.studio.connection.core.io.api.StudioSearchResult;
+import org.apache.directory.studio.connection.core.io.api.StudioSearchResultEnumeration;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.jobs.SearchRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -351,7 +351,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
 
             // Looking for the 'ou=config' base entry
             Entry configEntry = null;
-            StudioNamingEnumeration enumeration = SearchRunnable.search( browserConnection, configSearchParameter,
+            StudioSearchResultEnumeration enumeration = SearchRunnable.search( browserConnection, configSearchParameter,
                 monitor );
 
             // Checking if an error occurred
@@ -401,7 +401,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
                 searchParameter.setReturningAttributes( SchemaConstants.ALL_USER_ATTRIBUTES_ARRAY );
 
                 // Looking for the children of the entry
-                StudioNamingEnumeration childrenEnumeration = SearchRunnable.search( browserConnection,
+                StudioSearchResultEnumeration childrenEnumeration = SearchRunnable.search( browserConnection,
                     searchParameter, monitor );
 
                 // Checking if an error occurred
