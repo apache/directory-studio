@@ -27,7 +27,6 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.naming.NameAlreadyBoundException;
-import javax.naming.NamingEnumeration;
 import javax.naming.directory.SearchControls;
 import javax.naming.ldap.Control;
 import javax.naming.ldap.ManageReferralControl;
@@ -44,7 +43,7 @@ import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
-import org.apache.directory.studio.connection.core.io.api.StudioSearchResult;
+import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
@@ -231,7 +230,7 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
                 { new ManageReferralControl( false ) };
         }
 
-        NamingEnumeration<StudioSearchResult> result = entryToCopy
+        StudioNamingEnumeration result = entryToCopy
             .getBrowserConnection()
             .getConnection()
             .getConnectionWrapper()
@@ -271,7 +270,7 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
      * 
      * @return the number of copied entries
      */
-    static int copyEntryRecursive( IBrowserConnection sourceBrowserConnection, NamingEnumeration<StudioSearchResult> entries,
+    static int copyEntryRecursive( IBrowserConnection sourceBrowserConnection, StudioNamingEnumeration entries,
         IBrowserConnection targetBrowserConnection, Dn parentDn, Rdn forceNewRdn, int scope,
         int numberOfCopiedEntries, EntryExistsCopyStrategyDialog dialog, StudioProgressMonitor dummyMonitor,
         StudioProgressMonitor monitor )
@@ -398,7 +397,7 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
                         searchControls.setReturningAttributes( new String[]
                             { SchemaConstants.ALL_USER_ATTRIBUTES, SchemaConstants.REF_AT } );
                         searchControls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
-                        NamingEnumeration<StudioSearchResult> childEntries = sourceBrowserConnection
+                        StudioNamingEnumeration childEntries = sourceBrowserConnection
                             .getConnection()
                             .getConnectionWrapper()
                             .search( oldLdapDn.getName(), ISearch.FILTER_TRUE, searchControls,

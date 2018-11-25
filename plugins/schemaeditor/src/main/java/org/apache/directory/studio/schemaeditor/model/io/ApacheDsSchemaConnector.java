@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.SearchControls;
 
@@ -35,6 +34,7 @@ import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Value;
+import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.LdapSyntax;
@@ -47,6 +47,7 @@ import org.apache.directory.api.ldap.model.schema.UsageEnum;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
+import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
 import org.apache.directory.studio.connection.core.io.api.StudioSearchResult;
 import org.apache.directory.studio.schemaeditor.model.Project;
 import org.apache.directory.studio.schemaeditor.model.Schema;
@@ -84,7 +85,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
         SearchControls constraintSearch = new SearchControls();
         constraintSearch.setSearchScope( SearchControls.ONELEVEL_SCOPE );
 
-        NamingEnumeration<StudioSearchResult> answer = wrapper
+        StudioNamingEnumeration answer = wrapper
             .search( SchemaConstants.OU_SCHEMA, "(objectclass=metaSchema)", constraintSearch, DEREF_ALIAS_METHOD, //$NON-NLS-1$ //$NON-NLS-2$
                 HANDLE_REFERALS_METHOD, null, monitor, null );
         
@@ -134,7 +135,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
         constraintSearch.setReturningAttributes( new String[]
             { SchemaConstants.ALL_OPERATIONAL_ATTRIBUTES } );
 
-        NamingEnumeration<StudioSearchResult> answer = wrapper.search( "", LdapConstants.OBJECT_CLASS_STAR, constraintSearch, //$NON-NLS-1$ //$NON-NLS-2$
+        StudioNamingEnumeration answer = wrapper.search( "", LdapConstants.OBJECT_CLASS_STAR, constraintSearch, //$NON-NLS-1$ //$NON-NLS-2$
             DEREF_ALIAS_METHOD, HANDLE_REFERALS_METHOD, null, monitor, null );
 
         if ( answer != null )
@@ -170,7 +171,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
                     return ( ( vendorName != null ) && vendorName.equalsIgnoreCase( "Apache Software Foundation" ) ); //$NON-NLS-1$
                 }
             }
-            catch ( NamingException e )
+            catch ( LdapException e )
             {
                 monitor.reportError( e );
             }
@@ -181,7 +182,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
 
 
     private static Schema getSchema( ConnectionWrapper wrapper, String name, StudioProgressMonitor monitor )
-        throws NamingException
+        throws LdapException
     {
         monitor.subTask( name );
 
@@ -192,7 +193,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
         SearchControls constraintSearch = new SearchControls();
         constraintSearch.setSearchScope( SearchControls.SUBTREE_SCOPE );
 
-        NamingEnumeration<StudioSearchResult> answer = wrapper.search( "cn=" + name + ", ou=schema", LdapConstants.OBJECT_CLASS_STAR, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        StudioNamingEnumeration answer = wrapper.search( "cn=" + name + ", ou=schema", LdapConstants.OBJECT_CLASS_STAR, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             constraintSearch, DEREF_ALIAS_METHOD, HANDLE_REFERALS_METHOD, null, monitor, null );
         
         if ( answer != null )
@@ -251,7 +252,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      * @return the Type of node
      * @throws NamingException if an error occurrs when reading the SearchResult
      */
-    private static SchemaNodeTypes getNodeType( Entry entry ) throws NamingException
+    private static SchemaNodeTypes getNodeType( Entry entry )
     {
         if ( entry.hasObjectClass( SchemaConstants.META_ATTRIBUTE_TYPE_OC ) )
         {

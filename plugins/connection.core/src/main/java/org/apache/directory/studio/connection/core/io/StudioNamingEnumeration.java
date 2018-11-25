@@ -20,10 +20,10 @@
 package org.apache.directory.studio.connection.core.io;
 
 
-import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.ldap.Control;
 
+import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.io.api.StudioSearchResult;
 
@@ -33,7 +33,7 @@ import org.apache.directory.studio.connection.core.io.api.StudioSearchResult;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface StudioNamingEnumeration extends NamingEnumeration<StudioSearchResult>
+public interface StudioNamingEnumeration extends AutoCloseable
 {
     /**
      * Gets the connection.
@@ -50,5 +50,9 @@ public interface StudioNamingEnumeration extends NamingEnumeration<StudioSearchR
      * 
      * @throws NamingException the naming exception
      */
-    Control[] getResponseControls() throws NamingException;
+    Control[] getResponseControls();
+    
+    boolean hasMore() throws LdapException;
+    StudioSearchResult next() throws LdapException;
+    void close() throws LdapException;
 }

@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Set;
 
 import javax.naming.ContextNotEmptyException;
-import javax.naming.NamingEnumeration;
 import javax.naming.directory.SearchControls;
 import javax.naming.ldap.BasicControl;
 import javax.naming.ldap.Control;
@@ -42,7 +41,7 @@ import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.StudioControl;
-import org.apache.directory.studio.connection.core.io.api.StudioSearchResult;
+import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
@@ -295,7 +294,7 @@ public class DeleteEntriesRunnable implements StudioConnectionBulkRunnableWithPr
                 searchControls.setCountLimit( 1000 );
                 searchControls.setReturningAttributes( new String[0] );
                 searchControls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
-                NamingEnumeration<StudioSearchResult> result = browserConnection
+                StudioNamingEnumeration result = browserConnection
                     .getConnection()
                     .getConnectionWrapper()
                     .search( dn.getName(), ISearch.FILTER_TRUE, searchControls, aliasDereferencingMethod,

@@ -26,10 +26,8 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import javax.naming.NamingException;
-
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionRunnableWithProgress;
@@ -247,7 +245,7 @@ public class ExportXlsRunnable implements StudioConnectionRunnableWithProgress
             }
 
         }
-        catch ( NamingException ne )
+        catch ( LdapException ne )
         {
             int ldapStatusCode = JNDIUtils.getLdapStatusCode( ne );
             if ( ldapStatusCode == 3 || ldapStatusCode == 4 || ldapStatusCode == 11 )
@@ -258,10 +256,6 @@ public class ExportXlsRunnable implements StudioConnectionRunnableWithProgress
             {
                 monitor.reportError( ne );
             }
-        }
-        catch ( LdapInvalidDnException e )
-        {
-            monitor.reportError( e );
         }
     }
 

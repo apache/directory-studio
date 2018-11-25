@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.NamingException;
 import javax.naming.ldap.Control;
 import javax.naming.ldap.PagedResultsResponseControl;
 
@@ -35,7 +34,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Value;
-import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
@@ -219,21 +218,17 @@ public class ExportLdifRunnable implements StudioConnectionRunnableWithProgress
                 }
             }
         }
-        catch ( NamingException ne )
+        catch ( LdapException loe )
         {
-            int ldapStatusCode = JNDIUtils.getLdapStatusCode( ne );
+            int ldapStatusCode = JNDIUtils.getLdapStatusCode( loe );
             if ( ldapStatusCode == 3 || ldapStatusCode == 4 || ldapStatusCode == 11 )
             {
                 // ignore
             }
             else
             {
-                monitor.reportError( ne );
+                monitor.reportError( loe );
             }
-        }
-        catch ( LdapInvalidDnException e )
-        {
-            monitor.reportError( e );
         }
     }
 
@@ -267,7 +262,7 @@ public class ExportLdifRunnable implements StudioConnectionRunnableWithProgress
         }
 
 
-        public boolean hasNext() throws NamingException
+        public boolean hasNext() throws LdapException
         {
             if ( enumeration != null )
             {
@@ -308,7 +303,7 @@ public class ExportLdifRunnable implements StudioConnectionRunnableWithProgress
         }
 
 
-        public LdifContainer next() throws NamingException, LdapInvalidDnException
+        public LdifContainer next() throws LdapException
         {
             Entry entry = enumeration.next().getEntry();
             Dn dn = entry.getDn();

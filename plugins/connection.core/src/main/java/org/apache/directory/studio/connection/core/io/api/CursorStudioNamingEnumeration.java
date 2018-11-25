@@ -26,7 +26,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import javax.naming.NamingException;
 import javax.naming.directory.SearchControls;
 import javax.naming.ldap.BasicControl;
 import javax.naming.ldap.Control;
@@ -117,7 +116,7 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
     /**
      * @see javax.naming.NamingEnumeration#close()
      */
-    public void close() throws NamingException
+    public void close() throws LdapException
     {
         try
         {
@@ -125,7 +124,7 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
         }
         catch ( Exception e )
         {
-            throw new NamingException( e.getMessage() );
+            throw new LdapException( e.getMessage() );
         }
     }
 
@@ -133,7 +132,7 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
     /**
      * @see javax.naming.NamingEnumeration#hasMore()
      */
-    public boolean hasMore() throws NamingException
+    public boolean hasMore() throws LdapException
     {
         try
         {
@@ -248,26 +247,17 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
 
             return false;
         }
-        catch ( CursorException | LdapException e )
+        catch ( CursorException e )
         {
-            throw new NamingException( e.getMessage() );
+            throw new LdapException( e.getMessage(), e );
         }
-    }
-
-
-    /**
-     * @see java.util.Enumeration#hasMoreElements()
-     */
-    public boolean hasMoreElements()
-    {
-        throw new UnsupportedOperationException( "Call hasMore() instead of hasMoreElements() !" ); //$NON-NLS-1$
     }
 
 
     /**
      * @see javax.naming.NamingEnumeration#next()
      */
-    public StudioSearchResult next() throws NamingException
+    public StudioSearchResult next() throws LdapException
     {
         try
         {
@@ -308,17 +298,8 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
         }
         catch ( Exception e )
         {
-            throw new NamingException( e.getMessage() );
+            throw new LdapException( e.getMessage() );
         }
-    }
-
-
-    /**
-     * @see java.util.Enumeration#nextElement()
-     */
-    public StudioSearchResult nextElement()
-    {
-        throw new UnsupportedOperationException( "Call next() instead of nextElement() !" ); //$NON-NLS-1$
     }
 
 
@@ -337,10 +318,8 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
      * Gets the response controls.
      * 
      * @return the response controls, may be null
-     * 
-     * @throws NamingException the naming exception
      */
-    public Control[] getResponseControls() throws NamingException
+    public Control[] getResponseControls()
     {
         if ( searchResultDone != null )
         {

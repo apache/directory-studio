@@ -22,6 +22,7 @@ package org.apache.directory.studio.ldapbrowser.core.utils;
 
 
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.exception.LdapOperationException;
 import org.apache.directory.api.ldap.model.name.Dn;
 
 
@@ -83,6 +84,12 @@ public class JNDIUtils
     public static int getLdapStatusCode( Exception exception )
     {
         int ldapStatusCode = -1;
+
+        if ( exception instanceof LdapOperationException )
+        {
+            LdapOperationException loe = ( LdapOperationException ) exception;
+            loe.getResultCode().getValue();
+        }
 
         // get LDAP status code
         // [LDAP: error code 21 - telephoneNumber: value #0 invalid per syntax]

@@ -29,10 +29,8 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.naming.NamingException;
-
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionRunnableWithProgress;
@@ -231,7 +229,7 @@ public class ExportCsvRunnable implements StudioConnectionRunnableWithProgress
                 }
             }
         }
-        catch ( NamingException ce )
+        catch ( LdapException ce )
         {
             int ldapStatusCode = JNDIUtils.getLdapStatusCode( ce );
             if ( ldapStatusCode == 3 || ldapStatusCode == 4 || ldapStatusCode == 11 )
@@ -242,10 +240,6 @@ public class ExportCsvRunnable implements StudioConnectionRunnableWithProgress
             {
                 monitor.reportError( ce );
             }
-        }
-        catch ( LdapInvalidDnException e )
-        {
-            monitor.reportError( e );
         }
     }
 

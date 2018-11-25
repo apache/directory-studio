@@ -37,6 +37,7 @@ import javax.naming.ldap.PagedResultsResponseControl;
 
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.entry.Attribute;
+import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.url.LdapUrl;
@@ -672,7 +673,7 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
                         enumeration.close();
                     }
                 }
-                catch ( NamingException e )
+                catch ( LdapException e )
                 {
                 }
             }

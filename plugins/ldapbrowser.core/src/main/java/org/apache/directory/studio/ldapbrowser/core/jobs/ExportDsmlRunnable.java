@@ -295,7 +295,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
                 }
             }
         }
-        catch ( NamingException e )
+        catch ( LdapException e )
         {
             int ldapStatusCode = JNDIUtils.getLdapStatusCode( e );
             if ( ldapStatusCode == 3 || ldapStatusCode == 4 || ldapStatusCode == 11 )
@@ -448,7 +448,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
                 }
             }
         }
-        catch ( NamingException e )
+        catch ( LdapException e )
         {
             int ldapStatusCode = JNDIUtils.getLdapStatusCode( e );
             if ( ldapStatusCode == 3 || ldapStatusCode == 4 || ldapStatusCode == 11 )

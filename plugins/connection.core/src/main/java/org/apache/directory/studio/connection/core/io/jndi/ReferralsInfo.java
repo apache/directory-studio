@@ -24,8 +24,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
-import javax.naming.LinkLoopException;
-
+import org.apache.directory.api.ldap.model.exception.LdapLoopDetectedException;
 import org.apache.directory.api.ldap.model.message.Referral;
 
 
@@ -70,9 +69,9 @@ public class ReferralsInfo
      * Gets the next referral or null.
      * 
      * @return the next referral or null
-     * @throws LinkLoopException 
+     * @throws LdapLoopDetectedException 
      */
-    public Referral getNextReferral() throws LinkLoopException
+    public Referral getNextReferral() throws LdapLoopDetectedException
     {
         handleAlreadyProcessedUrls();
         if ( !referralsToProcess.isEmpty() )
@@ -92,16 +91,16 @@ public class ReferralsInfo
      * Checks for more referrals.
      * 
      * @return true, if there are more referrals
-     * @throws LinkLoopException 
+     * @throws LdapLoLinkLoopExceptionopDetectedException 
      */
-    public boolean hasMoreReferrals() throws LinkLoopException
+    public boolean hasMoreReferrals() throws LdapLoopDetectedException
     {
         handleAlreadyProcessedUrls();
         return !referralsToProcess.isEmpty();
     }
 
 
-    private void handleAlreadyProcessedUrls() throws LinkLoopException
+    private void handleAlreadyProcessedUrls() throws LdapLoopDetectedException
     {
         while ( !referralsToProcess.isEmpty() )
         {
@@ -112,7 +111,7 @@ public class ReferralsInfo
                 // yes, already processed, remove the current referral and continue with filtering
                 if ( throwExceptionOnLoop )
                 {
-                    throw new LinkLoopException( "Referral " + referral.getLdapUrls() + " already processed" );
+                    throw new LdapLoopDetectedException( "Referral " + referral.getLdapUrls() + " already processed" );
                 }
                 else
                 {
