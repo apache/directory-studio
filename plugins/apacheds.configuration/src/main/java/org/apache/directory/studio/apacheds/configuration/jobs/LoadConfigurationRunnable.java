@@ -30,6 +30,7 @@ import java.util.List;
 
 import org.apache.directory.api.ldap.model.constants.LdapConstants;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
+import org.apache.directory.api.ldap.model.entry.DefaultEntry;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapNoSuchObjectException;
@@ -364,7 +365,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
             {
                 // Creating the 'ou=config' base entry
                 StudioSearchResult searchResult = enumeration.next();
-                configEntry = searchResult.getEntry();
+                configEntry = new DefaultEntry( schemaManager, searchResult.getEntry() );
             }
 
             enumeration.close();
@@ -413,7 +414,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
                 {
                     // Adding the children to the list of entries
                     StudioSearchResult searchResult = childrenEnumeration.next();
-                    entries.add( searchResult.getEntry() );
+                    entries.add( new DefaultEntry( schemaManager, searchResult.getEntry() ) );
                 }
                 
                 childrenEnumeration.close();
