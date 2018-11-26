@@ -94,7 +94,7 @@ public class DirectoryApiConnectionWrapperTest extends ConnectionWrapperTestBase
         StudioProgressMonitor monitor = getProgressMonitor();
         ConnectionParameter connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(),
             EncryptionMethod.NONE, AuthenticationMethod.SIMPLE,
-            "uid=admin,ou=system", "secret", null, true, null, 30L );
+            "uid=admin,ou=system", "secret", null, true, null, 30000L );
         Connection connection = new Connection( connectionParameter );
         BrowserConnection browserConnection = new BrowserConnection( connection );
 
@@ -115,7 +115,7 @@ public class DirectoryApiConnectionWrapperTest extends ConnectionWrapperTestBase
         final StudioProgressMonitor monitor = getProgressMonitor();
         final ConnectionParameter connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(),
             EncryptionMethod.NONE, AuthenticationMethod.SIMPLE,
-            "uid=admin,ou=system", "secret", null, true, null, 30L );
+            "uid=admin,ou=system", "secret", null, true, null, 30000L );
         final Connection connection = new Connection( connectionParameter );
         final BrowserConnection browserConnection = new BrowserConnection( connection );
 

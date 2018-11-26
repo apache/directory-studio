@@ -26,11 +26,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.naming.ContextNotEmptyException;
-import javax.naming.NameAlreadyBoundException;
-import javax.naming.NamingException;
 import javax.naming.directory.DirContext;
-import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SearchControls;
 import javax.naming.ldap.Control;
 import javax.net.ssl.TrustManager;
@@ -40,16 +36,12 @@ import javax.security.auth.login.AppConfigurationEntry;
 import javax.security.auth.login.AppConfigurationEntry.LoginModuleControlFlag;
 import javax.security.auth.login.Configuration;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.directory.api.ldap.codec.api.DefaultConfigurableBinaryAttributeDetector;
 import org.apache.directory.api.ldap.model.cursor.SearchCursor;
-import org.apache.directory.api.ldap.model.entry.AttributeUtils;
-import org.apache.directory.api.ldap.model.entry.DefaultModification;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.entry.ModificationOperation;
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.api.ldap.model.filter.ExprNode;
 import org.apache.directory.api.ldap.model.filter.FilterParser;
 import org.apache.directory.api.ldap.model.message.AddRequest;
@@ -94,14 +86,12 @@ import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.connection.core.IAuthHandler;
 import org.apache.directory.studio.connection.core.ICredentials;
-import org.apache.directory.studio.connection.core.IJndiLogger;
+import org.apache.directory.studio.connection.core.ILdapLogger;
 import org.apache.directory.studio.connection.core.Messages;
-import org.apache.directory.studio.connection.core.Utils;
+import org.apache.directory.studio.connection.core.ReferralsInfo;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapperUtils;
 import org.apache.directory.studio.connection.core.io.StudioTrustManager;
-import org.apache.directory.studio.connection.core.io.jndi.CancelException;
-import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo;
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.osgi.util.NLS;
 
@@ -145,7 +135,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
 
 
     /**
-     * Creates a new instance of JNDIConnectionContext.
+     * Creates a new instance of DirectoryApiConnectionWrapper.
      * 
      * @param connection the connection
      */
@@ -600,24 +590,20 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     exception = e;
                 }
 
-                NamingException ne = null;
-                if ( exception != null )
-                {
-                    ne = new NamingException( exception.getMessage() );
-                }
+                LdapException le = toLdapException( exception );
 
-                for ( IJndiLogger logger : getJndiLoggers() )
+                for ( ILdapLogger logger : getLdapLoggers() )
                 {
                     if ( searchResultEnumeration != null )
                     {
                         logger.logSearchRequest( connection, searchBase, filter, searchControls,
-                            aliasesDereferencingMethod, controls, requestNum, ne );
+                            aliasesDereferencingMethod, controls, requestNum, le );
                     }
                     else
                     {
                         logger.logSearchRequest( connection, searchBase, filter, searchControls,
-                            aliasesDereferencingMethod, controls, requestNum, ne );
-                        logger.logSearchResultDone( connection, 0, requestNum, ne );
+                            aliasesDereferencingMethod, controls, requestNum, le );
+                        logger.logSearchResultDone( connection, 0, requestNum, le );
                     }
                 }
             }
@@ -787,15 +773,11 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     exception = e;
                 }
 
-                NamingException ne = null;
-                if ( exception != null )
-                {
-                    ne = new NamingException( exception.getMessage() );
-                }
+                LdapException le = toLdapException( exception );
 
-                for ( IJndiLogger logger : getJndiLoggers() )
+                for ( ILdapLogger logger : getLdapLoggers() )
                 {
-                    logger.logChangetypeModify( connection, dn, modifications, controls, ne );
+                    logger.logChangetypeModify( connection, dn, modifications, controls, le );
                 }
             }
         };
@@ -816,40 +798,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         if ( runnable.getException() != null )
         {
             monitor.reportError( runnable.getException() );
-        }
-    }
-
-
-    /**
-     * Converts modification items.
-     *
-     * @param modificationItems
-     *      an array of modification items
-     * @return
-     *      an array of converted modifications
-     * @throws LdapInvalidAttributeValueException 
-     */
-    private Modification[] convertModificationItems( ModificationItem[] modificationItems )
-        throws LdapInvalidAttributeValueException
-    {
-        if ( modificationItems != null )
-        {
-            List<Modification> modifications = new ArrayList<>();
-
-            for ( ModificationItem modificationItem : modificationItems )
-            {
-                Modification modification = new DefaultModification();
-
-                modification.setAttribute( AttributeUtils.toApiAttribute( modificationItem.getAttribute() ) );
-                modification.setOperation( convertModificationOperation( modificationItem.getModificationOp() ) );
-                modifications.add( modification );
-            }
-
-            return modifications.toArray( new Modification[0] );
-        }
-        else
-        {
-            return null;
         }
     }
 
@@ -929,15 +877,11 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     exception = e;
                 }
 
-                NamingException ne = null;
-                if ( exception != null )
-                {
-                    ne = new NamingException( exception.getMessage() );
-                }
+                LdapException le = toLdapException( exception );
 
-                for ( IJndiLogger logger : getJndiLoggers() )
+                for ( ILdapLogger logger : getLdapLoggers() )
                 {
-                    logger.logChangetypeModDn( connection, oldDn, newDn, deleteOldRdn, controls, ne );
+                    logger.logChangetypeModDn( connection, oldDn, newDn, deleteOldRdn, controls, le );
                 }
             }
         };
@@ -1010,15 +954,11 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     exception = e;
                 }
 
-                NamingException ne = null;
-                if ( exception != null )
-                {
-                    ne = new NamingException( exception.getMessage() );
-                }
+                LdapException le = toLdapException( exception );
 
-                for ( IJndiLogger logger : getJndiLoggers() )
+                for ( ILdapLogger logger : getLdapLoggers() )
                 {
-                    logger.logChangetypeAdd( connection, entry, controls, ne );
+                    logger.logChangetypeAdd( connection, entry, controls, le );
                 }
             }
         };
@@ -1088,15 +1028,11 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     exception = e;
                 }
 
-                NamingException ne = null;
-                if ( exception != null )
-                {
-                    ne = new NamingException( exception.getMessage() );
-                }
+                LdapException le = toLdapException( exception );
 
-                for ( IJndiLogger logger : getJndiLoggers() )
+                for ( ILdapLogger logger : getLdapLoggers() )
                 {
-                    logger.logChangetypeDelete( connection, dn, controls, ne );
+                    logger.logChangetypeDelete( connection, dn, controls, le );
                 }
             }
         };
@@ -1185,7 +1121,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     }
 
     private boolean checkAndHandleReferral( ResultResponse response, StudioProgressMonitor monitor,
-        ReferralsInfo referralsInfo, ReferralHandlingDataConsumer consumer ) throws NamingException, LdapException
+        ReferralsInfo referralsInfo, ReferralHandlingDataConsumer consumer ) throws LdapException
     {
         if ( response == null )
         {
@@ -1251,7 +1187,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         }
         if ( ldapConnection == null )
         {
-            throw new NamingException( Messages.DirectoryApiConnectionWrapper_NoConnection );
+            throw new InvalidConnectionException( Messages.DirectoryApiConnectionWrapper_NoConnection );
         }
 
         // loop for reconnection
@@ -1373,9 +1309,9 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     }
 
 
-    private List<IJndiLogger> getJndiLoggers()
+    private List<ILdapLogger> getLdapLoggers()
     {
-        return ConnectionCorePlugin.getDefault().getJndiLoggers();
+        return ConnectionCorePlugin.getDefault().getLdapLoggers();
     }
 
 
@@ -1391,38 +1327,25 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     {
         if ( response != null )
         {
-            LdapResult ldapResult = response.getLdapResult();
-            if ( ldapResult != null )
-            {
-                // NOT_ALLOWED_ON_NON_LEAF error (thrown when deleting an entry with children)
-                if ( ResultCodeEnum.NOT_ALLOWED_ON_NON_LEAF.equals( ldapResult.getResultCode() ) )
-                {
-                    throw new ContextNotEmptyException( ldapResult.getDiagnosticMessage() );
-                }
-                // ENTRY_ALREADY_EXISTS error
-                // (We need this conversion in the case where this error is thrown during an LDIF
-                // import with the "Update existing entries" flag turned on)
-                else if ( ResultCodeEnum.ENTRY_ALREADY_EXISTS.equals( ldapResult.getResultCode() ) )
-                {
-                    throw new NameAlreadyBoundException( ldapResult.getDiagnosticMessage() );
-                }
-                // Different from SUCCESS, we throw a generic exception
-                else if ( !ResultCodeEnum.SUCCESS.equals( ldapResult.getResultCode() ) )
-                {
-                    int code = ldapResult.getResultCode().getResultCode();
-                    String message = ldapResult.getDiagnosticMessage();
-
-                    // Checking if we got a message from the LDAP result
-                    if ( StringUtils.isEmpty( message ) )
-                    {
-                        // Assigning the generic result code description
-                        message = Utils.getResultCodeDescription( code );
-                    }
-
-                    throw new Exception( NLS.bind( "[LDAP: error code {0} - {1}]", new String[] //$NON-NLS-1$
-                        { Integer.toString( code ), message } ) ); //$NON-NLS-1$
-                }
-            }
+            ResultCodeEnum.processResponse( response );
         }
     }
+
+
+    private LdapException toLdapException( Exception exception )
+    {
+        if ( exception == null )
+        {
+            return null;
+        }
+        else if ( exception instanceof LdapException )
+        {
+            return ( LdapException ) exception;
+        }
+        else
+        {
+            return new LdapException( exception.getMessage(), exception );
+        }
+    }
+
 }

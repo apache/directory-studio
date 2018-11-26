@@ -1,19 +1,24 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.apache.directory.studio.connection.core">
+<schema targetNamespace="org.apache.directory.studio.connection.core" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.apache.directory.studio.connection.core" id="jndiLogger" name="JNDI Logger"/>
+         <meta.schema plugin="org.apache.directory.studio.connection.core" id="ldapLogger" name="LDAP Logger"/>
       </appInfo>
       <documentation>
-         An JNDI Logger is used to log an LDAP request send by the JNDIConnectionWrapper.
+         An LDAP Logger is used to log an LDAP request.
       </documentation>
    </annotation>
 
    <element name="extension">
+      <annotation>
+         <appInfo>
+            <meta.element />
+         </appInfo>
+      </annotation>
       <complexType>
          <sequence minOccurs="1" maxOccurs="unbounded">
-            <element ref="jndiLogger"/>
+            <element ref="ldapLogger"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -39,7 +44,7 @@
       </complexType>
    </element>
 
-   <element name="jndiLogger">
+   <element name="ldapLogger">
       <annotation>
          <appInfo>
             <meta.element labelAttribute="name" icon="icon"/>
@@ -79,7 +84,7 @@
                   The specific class implementing the function.
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn=":org.apache.directory.studio.connection.core.IJndiLogger"/>
+                  <meta.attribute kind="java" basedOn=":org.apache.directory.studio.connection.core.ILdapLogger"/>
                </appInfo>
             </annotation>
          </attribute>
@@ -103,7 +108,7 @@
          &lt;p&gt;
 &lt;pre&gt;
    &lt;extension
-       point=&quot;org.apache.directory.studio.jndilogger&quot;&gt;
+       point=&quot;org.apache.directory.studio.ldaplogger&quot;&gt;
 
     &lt;valueEditor
           name=&quot;Browser Options&quot;
@@ -115,23 +120,7 @@
       </documentation>
    </annotation>
 
-   <annotation>
-      <appInfo>
-         <meta.section type="apiInfo"/>
-      </appInfo>
-      <documentation>
-         
-      </documentation>
-   </annotation>
 
-   <annotation>
-      <appInfo>
-         <meta.section type="implementation"/>
-      </appInfo>
-      <documentation>
-         
-      </documentation>
-   </annotation>
 
    <annotation>
       <appInfo>

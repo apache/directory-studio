@@ -26,11 +26,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.naming.ContextNotEmptyException;
 import javax.naming.directory.SearchControls;
 import javax.naming.ldap.Control;
 import javax.naming.ldap.ManageReferralControl;
 
+import org.apache.directory.api.ldap.model.exception.LdapContextNotEmptyException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
@@ -167,7 +167,7 @@ public class RenameEntryRunnable implements StudioConnectionBulkRunnableWithProg
         // do a simulated rename, if renaming of a non-leaf entry is not supported.
         if ( dummyMonitor.errorsReported() && !monitor.isCanceled() )
         {
-            if ( dialog != null && dummyMonitor.getException() instanceof ContextNotEmptyException )
+            if ( dialog != null && dummyMonitor.getException() instanceof LdapContextNotEmptyException )
             {
                 // open dialog
                 dialog.setEntryInfo( browserConnection, oldDn, newDn );

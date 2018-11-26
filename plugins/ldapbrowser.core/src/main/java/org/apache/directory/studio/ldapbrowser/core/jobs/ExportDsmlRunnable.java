@@ -28,8 +28,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.naming.NamingEnumeration;
-import javax.naming.NamingException;
 import javax.naming.directory.SearchResult;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -238,7 +236,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
 
 
     /**
-     * Processes the {@link NamingEnumeration} as a DSML response.
+     * Processes the {@link StudioSearchResultEnumeration} as a DSML response.
      *
      * @param sre the search result enumeration
      * @param monitor the monitor
@@ -258,7 +256,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
 
 
     /**
-     * Processes the {@link NamingEnumeration} as a DSML response.
+     * Processes the {@link StudioSearchResultEnumeration} as a DSML response.
      *
      * @param sre
      *      the search result enumeration
@@ -411,7 +409,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
 
 
     /**
-     * Processes the {@link NamingEnumeration} as a DSML request.
+     * Processes the {@link StudioSearchResultEnumeration} as a DSML request.
      *
      * @param sre
      *      the search result enumeration
@@ -419,11 +417,10 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
      *      the monitor
      * @return
      *      the associated DSML
-     * @throws NamingException 
      * @throws LdapException
      */
     private String processAsDsmlRequest( StudioSearchResultEnumeration sre, StudioProgressMonitor monitor )
-        throws NamingException, LdapException
+        throws LdapException
     {
         // Creating the batch request
         BatchRequestDsml batchRequest = new BatchRequestDsml();

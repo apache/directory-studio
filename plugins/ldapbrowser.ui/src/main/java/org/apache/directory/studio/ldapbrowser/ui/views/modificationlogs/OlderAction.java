@@ -24,7 +24,7 @@ package org.apache.directory.studio.ldapbrowser.ui.views.modificationlogs;
 import java.io.File;
 
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
-import org.apache.directory.studio.connection.core.io.jndi.LdifModificationLogger;
+import org.apache.directory.studio.connection.core.io.api.LdifModificationLogger;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserAction;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;

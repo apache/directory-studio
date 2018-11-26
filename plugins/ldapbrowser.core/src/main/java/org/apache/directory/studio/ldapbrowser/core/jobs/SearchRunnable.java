@@ -29,7 +29,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import javax.naming.NamingException;
 import javax.naming.directory.SearchControls;
 import javax.naming.ldap.BasicControl;
 import javax.naming.ldap.Control;
@@ -697,7 +696,6 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
      * @param searchParameter the search parameters
      */
     private static void initFlags( IEntry entry, StudioSearchResult sr, SearchParameter searchParameter )
-        throws NamingException
     {
         for ( Attribute attribute : sr.getEntry() )
         {
@@ -784,7 +782,6 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
      * @param searchParameter the search parameters
      */
     private static void fillAttributes( IEntry entry, StudioSearchResult sr, SearchParameter searchParameter )
-        throws NamingException
     {
         if ( searchParameter.getReturningAttributes() == null || searchParameter.getReturningAttributes().length > 0 )
         {

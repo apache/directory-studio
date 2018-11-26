@@ -29,12 +29,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import javax.naming.ContextNotEmptyException;
 import javax.naming.directory.SearchControls;
 import javax.naming.ldap.BasicControl;
 import javax.naming.ldap.Control;
 import javax.naming.ldap.ManageReferralControl;
 
+import org.apache.directory.api.ldap.model.exception.LdapContextNotEmptyException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
@@ -277,7 +277,7 @@ public class DeleteEntriesRunnable implements StudioConnectionBulkRunnableWithPr
                 new String[]
                     { "" + numberOfDeletedEntries } ) ); //$NON-NLS-1$
         }
-        else if ( dummyMonitor.getException() instanceof ContextNotEmptyException )
+        else if ( dummyMonitor.getException() instanceof LdapContextNotEmptyException )
         {
             // do not follow referrals or dereference aliases when deleting entries
             AliasDereferencingMethod aliasDereferencingMethod = AliasDereferencingMethod.NEVER;

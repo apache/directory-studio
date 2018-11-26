@@ -22,16 +22,15 @@ package org.apache.directory.studio.connection.core;
 
 import java.util.Collection;
 
-import javax.naming.NamingException;
 import javax.naming.directory.SearchControls;
 import javax.naming.ldap.Control;
 
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Modification;
+import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
-import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo;
 
 
 /**
@@ -39,7 +38,7 @@ import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface IJndiLogger
+public interface ILdapLogger
 {
 
     /**
@@ -48,10 +47,10 @@ public interface IJndiLogger
      * @param connection the connection
      * @param entry the entry
      * @param controls the controls
-     * @param ex the naming exception if an error occurred, null otherwise
+     * @param ex the LDAP exception if an error occurred, null otherwise
      */
     void logChangetypeAdd( Connection connection, final Entry entry,
-        final Control[] controls, NamingException ex );
+        final Control[] controls, LdapException ex );
 
 
     /**
@@ -60,11 +59,11 @@ public interface IJndiLogger
      * @param connection the connection
      * @param dn the Dn
      * @param controls the controls
-     * @param ex the naming exception if an error occurred, null otherwise
+     * @param ex the LDAP exception if an error occurred, null otherwise
      * 
      */
     void logChangetypeDelete( Connection connection, final Dn dn, final Control[] controls,
-        NamingException ex );
+        LdapException ex );
 
 
     /**
@@ -73,11 +72,11 @@ public interface IJndiLogger
      * @param connection the connection
      * @param dn the Dn
      * @param modifications the modification items
-     * @param ex the naming exception if an error occurred, null otherwise
+     * @param ex the LDAP exception if an error occurred, null otherwise
      * @param controls the controls
      */
     void logChangetypeModify( Connection connection, final Dn dn,
-        final Collection<Modification> modifications, final Control[] controls, NamingException ex );
+        final Collection<Modification> modifications, final Control[] controls, LdapException ex );
 
 
     /**
@@ -88,10 +87,10 @@ public interface IJndiLogger
      * @param newDn the new Dn
      * @param deleteOldRdn the delete old Rdn
      * @param controls the controls
-     * @param ex the naming exception if an error occurred, null otherwise
+     * @param ex the LDAP exception if an error occurred, null otherwise
      */
     void logChangetypeModDn( Connection connection, final Dn oldDn, final Dn newDn,
-        final boolean deleteOldRdn, final Control[] controls, NamingException ex );
+        final boolean deleteOldRdn, final Control[] controls, LdapException ex );
 
 
     /**
@@ -152,11 +151,11 @@ public interface IJndiLogger
      * @param aliasesDereferencingMethod the aliases dereferncing method
      * @param controls the LDAP controls 
      * @param requestNum the request number
-     * @param namingException the naming exception if an error occurred, null otherwise
+     * @param ex the LDAP exception if an error occurred, null otherwise
      */
     void logSearchRequest( Connection connection, String searchBase, String filter,
         SearchControls searchControls, AliasDereferencingMethod aliasesDereferencingMethod, Control[] controls,
-        long requestNum, NamingException namingException );
+        long requestNum, LdapException ex );
 
 
     /**
@@ -166,10 +165,10 @@ public interface IJndiLogger
      * @param referral the referral
      * @param referralsInfo the referrals info containing further URLs and DNs
      * @param requestNum the request number
-     * @param the naming exception if an error occurred, null otherwise
+     * @param ex the LDAP exception if an error occurred, null otherwise
      */
     void logSearchResultReference( Connection connection, Referral referral,
-        ReferralsInfo referralsInfo, long requestNum, NamingException namingException );
+        ReferralsInfo referralsInfo, long requestNum, LdapException ex );
 
 
     /**
@@ -178,8 +177,8 @@ public interface IJndiLogger
      * @param connection the connection
      * @param count the number of received entries
      * @param requestNum the request number
-     * @param the naming exception if an error occurred, null otherwise
+     * @param ex the LDAP exception if an error occurred, null otherwise
      */
-    void logSearchResultDone( Connection connection, long count, long requestNum, NamingException namingException );
+    void logSearchResultDone( Connection connection, long count, long requestNum, LdapException ex );
 
 }

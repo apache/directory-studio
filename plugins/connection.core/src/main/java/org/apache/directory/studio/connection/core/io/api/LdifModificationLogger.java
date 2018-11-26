@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.studio.connection.core.io.jndi;
+package org.apache.directory.studio.connection.core.io.api;
 
 
 import java.io.File;
@@ -26,11 +26,12 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.FileHandler;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
@@ -38,37 +39,52 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import javax.naming.NamingException;
 import javax.naming.directory.SearchControls;
 import javax.naming.ldap.Control;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Modification;
+import org.apache.directory.api.ldap.model.entry.Value;
+import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.api.ldap.model.name.Dn;
-import org.apache.directory.api.ldap.model.url.LdapUrl;
+import org.apache.directory.api.ldap.model.name.Rdn;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionManager;
-import org.apache.directory.studio.connection.core.IJndiLogger;
-import org.apache.directory.studio.connection.core.Utils;
+import org.apache.directory.studio.connection.core.ILdapLogger;
+import org.apache.directory.studio.connection.core.ReferralsInfo;
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
+import org.apache.directory.studio.ldifparser.model.container.LdifChangeAddRecord;
+import org.apache.directory.studio.ldifparser.model.container.LdifChangeDeleteRecord;
+import org.apache.directory.studio.ldifparser.model.container.LdifChangeModDnRecord;
+import org.apache.directory.studio.ldifparser.model.container.LdifChangeModifyRecord;
+import org.apache.directory.studio.ldifparser.model.container.LdifChangeRecord;
+import org.apache.directory.studio.ldifparser.model.container.LdifModSpec;
+import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifChangeTypeLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifCommentLine;
-import org.apache.directory.studio.ldifparser.model.lines.LdifLineBase;
+import org.apache.directory.studio.ldifparser.model.lines.LdifControlLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifDeloldrdnLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifDnLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifModSpecSepLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifNewrdnLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifNewsuperiorLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifSepLine;
 import org.eclipse.core.runtime.Preferences.IPropertyChangeListener;
 import org.eclipse.core.runtime.Preferences.PropertyChangeEvent;
 
 
 /**
- * The LdifSearchLogger is used to log searches into a file.
+ * The LdifModificationLogger is used to log modifications in LDIF format into a file.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LdifSearchLogger implements IJndiLogger
+public class LdifModificationLogger implements ILdapLogger
 {
 
     /** The ID. */
@@ -88,17 +104,17 @@ public class LdifSearchLogger implements IJndiLogger
 
 
     /**
-     * Creates a new instance of LdifSearchLogger.
+     * Creates a new instance of LdifModificationLogger.
      */
-    public LdifSearchLogger()
+    public LdifModificationLogger()
     {
         ConnectionCorePlugin.getDefault().getPluginPreferences().addPropertyChangeListener(
             new IPropertyChangeListener()
             {
                 public void propertyChange( PropertyChangeEvent event )
                 {
-                    if ( ConnectionCoreConstants.PREFERENCE_SEARCHLOGS_FILE_COUNT.equals( event.getProperty() )
-                        || ConnectionCoreConstants.PREFERENCE_SEARCHLOGS_FILE_SIZE.equals( event.getProperty() ) )
+                    if ( ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_FILE_COUNT.equals( event.getProperty() )
+                        || ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_FILE_SIZE.equals( event.getProperty() ) )
                     {
                         // dispose all loggers/handlers
                         for ( Logger logger : loggers.values() )
@@ -136,15 +152,15 @@ public class LdifSearchLogger implements IJndiLogger
 
 
     /**
-     * Inits the search logger.
+     * Inits the modification logger.
      */
-    private void initSearchLogger( Connection connection )
+    private void initModificationLogger( Connection connection )
     {
         Logger logger = Logger.getAnonymousLogger();
         loggers.put( connection.getId(), logger );
         logger.setLevel( Level.ALL );
 
-        String logfileName = ConnectionManager.getSearchLogFileName( connection );
+        String logfileName = ConnectionManager.getModificationLogFileName( connection );
         try
         {
             FileHandler fileHandler = new FileHandler( logfileName, getFileSizeInKb() * 1000, getFileCount(), true );
@@ -170,7 +186,7 @@ public class LdifSearchLogger implements IJndiLogger
 
 
     /**
-     * Disposes the search logger of the given connection.
+     * Disposes the modification logger of the given connection.
      * 
      * @param connection the connection
      */
@@ -190,22 +206,14 @@ public class LdifSearchLogger implements IJndiLogger
     }
 
 
-    /**
-     * Logs the given text to the search logger of the given connection.
-     * 
-     * @param text the text to log
-     * @param type the type, either SEARCH REQUEST or SEARCH RESULT
-     * @param ex the naming exception if an error occurred, null otherwise
-     * @param connection the connection
-     */
-    private void log( String text, String type, NamingException ex, Connection connection )
+    private void log( String text, LdapException ex, Connection connection )
     {
         String id = connection.getId();
         if ( !loggers.containsKey( id ) )
         {
             if ( connection.getName() != null )
             {
-                initSearchLogger( connection );
+                initModificationLogger( connection );
             }
         }
 
@@ -218,12 +226,12 @@ public class LdifSearchLogger implements IJndiLogger
             if ( ex != null )
             {
                 logger.log( Level.ALL, LdifCommentLine
-                    .create( "#!" + type + " ERROR" ).toFormattedString( LdifFormatParameters.DEFAULT ) ); //$NON-NLS-1$ //$NON-NLS-2$
+                    .create( "#!RESULT ERROR" ).toFormattedString( LdifFormatParameters.DEFAULT ) ); //$NON-NLS-1$
             }
             else
             {
                 logger.log( Level.ALL, LdifCommentLine
-                    .create( "#!" + type + " OK" ).toFormattedString( LdifFormatParameters.DEFAULT ) ); //$NON-NLS-1$ //$NON-NLS-2$
+                    .create( "#!RESULT OK" ).toFormattedString( LdifFormatParameters.DEFAULT ) ); //$NON-NLS-1$
             }
 
             logger
@@ -252,9 +260,43 @@ public class LdifSearchLogger implements IJndiLogger
      * {@inheritDoc}
      */
     public void logChangetypeAdd( Connection connection, final Entry entry,
-        final Control[] controls, NamingException ex )
+        final Control[] controls, LdapException ex )
     {
-        // don't log changetypes
+        if ( !isModificationLogEnabled() )
+        {
+            return;
+        }
+
+        Set<String> maskedAttributes = getMaskedAttributes();
+        LdifChangeAddRecord record = new LdifChangeAddRecord( LdifDnLine.create( entry.getDn().getName() ) );
+        addControlLines( record, controls );
+        record.setChangeType( LdifChangeTypeLine.createAdd() );
+        for ( Attribute attribute : entry )
+        {
+            String attributeName = attribute.getUpId();
+            for ( Value value : attribute )
+            {
+                if ( maskedAttributes.contains( Strings.toLowerCase( attributeName ) ) )
+                {
+                    record.addAttrVal( LdifAttrValLine.create( attributeName, "**********" ) ); //$NON-NLS-1$
+                }
+                else
+                {
+                    if ( value.isHumanReadable() )
+                    {
+                        record.addAttrVal( LdifAttrValLine.create( attributeName, value.getValue() ) );
+                    }
+                    else
+                    {
+                        record.addAttrVal( LdifAttrValLine.create( attributeName, value.getBytes() ) );
+                    }
+                }
+            }
+        }
+        record.finish( LdifSepLine.create() );
+
+        String formattedString = record.toFormattedString( LdifFormatParameters.DEFAULT );
+        log( formattedString, ex, connection );
     }
 
 
@@ -262,9 +304,20 @@ public class LdifSearchLogger implements IJndiLogger
      * {@inheritDoc}
      */
     public void logChangetypeDelete( Connection connection, final Dn dn, final Control[] controls,
-        NamingException ex )
+        LdapException ex )
     {
-        // don't log changetypes
+        if ( !isModificationLogEnabled() )
+        {
+            return;
+        }
+
+        LdifChangeDeleteRecord record = new LdifChangeDeleteRecord( LdifDnLine.create( dn.getName() ) );
+        addControlLines( record, controls );
+        record.setChangeType( LdifChangeTypeLine.createDelete() );
+        record.finish( LdifSepLine.create() );
+
+        String formattedString = record.toFormattedString( LdifFormatParameters.DEFAULT );
+        log( formattedString, ex, connection );
     }
 
 
@@ -272,9 +325,61 @@ public class LdifSearchLogger implements IJndiLogger
      * {@inheritDoc}
      */
     public void logChangetypeModify( Connection connection, final Dn dn,
-        final Collection<Modification> modifications, final Control[] controls, NamingException ex )
+        final Collection<Modification> modifications, final Control[] controls, LdapException ex )
     {
-        // don't log changetypes
+        if ( !isModificationLogEnabled() )
+        {
+            return;
+        }
+
+        Set<String> maskedAttributes = getMaskedAttributes();
+        LdifChangeModifyRecord record = new LdifChangeModifyRecord( LdifDnLine.create( dn.getName() ) );
+        addControlLines( record, controls );
+        record.setChangeType( LdifChangeTypeLine.createModify() );
+        for ( Modification item : modifications )
+        {
+            String attributeName = item.getAttribute().getUpId();
+            LdifModSpec modSpec;
+            switch ( item.getOperation() )
+            {
+                case ADD_ATTRIBUTE:
+                    modSpec = LdifModSpec.createAdd( attributeName );
+                    break;
+                case REMOVE_ATTRIBUTE:
+                    modSpec = LdifModSpec.createDelete( attributeName );
+                    break;
+                case REPLACE_ATTRIBUTE:
+                    modSpec = LdifModSpec.createReplace( attributeName );
+                    break;
+                default:
+                    continue;
+            }
+            for ( Value value : item.getAttribute() )
+            {
+                if ( maskedAttributes.contains( Strings.toLowerCase( attributeName ) ) )
+                {
+                    modSpec.addAttrVal( LdifAttrValLine.create( attributeName, "**********" ) ); //$NON-NLS-1$
+                }
+                else
+                {
+                    if ( value.isHumanReadable() )
+                    {
+                        modSpec.addAttrVal( LdifAttrValLine.create( attributeName, value.getValue() ) );
+                    }
+                    else
+                    {
+                        modSpec.addAttrVal( LdifAttrValLine.create( attributeName, value.getBytes() ) );
+                    }
+                }
+            }
+            modSpec.finish( LdifModSpecSepLine.create() );
+
+            record.addModSpec( modSpec );
+        }
+        record.finish( LdifSepLine.create() );
+
+        String formattedString = record.toFormattedString( LdifFormatParameters.DEFAULT );
+        log( formattedString, ex, connection );
     }
 
 
@@ -282,9 +387,26 @@ public class LdifSearchLogger implements IJndiLogger
      * {@inheritDoc}
      */
     public void logChangetypeModDn( Connection connection, final Dn oldDn, final Dn newDn,
-        final boolean deleteOldRdn, final Control[] controls, NamingException ex )
+        final boolean deleteOldRdn, final Control[] controls, LdapException ex )
     {
-        // don't log changetypes
+        if ( !isModificationLogEnabled() )
+        {
+            return;
+        }
+
+        Rdn newrdn = newDn.getRdn();
+        Dn newsuperior = newDn.getParent();
+
+        LdifChangeModDnRecord record = new LdifChangeModDnRecord( LdifDnLine.create( oldDn.getName() ) );
+        addControlLines( record, controls );
+        record.setChangeType( LdifChangeTypeLine.createModDn() );
+        record.setNewrdn( LdifNewrdnLine.create( newrdn.getName() ) );
+        record.setDeloldrdn( deleteOldRdn ? LdifDeloldrdnLine.create1() : LdifDeloldrdnLine.create0() );
+        record.setNewsuperior( LdifNewsuperiorLine.create( newsuperior.getName() ) );
+        record.finish( LdifSepLine.create() );
+
+        String formattedString = record.toFormattedString( LdifFormatParameters.DEFAULT );
+        log( formattedString, ex, connection );
     }
 
 
@@ -293,60 +415,9 @@ public class LdifSearchLogger implements IJndiLogger
      */
     public void logSearchRequest( Connection connection, String searchBase, String filter,
         SearchControls searchControls, AliasDereferencingMethod aliasesDereferencingMethod, Control[] controls,
-        long requestNum, NamingException ex )
+        long requestNum, LdapException ex )
     {
-        if ( !isSearchRequestLogEnabled() )
-        {
-            return;
-        }
-
-        String scopeAsString = searchControls.getSearchScope() == SearchControls.SUBTREE_SCOPE ? "wholeSubtree (2)" //$NON-NLS-1$
-            : searchControls.getSearchScope() == SearchControls.ONELEVEL_SCOPE ? "singleLevel (1)" : "baseObject (0)"; //$NON-NLS-1$ //$NON-NLS-2$
-        String attributesAsString = searchControls.getReturningAttributes() == null ? "*" : searchControls //$NON-NLS-1$
-            .getReturningAttributes().length == 0 ? "1.1" : StringUtils.join( searchControls.getReturningAttributes(), //$NON-NLS-1$
-            " " ); //$NON-NLS-1$
-        String aliasAsString = aliasesDereferencingMethod == AliasDereferencingMethod.ALWAYS ? "derefAlways (3)" //$NON-NLS-1$
-            : aliasesDereferencingMethod == AliasDereferencingMethod.FINDING ? "derefFindingBaseObj (2)" //$NON-NLS-1$
-                : aliasesDereferencingMethod == AliasDereferencingMethod.SEARCH ? "derefInSearching (1)" //$NON-NLS-1$
-                    : "neverDerefAliases (0)"; //$NON-NLS-1$
-
-        // build LDAP URL
-        LdapUrl url = Utils.getLdapURL( connection, searchBase, searchControls.getSearchScope(), filter, searchControls
-            .getReturningAttributes() );
-
-        // build command line
-        String cmdLine = Utils.getLdapSearchCommandLine( connection, searchBase, searchControls.getSearchScope(),
-            aliasesDereferencingMethod, searchControls.getCountLimit(), searchControls.getTimeLimit(), filter,
-            searchControls.getReturningAttributes() );
-
-        // build 
-        Collection<LdifLineBase> lines = new ArrayList<LdifLineBase>();
-        lines.add( LdifCommentLine.create( "# LDAP URL     : " + url.toString() ) ); //$NON-NLS-1$
-        lines.add( LdifCommentLine.create( "# command line : " + cmdLine.toString() ) ); //$NON-NLS-1$
-        lines.add( LdifCommentLine.create( "# baseObject   : " + searchBase ) ); //$NON-NLS-1$
-        lines.add( LdifCommentLine.create( "# scope        : " + scopeAsString ) ); //$NON-NLS-1$
-        lines.add( LdifCommentLine.create( "# derefAliases : " + aliasAsString ) ); //$NON-NLS-1$
-        lines.add( LdifCommentLine.create( "# sizeLimit    : " + searchControls.getCountLimit() ) ); //$NON-NLS-1$
-        lines.add( LdifCommentLine.create( "# timeLimit    : " + searchControls.getTimeLimit() ) ); //$NON-NLS-1$
-        lines.add( LdifCommentLine.create( "# typesOnly    : " + "False" ) ); //$NON-NLS-1$ //$NON-NLS-2$
-        lines.add( LdifCommentLine.create( "# filter       : " + filter ) ); //$NON-NLS-1$
-        lines.add( LdifCommentLine.create( "# attributes   : " + attributesAsString ) ); //$NON-NLS-1$
-        if ( controls != null )
-        {
-            for ( Control control : controls )
-            {
-                lines.add( LdifCommentLine.create( "# control      : " + control.getID() ) ); //$NON-NLS-1$
-            }
-        }
-        lines.add( LdifSepLine.create() );
-
-        String formattedString = ""; //$NON-NLS-1$
-        for ( LdifLineBase line : lines )
-        {
-            formattedString += line.toFormattedString( LdifFormatParameters.DEFAULT );
-        }
-
-        log( formattedString, "SEARCH REQUEST (" + requestNum + ")", ex, connection ); //$NON-NLS-1$ //$NON-NLS-2$
+        // don't log searches
     }
 
 
@@ -354,46 +425,40 @@ public class LdifSearchLogger implements IJndiLogger
      * {@inheritDoc}
      */
     public void logSearchResultReference( Connection connection, Referral referral,
-        ReferralsInfo referralsInfo, long requestNum, NamingException ex )
+        ReferralsInfo referralsInfo, long requestNum, LdapException ex )
     {
-        if ( !isSearchResultEntryLogEnabled() )
-        {
-            return;
-        }
-
-        Collection<LdifLineBase> lines = new ArrayList<LdifLineBase>();
-        lines.add( LdifCommentLine.create( "# reference : " + ( referral != null ? referral.getLdapUrls() : "null" ) ) ); //$NON-NLS-1$ //$NON-NLS-2$
-        lines.add( LdifSepLine.create() );
-
-        String formattedString = ""; //$NON-NLS-1$
-        for ( LdifLineBase line : lines )
-        {
-            formattedString += line.toFormattedString( LdifFormatParameters.DEFAULT );
-        }
-        log( formattedString, "SEARCH RESULT REFERENCE (" + requestNum + ")", ex, connection ); //$NON-NLS-1$ //$NON-NLS-2$
+        // don't log searches 
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void logSearchResultDone( Connection connection, long count, long requestNum, NamingException ex )
+    public void logSearchResultDone( Connection connection, long count, long requestNum, LdapException ex )
     {
-        if ( !isSearchRequestLogEnabled() )
-        {
-            return;
-        }
+        // don't log searches 
+    }
 
-        Collection<LdifLineBase> lines = new ArrayList<LdifLineBase>();
-        lines.add( LdifCommentLine.create( "# numEntries : " + count ) ); //$NON-NLS-1$
-        lines.add( LdifSepLine.create() );
 
-        String formattedString = ""; //$NON-NLS-1$
-        for ( LdifLineBase line : lines )
+    /**
+     * Adds control lines to the record
+     *
+     * @param record the recored
+     * @param controls the controls
+     */
+    private static void addControlLines( LdifChangeRecord record, Control[] controls )
+    {
+        if ( controls != null )
         {
-            formattedString += line.toFormattedString( LdifFormatParameters.DEFAULT );
+            for ( Control control : controls )
+            {
+                String oid = control.getID();
+                boolean isCritical = control.isCritical();
+                byte[] controlValue = control.getEncodedValue();
+                LdifControlLine controlLine = LdifControlLine.create( oid, isCritical, controlValue );
+                record.addControl( controlLine );
+            }
         }
-        log( formattedString, "SEARCH RESULT DONE (" + requestNum + ")", ex, connection ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
@@ -411,7 +476,7 @@ public class LdifSearchLogger implements IJndiLogger
         {
             if ( connection.getName() != null )
             {
-                initSearchLogger( connection );
+                initModificationLogger( connection );
             }
         }
 
@@ -469,26 +534,14 @@ public class LdifSearchLogger implements IJndiLogger
 
 
     /**
-     * Checks if search request log is enabled.
+     * Checks if modification log is enabled.
      * 
-     * @return true, if search request log is enabled
+     * @return true, if modification log is enabled
      */
-    private boolean isSearchRequestLogEnabled()
+    private boolean isModificationLogEnabled()
     {
         return ConnectionCorePlugin.getDefault().getPluginPreferences().getBoolean(
-            ConnectionCoreConstants.PREFERENCE_SEARCHREQUESTLOGS_ENABLE );
-    }
-
-
-    /**
-     * Checks if search result entry log is enabled.
-     * 
-     * @return true, if search result log is enabled
-     */
-    private boolean isSearchResultEntryLogEnabled()
-    {
-        return ConnectionCorePlugin.getDefault().getPluginPreferences().getBoolean(
-            ConnectionCoreConstants.PREFERENCE_SEARCHRESULTENTRYLOGS_ENABLE );
+            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_ENABLE );
     }
 
 
@@ -500,7 +553,7 @@ public class LdifSearchLogger implements IJndiLogger
     private int getFileCount()
     {
         return ConnectionCorePlugin.getDefault().getPluginPreferences().getInt(
-            ConnectionCoreConstants.PREFERENCE_SEARCHLOGS_FILE_COUNT );
+            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_FILE_COUNT );
     }
 
 
@@ -512,7 +565,29 @@ public class LdifSearchLogger implements IJndiLogger
     private int getFileSizeInKb()
     {
         return ConnectionCorePlugin.getDefault().getPluginPreferences().getInt(
-            ConnectionCoreConstants.PREFERENCE_SEARCHLOGS_FILE_SIZE );
+            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_FILE_SIZE );
+    }
+
+
+    /**
+     * Gets the masked attributes.
+     * 
+     * @return the masked attributes
+     */
+    private Set<String> getMaskedAttributes()
+    {
+        Set<String> maskedAttributes = new HashSet<String>();
+
+        String maskedAttributeString = ConnectionCorePlugin.getDefault().getPluginPreferences().getString(
+            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_MASKED_ATTRIBUTES );
+        String[] splitted = maskedAttributeString.split( "," ); //$NON-NLS-1$
+
+        for ( String s : splitted )
+        {
+            maskedAttributes.add( Strings.toLowerCase( s ) );
+        }
+
+        return maskedAttributes;
     }
 
 

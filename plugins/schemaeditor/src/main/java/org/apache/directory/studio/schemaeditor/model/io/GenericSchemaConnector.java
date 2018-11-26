@@ -24,7 +24,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.NamingException;
 import javax.naming.directory.SearchControls;
 
 import org.apache.directory.api.ldap.model.constants.LdapConstants;
@@ -186,7 +185,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
 
 
     private static void getSchema( Schema schema, ConnectionWrapper wrapper, Entry entry,
-        StudioProgressMonitor monitor ) throws NamingException, SchemaConnectorException
+        StudioProgressMonitor monitor ) throws SchemaConnectorException
     {
         // The counter for parser exceptions
         int parseErrorCount = 0;

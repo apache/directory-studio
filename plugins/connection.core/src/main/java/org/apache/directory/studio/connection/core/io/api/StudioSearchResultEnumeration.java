@@ -50,9 +50,9 @@ import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
-import org.apache.directory.studio.connection.core.IJndiLogger;
+import org.apache.directory.studio.connection.core.ILdapLogger;
+import org.apache.directory.studio.connection.core.ReferralsInfo;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapperUtils;
-import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo;
 
 
 /**
@@ -86,7 +86,7 @@ public class StudioSearchResultEnumeration
 
 
     /**
-     * Creates a new instance of ReferralNamingEnumeration.
+     * Creates a new instance of StudioSearchResultEnumeration.
      * 
      * @param connection the connection
      * @param cursor the search cursor
@@ -128,9 +128,6 @@ public class StudioSearchResultEnumeration
     }
 
 
-    /**
-     * @see javax.naming.NamingEnumeration#close()
-     */
     public void close() throws LdapException
     {
         try
@@ -144,9 +141,6 @@ public class StudioSearchResultEnumeration
     }
 
 
-    /**
-     * @see javax.naming.NamingEnumeration#hasMore()
-     */
     public boolean hasMore() throws LdapException
     {
         try
@@ -258,7 +252,7 @@ public class StudioSearchResultEnumeration
                 }
             }
 
-            for ( IJndiLogger logger : ConnectionCorePlugin.getDefault().getJndiLoggers() )
+            for ( ILdapLogger logger : ConnectionCorePlugin.getDefault().getLdapLoggers() )
             {
                 logger.logSearchResultDone( connection, resultEntryCounter, requestNum, null );
             }
@@ -272,9 +266,6 @@ public class StudioSearchResultEnumeration
     }
 
 
-    /**
-     * @see javax.naming.NamingEnumeration#next()
-     */
     public StudioSearchResult next() throws LdapException
     {
         try

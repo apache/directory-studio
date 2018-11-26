@@ -36,8 +36,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import javax.naming.NameAlreadyBoundException;
-import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.BasicAttributes;
 import javax.naming.ldap.BasicControl;
@@ -50,8 +48,10 @@ import org.apache.directory.api.ldap.model.entry.DefaultModification;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.entry.ModificationOperation;
+import org.apache.directory.api.ldap.model.exception.LdapEntryAlreadyExistsException;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.exception.LdapSchemaException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
@@ -401,16 +401,14 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
      * @param record the LDIF record
      * @param updateIfEntryExists the update if entry exists flag
      * @param monitor the progress monitor
-     * 
-     * @throws NamingException the naming exception
      * @throws LdapInvalidDnException
      */
     static void importLdifRecord( IBrowserConnection browserConnection, LdifRecord record, boolean updateIfEntryExists,
-        StudioProgressMonitor monitor ) throws NamingException, LdapException
+        StudioProgressMonitor monitor ) throws LdapException
     {
         if ( !record.isValid() )
         {
-            throw new NamingException( BrowserCoreMessages.bind( BrowserCoreMessages.model__invalid_record,
+            throw new LdapSchemaException( BrowserCoreMessages.bind( BrowserCoreMessages.model__invalid_record,
                 record.getInvalidString() ) );
         }
 
@@ -470,7 +468,7 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
                 .createEntry( entry, getControls( record ), monitor, null );
 
             if ( monitor.errorsReported() && updateIfEntryExists
-                && monitor.getException() instanceof NameAlreadyBoundException )
+                && monitor.getException() instanceof LdapEntryAlreadyExistsException )
             {
                 // creation failed with Error 68, now try to update the existing entry
                 monitor.reset();

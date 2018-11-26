@@ -49,6 +49,7 @@ import org.apache.directory.api.ldap.model.entry.DefaultModification;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.entry.ModificationOperation;
+import org.apache.directory.api.ldap.model.exception.LdapAuthenticationException;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapLoopDetectedException;
 import org.apache.directory.api.ldap.model.name.Dn;
@@ -162,7 +163,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
     {
         StudioProgressMonitor monitor = getProgressMonitor();
         ConnectionParameter connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(),
-            EncryptionMethod.NONE, AuthenticationMethod.NONE, null, null, null, true, null, 30L );
+            EncryptionMethod.NONE, AuthenticationMethod.NONE, null, null, null, true, null, 30000L );
         Connection connection = new Connection( connectionParameter );
         ConnectionWrapper connectionWrapper = connection.getConnectionWrapper();
 
@@ -193,7 +194,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         // invalid port
         monitor = getProgressMonitor();
         connectionParameter = new ConnectionParameter( null, LOCALHOST, AvailablePortFinder.getNextAvailable(),
-            EncryptionMethod.NONE, AuthenticationMethod.NONE, null, null, null, true, null, 30L );
+            EncryptionMethod.NONE, AuthenticationMethod.NONE, null, null, null, true, null, 30000L );
         connection = new Connection( connectionParameter );
         connectionWrapper = connection.getConnectionWrapper();
         connectionWrapper.connect( monitor );
@@ -206,7 +207,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         // unknown host
         monitor = getProgressMonitor();
         connectionParameter = new ConnectionParameter( null, "555.555.555.555", ldapServer.getPort(),
-            EncryptionMethod.NONE, AuthenticationMethod.NONE, null, null, null, true, null, 30L );
+            EncryptionMethod.NONE, AuthenticationMethod.NONE, null, null, null, true, null, 30000L );
         connection = new Connection( connectionParameter );
         connectionWrapper = connection.getConnectionWrapper();
         connectionWrapper.connect( monitor );
@@ -229,7 +230,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         StudioProgressMonitor monitor = getProgressMonitor();
         ConnectionParameter connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(),
             EncryptionMethod.NONE, AuthenticationMethod.SIMPLE, "uid=admin,ou=system", "secret", null, true,
-            null, 30L );
+            null, 30000L );
         Connection connection = new Connection( connectionParameter );
         ConnectionWrapper connectionWrapper = connection.getConnectionWrapper();
 
@@ -260,28 +261,28 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         // simple auth without principal and credential
         monitor = getProgressMonitor();
         connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(), EncryptionMethod.NONE,
-            AuthenticationMethod.SIMPLE, "uid=admin", "invalid", null, true, null, 30L );
+            AuthenticationMethod.SIMPLE, "uid=admin", "invalid", null, true, null, 30000L );
         connection = new Connection( connectionParameter );
         connectionWrapper = connection.getConnectionWrapper();
         connectionWrapper.connect( monitor );
         connectionWrapper.bind( monitor );
         assertFalse( connectionWrapper.isConnected() );
         assertNotNull( monitor.getException() );
-        assertTrue( monitor.getException() instanceof Exception );
-        assertTrue( monitor.getException().getMessage().contains( "error code 49 - INVALID_CREDENTIALS" ) );
+        assertTrue( monitor.getException() instanceof LdapAuthenticationException );
+        assertTrue( monitor.getException().getMessage().contains( "INVALID_CREDENTIALS" ) );
 
         // simple auth with invalid principal and credential
         monitor = getProgressMonitor();
         connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(), EncryptionMethod.NONE,
-            AuthenticationMethod.SIMPLE, "uid=admin,ou=system", "bar", null, true, null, 30L );
+            AuthenticationMethod.SIMPLE, "uid=admin,ou=system", "bar", null, true, null, 30000L );
         connection = new Connection( connectionParameter );
         connectionWrapper = connection.getConnectionWrapper();
         connectionWrapper.connect( monitor );
         connectionWrapper.bind( monitor );
         assertFalse( connectionWrapper.isConnected() );
         assertNotNull( monitor.getException() );
-        assertTrue( monitor.getException() instanceof Exception );
-        assertTrue( monitor.getException().getMessage().contains( "error code 49 - INVALID_CREDENTIALS" ) );
+        assertTrue( monitor.getException() instanceof LdapAuthenticationException );
+        assertTrue( monitor.getException().getMessage().contains( "INVALID_CREDENTIALS" ) );
     }
 
 

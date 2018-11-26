@@ -50,7 +50,6 @@
  org.apache.directory.studio.connection.core.event,
  org.apache.directory.studio.connection.core.io,
  org.apache.directory.studio.connection.core.io.api,
- org.apache.directory.studio.connection.core.io.jndi,
  org.apache.directory.studio.connection.core.jobs</Export-Package>
             
             <Import-Package>

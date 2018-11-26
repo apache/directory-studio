@@ -498,7 +498,8 @@ public class NewConnectionWizardTest extends AbstractLdapTestUnit
         // click "Check Network Parameter" button
         String result = wizardBot.clickCheckAuthenticationButton();
         assertNotNull( "Expected Error", result );
-        assertTrue( "'error code 49' message must occur in error message", result.contains( "error code 49" ) );
+        System.out.println( result );
+        assertTrue( "'INVALID_CREDENTIALS' message must occur in error message", result.contains( "INVALID_CREDENTIALS" ) );
 
         wizardBot.clickCancelButton();
     }

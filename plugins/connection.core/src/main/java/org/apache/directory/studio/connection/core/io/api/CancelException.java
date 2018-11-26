@@ -18,18 +18,18 @@
  *  
  */
 
-package org.apache.directory.studio.connection.core.io.jndi;
+package org.apache.directory.studio.connection.core.io.api;
 
 
-import javax.naming.NamingException;
+import org.apache.directory.api.ldap.model.exception.LdapException;
 
 
 /**
- * A specific {@link NamingException} that represents the cancellation of an request.
+ * A specific {@link LdapException} that represents the cancellation of an request.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class CancelException extends NamingException
+public class CancelException extends LdapException
 {
 
     private static final long serialVersionUID = 1L;

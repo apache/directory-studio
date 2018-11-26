@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import javax.naming.NamingException;
 import javax.naming.directory.SearchControls;
 
 import org.apache.directory.api.ldap.model.constants.LdapConstants;
@@ -250,7 +249,6 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      * 
      * @param entry the SearchResult to be identified
      * @return the Type of node
-     * @throws NamingException if an error occurrs when reading the SearchResult
      */
     private static SchemaNodeTypes getNodeType( Entry entry )
     {
@@ -374,7 +372,6 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      *
      * @param sr the SearchResult
      * @return the usage of the attribute type
-     * @throws NamingException if an error occurs when searching in the SearchResult
      */
     private static UsageEnum getUsage( Entry entry ) throws LdapInvalidAttributeValueException
     {
@@ -483,8 +480,6 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      * @param entry the SearchResult
      * @param schemaElement The Schema Element we are looking for
      * @return the optional attribute types of the attribute type, or an empty array if no optional attribute type was found
-     * @throws NamingException
-     *      if an error occurrs when searching in the SearchResult
      */
     private static List<String> getStringValues( Entry entry, String schemaElement )
     {

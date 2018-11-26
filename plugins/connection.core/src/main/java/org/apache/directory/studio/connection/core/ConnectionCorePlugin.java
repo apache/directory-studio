@@ -28,8 +28,8 @@ import java.util.PropertyResourceBundle;
 
 import org.apache.directory.studio.connection.core.event.CoreEventRunner;
 import org.apache.directory.studio.connection.core.event.EventRunner;
-import org.apache.directory.studio.connection.core.io.jndi.LdifModificationLogger;
-import org.apache.directory.studio.connection.core.io.jndi.LdifSearchLogger;
+import org.apache.directory.studio.connection.core.io.api.LdifModificationLogger;
+import org.apache.directory.studio.connection.core.io.api.LdifSearchLogger;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -84,8 +84,8 @@ public class ConnectionCorePlugin extends Plugin
     /** The certificate handler */
     private ICertificateHandler certificateHandler;
 
-    /** The JNDI loggers. */
-    private List<IJndiLogger> jndiLoggers;
+    /** The LDAP loggers. */
+    private List<ILdapLogger> ldapLoggers;
 
     /** The connection listeners. */
     private List<IConnectionListener> connectionListeners;
@@ -398,12 +398,12 @@ public class ConnectionCorePlugin extends Plugin
      */
     public LdifModificationLogger getLdifModificationLogger()
     {
-        List<IJndiLogger> jndiLoggers = getJndiLoggers();
-        for ( IJndiLogger jndiLogger : jndiLoggers )
+        List<ILdapLogger> ldapLoggers = getLdapLoggers();
+        for ( ILdapLogger ldapLogger : ldapLoggers )
         {
-            if ( jndiLogger instanceof LdifModificationLogger )
+            if ( ldapLogger instanceof LdifModificationLogger )
             {
-                return ( LdifModificationLogger ) jndiLogger;
+                return ( LdifModificationLogger ) ldapLogger;
             }
         }
         return null;
@@ -417,12 +417,12 @@ public class ConnectionCorePlugin extends Plugin
      */
     public LdifSearchLogger getLdifSearchLogger()
     {
-        List<IJndiLogger> jndiLoggers = getJndiLoggers();
-        for ( IJndiLogger jndiLogger : jndiLoggers )
+        List<ILdapLogger> ldapLoggers = getLdapLoggers();
+        for ( ILdapLogger ldapLogger : ldapLoggers )
         {
-            if ( jndiLogger instanceof LdifSearchLogger )
+            if ( ldapLogger instanceof LdifSearchLogger )
             {
-                return ( LdifSearchLogger ) jndiLogger;
+                return ( LdifSearchLogger ) ldapLogger;
             }
         }
         return null;
@@ -430,39 +430,39 @@ public class ConnectionCorePlugin extends Plugin
 
 
     /**
-     * Gets the jndi loggers.
+     * Gets the LDAP loggers.
      * 
-     * @return the JNDI loggers
+     * @return the LDAP loggers
      */
-    public List<IJndiLogger> getJndiLoggers()
+    public List<ILdapLogger> getLdapLoggers()
     {
-        if ( jndiLoggers == null )
+        if ( ldapLoggers == null )
         {
-            jndiLoggers = new ArrayList<IJndiLogger>();
+            ldapLoggers = new ArrayList<ILdapLogger>();
 
             IExtensionRegistry registry = Platform.getExtensionRegistry();
-            IExtensionPoint extensionPoint = registry.getExtensionPoint( "org.apache.directory.studio.jndilogger" ); //$NON-NLS-1$
+            IExtensionPoint extensionPoint = registry.getExtensionPoint( "org.apache.directory.studio.ldaplogger" ); //$NON-NLS-1$
             IConfigurationElement[] members = extensionPoint.getConfigurationElements();
             for ( IConfigurationElement member : members )
             {
                 try
                 {
-                    IJndiLogger logger = ( IJndiLogger ) member.createExecutableExtension( "class" ); //$NON-NLS-1$
+                    ILdapLogger logger = ( ILdapLogger ) member.createExecutableExtension( "class" ); //$NON-NLS-1$
                     logger.setId( member.getAttribute( "id" ) ); //$NON-NLS-1$
                     logger.setName( member.getAttribute( "name" ) ); //$NON-NLS-1$
                     logger.setDescription( member.getAttribute( "description" ) ); //$NON-NLS-1$
-                    jndiLoggers.add( logger );
+                    ldapLoggers.add( logger );
                 }
                 catch ( Exception e )
                 {
                     getLog().log(
                         new Status( IStatus.ERROR, ConnectionCoreConstants.PLUGIN_ID, 1,
-                            Messages.error__unable_to_create_jndi_logger + member.getAttribute( "class" ), e ) ); //$NON-NLS-1$
+                            Messages.error__unable_to_create_ldap_logger + member.getAttribute( "class" ), e ) ); //$NON-NLS-1$
                 }
             }
         }
 
-        return jndiLoggers;
+        return ldapLoggers;
     }
 
 

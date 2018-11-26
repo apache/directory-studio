@@ -17,7 +17,7 @@
  *  under the License.
  *
  */
-package org.apache.directory.studio.connection.core.io.jndi;
+package org.apache.directory.studio.connection.core;
 
 
 import java.util.HashSet;

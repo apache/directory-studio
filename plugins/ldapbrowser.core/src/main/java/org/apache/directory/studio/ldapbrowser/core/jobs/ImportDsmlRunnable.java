@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.naming.NamingException;
 import javax.naming.directory.SearchControls;
 import javax.naming.ldap.Control;
 
@@ -273,13 +272,12 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
      *      the request
      * @param batchResponseDsml
      *      the DSML batch response (can be <code>null</code>)
-     * @throws NamingException 
      * @throws org.apache.directory.api.ldap.model.exception.LdapURLEncodingException
      * @throws LdapException
      */
     private void processRequest( DsmlDecorator<? extends Request> request, BatchResponseDsml batchResponseDsml,
         StudioProgressMonitor monitor )
-        throws NamingException, LdapURLEncodingException, LdapException
+        throws LdapURLEncodingException, LdapException
     {
         switch ( request.getDecorated().getType() )
         {
@@ -593,12 +591,11 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
      *      the request
      * @param batchResponseDsml
      *      the DSML batch response (can be <code>null</code>)
-     * @throws NamingException 
      * @throws org.apache.directory.api.ldap.model.exception.LdapURLEncodingException
      * @throws org.apache.directory.api.ldap.model.exception.LdapException
      */
     private void processSearchRequest( SearchRequest request, BatchResponseDsml batchResponseDsml,
-        StudioProgressMonitor monitor ) throws NamingException, LdapURLEncodingException, LdapException
+        StudioProgressMonitor monitor ) throws LdapURLEncodingException, LdapException
     {
         // Creating the response
         if ( batchResponseDsml != null )
