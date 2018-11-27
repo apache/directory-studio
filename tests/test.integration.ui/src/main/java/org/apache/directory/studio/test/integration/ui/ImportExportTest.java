@@ -315,7 +315,6 @@ public class ImportExportTest extends AbstractLdapTestUnit
      *
      * @throws Exception
      */
-    @Ignore
     @Test
     public void testDIRSTUDIO_1160() throws Exception
     {

@@ -28,8 +28,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.naming.directory.SearchResult;
-
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.directory.api.dsmlv2.DsmlDecorator;
 import org.apache.directory.api.dsmlv2.request.AddRequestDsml;

@@ -36,13 +36,10 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import javax.naming.directory.Attributes;
-import javax.naming.directory.BasicAttributes;
 import javax.naming.ldap.BasicControl;
 import javax.naming.ldap.Control;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.directory.api.ldap.model.entry.AttributeUtils;
 import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.api.ldap.model.entry.DefaultModification;
 import org.apache.directory.api.ldap.model.entry.Entry;
@@ -416,12 +413,10 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
 
         if ( record instanceof LdifContentRecord || record instanceof LdifChangeAddRecord )
         {
-            LdifAttrValLine[] attrVals;
             IEntry dummyEntry;
             if ( record instanceof LdifContentRecord )
             {
                 LdifContentRecord attrValRecord = ( LdifContentRecord ) record;
-                attrVals = attrValRecord.getAttrVals();
                 try
                 {
                     dummyEntry = ModelConverter.ldifContentRecordToEntry( attrValRecord, browserConnection );
@@ -435,7 +430,6 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
             else
             {
                 LdifChangeAddRecord changeAddRecord = ( LdifChangeAddRecord ) record;
-                attrVals = changeAddRecord.getAttrVals();
                 try
                 {
                     dummyEntry = ModelConverter.ldifChangeAddRecordToEntry( changeAddRecord, browserConnection );
@@ -447,23 +441,7 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
                 }
             }
 
-            Attributes jndiAttributes = new BasicAttributes();
-            for ( LdifAttrValLine attrVal : attrVals )
-            {
-                String attributeName = attrVal.getUnfoldedAttributeDescription();
-                Object realValue = attrVal.getValueAsObject();
-
-                if ( jndiAttributes.get( attributeName ) != null )
-                {
-                    jndiAttributes.get( attributeName ).add( realValue );
-                }
-                else
-                {
-                    jndiAttributes.put( attributeName, realValue );
-                }
-            }
-
-            Entry entry = AttributeUtils.toEntry( jndiAttributes, new Dn( dn ) );
+            Entry entry = ModelConverter.toLdapApiEntry( dummyEntry );
             browserConnection.getConnection().getConnectionWrapper()
                 .createEntry( entry, getControls( record ), monitor, null );
 
@@ -473,7 +451,7 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
                 // creation failed with Error 68, now try to update the existing entry
                 monitor.reset();
 
-                Collection<Modification> modifications = ModelConverter.entryToReplaceModifications( entry );
+                Collection<Modification> modifications = ModelConverter.toReplaceModifications( entry );
                 browserConnection.getConnection().getConnectionWrapper()
                     .modifyEntry( new Dn( dn ), modifications, getControls( record ), monitor, null );
             }

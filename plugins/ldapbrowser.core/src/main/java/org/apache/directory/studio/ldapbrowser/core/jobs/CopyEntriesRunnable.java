@@ -335,7 +335,7 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
                                 case OVERWRITE_AND_CONTINUE:
                                     // create modifications
                                     Collection<Modification> modifications = ModelConverter
-                                        .entryToReplaceModifications( entry );
+                                        .toReplaceModifications( entry );
 
                                     // modify entry
                                     targetBrowserConnection

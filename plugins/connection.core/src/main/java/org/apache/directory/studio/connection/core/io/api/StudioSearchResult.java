@@ -20,8 +20,6 @@
 package org.apache.directory.studio.connection.core.io.api;
 
 
-import javax.naming.directory.SearchResult;
-
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.message.SearchResultEntry;
 import org.apache.directory.api.ldap.model.name.Dn;
@@ -30,7 +28,7 @@ import org.apache.directory.studio.connection.core.Connection;
 
 
 /**
- * Extension of {@link SearchResult} that holds a reference to the 
+ * Wrapper around {@link SearchResultEntry} that holds a reference to the 
  * underlying connection.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -73,10 +71,12 @@ public class StudioSearchResult
         return searchResultEntry;
     }
 
-    
-    public Dn getDn() {
+
+    public Dn getDn()
+    {
         return getEntry().getDn();
     }
+
 
     public Entry getEntry()
     {

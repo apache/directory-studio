@@ -26,7 +26,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.naming.directory.DirContext;
 import javax.naming.directory.SearchControls;
 import javax.naming.ldap.Control;
 import javax.net.ssl.TrustManager;
@@ -40,7 +39,6 @@ import org.apache.directory.api.ldap.codec.api.DefaultConfigurableBinaryAttribut
 import org.apache.directory.api.ldap.model.cursor.SearchCursor;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Modification;
-import org.apache.directory.api.ldap.model.entry.ModificationOperation;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.filter.ExprNode;
 import org.apache.directory.api.ldap.model.filter.FilterParser;
@@ -799,33 +797,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         {
             monitor.reportError( runnable.getException() );
         }
-    }
-
-
-    /**
-     * Converts a modification operation.
-     *
-     * @param modificationOp
-     *      a modification operation
-     * @return
-     *      the converted modification operation
-     */
-    private ModificationOperation convertModificationOperation( int modificationOp )
-    {
-        if ( modificationOp == DirContext.ADD_ATTRIBUTE )
-        {
-            return ModificationOperation.ADD_ATTRIBUTE;
-        }
-        else if ( modificationOp == DirContext.REPLACE_ATTRIBUTE )
-        {
-            return ModificationOperation.REPLACE_ATTRIBUTE;
-        }
-        else if ( modificationOp == DirContext.REMOVE_ATTRIBUTE )
-        {
-            return ModificationOperation.REMOVE_ATTRIBUTE;
-        }
-
-        return null;
     }
 
 

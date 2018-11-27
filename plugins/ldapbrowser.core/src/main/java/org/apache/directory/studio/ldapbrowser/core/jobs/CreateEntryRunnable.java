@@ -24,13 +24,11 @@ package org.apache.directory.studio.ldapbrowser.core.jobs;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.directory.Attributes;
-import javax.naming.directory.BasicAttributes;
 import javax.naming.ldap.Control;
 import javax.naming.ldap.ManageReferralControl;
 
-import org.apache.directory.api.ldap.model.entry.AttributeUtils;
 import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioControl;
@@ -38,10 +36,9 @@ import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunn
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryAddedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.IValue;
+import org.apache.directory.studio.ldapbrowser.core.utils.ModelConverter;
 
 
 /**
@@ -123,7 +120,14 @@ public class CreateEntryRunnable implements StudioConnectionBulkRunnableWithProg
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
 
-        createEntry( browserConnection, entryToCreate, monitor );
+        try
+        {
+            createEntry( browserConnection, entryToCreate, monitor );
+        }
+        catch ( LdapException e )
+        {
+            monitor.reportError( e );
+        }
 
         if ( !monitor.errorsReported() && !monitor.isCanceled() )
         {
@@ -188,32 +192,9 @@ public class CreateEntryRunnable implements StudioConnectionBulkRunnableWithProg
      * @param entryToCreate the entry to create
      * @param monitor the monitor
      */
-    static void createEntry( IBrowserConnection browserConnection, IEntry entryToCreate, StudioProgressMonitor monitor )
+    static void createEntry( IBrowserConnection browserConnection, IEntry entryToCreate, StudioProgressMonitor monitor ) throws LdapException
     {
-        // dn
-        String dn = entryToCreate.getDn().getName();
-
-        // attributes
-        Attributes jndiAttributes = new BasicAttributes();
-        IAttribute[] attributes = entryToCreate.getAttributes();
-        for ( int i = 0; i < attributes.length; i++ )
-        {
-            String description = attributes[i].getDescription();
-            IValue[] values = attributes[i].getValues();
-            for ( int ii = 0; ii < values.length; ii++ )
-            {
-                IValue value = values[ii];
-                Object rawValue = value.getRawValue();
-                if ( jndiAttributes.get( description ) != null )
-                {
-                    jndiAttributes.get( description ).add( rawValue );
-                }
-                else
-                {
-                    jndiAttributes.put( description, rawValue );
-                }
-            }
-        }
+        Entry entry = ModelConverter.toLdapApiEntry( entryToCreate );
 
         // ManageDsaIT control
         Control[] controls = null;
@@ -223,7 +204,6 @@ public class CreateEntryRunnable implements StudioConnectionBulkRunnableWithProg
                 { new ManageReferralControl( false ) };
         }
 
-        Entry entry = entryToCreate.toEntry();
         browserConnection.getConnection().getConnectionWrapper()
             .createEntry( entry, controls, monitor, null );
     }
