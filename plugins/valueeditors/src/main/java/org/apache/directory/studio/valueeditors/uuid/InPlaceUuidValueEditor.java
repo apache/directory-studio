@@ -22,7 +22,7 @@ package org.apache.directory.studio.valueeditors.uuid;
 
 
 import org.apache.commons.codec.binary.Hex;
-import org.apache.directory.shared.util.Strings;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.valueeditors.HexValueEditor;
 
@@ -48,11 +48,13 @@ public class InPlaceUuidValueEditor extends HexValueEditor
         if ( !showRawValues() )
         {
             Object rawValue = super.getRawValue( value );
+            
             if ( rawValue instanceof byte[] )
             {
                 byte[] bytes = ( byte[] ) rawValue;
-                String string = Strings.utf8ToString(bytes);
-                if ( string.matches( UUID_REGEX ) || Strings.isEmpty(string) )
+                String string = Strings.utf8ToString( bytes );
+                
+                if ( string.matches( UUID_REGEX ) || Strings.isEmpty( string ) )
                 {
                     return string;
                 }
@@ -71,7 +73,7 @@ public class InPlaceUuidValueEditor extends HexValueEditor
     {
         if ( bytes == null || bytes.length != 16 )
         {
-            return "Invalid UUID";
+            return Messages.getString( "InPlaceUuidValueEditor.InvalidUuid" ); //$NON-NLS-1$
         }
 
         char[] hex = Hex.encodeHex( bytes );
@@ -85,6 +87,7 @@ public class InPlaceUuidValueEditor extends HexValueEditor
         sb.append( hex, 16, 4 );
         sb.append( '-' );
         sb.append( hex, 20, 12 );
+        
         return Strings.toLowerCase( sb.toString() );
     }
 }

@@ -21,6 +21,7 @@
 package org.apache.directory.studio.connection.ui.actions;
 
 
+import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.jobs.OpenConnectionsRunnable;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionJob;
 import org.apache.directory.studio.connection.ui.ConnectionUIConstants;
@@ -36,15 +37,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 public class OpenConnectionAction extends StudioAction
 {
     /**
-     * Creates a new instance of OpenConnectionAction.
-     */
-    public OpenConnectionAction()
-    {
-        super();
-    }
-
-
-    /**
      * {@inheritDoc}
      */
     public void run()
@@ -58,7 +50,14 @@ public class OpenConnectionAction extends StudioAction
      */
     public String getText()
     {
-        return getSelectedConnections().length > 1 ? Messages.getString( "OpenConnectionAction.OpenConnections" ) : Messages.getString( "OpenConnectionAction.OpenConnection" ); //$NON-NLS-1$ //$NON-NLS-2$
+        if ( getSelectedConnections().length > 1 )
+        {
+            return Messages.getString( "OpenConnectionAction.OpenConnections" );
+        }
+        else
+        {
+            return Messages.getString( "OpenConnectionAction.OpenConnection" ); //$NON-NLS-1$ //$NON-NLS-2$
+        }
     }
 
 
@@ -86,14 +85,16 @@ public class OpenConnectionAction extends StudioAction
     public boolean isEnabled()
     {
         boolean canOpen = false;
-        for ( int i = 0; i < getSelectedConnections().length; i++ )
+        
+        for ( Connection connection : getSelectedConnections() )
         {
-            if ( !getSelectedConnections()[i].getConnectionWrapper().isConnected() )
+            if ( !connection.getConnectionWrapper().isConnected() )
             {
                 canOpen = true;
                 break;
             }
         }
+        
         return getSelectedConnections().length > 0 && canOpen;
     }
 }

@@ -21,9 +21,11 @@
 package org.apache.directory.studio.ldapbrowser.ui.wizards;
 
 
+import java.util.List;
+
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.common.widgets.ModWidget;
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldifparser.model.LdifFile;
@@ -36,14 +38,26 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
 
+/**
+ * This class implements the "Modify" page for the Batch Operation Wizard.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class BatchOperationModifyWizardPage extends WizardPage implements WidgetModifyListener
 {
-
+    /** The wizard */
     private BatchOperationWizard wizard;
 
+    /** The ModWidget */
     private ModWidget modWidget;
 
 
+    /**
+     * Creates a new instance of BatchOperationModifyWizardPage.
+     *
+     * @param pageName the name of the page
+     * @param wizard the wizard
+     */
     public BatchOperationModifyWizardPage( String pageName, BatchOperationWizard wizard )
     {
         super( pageName );
@@ -56,31 +70,9 @@ public class BatchOperationModifyWizardPage extends WizardPage implements Widget
     }
 
 
-    private void validate()
-    {
-
-        String dummyLdif = "dn: cn=dummy" + BrowserCoreConstants.LINE_SEPARATOR + modWidget.getLdifFragment(); //$NON-NLS-1$
-        LdifFile model = new LdifParser().parse( dummyLdif );
-        LdifContainer[] containers = model.getContainers();
-        if ( containers.length == 0 )
-        {
-            setPageComplete( false );
-            return;
-        }
-        for ( int i = 0; i < containers.length; i++ )
-        {
-            if ( !containers[i].isValid() )
-            {
-                setPageComplete( false );
-                return;
-            }
-        }
-
-        setPageComplete( true );
-
-    }
-
-
+    /**
+     * {@inheritDoc}
+     */
     public void createControl( Composite parent )
     {
 
@@ -101,15 +93,53 @@ public class BatchOperationModifyWizardPage extends WizardPage implements Widget
     }
 
 
+    /**
+     * Gets the LDIF fragment.
+     *
+     * @return the LDIF fragment
+     */
     public String getLdifFragment()
     {
         return modWidget.getLdifFragment();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void widgetModified( WidgetModifyEvent event )
     {
         validate();
     }
 
+
+    /**
+     * Validates the page
+     */
+    private void validate()
+    {
+        String dummyLdif = "dn: cn=dummy" + BrowserCoreConstants.LINE_SEPARATOR + modWidget.getLdifFragment(); //$NON-NLS-1$
+        
+        LdifFile model = new LdifParser().parse( dummyLdif );
+        
+        List<LdifContainer> containers = model.getContainers();
+        
+        if ( containers.size() == 0 )
+        {
+            setPageComplete( false );
+            return;
+        }
+        
+        for ( LdifContainer ldifContainer : containers )
+        {
+            if ( !ldifContainer.isValid() )
+            {
+                setPageComplete( false );
+                
+                return;
+            }
+        }
+
+        setPageComplete( true );
+    }
 }

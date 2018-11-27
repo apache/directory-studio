@@ -99,7 +99,7 @@ public class PathEditorInput implements IPathEditorInput, ILocationProvider
             return path.toFile().getName();
         }
 
-        return "";
+        return ""; //$NON-NLS-1$
     }
 
 
@@ -150,7 +150,7 @@ public class PathEditorInput implements IPathEditorInput, ILocationProvider
             return path.makeRelative().toOSString();
         }
 
-        return "";
+        return ""; //$NON-NLS-1$
     }
 
 

@@ -28,6 +28,9 @@ import org.apache.directory.studio.schemaeditor.model.ProjectType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -82,13 +85,6 @@ public class NewProjectWizardInformationPage extends AbstractWizardPage
         nameLabel.setText( Messages.getString( "NewProjectWizardInformationPage.ProjectName" ) ); //$NON-NLS-1$
         nameText = new Text( composite, SWT.BORDER );
         nameText.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
-        nameText.addModifyListener( new ModifyListener()
-        {
-            public void modifyText( ModifyEvent e )
-            {
-                dialogChanged();
-            }
-        } );
 
         if ( PluginUtils.getSchemaConnectors().size() > 0 )
         {
@@ -101,12 +97,14 @@ public class NewProjectWizardInformationPage extends AbstractWizardPage
             typeOfflineRadio = new Button( typeGroup, SWT.RADIO );
             typeOfflineRadio.setText( Messages.getString( "NewProjectWizardInformationPage.OfflineSchema" ) ); //$NON-NLS-1$
             typeOfflineRadio.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+
             typeOnlineRadio = new Button( typeGroup, SWT.RADIO );
             typeOnlineRadio.setText( Messages.getString( "NewProjectWizardInformationPage.OnlineSchema" ) ); //$NON-NLS-1$
             typeOnlineRadio.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
         }
 
         initFields();
+        addListeners();
 
         setControl( composite );
     }
@@ -124,6 +122,32 @@ public class NewProjectWizardInformationPage extends AbstractWizardPage
 
         displayErrorMessage( null );
         setPageComplete( false );
+    }
+
+
+    /**
+     * Adds the listeners.
+     */
+    private void addListeners()
+    {
+        nameText.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent e )
+            {
+                dialogChanged();
+            }
+        } );
+
+        SelectionListener dialogChangedSelectionListener = new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                dialogChanged();
+            }
+        };
+
+        typeOfflineRadio.addSelectionListener( dialogChangedSelectionListener );
+        typeOnlineRadio.addSelectionListener( dialogChangedSelectionListener );
     }
 
 

@@ -23,7 +23,9 @@ package org.apache.directory.studio.connection.ui.properties;
 
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
+import org.apache.directory.studio.connection.core.PasswordsKeyStoreManager;
 import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.connection.core.jobs.CloseConnectionsRunnable;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionJob;
@@ -31,12 +33,12 @@ import org.apache.directory.studio.connection.ui.ConnectionParameterPage;
 import org.apache.directory.studio.connection.ui.ConnectionParameterPageManager;
 import org.apache.directory.studio.connection.ui.ConnectionParameterPageModifyListener;
 import org.apache.directory.studio.connection.ui.ConnectionUIConstants;
+import org.apache.directory.studio.connection.ui.PasswordsKeyStoreManagerUtils;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.ui.PlatformUI;
@@ -44,18 +46,31 @@ import org.eclipse.ui.dialogs.PropertyPage;
 
 
 /**
- * The ConnectionPropertyPage displays the properties of a {@link Connection}.
+ * The ConnectionPropertyPage displays the properties of a {@link Connection}, in a popup containing
+ * tabs :
+ * 
+ * <pre>
+ *  +-------------------------------------------------------------------------------------+
+ *  | Connection                                                                  <- -> v |
+ *  +-------------------------------------------------------------------------------------+
+ *  |       .-------------------.----------------.-----------------.--------------.       |
+ *  | .-----| Network Parameter | Authentication | Browser Options | edit Options |-----. |
+ *  | |     `-------------------'----------------'-----------------'--------------'     | |
+ *  | |                                                                                 | |
+ *  .......................................................................................
+ *  | |                                                                                 | |
+ *  | `---------------------------------------------------------------------------------' |
+ *  | [] Read-Only (prevents any add, delete, modify or rename operations                 |
+ *  +-------------------------------------------------------------------------------------+
+ *  
+ * </pe>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ConnectionPropertyPage extends PropertyPage implements ConnectionParameterPageModifyListener
 {
-
     /** The tab folder. */
     private TabFolder tabFolder;
-
-    /** The tabs. */
-    private TabItem[] tabs;
 
     /** The connection property pages. */
     private ConnectionParameterPage[] pages;
@@ -86,10 +101,12 @@ public class ConnectionPropertyPage extends PropertyPage implements ConnectionPa
     public ConnectionParameter getTestConnectionParameters()
     {
         ConnectionParameter connectionParameter = new ConnectionParameter();
-        for ( int i = 0; i < pages.length; i++ )
+        
+        for ( ConnectionParameterPage page : pages )
         {
-            pages[i].saveParameters( connectionParameter );
+            page.saveParameters( connectionParameter );
         }
+        
         return connectionParameter;
     }
 
@@ -97,18 +114,10 @@ public class ConnectionPropertyPage extends PropertyPage implements ConnectionPa
     /**
      * @see org.eclipse.jface.dialogs.DialogPage#setMessage(java.lang.String)
      */
+    @Override
     public void setMessage( String message )
     {
         super.setMessage( message, PropertyPage.WARNING );
-    }
-
-
-    /**
-     * @see org.eclipse.jface.preference.PreferencePage#setErrorMessage(java.lang.String)
-     */
-    public void setErrorMessage( String errorMessage )
-    {
-        super.setErrorMessage( errorMessage );
     }
 
 
@@ -118,10 +127,11 @@ public class ConnectionPropertyPage extends PropertyPage implements ConnectionPa
     private void validate()
     {
         int index = tabFolder.getSelectionIndex();
-        ConnectionParameterPage page = index >= 0 ? pages[tabFolder.getSelectionIndex()] : null;
-        if ( page != null
-            && ( page.getMessage() != null || page.getInfoMessage() != null || page.getErrorMessage() != null ) )
+        
+        if ( index >= 0 )
         {
+            ConnectionParameterPage page = pages[tabFolder.getSelectionIndex()];
+            
             if ( page.getMessage() != null )
             {
                 setMessage( page.getMessage() );
@@ -134,30 +144,37 @@ public class ConnectionPropertyPage extends PropertyPage implements ConnectionPa
             {
                 setMessage( null );
             }
-            setErrorMessage( page.getErrorMessage() );
+            
+            if ( page.getErrorMessage() != null )
+            {
+                setErrorMessage( page.getErrorMessage() );
+            }
+            
             setValid( page.isValid() );
         }
         else
         {
-            for ( int i = 0; i < pages.length; i++ )
+            for ( ConnectionParameterPage page : pages )
             {
-                if ( pages[i].getMessage() != null || pages[i].getInfoMessage() != null
-                    || pages[i].getErrorMessage() != null )
+                if ( page.getMessage() != null )
                 {
-                    if ( page.getMessage() != null )
-                    {
-                        setMessage( page.getMessage() );
-                    }
-                    else if ( page.getInfoMessage() != null )
-                    {
-                        setMessage( page.getInfoMessage() );
-                    }
-                    else
-                    {
-                        setMessage( null );
-                    }
-                    setErrorMessage( pages[i].getErrorMessage() );
-                    setValid( pages[i].isValid() );
+                    setMessage( page.getMessage() );
+                }
+                else if ( page.getInfoMessage() != null )
+                {
+                    setMessage( page.getInfoMessage() );
+                }
+                else
+                {
+                    setMessage( null );
+                }
+
+                if ( page.getErrorMessage() != null )
+                {
+                    
+                    setErrorMessage( page.getErrorMessage() );
+                    setValid( page.isValid() );
+                    
                     return;
                 }
             }
@@ -172,10 +189,12 @@ public class ConnectionPropertyPage extends PropertyPage implements ConnectionPa
     static Connection getConnection( Object element )
     {
         Connection connection = null;
+        
         if ( element instanceof IAdaptable )
         {
-            connection = ( Connection ) ( ( IAdaptable ) element ).getAdapter( Connection.class );
+            connection = ( ( IAdaptable ) element ).getAdapter( Connection.class );
         }
+        
         return connection;
     }
 
@@ -188,9 +207,32 @@ public class ConnectionPropertyPage extends PropertyPage implements ConnectionPa
         PlatformUI.getWorkbench().getHelpSystem().setHelp( parent,
             ConnectionUIConstants.PLUGIN_ID + "." + "tools_connection_properties" ); //$NON-NLS-1$ //$NON-NLS-2$
 
+        // Checking of the connection passwords keystore is enabled
+        if ( PasswordsKeyStoreManagerUtils.isPasswordsKeystoreEnabled() )
+        {
+            // Getting the passwords keystore manager
+            PasswordsKeyStoreManager passwordsKeyStoreManager = ConnectionCorePlugin.getDefault()
+                .getPasswordsKeyStoreManager();
+
+            // Checking if the keystore is not loaded 
+            // Asking the user to load the keystore
+            if ( !passwordsKeyStoreManager.isLoaded() && !PasswordsKeyStoreManagerUtils.askUserToLoadKeystore() )
+            {
+                // The user failed to load the keystore and cancelled
+                return BaseWidgetUtils
+                    .createLabel(
+                        parent,
+                        Messages
+                            .getString( "ConnectionPropertyPage.AccessToPasswordsKeystoreRequiredToViewProperties" ), 1 ); //$NON-NLS-1$
+            }
+        }
+
+        // Select the connection in the tree
         Connection connection = getConnection( getElement() );
+        
         if ( connection != null )
         {
+            // Create the tabs for this connection 
             super
                 .setMessage( Messages.getString( "ConnectionPropertyPage.Connection" ) + Utils.shorten( connection.getName(), 30 ) ); //$NON-NLS-1$
 
@@ -198,7 +240,8 @@ public class ConnectionPropertyPage extends PropertyPage implements ConnectionPa
 
             tabFolder = new TabFolder( parent, SWT.TOP );
 
-            tabs = new TabItem[pages.length];
+            TabItem[] tabs = new TabItem[pages.length];
+            
             for ( int i = 0; i < pages.length; i++ )
             {
                 Composite composite = new Composite( tabFolder, SWT.NONE );
@@ -216,9 +259,7 @@ public class ConnectionPropertyPage extends PropertyPage implements ConnectionPa
         }
         else
         {
-            Label label = BaseWidgetUtils.createLabel( parent, Messages
-                .getString( "ConnectionPropertyPage.NoConnection" ), 1 ); //$NON-NLS-1$
-            return label;
+            return BaseWidgetUtils.createLabel( parent, Messages.getString( "ConnectionPropertyPage.NoConnection" ), 1 ); //$NON-NLS-1$
         }
     }
 
@@ -228,20 +269,31 @@ public class ConnectionPropertyPage extends PropertyPage implements ConnectionPa
      */
     public boolean performOk()
     {
+        // Checking of the connection passwords keystore is enabled
+        if ( PasswordsKeyStoreManagerUtils.isPasswordsKeystoreEnabled() )
+        {
+            // Checking if the keystore is not loaded 
+            if ( !ConnectionCorePlugin.getDefault().getPasswordsKeyStoreManager().isLoaded() )
+            {
+                return true;
+            }
+        }
+
         // get current connection parameters
-        Connection connection = ( Connection ) getConnection( getElement() );
+        Connection connection = getConnection( getElement() );
 
         // save modified parameters
         boolean parametersModified = false;
         boolean reconnectionRequired = false;
         ConnectionParameter connectionParameter = new ConnectionParameter();
         connectionParameter.setId( connection.getConnectionParameter().getId() );
-        for ( int i = 0; i < pages.length; i++ )
+        
+        for ( ConnectionParameterPage page : pages )
         {
-            pages[i].saveParameters( connectionParameter );
-            pages[i].saveDialogSettings();
-            parametersModified |= pages[i].areParametersModifed();
-            reconnectionRequired |= pages[i].isReconnectionRequired();
+            page.saveParameters( connectionParameter );
+            page.saveDialogSettings();
+            parametersModified |= page.areParametersModifed();
+            reconnectionRequired |= page.isReconnectionRequired();
         }
 
         if ( parametersModified )
@@ -258,5 +310,4 @@ public class ConnectionPropertyPage extends PropertyPage implements ConnectionPa
 
         return true;
     }
-
 }

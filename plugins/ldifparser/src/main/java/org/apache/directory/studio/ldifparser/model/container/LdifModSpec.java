@@ -22,7 +22,6 @@ package org.apache.directory.studio.ldifparser.model.container;
 
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.directory.studio.ldifparser.model.LdifPart;
@@ -31,17 +30,13 @@ import org.apache.directory.studio.ldifparser.model.lines.LdifModSpecSepLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifModSpecTypeLine;
 
 
-public class LdifModSpec extends LdifContainer implements LdifPart
+/**
+ * A LDIF container for a ModSpec
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
+public class LdifModSpec extends LdifContainer
 {
-
-    private static final long serialVersionUID = 6708749639253050273L;
-
-
-    protected LdifModSpec()
-    {
-    }
-
-
     public LdifModSpec( LdifModSpecTypeLine modSpecTypeLine )
     {
         super( modSpecTypeLine );
@@ -51,45 +46,54 @@ public class LdifModSpec extends LdifContainer implements LdifPart
     public void addAttrVal( LdifAttrValLine attrVal )
     {
         if ( attrVal == null )
+        {
             throw new IllegalArgumentException( "null argument" ); //$NON-NLS-1$
-        this.parts.add( attrVal );
+        }
+
+        ldifParts.add( attrVal );
     }
 
 
     public void finish( LdifModSpecSepLine modSpecSepLine )
     {
         if ( modSpecSepLine == null )
+        {
             throw new IllegalArgumentException( "null argument" ); //$NON-NLS-1$
-        this.parts.add( modSpecSepLine );
+        }
+
+        ldifParts.add( modSpecSepLine );
     }
 
 
     public LdifModSpecTypeLine getModSpecType()
     {
-        return ( LdifModSpecTypeLine ) this.parts.get( 0 );
+        return ( LdifModSpecTypeLine ) ldifParts.get( 0 );
     }
 
 
     public LdifAttrValLine[] getAttrVals()
     {
-        List l = new ArrayList();
-        for ( Iterator it = this.parts.iterator(); it.hasNext(); )
+        List<LdifAttrValLine> ldifAttrValLines = new ArrayList<LdifAttrValLine>();
+
+        for ( LdifPart ldifPart : ldifParts )
         {
-            Object o = it.next();
-            if ( o instanceof LdifAttrValLine )
+            if ( ldifPart instanceof LdifAttrValLine )
             {
-                l.add( o );
+                ldifAttrValLines.add( ( LdifAttrValLine ) ldifPart );
             }
         }
-        return ( LdifAttrValLine[] ) l.toArray( new LdifAttrValLine[l.size()] );
+
+        return ldifAttrValLines.toArray( new LdifAttrValLine[ldifAttrValLines.size()] );
     }
 
 
     public LdifModSpecSepLine getModSpecSep()
     {
-        if ( getLastPart() instanceof LdifModSpecSepLine )
+        LdifPart lastPart = getLastPart();
+
+        if ( lastPart instanceof LdifModSpecSepLine )
         {
-            return ( LdifModSpecSepLine ) getLastPart();
+            return ( LdifModSpecSepLine ) lastPart;
         }
         else
         {
@@ -100,19 +104,19 @@ public class LdifModSpec extends LdifContainer implements LdifPart
 
     public boolean isAdd()
     {
-        return this.getModSpecType().isAdd();
+        return getModSpecType().isAdd();
     }
 
 
     public boolean isReplace()
     {
-        return this.getModSpecType().isReplace();
+        return getModSpecType().isReplace();
     }
 
 
     public boolean isDelete()
     {
-        return this.getModSpecType().isDelete();
+        return getModSpecType().isDelete();
     }
 
 
@@ -141,68 +145,68 @@ public class LdifModSpec extends LdifContainer implements LdifPart
             return false;
         }
 
-        if ( this.getModSpecType() == null )
+        if ( getModSpecType() == null )
         {
             return false;
         }
 
-        LdifAttrValLine[] attrVals = this.getAttrVals();
-        if ( attrVals.length > 0 )
+        String att = getModSpecType().getUnfoldedAttributeDescription();
+        int sizeAttrVals = 0;
+
+        for ( LdifPart ldifPart : ldifParts )
         {
-            String att = this.getModSpecType().getUnfoldedAttributeDescription();
-            for ( int i = 0; i < attrVals.length; i++ )
+            if ( ldifPart instanceof LdifAttrValLine )
             {
-                if ( !att.equalsIgnoreCase( attrVals[i].getUnfoldedAttributeDescription() ) )
+                if ( !att.equalsIgnoreCase( ( ( LdifAttrValLine ) ldifPart ).getUnfoldedAttributeDescription() ) )
                 {
                     return false;
+                }
+                else
+                {
+                    sizeAttrVals++;
                 }
             }
         }
 
         if ( isAdd() )
         {
-            return attrVals.length > 0;
-        }
-        else if ( isDelete() )
-        {
-            return true;
-        }
-        else if ( isReplace() )
-        {
-            return true;
+            return sizeAttrVals > 0;
         }
         else
         {
-            return false;
+            return isDelete() || isReplace();
         }
     }
 
 
     public String getInvalidString()
     {
-        if ( this.getModSpecType() == null )
+        if ( getModSpecType() == null )
         {
             return "Missing mod spec line ";
         }
-        else if ( isAdd() && this.getAttrVals().length == 0 )
+
+        int sizeAttrVals = 0;
+        String att = getModSpecType().getUnfoldedAttributeDescription();
+
+        for ( LdifPart ldifPart : ldifParts )
+        {
+            if ( ldifPart instanceof LdifAttrValLine )
+            {
+                if ( !att.equalsIgnoreCase( ( ( LdifAttrValLine ) ldifPart ).getUnfoldedAttributeDescription() ) )
+                {
+                    return "Attribute descriptions don't match";
+                }
+
+                sizeAttrVals++;
+            }
+        }
+
+        if ( isAdd() && sizeAttrVals == 0 )
         {
             return "Modification must contain attribute value lines ";
         }
 
-        LdifAttrValLine[] attrVals = this.getAttrVals();
-        if ( attrVals.length > 0 )
-        {
-            String att = this.getModSpecType().getUnfoldedAttributeDescription();
-            for ( int i = 0; i < attrVals.length; i++ )
-            {
-                if ( !att.equalsIgnoreCase( attrVals[i].getUnfoldedAttributeDescription() ) )
-                {
-                    return "Attribute descriptions don't match";
-                }
-            }
-        }
-
         return null;
     }
-
 }

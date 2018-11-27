@@ -39,7 +39,6 @@ import org.eclipse.core.runtime.IAdaptable;
 public interface IValue extends Serializable, IAdaptable, ValuePropertyPageProvider, AttributePropertyPageProvider,
     EntryPropertyPageProvider, ConnectionPropertyPageProvider
 {
-
     /**
      * EmptyValue is used to indicate an empty value.
      *
@@ -47,13 +46,12 @@ public interface IValue extends Serializable, IAdaptable, ValuePropertyPageProvi
      */
     interface EmptyValue
     {
-
         /**
          * Gets the string value.
          *
          * @return the string value
          */
-        public String getStringValue();
+        String getStringValue();
 
 
         /**
@@ -61,7 +59,7 @@ public interface IValue extends Serializable, IAdaptable, ValuePropertyPageProvi
          * 
          * @return the binary value
          */
-        public byte[] getBinaryValue();
+        byte[] getBinaryValue();
 
 
         /**
@@ -69,7 +67,7 @@ public interface IValue extends Serializable, IAdaptable, ValuePropertyPageProvi
          * 
          * @return true, if is string
          */
-        public boolean isString();
+        boolean isString();
 
 
         /**
@@ -77,13 +75,13 @@ public interface IValue extends Serializable, IAdaptable, ValuePropertyPageProvi
          * 
          * @return true, if is binary
          */
-        public boolean isBinary();
+        boolean isBinary();
     }
 
     /**
      * This object represents the empty string value.
      */
-    public static final EmptyValue EMPTY_STRING_VALUE = new EmptyValue()
+    EmptyValue EMPTY_STRING_VALUE = new EmptyValue()
     {
 
         /**
@@ -134,7 +132,7 @@ public interface IValue extends Serializable, IAdaptable, ValuePropertyPageProvi
     /**
      * This object represents the empty binary value.
      */
-    public static final EmptyValue EMPTY_BINARY_VALUE = new EmptyValue()
+    EmptyValue EMPTY_BINARY_VALUE = new EmptyValue()
     {
 
         /**
@@ -188,7 +186,7 @@ public interface IValue extends Serializable, IAdaptable, ValuePropertyPageProvi
      * 
      * @return The attribute of this value, never null.
      */
-    public abstract IAttribute getAttribute();
+    IAttribute getAttribute();
 
 
     /**
@@ -196,7 +194,7 @@ public interface IValue extends Serializable, IAdaptable, ValuePropertyPageProvi
      * 
      * @return The raw value or an EmptyValue, never null.
      */
-    public abstract Object getRawValue();
+    Object getRawValue();
 
 
     /**
@@ -207,7 +205,7 @@ public interface IValue extends Serializable, IAdaptable, ValuePropertyPageProvi
      * 
      * @return the String value
      */
-    public abstract String getStringValue();
+    String getStringValue();
 
 
     /**
@@ -218,7 +216,7 @@ public interface IValue extends Serializable, IAdaptable, ValuePropertyPageProvi
      * 
      * @return the binary value
      */
-    public abstract byte[] getBinaryValue();
+    byte[] getBinaryValue();
 
 
     /**
@@ -228,7 +226,7 @@ public interface IValue extends Serializable, IAdaptable, ValuePropertyPageProvi
      * 
      * @return true if the value is empty.
      */
-    public abstract boolean isEmpty();
+    boolean isEmpty();
 
 
     /**
@@ -236,7 +234,7 @@ public interface IValue extends Serializable, IAdaptable, ValuePropertyPageProvi
      * 
      * @return true if the values attribute is string.
      */
-    public abstract boolean isString();
+    boolean isString();
 
 
     /**
@@ -244,7 +242,7 @@ public interface IValue extends Serializable, IAdaptable, ValuePropertyPageProvi
      * 
      * @return true if the values attribute is binary.
      */
-    public abstract boolean isBinary();
+    boolean isBinary();
 
 
     /**
@@ -252,7 +250,7 @@ public interface IValue extends Serializable, IAdaptable, ValuePropertyPageProvi
      * 
      * @return true if this value is part of its entry's Rdn.
      */
-    public abstract boolean isRdnPart();
+    boolean isRdnPart();
 
 
     /**
@@ -266,6 +264,5 @@ public interface IValue extends Serializable, IAdaptable, ValuePropertyPageProvi
      *                The value to compare, must be of type IValue
      * @return true if the argument is equal to this.
      */
-    public abstract boolean equals( Object o );
-
+    boolean equals( Object o );
 }

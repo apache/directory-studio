@@ -39,7 +39,7 @@ public final class BrowserUIConstants
     }
 
     /** The plug-in ID */
-    public static final String PLUGIN_ID = BrowserUIPlugin.getDefault().getPluginProperties().getString( "Plugin_id" ); //$NON-NLS-1$
+    public static final String PLUGIN_ID = BrowserUIConstants.class.getPackage().getName();
 
     public static final String ENTRY_EDITOR_EXTENSION_POINT = "org.apache.directory.studio.entryeditors"; //$NON-NLS-1$
 
@@ -48,26 +48,27 @@ public final class BrowserUIConstants
     public static final String PREFERENCE_BROWSER_LINK_WITH_EDITOR = "browserLinkWithEditor"; //$NON-NLS-1$
     public static final String PREFERENCE_SEARCHRESULTEDITOR_SHOW_DN = "searchResultEditorShowDn"; //$NON-NLS-1$
     public static final String PREFERENCE_SEARCHRESULTEDITOR_SHOW_LINKS = "searchResultEditorShowLinks"; //$NON-NLS-1$
-    public static final String PREFERENCEPAGEID_MAIN = BrowserUIPlugin.getDefault().getPluginProperties().getString(
-        "PrefPage_MainPreferencePage_id" ); //$NON-NLS-1$
+    public static final String PREFERENCE_SEARCHRESULTEDITOR_SORT_FILTER_LIMIT = "searchResultEditorSortFilterLimit"; //$NON-NLS-1$
+    public static final String PREFERENCEPAGEID_MAIN = BrowserUIPlugin.getDefault().getPluginProperties()
+        .getString( "PrefPage_MainPreferencePage_id" ); //$NON-NLS-1$
     public static final String PREFERENCEPAGEID_ATTRIBUTES = BrowserUIPlugin.getDefault().getPluginProperties()
         .getString( "PrefPage_AttributesPreferencePage_id" ); //$NON-NLS-1$
-    public static final String PREFERENCEPAGEID_BINARYATTRIBUTES = BrowserUIPlugin.getDefault().getPluginProperties()
-        .getString( "PrefPage_BinaryAttributesAndSyntaxesPreferencePage_id" ); //$NON-NLS-1$
-    public static final String PREFERENCEPAGEID_BROWSER = BrowserUIPlugin.getDefault().getPluginProperties().getString(
-        "PrefPage_BrowserPreferencePage_id" ); //$NON-NLS-1$
-    public static final String PREFERENCEPAGEID_ENTRYEDITOR = BrowserUIPlugin.getDefault().getPluginProperties()
-        .getString( "PrefPage_EntryEditorPreferencePage_id" ); //$NON-NLS-1$
-    public static final String PREFERENCEPAGEID_ENTRYEDITORS = BrowserUIPlugin.getDefault().getPluginProperties()
-        .getString( "PrefPage_EntryEditorsPreferencePage_id" ); //$NON-NLS-1$
+    public static final String PREFERENCEPAGEID_BINARYATTRIBUTES = 
+        "org.apache.directory.studio.ldapbrowser.preferences.BinaryAttributesAndSyntaxesPreferencePage"; //$NON-NLS-1$
+    public static final String PREFERENCEPAGEID_BROWSER = 
+        "org.apache.directory.studio.ldapbrowser.preferences.BrowserPreferencePage"; //$NON-NLS-1$
+    public static final String PREFERENCEPAGEID_ENTRYEDITOR = 
+        "org.apache.directory.studio.ldapbrowser.preferences.EntryEditorPreferencePage"; //$NON-NLS-1$
+    public static final String PREFERENCEPAGEID_ENTRYEDITORS = 
+        "org.apache.directory.studio.ldapbrowser.preferences.EntryEditorsPreferencePage"; //$NON-NLS-1$
     public static final String PREFERENCEPAGEID_SEARCHRESULTEDITOR = BrowserUIPlugin.getDefault().getPluginProperties()
         .getString( "PrefPage_SearchResultEditorPreferencePage_id" ); //$NON-NLS-1$
     public static final String PREFERENCEPAGEID_MODIFICATIONLOGS = BrowserUIPlugin.getDefault().getPluginProperties()
         .getString( "PrefPage_ModificationLogsPreferencePage_id" ); //$NON-NLS-1$
     public static final String PREFERENCEPAGEID_SEARCHLOGS = BrowserUIPlugin.getDefault().getPluginProperties()
         .getString( "PrefPage_SearchLogsPreferencePage_id" ); //$NON-NLS-1$
-    public static final String PREFERENCEPAGEID_TEXTFORMATS = BrowserUIPlugin.getDefault().getPluginProperties()
-        .getString( "PrefPage_TextFormatsPreferencePage_id" ); //$NON-NLS-1$
+    public static final String PREFERENCEPAGEID_TEXTFORMATS = 
+        "org.apache.directory.studio.ldapbrowser.preferences.TextFormatsPreferencePage"; //$NON-NLS-1$
 
     /** The constant used to identify the "user user priorities" preference  */
     public static final String PREFERENCE_ENTRYEDITORS_USE_USER_PRIORITIES = "useUserPriorities"; //$NON-NLS-1$
@@ -179,15 +180,13 @@ public final class BrowserUIConstants
     public static final String IMG_REFRESH = "resources/icons/refresh.gif"; //$NON-NLS-1$
     public static final String IMG_CLEAR = "resources/icons/clear.gif"; //$NON-NLS-1$
 
-    public static final String CMD_LOCATE_IN_DIT = BrowserUIPlugin.getDefault().getPluginProperties().getString(
-        "Cmd_LocateInDit_id" ); //$NON-NLS-1$
-    public static final String CMD_OPEN_SEARCH_RESULT = BrowserUIPlugin.getDefault().getPluginProperties().getString(
-        "Cmd_OpenSearchResult_id" ); //$NON-NLS-1$
+    public static final String CMD_LOCATE_IN_DIT = BrowserUIPlugin.getDefault().getPluginProperties()
+        .getString( "Cmd_LocateInDit_id" ); //$NON-NLS-1$
+    public static final String CMD_OPEN_SEARCH_RESULT = BrowserUIPlugin.getDefault().getPluginProperties()
+        .getString( "Cmd_OpenSearchResult_id" ); //$NON-NLS-1$
 
-    public static final String PERSPECTIVE_LDAP = BrowserUIPlugin.getDefault().getPluginProperties().getString(
-        "Perspective_LdapPerspective_id" ); //$NON-NLS-1$
-    public static final String PERSPECTIVE_SCHEMA_EDITOR = BrowserUIPlugin.getDefault().getPluginProperties()
-        .getString( "Perspective_SchemaEditor_id" ); //$NON-NLS-1$
+    public static final String PERSPECTIVE_LDAP = "org.apache.directory.studio.ldapbrowser.ui.perspective.BrowserPerspective"; //$NON-NLS-1$
+    public static final String PERSPECTIVE_SCHEMA_EDITOR = "org.apache.directory.studio.schemaeditor.perspective"; //$NON-NLS-1$
 
     public static final String EDITOR_SINGLE_TAB_ENTRY_EDITOR = BrowserUIPlugin.getDefault().getPluginProperties()
         .getString( "Editor_SingleTabEntryEditor_id" ); //$NON-NLS-1$
@@ -197,46 +196,45 @@ public final class BrowserUIConstants
         .getString( "Editor_SingleTabLdifEntryEditor_id" ); //$NON-NLS-1$
     public static final String EDITOR_MULTI_TAB_LDIF_ENTRY_EDITOR = BrowserUIPlugin.getDefault().getPluginProperties()
         .getString( "Editor_MultiTabLdifEntryEditor_id" ); //$NON-NLS-1$
-    public static final String EDITOR_SCHEMA_BROWSER = BrowserUIPlugin.getDefault().getPluginProperties().getString(
-        "Editor_SchemaBrowser_id" ); //$NON-NLS-1$
-    public static final String EDITOR_SEARCH_RESULT = BrowserUIPlugin.getDefault().getPluginProperties().getString(
-        "Editor_SearchResultEditor_id" ); //$NON-NLS-1$
+    public static final String EDITOR_SCHEMA_BROWSER = BrowserUIPlugin.getDefault().getPluginProperties()
+        .getString( "Editor_SchemaBrowser_id" ); //$NON-NLS-1$
+    public static final String EDITOR_SEARCH_RESULT = BrowserUIPlugin.getDefault().getPluginProperties()
+        .getString( "Editor_SearchResultEditor_id" ); //$NON-NLS-1$
 
-    public static final String SEARCH_PAGE_LDAP_SEARCH = BrowserUIPlugin.getDefault().getPluginProperties().getString(
-        "SearchPage_LdapSearch_id" ); //$NON-NLS-1$
+    public static final String SEARCH_PAGE_LDAP_SEARCH = BrowserUIPlugin.getDefault().getPluginProperties()
+        .getString( "SearchPage_LdapSearch_id" ); //$NON-NLS-1$
 
-    public static final String VIEW_BROWSER_VIEW = BrowserUIPlugin.getDefault().getPluginProperties().getString(
-        "View_BrowserView_id" ); //$NON-NLS-1$
-    public static final String VIEW_CONNECTION_VIEW = BrowserUIPlugin.getDefault().getPluginProperties().getString(
-        "View_ConnectionView_id" ); //$NON-NLS-1$
+    public static final String VIEW_BROWSER_VIEW = BrowserUIPlugin.getDefault().getPluginProperties()
+        .getString( "View_BrowserView_id" ); //$NON-NLS-1$
+    public static final String VIEW_CONNECTION_VIEW = BrowserUIPlugin.getDefault().getPluginProperties()
+        .getString( "View_ConnectionView_id" ); //$NON-NLS-1$
     public static final String VIEW_MODIFICATION_LOGS_VIEW = BrowserUIPlugin.getDefault().getPluginProperties()
         .getString( "View_ModificationLogsView_id" ); //$NON-NLS-1$
-    public static final String VIEW_SEARCH_LOGS_VIEW = BrowserUIPlugin.getDefault().getPluginProperties().getString(
-        "View_SearchLogsView_id" ); //$NON-NLS-1$
+    public static final String VIEW_SEARCH_LOGS_VIEW = BrowserUIPlugin.getDefault().getPluginProperties()
+        .getString( "View_SearchLogsView_id" ); //$NON-NLS-1$
 
-    public static final String WIZARD_BATCH_OPERATION = BrowserUIPlugin.getDefault().getPluginProperties().getString(
-        "NewWizard_BatchOperationWizard_id" ); //$NON-NLS-1$
-    public static final String WIZARD_EXPORT_CONNECTIONS = BrowserUIPlugin.getDefault().getPluginProperties()
-        .getString( "Wizard_ExportConnections_id" ); //$NON-NLS-1$
-    public static final String WIZARD_EXPORT_CSV = BrowserUIPlugin.getDefault().getPluginProperties().getString(
-        "ExportWizard_ExportCsvWizard_id" ); //$NON-NLS-1$
-    public static final String WIZARD_EXPORT_DSML = BrowserUIPlugin.getDefault().getPluginProperties().getString(
-        "ExportWizard_ExportDdsmlWizard_id" ); //$NON-NLS-1$
-    public static final String WIZARD_EXPORT_EXCEL = BrowserUIPlugin.getDefault().getPluginProperties().getString(
-        "ExportWizard_ExportExcelWizard_id" ); //$NON-NLS-1$
-    public static final String WIZARD_EXPORT_ODF = BrowserUIPlugin.getDefault().getPluginProperties().getString(
-        "ExportWizard_ExportOdfWizard_id" ); //$NON-NLS-1$
-    public static final String WIZARD_EXPORT_LDIF = BrowserUIPlugin.getDefault().getPluginProperties().getString(
-        "ExportWizard_ExportLdifWizard_id" ); //$NON-NLS-1$
-    public static final String WIZARD_IMPORT_CONNECTIONS = BrowserUIPlugin.getDefault().getPluginProperties()
-        .getString( "Wizard_ImportConnections_id" ); //$NON-NLS-1$
-    public static final String WIZARD_IMPORT_DSML = BrowserUIPlugin.getDefault().getPluginProperties().getString(
-        "ImportWizard_ImportDsmlWizard_id" ); //$NON-NLS-1$
-    public static final String WIZARD_IMPORT_LDIF = BrowserUIPlugin.getDefault().getPluginProperties().getString(
-        "ImportWizard_ImportLdifWizard_id" ); //$NON-NLS-1$
-    public static final String WIZARD_NEW_BOOKMARK = BrowserUIPlugin.getDefault().getPluginProperties().getString(
-        "NewWizard_NewBookmarkWizard_id" ); //$NON-NLS-1$
-    public static final String WIZARD_NEW_SEARCH = BrowserUIPlugin.getDefault().getPluginProperties().getString(
-        "NewWizard_NewSearchWizard_id" ); //$NON-NLS-1$
+    public static final String WIZARD_BATCH_OPERATION = BrowserUIPlugin.getDefault().getPluginProperties()
+        .getString( "NewWizard_BatchOperationWizard_id" ); //$NON-NLS-1$
+    public static final String WIZARD_EXPORT_CONNECTIONS = "org.apache.directory.studio.ldapbrowser.ui.wizards.ImportConnectionsWizard"; //$NON-NLS-1$
+    public static final String WIZARD_EXPORT_CSV = BrowserUIPlugin.getDefault().getPluginProperties()
+        .getString( "ExportWizard_ExportCsvWizard_id" ); //$NON-NLS-1$
+    public static final String WIZARD_EXPORT_DSML = BrowserUIPlugin.getDefault().getPluginProperties()
+        .getString( "ExportWizard_ExportDdsmlWizard_id" ); //$NON-NLS-1$
+    public static final String WIZARD_EXPORT_EXCEL = BrowserUIPlugin.getDefault().getPluginProperties()
+        .getString( "ExportWizard_ExportExcelWizard_id" ); //$NON-NLS-1$
+    public static final String WIZARD_EXPORT_ODF = BrowserUIPlugin.getDefault().getPluginProperties()
+        .getString( "ExportWizard_ExportOdfWizard_id" ); //$NON-NLS-1$
+    public static final String WIZARD_EXPORT_LDIF = BrowserUIPlugin.getDefault().getPluginProperties()
+        .getString( "ExportWizard_ExportLdifWizard_id" ); //$NON-NLS-1$
+    public static final String WIZARD_IMPORT_CONNECTIONS = "org.apache.directory.studio.ldapbrowser.ui.wizards.ExportConnectionsWizard"; //$NON-NLS-1$
+    public static final String WIZARD_IMPORT_DSML = BrowserUIPlugin.getDefault().getPluginProperties()
+        .getString( "ImportWizard_ImportDsmlWizard_id" ); //$NON-NLS-1$
+    public static final String WIZARD_IMPORT_LDIF = BrowserUIPlugin.getDefault().getPluginProperties()
+        .getString( "ImportWizard_ImportLdifWizard_id" ); //$NON-NLS-1$
+    public static final String WIZARD_NEW_BOOKMARK = BrowserUIPlugin.getDefault().getPluginProperties()
+        .getString( "NewWizard_NewBookmarkWizard_id" ); //$NON-NLS-1$
+    public static final String WIZARD_NEW_SEARCH = BrowserUIPlugin.getDefault().getPluginProperties()
+        .getString( "NewWizard_NewSearchWizard_id" ); //$NON-NLS-1$
 
+    public static final int INPUT_CHANGED = 1342730831;
 }

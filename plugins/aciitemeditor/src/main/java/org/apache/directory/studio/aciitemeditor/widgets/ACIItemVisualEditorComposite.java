@@ -23,15 +23,15 @@ package org.apache.directory.studio.aciitemeditor.widgets;
 import java.text.ParseException;
 import java.util.Collection;
 
-import org.apache.directory.shared.ldap.aci.ACIItem;
-import org.apache.directory.shared.ldap.aci.ACIItemParser;
-import org.apache.directory.shared.ldap.aci.ItemFirstACIItem;
-import org.apache.directory.shared.ldap.aci.ItemPermission;
-import org.apache.directory.shared.ldap.aci.ProtectedItem;
-import org.apache.directory.shared.ldap.aci.UserClass;
-import org.apache.directory.shared.ldap.aci.UserFirstACIItem;
-import org.apache.directory.shared.ldap.aci.UserPermission;
-import org.apache.directory.shared.ldap.model.constants.AuthenticationLevel;
+import org.apache.directory.api.ldap.aci.ACIItem;
+import org.apache.directory.api.ldap.aci.ACIItemParser;
+import org.apache.directory.api.ldap.aci.ItemFirstACIItem;
+import org.apache.directory.api.ldap.aci.ItemPermission;
+import org.apache.directory.api.ldap.aci.ProtectedItem;
+import org.apache.directory.api.ldap.aci.UserClass;
+import org.apache.directory.api.ldap.aci.UserFirstACIItem;
+import org.apache.directory.api.ldap.aci.UserPermission;
+import org.apache.directory.api.ldap.model.constants.AuthenticationLevel;
 import org.apache.directory.studio.aciitemeditor.ACIItemValueWithContext;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -52,7 +52,6 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class ACIItemVisualEditorComposite extends ScrolledComposite implements WidgetModifyListener
 {
-
     /** The inner composite for all the content */
     private Composite composite = null;
 
@@ -97,16 +96,9 @@ public class ACIItemVisualEditorComposite extends ScrolledComposite implements W
      */
     private void createComposite()
     {
-        GridLayout gridLayout = new GridLayout();
-        gridLayout.numColumns = 1;
-        GridData gridData = new GridData();
-        gridData.horizontalAlignment = GridData.FILL;
-        gridData.grabExcessHorizontalSpace = true;
-        gridData.verticalAlignment = GridData.CENTER;
-
         composite = new Composite( this, SWT.NONE );
-        composite.setLayout( gridLayout );
-        composite.setLayoutData( gridData );
+        composite.setLayout( new GridLayout() );
+        composite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
         generalComposite = new ACIItemGeneralComposite( composite, SWT.NONE );
         generalComposite.addWidgetModifyListener( this );

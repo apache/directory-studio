@@ -20,13 +20,17 @@
 package org.apache.directory.studio.common.ui;
 
 
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtension;
-import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.osgi.framework.Bundle;
 
 
 /**
@@ -39,22 +43,19 @@ public class CommonUIUtils
     /**
      * Opens an Error {@link MessageDialog} with the given message.
      *
-     * @param message
-     *      the message
+     * @param message the message
      */
     public static void openErrorDialog( String message )
     {
-        openErrorDialog( "Error!", message );
+        openErrorDialog( Messages.getString( "CommonUIUtils.Error" ), message ); //$NON-NLS-1$
     }
 
 
     /**
      * Opens an Error {@link MessageDialog} with the given title and message.
      *
-     * @param title
-     *      the title
-     * @param message
-     *      the message
+     * @param title the title
+     * @param message the message
      */
     public static void openErrorDialog( String title, String message )
     {
@@ -68,22 +69,19 @@ public class CommonUIUtils
     /**
      * Opens an Information {@link MessageDialog} with the given message.
      *
-     * @param message
-     *      the message
+     * @param message the message
      */
     public static void openInformationDialog( String message )
     {
-        openInformationDialog( "Information", message );
+        openInformationDialog( Messages.getString( "CommonUIUtils.Information" ), message ); //$NON-NLS-1$
     }
 
 
     /**
      * Opens an Information {@link MessageDialog} with the given title and message.
      *
-     * @param title
-     *      the title
-     * @param message
-     *      the message
+     * @param title the title
+     * @param message the message
      */
     public static void openInformationDialog( String title, String message )
     {
@@ -97,22 +95,19 @@ public class CommonUIUtils
     /**
      * Opens an Warning {@link MessageDialog} with the given message.
      *
-     * @param message
-     *      the message
+     * @param message the message
      */
     public static void openWarningDialog( String message )
     {
-        openInformationDialog( "Information", message );
+        openWarningDialog( Messages.getString( "CommonUIUtils.Warning" ), message ); //$NON-NLS-1$
     }
 
 
     /**
      * Opens an Warning {@link MessageDialog} with the given title and message.
      *
-     * @param title
-     *      the title
-     * @param message
-     *      the message
+     * @param title the title
+     * @param message the message
      */
     public static void openWarningDialog( String title, String message )
     {
@@ -125,38 +120,130 @@ public class CommonUIUtils
 
     /**
      * Checks, if this plugins runs in the Eclipse IDE or in RCP environment.
-     * This is done by looking for the Resource perspective extensions.
+     * This is done by looking if "org.apache.directory.studio.rcp" bundle is installed.
      *
      * @return true if this plugin runs in IDE environment
      */
     public static boolean isIDEEnvironment()
     {
-        IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
-            "org.eclipse.ui.perspectives" ); //$NON-NLS-1$
-        if ( extensionPoint != null )
+        Bundle bundle = Platform.getBundle( "org.apache.directory.studio.rcp" );
+        return bundle == null;
+    }
+    
+    
+    /**
+     * Create a default Text input, with a label and a ModifyListener.
+     * 
+     * @param toolkit the toolkit
+     * @param composite the Composite
+     * @param label the Text label
+     * @param value the default value. Default to "" if null
+     * @param limit the size limit. Ignored if < 0 
+     * @param listener the ModifyListener
+     * @return An instance of a Text
+     */
+    public static Text createText( FormToolkit toolkit, Composite composite, String label, String defaultValue, int limit, ModifyListener listener  )
+    {
+        toolkit.createLabel( composite, label );
+        String value = "";
+        
+        if ( defaultValue != null )
         {
-            IExtension[] extensions = extensionPoint.getExtensions();
-            if ( extensions != null )
-            {
-                for ( int i = 0; i < extensions.length; i++ )
-                {
-                    IExtension extension = extensions[i];
-                    IConfigurationElement[] elements = extension.getConfigurationElements();
-                    for ( int j = 0; j < elements.length; j++ )
-                    {
-                        IConfigurationElement element = elements[j];
-                        if ( element.getName().equals( "perspective" ) ) //$NON-NLS-1$
-                        {
-                            if ( "org.eclipse.ui.resourcePerspective".equals( element.getAttribute( "id" ) ) ) //$NON-NLS-1$ //$NON-NLS-2$
-                            {
-                                return true;
-                            }
-                        }
-                    }
-                }
-            }
+            value = defaultValue;
         }
-
-        return false;
+        
+        Text text = toolkit.createText( composite, value );
+        text.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        
+        if ( limit >= 0 )
+        {
+            text.setTextLimit( limit );
+        }
+        
+        // Attach a listener to check the value
+        if ( listener != null )
+        {
+            text.addModifyListener( listener );
+        }
+        
+        return text;
+    }
+    
+    
+    /**
+     * Create a default Text input, with a label and a ModifyListener.
+     * 
+     * @param toolkit the toolkit
+     * @param composite the Composite
+     * @param label the Text label
+     * @param value the default value. Default to "" if null
+     * @param limit the size limit. Ignored if < 0 
+     * @param gridData the GridData
+     * @param listener the ModifyListener
+     * @return An instance of a Text
+     */
+    public static Text createText( FormToolkit toolkit, Composite composite, String label, String defaultValue, int limit, GridData gridData, ModifyListener listener  )
+    {
+        toolkit.createLabel( composite, label );
+        String value = "";
+        
+        if ( defaultValue != null )
+        {
+            value = defaultValue;
+        }
+        
+        Text text = toolkit.createText( composite, value );
+        text.setLayoutData( gridData );
+        
+        if ( limit >= 0 )
+        {
+            text.setTextLimit( limit );
+        }
+        
+        // Attach a listener to check the value
+        if ( listener != null )
+        {
+            text.addModifyListener( listener );
+        }
+        
+        return text;
+    }
+    
+    
+    /**
+     * An utility method that return a String which is never null.
+     * 
+     * @param value The incoming value, which can be null
+     * @return The String if it's not null, "" otherwise
+     */
+    public static String getTextValue( String value )
+    {
+        if ( value == null )
+        {
+            return "";
+        }
+        else
+        {
+            return value;
+        }
+    }
+    
+    
+    /**
+     * An utility method that return a String which is never 0.
+     * 
+     * @param value The incoming value, which can be 0
+     * @return The Int value if it's not 0, "" otherwise
+     */
+    public static String getTextValue( int value )
+    {
+        if ( value == 0 )
+        {
+            return "";
+        }
+        else
+        {
+            return Integer.toString( value );
+        }
     }
 }

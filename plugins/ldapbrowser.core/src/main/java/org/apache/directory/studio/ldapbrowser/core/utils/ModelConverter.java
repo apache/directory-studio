@@ -31,8 +31,8 @@ import javax.naming.directory.BasicAttribute;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.ModificationItem;
 
-import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
-import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
@@ -68,7 +68,7 @@ public class ModelConverter
      *
      * @return the resulting dummy entry
      *
-     * @throws org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException
+     * @throws org.apache.directory.api.ldap.model.exception.LdapInvalidDnException
      */
     public static DummyEntry ldifContentRecordToEntry( LdifContentRecord ldifContentRecord,
         IBrowserConnection connection ) throws LdapInvalidDnException
@@ -85,7 +85,7 @@ public class ModelConverter
      *
      * @return the resulting dummy entry
      *
-     * @throws org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException
+     * @throws org.apache.directory.api.ldap.model.exception.LdapInvalidDnException
      */
     public static DummyEntry ldifChangeAddRecordToEntry( LdifChangeAddRecord ldifChangeAddRecord,
         IBrowserConnection connection ) throws LdapInvalidDnException

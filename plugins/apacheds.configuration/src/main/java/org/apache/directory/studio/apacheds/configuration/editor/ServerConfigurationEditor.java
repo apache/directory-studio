@@ -20,84 +20,62 @@
 package org.apache.directory.studio.apacheds.configuration.editor;
 
 
-import java.io.BufferedWriter;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 
-import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPlugin;
-import org.apache.directory.studio.apacheds.configuration.ApacheDSConfigurationPluginConstants;
-import org.apache.directory.studio.apacheds.configuration.model.ServerConfiguration;
-import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIO;
-import org.apache.directory.studio.apacheds.configuration.model.ServerXmlIOException;
-import org.apache.directory.studio.apacheds.configuration.model.v150.ServerXmlIOV150;
-import org.apache.directory.studio.apacheds.configuration.model.v151.ServerXmlIOV151;
-import org.apache.directory.studio.apacheds.configuration.model.v152.ServerXmlIOV152;
-import org.apache.directory.studio.apacheds.configuration.model.v153.ServerXmlIOV153;
-import org.apache.directory.studio.apacheds.configuration.model.v154.ServerXmlIOV154;
-import org.apache.directory.studio.apacheds.configuration.model.v155.ServerXmlIOV155;
-import org.apache.directory.studio.apacheds.configuration.model.v156.ServerXmlIOV156;
-import org.apache.directory.studio.apacheds.configuration.model.v157.ServerXmlIOV157;
-import org.apache.directory.studio.common.ui.CommonUIUtils;
-import org.apache.directory.studio.common.ui.filesystem.PathEditorInput;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
+import org.apache.directory.server.config.ConfigWriter;
+import org.apache.directory.studio.apacheds.configuration.ApacheDS2ConfigurationPlugin;
+import org.apache.directory.studio.apacheds.configuration.jobs.LoadConfigurationRunnable;
+import org.apache.directory.studio.apacheds.configuration.jobs.SaveConfigurationRunnable;
+import org.apache.directory.studio.common.core.jobs.StudioJob;
+import org.apache.directory.studio.common.core.jobs.StudioRunnableWithProgress;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.IPageChangedListener;
+import org.eclipse.jface.dialogs.PageChangedEvent;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.custom.CTabFolder;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
-import org.eclipse.ui.IPathEditorInput;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.forms.editor.FormEditor;
-import org.eclipse.ui.forms.editor.FormPage;
-import org.eclipse.ui.part.FileEditorInput;
 
 
 /**
- * This class implements the Server Configuration Editor.
+ * This class implements the Server Configuration Editor. This editor expose
+ * 6 pages into a form with 6 tags :
+ * <ul>
+ * <li>Overview : the basic configuration</li>
+ * <li>LDAP/LDAPS : the configuration for the LDAP/S server</li>
+ * <li>Kerberos : the configuration for the Kerberos server</li>
+ * <li>Partitions : The partitions configuration</li>
+ * <li>PasswordPolicy : The password policy configuration</li>
+ * <li>Replication : The replicationconfiguration</li>
+ * </ul> 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ServerConfigurationEditor extends FormEditor
+public class ServerConfigurationEditor extends FormEditor implements IPageChangedListener
 {
     /** The Editor ID */
-    public static final String ID = ApacheDSConfigurationPluginConstants.EDITOR_SERVER_CONFIGURATION_EDITOR;
+    public static final String ID = ServerConfigurationEditor.class.getName();
 
-    /** The Server Configuration */
-    private ServerConfiguration serverConfiguration;
-
-    /** The associated ServerXmlIO class */
-    private ServerXmlIO serverXmlIO;
-
-    /** The dirty flag */
+    /** The flag indicating if the editor is dirty */
     private boolean dirty = false;
 
-    /** The error message */
-    private String errorMessage;
+    /** The configuration including bean and underlying parttiton */
+    private Configuration configuration;
 
-    // The Pages
-    private FormPage generalPage;
-    private FormPage authenticationPage;
-    private FormPage partitionsPage;
-    private FormPage interceptorsPage;
-    private FormPage extendedOperationsPage;
+    /** The pages */
+    private LoadingPage loadingPage;
+    private OverviewPage overviewPage;
+    private LdapLdapsServersPage ldapLdapsServersPage;
+    private KerberosServerPage kerberosServerPage;
+    private PartitionsPage partitionsPage;
+    private PasswordPoliciesPage passwordPolicyPage;
+    private ReplicationPage replicationPage;
+
+
 
 
     /**
@@ -108,119 +86,43 @@ public class ServerConfigurationEditor extends FormEditor
         super.init( site, input );
         setPartName( input.getName() );
 
-        try
+        // Checking if the input is a new server configuration file
+        if ( input instanceof NewServerConfigurationInput )
         {
-            readServerConfiguration( input );
+            // New server configuration file have a dirty state 
+            // set to true since they are not saved yet
+            setDirty( true );
         }
-        catch ( Exception e )
-        {
-            errorMessage = e.getMessage();
-        }
+
+        addPageChangedListener( this );
+
+        readConfiguration();
     }
 
 
     /**
-     * Reads the server configuration from the given editor input.
-     *
-     * @param input
-     *      the editor input
-     * @throws CoreException 
-     * @throws FileNotFoundException 
-     * @throws ServerXmlIOException 
+     * Reads the configuration
      */
-    private void readServerConfiguration( IEditorInput input ) throws CoreException, FileNotFoundException,
-        ServerXmlIOException
+    private void readConfiguration()
     {
-        // If the input is a NonExistingServerConfigurationInput, then we only 
-        // need to get the server configuration and return
-        if ( input instanceof NonExistingServerConfigurationInput )
-        {
-            // The 'ServerConfigurationEditorInput' class is used when a
-            // new Server Configuration File is created.
-            serverConfiguration = ( ( NonExistingServerConfigurationInput ) input ).getServerConfiguration();
-            dirty = true;
-
-            // Setting the ServerXmlIO class
-            switch ( serverConfiguration.getVersion() )
-            {
-                case VERSION_1_5_7:
-                    serverXmlIO = new ServerXmlIOV157();
-                    break;
-                case VERSION_1_5_6:
-                    serverXmlIO = new ServerXmlIOV156();
-                    break;
-                case VERSION_1_5_5:
-                    serverXmlIO = new ServerXmlIOV155();
-                    break;
-                case VERSION_1_5_4:
-                    serverXmlIO = new ServerXmlIOV154();
-                    break;
-                case VERSION_1_5_3:
-                    serverXmlIO = new ServerXmlIOV153();
-                    break;
-                case VERSION_1_5_2:
-                    serverXmlIO = new ServerXmlIOV152();
-                    break;
-                case VERSION_1_5_1:
-                    serverXmlIO = new ServerXmlIOV151();
-                    break;
-                case VERSION_1_5_0:
-                    serverXmlIO = new ServerXmlIOV150();
-                    break;
-            }
-            return;
-        }
-
-        // Looping on the ServerXmlIO classes to find a corresponding one
-        ServerXmlIO[] serverXmlIOs = ApacheDSConfigurationPlugin.getDefault().getServerXmlIOs();
-        for ( ServerXmlIO validationServerXmlIO : serverXmlIOs )
-        {
-            // Checking if the ServerXmlIO is valid
-            if ( validationServerXmlIO.isValid( getInputStream( input ) ) )
-            {
-                serverXmlIO = validationServerXmlIO;
-                serverConfiguration = serverXmlIO.parse( getInputStream( input ) );
-                return;
-            }
-        }
+        // Creating and scheduling the job to load the configuration
+        StudioJob<StudioRunnableWithProgress> job = new StudioJob<StudioRunnableWithProgress>(
+            new LoadConfigurationRunnable( this ) );
+        job.schedule();
     }
 
 
     /**
-     * Gets an input stream from the editor input.
-     *
-     * @param input
-     *      the editor input
-     * @return
-     *      an input stream from the editor input, or <code>null</code>
-     * @throws CoreException
-     * @throws FileNotFoundException
+     * {@inheritDoc}
      */
-    private InputStream getInputStream( IEditorInput input ) throws CoreException, FileNotFoundException
+    public void pageChanged( PageChangedEvent event )
     {
-        String inputClassName = input.getClass().getName();
-        if ( input instanceof FileEditorInput )
-        // The 'FileEditorInput' class is used when the file is opened
-        // from a project in the workspace.
-        {
-            return ( ( FileEditorInput ) input ).getFile().getContents();
-        }
-        else if ( input instanceof IPathEditorInput )
-        {
-            return new FileInputStream( new File( ( ( IPathEditorInput ) input ).getPath().toOSString() ) );
-        }
-        else if ( inputClassName.equals( "org.eclipse.ui.internal.editors.text.JavaFileEditorInput" ) //$NON-NLS-1$
-            || inputClassName.equals( "org.eclipse.ui.ide.FileStoreEditorInput" ) ) //$NON-NLS-1$
-        // The class 'org.eclipse.ui.internal.editors.text.JavaFileEditorInput'
-        // is used when opening a file from the menu File > Open... in Eclipse 3.2.x
-        // The class 'org.eclipse.ui.ide.FileStoreEditorInput' is used when
-        // opening a file from the menu File > Open... in Eclipse 3.3.x
-        {
-            // We use the tooltip to get the full path of the file
-            return new FileInputStream( new File( input.getToolTipText() ) );
-        }
+        Object selectedPage = event.getSelectedPage();
 
-        return null;
+        if ( selectedPage instanceof ServerConfigurationEditorPage )
+        {
+            ( ( ServerConfigurationEditorPage ) selectedPage ).refreshUI();
+        }
     }
 
 
@@ -231,183 +133,39 @@ public class ServerConfigurationEditor extends FormEditor
     {
         try
         {
-            if ( serverConfiguration == null )
-            {
-                ErrorPage errorPage = new ErrorPage( this );
-                addPage( errorPage );
-            }
-            else
-            {
-                switch ( serverConfiguration.getVersion() )
-                {
-                    case VERSION_1_5_7:
-                        generalPage = new org.apache.directory.studio.apacheds.configuration.editor.v157.GeneralPage(
-                            this );
-                        addPage( generalPage );
-
-                        authenticationPage = new org.apache.directory.studio.apacheds.configuration.editor.v157.AuthenticationPage(
-                            this );
-                        addPage( authenticationPage );
-
-                        partitionsPage = new org.apache.directory.studio.apacheds.configuration.editor.v157.PartitionsPage(
-                            this );
-                        addPage( partitionsPage );
-
-                        interceptorsPage = new org.apache.directory.studio.apacheds.configuration.editor.v157.InterceptorsPage(
-                            this );
-                        addPage( interceptorsPage );
-
-                        extendedOperationsPage = new org.apache.directory.studio.apacheds.configuration.editor.v157.ExtendedOperationsPage(
-                            this );
-                        addPage( extendedOperationsPage );
-                        break;
-                    case VERSION_1_5_6:
-                        generalPage = new org.apache.directory.studio.apacheds.configuration.editor.v156.GeneralPage(
-                            this );
-                        addPage( generalPage );
-
-                        authenticationPage = new org.apache.directory.studio.apacheds.configuration.editor.v156.AuthenticationPage(
-                            this );
-                        addPage( authenticationPage );
-
-                        partitionsPage = new org.apache.directory.studio.apacheds.configuration.editor.v156.PartitionsPage(
-                            this );
-                        addPage( partitionsPage );
-
-                        interceptorsPage = new org.apache.directory.studio.apacheds.configuration.editor.v156.InterceptorsPage(
-                            this );
-                        addPage( interceptorsPage );
-
-                        extendedOperationsPage = new org.apache.directory.studio.apacheds.configuration.editor.v156.ExtendedOperationsPage(
-                            this );
-                        addPage( extendedOperationsPage );
-                        break;
-                    case VERSION_1_5_5:
-                        generalPage = new org.apache.directory.studio.apacheds.configuration.editor.v155.GeneralPage(
-                            this );
-                        addPage( generalPage );
-
-                        authenticationPage = new org.apache.directory.studio.apacheds.configuration.editor.v155.AuthenticationPage(
-                            this );
-                        addPage( authenticationPage );
-
-                        partitionsPage = new org.apache.directory.studio.apacheds.configuration.editor.v155.PartitionsPage(
-                            this );
-                        addPage( partitionsPage );
-
-                        interceptorsPage = new org.apache.directory.studio.apacheds.configuration.editor.v155.InterceptorsPage(
-                            this );
-                        addPage( interceptorsPage );
-
-                        extendedOperationsPage = new org.apache.directory.studio.apacheds.configuration.editor.v155.ExtendedOperationsPage(
-                            this );
-                        addPage( extendedOperationsPage );
-                        break;
-                    case VERSION_1_5_4:
-                        generalPage = new org.apache.directory.studio.apacheds.configuration.editor.v154.GeneralPage(
-                            this );
-                        addPage( generalPage );
-
-                        authenticationPage = new org.apache.directory.studio.apacheds.configuration.editor.v154.AuthenticationPage(
-                            this );
-                        addPage( authenticationPage );
-
-                        partitionsPage = new org.apache.directory.studio.apacheds.configuration.editor.v154.PartitionsPage(
-                            this );
-                        addPage( partitionsPage );
-
-                        interceptorsPage = new org.apache.directory.studio.apacheds.configuration.editor.v154.InterceptorsPage(
-                            this );
-                        addPage( interceptorsPage );
-
-                        extendedOperationsPage = new org.apache.directory.studio.apacheds.configuration.editor.v154.ExtendedOperationsPage(
-                            this );
-                        addPage( extendedOperationsPage );
-                        break;
-                    case VERSION_1_5_3:
-                        generalPage = new org.apache.directory.studio.apacheds.configuration.editor.v153.GeneralPage(
-                            this );
-                        addPage( generalPage );
-
-                        authenticationPage = new org.apache.directory.studio.apacheds.configuration.editor.v153.AuthenticationPage(
-                            this );
-                        addPage( authenticationPage );
-
-                        partitionsPage = new org.apache.directory.studio.apacheds.configuration.editor.v153.PartitionsPage(
-                            this );
-                        addPage( partitionsPage );
-
-                        interceptorsPage = new org.apache.directory.studio.apacheds.configuration.editor.v153.InterceptorsPage(
-                            this );
-                        addPage( interceptorsPage );
-
-                        extendedOperationsPage = new org.apache.directory.studio.apacheds.configuration.editor.v153.ExtendedOperationsPage(
-                            this );
-                        addPage( extendedOperationsPage );
-                        break;
-                    case VERSION_1_5_2:
-                        generalPage = new org.apache.directory.studio.apacheds.configuration.editor.v152.GeneralPage(
-                            this );
-                        addPage( generalPage );
-
-                        authenticationPage = new org.apache.directory.studio.apacheds.configuration.editor.v152.AuthenticationPage(
-                            this );
-                        addPage( authenticationPage );
-
-                        partitionsPage = new org.apache.directory.studio.apacheds.configuration.editor.v152.PartitionsPage(
-                            this );
-                        addPage( partitionsPage );
-
-                        interceptorsPage = new org.apache.directory.studio.apacheds.configuration.editor.v152.InterceptorsPage(
-                            this );
-                        addPage( interceptorsPage );
-
-                        extendedOperationsPage = new org.apache.directory.studio.apacheds.configuration.editor.v152.ExtendedOperationsPage(
-                            this );
-                        addPage( extendedOperationsPage );
-                        break;
-                    case VERSION_1_5_1:
-                        generalPage = new org.apache.directory.studio.apacheds.configuration.editor.v151.GeneralPage(
-                            this );
-                        addPage( generalPage );
-
-                        partitionsPage = new org.apache.directory.studio.apacheds.configuration.editor.v151.PartitionsPage(
-                            this );
-                        addPage( partitionsPage );
-
-                        interceptorsPage = new org.apache.directory.studio.apacheds.configuration.editor.v151.InterceptorsPage(
-                            this );
-                        addPage( interceptorsPage );
-
-                        extendedOperationsPage = new org.apache.directory.studio.apacheds.configuration.editor.v151.ExtendedOperationsPage(
-                            this );
-                        addPage( extendedOperationsPage );
-                        break;
-                    case VERSION_1_5_0:
-                        generalPage = new org.apache.directory.studio.apacheds.configuration.editor.v150.GeneralPage(
-                            this );
-                        addPage( generalPage );
-
-                        partitionsPage = new org.apache.directory.studio.apacheds.configuration.editor.v150.PartitionsPage(
-                            this );
-                        addPage( partitionsPage );
-
-                        interceptorsPage = new org.apache.directory.studio.apacheds.configuration.editor.v150.InterceptorsPage(
-                            this );
-                        addPage( interceptorsPage );
-
-                        extendedOperationsPage = new org.apache.directory.studio.apacheds.configuration.editor.v150.ExtendedOperationsPage(
-                            this );
-                        addPage( extendedOperationsPage );
-                        break;
-                }
-            }
+            loadingPage = new LoadingPage( this );
+            addPage( loadingPage );
         }
         catch ( PartInitException e )
         {
-            ApacheDSConfigurationPlugin.getDefault().getLog().log(
-                new Status( Status.ERROR, ApacheDSConfigurationPluginConstants.PLUGIN_ID, Status.OK, e.getMessage(), e
-                    .getCause() ) );
+        }
+
+        showOrHideTabFolder();
+    }
+
+
+    /**
+     * Shows or hides the tab folder depending on
+     * the number of pages.
+     */
+    private void showOrHideTabFolder()
+    {
+        Composite container = getContainer();
+        
+        if ( container instanceof CTabFolder )
+        {
+            CTabFolder folder = ( CTabFolder ) container;
+            
+            if ( getPageCount() == 1 )
+            {
+                folder.setTabHeight( 0 );
+            }
+            else
+            {
+                folder.setTabHeight( -1 );
+            }
+            
+            folder.layout( true, true );
         }
     }
 
@@ -417,169 +175,13 @@ public class ServerConfigurationEditor extends FormEditor
      */
     public void doSave( IProgressMonitor monitor )
     {
-        monitor.beginTask(
-            Messages.getString( "ServerConfigurationEditor.SavingTheServerConfiguration" ), IProgressMonitor.UNKNOWN ); //$NON-NLS-1$
+        // Saving pages
+        doSavePages( monitor );
 
-        // Saving the editor pages
-        saveEditorPages( monitor );
-
-        try
-        {
-            IEditorInput input = getEditorInput();
-            String inputClassName = input.getClass().getName();
-            boolean success = false;
-            if ( input instanceof FileEditorInput )
-            // FileEditorInput class is used when the file is opened
-            // from a project in the workspace.
-            {
-                // Saving the ServerConfiguration to disk
-                saveConfiguration( ( FileEditorInput ) input, monitor );
-                success = true;
-            }
-            else if ( input instanceof IPathEditorInput )
-            {
-                // Saving the ServerConfiguration to disk
-                saveConfiguration( ( ( IPathEditorInput ) input ).getPath().toOSString() );
-                success = true;
-            }
-            else if ( inputClassName.equals( "org.eclipse.ui.internal.editors.text.JavaFileEditorInput" ) //$NON-NLS-1$
-                || inputClassName.equals( "org.eclipse.ui.ide.FileStoreEditorInput" ) ) //$NON-NLS-1$
-            // The class 'org.eclipse.ui.internal.editors.text.JavaFileEditorInput'
-            // is used when opening a file from the menu File > Open... in Eclipse 3.2.x
-            // The class 'org.eclipse.ui.ide.FileStoreEditorInput' is used when
-            // opening a file from the menu File > Open... in Eclipse 3.3.x
-            {
-                // Saving the ServerConfiguration to disk
-                saveConfiguration( input.getToolTipText() );
-                success = true;
-            }
-            else if ( input instanceof NonExistingServerConfigurationInput )
-            {
-                // The 'ServerConfigurationEditorInput' class is used when a
-                // new Server Configuration File is created.
-
-                // We are saving this as if it is a "Save as..." action.
-                success = doSaveAs( monitor );
-            }
-
-            setDirty( !success );
-            monitor.done();
-        }
-        catch ( Exception e )
-        {
-            MessageDialog.openError(
-                PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-                Messages.getString( "ServerConfigurationEditor.Error" ), //$NON-NLS-1$
-                Messages.getString( "ServerConfigurationEditor.AnErrorOccurredWhenWritingTheFileToDisk" ) + "\n" //$NON-NLS-1$ //$NON-NLS-2$
-                    + e.getMessage() );
-            setDirty( true );
-            monitor.done();
-            return;
-        }
-    }
-
-
-    /**
-     * Saves the editor pages.
-     *
-     * @param monitor
-     *      the monitor to use
-     */
-    private void saveEditorPages( IProgressMonitor monitor )
-    {
-        if ( serverConfiguration != null )
-        {
-            switch ( serverConfiguration.getVersion() )
-            {
-                case VERSION_1_5_7:
-                    generalPage.doSave( monitor );
-                    authenticationPage.doSave( monitor );
-                    partitionsPage.doSave( monitor );
-                    interceptorsPage.doSave( monitor );
-                    extendedOperationsPage.doSave( monitor );
-                    break;
-                case VERSION_1_5_6:
-                    generalPage.doSave( monitor );
-                    authenticationPage.doSave( monitor );
-                    partitionsPage.doSave( monitor );
-                    interceptorsPage.doSave( monitor );
-                    extendedOperationsPage.doSave( monitor );
-                    break;
-                case VERSION_1_5_5:
-                    generalPage.doSave( monitor );
-                    authenticationPage.doSave( monitor );
-                    partitionsPage.doSave( monitor );
-                    interceptorsPage.doSave( monitor );
-                    extendedOperationsPage.doSave( monitor );
-                    break;
-                case VERSION_1_5_4:
-                    generalPage.doSave( monitor );
-                    authenticationPage.doSave( monitor );
-                    partitionsPage.doSave( monitor );
-                    interceptorsPage.doSave( monitor );
-                    extendedOperationsPage.doSave( monitor );
-                    break;
-                case VERSION_1_5_3:
-                    generalPage.doSave( monitor );
-                    authenticationPage.doSave( monitor );
-                    partitionsPage.doSave( monitor );
-                    interceptorsPage.doSave( monitor );
-                    extendedOperationsPage.doSave( monitor );
-                    break;
-                case VERSION_1_5_2:
-                    generalPage.doSave( monitor );
-                    authenticationPage.doSave( monitor );
-                    partitionsPage.doSave( monitor );
-                    interceptorsPage.doSave( monitor );
-                    extendedOperationsPage.doSave( monitor );
-                    break;
-                case VERSION_1_5_1:
-                    generalPage.doSave( monitor );
-                    partitionsPage.doSave( monitor );
-                    interceptorsPage.doSave( monitor );
-                    extendedOperationsPage.doSave( monitor );
-                    break;
-                case VERSION_1_5_0:
-                    generalPage.doSave( monitor );
-                    partitionsPage.doSave( monitor );
-                    interceptorsPage.doSave( monitor );
-                    extendedOperationsPage.doSave( monitor );
-                    break;
-            }
-        }
-    }
-
-
-    /**
-     * Saves the server configuration to the given path.
-     *
-     * @param path
-     *      the path where to save the file
-     * @throws IOException
-     * @throws ServerConfigurationWriterException
-     */
-    private void saveConfiguration( String path ) throws IOException
-    {
-        BufferedWriter outFile = new BufferedWriter( new FileWriter( path ) );
-        String xml = serverXmlIO.toXml( serverConfiguration );
-        outFile.write( xml );
-        outFile.close();
-    }
-
-
-    /**
-     * Saves the server configuration using the given {@link FileEditorInput}.
-     *
-     * @param fei
-     *      the {@link FileEditorInput}
-     * @throws ServerConfigurationWriterException 
-     * @throws CoreException 
-     * @throws IOException 
-     */
-    private void saveConfiguration( FileEditorInput fei, IProgressMonitor monitor ) throws CoreException, IOException
-    {
-        String xml = serverXmlIO.toXml( serverConfiguration );
-        fei.getFile().setContents( new ByteArrayInputStream( xml.getBytes() ), true, true, monitor );
+        // Saving the configuration using a job
+        StudioJob<StudioRunnableWithProgress> job = new StudioJob<StudioRunnableWithProgress>(
+            new SaveConfigurationRunnable( this ) );
+        job.schedule();
     }
 
 
@@ -596,37 +198,22 @@ public class ServerConfigurationEditor extends FormEditor
                 {
                     try
                     {
-                        monitor
-                            .beginTask(
-                                Messages.getString( "ServerConfigurationEditor.SavingTheServerConfiguration" ), IProgressMonitor.UNKNOWN ); //$NON-NLS-1$
-                        saveEditorPages( monitor );
-                        boolean success = doSaveAs( monitor );
-                        setDirty( !success );
+                        monitor.beginTask(
+                            Messages.getString( "ServerConfigurationEditor.SavingServerConfiguration" ), IProgressMonitor.UNKNOWN ); //$NON-NLS-1$
+                        doSaveAs( monitor );
                         monitor.done();
                     }
                     catch ( Exception e )
                     {
-                        MessageDialog.openError(
-                            PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-                            Messages.getString( "ServerConfigurationEditor.Error" ), //$NON-NLS-1$ 
-                            Messages.getString( "ServerConfigurationEditor.AnErrorOccurredWhenWritingTheFileToDisk" ) //$NON-NLS-1$ 
-                                + "\n" + e.getMessage() ); //$NON-NLS-1$ 
-                        setDirty( true );
-                        monitor.done();
-                        return;
+                        // TODO handle the exception
                     }
                 }
             } );
         }
         catch ( Exception e )
         {
-            MessageDialog
-                .openError(
-                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-                    Messages.getString( "ServerConfigurationEditor.Error" ), //$NON-NLS-1$ 
-                    Messages.getString( "ServerConfigurationEditor.AnErrorOccurredWhenWritingTheFileToDisk" ) + "\n" //$NON-NLS-1$ //$NON-NLS-2$ 
-                        + e.getMessage() );
-            return;
+            // TODO handle the exception
+            e.printStackTrace();
         }
     }
 
@@ -634,109 +221,60 @@ public class ServerConfigurationEditor extends FormEditor
     /**
      * Performs the "Save as..." action.
      *
-     * @param monitor
-     *      the monitor to use
+     * @param monitor the monitor to use
      * @throws Exception
      */
-    private boolean doSaveAs( IProgressMonitor monitor ) throws Exception
+    public boolean doSaveAs( IProgressMonitor monitor ) throws Exception
     {
-        // detect IDE or RCP:
-        // check if perspective org.eclipse.ui.resourcePerspective is available
-        boolean isIDE = CommonUIUtils.isIDEEnvironment();
+        // Saving pages
+        doSavePages( monitor );
 
-        if ( isIDE )
+        // Saving the configuration as a new file and getting the associated new editor input
+        IEditorInput newInput = ServerConfigurationEditorUtils.saveAs( monitor, getSite().getShell(),
+            getEditorInput(), getConfigWriter(), getConfiguration(), true );
+
+        // Checking if the 'save as' is successful 
+        boolean success = newInput != null;
+        
+        if ( success )
         {
-            // Asking the user for the location where to 'save as' the file
-            SaveAsDialog dialog = new SaveAsDialog( getSite().getShell() );
-            if ( !( getEditorInput() instanceof NonExistingServerConfigurationInput ) )
-            {
-                dialog.setOriginalFile( ResourcesPlugin.getWorkspace().getRoot().getFile(
-                    new Path( getEditorInput().getToolTipText() ) ) );
-            }
-            if ( dialog.open() != Dialog.OK )
-            {
-                return false;
-            }
-
-            // Getting if the resulting file
-            IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile( dialog.getResult() );
-
-            // Creating the file if it does not exist
-            if ( !file.exists() )
-            {
-                file.create( new ByteArrayInputStream( "".getBytes() ), true, null ); //$NON-NLS-1$
-            }
-
-            // Creating the new input for the editor
-            FileEditorInput fei = new FileEditorInput( file );
-
-            // Saving the file to disk
-            saveEditorPages( monitor );
-            saveConfiguration( fei, monitor );
-
-            // Setting the new input to the editor
-            setInput( fei );
-        }
-        else
-        {
-            Shell shell = getSite().getShell();
-            boolean canOverwrite = false;
-            String path = null;
-
-            while ( !canOverwrite )
-            {
-                // Open FileDialog
-                FileDialog dialog = new FileDialog( shell, SWT.SAVE );
-                path = dialog.open();
-                if ( path == null )
-                {
-                    return false;
-                }
-
-                // Check whether file exists and if so, confirm overwrite
-                final File externalFile = new File( path );
-                if ( externalFile.exists() )
-                {
-                    String question = NLS.bind( Messages
-                        .getString( "ServerConfigurationEditor.TheFileAlreadyExistsReplace" ), path ); //$NON-NLS-1$
-                    MessageDialog overwriteDialog = new MessageDialog( shell, Messages
-                        .getString( "ServerConfigurationEditor.Question" ), null, question, //$NON-NLS-1$
-                        MessageDialog.QUESTION, new String[]
-                            { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL, IDialogConstants.CANCEL_LABEL }, 0 );
-                    int overwrite = overwriteDialog.open();
-                    switch ( overwrite )
-                    {
-                        case 0: // Yes
-                            canOverwrite = true;
-                            break;
-                        case 1: // No
-                            break;
-                        case 2: // Cancel
-                        default:
-                            return false;
-                    }
-                }
-                else
-                {
-                    canOverwrite = true;
-                }
-            }
-
-            // Saving the file to disk
-            saveEditorPages( monitor );
-            saveConfiguration( path );
-
-            // Creating the new input for the editor
-            PathEditorInput newInput = new PathEditorInput( new Path( path ) );
-
             // Setting the new input to the editor
             setInput( newInput );
+
+            // Resetting the dirty state of the editor
+            setDirty( false );
+
+            // Updating the title and tooltip texts
+            Display.getDefault().syncExec( new Runnable()
+            {
+                public void run()
+                {
+                    setPartName( getEditorInput().getName() );
+                }
+            } );
         }
 
-        // Updating the title and tooltip texts
-        setPartName( getEditorInput().getName() );
+        return success;
+    }
 
-        return true;
+
+    /**
+     * Saves the pages.
+     *
+     * @param monitor the monitor
+     */
+    private void doSavePages( final IProgressMonitor monitor )
+    {
+        if ( partitionsPage != null )
+        {
+            Display.getDefault().syncExec( new Runnable()
+            {
+                public void run()
+                {
+                    partitionsPage.doSave( monitor );
+                }
+            } );
+        }
     }
 
 
@@ -759,38 +297,191 @@ public class ServerConfigurationEditor extends FormEditor
 
 
     /**
-     * Sets the dirty state of the editor.
-     * 
-     * @param dirty
-     *      the new dirty
+     * Sets the 'dirty' flag.
+     *
+     * @param dirty the 'dirty' flag
      */
     public void setDirty( boolean dirty )
     {
         this.dirty = dirty;
-        editorDirtyStateChanged();
+
+        Display.getDefault().asyncExec( new Runnable()
+        {
+            public void run()
+            {
+                firePropertyChange( PROP_DIRTY );
+            }
+        } );
     }
 
 
     /**
-     * Gets the Server Configuration.
+     * Gets the configuration.
      *
-     * @return
-     *      the Server Configuration
+     * @return the configuration
      */
-    public ServerConfiguration getServerConfiguration()
+    public Configuration getConfiguration()
     {
-        return serverConfiguration;
+        return configuration;
     }
 
 
     /**
-     * Gets the error message.
+     * Sets the configuration.
      *
-     * @return
-     *      the error message
+     * @param configuration the configuration
      */
-    public String getErrorMessage()
+    public void setConfiguration( Configuration configuration )
     {
-        return errorMessage;
+        this.configuration = configuration;
+    }
+
+
+    /**
+     * Resets the configuration and refresh the UI.
+     *
+     * @param configuration the configuration
+     */
+    public void resetConfiguration( Configuration configuration )
+    {
+        setConfiguration( configuration );
+
+        setDirty( true );
+
+        overviewPage.refreshUI();
+        ldapLdapsServersPage.refreshUI();
+        kerberosServerPage.refreshUI();
+        partitionsPage.refreshUI();
+        passwordPolicyPage.refreshUI();
+        replicationPage.refreshUI();
+    }
+
+
+    /**
+     * This method is called by the job responsible for loading the 
+     * configuration when it has been fully and correctly loaded.
+     *
+     * @param configuration the configuration
+     */
+    public void configurationLoaded( Configuration configuration )
+    {
+        setConfiguration( configuration );
+
+        hideLoadingPageAndDisplayConfigPages();
+    }
+
+
+    /**
+     * This method is called by the job responsible for loading the
+     * configuration when it failed to load it.
+     *
+     * @param exception the exception
+     */
+    public void configurationLoadFailed( Exception exception )
+    {
+        // Overriding the default dirty setting 
+        // (especially in the case of a new configuration file)
+        setDirty( false );
+
+        hideLoadingPageAndDisplayErrorPage( exception );
+    }
+
+
+    /**
+     * Hides the loading page and displays the standard configuration pages.
+     */
+    private void hideLoadingPageAndDisplayConfigPages()
+    {
+        // Removing the loading page
+        removePage( 0 );
+
+        // Adding the configuration pages
+        try
+        {
+            overviewPage = new OverviewPage( this );
+            addPage( overviewPage );
+            ldapLdapsServersPage = new LdapLdapsServersPage( this );
+            addPage( ldapLdapsServersPage );
+            kerberosServerPage = new KerberosServerPage( this );
+            addPage( kerberosServerPage );
+            partitionsPage = new PartitionsPage( this );
+            addPage( partitionsPage );
+            passwordPolicyPage = new PasswordPoliciesPage( this );
+            addPage( passwordPolicyPage );
+            replicationPage = new ReplicationPage( this );
+            addPage( replicationPage );
+        }
+        catch ( PartInitException e )
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        // Activating the first page
+        setActivePage( 0 );
+
+        showOrHideTabFolder();
+    }
+
+
+    /**
+     * Hides the loading page and displays the error page.
+     *
+     * @param exception
+     *      the exception
+     */
+    private void hideLoadingPageAndDisplayErrorPage( Exception exception )
+    {
+        // Removing the loading page
+        removePage( 0 );
+
+        // Adding the error page
+        try
+        {
+            addPage( new ErrorPage( this, exception ) );
+        }
+        catch ( PartInitException e )
+        {
+        }
+
+        // Activating the first page
+        setActivePage( 0 );
+
+        showOrHideTabFolder();
+    }
+
+
+    /**
+     * Set a particular page as active if it is found in the pages vector.
+     *
+     * @param pageClass the class of the page
+     */
+    public void showPage( Class<?> pageClass )
+    {
+        if ( pageClass != null )
+        {
+            for ( Object page : pages )
+            {
+                if ( pageClass.isInstance( page ) )
+                {
+                    setActivePage( pages.indexOf( page ) );
+                    
+                    return;
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Gets the configuration writer.
+     *
+     * @return the configuration writer
+     * @throws Exception
+     */
+    public ConfigWriter getConfigWriter() throws Exception
+    {
+        return new ConfigWriter( ApacheDS2ConfigurationPlugin.getDefault().getSchemaManager(),
+            configuration.getConfigBean() );
     }
 }

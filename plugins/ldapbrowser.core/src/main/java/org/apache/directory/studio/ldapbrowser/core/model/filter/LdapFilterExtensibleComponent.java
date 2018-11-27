@@ -467,27 +467,27 @@ public class LdapFilterExtensibleComponent extends LdapFilterComponent
     {
         if ( dnAttrColonToken != null && dnAttrToken == null )
         {
-            return "Missing dn";
+            return Messages.LdapFilterExtensibleComponent_MissingDn;
         }
         else if ( matchingRuleColonToken != null && matchingRuleToken == null )
         {
-            return "Missing matching rule";
+            return Messages.LdapFilterExtensibleComponent_MissingMatchingRule;
         }
         else if ( equalsColonToken == null )
         {
-            return "Missing colon";
+            return Messages.LdapFilterExtensibleComponent_MissingColon;
         }
         else if ( equalsToken == null )
         {
-            return "Missing equals";
+            return Messages.LdapFilterExtensibleComponent_MissingEquals;
         }
         else if ( attributeToken == null )
         {
-            return "Missing attribute type";
+            return Messages.LdapFilterExtensibleComponent_MissingAttributeType;
         }
         else if ( valueToken != null )
         {
-            return "Missing value";
+            return Messages.LdapFilterExtensibleComponent_MissingValue;
         }
         else
         {

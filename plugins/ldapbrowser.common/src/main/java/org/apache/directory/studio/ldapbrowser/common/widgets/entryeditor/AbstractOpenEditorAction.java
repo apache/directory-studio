@@ -48,7 +48,7 @@ public abstract class AbstractOpenEditorAction extends BrowserAction implements 
     protected TreeViewer viewer;
 
     /** The cell editor. */
-    protected CellEditor cellEditor;
+    private CellEditor cellEditor;
 
     /** The actionGroup. */
     protected EntryEditorWidgetActionGroup actionGroup;
@@ -93,6 +93,17 @@ public abstract class AbstractOpenEditorAction extends BrowserAction implements 
 
 
     /**
+     * Sets the cell editor.
+     * 
+     * @param cellEditor the cell editor
+     */
+    public void setCellEditor( CellEditor cellEditor )
+    {
+        this.cellEditor = cellEditor;
+    }
+
+
+    /**
      * {@inheritDoc}
      */
     public void run()
@@ -107,8 +118,8 @@ public abstract class AbstractOpenEditorAction extends BrowserAction implements 
     private void activateEditor()
     {
         if ( !viewer.isCellEditorActive()
-            && getSelectedValues().length == 1
-            && getSelectedAttributes().length == 0
+            && ( getSelectedValues().length == 1 )
+            && ( getSelectedAttributes().length == 0 )
             && viewer.getCellModifier().canModify( getSelectedValues()[0],
                 EntryEditorWidgetTableMetadata.VALUE_COLUMN_NAME ) )
         {

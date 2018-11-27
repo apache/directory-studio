@@ -24,7 +24,7 @@ package org.apache.directory.studio.ldapbrowser.common.filtereditor;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
+import org.apache.directory.studio.common.ui.CommonUIConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilter;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterParser;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterToken;
@@ -41,7 +41,6 @@ import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.jface.text.source.IAnnotationModelExtension;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.MatchingCharacterPainter;
-import org.eclipse.swt.graphics.RGB;
 
 
 /**
@@ -93,12 +92,12 @@ public class FilterReconcilingStrategy implements IReconcilingStrategy
         {
             AnnotationPainter ap = new AnnotationPainter( sourceViewer, null );
             ap.addAnnotationType( "DEFAULT" ); //$NON-NLS-1$
-            ap.setAnnotationTypeColor( "DEFAULT", BrowserCommonActivator.getDefault().getColor( new RGB( 255, 0, 0 ) ) ); //$NON-NLS-1$
+            ap.setAnnotationTypeColor( "DEFAULT", CommonUIConstants.RED_COLOR ); //$NON-NLS-1$
             sourceViewer.getAnnotationModel().addAnnotationModelListener( ap );
 
             FilterCharacterPairMatcher cpm = new FilterCharacterPairMatcher( sourceViewer, parser );
             MatchingCharacterPainter mcp = new MatchingCharacterPainter( sourceViewer, cpm );
-            mcp.setColor( BrowserCommonActivator.getDefault().getColor( new RGB( 159, 159, 159 ) ) );
+            mcp.setColor( CommonUIConstants.ML_GREY_COLOR );
 
             paintManager = new PaintManager( sourceViewer );
             paintManager.addPainter( ap );

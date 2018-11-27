@@ -23,18 +23,18 @@ package org.apache.directory.studio.schemaeditor.view.editors.attributetype;
 
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
-import org.apache.directory.shared.ldap.model.schema.ObjectClass;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
+import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
+import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
+import org.apache.directory.studio.schemaeditor.PluginUtils;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandlerAdapter;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 import org.apache.directory.studio.schemaeditor.view.ViewUtils;
 import org.apache.directory.studio.schemaeditor.view.editors.objectclass.ObjectClassEditor;
 import org.apache.directory.studio.schemaeditor.view.editors.objectclass.ObjectClassEditorInput;
-import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.osgi.util.NLS;
@@ -162,7 +162,7 @@ public class AttributeTypeEditorUsedByPage extends AbstractAttributeTypeEditorPa
                 }
                 catch ( PartInitException exception )
                 {
-                    Logger.getLogger( AttributeTypeEditorUsedByPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                    PluginUtils.logError( "error when opening the editor", exception ); //$NON-NLS-1$
                 }
             }
         }
@@ -186,7 +186,7 @@ public class AttributeTypeEditorUsedByPage extends AbstractAttributeTypeEditorPa
                 }
                 catch ( PartInitException exception )
                 {
-                    Logger.getLogger( AttributeTypeEditorUsedByPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                    PluginUtils.logError( "error when opening the editor", exception ); //$NON-NLS-1$
                 }
             }
         }

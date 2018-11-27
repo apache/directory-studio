@@ -21,8 +21,8 @@
 package org.apache.directory.studio.ldifeditor.editor.actions;
 
 
-import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
-import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyConnection;
@@ -87,11 +87,12 @@ public abstract class AbstractOpenValueEditorAction extends AbstractLdifAction
                 cellEditor.activate();
                 Object newValue = cellEditor.getValue();
 
-                if ( newValue != null && newValue instanceof String || newValue instanceof byte[] )
+                if ( ( newValue instanceof String ) || ( newValue instanceof byte[] ) )
                 {
                     IDocument document = editor.getDocumentProvider().getDocument( editor.getEditorInput() );
 
                     LdifValueLineBase newLine;
+                    
                     if ( line instanceof LdifControlLine )
                     {
                         LdifControlLine oldControlLine = ( LdifControlLine ) line;
@@ -153,7 +154,7 @@ public abstract class AbstractOpenValueEditorAction extends AbstractLdifAction
             try
             {
                 // some value editors need the real Dn (e.g. the password editor)
-                DummyEntry dummyEntry = new DummyEntry( Dn.isValid(dn) ? new Dn( dn ) : new Dn(),
+                DummyEntry dummyEntry = new DummyEntry( Dn.isValid( dn ) ? new Dn( dn ) : new Dn(),
                     connection );
                 Attribute dummyAttribute = new Attribute( dummyEntry, description );
                 Value dummyValue = new Value( dummyAttribute, value );

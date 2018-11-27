@@ -33,14 +33,13 @@ import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
  */
 public interface IConnectionListener
 {
-
     /**
      * Called when an {@link Connection} was opened.
      *
      * @param connection the opened connection 
      * @param monitor the progress monitor
      */
-    public void connectionOpened( Connection connection, StudioProgressMonitor monitor );
+    void connectionOpened( Connection connection, StudioProgressMonitor monitor );
 
 
     /**
@@ -49,5 +48,5 @@ public interface IConnectionListener
      * @param connection the closed connection 
      * @param monitor the progress monitor
      */
-    public void connectionClosed( Connection connection, StudioProgressMonitor monitor );
+    void connectionClosed( Connection connection, StudioProgressMonitor monitor );
 }

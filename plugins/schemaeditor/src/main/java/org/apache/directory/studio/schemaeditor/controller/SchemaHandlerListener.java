@@ -20,10 +20,10 @@
 package org.apache.directory.studio.schemaeditor.controller;
 
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
-import org.apache.directory.shared.ldap.model.schema.ObjectClass;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
+import org.apache.directory.api.ldap.model.schema.LdapSyntax;
+import org.apache.directory.api.ldap.model.schema.MatchingRule;
+import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 
 
@@ -41,7 +41,7 @@ public interface SchemaHandlerListener
      * @param at
      *      the added attribute type
      */
-    public void attributeTypeAdded( AttributeType at );
+    void attributeTypeAdded( AttributeType at );
 
 
     /**
@@ -50,7 +50,7 @@ public interface SchemaHandlerListener
      * @param at
      *      the modified attribute type
      */
-    public void attributeTypeModified( AttributeType at );
+    void attributeTypeModified( AttributeType at );
 
 
     /**
@@ -59,7 +59,7 @@ public interface SchemaHandlerListener
      * @param at
      *      the removed attribute type
      */
-    public void attributeTypeRemoved( AttributeType at );
+    void attributeTypeRemoved( AttributeType at );
 
 
     /**
@@ -68,7 +68,7 @@ public interface SchemaHandlerListener
      * @param mr
      *      the added matching rule
      */
-    public void matchingRuleAdded( MatchingRule mr );
+    void matchingRuleAdded( MatchingRule mr );
 
 
     /**
@@ -77,7 +77,7 @@ public interface SchemaHandlerListener
      * @param mr
      *      the modified matching rule
      */
-    public void matchingRuleModified( MatchingRule mr );
+    void matchingRuleModified( MatchingRule mr );
 
 
     /**
@@ -86,7 +86,7 @@ public interface SchemaHandlerListener
      * @param mr
      *      the removed matching rule
      */
-    public void matchingRuleRemoved( MatchingRule mr );
+    void matchingRuleRemoved( MatchingRule mr );
 
 
     /**
@@ -95,7 +95,7 @@ public interface SchemaHandlerListener
      * @param oc
      *      the added object class
      */
-    public void objectClassAdded( ObjectClass oc );
+    void objectClassAdded( ObjectClass oc );
 
 
     /**
@@ -104,7 +104,7 @@ public interface SchemaHandlerListener
      * @param oc
      *      the modified object class
      */
-    public void objectClassModified( ObjectClass oc );
+    void objectClassModified( ObjectClass oc );
 
 
     /**
@@ -113,7 +113,7 @@ public interface SchemaHandlerListener
      * @param oc
      *      the removed attribute type
      */
-    public void objectClassRemoved( ObjectClass oc );
+    void objectClassRemoved( ObjectClass oc );
 
 
     /**
@@ -122,7 +122,7 @@ public interface SchemaHandlerListener
      * @param schema
      *      the added syntax
      */
-    public void schemaAdded( Schema schema );
+    void schemaAdded( Schema schema );
 
 
     /**
@@ -131,7 +131,7 @@ public interface SchemaHandlerListener
      * @param schema
      *      the removed syntax
      */
-    public void schemaRemoved( Schema schema );
+    void schemaRemoved( Schema schema );
 
 
     /**
@@ -140,7 +140,7 @@ public interface SchemaHandlerListener
      * @param schema
      *      the removed syntax
      */
-    public void schemaRenamed( Schema schema );
+    void schemaRenamed( Schema schema );
 
 
     /**
@@ -149,7 +149,7 @@ public interface SchemaHandlerListener
      * @param syntax
      *      the added syntax
      */
-    public void syntaxAdded( LdapSyntax syntax );
+    void syntaxAdded( LdapSyntax syntax );
 
 
     /**
@@ -158,7 +158,7 @@ public interface SchemaHandlerListener
      * @param syntax
      *      the modified syntax
      */
-    public void syntaxModified( LdapSyntax syntax );
+    void syntaxModified( LdapSyntax syntax );
 
 
     /**
@@ -167,5 +167,5 @@ public interface SchemaHandlerListener
      * @param syntax
      *      the removed syntax
      */
-    public void syntaxRemoved( LdapSyntax syntax );
+    void syntaxRemoved( LdapSyntax syntax );
 }

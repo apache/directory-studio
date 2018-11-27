@@ -22,6 +22,8 @@ package org.apache.directory.studio.schemaeditor.model.io;
 
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
+import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 
 
 /**
@@ -31,6 +33,9 @@ import org.apache.directory.studio.connection.core.Connection;
  */
 public abstract class AbstractSchemaConnector implements SchemaConnector
 {
+    protected static final AliasDereferencingMethod DEREF_ALIAS_METHOD = AliasDereferencingMethod.ALWAYS;
+    protected static final ReferralHandlingMethod HANDLE_REFERALS_METHOD = ReferralHandlingMethod.FOLLOW;
+
     /** The name */
     private String name;
 

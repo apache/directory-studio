@@ -22,7 +22,6 @@ package org.apache.directory.studio.connection.core.jobs;
 
 
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
-import org.apache.directory.studio.common.core.jobs.StudioRunnableWithProgress;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Messages;
 
@@ -34,7 +33,6 @@ import org.apache.directory.studio.connection.core.Messages;
  */
 public class CheckBindRunnable implements StudioConnectionRunnableWithProgress
 {
-
     private Connection connection;
 
 

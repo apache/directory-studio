@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor;
 
 
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
@@ -37,7 +38,6 @@ import org.eclipse.jface.viewers.ViewerFilter;
  */
 public class EntryEditorWidgetFilter extends ViewerFilter
 {
-
     /** The viewer to filter. */
     protected TreeViewer viewer;
 
@@ -53,8 +53,8 @@ public class EntryEditorWidgetFilter extends ViewerFilter
      */
     public EntryEditorWidgetFilter()
     {
-        this.quickFilterAttribute = ""; //$NON-NLS-1$
-        this.quickFilterValue = ""; //$NON-NLS-1$
+        quickFilterAttribute = ""; //$NON-NLS-1$
+        quickFilterValue = ""; //$NON-NLS-1$
     }
 
 
@@ -77,33 +77,23 @@ public class EntryEditorWidgetFilter extends ViewerFilter
     {
         if ( element instanceof IAttribute )
         {
-            IAttribute attribute = ( IAttribute ) element;
-
             // check if one of the values goes through the quick filter
-            boolean oneGoesThrough = false;
-            IValue[] values = attribute.getValues();
-            for ( int i = 0; i < values.length; i++ )
+            IValue[] values = ( ( IAttribute ) element).getValues();
+            
+            for ( IValue value : values )
             {
-                if ( goesThroughQuickFilter( values[i] ) )
+                if ( goesThroughQuickFilter( value ) )
                 {
-                    oneGoesThrough = true;
-                    break;
+                    return true;
                 }
             }
-            if ( !oneGoesThrough )
-            {
-                return false;
-            }
+            
+            return false;
         }
         else if ( element instanceof IValue )
         {
-            IValue value = ( IValue ) element;
-
             // check quick filter
-            if ( !goesThroughQuickFilter( value ) )
-            {
-                return false;
-            }
+            return goesThroughQuickFilter( ( IValue ) element );
         }
 
         return true;
@@ -120,7 +110,7 @@ public class EntryEditorWidgetFilter extends ViewerFilter
     private boolean goesThroughQuickFilter( IValue value )
     {
         // filter attribute description
-        if ( quickFilterAttribute != null && !"".equals( quickFilterAttribute ) ) //$NON-NLS-1$
+        if ( !Strings.isEmpty( quickFilterAttribute ) )
         {
             if ( value.getAttribute().getDescription().toUpperCase().indexOf( quickFilterAttribute.toUpperCase() ) == -1 )
             {
@@ -129,7 +119,7 @@ public class EntryEditorWidgetFilter extends ViewerFilter
         }
 
         // filter value
-        if ( quickFilterValue != null && !"".equals( quickFilterValue ) ) //$NON-NLS-1$
+        if ( !Strings.isEmpty( quickFilterValue ) )
         {
             if ( value.isString()
                 && value.getStringValue().toUpperCase().indexOf( quickFilterValue.toUpperCase() ) == -1 )
@@ -177,8 +167,8 @@ public class EntryEditorWidgetFilter extends ViewerFilter
         {
             String oldValue = this.quickFilterAttribute;
             this.quickFilterAttribute = quickFilterAttribute;
-            BrowserCommonActivator.getDefault().getPreferenceStore().firePropertyChangeEvent(
-                "QuickFilterAttributeChanged", oldValue, quickFilterAttribute ); //$NON-NLS-1$
+            BrowserCommonActivator.getDefault().getPreferenceStore()
+                .firePropertyChangeEvent( "QuickFilterAttributeChanged", oldValue, quickFilterAttribute ); //$NON-NLS-1$
         }
     }
 
@@ -205,9 +195,8 @@ public class EntryEditorWidgetFilter extends ViewerFilter
         {
             String oldValue = this.quickFilterValue;
             this.quickFilterValue = quickFilterValue;
-            BrowserCommonActivator.getDefault().getPreferenceStore().firePropertyChangeEvent(
-                "QuickFilterValueChanged", oldValue, quickFilterAttribute ); //$NON-NLS-1$
+            BrowserCommonActivator.getDefault().getPreferenceStore()
+                .firePropertyChangeEvent( "QuickFilterValueChanged", oldValue, quickFilterAttribute ); //$NON-NLS-1$
         }
     }
-
 }

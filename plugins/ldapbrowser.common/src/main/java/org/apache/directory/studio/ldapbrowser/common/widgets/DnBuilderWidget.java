@@ -25,10 +25,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
-import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
-import org.apache.directory.shared.ldap.model.name.Ava;
-import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.model.name.Rdn;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.name.Ava;
+import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.name.Rdn;
+import org.apache.directory.studio.common.ui.widgets.AbstractWidget;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.connection.ui.widgets.ExtendedContentAssistCommandAdapter;
@@ -57,17 +58,11 @@ import org.eclipse.swt.widgets.Text;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class DnBuilderWidget extends BrowserWidget implements ModifyListener
+public class DnBuilderWidget extends AbstractWidget implements ModifyListener
 {
 
     /** The attribute names that could be selected from drop-down list. */
     private String[] attributeNames;
-
-    /** The initial Rdn. */
-    private Rdn currentRdn;
-
-    /** The initial parent Dn. */
-    private Dn currentParentDn;
 
     /** True if the Rdn input elements should be shown. */
     private boolean showRDN;
@@ -108,6 +103,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
     // Listeners
     private SelectionListener rdnAddButtonSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             int index = rdnLineList.size();
@@ -127,6 +123,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
 
     private SelectionListener rdnDeleteButtonSelectionListener = new SelectionAdapter()
     {
+        @Override
         public void widgetSelected( SelectionEvent e )
         {
             int index = 0;
@@ -177,8 +174,8 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
     public void setInput( IBrowserConnection browserConnection, String[] attributeNames, Rdn rdn, Dn parentDn )
     {
         this.attributeNames = attributeNames;
-        this.currentRdn = rdn;
-        this.currentParentDn = parentDn;
+        Rdn currentRdn = rdn;
+        Dn currentParentDn = parentDn;
 
         if ( showRDN )
         {
@@ -218,20 +215,22 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
                     removeRdnLineListeners( i );
 
                     rdnLineList.get( i ).rdnTypeCombo.setText( ava.getType() );
-                    rdnLineList.get( i ).rdnValueText.setText( ava.getNormValue().getString() );
+                    rdnLineList.get( i ).rdnValueText.setText( (String)ava.getValue().getNormalized() );
 
                     addRdnLineListeners( i );
 
                     if ( i == 0 )
                     {
-                        if ( "".equals( rdnLineList.get( i ).rdnTypeCombo ) ) //$NON-NLS-1$
+                        RdnLine rdnLine = rdnLineList.get( i );
+                        
+                        if ( rdnLine.rdnTypeCombo != null ) //$NON-NLS-1$
                         {
-                            rdnLineList.get( i ).rdnTypeCombo.setFocus();
+                            rdnLine.rdnTypeCombo.setFocus();
                         }
                         else
                         {
-                            rdnLineList.get( i ).rdnValueText.selectAll();
-                            rdnLineList.get( i ).rdnValueText.setFocus();
+                            rdnLine.rdnValueText.selectAll();
+                            rdnLine.rdnValueText.setFocus();
                         }
                     }
                     i++;
@@ -290,13 +289,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
                 Messages.getString( "DnBuilderWidget.Parent" ), 1 ); //$NON-NLS-1$
             parentEntryWidget = new EntryWidget();
             parentEntryWidget.createWidget( composite );
-            parentEntryWidget.addWidgetModifyListener( new WidgetModifyListener()
-            {
-                public void widgetModified( WidgetModifyEvent event )
-                {
-                    validate();
-                }
-            } );
+            parentEntryWidget.addWidgetModifyListener( event -> validate() );
 
             BaseWidgetUtils.createSpacer( composite, 3 );
         }
@@ -306,7 +299,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
         {
             rdnLabel = BaseWidgetUtils.createLabel( composite, Messages.getString( "DnBuilderWidget.RDN" ), 1 ); //$NON-NLS-1$
             rdnComposite = BaseWidgetUtils.createColumnContainer( composite, 5, 2 );
-            rdnLineList = new ArrayList<RdnLine>();
+            rdnLineList = new ArrayList<>();
             BaseWidgetUtils.createSpacer( composite, 3 );
         }
 
@@ -421,6 +414,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
             else
             {
                 Dn dn;
+                
                 if ( showParent && showRDN )
                 {
                     try
@@ -470,7 +464,7 @@ public class DnBuilderWidget extends BrowserWidget implements ModifyListener
      */
     private void addRdnLine( Composite rdnComposite, int index )
     {
-        RdnLine[] rdnLines = ( RdnLine[] ) rdnLineList.toArray( new RdnLine[rdnLineList.size()] );
+        RdnLine[] rdnLines = rdnLineList.toArray( new RdnLine[rdnLineList.size()] );
 
         if ( rdnLines.length > 0 )
         {

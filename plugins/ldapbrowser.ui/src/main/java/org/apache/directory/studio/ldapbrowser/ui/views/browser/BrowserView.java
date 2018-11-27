@@ -275,7 +275,7 @@ public class BrowserView extends ViewPart
                         IEntry entry = value.getAttribute().getEntry();
                         // The entry may be a clone, lookup original entry from entry cache.
                         // The result may be null, in that case the selection won't change.
-                        entry =  entry.getBrowserConnection().getEntryFromCache( entry.getDn() );
+                        entry = entry.getBrowserConnection().getEntryFromCache( entry.getDn() );
                         select( entry );
                     }
                     else if ( obj instanceof IAttribute )

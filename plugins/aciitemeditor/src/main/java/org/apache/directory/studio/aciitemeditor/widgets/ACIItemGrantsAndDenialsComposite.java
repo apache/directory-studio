@@ -26,7 +26,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.aci.GrantAndDenial;
+import org.apache.directory.api.ldap.aci.GrantAndDenial;
 import org.apache.directory.studio.aciitemeditor.Activator;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
@@ -58,27 +58,8 @@ import org.eclipse.swt.widgets.TreeColumn;
  */
 public class ACIItemGrantsAndDenialsComposite extends Composite
 {
-
-    /** The description label */
-    private Label label = null;
-
-    /** The tree control for the tree viewer */
-    private Tree tree = null;
-
     /** The tree viewer containing all grants and denials */
     private TreeViewer treeViewer = null;
-
-    /** The composite containing the buttons */
-    private Composite buttonComposite = null;
-
-    /** The grant all button */
-    private Button grantAllButton = null;
-
-    /** The deny all button */
-    private Button denyAllButton = null;
-
-    /** The deselect all button */
-    private Button deselectAllButton = null;
 
     /** The undo button */
     private Button undoButton = null;
@@ -87,13 +68,13 @@ public class ACIItemGrantsAndDenialsComposite extends Composite
     private Button redoButton = null;
 
     /** Colum 1 */
-    private static String PERMISSION = Messages.getString( "ACIItemGrantsAndDenialsComposite.column1.header" ); //$NON-NLS-1$
+    private static final String PERMISSION = Messages.getString( "ACIItemGrantsAndDenialsComposite.column1.header" ); //$NON-NLS-1$
 
     /** Colum2 */
-    private static String STATE = Messages.getString( "ACIItemGrantsAndDenialsComposite.column2.header" ); //$NON-NLS-1$
+    private static final String STATE = Messages.getString( "ACIItemGrantsAndDenialsComposite.column2.header" ); //$NON-NLS-1$
 
     /** The colums */
-    private static String[] COLUMNS = new String[]
+    private static final String[] COLUMNS = new String[]
         { PERMISSION, STATE };
 
     /** The undo/redo stack size */
@@ -225,7 +206,7 @@ public class ACIItemGrantsAndDenialsComposite extends Composite
         labelGridData.grabExcessHorizontalSpace = true;
         labelGridData.horizontalAlignment = GridData.FILL;
 
-        label = new Label( this, SWT.NONE );
+        Label label = new Label( this, SWT.NONE );
         label.setText( Messages.getString( "ACIItemGrantsAndDenialsComposite.description" ) ); //$NON-NLS-1$
         label.setLayoutData( labelGridData );
 
@@ -248,18 +229,18 @@ public class ACIItemGrantsAndDenialsComposite extends Composite
         tableGridData.horizontalAlignment = GridData.FILL;
         //tableGridData.heightHint = 100;
 
-        tree = new Tree( this, SWT.SINGLE | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION
+        Tree tree = new Tree( this, SWT.SINGLE | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION
             | SWT.HIDE_SELECTION );
         tree.setHeaderVisible( true );
         tree.setLayoutData( tableGridData );
         tree.setLinesVisible( true );
 
-        TreeColumn c1 = new TreeColumn( tree, SWT.LEFT, 0 );
-        c1.setText( COLUMNS[0] );
-        c1.setWidth( 160 );
-        TreeColumn c2 = new TreeColumn( tree, SWT.LEFT, 1 );
-        c2.setText( COLUMNS[1] );
-        c2.setWidth( 80 );
+        TreeColumn treeColumn1 = new TreeColumn( tree, SWT.LEFT, 0 );
+        treeColumn1.setText( COLUMNS[0] );
+        treeColumn1.setWidth( 160 );
+        TreeColumn treeColumn2 = new TreeColumn( tree, SWT.LEFT, 1 );
+        treeColumn2.setText( COLUMNS[1] );
+        treeColumn2.setWidth( 80 );
         //        TreeColumn c3 = new TreeColumn( tree, SWT.LEFT, 2 );
         //        c3.setText( " " ); //$NON-NLS-1$
         //        c3.setWidth( 0 );
@@ -337,16 +318,16 @@ public class ACIItemGrantsAndDenialsComposite extends Composite
         gridData.grabExcessVerticalSpace = false;
         gridData.verticalAlignment = GridData.FILL;
 
-        buttonComposite = new Composite( this, SWT.NONE );
+        Composite buttonComposite = new Composite( this, SWT.NONE );
         buttonComposite.setLayoutData( gridData );
         buttonComposite.setLayout( gridLayout );
 
-        grantAllButton = new Button( buttonComposite, SWT.NONE );
+        Button grantAllButton = new Button( buttonComposite, SWT.NONE );
         grantAllButton.setText( Messages.getString( "ACIItemGrantsAndDenialsComposite.grantAll.button" ) ); //$NON-NLS-1$
         grantAllButton.setLayoutData( grantAllButtonGridData );
         grantAllButton.addSelectionListener( new SelectionAdapter()
         {
-            public void widgetSelected( SelectionEvent e )
+            public void widgetSelected( SelectionEvent event )
             {
                 backup();
                 for ( GrantAndDenialCategory grantAndDenialCategory : grantAndDenialCategories )
@@ -360,12 +341,12 @@ public class ACIItemGrantsAndDenialsComposite extends Composite
             }
         } );
 
-        denyAllButton = new Button( buttonComposite, SWT.NONE );
+        Button denyAllButton = new Button( buttonComposite, SWT.NONE );
         denyAllButton.setText( Messages.getString( "ACIItemGrantsAndDenialsComposite.denyAll.button" ) ); //$NON-NLS-1$
         denyAllButton.setLayoutData( denyAllButtonGridData );
         denyAllButton.addSelectionListener( new SelectionAdapter()
         {
-            public void widgetSelected( SelectionEvent e )
+            public void widgetSelected( SelectionEvent event )
             {
                 backup();
                 for ( GrantAndDenialCategory grantAndDenialCategory : grantAndDenialCategories )
@@ -379,12 +360,12 @@ public class ACIItemGrantsAndDenialsComposite extends Composite
             }
         } );
 
-        deselectAllButton = new Button( buttonComposite, SWT.NONE );
+        Button deselectAllButton = new Button( buttonComposite, SWT.NONE );
         deselectAllButton.setText( Messages.getString( "ACIItemGrantsAndDenialsComposite.deselectAll.button" ) ); //$NON-NLS-1$
         deselectAllButton.setLayoutData( deselectAllButtonGridData );
         deselectAllButton.addSelectionListener( new SelectionAdapter()
         {
-            public void widgetSelected( SelectionEvent e )
+            public void widgetSelected( SelectionEvent event )
             {
                 backup();
                 for ( GrantAndDenialCategory grantAndDenialCategory : grantAndDenialCategories )
@@ -403,7 +384,7 @@ public class ACIItemGrantsAndDenialsComposite extends Composite
         undoButton.setLayoutData( undoButtonGridData );
         undoButton.addSelectionListener( new SelectionAdapter()
         {
-            public void widgetSelected( SelectionEvent e )
+            public void widgetSelected( SelectionEvent event )
             {
                 undo();
                 treeViewer.refresh();
@@ -416,7 +397,7 @@ public class ACIItemGrantsAndDenialsComposite extends Composite
         redoButton.setLayoutData( redoButtonGridData );
         redoButton.addSelectionListener( new SelectionAdapter()
         {
-            public void widgetSelected( SelectionEvent e )
+            public void widgetSelected( SelectionEvent event )
             {
                 redo();
                 treeViewer.refresh();
@@ -463,12 +444,9 @@ public class ACIItemGrantsAndDenialsComposite extends Composite
          */
         public Object getValue( Object element, String property )
         {
-            if ( element instanceof GrantAndDenialWrapper )
+            if ( ( element instanceof GrantAndDenialWrapper ) && property.equals( STATE ) )
             {
-                if ( property.equals( STATE ) )
-                {
-                    return new Boolean( true );
-                }
+                return Boolean.TRUE;
             }
 
             return null;
@@ -484,14 +462,16 @@ public class ACIItemGrantsAndDenialsComposite extends Composite
          */
         public void modify( Object element, String property, Object value )
         {
-            if ( element != null && element instanceof Item )
+            Object target = element;
+            
+            if ( element instanceof Item )
             {
-                element = ( ( Item ) element ).getData();
+                target = ( ( Item ) element ).getData();
             }
 
-            if ( element instanceof GrantAndDenialWrapper )
+            if ( target instanceof GrantAndDenialWrapper )
             {
-                GrantAndDenialWrapper grantAndDenialWrapper = ( GrantAndDenialWrapper ) element;
+                GrantAndDenialWrapper grantAndDenialWrapper = ( GrantAndDenialWrapper ) target;
 
                 if ( property.equals( STATE ) )
                 {
@@ -637,13 +617,11 @@ public class ACIItemGrantsAndDenialsComposite extends Composite
                     return cat.name;
                 }
             }
-            else if ( element instanceof GrantAndDenialWrapper )
+            else if ( ( element instanceof GrantAndDenialWrapper ) && ( columnIndex == 0 ) )
             {
-                if ( columnIndex == 0 )
-                {
-                    GrantAndDenialWrapper wrapper = ( GrantAndDenialWrapper ) element;
-                    return wrapper.grant.getMicroOperation().getName();
-                }
+                GrantAndDenialWrapper wrapper = ( GrantAndDenialWrapper ) element;
+                
+                return wrapper.grant.getMicroOperation().getName();
             }
 
             return ""; //$NON-NLS-1$
@@ -715,7 +693,7 @@ public class ACIItemGrantsAndDenialsComposite extends Composite
         {
             for ( GrantAndDenialWrapper grantAndDenialWrapper : grantAndDenialCategory.grantAndDenialWrappers )
             {
-                if ( grantAndDenialWrapper.undoStack.size() > 0 )
+                if ( !grantAndDenialWrapper.undoStack.isEmpty() )
                 {
                     grantAndDenialWrapper.redoStack.add( 0, grantAndDenialWrapper.activeGrantAndDenial );
                     grantAndDenialWrapper.activeGrantAndDenial = grantAndDenialWrapper.undoStack.remove( 0 );
@@ -737,7 +715,7 @@ public class ACIItemGrantsAndDenialsComposite extends Composite
         {
             for ( GrantAndDenialWrapper grantAndDenialWrapper : grantAndDenialCategory.grantAndDenialWrappers )
             {
-                if ( grantAndDenialWrapper.redoStack.size() > 0 )
+                if ( !grantAndDenialWrapper.redoStack.isEmpty() )
                 {
                     grantAndDenialWrapper.undoStack.add( 0, grantAndDenialWrapper.activeGrantAndDenial );
                     grantAndDenialWrapper.activeGrantAndDenial = grantAndDenialWrapper.redoStack.remove( 0 );

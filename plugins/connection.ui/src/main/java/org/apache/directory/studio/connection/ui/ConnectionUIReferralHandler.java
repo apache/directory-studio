@@ -21,12 +21,12 @@
 package org.apache.directory.studio.connection.ui;
 
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.directory.shared.ldap.model.exception.LdapURLEncodingException;
-import org.apache.directory.shared.ldap.model.url.LdapUrl;
+import org.apache.directory.api.ldap.model.exception.LdapURLEncodingException;
+import org.apache.directory.api.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.IReferralHandler;
@@ -44,17 +44,23 @@ import org.eclipse.ui.PlatformUI;
  */
 public class ConnectionUIReferralHandler extends ConnectionUpdateAdapter implements IReferralHandler
 {
-
     /** The referral URL to referral connection cache. */
-    private Map<String, Connection> referralUrlToReferralConnectionCache = new HashMap<String, Connection>();
+    private Map<String, Connection> referralUrlToReferralConnectionCache = new ConcurrentHashMap<>();
 
 
+    /**
+     * The constructor
+     */
     public ConnectionUIReferralHandler()
     {
+        super();
         ConnectionEventRegistry.addConnectionUpdateListener( this, ConnectionCorePlugin.getDefault().getEventRunner() );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void connectionClosed( Connection connection )
     {
@@ -68,6 +74,7 @@ public class ConnectionUIReferralHandler extends ConnectionUpdateAdapter impleme
     public Connection getReferralConnection( final List<String> referralUrls )
     {
         final Connection[] referralConnections = new Connection[1];
+
         try
         {
             // check cache
@@ -81,10 +88,10 @@ public class ConnectionUIReferralHandler extends ConnectionUpdateAdapter impleme
                     Connection referralConnection = referralUrlToReferralConnectionCache.get( normalizedUrl );
                     Connection[] connections = ConnectionCorePlugin.getDefault().getConnectionManager()
                         .getConnections();
-                    for ( int i = 0; i < connections.length; i++ )
+
+                    for ( Connection connection : connections )
                     {
-                        Connection connection = connections[i];
-                        if ( referralConnection == connection )
+                        if ( connection.equals( referralConnection ) )
                         {
                             return referralConnection;
                         }
@@ -96,18 +103,17 @@ public class ConnectionUIReferralHandler extends ConnectionUpdateAdapter impleme
             }
 
             // open dialog
-            PlatformUI.getWorkbench().getDisplay().syncExec( new Runnable()
+            PlatformUI.getWorkbench().getDisplay().syncExec( () ->
             {
-                public void run()
-            {
-                SelectReferralConnectionDialog dialog = new SelectReferralConnectionDialog( PlatformUI.getWorkbench()
+                SelectReferralConnectionDialog dialog = new SelectReferralConnectionDialog( PlatformUI
+                    .getWorkbench()
                     .getDisplay().getActiveShell(), referralUrls );
+
                 if ( dialog.open() == SelectReferralConnectionDialog.OK )
                 {
                     Connection connection = dialog.getReferralConnection();
                     referralConnections[0] = connection;
                 }
-            }
             } );
 
             // put to cache
@@ -120,12 +126,11 @@ public class ConnectionUIReferralHandler extends ConnectionUpdateAdapter impleme
                 }
             }
         }
-        catch ( LdapURLEncodingException e )
+        catch ( LdapURLEncodingException luee )
         {
             // Will never occur
         }
 
         return referralConnections[0];
     }
-
 }

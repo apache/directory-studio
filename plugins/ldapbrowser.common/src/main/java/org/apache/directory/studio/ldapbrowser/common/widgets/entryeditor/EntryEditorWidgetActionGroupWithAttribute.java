@@ -42,13 +42,13 @@ public class EntryEditorWidgetActionGroupWithAttribute extends EntryEditorWidget
 {
 
     /** The Constant editAttributeDescriptionAction. */
-    private static final String editAttributeDescriptionAction = "editAttributeDescriptionAction"; //$NON-NLS-1$
+    private static final String EDIT_ATTRIBUTE_DESCRIPTION_ACTION = "editAttributeDescriptionAction"; //$NON-NLS-1$
 
     /** The Constant newAttributeAction. */
-    private static final String newAttributeAction = "newAttributeAction"; //$NON-NLS-1$
+    private static final String NEW_ATTRIBUTE_ACTION = "newAttributeAction"; //$NON-NLS-1$
 
     /** The Constant deleteAllValuesAction. */
-    private static final String deleteAllValuesAction = "deleteAllValuesAction"; //$NON-NLS-1$
+    private static final String DELETE_ALL_VALUES_ACTION = "deleteAllValuesAction"; //$NON-NLS-1$
 
 
     /**
@@ -64,10 +64,10 @@ public class EntryEditorWidgetActionGroupWithAttribute extends EntryEditorWidget
         super( mainWidget, configuration );
         TreeViewer viewer = mainWidget.getViewer();
 
-        entryEditorActionMap.put( editAttributeDescriptionAction, new EntryEditorActionProxy( viewer,
+        entryEditorActionMap.put( EDIT_ATTRIBUTE_DESCRIPTION_ACTION, new EntryEditorActionProxy( viewer,
             new EditAttributeDescriptionAction( viewer ) ) );
-        entryEditorActionMap.put( newAttributeAction, new EntryEditorActionProxy( viewer, new NewAttributeAction() ) );
-        entryEditorActionMap.put( deleteAllValuesAction, new EntryEditorActionProxy( viewer,
+        entryEditorActionMap.put( NEW_ATTRIBUTE_ACTION, new EntryEditorActionProxy( viewer, new NewAttributeAction() ) );
+        entryEditorActionMap.put( DELETE_ALL_VALUES_ACTION, new EntryEditorActionProxy( viewer,
             new DeleteAllValuesAction() ) );
     }
 
@@ -77,11 +77,11 @@ public class EntryEditorWidgetActionGroupWithAttribute extends EntryEditorWidget
      */
     public void fillToolBar( IToolBarManager toolBarManager )
     {
-        toolBarManager.add( ( IAction ) entryEditorActionMap.get( newValueAction ) );
-        toolBarManager.add( ( IAction ) entryEditorActionMap.get( newAttributeAction ) );
+        toolBarManager.add( ( IAction ) entryEditorActionMap.get( NEW_VALUE_ACTION ) );
+        toolBarManager.add( ( IAction ) entryEditorActionMap.get( NEW_ATTRIBUTE_ACTION ) );
         toolBarManager.add( new Separator() );
-        toolBarManager.add( ( IAction ) this.entryEditorActionMap.get( deleteAction ) );
-        toolBarManager.add( ( IAction ) this.entryEditorActionMap.get( deleteAllValuesAction ) );
+        toolBarManager.add( ( IAction ) this.entryEditorActionMap.get( DELETE_ACTION ) );
+        toolBarManager.add( ( IAction ) this.entryEditorActionMap.get( DELETE_ALL_VALUES_ACTION ) );
         toolBarManager.add( new Separator() );
         toolBarManager.add( this.showQuickFilterAction );
         toolBarManager.update( true );
@@ -94,28 +94,28 @@ public class EntryEditorWidgetActionGroupWithAttribute extends EntryEditorWidget
     protected void contextMenuAboutToShow( IMenuManager menuManager )
     {
         // new
-        menuManager.add( ( IAction ) entryEditorActionMap.get( newAttributeAction ) );
-        menuManager.add( ( IAction ) entryEditorActionMap.get( newValueAction ) );
+        menuManager.add( ( IAction ) entryEditorActionMap.get( NEW_ATTRIBUTE_ACTION ) );
+        menuManager.add( ( IAction ) entryEditorActionMap.get( NEW_VALUE_ACTION ) );
         menuManager.add( new Separator() );
 
         // copy, paste, delete
-        menuManager.add( ( IAction ) entryEditorActionMap.get( copyAction ) );
-        menuManager.add( ( IAction ) entryEditorActionMap.get( pasteAction ) );
-        menuManager.add( ( IAction ) entryEditorActionMap.get( deleteAction ) );
-        menuManager.add( ( IAction ) entryEditorActionMap.get( selectAllAction ) );
+        menuManager.add( ( IAction ) entryEditorActionMap.get( COPY_ACTION ) );
+        menuManager.add( ( IAction ) entryEditorActionMap.get( PASTE_ACTION ) );
+        menuManager.add( ( IAction ) entryEditorActionMap.get( DELETE_ACTION ) );
+        menuManager.add( ( IAction ) entryEditorActionMap.get( SELECT_ALL_ACTION ) );
         MenuManager copyMenuManager = new MenuManager( Messages
             .getString( "EntryEditorWidgetActionGroupWithAttribute.Advanced" ) ); //$NON-NLS-1$
-        copyMenuManager.add( ( IAction ) entryEditorActionMap.get( deleteAllValuesAction ) );
+        copyMenuManager.add( ( IAction ) entryEditorActionMap.get( DELETE_ALL_VALUES_ACTION ) );
         menuManager.add( copyMenuManager );
         menuManager.add( new Separator() );
 
         // edit
-        menuManager.add( ( IAction ) entryEditorActionMap.get( editAttributeDescriptionAction ) );
+        menuManager.add( ( IAction ) entryEditorActionMap.get( EDIT_ATTRIBUTE_DESCRIPTION_ACTION ) );
         super.addEditMenu( menuManager );
         menuManager.add( new Separator() );
 
         // properties
-        menuManager.add( ( IAction ) entryEditorActionMap.get( propertyDialogAction ) );
+        menuManager.add( ( IAction ) entryEditorActionMap.get( PROPERTY_DIALOG_ACTION ) );
     }
 
 
@@ -126,9 +126,9 @@ public class EntryEditorWidgetActionGroupWithAttribute extends EntryEditorWidget
     {
         super.activateGlobalActionHandlers();
 
-        IAction naa = ( IAction ) entryEditorActionMap.get( newAttributeAction );
+        IAction naa = ( IAction ) entryEditorActionMap.get( NEW_ATTRIBUTE_ACTION );
         ActionUtils.activateActionHandler( naa );
-        IAction eada = ( IAction ) entryEditorActionMap.get( editAttributeDescriptionAction );
+        IAction eada = ( IAction ) entryEditorActionMap.get( EDIT_ATTRIBUTE_DESCRIPTION_ACTION );
         ActionUtils.activateActionHandler( eada );
     }
 
@@ -140,9 +140,9 @@ public class EntryEditorWidgetActionGroupWithAttribute extends EntryEditorWidget
     {
         super.deactivateGlobalActionHandlers();
 
-        IAction naa = ( IAction ) entryEditorActionMap.get( newAttributeAction );
+        IAction naa = ( IAction ) entryEditorActionMap.get( NEW_ATTRIBUTE_ACTION );
         ActionUtils.deactivateActionHandler( naa );
-        IAction eada = ( IAction ) entryEditorActionMap.get( editAttributeDescriptionAction );
+        IAction eada = ( IAction ) entryEditorActionMap.get( EDIT_ATTRIBUTE_DESCRIPTION_ACTION );
         ActionUtils.deactivateActionHandler( eada );
     }
 

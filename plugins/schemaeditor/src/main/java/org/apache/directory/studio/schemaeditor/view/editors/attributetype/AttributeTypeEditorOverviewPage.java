@@ -24,15 +24,16 @@ package org.apache.directory.studio.schemaeditor.view.editors.attributetype;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.shared.asn1.util.Oid;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
-import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
-import org.apache.directory.shared.ldap.model.schema.ObjectClass;
-import org.apache.directory.shared.ldap.model.schema.UsageEnum;
+import org.apache.directory.api.asn1.util.Oid;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
+import org.apache.directory.api.ldap.model.schema.LdapSyntax;
+import org.apache.directory.api.ldap.model.schema.MatchingRule;
+import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
+import org.apache.directory.api.ldap.model.schema.ObjectClass;
+import org.apache.directory.api.ldap.model.schema.UsageEnum;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
+import org.apache.directory.studio.schemaeditor.PluginUtils;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener;
 import org.apache.directory.studio.schemaeditor.model.Schema;
@@ -46,7 +47,6 @@ import org.apache.directory.studio.schemaeditor.view.editors.NonExistingMatching
 import org.apache.directory.studio.schemaeditor.view.editors.NonExistingSyntax;
 import org.apache.directory.studio.schemaeditor.view.editors.schema.SchemaEditor;
 import org.apache.directory.studio.schemaeditor.view.editors.schema.SchemaEditorInput;
-import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -327,7 +327,7 @@ public class AttributeTypeEditorOverviewPage extends AbstractAttributeTypeEditor
             }
             catch ( PartInitException exception )
             {
-                Logger.getLogger( AttributeTypeEditorInput.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                PluginUtils.logError( "error when opening the editor", exception ); //$NON-NLS-1$
             }
         }
     };
@@ -362,7 +362,7 @@ public class AttributeTypeEditorOverviewPage extends AbstractAttributeTypeEditor
                 }
                 catch ( PartInitException exception )
                 {
-                    Logger.getLogger( AttributeTypeEditorInput.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                    PluginUtils.logError( "error when opening the editor", exception ); //$NON-NLS-1$
                 }
             }
         }
@@ -797,7 +797,8 @@ public class AttributeTypeEditorOverviewPage extends AbstractAttributeTypeEditor
         collectiveCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // NO-USER-MODIFICATION Checkbox
-        noUserModificationCheckbox = toolkit.createButton( propertiesComposite, "No-User-Modification", SWT.CHECK ); //$NON-NLS-1$
+        noUserModificationCheckbox = toolkit.createButton( propertiesComposite,
+            Messages.getString( "AttributeTypeEditorOverviewPage.NoUserModification" ), SWT.CHECK ); //$NON-NLS-1$
         noUserModificationCheckbox.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
     }
 

@@ -21,12 +21,12 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 
-import org.apache.directory.shared.ldap.model.schema.AbstractSchemaObject;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
-import org.apache.directory.shared.ldap.model.schema.MatchingRuleUse;
-import org.apache.directory.shared.ldap.model.schema.ObjectClass;
+import org.apache.directory.api.ldap.model.schema.AbstractSchemaObject;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
+import org.apache.directory.api.ldap.model.schema.LdapSyntax;
+import org.apache.directory.api.ldap.model.schema.MatchingRule;
+import org.apache.directory.api.ldap.model.schema.MatchingRuleUse;
+import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
@@ -150,13 +150,16 @@ public class SchemaBrowserNavigationLocation extends NavigationLocation
     public void restoreLocation()
     {
         IEditorPart editorPart = getEditorPart();
-        if ( editorPart != null && editorPart instanceof SchemaBrowser )
+        
+        if ( editorPart instanceof SchemaBrowser )
         {
             SchemaBrowser schemaBrowser = ( SchemaBrowser ) editorPart;
             Object input = getInput();
-            if ( input != null && input instanceof SchemaBrowserInput )
+            
+            if ( input instanceof SchemaBrowserInput )
             {
                 SchemaBrowserInput sbi = ( SchemaBrowserInput ) input;
+                
                 if ( sbi.getConnection() != null && sbi.getSchemaElement() != null )
                 {
                     schemaBrowser.setInput( sbi );
@@ -215,12 +218,13 @@ public class SchemaBrowserNavigationLocation extends NavigationLocation
      */
     private AbstractSchemaObject getSchemaElement()
     {
-
         Object editorInput = getInput();
-        if ( editorInput != null && editorInput instanceof SchemaBrowserInput )
+        
+        if ( editorInput instanceof SchemaBrowserInput )
         {
             SchemaBrowserInput schemaBrowserInput = ( SchemaBrowserInput ) editorInput;
             AbstractSchemaObject schemaElement = schemaBrowserInput.getSchemaElement();
+            
             if ( schemaElement != null )
             {
                 return schemaElement;
@@ -238,11 +242,12 @@ public class SchemaBrowserNavigationLocation extends NavigationLocation
      */
     private IBrowserConnection getConnection()
     {
-
         Object editorInput = getInput();
-        if ( editorInput != null && editorInput instanceof SchemaBrowserInput )
+        
+        if ( editorInput instanceof SchemaBrowserInput )
         {
             SchemaBrowserInput schemaBrowserInput = ( SchemaBrowserInput ) editorInput;
+            
             return schemaBrowserInput.getConnection();
         }
 

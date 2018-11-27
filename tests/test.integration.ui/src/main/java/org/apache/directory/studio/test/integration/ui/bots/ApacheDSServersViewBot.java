@@ -20,9 +20,9 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
-import org.apache.directory.studio.apacheds.model.Server;
-import org.apache.directory.studio.apacheds.model.ServerStateEnum;
-import org.apache.directory.studio.apacheds.model.ServersHandler;
+import org.apache.directory.studio.ldapservers.LdapServersManager;
+import org.apache.directory.studio.ldapservers.model.LdapServer;
+import org.apache.directory.studio.ldapservers.model.LdapServerStatus;
 import org.apache.directory.studio.test.integration.ui.ContextMenuHelper;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
@@ -40,7 +40,7 @@ public class ApacheDSServersViewBot
 
     public ApacheDSServersViewBot()
     {
-        view = new SWTWorkbenchBot().viewByTitle( "Servers" );
+        view = new SWTWorkbenchBot().viewByTitle( "LDAP Servers" );
     }
 
 
@@ -74,7 +74,7 @@ public class ApacheDSServersViewBot
      */
     public ConnectionFromServerDialogBot createConnectionFromServer()
     {
-        ContextMenuHelper.clickContextMenu( getServersTree(), "LDAP Browser", "Create a Connection" );
+        ContextMenuHelper.clickContextMenu( getServersTree(), "Create a Connection" );
         return new ConnectionFromServerDialogBot();
     }
 
@@ -89,6 +89,14 @@ public class ApacheDSServersViewBot
     {
         ContextMenuHelper.clickContextMenu( getServersTree(), "Delete" );
         return new DeleteDialogBot( DeleteDialogBot.DELETE_SERVER );
+    }
+
+
+    public ApacheDSConfigurationEditorBot openConfigurationEditor( String serverName )
+    {
+        selectServer( serverName );
+        ContextMenuHelper.clickContextMenu( getServersTree(), "Open Configuration" );
+        return new ApacheDSConfigurationEditorBot( "ou=config.ldif" );
     }
 
 
@@ -126,8 +134,21 @@ public class ApacheDSServersViewBot
      */
     public void runServer( String serverName )
     {
-        getServersTree().select( serverName );
+        selectServer( serverName );
         ContextMenuHelper.clickContextMenu( getServersTree(), "&Run" );
+    }
+    
+    
+    /**
+     * Repairs the server associated with the given name.
+     *
+     * @param serverName
+     *      the name of the server
+     */
+    public void repairServer( String serverName )
+    {
+        selectServer( serverName );
+        ContextMenuHelper.clickContextMenu( getServersTree(), "Repair" );
     }
 
 
@@ -139,7 +160,7 @@ public class ApacheDSServersViewBot
      */
     public void stopServer( String serverName )
     {
-        getServersTree().select( serverName );
+        selectServer( serverName );
         ContextMenuHelper.clickContextMenu( getServersTree(), "S&top" );
     }
 
@@ -189,10 +210,10 @@ public class ApacheDSServersViewBot
         {
             public boolean test() throws Exception
             {
-                Server server = getServer( serverName );
+                LdapServer server = getServer( serverName );
                 if ( server != null )
                 {
-                    return ( ServerStateEnum.STARTED == server.getState() );
+                    return ( LdapServerStatus.STARTED == server.getStatus() );
                 }
 
                 return false;
@@ -203,7 +224,7 @@ public class ApacheDSServersViewBot
             {
                 return "Server " + serverName + " not started in servers view.";
             }
-        }, 20000 );
+        }, 60000 );
     }
 
 
@@ -219,10 +240,10 @@ public class ApacheDSServersViewBot
         {
             public boolean test() throws Exception
             {
-                Server server = getServer( serverName );
+                LdapServer server = getServer( serverName );
                 if ( server != null )
                 {
-                    return ( ServerStateEnum.STOPPED == server.getState() );
+                    return ( LdapServerStatus.STOPPED == server.getStatus() );
                 }
 
                 return false;
@@ -233,7 +254,10 @@ public class ApacheDSServersViewBot
             {
                 return "Server " + serverName + " not stopped in servers view.";
             }
-        }, 10000 );
+        }, 30000 );
+
+        // Wait a bit more to avoid unknown race conditions...
+        BotUtils.sleep( 1000 );
     }
 
 
@@ -246,9 +270,9 @@ public class ApacheDSServersViewBot
      *      the server associated with the given name,
      *      or <code>null</code> if none was found.
      */
-    private Server getServer( String serverName )
+    private LdapServer getServer( String serverName )
     {
-        for ( Server server : ServersHandler.getDefault().getServersList() )
+        for ( LdapServer server : LdapServersManager.getDefault().getServersList() )
         {
             if ( serverName.equals( server.getName() ) )
             {

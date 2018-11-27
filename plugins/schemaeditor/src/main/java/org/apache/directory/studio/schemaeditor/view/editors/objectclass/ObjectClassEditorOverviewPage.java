@@ -24,15 +24,16 @@ package org.apache.directory.studio.schemaeditor.view.editors.objectclass;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.shared.asn1.util.Oid;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
-import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
-import org.apache.directory.shared.ldap.model.schema.ObjectClass;
-import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
+import org.apache.directory.api.asn1.util.Oid;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
+import org.apache.directory.api.ldap.model.schema.LdapSyntax;
+import org.apache.directory.api.ldap.model.schema.MatchingRule;
+import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
+import org.apache.directory.api.ldap.model.schema.ObjectClass;
+import org.apache.directory.api.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
+import org.apache.directory.studio.schemaeditor.PluginUtils;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener;
 import org.apache.directory.studio.schemaeditor.model.Schema;
@@ -49,7 +50,6 @@ import org.apache.directory.studio.schemaeditor.view.editors.attributetype.Attri
 import org.apache.directory.studio.schemaeditor.view.editors.attributetype.AttributeTypeEditorInput;
 import org.apache.directory.studio.schemaeditor.view.editors.schema.SchemaEditor;
 import org.apache.directory.studio.schemaeditor.view.editors.schema.SchemaEditorInput;
-import org.apache.log4j.Logger;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
@@ -330,7 +330,7 @@ public class ObjectClassEditorOverviewPage extends AbstractObjectClassEditorPage
             }
             catch ( PartInitException exception )
             {
-                Logger.getLogger( ObjectClassEditorOverviewPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                PluginUtils.logError( "error when opening the editor", exception ); //$NON-NLS-1$
             }
         }
     };
@@ -404,7 +404,7 @@ public class ObjectClassEditorOverviewPage extends AbstractObjectClassEditorPage
                     }
                     catch ( PartInitException exception )
                     {
-                        Logger.getLogger( ObjectClassEditorOverviewPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                        PluginUtils.logError( "error when opening the editor", exception ); //$NON-NLS-1$
                     }
                 }
             }
@@ -550,7 +550,7 @@ public class ObjectClassEditorOverviewPage extends AbstractObjectClassEditorPage
                     }
                     catch ( PartInitException exception )
                     {
-                        Logger.getLogger( ObjectClassEditorOverviewPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                        PluginUtils.logError( "error when opening the editor", exception ); //$NON-NLS-1$
                     }
                 }
             }
@@ -690,7 +690,7 @@ public class ObjectClassEditorOverviewPage extends AbstractObjectClassEditorPage
                     }
                     catch ( PartInitException exception )
                     {
-                        Logger.getLogger( ObjectClassEditorOverviewPage.class ).debug( "error when opening the editor" ); //$NON-NLS-1$
+                        PluginUtils.logError( "error when opening the editor", exception ); //$NON-NLS-1$
                     }
                 }
             }
@@ -1191,19 +1191,19 @@ public class ObjectClassEditorOverviewPage extends AbstractObjectClassEditorPage
         addSelectionListener( aliasesButton, aliasesButtonListener );
         addModifyListener( oidText, oidTextModifyListener );
         addVerifyListener( oidText, oidTextVerifyListener );
+        addHyperlinkListener( schemaLink, schemaLinkListener );
         addModifyListener( descriptionText, descriptionTextListener );
+        addMouseListener( superiorsTable, superiorsTableListener );
         addSelectionListener( addButtonSuperiorsTable, addButtonSuperiorsTableListener );
         addSelectionListener( removeButtonSuperiorsTable, removeButtonSuperiorsTableListener );
         addModifyListener( classTypeCombo, classTypeListener );
         addSelectionListener( obsoleteCheckbox, obsoleteListener );
+        addMouseListener( mandatoryAttributesTable, mandatoryAttributesTableListener );
         addSelectionListener( addButtonMandatoryTable, addButtonMandatoryTableListener );
-        addSelectionListener( addButtonMandatoryTable, removeButtonMandatoryTableListener );
+        addSelectionListener( removeButtonMandatoryTable, removeButtonMandatoryTableListener );
+        addMouseListener( optionalAttributesTable, optionalAttributesTableListener );
         addSelectionListener( addButtonOptionalTable, addButtonOptionalTableListener );
         addSelectionListener( removeButtonOptionalTable, removeButtonOptionalTableListener );
-        addHyperlinkListener( schemaLink, schemaLinkListener );
-        addMouseListener( superiorsTable, superiorsTableListener );
-        addMouseListener( mandatoryAttributesTable, mandatoryAttributesTableListener );
-        addMouseListener( optionalAttributesTable, optionalAttributesTableListener );
 
         Display.getCurrent().addFilter( SWT.MouseWheel, mouseWheelFilter );
     }

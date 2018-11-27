@@ -47,6 +47,8 @@ public class BrowserCoreMessages extends NLS
         NLS.initializeMessages( BUNDLE_NAME, BrowserCoreMessages.class );
     }
 
+    public static String activator_unable_get_plugin_properties;
+
     public static String copy_n_of_s;
 
     public static String event__added_att_to_dn;
@@ -180,6 +182,10 @@ public class BrowserCoreMessages extends NLS
     public static String ldif__error_msg;
 
     public static String dsml__n_errors_see_responsefile;
+
+    public static String dsml__kind_request_not_supported;
+
+    public static String dsml__should_not_be_encountering_request;
 
     public static String model__no_connection;
 
@@ -424,5 +430,23 @@ public class BrowserCoreMessages extends NLS
     public static String model_filter_missing_filter_expression;
 
     public static String model__quick_search_name;
+
+    public static String BrowserConnectionIO_TheFileDoesNotSeemToBeValid;
+
+    public static String BrowserConnectionIO_UnableToParseAliasesDereferencingMethod;
+
+    public static String BrowserConnectionIO_UnableToParseControl;
+
+    public static String BrowserConnectionIO_UnableToParseCountLimit;
+
+    public static String BrowserConnectionIO_UnableToParseDn;
+
+    public static String BrowserConnectionIO_UnableToParseReferralsHandlingMethod;
+
+    public static String BrowserConnectionIO_UnableToParseScope;
+
+    public static String BrowserConnectionIO_UnableToParseSearchBase;
+
+    public static String BrowserConnectionIO_UnableToParseTimeLimit;
 
 }

@@ -21,17 +21,17 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
+import static org.apache.directory.studio.test.integration.ui.Constants.LOCALHOST;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.apache.directory.server.annotations.CreateLdapServer;
 import org.apache.directory.server.annotations.CreateTransport;
 import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
-import org.apache.directory.server.core.integ.FrameworkRunner;
-import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
-import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.entry.DefaultEntry;
+import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -39,6 +39,7 @@ import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ReferralDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
+import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,7 +52,7 @@ import org.junit.runner.RunWith;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-@RunWith(FrameworkRunner.class)
+@RunWith(FrameworkRunnerWithScreenshotCaptureListener.class)
 @CreateLdapServer(transports =
     { @CreateTransport(protocol = "LDAP") })
 public class ReferralDialogTest extends AbstractLdapTestUnit
@@ -81,8 +82,8 @@ public class ReferralDialogTest extends AbstractLdapTestUnit
         entry.setDn( new Dn( "cn=referralDialogTest,ou=system" ) );
         entry.add( "objectClass", "top", "referral", "extensibleObject" );
         entry.add( "cn", "referralDialogTest" );
-        entry.add( "ref", "ldap://localhost:" + ldapServer.getPort() + "/ou=users,ou=system" );
-        ldapServer.getDirectoryService().getAdminSession().add( entry );
+        entry.add( "ref", "ldap://" + LOCALHOST + ":" + ldapServer.getPort() + "/ou=users,ou=system" );
+        service.getAdminSession().add( entry );
 
         // get paths
         parentPath = new String[]
@@ -90,7 +91,8 @@ public class ReferralDialogTest extends AbstractLdapTestUnit
         referralPath = new String[]
             { "DIT", "Root DSE", "ou=system", "cn=referralDialogTest" };
         targetPath = new String[]
-            { "DIT", "Root DSE", "ou=system", "ldap://localhost:" + ldapServer.getPort() + "/ou=users,ou=system" };
+            { "DIT", "Root DSE", "ou=system",
+                "ldap://" + LOCALHOST + ":" + ldapServer.getPort() + "/ou=users,ou=system" };
     }
 
 

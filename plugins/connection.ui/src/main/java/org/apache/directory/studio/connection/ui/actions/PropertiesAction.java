@@ -27,8 +27,8 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.ui.IWorkbenchCommandConstants;
 import org.eclipse.ui.dialogs.PreferencesUtil;
-import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
 
 
 /**
@@ -38,15 +38,6 @@ import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
  */
 public class PropertiesAction extends StudioAction
 {
-    /**
-     * Creates a new instance of PropertiesAction.
-     */
-    public PropertiesAction()
-    {
-        super();
-    }
-
-
     /**
      * {@inheritDoc}
      */
@@ -70,7 +61,7 @@ public class PropertiesAction extends StudioAction
      */
     public String getCommandId()
     {
-        return IWorkbenchActionDefinitionIds.PROPERTIES;
+        return IWorkbenchCommandConstants.FILE_PROPERTIES;
     }
 
 
@@ -79,7 +70,6 @@ public class PropertiesAction extends StudioAction
      */
     public boolean isEnabled()
     {
-
         return getSelectedConnections().length == 1;
 
     }
@@ -96,20 +86,25 @@ public class PropertiesAction extends StudioAction
 
         if ( getSelectedConnections().length == 1 )
         {
-            element = ( IAdaptable ) getSelectedConnections()[0];
-            pageId = ConnectionUIPlugin.getDefault().getPluginProperties().getString( "Prop_ConnectionPropertyPage_id" ); //$NON-NLS-1$
+            element = getSelectedConnections()[0];
+            pageId = ConnectionUIPlugin.getDefault().getPluginProperties()
+                .getString( "Prop_ConnectionPropertyPage_id" ); //$NON-NLS-1$
             title = getSelectedConnections()[0].getName();
         }
 
         if ( element != null )
         {
             PreferenceDialog dialog = PreferencesUtil.createPropertyDialogOn( getShell(), element, pageId, null, null );
-            if ( dialog != null )
-                title = Utils.shorten( title, 30 );
-            dialog.getShell().setText(
-                NLS.bind( Messages.getString( "PropertiesAction.PropertiesFor" ), new String[] { title } ) ); //$NON-NLS-1$
-            dialog.open();
 
+            if ( dialog != null )
+            {
+                title = Utils.shorten( title, 30 );
+            }
+
+            dialog.getShell().setText(
+                NLS.bind( Messages.getString( "PropertiesAction.PropertiesFor" ), new String[] //$NON-NLS-1$
+                { title } ) );
+            dialog.open();
         }
     }
 }

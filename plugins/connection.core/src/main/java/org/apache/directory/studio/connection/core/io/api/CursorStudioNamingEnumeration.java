@@ -34,17 +34,19 @@ import javax.naming.ldap.BasicControl;
 import javax.naming.ldap.Control;
 import javax.naming.ldap.PagedResultsResponseControl;
 
-import org.apache.directory.shared.ldap.codec.api.CodecControl;
-import org.apache.directory.shared.ldap.codec.api.LdapApiService;
-import org.apache.directory.shared.ldap.codec.api.LdapApiServiceFactory;
-import org.apache.directory.shared.ldap.model.cursor.SearchCursor;
-import org.apache.directory.shared.ldap.model.entry.AttributeUtils;
-import org.apache.directory.shared.ldap.model.message.Referral;
-import org.apache.directory.shared.ldap.model.message.Response;
-import org.apache.directory.shared.ldap.model.message.SearchResultDone;
-import org.apache.directory.shared.ldap.model.message.SearchResultEntry;
-import org.apache.directory.shared.ldap.model.message.SearchResultReference;
-import org.apache.directory.shared.ldap.model.url.LdapUrl;
+import org.apache.directory.api.ldap.codec.api.CodecControl;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
+import org.apache.directory.api.ldap.model.cursor.CursorException;
+import org.apache.directory.api.ldap.model.cursor.SearchCursor;
+import org.apache.directory.api.ldap.model.entry.AttributeUtils;
+import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.message.Referral;
+import org.apache.directory.api.ldap.model.message.Response;
+import org.apache.directory.api.ldap.model.message.SearchResultDone;
+import org.apache.directory.api.ldap.model.message.SearchResultEntry;
+import org.apache.directory.api.ldap.model.message.SearchResultReference;
+import org.apache.directory.api.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -67,14 +69,13 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
 {
     private SearchCursor cursor;
     private SearchResultEntry currentSearchResultEntry;
-    private List<Referral> referralsList = new ArrayList<Referral>();
     private List<String> currentReferralUrlsList;
     private StudioNamingEnumeration cursorNamingEnumeration;
     private SearchResultDone searchResultDone;
 
     // @TODO: By Alex: temporary fix until things are in order (needs to be fixed)
     private LdapApiService codec = LdapApiServiceFactory.getSingleton();
-    
+
 
     /**
      * Creates a new instance of ReferralNamingEnumeration.
@@ -90,13 +91,13 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
      * @param monitor the progress monitor
      * @param referralsInfo the referrals info
      */
-    public CursorStudioNamingEnumeration( Connection connection, SearchCursor cursor,
-        String searchBase, String filter, SearchControls searchControls,
-        AliasDereferencingMethod aliasesDereferencingMethod, ReferralHandlingMethod referralsHandlingMethod,
-        Control[] controls, long requestNum, StudioProgressMonitor monitor, ReferralsInfo referralsInfo )
+    public CursorStudioNamingEnumeration( Connection connection, SearchCursor cursor, String searchBase, String filter,
+        SearchControls searchControls, AliasDereferencingMethod aliasesDereferencingMethod,
+        ReferralHandlingMethod referralsHandlingMethod, Control[] controls, long requestNum,
+        StudioProgressMonitor monitor, ReferralsInfo referralsInfo )
     {
-        super( connection, searchBase, filter, searchControls, aliasesDereferencingMethod,
-            referralsHandlingMethod, controls, requestNum, monitor, referralsInfo );
+        super( connection, searchBase, filter, searchControls, aliasesDereferencingMethod, referralsHandlingMethod,
+            controls, requestNum, monitor, referralsInfo );
         this.connection = connection;
         this.cursor = cursor;
 
@@ -107,7 +108,11 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
         this.referralsHandlingMethod = referralsHandlingMethod;
         this.controls = controls;
         this.monitor = monitor;
-        this.referralsInfo = referralsInfo;
+
+        if ( super.referralsInfo == null )
+        {
+            super.referralsInfo = new ReferralsInfo( false );
+        }
     }
 
 
@@ -157,7 +162,7 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
                     if ( referralsHandlingMethod != ReferralHandlingMethod.IGNORE )
                     {
                         // Storing the referral for later use
-                        referralsList.add( ( (SearchResultReference) currentResponse ).getReferral() );
+                        referralsInfo.addReferral( ( ( SearchResultReference ) currentResponse ).getReferral() );
                     }
                 }
             }
@@ -166,6 +171,12 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
             if ( searchResultDone == null )
             {
                 searchResultDone = ( ( SearchCursor ) cursor ).getSearchResultDone();
+                Referral referral = searchResultDone.getLdapResult().getReferral();
+                if ( referralsHandlingMethod != ReferralHandlingMethod.IGNORE && referral != null )
+                {
+                    // Storing the referral for later use
+                    referralsInfo.addReferral( referral );
+                }
             }
 
             // Are we following referrals manually?
@@ -179,10 +190,10 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
                 }
 
                 // Checking the referrals list
-                if ( ( referralsList != null ) && ( referralsList.size() > 0 ) )
+                if ( referralsInfo.hasMoreReferrals() )
                 {
                     // Getting the list of the next referral
-                    currentReferralUrlsList = new ArrayList<String>( referralsList.remove( 0 ).getLdapUrls() );
+                    currentReferralUrlsList = new ArrayList<String>( referralsInfo.getNextReferral().getLdapUrls() );
 
                     // return true if there's at least one referral LDAP URL to handle
                     return currentReferralUrlsList.size() > 0;
@@ -197,9 +208,9 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
                     return true;
                 }
 
-                if ( ( referralsList != null ) && ( referralsList.size() > 0 ) )
+                if ( referralsInfo.hasMoreReferrals() )
                 {
-                    Referral referral = referralsList.remove( 0 );
+                    Referral referral = referralsInfo.getNextReferral();
                     List<String> referralUrls = new ArrayList<String>( referral.getLdapUrls() );
                     LdapUrl url = new LdapUrl( referralUrls.get( 0 ) );
 
@@ -207,28 +218,25 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
                         this );
                     if ( referralConnection != null )
                     {
-                        String referralSearchBase = url.getDn() != null && !url.getDn().isEmpty() ? url.getDn()
-                            .getName()
-                            : searchBase;
-                        String referralFilter = url.getFilter() != null && url.getFilter().length() == 0 ? url
-                            .getFilter()
-                            : filter;
+                        String referralSearchBase = url.getDn() != null && !url.getDn().isEmpty()
+                            ? url.getDn().getName() : searchBase;
+                        String referralFilter = url.getFilter() != null && url.getFilter().length() == 0
+                            ? url.getFilter() : filter;
                         SearchControls referralSearchControls = new SearchControls();
-                        referralSearchControls.setSearchScope( url.getScope().getScope() > -1 ? url.getScope()
-                            .getScope()
-                            : searchControls.getSearchScope() );
-                        referralSearchControls.setReturningAttributes( url.getAttributes() != null
-                            && url.getAttributes().size() > 0 ? url.getAttributes().toArray(
-                            new String[url.getAttributes().size()] ) : searchControls.getReturningAttributes() );
+                        referralSearchControls.setSearchScope( url.getScope().getScope() > -1
+                            ? url.getScope().getScope() : searchControls.getSearchScope() );
+                        referralSearchControls
+                            .setReturningAttributes( url.getAttributes() != null && url.getAttributes().size() > 0
+                                ? url.getAttributes().toArray( new String[url.getAttributes().size()] )
+                                : searchControls.getReturningAttributes() );
                         referralSearchControls.setCountLimit( searchControls.getCountLimit() );
                         referralSearchControls.setTimeLimit( searchControls.getTimeLimit() );
                         referralSearchControls.setDerefLinkFlag( searchControls.getDerefLinkFlag() );
                         referralSearchControls.setReturningObjFlag( searchControls.getReturningObjFlag() );
 
-                        cursorNamingEnumeration = referralConnection.getConnectionWrapper()
-                            .search(
-                                referralSearchBase, referralFilter, referralSearchControls, aliasesDereferencingMethod,
-                                referralsHandlingMethod, controls, monitor, referralsInfo );
+                        cursorNamingEnumeration = referralConnection.getConnectionWrapper().search( referralSearchBase,
+                            referralFilter, referralSearchControls, aliasesDereferencingMethod, referralsHandlingMethod,
+                            controls, monitor, referralsInfo );
 
                         return cursorNamingEnumeration.hasMore();
                     }
@@ -242,7 +250,7 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
 
             return false;
         }
-        catch ( Exception e )
+        catch ( CursorException | LdapException e )
         {
             throw new NamingException( e.getMessage() );
         }
@@ -269,7 +277,7 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
             {
                 resultEntryCounter++;
                 SearchResult sr = new SearchResult( currentSearchResultEntry.getObjectName().toString(), null,
-                        AttributeUtils.toAttributes(currentSearchResultEntry.getEntry()) );
+                    AttributeUtils.toAttributes( currentSearchResultEntry.getEntry() ) );
                 sr.setNameInNamespace( currentSearchResultEntry.getObjectName().toString() );
 
                 // Converting the SearchResult to a StudioSearchResult
@@ -288,8 +296,7 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
                     LdapUrl url = new LdapUrl( currentReferralUrlsList.remove( 0 ) );
 
                     // Building the search result
-                    SearchResult searchResult = new SearchResult( url.getDn().getName(), null,
-                        new BasicAttributes(),
+                    SearchResult searchResult = new SearchResult( url.getDn().getName(), null, new BasicAttributes(),
                         false );
                     searchResult.setNameInNamespace( url.getDn().getName() );
 
@@ -343,7 +350,7 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
     {
         if ( searchResultDone != null )
         {
-            Map<String, org.apache.directory.shared.ldap.model.message.Control> controlsMap = searchResultDone
+            Map<String, org.apache.directory.api.ldap.model.message.Control> controlsMap = searchResultDone
                 .getControls();
             if ( ( controlsMap != null ) && ( controlsMap.size() > 0 ) )
             {
@@ -363,20 +370,20 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
      * @return
      *      an array of converted controls
      */
-    private Control[] convertControls( Collection<org.apache.directory.shared.ldap.model.message.Control> controls )
+    private Control[] convertControls( Collection<org.apache.directory.api.ldap.model.message.Control> controls )
     {
         if ( controls != null )
         {
             List<Control> convertedControls = new ArrayList<Control>();
 
-            for ( org.apache.directory.shared.ldap.model.message.Control control : controls )
+            for ( org.apache.directory.api.ldap.model.message.Control control : controls )
             {
                 Control convertedControl = null;
-                CodecControl<? extends org.apache.directory.shared.ldap.model.message.Control> wrapped = null;
+                CodecControl<? extends org.apache.directory.api.ldap.model.message.Control> wrapped = null;
 
                 if ( control instanceof CodecControl )
                 {
-                    wrapped = (org.apache.directory.shared.ldap.codec.api.CodecControl<?> ) control;
+                    wrapped = ( org.apache.directory.api.ldap.codec.api.CodecControl<?> ) control;
                 }
                 else
                 {
@@ -400,8 +407,7 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
                 else
                 {
                     // Default case
-                    convertedControl = new BasicControl( wrapped.getOid(), wrapped.isCritical(),
-                        wrapped.getValue() );
+                    convertedControl = new BasicControl( wrapped.getOid(), wrapped.isCritical(), wrapped.getValue() );
                 }
 
                 convertedControls.add( convertedControl );

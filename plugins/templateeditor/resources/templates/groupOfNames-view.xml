@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+  
+  http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!--
+  @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+-->
+<template id="groupOfNames-view" title="GroupOfNames - View">
+	<objectClasses>
+		<structural>groupOfNames</structural>
+	</objectClasses>
+	<form>
+		<composite numberOfColumns="2" equalColumns="false"
+			horizontalAlignment="fill" grabExcessHorizontalSpace="true"
+			verticalAlignment="fill" grabExcessVerticalSpace="true">
+			<!-- GENERAL INFORMATION -->
+			<section title="General Information" numberOfColumns="2"
+				equalColumns="false" horizontalAlignment="fill"
+				grabExcessHorizontalSpace="true">
+
+				<!-- Name -->
+				<label value="Name:" horizontalAlignment="end" width="70" />
+				<label attributeType="cn" />
+
+				<!-- Description -->
+				<label value="Description:" horizontalAlignment="end" />
+				<label attributeType="description" numberOfRows="3" />
+
+			</section>
+
+			<!-- Image -->
+			<image imageWidth="64" imageHeight="64" showSaveAsButton="false"
+				showClearButton="false" showBrowseButton="false">
+				<data>/9j/4AAQSkZJRgABAgAAZABkAAD/7AARRHVja3kAAQAEAAAAUAAA/+4AJkFkb2Jl
+					AGTAAAAAAQMAFQQDBgoNAAAEIgAABwEAAAmZAAANUP/bAIQAAgICAgICAgICAgMCAgIDBAMCAgM
+					EBQQEBAQEBQYFBQUFBQUGBgcHCAcHBgkJCgoJCQwMDAwMDAwMDAwMDAwMDAEDAwMFBAUJBgYJDQ
+					sJCw0PDg4ODg8PDAwMDAwPDwwMDAwMDA8MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwM/8IAE
+					QgAQABAAwERAAIRAQMRAf/EANcAAAMBAQADAAAAAAAAAAAAAAYHCAUAAQMEAQACAwEBAAAAAAAA
+					AAAAAAACBAADBQEGEAAABgEDAwMEAwAAAAAAAAAAAQIDBAUREBIGMkITITEiIzNDJBQ2BxEAAAQ
+					EBAMEBQkJAAAAAAAAARECAwASEwQhMRQFUSIyEEFhFXGxsiMzgXKCwlODs8MGwUJSYmNzJDSEEg
+					ABBAMBAQEAAAAAAAAAAAAAEAERISAxEjACIhMAAgIBAgYCAwEBAAAAAAAAAREAMSFBURDwYXGRw
+					YGxodHxIOH/2gAMAwEAAhEDEQAAAb+kTGkiIHUY1W4nR+YxziGmsnU6SctbNIwsyeis3FGok4kH
+					0bn87u9IgtVD6Q6MM1AllDtz3Vu2vWOLqpt5YtUIObDcp6v9BfM4HuOadB6gXmKVi8eoL17F5qK
+					hnaDEbvNPaLy9GeXkd+Hw9W2mkWKXK51S0PP7emBy1p5mqc9tfVloJsJRpPPpXv5n0PSTFqZmyJ
+					r5hcZZpcCDolfTXGJr/wD/2gAIAQEAAQUCE6zXZCrh3Dx2nIZ0ddbyuwfnXDNntqL9dTrSKS4HN
+					qaKO2ldbaGQgIWXF/C5d6um3cCrq5DVTOdmw26xuQu+uocifWVTkfienLZMmMG2Y8dc+Y5Ms0to
+					r4dt+3E47cSWLC5abW/wObMmDmYaMzdkK28slK3NyVHso/7faH+3/nQejRpI4lIfeVaJipZjyVy
+					6ayluNM0MCAiPfynVPR4UOHpxBRJDvrxWCrHGLQ8w4p44fdatcPvmAdHZweMpVyFmA/H5A+0zR2
+					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
+					userPassword:: e0NSWVBUfTRUbzg3NU5HeFZyMEk=</data>
+			</image>
+
+			<!-- MEMBERS -->
+			<section title="Members" horizontalAlignment="fill"
+				grabExcessHorizontalSpace="true" verticalAlignment="fill"
+				grabExcessVerticalSpace="true" horizontalSpan="2">
+
+				<table attributeType="member" showAddButton="false"
+					showEditButton="false" showDeleteButton="false"
+					horizontalAlignment="fill" grabExcessHorizontalSpace="true"
+					verticalAlignment="fill" grabExcessVerticalSpace="true" />
+
+			</section>
+		</composite>
+	</form>
+</template>

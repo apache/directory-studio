@@ -26,7 +26,7 @@ import java.util.Collection;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.ValueAddedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.ValueDeletedEvent;
@@ -181,7 +181,7 @@ public class CompoundModification
         IAttribute attribute = oldValue.getAttribute();
 
         boolean modify = false;
-        if ( oldValue != null && newRawValue != null && newRawValue instanceof byte[] )
+        if ( oldValue != null && newRawValue instanceof byte[] )
         {
             byte[] newValue = ( byte[] ) newRawValue;
             if ( !Utils.equals( oldValue.getBinaryValue(), newValue ) )
@@ -189,7 +189,7 @@ public class CompoundModification
                 modify = true;
             }
         }
-        else if ( oldValue != null && newRawValue != null && newRawValue instanceof String )
+        else if ( oldValue != null && newRawValue instanceof String )
         {
 
             String newValue = ( String ) newRawValue;

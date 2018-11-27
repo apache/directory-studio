@@ -35,14 +35,6 @@ public class ConnectionSorter extends ViewerSorter
 {
 
     /**
-     * Creates a new instance of ConnectionSorter.
-     */
-    public ConnectionSorter()
-    {
-    }
-
-
-    /**
      * Connects the tree viewer to this sorter.
      *
      * @param viewer the tree viewer
@@ -58,6 +50,7 @@ public class ConnectionSorter extends ViewerSorter
      */
     public void dispose()
     {
+        // Nothing to do
     }
 
 
@@ -66,6 +59,7 @@ public class ConnectionSorter extends ViewerSorter
      * 
      * This method is used to categorize connection folders and connections.
      */
+    @Override
     public int category( Object element )
     {
         if ( element instanceof ConnectionFolder )
@@ -77,5 +71,4 @@ public class ConnectionSorter extends ViewerSorter
             return 2;
         }
     }
-
 }

@@ -21,8 +21,6 @@
 package org.apache.directory.studio.ldapservers;
 
 
-
-
 /**
  * Constants used in the LDAP Servers plugin.
  * Final reference -> class shouldn't be extended
@@ -41,7 +39,7 @@ public final class LdapServersPluginConstants
     }
 
     /** The plug-in ID */
-    public static final String PLUGIN_ID = LdapServersPlugin.getDefault().getPluginProperties().getString( "Plugin_id" ); //$NON-NLS-1$
+    public static final String PLUGIN_ID = LdapServersPluginConstants.class.getPackage().getName();
 
     /** The LDAP Adapters Extension Point ID */
     public static final String LDAP_SERVER_ADAPTERS_EXTENSION_POINT = PLUGIN_ID + ".ldapServerAdapters"; //$NON-NLS-1$
@@ -90,8 +88,7 @@ public final class LdapServersPluginConstants
     // -----
     // VIEWS
     // -----
-    public static final String VIEW_SERVERS_VIEW = LdapServersPlugin.getDefault().getPluginProperties()
-        .getString( "View_ServersView_id" ); //$NON-NLS-1$
+    public static final String VIEW_SERVERS_VIEW = "org.apache.directory.studio.apacheds.serversView"; //$NON-NLS-1$
 
     // --------
     // CONTEXTS

@@ -36,10 +36,6 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class AttributeTypeAndValueValueEditor extends AbstractDialogStringValueEditor
 {
-
-    private static final String EMPTY = ""; //$NON-NLS-1$
-
-
     /**
      * {@inheritDoc}
      * 
@@ -48,18 +44,22 @@ public class AttributeTypeAndValueValueEditor extends AbstractDialogStringValueE
     public boolean openDialog( Shell shell )
     {
         Object value = getValue();
-        if ( value != null && value instanceof AttributeTypeAndValueValueEditorRawValueWrapper )
+        
+        if ( value instanceof AttributeTypeAndValueValueEditorRawValueWrapper )
         {
             AttributeTypeAndValueValueEditorRawValueWrapper wrapper = ( AttributeTypeAndValueValueEditorRawValueWrapper ) value;
             AttributeTypeAndValueDialog dialog = new AttributeTypeAndValueDialog( shell, wrapper.schema,
                 wrapper.attributeType, wrapper.value );
-            if ( dialog.open() == TextDialog.OK && !EMPTY.equals( dialog.getAttributeType() )
+        
+            if ( ( dialog.open() == TextDialog.OK ) && !EMPTY.equals( dialog.getAttributeType() )
                 && !EMPTY.equals( dialog.getValue() ) )
             {
                 setValue( dialog.getAttributeType() + '=' + dialog.getValue() );
+                
                 return true;
             }
         }
+        
         return false;
     }
 
@@ -71,19 +71,26 @@ public class AttributeTypeAndValueValueEditor extends AbstractDialogStringValueE
      */
     public Object getRawValue( IValue value )
     {
-        return value != null ? getRawValue( value.getAttribute().getEntry().getBrowserConnection(), value
-            .getStringValue() ) : null;
+        if ( value != null )
+        {
+            return getRawValue( value.getAttribute().getEntry().getBrowserConnection(), 
+                                value.getStringValue() );
+        }
+
+        return null;
     }
 
 
     private Object getRawValue( IBrowserConnection connection, Object value )
     {
         Schema schema = null;
+        
         if ( connection != null )
         {
             schema = connection.getSchema();
         }
-        if ( schema == null || value == null || !( value instanceof String ) )
+        
+        if ( ( schema == null ) || !( value instanceof String ) )
         {
             return null;
         }
@@ -94,6 +101,7 @@ public class AttributeTypeAndValueValueEditor extends AbstractDialogStringValueE
         String v = atav.length > 1 ? atav[1] : EMPTY;
         AttributeTypeAndValueValueEditorRawValueWrapper wrapper = new AttributeTypeAndValueValueEditorRawValueWrapper(
             schema, at, v );
+        
         return wrapper;
     }
 

@@ -21,8 +21,8 @@
 package org.apache.directory.studio.schemaeditor.view.editors.attributetype;
 
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
+import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.studio.schemaeditor.view.editors.AbstractSchemaObjectEditorPage;
 
 

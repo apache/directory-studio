@@ -23,7 +23,6 @@ package org.apache.directory.studio.valueeditors;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
@@ -39,13 +38,12 @@ import org.eclipse.jface.viewers.TextCellEditor;
 /**
  * 
  * Abstract base class for value editors that handle string values
- * withing the table or tree control. 
+ * within the table or tree control. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor implements IValueEditor
 {
-
     /** The name of this value editor */
     private String name;
 
@@ -82,29 +80,38 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
      * This implementation of getDisplayValue() returns a 
      * comma-separated list of all values. 
      */
+    @Override
     public String getDisplayValue( AttributeHierarchy attributeHierarchy )
     {
         if ( attributeHierarchy == null )
         {
-            return "NULL"; //$NON-NLS-1$
+            return NULL;
         }
 
-        List<IValue> valueList = new ArrayList<IValue>();
+        List<IValue> valueList = new ArrayList<>();
+        
         for ( IAttribute attribute : attributeHierarchy )
         {
             valueList.addAll( Arrays.asList( attribute.getValues() ) );
         }
 
-        StringBuffer sb = new StringBuffer();
-        for ( Iterator<IValue> it = valueList.iterator(); it.hasNext(); )
+        StringBuilder sb = new StringBuilder();
+        boolean isFirst = true;
+        
+        for ( IValue value : valueList )
         {
-            IValue value = it.next();
-            sb.append( getDisplayValue( value ) );
-            if ( it.hasNext() )
+            if ( isFirst )
+            {
+                isFirst = false;
+            }
+            else
             {
                 sb.append( ", " ); //$NON-NLS-1$
             }
+
+            sb.append( getDisplayValue( value ) );
         }
+        
         return sb.toString();
     }
 
@@ -114,10 +121,11 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
      * 
      * This implementation just returns the raw value
      */
+    @Override
     public String getDisplayValue( IValue value )
     {
-        Object obj = this.getRawValue( value );
-        return obj == null ? "NULL" : obj.toString(); //$NON-NLS-1$
+        Object obj = getRawValue( value );
+        return StringValueEditorUtils.getDisplayValue( obj );
     }
 
 
@@ -128,80 +136,52 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
      * in attributeHierarchy or calls getRawValue(IValue) if attributeHierarchy
      * contains exactly one value. Otherwise null is returned.
      */
+    @Override
     public Object getRawValue( AttributeHierarchy attributeHierarchy )
     {
-        if ( attributeHierarchy == null )
+        if ( ( attributeHierarchy != null ) && ( attributeHierarchy.size() == 1 ) )
         {
-            return null;
-        }
-        else if ( attributeHierarchy.size() == 1 && attributeHierarchy.getAttribute().getValueSize() == 0 )
-        {
-            if ( attributeHierarchy.getAttribute().isString() )
+            if ( attributeHierarchy.getAttribute().getValueSize() == 0 )
             {
-                return IValue.EMPTY_STRING_VALUE;
+                if ( attributeHierarchy.getAttribute().isString() )
+                {
+                    return IValue.EMPTY_STRING_VALUE;
+                }
+                else
+                {
+                    return IValue.EMPTY_BINARY_VALUE;
+                }
             }
-            else
+            else if ( attributeHierarchy.getAttribute().getValueSize() == 1 )
             {
-                return IValue.EMPTY_BINARY_VALUE;
+                return getRawValue( attributeHierarchy.getAttribute().getValues()[0] );
             }
         }
-        else if ( attributeHierarchy.size() == 1 && attributeHierarchy.getAttribute().getValueSize() == 1 )
-        {
-            return getRawValue( attributeHierarchy.getAttribute().getValues()[0] );
-        }
-        else
-        {
-            return null;
-        }
+
+        return null;
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean hasValue( IValue value )
+    {
+        return ( value != null ) && ( value.isString() || value.isBinary() );
     }
 
-
+    
     /**
      * {@inheritDoc}
      * 
      * This implementation returns the string value 
      * of the given value. 
      */
+    @Override
     public Object getRawValue( IValue value )
     {
-        if ( value == null )
-        {
-            return null;
-        }
-        else if ( value.isString() )
-        {
-            return value.getStringValue();
-        }
-        else if ( value.isBinary() )
-        {
-            return isEditable( value.getBinaryValue() ) ? value.getStringValue() : null;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-
-    /**
-     * Small helper.
-     */
-    private boolean isEditable( byte[] b )
-    {
-        if ( b == null )
-        {
-            return false;
-        }
-
-        for ( int i = 0; i < b.length; i++ )
-        {
-            if ( !( b[i] == '\n' || b[i] == '\r' || ( b[i] >= '\u0020' && b[i] <= '\u007F' ) ) )
-            {
-                return false;
-            }
-        }
-
-        return true;
+        return StringValueEditorUtils.getRawValue( value );
     }
 
 
@@ -211,26 +191,17 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
      * This implementation always return the string value
      * as String.
      */
+    @Override
     public Object getStringOrBinaryValue( Object rawValue )
     {
-        if ( rawValue == null )
-        {
-            return null;
-        }
-        else if ( rawValue instanceof String )
-        {
-            return rawValue;
-        }
-        else
-        {
-            return null;
-        }
+        return StringValueEditorUtils.getStringOrBinaryValue( rawValue );
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public CellEditor getCellEditor()
     {
         return this;
@@ -240,28 +211,41 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
     /**
      * {@inheritDoc}
      */
+    @Override
     protected Object doGetValue()
     {
-        return "".equals( text.getText() ) ? null : text.getText(); //$NON-NLS-1$
+        if ( EMPTY.equals( text.getText() ) )
+        {
+            return null;
+        }
+        else
+        {
+            return text.getText();
+        }
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void doSetValue( Object value )
     {
-        if ( value != null && value instanceof IValue.EmptyValue )
+        if ( value instanceof IValue.EmptyValue )
         {
-            value = ( ( IValue.EmptyValue ) value ).getStringValue();
+            super.doSetValue( ( ( IValue.EmptyValue ) value ).getStringValue() );
         }
-        super.doSetValue( value );
+        else
+        {
+            super.doSetValue( value );
+        }
     }
 
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setValueEditorName( String name )
     {
         this.name = name;
@@ -271,6 +255,7 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getValueEditorName()
     {
         return name;
@@ -280,6 +265,7 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setValueEditorImageDescriptor( ImageDescriptor imageDescriptor )
     {
         this.imageDescriptor = imageDescriptor;
@@ -289,9 +275,9 @@ public abstract class AbstractInPlaceStringValueEditor extends TextCellEditor im
     /**
      * {@inheritDoc}
      */
+    @Override
     public ImageDescriptor getValueEditorImageDescriptor()
     {
         return imageDescriptor;
     }
-
 }

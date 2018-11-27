@@ -34,8 +34,8 @@ import org.apache.directory.studio.connection.core.jobs.StudioConnectionJob;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IWorkbenchCommandConstants;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
 
 
 /**
@@ -52,13 +52,28 @@ public class DeleteAction extends StudioAction
     {
         Connection[] connections = getSelectedConnections();
         ConnectionFolder[] connectionFolders = getSelectedConnectionFolders();
-        if ( connections.length > 0 && connectionFolders.length == 0 )
+        
+        if ( ( connections.length > 0 ) && ( connectionFolders.length == 0 ) )
         {
-            return connections.length > 1 ? Messages.getString( "DeleteAction.DeleteConnections" ) : Messages.getString( "DeleteAction.DeleteConnection" ); //$NON-NLS-1$ //$NON-NLS-2$
+            if ( connections.length > 1 )
+            {
+                return Messages.getString( "DeleteAction.DeleteConnections" );
+            }
+            else
+            {
+                return Messages.getString( "DeleteAction.DeleteConnection" ); //$NON-NLS-1$ //$NON-NLS-2$
+            }
         }
-        else if ( connectionFolders.length > 0 && connections.length == 0 )
+        else if ( ( connectionFolders.length > 0 ) && ( connections.length == 0 ) )
         {
-            return connectionFolders.length > 1 ? Messages.getString( "DeleteAction.DeleteConnectionFolders" ) : Messages.getString( "DeleteAction.DeleteConnectionFolder" ); //$NON-NLS-1$ //$NON-NLS-2$
+            if ( connectionFolders.length > 1 )
+            {
+                return Messages.getString( "DeleteAction.DeleteConnectionFolders" );
+            }
+            else
+            {
+                return Messages.getString( "DeleteAction.DeleteConnectionFolder" ); //$NON-NLS-1$ //$NON-NLS-2$
+            }
         }
         else
         {
@@ -81,7 +96,7 @@ public class DeleteAction extends StudioAction
      */
     public String getCommandId()
     {
-        return IWorkbenchActionDefinitionIds.DELETE;
+        return IWorkbenchCommandConstants.EDIT_DELETE;
     }
 
 
@@ -93,26 +108,33 @@ public class DeleteAction extends StudioAction
         Connection[] connections = getSelectedConnections();
         ConnectionFolder[] connectionFolders = getSelectedConnectionFolders();
 
-        StringBuffer message = new StringBuffer();
+        StringBuilder message = new StringBuilder();
 
         if ( connections.length > 0 )
         {
             if ( connections.length <= 5 )
             {
-                message.append( connections.length == 1 ? Messages
-                    .getString( "DeleteAction.SureDeleteFollowingConnection" ) //$NON-NLS-1$
-                    : Messages.getString( "DeleteAction.SureDeleteFollowingConnections" ) ); //$NON-NLS-1$
-                for ( int i = 0; i < connections.length; i++ )
+                if ( connections.length == 1 )
+                {
+                    message.append( Messages.getString( "DeleteAction.SureDeleteFollowingConnection" ) ); //$NON-NLS-1$
+                }
+                else
+                {
+                    message.append( Messages.getString( "DeleteAction.SureDeleteFollowingConnections" ) ); //$NON-NLS-1$
+                }
+                
+                for ( Connection connection : connections )
                 {
                     message.append( ConnectionCoreConstants.LINE_SEPARATOR );
                     message.append( "  - " ); //$NON-NLS-1$
-                    message.append( connections[i].getName() );
+                    message.append( connection.getName() );
                 }
             }
             else
             {
                 message.append( Messages.getString( "DeleteAction.SureDeleteSelectedConnections" ) ); //$NON-NLS-1$
             }
+            
             message.append( ConnectionCoreConstants.LINE_SEPARATOR );
             message.append( ConnectionCoreConstants.LINE_SEPARATOR );
         }
@@ -121,25 +143,32 @@ public class DeleteAction extends StudioAction
         {
             if ( connectionFolders.length <= 5 )
             {
-                message.append( connectionFolders.length == 1 ? Messages
-                    .getString( "DeleteAction.SureDeleteFollowingFolder" ) //$NON-NLS-1$
-                    : Messages.getString( "DeleteAction.SureDeleteFollowingFolders" ) ); //$NON-NLS-1$
-                for ( int i = 0; i < connectionFolders.length; i++ )
+                if ( connectionFolders.length == 1 )
+                {
+                    message.append( Messages.getString( "DeleteAction.SureDeleteFollowingFolder" ) ); //$NON-NLS-1$
+                }
+                else
+                {
+                    message.append( Messages.getString( "DeleteAction.SureDeleteFollowingFolders" ) ); //$NON-NLS-1$
+                }
+
+                for ( ConnectionFolder connectionFolder : connectionFolders )
                 {
                     message.append( ConnectionCoreConstants.LINE_SEPARATOR );
                     message.append( "  - " ); //$NON-NLS-1$
-                    message.append( connectionFolders[i].getName() );
+                    message.append( connectionFolder.getName() );
                 }
             }
             else
             {
                 message.append( Messages.getString( "DeleteAction.SureDeleteSelectedConnectionFolders" ) ); //$NON-NLS-1$
             }
+            
             message.append( ConnectionCoreConstants.LINE_SEPARATOR );
             message.append( ConnectionCoreConstants.LINE_SEPARATOR );
         }
 
-        if ( message.length() == 0 || MessageDialog.openConfirm( getShell(), getText(), message.toString() ) )
+        if ( ( message.length() == 0 ) || MessageDialog.openConfirm( getShell(), getText(), message.toString() ) )
         {
             List<Connection> connectionsToDelete = getConnectionsToDelete();
             List<ConnectionFolder> connectionsFoldersToDelete = getConnectionsFoldersToDelete();
@@ -148,6 +177,7 @@ public class DeleteAction extends StudioAction
             {
                 deleteConnections( connectionsToDelete );
             }
+            
             if ( !connectionsFoldersToDelete.isEmpty() )
             {
                 deleteConnectionFolders( connectionsFoldersToDelete );
@@ -158,18 +188,21 @@ public class DeleteAction extends StudioAction
 
     private List<ConnectionFolder> getConnectionsFoldersToDelete()
     {
-        List<ConnectionFolder> selectedFolders = new ArrayList<ConnectionFolder>( Arrays
+        List<ConnectionFolder> selectedFolders = new ArrayList<>( Arrays
             .asList( getSelectedConnectionFolders() ) );
-        List<ConnectionFolder> foldersToDelete = new ArrayList<ConnectionFolder>();
+        List<ConnectionFolder> foldersToDelete = new ArrayList<>();
+        
         while ( !selectedFolders.isEmpty() )
         {
             ConnectionFolder folder = selectedFolders.get( 0 );
 
             List<String> subFolderIds = folder.getSubFolderIds();
+            
             for ( String subFolderId : subFolderIds )
             {
                 ConnectionFolder subFolder = ConnectionCorePlugin.getDefault().getConnectionFolderManager()
                     .getConnectionFolderById( subFolderId );
+                
                 if ( subFolder != null )
                 {
                     selectedFolders.add( subFolder );
@@ -183,25 +216,29 @@ public class DeleteAction extends StudioAction
 
             selectedFolders.remove( folder );
         }
+        
         return foldersToDelete;
     }
 
 
     private List<Connection> getConnectionsToDelete()
     {
-        List<ConnectionFolder> selectedFolders = new ArrayList<ConnectionFolder>( Arrays
+        List<ConnectionFolder> selectedFolders = new ArrayList<>( Arrays
             .asList( getSelectedConnectionFolders() ) );
-        List<Connection> selectedConnections = new ArrayList<Connection>( Arrays.asList( getSelectedConnections() ) );
-        List<Connection> connectionsToDelete = new ArrayList<Connection>( selectedConnections );
+        List<Connection> selectedConnections = new ArrayList<>( Arrays.asList( getSelectedConnections() ) );
+        List<Connection> connectionsToDelete = new ArrayList<>( selectedConnections );
+        
         while ( !selectedFolders.isEmpty() )
         {
             ConnectionFolder folder = selectedFolders.get( 0 );
 
             List<String> subFolderIds = folder.getSubFolderIds();
+            
             for ( String subFolderId : subFolderIds )
             {
                 ConnectionFolder subFolder = ConnectionCorePlugin.getDefault().getConnectionFolderManager()
                     .getConnectionFolderById( subFolderId );
+                
                 if ( subFolder != null )
                 {
                     selectedFolders.add( subFolder );
@@ -209,11 +246,13 @@ public class DeleteAction extends StudioAction
             }
 
             List<String> connectionIds = folder.getConnectionIds();
+            
             for ( String connectionId : connectionIds )
             {
                 Connection connection = ConnectionCorePlugin.getDefault().getConnectionManager().getConnectionById(
                     connectionId );
-                if ( connection != null && !connectionsToDelete.contains( connection ) )
+                
+                if ( ( connection != null ) && !connectionsToDelete.contains( connection ) )
                 {
                     connectionsToDelete.add( connection );
                 }
@@ -221,6 +260,7 @@ public class DeleteAction extends StudioAction
 
             selectedFolders.remove( folder );
         }
+        
         return connectionsToDelete;
     }
 
@@ -237,12 +277,12 @@ public class DeleteAction extends StudioAction
     /**
      * Deletes Connections
      *
-     * @param connectionsToDelete
-     *      the Connections to delete
+     * @param connectionsToDelete the Connections to delete
      */
     private void deleteConnections( List<Connection> connectionsToDelete )
     {
         new StudioConnectionJob( new CloseConnectionsRunnable( connectionsToDelete ) ).execute();
+        
         for ( Connection connection : connectionsToDelete )
         {
             ConnectionCorePlugin.getDefault().getConnectionManager().removeConnection( connection );
@@ -253,8 +293,7 @@ public class DeleteAction extends StudioAction
     /**
      * Deletes Connection Folders
      *
-     * @param connectionsFoldersToDelete
-     *      the Connection Folders to delete
+     * @param connectionsFoldersToDelete the Connection Folders to delete
      */
     private void deleteConnectionFolders( List<ConnectionFolder> connectionsFoldersToDelete )
     {
@@ -263,5 +302,4 @@ public class DeleteAction extends StudioAction
             ConnectionCorePlugin.getDefault().getConnectionFolderManager().removeConnectionFolder( connectionFolder );
         }
     }
-
 }

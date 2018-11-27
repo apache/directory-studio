@@ -24,8 +24,8 @@ package org.apache.directory.studio.ldapbrowser.core.model.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.model.url.LdapUrl;
+import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesRunnable;
@@ -182,7 +182,7 @@ public class ContinuedSearchResultEntry extends DelegateEntry implements IContin
     public boolean equals( Object o )
     {
         // check argument
-        if ( o == null || !( o instanceof ContinuedSearchResultEntry ) )
+        if ( !( o instanceof ContinuedSearchResultEntry ) )
         {
             return false;
         }

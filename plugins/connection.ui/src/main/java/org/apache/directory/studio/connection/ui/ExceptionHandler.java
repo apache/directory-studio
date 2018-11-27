@@ -63,14 +63,10 @@ public class ExceptionHandler
         }
         else
         {
-            Runnable runnable = new Runnable()
-            {
-                public void run()
-                {
-                    ErrorDialog.openError( Display.getDefault().getActiveShell(), Messages
-                        .getString( "ExceptionHandler.Error" ), message, status ); //$NON-NLS-1$
-                }
-            };
+            Runnable runnable = () -> 
+                ErrorDialog.openError( Display.getDefault().getActiveShell(), Messages
+                    .getString( "ExceptionHandler.Error" ), message, status ); //$NON-NLS-1$
+            
             Display.getDefault().asyncExec( runnable );
         }
 

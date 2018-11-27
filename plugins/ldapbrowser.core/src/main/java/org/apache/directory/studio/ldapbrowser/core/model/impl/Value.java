@@ -23,7 +23,7 @@ package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 import java.util.Iterator;
 
-import org.apache.directory.shared.ldap.model.name.Ava;
+import org.apache.directory.api.ldap.model.name.Ava;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.core.internal.search.LdapSearchPageScoreComputer;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
@@ -149,7 +149,7 @@ public class Value implements IValue
         }
         else
         {
-            return "UNKNOWN";
+            return Messages.Value_Unknown;
         }
     }
 
@@ -177,7 +177,7 @@ public class Value implements IValue
         }
         else
         {
-            return LdifUtils.utf8encode( "UNKNOWN" );
+            return LdifUtils.utf8encode( Messages.Value_Unknown );
         }
     }
 
@@ -215,7 +215,7 @@ public class Value implements IValue
     public boolean equals( Object o )
     {
         // check argument
-        if ( o == null || !( o instanceof IValue ) )
+        if ( !( o instanceof IValue ) )
         {
             return false;
         }
@@ -310,7 +310,7 @@ public class Value implements IValue
         {
             Ava ava = atavIterator.next();
             if ( getAttribute().getDescription().equals( ava.getNormType() )
-                && getStringValue().equals( ava.getNormValue().getString() ) )
+                && getStringValue().equals( ava.getValue().getNormalized() ) )
             {
                 return true;
             }

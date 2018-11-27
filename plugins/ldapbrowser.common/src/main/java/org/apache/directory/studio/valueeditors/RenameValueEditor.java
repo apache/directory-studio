@@ -23,10 +23,9 @@ package org.apache.directory.studio.valueeditors;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.name.Rdn;
+import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.RenameEntryDialog;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.SimulateRenameDialogImpl;
 import org.apache.directory.studio.ldapbrowser.core.jobs.RenameEntryRunnable;
@@ -50,7 +49,6 @@ import org.eclipse.swt.widgets.Control;
  */
 public class RenameValueEditor extends CellEditor implements IValueEditor
 {
-
     /** The value to handle */
     private Object value;
 
@@ -133,21 +131,21 @@ public class RenameValueEditor extends CellEditor implements IValueEditor
      */
     public void activate()
     {
-        if ( getValue() != null && getValue() instanceof IEntry )
+        if ( getValue() instanceof IEntry )
         {
             IEntry entry = ( IEntry ) getValue();
-            if ( entry != null )
+            
+            RenameEntryDialog renameDialog = new RenameEntryDialog( parent.getShell(), entry );
+            
+            if ( renameDialog.open() == Dialog.OK )
             {
-                RenameEntryDialog renameDialog = new RenameEntryDialog( parent.getShell(), entry );
-                if ( renameDialog.open() == Dialog.OK )
+                Rdn newRdn = renameDialog.getRdn();
+                
+                if ( ( newRdn != null ) && !newRdn.equals( entry.getRdn() ) )
                 {
-                    Rdn newRdn = renameDialog.getRdn();
-                    if ( newRdn != null && !newRdn.equals( entry.getRdn() ) )
-                    {
-                        IEntry originalEntry = entry.getBrowserConnection().getEntryFromCache( entry.getDn() );
-                        new StudioBrowserJob( new RenameEntryRunnable( originalEntry, newRdn,
-                            new SimulateRenameDialogImpl( parent.getShell() ) ) ).execute();
-                    }
+                    IEntry originalEntry = entry.getBrowserConnection().getEntryFromCache( entry.getDn() );
+                    new StudioBrowserJob( new RenameEntryRunnable( originalEntry, newRdn,
+                        new SimulateRenameDialogImpl( parent.getShell() ) ) ).execute();
                 }
             }
         }
@@ -176,26 +174,36 @@ public class RenameValueEditor extends CellEditor implements IValueEditor
     public String getDisplayValue( AttributeHierarchy attributeHierarchy )
     {
         List<IValue> valueList = new ArrayList<IValue>();
+        
         for ( IAttribute attribute : attributeHierarchy )
         {
             valueList.addAll( Arrays.asList( attribute.getValues() ) );
         }
 
         StringBuffer sb = new StringBuffer();
+        
         if ( valueList.size() > 1 )
         {
             sb.append( NLS.bind( Messages.getString( "EntryValueEditor.n_values" ), valueList.size() ) ); //$NON-NLS-1$
         }
-        for ( Iterator<IValue> it = valueList.iterator(); it.hasNext(); )
+        
+        boolean isFirst = true;
+        
+        for ( IValue value : valueList )
         {
-            IValue value = it.next();
+            if ( isFirst )
+            {
+                isFirst = false;
+            }
+            else
+            {
+                sb.append( ", " );
+            }
+            
             IValueEditor vp = getValueEditor( value );
             sb.append( vp.getDisplayValue( value ) );
-            if ( it.hasNext() )
-            {
-                sb.append( ", " ); //$NON-NLS-1$
-            }
         }
+
         return sb.toString();
     }
 
@@ -208,6 +216,7 @@ public class RenameValueEditor extends CellEditor implements IValueEditor
     public String getDisplayValue( IValue value )
     {
         IValueEditor vp = getValueEditor( value );
+        
         return vp.getDisplayValue( value );
     }
 
@@ -239,6 +248,15 @@ public class RenameValueEditor extends CellEditor implements IValueEditor
     public Object getRawValue( AttributeHierarchy attributeHierarchy )
     {
         return attributeHierarchy.getEntry();
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    public boolean hasValue( IValue value )
+    {
+        return value.getAttribute().getEntry() != null;
     }
 
 
@@ -298,5 +316,4 @@ public class RenameValueEditor extends CellEditor implements IValueEditor
     {
         return imageDescriptor;
     }
-
 }

@@ -34,6 +34,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 
 
@@ -81,10 +82,9 @@ public class EntryEditorWidgetSorter extends ViewerSorter implements SelectionLi
         this.viewer = viewer;
         viewer.setSorter( this );
 
-        TreeColumn[] columns = ( ( TreeViewer ) viewer ).getTree().getColumns();
-        for ( int i = 0; i < columns.length; i++ )
+        for ( TreeColumn column : ( ( TreeViewer ) viewer ).getTree().getColumns() )
         {
-            columns[i].addSelectionListener( this );
+            column.addSelectionListener( this );
         }
     }
 
@@ -112,20 +112,21 @@ public class EntryEditorWidgetSorter extends ViewerSorter implements SelectionLi
      * 
      * Switches the sort property and sort order when clicking the table headers.
      */
-    public void widgetSelected( SelectionEvent e )
+    public void widgetSelected( SelectionEvent event )
     {
-        if ( e.widget instanceof TreeColumn && viewer != null )
+        if ( ( event.widget instanceof TreeColumn ) && ( viewer != null ) )
         {
-            int index = viewer.getTree().indexOf( ( ( TreeColumn ) e.widget ) );
+            Tree tree = viewer.getTree();
+            TreeColumn treeColumn = ( ( TreeColumn ) event.widget );
+            
+            int index = tree.indexOf( treeColumn );
+            
             switch ( index )
             {
                 case EntryEditorWidgetTableMetadata.KEY_COLUMN_INDEX:
                     if ( sortBy == BrowserCoreConstants.SORT_BY_ATTRIBUTE_DESCRIPTION )
                     {
-                        // toggle sort order
-                        sortOrder = sortOrder == BrowserCoreConstants.SORT_ORDER_NONE ? BrowserCoreConstants.SORT_ORDER_ASCENDING
-                            : sortOrder == BrowserCoreConstants.SORT_ORDER_ASCENDING ? BrowserCoreConstants.SORT_ORDER_DESCENDING
-                                : BrowserCoreConstants.SORT_ORDER_NONE;
+                        toggleSortOrder();
                     }
                     else
                     {
@@ -133,14 +134,13 @@ public class EntryEditorWidgetSorter extends ViewerSorter implements SelectionLi
                         sortBy = BrowserCoreConstants.SORT_BY_ATTRIBUTE_DESCRIPTION;
                         sortOrder = BrowserCoreConstants.SORT_ORDER_ASCENDING;
                     }
+                    
                     break;
+                    
                 case EntryEditorWidgetTableMetadata.VALUE_COLUMN_INDEX:
                     if ( sortBy == BrowserCoreConstants.SORT_BY_VALUE )
                     {
-                        // toggle sort order
-                        sortOrder = sortOrder == BrowserCoreConstants.SORT_ORDER_NONE ? BrowserCoreConstants.SORT_ORDER_ASCENDING
-                            : sortOrder == BrowserCoreConstants.SORT_ORDER_ASCENDING ? BrowserCoreConstants.SORT_ORDER_DESCENDING
-                                : BrowserCoreConstants.SORT_ORDER_NONE;
+                        toggleSortOrder();
                     }
                     else
                     {
@@ -148,29 +148,31 @@ public class EntryEditorWidgetSorter extends ViewerSorter implements SelectionLi
                         sortBy = BrowserCoreConstants.SORT_BY_VALUE;
                         sortOrder = BrowserCoreConstants.SORT_ORDER_ASCENDING;
                     }
+                    
                     break;
+                    
                 default:
                     ;
             }
+            
             if ( sortOrder == BrowserCoreConstants.SORT_ORDER_NONE )
             {
                 sortBy = BrowserCoreConstants.SORT_BY_NONE;
             }
 
-            TreeColumn[] columns = viewer.getTree().getColumns();
-            for ( int i = 0; i < columns.length; i++ )
+            for ( TreeColumn column : tree.getColumns() )
             {
-                columns[i].setImage( null );
+                column.setImage( null );
             }
 
             if ( sortOrder == BrowserCoreConstants.SORT_ORDER_ASCENDING )
             {
-                ( ( TreeColumn ) e.widget ).setImage( BrowserCommonActivator.getDefault().getImage(
+                treeColumn.setImage( BrowserCommonActivator.getDefault().getImage(
                     BrowserCommonConstants.IMG_SORT_ASCENDING ) );
             }
             else if ( sortOrder == BrowserCoreConstants.SORT_ORDER_DESCENDING )
             {
-                ( ( TreeColumn ) e.widget ).setImage( BrowserCommonActivator.getDefault().getImage(
+                treeColumn.setImage( BrowserCommonActivator.getDefault().getImage(
                     BrowserCommonConstants.IMG_SORT_DESCENDING ) );
             }
 
@@ -178,6 +180,29 @@ public class EntryEditorWidgetSorter extends ViewerSorter implements SelectionLi
         }
     }
 
+    
+    /**
+     * Rotate the sort order. If it was none, change it to ascending. If it was 
+     * ascending, change it to descending, and if it was descending, change it to none.
+     */
+    private void toggleSortOrder()
+    {
+        switch ( sortOrder )
+        {
+            case BrowserCoreConstants.SORT_ORDER_NONE :
+                sortOrder = BrowserCoreConstants.SORT_ORDER_ASCENDING;
+                break;
+                
+            case BrowserCoreConstants.SORT_ORDER_ASCENDING :
+                sortOrder = BrowserCoreConstants.SORT_ORDER_DESCENDING;
+                break;
+                
+            case BrowserCoreConstants.SORT_ORDER_DESCENDING :
+                sortOrder = BrowserCoreConstants.SORT_ORDER_NONE;
+                break;
+        }
+    }
+    
 
     /**
      * {@inheritDoc}
@@ -203,6 +228,7 @@ public class EntryEditorWidgetSorter extends ViewerSorter implements SelectionLi
         // check o1
         IAttribute attribute1 = null;
         IValue value1 = null;
+        
         if ( o1 instanceof IAttribute )
         {
             attribute1 = ( IAttribute ) o1;
@@ -216,6 +242,7 @@ public class EntryEditorWidgetSorter extends ViewerSorter implements SelectionLi
         // check o2
         IAttribute attribute2 = null;
         IValue value2 = null;
+        
         if ( o2 instanceof IAttribute )
         {
             attribute2 = ( IAttribute ) o2;
@@ -249,7 +276,7 @@ public class EntryEditorWidgetSorter extends ViewerSorter implements SelectionLi
                 return equal();
             }
         }
-        else if ( attribute1 != null && attribute2 != null )
+        else if ( ( attribute1 != null ) && ( attribute2 != null ) )
         {
             return compareAttributes( attribute1, attribute2 );
         }
@@ -292,7 +319,8 @@ public class EntryEditorWidgetSorter extends ViewerSorter implements SelectionLi
                     return greaterThan();
                 }
             }
-            if ( preferences == null || preferences.isOperationalAttributesLast() )
+            
+            if ( ( preferences == null ) || preferences.isOperationalAttributesLast() )
             {
                 if ( attribute1.isOperationalAttribute() && !attribute2.isOperationalAttribute() )
                 {
@@ -319,17 +347,20 @@ public class EntryEditorWidgetSorter extends ViewerSorter implements SelectionLi
      */
     private int compareValues( IValue value1, IValue value2 )
     {
-        if ( value1.isEmpty() && value2.isEmpty() )
+        if ( value1.isEmpty() || value2.isEmpty() )
         {
-            return equal();
-        }
-        else if ( value1.isEmpty() && !value2.isEmpty() )
-        {
-            return greaterThan();
-        }
-        else if ( !value1.isEmpty() && value2.isEmpty() )
-        {
-            return lessThan();
+            if ( !value1.isEmpty() )
+            {
+                return greaterThan();
+            }
+            else if ( !value2.isEmpty() )
+            {
+                return lessThan();
+            }
+            else
+            {
+                return equal();
+            }
         }
         else
         {
@@ -389,7 +420,14 @@ public class EntryEditorWidgetSorter extends ViewerSorter implements SelectionLi
      */
     private int lessThan()
     {
-        return this.getSortOrderOrDefault() == BrowserCoreConstants.SORT_ORDER_ASCENDING ? -1 : 1;
+        if ( getSortOrderOrDefault() == BrowserCoreConstants.SORT_ORDER_ASCENDING )
+        {
+            return -1;
+        }
+        else
+        {
+            return 1;
+        }
     }
 
 
@@ -411,7 +449,14 @@ public class EntryEditorWidgetSorter extends ViewerSorter implements SelectionLi
      */
     private int greaterThan()
     {
-        return this.getSortOrderOrDefault() == BrowserCoreConstants.SORT_ORDER_ASCENDING ? 1 : -1;
+        if ( getSortOrderOrDefault() == BrowserCoreConstants.SORT_ORDER_ASCENDING )
+        {
+            return 1;
+        }
+        else
+        {
+            return -1;
+        }
     }
 
 
@@ -426,8 +471,13 @@ public class EntryEditorWidgetSorter extends ViewerSorter implements SelectionLi
      */
     private int compare( String s1, String s2 )
     {
-        return this.getSortOrderOrDefault() == BrowserCoreConstants.SORT_ORDER_ASCENDING ? s1.compareToIgnoreCase( s2 )
-            : s2.compareToIgnoreCase( s1 );
+        if ( getSortOrderOrDefault() == BrowserCoreConstants.SORT_ORDER_ASCENDING )
+        {
+            return s1.compareToIgnoreCase( s2 );
+        }
+        else
+        {
+            return s2.compareToIgnoreCase( s1 );
+        }
     }
-
 }

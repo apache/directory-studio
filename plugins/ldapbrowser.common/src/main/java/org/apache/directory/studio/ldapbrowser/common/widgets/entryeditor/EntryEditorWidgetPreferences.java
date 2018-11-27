@@ -30,12 +30,21 @@ import org.eclipse.jface.viewers.Viewer;
 
 /**
  * This class is a wrapper for the preferences of the entry editor widget.
+ * The preferences we handle for the EntryEditor are the following :
+ * <ul>
+ * <li>PREFERENCE_ENTRYEDITOR_ENABLE_FOLDING : </li>
+ * <li>PREFERENCE_ENTRYEDITOR_FOLDING_THRESHOLD : </li>
+ * <li>PREFERENCE_ENTRYEDITOR_AUTO_EXPAND_FOLDED_ATTRIBUTES</li>
+ * <li>PREFERENCE_ENTRYEDITOR_OBJECTCLASS_AND_MUST_ATTRIBUTES_FIRST : put the ObjectClass and the MUST attributes first</li>
+ * <li>PREFERENCE_ENTRYEDITOR_OPERATIONAL_ATTRIBUTES_LAST : show the operational attributes at the end</li>
+ * <li>PREFERENCE_ENTRYEDITOR_DEFAULT_SORT_BY: sort either by the attribute or by the values</li>
+ * <li>PREFERENCE_ENTRYEDITOR_DEFAULT_SORT_ORDER : defines the sort order (none, ascending or descending)</li>
+ * </ul>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class EntryEditorWidgetPreferences
 {
-
     /** The viewer. */
     protected Viewer viewer;
 
@@ -156,5 +165,4 @@ public class EntryEditorWidgetPreferences
         return BrowserCommonActivator.getDefault().getPreferenceStore().getInt(
             BrowserCommonConstants.PREFERENCE_ENTRYEDITOR_DEFAULT_SORT_ORDER );
     }
-
 }

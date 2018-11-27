@@ -28,26 +28,8 @@ public class SelectDnDialogBot extends DialogBot
 
     public SelectDnDialogBot()
     {
-        super();
+        super("Select DN");
         browserBot = new BrowserWidgetBot( bot );
-    }
-
-
-    public boolean isVisible()
-    {
-        return super.isVisible( "Select DN" );
-    }
-
-
-    public void clickOkButton()
-    {
-        super.clickButton( "OK" );
-    }
-
-
-    public void clickCancelButton()
-    {
-        super.clickButton( "Cancel" );
     }
 
 

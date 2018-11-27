@@ -74,6 +74,7 @@ public class ConnectionsPreferencePage extends PreferencePage implements IWorkbe
      */
     public void init( IWorkbench workbench )
     {
+        // Nothing to do
     }
 
 
@@ -88,10 +89,11 @@ public class ConnectionsPreferencePage extends PreferencePage implements IWorkbe
         BaseWidgetUtils.createSpacer( composite, 1 );
 
         Group defaultNetworkProviderGroup = BaseWidgetUtils.createGroup(
-            BaseWidgetUtils.createColumnContainer( composite, 1, 1 ), "Default Network Provider", 1 );
+            BaseWidgetUtils.createColumnContainer( composite, 1, 1 ),
+            Messages.getString( "ConnectionsPreferencePage.DefaultNetworkProvider" ), 1 ); //$NON-NLS-1$
         NetworkProvider defaultNetworkProvider = ConnectionCorePlugin.getDefault().getDefaultNetworkProvider();
         String[] networkProviders = new String[]
-            { "Apache Directory LDAP Client API", "JNDI (Java Naming and Directory Interface)" };
+            { "Apache Directory LDAP Client API", "JNDI (Java Naming and Directory Interface)" }; //$NON-NLS-1$ //$NON-NLS-2$
         networkProviderCombo = BaseWidgetUtils.createReadonlyCombo( defaultNetworkProviderGroup,
             networkProviders, 0, 2 );
         networkProviderCombo.select( defaultNetworkProvider == NetworkProvider.APACHE_DIRECTORY_LDAP_API ? 0
@@ -132,7 +134,8 @@ public class ConnectionsPreferencePage extends PreferencePage implements IWorkbe
 
         useKrb5SystemPropertiesButton.addSelectionListener( new SelectionAdapter()
         {
-            public void widgetSelected( SelectionEvent e )
+            @Override
+            public void widgetSelected( SelectionEvent event )
             {
                 validate();
             }
@@ -155,6 +158,7 @@ public class ConnectionsPreferencePage extends PreferencePage implements IWorkbe
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void performDefaults()
     {
         NetworkProvider defaultdDefaultNetworkProvider = ConnectionCorePlugin.getDefault().getNetworkProvider(
@@ -162,7 +166,7 @@ public class ConnectionsPreferencePage extends PreferencePage implements IWorkbe
                 .getDefaultInt( ConnectionCoreConstants.PREFERENCE_DEFAULT_NETWORK_PROVIDER ) );
         networkProviderCombo.select( defaultdDefaultNetworkProvider == NetworkProvider.APACHE_DIRECTORY_LDAP_API ? 0
             : 1 );
-        
+
         ldapContextFactoryText.setText( ConnectionCorePlugin.getDefault().getPluginPreferences().getDefaultString(
             ConnectionCoreConstants.PREFERENCE_LDAP_CONTEXT_FACTORY ) );
         krb5LoginModuleText.setText( ConnectionCorePlugin.getDefault().getPluginPreferences().getDefaultString(
@@ -189,7 +193,7 @@ public class ConnectionsPreferencePage extends PreferencePage implements IWorkbe
         ConnectionCorePlugin.getDefault().getPluginPreferences()
             .setValue( ConnectionCoreConstants.PREFERENCE_USE_KRB5_SYSTEM_PROPERTIES,
                 useKrb5SystemPropertiesButton.getSelection() );
-        
+
         ConnectionCorePlugin.getDefault().savePluginPreferences();
 
         return true;
@@ -207,6 +211,7 @@ public class ConnectionsPreferencePage extends PreferencePage implements IWorkbe
         {
             case 1:
                 return ConnectionCoreConstants.PREFERENCE_NETWORK_PROVIDER_JNDI;
+                
             default:
                 return ConnectionCoreConstants.PREFERENCE_NETWORK_PROVIDER_APACHE_DIRECTORY_LDAP_API;
         }

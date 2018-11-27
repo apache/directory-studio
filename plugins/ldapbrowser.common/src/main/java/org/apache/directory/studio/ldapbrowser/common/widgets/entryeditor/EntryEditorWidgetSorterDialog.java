@@ -46,7 +46,6 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class EntryEditorWidgetSorterDialog extends Dialog
 {
-
     /** The Constant DIALOG_TITLE. */
     public static final String DIALOG_TITLE = Messages.getString( "EntryEditorWidgetSorterDialog.EntryEditorSorting" ); //$NON-NLS-1$
 
@@ -189,5 +188,4 @@ public class EntryEditorWidgetSorterDialog extends Dialog
         applyDialogFont( composite );
         return composite;
     }
-
 }

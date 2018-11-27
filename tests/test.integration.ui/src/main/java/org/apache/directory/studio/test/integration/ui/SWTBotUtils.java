@@ -299,7 +299,10 @@ public class SWTBotUtils
         {
             public void run()
             {
-                entry.expand();
+                if ( !entry.isExpanded() )
+                {
+                    entry.expand();
+                }
             }
         } );
 

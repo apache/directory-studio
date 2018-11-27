@@ -19,501 +19,626 @@
 -->
 <?eclipse version="3.2"?>
 <plugin>
-   <extension-point id="org.apache.directory.studio.entryeditors" name="Entry Editors" schema="src/main/resources/entryEditors.exsd"/>
+  <extension-point id="org.apache.directory.studio.entryeditors" name="Entry Editors" schema="src/main/resources/entryEditors.exsd"/>
 
-   <extension
-         point="org.eclipse.ui.perspectives">
-      <perspective
-            icon="resources/icons/browser_browserview.gif"
-            class="org.apache.directory.studio.ldapbrowser.ui.perspective.BrowserPerspective"
-            fixed="false"
-            name="%Perspective_LdapPerspective_name"
-            id="%Perspective_LdapPerspective_id"/>
-   </extension>
-    <extension
-       point="org.eclipse.ui.perspectiveExtensions">
-    <perspectiveExtension targetID="%Perspective_LdapPerspective_id">
-       <actionSet id="%ActionSet_LdapMenuActionSet_id"/>
+  <extension
+      point="org.eclipse.ui.perspectives">
+    <perspective
+      icon="resources/icons/browser_browserview.gif"
+      class="org.apache.directory.studio.ldapbrowser.ui.perspective.BrowserPerspective"
+      fixed="false"
+      name="%Perspective_LdapPerspective_name"
+      id="org.apache.directory.studio.ldapbrowser.ui.perspective.BrowserPerspective"/>
+  </extension>
+  
+  <extension
+      point="org.eclipse.ui.perspectiveExtensions">
+    <perspectiveExtension targetID="org.apache.directory.studio.ldapbrowser.ui.perspective.BrowserPerspective">
+      <actionSet id="%ActionSet_LdapMenuActionSet_id"/>
     </perspectiveExtension>
- </extension>
- <extension
-       point="org.eclipse.ui.editors">
-	<editor
-       class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.SingleTabEntryEditor"
-       default="true"
-       icon="resources/icons/browser_singletab_entry_editor.gif"
-       id="%Editor_SingleTabEntryEditor_id"
-       matchingStrategy="org.apache.directory.studio.entryeditors.SingleTabEntryEditorMatchingStrategy"
-       name="%Editor_SingleTabEntryEditor_shortname"/>
- <editor
-       class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.MultiTabEntryEditor"
-       default="true"
-       icon="resources/icons/browser_multitab_entry_editor.gif"
-       id="%Editor_MultiTabEntryEditor_id"
-       matchingStrategy="org.apache.directory.studio.entryeditors.MultiTabEntryEditorMatchingStrategy"
-       name="%Editor_MultiTabEntryEditor_shortname">
- </editor>
- <editor
-       class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.SingleTabLdifEntryEditor"
-       default="false"
-       icon="resources/icons/browser_singletab_ldif_editor.gif"
-       id="%Editor_SingleTabLdifEntryEditor_id"
-       matchingStrategy="org.apache.directory.studio.entryeditors.SingleTabEntryEditorMatchingStrategy"
-       name="%Editor_SingleTabLdifEntryEditor_shortname">
- </editor>
- <editor
-       class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.MultiTabLdifEntryEditor"
-       default="true"
-       icon="resources/icons/browser_multitab_ldif_editor.gif"
-       id="%Editor_MultiTabLdifEntryEditor_id"
-       matchingStrategy="org.apache.directory.studio.entryeditors.MultiTabEntryEditorMatchingStrategy"
-       name="%Editor_MultiTabLdifEntryEditor_shortname">
- </editor>
- <editor
-       class="org.apache.directory.studio.ldapbrowser.ui.editors.searchresult.SearchResultEditor"
-       default="true"
-       icon="resources/icons/browser_searchresulteditor.gif"
-       id="%Editor_SearchResultEditor_id"
-       matchingStrategy="org.apache.directory.studio.ldapbrowser.ui.editors.searchresult.SingleTabSearchResultEditorMatchingStrategy"
-       name="%Editor_SearchResultEditor_name"/>
- <editor
-       class="org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser.SchemaBrowser"
-       default="true"
-       icon="resources/icons/browser_schemabrowsereditor.gif"
-       id="%Editor_SchemaBrowser_id"
-       name="%Editor_SchemaBrowser_name"/>
- </extension>
-   <extension
-         point="org.eclipse.ui.views">
-      <category
-            name="%View_Category_name"
-            id="%View_Category_id"/>
-      <view
-            allowMultiple="false"
-            class="org.apache.directory.studio.ldapbrowser.ui.views.connection.ConnectionView"
-            icon="resources/icons/browser_connectionview.gif"
-            category="%View_Category_id"
-            name="%View_ConnectionView_name"
-            id="%View_ConnectionView_id"/>            
-	  <view
+  </extension>
+ 
+  <!-- The supported editors :    -->
+  <!--  o Single tab              -->
+  <!--  o Single tab LDIF         -->
+  <!--  o Multi tab               -->
+  <!--  o Multi tab LDIF          -->
+  <!--  o Search result           -->
+  <!--  o Browser                 -->
+  <extension
+      point="org.eclipse.ui.editors">
+    <editor
+      class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.SingleTabEntryEditor"
+      default="true"
+      icon="resources/icons/browser_singletab_entry_editor.gif"
+      id="%Editor_SingleTabEntryEditor_id"
+      matchingStrategy="org.apache.directory.studio.entryeditors.SingleTabEntryEditorMatchingStrategy"
+      name="%Editor_SingleTabEntryEditor_shortname"/>
+    
+    <editor
+      class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.MultiTabEntryEditor"
+      default="true"
+      icon="resources/icons/browser_multitab_entry_editor.gif"
+      id="%Editor_MultiTabEntryEditor_id"
+      matchingStrategy="org.apache.directory.studio.entryeditors.MultiTabEntryEditorMatchingStrategy"
+      name="%Editor_MultiTabEntryEditor_shortname"/>
+    
+    <editor
+      class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.SingleTabLdifEntryEditor"
+      default="false"
+      icon="resources/icons/browser_singletab_ldif_editor.gif"
+      id="%Editor_SingleTabLdifEntryEditor_id"
+      matchingStrategy="org.apache.directory.studio.entryeditors.SingleTabEntryEditorMatchingStrategy"
+      name="%Editor_SingleTabLdifEntryEditor_shortname"/>
+    
+    <editor
+      class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.MultiTabLdifEntryEditor"
+      default="true"
+      icon="resources/icons/browser_multitab_ldif_editor.gif"
+      id="%Editor_MultiTabLdifEntryEditor_id"
+      matchingStrategy="org.apache.directory.studio.entryeditors.MultiTabEntryEditorMatchingStrategy"
+      name="%Editor_MultiTabLdifEntryEditor_shortname"/>
+    
+    <editor
+      class="org.apache.directory.studio.ldapbrowser.ui.editors.searchresult.SearchResultEditor"
+      default="true"
+      icon="resources/icons/browser_searchresulteditor.gif"
+      id="%Editor_SearchResultEditor_id"
+      matchingStrategy="org.apache.directory.studio.ldapbrowser.ui.editors.searchresult.SingleTabSearchResultEditorMatchingStrategy"
+      name="%Editor_SearchResultEditor_name"/>
+    
+    <editor
+      class="org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser.SchemaBrowser"
+      default="true"
+      icon="resources/icons/browser_schemabrowsereditor.gif"
+      id="%Editor_SchemaBrowser_id"
+      name="%Editor_SchemaBrowser_name"/>
+  </extension>
+  
+  <!-- The supported views       -->
+  <!--  o Connection             -->
+  <!--  o Browser                -->
+  <!--  o Modification logs      -->
+  <!--  o Search logs tab        -->
+  <extension
+      point="org.eclipse.ui.views">
+    <category
+        name="%View_Category_name"
+        id="%View_Category_id"/>
+    <view
+        allowMultiple="false"
+        class="org.apache.directory.studio.ldapbrowser.ui.views.connection.ConnectionView"
+        icon="resources/icons/browser_connectionview.gif"
+        category="%View_Category_id"
+        name="%View_ConnectionView_name"
+        id="%View_ConnectionView_id"/>
+        
+    <view
          allowMultiple="false"
          category="%View_Category_id"
          class="org.apache.directory.studio.ldapbrowser.ui.views.browser.BrowserView"
          icon="resources/icons/browser_browserview.gif"
          id="%View_BrowserView_id"
          name="%View_BrowserView_name"/>
-   <view
+    
+    <view
          allowMultiple="false"
          category="%View_Category_id"
          class="org.apache.directory.studio.ldapbrowser.ui.views.modificationlogs.ModificationLogsView"
          icon="resources/icons/browser_modificationlogview.gif"
          id="%View_ModificationLogsView_id"
-         name="%View_ModificationLogsView_name"/>            
-   <view
+         name="%View_ModificationLogsView_name"/>
+    
+    <view
          allowMultiple="false"
          category="%View_Category_id"
          class="org.apache.directory.studio.ldapbrowser.ui.views.searchlogs.SearchLogsView"
          icon="resources/icons/browser_modificationlogview.gif"
          id="%View_SearchLogsView_id"
-         name="%View_SearchLogsView_name"/>            
-   </extension>
-   <extension
-         point="org.eclipse.ui.newWizards">
-      <wizard
-            category="%NewWizards_Category_id"
-            class="org.apache.directory.studio.ldapbrowser.common.wizards.NewEntryWizard"
-            hasPages="true"
-            icon="resources/icons/entry_add.gif"
-            id="%NewWizard_NewEntryWizard_id"
-            name="%NewWizard_NewEntryWizard_name"
-            project="false"/>
-      <wizard
-            category="%NewWizards_Category_id"
-            class="org.apache.directory.studio.ldapbrowser.common.wizards.NewContextEntryWizard"
-            hasPages="true"
-            icon="resources/icons/entry_add.gif"
-            id="%NewWizard_NewContextEntryWizard_id"
-            name="%NewWizard_NewContextEntryWizard_name"
-            project="false"/>
-      <wizard
-            canFinishEarly="true"
-            category="%NewWizards_Category_id"
-            class="org.apache.directory.studio.ldapbrowser.ui.wizards.NewSearchWizard"
-            hasPages="false"
-            icon="resources/icons/search_new.gif"
-            id="%NewWizard_NewSearchWizard_id"
-            name="%NewWizard_NewSearchWizard_name"
-            project="false"/>
-      <wizard
-            category="%NewWizards_Category_id"
-            class="org.apache.directory.studio.ldapbrowser.ui.wizards.NewBookmarkWizard"
-            hasPages="true"
-            icon="resources/icons/bookmark_add.gif"
-            id="%NewWizard_NewBookmarkWizard_id"
-            name="%NewWizard_NewBookmarkWizard_name"
-            project="false"/>
-      <wizard
-            category="%NewWizards_Category_id"
-            class="org.apache.directory.studio.ldapbrowser.ui.wizards.BatchOperationWizard"
-            hasPages="true"
-            icon="resources/icons/batch.gif"
-            id="%NewWizard_BatchOperationWizard_id"
-            name="%NewWizard_BatchOperationWizard_name"
-            project="false"/>
-   </extension>
- <extension
-       point="org.eclipse.ui.importWizards">
+         name="%View_SearchLogsView_name"/>
+  </extension>
+  
+  <!-- The new wizards           -->
+  <!--  o Batch Operation        -->
+  <!--  o Bookmark               -->
+  <!--  o Context Entry          -->
+  <!--  o Entry                  -->
+  <!--  o Search                 -->
+  <extension
+      point="org.eclipse.ui.newWizards">
+    <wizard
+        category="%NewWizards_Category_id"
+        class="org.apache.directory.studio.ldapbrowser.ui.wizards.BatchOperationWizard"
+        hasPages="true"
+        icon="resources/icons/batch.gif"
+        id="%NewWizard_BatchOperationWizard_id"
+        name="%NewWizard_BatchOperationWizard_name"
+        project="false"/>
+
+    <wizard
+        category="%NewWizards_Category_id"
+        class="org.apache.directory.studio.ldapbrowser.ui.wizards.NewBookmarkWizard"
+        hasPages="true"
+        icon="resources/icons/bookmark_add.gif"
+        id="%NewWizard_NewBookmarkWizard_id"
+        name="%NewWizard_NewBookmarkWizard_name"
+        project="false"/>
+
+    <wizard
+        category="%NewWizards_Category_id"
+        class="org.apache.directory.studio.ldapbrowser.common.wizards.NewContextEntryWizard"
+        hasPages="true"
+        icon="resources/icons/entry_add.gif"
+        id="%NewWizard_NewContextEntryWizard_id"
+        name="%NewWizard_NewContextEntryWizard_name"
+        project="false"/>
+
+    <wizard
+        category="%NewWizards_Category_id"
+        class="org.apache.directory.studio.ldapbrowser.common.wizards.NewEntryWizard"
+        hasPages="true"
+        icon="resources/icons/entry_add.gif"
+        id="org.apache.directory.studio.ldapbrowser.common.wizards.NewEntryWizard"
+        name="%NewWizard_NewEntryWizard_name"
+        project="false"/>
+
+    <wizard
+        canFinishEarly="true"
+        category="%NewWizards_Category_id"
+        class="org.apache.directory.studio.ldapbrowser.ui.wizards.NewSearchWizard"
+        hasPages="false"
+        icon="resources/icons/search_new.gif"
+        id="%NewWizard_NewSearchWizard_id"
+        name="%NewWizard_NewSearchWizard_name"
+        project="false"/>
+  </extension>
+  
+  <!-- The import wizards                                  -->
+  <!--  o LDIF                                  -->
+  <!--  o DSML                                  -->
+  <extension
+      point="org.eclipse.ui.importWizards">
     <category
           id="%ImportWizards_Category_id"
           name="%ImportWizards_Category_name"/>
+    
     <wizard
           category="%ImportWizards_Category_id"
           class="org.apache.directory.studio.ldapbrowser.ui.wizards.ImportLdifWizard"
           icon="resources/icons/import_ldif.gif"
           id="%ImportWizard_ImportLdifWizard_id"
           name="%ImportWizard_ImportLdifWizard_name">
-       <description>
+      <description>
           %ImportWizard_ImportLdifWizard_description
-       </description>
-       <selection class="org.apache.directory.studio.connection.core.Connection"/>
-       <selection class="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
+      </description>
+      <selection class="org.apache.directory.studio.connection.core.Connection"/>
+      <selection class="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
+      <selection class="org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserCategory"/>
     </wizard>
+    
     <wizard
           category="%ImportWizards_Category_id"
           class="org.apache.directory.studio.ldapbrowser.ui.wizards.ImportDsmlWizard"
           icon="resources/icons/import_dsml.gif"
           id="%ImportWizard_ImportDsmlWizard_id"
           name="%ImportWizard_ImportDsmlWizard_name">
-       <description>
-          %ImportWizard_ImportDsmlWizard_description
-       </description>
-       <selection class="org.apache.directory.studio.connection.core.Connection"/>
-       <selection class="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
+      <description>
+        %ImportWizard_ImportDsmlWizard_description
+      </description>
+      <selection class="org.apache.directory.studio.connection.core.Connection"/>
+      <selection class="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
+      <selection class="org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserCategory"/>
     </wizard>
- </extension>
- <extension
+  </extension>
+  
+  <!-- The export wizards              -->
+  <!--  o LDIF format                  -->
+  <!--  o DSML format                  -->
+  <!--  o CSV Format                   -->
+  <!--  o Excel format                 -->
+  <!--  o ODF format                   -->
+  <extension
        point="org.eclipse.ui.exportWizards">
     <category
-          id="%ExportWizards_Category_id"
-          name="%ExportWizards_Category_name"/>
+        id="%ExportWizards_Category_id"
+        name="%ExportWizards_Category_name"/>
     <wizard
-          category="%ExportWizards_Category_id"
-          class="org.apache.directory.studio.ldapbrowser.ui.wizards.ExportLdifWizard"
-          icon="resources/icons/export_ldif.gif"
-          id="%ExportWizard_ExportLdifWizard_id"
-          name="%ExportWizard_ExportLdifWizard_name">
-       <description>
+        category="%ExportWizards_Category_id"
+        class="org.apache.directory.studio.ldapbrowser.ui.wizards.ExportLdifWizard"
+        icon="resources/icons/export_ldif.gif"
+        id="%ExportWizard_ExportLdifWizard_id"
+        name="%ExportWizard_ExportLdifWizard_name">
+      <description>
           %ExportWizard_ExportLdifWizard_description
-       </description>
-       <selection class="org.apache.directory.studio.connection.core.Connection"/>
-       <selection class="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
+      </description>
+      <selection class="org.apache.directory.studio.connection.core.Connection"/>
+      <selection class="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
+      <selection class="org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserCategory"/>
     </wizard>
-    <wizard
-          category="%ExportWizards_Category_id"
-          class="org.apache.directory.studio.ldapbrowser.ui.wizards.ExportDsmlWizard"
-          icon="resources/icons/export_dsml.gif"
-          id="%ExportWizard_ExportDdsmlWizard_id"
-          name="%ExportWizard_ExportDdsmlWizard_name">
-       <description>
-          %ExportWizard_ExportDdsmlWizard_description
-       </description>
-       <selection class="org.apache.directory.studio.connection.core.Connection"/>
-       <selection class="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
-    </wizard>
-    <wizard
-          category="%ExportWizards_Category_id"
-          class="org.apache.directory.studio.ldapbrowser.ui.wizards.ExportCsvWizard"
-          icon="resources/icons/export_csv.gif"
-          id="%ExportWizard_ExportCsvWizard_id"
-          name="%ExportWizard_ExportCsvWizard_name">
-       <description>
-          %ExportWizard_ExportCsvWizard_description
-       </description>
-       <selection class="org.apache.directory.studio.connection.core.Connection"/>
-       <selection class="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
-    </wizard>
-    <wizard
-          category="%ExportWizards_Category_id"
-          class="org.apache.directory.studio.ldapbrowser.ui.wizards.ExportExcelWizard"
-          icon="resources/icons/export_xls.gif"
-          id="%ExportWizard_ExportExcelWizard_id"
-          name="%ExportWizard_ExportExcelWizard_name">
-       <description>
-          %ExportWizard_ExportExcelWizard_description
-       </description>
-       <selection class="org.apache.directory.studio.connection.core.Connection"/>
-       <selection class="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
-    </wizard>
-    <wizard
-          category="%ExportWizards_Category_id"
-          class="org.apache.directory.studio.ldapbrowser.ui.wizards.ExportOdfWizard"
-          icon="resources/icons/export_odf.gif"
-          id="%ExportWizard_ExportOdfWizard_id"
-          name="%ExportWizard_ExportOdfWizard_name">
-       <description>
-          %ExportWizard_ExportOdfWizard_description
-       </description>
-       <selection class="org.apache.directory.studio.connection.core.Connection"/>
-       <selection class="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
-    </wizard>
- </extension>
 
-   <extension point="org.eclipse.search.searchPages">
-	   <page
-          enabled="true"
-          label="%SearchPage_LdapSearch_label"
-          class="org.apache.directory.studio.ldapbrowser.ui.search.SearchPage"
-          icon="resources/icons/browser_searchresulteditor.gif"
-          showScopeSection="false"
-          sizeHint="450,450"
-          id="%SearchPage_LdapSearch_id">
-		</page>
-	</extension>
-   
-      <extension
-         point="org.eclipse.core.runtime.preferences">
-      <initializer class="org.apache.directory.studio.ldapbrowser.ui.BrowserUIPreferencesInitializer"/>
-   </extension>
-   
-   <extension
-         point="org.eclipse.ui.preferencePages">
-      <page
-            category="%PrefPage_MainPreferencePage_id"
-            class="org.apache.directory.studio.ldapbrowser.ui.dialogs.preferences.SearchResultEditorPreferencePage"
-            id="%PrefPage_SearchResultEditorPreferencePage_id"
-            name="%PrefPage_SearchResultEditorPreferencePage_name">
-         <keywordReference id="%Keyword_LDAP_id"/>
-      </page>
-      <page
-            category="%PrefPage_ViewsPreferencePage_id"
-            class="org.apache.directory.studio.ldapbrowser.ui.dialogs.preferences.ModificationLogsPreferencePage"
-            id="%PrefPage_ModificationLogsPreferencePage_id"
-            name="%PrefPage_ModificationLogsPreferencePage_name">
-         <keywordReference id="%Keyword_LDAP_id"/>
-      </page>
-      <page
-            category="%PrefPage_ViewsPreferencePage_id"
-            class="org.apache.directory.studio.ldapbrowser.ui.dialogs.preferences.SearchLogsPreferencePage"
-            id="%PrefPage_SearchLogsPreferencePage_id"
-            name="%PrefPage_SearchLogsPreferencePage_name">
-         <keywordReference id="%Keyword_LDAP_id"/>
-      </page>
-      <page
-            category="%PrefPage_MainPreferencePage_id"
-            class="org.apache.directory.studio.ldapbrowser.ui.dialogs.preferences.EntryEditorsPreferencePage"
-            id="%PrefPage_EntryEditorsPreferencePage_id"
-            name="%PrefPage_EntryEditorsPreferencePage_name">
-         <keywordReference id="%Keyword_LDAP_id"/>
-      </page>
-   </extension>
+    <wizard
+        category="%ExportWizards_Category_id"
+        class="org.apache.directory.studio.ldapbrowser.ui.wizards.ExportDsmlWizard"
+        icon="resources/icons/export_dsml.gif"
+        id="%ExportWizard_ExportDdsmlWizard_id"
+        name="%ExportWizard_ExportDdsmlWizard_name">
+      <description>
+        %ExportWizard_ExportDdsmlWizard_description
+      </description>
+      <selection class="org.apache.directory.studio.connection.core.Connection"/>
+      <selection class="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
+      <selection class="org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserCategory"/>
+    </wizard>
+    
+    <wizard
+        category="%ExportWizards_Category_id"
+        class="org.apache.directory.studio.ldapbrowser.ui.wizards.ExportCsvWizard"
+        icon="resources/icons/export_csv.gif"
+        id="%ExportWizard_ExportCsvWizard_id"
+        name="%ExportWizard_ExportCsvWizard_name">
+      <description>
+        %ExportWizard_ExportCsvWizard_description
+      </description>
+      <selection class="org.apache.directory.studio.connection.core.Connection"/>
+      <selection class="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
+      <selection class="org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserCategory"/>
+    </wizard>
+    
+    <wizard
+        category="%ExportWizards_Category_id"
+        class="org.apache.directory.studio.ldapbrowser.ui.wizards.ExportExcelWizard"
+        icon="resources/icons/export_xls.gif"
+        id="%ExportWizard_ExportExcelWizard_id"
+        name="%ExportWizard_ExportExcelWizard_name">
+      <description>
+        %ExportWizard_ExportExcelWizard_description
+      </description>
+      <selection class="org.apache.directory.studio.connection.core.Connection"/>
+      <selection class="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
+      <selection class="org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserCategory"/>
+    </wizard>
+    
+    <wizard
+        category="%ExportWizards_Category_id"
+        class="org.apache.directory.studio.ldapbrowser.ui.wizards.ExportOdfWizard"
+        icon="resources/icons/export_odf.gif"
+        id="%ExportWizard_ExportOdfWizard_id"
+        name="%ExportWizard_ExportOdfWizard_name">
+      <description>
+        %ExportWizard_ExportOdfWizard_description
+      </description>
+      <selection class="org.apache.directory.studio.connection.core.Connection"/>
+      <selection class="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
+      <selection class="org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserCategory"/>
+    </wizard>
+  </extension>
 
-	<extension
-		point="org.eclipse.ui.propertyPages">
-		<page
+  <extension point="org.eclipse.search.searchPages">
+    <page
+        enabled="true"
+        label="%SearchPage_LdapSearch_label"
+        class="org.apache.directory.studio.ldapbrowser.ui.search.SearchPage"
+        icon="resources/icons/browser_searchresulteditor.gif"
+        showScopeSection="false"
+        sizeHint="450,450"
+        id="%SearchPage_LdapSearch_id"/>
+  </extension>
+   
+  <extension
+      point="org.eclipse.core.runtime.preferences">
+    <initializer class="org.apache.directory.studio.ldapbrowser.ui.BrowserUIPreferencesInitializer"/>
+  </extension>
+   
+  <!-- The Preference pages    -->
+  <!--  o SearchResult         -->
+  <!--  o Modification logs    -->
+  <!--  o Search logs          -->
+  <!--  o Entry editors        -->
+  <extension
+       point="org.eclipse.ui.preferencePages">
+    <page
+        category="%PrefPage_MainPreferencePage_id"
+        class="org.apache.directory.studio.ldapbrowser.ui.dialogs.preferences.SearchResultEditorPreferencePage"
+        id="%PrefPage_SearchResultEditorPreferencePage_id"
+        name="%PrefPage_SearchResultEditorPreferencePage_name">
+      <keywordReference id="%Keyword_LDAP_id"/>
+    </page>
+    
+    <page
+        category="%PrefPage_ViewsPreferencePage_id"
+        class="org.apache.directory.studio.ldapbrowser.ui.dialogs.preferences.ModificationLogsPreferencePage"
+        id="%PrefPage_ModificationLogsPreferencePage_id"
+        name="%PrefPage_ModificationLogsPreferencePage_name">
+      <keywordReference id="%Keyword_LDAP_id"/>
+    </page>
+    
+    <page
+        category="%PrefPage_ViewsPreferencePage_id"
+        class="org.apache.directory.studio.ldapbrowser.ui.dialogs.preferences.SearchLogsPreferencePage"
+        id="%PrefPage_SearchLogsPreferencePage_id"
+        name="%PrefPage_SearchLogsPreferencePage_name">
+      <keywordReference id="%Keyword_LDAP_id"/>
+    </page>
+    
+    <page
+        category="%PrefPage_MainPreferencePage_id"
+        class="org.apache.directory.studio.ldapbrowser.ui.dialogs.preferences.EntryEditorsPreferencePage"
+        id="org.apache.directory.studio.ldapbrowser.preferences.EntryEditorsPreferencePage"
+        name="%PrefPage_EntryEditorsPreferencePage_name">
+      <keywordReference id="%Keyword_LDAP_id"/>
+    </page>
+  </extension>
+
+
+  <!-- The Property pages    -->
+  <!--  o Attribute          -->
+  <!--  o Bookmark           -->
+  <!--  o Entry              -->
+  <!--  o RootDSE            -->
+  <!--  o Schema             -->
+  <!--  o Search             -->
+  <!--  o Value              -->
+  <extension
+      point="org.eclipse.ui.propertyPages">
+    <page
         category="%Prop_ConnectionPropertyPage_id"
         class="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.SchemaPropertyPage"
-        id="%PropPage_Schema_id"
-        name="%PropPage_Schema_name"
-        objectClass="org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider"/>            
-		<page
+        id="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.SchemaPropertyPage"
+        name="%PropPage_Schema_name">
+      <enabledWhen>
+        <instanceof value="org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider"/>
+      </enabledWhen>>
+    </page>
+    
+    <page
         category="%Prop_ConnectionPropertyPage_id"
         class="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.RootDSEPropertyPage"
-        id="%PropPage_RootDSE_id"
-        name="%PropPage_RootDSE_name"
-        objectClass="org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider"/>                        
-		<page
+        id="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.RootDSEPropertyPage"
+        name="%PropPage_RootDSE_name">
+      <enabledWhen>
+        <instanceof value="org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider"/>
+      </enabledWhen>>
+    </page>
+    
+    <page
         class="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.SearchPropertyPage"
-        id="%PropPage_Search_id"
-        name="%PropPage_Search_name"
-        objectClass="org.apache.directory.studio.ldapbrowser.core.propertypageproviders.SearchPropertyPageProvider"/>            
-		<page
+        id="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.SearchPropertyPage"
+        name="%PropPage_Search_name">
+      <enabledWhen>
+        <instanceof value="org.apache.directory.studio.ldapbrowser.core.propertypageproviders.SearchPropertyPageProvider"/>
+      </enabledWhen>>
+    </page>
+    
+    <page
         class="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.EntryPropertyPage"
-        id="%PropPage_Entry_id"
-        name="%PropPage_Entry_name"
-        objectClass="org.apache.directory.studio.ldapbrowser.core.propertypageproviders.EntryPropertyPageProvider">
-  </page>            
-	  <page
-         class="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.AttributePropertyPage"
-         id="%PropPage_Attribute_id"
-         name="%PropPage_Attribute_name"
-         objectClass="org.apache.directory.studio.ldapbrowser.core.propertypageproviders.AttributePropertyPageProvider"/>
-	  <page
-         class="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.ValuePropertyPage"
-         id="%PropPage_Value_id"
-         name="%PropPage_Value_name"
-         objectClass="org.apache.directory.studio.ldapbrowser.core.propertypageproviders.ValuePropertyPageProvider"/>
-   <page
-         class="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.BookmarkPropertyPage"
-         id="%PropPage_Bookmark_id"
-         name="%PropPage_Bookmark_name"
-         objectClass="org.apache.directory.studio.ldapbrowser.core.propertypageproviders.BookmarkPropertyPageProvider"/>
-      </extension>
-      
- <extension
-       point="org.eclipse.ui.actionSets">
-    <actionSet
-          id="%ActionSet_LdapMenuActionSet_id"
-          label="%ActionSet_LdapMenuActionSet_label"
-          visible="false">
-       <menu
-             id="%Menu_LdapMenu_id"
-             label="%Menu_LdapMenu_label">
-          <groupMarker name="%GroupMarker_NewConnection_name"/>
-          <groupMarker name="%GroupMarker_NewEntry_name"/>
-          <groupMarker name="%GroupMarker_NewAttribute_name"/>
-          <groupMarker name="%GroupMarker_NewValue_name"/>
-          <groupMarker name="%GroupMarker_NewSearch_name"/>
-          <groupMarker name="%GroupMarker_NewBookmark_name"/>
-          <groupMarker name="%GroupMarker_NewBatchOperation_name"/>
-          <groupMarker name="%GroupMarker_NewLdifFile_name"/>
-          <separator name="%Separator_New_name"/>
-          <separator name="%Separator_Open_name"/>
-          <separator name="%Separator_Edit_name"/>
-          <separator name="%Separator_ImportExport_name"/>
-       </menu>
-       <action
-             class="org.apache.directory.studio.ldapbrowser.ui.actions.OpenSchemaBrowserAction"
-             icon="resources/icons/browser_schemabrowsereditor.gif"
-             id="%Action_OpenSchemaBrowserAction_id"
-             label="%Action_OpenSchemaBrowserAction_label"
-             menubarPath="%Action_OpenSchemaBrowserAction_menubarpath"
-             style="push">
-       </action>
-       <action
-             class="org.apache.directory.studio.connection.ui.actions.NewConnectionAction"
-             icon="resources/icons/connection_add.gif"
-             id="%Action_NewConnectionAction_id"
-             label="%Action_NewConnectionAction_label"
-             menubarPath="%Action_NewConnectionAction_menubarpath"
-             style="push"/>
-       <action
-             class="org.apache.directory.studio.ldapbrowser.ui.actions.NewEntryAction"
-             icon="resources/icons/entry_add.gif"
-             id="%Action_NewEntryAction_id"
-             label="%Action_NewEntryAction_label"
-             menubarPath="%Action_NewEntryAction_menubarpath"
-             style="push"/>
-       <action
-             class="org.apache.directory.studio.ldapbrowser.common.actions.NewAttributeAction"
-             icon="resources/icons/attribute_add.gif"
-             id="%Action_NewAttributeAction_id"
-             label="%Action_NewAttributeAction_label"
-             menubarPath="%Action_NewAttributeAction_menubarpath"
-             style="push"/>
-       <action
-             class="org.apache.directory.studio.ldapbrowser.common.actions.NewValueAction"
-             icon="resources/icons/value_add.gif"
-             id="%Action_NewValueAction_id"
-             label="%Action_NewValueAction_label"
-             menubarPath="%Action_NewValueAction_menubarpath"
-             style="push"/>
-       <action
-             class="org.apache.directory.studio.ldapbrowser.ui.actions.NewSearchAction"
-             icon="resources/icons/search_new.gif"
-             id="%Action_NewSearchAction_id"
-             label="%Action_NewSearchAction_label"
-             menubarPath="%Action_NewSearchAction_menubarpath"
-             style="push"/>
-       <action
-             class="org.apache.directory.studio.ldapbrowser.ui.actions.NewBookmarkAction"
-             icon="resources/icons/bookmark_add.gif"
-             id="%Action_NewBookmarkAction_id"
-             label="%Action_NewBookmarkAction_label"
-             menubarPath="%Action_NewBookmarkAction_menubarpath"
-             style="push"/>
-       <action
-             class="org.apache.directory.studio.ldapbrowser.ui.actions.NewBatchOperationAction"
-             icon="resources/icons/batch.gif"
-             id="%Action_NewBatchOperationAction_id"
-             label="%Action_NewBatchOperationAction_label"
-             menubarPath="%Action_NewBatchOperationAction_menubarpath"
-             style="push"/>
-       <action
-             class="org.apache.directory.studio.ldapbrowser.ui.actions.OpenEncoderDecoderDialogAction"
-             id="%Action_OpenEncoderDecoderDialogAction_id"
-             label="%Action_OpenEncoderDecoderDialogAction_label"
-             menubarPath="%Action_OpenEncoderDecoderDialogAction_menubarpath"
-             style="push"/>
-       <action
-             class="org.apache.directory.studio.ldapbrowser.ui.actions.NewLdifFileAction"
-             icon="resources/icons/ldifeditor_new.gif"
-             id="%Action_NewLdifFileAction_id"
-             label="%Action_NewLdifFileAction_label"
-             menubarPath="%Action_NewLdifFileAction_menubarpath"
-             style="push"/>
-       <action
-             class="org.apache.directory.studio.ldapbrowser.ui.actions.GotoDnNavigateMenuAction"
-             icon="resources/icons/locate_dn_in_dit.gif"
-             id="%Action_GotoDnAction_id"
-             label="%Action_GotoDnAction_label"
-             menubarPath="%Action_GotoDnAction_menubarpath"
-             style="push"/>
-    </actionSet>
- </extension>
- <extension
-       point="org.eclipse.ui.decorators">
-    <decorator
-          adaptable="false"
-          class="org.apache.directory.studio.ldapbrowser.ui.views.browser.BrowserViewLabelDecorator"
-          id="%Decorator_BrowserViewLabelDecorator_id"
-          label="%Decorator_BrowserViewLabelDecorator_label"
-          lightweight="true"
-          location="BOTTOM_RIGHT"
-          state="true">
-       <enablement>
-          <or>
-            <objectClass name="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
-            <objectClass name="org.apache.directory.studio.ldapbrowser.core.model.ISearchResult"/>
-            <objectClass name="org.apache.directory.studio.ldapbrowser.core.model.ISearch"/>
-          </or>
-       </enablement>
-       <description>
-          %Decorator_BrowserViewLabelDecorator_description
-       </description>
-    </decorator>
- </extension>
- <extension
-       point="org.apache.directory.studio.entryeditors">
-    <entryEditor
-          class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.SingleTabEntryEditor"
-          description="%Editor_SingleTabEntryEditor_description"
-          editorId="%Editor_SingleTabEntryEditor_id"
-          icon="resources/icons/browser_singletab_entry_editor.gif"
-          id="%Editor_SingleTabEntryEditor_id"
-          name="%Editor_SingleTabEntryEditor_fullname"
-          priority="5"
-          multiWindow="false">
-    </entryEditor>
-    <entryEditor
-          class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.MultiTabEntryEditor"
-          description="%Editor_MultiTabEntryEditor_description"
-          editorId="%Editor_MultiTabEntryEditor_id"
-          icon="resources/icons/browser_multitab_entry_editor.gif"
-          id="%Editor_MultiTabEntryEditor_id"
-          name="%Editor_MultiTabEntryEditor_fullname"
-          priority="3"
-          multiWindow="true">
-    </entryEditor>
-    <entryEditor
-          class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.SingleTabLdifEntryEditor"
-          description="%Editor_SingleTabLdifEntryEditor_description"
-          editorId="%Editor_SingleTabLdifEntryEditor_id"
-          icon="resources/icons/browser_singletab_ldif_editor.gif"
-          id="%Editor_SingleTabLdifEntryEditor_id"
-          multiWindow="false"
-          name="%Editor_SingleTabLdifEntryEditor_fullname"
-          priority="1">
-    </entryEditor>
-    <entryEditor
-          class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.MultiTabLdifEntryEditor"
-          description="%Editor_MultiTabLdifEntryEditor_description"
-          editorId="%Editor_MultiTabLdifEntryEditor_id"
-          icon="resources/icons/browser_multitab_ldif_editor.gif"
-          id="%Editor_MultiTabLdifEntryEditor_id"
-          multiWindow="true"
-          name="%Editor_MultiTabLdifEntryEditor_fullname"
-          priority="2">
-    </entryEditor>
- </extension>
+        id="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.EntryPropertyPage"
+        name="%PropPage_Entry_name">
+      <enabledWhen>
+        <instanceof value="org.apache.directory.studio.ldapbrowser.core.propertypageproviders.EntryPropertyPageProvider"/>
+      </enabledWhen>>
+    </page>
 
+    <page
+         class="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.AttributePropertyPage"
+         id="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.AttributePropertyPage"
+         name="%PropPage_Attribute_name">
+      <enabledWhen>
+        <instanceof value="org.apache.directory.studio.ldapbrowser.core.propertypageproviders.AttributePropertyPageProvider"/>
+      </enabledWhen>>
+    </page>
+
+    <page
+         class="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.ValuePropertyPage"
+         id="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.ValuePropertyPage"
+         name="%PropPage_Value_name">
+      <enabledWhen>
+        <instanceof value="org.apache.directory.studio.ldapbrowser.core.propertypageproviders.ValuePropertyPageProvider"/>
+      </enabledWhen>>
+    </page>
+
+    <page
+        class="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.BookmarkPropertyPage"
+        id="org.apache.directory.studio.ldapbrowser.ui.dialogs.properties.BookmarkPropertyPage"
+        name="%PropPage_Bookmark_name">
+      <enabledWhen>
+        <instanceof value="org.apache.directory.studio.ldapbrowser.core.propertypageproviders.BookmarkPropertyPageProvider"/>
+      </enabledWhen>>
+    </page>
+  </extension>
+      
+  <!-- The Actions              -->
+  <!--  o Open Schema Browser   -->
+  <!--  o New Connection        -->
+  <!--  o New Entry             -->
+  <!--  o New Attribute         -->
+  <!--  o New Value             -->
+  <!--  o New Search            -->
+  <!--  o New Bookmark          -->
+  <!--  o New Batch Operation   -->
+  <!--  o New Ldif              -->
+  <!--  o Open encoder/decoder  -->
+  <!--  o Navigate to DN        -->
+  <extension
+      point="org.eclipse.ui.actionSets">
+    <actionSet
+        id="%ActionSet_LdapMenuActionSet_id"
+        label="%ActionSet_LdapMenuActionSet_label"
+        visible="false">
+      <menu
+          id="org.apache.directory.studio.ldapbrowser.ldapMenu"
+          label="%Menu_LdapMenu_label">
+        <groupMarker name="%GroupMarker_NewConnection_name"/>
+        <groupMarker name="%GroupMarker_NewEntry_name"/>
+        <groupMarker name="%GroupMarker_NewAttribute_name"/>
+        <groupMarker name="%GroupMarker_NewValue_name"/>
+        <groupMarker name="%GroupMarker_NewSearch_name"/>
+        <groupMarker name="%GroupMarker_NewBookmark_name"/>
+        <groupMarker name="%GroupMarker_NewBatchOperation_name"/>
+        <groupMarker name="%GroupMarker_NewLdifFile_name"/>
+        <separator name="%Separator_New_name"/>
+        <separator name="%Separator_Open_name"/>
+        <separator name="%Separator_Edit_name"/>
+        <separator name="%Separator_ImportExport_name"/>
+      </menu>
+      
+      <action
+           class="org.apache.directory.studio.ldapbrowser.ui.actions.OpenSchemaBrowserAction"
+           icon="resources/icons/browser_schemabrowsereditor.gif"
+           id="org.apache.directory.studio.ldapbrowser.ui.actions.OpenSchemaBrowserAction"
+           label="%Action_OpenSchemaBrowserAction_label"
+           menubarPath="%Action_OpenSchemaBrowserAction_menubarpath"
+           style="push"/>
+
+       <action
+           class="org.apache.directory.studio.connection.ui.actions.NewConnectionAction"
+           icon="resources/icons/connection_add.gif"
+           id="org.apache.directory.studio.connection.ui.actions.NewConnectionAction"
+           label="%Action_NewConnectionAction_label"
+           menubarPath="%Action_NewConnectionAction_menubarpath"
+           style="push"/>
+
+       <action
+           class="org.apache.directory.studio.ldapbrowser.ui.actions.NewEntryAction"
+           icon="resources/icons/entry_add.gif"
+           id="org.apache.directory.studio.ldapbrowser.ui.actions.NewEntryAction"
+           label="%Action_NewEntryAction_label"
+           menubarPath="%Action_NewEntryAction_menubarpath"
+           style="push"/>
+
+       <action
+           class="org.apache.directory.studio.ldapbrowser.common.actions.NewAttributeAction"
+           icon="resources/icons/attribute_add.gif"
+           id="org.apache.directory.studio.ldapbrowser.ui.actions.NewAttributeAction"
+           label="%Action_NewAttributeAction_label"
+           menubarPath="%Action_NewAttributeAction_menubarpath"
+           style="push"/>
+
+       <action
+           class="org.apache.directory.studio.ldapbrowser.common.actions.NewValueAction"
+           icon="resources/icons/value_add.gif"
+           id="org.apache.directory.studio.ldapbrowser.ui.actions.NewValueAction"
+           label="%Action_NewValueAction_label"
+           menubarPath="%Action_NewValueAction_menubarpath"
+           style="push"/>
+
+       <action
+           class="org.apache.directory.studio.ldapbrowser.ui.actions.NewSearchAction"
+           icon="resources/icons/search_new.gif"
+           id="org.apache.directory.studio.ldapbrowser.ui.actions.NewSearchAction"
+           label="%Action_NewSearchAction_label"
+           menubarPath="%Action_NewSearchAction_menubarpath"
+           style="push"/>
+           
+       <action
+           class="org.apache.directory.studio.ldapbrowser.ui.actions.NewBookmarkAction"
+           icon="resources/icons/bookmark_add.gif"
+           id="org.apache.directory.studio.ldapbrowser.ui.actions.NewBookmarkAction"
+           label="%Action_NewBookmarkAction_label"
+           menubarPath="%Action_NewBookmarkAction_menubarpath"
+           style="push"/>
+             
+       <action
+           class="org.apache.directory.studio.ldapbrowser.ui.actions.NewBatchOperationAction"
+           icon="resources/icons/batch.gif"
+           id="org.apache.directory.studio.ldapbrowser.ui.actions.NewBatchOperationAction"
+           label="%Action_NewBatchOperationAction_label"
+           menubarPath="%Action_NewBatchOperationAction_menubarpath"
+           style="push"/>
+
+       <action
+           class="org.apache.directory.studio.ldapbrowser.ui.actions.OpenEncoderDecoderDialogAction"
+           id="org.apache.directory.studio.ldapbrowser.ui.actions.OpenEncoderDecoderDialogAction"
+           label="%Action_OpenEncoderDecoderDialogAction_label"
+           menubarPath="%Action_OpenEncoderDecoderDialogAction_menubarpath"
+           style="push"/>
+
+       <action
+           class="org.apache.directory.studio.ldapbrowser.ui.actions.NewLdifFileAction"
+           icon="resources/icons/ldifeditor_new.gif"
+           id="org.apache.directory.studio.ldapbrowser.ui.actions.NewLdifFileAction"
+           label="%Action_NewLdifFileAction_label"
+           menubarPath="%Action_NewLdifFileAction_menubarpath"
+           style="push"/>
+
+       <action
+           class="org.apache.directory.studio.ldapbrowser.ui.actions.GotoDnNavigateMenuAction"
+           icon="resources/icons/locate_dn_in_dit.gif"
+           id="org.apache.directory.studio.ldapbrowser.ui.actions.GotoDnAction"
+           label="%Action_GotoDnAction_label"
+           menubarPath="%Action_GotoDnAction_menubarpath"
+           style="push"/>
+    </actionSet>
+  </extension>
+  
+  <extension
+      point="org.eclipse.ui.decorators">
+    <decorator
+        adaptable="false"
+        class="org.apache.directory.studio.ldapbrowser.ui.views.browser.BrowserViewLabelDecorator"
+        id="org.apache.directory.studio.ldapbrowser.decorator"
+        label="%Decorator_BrowserViewLabelDecorator_label"
+        lightweight="true"
+        location="BOTTOM_RIGHT"
+        state="true">
+      <enablement>
+        <or>
+          <objectClass name="org.apache.directory.studio.ldapbrowser.core.model.IEntry"/>
+          <objectClass name="org.apache.directory.studio.ldapbrowser.core.model.ISearchResult"/>
+          <objectClass name="org.apache.directory.studio.ldapbrowser.core.model.ISearch"/>
+        </or>
+      </enablement>
+      
+      <description>
+        %Decorator_BrowserViewLabelDecorator_description
+      </description>
+    </decorator>
+  </extension>
+  
+  <!-- The supported entry editors :    -->
+  <!--  o Single tab                    -->
+  <!--  o Single tab LDIF               -->
+  <!--  o Multi tab                     -->
+  <!--  o Multi tab LDIF                -->
+  <extension
+      point="org.apache.directory.studio.entryeditors">
+    <entryEditor
+        class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.SingleTabEntryEditor"
+        description="%Editor_SingleTabEntryEditor_description"
+        editorId="%Editor_SingleTabEntryEditor_id"
+        icon="resources/icons/browser_singletab_entry_editor.gif"
+        id="%Editor_SingleTabEntryEditor_id"
+        name="%Editor_SingleTabEntryEditor_fullname"
+        priority="52"
+        multiWindow="false"/>
+
+    <entryEditor
+        class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.MultiTabEntryEditor"
+        description="%Editor_MultiTabEntryEditor_description"
+        editorId="%Editor_MultiTabEntryEditor_id"
+        icon="resources/icons/browser_multitab_entry_editor.gif"
+        id="%Editor_MultiTabEntryEditor_id"
+        name="%Editor_MultiTabEntryEditor_fullname"
+        priority="51"
+        multiWindow="true"/>
+
+    <entryEditor
+        class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.SingleTabLdifEntryEditor"
+        description="%Editor_SingleTabLdifEntryEditor_description"
+        editorId="%Editor_SingleTabLdifEntryEditor_id"
+        icon="resources/icons/browser_singletab_ldif_editor.gif"
+        id="%Editor_SingleTabLdifEntryEditor_id"
+        multiWindow="false"
+        name="%Editor_SingleTabLdifEntryEditor_fullname"
+        priority="21"/>
+
+    <entryEditor
+        class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.MultiTabLdifEntryEditor"
+        description="%Editor_MultiTabLdifEntryEditor_description"
+        editorId="%Editor_MultiTabLdifEntryEditor_id"
+        icon="resources/icons/browser_multitab_ldif_editor.gif"
+        id="%Editor_MultiTabLdifEntryEditor_id"
+        multiWindow="true"
+        name="%Editor_MultiTabLdifEntryEditor_fullname"
+        priority="22"/>
+  </extension>
 </plugin>

@@ -118,8 +118,8 @@ public class NewServerWizard extends Wizard implements INewWizard
                     StudioProgressMonitor spm = new StudioProgressMonitor( monitor );
 
                     // Setting the title
-                    spm.beginTask( Messages.getString("NewServerWizard.CreatingLdapServer"), IProgressMonitor.UNKNOWN ); //$NON-NLS-1$
-                    spm.subTask( Messages.getString("NewServerWizard.CreatingServerFolder") ); //$NON-NLS-1$
+                    spm.beginTask( Messages.getString( "NewServerWizard.CreatingLdapServer" ), IProgressMonitor.UNKNOWN ); //$NON-NLS-1$
+                    spm.subTask( Messages.getString( "NewServerWizard.CreatingServerFolder" ) ); //$NON-NLS-1$
 
                     // Adding the new server to the servers handler
                     LdapServersManager.getDefault().addServer( server );

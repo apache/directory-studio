@@ -22,9 +22,9 @@ package org.apache.directory.studio.aciitemeditor.dialogs;
 
 import java.util.Collection;
 
-import org.apache.directory.shared.ldap.aci.GrantAndDenial;
-import org.apache.directory.shared.ldap.aci.ItemPermission;
-import org.apache.directory.shared.ldap.aci.UserClass;
+import org.apache.directory.api.ldap.aci.GrantAndDenial;
+import org.apache.directory.api.ldap.aci.ItemPermission;
+import org.apache.directory.api.ldap.aci.UserClass;
 import org.apache.directory.studio.aciitemeditor.ACIItemValueWithContext;
 import org.apache.directory.studio.aciitemeditor.Activator;
 import org.apache.directory.studio.aciitemeditor.widgets.ACIItemGrantsAndDenialsComposite;
@@ -179,7 +179,7 @@ public class ItemPermissionDialog extends Dialog
         // set initial values
         if ( initialItemPermission != null )
         {
-            if ( initialItemPermission.getPrecedence() > -1 )
+            if ( ( initialItemPermission.getPrecedence() != null ) && ( initialItemPermission.getPrecedence() > -1 ) )
             {
                 precedenceCheckbox.setSelection( true );
                 precedenceSpinner.setEnabled( true );

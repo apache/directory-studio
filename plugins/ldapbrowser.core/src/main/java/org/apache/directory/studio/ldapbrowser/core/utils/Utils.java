@@ -29,18 +29,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.directory.shared.ldap.model.name.Ava;
-import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.model.name.Rdn;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.url.LdapUrl;
-import org.apache.directory.shared.util.Strings;
+import org.apache.directory.api.ldap.model.name.Ava;
+import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.name.Rdn;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
+import org.apache.directory.api.ldap.model.url.LdapUrl;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
@@ -89,17 +88,22 @@ public class Utils
      */
     public static String getNormalizedOidString( Dn dn, Schema schema )
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
-        Iterator<Rdn> it = dn.getRdns().iterator();
-        while ( it.hasNext() )
+        boolean isFirst = true;
+        
+        for ( Rdn rdn : dn )
         {
-            Rdn rdn = it.next();
-            sb.append( getOidString( rdn, schema ) );
-            if ( it.hasNext() )
+            if ( isFirst )
+            {
+                isFirst = false;
+            }
+            else
             {
                 sb.append( ',' );
             }
+
+            sb.append( getOidString( rdn, schema ) );
         }
 
         return sb.toString();
@@ -108,17 +112,22 @@ public class Utils
 
     private static String getOidString( Rdn rdn, Schema schema )
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
-        Iterator<Ava> it = rdn.iterator();
-        while ( it.hasNext() )
+        boolean isFirst = true;
+        
+        for ( Ava ava : rdn )
         {
-            Ava ava = it.next();
-            sb.append( getOidString( ava, schema ) );
-            if ( it.hasNext() )
+            if ( isFirst )
+            {
+                isFirst = false;
+            }
+            else
             {
                 sb.append( '+' );
             }
+
+            sb.append( getOidString( ava, schema ) );
         }
 
         return sb.toString();
@@ -129,7 +138,8 @@ public class Utils
     {
         String oid = schema != null ? schema.getAttributeTypeDescription( ava.getNormType() ).getOid() : ava
             .getNormType();
-        return Strings.toLowerCase( Strings.trim( oid ) ) + "=" + Strings.toLowerCase( Strings.trim( ava.getValue().getString() ) ); //$NON-NLS-1$
+        return Strings.toLowerCaseAscii( Strings.trim( oid ) )
+            + "=" + Strings.trim( ava.getValue().getValue() ).toLowerCase(); //$NON-NLS-1$
     }
 
 
@@ -141,12 +151,14 @@ public class Utils
         }
         else
         {
-            StringBuffer sb = new StringBuffer( array[0] );
+            StringBuilder sb = new StringBuilder( array[0] );
+            
             for ( int i = 1; i < array.length; i++ )
             {
                 sb.append( ", " ); //$NON-NLS-1$
                 sb.append( array[i] );
             }
+            
             return sb.toString();
         }
     }
@@ -171,22 +183,21 @@ public class Utils
 
     public static String getShortenedString( String value, int length )
     {
-
-        if ( value == null )
-            return ""; //$NON-NLS-1$
-
-        if ( value.length() > length )
+        StringBuilder sb = new StringBuilder();
+        
+        if ( ( value != null ) && ( value.length() > length ) )
         {
-            value = value.substring( 0, length ) + "..."; //$NON-NLS-1$
+            sb.append( value.substring( 0, length ) ).append( "..." ); //$NON-NLS-1$
         }
 
-        return value;
+        return sb.toString();
     }
 
 
     public static String serialize( Object o )
     {
         ClassLoader ccl = Thread.currentThread().getContextClassLoader();
+        
         try
         {
             Thread.currentThread().setContextClassLoader( Utils.class.getClassLoader() );
@@ -194,8 +205,8 @@ public class Utils
             XMLEncoder encoder = new XMLEncoder( baos );
             encoder.writeObject( o );
             encoder.close();
-            String s = LdifUtils.utf8decode( baos.toByteArray() );
-            return s;
+
+            return LdifUtils.utf8decode( baos.toByteArray() );
         }
         finally
         {
@@ -207,6 +218,7 @@ public class Utils
     public static Object deserialize( String s )
     {
         ClassLoader ccl = Thread.currentThread().getContextClassLoader();
+        
         try
         {
             Thread.currentThread().setContextClassLoader( Utils.class.getClassLoader() );
@@ -214,6 +226,7 @@ public class Utils
             XMLDecoder decoder = new XMLDecoder( bais );
             Object o = decoder.readObject();
             decoder.close();
+            
             return o;
         }
         finally
@@ -232,14 +245,25 @@ public class Utils
     public static String formatBytes( long bytes )
     {
         String size = ""; //$NON-NLS-1$
+        
         if ( bytes > 1024 * 1024 )
-            size += ( bytes / 1024 / 1024 ) + " MB (" + bytes + " Bytes)";
+        {
+            size += ( bytes / 1024 / 1024 )
+                + " " + Messages.Utils_MegaBytes + " (" + bytes + " " + Messages.Utils_Bytes + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-6$
+        }
         else if ( bytes > 1024 )
-            size += ( bytes / 1024 ) + " KB (" + bytes + " Bytes)";
+        {
+            size += ( bytes / 1024 ) + " " + Messages.Utils_KiloBytes + " (" + bytes + " " + Messages.Utils_Bytes + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-6$
+        }
         else if ( bytes > 1 )
-            size += bytes + " Bytes";
+        {
+            size += bytes + " " + Messages.Utils_Bytes; //$NON-NLS-1$
+        }
         else
-            size += bytes + " Byte";
+        {
+            size += bytes + " " + Messages.Utils_Byte; //$NON-NLS-1$
+        }
+        
         return size;
     }
 
@@ -269,8 +293,8 @@ public class Utils
         boolean spaceAfterColon = store.getBoolean( BrowserCoreConstants.PREFERENCE_LDIF_SPACE_AFTER_COLON );
         int lineWidth = store.getInt( BrowserCoreConstants.PREFERENCE_LDIF_LINE_WIDTH );
         String lineSeparator = store.getString( BrowserCoreConstants.PREFERENCE_LDIF_LINE_SEPARATOR );
-        LdifFormatParameters ldifFormatParameters = new LdifFormatParameters( spaceAfterColon, lineWidth, lineSeparator );
-        return ldifFormatParameters;
+
+        return new LdifFormatParameters( spaceAfterColon, lineWidth, lineSeparator );
     }
 
 
@@ -289,6 +313,7 @@ public class Utils
     public static LdapUrl getLdapURL( IBrowserConnection browserConnection )
     {
         LdapUrl url = new LdapUrl();
+        
         if ( browserConnection.getConnection() != null )
         {
             if ( browserConnection.getConnection().getEncryptionMethod() == EncryptionMethod.LDAPS )
@@ -299,9 +324,11 @@ public class Utils
             {
                 url.setScheme( LdapUrl.LDAP_SCHEME );
             }
+            
             url.setHost( browserConnection.getConnection().getHost() );
             url.setPort( browserConnection.getConnection().getPort() );
         }
+        
         return url;
     }
 
@@ -323,6 +350,7 @@ public class Utils
     {
         LdapUrl url = getLdapURL( entry.getBrowserConnection() );
         url.setDn( entry.getDn() );
+        
         return url;
     }
 
@@ -347,12 +375,15 @@ public class Utils
     {
         LdapUrl url = getLdapURL( search.getBrowserConnection() );
         url.setDn( search.getSearchBase() );
+        
         if ( search.getReturningAttributes() != null )
         {
             url.setAttributes( Arrays.asList( search.getReturningAttributes() ) );
         }
+        
         url.setScope( search.getScope().getScope() );
         url.setFilter( search.getFilter() );
+        
         return url;
     }
 
@@ -375,11 +406,13 @@ public class Utils
         ModifyOrder modifyAddDeleteOrder = oldEntry.getBrowserConnection().getModifyAddDeleteOrder();
 
         // get all attribute descriptions
-        Set<String> attributeDescriptions = new HashSet<String>();
+        Set<String> attributeDescriptions = new HashSet<>();
+        
         for ( IAttribute oldAttr : oldEntry.getAttributes() )
         {
             attributeDescriptions.add( oldAttr.getDescription() );
         }
+        
         for ( IAttribute newAttr : newEntry.getAttributes() )
         {
             attributeDescriptions.add( newAttr.getDescription() );
@@ -387,6 +420,7 @@ public class Utils
 
         // prepare the LDIF record containing the modifications
         LdifChangeModifyRecord record = new LdifChangeModifyRecord( LdifDnLine.create( newEntry.getDn().getName() ) );
+        
         if ( newEntry.isReferral() )
         {
             record.addControl( LdifControlLine.create( StudioControl.MANAGEDSAIT_CONTROL.getOid(),
@@ -410,8 +444,9 @@ public class Utils
 
             // get old an new values for comparison
             IAttribute oldAttribute = oldEntry.getAttribute( attributeDescription );
-            Set<String> oldValues = new HashSet<String>();
-            Map<String, LdifAttrValLine> oldAttrValLines = new LinkedHashMap<String, LdifAttrValLine>();
+            Set<String> oldValues = new HashSet<>();
+            Map<String, LdifAttrValLine> oldAttrValLines = new LinkedHashMap<>();
+            
             if ( oldAttribute != null )
             {
                 for ( IValue value : oldAttribute.getValues() )
@@ -421,9 +456,11 @@ public class Utils
                     oldAttrValLines.put( attrValLine.getUnfoldedValue(), attrValLine );
                 }
             }
+            
             IAttribute newAttribute = newEntry.getAttribute( attributeDescription );
-            Set<String> newValues = new HashSet<String>();
-            Map<String, LdifAttrValLine> newAttrValLines = new LinkedHashMap<String, LdifAttrValLine>();
+            Set<String> newValues = new HashSet<>();
+            Map<String, LdifAttrValLine> newAttrValLines = new LinkedHashMap<>();
+            
             if ( newAttribute != null )
             {
                 for ( IValue value : newAttribute.getValues() )
@@ -439,6 +476,7 @@ public class Utils
             {
                 // attribute only exists in the old entry: delete all values
                 LdifModSpec modSpec;
+                
                 if ( isReplaceForced )
                 {
                     // replace (empty value list)
@@ -450,6 +488,7 @@ public class Utils
                     // delete all
                     modSpec = LdifModSpec.createDelete( attributeDescription );
                 }
+                
                 modSpec.finish( LdifModSpecSepLine.create() );
                 record.addModSpec( modSpec );
             }
@@ -457,6 +496,7 @@ public class Utils
             {
                 // attribute only exists in the new entry: add all values
                 LdifModSpec modSpec;
+                
                 if ( isReplaceForced )
                 {
                     // replace (all values)
@@ -468,10 +508,12 @@ public class Utils
                     // add (all new values)
                     modSpec = LdifModSpec.createAdd( attributeDescription );
                 }
+                
                 for ( IValue value : newAttribute.getValues() )
                 {
                     modSpec.addAttrVal( computeDiffCreateAttrValLine( value ) );
                 }
+                
                 modSpec.finish( LdifModSpecSepLine.create() );
                 record.addModSpec( modSpec );
             }
@@ -482,18 +524,20 @@ public class Utils
                 {
                     // replace (all new values)
                     LdifModSpec modSpec = LdifModSpec.createReplace( attributeDescription );
+                    
                     for ( IValue value : newAttribute.getValues() )
                     {
                         modSpec.addAttrVal( computeDiffCreateAttrValLine( value ) );
                     }
+                    
                     modSpec.finish( LdifModSpecSepLine.create() );
                     record.addModSpec( modSpec );
                 }
                 else
                 {
                     // compute diff
-                    List<LdifAttrValLine> toDel = new ArrayList<LdifAttrValLine>();
-                    List<LdifAttrValLine> toAdd = new ArrayList<LdifAttrValLine>();
+                    List<LdifAttrValLine> toDel = new ArrayList<>();
+                    List<LdifAttrValLine> toAdd = new ArrayList<>();
 
                     for ( Map.Entry<String, LdifAttrValLine> entry : oldAttrValLines.entrySet() )
                     {
@@ -502,6 +546,7 @@ public class Utils
                             toDel.add( entry.getValue() );
                         }
                     }
+                    
                     for ( Map.Entry<String, LdifAttrValLine> entry : newAttrValLines.entrySet() )
                     {
                         if ( !oldValues.contains( entry.getKey() ) )
@@ -526,16 +571,20 @@ public class Utils
                     {
                         // add/del del/add
                         LdifModSpec addModSpec = LdifModSpec.createAdd( attributeDescription );
+                        
                         for ( LdifAttrValLine attrValLine : toAdd )
                         {
                             addModSpec.addAttrVal( attrValLine );
                         }
+                        
                         addModSpec.finish( LdifModSpecSepLine.create() );
                         LdifModSpec delModSpec = LdifModSpec.createDelete( attributeDescription );
+                        
                         for ( LdifAttrValLine attrValLine : toDel )
                         {
                             delModSpec.addAttrVal( attrValLine );
                         }
+                        
                         delModSpec.finish( LdifModSpecSepLine.create() );
 
                         if ( modifyAddDeleteOrder == ModifyOrder.DELETE_FIRST )
@@ -544,6 +593,7 @@ public class Utils
                             {
                                 record.addModSpec( delModSpec );
                             }
+                            
                             if ( addModSpec.getAttrVals().length > 0 )
                             {
                                 record.addModSpec( addModSpec );
@@ -555,6 +605,7 @@ public class Utils
                             {
                                 record.addModSpec( addModSpec );
                             }
+                            
                             if ( delModSpec.getAttrVals().length > 0 )
                             {
                                 record.addModSpec( delModSpec );
@@ -565,10 +616,12 @@ public class Utils
                     {
                         // replace (all new values)
                         LdifModSpec modSpec = LdifModSpec.createReplace( attributeDescription );
+                        
                         for ( LdifAttrValLine attrValLine : newAttrValLines.values() )
                         {
                             modSpec.addAttrVal( attrValLine );
                         }
+                        
                         modSpec.finish( LdifModSpecSepLine.create() );
                         record.addModSpec( modSpec );
                     }
@@ -580,10 +633,12 @@ public class Utils
         record.finish( LdifSepLine.create() );
 
         LdifFile model = new LdifFile();
+        
         if ( record.isValid() && record.getModSpecs().length > 0 )
         {
             model.addContainer( record );
         }
+        
         return model.getRecords().length > 0 ? model : null;
     }
 
@@ -591,6 +646,7 @@ public class Utils
     private static LdifAttrValLine computeDiffCreateAttrValLine( IValue value )
     {
         IAttribute attribute = value.getAttribute();
+        
         if ( attribute.isBinary() )
         {
             return LdifAttrValLine.create( attribute.getDescription(), value.getBinaryValue() );

@@ -23,7 +23,7 @@ package org.apache.directory.studio.schemaeditor.view.views;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.exception.LdapSchemaException;
+import org.apache.directory.api.ldap.model.exception.LdapSchemaException;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.model.schemachecker.SchemaChecker;
 import org.apache.directory.studio.schemaeditor.model.schemachecker.SchemaWarning;

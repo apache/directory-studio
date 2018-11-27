@@ -65,7 +65,6 @@ public class LinkWithEditorSchemaViewAction extends Action implements IWorkbench
     private IPartListener2 editorListener = new IPartListener2()
     {
 
-
         /**
          * {@inheritDoc}
          */

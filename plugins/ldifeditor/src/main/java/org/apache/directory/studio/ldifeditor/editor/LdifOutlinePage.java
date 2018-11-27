@@ -26,8 +26,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
-import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserLabelProvider;
@@ -130,7 +130,8 @@ public class LdifOutlinePage extends ContentOutlinePage
                     }
                     else if ( element instanceof List )
                     {
-                        List list = ( List ) element;
+                        List<?> list = ( List<?> ) element;
+                        
                         if ( !list.isEmpty() && list.get( 0 ) instanceof LdifAttrValLine )
                         {
                             LdifAttrValLine line = ( LdifAttrValLine ) list.get( 0 );
@@ -283,9 +284,9 @@ public class LdifOutlinePage extends ContentOutlinePage
             }
 
             // List of AttrValLine --> Array of AttrValLine
-            else if ( element instanceof List && ( ( List ) element ).get( 0 ) instanceof LdifAttrValLine )
+            else if ( element instanceof List && ( ( List<?> ) element ).get( 0 ) instanceof LdifAttrValLine )
             {
-                List list = ( List ) element;
+                List<?> list = ( List<?> ) element;
                 return list.toArray();
             }
             else if ( element instanceof LdifModSpec )
@@ -304,22 +305,27 @@ public class LdifOutlinePage extends ContentOutlinePage
         /**
          * Returns a unique line of attribute values from an array of attribute value lines
          *
-         * @param lines
-         *      the attribute value lines
-         * @return 
-         *      a unique line of attribute values from an array of attribute values lines
+         * @param lines the attribute value lines
+         * @return a unique line of attribute values from an array of attribute values lines
          */
         private Object[] getUniqueAttrValLineArray( LdifAttrValLine[] lines )
         {
-            Map uniqueAttrMap = new LinkedHashMap();
-            for ( int i = 0; i < lines.length; i++ )
+            Map<String, List<LdifAttrValLine>> uniqueAttrMap = new LinkedHashMap<String, List<LdifAttrValLine>>();
+            
+            for ( LdifAttrValLine ldifAttrValLine : lines )
             {
-                if ( !uniqueAttrMap.containsKey( lines[i].getUnfoldedAttributeDescription() ) )
+                String key = ldifAttrValLine.getUnfoldedAttributeDescription();
+                List<LdifAttrValLine> listLdifAttrValLine = uniqueAttrMap.get( key );
+                
+                if ( listLdifAttrValLine == null )
                 {
-                    uniqueAttrMap.put( lines[i].getUnfoldedAttributeDescription(), new ArrayList() );
+                    listLdifAttrValLine = new ArrayList<LdifAttrValLine>();
+                    uniqueAttrMap.put( key, listLdifAttrValLine );
                 }
-                ( ( List ) uniqueAttrMap.get( lines[i].getUnfoldedAttributeDescription() ) ).add( lines[i] );
+                
+                listLdifAttrValLine.add( ldifAttrValLine );
             }
+            
             return uniqueAttrMap.values().toArray();
         }
 
@@ -402,9 +408,9 @@ public class LdifOutlinePage extends ContentOutlinePage
             }
 
             // List of AttrValLine
-            else if ( element instanceof List && ( ( List ) element ).get( 0 ) instanceof LdifAttrValLine )
+            else if ( element instanceof List && ( ( List<?> ) element ).get( 0 ) instanceof LdifAttrValLine )
             {
-                List list = ( List ) element;
+                List<?> list = ( List<?> ) element;
                 return ( ( LdifAttrValLine ) list.get( 0 ) ).getUnfoldedAttributeDescription() + " (" + list.size() //$NON-NLS-1$
                     + ")"; //$NON-NLS-1$
             }
@@ -434,6 +440,7 @@ public class LdifOutlinePage extends ContentOutlinePage
          */
         public Image getImage( Object element )
         {
+            
             // Record
             if ( element instanceof LdifContentRecord )
             {
@@ -442,10 +449,12 @@ public class LdifOutlinePage extends ContentOutlinePage
                     LdifContentRecord record = ( LdifContentRecord ) element;
 
                     LdifDnLine dnLine = record.getDnLine();
+                    
                     if ( dnLine != null )
                     {
                         String dn = dnLine.getUnfoldedDn();
-                        if ( dn != null && "".equals( dn ) ) //$NON-NLS-1$
+                        
+                        if ( ( dn != null ) && ( dn.length() == 0 ) ) //$NON-NLS-1$
                         {
                             // Root DSE
                             return BrowserCommonActivator.getDefault().getImage( BrowserCommonConstants.IMG_ENTRY_ROOT );
@@ -484,7 +493,6 @@ public class LdifOutlinePage extends ContentOutlinePage
             {
                 return LdifEditorActivator.getDefault().getImage( LdifEditorConstants.IMG_LDIF_RENAME );
             }
-
             // List of AttrValLine
             else if ( element instanceof List && ( ( List ) element ).get( 0 ) instanceof LdifAttrValLine )
             {
@@ -493,14 +501,23 @@ public class LdifOutlinePage extends ContentOutlinePage
             else if ( element instanceof LdifModSpec )
             {
                 LdifModSpec modSpec = ( LdifModSpec ) element;
+                
                 if ( modSpec.isAdd() )
+                {
                     return LdifEditorActivator.getDefault().getImage( LdifEditorConstants.IMG_LDIF_MOD_ADD );
+                }
                 else if ( modSpec.isReplace() )
+                {
                     return LdifEditorActivator.getDefault().getImage( LdifEditorConstants.IMG_LDIF_MOD_REPLACE );
+                }
                 else if ( modSpec.isDelete() )
+                {
                     return LdifEditorActivator.getDefault().getImage( LdifEditorConstants.IMG_LDIF_MOD_DELETE );
+                }
                 else
+                {
                     return null;
+                }
             }
 
             // AttrValLine
@@ -508,7 +525,6 @@ public class LdifOutlinePage extends ContentOutlinePage
             {
                 return LdifEditorActivator.getDefault().getImage( LdifEditorConstants.IMG_LDIF_VALUE );
             }
-
             else
             {
                 return null;

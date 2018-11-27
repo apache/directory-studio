@@ -20,7 +20,7 @@
 package org.apache.directory.studio.schemaeditor.model.schemachecker;
 
 
-import org.apache.directory.shared.ldap.model.schema.SchemaObject;
+import org.apache.directory.api.ldap.model.schema.SchemaObject;
 
 
 /**
@@ -47,7 +47,7 @@ public class NoAliasWarning implements SchemaWarning
 
 
     /**
-     * {@inheritDoc
+     * {@inheritDoc}
      */
     public SchemaObject getSource()
     {

@@ -33,12 +33,10 @@ import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
  */
 public interface EntryUpdateListener extends EventListener
 {
-
     /**
      * Called when an {@link IEntry} was updated.
      *
      * @param event the event
      */
-    public void entryUpdated( EntryModificationEvent event );
-
+    void entryUpdated( EntryModificationEvent event );
 }

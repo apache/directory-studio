@@ -20,8 +20,19 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
+import org.apache.directory.studio.test.integration.ui.bots.utils.TreeBot;
+import org.eclipse.swtbot.swt.finder.waits.Conditions;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
+
+
 public abstract class WizardBot extends DialogBot
 {
+
+    public WizardBot( String title )
+    {
+        super( title );
+    }
+
 
     public boolean isBackButtonEnabled()
     {
@@ -67,13 +78,38 @@ public abstract class WizardBot extends DialogBot
 
     public void clickFinishButton()
     {
+        SWTBotShell shell = null;
+        if ( title != null )
+        {
+            shell = bot.shell( title );
+        }
+
         clickButton( "Finish" );
+
+        if ( shell != null )
+        {
+            bot.waitUntil( Conditions.shellCloses( shell ) );
+        }
     }
 
 
     public void clickCancelButton()
     {
         clickButton( "Cancel" );
+    }
+
+
+    public boolean existsCategory( String category )
+    {
+        TreeBot treeBot = new TreeBot( bot.tree() );
+        return treeBot.exists( category );
+    }
+
+
+    public boolean existsWizard( String category, String wizard )
+    {
+        TreeBot treeBot = new TreeBot( bot.tree() );
+        return treeBot.exists( category, wizard );
     }
 
 }

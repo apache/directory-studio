@@ -26,7 +26,6 @@ import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.naming.NamingEnumeration;
@@ -34,30 +33,30 @@ import javax.naming.NamingException;
 import javax.naming.directory.SearchResult;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.directory.shared.dsmlv2.DsmlDecorator;
-import org.apache.directory.shared.dsmlv2.reponse.BatchResponseDsml;
-import org.apache.directory.shared.dsmlv2.reponse.SearchResponseDsml;
-import org.apache.directory.shared.dsmlv2.reponse.SearchResultDoneDsml;
-import org.apache.directory.shared.dsmlv2.reponse.SearchResultEntryDsml;
-import org.apache.directory.shared.dsmlv2.reponse.SearchResultReferenceDsml;
-import org.apache.directory.shared.dsmlv2.request.AddRequestDsml;
-import org.apache.directory.shared.dsmlv2.request.BatchRequestDsml;
-import org.apache.directory.shared.ldap.codec.api.LdapApiService;
-import org.apache.directory.shared.ldap.codec.api.LdapApiServiceFactory;
-import org.apache.directory.shared.ldap.model.entry.Attribute;
-import org.apache.directory.shared.ldap.model.entry.AttributeUtils;
-import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.Value;
-import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.exception.LdapURLEncodingException;
-import org.apache.directory.shared.ldap.model.message.LdapResult;
-import org.apache.directory.shared.ldap.model.message.MessageTypeEnum;
-import org.apache.directory.shared.ldap.model.message.Response;
-import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
-import org.apache.directory.shared.ldap.model.message.SearchResultDone;
-import org.apache.directory.shared.ldap.model.message.SearchResultDoneImpl;
-import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.model.url.LdapUrl;
+import org.apache.directory.api.dsmlv2.DsmlDecorator;
+import org.apache.directory.api.dsmlv2.response.BatchResponseDsml;
+import org.apache.directory.api.dsmlv2.response.SearchResponseDsml;
+import org.apache.directory.api.dsmlv2.response.SearchResultDoneDsml;
+import org.apache.directory.api.dsmlv2.response.SearchResultEntryDsml;
+import org.apache.directory.api.dsmlv2.response.SearchResultReferenceDsml;
+import org.apache.directory.api.dsmlv2.request.AddRequestDsml;
+import org.apache.directory.api.dsmlv2.request.BatchRequestDsml;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
+import org.apache.directory.api.ldap.model.entry.Attribute;
+import org.apache.directory.api.ldap.model.entry.AttributeUtils;
+import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.entry.Value;
+import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.exception.LdapURLEncodingException;
+import org.apache.directory.api.ldap.model.message.LdapResult;
+import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
+import org.apache.directory.api.ldap.model.message.Response;
+import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
+import org.apache.directory.api.ldap.model.message.SearchResultDone;
+import org.apache.directory.api.ldap.model.message.SearchResultDoneImpl;
+import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
@@ -75,14 +74,14 @@ import org.apache.directory.studio.ldapbrowser.core.utils.JNDIUtils;
  */
 public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
 {
-    private static final String OBJECTCLASS_OBJECTCLASS_OID = "objectClass";
-    private static final String OBJECTCLASS_OBJECTCLASS_NAME = "2.5.4.0";
+    private static final String OBJECTCLASS_OBJECTCLASS_OID = "objectClass"; //$NON-NLS-1$
+    private static final String OBJECTCLASS_OBJECTCLASS_NAME = "2.5.4.0"; //$NON-NLS-1$
 
-    private static final String REFERRAL_OBJECTCLASS_OID = "2.16.840.1.113730.3.2.6";
-    private static final String REFERRAL_OBJECTCLASS_NAME = "referral";
+    private static final String REFERRAL_OBJECTCLASS_OID = "2.16.840.1.113730.3.2.6"; //$NON-NLS-1$
+    private static final String REFERRAL_OBJECTCLASS_NAME = "referral"; //$NON-NLS-1$
 
-    private static final String REF_ATTRIBUTETYPE_OID = "2.16.840.1.113730.3.1.34";
-    private static final String REF_ATTRIBUTETYPE_NAME = "ref";
+    private static final String REF_ATTRIBUTETYPE_OID = "2.16.840.1.113730.3.1.34"; //$NON-NLS-1$
+    private static final String REF_ATTRIBUTETYPE_NAME = "ref"; //$NON-NLS-1$
 
     /** The name of the DSML file to export to */
     private String exportDsmlFilename;
@@ -95,14 +94,13 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
 
     /** The type of the export */
     private ExportDsmlJobType type = ExportDsmlJobType.RESPONSE;
-    
+
     /** 
      * The LDAP Codec - for now need by the DSML Parser 
      * @TODO - this should be removed - no reason why the DSML parser needs it
      * @TODO - hate to make it static like this but methods are static
      */
     private static LdapApiService codec = LdapApiServiceFactory.getSingleton();
-    
 
     /**
      * This enum contains the two possible export types.
@@ -112,7 +110,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
     public enum ExportDsmlJobType
     {
         RESPONSE, REQUEST
-    };
+    }
 
 
     /**
@@ -135,7 +133,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
 
         // Adding the name and OID of the 'ref' attribute to the list of returning attributes
         // for handling externals correctly
-        List<String> returningAttributes = new ArrayList<String>( Arrays.asList( searchParameter
+        List<String> returningAttributes = new ArrayList<>( Arrays.asList( searchParameter
             .getReturningAttributes() ) );
         returningAttributes.add( REF_ATTRIBUTETYPE_NAME );
         returningAttributes.add( REF_ATTRIBUTETYPE_OID );
@@ -167,8 +165,8 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
      */
     public Object[] getLockedObjects()
     {
-        List<String> l = new ArrayList<String>();
-        l.add( browserConnection.getUrl() + "_" + DigestUtils.shaHex( exportDsmlFilename ) );
+        List<String> l = new ArrayList<>();
+        l.add( browserConnection.getUrl() + "_" + DigestUtils.shaHex( exportDsmlFilename ) ); //$NON-NLS-1$
         return l.toArray();
     }
 
@@ -205,6 +203,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
             // Getting the DSML string associated to the search
             // and the type of answer the user is expecting
             String dsmlExportString = null;
+            
             switch ( type )
             {
                 case RESPONSE:
@@ -214,18 +213,22 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
                     dsmlExportString = processAsDsmlRequest( ne, dummyMonitor );
                     break;
             }
+            
             monitor.worked( 1 );
 
             // Writing the DSML string to the final destination file.
             if ( dsmlExportString != null )
             {
-                FileOutputStream fos = new FileOutputStream( exportDsmlFilename );
-                OutputStreamWriter osw = new OutputStreamWriter( fos, "UTF-8" ); //$NON-NLS-1$
-                BufferedWriter bufferedWriter = new BufferedWriter( osw );
-                bufferedWriter.write( dsmlExportString );
-                bufferedWriter.close();
-                osw.close();
-                fos.close();
+                try ( FileOutputStream fos = new FileOutputStream( exportDsmlFilename ) )
+                {
+                    try ( OutputStreamWriter osw = new OutputStreamWriter( fos, "UTF-8" ) ) //$NON-NLS-1$
+                    {
+                        try ( BufferedWriter bufferedWriter = new BufferedWriter( osw ) )
+                        {
+                            bufferedWriter.write( dsmlExportString );
+                        }
+                    }
+                }
             }
             monitor.worked( 1 );
         }
@@ -239,18 +242,12 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
     /**
      * Processes the {@link NamingEnumeration} as a DSML response.
      *
-     * @param ne
-     *      the naming enumeration
-     * @param monitor 
-     *      the monitor
-     * @return
-     *      the associated DSML
-     * @throws NamingException 
-     * @throws LdapURLEncodingException 
+     * @param ne the naming enumeration
+     * @param monitor the monitor
+     * @return the associated DSML
      * @throws LdapException
      */
-    private String processAsDsmlResponse( StudioNamingEnumeration ne, StudioProgressMonitor monitor )
-        throws NamingException, LdapURLEncodingException, LdapException
+    private String processAsDsmlResponse( StudioNamingEnumeration ne, StudioProgressMonitor monitor ) throws LdapException
     {
         // Creating the batch reponse
         BatchResponseDsml batchResponse = new BatchResponseDsml();
@@ -272,10 +269,10 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
      * @param searchParameter 
      *      the search parameter
      * @throws LdapURLEncodingException 
-     * @throws org.apache.directory.shared.ldap.model.exception.LdapException
+     * @throws org.apache.directory.api.ldap.model.exception.LdapException
      */
     public static void processAsDsmlResponse( StudioNamingEnumeration ne, BatchResponseDsml batchResponse,
-        StudioProgressMonitor monitor, SearchParameter searchParameter ) throws LdapURLEncodingException, LdapException
+        StudioProgressMonitor monitor, SearchParameter searchParameter ) throws LdapException
     {
         // Creating and adding the search response
         SearchResponseDsml sr = new SearchResponseDsml( codec );
@@ -290,13 +287,13 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
                 // Creating and adding a search result entry or reference for each result
                 while ( ne.hasMore() )
                 {
-                    SearchResult searchResult = ( SearchResult ) ne.next();
-                    sr.addResponse( convertSearchResultToDsml( searchResult, searchParameter ) );
+                    SearchResult searchResult = ne.next();
+                    sr.addResponse( convertSearchResultToDsml( searchResult ) );
 
                     count++;
                     monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__export_progress,
                         new String[]
-                        { Integer.toString( count ) } ) );
+                            { Integer.toString( count ) } ) );
                 }
             }
         }
@@ -341,17 +338,15 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
     /**
      * Converts the given {@link SearchResult} to a {@link SearchResultEntryDsml}.
      *
-     * @param searchResult
-     *      the search result
-     * @return
-     *      the associated search result entry DSML
-     * @throws org.apache.directory.shared.ldap.model.exception.LdapException
+     * @param searchResult the search result
+     * @return the associated search result entry DSML
+     * @throws org.apache.directory.api.ldap.model.exception.LdapException
      */
-    private static DsmlDecorator<? extends Response> convertSearchResultToDsml( SearchResult searchResult, SearchParameter searchParameter )
-        throws LdapException, LdapURLEncodingException
+    private static DsmlDecorator<? extends Response> convertSearchResultToDsml( SearchResult searchResult )
+        throws LdapException
     {
-        Entry entry = AttributeUtils.toEntry(searchResult.getAttributes(),
-                new Dn(searchResult.getNameInNamespace()));
+        Entry entry = AttributeUtils.toEntry( searchResult.getAttributes(),
+            new Dn( searchResult.getNameInNamespace() ) );
 
         if ( isReferral( entry ) )
         {
@@ -369,10 +364,8 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
             // Adding references
             if ( refAttribute != null )
             {
-                for ( Iterator<Value<?>> iterator = refAttribute.iterator(); iterator.hasNext(); )
+                for ( Value value : refAttribute )
                 {
-                    Value<?> value = ( Value<?> ) iterator.next();
-
                     srr.addSearchResultReference( new LdapUrl( ( String ) value.getValue() ) );
                 }
             }
@@ -449,14 +442,14 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
                 // Creating and adding an add request for each result
                 while ( ne.hasMore() )
                 {
-                    SearchResult searchResult = ( SearchResult ) ne.next();
+                    SearchResult searchResult = ne.next();
                     AddRequestDsml arDsml = convertToAddRequestDsml( searchResult );
                     batchRequest.addRequest( arDsml );
 
                     count++;
                     monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__export_progress,
                         new String[]
-                    { Integer.toString( count ) } ) );
+                            { Integer.toString( count ) } ) );
                 }
             }
         }

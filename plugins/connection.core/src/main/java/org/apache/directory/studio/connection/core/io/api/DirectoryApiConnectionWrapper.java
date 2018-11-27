@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Consumer;
 
 import javax.naming.ContextNotEmptyException;
 import javax.naming.NameAlreadyBoundException;
@@ -42,43 +43,49 @@ import javax.security.auth.login.AppConfigurationEntry.LoginModuleControlFlag;
 import javax.security.auth.login.Configuration;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.directory.ldap.client.api.CramMd5Request;
-import org.apache.directory.ldap.client.api.DigestMd5Request;
-import org.apache.directory.ldap.client.api.GssApiRequest;
+import org.apache.directory.api.ldap.codec.api.DefaultConfigurableBinaryAttributeDetector;
+import org.apache.directory.api.ldap.model.cursor.SearchCursor;
+import org.apache.directory.api.ldap.model.entry.AttributeUtils;
+import org.apache.directory.api.ldap.model.entry.DefaultModification;
+import org.apache.directory.api.ldap.model.entry.Modification;
+import org.apache.directory.api.ldap.model.entry.ModificationOperation;
+import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
+import org.apache.directory.api.ldap.model.exception.LdapURLEncodingException;
+import org.apache.directory.api.ldap.model.filter.ExprNode;
+import org.apache.directory.api.ldap.model.filter.FilterParser;
+import org.apache.directory.api.ldap.model.message.AddRequest;
+import org.apache.directory.api.ldap.model.message.AddRequestImpl;
+import org.apache.directory.api.ldap.model.message.AddResponse;
+import org.apache.directory.api.ldap.model.message.AliasDerefMode;
+import org.apache.directory.api.ldap.model.message.BindRequest;
+import org.apache.directory.api.ldap.model.message.BindRequestImpl;
+import org.apache.directory.api.ldap.model.message.BindResponse;
+import org.apache.directory.api.ldap.model.message.DeleteRequest;
+import org.apache.directory.api.ldap.model.message.DeleteRequestImpl;
+import org.apache.directory.api.ldap.model.message.DeleteResponse;
+import org.apache.directory.api.ldap.model.message.LdapResult;
+import org.apache.directory.api.ldap.model.message.ModifyDnRequest;
+import org.apache.directory.api.ldap.model.message.ModifyDnRequestImpl;
+import org.apache.directory.api.ldap.model.message.ModifyDnResponse;
+import org.apache.directory.api.ldap.model.message.ModifyRequest;
+import org.apache.directory.api.ldap.model.message.ModifyRequestImpl;
+import org.apache.directory.api.ldap.model.message.ModifyResponse;
+import org.apache.directory.api.ldap.model.message.Referral;
+import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
+import org.apache.directory.api.ldap.model.message.ResultResponse;
+import org.apache.directory.api.ldap.model.message.SearchRequest;
+import org.apache.directory.api.ldap.model.message.SearchRequestImpl;
+import org.apache.directory.api.ldap.model.message.SearchScope;
+import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.url.LdapUrl;
 import org.apache.directory.ldap.client.api.LdapConnectionConfig;
 import org.apache.directory.ldap.client.api.LdapNetworkConnection;
+import org.apache.directory.ldap.client.api.SaslCramMd5Request;
+import org.apache.directory.ldap.client.api.SaslDigestMd5Request;
+import org.apache.directory.ldap.client.api.SaslGssApiRequest;
+import org.apache.directory.ldap.client.api.SaslPlainRequest;
 import org.apache.directory.ldap.client.api.exception.InvalidConnectionException;
-import org.apache.directory.shared.ldap.codec.api.DefaultConfigurableBinaryAttributeDetector;
-import org.apache.directory.shared.ldap.codec.protocol.mina.LdapProtocolCodecActivator;
-import org.apache.directory.shared.ldap.model.cursor.SearchCursor;
-import org.apache.directory.shared.ldap.model.entry.AttributeUtils;
-import org.apache.directory.shared.ldap.model.entry.DefaultModification;
-import org.apache.directory.shared.ldap.model.entry.Modification;
-import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
-import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
-import org.apache.directory.shared.ldap.model.message.AddRequest;
-import org.apache.directory.shared.ldap.model.message.AddRequestImpl;
-import org.apache.directory.shared.ldap.model.message.AddResponse;
-import org.apache.directory.shared.ldap.model.message.AliasDerefMode;
-import org.apache.directory.shared.ldap.model.message.BindRequest;
-import org.apache.directory.shared.ldap.model.message.BindRequestImpl;
-import org.apache.directory.shared.ldap.model.message.BindResponse;
-import org.apache.directory.shared.ldap.model.message.DeleteRequest;
-import org.apache.directory.shared.ldap.model.message.DeleteRequestImpl;
-import org.apache.directory.shared.ldap.model.message.DeleteResponse;
-import org.apache.directory.shared.ldap.model.message.LdapResult;
-import org.apache.directory.shared.ldap.model.message.ModifyDnRequest;
-import org.apache.directory.shared.ldap.model.message.ModifyDnRequestImpl;
-import org.apache.directory.shared.ldap.model.message.ModifyDnResponse;
-import org.apache.directory.shared.ldap.model.message.ModifyRequest;
-import org.apache.directory.shared.ldap.model.message.ModifyRequestImpl;
-import org.apache.directory.shared.ldap.model.message.ModifyResponse;
-import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
-import org.apache.directory.shared.ldap.model.message.ResultResponse;
-import org.apache.directory.shared.ldap.model.message.SearchRequest;
-import org.apache.directory.shared.ldap.model.message.SearchRequestImpl;
-import org.apache.directory.shared.ldap.model.message.SearchScope;
-import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -93,6 +100,7 @@ import org.apache.directory.studio.connection.core.IJndiLogger;
 import org.apache.directory.studio.connection.core.Messages;
 import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
+import org.apache.directory.studio.connection.core.io.ConnectionWrapperUtils;
 import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
 import org.apache.directory.studio.connection.core.io.StudioTrustManager;
 import org.apache.directory.studio.connection.core.io.jndi.CancelException;
@@ -109,7 +117,7 @@ import org.eclipse.osgi.util.NLS;
 public class DirectoryApiConnectionWrapper implements ConnectionWrapper
 {
     /** The search request number */
-    private static int SEARCH_RESQUEST_NUM = 0;
+    private static int searchRequestNum = 0;
 
     /** The connection*/
     private Connection connection;
@@ -135,6 +143,9 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     /** The bind password */
     private String bindPassword;
 
+    /** The SASL PLAIN authzid */
+    private String authzId;
+
 
     /**
      * Creates a new instance of JNDIConnectionContext.
@@ -144,13 +155,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     public DirectoryApiConnectionWrapper( Connection connection )
     {
         this.connection = connection;
-
-        // Nasty hack to get the 'org.apache.directory.shared.ldap.protocol.codec'
-        // bundle started.
-        // Instantiating one of this bundle class will trigger the start of the bundle
-        // thanks to the lazy activation policy
-        // DO NOT REMOVE
-        LdapProtocolCodecActivator.lazyStart();
     }
 
 
@@ -183,12 +187,24 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         ldapConnectionConfig = new LdapConnectionConfig();
         ldapConnectionConfig.setLdapHost( connection.getHost() );
         ldapConnectionConfig.setLdapPort( connection.getPort() );
+        
+        long timeout = connection.getTimeout();
+        
+        if ( timeout < 0 ) 
+        {
+            timeout = 30000L;
+        }
+        
+        ldapConnectionConfig.setTimeout( timeout );
+        
         binaryAttributeDetector = new DefaultConfigurableBinaryAttributeDetector();
         ldapConnectionConfig.setBinaryAttributeDetector( binaryAttributeDetector );
+        
         if ( ( connection.getEncryptionMethod() == EncryptionMethod.LDAPS )
             || ( connection.getEncryptionMethod() == EncryptionMethod.START_TLS ) )
         {
             ldapConnectionConfig.setUseSsl( connection.getEncryptionMethod() == EncryptionMethod.LDAPS );
+            ldapConnectionConfig.setUseTls( connection.getEncryptionMethod() == EncryptionMethod.START_TLS );
 
             try
             {
@@ -200,6 +216,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
 
                 // create wrappers around the trust managers
                 StudioTrustManager[] trustManagers = new StudioTrustManager[defaultTrustManagers.length];
+        
                 for ( int i = 0; i < defaultTrustManagers.length; i++ )
                 {
                     trustManagers[i] = new StudioTrustManager( ( X509TrustManager ) defaultTrustManagers[i] );
@@ -221,24 +238,26 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
             {
                 try
                 {
-                    ldapConnection = new LdapNetworkConnection( ldapConnectionConfig );
+                    // Set lower timeout for connecting
+                    long oldTimeout = ldapConnectionConfig.getTimeout();
+                    ldapConnectionConfig.setTimeout( Math.min( oldTimeout, 5000L ) );
 
                     // Connecting
+                    ldapConnection = new LdapNetworkConnection( ldapConnectionConfig );
                     boolean connected = ldapConnection.connect();
+                    
                     if ( !connected )
                     {
-                        throw new Exception( "Unable to connect" );
+                        throw new Exception( Messages.DirectoryApiConnectionWrapper_UnableToConnect );
                     }
 
-                    // Start TLS
-                    if ( connection.getConnectionParameter().getEncryptionMethod() == ConnectionParameter.EncryptionMethod.START_TLS )
-                    {
-                        ldapConnection.startTls();
-                    }
+                    // Set old timeout again
+                    ldapConnectionConfig.setTimeout( oldTimeout );
                 }
                 catch ( Exception e )
                 {
                     exception = e;
+                    
                     try
                     {
                         if ( ldapConnection != null )
@@ -283,7 +302,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         {
             try
             {
-                ldapConnection.unBind();
                 ldapConnection.close();
             }
             catch ( Exception e )
@@ -313,6 +331,32 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         }
     }
 
+    
+    private BindResponse bindSimple( String bindPrincipal, String bindPassword ) throws LdapException
+    {
+        BindRequest bindRequest = new BindRequestImpl();
+        bindRequest.setName( bindPrincipal );
+        bindRequest.setCredentials( bindPassword );
+        
+        return ldapConnection.bind( bindRequest );
+    }
+    
+    
+    private BindResponse bindSaslPlain() throws LdapException
+    {
+        SaslPlainRequest saslPlainRequest = new SaslPlainRequest();
+        saslPlainRequest.setUsername( bindPrincipal );
+        saslPlainRequest.setCredentials( bindPassword );
+        saslPlainRequest.setAuthorizationId( authzId );
+        saslPlainRequest
+            .setQualityOfProtection( connection.getConnectionParameter().getSaslQop() );
+        saslPlainRequest.setSecurityStrength( connection.getConnectionParameter()
+            .getSaslSecurityStrength() );
+        saslPlainRequest.setMutualAuthentication( connection.getConnectionParameter()
+            .isSaslMutualAuthentication() );
+        
+        return ldapConnection.bindSaslPlain( bindPrincipal, bindPassword, authzId );
+    }
 
     private void doBind( final StudioProgressMonitor monitor ) throws Exception
     {
@@ -360,90 +404,98 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                             bindPrincipal = credentials.getBindPrincipal();
                             bindPassword = credentials.getBindPassword();
 
-                            // Simple Authentication
-                            if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SIMPLE )
+                            switch ( connection.getConnectionParameter().getAuthMethod() )
                             {
-                                BindRequest bindRequest = new BindRequestImpl();
-                                bindRequest.setName( bindPrincipal );
-                                bindRequest.setCredentials( bindPassword );
-                                bindResponse = ldapConnection.bind( bindRequest );
-                            }
-                            // CRAM-MD5 Authentication
-                            else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_CRAM_MD5 )
-                            {
-                                CramMd5Request cramMd5Request = new CramMd5Request();
-                                cramMd5Request.setUsername( bindPrincipal );
-                                cramMd5Request.setCredentials( bindPassword );
-                                cramMd5Request
-                                    .setQualityOfProtection( connection.getConnectionParameter().getSaslQop() );
-                                cramMd5Request.setSecurityStrength( connection.getConnectionParameter()
-                                    .getSaslSecurityStrength() );
-                                cramMd5Request.setMutualAuthentication( connection.getConnectionParameter()
-                                    .isSaslMutualAuthentication() );
+                                case SIMPLE :
+                                    // Simple Authentication
+                                    bindResponse = bindSimple( bindPrincipal, bindPassword );
+                                    
+                                    break;
+                                    
+                                case SASL_PLAIN :
+                                    // SASL Plain authentication
+                                    bindResponse = bindSaslPlain();
 
-                                bindResponse = ldapConnection.bind( cramMd5Request );
-                            }
-                            // DIGEST-MD5 Authentication
-                            else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_DIGEST_MD5 )
-                            {
-                                DigestMd5Request digestMd5Request = new DigestMd5Request();
-                                digestMd5Request.setUsername( bindPrincipal );
-                                digestMd5Request.setCredentials( bindPassword );
-                                digestMd5Request.setRealmName( connection.getConnectionParameter().getSaslRealm() );
-                                digestMd5Request.setQualityOfProtection( connection.getConnectionParameter()
-                                    .getSaslQop() );
-                                digestMd5Request.setSecurityStrength( connection.getConnectionParameter()
-                                    .getSaslSecurityStrength() );
-                                digestMd5Request.setMutualAuthentication( connection.getConnectionParameter()
-                                    .isSaslMutualAuthentication() );
-
-                                bindResponse = ldapConnection.bind( digestMd5Request );
-                            }
-                            // GSSAPI Authentication
-                            else if ( connection.getConnectionParameter().getAuthMethod() == ConnectionParameter.AuthenticationMethod.SASL_GSSAPI )
-                            {
-                                GssApiRequest gssApiRequest = new GssApiRequest();
-
-                                Preferences preferences = ConnectionCorePlugin.getDefault().getPluginPreferences();
-                                boolean useKrb5SystemProperties = preferences
-                                    .getBoolean( ConnectionCoreConstants.PREFERENCE_USE_KRB5_SYSTEM_PROPERTIES );
-                                String krb5LoginModule = preferences
-                                    .getString( ConnectionCoreConstants.PREFERENCE_KRB5_LOGIN_MODULE );
-
-                                if ( !useKrb5SystemProperties )
-                                {
-                                    gssApiRequest.setUsername( bindPrincipal );
-                                    gssApiRequest.setCredentials( bindPassword );
-                                    gssApiRequest.setQualityOfProtection( connection
-                                        .getConnectionParameter().getSaslQop() );
-                                    gssApiRequest.setSecurityStrength( connection
-                                        .getConnectionParameter()
+                                    break;
+                                    
+                                case SASL_CRAM_MD5 :
+                                    // CRAM-MD5 Authentication
+                                    SaslCramMd5Request cramMd5Request = new SaslCramMd5Request();
+                                    cramMd5Request.setUsername( bindPrincipal );
+                                    cramMd5Request.setCredentials( bindPassword );
+                                    cramMd5Request
+                                        .setQualityOfProtection( connection.getConnectionParameter().getSaslQop() );
+                                    cramMd5Request.setSecurityStrength( connection.getConnectionParameter()
                                         .getSaslSecurityStrength() );
-                                    gssApiRequest.setMutualAuthentication( connection
-                                        .getConnectionParameter()
+                                    cramMd5Request.setMutualAuthentication( connection.getConnectionParameter()
                                         .isSaslMutualAuthentication() );
-                                    gssApiRequest
-                                        .setLoginModuleConfiguration( new InnerConfiguration(
-                                            krb5LoginModule ) );
 
-                                    switch ( connection.getConnectionParameter().getKrb5Configuration() )
+                                    bindResponse = ldapConnection.bind( cramMd5Request );
+                                    break;
+                                    
+                                case SASL_DIGEST_MD5 :
+                                    // DIGEST-MD5 Authentication
+                                    SaslDigestMd5Request digestMd5Request = new SaslDigestMd5Request();
+                                    digestMd5Request.setUsername( bindPrincipal );
+                                    digestMd5Request.setCredentials( bindPassword );
+                                    digestMd5Request.setRealmName( connection.getConnectionParameter().getSaslRealm() );
+                                    digestMd5Request.setQualityOfProtection( connection.getConnectionParameter()
+                                        .getSaslQop() );
+                                    digestMd5Request.setSecurityStrength( connection.getConnectionParameter()
+                                        .getSaslSecurityStrength() );
+                                    digestMd5Request.setMutualAuthentication( connection.getConnectionParameter()
+                                        .isSaslMutualAuthentication() );
+
+                                    bindResponse = ldapConnection.bind( digestMd5Request );
+                                    break;
+                                    
+                                case SASL_GSSAPI :
+                                    // GSSAPI Authentication
+                                    SaslGssApiRequest gssApiRequest = new SaslGssApiRequest();
+
+                                    Preferences preferences = ConnectionCorePlugin.getDefault().getPluginPreferences();
+                                    boolean useKrb5SystemProperties = preferences
+                                        .getBoolean( ConnectionCoreConstants.PREFERENCE_USE_KRB5_SYSTEM_PROPERTIES );
+                                    String krb5LoginModule = preferences
+                                        .getString( ConnectionCoreConstants.PREFERENCE_KRB5_LOGIN_MODULE );
+
+                                    if ( !useKrb5SystemProperties )
                                     {
-                                        case FILE:
-                                            gssApiRequest.setKrb5ConfFilePath( connection.getConnectionParameter()
-                                                .getKrb5ConfigurationFile() );
-                                            break;
-                                        case MANUAL:
-                                            gssApiRequest.setRealmName( connection.getConnectionParameter()
-                                                .getKrb5Realm() );
-                                            gssApiRequest.setKdcHost( connection.getConnectionParameter()
-                                                .getKrb5KdcHost() );
-                                            gssApiRequest.setKdcPort( connection.getConnectionParameter()
-                                                .getKrb5KdcPort() );
-                                            break;
-                                    }
-                                }
+                                        gssApiRequest.setUsername( bindPrincipal );
+                                        gssApiRequest.setCredentials( bindPassword );
+                                        gssApiRequest.setQualityOfProtection( connection
+                                            .getConnectionParameter().getSaslQop() );
+                                        gssApiRequest.setSecurityStrength( connection
+                                            .getConnectionParameter()
+                                            .getSaslSecurityStrength() );
+                                        gssApiRequest.setMutualAuthentication( connection
+                                            .getConnectionParameter()
+                                            .isSaslMutualAuthentication() );
+                                        gssApiRequest
+                                            .setLoginModuleConfiguration( new InnerConfiguration(
+                                                krb5LoginModule ) );
 
-                                bindResponse = ldapConnection.bind( gssApiRequest );
+                                        switch ( connection.getConnectionParameter().getKrb5Configuration() )
+                                        {
+                                            case FILE:
+                                                gssApiRequest.setKrb5ConfFilePath( connection.getConnectionParameter()
+                                                    .getKrb5ConfigurationFile() );
+                                                break;
+                                            case MANUAL:
+                                                gssApiRequest.setRealmName( connection.getConnectionParameter()
+                                                    .getKrb5Realm() );
+                                                gssApiRequest.setKdcHost( connection.getConnectionParameter()
+                                                    .getKrb5KdcHost() );
+                                                gssApiRequest.setKdcPort( connection.getConnectionParameter()
+                                                    .getKrb5KdcPort() );
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                    }
+
+                                    bindResponse = ldapConnection.bind( gssApiRequest );
+                                    break;
                             }
                         }
 
@@ -465,7 +517,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         }
         else
         {
-            throw new Exception( "No Connection" );
+            throw new Exception( Messages.DirectoryApiConnectionWrapper_NoConnection );
         }
     }
 
@@ -496,7 +548,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         if ( binaryAttributeDetector != null )
         {
             // Clear the initial list
-            binaryAttributeDetector.setBinaryAttributes( new String[0] );
+            binaryAttributeDetector.setBinaryAttributes();
 
             // Add each binary attribute
             for ( String binaryAttribute : binaryAttributes )
@@ -515,7 +567,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         final ReferralHandlingMethod referralsHandlingMethod, final Control[] controls,
         final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo )
     {
-        final long requestNum = SEARCH_RESQUEST_NUM++;
+        final long requestNum = searchRequestNum++;
 
         InnerRunnable runnable = new InnerRunnable()
         {
@@ -526,7 +578,8 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     // Preparing the search request
                     SearchRequest request = new SearchRequestImpl();
                     request.setBase( new Dn( searchBase ) );
-                    request.setFilter( filter );
+                    ExprNode node = FilterParser.parse( filter, true );
+                    request.setFilter( node );
                     request.setScope( convertSearchScope( searchControls ) );
                     if ( searchControls.getReturningAttributes() != null )
                     {
@@ -542,9 +595,8 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
 
                     // Returning the result of the search
                     namingEnumeration = new CursorStudioNamingEnumeration( connection, cursor, searchBase, filter,
-                        searchControls,
-                        aliasesDereferencingMethod, referralsHandlingMethod, controls, requestNum, monitor,
-                        referralsInfo );
+                        searchControls, aliasesDereferencingMethod, referralsHandlingMethod, controls, requestNum,
+                        monitor, referralsInfo );
                 }
                 catch ( Exception e )
                 {
@@ -638,13 +690,13 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
      * @return
      *      an array of converted controls
      */
-    private org.apache.directory.shared.ldap.model.message.Control[] convertControls( Control[] controls )
+    private org.apache.directory.api.ldap.model.message.Control[] convertControls( Control[] controls )
         throws Exception
     {
         if ( controls != null )
         {
-            org.apache.directory.shared.ldap.model.message.Control[] returningControls =
-                new org.apache.directory.shared.ldap.model.message.Control[controls.length];
+            org.apache.directory.api.ldap.model.message.Control[] returningControls =
+                new org.apache.directory.api.ldap.model.message.Control[controls.length];
 
             for ( int i = 0; i < controls.length; i++ )
             {
@@ -655,7 +707,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         }
         else
         {
-            return new org.apache.directory.shared.ldap.model.message.Control[0];
+            return new org.apache.directory.api.ldap.model.message.Control[0];
         }
     }
 
@@ -721,6 +773,16 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     // Performing the modify operation
                     ModifyResponse modifyResponse = ldapConnection.modify( request );
 
+                    // Handle referral
+                    Consumer<ReferralHandlingData> consumer = referralHandlingData -> 
+                        referralHandlingData.connectionWrapper.modifyEntry( referralHandlingData.referralDn,
+                            modificationItems, controls, monitor, referralHandlingData.newReferralsInfo );
+                    
+                    if ( checkAndHandleReferral( modifyResponse, monitor, referralsInfo, consumer ) )
+                    {
+                        return;
+                    }
+
                     // Checking the response
                     checkResponse( modifyResponse );
                 }
@@ -776,7 +838,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     {
         if ( modificationItems != null )
         {
-            List<Modification> modifications = new ArrayList<Modification>();
+            List<Modification> modifications = new ArrayList<>();
 
             for ( ModificationItem modificationItem : modificationItems )
             {
@@ -854,6 +916,16 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     // Performing the rename operation
                     ModifyDnResponse modifyDnResponse = ldapConnection.modifyDn( request );
 
+                    // Handle referral
+                    Consumer<ReferralHandlingData> consumer = referralHandlingData ->
+                        referralHandlingData.connectionWrapper.renameEntry( oldDn, newDn, deleteOldRdn, controls,
+                            monitor, referralHandlingData.newReferralsInfo );
+                    
+                    if ( checkAndHandleReferral( modifyDnResponse, monitor, referralsInfo, consumer ) )
+                    {
+                        return;
+                    }
+
                     // Checking the response
                     checkResponse( modifyDnResponse );
                 }
@@ -923,6 +995,16 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     // Performing the add operation
                     AddResponse addResponse = ldapConnection.add( request );
 
+                    // Handle referral
+                    Consumer<ReferralHandlingData> consumer = referralHandlingData ->
+                        referralHandlingData.connectionWrapper.createEntry( referralHandlingData.referralDn, attributes,
+                            controls, monitor, referralHandlingData.newReferralsInfo );
+                        
+                    if ( checkAndHandleReferral( addResponse, monitor, referralsInfo, consumer ) )
+                    {
+                        return;
+                    }
+
                     // Checking the response
                     checkResponse( addResponse );
                 }
@@ -990,6 +1072,16 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
 
                     // Performing the delete operation
                     DeleteResponse deleteResponse = ldapConnection.delete( request );
+
+                    // Handle referral
+                    Consumer<ReferralHandlingData> consumer = referralHandlingData -> 
+                        referralHandlingData.connectionWrapper.deleteEntry( referralHandlingData.referralDn, controls,
+                            monitor, referralHandlingData.newReferralsInfo );
+                    
+                    if ( checkAndHandleReferral( deleteResponse, monitor, referralsInfo, consumer ) )
+                    {
+                        return;
+                    }
 
                     // Checking the response
                     checkResponse( deleteResponse );
@@ -1088,6 +1180,62 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     }
 
 
+    private boolean checkAndHandleReferral( ResultResponse response, StudioProgressMonitor monitor,
+        ReferralsInfo referralsInfo, Consumer<ReferralHandlingData> consumer ) throws NamingException, LdapURLEncodingException
+    {
+        if ( response == null )
+        {
+            return false;
+        }
+
+        LdapResult ldapResult = response.getLdapResult();
+        if ( ldapResult == null || !ResultCodeEnum.REFERRAL.equals( ldapResult.getResultCode() ) )
+        {
+            return false;
+        }
+
+        if ( referralsInfo == null )
+        {
+            referralsInfo = new ReferralsInfo( true );
+        }
+
+        Referral referral = ldapResult.getReferral();
+        referralsInfo.addReferral( referral );
+        Referral nextReferral = referralsInfo.getNextReferral();
+
+        Connection referralConnection = ConnectionWrapperUtils.getReferralConnection( nextReferral, monitor, this );
+        if ( referralConnection == null )
+        {
+            monitor.setCanceled( true );
+            return true;
+        }
+
+        List<String> urls = new ArrayList<>( referral.getLdapUrls() );
+        String referralDn = new LdapUrl( urls.get( 0 ) ).getDn().getName();
+        ReferralHandlingData referralHandlingData = new ReferralHandlingData( referralConnection.getConnectionWrapper(),
+            referralDn, referralsInfo );
+        consumer.accept( referralHandlingData );
+
+        return true;
+    }
+
+
+    static class ReferralHandlingData
+    {
+        ConnectionWrapper connectionWrapper;
+        String referralDn;
+        ReferralsInfo newReferralsInfo;
+
+
+        ReferralHandlingData( ConnectionWrapper connectionWrapper, String referralDn, ReferralsInfo newReferralsInfo )
+        {
+            this.connectionWrapper = connectionWrapper;
+            this.referralDn = referralDn;
+            this.newReferralsInfo = newReferralsInfo;
+        }
+    }
+
+
     private void checkConnectionAndRunAndMonitor( final InnerRunnable runnable, final StudioProgressMonitor monitor )
         throws Exception
     {
@@ -1099,7 +1247,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         }
         if ( ldapConnection == null )
         {
-            throw new NamingException( "No Connection" );
+            throw new NamingException( Messages.DirectoryApiConnectionWrapper_NoConnection );
         }
 
         // loop for reconnection
@@ -1108,9 +1256,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
             runAndMonitor( runnable, monitor );
 
             // check reconnection
-            if ( i == 0
-                && runnable.getException() != null
-                && ( ( runnable.getException() instanceof InvalidConnectionException ) ) )
+            if ( ( i == 0 ) && ( runnable.getException() instanceof InvalidConnectionException ) )
             {
                 doConnect( monitor );
                 doBind( monitor );
@@ -1130,9 +1276,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         if ( !monitor.isCanceled() )
         {
             // monitor
-            StudioProgressMonitor.CancelListener listener = new StudioProgressMonitor.CancelListener()
-            {
-                public void cancelRequested( StudioProgressMonitor.CancelEvent event )
+            StudioProgressMonitor.CancelListener listener = event ->
                 {
                     if ( monitor.isCanceled() )
                     {
@@ -1140,6 +1284,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                         {
                             jobThread.interrupt();
                         }
+                        
                         if ( ldapConnection != null )
                         {
                             try
@@ -1149,28 +1294,21 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                             catch ( Exception e )
                             {
                             }
+                            
                             isConnected = false;
                             ldapConnection = null;
                         }
+                        
                         isConnected = false;
                     }
-                }
-            };
+                };
+
             monitor.addCancelListener( listener );
             jobThread = Thread.currentThread();
 
             // run
             try
             {
-                // try {
-                // Thread.sleep(5000);
-                // } catch (InterruptedException e) {
-                // System.out.println(System.currentTimeMillis() + ": sleep
-                // interrupted!");
-                // }
-                // System.out.println(System.currentTimeMillis() + ": " +
-                // runnable);
-
                 runnable.run();
             }
             finally
@@ -1202,7 +1340,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         {
             if ( configList == null )
             {
-                HashMap<String, Object> options = new HashMap<String, Object>();
+                HashMap<String, Object> options = new HashMap<>();
 
                 // TODO: this only works for Sun JVM
                 options.put( "refreshKrb5Config", "true" ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1224,6 +1362,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         }
 
 
+        @Override
         public void refresh()
         {
         }
@@ -1277,7 +1416,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     }
 
                     throw new Exception( NLS.bind( "[LDAP: error code {0} - {1}]", new String[] //$NON-NLS-1$
-                        { code + "", message } ) ); //$NON-NLS-1$
+                        { Integer.toString( code ), message } ) ); //$NON-NLS-1$
                 }
             }
         }

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+  
+  http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!--
+  @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+-->
+<template id="domain-view" title="Domain - View">
+	<objectClasses>
+		<structural>domain</structural>
+	</objectClasses>
+	<form>
+		<composite numberOfColumns="2" equalColumns="false"
+			horizontalAlignment="fill" grabExcessHorizontalSpace="true"
+			verticalAlignment="fill" grabExcessVerticalSpace="true">
+			<!-- GENERAL INFORMATION -->
+			<section title="General Information" numberOfColumns="2"
+				equalColumns="false" horizontalAlignment="fill"
+				grabExcessHorizontalSpace="true">
+
+				<!-- Name -->
+				<label value="Name:" horizontalAlignment="end" width="70" />
+				<label attributeType="dc" />
+
+				<!-- Description -->
+				<label value="Description:" horizontalAlignment="end" />
+				<label attributeType="description" numberOfRows="3" />
+
+			</section>
+			<!-- Image -->
+			<image imageWidth="64" imageHeight="64" showSaveAsButton="false"
+				showClearButton="false" showBrowseButton="false">
+				<data>/9j/4AAQSkZJRgABAgAAZABkAAD/7AARRHVja3kAAQAEAAAAUAAA/+4AJkFkb2Jl
+					AGTAAAAAAQMAFQQDBgoNAAAD+AAABVkAAAdwAAAK7f/bAIQAAgICAgICAgICAgMCAgIDBAMCAgM
+					EBQQEBAQEBQYFBQUFBQUGBgcHCAcHBgkJCgoJCQwMDAwMDAwMDAwMDAwMDAEDAwMFBAUJBgYJDQ
+					sJCw0PDg4ODg8PDAwMDAwPDwwMDAwMDA8MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwM/8IAE
+					QgAQABAAwERAAIRAQMRAf/EAMoAAAEFAQADAAAAAAAAAAAAAAYAAwQFCAcBAgkBAAIDAQEAAAAA
+					AAAAAAAAAAMEAAEFBgIQAAIBAwMEAwEBAAAAAAAAAAECAwAEBRAREiAhEwYxMhQiIxEAAgECBAM
+					DCgcBAAAAAAAAAQIAEQMhMRIEEFEiQZEyIGFxscFCUnITM4FikrIjQxQFEgAABwEBAQAAAAAAAA
+					AAAAAAECAwAREhMUBhEwEAAgEDAwQCAwEAAAAAAAABABEhMUFREGFxIIGRsfChwdHh8f/aAAwDA
+					QACEQMRAAAB39IpG5Q8UDN0ThYclqRSU8FzdtAdoIM6oPseNV4vQmAjtyuPpp+qhfLowZ9IKsJb
+					lP6gf0KQoOM+E4WK6Rb6YEVcXxzv57OmdpiwOHPenjLNeYcADK3S4OiG9Tib3y+hPLvGm9zQaD2
+					L42nX9fzkDmdu62FPpJgdHKkDygxNt8/zUwIji5Yjobt57oui+CKRSMyAhBM1Z74JKkUn/9oACA
+					EBAAEFAtGZUEmXx0ZTN4pyrK41u7tbZZ2muTLbVeWzILTL3+Jlw+ZtszbUzBFnmaVoWMjP9cgxZ
+					Zcc1wcaoxEiOJEyr+OwmlIghaSRjxhS6lG/7eLrdOV9dlMuJzKlsYlwCrXwtUbIpKtzd/01zyE9
+					/Is/q6MmFZQ65aCXE31xciSNLjvPc8q/RsmCxcmXyUMSwxVmcNbZm2zGEyeJfkQpasXgMll5fXv
+					XrbBW2rokgn9WwVy0PqeBgaKGKFdP/9oACAECAAEFAteBrxt0j53ArzrUcqtTIGp04nS4i2qMkk
+					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
+				</data>
+			</image>
+		</composite>
+	</form>
+</template>

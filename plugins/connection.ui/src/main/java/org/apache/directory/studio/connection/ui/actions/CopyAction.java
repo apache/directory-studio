@@ -25,8 +25,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.model.url.LdapUrl;
+import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
 import org.apache.directory.studio.connection.core.ConnectionFolder;
@@ -40,8 +40,8 @@ import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IWorkbenchCommandConstants;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
 
 
 /**
@@ -51,6 +51,7 @@ import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
  */
 public class CopyAction extends StudioAction
 {
+    /** The Paste action proxy */
     private StudioActionProxy pasteActionProxy;
 
 
@@ -74,13 +75,28 @@ public class CopyAction extends StudioAction
     {
         Connection[] connections = getSelectedConnections();
         ConnectionFolder[] connectionFolders = getSelectedConnectionFolders();
-        if ( connections.length > 0 && connectionFolders.length == 0 )
+        
+        if ( ( connections.length ) > 0 && ( connectionFolders.length == 0 ) )
         {
-            return connections.length > 1 ? Messages.getString( "CopyAction.CopyConnections" ) : Messages.getString( "CopyAction.CopyConnection" ); //$NON-NLS-1$ //$NON-NLS-2$
+            if ( connections.length > 1 )
+            {
+                return Messages.getString( "CopyAction.CopyConnections" );
+            }
+            else
+            {
+                return Messages.getString( "CopyAction.CopyConnection" );
+            }
         }
-        else if ( connectionFolders.length > 0 && connections.length == 0 )
+        else if ( ( connectionFolders.length > 0 ) && ( connections.length == 0 ) )
         {
-            return connectionFolders.length > 1 ? Messages.getString( "CopyAction.CopyFolders" ) : Messages.getString( "CopyAction.CopyFolder" ); //$NON-NLS-1$ //$NON-NLS-2$
+            if ( connectionFolders.length > 1 )
+            {
+                return Messages.getString( "CopyAction.CopyFolders" );
+            }
+            else
+            {
+                return Messages.getString( "CopyAction.CopyFolder" );
+            }
         }
         else
         {
@@ -103,7 +119,7 @@ public class CopyAction extends StudioAction
      */
     public String getCommandId()
     {
-        return IWorkbenchActionDefinitionIds.COPY;
+        return IWorkbenchCommandConstants.EDIT_COPY;
     }
 
 
@@ -114,13 +130,13 @@ public class CopyAction extends StudioAction
     {
         Connection[] connections = getSelectedConnections();
         ConnectionFolder[] connectionFolders = getSelectedConnectionFolders();
-        List<Object> objects = new ArrayList<Object>();
+        List<Object> objects = new ArrayList<>();
         objects.addAll( Arrays.asList( connections ) );
         objects.addAll( Arrays.asList( connectionFolders ) );
         String urls = getSelectedConnectionUrls();
 
         // copy to clipboard
-        if ( objects != null )
+        if ( !objects.isEmpty() )
         {
             if ( urls != null && urls.length() > 0 )
             {
@@ -147,15 +163,14 @@ public class CopyAction extends StudioAction
     /**
      * Copies data to Clipboard
      *
-     * @param data
-     *      the data to be set in the clipboard
-     * @param dataTypes
-     *      the transfer agents that will convert the data to its platform specific format; 
+     * @param data the data to be set in the clipboard
+     * @param dataTypes the transfer agents that will convert the data to its platform specific format; 
      *      each entry in the data array must have a corresponding dataType
      */
     public static void copyToClipboard( Object[] data, Transfer[] dataTypes )
     {
         Clipboard clipboard = null;
+        
         try
         {
             clipboard = new Clipboard( Display.getCurrent() );
@@ -164,7 +179,9 @@ public class CopyAction extends StudioAction
         finally
         {
             if ( clipboard != null )
+            {
                 clipboard.dispose();
+            }
         }
     }
 
@@ -186,24 +203,26 @@ public class CopyAction extends StudioAction
      */
     private String getSelectedConnectionUrls()
     {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder buffer = new StringBuilder();
 
         Connection[] connections = getSelectedConnections();
-        ConnectionParameterPage[] connectionParameterPages = ConnectionParameterPageManager
-            .getConnectionParameterPages();
+        ConnectionParameterPage[] connectionParameterPages = ConnectionParameterPageManager.getConnectionParameterPages();
+        
         for ( Connection connection : connections )
         {
             ConnectionParameter parameter = connection.getConnectionParameter();
             LdapUrl ldapUrl = new LdapUrl();
-            ldapUrl.setDn( Dn.EMPTY_DN);
+            ldapUrl.setDn( Dn.EMPTY_DN );
+            
             for ( ConnectionParameterPage connectionParameterPage : connectionParameterPages )
             {
                 connectionParameterPage.mergeParametersToLdapURL( parameter, ldapUrl );
             }
-            sb.append( ldapUrl.toString() );
-            sb.append( ConnectionCoreConstants.LINE_SEPARATOR );
+            
+            buffer.append( ldapUrl.toString() );
+            buffer.append( ConnectionCoreConstants.LINE_SEPARATOR );
         }
-        return sb.toString();
+        
+        return buffer.toString();
     }
-
 }

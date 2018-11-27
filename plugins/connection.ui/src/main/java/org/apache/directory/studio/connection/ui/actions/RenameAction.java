@@ -27,7 +27,7 @@ import org.apache.directory.studio.connection.core.ConnectionFolder;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
+import org.eclipse.ui.IWorkbenchCommandConstants;
 
 
 /**
@@ -38,27 +38,18 @@ import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
 public class RenameAction extends StudioAction
 {
     /**
-     * Creates a new instance of RenameAction.
-     *
-     */
-    public RenameAction()
-    {
-        super();
-    }
-
-
-    /**
      * {@inheritDoc}
      */
     public String getText()
     {
         Connection[] connections = getSelectedConnections();
         ConnectionFolder[] connectionFolders = getSelectedConnectionFolders();
-        if ( connections.length == 1 && connectionFolders.length == 0 )
+        
+        if ( ( connections.length == 1 ) && ( connectionFolders.length == 0 ) )
         {
             return Messages.getString( "RenameAction.Connection" ); //$NON-NLS-1$
         }
-        else if ( connectionFolders.length == 1 && connections.length == 0 )
+        else if ( ( connectionFolders.length == 1) && ( connections.length == 0 ) )
         {
             return Messages.getString( "RenameAction.ConnectionFolder" ); //$NON-NLS-1$
         }
@@ -83,7 +74,7 @@ public class RenameAction extends StudioAction
      */
     public String getCommandId()
     {
-        return IWorkbenchActionDefinitionIds.RENAME;
+        return IWorkbenchCommandConstants.FILE_RENAME;
     }
 
 
@@ -94,6 +85,7 @@ public class RenameAction extends StudioAction
     {
         Connection[] connections = getSelectedConnections();
         ConnectionFolder[] connectionFolders = getSelectedConnectionFolders();
+        
         if ( connections.length == 1 )
         {
             renameConnection( connections[0] );
@@ -122,24 +114,21 @@ public class RenameAction extends StudioAction
      */
     private void renameConnection( final Connection connection )
     {
-        IInputValidator validator = new IInputValidator()
-        {
-            public String isValid( String newName )
+        IInputValidator validator = newName ->
             {
                 if ( connection.getName().equals( newName ) )
                 {
                     return null;
                 }
-                else if ( ConnectionCorePlugin.getDefault().getConnectionManager().getConnectionByName( newName ) != null )
-                {
-                    return Messages.getString( "RenameAction.ConnectionAlreadyExists" ); //$NON-NLS-1$
-                }
-                else
+                else if ( ConnectionCorePlugin.getDefault().getConnectionManager().getConnectionByName( newName ) == null )
                 {
                     return null;
                 }
-            }
-        };
+                else
+                {
+                    return Messages.getString( "RenameAction.ConnectionAlreadyExists" ); //$NON-NLS-1$
+                }
+            };
 
         InputDialog dialog = new InputDialog(
             getShell(),
@@ -148,6 +137,7 @@ public class RenameAction extends StudioAction
 
         dialog.open();
         String newName = dialog.getValue();
+        
         if ( newName != null )
         {
             connection.setName( newName );
@@ -158,30 +148,26 @@ public class RenameAction extends StudioAction
     /**
      * Renames a ConnectionFolder.
      *
-     * @param connectionFolder
-     *      the ConnectionFolder to rename
+     * @param connectionFolder the ConnectionFolder to rename
      */
     private void renameConnectionFolder( final ConnectionFolder connectionFolder )
     {
-        IInputValidator validator = new IInputValidator()
-        {
-            public String isValid( String newName )
+        IInputValidator validator = newName ->
             {
                 if ( connectionFolder.getName().equals( newName ) )
                 {
                     return null;
                 }
                 else if ( ConnectionCorePlugin.getDefault().getConnectionFolderManager().getConnectionFolderByName(
-                    newName ) != null )
-                {
-                    return Messages.getString( "RenameAction.ConnectionFolderAlreadyExists" ); //$NON-NLS-1$
-                }
-                else
+                    newName ) == null )
                 {
                     return null;
                 }
-            }
-        };
+                else
+                {
+                    return Messages.getString( "RenameAction.ConnectionFolderAlreadyExists" ); //$NON-NLS-1$
+                }
+            };
 
         InputDialog dialog = new InputDialog(
             getShell(),
@@ -190,10 +176,10 @@ public class RenameAction extends StudioAction
 
         dialog.open();
         String newName = dialog.getValue();
+        
         if ( newName != null )
         {
             connectionFolder.setName( newName );
         }
     }
-
 }

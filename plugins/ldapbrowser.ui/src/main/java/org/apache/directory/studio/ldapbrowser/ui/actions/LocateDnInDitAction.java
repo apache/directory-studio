@@ -21,8 +21,8 @@
 package org.apache.directory.studio.ldapbrowser.ui.actions;
 
 
-import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
-import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
@@ -81,7 +81,7 @@ public class LocateDnInDitAction extends LocateInDitAction
             try
             {
                 IValue value = getSelectedAttributeHierarchies()[0].getAttribute().getValues()[0];
-                if ( value.isString() && Dn.isValid(value.getStringValue()) )
+                if ( value.isString() && Dn.isValid( value.getStringValue() ) )
                 {
                     return new ConnectionAndDn( value.getAttribute().getEntry().getBrowserConnection(), new Dn(
                         value.getStringValue() ) );
@@ -98,7 +98,7 @@ public class LocateDnInDitAction extends LocateInDitAction
             try
             {
                 IValue value = getSelectedValues()[0];
-                if ( value.isString() && Dn.isValid(value.getStringValue()) )
+                if ( value.isString() && Dn.isValid( value.getStringValue() ) )
                 {
                     return new ConnectionAndDn( value.getAttribute().getEntry().getBrowserConnection(), new Dn(
                         value.getStringValue() ) );

@@ -28,7 +28,6 @@ import org.apache.directory.studio.ldifeditor.editor.ILdifEditor;
 import org.apache.directory.studio.ldifparser.model.LdifFile;
 import org.apache.directory.studio.ldifparser.model.LdifPart;
 import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
-
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
@@ -64,79 +63,74 @@ class LdifAnnotationUpdater
 
     public void updateAnnotations()
     {
-
         LdifFile model = editor.getLdifModel();
         ISourceViewer viewer = ( ISourceViewer ) editor.getAdapter( ISourceViewer.class );
+        
         if ( viewer == null )
+        {
             return;
+        }
 
         IDocument document = viewer.getDocument();
         IAnnotationModel annotationModel = viewer.getAnnotationModel();
+        
         if ( document == null || annotationModel == null || model == null )
+        {
             return;
+        }
 
         if ( annotationModel instanceof IAnnotationModelExtension )
         {
             ( ( IAnnotationModelExtension ) annotationModel ).removeAllAnnotations();
 
-            List positionList = new ArrayList();
+            List<Position> positionList = new ArrayList<Position>();
 
-            LdifContainer[] containers = model.getContainers();
-            for ( int i = 0; i < containers.length; i++ )
+            List<LdifContainer> containers = model.getContainers();
+            
+            for ( LdifContainer ldifContainer : containers )
             {
-                LdifContainer container = containers[i];
-
                 // LdifPart errorPart = null;
                 int errorOffset = -1;
                 int errorLength = -1;
-                StringBuffer errorText = null;
+                StringBuilder errorText = null;
 
-                LdifPart[] parts = container.getParts();
-                for ( int k = 0; k < parts.length; k++ )
+                LdifPart[] parts = ldifContainer.getParts();
+                
+                for ( LdifPart ldifPart : parts )
                 {
-                    LdifPart part = parts[k];
-                    if ( !part.isValid() )
+                    if ( !ldifPart.isValid() )
                     {
                         if ( errorOffset == -1 )
                         {
                             // errorPart = part;
-                            errorOffset = part.getOffset();
-                            errorLength = part.getLength();
-                            errorText = new StringBuffer();
-                            errorText.append( part.toRawString() );
+                            errorOffset = ldifPart.getOffset();
+                            errorLength = ldifPart.getLength();
+                            errorText = new StringBuilder();
+                            errorText.append( ldifPart.toRawString() );
                         }
                         else
                         {
-                            errorLength += part.getLength();
-                            errorText.append( part.toRawString() );
+                            errorLength += ldifPart.getLength();
+                            errorText.append( ldifPart.toRawString() );
                         }
                     }
                 }
 
-                if ( errorOffset == -1 && !container.isValid() )
+                if ( errorOffset == -1 && !ldifContainer.isValid() )
                 {
-                    errorOffset = container.getOffset();
-                    errorLength = container.getLength();
-                    errorText = new StringBuffer();
-                    errorText.append( container.toRawString() );
+                    errorOffset = ldifContainer.getOffset();
+                    errorLength = ldifContainer.getLength();
+                    errorText = new StringBuilder();
+                    errorText.append( ldifContainer.toRawString() );
                 }
 
                 if ( errorOffset > -1 )
                 {
-                    // Annotation annotation = new Annotation("DEFAULT",
-                    // true,
-                    // invalidFilters[i].toString());
-                    // if(errorPart instanceof LdifUnknownPart) {
-                    // errorOffset = container.getOffset();
-                    // errorLength = container.getLength();
-                    // errorText = new StringBuffer(container.toString());
-                    // }
                     Annotation annotation = new Annotation( ERROR_ANNOTATION_TYPE, true, errorText.toString() );
                     Position position = new Position( errorOffset, errorLength );
                     positionList.add( position );
                     viewer.getAnnotationModel().addAnnotation( annotation, position );
                 }
-
             }
         }
     }

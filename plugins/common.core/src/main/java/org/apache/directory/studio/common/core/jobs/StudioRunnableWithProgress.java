@@ -33,7 +33,7 @@ public interface StudioRunnableWithProgress
      * 
      * @param monitor the monitor
      */
-    public void run( StudioProgressMonitor monitor );
+    void run( StudioProgressMonitor monitor );
 
 
     /**
@@ -41,7 +41,7 @@ public interface StudioRunnableWithProgress
      * 
      * @return the locked objects
      */
-    public Object[] getLockedObjects();
+    Object[] getLockedObjects();
 
 
     /**
@@ -49,7 +49,7 @@ public interface StudioRunnableWithProgress
      * 
      * @return the error message
      */
-    public String getErrorMessage();
+    String getErrorMessage();
 
 
     /**
@@ -57,5 +57,5 @@ public interface StudioRunnableWithProgress
      * 
      * @return the name
      */
-    public String getName();
+    String getName();
 }

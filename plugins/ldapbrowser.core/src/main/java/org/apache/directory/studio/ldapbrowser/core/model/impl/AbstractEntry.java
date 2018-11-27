@@ -27,11 +27,11 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.model.name.Rdn;
-import org.apache.directory.shared.ldap.model.schema.ObjectClass;
-import org.apache.directory.shared.ldap.model.url.LdapUrl;
-import org.apache.directory.shared.util.Strings;
+import org.apache.directory.api.ldap.model.constants.SchemaConstants;
+import org.apache.directory.api.ldap.model.name.Rdn;
+import org.apache.directory.api.ldap.model.schema.ObjectClass;
+import org.apache.directory.api.ldap.model.url.LdapUrl;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
@@ -879,15 +879,23 @@ public abstract class AbstractEntry implements IEntry, ICompareableEntry
     public boolean equals( Object o )
     {
         // check argument
-        if ( o == null || !( o instanceof ICompareableEntry ) )
+        if ( !( o instanceof ICompareableEntry ) )
         {
             return false;
         }
+        
         ICompareableEntry e = ( ICompareableEntry ) o;
 
         // compare dn and connection
-        return getDn() == null ? e.getDn() == null : ( getDn().equals( e.getDn() ) && getBrowserConnection().equals(
-            e.getBrowserConnection() ) );
+        if ( getDn() == null )
+        {
+            return e.getDn() == null;
+        }
+        else
+        {
+            return getDn().equals( e.getDn() ) && 
+                   getBrowserConnection().equals( e.getBrowserConnection() );
+        }
     }
 
 

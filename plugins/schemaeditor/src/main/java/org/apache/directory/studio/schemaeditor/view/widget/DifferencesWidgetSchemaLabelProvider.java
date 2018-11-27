@@ -22,8 +22,8 @@ package org.apache.directory.studio.schemaeditor.view.widget;
 
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.ObjectClass;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
+import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.model.Schema;
@@ -419,6 +419,8 @@ public class DifferencesWidgetSchemaLabelProvider extends LabelProvider
                     return Activator.getDefault().getImage( PluginConstants.IMG_FOLDER_OC );
                 case NONE:
                     return Activator.getDefault().getImage( PluginConstants.IMG_FOLDER );
+                default:
+                    break;
             }
         }
 

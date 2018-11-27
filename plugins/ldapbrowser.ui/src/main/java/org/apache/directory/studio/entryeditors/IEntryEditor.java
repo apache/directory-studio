@@ -38,7 +38,7 @@ public interface IEntryEditor
      * 
      * @return true if this editor can handle the entry, false otherwise.
      */
-    public boolean canHandle( IEntry entry );
+    boolean canHandle( IEntry entry );
 
 
     /**
@@ -46,7 +46,7 @@ public interface IEntryEditor
      * 
      * @param source the source of the modification, may be null
      */
-    public void workingCopyModified( Object source );
+    void workingCopyModified( Object source );
 
 
     /**
@@ -54,7 +54,7 @@ public interface IEntryEditor
      * 
      * @return the entry editor input, null if no input was set
      */
-    public EntryEditorInput getEntryEditorInput();
+    EntryEditorInput getEntryEditorInput();
 
 
     /**
@@ -63,6 +63,5 @@ public interface IEntryEditor
      * 
      * @return true, if the editor uses auto save
      */
-    public boolean isAutoSave();
-
+    boolean isAutoSave();
 }

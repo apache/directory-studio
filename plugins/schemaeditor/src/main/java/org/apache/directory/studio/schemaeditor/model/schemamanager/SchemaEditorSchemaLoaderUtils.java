@@ -22,23 +22,24 @@ package org.apache.directory.studio.schemaeditor.model.schemamanager;
 
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
-import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
-import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.Attribute;
-import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
-import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.model.name.Rdn;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
-import org.apache.directory.shared.ldap.model.schema.ObjectClass;
-import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
-import org.apache.directory.shared.ldap.model.schema.SchemaObject;
-import org.apache.directory.shared.ldap.model.schema.UsageEnum;
-import org.apache.directory.shared.util.Strings;
+import org.apache.directory.api.ldap.model.constants.SchemaConstants;
+import org.apache.directory.api.ldap.model.entry.Attribute;
+import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
+import org.apache.directory.api.ldap.model.entry.DefaultEntry;
+import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.name.Rdn;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
+import org.apache.directory.api.ldap.model.schema.LdapSyntax;
+import org.apache.directory.api.ldap.model.schema.MatchingRule;
+import org.apache.directory.api.ldap.model.schema.ObjectClass;
+import org.apache.directory.api.ldap.model.schema.ObjectClassTypeEnum;
+import org.apache.directory.api.ldap.model.schema.SchemaObject;
+import org.apache.directory.api.ldap.model.schema.UsageEnum;
+import org.apache.directory.api.util.Strings;
 
 
 /**
@@ -48,25 +49,25 @@ import org.apache.directory.shared.util.Strings;
  */
 public class SchemaEditorSchemaLoaderUtils
 {
-    private static final String M_COLLECTIVE = "m-collective";
-    private static final String M_DESCRIPTION = "m-description";
-    private static final String M_EQUALITY = "m-equality";
-    private static final String M_LENGTH = "m-length";
-    private static final String M_MAY = "m-may";
-    private static final String M_MUST = "m-must";
-    private static final String M_NAME = "m-name";
-    private static final String M_NO_USER_MODIFICATION = "m-noUserModification";
-    private static final String M_OBSOLETE = "m-obsolete";
-    private static final String M_OID = "m-oid";
-    private static final String M_ORDERING = "m-ordering";
-    private static final String M_SINGLE_VALUE = "m-singleValue";
-    private static final String M_SUBSTR = "m-substr";
-    private static final String M_SUP_ATTRIBUTE_TYPE = "m-supAttributeType";
-    private static final String M_SUP_OBJECT_CLASS = "m-supObjectClass";
-    private static final String M_SYNTAX = "m-syntax";
-    private static final String M_TYPE_OBJECT_CLASS = "m-typeObjectClass";
-    private static final String M_USAGE = "m-usage";
-    private static final String TRUE = "TRUE";
+    private static final String M_COLLECTIVE = "m-collective"; //$NON-NLS-1$
+    private static final String M_DESCRIPTION = "m-description"; //$NON-NLS-1$
+    private static final String M_EQUALITY = "m-equality"; //$NON-NLS-1$
+    private static final String M_LENGTH = "m-length"; //$NON-NLS-1$
+    private static final String M_MAY = "m-may"; //$NON-NLS-1$
+    private static final String M_MUST = "m-must"; //$NON-NLS-1$
+    private static final String M_NAME = "m-name"; //$NON-NLS-1$
+    private static final String M_NO_USER_MODIFICATION = "m-noUserModification"; //$NON-NLS-1$
+    private static final String M_OBSOLETE = "m-obsolete"; //$NON-NLS-1$
+    private static final String M_OID = "m-oid"; //$NON-NLS-1$
+    private static final String M_ORDERING = "m-ordering"; //$NON-NLS-1$
+    private static final String M_SINGLE_VALUE = "m-singleValue"; //$NON-NLS-1$
+    private static final String M_SUBSTR = "m-substr"; //$NON-NLS-1$
+    private static final String M_SUP_ATTRIBUTE_TYPE = "m-supAttributeType"; //$NON-NLS-1$
+    private static final String M_SUP_OBJECT_CLASS = "m-supObjectClass"; //$NON-NLS-1$
+    private static final String M_SYNTAX = "m-syntax"; //$NON-NLS-1$
+    private static final String M_TYPE_OBJECT_CLASS = "m-typeObjectClass"; //$NON-NLS-1$
+    private static final String M_USAGE = "m-usage"; //$NON-NLS-1$
+    private static final String TRUE = "TRUE"; //$NON-NLS-1$
 
 
     /**
@@ -224,11 +225,18 @@ public class SchemaEditorSchemaLoaderUtils
      */
     private static Dn getDn( SchemaObject schemaObject, String objectPath ) throws LdapInvalidDnException
     {
-        return Dn.EMPTY_DN
-            .add( new Rdn( SchemaConstants.OU_SCHEMA ) )
-            .add( new Rdn( SchemaConstants.CN_AT, Rdn.escapeValue( schemaObject.getSchemaName() ) ) )
-            .add( new Rdn( objectPath ) )
-            .add( new Rdn( M_OID, schemaObject.getOid() ) );
+        try
+        {
+            return Dn.EMPTY_DN
+                .add( new Rdn( SchemaConstants.OU_SCHEMA ) )
+                .add( new Rdn( SchemaConstants.CN_AT, Rdn.escapeValue( schemaObject.getSchemaName() ) ) )
+                .add( new Rdn( objectPath ) )
+                .add( new Rdn( M_OID, schemaObject.getOid() ) );
+        }
+        catch ( LdapInvalidAttributeValueException liave )
+        {
+            throw new LdapInvalidDnException( liave.getLocalizedMessage(), liave );
+        }
     }
 
 
@@ -317,7 +325,7 @@ public class SchemaEditorSchemaLoaderUtils
     private static void addNamesValue( SchemaObject schemaObject, Entry entry ) throws LdapException
     {
         List<String> names = schemaObject.getNames();
-        if ( ( names != null ) && ( names.size() > 0 ) )
+        if ( ( names != null ) && !names.isEmpty() )
         {
             Attribute attribute = new DefaultAttribute( M_NAME );
             entry.add( attribute );
@@ -469,7 +477,7 @@ public class SchemaEditorSchemaLoaderUtils
             long syntaxLength = attributeType.getSyntaxLength();
             if ( syntaxLength != -1 )
             {
-                attribute = new DefaultAttribute( M_LENGTH, "" + syntaxLength );
+                attribute = new DefaultAttribute( M_LENGTH, Long.toString( syntaxLength) ); //$NON-NLS-1$
                 entry.add( attribute );
             }
         }
@@ -565,7 +573,7 @@ public class SchemaEditorSchemaLoaderUtils
     private static void addSuperiorsValue( ObjectClass objectClass, Entry entry ) throws LdapException
     {
         List<String> superiors = objectClass.getSuperiorOids();
-        if ( ( superiors != null ) && ( superiors.size() > 0 ) )
+        if ( ( superiors != null ) && !superiors.isEmpty() )
         {
             Attribute attribute = new DefaultAttribute( M_SUP_OBJECT_CLASS );
             entry.add( attribute );
@@ -610,7 +618,7 @@ public class SchemaEditorSchemaLoaderUtils
     private static void addMustsValue( ObjectClass objectClass, Entry entry ) throws LdapException
     {
         List<String> musts = objectClass.getMustAttributeTypeOids();
-        if ( ( musts != null ) && ( musts.size() > 0 ) )
+        if ( ( musts != null ) && !musts.isEmpty() )
         {
             Attribute attribute = new DefaultAttribute( M_MUST );
             entry.add( attribute );
@@ -635,7 +643,7 @@ public class SchemaEditorSchemaLoaderUtils
     private static void addMaysValue( ObjectClass objectClass, Entry entry ) throws LdapException
     {
         List<String> mays = objectClass.getMayAttributeTypeOids();
-        if ( ( mays != null ) && ( mays.size() > 0 ) )
+        if ( ( mays != null ) && !mays.isEmpty() )
         {
             Attribute attribute = new DefaultAttribute( M_MAY );
             entry.add( attribute );

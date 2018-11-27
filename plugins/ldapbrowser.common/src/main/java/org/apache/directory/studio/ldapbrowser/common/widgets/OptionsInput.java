@@ -23,6 +23,7 @@ package org.apache.directory.studio.ldapbrowser.common.widgets;
 
 import java.util.Arrays;
 
+import org.apache.directory.studio.common.ui.widgets.AbstractWidget;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.preferences.TextFormatsPreferencePage;
 import org.eclipse.swt.events.ModifyEvent;
@@ -54,7 +55,7 @@ import org.eclipse.swt.widgets.Group;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class OptionsInput extends BrowserWidget
+public class OptionsInput extends AbstractWidget
 {
 
     /** The option's title */

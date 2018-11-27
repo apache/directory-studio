@@ -20,6 +20,10 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
+import static org.apache.directory.studio.test.integration.ui.Constants.LOCALHOST;
+
+import java.util.Random;
+
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionFolder;
@@ -29,9 +33,11 @@ import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.NetworkProvider;
+import org.apache.directory.studio.connection.core.Messages;
 import org.apache.directory.studio.connection.core.jobs.OpenConnectionsRunnable;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionJob;
 import org.apache.directory.studio.test.integration.ui.ContextMenuHelper;
+import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.utils.TableCollection;
@@ -49,18 +55,42 @@ public class ConnectionsViewBot
     public NewConnectionWizardBot openNewConnectionWizard()
     {
         ContextMenuHelper.clickContextMenu( getConnectionsTree(), "New Connection..." );
-        return new NewConnectionWizardBot();
+        NewConnectionWizardBot newConnectionWizardBot = new NewConnectionWizardBot();
+        
+        // choose random network provider to test both, LDAP API and JNDI
+        if ( new Random().nextBoolean() )
+        {
+            newConnectionWizardBot.selectLdapApiProvider();
+        }
+        else
+        {
+            newConnectionWizardBot.selectJndiProvider();
+        }
+
+        return newConnectionWizardBot;
     }
+
+
+    public SchemaBrowserBot openSchemaBrowser()
+    {
+        ContextMenuHelper.clickContextMenu( getConnectionsTree(), "Open Schema Browser" );
+        return new SchemaBrowserBot();
+    }
+
 
     public void openSelectedConnection()
     {
+        JobWatcher watcher = new JobWatcher( Messages.jobs__open_connections_name_1 );
         getConnectionsTree().contextMenu( "Open Connection" ).click();
+        watcher.waitUntilDone();
     }
 
 
     public void closeSelectedConnections()
     {
+        JobWatcher watcher = new JobWatcher( Messages.jobs__close_connections_name_1 );
         getConnectionsTree().contextMenu( "Close Connection" ).click();
+        watcher.waitUntilDone();
     }
 
 
@@ -140,9 +170,11 @@ public class ConnectionsViewBot
 
         ConnectionManager connectionManager = ConnectionCorePlugin.getDefault().getConnectionManager();
         ConnectionParameter connectionParameter = new ConnectionParameter();
-        connectionParameter.setNetworkProvider( NetworkProvider.JNDI );
+        // choose random network provider to test both, LDAP API and JNDI
+        connectionParameter
+            .setNetworkProvider( NetworkProvider.values()[new Random().nextInt( NetworkProvider.values().length )] );
         connectionParameter.setName( name );
-        connectionParameter.setHost( "localhost" );
+        connectionParameter.setHost( LOCALHOST );
         connectionParameter.setPort( port );
         connectionParameter.setEncryptionMethod( EncryptionMethod.NONE );
         connectionParameter.setAuthMethod( AuthenticationMethod.SIMPLE );
@@ -176,4 +208,13 @@ public class ConnectionsViewBot
             connectionManager.removeConnection( connection );
         }
     }
+
+
+    public ApacheDSConfigurationEditorBot openApacheDSConfiguration()
+    {
+        getConnectionsTree().contextMenu( "Open Configuration" ).click();
+        String title = getSelectedConnection() + " - Configuration";
+        return new ApacheDSConfigurationEditorBot( title );
+    }
+
 }

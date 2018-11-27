@@ -23,7 +23,7 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 
 import java.io.Serializable;
 
-import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider;
 import org.apache.directory.studio.ldapbrowser.core.propertypageproviders.BookmarkPropertyPageProvider;
 import org.apache.directory.studio.ldapbrowser.core.propertypageproviders.EntryPropertyPageProvider;
@@ -39,13 +39,12 @@ import org.eclipse.core.runtime.IAdaptable;
 public interface IBookmark extends Serializable, IAdaptable, BookmarkPropertyPageProvider, EntryPropertyPageProvider,
     ConnectionPropertyPageProvider
 {
-
     /**
      * Gets the target Dn.
      * 
      * @return the Dn
      */
-    public Dn getDn();
+    Dn getDn();
 
 
     /**
@@ -53,7 +52,7 @@ public interface IBookmark extends Serializable, IAdaptable, BookmarkPropertyPag
      * 
      * @param dn the Dn
      */
-    public void setDn( Dn dn );
+    void setDn( Dn dn );
 
 
     /**
@@ -61,7 +60,7 @@ public interface IBookmark extends Serializable, IAdaptable, BookmarkPropertyPag
      * 
      * @return the name
      */
-    public String getName();
+    String getName();
 
 
     /**
@@ -69,7 +68,7 @@ public interface IBookmark extends Serializable, IAdaptable, BookmarkPropertyPag
      * 
      * @param name the name
      */
-    public void setName( String name );
+    void setName( String name );
 
 
     /**
@@ -77,7 +76,7 @@ public interface IBookmark extends Serializable, IAdaptable, BookmarkPropertyPag
      * 
      * @return the browser connection
      */
-    public IBrowserConnection getBrowserConnection();
+    IBrowserConnection getBrowserConnection();
 
 
     /**
@@ -85,7 +84,7 @@ public interface IBookmark extends Serializable, IAdaptable, BookmarkPropertyPag
      * 
      * @return the entry
      */
-    public IEntry getEntry();
+    IEntry getEntry();
 
 
     /**
@@ -93,7 +92,7 @@ public interface IBookmark extends Serializable, IAdaptable, BookmarkPropertyPag
      * 
      * @return the bookmark parameter
      */
-    public BookmarkParameter getBookmarkParameter();
+    BookmarkParameter getBookmarkParameter();
 
 
     /**
@@ -101,6 +100,5 @@ public interface IBookmark extends Serializable, IAdaptable, BookmarkPropertyPag
      * 
      * @param bookmarkParameter the bookmark parameter
      */
-    public void setBookmarkParameter( BookmarkParameter bookmarkParameter );
-
+    void setBookmarkParameter( BookmarkParameter bookmarkParameter );
 }

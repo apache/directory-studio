@@ -22,76 +22,13 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.apache.directory.studio</groupId>
-    <artifactId>parent-helps</artifactId>
+    <artifactId>org.apache.directory.studio.helps-parent</artifactId>
     <version>2.0.0-SNAPSHOT</version>
+    <relativePath>../</relativePath>
   </parent>
 
-  <artifactId>ldapbrowser.help</artifactId>
+  <artifactId>org.apache.directory.studio.ldapbrowser.help</artifactId>
   <name>Apache Directory Studio LDAP Browser Help</name>
-  <packaging>jar</packaging>
+  <packaging>eclipse-plugin</packaging>
 
-  <description />
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-eclipse-plugin</artifactId>
-        <configuration>
-          <skip>false</skip>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.directory.studio</groupId>
-        <artifactId>studio-maven-plugin</artifactId>
-        <configuration>
-          <skip>false</skip>
-          <createManifest>true</createManifest>
-        </configuration>
-      </plugin>
-    </plugins>
-    
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.rat</groupId>
-          <artifactId>apache-rat-plugin</artifactId>
-          <configuration>
-            <excludeSubProjects>false</excludeSubProjects>
-            <excludes>
-              <!-- MAVEN_DEFAULT_EXCLUDES -->
-              <exclude>**/target/**/*</exclude>
-              <exclude>**/cobertura.ser</exclude>
-              <!-- ECLIPSE_DEFAULT_EXCLUDES -->
-              <exclude>**/.classpath</exclude>
-              <exclude>**/.project</exclude>
-              <exclude>**/.settings/**/*</exclude>
-              <!-- IDEA_DEFAULT_EXCLUDES -->
-              <exclude>**/*.iml</exclude>
-              <exclude>**/*.ipr</exclude>
-              <exclude>**/*.iws</exclude>
-              <!-- MANIFEST_MF_EXCLUDES -->
-              <exclude>**/MANIFEST.MF</exclude>
-              <!-- Missing license header in dependency reduced pom, see http://jira.codehaus.org/browse/MSHADE-48 -->
-              <exclude>**/dependency-reduced-pom.xml</exclude>
-              <!-- GITIGNORE_EXCLUDES -->
-              <exclude>**/.gitignore</exclude>
-              <!-- ABOUT_EXCLUDES -->
-              <exclude>**/about.ini</exclude>
-              <exclude>**/about_files/*</exclude>
-              <!-- LOG_FILES_EXCLUDES -->
-              <exclude>**/*.log</exclude>
-              <exclude>**/*.vm</exclude>
-              <!-- NSIS_EXCLUDES -->
-              <exclude>**/src/main/resources/AdvUninstLog.nsh</exclude>
-              <!-- OTHER_EXCLUDES -->
-              <exclude>src/main/resources/sevenseas.ldif</exclude>
-              <exclude>src/main/resources/html/rfc/*.txt</exclude>
-              <exclude>src/main/resources/html/rfcs/*.txt</exclude>
-            </excludes>
-          </configuration>
-         </plugin>
-      </plugins>
-    </pluginManagement>
-  </build>
 </project>

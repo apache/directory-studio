@@ -87,4 +87,7 @@ public class Messages extends NLS
     public static String StudioKeyStoreManager_CantRemoveCertificateFromTrustStore;
     public static String StudioKeyStoreManager_CantReadTrustStore;
 
+    public static String DirectoryApiConnectionWrapper_NoConnection;
+    public static String DirectoryApiConnectionWrapper_UnableToConnect;
+
 }

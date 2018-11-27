@@ -23,7 +23,7 @@ package org.apache.directory.studio.schemaeditor.view.editors.attributetype;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
 
 
 /**

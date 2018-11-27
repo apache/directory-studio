@@ -47,7 +47,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 public abstract class BrowserActionProxy extends Action implements ISelectionChangedListener, EntryUpdateListener,
     SearchUpdateListener, BookmarkUpdateListener, ConnectionUpdateListener
 {
-
+    /** The action */
     protected BrowserAction action;
 
     protected ISelectionProvider selectionProvider;
@@ -243,8 +243,9 @@ public abstract class BrowserActionProxy extends Action implements ISelectionCha
     {
         if ( !isDisposed() )
         {
-            setText( action.getText() );
-            setToolTipText( action.getText() );
+            String text = action.getText();
+            setText( text );
+            setToolTipText( text );
             setEnabled( action.isEnabled() );
             setImageDescriptor( action.getImageDescriptor() );
             setChecked( action.isChecked() );

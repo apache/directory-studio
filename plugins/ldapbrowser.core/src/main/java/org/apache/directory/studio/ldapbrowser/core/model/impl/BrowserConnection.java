@@ -25,9 +25,9 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
-import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.model.url.LdapUrl;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
@@ -154,7 +154,7 @@ public class BrowserConnection implements IBrowserConnection, Serializable
         entryToAttributeInfoMap.clear();
         entryToChildrenInfoMap.clear();
         entryToChildrenFilterMap.clear();
-//        searchManager.setQuickSearch( null ); TODO
+        //        searchManager.setQuickSearch( null ); TODO
 
         rootDSE = new RootDSE( this );
         cacheEntry( rootDSE );
@@ -222,7 +222,7 @@ public class BrowserConnection implements IBrowserConnection, Serializable
     /**
      * {@inheritDoc}
      */
-    public void setBaseDN( Dn baseDn)
+    public void setBaseDN( Dn baseDn )
     {
         connection.getConnectionParameter().setExtendedProperty( CONNECTION_PARAMETER_BASE_DN, baseDn.toString() );
         ConnectionEventRegistry.fireConnectionUpdated( connection, this );

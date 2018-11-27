@@ -62,7 +62,7 @@ public class DeleteLdapServerRunnable implements StudioRunnableWithProgress
      */
     public String getErrorMessage()
     {
-        return NLS.bind( "Unable to delete server ''{0}''", new String[]
+        return NLS.bind( Messages.getString( "DeleteLdapServerRunnable.UnableToDeleteServer" ), new String[] //$NON-NLS-1$
             { server.getName() } );
     }
 

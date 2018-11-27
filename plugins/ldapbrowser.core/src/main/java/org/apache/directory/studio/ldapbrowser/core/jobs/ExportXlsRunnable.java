@@ -29,7 +29,7 @@ import java.util.Map;
 import javax.naming.NamingException;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionRunnableWithProgress;
@@ -46,6 +46,7 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
 import org.eclipse.core.runtime.Preferences;
 
 
@@ -151,18 +152,8 @@ public class ExportXlsRunnable implements StudioConnectionRunnableWithProgress
         {
             int cellNum = 0;
             attributeNameMap.put( "dn", cellNum ); //$NON-NLS-1$
-            headerRow.createCell( cellNum ).setCellValue( "dn" ); //$NON-NLS-1$
+            createStringCell( headerRow, cellNum ).setCellValue( "dn" ); //$NON-NLS-1$
         }
-
-        // String[] exportAttributes =
-        // this.searchParameter.getReturningAttributes();
-        // exportAttributes = null;
-        // for (int i = 0; exportAttributes != null && i <
-        // exportAttributes.length; i++) {
-        // short cellNum = (short)attributeNameMap.size();
-        // attributeNameMap.put(exportAttributes[i], new Short(cellNum));
-        // headerRow.createCell(cellNum).setCellValue(exportAttributes[i]);
-        // }
 
         // max export
         if ( searchParameter.getCountLimit() < 1 || searchParameter.getCountLimit() > MAX_COUNT_LIMIT )
@@ -299,7 +290,7 @@ public class ExportXlsRunnable implements StudioConnectionRunnableWithProgress
         HSSFRow row = sheet.createRow( sheet.getLastRowNum() + 1 );
         if ( exportDn )
         {
-            HSSFCell cell = row.createCell( 0 );
+            HSSFCell cell = createStringCell(row, 0 );
             cell.setCellValue( record.getDnLine().getValueAsString() );
         }
         for ( String attributeName : attributeMap.keySet() )
@@ -310,27 +301,26 @@ public class ExportXlsRunnable implements StudioConnectionRunnableWithProgress
             {
                 int cellNum = headerRowAttributeNameMap.size();
                 headerRowAttributeNameMap.put( attributeName, new Integer( cellNum ) );
-                HSSFCell cell = headerRow.createCell( cellNum );
+                HSSFCell cell = createStringCell( headerRow, cellNum );
                 cell.setCellValue( attributeName );
             }
 
             if ( headerRowAttributeNameMap.containsKey( attributeName ) )
             {
                 int cellNum = headerRowAttributeNameMap.get( attributeName ).shortValue();
-                HSSFCell cell = row.createCell( cellNum );
+                HSSFCell cell = createStringCell( row, cellNum );
                 cell.setCellValue( value );
             }
         }
 
-        // for (int i = 0; i < attributes.length; i++) {
-        //
-        // String attributeName = attributes[i];
-        // if (attributeMap.containsKey(attributeName)) {
-        // String value = (String)attributeMap.get(attributeName);
-        // short cellNum = (short)(i + (exportDn?1:0));
-        // row.createCell(cellNum).setCellValue(value);
-        // }
-        // }
-
     }
+
+
+    private static HSSFCell createStringCell( HSSFRow row, int cellNum )
+    {
+        HSSFCell cell = row.createCell( cellNum );
+        cell.setCellType( Cell.CELL_TYPE_STRING );
+        return cell;
+    }
+
 }

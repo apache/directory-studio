@@ -23,12 +23,12 @@ package org.apache.directory.studio.aciitemeditor.valueeditors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
-import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.aciitemeditor.Activator;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.EntryWidget;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.jface.dialogs.Dialog;
@@ -53,7 +53,6 @@ import org.eclipse.swt.widgets.Shell;
  */
 class ExclusionDialog extends Dialog
 {
-
     /** The connection. */
     private IBrowserConnection connection;
 
@@ -78,7 +77,6 @@ class ExclusionDialog extends Dialog
 
     // UI Fields
     private Combo typeCombo;
-    private ComboViewer typeComboViewer;
     private EntryWidget entryWidget;
 
 
@@ -154,7 +152,8 @@ class ExclusionDialog extends Dialog
         String[] types = new String[2];
         types[0] = CHOP_BEFORE;
         types[1] = CHOP_AFTER;
-        typeComboViewer = new ComboViewer( typeCombo );
+        
+        ComboViewer typeComboViewer = new ComboViewer( typeCombo );
         typeComboViewer.setContentProvider( new ArrayContentProvider() );
         typeComboViewer.setLabelProvider( new LabelProvider() );
         typeComboViewer.setInput( types );

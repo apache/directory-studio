@@ -71,6 +71,7 @@ public class ConnectionWidget extends ViewFormWidget
      */
     public ConnectionWidget( ConnectionConfiguration configuration, IActionBars actionBars )
     {
+        super();
         this.configuration = configuration;
         this.actionBars = actionBars;
     }
@@ -79,6 +80,7 @@ public class ConnectionWidget extends ViewFormWidget
     /**
      * {@inheritDoc}
      */
+    @Override
     public void createWidget( Composite parent )
     {
         if ( actionBars == null )
@@ -95,6 +97,7 @@ public class ConnectionWidget extends ViewFormWidget
     /**
      * {@inheritDoc}
      */
+    @Override
     public IToolBarManager getToolBarManager()
     {
         if ( actionBars == null )
@@ -111,12 +114,12 @@ public class ConnectionWidget extends ViewFormWidget
     /**
      * {@inheritDoc}
      */
+    @Override
     public IMenuManager getMenuManager()
     {
         if ( actionBars == null )
         {
             return super.getMenuManager();
-
         }
         else
         {
@@ -128,6 +131,7 @@ public class ConnectionWidget extends ViewFormWidget
     /**
      * {@inheritDoc}
      */
+    @Override
     public IMenuManager getContextMenuManager()
     {
         if ( actionBars == null )
@@ -187,6 +191,7 @@ public class ConnectionWidget extends ViewFormWidget
     /**
      * {@inheritDoc}
      */
+    @Override
     public void dispose()
     {
         if ( viewer != null )
@@ -210,5 +215,4 @@ public class ConnectionWidget extends ViewFormWidget
     {
         return viewer;
     }
-
 }

@@ -19,440 +19,460 @@
   under the License.
 -->
 <plugin>
-   <extension-point id="org.apache.directory.studio.schemaeditor.schemaConnectors" name="Schema Connectors" schema="src/main/resources/org.apache.directory.studio.schemaeditor.schemaConnectors.exsd"/>
-   	<extension
-         point="org.eclipse.ui.perspectives">
-      <perspective
-            class="org.apache.directory.studio.schemaeditor.view.Perspective"
-            icon="resources/icons/schemaeditor_perspective.gif"
-            id="%Perspective_SchemaEditor_id"
-            name="%Perspective_SchemaEditor_name"/>
-   </extension>
-	<extension
-         point="org.eclipse.ui.views">
-      <category
-            id="%Views_Category_id"
-            name="%Views_Category_name"/>
-      <view
-            allowMultiple="false"
-            category="%Views_Category_id"
-            class="org.apache.directory.studio.schemaeditor.view.views.SchemaView"
-            icon="resources/icons/schemas_view.png"
-            id="%View_SchemaView_id"
-            name="%View_SchemaView_name"/>
-	  <view
-            allowMultiple="false"
-            category="%Views_Category_id"
-            class="org.apache.directory.studio.schemaeditor.view.views.HierarchyView"
-            icon="resources/icons/hierarchy_view.gif"
-            id="%View_HierarchyView_id"
-            name="%View_HierarchyView_name"/>
-	  <view
-            allowMultiple="false"
-            category="%Views_Category_id"
-            class="org.apache.directory.studio.schemaeditor.view.views.ProblemsView"
-            icon="resources/icons/problems_view.gif"
-            id="%View_ProblemsView_id"
-            name="%View_ProblemsView_name"/>
-	  <view
-            allowMultiple="false"
-            category="%Views_Category_id"
-            class="org.apache.directory.studio.schemaeditor.view.views.ProjectsView"
-            icon="resources/icons/projects_view.gif"
-            id="%View_ProjectsView_id"
-            name="%View_ProjectsView_name"/>
-	<view
-            allowMultiple="false"
-            category="%Views_Category_id"
-            class="org.apache.directory.studio.schemaeditor.view.views.SearchView"
-            icon="resources/icons/search_view.gif"
-            id="%View_SearchView_id"
-            name="%View_SearchView_name"/>
-   </extension>
- <extension
-       point="org.eclipse.core.runtime.preferences">
+  <extension-point id="org.apache.directory.studio.schemaeditor.schemaConnectors" name="Schema Connectors" schema="src/main/resources/org.apache.directory.studio.schemaeditor.schemaConnectors.exsd"/>
+    <extension
+        point="org.eclipse.ui.perspectives">
+    <perspective
+        class="org.apache.directory.studio.schemaeditor.view.Perspective"
+        icon="resources/icons/schemaeditor_perspective.gif"
+        id="%Perspective_SchemaEditor_id"
+        name="%Perspective_SchemaEditor_name"/>
+  </extension>
+  
+  <extension
+      point="org.eclipse.ui.views">
+    <category
+        id="%Views_Category_id"
+        name="%Views_Category_name"/>
+
+    <view
+        allowMultiple="false"
+        category="%Views_Category_id"
+        class="org.apache.directory.studio.schemaeditor.view.views.SchemaView"
+        icon="resources/icons/schemas_view.png"
+        id="%View_SchemaView_id"
+        name="%View_SchemaView_name"/>
+
+    <view
+        allowMultiple="false"
+        category="%Views_Category_id"
+        class="org.apache.directory.studio.schemaeditor.view.views.HierarchyView"
+        icon="resources/icons/hierarchy_view.gif"
+        id="%View_HierarchyView_id"
+        name="%View_HierarchyView_name"/>
+
+    <view
+        allowMultiple="false"
+        category="%Views_Category_id"
+        class="org.apache.directory.studio.schemaeditor.view.views.ProblemsView"
+        icon="resources/icons/problems_view.gif"
+        id="%View_ProblemsView_id"
+        name="%View_ProblemsView_name"/>
+
+    <view
+        allowMultiple="false"
+        category="%Views_Category_id"
+        class="org.apache.directory.studio.schemaeditor.view.views.ProjectsView"
+        icon="resources/icons/projects_view.gif"
+        id="%View_ProjectsView_id"
+        name="%View_ProjectsView_name"/>
+
+    <view
+        allowMultiple="false"
+        category="%Views_Category_id"
+        class="org.apache.directory.studio.schemaeditor.view.views.SearchView"
+        icon="resources/icons/search_view.gif"
+        id="%View_SearchView_id"
+        name="%View_SearchView_name"/>
+  </extension>
+
+  <extension
+      point="org.eclipse.core.runtime.preferences">
     <initializer class="org.apache.directory.studio.schemaeditor.PreferenceInitializer"/>
- </extension>
- <extension
-       point="org.eclipse.ui.newWizards">
+  </extension>
+
+  <extension
+      point="org.eclipse.ui.newWizards">
     <category
-          id="%NewWizards_Category_id"
-          name="%NewWizards_Category_name"/>
-	<wizard
-          category="%NewWizards_Category_id"
-          class="org.apache.directory.studio.schemaeditor.view.wizards.NewProjectWizard"
-          hasPages="true"
-          icon="resources/icons/project_new.gif"
-          id="%NewWizard_NewProjectWizard_id"
-          name="%NewWizard_NewProjectWizard_name"
-          project="true"/>
+        id="%NewWizards_Category_id"
+        name="%NewWizards_Category_name"/>
+    
     <wizard
-          category="%NewWizards_Category_id"
-          class="org.apache.directory.studio.schemaeditor.view.wizards.NewSchemaWizard"
-          hasPages="true"
-          icon="resources/icons/schema_new.gif"
-          id="%NewWizard_NewSchemaWizard_id"
-          name="%NewWizard_NewSchemaWizard_name"
-          project="false"/>
+        category="%NewWizards_Category_id"
+        class="org.apache.directory.studio.schemaeditor.view.wizards.NewProjectWizard"
+        hasPages="true"
+        icon="resources/icons/project_new.gif"
+        id="%NewWizard_NewProjectWizard_id"
+        name="%NewWizard_NewProjectWizard_name"
+        project="true"/>
+    
     <wizard
-          category="%NewWizards_Category_id"
-          class="org.apache.directory.studio.schemaeditor.view.wizards.NewAttributeTypeWizard"
-          hasPages="true"
-          icon="resources/icons/attribute_type_new.gif"
-          id="%NewWizard_NewAttributeTypeWizard_id"
-          name="%NewWizard_NewAttributeTypeWizard_name"
-          project="false"/>
-	<wizard
-          category="%NewWizards_Category_id"
-          class="org.apache.directory.studio.schemaeditor.view.wizards.NewObjectClassWizard"
-          hasPages="true"
-          icon="resources/icons/object_class_new.gif"
-          id="%NewWizard_NewObjectClassWizard_id"
-          name="%NewWizard_NewObjectClassWizard_name"
-          project="false"/>
- </extension>
- <extension
-		point="org.eclipse.ui.editors">
-	<editor
-		class="org.apache.directory.studio.schemaeditor.view.editors.objectclass.ObjectClassEditor"
-		default="false"
-		icon="resources/icons/object_class.gif"
-		id="%Editor_ObjectClassEditor_id"
-		name="%Editor_ObjectClassEditor_name"/>
-      <editor
- 		class="org.apache.directory.studio.schemaeditor.view.editors.attributetype.AttributeTypeEditor"
-		default="false"
-		icon="resources/icons/attribute_type.gif"
-		id="%Editor_AttributeTypeEditor_id"
-		name="%Editor_AttributeTypeEditor_name"/>
-      <editor
-		class="org.apache.directory.studio.schemaeditor.view.editors.schema.SchemaEditor"
-		default="false"
-		icon="resources/icons/schema.gif"
-		id="%Editor_SchemaEditor_id"
-		name="%Editor_SchemaEditor_name"/>
-</extension>
- <extension
-       point="org.eclipse.ui.exportWizards">
+        category="%NewWizards_Category_id"
+        class="org.apache.directory.studio.schemaeditor.view.wizards.NewSchemaWizard"
+        hasPages="true"
+        icon="resources/icons/schema_new.gif"
+        id="%NewWizard_NewSchemaWizard_id"
+        name="%NewWizard_NewSchemaWizard_name"
+        project="false"/>
+    
+    <wizard
+        category="%NewWizards_Category_id"
+        class="org.apache.directory.studio.schemaeditor.view.wizards.NewAttributeTypeWizard"
+        hasPages="true"
+        icon="resources/icons/attribute_type_new.gif"
+        id="%NewWizard_NewAttributeTypeWizard_id"
+        name="%NewWizard_NewAttributeTypeWizard_name"
+        project="false"/>
+
+    <wizard
+        category="%NewWizards_Category_id"
+        class="org.apache.directory.studio.schemaeditor.view.wizards.NewObjectClassWizard"
+        hasPages="true"
+        icon="resources/icons/object_class_new.gif"
+        id="%NewWizard_NewObjectClassWizard_id"
+        name="%NewWizard_NewObjectClassWizard_name"
+        project="false"/>
+  </extension>
+  <extension
+      point="org.eclipse.ui.editors">
+    <editor
+        class="org.apache.directory.studio.schemaeditor.view.editors.objectclass.ObjectClassEditor"
+        default="false"
+        icon="resources/icons/object_class.gif"
+        id="%Editor_ObjectClassEditor_id"
+        name="%Editor_ObjectClassEditor_name"/>
+
+    <editor
+        class="org.apache.directory.studio.schemaeditor.view.editors.attributetype.AttributeTypeEditor"
+        default="false"
+        icon="resources/icons/attribute_type.gif"
+        id="%Editor_AttributeTypeEditor_id"
+        name="%Editor_AttributeTypeEditor_name"/>
+    
+    <editor
+        class="org.apache.directory.studio.schemaeditor.view.editors.schema.SchemaEditor"
+        default="false"
+        icon="resources/icons/schema.gif"
+        id="%Editor_SchemaEditor_id"
+        name="%Editor_SchemaEditor_name"/>
+  </extension>
+
+  <extension
+      point="org.eclipse.ui.exportWizards">
     <category
-          id="%ExportWizards_Category_id"
-          name="%ExportWizards_Category_name">
-    </category>
+        id="%ExportWizards_Category_id"
+        name="%ExportWizards_Category_name"/>
+
     <wizard
-          category="%ExportWizards_Category_id"
-          class="org.apache.directory.studio.schemaeditor.view.wizards.ExportSchemasAsXmlWizard"
-          icon="resources/icons/schemas_export.gif"
-          id="%ExportWizard_ExportSchemasAsXmlWizard_id"
-          name="%ExportWizard_ExportSchemasAsXmlWizard_name">
-    </wizard>
+        category="%ExportWizards_Category_id"
+        class="org.apache.directory.studio.schemaeditor.view.wizards.ExportSchemasAsXmlWizard"
+        icon="resources/icons/schemas_export.gif"
+        id="org.apache.directory.studio.schemaeditor.wizards.ExportSchemasAsXmlWizard"
+        name="%ExportWizard_ExportSchemasAsXmlWizard_name"/>
+
     <wizard
-          category="%ExportWizards_Category_id"
-          class="org.apache.directory.studio.schemaeditor.view.wizards.ExportSchemasAsOpenLdapWizard"
-          icon="resources/icons/schemas_export.gif"
-          id="%ExportWizard_ExportSchemasAsOpenLdapWizard_id"
-          name="%ExportWizard_ExportSchemasAsOpenLdapWizard_name">
-    </wizard>
-	<wizard
-          category="%ExportWizards_Category_id"
-          class="org.apache.directory.studio.schemaeditor.view.wizards.ExportSchemasForADSWizard"
-          icon="resources/icons/schemas_export_for_ads.gif"
-          id="%ExportWizard_ExportSchemasForADSWizard_id"
-          name="%ExportWizard_ExportSchemasForADSWizard_name">
-    </wizard>
-	<wizard
-          category="%ExportWizards_Category_id"
-          class="org.apache.directory.studio.schemaeditor.view.wizards.ExportProjectsWizard"
-          icon="resources/icons/project_export.gif"
-          id="%ExportWizard_ExportProjectsWizard_id"
-          name="%ExportWizard_ExportProjectsWizard_name">
-    </wizard>
- </extension>
- <extension
-       point="org.eclipse.ui.importWizards">
+        category="%ExportWizards_Category_id"
+        class="org.apache.directory.studio.schemaeditor.view.wizards.ExportSchemasAsOpenLdapWizard"
+        icon="resources/icons/schemas_export.gif"
+        id="org.apache.directory.studio.schemaeditor.wizards.ExportSchemasAsXmlWizard"
+        name="%ExportWizard_ExportSchemasAsOpenLdapWizard_name"/>
+
+    <wizard
+        category="%ExportWizards_Category_id"
+        class="org.apache.directory.studio.schemaeditor.view.wizards.ExportSchemasForADSWizard"
+        icon="resources/icons/schemas_export_for_ads.gif"
+        id="org.apache.directory.studio.schemaeditor.wizards.ExportSchemasForADSWizard"
+        name="%ExportWizard_ExportSchemasForADSWizard_name"/>
+
+    <wizard
+        category="%ExportWizards_Category_id"
+        class="org.apache.directory.studio.schemaeditor.view.wizards.ExportProjectsWizard"
+        icon="resources/icons/project_export.gif"
+        id="org.apache.directory.studio.schemaeditor.wizards.ExportProjectsWizard"
+        name="%ExportWizard_ExportProjectsWizard_name"/>
+  </extension>
+  
+  <extension
+      point="org.eclipse.ui.importWizards">
     <category
-          id="%ImportWizards_Category_id"
-          name="Schema Editor">
-    </category>
+        id="%ImportWizards_Category_id"
+        name="Schema Editor"/>
+
     <wizard
-          category="%ImportWizards_Category_id"
-          class="org.apache.directory.studio.schemaeditor.view.wizards.ImportCoreSchemasWizard"
-          icon="resources/icons/schemas_import.gif"
-          id="%ImportWizard_ImportCoreSchemasWizard_id"
-          name="%ImportWizard_ImportCoreSchemasWizard_name">
-    </wizard>
+        category="%ImportWizards_Category_id"
+        class="org.apache.directory.studio.schemaeditor.view.wizards.ImportCoreSchemasWizard"
+        icon="resources/icons/schemas_import.gif"
+        id="org.apache.directory.studio.schemaeditor.wizards.ImportCoreSchemasWizard"
+        name="%ImportWizard_ImportCoreSchemasWizard_name"/>
+
     <wizard
-          category="%ImportWizards_Category_id"
-          class="org.apache.directory.studio.schemaeditor.view.wizards.ImportSchemasFromXmlWizard"
-          icon="resources/icons/schemas_import.gif"
-          id="%ImportWizard_ImportSchemasFromXmlWizard_id"
-          name="%ImportWizard_ImportSchemasFromXmlWizard_name">
-    </wizard>
+        category="%ImportWizards_Category_id"
+        class="org.apache.directory.studio.schemaeditor.view.wizards.ImportSchemasFromXmlWizard"
+        icon="resources/icons/schemas_import.gif"
+        id="org.apache.directory.studio.schemaeditor.wizards.ImportSchemasFromXmlWizard"
+        name="%ImportWizard_ImportSchemasFromXmlWizard_name"/>
+
     <wizard
-          category="%ImportWizards_Category_id"
-          class="org.apache.directory.studio.schemaeditor.view.wizards.ImportSchemasFromOpenLdapWizard"
-          icon="resources/icons/schemas_import.gif"
-          id="%ImportWizard_ImportSchemasFromOpenLdapWizard_id"
-          name="%ImportWizard_ImportSchemasFromOpenLdapWizard_name">
-    </wizard>
+        category="%ImportWizards_Category_id"
+        class="org.apache.directory.studio.schemaeditor.view.wizards.ImportSchemasFromOpenLdapWizard"
+        icon="resources/icons/schemas_import.gif"
+        id="org.apache.directory.studio.schemaeditor.wizards.ImportSchemasFromOpenLdapWizard"
+        name="%ImportWizard_ImportSchemasFromOpenLdapWizard_name"/>
+
     <wizard
-          category="%ImportWizards_Category_id"
-          class="org.apache.directory.studio.schemaeditor.view.wizards.ImportProjectsWizard"
-          icon="resources/icons/project_import.gif"
-          id="%ImportWizard_ImportProjectsWizard_id"
-          name="%ImportWizard_ImportProjectsWizard_name">
-    </wizard>
- </extension>
-    <extension
-         point="org.eclipse.ui.preferencePages">
-      <page
-            class="org.apache.directory.studio.schemaeditor.view.preferences.PluginPreferencePage"
-            category="%PrefPage_StudioPage_id"
-            id="%PrefPage_SchemaEditor_id"
-            name="%PrefPage_SchemaEditor_name"/>
-	  <page
-      		category="%PrefPage_SchemaEditor_id"
-            class="org.apache.directory.studio.schemaeditor.view.preferences.HierarchyViewPreferencePage"
-            id="%PrefPage_HierarchyView_id"
-            name="%PrefPage_HierarchyView_name"/>
-      <page
-      		category="%PrefPage_SchemaEditor_id"
-            class="org.apache.directory.studio.schemaeditor.view.preferences.SchemaViewPreferencePage"
-            id="%PrefPage_SchemaView_id"
-            name="%PrefPage_SchemaView_name"/>
-      <page
-      		category="%PrefPage_SchemaEditor_id"
-            class="org.apache.directory.studio.schemaeditor.view.preferences.SearchViewPreferencePage"
-            id="%PrefPage_SearchView_id"
-            name="%PrefPage_SearchView_name"/>
-   </extension>
-    <extension
-          point="org.eclipse.ui.decorators">
-       <decorator
-             adaptable="false"
-             class="org.apache.directory.studio.schemaeditor.view.SchemaEditorTypeLabelDecorator"
-             id="%Decorator_SchemaEditorTypeDecorator_id"
-             label="%Decorator_SchemaEditorTypeDecorator_label"
-             lightweight="true"
-             location="BOTTOM_RIGHT"
-             state="true">
-          <enablement>
-             <or>
-                <objectClass
-                      name="org.apache.directory.studio.schemaeditor.view.wrappers.AttributeTypeWrapper">
-                </objectClass>
-                <objectClass
-                      name="org.apache.directory.studio.schemaeditor.view.wrappers.ObjectClassWrapper">
-                </objectClass>
-                <objectClass
-                      name="org.apache.directory.shared.ldap.model.schema.AttributeType">
-                </objectClass>
-                <objectClass
-                      name="org.apache.directory.shared.ldap.model.schema.ObjectClass">
-                </objectClass>
-             </or>
-          </enablement>
-          <description>
-             %Decorator_SchemaEditorTypeDecorator_description
-          </description>
-       </decorator>
-	   <decorator
-             adaptable="false"
-             class="org.apache.directory.studio.schemaeditor.view.SchemaEditorSchemaCheckerLabelDecorator"
-             id="%Decorator_SchemaEditorSchemaCheckerDecorator_id"
-             label="%Decorator_SchemaEditorSchemaCheckerDecorator_label"
-             lightweight="true"
-             location="BOTTOM_LEFT"
-             state="true">
-          <enablement>
-             <or>
-                <objectClass
-                      name="org.apache.directory.studio.schemaeditor.view.wrappers.AttributeTypeWrapper">
-                </objectClass>
-                <objectClass
-                      name="org.apache.directory.studio.schemaeditor.view.wrappers.ObjectClassWrapper">
-                </objectClass>
-                <objectClass
-                      name="org.apache.directory.studio.schemaeditor.view.wrappers.SchemaWrapper">
-                </objectClass>
-                <objectClass
-                      name="org.apache.directory.studio.schemaeditor.view.wrappers.Folder">
-                </objectClass>
-             </or>
-          </enablement>
-          <description>
-             %Decorator_SchemaEditorSchemaCheckerDecorator_description
-          </description>
-       </decorator>
-    </extension>
-	<extension
-         point="org.eclipse.search.searchPages">
-		<page
-			class="org.apache.directory.studio.schemaeditor.view.search.SearchPage"
-            enabled="true"
-            icon="resources/icons/search.gif"
-            id="%SearchPage_SchemaEditorSearch_id"
-            label="%SearchPage_SchemaEditorSearch_label"
-            showScopeSection="false"
-            sizeHint="450,300"/>
-	</extension>
- <extension
-       point="org.eclipse.ui.contexts">
+        category="%ImportWizards_Category_id"
+        class="org.apache.directory.studio.schemaeditor.view.wizards.ImportProjectsWizard"
+        icon="resources/icons/project_import.gif"
+        id="org.apache.directory.studio.schemaeditor.wizards.ImportProjectsWizard"
+        name="%ImportWizard_ImportProjectsWizard_name"/>
+  </extension>
+
+  <extension
+      point="org.eclipse.ui.preferencePages">
+    <page
+        class="org.apache.directory.studio.schemaeditor.view.preferences.PluginPreferencePage"
+        category="org.apache.directory.studio.StudioPreferencePage"
+        id="%PrefPage_SchemaEditor_id"
+        name="%PrefPage_SchemaEditor_name"/>
+
+    <page
+        category="%PrefPage_SchemaEditor_id"
+        class="org.apache.directory.studio.schemaeditor.view.preferences.HierarchyViewPreferencePage"
+        id="%PrefPage_HierarchyView_id"
+        name="%PrefPage_HierarchyView_name"/>
+
+    <page
+        category="%PrefPage_SchemaEditor_id"
+        class="org.apache.directory.studio.schemaeditor.view.preferences.SchemaViewPreferencePage"
+        id="%PrefPage_SchemaView_id"
+        name="%PrefPage_SchemaView_name"/>
+
+    <page
+        category="%PrefPage_SchemaEditor_id"
+        class="org.apache.directory.studio.schemaeditor.view.preferences.SearchViewPreferencePage"
+        id="%PrefPage_SearchView_id"
+        name="%PrefPage_SearchView_name"/>
+  </extension>
+
+  <extension
+      point="org.eclipse.ui.decorators">
+    <decorator
+        adaptable="false"
+        class="org.apache.directory.studio.schemaeditor.view.SchemaEditorTypeLabelDecorator"
+        id="org.apache.directory.studio.schemas.typeDecorator"
+        label="%Decorator_SchemaEditorTypeDecorator_label"
+        lightweight="true"
+        location="BOTTOM_RIGHT"
+        state="true">
+      <enablement>
+        <or>
+          <objectClass
+              name="org.apache.directory.studio.schemaeditor.view.wrappers.AttributeTypeWrapper"/>
+
+          <objectClass
+              name="org.apache.directory.studio.schemaeditor.view.wrappers.ObjectClassWrapper"/>
+
+          <objectClass
+              name="org.apache.directory.api.ldap.model.schema.AttributeType"/>
+
+          <objectClass
+              name="org.apache.directory.api.ldap.model.schema.ObjectClass"/>
+        </or>
+      </enablement>
+      <description>
+         %Decorator_SchemaEditorTypeDecorator_description
+      </description>
+    </decorator>
+
+    <decorator
+        adaptable="false"
+        class="org.apache.directory.studio.schemaeditor.view.SchemaEditorSchemaCheckerLabelDecorator"
+        id="org.apache.directory.studio.schemas.schemaCheckerDecorator"
+        label="%Decorator_SchemaEditorSchemaCheckerDecorator_label"
+        lightweight="true"
+        location="BOTTOM_LEFT"
+        state="true">
+      <enablement>
+        <or>
+          <objectClass
+              name="org.apache.directory.studio.schemaeditor.view.wrappers.AttributeTypeWrapper"/>
+
+          <objectClass
+              name="org.apache.directory.studio.schemaeditor.view.wrappers.ObjectClassWrapper"/>
+
+          <objectClass
+              name="org.apache.directory.studio.schemaeditor.view.wrappers.SchemaWrapper"/>
+
+          <objectClass
+              name="org.apache.directory.studio.schemaeditor.view.wrappers.Folder"/>
+        </or>
+      </enablement>
+      <description>
+          %Decorator_SchemaEditorSchemaCheckerDecorator_description
+      </description>
+    </decorator>
+  </extension>
+    
+  <extension
+      point="org.eclipse.search.searchPages">
+    <page
+        class="org.apache.directory.studio.schemaeditor.view.search.SearchPage"
+        enabled="true"
+        icon="resources/icons/search.gif"
+        id="org.apache.directory.studio.schemaeditor.search"
+        label="%SearchPage_SchemaEditorSearch_label"
+        showScopeSection="false"
+        sizeHint="450,300"/>
+  </extension>
+
+  <extension
+      point="org.eclipse.ui.contexts">
     <context
-          description="%Ctx_ProjectsView_description"
-          id="%Ctx_ProjectsView_id"
-          name="%Ctx_ProjectsView_name"
-          parentId="org.eclipse.ui.contexts.window">
-    </context>
+        description="%Ctx_ProjectsView_description"
+        id="%Ctx_ProjectsView_id"
+        name="%Ctx_ProjectsView_name"
+        parentId="org.eclipse.ui.contexts.window"/>
+
     <context
-          description="%Ctx_SchemaView_description"
-          id="%Ctx_SchemaView_id"
-          name="%Ctx_SchemaView_name"
-          parentId="org.eclipse.ui.contexts.window">
-    </context>
- </extension>
- <extension
-       point="org.eclipse.ui.commands">
+        description="%Ctx_SchemaView_description"
+        id="%Ctx_SchemaView_id"
+        name="%Ctx_SchemaView_name"
+        parentId="org.eclipse.ui.contexts.window"/>
+  </extension>
+  
+  <extension
+      point="org.eclipse.ui.commands">
     <category
-          id="%Cmd_Category_id"
-          name="%Cmd_Category_name">
-    </category>
+        id="%Cmd_Category_id"
+        name="%Cmd_Category_name"/>
+
     <command
-          categoryId="%Cmd_Category_id"
-          description="%Cmd_NewProject_description"
-          id="%Cmd_NewProject_id"
-          name="%Cmd_NewProject_name">
-    </command>
+        categoryId="%Cmd_Category_id"
+        description="%Cmd_NewProject_description"
+        id="%Cmd_NewProject_id"
+        name="%Cmd_NewProject_name"/>
+
     <command
-          categoryId="%Cmd_Category_id"
-          description="%Cmd_RenameProject_description"
-          id="%Cmd_RenameProject_id"
-          name="%Cmd_RenameProject_name">
-    </command>
+        categoryId="%Cmd_Category_id"
+        description="%Cmd_RenameProject_description"
+        id="%Cmd_RenameProject_id"
+        name="%Cmd_RenameProject_name"/>
+
     <command
-          categoryId="%Cmd_Category_id"
-          description="%Cmd_DeleteProject_description"
-          id="%Cmd_DeleteProject_id"
-          name="%Cmd_DeleteProject_name">
-    </command>
+        categoryId="%Cmd_Category_id"
+        description="%Cmd_DeleteProject_description"
+        id="%Cmd_DeleteProject_id"
+        name="%Cmd_DeleteProject_name"/>
+
     <command
-          categoryId="%Cmd_Category_id"
-          description="%Cmd_NewSchema_description"
-          id="%Cmd_NewSchema_id"
-          name="%Cmd_NewSchema_name">
-    </command>
+        categoryId="%Cmd_Category_id"
+        description="%Cmd_NewSchema_description"
+        id="%Cmd_NewSchema_id"
+        name="%Cmd_NewSchema_name"/>
+
     <command
-          categoryId="%Cmd_Category_id"
-          description="%Cmd_NewAttributeType_description"
-          id="%Cmd_NewAttributeType_id"
-          name="%Cmd_NewAttributeType_name">
-    </command>
+        categoryId="%Cmd_Category_id"
+        description="%Cmd_NewAttributeType_description"
+        id="%Cmd_NewAttributeType_id"
+        name="%Cmd_NewAttributeType_name"/>
+
     <command
-          categoryId="%Cmd_Category_id"
-          description="%Cmd_NewObjectClass_description"
-          id="%Cmd_NewObjectClass_id"
-          name="%Cmd_NewObjectClass_name">
-    </command>
+        categoryId="%Cmd_Category_id"
+        description="%Cmd_NewObjectClass_description"
+        id="%Cmd_NewObjectClass_id"
+        name="%Cmd_NewObjectClass_name"/>
+
     <command
-          categoryId="%Cmd_Category_id"
-          description="%Cmd_OpenElement_description"
-          id="%Cmd_OpenElement_id"
-          name="%Cmd_OpenElement_name">
-    </command>
+        categoryId="%Cmd_Category_id"
+        description="%Cmd_OpenElement_description"
+        id="%Cmd_OpenElement_id"
+        name="%Cmd_OpenElement_name"/>
+
     <command
-          categoryId="%Cmd_Category_id"
-          description="%Cmd_OpenTypeHierarchy_description"
-          id="%Cmd_OpenTypeHierarchy_id"
-          name="%Cmd_OpenTypeHierarchy_name">
-    </command>
+        categoryId="%Cmd_Category_id"
+        description="%Cmd_OpenTypeHierarchy_description"
+        id="%Cmd_OpenTypeHierarchy_id"
+        name="%Cmd_OpenTypeHierarchy_name"/>
+
     <command
-          categoryId="%Cmd_Category_id"
-          description="%Cmd_DeleteSchemaElement_description"
-          id="%Cmd_DeleteSchemaElement_id"
-          name="%Cmd_DeleteSchemaElement_name">
-    </command>
+        categoryId="%Cmd_Category_id"
+        description="%Cmd_DeleteSchemaElement_description"
+        id="%Cmd_DeleteSchemaElement_id"
+        name="%Cmd_DeleteSchemaElement_name"/>
+
     <command
-          categoryId="%Cmd_Category_id"
-          description="%Cmd_RenameSchemaElement_description"
-          id="%Cmd_RenameSchemaElement_id"
-          name="%Cmd_RenameSchemaElement_name">
-    </command>
- </extension>
- <extension
-       point="org.eclipse.ui.bindings">
+        categoryId="%Cmd_Category_id"
+        description="%Cmd_RenameSchemaElement_description"
+        id="%Cmd_RenameSchemaElement_id"
+        name="%Cmd_RenameSchemaElement_name"/>
+
+  </extension>
+  
+  <extension
+      point="org.eclipse.ui.bindings">
     <key
-          commandId="%Cmd_NewProject_id"
-          contextId="%Ctx_ProjectsView_id"
-          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-          sequence="M1+R">
-    </key>
+        commandId="%Cmd_NewProject_id"
+        contextId="%Ctx_ProjectsView_id"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="M1+R"/>
+
     <key
-          commandId="%Cmd_RenameProject_id"
-          contextId="%Ctx_ProjectsView_id"
-          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-          sequence="F2">
-    </key>
+        commandId="%Cmd_RenameProject_id"
+        contextId="%Ctx_ProjectsView_id"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="F2"/>
+
     <key
-          commandId="%Cmd_DeleteProject_id"
-          contextId="%Ctx_ProjectsView_id"
-          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-          sequence="DEL">
-    </key>
+        commandId="%Cmd_DeleteProject_id"
+        contextId="%Ctx_ProjectsView_id"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="DEL"/>
+
     <key
-          commandId="%Cmd_NewSchema_id"
-          contextId="%Ctx_SchemaView_id"
-          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-          sequence="M1+E">
-    </key>
+        commandId="%Cmd_NewSchema_id"
+        contextId="%Ctx_SchemaView_id"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="M1+E"/>
+
     <key
-          commandId="%Cmd_NewAttributeType_id"
-          contextId="%Ctx_SchemaView_id"
-          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-          sequence="M1+T">
-    </key>
+        commandId="%Cmd_NewAttributeType_id"
+        contextId="%Ctx_SchemaView_id"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="M1+T"/>
+
     <key
-          commandId="%Cmd_NewObjectClass_id"
-          contextId="%Ctx_SchemaView_id"
-          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-          sequence="M1+B">
-    </key>
+        commandId="%Cmd_NewObjectClass_id"
+        contextId="%Ctx_SchemaView_id"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="M1+B"/>
+
     <key
-          commandId="%Cmd_OpenElement_id"
-          contextId="%Ctx_SchemaView_id"
-          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-          sequence="F3">
-    </key>
+        commandId="%Cmd_OpenElement_id"
+        contextId="%Ctx_SchemaView_id"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="F3"/>
+
     <key
-          commandId="%Cmd_OpenTypeHierarchy_id"
-          contextId="%Ctx_SchemaView_id"
-          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-          sequence="F4">
-    </key>
+        commandId="%Cmd_OpenTypeHierarchy_id"
+        contextId="%Ctx_SchemaView_id"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="F4"/>
+
     <key
-          commandId="%Cmd_DeleteSchemaElement_id"
-          contextId="%Ctx_SchemaView_id"
-          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-          sequence="DEL">
-    </key>
+        commandId="%Cmd_DeleteSchemaElement_id"
+        contextId="%Ctx_SchemaView_id"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="DEL"/>
+
     <key
-          commandId="%Cmd_RenameSchemaElement_id"
-          contextId="%Ctx_SchemaView_id"
-          schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-          sequence="F2">
-    </key>
- </extension>
- <extension
-       point="org.apache.directory.studio.schemaeditor.schemaConnectors">
+        commandId="%Cmd_RenameSchemaElement_id"
+        contextId="%Ctx_SchemaView_id"
+        schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        sequence="F2"/>
+  </extension>
+  
+  <extension
+      point="org.apache.directory.studio.schemaeditor.schemaConnectors">
     <schemaConnector
-          class="org.apache.directory.studio.schemaeditor.model.io.ApacheDsSchemaConnector"
-          description="%SchemaConnector_ApacheDS_description"
-          id="%SchemaConnector_ApacheDS_id"
-          name="%SchemaConnector_ApacheDS_name">
-    </schemaConnector>
+        class="org.apache.directory.studio.schemaeditor.model.io.ApacheDsSchemaConnector"
+        description="%SchemaConnector_ApacheDS_description"
+        id="org.apache.directory.studio.schemaeditor.model.io.ApacheDsSchemaConnector"
+        name="%SchemaConnector_ApacheDS_name"/>
+
     <schemaConnector
-          class="org.apache.directory.studio.schemaeditor.model.io.GenericSchemaConnector"
-          description="%SchemaConnector_Generic_description"
-          id="%SchemaConnector_Generic_id"
-          name="%SchemaConnector_Generic_name">
-    </schemaConnector>
- </extension>     
+        class="org.apache.directory.studio.schemaeditor.model.io.GenericSchemaConnector"
+        description="%SchemaConnector_Generic_description"
+        id="org.apache.directory.studio.schemaeditor.model.io.GenericSchemaConnector"
+        name="%SchemaConnector_Generic_name"/>
+  </extension>     
 </plugin>

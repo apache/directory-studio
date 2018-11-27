@@ -21,11 +21,11 @@
 package org.apache.directory.studio.ldapbrowser.common.dialogs;
 
 
-import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.common.widgets.DnBuilderWidget;
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -142,7 +142,7 @@ public class MoveEntriesDialog extends Dialog implements WidgetModifyListener
 
 
     /**
-     * @see org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener#widgetModified(org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent)
+     * @see org.apache.directory.studio.common.ui.widgets.WidgetModifyListener#widgetModified(org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent)
      */
     public void widgetModified( WidgetModifyEvent event )
     {

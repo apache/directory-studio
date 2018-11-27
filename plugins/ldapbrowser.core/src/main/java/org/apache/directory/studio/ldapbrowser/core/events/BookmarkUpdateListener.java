@@ -33,12 +33,10 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
  */
 public interface BookmarkUpdateListener extends EventListener
 {
-
     /**
      * Called when an {@link IBookmark} was updated.
      *
      * @param bookmarkUpdateEvent the bookmark update event
      */
-    public void bookmarkUpdated( BookmarkUpdateEvent bookmarkUpdateEvent );
-
+    void bookmarkUpdated( BookmarkUpdateEvent bookmarkUpdateEvent );
 }

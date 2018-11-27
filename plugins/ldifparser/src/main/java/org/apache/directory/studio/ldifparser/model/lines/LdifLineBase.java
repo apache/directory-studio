@@ -22,6 +22,7 @@ package org.apache.directory.studio.ldifparser.model.lines;
 
 
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
+import org.apache.directory.studio.ldifparser.LdifUtils;
 import org.apache.directory.studio.ldifparser.model.LdifPart;
 
 
@@ -32,64 +33,64 @@ import org.apache.directory.studio.ldifparser.model.LdifPart;
  */
 public abstract class LdifLineBase implements LdifPart
 {
+    /** The position of this LdifPart in the Ldif */
+    protected int offset;
 
     protected String rawNewLine;
-
-    protected int offset;
 
 
     protected LdifLineBase()
     {
+        super();
     }
 
 
     protected LdifLineBase( int offset, String rawNewLine )
     {
-        super();
-        this.rawNewLine = rawNewLine;
         this.offset = offset;
-    }
-
-
-    public final String getRawNewLine()
-    {
-        return getNonNull( this.rawNewLine );
-    }
-
-
-    public String getUnfoldedNewLine()
-    {
-        return unfold( this.getRawNewLine() );
-    }
-
-
-    public final void adjustOffset( int adjust )
-    {
-        this.offset += adjust;
+        this.rawNewLine = rawNewLine;
     }
 
 
     public final int getOffset()
     {
-        return this.offset;
+        return offset;
+    }
+
+    
+    public final String getRawNewLine()
+    {
+        return getNonNull( rawNewLine );
+    }
+
+
+    public String getUnfoldedNewLine()
+    {
+        return unfold( getRawNewLine() );
+    }
+
+
+    public final void adjustOffset( int adjust )
+    {
+        offset += adjust;
     }
 
 
     public final int getLength()
     {
-        return this.toRawString().length();
+        return toRawString().length();
     }
 
 
     public boolean isValid()
     {
-        return this.rawNewLine != null;
+        return rawNewLine != null;
     }
 
 
     public String getInvalidString()
     {
-        if ( this.rawNewLine == null )
+        if ( rawNewLine == null )
         {
             return "Missing new line";
         }
@@ -102,7 +103,7 @@ public abstract class LdifLineBase implements LdifPart
 
     public String toRawString()
     {
-        return this.getRawNewLine();
+        return getRawNewLine();
     }
 
 
@@ -128,8 +129,8 @@ public abstract class LdifLineBase implements LdifPart
     public final String toString()
     {
         String text = toRawString();
-        text = text.replaceAll( "\n", "\\\\n" ); //$NON-NLS-1$ //$NON-NLS-2$
-        text = text.replaceAll( "\r", "\\\\r" ); //$NON-NLS-1$ //$NON-NLS-2$
+        text = LdifUtils.convertNlRcToString( text ); //$NON-NLS-1$ //$NON-NLS-2$
+
         return getClass().getName() + " (" + getOffset() + "," + getLength() + "): '" + text + "'"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     }
 

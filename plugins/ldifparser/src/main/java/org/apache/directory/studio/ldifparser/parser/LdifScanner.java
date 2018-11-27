@@ -440,27 +440,6 @@ public class LdifScanner
     }
 
 
-    // private String getStartAndFill(String start) {
-    // String s = this.getWord(start);
-    // if(s != null) {
-    // StringBuffer sb = new StringBuffer(s);
-    //			
-    // try {
-    // char c = '\u0000';
-    // while (c==' ') {
-    // c = read(sb);
-    // }
-    // unread(sb);
-    // } catch (EOFException e) {
-    // }
-    //    		
-    // return sb.toString();
-    // }
-    // else {
-    // return null;
-    // }
-    // }
-
     private String getWord( String word )
     {
         StringBuffer sb = new StringBuffer();

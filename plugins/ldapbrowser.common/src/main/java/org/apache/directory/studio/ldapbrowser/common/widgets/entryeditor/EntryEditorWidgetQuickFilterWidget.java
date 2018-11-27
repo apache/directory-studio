@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor;
 
 
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
@@ -39,13 +40,17 @@ import org.eclipse.swt.widgets.Text;
 /**
  * The EntryEditorWidgetQuickFilterWidget implements an instant search 
  * for the entry editor widget. It contains separate search fields for
- * attribute type and/or value.
- *
+ * attribute type and/or value, plus a Clear button :
+ * <pre>
+ * +----------------------------------------------------------------+
+ * | [(attribute)] [(Value)                             ] (X Clear) |
+ * +----------------------------------------------------------------+
+ * </pre>
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class EntryEditorWidgetQuickFilterWidget
 {
-
     /** The filter to propagate the entered filter phrases. */
     private EntryEditorWidgetFilter filter;
 
@@ -70,6 +75,46 @@ public class EntryEditorWidgetQuickFilterWidget
     /** The clear quick filter button. */
     private Button clearQuickFilterButton;
 
+    /**
+     * The Listener that reacts on any text entered into the quick Attribute filter text widget
+     */
+    private ModifyListener quickFilterAttributeTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            filter.setQuickFilterAttribute( quickFilterAttributeText.getText() );
+            clearQuickFilterButton.setEnabled( !Strings.isEmpty( quickFilterAttributeText.getText() ) //$NON-NLS-1$
+                || !Strings.isEmpty( quickFilterValueText.getText() ) ); //$NON-NLS-1$
+        }
+    };
+    
+    
+    /**
+     * The Listener that reacts on any text entered into the quick Value filter text widget
+     */
+    private ModifyListener quickFilterValueTextListener = new ModifyListener()
+    {
+        public void modifyText( ModifyEvent e )
+        {
+            filter.setQuickFilterValue( quickFilterValueText.getText() );
+            clearQuickFilterButton.setEnabled( !Strings.isEmpty( quickFilterAttributeText.getText() ) //$NON-NLS-1$
+                || !Strings.isEmpty( quickFilterValueText.getText() ) ); //$NON-NLS-1$
+        }
+    };
+    
+    
+    /**
+     * The listener associated with teh Clear button. It will reset the attribute and value Texts
+     */
+    public SelectionAdapter clearQuickFilterButtonListener = new SelectionAdapter()
+    {
+        public void widgetSelected( SelectionEvent e )
+        {
+            quickFilterAttributeText.setText( "" ); //$NON-NLS-1$
+            quickFilterValueText.setText( "" ); //$NON-NLS-1$
+        }
+    };
+
 
     /**
      * Creates a new instance of EntryEditorWidgetQuickFilterWidget.
@@ -86,6 +131,11 @@ public class EntryEditorWidgetQuickFilterWidget
 
     /**
      * Creates the outer composite.
+     * <pre>
+     * +----------------------------------------------------------+
+     * |                                                          |
+     * +----------------------------------------------------------+
+     * </pre>
      * 
      * @param parent the parent
      */
@@ -110,8 +160,11 @@ public class EntryEditorWidgetQuickFilterWidget
 
     /**
      * Creates the inner composite with its input fields.
+     * <pre>
+     * [          ] [                                     ] (X)
+     * </pre>
      */
-    private void create()
+    private void createFilterView()
     {
         // Reseting the layout of the composite to be displayed correctly
         GridData compositeGridData = new GridData( SWT.FILL, SWT.NONE, true, false );
@@ -119,50 +172,25 @@ public class EntryEditorWidgetQuickFilterWidget
 
         innerComposite = BaseWidgetUtils.createColumnContainer( composite, 3, 1 );
 
+        // The QuickFilterAttribute Text
         quickFilterAttributeText = new Text( innerComposite, SWT.BORDER );
         quickFilterAttributeText.setLayoutData( new GridData( 200 - 14, SWT.DEFAULT ) );
-        quickFilterAttributeText.addModifyListener( new ModifyListener()
-        {
-            public void modifyText( ModifyEvent e )
-            {
-                filter.setQuickFilterAttribute( quickFilterAttributeText.getText() );
-                clearQuickFilterButton.setEnabled( !"".equals( quickFilterAttributeText.getText() ) //$NON-NLS-1$
-                    || !"".equals( quickFilterValueText.getText() ) ); //$NON-NLS-1$
-            }
-        } );
+        
+        quickFilterAttributeText.addModifyListener( quickFilterAttributeTextListener );
 
+        // The QuickFilterValue Text
         quickFilterValueText = new Text( innerComposite, SWT.BORDER );
         quickFilterValueText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-        quickFilterValueText.addModifyListener( new ModifyListener()
-        {
-            public void modifyText( ModifyEvent e )
-            {
-                filter.setQuickFilterValue( quickFilterValueText.getText() );
-                clearQuickFilterButton.setEnabled( !"".equals( quickFilterAttributeText.getText() ) //$NON-NLS-1$
-                    || !"".equals( quickFilterValueText.getText() ) ); //$NON-NLS-1$
-            }
-        } );
+        quickFilterValueText.addModifyListener( quickFilterValueTextListener );
 
+        // The QuickFilter Button
         clearQuickFilterButton = new Button( innerComposite, SWT.PUSH );
         clearQuickFilterButton.setToolTipText( Messages
             .getString( "EntryEditorWidgetQuickFilterWidget.ClearQuickFilter" ) ); //$NON-NLS-1$
         clearQuickFilterButton.setImage( BrowserCommonActivator.getDefault()
             .getImage( BrowserCommonConstants.IMG_CLEAR ) );
         clearQuickFilterButton.setEnabled( false );
-        clearQuickFilterButton.addSelectionListener( new SelectionAdapter()
-        {
-            public void widgetSelected( SelectionEvent e )
-            {
-                if ( !"".equals( quickFilterAttributeText.getText() ) ) //$NON-NLS-1$
-                {
-                    quickFilterAttributeText.setText( "" ); //$NON-NLS-1$
-                }
-                if ( !"".equals( quickFilterValueText.getText() ) ) //$NON-NLS-1$
-                {
-                    quickFilterValueText.setText( "" ); //$NON-NLS-1$
-                }
-            }
-        } );
+        clearQuickFilterButton.addSelectionListener( clearQuickFilterButtonListener );
 
         setEnabled( composite.isEnabled() );
 
@@ -181,15 +209,8 @@ public class EntryEditorWidgetQuickFilterWidget
         compositeGridData.heightHint = 0;
         compositeGridData.widthHint = 0;
         composite.setLayoutData( compositeGridData );
-
-        if ( !"".equals( quickFilterAttributeText.getText() ) ) //$NON-NLS-1$
-        {
-            quickFilterAttributeText.setText( "" ); //$NON-NLS-1$
-        }
-        if ( !"".equals( quickFilterValueText.getText() ) ) //$NON-NLS-1$
-        {
-            quickFilterValueText.setText( "" ); //$NON-NLS-1$
-        }
+        quickFilterAttributeText.setText( "" ); //$NON-NLS-1$
+        quickFilterValueText.setText( "" ); //$NON-NLS-1$
         innerComposite.dispose();
         innerComposite = null;
 
@@ -224,11 +245,12 @@ public class EntryEditorWidgetQuickFilterWidget
      */
     public void setEnabled( boolean enabled )
     {
-        if ( composite != null && !composite.isDisposed() )
+        if ( ( composite != null ) && !composite.isDisposed() )
         {
             composite.setEnabled( enabled );
         }
-        if ( innerComposite != null && !innerComposite.isDisposed() )
+        
+        if ( ( innerComposite != null ) && !innerComposite.isDisposed() )
         {
             innerComposite.setEnabled( enabled );
             quickFilterAttributeText.setEnabled( enabled );
@@ -245,16 +267,15 @@ public class EntryEditorWidgetQuickFilterWidget
      */
     public void setActive( boolean visible )
     {
-        if ( visible && innerComposite == null && composite != null )
+        if ( visible && ( innerComposite == null ) && ( composite != null ) )
         {
-            create();
+            createFilterView();
             quickFilterAttributeText.setFocus();
         }
-        else if ( !visible && innerComposite != null && composite != null )
+        else if ( !visible && ( innerComposite != null ) && ( composite != null ) )
         {
             destroy();
             entryEditorWidget.getViewer().getTree().setFocus();
         }
     }
-
 }

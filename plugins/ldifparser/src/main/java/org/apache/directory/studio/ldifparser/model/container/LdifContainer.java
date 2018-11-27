@@ -21,9 +21,7 @@
 package org.apache.directory.studio.ldifparser.model.container;
 
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
@@ -33,35 +31,38 @@ import org.apache.directory.studio.ldifparser.model.LdifPart;
 import org.apache.directory.studio.ldifparser.model.lines.LdifLineBase;
 
 
-public abstract class LdifContainer implements Serializable
+/**
+ * A base class for any LDIF container.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
+public abstract class LdifContainer implements LdifPart
 {
-
-    protected List parts;
-
-
-    protected LdifContainer()
-    {
-    }
+    /** The contained Ldif Parts */
+    protected List<LdifPart> ldifParts = new ArrayList<LdifPart>();
 
 
     protected LdifContainer( LdifPart part )
     {
-        this.parts = new ArrayList( 1 );
         if ( part == null )
+        {
             throw new IllegalArgumentException( "null argument" ); //$NON-NLS-1$
-        this.parts.add( part );
+        }
+
+        ldifParts.add( part );
     }
 
 
     public final int getOffset()
     {
-        return ( ( LdifPart ) this.parts.get( 0 ) ).getOffset();
+        return ldifParts.get( 0 ).getOffset();
     }
 
 
     public final int getLength()
     {
-        LdifPart lastPart = this.getLastPart();
+        LdifPart lastPart = getLastPart();
+
         return lastPart.getOffset() + lastPart.getLength() - getOffset();
     }
 
@@ -69,37 +70,39 @@ public abstract class LdifContainer implements Serializable
     public final void addInvalid( LdifInvalidPart invalid )
     {
         if ( invalid == null )
+        {
             throw new IllegalArgumentException( "null argument" ); //$NON-NLS-1$
-        this.parts.add( invalid );
+        }
+
+        ldifParts.add( invalid );
     }
 
 
     public final LdifPart getLastPart()
     {
-        return ( LdifPart ) parts.get( parts.size() - 1 );
+        return ldifParts.get( ldifParts.size() - 1 );
     }
 
 
     public final LdifPart[] getParts()
     {
-        return ( org.apache.directory.studio.ldifparser.model.LdifPart[] ) this.parts.toArray( new LdifPart[parts
+        return ( LdifPart[] ) ldifParts.toArray( new LdifPart[ldifParts
             .size()] );
     }
 
 
     public final String toString()
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
-        sb.append( getClass().getName() );
+        sb.append( getClass().getSimpleName() );
         sb.append( ":" ); //$NON-NLS-1$
         sb.append( LdifParserConstants.LINE_SEPARATOR );
 
-        LdifPart[] parts = this.getParts();
-        for ( int i = 0; i < parts.length; i++ )
+        for ( LdifPart part : ldifParts )
         {
             sb.append( "    " ); //$NON-NLS-1$
-            sb.append( parts[i].toString() );
+            sb.append( part.toString() );
             sb.append( LdifParserConstants.LINE_SEPARATOR );
         }
 
@@ -109,12 +112,11 @@ public abstract class LdifContainer implements Serializable
 
     public final String toRawString()
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
-        LdifPart[] parts = this.getParts();
-        for ( int i = 0; i < parts.length; i++ )
+        for ( LdifPart part : ldifParts )
         {
-            sb.append( parts[i].toRawString() );
+            sb.append( part.toRawString() );
         }
 
         return sb.toString();
@@ -123,12 +125,11 @@ public abstract class LdifContainer implements Serializable
 
     public final String toFormattedString( LdifFormatParameters formatParameters )
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
-        LdifPart[] parts = this.getParts();
-        for ( int i = 0; i < parts.length; i++ )
+        for ( LdifPart part : ldifParts )
         {
-            sb.append( parts[i].toFormattedString( formatParameters ) );
+            sb.append( part.toFormattedString( formatParameters ) );
         }
 
         return sb.toString();
@@ -142,47 +143,46 @@ public abstract class LdifContainer implements Serializable
      * true if
      * <ul>
      * <li>at least one line
-     * <li>no LdifUnknownPart
+     * <li>no LdifInvalidPart
      * <li>all parts are valid
      * </ul>
      */
     protected boolean isAbstractValid()
     {
-        if ( this.parts.isEmpty() )
-            return false;
-
-        boolean containsLine = false;
-        LdifPart[] parts = this.getParts();
-        for ( int i = 0; i < parts.length; i++ )
+        if ( ldifParts.isEmpty() )
         {
-            if ( parts[i] instanceof LdifInvalidPart )
+            return false;
+        }
+
+        for ( LdifPart ldifPart : ldifParts )
+        {
+            if ( ( ldifPart instanceof LdifInvalidPart ) || ( !ldifPart.isValid() ) )
             {
                 return false;
             }
-            if ( !parts[i].isValid() )
+
+            if ( ldifPart instanceof LdifLineBase )
             {
-                return false;
-            }
-            if ( parts[i] instanceof LdifLineBase )
-            {
-                containsLine = true;
+                return true;
             }
         }
-        return containsLine;
+
+        return false;
     }
 
 
     public String getInvalidString()
     {
-        if ( this.parts.isEmpty() )
-            return "Empty Container";
-
-        LdifPart[] parts = this.getParts();
-        for ( int i = 0; i < parts.length; i++ )
+        if ( ldifParts.isEmpty() )
         {
-            if ( !parts[i].isValid() )
+            return "Empty Container";
+        }
+
+        for ( LdifPart ldifPart : ldifParts )
+        {
+            if ( !ldifPart.isValid() )
             {
-                return parts[i].getInvalidString();
+                return ldifPart.getInvalidString();
             }
         }
 
@@ -192,11 +192,9 @@ public abstract class LdifContainer implements Serializable
 
     public final void adjustOffset( int adjust )
     {
-        for ( Iterator it = this.parts.iterator(); it.hasNext(); )
+        for ( LdifPart ldifPart : ldifParts )
         {
-            LdifPart part = ( LdifPart ) it.next();
-            part.adjustOffset( adjust );
+            ldifPart.adjustOffset( adjust );
         }
     }
-
 }

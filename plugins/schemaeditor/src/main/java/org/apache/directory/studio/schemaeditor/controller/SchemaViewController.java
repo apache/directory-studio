@@ -23,9 +23,8 @@ package org.apache.directory.studio.schemaeditor.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
-import org.apache.directory.shared.ldap.model.schema.ObjectClass;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
+import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
@@ -153,7 +152,7 @@ public class SchemaViewController
         /**
          * {@inheritDoc}
          */
-        public void objectClassAdded( MutableObjectClass oc )
+        public void objectClassAdded( ObjectClass oc )
         {
             SchemaViewContentProvider contentProvider = ( SchemaViewContentProvider ) viewer.getContentProvider();
             contentProvider.objectClassAdded( oc );
@@ -169,7 +168,7 @@ public class SchemaViewController
         /**
          * {@inheritDoc}
          */
-        public void objectClassModified( MutableObjectClass oc )
+        public void objectClassModified( ObjectClass oc )
         {
             ( ( SchemaViewContentProvider ) viewer.getContentProvider() ).objectClassModified( oc );
         }

@@ -26,8 +26,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.api.ldap.model.constants.SchemaConstants;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.EmptyValueAddedEvent;
@@ -355,7 +355,7 @@ public class Attribute implements IAttribute
     public boolean equals( Object o )
     {
         // check argument
-        if ( o == null || !( o instanceof IAttribute ) )
+        if ( !( o instanceof IAttribute ) )
         {
             return false;
         }

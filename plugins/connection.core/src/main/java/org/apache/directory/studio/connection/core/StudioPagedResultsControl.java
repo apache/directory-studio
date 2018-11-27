@@ -181,10 +181,11 @@ public class StudioPagedResultsControl extends StudioControl
      */
     public boolean equals( Object obj )
     {
-        if ( obj == null || !( obj instanceof StudioPagedResultsControl ) )
+        if ( !( obj instanceof StudioPagedResultsControl ) )
         {
             return false;
         }
+        
         StudioPagedResultsControl other = ( StudioPagedResultsControl ) obj;
 
         return this.toString().equals( other.toString() ) && this.isScrollMode == other.isScrollMode;

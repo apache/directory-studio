@@ -21,13 +21,13 @@
 package org.apache.directory.studio.ldapbrowser.common.wizards;
 
 
-import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.EntryWidget;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeAttributesRunnable;
@@ -54,6 +54,26 @@ import org.eclipse.swt.widgets.Composite;
 
 /**
  * The NewEntryTypeWizardPage is used to choose the entry creation method.
+ * 
+ * <pre>
+ *   .-------------------------------------------------.
+ *   | o o o              New Entry                    |
+ *   +-------------------------------------------------+
+ *   | Entry Creation Method                           |
+ *   |  Please select the entry creation method        |
+ *   +-------------------------------------------------+
+ *   | (o) Create entry from scratch                   |
+ *   | ( ) Use existing entry as template              |
+ *   |                                                 |
+ *   |    [---------------------------|v] [m] (Browse) |
+ *   |                                                 |
+ *   |                                                 |
+ *   |                                                 |
+ *   |                                                 |
+ *   +-------------------------------------------------+
+ *   | (?)         (< back) (Next >) (cancel) (finish) |
+ *   +-------------------------------------------------+
+ * </pre>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

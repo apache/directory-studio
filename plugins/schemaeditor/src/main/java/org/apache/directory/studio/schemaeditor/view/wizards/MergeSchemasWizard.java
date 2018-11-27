@@ -27,11 +27,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.directory.shared.ldap.model.schema.AbstractSchemaObject;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
-import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
-import org.apache.directory.shared.ldap.model.schema.ObjectClass;
+import org.apache.directory.api.ldap.model.schema.AbstractSchemaObject;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
+import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
+import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
+import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.model.Project;
 import org.apache.directory.studio.schemaeditor.model.Schema;
@@ -153,7 +153,7 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
             {
                 ObjectClassFolder ocf = ( ObjectClassFolder ) sourceObject;
                 Schema targetSchema = getTargetSchema( ocf.schema.getProject(), targetProject, targetSchemas );
-                List<MutableObjectClass> sourceObjectClasses = ocf.schema.getObjectClasses();
+                List<ObjectClass> sourceObjectClasses = ocf.schema.getObjectClasses();
                 for ( ObjectClass sourceObjectClass : sourceObjectClasses )
                 {
                     mergeObjectClass( sourceObjectClass, targetProject, targetSchema, processedObjects, errorMessages,
@@ -223,7 +223,7 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
                 replaceUnknownSyntax, mergeDependencies, pullUpAttributes );
         }
 
-        List<MutableObjectClass> sourceObjectClasses = sourceSchema.getObjectClasses();
+        List<ObjectClass> sourceObjectClasses = sourceSchema.getObjectClasses();
         for ( ObjectClass sourceObjectClass : sourceObjectClasses )
         {
             mergeObjectClass( sourceObjectClass, targetProject, targetSchema, processedObjects, errorMessages,
@@ -325,10 +325,10 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
                                     getIdString( sourceAttributeType ),
                                     clonedAttributeType.getSyntaxOid(),
                                     "1.3.6.1.4.1.1466.115.121.1.15 (Directory String)" } ) ); //$NON-NLS-1$
-                        clonedAttributeType.setSyntaxOid( "1.3.6.1.4.1.1466.115.121.1.15" );
-                        clonedAttributeType.setEqualityOid( "caseIgnoreMatch" );
+                        clonedAttributeType.setSyntaxOid( "1.3.6.1.4.1.1466.115.121.1.15" ); //$NON-NLS-1$
+                        clonedAttributeType.setEqualityOid( "caseIgnoreMatch" ); //$NON-NLS-1$
                         clonedAttributeType.setOrderingOid( null );
-                        clonedAttributeType.setSubstringOid( "caseIgnoreSubstringsMatch" );
+                        clonedAttributeType.setSubstringOid( "caseIgnoreSubstringsMatch" ); //$NON-NLS-1$
                     }
                 }
                 // TODO: if unknown (single) matching rule: set appropriate matching rule according to syntax

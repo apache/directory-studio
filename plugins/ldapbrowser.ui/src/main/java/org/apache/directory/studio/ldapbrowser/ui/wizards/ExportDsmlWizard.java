@@ -116,12 +116,14 @@ public class ExportDsmlWizard extends ExportBaseWizard
         switch ( saveAsType )
         {
             case RESPONSE:
-                new StudioBrowserJob( new ExportDsmlRunnable( exportFilename, search.getBrowserConnection(), search.getSearchParameter(),
-                    ExportDsmlJobType.RESPONSE )).execute();
+                new StudioBrowserJob( new ExportDsmlRunnable( exportFilename, search.getBrowserConnection(),
+                    search.getSearchParameter(),
+                    ExportDsmlJobType.RESPONSE ) ).execute();
                 break;
             case REQUEST:
-                new StudioBrowserJob( new ExportDsmlRunnable( exportFilename, search.getBrowserConnection(), search.getSearchParameter(),
-                    ExportDsmlJobType.REQUEST )).execute();
+                new StudioBrowserJob( new ExportDsmlRunnable( exportFilename, search.getBrowserConnection(),
+                    search.getSearchParameter(),
+                    ExportDsmlJobType.REQUEST ) ).execute();
                 break;
         }
 

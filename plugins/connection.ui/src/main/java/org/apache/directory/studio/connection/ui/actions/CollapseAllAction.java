@@ -34,21 +34,22 @@ import org.eclipse.jface.viewers.TreeViewer;
  */
 public class CollapseAllAction extends Action
 {
+    /** The Tree viewer */
     protected TreeViewer viewer;
 
 
     /**
      * Creates a new instance of CollapseAllAction.
      *
-     * @param viewer
-     *      the attached Viewer
+     * @param viewer the attached Viewer
      */
     public CollapseAllAction( TreeViewer viewer )
     {
         super(
-            Messages.getString( "CollapseAllAction.CollapseAll" ), ConnectionUIPlugin.getDefault().getImageDescriptor( ConnectionUIConstants.IMG_COLLAPSEALL ) ); //$NON-NLS-1$
-        super.setToolTipText( getText() );
-        super.setEnabled( true );
+            Messages.getString( "CollapseAllAction.CollapseAll" ), 
+                ConnectionUIPlugin.getDefault().getImageDescriptor( ConnectionUIConstants.IMG_COLLAPSEALL ) ); //$NON-NLS-1$
+        setToolTipText( getText() );
+        setEnabled( true );
 
         this.viewer = viewer;
     }
@@ -57,6 +58,7 @@ public class CollapseAllAction extends Action
     /**
      * {@inheritDoc}
      */
+    @Override
     public void run()
     {
         this.viewer.collapseAll();

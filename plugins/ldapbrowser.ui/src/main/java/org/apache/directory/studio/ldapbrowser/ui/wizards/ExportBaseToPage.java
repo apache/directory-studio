@@ -24,9 +24,9 @@ package org.apache.directory.studio.ldapbrowser.ui.wizards;
 import java.io.File;
 
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.common.widgets.FileBrowserWidget;
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -127,8 +127,8 @@ public abstract class ExportBaseToPage extends WizardPage
         BaseWidgetUtils.createLabel( composite, NLS.bind(
             Messages.getString( "ExportBaseToPage.FileTypeColon" ), getFileType() ), 1 ); //$NON-NLS-1$
         fileBrowserWidget = new FileBrowserWidget( NLS.bind(
-            Messages.getString( "ExportBaseToPage.SelectFileType" ), new String[] { getFileType() } ), getExtensions(), //$NON-NLS-1$
-            FileBrowserWidget.TYPE_SAVE );
+            Messages.getString( "ExportBaseToPage.SelectFileType" ), new String[] { getFileType() } ), //$NON-NLS-1$
+            getExtensions(), FileBrowserWidget.TYPE_SAVE );
         fileBrowserWidget.createWidget( composite );
         fileBrowserWidget.addWidgetModifyListener( new WidgetModifyListener()
         {

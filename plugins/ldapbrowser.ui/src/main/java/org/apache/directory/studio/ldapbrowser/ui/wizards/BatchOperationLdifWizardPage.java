@@ -21,8 +21,10 @@
 package org.apache.directory.studio.ldapbrowser.ui.wizards;
 
 
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
+import java.util.List;
+
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldifeditor.widgets.LdifEditorWidget;
 import org.apache.directory.studio.ldifparser.model.LdifFile;
@@ -69,19 +71,22 @@ public class BatchOperationLdifWizardPage extends WizardPage implements WidgetMo
 
     private void validate()
     {
-
         LdifFile model = ldifEditorWidget.getLdifModel();
-        LdifContainer[] containers = model.getContainers();
-        if ( containers.length == 0 )
+        List<LdifContainer> containers = model.getContainers();
+        
+        if ( containers.size() == 0 )
         {
             setPageComplete( false );
+            
             return;
         }
-        for ( int i = 0; i < containers.length; i++ )
+        
+        for ( LdifContainer ldifContainer : containers )
         {
-            if ( !containers[i].isValid() )
+            if ( !ldifContainer.isValid() )
             {
                 setPageComplete( false );
+                
                 return;
             }
         }

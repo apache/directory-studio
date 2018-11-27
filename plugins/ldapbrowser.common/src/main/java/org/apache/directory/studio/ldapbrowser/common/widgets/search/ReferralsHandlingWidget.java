@@ -21,10 +21,10 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.search;
 
 
+import org.apache.directory.studio.common.ui.widgets.AbstractWidget;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
-import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
@@ -39,7 +39,7 @@ import org.eclipse.swt.widgets.Group;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ReferralsHandlingWidget extends BrowserWidget
+public class ReferralsHandlingWidget extends AbstractWidget
 {
 
     /** The initial referrals handling method. */

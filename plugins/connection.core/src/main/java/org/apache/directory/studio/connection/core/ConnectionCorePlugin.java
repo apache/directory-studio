@@ -64,6 +64,9 @@ public class ConnectionCorePlugin extends Plugin
     /** The connection folder manager */
     private ConnectionFolderManager connectionFolderManager;
 
+    /** The passwords keystore manager */
+    private PasswordsKeyStoreManager passwordsKeyStoreManager;
+
     /** The permanent trust store */
     private StudioKeyStoreManager permanentTrustStoreManager;
 
@@ -123,6 +126,11 @@ public class ConnectionCorePlugin extends Plugin
             connectionFolderManager = new ConnectionFolderManager();
         }
 
+        if ( passwordsKeyStoreManager == null )
+        {
+            passwordsKeyStoreManager = new PasswordsKeyStoreManager();
+        }
+
         if ( permanentTrustStoreManager == null )
         {
             permanentTrustStoreManager = StudioKeyStoreManager.createFileKeyStoreManager( PERMANENT_TRUST_STORE,
@@ -133,6 +141,10 @@ public class ConnectionCorePlugin extends Plugin
         {
             sessionTrustStoreManager = StudioKeyStoreManager.createMemoryKeyStoreManager();
         }
+
+        // Nasty hack to get the API bundles started. DO NOT REMOVE
+        Platform.getBundle( "org.apache.directory.api.ldap.codec.core" ).start();
+        Platform.getBundle( "org.apache.directory.api.ldap.net.mina" ).start();
     }
 
 
@@ -218,6 +230,17 @@ public class ConnectionCorePlugin extends Plugin
     public EventRunner getEventRunner()
     {
         return eventRunner;
+    }
+
+
+    /**
+     * Gets the password keystore manager.
+     *
+     * @return the password keystore manager
+     */
+    public PasswordsKeyStoreManager getPasswordsKeyStoreManager()
+    {
+        return passwordsKeyStoreManager;
     }
 
 
@@ -419,8 +442,7 @@ public class ConnectionCorePlugin extends Plugin
             jndiLoggers = new ArrayList<IJndiLogger>();
 
             IExtensionRegistry registry = Platform.getExtensionRegistry();
-            IExtensionPoint extensionPoint = registry.getExtensionPoint( getPluginProperties().getString(
-                "ExtensionPoint_JndiLogger_id" ) ); //$NON-NLS-1$
+            IExtensionPoint extensionPoint = registry.getExtensionPoint( "org.apache.directory.studio.jndilogger" ); //$NON-NLS-1$
             IConfigurationElement[] members = extensionPoint.getConfigurationElements();
             for ( IConfigurationElement member : members )
             {
@@ -457,8 +479,7 @@ public class ConnectionCorePlugin extends Plugin
             connectionListeners = new ArrayList<IConnectionListener>();
 
             IExtensionRegistry registry = Platform.getExtensionRegistry();
-            IExtensionPoint extensionPoint = registry.getExtensionPoint( getPluginProperties().getString(
-                "ExtensionPoint_ConnectionListener_id" ) ); //$NON-NLS-1$
+            IExtensionPoint extensionPoint = registry.getExtensionPoint( "org.apache.directory.studio.connectionlistener" ); //$NON-NLS-1$
             IConfigurationElement[] members = extensionPoint.getConfigurationElements();
             for ( IConfigurationElement member : members )
             {

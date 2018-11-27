@@ -21,28 +21,8 @@
 package org.apache.directory.studio.test.integration.core;
 
 
-import java.net.ConnectException;
-import java.net.UnknownHostException;
-
-import javax.naming.AuthenticationException;
-import javax.naming.CommunicationException;
-import javax.naming.NamingEnumeration;
-import javax.naming.NamingException;
-import javax.naming.directory.SearchControls;
-import javax.naming.directory.SearchResult;
-
-import org.apache.directory.server.unit.AbstractServerTest;
-import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
-import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
-import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
-import org.apache.directory.studio.connection.core.ConnectionParameter;
-import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
-import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.NetworkProvider;
-import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
 import org.apache.directory.studio.connection.core.io.jndi.JNDIConnectionWrapper;
-import org.eclipse.core.runtime.NullProgressMonitor;
 
 
 /**
@@ -51,187 +31,14 @@ import org.eclipse.core.runtime.NullProgressMonitor;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class JNDIConnectionWrapperTest extends AbstractServerTest
+public class JNDIConnectionWrapperTest extends ConnectionWrapperTestBase
 {
-    /**
-     * Initialize the server.
-     */
-    public void setUp() throws Exception
+
+    public JNDIConnectionWrapperTest()
     {
-        super.setUp();
+        super( NetworkProvider.JNDI );
     }
 
-
-    /**
-     * Tests connecting to the server.
-     */
-    public void testConnect()
-    {
-        StudioProgressMonitor monitor = getProgressMonitor();
-        ConnectionParameter connectionParameter = new ConnectionParameter( null, "localhost", ldapServer.getPort(),
-            EncryptionMethod.NONE, NetworkProvider.JNDI, AuthenticationMethod.NONE, null, null, null, true, null );
-        Connection connection = new Connection( connectionParameter );
-        ConnectionWrapper connectionWrapper = connection.getConnectionWrapper();
-
-        assertFalse( connectionWrapper.isConnected() );
-
-        connectionWrapper.connect( monitor );
-        assertTrue( connectionWrapper.isConnected() );
-        assertNull( monitor.getException() );
-
-        connectionWrapper.disconnect();
-        assertFalse( connectionWrapper.isConnected() );
-
-        // TODO: SSL, StartTLS
-    }
-
-
-    /**
-     * Test failed connections to the server.
-     */
-    public void testConnectFailures()
-    {
-        StudioProgressMonitor monitor = null;
-        ConnectionParameter connectionParameter = null;
-        Connection connection = null;
-        ConnectionWrapper connectionWrapper = null;
-
-        // invalid port
-        monitor = getProgressMonitor();
-        connectionParameter = new ConnectionParameter( null, "localhost", ldapServer.getPort() + 1,
-            EncryptionMethod.NONE, NetworkProvider.JNDI, AuthenticationMethod.NONE, null, null, null, true, null );
-        connection = new Connection( connectionParameter );
-        connectionWrapper = connection.getConnectionWrapper();
-        connectionWrapper.connect( monitor );
-        assertFalse( connectionWrapper.isConnected() );
-        assertNotNull( monitor.getException() );
-        assertTrue( monitor.getException() instanceof CommunicationException );
-        assertNotNull( monitor.getException().getCause() );
-        assertTrue( monitor.getException().getCause() instanceof ConnectException );
-
-        // unknown host
-        monitor = getProgressMonitor();
-        connectionParameter = new ConnectionParameter( null, "555.555.555.555", ldapServer.getPort(),
-            EncryptionMethod.NONE, NetworkProvider.JNDI, AuthenticationMethod.NONE, null, null, null, true, null );
-        connection = new Connection( connectionParameter );
-        connectionWrapper = connection.getConnectionWrapper();
-        connectionWrapper.connect( monitor );
-        assertFalse( connectionWrapper.isConnected() );
-        assertNotNull( monitor.getException() );
-        assertTrue( monitor.getException() instanceof CommunicationException );
-        assertNotNull( monitor.getException().getCause() );
-        assertTrue( monitor.getException().getCause() instanceof UnknownHostException );
-
-        // TODO: SSL, StartTLS
-    }
-
-
-    /**
-     * Test binding to the server.
-     */
-    public void testBind()
-    {
-        StudioProgressMonitor monitor = getProgressMonitor();
-        ConnectionParameter connectionParameter = new ConnectionParameter( null, "localhost", ldapServer.getPort(),
-            EncryptionMethod.NONE, NetworkProvider.JNDI, AuthenticationMethod.SIMPLE, "uid=admin,ou=system", "secret",
-            null, true, null );
-        Connection connection = new Connection( connectionParameter );
-        ConnectionWrapper connectionWrapper = connection.getConnectionWrapper();
-
-        assertFalse( connectionWrapper.isConnected() );
-
-        connectionWrapper.connect( monitor );
-        connectionWrapper.bind( monitor );
-        assertTrue( connectionWrapper.isConnected() );
-        assertNull( monitor.getException() );
-
-        connectionWrapper.unbind();
-        connectionWrapper.disconnect();
-        assertFalse( connectionWrapper.isConnected() );
-
-    }
-
-
-    /**
-     * Test failed binds to the server.
-     */
-    public void testBindFailures()
-    {
-        StudioProgressMonitor monitor = null;
-        ConnectionParameter connectionParameter = null;
-        Connection connection = null;
-        ConnectionWrapper connectionWrapper = null;
-
-        // simple auth without principal and credential
-        monitor = getProgressMonitor();
-        connectionParameter = new ConnectionParameter( null, "localhost", ldapServer.getPort(),
-            EncryptionMethod.NONE, NetworkProvider.JNDI, AuthenticationMethod.SIMPLE, "uid=admin", "invalid", null,
-            true, null );
-        connection = new Connection( connectionParameter );
-        connectionWrapper = connection.getConnectionWrapper();
-        connectionWrapper.connect( monitor );
-        connectionWrapper.bind( monitor );
-        assertFalse( connectionWrapper.isConnected() );
-        assertNotNull( monitor.getException() );
-        assertTrue( monitor.getException() instanceof NamingException );
-
-        // simple auth with invalid principal and credential
-        monitor = getProgressMonitor();
-        connectionParameter = new ConnectionParameter( null, "localhost", ldapServer.getPort(),
-            EncryptionMethod.NONE, NetworkProvider.JNDI, AuthenticationMethod.SIMPLE, "uid=admin,ou=system", "bar",
-            null, true, null );
-        connection = new Connection( connectionParameter );
-        connectionWrapper = connection.getConnectionWrapper();
-        connectionWrapper.connect( monitor );
-        connectionWrapper.bind( monitor );
-        assertFalse( connectionWrapper.isConnected() );
-        assertNotNull( monitor.getException() );
-        assertTrue( monitor.getException() instanceof AuthenticationException );
-    }
-
-
-    /**
-     * Test searching.
-     */
-    public void testSearch()
-    {
-        StudioProgressMonitor monitor = null;
-        ConnectionParameter connectionParameter = null;
-        Connection connection = null;
-        ConnectionWrapper connectionWrapper = null;
-
-        // simple auth without principal and credential
-        monitor = getProgressMonitor();
-        connectionParameter = new ConnectionParameter( null, "localhost", ldapServer.getPort(),
-            EncryptionMethod.NONE, NetworkProvider.JNDI, AuthenticationMethod.SIMPLE, "uid=admin,ou=system", "secret",
-            null, true, null );
-        connection = new Connection( connectionParameter );
-        connectionWrapper = connection.getConnectionWrapper();
-        connectionWrapper.connect( monitor );
-        connectionWrapper.bind( monitor );
-        assertTrue( connectionWrapper.isConnected() );
-        assertNull( monitor.getException() );
-
-        SearchControls searchControls = new SearchControls();
-        NamingEnumeration<SearchResult> result = connectionWrapper.search( "ou=system", "objectClass=*",
-            searchControls, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, null, monitor, null );
-        assertNotNull( result );
-    }
-
-
-    /**
-     * Shutdown the server.
-     */
-    public void tearDown() throws Exception
-    {
-        super.tearDown();
-    }
-
-
-    private StudioProgressMonitor getProgressMonitor()
-    {
-        StudioProgressMonitor monitor = new StudioProgressMonitor( new NullProgressMonitor() );
-        return monitor;
-    }
+    // see tests in super class
 
 }

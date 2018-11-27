@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.io.FileUtils;
+import org.apache.directory.api.util.FileUtils;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.connection.core.event.ConnectionUpdateListener;
 import org.apache.directory.studio.connection.core.io.ConnectionIO;
@@ -73,7 +73,7 @@ public class ConnectionManager implements ConnectionUpdateListener
      */
     public ConnectionManager()
     {
-        this.connectionList = new HashSet<Connection>();
+        this.connectionList = new HashSet<>();
         loadInitializers();
         loadConnections();
         ConnectionEventRegistry.addConnectionUpdateListener( this, ConnectionCorePlugin.getDefault().getEventRunner() );
@@ -93,8 +93,7 @@ public class ConnectionManager implements ConnectionUpdateListener
         }
 
         IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(
-            ConnectionCorePlugin.getDefault().getPluginProperties().getString(
-                "ExtensionPoint_ConnectionInitializer_id" ) ); //$NON-NLS-1$
+            "org.apache.directory.studio.connectionInitializer" ); //$NON-NLS-1$
 
         IConfigurationElement[] configurationElements = extensionPoint.getConfigurationElements();
         for ( IConfigurationElement configurationElement : configurationElements )
@@ -180,8 +179,7 @@ public class ConnectionManager implements ConnectionUpdateListener
      */
     public static final String getConnectionStoreFileName()
     {
-        String filename = ConnectionCorePlugin.getDefault().getStateLocation().append( CONNECTIONS_XML ).toOSString();
-        return filename;
+        return ConnectionCorePlugin.getDefault().getStateLocation().append( CONNECTIONS_XML ).toOSString();
     }
 
 
@@ -273,7 +271,7 @@ public class ConnectionManager implements ConnectionUpdateListener
      */
     public Connection[] getConnections()
     {
-        return ( Connection[] ) connectionList.toArray( new Connection[0] );
+        return connectionList.toArray( new Connection[0] );
     }
 
 
@@ -359,9 +357,10 @@ public class ConnectionManager implements ConnectionUpdateListener
     /**
      * Saves the Connections
      */
-    private synchronized void saveConnections()
+    public synchronized void saveConnections()
     {
-        Set<ConnectionParameter> connectionParameters = new HashSet<ConnectionParameter>();
+        Set<ConnectionParameter> connectionParameters = new HashSet<>();
+        
         for ( Connection connection : connectionList )
         {
             connectionParameters.add( connection.getConnectionParameter() );
@@ -383,6 +382,7 @@ public class ConnectionManager implements ConnectionUpdateListener
         // move temp file to good file
         File file = new File( getConnectionStoreFileName() );
         File tempFile = new File( getConnectionStoreFileName() + TEMP_SUFFIX );
+        
         if ( file.exists() )
         {
             file.delete();

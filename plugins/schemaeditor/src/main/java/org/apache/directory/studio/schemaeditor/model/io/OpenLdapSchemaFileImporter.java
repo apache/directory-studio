@@ -29,11 +29,11 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.regex.MatchResult;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
-import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
-import org.apache.directory.shared.ldap.model.schema.ObjectClass;
-import org.apache.directory.shared.ldap.model.schema.parsers.OpenLdapSchemaParser;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
+import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
+import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
+import org.apache.directory.api.ldap.model.schema.ObjectClass;
+import org.apache.directory.api.ldap.model.schema.parsers.OpenLdapSchemaParser;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 import org.eclipse.osgi.util.NLS;
 
@@ -122,7 +122,7 @@ public class OpenLdapSchemaFileImporter
      * @return
      *      the name of the file.
      */
-    private static final String getNameFromPath( String path )
+    private static String getNameFromPath( String path )
     {
         File file = new File( path );
         String fileName = file.getName();
@@ -144,7 +144,7 @@ public class OpenLdapSchemaFileImporter
      * @return
      *      the corresponding AttributeTypeImpl
      */
-    private static final AttributeType convertAttributeType( AttributeType at )
+    private static AttributeType convertAttributeType( AttributeType at )
     {
         MutableAttributeType newAT = new MutableAttributeType( at.getOid() );
         newAT.setNames( at.getNames() );
@@ -173,7 +173,7 @@ public class OpenLdapSchemaFileImporter
      * @return
      *      the corresponding ObjectClassImpl
      */
-    private static final MutableObjectClass convertObjectClass( ObjectClass oc )
+    private static MutableObjectClass convertObjectClass( ObjectClass oc )
     {
         MutableObjectClass newOC = new MutableObjectClass( oc.getOid() );
         newOC.setNames( oc.getNames() );

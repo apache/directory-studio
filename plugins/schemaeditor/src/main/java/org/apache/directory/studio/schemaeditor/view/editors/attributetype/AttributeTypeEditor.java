@@ -21,8 +21,8 @@
 package org.apache.directory.studio.schemaeditor.view.editors.attributetype;
 
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
+import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
@@ -30,7 +30,6 @@ import org.apache.directory.studio.schemaeditor.controller.SchemaHandler;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandlerAdapter;
 import org.apache.directory.studio.schemaeditor.controller.SchemaHandlerListener;
 import org.apache.directory.studio.schemaeditor.model.Schema;
-import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.IPageChangedListener;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -49,9 +48,6 @@ import org.eclipse.ui.forms.editor.FormEditor;
  */
 public class AttributeTypeEditor extends FormEditor
 {
-    /** The logger */
-    private static Logger logger = Logger.getLogger( AttributeTypeEditor.class );
-
     /** The ID of the Editor */
     public static final String ID = PluginConstants.EDITOR_ATTRIBUTE_TYPE_ID;
 
@@ -170,7 +166,8 @@ public class AttributeTypeEditor extends FormEditor
         setInput( input );
         setPartName( input.getName() );
 
-        originalAttributeType = (MutableAttributeType)( ( AttributeTypeEditorInput ) getEditorInput() ).getAttributeType();
+        originalAttributeType = ( MutableAttributeType ) ( ( AttributeTypeEditorInput ) getEditorInput() )
+            .getAttributeType();
         modifiedAttributeType = PluginUtils.getClone( originalAttributeType );
 
         SchemaHandler schemaHandler = Activator.getDefault().getSchemaHandler();
@@ -209,7 +206,7 @@ public class AttributeTypeEditor extends FormEditor
         }
         catch ( PartInitException e )
         {
-            logger.debug( "error when adding pages" ); //$NON-NLS-1$
+            PluginUtils.logError( "error when adding pages", e ); //$NON-NLS-1$
         }
     }
 

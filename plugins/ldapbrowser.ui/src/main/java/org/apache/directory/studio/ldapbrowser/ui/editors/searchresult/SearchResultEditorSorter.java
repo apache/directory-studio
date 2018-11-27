@@ -106,9 +106,9 @@ public class SearchResultEditorSorter extends ViewerSorter implements SelectionL
                 column.removeSelectionListener( this );
             }
         }
-        
+
         columns = contentProvider.getViewer().getTable().getColumns();
-        
+
         for ( TableColumn column : columns )
         {
             column.addSelectionListener( this );
@@ -116,12 +116,12 @@ public class SearchResultEditorSorter extends ViewerSorter implements SelectionL
 
         // check sort column
         int visibleColumns = search.getReturningAttributes().length;
-        
+
         if ( showDn )
         {
             visibleColumns++;
         }
-        
+
         if ( visibleColumns < sortBy + 1 )
         {
             setSortColumn( 0 );
@@ -143,7 +143,7 @@ public class SearchResultEditorSorter extends ViewerSorter implements SelectionL
                 }
             }
         }
-        
+
         columns = null;
         search = null;
         contentProvider = null;
@@ -191,14 +191,14 @@ public class SearchResultEditorSorter extends ViewerSorter implements SelectionL
             sortBy = index;
             sortOrder = BrowserCoreConstants.SORT_ORDER_ASCENDING;
         }
-        
+
         if ( sortOrder == BrowserCoreConstants.SORT_ORDER_NONE )
         {
             sortBy = BrowserCoreConstants.SORT_BY_NONE;
         }
 
         TableColumn[] columns = contentProvider.getViewer().getTable().getColumns();
-        
+
         for ( TableColumn column : columns )
         {
             column.setImage( null );
@@ -288,7 +288,7 @@ public class SearchResultEditorSorter extends ViewerSorter implements SelectionL
         else
         {
             String attributeName;
-            
+
             if ( showDn && ( sortBy == 0 ) )
             {
                 attributeName = BrowserUIConstants.DN;
@@ -311,7 +311,7 @@ public class SearchResultEditorSorter extends ViewerSorter implements SelectionL
             {
                 AttributeHierarchy ah1 = entry1.getAttributeWithSubtypes( attributeName );
                 AttributeHierarchy ah2 = entry2.getAttributeWithSubtypes( attributeName );
-                
+
                 if ( ah1 == null )
                 {
                     if ( ah2 == null )

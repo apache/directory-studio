@@ -40,7 +40,7 @@ public interface StudioNamingEnumeration extends NamingEnumeration<SearchResult>
      * 
      * @return the connection
      */
-    public Connection getConnection();
+    Connection getConnection();
 
 
     /**
@@ -50,5 +50,5 @@ public interface StudioNamingEnumeration extends NamingEnumeration<SearchResult>
      * 
      * @throws NamingException the naming exception
      */
-    public Control[] getResponseControls() throws NamingException;
+    Control[] getResponseControls() throws NamingException;
 }

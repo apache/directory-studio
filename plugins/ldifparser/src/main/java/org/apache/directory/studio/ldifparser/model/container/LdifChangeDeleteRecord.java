@@ -25,17 +25,13 @@ import org.apache.directory.studio.ldifparser.model.lines.LdifChangeTypeLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifDnLine;
 
 
+/**
+ * A LDIF container for LDIF delete change records
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class LdifChangeDeleteRecord extends LdifChangeRecord
 {
-
-    private static final long serialVersionUID = -1597258565782701577L;
-
-
-    protected LdifChangeDeleteRecord()
-    {
-    }
-
-
     public LdifChangeDeleteRecord( LdifDnLine dn )
     {
         super( dn );
@@ -46,6 +42,7 @@ public class LdifChangeDeleteRecord extends LdifChangeRecord
     {
         LdifChangeDeleteRecord record = new LdifChangeDeleteRecord( LdifDnLine.create( dn ) );
         record.setChangeType( LdifChangeTypeLine.createDelete() );
+
         return record;
     }
 
@@ -57,7 +54,6 @@ public class LdifChangeDeleteRecord extends LdifChangeRecord
             return false;
         }
 
-        return this.getChangeTypeLine() != null && this.getSepLine() != null;
+        return ( getChangeTypeLine() != null ) && ( getSepLine() != null );
     }
-
 }

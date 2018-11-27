@@ -20,9 +20,9 @@
 package org.apache.directory.studio.schemaeditor.controller.actions;
 
 
-import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
-import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
-import org.apache.directory.shared.ldap.model.schema.ObjectClass;
+import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
+import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
+import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
@@ -112,7 +112,8 @@ public class RenameSchemaElementAction extends Action implements IWorkbenchWindo
                 // ATTRIBUTE TYPE
                 else if ( selectedElement instanceof AttributeTypeWrapper )
                 {
-                    MutableAttributeType attributeType = (MutableAttributeType)( ( AttributeTypeWrapper ) selectedElement ).getAttributeType();
+                    MutableAttributeType attributeType = ( MutableAttributeType ) ( ( AttributeTypeWrapper ) selectedElement )
+                        .getAttributeType();
 
                     RenameAttributeTypeDialog dialog = new RenameAttributeTypeDialog( attributeType.getNames() );
                     if ( dialog.open() == RenameAttributeTypeDialog.OK )
@@ -126,7 +127,8 @@ public class RenameSchemaElementAction extends Action implements IWorkbenchWindo
                 // OBJECT CLASS
                 else if ( selectedElement instanceof ObjectClassWrapper )
                 {
-                    MutableObjectClass objectClass = ( ( ObjectClassWrapper ) selectedElement ).getObjectClass();
+                    MutableObjectClass objectClass = ( MutableObjectClass ) ( ( ObjectClassWrapper ) selectedElement )
+                        .getObjectClass();
 
                     RenameObjectClassDialog dialog = new RenameObjectClassDialog( objectClass.getNames() );
                     if ( dialog.open() == RenameObjectClassDialog.OK )

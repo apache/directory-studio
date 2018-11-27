@@ -26,10 +26,10 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.directory.studio.common.ui.HistoryUtils;
+import org.apache.directory.studio.common.ui.widgets.AbstractWidget;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
-import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
 import org.apache.directory.studio.ldapbrowser.common.widgets.DialogContentAssistant;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
@@ -44,12 +44,12 @@ import org.eclipse.swt.widgets.Composite;
 
 /**
  * The ReturningAttributesWidget could be used to enter a list of attribute types
- * return by an LDPA search. It is composed of a combo with content assist
+ * return by an LDAP search. It is composed of a combo with content assist
  * and a history.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ReturningAttributesWidget extends BrowserWidget
+public class ReturningAttributesWidget extends AbstractWidget
 {
 
     /** The returning attributes combo. */
@@ -230,12 +230,13 @@ public class ReturningAttributesWidget extends BrowserWidget
      * <li>A-Z
      * <li>0-9
      * <li>-
-     * <li>.
-     * <li>;
-     * <li>_
-     * <li>*
-     * <li>+
+     * <li>. (part of numeric OID)
+     * <li>; (attribute option)
+     * <li>_ (some directory servers allow underscore in attribute name)
+     * <li>* (all user attributes)
+     * <li>+ (all operational attributes)
      * <li>@
+     * <li>= (range option, DIRSTUDIO-985)
      * 
      * @param s the string to split
      * 
@@ -257,7 +258,7 @@ public class ReturningAttributesWidget extends BrowserWidget
                 char c = s.charAt( i );
 
                 if ( ( c >= 'a' && c <= 'z' ) || ( c >= 'A' && c <= 'Z' ) || ( c >= '0' && c <= '9' ) || c == '-'
-                    || c == '.' || c == ';' || c == '_' || c == '*' || c == '+' || c == '@' )
+                    || c == '.' || c == ';' || c == '_' || c == '*' || c == '+' || c == '@' || c == '=' )
                 {
                     temp.append( c );
                 }

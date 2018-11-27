@@ -38,8 +38,7 @@ public final class ValueEditorsConstants
     }
 
     /** The plug-in ID */
-    public static final String PLUGIN_ID = ValueEditorsActivator.getDefault().getPluginProperties().getString(
-        "Plugin_id" ); //$NON-NLS-1$
+    public static final String PLUGIN_ID = ValueEditorsConstants.class.getPackage().getName();
 
     /** The relative path to the image editor icon */
     public static final String IMG_IMAGEEDITOR = "resources/icons/imageeditor.gif"; //$NON-NLS-1$
@@ -74,4 +73,6 @@ public final class ValueEditorsConstants
     /** The relative path to the text field ok icon */
     public static final String IMG_TEXTFIELD_OK = "resources/icons/textfield_ok.png"; //$NON-NLS-1$
 
+    /** The dialogs settings for the Date Editor "Discard fraction" checkbox */
+    public static final String DIALOGSETTING_KEY_DATE_EDITOR_DISCARD_FRACTION = "dateEditorDiscardFraction"; //$NON-NLS-1$
 }

@@ -26,7 +26,7 @@ import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SearchControls;
 import javax.naming.ldap.Control;
 
-import org.apache.directory.shared.ldap.model.message.Referral;
+import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo;
 import org.apache.directory.studio.connection.core.io.jndi.StudioSearchResult;
@@ -49,7 +49,7 @@ public interface IJndiLogger
      * @param controls the controls
      * @param ex the naming exception if an error occurred, null otherwise
      */
-    public void logChangetypeAdd( Connection connection, final String dn, final Attributes attributes,
+    void logChangetypeAdd( Connection connection, final String dn, final Attributes attributes,
         final Control[] controls, NamingException ex );
 
 
@@ -62,7 +62,7 @@ public interface IJndiLogger
      * @param ex the naming exception if an error occurred, null otherwise
      * 
      */
-    public void logChangetypeDelete( Connection connection, final String dn, final Control[] controls,
+    void logChangetypeDelete( Connection connection, final String dn, final Control[] controls,
         NamingException ex );
 
 
@@ -75,7 +75,7 @@ public interface IJndiLogger
      * @param ex the naming exception if an error occurred, null otherwise
      * @param controls the controls
      */
-    public void logChangetypeModify( Connection connection, final String dn,
+    void logChangetypeModify( Connection connection, final String dn,
         final ModificationItem[] modificationItems, final Control[] controls, NamingException ex );
 
 
@@ -89,7 +89,7 @@ public interface IJndiLogger
      * @param controls the controls
      * @param ex the naming exception if an error occurred, null otherwise
      */
-    public void logChangetypeModDn( Connection connection, final String oldDn, final String newDn,
+    void logChangetypeModDn( Connection connection, final String oldDn, final String newDn,
         final boolean deleteOldRdn, final Control[] controls, NamingException ex );
 
 
@@ -98,7 +98,7 @@ public interface IJndiLogger
      * 
      * @param id the new logger ID
      */
-    public void setId( String id );
+    void setId( String id );
 
 
     /**
@@ -106,7 +106,7 @@ public interface IJndiLogger
      * 
      * @return the logger ID
      */
-    public String getId();
+    String getId();
 
 
     /**
@@ -114,7 +114,7 @@ public interface IJndiLogger
      * 
      * @param name the new logger name
      */
-    public void setName( String name );
+    void setName( String name );
 
 
     /**
@@ -122,7 +122,7 @@ public interface IJndiLogger
      * 
      * @return the logger name
      */
-    public String getName();
+    String getName();
 
 
     /**
@@ -130,7 +130,7 @@ public interface IJndiLogger
      * 
      * @param description the new logger description
      */
-    public void setDescription( String description );
+    void setDescription( String description );
 
 
     /**
@@ -138,7 +138,7 @@ public interface IJndiLogger
      * 
      * @return the logger description
      */
-    public String getDescription();
+    String getDescription();
 
 
     /**
@@ -153,7 +153,7 @@ public interface IJndiLogger
      * @param requestNum the request number
      * @param namingException the naming exception if an error occurred, null otherwise
      */
-    public void logSearchRequest( Connection connection, String searchBase, String filter,
+    void logSearchRequest( Connection connection, String searchBase, String filter,
         SearchControls searchControls, AliasDereferencingMethod aliasesDereferencingMethod, Control[] controls,
         long requestNum, NamingException namingException );
 
@@ -166,7 +166,7 @@ public interface IJndiLogger
      * @param requestNum the request number
      * @param the naming exception if an error occurred, null otherwise
      */
-    public void logSearchResultEntry( Connection connection, StudioSearchResult studioSearchResult, long requestNum,
+    void logSearchResultEntry( Connection connection, StudioSearchResult studioSearchResult, long requestNum,
         NamingException namingException );
 
 
@@ -179,7 +179,7 @@ public interface IJndiLogger
      * @param requestNum the request number
      * @param the naming exception if an error occurred, null otherwise
      */
-    public void logSearchResultReference( Connection connection, Referral referral,
+    void logSearchResultReference( Connection connection, Referral referral,
         ReferralsInfo referralsInfo, long requestNum, NamingException namingException );
 
 
@@ -191,6 +191,6 @@ public interface IJndiLogger
      * @param requestNum the request number
      * @param the naming exception if an error occurred, null otherwise
      */
-    public void logSearchResultDone( Connection connection, long count, long requestNum, NamingException namingException );
+    void logSearchResultDone( Connection connection, long count, long requestNum, NamingException namingException );
 
 }

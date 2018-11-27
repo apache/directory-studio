@@ -32,7 +32,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -56,12 +55,6 @@ public class CertificateValidationPreferencePage extends PreferencePage implemen
     /** The tab folder. */
     private TabFolder tabFolder;
 
-    /** The composite containing permanent trusted certificates */
-    private CertificateListComposite permanentCLComposite;
-
-    /** The composite containing temporary trusted certificates */
-    private CertificateListComposite sessionCLComposite;
-
 
     /**
      * 
@@ -80,6 +73,7 @@ public class CertificateValidationPreferencePage extends PreferencePage implemen
      */
     public void init( IWorkbench workbench )
     {
+        // Nothing to do
     }
 
 
@@ -100,7 +94,7 @@ public class CertificateValidationPreferencePage extends PreferencePage implemen
         verifyCertificatesButton.addSelectionListener( new SelectionAdapter()
         {
             @Override
-            public void widgetSelected( SelectionEvent e )
+            public void widgetSelected( SelectionEvent event )
             {
                 tabFolder.setEnabled( verifyCertificatesButton.getSelection() );
             }
@@ -108,19 +102,15 @@ public class CertificateValidationPreferencePage extends PreferencePage implemen
 
         // certificate list widget
         tabFolder = new TabFolder( composite, SWT.TOP );
-        GridLayout mainLayout = new GridLayout();
-        mainLayout.marginWidth = 0;
-        mainLayout.marginHeight = 0;
-        tabFolder.setLayout( mainLayout );
         tabFolder.setLayoutData( new GridData( GridData.FILL, GridData.FILL, true, true ) );
 
-        permanentCLComposite = new CertificateListComposite( tabFolder, SWT.NONE );
+        CertificateListComposite permanentCLComposite = new CertificateListComposite( tabFolder, SWT.NONE );
         permanentCLComposite.setInput( ConnectionCorePlugin.getDefault().getPermanentTrustStoreManager() );
         TabItem permanentTab = new TabItem( tabFolder, SWT.NONE, 0 );
         permanentTab.setText( Messages.getString( "CertificateValidationPreferencePage.PermanentTrusted" ) ); //$NON-NLS-1$
         permanentTab.setControl( permanentCLComposite );
 
-        sessionCLComposite = new CertificateListComposite( tabFolder, SWT.NONE );
+        CertificateListComposite sessionCLComposite = new CertificateListComposite( tabFolder, SWT.NONE );
         sessionCLComposite.setInput( ConnectionCorePlugin.getDefault().getSessionTrustStoreManager() );
         TabItem sessionTab = new TabItem( tabFolder, SWT.NONE, 1 );
         sessionTab.setText( Messages.getString( "CertificateValidationPreferencePage.TemporaryTrusted" ) ); //$NON-NLS-1$
@@ -134,6 +124,7 @@ public class CertificateValidationPreferencePage extends PreferencePage implemen
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void performDefaults()
     {
         verifyCertificatesButton.setSelection( ConnectionCorePlugin.getDefault().getPluginPreferences()

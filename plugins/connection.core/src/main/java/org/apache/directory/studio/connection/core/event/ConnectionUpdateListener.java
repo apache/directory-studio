@@ -34,13 +34,12 @@ import org.apache.directory.studio.connection.core.ConnectionFolder;
  */
 public interface ConnectionUpdateListener extends EventListener
 {
-
     /**
      * Called when an {@link Connection} was opened.
      *
      * @param connection the opened connection 
      */
-    public void connectionOpened( Connection connection );
+    void connectionOpened( Connection connection );
 
 
     /**
@@ -48,7 +47,7 @@ public interface ConnectionUpdateListener extends EventListener
      *
      * @param connection the closed connection 
      */
-    public void connectionClosed( Connection connection );
+    void connectionClosed( Connection connection );
 
 
     /**
@@ -56,7 +55,7 @@ public interface ConnectionUpdateListener extends EventListener
      *
      * @param connection the added connection 
      */
-    public void connectionAdded( Connection connection );
+    void connectionAdded( Connection connection );
 
 
     /**
@@ -64,7 +63,7 @@ public interface ConnectionUpdateListener extends EventListener
      *
      * @param connection the removed connection 
      */
-    public void connectionRemoved( Connection connection );
+    void connectionRemoved( Connection connection );
 
 
     /**
@@ -72,7 +71,7 @@ public interface ConnectionUpdateListener extends EventListener
      *
      * @param connection the updated connection 
      */
-    public void connectionUpdated( Connection connection );
+    void connectionUpdated( Connection connection );
 
 
     /**
@@ -80,7 +79,7 @@ public interface ConnectionUpdateListener extends EventListener
      *
      * @param connectionFolder the modified connection folder 
      */
-    public void connectionFolderModified( ConnectionFolder connectionFolder );
+    void connectionFolderModified( ConnectionFolder connectionFolder );
 
 
     /**
@@ -88,7 +87,7 @@ public interface ConnectionUpdateListener extends EventListener
      *
      * @param connectionFolder the added connection folder 
      */
-    public void connectionFolderAdded( ConnectionFolder connectionFolder );
+    void connectionFolderAdded( ConnectionFolder connectionFolder );
 
 
     /**
@@ -96,6 +95,5 @@ public interface ConnectionUpdateListener extends EventListener
      *
      * @param connectionFolder the removed connection folder 
      */
-    public void connectionFolderRemoved( ConnectionFolder connectionFolder );
-
+    void connectionFolderRemoved( ConnectionFolder connectionFolder );
 }

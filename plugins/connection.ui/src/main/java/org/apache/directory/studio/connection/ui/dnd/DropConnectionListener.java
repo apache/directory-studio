@@ -44,15 +44,6 @@ import org.eclipse.swt.widgets.TreeItem;
  */
 public class DropConnectionListener implements DropTargetListener
 {
-
-    /**
-     * Creates a new instance of DropConnectionListener.
-     */
-    public DropConnectionListener()
-    {
-    }
-
-
     /**
      * {@inheritDoc}
      * 
@@ -86,6 +77,7 @@ public class DropConnectionListener implements DropTargetListener
      */
     public void dragLeave( DropTargetEvent event )
     {
+        // Nothing to do
     }
 
 
@@ -101,36 +93,36 @@ public class DropConnectionListener implements DropTargetListener
         {
             // move connection folder: check that the new connection folder is not the same or a parent folder
             boolean isMoveConnectionFolderForbidden = false;
-            if ( event.detail == DND.DROP_MOVE || event.detail == DND.DROP_NONE )
+            
+            if ( ( ( event.detail == DND.DROP_MOVE ) || ( event.detail == DND.DROP_NONE ) ) &&
+                ( ConnectionTransfer.getInstance().isSupportedType( event.currentDataType ) ) &&
+                ( ( event.item != null ) && ( event.item.getData() instanceof ConnectionFolder ) ) )
             {
-                if ( ConnectionTransfer.getInstance().isSupportedType( event.currentDataType ) )
-                {
-                    if ( event.item != null && event.item.getData() instanceof ConnectionFolder )
-                    {
-                        ConnectionFolderManager connectionFolderManager = ConnectionCorePlugin.getDefault()
-                            .getConnectionFolderManager();
-                        ConnectionFolder overFolder = ( ConnectionFolder ) event.item.getData();
-                        Set<ConnectionFolder> allParentFolders = connectionFolderManager
-                            .getAllParentFolders( overFolder );
+                ConnectionFolderManager connectionFolderManager = ConnectionCorePlugin.getDefault()
+                    .getConnectionFolderManager();
+                ConnectionFolder overFolder = ( ConnectionFolder ) event.item.getData();
+                Set<ConnectionFolder> allParentFolders = connectionFolderManager
+                    .getAllParentFolders( overFolder );
 
-                        if ( event.widget instanceof DropTarget )
+                if ( event.widget instanceof DropTarget )
+                {
+                    DropTarget dropTarget = ( DropTarget ) event.widget;
+                    
+                    if ( dropTarget.getControl() instanceof Tree )
+                    {
+                        Tree tree = ( Tree ) dropTarget.getControl();
+                        
+                        for ( TreeItem treeItem : tree.getSelection() )
                         {
-                            DropTarget dropTarget = ( DropTarget ) event.widget;
-                            if ( dropTarget.getControl() instanceof Tree )
+                            if ( treeItem.getData() instanceof ConnectionFolder )
                             {
-                                Tree tree = ( Tree ) dropTarget.getControl();
-                                TreeItem[] items = tree.getSelection();
-                                for ( int i = 0; i < items.length; i++ )
+                                ConnectionFolder folder = ( ConnectionFolder ) treeItem.getData();
+                                
+                                if ( allParentFolders.contains( folder ) )
                                 {
-                                    if ( items[i].getData() instanceof ConnectionFolder )
-                                    {
-                                        ConnectionFolder folder = ( ConnectionFolder ) items[i].getData();
-                                        if ( allParentFolders.contains( folder ) )
-                                        {
-                                            isMoveConnectionFolderForbidden = true;
-                                            break;
-                                        }
-                                    }
+                                    isMoveConnectionFolderForbidden = true;
+                                    
+                                    break;
                                 }
                             }
                         }
@@ -170,6 +162,7 @@ public class DropConnectionListener implements DropTargetListener
      */
     public void dropAccept( DropTargetEvent event )
     {
+        // Nothing to do
     }
 
 
@@ -191,10 +184,19 @@ public class DropConnectionListener implements DropTargetListener
             {
                 // get connection and folders to handle
                 Object[] objects = ( Object[] ) event.data;
-                Object target = event.item != null ? event.item.getData() : connectionFolderManager
-                    .getRootConnectionFolder();
+                Object target;
+                
+                if ( event.item == null ) 
+                {
+                    target = connectionFolderManager .getRootConnectionFolder();
+                }
+                else
+                {
+                    target = event.item.getData();
+                }
 
                 ConnectionFolder targetFolder = null;
+                
                 if ( target instanceof ConnectionFolder )
                 {
                     targetFolder = ( ConnectionFolder ) target;
@@ -210,6 +212,7 @@ public class DropConnectionListener implements DropTargetListener
                     if ( object instanceof Connection )
                     {
                         Connection connection = ( Connection ) object;
+                        
                         if ( event.detail == DND.DROP_MOVE )
                         {
                             ConnectionFolder parentConnectionFolder = connectionFolderManager
@@ -227,6 +230,7 @@ public class DropConnectionListener implements DropTargetListener
                     else if ( object instanceof ConnectionFolder )
                     {
                         ConnectionFolder folder = ( ConnectionFolder ) object;
+                        
                         if ( event.detail == DND.DROP_MOVE )
                         {
                             ConnectionFolder parentConnectionFolder = connectionFolderManager
@@ -256,5 +260,4 @@ public class DropConnectionListener implements DropTargetListener
             e.printStackTrace();
         }
     }
-
 }

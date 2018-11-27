@@ -22,8 +22,8 @@ package org.apache.directory.studio.schemaeditor.view;
 
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.ObjectClass;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
+import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.model.Schema;
@@ -157,6 +157,8 @@ public class SchemaEditorSchemaCheckerLabelDecorator extends LabelProvider imple
             case ERROR:
                 decoration.addOverlay( Activator.getDefault().getImageDescriptor( PluginConstants.IMG_OVERLAY_ERROR ),
                     IDecoration.BOTTOM_LEFT );
+                break;
+            default:
                 break;
         }
     }

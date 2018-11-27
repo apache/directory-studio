@@ -30,8 +30,8 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.ObjectClass;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
+import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.DeleteDialog;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
@@ -472,10 +472,10 @@ public class DeleteAction extends BrowserAction
             // check if ALL values of objectClass or a MUST attribute are selected
             if ( !attributeNameToSelectedValuesCountMap.containsKey( atd ) )
             {
-                attributeNameToSelectedValuesCountMap.put( atd, new Integer( 0 ) );
+                attributeNameToSelectedValuesCountMap.put( atd, Integer.valueOf(  0 ) );
             }
             int count = ( attributeNameToSelectedValuesCountMap.get( atd ) ).intValue() + 1;
-            attributeNameToSelectedValuesCountMap.put( atd, new Integer( count ) );
+            attributeNameToSelectedValuesCountMap.put( atd, Integer.valueOf( count ) );
             if ( value.getAttribute().isObjectClassAttribute() && count >= ah.getValueSize() )
             {
                 message.append( Messages.getString( "DeleteAction.DeleteObjectClass" ) ); //$NON-NLS-1$

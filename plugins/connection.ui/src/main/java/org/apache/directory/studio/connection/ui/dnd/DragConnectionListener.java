@@ -79,27 +79,29 @@ public class DragConnectionListener implements DragSourceListener
      */
     public void dragSetData( DragSourceEvent event )
     {
-        if ( ConnectionTransfer.getInstance().isSupportedType( event.dataType ) )
+        if ( ConnectionTransfer.getInstance().isSupportedType( event.dataType ) &&
+            ( event.widget instanceof DragSource ) )
         {
-            if ( event.widget instanceof DragSource )
+            DragSource dragSource = ( DragSource ) event.widget;
+            
+            if ( dragSource.getControl() instanceof Tree )
             {
-                DragSource dragSource = ( DragSource ) event.widget;
-                if ( dragSource.getControl() instanceof Tree )
+                List<Object> objectList = new ArrayList<>();
+                
+                if ( selection != null )
                 {
-                    List<Object> objectList = new ArrayList<Object>();
-                    if ( selection != null )
+                    for ( Iterator<?> iterator = selection.iterator(); iterator.hasNext(); )
                     {
-                        for ( Iterator<?> iterator = selection.iterator(); iterator.hasNext(); )
+                        Object item = iterator.next();
+                        
+                        if ( ( item instanceof Connection ) || ( item instanceof ConnectionFolder ) )
                         {
-                            Object item = iterator.next();
-                            if ( item instanceof Connection || item instanceof ConnectionFolder )
-                            {
-                                objectList.add( item );
-                            }
+                            objectList.add( item );
                         }
                     }
-                    event.data = objectList.toArray();
                 }
+                
+                event.data = objectList.toArray();
             }
         }
     }
@@ -112,5 +114,6 @@ public class DragConnectionListener implements DragSourceListener
      */
     public void dragFinished( DragSourceEvent event )
     {
+        // Nothing to do
     }
 }

@@ -20,7 +20,7 @@
 package org.apache.directory.studio.schemaeditor.model.schemachecker;
 
 
-import org.apache.directory.shared.ldap.model.schema.SchemaObject;
+import org.apache.directory.api.ldap.model.schema.SchemaObject;
 
 
 /**
@@ -33,8 +33,7 @@ public interface SchemaWarning
     /**
      * Gets the source object.
      * 
-     * @return
-     *      the source object
+     * @return the source object
      */
-    public SchemaObject getSource();
+    SchemaObject getSource();
 }

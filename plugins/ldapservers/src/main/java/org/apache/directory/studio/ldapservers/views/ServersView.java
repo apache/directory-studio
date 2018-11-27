@@ -433,6 +433,7 @@ public class ServersView extends ViewPart
                     start.setEnabled( false );
                     stop.setEnabled( true );
                     break;
+                case REPAIRING:
                 case STARTING:
                     start.setEnabled( false );
                     stop.setEnabled( false );

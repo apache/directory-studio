@@ -32,25 +32,29 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class TextValueEditor extends AbstractDialogStringValueEditor
 {
-
     /**
      * {@inheritDoc}
      * 
      * This implementation opens the TextDialog.
      */
+    @Override
     public boolean openDialog( Shell shell )
     {
         Object value = getValue();
-        if ( value != null && value instanceof String )
+        
+        if ( value instanceof String )
         {
             TextDialog dialog = new TextDialog( shell, ( String ) value );
-            if ( dialog.open() == TextDialog.OK && !"".equals( dialog.getText() ) ) //$NON-NLS-1$
+            
+            if ( ( dialog.open() == TextDialog.OK ) && ( dialog.getText() != null )
+                && ( dialog.getText().length() != 0 ) )
             {
                 setValue( dialog.getText() );
+                
                 return true;
             }
         }
+        
         return false;
     }
-
 }

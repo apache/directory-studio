@@ -23,12 +23,19 @@ package org.apache.directory.studio.common.core.jobs;
 
 /**
  * Constants used in the Apache Directory Studio Common Core plugin.
- * Final reference -> class shouldn't be extended
+ * Final reference -&gt; class shouldn't be extended
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public final class CommonCoreConstants
 {
+
+    /** The plug-in ID */
+    public static final String PLUGIN_ID = CommonCoreConstants.class.getPackage().getName();
+
+    /** The Job family ID */
+    public static final String JOB_FAMILY_ID = PLUGIN_ID + ".family"; //$NON-NLS-1$
+
     /**
      *  Ensures no construction of this class, also ensures there is no need for final keyword above
      *  (Implicit super constructor is not visible for default constructor),
@@ -37,10 +44,4 @@ public final class CommonCoreConstants
     private CommonCoreConstants()
     {
     }
-
-    /** The plug-in ID */
-    public static final String PLUGIN_ID = "org.apache.directory.studio.common.core"; //$NON-NLS-1$
-    
-    /** The Job family ID */
-    public static final String JOB_FAMILY_ID = "org.apache.directory.studio.common.core.jobs.family"; //$NON-NLS-1$
 }

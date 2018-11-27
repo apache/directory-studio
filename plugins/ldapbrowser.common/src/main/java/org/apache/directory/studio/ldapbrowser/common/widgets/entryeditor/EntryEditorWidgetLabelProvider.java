@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor;
 
 
+import org.apache.directory.studio.common.ui.CommonUIConstants;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
@@ -92,7 +93,7 @@ public class EntryEditorWidgetLabelProvider extends LabelProvider implements ITa
      */
     public final String getColumnText( Object obj, int index )
     {
-        if ( obj != null && obj instanceof IValue )
+        if ( obj instanceof IValue )
         {
             IValue value = ( IValue ) obj;
             switch ( index )
@@ -107,7 +108,7 @@ public class EntryEditorWidgetLabelProvider extends LabelProvider implements ITa
                     return ""; //$NON-NLS-1$
             }
         }
-        else if ( obj != null && obj instanceof IAttribute )
+        else if ( obj instanceof IAttribute )
         {
             IAttribute attribute = ( IAttribute ) obj;
             if ( index == EntryEditorWidgetTableMetadata.KEY_COLUMN_INDEX )
@@ -261,16 +262,15 @@ public class EntryEditorWidgetLabelProvider extends LabelProvider implements ITa
         {
             if ( value.isEmpty() )
             {
-                return BrowserCommonActivator.getDefault().getColor(
-                    Display.getDefault().getSystemColor( SWT.COLOR_RED ).getRGB() );
+                return CommonUIConstants.RED_COLOR;
             }
         }
+        
         if ( attribute != null && value == null )
         {
             if ( !attribute.isConsistent() )
             {
-                return BrowserCommonActivator.getDefault().getColor(
-                    Display.getDefault().getSystemColor( SWT.COLOR_RED ).getRGB() );
+                return CommonUIConstants.RED_COLOR;
             }
         }
 

@@ -34,21 +34,22 @@ import org.eclipse.jface.viewers.TreeViewer;
  */
 public class ExpandAllAction extends Action
 {
+    /** The Tree viewer */
     protected TreeViewer viewer;
 
 
     /**
      * Creates a new instance of ExpandAllAction.
      *
-     * @param viewer
-     *      the attached Viewer
+     * @param viewer the attached Viewer
      */
     public ExpandAllAction( TreeViewer viewer )
     {
         super(
-            Messages.getString( "ExpandAllAction.ExpandAll" ), ConnectionUIPlugin.getDefault().getImageDescriptor( ConnectionUIConstants.IMG_EXPANDALL ) ); //$NON-NLS-1$
-        super.setToolTipText( getText() );
-        super.setEnabled( true );
+            Messages.getString( "ExpandAllAction.ExpandAll" ), 
+            ConnectionUIPlugin.getDefault().getImageDescriptor( ConnectionUIConstants.IMG_EXPANDALL ) ); //$NON-NLS-1$
+        setToolTipText( getText() );
+        setEnabled( true );
 
         this.viewer = viewer;
     }
@@ -57,9 +58,10 @@ public class ExpandAllAction extends Action
     /**
      * {@inheritDoc}
      */
+    @Override
     public void run()
     {
-        this.viewer.expandAll();
+        viewer.expandAll();
     }
 
 
@@ -68,6 +70,6 @@ public class ExpandAllAction extends Action
      */
     public void dispose()
     {
-        this.viewer = null;
+        viewer = null;
     }
 }

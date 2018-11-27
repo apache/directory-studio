@@ -42,7 +42,7 @@ public interface LdapServerAdapter
      * @throws Exception
      *      if an error occurs when adding the server
      */
-    public void add( LdapServer server, StudioProgressMonitor monitor ) throws Exception;
+    void add( LdapServer server, StudioProgressMonitor monitor ) throws Exception;
 
 
     /**
@@ -55,7 +55,7 @@ public interface LdapServerAdapter
      * @throws Exception
      *      if an error occurs when deleting the server
      */
-    public void delete( LdapServer server, StudioProgressMonitor monitor ) throws Exception;
+    void delete( LdapServer server, StudioProgressMonitor monitor ) throws Exception;
 
 
     /**
@@ -68,7 +68,7 @@ public interface LdapServerAdapter
      * @throws Exception
      *      if an error occurs when opening the configuration of the server
      */
-    public void openConfiguration( LdapServer server, StudioProgressMonitor monitor ) throws Exception;
+    void openConfiguration( LdapServer server, StudioProgressMonitor monitor ) throws Exception;
 
 
     /**
@@ -81,7 +81,7 @@ public interface LdapServerAdapter
      * @throws Exception
      *      if an error occurs when starting the server
      */
-    public void start( LdapServer server, StudioProgressMonitor monitor ) throws Exception;
+    void start( LdapServer server, StudioProgressMonitor monitor ) throws Exception;
 
 
     /**
@@ -94,7 +94,7 @@ public interface LdapServerAdapter
      * @throws Exception
      *      if an error occurs when stopping the server
      */
-    public void stop( LdapServer server, StudioProgressMonitor monitor ) throws Exception;
+    void stop( LdapServer server, StudioProgressMonitor monitor ) throws Exception;
 
 
     /**
@@ -107,5 +107,5 @@ public interface LdapServerAdapter
      * @throws Exception
      *      if an error occurs when checking the ports before the server starts
      */
-    public String[] checkPortsBeforeServerStart( LdapServer server ) throws Exception;
+    String[] checkPortsBeforeServerStart( LdapServer server ) throws Exception;
 }

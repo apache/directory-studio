@@ -23,6 +23,9 @@ package org.apache.directory.studio.connection.ui.wizards;
 
 import java.io.File;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.directory.api.util.Strings;
+import org.apache.directory.studio.common.ui.CommonUIUtils;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.ui.ConnectionUIConstants;
 import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
@@ -33,8 +36,6 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -54,9 +55,13 @@ import org.eclipse.ui.PlatformUI;
 public class ExportCertificateWizardPage extends WizardPage
 {
     // UI widgets
+    /** The certificate file name */
     private Text fileText;
-    private Button browseButton;
+    
+    /** The button for overwriting teh file */
     private Button overwriteFileButton;
+    
+    /** The combo for the certificate format (DER or PEM)  */
     private ComboViewer formatComboViewer;
 
 
@@ -93,25 +98,20 @@ public class ExportCertificateWizardPage extends WizardPage
         fileComposite.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
         // Creating the file's text widget
-        fileText = BaseWidgetUtils.createText( fileComposite, "", 1 ); //$NON-NLS-1$
+        fileText = BaseWidgetUtils.createText( fileComposite, StringUtils.EMPTY, 1 ); //$NON-NLS-1$
         fileText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
-        fileText.addModifyListener( new ModifyListener()
-        {
-            public void modifyText( ModifyEvent e )
-            {
-                validate();
-            }
-        } );
+        fileText.addModifyListener( event -> validate() );
 
         // Creating the file's 'Browse' button widget
-        browseButton = BaseWidgetUtils.createButton( fileComposite,
+        Button browseButton = BaseWidgetUtils.createButton( fileComposite,
             Messages.getString( "ExportCertificateWizardPage.Browse" ), 1 ); //$NON-NLS-1$
         browseButton.addSelectionListener( new SelectionAdapter()
         {
             /**
              * {@inheritDoc}
              */
-            public void widgetSelected( SelectionEvent e )
+            @Override
+            public void widgetSelected( SelectionEvent event )
             {
                 chooseExportFile();
                 validate();
@@ -123,6 +123,10 @@ public class ExportCertificateWizardPage extends WizardPage
             Messages.getString( "ExportCertificateWizardPage.OverwriteExistingFile" ), 2 ); //$NON-NLS-1$
         overwriteFileButton.addSelectionListener( new SelectionAdapter()
         {
+            /**
+             * {@InheritDoc}
+             */
+            @Override
             public void widgetSelected( SelectionEvent event )
             {
                 validate();
@@ -139,18 +143,23 @@ public class ExportCertificateWizardPage extends WizardPage
         formatComboViewer.setContentProvider( new ArrayContentProvider() );
         formatComboViewer.setLabelProvider( new LabelProvider()
         {
+            /**
+             * {@InheritDoc}
+             */
+            @Override
             public String getText( Object element )
             {
                 if ( element instanceof CertificateExportFormat )
                 {
                     CertificateExportFormat format = ( CertificateExportFormat ) element;
 
-                    switch ( format )
+                    if ( format == CertificateExportFormat.DER )
                     {
-                        case DER:
-                            return "X509 Certificat DER";
-                        case PEM:
-                            return "X509 Certificat PEM";
+                        return Messages.getString( "ExportCertificateWizardPage.X509CertificateDER" ); //$NON-NLS-1$
+                    }
+                    else
+                    {
+                        return Messages.getString( "ExportCertificateWizardPage.X509CertificatePEM" ); //$NON-NLS-1$
                     }
                 }
 
@@ -175,6 +184,7 @@ public class ExportCertificateWizardPage extends WizardPage
     private void validate()
     {
         File file = new File( fileText.getText() );
+        
         if ( file.isDirectory() )
         {
             displayErrorMessage( Messages.getString( "ExportCertificateWizardPage.ErrorFileNotAFile" ) ); //$NON-NLS-1$
@@ -221,16 +231,15 @@ public class ExportCertificateWizardPage extends WizardPage
     {
         FileDialog dialog = new FileDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.SAVE );
         dialog.setText( Messages.getString( "ExportCertificateWizardPage.ChooseFile" ) ); //$NON-NLS-1$
-        if ( !"".equals( fileText.getText() ) ) //$NON-NLS-1$
+        
+        if ( !Strings.isEmpty( fileText.getText() ) ) //$NON-NLS-1$
         {
             dialog.setFilterPath( fileText.getText() );
         }
 
         String selectedFile = dialog.open();
-        if ( selectedFile != null )
-        {
-            fileText.setText( selectedFile );
-        }
+        
+        fileText.setText( CommonUIUtils.getTextValue( selectedFile ) );
     }
 
 
@@ -253,6 +262,7 @@ public class ExportCertificateWizardPage extends WizardPage
     public CertificateExportFormat getCertificateExportFormat()
     {
         StructuredSelection selection = ( StructuredSelection ) formatComboViewer.getSelection();
+        
         if ( !selection.isEmpty() )
         {
             return ( CertificateExportFormat ) selection.getFirstElement();
@@ -261,6 +271,7 @@ public class ExportCertificateWizardPage extends WizardPage
         // Default format
         return CertificateExportFormat.DER;
     }
+    
 
     /**
      * This enum represents the various certificate export formats.

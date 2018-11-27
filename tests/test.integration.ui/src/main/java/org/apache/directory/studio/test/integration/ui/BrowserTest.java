@@ -21,21 +21,23 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
+import static org.apache.directory.studio.test.integration.ui.Constants.LOCALHOST;
+import static org.apache.directory.studio.test.integration.ui.Constants.LOCALHOST_ADDRESS;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.directory.server.annotations.CreateLdapServer;
 import org.apache.directory.server.annotations.CreateTransport;
 import org.apache.directory.server.core.annotations.ApplyLdifFiles;
 import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
-import org.apache.directory.server.core.integ.FrameworkRunner;
-import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
-import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.entry.DefaultEntry;
+import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
@@ -43,6 +45,9 @@ import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Bookmark;
+import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
+import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
+import org.apache.directory.studio.ldapbrowser.ui.editors.entry.EntryEditor;
 import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.DeleteDialogBot;
@@ -51,8 +56,14 @@ import org.apache.directory.studio.test.integration.ui.bots.ModificationLogsView
 import org.apache.directory.studio.test.integration.ui.bots.ReferralDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.SearchLogsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
+import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
 import org.eclipse.jface.dialogs.ErrorDialog;
+import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
+import org.eclipse.swtbot.swt.finder.results.VoidResult;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IPropertyListener;
+import org.eclipse.ui.PlatformUI;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -65,11 +76,11 @@ import org.junit.runner.RunWith;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-@RunWith(FrameworkRunner.class)
+@RunWith(FrameworkRunnerWithScreenshotCaptureListener.class)
 @CreateLdapServer(transports =
     { @CreateTransport(protocol = "LDAP") })
-@ApplyLdifFiles(
-    { "org/apache/directory/studio/test/integration/ui/BrowserTest.ldif" })
+@ApplyLdifFiles( clazz = BrowserTest.class,
+    value = "org/apache/directory/studio/test/integration/ui/BrowserTest.ldif" )
 public class BrowserTest extends AbstractLdapTestUnit
 {
     private StudioBot studioBot;
@@ -87,8 +98,6 @@ public class BrowserTest extends AbstractLdapTestUnit
         studioBot = new StudioBot();
         studioBot.resetLdapPerspective();
         connectionsViewBot = studioBot.getConnectionView();
-        System.out.println( connectionsViewBot );
-        System.out.println( ldapServer );
         connection = connectionsViewBot.createTestConnection( "BrowserTest", ldapServer.getPort() );
         browserViewBot = studioBot.getBrowserView();
         searchLogsViewBot = studioBot.getSearchLogsViewBot();
@@ -359,7 +368,7 @@ public class BrowserTest extends AbstractLdapTestUnit
     public void testRefreshSearchContinuation() throws Exception
     {
         // preparation: add referral entry and set referral handling
-        String url = "ldap://localhost:" + ldapServer.getPort() + "/ou=users,ou=system";
+        String url = "ldap://" + LOCALHOST + ":" + ldapServer.getPort() + "/ou=users,ou=system";
         Entry refEntry = new DefaultEntry( service.getSchemaManager() );
         refEntry.setDn( new Dn( "cn=referral,ou=system" ) );
         refEntry.add( "objectClass", "top", "referral", "extensibleObject" );
@@ -485,15 +494,16 @@ public class BrowserTest extends AbstractLdapTestUnit
 
         // create entry with multi-valued RDN containing an IP address value
         Entry entry = new DefaultEntry( service.getSchemaManager() );
-        entry.setDn( new Dn( "cn=loopback+ipHostNumber=127.0.0.1,ou=users,ou=system" ) );
+        entry.setDn( new Dn( "cn=loopback+ipHostNumber=" + LOCALHOST_ADDRESS + ",ou=users,ou=system" ) );
         entry.add( "objectClass", "top", "device", "ipHost" );
         entry.add( "cn", "loopback" );
-        entry.add( "ipHostNumber", "127.0.0.1" );
+        entry.add( "ipHostNumber", LOCALHOST_ADDRESS );
         ldapServer.getDirectoryService().getAdminSession().add( entry );
 
         assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users",
-            "cn=loopback+ipHostNumber=127.0.0.1" ) );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=loopback+ipHostNumber=127.0.0.1" );
+            "cn=loopback+ipHostNumber=" + LOCALHOST_ADDRESS ) );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users",
+            "cn=loopback+ipHostNumber=" + LOCALHOST_ADDRESS );
     }
 
 
@@ -538,6 +548,79 @@ public class BrowserTest extends AbstractLdapTestUnit
         Entry entry = ldapServer.getDirectoryService().getAdminSession().lookup(
             new Dn( "uid=user.2,ou=users,ou=system" ) );
         assertTrue( entry.contains( "uid", "user.1" ) );
+    }
+
+
+    /**
+     * Test for DIRSTUDIO-1121.
+     *
+     * Verify input is set only once when entry is selected.
+     */
+    @Test
+    public void testSetInputOnlyOnce() throws Exception
+    {
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+
+        // verify link-with-editor is enabled
+        assertTrue( BrowserUIPlugin.getDefault().getPreferenceStore()
+            .getBoolean( BrowserUIConstants.PREFERENCE_BROWSER_LINK_WITH_EDITOR ) );
+
+        // setup counter and listener to record entry editor input changes
+        final AtomicInteger counter = new AtomicInteger();
+        UIThreadRunnable.syncExec( new VoidResult()
+        {
+            public void run()
+            {
+                try
+                {
+                    IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+                        .getActiveEditor();
+                    editor.addPropertyListener( new IPropertyListener()
+                    {
+                        @Override
+                        public void propertyChanged( Object source, int propId )
+                        {
+                            if ( source instanceof EntryEditor && propId == BrowserUIConstants.INPUT_CHANGED )
+                            {
+                                counter.incrementAndGet();
+                            }
+                        }
+                    } );
+                }
+                catch ( Exception e )
+                {
+                    throw new RuntimeException( e );
+                }
+            }
+        } );
+
+        // select 3 different entries, select one twice should not set the input again
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.2" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.2" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.3" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.3" );
+
+        // verify that input was only set 3 times.
+        assertEquals( "Only 3 input changes expected.", 3, counter.get() );
+
+        // reset counter
+        counter.set( 0 );
+
+        // use navigation history to go back and forth, each step should set input only once
+        studioBot.navigationHistoryBack();
+        assertEquals( "uid=user.2", browserViewBot.getSelectedEntry() );
+        studioBot.navigationHistoryBack();
+        assertEquals( "uid=user.1", browserViewBot.getSelectedEntry() );
+        studioBot.navigationHistoryForward();
+        assertEquals( "uid=user.2", browserViewBot.getSelectedEntry() );
+        studioBot.navigationHistoryForward();
+        assertEquals( "uid=user.3", browserViewBot.getSelectedEntry() );
+
+        // verify that input was only set 4 times.
+        assertEquals( "Only 4 input changes expected.", 4, counter.get() );
     }
 
 }

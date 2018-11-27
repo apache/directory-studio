@@ -21,9 +21,9 @@
 package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 
-import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
-import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.model.name.Rdn;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 
@@ -85,7 +85,7 @@ public class Entry extends AbstractEntry
         try
         {
             Dn dn = parent.getDn().add( rdn );
-            
+
             return dn;
         }
         catch ( LdapInvalidDnException lide )

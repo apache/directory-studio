@@ -98,7 +98,7 @@ public class SelectAllAction extends BrowserAction
      */
     public void run()
     {
-        if ( getInput() != null && getInput() instanceof IEntry )
+        if ( getInput() instanceof IEntry )
         {
             List selectionList = new ArrayList();
             IAttribute[] attributes = ( ( IEntry ) getInput() ).getAttributes();
@@ -113,7 +113,7 @@ public class SelectAllAction extends BrowserAction
             StructuredSelection selection = new StructuredSelection( selectionList );
             this.viewer.setSelection( selection );
         }
-        else if ( getInput() != null && getInput() instanceof ConnectionManager )
+        else if ( getInput() instanceof ConnectionManager )
         {
             StructuredSelection selection = new StructuredSelection( ( ( ConnectionManager ) getInput() )
                 .getConnections() );

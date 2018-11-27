@@ -21,10 +21,16 @@
 package org.apache.directory.studio.common.ui.widgets;
 
 
+import org.apache.directory.studio.common.ui.CommonUIConstants;
+import org.apache.directory.studio.common.ui.CommonUIPlugin;
+import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.layout.GridData;
@@ -45,7 +51,6 @@ import org.eclipse.swt.widgets.Text;
  */
 public class BaseWidgetUtils
 {
-
     /**
      * Creates a SWT {@link Group} under the given parent.
      *
@@ -57,11 +62,17 @@ public class BaseWidgetUtils
     public static Group createGroup( Composite parent, String label, int span )
     {
         Group group = new Group( parent, SWT.NONE );
-        GridData gd = new GridData( GridData.FILL_BOTH );
-        gd.horizontalSpan = span;
-        group.setLayoutData( gd );
-        group.setText( label );
+        GridData gridData = new GridData( GridData.FILL_BOTH );
+        gridData.horizontalSpan = span;
+        group.setLayoutData( gridData );
+        
+        if ( label != null )
+        {
+            group.setText( label );
+        }
+        
         group.setLayout( new GridLayout() );
+        
         return group;
     }
 
@@ -95,12 +106,13 @@ public class BaseWidgetUtils
         int span )
     {
         Composite container = new Composite( parent, SWT.NONE );
-        GridLayout gl = new GridLayout( columnCount, makeColumnsEqualWidth );
-        gl.marginHeight = gl.marginWidth = 0;
-        container.setLayout( gl );
-        GridData gd = new GridData( GridData.FILL_HORIZONTAL );
-        gd.horizontalSpan = span;
-        container.setLayoutData( gd );
+        GridLayout gridLayout = new GridLayout( columnCount, makeColumnsEqualWidth );
+        gridLayout.marginHeight = gridLayout.marginWidth = 0;
+        container.setLayout( gridLayout );
+        GridData gridData = new GridData( GridData.FILL_HORIZONTAL );
+        gridData.horizontalSpan = span;
+        container.setLayoutData( gridData );
+        
         return container;
     }
 
@@ -115,13 +127,13 @@ public class BaseWidgetUtils
      */
     public static Label createLabel( Composite parent, String text, int span )
     {
-        Label l = new Label( parent, SWT.NONE );
-        GridData gd = new GridData();
-        gd.horizontalSpan = span;
-        // gd.verticalAlignment = SWT.BEGINNING;
-        l.setLayoutData( gd );
-        l.setText( text );
-        return l;
+        Label label = new Label( parent, SWT.NONE );
+        GridData gridData = new GridData();
+        gridData.horizontalSpan = span;
+        label.setLayoutData( gridData );
+        label.setText( text );
+        
+        return label;
     }
 
 
@@ -136,13 +148,14 @@ public class BaseWidgetUtils
      */
     public static Label createWrappedLabel( Composite parent, String text, int span )
     {
-        Label l = new Label( parent, SWT.WRAP );
-        GridData gd = new GridData( GridData.FILL_HORIZONTAL );
-        gd.horizontalSpan = span;
-        gd.widthHint = 100;
-        l.setLayoutData( gd );
-        l.setText( text );
-        return l;
+        Label label = new Label( parent, SWT.WRAP );
+        GridData gridData = new GridData( GridData.FILL_HORIZONTAL );
+        gridData.horizontalSpan = span;
+        gridData.widthHint = 100;
+        label.setLayoutData( gridData );
+        label.setText( text );
+        
+        return label;
     }
 
 
@@ -157,12 +170,13 @@ public class BaseWidgetUtils
      */
     public static Text createText( Composite parent, String text, int span )
     {
-        Text t = new Text( parent, SWT.NONE | SWT.BORDER );
-        GridData gd = new GridData( GridData.FILL_HORIZONTAL );
-        gd.horizontalSpan = span;
-        t.setLayoutData( gd );
-        t.setText( text );
-        return t;
+        Text textWidget = new Text( parent, SWT.NONE | SWT.BORDER );
+        GridData gridData = new GridData( GridData.FILL_HORIZONTAL );
+        gridData.horizontalSpan = span;
+        textWidget.setLayoutData( gridData );
+        textWidget.setText( text );
+        
+        return textWidget;
     }
 
 
@@ -178,14 +192,15 @@ public class BaseWidgetUtils
      */
     public static Text createText( Composite parent, String text, int textWidth, int span )
     {
-        Text t = new Text( parent, SWT.NONE | SWT.BORDER );
-        GridData gd = new GridData();
-        gd.horizontalSpan = span;
-        gd.widthHint = 9 * textWidth;
-        t.setLayoutData( gd );
-        t.setText( text );
-        t.setTextLimit( textWidth );
-        return t;
+        Text textWidget = new Text( parent, SWT.NONE | SWT.BORDER );
+        GridData gridData = new GridData();
+        gridData.horizontalSpan = span;
+        gridData.widthHint = 9 * textWidth;
+        textWidget.setLayoutData( gridData );
+        textWidget.setText( text );
+        textWidget.setTextLimit( textWidth );
+        
+        return textWidget;
     }
 
 
@@ -200,12 +215,13 @@ public class BaseWidgetUtils
      */
     public static Text createPasswordText( Composite parent, String text, int span )
     {
-        Text t = new Text( parent, SWT.NONE | SWT.BORDER | SWT.PASSWORD );
-        GridData gd = new GridData( GridData.FILL_HORIZONTAL );
-        gd.horizontalSpan = span;
-        t.setLayoutData( gd );
-        t.setText( text );
-        return t;
+        Text textWidget = new Text( parent, SWT.NONE | SWT.BORDER | SWT.PASSWORD );
+        GridData gridData = new GridData( GridData.FILL_HORIZONTAL );
+        gridData.horizontalSpan = span;
+        textWidget.setLayoutData( gridData );
+        textWidget.setText( text );
+        
+        return textWidget;
     }
 
 
@@ -221,14 +237,15 @@ public class BaseWidgetUtils
      */
     public static Text createReadonlyPasswordText( Composite parent, String text, int span )
     {
-        Text t = new Text( parent, SWT.NONE | SWT.BORDER | SWT.PASSWORD | SWT.READ_ONLY );
-        GridData gd = new GridData( GridData.FILL_HORIZONTAL );
-        gd.horizontalSpan = span;
-        t.setLayoutData( gd );
-        t.setEditable( false );
-        t.setBackground( parent.getBackground() );
-        t.setText( text );
-        return t;
+        Text textWidget = new Text( parent, SWT.NONE | SWT.BORDER | SWT.PASSWORD | SWT.READ_ONLY );
+        GridData gridData = new GridData( GridData.FILL_HORIZONTAL );
+        gridData.horizontalSpan = span;
+        textWidget.setLayoutData( gridData );
+        textWidget.setEditable( false );
+        textWidget.setBackground( parent.getBackground() );
+        textWidget.setText( text );
+        
+        return textWidget;
     }
 
 
@@ -245,14 +262,15 @@ public class BaseWidgetUtils
      */
     public static Text createLabeledText( Composite parent, String text, int span )
     {
-        Text t = new Text( parent, SWT.NONE );
-        GridData gd = new GridData( GridData.FILL_HORIZONTAL );
-        gd.horizontalSpan = span;
-        t.setLayoutData( gd );
-        t.setEditable( false );
-        t.setBackground( parent.getBackground() );
-        t.setText( text );
-        return t;
+        Text textWidget = new Text( parent, SWT.NONE );
+        GridData gridData = new GridData( GridData.FILL_HORIZONTAL );
+        gridData.horizontalSpan = span;
+        textWidget.setLayoutData( gridData );
+        textWidget.setEditable( false );
+        textWidget.setBackground( parent.getBackground() );
+        textWidget.setText( text );
+        
+        return textWidget;
     }
 
 
@@ -270,15 +288,16 @@ public class BaseWidgetUtils
      */
     public static Text createLabeledText( Composite parent, String text, int span, int widthHint )
     {
-        Text t = new Text( parent, SWT.NONE );
-        GridData gd = new GridData( SWT.FILL, SWT.NONE, true, false );
-        gd.horizontalSpan = span;
-        gd.widthHint = widthHint;
-        t.setLayoutData( gd );
-        t.setEditable( false );
-        t.setBackground( parent.getBackground() );
-        t.setText( text );
-        return t;
+        Text textWidget = new Text( parent, SWT.NONE );
+        GridData gridData = new GridData( SWT.FILL, SWT.NONE, true, false );
+        gridData.horizontalSpan = span;
+        gridData.widthHint = widthHint;
+        textWidget.setLayoutData( gridData );
+        textWidget.setEditable( false );
+        textWidget.setBackground( parent.getBackground() );
+        textWidget.setText( text );
+        
+        return textWidget;
     }
 
 
@@ -296,17 +315,18 @@ public class BaseWidgetUtils
      */
     public static Text createWrappedLabeledText( Composite parent, String text, int span )
     {
-        Text t = new Text( parent, SWT.WRAP );
-        GridData gd = new GridData( GridData.FILL_HORIZONTAL );
-        gd.horizontalSpan = span;
-        gd.widthHint = 10;
-        gd.grabExcessHorizontalSpace = true;
-        gd.horizontalAlignment = GridData.FILL;
-        t.setLayoutData( gd );
-        t.setEditable( false );
-        t.setBackground( parent.getBackground() );
-        t.setText( text );
-        return t;
+        Text textWidget = new Text( parent, SWT.WRAP );
+        GridData gridData = new GridData( GridData.FILL_HORIZONTAL );
+        gridData.horizontalSpan = span;
+        gridData.widthHint = 10;
+        gridData.grabExcessHorizontalSpace = true;
+        gridData.horizontalAlignment = GridData.FILL;
+        textWidget.setLayoutData( gridData );
+        textWidget.setEditable( false );
+        textWidget.setBackground( parent.getBackground() );
+        textWidget.setText( text );
+        
+        return textWidget;
     }
 
 
@@ -325,17 +345,18 @@ public class BaseWidgetUtils
      */
     public static Text createWrappedLabeledText( Composite parent, String text, int span, int widthHint )
     {
-        Text t = new Text( parent, SWT.WRAP );
-        GridData gd = new GridData( GridData.FILL_HORIZONTAL );
-        gd.horizontalSpan = span;
-        gd.widthHint = widthHint;
-        gd.grabExcessHorizontalSpace = true;
-        gd.horizontalAlignment = GridData.FILL;
-        t.setLayoutData( gd );
-        t.setEditable( false );
-        t.setBackground( parent.getBackground() );
-        t.setText( text );
-        return t;
+        Text textWidget = new Text( parent, SWT.WRAP );
+        GridData gridData = new GridData( GridData.FILL_HORIZONTAL );
+        gridData.horizontalSpan = span;
+        gridData.widthHint = widthHint;
+        gridData.grabExcessHorizontalSpace = true;
+        gridData.horizontalAlignment = GridData.FILL;
+        textWidget.setLayoutData( gridData );
+        textWidget.setEditable( false );
+        textWidget.setBackground( parent.getBackground() );
+        textWidget.setText( text );
+        
+        return textWidget;
     }
 
 
@@ -351,14 +372,15 @@ public class BaseWidgetUtils
      */
     public static Text createReadonlyText( Composite parent, String text, int span )
     {
-        Text t = new Text( parent, SWT.NONE | SWT.BORDER | SWT.READ_ONLY );
-        GridData gd = new GridData( GridData.FILL_HORIZONTAL );
-        gd.horizontalSpan = span;
-        t.setLayoutData( gd );
-        t.setEditable( false );
-        t.setBackground( parent.getBackground() );
-        t.setText( text );
-        return t;
+        Text textWidget = new Text( parent, SWT.NONE | SWT.BORDER | SWT.READ_ONLY );
+        GridData gridData = new GridData( GridData.FILL_HORIZONTAL );
+        gridData.horizontalSpan = span;
+        textWidget.setLayoutData( gridData );
+        textWidget.setEditable( false );
+        textWidget.setBackground( parent.getBackground() );
+        textWidget.setText( text );
+        
+        return textWidget;
     }
 
 
@@ -375,14 +397,15 @@ public class BaseWidgetUtils
      */
     public static Combo createCombo( Composite parent, String[] items, int selectedIndex, int span )
     {
-        Combo c = new Combo( parent, SWT.DROP_DOWN | SWT.BORDER );
-        GridData gd = new GridData( GridData.FILL_HORIZONTAL );
-        gd.horizontalSpan = span;
-        c.setLayoutData( gd );
-        c.setItems( items );
-        c.select( selectedIndex );
-        c.setVisibleItemCount( 20 );
-        return c;
+        Combo combo = new Combo( parent, SWT.DROP_DOWN | SWT.BORDER );
+        GridData gridData = new GridData( GridData.FILL_HORIZONTAL );
+        gridData.horizontalSpan = span;
+        combo.setLayoutData( gridData );
+        combo.setItems( items );
+        combo.select( selectedIndex );
+        combo.setVisibleItemCount( 20 );
+        
+        return combo;
     }
 
 
@@ -399,15 +422,15 @@ public class BaseWidgetUtils
      */
     public static Combo createReadonlyCombo( Composite parent, String[] items, int selectedIndex, int span )
     {
-        Combo c = new Combo( parent, SWT.DROP_DOWN | SWT.READ_ONLY | SWT.BORDER );
-        GridData gd = new GridData( GridData.FILL_HORIZONTAL );
-        gd.horizontalSpan = span;
-        c.setLayoutData( gd );
-        // c.setBackground(parent.getBackground());
-        c.setItems( items );
-        c.select( selectedIndex );
-        c.setVisibleItemCount( 20 );
-        return c;
+        Combo combo = new Combo( parent, SWT.DROP_DOWN | SWT.READ_ONLY | SWT.BORDER );
+        GridData gridData = new GridData( GridData.FILL_HORIZONTAL );
+        gridData.horizontalSpan = span;
+        combo.setLayoutData( gridData );
+        combo.setItems( items );
+        combo.select( selectedIndex );
+        combo.setVisibleItemCount( 20 );
+        
+        return combo;
     }
 
 
@@ -423,9 +446,10 @@ public class BaseWidgetUtils
     {
         Button checkbox = new Button( parent, SWT.CHECK );
         checkbox.setText( text );
-        GridData gd = new GridData();
-        gd.horizontalSpan = span;
-        checkbox.setLayoutData( gd );
+        GridData gridData = new GridData();
+        gridData.horizontalSpan = span;
+        checkbox.setLayoutData( gridData );
+        
         return checkbox;
     }
 
@@ -442,9 +466,10 @@ public class BaseWidgetUtils
     {
         Button radio = new Button( parent, SWT.RADIO );
         radio.setText( text );
-        GridData gd = new GridData();
-        gd.horizontalSpan = span;
-        radio.setLayoutData( gd );
+        GridData gridData = new GridData();
+        gridData.horizontalSpan = span;
+        radio.setLayoutData( gridData );
+        
         return radio;
     }
 
@@ -461,17 +486,25 @@ public class BaseWidgetUtils
     public static Button createButton( Composite parent, String text, int span )
     {
         GC gc = new GC( parent );
-        gc.setFont( JFaceResources.getDialogFont() );
-        FontMetrics fontMetrics = gc.getFontMetrics();
-        gc.dispose();
 
-        Button button = new Button( parent, SWT.PUSH );
-        GridData gd = new GridData();
-        gd.widthHint = Dialog.convertHorizontalDLUsToPixels( fontMetrics, IDialogConstants.BUTTON_WIDTH );
-        gd.horizontalSpan = span;
-        button.setLayoutData( gd );
-        button.setText( text );
-        return button;
+        try
+        {
+            gc.setFont( JFaceResources.getDialogFont() );
+            FontMetrics fontMetrics = gc.getFontMetrics();
+            Button button = new Button( parent, SWT.PUSH );
+            GridData gridData = new GridData();
+            gridData.widthHint = Dialog.convertHorizontalDLUsToPixels( fontMetrics, IDialogConstants.BUTTON_WIDTH );
+            gridData.horizontalSpan = span;
+            button.setLayoutData( gridData );
+            button.setText( text );
+            
+            return button;
+        }
+        finally
+        {
+            gc.dispose();
+        }
+
     }
 
 
@@ -484,12 +517,13 @@ public class BaseWidgetUtils
      */
     public static Label createRadioIndent( Composite parent, int span )
     {
-        Label l = new Label( parent, SWT.NONE );
-        GridData gd = new GridData();
-        gd.horizontalSpan = span;
-        gd.horizontalIndent = 22;
-        l.setLayoutData( gd );
-        return l;
+        Label label = new Label( parent, SWT.NONE );
+        GridData gridData = new GridData();
+        gridData.horizontalSpan = span;
+        gridData.horizontalIndent = 22;
+        label.setLayoutData( gridData );
+        
+        return label;
     }
 
 
@@ -502,12 +536,13 @@ public class BaseWidgetUtils
      */
     public static Label createSpacer( Composite parent, int span )
     {
-        Label l = new Label( parent, SWT.NONE );
-        GridData gd = new GridData();
-        gd.horizontalSpan = span;
-        gd.heightHint = 1;
-        l.setLayoutData( gd );
-        return l;
+        Label label = new Label( parent, SWT.NONE );
+        GridData gridData = new GridData();
+        gridData.horizontalSpan = span;
+        gridData.heightHint = 1;
+        label.setLayoutData( gridData );
+        
+        return label;
     }
 
 
@@ -520,11 +555,12 @@ public class BaseWidgetUtils
      */
     public static Label createSeparator( Composite parent, int span )
     {
-        Label l = new Label( parent, SWT.SEPARATOR | SWT.HORIZONTAL );
-        GridData gd = new GridData( GridData.FILL_HORIZONTAL );
-        gd.horizontalSpan = span;
-        l.setLayoutData( gd );
-        return l;
+        Label label = new Label( parent, SWT.SEPARATOR | SWT.HORIZONTAL );
+        GridData gridData = new GridData( GridData.FILL_HORIZONTAL );
+        gridData.horizontalSpan = span;
+        label.setLayoutData( gridData );
+        
+        return label;
     }
 
 
@@ -540,11 +576,161 @@ public class BaseWidgetUtils
     {
         Link link = new Link( parent, SWT.NONE );
         link.setText( text );
-        GridData gd = new GridData( SWT.FILL, SWT.BEGINNING, true, false );
-        gd.horizontalSpan = span;
-        gd.widthHint = 150;
-        link.setLayoutData( gd );
+        GridData gridData = new GridData( SWT.FILL, SWT.BEGINNING, true, false );
+        gridData.horizontalSpan = span;
+        gridData.widthHint = 150;
+        link.setLayoutData( gridData );
+        
         return link;
     }
+    
+    
+    /**
+     * Creates a Text that can be used to enter an integer.
+     *
+     * @param toolkit the toolkit
+     * @param parent the parent
+     * @return a Text that is a valid integer
+     */
+    public static Text createIntegerText( FormToolkit toolkit, Composite parent )
+    {
+        return createIntegerText( toolkit, parent, null, -1 );
+    }
 
+    
+    /**
+     * Creates a Text that can be used to enter an integer.
+     *
+     * @param toolkit the toolkit
+     * @param parent the parent
+     * @param width the size of the input text to use
+     * @return a Text that is a valid integer
+     */
+    public static Text createIntegerText( FormToolkit toolkit, Composite parent, int width )
+    {
+        return createIntegerText( toolkit, parent, null, width );
+    }
+
+    
+    /**
+     * Creates a Text that can be used to enter an integer.
+     *
+     * @param toolkit the toolkit
+     * @param parent the parent
+     * @param description the description that has to be added after the inmput text
+     * @return a Text that is a valid integer
+     */
+    public static Text createIntegerText( FormToolkit toolkit, Composite parent, String description )
+    {
+        return createIntegerText( toolkit, parent, description, -1 );
+    }
+
+    
+    /**
+     * Creates a Text that can be used to enter an integer.
+     *
+     * @param toolkit the toolkit
+     * @param parent the parent
+     * @param description the description that has to be added after the inmput text
+     * @param width the size of the input text to use
+     * @return a Text that is a valid integer
+     */
+    public static Text createIntegerText( FormToolkit toolkit, Composite parent, String description, int width )
+    {
+        Text integerText = toolkit.createText( parent, "" ); //$NON-NLS-1$
+        
+        integerText.addVerifyListener( new VerifyListener()
+        {
+            public void verifyText( VerifyEvent e )
+            {
+                for ( int i = 0; i < e.text.length(); i++ )
+                {
+                    if ( !Character.isDigit( e.text.charAt( i ) ) )
+                    {
+                        e.doit = false;
+                        break;
+                    }
+                }
+            }
+        } );
+
+        // Add the description, if needed
+        if ( ( description != null ) && ( description.length() > 0 ) )
+        {
+            ControlDecoration monitoringCheckboxDecoration = new ControlDecoration(
+                integerText, SWT.CENTER | SWT.RIGHT );
+            monitoringCheckboxDecoration.setImage( CommonUIPlugin.getDefault().getImageDescriptor(
+                CommonUIConstants.IMG_INFORMATION ).createImage() );
+            monitoringCheckboxDecoration.setMarginWidth( 4 );
+            monitoringCheckboxDecoration.setDescriptionText( description );
+        }
+        
+        if ( width >= 0 )
+        {
+            GridData gridData = new GridData();
+            gridData.widthHint = width;
+            integerText.setLayoutData( gridData );
+        }
+
+        return integerText;
+    }
+    
+    
+    /**
+     * Set a value in a Button, if it's not null
+     * 
+     * @param value The Value to set
+     * @param checkBox The Button which will be checked if the value is not null and set to True
+     */
+    public static void setValue( Boolean value, Button checkBox )
+    {
+        if ( value != null )
+        {
+            checkBox.setSelection( value );
+        }
+        else
+        {
+            checkBox.setSelection( false );
+        }
+        
+    }
+    
+    
+    /**
+     * Set a value in a Text, if it's not null
+     * 
+     * @param value The Value to set
+     * @param inputText The Text which will be set if the value is not null
+     */
+    public static void setValue( Integer value, Text inputText )
+    {
+        if ( value != null )
+        {
+            inputText.setText( value.toString() );
+        }
+        else
+        {
+            inputText.setText( "" );
+        }
+    }
+    
+    
+    /**
+     * Set a value in a Text, if it's not null
+     * 
+     * @param value The Value to set
+     * @param checkBox The Text which will be set if the value is not null
+     */
+    public static void setValue( String value, Text inputText )
+    {
+        if ( value != null )
+        {
+            inputText.setText( value );
+        }
+        else
+        {
+            inputText.setText( "" );
+        }
+        
+    }
 }

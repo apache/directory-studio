@@ -33,9 +33,9 @@ import javax.naming.directory.SearchResult;
 import javax.naming.ldap.Control;
 import javax.naming.ldap.LdapContext;
 
-import org.apache.directory.shared.ldap.model.exception.LdapURLEncodingException;
-import org.apache.directory.shared.ldap.model.message.Referral;
-import org.apache.directory.shared.ldap.model.url.LdapUrl;
+import org.apache.directory.api.ldap.model.exception.LdapURLEncodingException;
+import org.apache.directory.api.ldap.model.message.Referral;
+import org.apache.directory.api.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -148,6 +148,10 @@ public class JndiStudioNamingEnumeration extends AbstractStudioNamingEnumeration
             {
                 done = true;
                 logResultDoneException = re;
+                if ( referralsInfo == null )
+                {
+                    referralsInfo = new ReferralsInfo( false );
+                }
                 referralsInfo = JNDIConnectionWrapper.handleReferralException( re, referralsInfo );
                 if ( referralsInfo.hasMoreReferrals() )
                 {
@@ -263,7 +267,7 @@ public class JndiStudioNamingEnumeration extends AbstractStudioNamingEnumeration
     }
 
 
-    private boolean checkReferral()
+    private boolean checkReferral() throws NamingException
     {
         try
         {
@@ -281,64 +285,70 @@ public class JndiStudioNamingEnumeration extends AbstractStudioNamingEnumeration
             {
                 delegate = new NamingEnumeration<SearchResult>()
                 {
-
-                    List<String> urls = new ArrayList<String>();
+                    List<String> urls;
+                    
+                    private NamingEnumeration<SearchResult> init() throws NamingException
                     {
-                        while ( referralsInfo.hasMoreReferrals() )
-                    {
-                        Referral referral = referralsInfo.getNextReferral();
-                        for ( IJndiLogger logger : ConnectionCorePlugin.getDefault().getJndiLoggers() )
+                        urls = new ArrayList<String>();
                         {
-                            logger.logSearchResultReference( connection, referral, referralsInfo, requestNum, null );
+                            while ( referralsInfo.hasMoreReferrals() )
+                            {
+                                Referral referral = referralsInfo.getNextReferral();
+                                for ( IJndiLogger logger : ConnectionCorePlugin.getDefault().getJndiLoggers() )
+                                {
+                                    logger.logSearchResultReference( connection, referral, referralsInfo, requestNum,
+                                        null );
+                                }
+                                urls.addAll( referral.getLdapUrls() );
+                            }
                         }
-                        urls.addAll( referral.getLdapUrls() );
+                        return this;
                     }
-                }
 
 
                     public SearchResult nextElement()
-                {
-                    throw new UnsupportedOperationException( "Call next() instead of nextElement() !" ); //$NON-NLS-1$
-                }
+                    {
+                        throw new UnsupportedOperationException( "Call next() instead of nextElement() !" ); //$NON-NLS-1$
+                    }
 
 
                     public boolean hasMoreElements()
-                {
-                    throw new UnsupportedOperationException( "Call hasMore() instead of hasMoreElements() !" ); //$NON-NLS-1$
-                }
+                    {
+                        throw new UnsupportedOperationException( "Call hasMore() instead of hasMoreElements() !" ); //$NON-NLS-1$
+                    }
 
 
                     public SearchResult next() throws NamingException
-                {
-                    try
                     {
-                        LdapUrl url = new LdapUrl( urls.remove( 0 ) );
-                        SearchResult searchResult = new SearchResult( url.getDn().getName(), null,
-                            new BasicAttributes(),
-                            false );
-                        searchResult.setNameInNamespace( url.getDn().getName() );
-                        StudioSearchResult ssr = new StudioSearchResult( searchResult, null, false, url );
-                        return ssr;
+                        try
+                        {
+                            LdapUrl url = new LdapUrl( urls.remove( 0 ) );
+                            SearchResult searchResult = new SearchResult( url.getDn().getName(), null,
+                                new BasicAttributes(),
+                                false );
+                            searchResult.setNameInNamespace( url.getDn().getName() );
+                            StudioSearchResult ssr = new StudioSearchResult( searchResult, null, false, url );
+                            return ssr;
+                        }
+                        catch ( LdapURLEncodingException e )
+                        {
+                            throw new NamingException( e.getMessage() );
+                        }
                     }
-                    catch ( LdapURLEncodingException e )
-                    {
-                        throw new NamingException( e.getMessage() );
-                    }
-                }
 
 
                     public boolean hasMore() throws NamingException
-                {
-                    return !urls.isEmpty();
-                }
+                    {
+                        return !urls.isEmpty();
+                    }
 
 
                     public void close() throws NamingException
-                {
-                    urls.clear();
-                    referralsInfo = null;
-                }
-                };
+                    {
+                        urls.clear();
+                        referralsInfo = null;
+                    }
+                }.init();
             }
             else if ( referralsHandlingMethod == ReferralHandlingMethod.FOLLOW )
             {

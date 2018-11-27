@@ -31,7 +31,6 @@ import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo;
-import org.apache.directory.studio.connection.core.io.jndi.JndiStudioNamingEnumeration;
 
 
 /**
@@ -41,19 +40,18 @@ import org.apache.directory.studio.connection.core.io.jndi.JndiStudioNamingEnume
  */
 public interface ConnectionWrapper
 {
-
     /**
      * Connects to the directory server.
      * 
      * @param monitor the progres monitor
      */
-    public void connect( StudioProgressMonitor monitor );
+    void connect( StudioProgressMonitor monitor );
 
 
     /**
      * Disconnects from the directory server.
      */
-    public void disconnect();
+    void disconnect();
 
 
     /**
@@ -61,13 +59,13 @@ public interface ConnectionWrapper
      * 
      * @param monitor the progress monitor
      */
-    public void bind( StudioProgressMonitor monitor );
+    void bind( StudioProgressMonitor monitor );
 
 
     /**
      * Unbinds from the directory server.
      */
-    public void unbind();
+    void unbind();
 
 
     /**
@@ -75,7 +73,7 @@ public interface ConnectionWrapper
      * 
      * @return true, if is connected
      */
-    public boolean isConnected();
+    boolean isConnected();
 
 
     /**
@@ -83,7 +81,7 @@ public interface ConnectionWrapper
      * 
      * @param binaryAttributes the binary attributes
      */
-    public void setBinaryAttributes( Collection<String> binaryAttributes );
+    void setBinaryAttributes( Collection<String> binaryAttributes );
 
 
     /**
@@ -100,7 +98,7 @@ public interface ConnectionWrapper
      * 
      * @return the naming enumeration or null if an exception occurs.
      */
-    public StudioNamingEnumeration search( final String searchBase, final String filter,
+    StudioNamingEnumeration search( final String searchBase, final String filter,
         final SearchControls searchControls, final AliasDereferencingMethod aliasesDereferencingMethod,
         final ReferralHandlingMethod referralsHandlingMethod, final Control[] controls,
         final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo );
@@ -115,7 +113,7 @@ public interface ConnectionWrapper
      * @param monitor the progress monitor
      * @param referralsInfo the referrals info
      */
-    public void modifyEntry( final String dn, final ModificationItem[] modificationItems, final Control[] controls,
+    void modifyEntry( final String dn, final ModificationItem[] modificationItems, final Control[] controls,
         final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo );
 
 
@@ -129,7 +127,7 @@ public interface ConnectionWrapper
      * @param monitor the progress monitor
      * @param referralsInfo the referrals info
      */
-    public void renameEntry( final String oldDn, final String newDn, final boolean deleteOldRdn,
+    void renameEntry( final String oldDn, final String newDn, final boolean deleteOldRdn,
         final Control[] controls, final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo );
 
 
@@ -142,7 +140,7 @@ public interface ConnectionWrapper
      * @param monitor the progress monitor
      * @param referralsInfo the referrals info
      */
-    public void createEntry( final String dn, final Attributes attributes, final Control[] controls,
+    void createEntry( final String dn, final Attributes attributes, final Control[] controls,
         final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo );
 
 
@@ -154,6 +152,6 @@ public interface ConnectionWrapper
      * @param monitor the progress monitor
      * @param referralsInfo the referrals info
      */
-    public void deleteEntry( final String dn, final Control[] controls, final StudioProgressMonitor monitor,
+    void deleteEntry( final String dn, final Control[] controls, final StudioProgressMonitor monitor,
         final ReferralsInfo referralsInfo );
 }

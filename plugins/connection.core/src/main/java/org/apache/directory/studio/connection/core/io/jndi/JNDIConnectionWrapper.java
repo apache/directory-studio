@@ -50,8 +50,6 @@ import javax.naming.ldap.LdapContext;
 import javax.naming.ldap.LdapName;
 import javax.naming.ldap.StartTlsRequest;
 import javax.naming.ldap.StartTlsResponse;
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLSession;
 import javax.security.auth.Subject;
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
@@ -65,14 +63,14 @@ import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
 import javax.security.sasl.Sasl;
 
-import org.apache.commons.io.FileUtils;
+import org.apache.directory.api.util.FileUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.directory.shared.ldap.model.constants.SaslQoP;
-import org.apache.directory.shared.ldap.model.constants.SaslSecurityStrength;
-import org.apache.directory.shared.ldap.model.exception.LdapURLEncodingException;
-import org.apache.directory.shared.ldap.model.message.Referral;
-import org.apache.directory.shared.ldap.model.message.ReferralImpl;
-import org.apache.directory.shared.ldap.model.url.LdapUrl;
+import org.apache.directory.api.ldap.model.constants.SaslQoP;
+import org.apache.directory.api.ldap.model.constants.SaslSecurityStrength;
+import org.apache.directory.api.ldap.model.exception.LdapURLEncodingException;
+import org.apache.directory.api.ldap.model.message.Referral;
+import org.apache.directory.api.ldap.model.message.ReferralImpl;
+import org.apache.directory.api.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -136,7 +134,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
 
     private static final String JAVA_NAMING_LDAP_ATTRIBUTES_BINARY = "java.naming.ldap.attributes.binary"; //$NON-NLS-1$
 
-    private static int SEARCH_RESQUEST_NUM = 0;
+    private static int searchRequestNum = 0;
 
     private Connection connection;
 
@@ -286,11 +284,14 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
     public void setBinaryAttributes( Collection<String> binaryAttributes )
     {
         this.binaryAttributes = binaryAttributes;
-        String binaryAttributesString = StringUtils.EMPTY;
+        StringBuilder sb = new StringBuilder();
+        
         for ( String string : binaryAttributes )
         {
-            binaryAttributesString += string + ' ';
+            sb.append( string ).append( ' ' );
         }
+
+        String binaryAttributesString = sb.toString();
 
         if ( environment != null )
         {
@@ -331,7 +332,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         final ReferralHandlingMethod referralsHandlingMethod, final Control[] controls,
         final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo )
     {
-        final long requestNum = SEARCH_RESQUEST_NUM++;
+        final long requestNum = searchRequestNum++;
 
         // start
         InnerRunnable runnable = new InnerRunnable()
@@ -355,17 +356,10 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     NamingEnumeration<SearchResult> result = searchCtx.search( JNDIConnectionWrapper
                         .getSaveJndiName( searchBase ), filter, searchControls );
                     namingEnumeration = new JndiStudioNamingEnumeration( connection, searchCtx, result, null,
-                        searchBase,
-                        filter, searchControls, aliasesDereferencingMethod, referralsHandlingMethod, controls,
-                        requestNum, monitor, referralsInfo );
+                        searchBase, filter, searchControls, aliasesDereferencingMethod, referralsHandlingMethod,
+                        controls, requestNum, monitor, referralsInfo );
                 }
-                catch ( PartialResultException e )
-                {
-                    namingEnumeration = new JndiStudioNamingEnumeration( connection, searchCtx, null, e, searchBase,
-                        filter, searchControls, aliasesDereferencingMethod, referralsHandlingMethod, controls,
-                        requestNum, monitor, referralsInfo );
-                }
-                catch ( ReferralException e )
+                catch ( PartialResultException | ReferralException e )
                 {
                     namingEnumeration = new JndiStudioNamingEnumeration( connection, searchCtx, null, e, searchBase,
                         filter, searchControls, aliasesDereferencingMethod, referralsHandlingMethod, controls,
@@ -442,7 +436,6 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         {
             public void run()
             {
-                boolean logModification = true;
                 try
                 {
                     // create modify context
@@ -456,18 +449,18 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                 }
                 catch ( ReferralException re )
                 {
-                    logModification = false;
                     try
                     {
                         ReferralsInfo newReferralsInfo = handleReferralException( re, referralsInfo );
                         Referral referral = newReferralsInfo.getNextReferral();
+                        
                         if ( referral != null )
                         {
                             Connection referralConnection = ConnectionWrapperUtils.getReferralConnection( referral,
                                 monitor, this );
                             if ( referralConnection != null )
                             {
-                                List<String> urls = new ArrayList<String>( referral.getLdapUrls() );
+                                List<String> urls = new ArrayList<>( referral.getLdapUrls() );
 
                                 String referralDn = new LdapUrl( urls.get( 0 ) ).getDn().getName();
                                 referralConnection.getConnectionWrapper().modifyEntry( referralDn,
@@ -495,12 +488,9 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     namingException = ne;
                 }
 
-                if ( logModification )
+                for ( IJndiLogger logger : getJndiLoggers() )
                 {
-                    for ( IJndiLogger logger : getJndiLoggers() )
-                    {
-                        logger.logChangetypeModify( connection, dn, modificationItems, controls, namingException );
-                    }
+                    logger.logChangetypeModify( connection, dn, modificationItems, controls, namingException );
                 }
             }
         };
@@ -549,7 +539,6 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         {
             public void run()
             {
-                boolean logModification = true;
                 try
                 {
                     // create modify context
@@ -573,7 +562,6 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                 }
                 catch ( ReferralException re )
                 {
-                    logModification = false;
                     try
                     {
                         ReferralsInfo newReferralsInfo = handleReferralException( re, referralsInfo );
@@ -603,12 +591,9 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     namingException = ne;
                 }
 
-                if ( logModification )
+                for ( IJndiLogger logger : getJndiLoggers() )
                 {
-                    for ( IJndiLogger logger : getJndiLoggers() )
-                    {
-                        logger.logChangetypeModDn( connection, oldDn, newDn, deleteOldRdn, controls, namingException );
-                    }
+                    logger.logChangetypeModDn( connection, oldDn, newDn, deleteOldRdn, controls, namingException );
                 }
             }
         };
@@ -656,7 +641,6 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         {
             public void run()
             {
-                boolean logModification = true;
                 try
                 {
                     // create modify context
@@ -670,18 +654,19 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                 }
                 catch ( ReferralException re )
                 {
-                    logModification = false;
                     try
                     {
                         ReferralsInfo newReferralsInfo = handleReferralException( re, referralsInfo );
                         Referral referral = newReferralsInfo.getNextReferral();
+                        
                         if ( referral != null )
                         {
                             Connection referralConnection = ConnectionWrapperUtils.getReferralConnection( referral,
                                 monitor, this );
+                            
                             if ( referralConnection != null )
                             {
-                                List<String> urls = new ArrayList<String>( referral.getLdapUrls() );
+                                List<String> urls = new ArrayList<>( referral.getLdapUrls() );
 
                                 String referralDn = new LdapUrl( urls.get( 0 ) ).getDn().getName();
                                 referralConnection.getConnectionWrapper().createEntry( referralDn, attributes,
@@ -707,12 +692,9 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     namingException = ne;
                 }
 
-                if ( logModification )
+                for ( IJndiLogger logger : getJndiLoggers() )
                 {
-                    for ( IJndiLogger logger : getJndiLoggers() )
-                    {
-                        logger.logChangetypeAdd( connection, dn, attributes, controls, namingException );
-                    }
+                    logger.logChangetypeAdd( connection, dn, attributes, controls, namingException );
                 }
             }
         };
@@ -759,7 +741,6 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         {
             public void run()
             {
-                boolean logModification = true;
                 try
                 {
                     // create modify context
@@ -773,7 +754,6 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                 }
                 catch ( ReferralException re )
                 {
-                    logModification = false;
                     try
                     {
                         ReferralsInfo newReferralsInfo = handleReferralException( re, referralsInfo );
@@ -784,7 +764,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                                 monitor, this );
                             if ( referralConnection != null )
                             {
-                                List<String> urls = new ArrayList<String>( referral.getLdapUrls() );
+                                List<String> urls = new ArrayList<>( referral.getLdapUrls() );
 
                                 String referralDn = new LdapUrl( urls.get( 0 ) ).getDn().getName();
                                 referralConnection.getConnectionWrapper().deleteEntry( referralDn, controls,
@@ -810,12 +790,9 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     namingException = ne;
                 }
 
-                if ( logModification )
+                for ( IJndiLogger logger : getJndiLoggers() )
                 {
-                    for ( IJndiLogger logger : getJndiLoggers() )
-                    {
-                        logger.logChangetypeDelete( connection, dn, controls, namingException );
-                    }
+                    logger.logChangetypeDelete( connection, dn, controls, namingException );
                 }
             }
         };
@@ -848,11 +825,12 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         // setup connection parameters
         String host = connection.getConnectionParameter().getHost();
         int port = connection.getConnectionParameter().getPort();
+        long timeout = connection.getConnectionParameter().getTimeout();
 
         useLdaps = connection.getConnectionParameter().getEncryptionMethod() == ConnectionParameter.EncryptionMethod.LDAPS;
         useStartTLS = connection.getConnectionParameter().getEncryptionMethod() == ConnectionParameter.EncryptionMethod.START_TLS;
 
-        environment = new Hashtable<String, String>();
+        environment = new Hashtable<>();
         Preferences preferences = ConnectionCorePlugin.getDefault().getPluginPreferences();
         final boolean validateCertificates = preferences
             .getBoolean( ConnectionCoreConstants.PREFERENCE_VALIDATE_CERTIFICATES );
@@ -867,6 +845,16 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         {
             environment.put( COM_SUN_JNDI_LDAP_CONNECT_TIMEOUT, "10000" ); //$NON-NLS-1$
         }
+        else
+        {
+            if ( timeout < 0 )
+            {
+                timeout = 0;
+            }
+            
+            environment.put( COM_SUN_JNDI_LDAP_CONNECT_TIMEOUT, Long.toString( timeout ) ); //$NON-NLS-1$
+        }
+        
         environment.put( COM_SUN_JNDI_DNS_TIMEOUT_INITIAL, "2000" ); //$NON-NLS-1$
         environment.put( COM_SUN_JNDI_DNS_TIMEOUT_RETRIES, "3" ); //$NON-NLS-1$
 
@@ -905,13 +893,8 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                                 .extendedOperation( new StartTlsRequest() );
                             // deactivate host name verification at this level,
                             // host name verification is done in StudioTrustManager
-                            tls.setHostnameVerifier( new HostnameVerifier()
-                            {
-                                public boolean verify( String hostname, SSLSession session )
-                                {
-                                    return true;
-                                }
-                            } );
+                            tls.setHostnameVerifier( ( hostname, session ) -> true );
+                            
                             if ( validateCertificates )
                             {
                                 tls.negotiate( StudioSSLSocketFactory.getDefault() );
@@ -1190,9 +1173,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
             }
 
             // Login to LDAP server, obtains a service ticket from KDC
-            Subject.doAs( lc.getSubject(), new PrivilegedAction<Object>()
-            {
-                public Object run()
+            Subject.doAs( lc.getSubject(), (PrivilegedAction<Object>)() -> 
                 {
                     try
                     {
@@ -1204,7 +1185,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                     }
                     return null;
                 }
-            } );
+            );
         }
         finally
         {
@@ -1238,7 +1219,6 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
 
             // check reconnection
             if ( i == 0
-                && runnable.getException() != null
                 && ( ( runnable.getException() instanceof CommunicationException )
                     || ( runnable.getException() instanceof ServiceUnavailableException ) || ( runnable.getException() instanceof InsufficientResourcesException ) ) )
             {
@@ -1261,9 +1241,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         if ( !monitor.isCanceled() )
         {
             // monitor
-            StudioProgressMonitor.CancelListener listener = new StudioProgressMonitor.CancelListener()
-            {
-                public void cancelRequested( StudioProgressMonitor.CancelEvent event )
+            StudioProgressMonitor.CancelListener listener = event -> 
                 {
                     if ( monitor.isCanceled() )
                     {
@@ -1271,6 +1249,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                         {
                             jobThread.interrupt();
                         }
+                        
                         if ( context != null )
                         {
                             try
@@ -1280,28 +1259,21 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                             catch ( NamingException ne )
                             {
                             }
+                            
                             isConnected = false;
                             context = null;
                         }
+                        
                         isConnected = false;
                     }
-                }
-            };
+                };
+            
             monitor.addCancelListener( listener );
             jobThread = Thread.currentThread();
 
             // run
             try
             {
-                // try {
-                // Thread.sleep(5000);
-                // } catch (InterruptedException e) {
-                // System.out.println(System.currentTimeMillis() + ": sleep
-                // interrupted!");
-                // }
-                // System.out.println(System.currentTimeMillis() + ": " +
-                // runnable);
-
                 runnable.run();
             }
             finally
@@ -1333,16 +1305,18 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
         {
             if ( configList == null )
             {
-                HashMap<String, Object> options = new HashMap<String, Object>();
+                HashMap<String, Object> options = new HashMap<>();
 
                 // TODO: this only works for Sun JVM
                 options.put( "refreshKrb5Config", "true" ); //$NON-NLS-1$ //$NON-NLS-2$
+                
                 switch ( connection.getConnectionParameter().getKrb5CredentialConfiguration() )
                 {
                     case USE_NATIVE:
                         options.put( "useTicketCache", "true" ); //$NON-NLS-1$ //$NON-NLS-2$
                         options.put( "doNotPrompt", "true" ); //$NON-NLS-1$ //$NON-NLS-2$
                         break;
+                        
                     case OBTAIN_TGT:
                         options.put( "doNotPrompt", "false" ); //$NON-NLS-1$ //$NON-NLS-2$
                         break;
@@ -1354,7 +1328,8 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
             return configList;
         }
 
-
+        
+        @Override
         public void refresh()
         {
         }
@@ -1382,7 +1357,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                 }
                 else
                 {
-                    throw new UnsupportedCallbackException( callBack, "Callback not supported" );
+                    throw new UnsupportedCallbackException( callBack, "Callback not supported" ); //$NON-NLS-1$
                 }
             }
         }
@@ -1485,7 +1460,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
      * <li>Dn as String</li>
      * <li>javax.naming.CompositeName</li>
      * <li>javax.naming.ldap.LdapName (since Java5)</li>
-     * <li>org.apache.directory.shared.ldap.name.LdapDN</li>
+     * <li>org.apache.directory.api.ldap.name.LdapDN</li>
      * </ul>
      * <p>
      * There are some drawbacks when using this classes:
@@ -1540,7 +1515,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
     {
         if ( initialReferralsInfo == null )
         {
-            initialReferralsInfo = new ReferralsInfo();
+            initialReferralsInfo = new ReferralsInfo( true );
         }
 
         Referral referral = handleReferralException( referralException, initialReferralsInfo, null );
@@ -1564,6 +1539,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
                         // in the latter case we null out the reference, a new one will be created by handleReferral()
                         referral = null;
                     }
+                    
                     referralException = ( ReferralException ) ne;
 
                     referral = handleReferralException( referralException, initialReferralsInfo, referral );
@@ -1580,7 +1556,7 @@ public class JNDIConnectionWrapper implements ConnectionWrapper
 
 
     private static Referral handleReferralException( ReferralException referralException,
-        ReferralsInfo initialReferralsInfo, Referral referral ) throws NamingException
+        ReferralsInfo initialReferralsInfo, Referral referral )
     {
         String info = ( String ) referralException.getReferralInfo();
 

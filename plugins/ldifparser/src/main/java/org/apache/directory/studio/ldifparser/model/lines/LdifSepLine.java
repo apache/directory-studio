@@ -26,15 +26,6 @@ import org.apache.directory.studio.ldifparser.LdifParserConstants;
 
 public class LdifSepLine extends LdifLineBase
 {
-
-    private static final long serialVersionUID = 1682910718363816158L;
-
-
-    protected LdifSepLine()
-    {
-    }
-
-
     public LdifSepLine( int offset, String rawNewLine )
     {
         super( offset, rawNewLine );

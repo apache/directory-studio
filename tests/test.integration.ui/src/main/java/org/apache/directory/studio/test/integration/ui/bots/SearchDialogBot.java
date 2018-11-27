@@ -27,13 +27,14 @@ public class SearchDialogBot extends DialogBot
 
     public SearchDialogBot()
     {
+        super( "Search" );
         this.searchPageWrapperBot = new SearchPageWrapperBot( bot );
     }
 
 
     public boolean isVisible()
     {
-        return super.isVisible( "Search" ) && bot.tabItem( "LDAP Search" ).isActive();
+        return super.isVisible() && bot.tabItem( "LDAP Search" ).isActive();
     }
 
 
@@ -58,12 +59,6 @@ public class SearchDialogBot extends DialogBot
     public void clickSearchButton()
     {
         super.clickButton( "Search" );
-    }
-
-
-    public void clickCancelButton()
-    {
-        super.clickButton( "Cancel" );
     }
 
 }

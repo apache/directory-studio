@@ -27,9 +27,7 @@ import org.apache.directory.studio.entryeditors.IEntryEditor;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor.EntryEditorWidget;
-import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.util.IPropertyChangeListener;
@@ -40,7 +38,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.INavigationLocation;
 import org.eclipse.ui.INavigationLocationProvider;
@@ -78,6 +75,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
 
     IPropertyChangeListener propertyChangeListener = new IPropertyChangeListener()
     {
+        @Override
         public void propertyChange( org.eclipse.jface.util.PropertyChangeEvent event )
         {
             // set the input again if the auto-save option has been changed
@@ -96,6 +94,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
     /**
      * {@inheritDoc}
      */
+    @Override
     public void init( IEditorSite site, IEditorInput input ) throws PartInitException
     {
         setSite( site );
@@ -107,6 +106,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setInput( IEditorInput input )
     {
         super.setInput( input );
@@ -126,6 +126,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
     /**
      * {@inheritDoc}
      */
+    @Override
     public void createPartControl( Composite parent )
     {
         Composite composite = new Composite( parent, SWT.NONE );
@@ -143,7 +144,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
         configuration = new EntryEditorConfiguration( this );
 
         // create main widget
-        mainWidget = new EntryEditorWidget( this.configuration );
+        mainWidget = new EntryEditorWidget( configuration );
         mainWidget.createWidget( composite );
 
         // create actions and context menu and register global actions
@@ -163,6 +164,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setFocus()
     {
         mainWidget.setFocus();
@@ -172,6 +174,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
     /**
      * {@inheritDoc}
      */
+    @Override
     public Object getAdapter( Class required )
     {
         if ( IContentOutlinePage.class.equals( required ) )
@@ -180,6 +183,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
             {
                 outlinePage = new EntryEditorOutlinePage( this );
             }
+
             return outlinePage;
         }
 
@@ -190,6 +194,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
     /**
      * {@inheritDoc}
      */
+    @Override
     public void dispose()
     {
         if ( configuration != null )
@@ -214,6 +219,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
     /**
      * {@inheritDoc}
      */
+    @Override
     public void doSave( final IProgressMonitor monitor )
     {
         if ( !isAutoSave() )
@@ -227,6 +233,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
     /**
      * {@inheritDoc}
      */
+    @Override
     public void doSaveAs()
     {
     }
@@ -235,6 +242,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isDirty()
     {
         return getEntryEditorInput().isSharedWorkingCopyDirty( this );
@@ -244,6 +252,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isSaveAsAllowed()
     {
         return false;
@@ -308,6 +317,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
     /**
      * {@inheritDoc}
      */
+    @Override
     public INavigationLocation createEmptyNavigationLocation()
     {
         return null;
@@ -317,6 +327,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
     /**
      * {@inheritDoc}
      */
+    @Override
     public INavigationLocation createNavigationLocation()
     {
         return new EntryEditorNavigationLocation( this );
@@ -339,6 +350,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
      * 
      * {@inheritDoc}
      */
+    @Override
     public boolean canHandle( IEntry entry )
     {
         return true;
@@ -348,6 +360,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
     /**
      * {@inheritDoc}
      */
+    @Override
     public EntryEditorInput getEntryEditorInput()
     {
         return EntryEditorUtils.getEntryEditorInput( getEditorInput() );
@@ -357,6 +370,7 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
     /**
      * {@inheritDoc}
      */
+    @Override
     public void workingCopyModified( Object source )
     {
         if ( mainWidget != null && !mainWidget.getViewer().isCellEditorActive() )
@@ -400,51 +414,30 @@ public abstract class EntryEditor extends EditorPart implements IEntryEditor, IN
     /**
      * {@inheritDoc}
      */
+    @Override
     public void showEditorInput( IEditorInput input )
     {
         if ( input instanceof EntryEditorInput )
         {
-            // If the editor is dirty, let's ask for a save before changing the input
-            if ( isDirty() )
+            /*
+             * Optimization: no need to set the input again if the same input is already set
+             */
+            if ( getEntryEditorInput() != null
+                && getEntryEditorInput().getResolvedEntry() == ( ( EntryEditorInput ) input ).getResolvedEntry() )
             {
-                if ( !EntryEditorUtils.askSaveSharedWorkingCopyBeforeInputChange( this ) )
-                {
-                    return;
-                }
+                return;
             }
 
-            /*
-             * Workaround to make link-with-editor working for the single-tab editor:
-             * The call of firePropertyChange is used to inform the link-with-editor action.
-             * However firePropertyChange also modifies the navigation history.
-             * Thus, a dummy input with the real entry but a null extension is set.
-             * This avoids to modification of the navigation history.
-             * Afterwards the real input is set.
-             */
-            EntryEditorInput eei = ( EntryEditorInput ) input;
-            IEntry entry = eei.getEntryInput();
-            ISearchResult searchResult = eei.getSearchResultInput();
-            IBookmark bookmark = eei.getBookmarkInput();
-            EntryEditorInput dummyInput;
-            if ( entry != null )
+            // If the editor is dirty, let's ask for a save before changing the input
+            if ( isDirty() && !EntryEditorUtils.askSaveSharedWorkingCopyBeforeInputChange( this ) )
             {
-                dummyInput = new EntryEditorInput( entry, null );
+                return;
             }
-            else if ( searchResult != null )
-            {
-                dummyInput = new EntryEditorInput( searchResult, null );
-            }
-            else
-            {
-                dummyInput = new EntryEditorInput( bookmark, null );
-            }
-            setInput( dummyInput );
-            firePropertyChange( IEditorPart.PROP_INPUT );
 
             // now set the real input and mark history location
             setInput( input );
             getSite().getPage().getNavigationHistory().markLocation( this );
+            firePropertyChange( BrowserUIConstants.INPUT_CHANGED );
         }
     }
-
 }

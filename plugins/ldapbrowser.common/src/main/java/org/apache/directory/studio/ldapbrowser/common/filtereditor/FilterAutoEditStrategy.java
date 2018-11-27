@@ -149,7 +149,6 @@ public class FilterAutoEditStrategy extends DefaultIndentLineAutoEditStrategy im
 
                 // isSurroundNested
                 if ( filter.getStartToken() != null
-                    && filter.getFilterComponent() != null
                     && ( filter.getFilterComponent() instanceof LdapAndFilterComponent
                         || filter.getFilterComponent() instanceof LdapOrFilterComponent || filter.getFilterComponent() instanceof LdapNotFilterComponent ) )
                 {

@@ -43,6 +43,11 @@ public class BrowserViewBot
     }
 
 
+    public String getSelectedEntry() {
+        return browserBot.getSelectedEntry();
+    }
+
+
     public boolean existsEntry( String... path )
     {
         return browserBot.existsEntry( path );
@@ -134,6 +139,13 @@ public class BrowserViewBot
     {
         ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Export", "DSML Export..." );
         return new ExportWizardBot( ExportWizardBot.EXPORT_DSML_TITLE );
+    }
+
+
+    public ExportWizardBot openExportCsvWizard()
+    {
+        ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Export", "CSV Export..." );
+        return new ExportWizardBot( ExportWizardBot.EXPORT_CSV_TITLE );
     }
 
 

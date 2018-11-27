@@ -22,7 +22,7 @@ package org.apache.directory.studio.valueeditors.msad;
 
 
 import org.apache.commons.codec.binary.Hex;
-import org.apache.directory.shared.util.Strings;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.valueeditors.HexValueEditor;
 
@@ -54,9 +54,11 @@ public class InPlaceMsAdObjectGuidValueEditor extends HexValueEditor
         if ( !showRawValues() )
         {
             Object rawValue = super.getRawValue( value );
+            
             if ( rawValue instanceof byte[] )
             {
                 byte[] bytes = ( byte[] ) rawValue;
+            
                 return convertToString( bytes );
             }
         }
@@ -67,9 +69,9 @@ public class InPlaceMsAdObjectGuidValueEditor extends HexValueEditor
 
     String convertToString( byte[] bytes )
     {
-        if ( bytes == null || bytes.length != 16 )
+        if ((  bytes == null ) || ( bytes.length != 16 ) )
         {
-            return "Invalid GUID";
+            return Messages.getString( "InPlaceMsAdObjectGuidValueEditor.InvalidGuid" ); //$NON-NLS-1$
         }
 
         char[] hex = Hex.encodeHex( bytes );
@@ -90,7 +92,7 @@ public class InPlaceMsAdObjectGuidValueEditor extends HexValueEditor
         sb.append( '-' );
         sb.append( hex, 20, 12 );
         sb.append( '}' );
+        
         return Strings.toLowerCase( sb.toString() );
     }
-
 }

@@ -23,7 +23,7 @@
          point="org.eclipse.ui.preferencePages">
       <page
             class="org.apache.directory.studio.common.ui.StudioPreferencePage"
-            id="%Pref_StudioPage_id"
+            id="org.apache.directory.studio.StudioPreferencePage"
             name="%Pref_StudioPage_name">
       </page>
    </extension>

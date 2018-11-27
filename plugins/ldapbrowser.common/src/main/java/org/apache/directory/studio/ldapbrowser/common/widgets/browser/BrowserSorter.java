@@ -23,11 +23,12 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.browser;
 
 import java.math.BigInteger;
 
-import org.apache.directory.shared.ldap.model.name.Rdn;
+import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.IBookmark;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.IQuickSearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearchResult;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DirectoryMetadataEntry;
@@ -226,6 +227,23 @@ public class BrowserSorter extends ViewerSorter
         else if ( o1 != null && o2 == null )
         {
             return greaterThanEntries();
+        }
+
+        // special case for quick search
+        else if ( o1 instanceof IQuickSearch || o2 instanceof IQuickSearch )
+        {
+            if ( !( o1 instanceof IQuickSearch ) && ( o2 instanceof IQuickSearch ) )
+            {
+                return 1;
+            }
+            else if ( ( o1 instanceof IQuickSearch ) && !( o2 instanceof IQuickSearch ) )
+            {
+                return -1;
+            }
+            else
+            {
+                return equal();
+            }
         }
 
         // o1 and o2 are entries

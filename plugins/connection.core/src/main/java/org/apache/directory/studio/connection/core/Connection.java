@@ -21,9 +21,9 @@
 package org.apache.directory.studio.connection.core;
 
 
-import org.apache.directory.shared.ldap.model.constants.SaslQoP;
-import org.apache.directory.shared.ldap.model.constants.SaslSecurityStrength;
-import org.apache.directory.shared.ldap.model.url.LdapUrl;
+import org.apache.directory.api.ldap.model.constants.SaslQoP;
+import org.apache.directory.api.ldap.model.constants.SaslSecurityStrength;
+import org.apache.directory.api.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.Krb5Configuration;
@@ -49,7 +49,7 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
      * 
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
      */
-    public static enum AliasDereferencingMethod
+    public enum AliasDereferencingMethod
     {
         /** Never. */
         NEVER(0),
@@ -96,12 +96,16 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
             {
                 case 0:
                     return NEVER;
+                    
                 case 1:
                     return ALWAYS;
+                    
                 case 2:
                     return FINDING;
+                    
                 case 3:
                     return SEARCH;
+                    
                 default:
                     return null;
             }
@@ -113,7 +117,7 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
      * 
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
      */
-    public static enum ReferralHandlingMethod
+    public enum ReferralHandlingMethod
     {
         /** Ignore. */
         IGNORE(0),
@@ -160,12 +164,16 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
             {
                 case 0:
                     return IGNORE;
+                    
                 case 1:
                     return FOLLOW;
+                    
                 case 2:
                     return FOLLOW_MANUALLY;
+                    
                 case 3:
                     return FOLLOW_MANUALLY;
+                    
                 default:
                     return null;
             }
@@ -201,11 +209,9 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
     {
         ConnectionParameter cp = new ConnectionParameter( getName(), getHost(), getPort(), getEncryptionMethod(),
             getNetworkProvider(), getAuthMethod(), getBindPrincipal(), getBindPassword(), getSaslRealm(), isReadOnly(),
-            getConnectionParameter().getExtendedProperties() );
+            getConnectionParameter().getExtendedProperties() , getTimeout() );
 
-        Connection clone = new Connection( cp );
-
-        return clone;
+        return new Connection( cp );
     }
 
 
@@ -220,6 +226,7 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
         {
             case JNDI:
                 return getJndiConnectionWrapper();
+                
             case APACHE_DIRECTORY_LDAP_API:
                 return getDirectoryApiConnectionWrapper();
         }
@@ -236,7 +243,7 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
      */
     private ConnectionWrapper getJndiConnectionWrapper()
     {
-        if ( ( connectionWrapper == null ) || !( connectionWrapper instanceof JNDIConnectionWrapper ) )
+        if ( !( connectionWrapper instanceof JNDIConnectionWrapper ) )
         {
             connectionWrapper = new JNDIConnectionWrapper( this );
         }
@@ -253,7 +260,7 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
      */
     private ConnectionWrapper getDirectoryApiConnectionWrapper()
     {
-        if ( ( connectionWrapper == null ) || !( connectionWrapper instanceof DirectoryApiConnectionWrapper ) )
+        if ( !( connectionWrapper instanceof DirectoryApiConnectionWrapper ) )
         {
             connectionWrapper = new DirectoryApiConnectionWrapper( this );
         }
@@ -528,6 +535,17 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
 
 
     /**
+     * Gets the timeout.
+     * 
+     * @return the timeout
+     */
+    public long getTimeout()
+    {
+        return connectionParameter.getTimeout();
+    }
+
+
+    /**
      * Sets the auth method.
      * 
      * @param authMethod the auth method
@@ -634,6 +652,18 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
         ConnectionEventRegistry.fireConnectionUpdated( this, this );
     }
 
+    
+    /**
+     * Sets the timeout.
+     * 
+     * @param timeout the timeout
+     */
+    public void setTimeout( long timeout )
+    {
+        connectionParameter.setTimeout( timeout );
+        ConnectionEventRegistry.fireConnectionUpdated( this, this );
+    }
+
 
     /**
      * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
@@ -641,10 +671,6 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
     @SuppressWarnings("unchecked")
     public Object getAdapter( Class adapter )
     {
-        //        if ( adapter.isAssignableFrom( ISearchPageScoreComputer.class ) )
-        //        {
-        //            return new LdapSearchPageScoreComputer();
-        //        }
         if ( adapter == Connection.class )
         {
             return this;
@@ -668,6 +694,7 @@ public class Connection implements ConnectionPropertyPageProvider, IAdaptable
         LdapUrl url = new LdapUrl();
         url.setHost( getHost() );
         url.setPort( getPort() );
+        
         return url;
     }
 

@@ -30,16 +30,16 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.model.schema.AbstractSchemaObject;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
-import org.apache.directory.shared.ldap.model.schema.MatchingRuleUse;
-import org.apache.directory.shared.ldap.model.schema.ObjectClass;
-import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
-import org.apache.directory.shared.ldap.model.schema.UsageEnum;
-import org.apache.directory.shared.util.Strings;
+import org.apache.directory.api.ldap.model.constants.SchemaConstants;
+import org.apache.directory.api.ldap.model.schema.AbstractSchemaObject;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
+import org.apache.directory.api.ldap.model.schema.LdapSyntax;
+import org.apache.directory.api.ldap.model.schema.MatchingRule;
+import org.apache.directory.api.ldap.model.schema.MatchingRuleUse;
+import org.apache.directory.api.ldap.model.schema.ObjectClass;
+import org.apache.directory.api.ldap.model.schema.ObjectClassTypeEnum;
+import org.apache.directory.api.ldap.model.schema.UsageEnum;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
@@ -72,13 +72,16 @@ public class SchemaUtils
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.SUBSCHEMA_SUBENTRY_AT ) );
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.SUBSCHEMA_SUBENTRY_AT_OID ) );
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.STRUCTURAL_OBJECT_CLASS_AT ) );
-        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.STRUCTURAL_OBJECT_CLASS_AT_OID ) );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES
+            .add( Strings.toLowerCase( SchemaConstants.STRUCTURAL_OBJECT_CLASS_AT_OID ) );
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.GOVERNING_STRUCTURE_RULE_AT ) );
-        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.GOVERNING_STRUCTURE_RULE_AT_OID ) );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings
+            .toLowerCase( SchemaConstants.GOVERNING_STRUCTURE_RULE_AT_OID ) );
 
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.ENTRY_UUID_AT ) );
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.ENTRY_UUID_AT_OID ) );
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.ENTRY_CSN_AT ) );
+        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.ENTRY_CSN_AT_OID ) );
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.ENTRY_DN_AT ) );
         OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.ENTRY_DN_AT_OID ) );
 
@@ -114,37 +117,40 @@ public class SchemaUtils
     public static final Set<String> NON_MODIFIABLE_ATTRIBUTE_OIDS_AND_NAMES = new HashSet<String>();
     static
     {
-        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.CREATE_TIMESTAMP_AT ) );
-        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.CREATE_TIMESTAMP_AT_OID ) );
-        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.CREATORS_NAME_AT ) );
-        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.CREATORS_NAME_AT_OID ) );
-        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.MODIFY_TIMESTAMP_AT ) );
-        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.MODIFY_TIMESTAMP_AT_OID ) );
-        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.MODIFIERS_NAME_AT ) );
-        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.MODIFIERS_NAME_AT_OID ) );
+        NON_MODIFIABLE_ATTRIBUTE_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.CREATE_TIMESTAMP_AT ) );
+        NON_MODIFIABLE_ATTRIBUTE_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.CREATE_TIMESTAMP_AT_OID ) );
+        NON_MODIFIABLE_ATTRIBUTE_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.CREATORS_NAME_AT ) );
+        NON_MODIFIABLE_ATTRIBUTE_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.CREATORS_NAME_AT_OID ) );
+        NON_MODIFIABLE_ATTRIBUTE_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.MODIFY_TIMESTAMP_AT ) );
+        NON_MODIFIABLE_ATTRIBUTE_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.MODIFY_TIMESTAMP_AT_OID ) );
+        NON_MODIFIABLE_ATTRIBUTE_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.MODIFIERS_NAME_AT ) );
+        NON_MODIFIABLE_ATTRIBUTE_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.MODIFIERS_NAME_AT_OID ) );
 
-        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.SUBSCHEMA_SUBENTRY_AT ) );
-        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.SUBSCHEMA_SUBENTRY_AT_OID ) );
-        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.STRUCTURAL_OBJECT_CLASS_AT ) );
-        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.STRUCTURAL_OBJECT_CLASS_AT_OID ) );
-        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.GOVERNING_STRUCTURE_RULE_AT ) );
-        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.GOVERNING_STRUCTURE_RULE_AT_OID ) );
+        NON_MODIFIABLE_ATTRIBUTE_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.SUBSCHEMA_SUBENTRY_AT ) );
+        NON_MODIFIABLE_ATTRIBUTE_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.SUBSCHEMA_SUBENTRY_AT_OID ) );
+        NON_MODIFIABLE_ATTRIBUTE_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.STRUCTURAL_OBJECT_CLASS_AT ) );
+        NON_MODIFIABLE_ATTRIBUTE_OIDS_AND_NAMES
+            .add( Strings.toLowerCase( SchemaConstants.STRUCTURAL_OBJECT_CLASS_AT_OID ) );
+        NON_MODIFIABLE_ATTRIBUTE_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.GOVERNING_STRUCTURE_RULE_AT ) );
+        NON_MODIFIABLE_ATTRIBUTE_OIDS_AND_NAMES.add( Strings
+            .toLowerCase( SchemaConstants.GOVERNING_STRUCTURE_RULE_AT_OID ) );
 
-        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.ENTRY_UUID_AT ) );
-        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.ENTRY_UUID_AT_OID ) );
-        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.ENTRY_CSN_AT ) );
-        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.ENTRY_DN_AT ) );
-        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.ENTRY_DN_AT_OID ) );
+        NON_MODIFIABLE_ATTRIBUTE_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.ENTRY_UUID_AT ) );
+        NON_MODIFIABLE_ATTRIBUTE_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.ENTRY_UUID_AT_OID ) );
+        NON_MODIFIABLE_ATTRIBUTE_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.ENTRY_CSN_AT ) );
+        NON_MODIFIABLE_ATTRIBUTE_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.ENTRY_CSN_AT_OID ) );
+        NON_MODIFIABLE_ATTRIBUTE_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.ENTRY_DN_AT ) );
+        NON_MODIFIABLE_ATTRIBUTE_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.ENTRY_DN_AT_OID ) );
 
-        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.HAS_SUBORDINATES_AT ) );
-        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.HAS_SUBORDINATES_AT_OID ) );
-        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.NUM_SUBORDINATES_AT ) );
-        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.SUBORDINATE_COUNT_AT ) );
+        NON_MODIFIABLE_ATTRIBUTE_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.HAS_SUBORDINATES_AT ) );
+        NON_MODIFIABLE_ATTRIBUTE_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.HAS_SUBORDINATES_AT_OID ) );
+        NON_MODIFIABLE_ATTRIBUTE_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.NUM_SUBORDINATES_AT ) );
+        NON_MODIFIABLE_ATTRIBUTE_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.SUBORDINATE_COUNT_AT ) );
 
-        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.VENDOR_NAME_AT ) );
-        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.VENDOR_NAME_AT_OID ) );
-        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.VENDOR_VERSION_AT ) );
-        OPERATIONAL_ATTRIBUTES_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.VENDOR_VERSION_AT_OID ) );
+        NON_MODIFIABLE_ATTRIBUTE_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.VENDOR_NAME_AT ) );
+        NON_MODIFIABLE_ATTRIBUTE_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.VENDOR_NAME_AT_OID ) );
+        NON_MODIFIABLE_ATTRIBUTE_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.VENDOR_VERSION_AT ) );
+        NON_MODIFIABLE_ATTRIBUTE_OIDS_AND_NAMES.add( Strings.toLowerCase( SchemaConstants.VENDOR_VERSION_AT_OID ) );
     }
 
     private static final Comparator<String> nameAndOidComparator = new Comparator<String>()

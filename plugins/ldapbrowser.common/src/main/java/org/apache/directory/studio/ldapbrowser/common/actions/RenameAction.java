@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.common.actions;
 
 
-import org.apache.directory.shared.ldap.model.name.Rdn;
+import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.RenameEntryDialog;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.SimulateRenameDialogImpl;
 import org.apache.directory.studio.ldapbrowser.core.jobs.RenameEntryRunnable;

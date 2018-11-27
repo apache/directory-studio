@@ -19,8 +19,12 @@
   under the License.
 -->
 <contexts>
- 	<context id="gettingstarted_views_servers">
-   		<description>The Servers view allows you to manage the servers.</description>
-   		<topic label="Servers view" href="html/gettingstarted_views_servers.html"/>
+ 	<context id="gettingstarted_servers_view">
+   		<description>The LDAP Servers view allows you to manage the servers.</description>
+   		<topic label="LDAP Servers view" href="html/gettingstarted_servers_view.html"/>
+   	</context>
+ 	<context id="gettingstarted_configuration_editor">
+   		<description>Configuration editor for Apache DS.</description>
+   		<topic label="ApacheDS Configuration editor" href="html/gettingstarted_configuration_editor.html"/>
    	</context>
 </contexts>

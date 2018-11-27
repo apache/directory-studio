@@ -194,7 +194,7 @@ public class LdapFilterToken implements Comparable<LdapFilterToken>
         }
         else
         {
-            throw new ClassCastException( "Not instanceof LapFilterToken: " + o.getClass().getName() );
+            throw new ClassCastException( "Not instanceof LapFilterToken: " + o.getClass().getName() ); //$NON-NLS-1$
         }
     }
 

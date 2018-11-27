@@ -35,7 +35,6 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class CertificateValueEditor extends AbstractDialogBinaryValueEditor
 {
-
     /**
      * {@inheritDoc}
      * 
@@ -45,17 +44,19 @@ public class CertificateValueEditor extends AbstractDialogBinaryValueEditor
     {
         Object value = getValue();
 
-        if ( value != null && value instanceof byte[] )
+        if ( value instanceof byte[] )
         {
             byte[] currentCertificateData = ( byte[] ) value;
 
             CertificateDialog dialog = new CertificateDialog( shell, currentCertificateData );
-            if ( dialog.open() == TextDialog.OK && dialog.getData() != null )
+
+            if ( ( dialog.open() == TextDialog.OK ) && ( dialog.getData() != null ) )
             {
                 setValue( dialog.getData() );
                 return true;
             }
         }
+        
         return false;
     }
 
@@ -76,12 +77,13 @@ public class CertificateValueEditor extends AbstractDialogBinaryValueEditor
         {
             if ( value == null )
             {
-                return "NULL"; //$NON-NLS-1$
+                return NULL; //$NON-NLS-1$
             }
             else if ( value.isBinary() )
             {
                 byte[] data = value.getBinaryValue();
                 String text = CertificateDialog.getCertificateInfo( data );
+                
                 return text;
             }
             else
@@ -90,5 +92,4 @@ public class CertificateValueEditor extends AbstractDialogBinaryValueEditor
             }
         }
     }
-
 }

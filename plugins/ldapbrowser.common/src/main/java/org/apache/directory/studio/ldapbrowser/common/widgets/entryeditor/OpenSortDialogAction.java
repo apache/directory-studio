@@ -29,17 +29,16 @@ import org.eclipse.ui.PlatformUI;
 
 public class OpenSortDialogAction extends Action
 {
-
     private EntryEditorWidgetPreferences preferences;
 
 
     public OpenSortDialogAction( EntryEditorWidgetPreferences preferences )
     {
-        super.setText( Messages.getString( "OpenSortDialogAction.Sorting" ) ); //$NON-NLS-1$
-        super.setToolTipText( Messages.getString( "OpenSortDialogAction.Sorting" ) ); //$NON-NLS-1$
-        super.setImageDescriptor( BrowserCommonActivator.getDefault().getImageDescriptor(
+        setText( Messages.getString( "OpenSortDialogAction.Sorting" ) ); //$NON-NLS-1$
+        setToolTipText( Messages.getString( "OpenSortDialogAction.Sorting" ) ); //$NON-NLS-1$
+        setImageDescriptor( BrowserCommonActivator.getDefault().getImageDescriptor(
             BrowserCommonConstants.IMG_SORT ) );
-        super.setEnabled( true );
+        setEnabled( true );
 
         this.preferences = preferences;
     }
@@ -48,8 +47,7 @@ public class OpenSortDialogAction extends Action
     public void run()
     {
         EntryEditorWidgetSorterDialog dlg = new EntryEditorWidgetSorterDialog( PlatformUI.getWorkbench().getDisplay()
-            .getActiveShell(), this.preferences );
+            .getActiveShell(), preferences );
         dlg.open();
     }
-
 }

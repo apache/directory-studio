@@ -20,26 +20,16 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
-
-
-public class SearchLogsViewBot
+public class SearchLogsViewBot extends AbstractLogsViewBot
 {
-
-    private SWTBotView view;
-
-
     public SearchLogsViewBot()
     {
-        view = new SWTWorkbenchBot().viewByTitle( "Search Logs" );
+        super( "Search Logs" );
     }
 
 
     public String getSearchLogsText()
     {
-        view.show();
-        view.toolbarPushButton( "Refresh" ).click();
-        return view.bot().styledText().getText();
+        return super.getLogsText();
     }
 }

@@ -27,6 +27,7 @@ import org.apache.directory.studio.ldapbrowser.ui.actions.ExportConnectionsActio
 import org.apache.directory.studio.ldapbrowser.ui.actions.ImportConnectionsAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.ImportExportAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.OpenSchemaBrowserAction;
+import org.apache.directory.studio.ldapbrowser.ui.actions.ReloadSchemaAction;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
@@ -79,6 +80,9 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
     /** The Constant openSchemaBrowserAction. */
     private static final String openSchemaBrowserAction = "openSchemaBrowserAction"; //$NON-NLS-1$
 
+    /** The Constant reloadSchemaAction. */
+    private static final String reloadSchemaAction = "reloadSchemaAction"; //$NON-NLS-1$
+
 
     /**
      * Creates a new instance of ConnectionViewActionGroup and creates
@@ -114,6 +118,8 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
 
         connectionActionMap.put( openSchemaBrowserAction, new ConnectionViewActionProxy( viewer, this,
             new OpenSchemaBrowserAction() ) );
+        connectionActionMap.put( reloadSchemaAction, new ConnectionViewActionProxy( viewer, this,
+            new ReloadSchemaAction() ) );
     }
 
 
@@ -139,29 +145,30 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
     {
 
         // add
-        menuManager.add( ( IAction ) connectionActionMap.get( newConnectionAction ) );
-        menuManager.add( ( IAction ) connectionActionMap.get( newConnectionFolderAction ) );
+        menuManager.add( ( IAction ) connectionActionMap.get( NEW_CONNECTION_ACTION ) );
+        menuManager.add( ( IAction ) connectionActionMap.get( NEW_CONNECTION_FOLDER_ACTION ) );
         menuManager.add( new Separator() );
 
         // open/close
-        if ( ( ( IAction ) connectionActionMap.get( closeConnectionAction ) ).isEnabled() )
+        if ( ( ( IAction ) connectionActionMap.get( CLOSE_CONNECTION_ACTION ) ).isEnabled() )
         {
-            menuManager.add( ( IAction ) connectionActionMap.get( closeConnectionAction ) );
+            menuManager.add( ( IAction ) connectionActionMap.get( CLOSE_CONNECTION_ACTION ) );
         }
-        else if ( ( ( IAction ) connectionActionMap.get( openConnectionAction ) ).isEnabled() )
+        else if ( ( ( IAction ) connectionActionMap.get( OPEN_CONNECTION_ACTION ) ).isEnabled() )
         {
-            menuManager.add( ( IAction ) connectionActionMap.get( openConnectionAction ) );
+            menuManager.add( ( IAction ) connectionActionMap.get( OPEN_CONNECTION_ACTION ) );
         }
         menuManager.add( new Separator() );
 
         menuManager.add( ( IAction ) connectionActionMap.get( openSchemaBrowserAction ) );
+        menuManager.add( ( IAction ) connectionActionMap.get( reloadSchemaAction ) );
         menuManager.add( new Separator() );
 
         // copy/paste/...
-        menuManager.add( ( IAction ) connectionActionMap.get( copyConnectionAction ) );
-        menuManager.add( ( IAction ) connectionActionMap.get( pasteConnectionAction ) );
-        menuManager.add( ( IAction ) connectionActionMap.get( deleteConnectionAction ) );
-        menuManager.add( ( IAction ) connectionActionMap.get( renameConnectionAction ) );
+        menuManager.add( ( IAction ) connectionActionMap.get( COPY_CONNECTION_ACTION ) );
+        menuManager.add( ( IAction ) connectionActionMap.get( PASTE_CONNECTION_ACTION ) );
+        menuManager.add( ( IAction ) connectionActionMap.get( DELETE_CONNECTION_ACTION ) );
+        menuManager.add( ( IAction ) connectionActionMap.get( RENAME_CONNECTION_ACTION ) );
         menuManager.add( new Separator() );
 
         // import/export
@@ -190,7 +197,7 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
         menuManager.add( new Separator() );
 
         // properties
-        menuManager.add( ( IAction ) connectionActionMap.get( propertyDialogAction ) );
+        menuManager.add( ( IAction ) connectionActionMap.get( PROPERTY_DIALOG_ACTION ) );
     }
 
 }

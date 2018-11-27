@@ -72,6 +72,8 @@ public class ServersViewLabelProvider extends LabelProvider implements ITableLab
                         return Messages.getString( "ServersViewLabelProvider.Stopping" ) + getDots(); //$NON-NLS-1$
                     case UNKNOWN:
                         return Messages.getString( "ServersViewLabelProvider.Unknown" ); //$NON-NLS-1$
+                    case REPAIRING:
+                        return Messages.getString( "ServersViewLabelProvider.Repairing" ) + getDots(); //$NON-NLS-1$
                 }
             }
 
@@ -121,6 +123,7 @@ public class ServersViewLabelProvider extends LabelProvider implements ITableLab
                 {
                     case STARTED:
                         return LdapServersPlugin.getDefault().getImage( LdapServersPluginConstants.IMG_SERVER_STARTED );
+                    case REPAIRING:
                     case STARTING:
                         switch ( dotsCount )
                         {

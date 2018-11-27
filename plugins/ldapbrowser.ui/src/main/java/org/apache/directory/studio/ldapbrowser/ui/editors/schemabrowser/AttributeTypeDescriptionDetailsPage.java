@@ -23,11 +23,12 @@ package org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser;
 
 import java.util.Collection;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
-import org.apache.directory.shared.ldap.model.schema.ObjectClass;
-import org.apache.directory.shared.ldap.model.schema.UsageEnum;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
+import org.apache.directory.api.ldap.model.schema.LdapSyntax;
+import org.apache.directory.api.ldap.model.schema.MatchingRule;
+import org.apache.directory.api.ldap.model.schema.ObjectClass;
+import org.apache.directory.api.ldap.model.schema.UsageEnum;
+import org.apache.directory.studio.common.ui.CommonUIConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -52,7 +53,6 @@ import org.eclipse.ui.forms.widgets.Section;
  */
 public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
 {
-
     /** The main section, contains oid, names, desc and usage */
     private Section mainSection;
 
@@ -71,17 +71,17 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
     /** The flag section, contains sv, obsolete, collective and read-only */
     private Section flagSection;
 
-    /** The single-valued field */
-    private Label singleValuedText;
+    /** The single-valued label */
+    private Label singleValuedLabel;
 
-    /** The obsolete field */
-    private Label isObsoleteText;
+    /** The obsolete label */
+    private Label isObsoleteLabel;
 
-    /** The collective field */
-    private Label collectiveText;
+    /** The collective label */
+    private Label collectiveLabel;
 
-    /** The no-user-modification field */
-    private Label noUserModificationText;
+    /** The no-user-modification label */
+    private Label noUserModificationLabel;
 
     /** The syntax section, contains syntax description, lenth and a link to the syntax */
     private Section syntaxSection;
@@ -169,25 +169,21 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         flagClient.setLayout( flagLayout );
         flagSection.setClient( flagClient );
 
-        singleValuedText = toolkit.createLabel( flagClient, Messages
+        singleValuedLabel = toolkit.createLabel( flagClient, Messages
             .getString( "AttributeTypeDescriptionDetailsPage.SingleValued" ), SWT.CHECK ); //$NON-NLS-1$
-        singleValuedText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-        singleValuedText.setEnabled( false );
+        singleValuedLabel.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
 
-        noUserModificationText = toolkit.createLabel( flagClient, Messages
+        noUserModificationLabel = toolkit.createLabel( flagClient, Messages
             .getString( "AttributeTypeDescriptionDetailsPage.ReadOnly" ), SWT.CHECK ); //$NON-NLS-1$
-        noUserModificationText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-        noUserModificationText.setEnabled( false );
+        noUserModificationLabel.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
 
-        collectiveText = toolkit.createLabel( flagClient, Messages
+        collectiveLabel = toolkit.createLabel( flagClient, Messages
             .getString( "AttributeTypeDescriptionDetailsPage.Collective" ), SWT.CHECK ); //$NON-NLS-1$
-        collectiveText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-        collectiveText.setEnabled( false );
+        collectiveLabel.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
 
-        isObsoleteText = toolkit.createLabel( flagClient, Messages
+        isObsoleteLabel = toolkit.createLabel( flagClient, Messages
             .getString( "AttributeTypeDescriptionDetailsPage.Obsolete" ), SWT.CHECK ); //$NON-NLS-1$
-        isObsoleteText.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
-        isObsoleteText.setEnabled( false );
+        isObsoleteLabel.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
 
         // create syntax section
         syntaxSection = toolkit.createSection( detailForm.getBody(), SWT.NONE );
@@ -345,6 +341,7 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
     public void setInput( Object input )
     {
         AttributeType atd = null;
+        
         if ( input instanceof AttributeType )
         {
             atd = ( AttributeType ) input;
@@ -354,25 +351,61 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         createMainContent( atd );
 
         // set flags
-        singleValuedText.setEnabled( atd != null && atd.isSingleValued() );
-        isObsoleteText.setEnabled( atd != null && atd.isObsolete() );
-        collectiveText.setEnabled( atd != null && atd.isCollective() );
-        noUserModificationText.setEnabled( atd != null && !atd.isUserModifiable() );
+        if ( ( atd != null ) && ( atd.isSingleValued() ) )
+        {
+            singleValuedLabel.setForeground( CommonUIConstants.BLACK_COLOR );
+        }
+        else
+        {
+            singleValuedLabel.setForeground( CommonUIConstants.ML_GREY_COLOR );
+        }
+
+        if ( atd != null && atd.isObsolete() )
+        {
+            isObsoleteLabel.setForeground( CommonUIConstants.BLACK_COLOR );
+        }
+        else
+        {
+            isObsoleteLabel.setForeground( CommonUIConstants.ML_GREY_COLOR );
+        }
+
+        if ( atd != null && atd.isCollective() )
+        {
+            collectiveLabel.setForeground( CommonUIConstants.BLACK_COLOR );
+        }
+        else
+        {
+            collectiveLabel.setForeground( CommonUIConstants.ML_GREY_COLOR );
+        }
+
+        if ( atd != null && !atd.isUserModifiable() )
+        {
+            noUserModificationLabel.setForeground( CommonUIConstants.BLACK_COLOR );
+        }
+        else
+        {
+            noUserModificationLabel.setForeground( CommonUIConstants.ML_GREY_COLOR );
+        }
+
         flagSection.layout();
 
         // set syntax content
         String lsdOid = null;
         LdapSyntax lsd = null;
         long lsdLength = 0;
+        
         if ( atd != null )
         {
             lsdOid = SchemaUtils.getSyntaxNumericOidTransitive( atd, getSchema() );
+            
             if ( lsdOid != null && getSchema().hasLdapSyntaxDescription( lsdOid ) )
             {
                 lsd = getSchema().getLdapSyntaxDescription( lsdOid );
             }
+            
             lsdLength = SchemaUtils.getSyntaxLengthTransitive( atd, getSchema() );
         }
+        
         syntaxLink.setText( getNonNullString( lsd != null ? lsd.getOid() : lsdOid ) );
         syntaxLink.setHref( lsd );
         syntaxLink.setUnderlined( lsd != null );
@@ -384,14 +417,17 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         // set matching rules content
         String emrOid = null;
         MatchingRule emr = null;
+        
         if ( atd != null )
         {
             emrOid = SchemaUtils.getEqualityMatchingRuleNameOrNumericOidTransitive( atd, getSchema() );
+            
             if ( emrOid != null && getSchema().hasMatchingRuleDescription( emrOid ) )
             {
                 emr = getSchema().getMatchingRuleDescription( emrOid );
             }
         }
+        
         equalityLink.setText( getNonNullString( emr != null ? SchemaUtils.toString( emr ) : emrOid ) );
         equalityLink.setHref( emr );
         equalityLink.setUnderlined( emr != null );
@@ -399,14 +435,17 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
 
         String smrOid = null;
         MatchingRule smr = null;
+        
         if ( atd != null )
         {
             smrOid = SchemaUtils.getSubstringMatchingRuleNameOrNumericOidTransitive( atd, getSchema() );
+            
             if ( smrOid != null && getSchema().hasMatchingRuleDescription( smrOid ) )
             {
                 smr = getSchema().getMatchingRuleDescription( smrOid );
             }
         }
+        
         substringLink.setText( getNonNullString( smr != null ? SchemaUtils.toString( smr ) : smrOid ) );
         substringLink.setHref( smr );
         substringLink.setUnderlined( smr != null );
@@ -414,14 +453,17 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
 
         String omrOid = null;
         MatchingRule omr = null;
+        
         if ( atd != null )
         {
             omrOid = SchemaUtils.getOrderingMatchingRuleNameOrNumericOidTransitive( atd, getSchema() );
+            
             if ( omrOid != null && getSchema().hasMatchingRuleDescription( omrOid ) )
             {
                 omr = getSchema().getMatchingRuleDescription( omrOid );
             }
         }
+        
         orderingLink.setText( getNonNullString( omr != null ? SchemaUtils.toString( omr ) : omrOid ) );
         orderingLink.setHref( omr );
         orderingLink.setUnderlined( omr != null );

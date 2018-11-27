@@ -77,7 +77,7 @@ public class ExportAction extends BrowserAction
      */
     public boolean isEnabled()
     {
-        return getInput() != null && ( getInput() instanceof SearchLogsViewInput )
+        return ( getInput() instanceof SearchLogsViewInput )
             && ( ( SearchLogsViewInput ) getInput() ).getBrowserConnection().getConnection() != null;
     }
 

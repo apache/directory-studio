@@ -23,12 +23,12 @@ package org.apache.directory.studio.schemaeditor.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
-import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
-import org.apache.directory.shared.ldap.model.schema.ObjectClass;
-import org.apache.directory.shared.ldap.model.schema.registries.DefaultSchema;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
+import org.apache.directory.api.ldap.model.schema.LdapSyntax;
+import org.apache.directory.api.ldap.model.schema.MatchingRule;
+import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
+import org.apache.directory.api.ldap.model.schema.ObjectClass;
+import org.apache.directory.api.ldap.model.schema.registries.DefaultSchema;
 
 
 /**
@@ -45,7 +45,7 @@ public class Schema extends DefaultSchema
     private List<AttributeType> attributeTypes = new ArrayList<AttributeType>();
 
     /** The ObjectClass List */
-    private List<MutableObjectClass> objectClasses = new ArrayList<MutableObjectClass>();
+    private List<ObjectClass> objectClasses = new ArrayList<ObjectClass>();
 
     /** The MatchingRule List */
     private List<MatchingRule> matchingRules = new ArrayList<MatchingRule>();
@@ -62,7 +62,7 @@ public class Schema extends DefaultSchema
      */
     public Schema( String name )
     {
-        super( name );
+        super( null, name );
     }
 
 
@@ -258,7 +258,7 @@ public class Schema extends DefaultSchema
      * @return
      *      all the ObjectClass objects contained in the Schema
      */
-    public List<MutableObjectClass> getObjectClasses()
+    public List<ObjectClass> getObjectClasses()
     {
         return objectClasses;
     }

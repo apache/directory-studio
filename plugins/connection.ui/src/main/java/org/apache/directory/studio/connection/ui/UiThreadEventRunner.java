@@ -33,7 +33,6 @@ import org.eclipse.swt.widgets.Display;
  */
 public class UiThreadEventRunner implements EventRunner
 {
-
     /**
      * {@inheritDoc}
      *
@@ -44,5 +43,4 @@ public class UiThreadEventRunner implements EventRunner
     {
         Display.getDefault().asyncExec( runnable );
     }
-
 }

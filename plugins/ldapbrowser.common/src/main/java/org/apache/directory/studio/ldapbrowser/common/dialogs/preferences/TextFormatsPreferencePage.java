@@ -22,14 +22,14 @@ package org.apache.directory.studio.ldapbrowser.common.dialogs.preferences;
 
 
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.widgets.BinaryEncodingInput;
 import org.apache.directory.studio.ldapbrowser.common.widgets.FileEncodingInput;
 import org.apache.directory.studio.ldapbrowser.common.widgets.LineSeparatorInput;
 import org.apache.directory.studio.ldapbrowser.common.widgets.OptionsInput;
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.eclipse.core.runtime.Preferences;

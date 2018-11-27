@@ -29,8 +29,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
+import org.apache.directory.studio.valueeditors.IValueEditor;
 import org.apache.directory.studio.valueeditors.ValueEditorsActivator;
 import org.apache.directory.studio.valueeditors.ValueEditorsConstants;
 import org.eclipse.core.runtime.IStatus;
@@ -44,6 +46,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
@@ -52,6 +55,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
@@ -68,64 +72,56 @@ import org.eclipse.swt.widgets.Text;
  */
 public class ImageDialog extends Dialog
 {
-
-    private static final int MAX_WIDTH = 250;
-
-    private static final int MAX_HEIGHT = 250;
-
-    private static final int CURRENT_TAB = 0;
-
-    private static final int NEW_TAB = 1;
-
+    /** The dialog setting key for the currently selected tab item */
     private static final String SELECTED_TAB_DIALOGSETTINGS_KEY = ImageDialog.class.getName() + ".tab"; //$NON-NLS-1$
 
+    /** The maximum width for the image */
+    private static final int MAX_WIDTH = 400;
+    
+    /** The maximum height for the image */
+    private static final int MAX_HEIGHT = 400;
+
+    /** The current image tab item */
+    private static final int CURRENT_TAB = 0;
+    
+    /** The new image tab item */
+    private static final int NEW_TAB = 1;
+
+    /** The current image bytes */
+    private byte[] currentImageRawData;
+
+    /** The required image type */
+    private int requiredImageType;
+
+    /** The new image bytes */
+    private byte[] newImageRawData;
+
+    /** The new image bytes in the required image format */
+    private byte[] newImageRawDataInRequiredFormat;
+
+    // UI widgets
     private TabFolder tabFolder;
 
     private TabItem currentTab;
-
-    private TabItem newTab;
-
-    private byte[] currentImageRawData;
-
-    private Image currentImage;
-
     private Composite currentImageContainer;
-
+    private Image currentImage;
     private Label currentImageLabel;
-
     private Text currentImageTypeText;
-
     private Text currentImageWidthText;
-
     private Text currentImageHeightText;
-
     private Text currentImageSizeText;
-
     private Button currentImageSaveButton;
 
-    private byte[] newImageRawData;
-
-    private Image newImage;
-
+    private TabItem newTab;
     private Composite newImageContainer;
-
+    private Image newImage;
     private Label newImageLabel;
-
     private Text newImageTypeText;
-
     private Text newImageWidthText;
-
     private Text newImageHeightText;
-
     private Text newImageSizeText;
-
     private Text newImageFilenameText;
-
     private Button newImageBrowseButton;
-
-    private int requiredImageType;
-
-    private byte[] newImageRawDataInRequiredFormat;
 
     private Button okButton;
 
@@ -153,16 +149,19 @@ public class ImageDialog extends Dialog
      */
     public boolean close()
     {
-        if ( currentImage != null && !currentImage.isDisposed() )
+        // Disposing the current image
+        if ( ( currentImage != null ) && !currentImage.isDisposed() )
         {
             currentImage.dispose();
         }
-        if ( newImage != null && !newImage.isDisposed() )
+
+        // Disposing the new image
+        if ( ( newImage != null ) && !newImage.isDisposed() )
         {
             newImage.dispose();
         }
 
-        // save selected tab to dialog settings
+        // Saving the selected tab item to dialog settings
         ValueEditorsActivator.getDefault().getDialogSettings().put( SELECTED_TAB_DIALOGSETTINGS_KEY,
             tabFolder.getSelectionIndex() );
 
@@ -179,11 +178,14 @@ public class ImageDialog extends Dialog
         {
             if ( newImageRawData != null )
             {
+                // Preparing the new image bytes for the required format
                 try
                 {
                     ImageData imageData = new ImageData( new ByteArrayInputStream( newImageRawData ) );
+                    
                     if ( imageData.type != requiredImageType )
                     {
+                        // Converting the new image in the required format
                         ImageLoader imageLoader = new ImageLoader();
                         imageLoader.data = new ImageData[]
                             { imageData };
@@ -193,6 +195,7 @@ public class ImageDialog extends Dialog
                     }
                     else
                     {
+                        // Directly using the new image bytes
                         newImageRawDataInRequiredFormat = newImageRawData;
                     }
                 }
@@ -239,9 +242,10 @@ public class ImageDialog extends Dialog
         }
         catch ( Exception e )
         {
+            // Nothing to do
         }
 
-        // update on load
+        // Updating the tab folder on load
         updateTabFolder();
     }
 
@@ -252,17 +256,9 @@ public class ImageDialog extends Dialog
     protected Control createDialogArea( Composite parent )
     {
         Composite composite = ( Composite ) super.createDialogArea( parent );
-        GridData gd1 = new GridData( GridData.FILL_BOTH );
-        gd1.widthHint = convertHorizontalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH );
-        gd1.heightHint = convertVerticalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH );
-        composite.setLayoutData( gd1 );
-
         tabFolder = new TabFolder( composite, SWT.TOP );
-        GridLayout mainLayout = new GridLayout();
-        mainLayout.marginWidth = 0;
-        mainLayout.marginHeight = 0;
-        tabFolder.setLayout( mainLayout );
-        tabFolder.setLayoutData( new GridData( GridData.FILL_BOTH ) );
+        tabFolder.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+        
         tabFolder.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
@@ -274,15 +270,10 @@ public class ImageDialog extends Dialog
         // current image
         if ( currentImageRawData != null && currentImageRawData.length > 0 )
         {
-            currentImageContainer = new Composite( tabFolder, SWT.NONE );
-            GridLayout currentLayout = new GridLayout();
-            currentLayout.marginHeight = convertVerticalDLUsToPixels( IDialogConstants.VERTICAL_MARGIN );
-            currentLayout.marginWidth = convertHorizontalDLUsToPixels( IDialogConstants.HORIZONTAL_MARGIN );
-            currentLayout.verticalSpacing = convertVerticalDLUsToPixels( IDialogConstants.VERTICAL_SPACING );
-            currentLayout.horizontalSpacing = convertHorizontalDLUsToPixels( IDialogConstants.HORIZONTAL_SPACING );
-            currentImageContainer.setLayout( currentLayout );
-            currentImageContainer.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+            currentTab = new TabItem( tabFolder, SWT.NONE );
+            currentTab.setText( Messages.getString( "ImageDialog.CurrentImage" ) ); //$NON-NLS-1$
 
+            currentImageContainer = createTabItemComposite();
             currentImageLabel = createImageLabel( currentImageContainer );
 
             Composite currentImageInfoContainer = createImageInfoContainer( currentImageContainer );
@@ -300,6 +291,7 @@ public class ImageDialog extends Dialog
             GridData gd = new GridData( GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL );
             dummyLabel.setLayoutData( gd );
             currentImageSaveButton = createButton( currentImageSaveContainer, Messages.getString( "ImageDialog.Save" ) ); //$NON-NLS-1$
+            
             currentImageSaveButton.addSelectionListener( new SelectionAdapter()
             {
                 public void widgetSelected( SelectionEvent event )
@@ -309,6 +301,7 @@ public class ImageDialog extends Dialog
                     fileDialog.setFilterExtensions( new String[]
                         { "*.jpg" } ); //$NON-NLS-1$
                     String returnedFileName = fileDialog.open();
+                    
                     if ( returnedFileName != null )
                     {
                         try
@@ -321,7 +314,6 @@ public class ImageDialog extends Dialog
                         }
                         catch ( FileNotFoundException e )
                         {
-
                             ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
                                 new Status( IStatus.ERROR, ValueEditorsConstants.PLUGIN_ID, IStatus.ERROR, Messages
                                     .getString( "ImageDialog.CantWriteFile" ), e ) ); //$NON-NLS-1$
@@ -336,21 +328,14 @@ public class ImageDialog extends Dialog
                 }
             } );
 
-            currentTab = new TabItem( tabFolder, SWT.NONE );
-            currentTab.setText( Messages.getString( "ImageDialog.CurrentImage" ) ); //$NON-NLS-1$
             currentTab.setControl( currentImageContainer );
         }
 
         // new image
-        newImageContainer = new Composite( tabFolder, SWT.NONE );
-        GridLayout newLayout = new GridLayout();
-        newLayout.marginHeight = convertVerticalDLUsToPixels( IDialogConstants.VERTICAL_MARGIN );
-        newLayout.marginWidth = convertHorizontalDLUsToPixels( IDialogConstants.HORIZONTAL_MARGIN );
-        newLayout.verticalSpacing = convertVerticalDLUsToPixels( IDialogConstants.VERTICAL_SPACING );
-        newLayout.horizontalSpacing = convertHorizontalDLUsToPixels( IDialogConstants.HORIZONTAL_SPACING );
-        newImageContainer.setLayout( newLayout );
-        newImageContainer.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
+        newTab = new TabItem( tabFolder, SWT.NONE );
+        newTab.setText( Messages.getString( "ImageDialog.NewImage" ) ); //$NON-NLS-1$
 
+        newImageContainer = createTabItemComposite();
         newImageLabel = createImageLabel( newImageContainer );
 
         Composite newImageInfoContainer = createImageInfoContainer( newImageContainer );
@@ -363,6 +348,7 @@ public class ImageDialog extends Dialog
         newImageFilenameText = new Text( newImageSelectContainer, SWT.SINGLE | SWT.BORDER );
         GridData gd = new GridData( SWT.FILL, SWT.CENTER, true, false );
         newImageFilenameText.setLayoutData( gd );
+        
         newImageFilenameText.addModifyListener( new ModifyListener()
         {
             public void modifyText( ModifyEvent e )
@@ -370,17 +356,20 @@ public class ImageDialog extends Dialog
                 updateNewImageGroup();
             }
         } );
+        
         newImageBrowseButton = createButton( newImageSelectContainer, Messages.getString( "ImageDialog.Browse" ) ); //$NON-NLS-1$
+        
         newImageBrowseButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent event )
             {
                 FileDialog fileDialog = new FileDialog( ImageDialog.this.getShell(), SWT.OPEN );
                 fileDialog.setText( Messages.getString( "ImageDialog.SelectImage" ) ); //$NON-NLS-1$
-                // fileDialog.setFilterExtensions(IMAGE_FILE_EXTENSIONS);
                 fileDialog.setFileName( new File( newImageFilenameText.getText() ).getName() );
                 fileDialog.setFilterPath( new File( newImageFilenameText.getText() ).getParent() );
+
                 String returnedFileName = fileDialog.open();
+                
                 if ( returnedFileName != null )
                 {
                     newImageFilenameText.setText( returnedFileName );
@@ -388,12 +377,54 @@ public class ImageDialog extends Dialog
             }
         } );
 
-        newTab = new TabItem( tabFolder, SWT.NONE );
-        newTab.setText( Messages.getString( "ImageDialog.NewImage" ) ); //$NON-NLS-1$
         newTab.setControl( newImageContainer );
-
         applyDialogFont( composite );
+        
         return composite;
+    }
+
+
+    /**
+     * Creates a tab item composite.
+     *
+     * @return a tab item composite
+     */
+    private Composite createTabItemComposite()
+    {
+        Composite composite = new Composite( tabFolder, SWT.NONE );
+
+        GridLayout compositeLayout = new GridLayout( 1, false );
+        compositeLayout.marginHeight = convertVerticalDLUsToPixels( IDialogConstants.VERTICAL_MARGIN );
+        compositeLayout.marginWidth = convertHorizontalDLUsToPixels( IDialogConstants.HORIZONTAL_MARGIN );
+        compositeLayout.verticalSpacing = convertVerticalDLUsToPixels( IDialogConstants.VERTICAL_SPACING );
+        compositeLayout.horizontalSpacing = convertHorizontalDLUsToPixels( IDialogConstants.HORIZONTAL_SPACING );
+        composite.setLayout( compositeLayout );
+
+        composite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+
+        return composite;
+    }
+
+
+    /**
+     * Creates the image label.
+     * 
+     * @param parent the parent
+     * @return the image label
+     */
+    private Label createImageLabel( Composite parent )
+    {
+        Composite labelComposite = new Composite( parent, SWT.BORDER );
+        labelComposite.setLayout( new GridLayout() );
+        GridData gd = new GridData( SWT.FILL, SWT.FILL, true, true );
+        labelComposite.setLayoutData( gd );
+        labelComposite.setBackground( getShell().getDisplay().getSystemColor( SWT.COLOR_WIDGET_NORMAL_SHADOW ) );
+
+        Label imageLabel = new Label( labelComposite, SWT.CENTER );
+        gd = new GridData( SWT.CENTER, SWT.CENTER, true, true );
+        imageLabel.setLayoutData( gd );
+
+        return imageLabel;
     }
 
 
@@ -404,7 +435,7 @@ public class ImageDialog extends Dialog
     {
         if ( currentTab != null )
         {
-            if ( currentImage != null && !currentImage.isDisposed() )
+            if ( ( currentImage != null ) && !currentImage.isDisposed() )
             {
                 currentImage.dispose();
                 currentImage = null;
@@ -418,6 +449,10 @@ public class ImageDialog extends Dialog
                     currentImage = new Image( getShell().getDisplay(), resizeImage( imageData ) );
                     currentImageLabel.setText( "" ); //$NON-NLS-1$
                     currentImageLabel.setImage( currentImage );
+                    GridData currentImageLabelGridData = new GridData( SWT.CENTER, SWT.CENTER, true, true );
+                    currentImageLabelGridData.widthHint = currentImage.getBounds().width;
+                    currentImageLabelGridData.heightHint = currentImage.getBounds().height;
+                    currentImageLabel.setLayoutData( currentImageLabelGridData );
                     currentImageTypeText.setText( getImageType( imageData.type ) );
                     currentImageSizeText.setText( getSizeString( currentImageRawData.length ) );
                     currentImageWidthText.setText( NLS
@@ -455,25 +490,29 @@ public class ImageDialog extends Dialog
      */
     private void updateNewImageGroup()
     {
-        if ( newImage != null && !newImage.isDisposed() )
+        if ( ( newImage != null ) && !newImage.isDisposed() )
         {
             newImage.dispose();
             newImage = null;
         }
 
-        if ( !"".equals( newImageFilenameText.getText() ) ) //$NON-NLS-1$
+        String newImageFileName = newImageFilenameText.getText();
+        
+        if ( !Strings.isEmpty( newImageFileName ) ) //$NON-NLS-1$
         {
             try
             {
-                File file = new File( newImageFilenameText.getText() );
+                File file = new File( newImageFileName );
                 FileInputStream in = new FileInputStream( file );
                 ByteArrayOutputStream out = new ByteArrayOutputStream( ( int ) file.length() );
                 byte[] buf = new byte[4096];
                 int len;
+                
                 while ( ( len = in.read( buf ) ) > 0 )
                 {
                     out.write( buf, 0, len );
                 }
+                
                 newImageRawData = out.toByteArray();
                 out.close();
                 in.close();
@@ -511,7 +550,7 @@ public class ImageDialog extends Dialog
             newImageHeightText.setText( "-" ); //$NON-NLS-1$
         }
 
-        if ( newImageRawData != null && newImageRawData.length > 0 )
+        if ( ( newImageRawData != null ) && ( newImageRawData.length > 0 ) )
         {
             try
             {
@@ -519,6 +558,7 @@ public class ImageDialog extends Dialog
                 newImage = new Image( getShell().getDisplay(), resizeImage( imageData ) );
                 newImageLabel.setImage( newImage );
                 newImageTypeText.setText( getImageType( imageData.type ) );
+                
                 if ( imageData.type != requiredImageType )
                 {
                     newImageTypeText
@@ -527,6 +567,7 @@ public class ImageDialog extends Dialog
                                 .bind(
                                     Messages.getString( "ImageDialog.WillBeConverted" ), new String[] { getImageType( requiredImageType ) } ) ); //$NON-NLS-1$
                 }
+                
                 newImageSizeText.setText( getSizeString( newImageRawData.length ) );
                 newImageWidthText.setText( NLS.bind( Messages.getString( "ImageDialog.Pixel" ), imageData.width ) ); //$NON-NLS-1$
                 newImageHeightText.setText( NLS.bind( Messages.getString( "ImageDialog.Pixel" ), imageData.height ) ); //$NON-NLS-1$
@@ -563,15 +604,17 @@ public class ImageDialog extends Dialog
             {
                 currentImageSaveButton.setFocus();
             }
+            
             updateCurrentImageGroup();
         }
 
         if ( newImageBrowseButton != null )
         {
-            if ( tabFolder.getSelectionIndex() == NEW_TAB || currentImageSaveButton == null )
+            if ( ( tabFolder.getSelectionIndex() == NEW_TAB ) || ( currentImageSaveButton == null ) )
             {
                 newImageBrowseButton.setFocus();
             }
+            
             updateNewImageGroup();
         }
     }
@@ -586,55 +629,68 @@ public class ImageDialog extends Dialog
      */
     private ImageData resizeImage( ImageData imageData )
     {
+        // Computing the width scale factor
         double widthScaleFactor = 1.0;
+        
         if ( imageData.width > MAX_WIDTH )
         {
             widthScaleFactor = ( double ) MAX_WIDTH / imageData.width;
         }
+
+        // Computing the height scale factor
         double heightScaleFactor = 1.0;
+        
         if ( imageData.height > MAX_HEIGHT )
         {
             heightScaleFactor = ( double ) MAX_HEIGHT / imageData.height;
         }
 
-        if ( heightScaleFactor < widthScaleFactor )
-        {
-            imageData = imageData.scaledTo(
-                convertHorizontalDLUsToPixels( ( int ) ( imageData.width * heightScaleFactor ) ),
-                convertHorizontalDLUsToPixels( ( int ) ( imageData.height * heightScaleFactor ) ) );
-        }
-        else
-        {
-            imageData = imageData.scaledTo(
-                convertHorizontalDLUsToPixels( ( int ) ( imageData.width * widthScaleFactor ) ),
-                convertHorizontalDLUsToPixels( ( int ) ( imageData.height * widthScaleFactor ) ) );
-        }
+        // Taking the minimum of both
+        double minScalefactor = Math.min( heightScaleFactor, widthScaleFactor );
 
-        return imageData;
+        // Resizing the image data
+        return resize( imageData, ( int ) ( imageData.width * minScalefactor ),
+            ( int ) ( imageData.height * minScalefactor ) );
     }
 
 
     /**
-     * Creates the image label.
-     * 
-     * @param parent the parent
-     * 
-     * @return the image label
+     * Resizes an image using the GC (for better quality).
+     *
+     * @param imageData the image data
+     * @param width the width
+     * @param height the height
+     * @return the resized image
      */
-    private Label createImageLabel( Composite parent )
+    private ImageData resize( ImageData imageData, int width, int height )
     {
-        Composite labelComposite = new Composite( parent, SWT.BORDER );
-        labelComposite.setLayout( new GridLayout() );
-        GridData gd = new GridData( SWT.FILL, SWT.FILL, true, true );
-        gd.widthHint = MAX_WIDTH;
-        gd.heightHint = MAX_HEIGHT;
-        labelComposite.setLayoutData( gd );
-        labelComposite.setBackground( getShell().getDisplay().getSystemColor( SWT.COLOR_WIDGET_NORMAL_SHADOW ) );
+        Image image = new Image( Display.getDefault(), imageData );
+        Image resizedImage = new Image( Display.getDefault(), width, height );
 
-        Label imageLabel = new Label( labelComposite, SWT.CENTER );
-        gd = new GridData( SWT.CENTER, SWT.CENTER, true, true );
-        imageLabel.setLayoutData( gd );
-        return imageLabel;
+        try
+        {
+            GC gc = new GC( resizedImage );
+            
+            try
+            {
+                gc.setAntialias( SWT.ON );
+                gc.setInterpolation( SWT.HIGH );
+                gc.drawImage( image, 0, 0, image.getBounds().width, image.getBounds().height, 0, 0, width, height );
+            }
+            finally
+            {
+                gc.dispose();
+            }
+    
+            ImageData resizedImageData = resizedImage.getImageData();
+            
+            return resizedImageData;
+        }
+        finally
+        {
+            image.dispose();
+            resizedImage.dispose();
+        }
     }
 
 
@@ -652,6 +708,7 @@ public class ImageDialog extends Dialog
         gl.marginHeight = gl.marginWidth = 0;
         imageInfoContainer.setLayout( gl );
         imageInfoContainer.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
+        
         return imageInfoContainer;
     }
 
@@ -668,6 +725,7 @@ public class ImageDialog extends Dialog
     {
         BaseWidgetUtils.createLabel( parent, label, 1 );
         Text text = BaseWidgetUtils.createLabeledText( parent, "", 1 ); //$NON-NLS-1$
+        
         return text;
     }
 
@@ -683,6 +741,7 @@ public class ImageDialog extends Dialog
     private Button createButton( Composite parent, String label )
     {
         Button button = BaseWidgetUtils.createButton( parent, label, 1 );
+        
         return button;
     }
 
@@ -722,10 +781,9 @@ public class ImageDialog extends Dialog
      */
     public static String getImageInfo( byte[] imageRawData )
     {
-
         if ( imageRawData == null )
         {
-            return "NULL"; //$NON-NLS-1$
+            return IValueEditor.NULL;
         }
 
         String text;
@@ -734,8 +792,11 @@ public class ImageDialog extends Dialog
             ByteArrayInputStream bais = new ByteArrayInputStream( imageRawData );
             ImageData imageData = new ImageData( bais );
             String typePrefix = getImageType( imageData.type );
-            if ( !"".equals( typePrefix ) ) //$NON-NLS-1$
+            
+            if ( !Strings.isEmpty( typePrefix ) ) //$NON-NLS-1$
+            {
                 typePrefix += "-"; //$NON-NLS-1$
+            }
 
             text = NLS
                 .bind(
@@ -745,6 +806,7 @@ public class ImageDialog extends Dialog
         {
             text = NLS.bind( Messages.getString( "ImageDialog.InvalidImage" ), new Object[] { imageRawData.length } ); //$NON-NLS-1$
         }
+        
         return text;
     }
 
@@ -758,31 +820,29 @@ public class ImageDialog extends Dialog
      */
     private static String getImageType( int swtCode )
     {
-        String type = ""; //$NON-NLS-1$
-
-        if ( swtCode == SWT.IMAGE_JPEG )
+        switch ( swtCode )
         {
-            type = "JPEG"; //$NON-NLS-1$
+            case SWT.IMAGE_JPEG :
+                return "JPEG"; //$NON-NLS-1$
+                
+            case SWT.IMAGE_GIF :
+                return "GIF"; //$NON-NLS-1$
+                
+            case SWT.IMAGE_PNG :
+                return "PNG"; //$NON-NLS-1$
+                
+            case SWT.IMAGE_BMP :
+            case SWT.IMAGE_BMP_RLE :
+                return "BMP"; //$NON-NLS-1$
+                
+            default :
+                return "";
         }
-        else if ( swtCode == SWT.IMAGE_GIF )
-        {
-            type = "GIF"; //$NON-NLS-1$
-        }
-        else if ( swtCode == SWT.IMAGE_PNG )
-        {
-            type = "PNG"; //$NON-NLS-1$
-        }
-        else if ( swtCode == SWT.IMAGE_BMP || swtCode == SWT.IMAGE_BMP_RLE )
-        {
-            type = "BMP"; //$NON-NLS-1$
-        }
-
-        return type;
     }
 
 
     /**
-     * Gets the iimage data in required format.
+     * Gets the image data in required format.
      * 
      * @return Returns the image data in required format or null.
      */

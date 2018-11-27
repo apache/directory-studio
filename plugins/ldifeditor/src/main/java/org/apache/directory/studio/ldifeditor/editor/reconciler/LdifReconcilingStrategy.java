@@ -109,7 +109,7 @@ public class LdifReconcilingStrategy implements IReconcilingStrategy, IReconcili
 
                 // notify outline
                 IContentOutlinePage outline = ( IContentOutlinePage ) editor.getAdapter( IContentOutlinePage.class );
-                if ( outline != null && outline instanceof LdifOutlinePage )
+                if ( outline instanceof LdifOutlinePage )
                 {
                     ( ( LdifOutlinePage ) outline ).refresh();
                 }

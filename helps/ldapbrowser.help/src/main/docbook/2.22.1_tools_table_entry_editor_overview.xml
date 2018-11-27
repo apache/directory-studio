@@ -151,7 +151,7 @@
 		<para>
 			The toolbar contains the following items:
 			<informaltable frame="all">
-				<tgroup cols="3">
+				<tgroup cols="4">
 					<colspec colname="Icon" align="center" colwidth="1*" />
 					<colspec colname="Action" colwidth="2*" />
 					<colspec colname="Description" colwidth="5*" />

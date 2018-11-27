@@ -44,7 +44,7 @@ public class ExportDsmlToWizardPage extends ExportBaseToPage
 
     /** The extensions used by DSML files*/
     private static final String[] EXTENSIONS = new String[]
-        { "*.xml", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
+        { "*.xml", "*" }; //$NON-NLS-1$ //$NON-NLS-2$
 
 
     /**
@@ -77,7 +77,7 @@ public class ExportDsmlToWizardPage extends ExportBaseToPage
             .getString( "ExportDsmlToWizardPage.SaveAs" ), 1 ); //$NON-NLS-1$
         Composite saveAsComposite = BaseWidgetUtils.createColumnContainer( saveAsGroup, 2, 1 );
 
-        Button saveAsDsmlResponseButton = BaseWidgetUtils.createRadiobutton( saveAsComposite, Messages
+        final Button saveAsDsmlResponseButton = BaseWidgetUtils.createRadiobutton( saveAsComposite, Messages
             .getString( "ExportDsmlToWizardPage.DSMLResponse" ), 2 ); //$NON-NLS-1$
         saveAsDsmlResponseButton.setSelection( true );
         wizard.setSaveAsType( ExportDsmlWizardSaveAsType.RESPONSE );
@@ -85,20 +85,26 @@ public class ExportDsmlToWizardPage extends ExportBaseToPage
         {
             public void widgetSelected( SelectionEvent e )
             {
-                wizard.setSaveAsType( ExportDsmlWizardSaveAsType.RESPONSE );
+                if ( saveAsDsmlResponseButton.getSelection() )
+                {
+                    wizard.setSaveAsType( ExportDsmlWizardSaveAsType.RESPONSE );
+                }
             }
         } );
         BaseWidgetUtils.createRadioIndent( saveAsComposite, 1 );
         BaseWidgetUtils.createWrappedLabel( saveAsComposite, Messages
             .getString( "ExportDsmlToWizardPage.SearchSaveAsResponse" ), 1 ); //$NON-NLS-1$
 
-        Button saveAsDsmlRequestButton = BaseWidgetUtils.createRadiobutton( saveAsComposite, Messages
+        final Button saveAsDsmlRequestButton = BaseWidgetUtils.createRadiobutton( saveAsComposite, Messages
             .getString( "ExportDsmlToWizardPage.DSMLRequest" ), 2 ); //$NON-NLS-1$
         saveAsDsmlRequestButton.addSelectionListener( new SelectionAdapter()
         {
             public void widgetSelected( SelectionEvent e )
             {
-                wizard.setSaveAsType( ExportDsmlWizardSaveAsType.REQUEST );
+                if ( saveAsDsmlRequestButton.getSelection() )
+                {
+                    wizard.setSaveAsType( ExportDsmlWizardSaveAsType.REQUEST );
+                }
             }
         } );
         BaseWidgetUtils.createRadioIndent( saveAsComposite, 1 );

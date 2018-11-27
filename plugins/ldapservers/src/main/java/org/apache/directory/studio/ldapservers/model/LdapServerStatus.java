@@ -27,5 +27,5 @@ package org.apache.directory.studio.ldapservers.model;
  */
 public enum LdapServerStatus
 {
-    STARTED, STARTING, STOPPED, STOPPING, UNKNOWN
+    STARTED, STARTING, STOPPED, STOPPING, UNKNOWN, REPAIRING
 }

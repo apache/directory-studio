@@ -25,9 +25,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
+import org.apache.directory.api.util.FileUtils;
+import org.apache.directory.api.util.IOUtils;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.io.jndi.LdifModificationLogger;
 import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
@@ -79,7 +81,7 @@ public class ExportModificationLogsWizard extends ExportBaseWizard
             try
             {
                 File targetFile = new File( exportFilename );
-                FileOutputStream os = FileUtils.openOutputStream( targetFile );
+                OutputStream os = FileUtils.openOutputStream( targetFile );
 
                 LdifModificationLogger modificationLogger = ConnectionCorePlugin.getDefault()
                     .getLdifModificationLogger();
@@ -90,7 +92,7 @@ public class ExportModificationLogsWizard extends ExportBaseWizard
                     File file = files[i];
                     if ( file != null && file.exists() && file.canRead() )
                     {
-                        FileInputStream is = FileUtils.openInputStream( file );
+                        InputStream is = FileUtils.openInputStream( file );
                         IOUtils.copy( is, os );
                         is.close();
                     }

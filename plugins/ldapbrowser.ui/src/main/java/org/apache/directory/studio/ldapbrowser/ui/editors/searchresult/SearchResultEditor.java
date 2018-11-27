@@ -170,22 +170,17 @@ public class SearchResultEditor extends EditorPart implements INavigationLocatio
         if ( input instanceof SearchResultEditorInput )
         {
             /*
-             * Workaround to make link-with-editor working for the single-tab editor:
-             * The call of firePropertyChange is used to inform the link-with-editor action.
-             * However firePropertyChange also modifies the navigation history.
-             * Thus, a dummy input with the real search but dummy flag is set.
-             * This avoids to modification of the navigation history.
-             * Afterwards the real input is set.
+             * Optimization: no need to set the input again if the same input is already set
              */
-            SearchResultEditorInput srei = ( SearchResultEditorInput ) input;
-            ISearch search = srei.getSearch();
-            SearchResultEditorInput dummyInput = new SearchResultEditorInput( search, true );
-            setInput( dummyInput );
-            firePropertyChange( IEditorPart.PROP_INPUT );
+            if ( getEditorInput() != null && getEditorInput().equals( input ) )
+            {
+                return;
+            }
 
             // now set the real input and mark history location
             setInput( input );
             getSite().getPage().getNavigationHistory().markLocation( this );
+            firePropertyChange( BrowserUIConstants.INPUT_CHANGED );
         }
     }
 

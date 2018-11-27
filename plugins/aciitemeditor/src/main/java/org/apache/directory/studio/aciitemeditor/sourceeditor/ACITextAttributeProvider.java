@@ -23,11 +23,9 @@ package org.apache.directory.studio.aciitemeditor.sourceeditor;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.directory.studio.common.ui.CommonUIConstants;
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.widgets.Display;
 
 
 /**
@@ -58,33 +56,17 @@ public class ACITextAttributeProvider
      */
     public ACITextAttributeProvider()
     {
-        attributes.put( DEFAULT_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(), new RGB( 0, 0, 0 ) ) ) );
-
-        attributes.put( KEYWORD_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(), new RGB( 127, 0, 85 ) ),
-            null, SWT.BOLD ) );
-
-        attributes.put( STRING_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(), new RGB( 0, 0, 255 ) ) ) );
-
-        attributes.put( GRANT_DENY_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(), new RGB( 125, 125,
-            125 ) ) ) );
-
-        attributes.put( GRANT_VALUE, new TextAttribute( new Color( Display.getCurrent(), new RGB( 0, 150, 0 ) ) ) );
-        attributes.put( DENY_VALUE, new TextAttribute( new Color( Display.getCurrent(), new RGB( 150, 0, 0 ) ) ) );
-
-        attributes.put( IDENTIFICATION_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(), new RGB( 125, 0,
-            0 ) ), null, SWT.BOLD ) );
-
-        attributes.put( PRECEDENCE_ATTRIBUTE, new TextAttribute(
-            new Color( Display.getCurrent(), new RGB( 0, 0, 125 ) ), null, SWT.BOLD ) );
-
-        attributes.put( AUTHENTICATIONLEVEL_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(), new RGB( 0,
-            125, 0 ) ), null, SWT.BOLD ) );
-
-        attributes.put( ITEMORUSERFIRST_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(), new RGB( 125, 0,
-            125 ) ), null, SWT.BOLD ) );
-
-        attributes.put( USER_ATTRIBUTE, new TextAttribute( new Color( Display.getCurrent(), new RGB( 0, 122, 255 ) ),
-            null, SWT.BOLD ) );
+        attributes.put( DEFAULT_ATTRIBUTE, new TextAttribute( CommonUIConstants.BLACK_COLOR ) );
+        attributes.put( KEYWORD_ATTRIBUTE, new TextAttribute( CommonUIConstants.M_PURPLE_COLOR, null, SWT.BOLD ) );
+        attributes.put( STRING_ATTRIBUTE, new TextAttribute( CommonUIConstants.BLUE_COLOR ) );
+        attributes.put( GRANT_DENY_ATTRIBUTE, new TextAttribute( CommonUIConstants.M_GREY_COLOR ) );
+        attributes.put( GRANT_VALUE, new TextAttribute( CommonUIConstants.ML_GREEN_COLOR ) );
+        attributes.put( DENY_VALUE, new TextAttribute( CommonUIConstants.ML_RED_COLOR ) );
+        attributes.put( IDENTIFICATION_ATTRIBUTE, new TextAttribute( CommonUIConstants.M_RED_COLOR, null, SWT.BOLD ) );
+        attributes.put( PRECEDENCE_ATTRIBUTE, new TextAttribute( CommonUIConstants.M_BLUE_COLOR, null, SWT.BOLD ) );
+        attributes.put( AUTHENTICATIONLEVEL_ATTRIBUTE, new TextAttribute( CommonUIConstants.M_GREEN_COLOR, null, SWT.BOLD ) );
+        attributes.put( ITEMORUSERFIRST_ATTRIBUTE, new TextAttribute( CommonUIConstants.M_PURPLE_COLOR, null, SWT.BOLD ) );
+        attributes.put( USER_ATTRIBUTE, new TextAttribute( CommonUIConstants.R0_G127_B255_COLOR, null, SWT.BOLD ) );
 
     }
 

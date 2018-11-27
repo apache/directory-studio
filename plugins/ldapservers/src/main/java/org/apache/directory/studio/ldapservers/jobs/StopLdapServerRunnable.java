@@ -59,7 +59,7 @@ public class StopLdapServerRunnable implements StudioRunnableWithProgress
      */
     public String getErrorMessage()
     {
-        return NLS.bind( "Unable to stop server ''{0}''", new String[]
+        return NLS.bind( Messages.getString( "StopLdapServerRunnable.UnableToStopServer" ), new String[] //$NON-NLS-1$
             { server.getName() } );
     }
 

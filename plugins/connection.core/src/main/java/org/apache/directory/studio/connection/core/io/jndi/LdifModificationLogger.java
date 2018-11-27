@@ -47,12 +47,11 @@ import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SearchControls;
 import javax.naming.ldap.Control;
 
-import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
-import org.apache.directory.shared.ldap.model.message.Referral;
-import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.model.name.Rdn;
-import org.apache.directory.shared.util.DateUtils;
-import org.apache.directory.shared.util.Strings;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.message.Referral;
+import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.name.Rdn;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
@@ -229,7 +228,7 @@ public class LdifModificationLogger implements IJndiLogger
         {
             Logger logger = loggers.get( id );
             DateFormat df = new SimpleDateFormat( ConnectionCoreConstants.DATEFORMAT );
-            df.setTimeZone( DateUtils.UTC_TIME_ZONE );
+            df.setTimeZone( ConnectionCoreConstants.UTC_TIME_ZONE );
 
             if ( ex != null )
             {

@@ -23,15 +23,21 @@ package org.apache.directory.studio.test.integration.ui.bots;
 public class ErrorDialogBot extends DialogBot
 {
 
-    public String getErrorMessage()
+    public ErrorDialogBot()
     {
-        return bot.label( 1 ).getText();
+        this( "Error" );
     }
 
 
-    public void clickOkButton()
+    public ErrorDialogBot( String title )
     {
-        super.clickButton( "OK" );
+        super( title );
+    }
+
+
+    public String getErrorMessage()
+    {
+        return bot.label( 1 ).getText();
     }
 
 }

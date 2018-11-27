@@ -28,5 +28,4 @@ package org.apache.directory.studio.valueeditors;
  */
 public class InPlaceTextValueEditor extends AbstractInPlaceStringValueEditor
 {
-
 }

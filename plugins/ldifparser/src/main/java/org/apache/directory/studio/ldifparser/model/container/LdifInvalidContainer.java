@@ -24,17 +24,13 @@ package org.apache.directory.studio.ldifparser.model.container;
 import org.apache.directory.studio.ldifparser.model.LdifInvalidPart;
 
 
+/**
+ * A LDIF container for invalid LDIF lines
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class LdifInvalidContainer extends LdifContainer
 {
-
-    private static final long serialVersionUID = -6967822536130425931L;
-
-
-    protected LdifInvalidContainer()
-    {
-    }
-
-
     public LdifInvalidContainer( LdifInvalidPart invalid )
     {
         super( invalid );
@@ -45,5 +41,4 @@ public class LdifInvalidContainer extends LdifContainer
     {
         return false;
     }
-
 }

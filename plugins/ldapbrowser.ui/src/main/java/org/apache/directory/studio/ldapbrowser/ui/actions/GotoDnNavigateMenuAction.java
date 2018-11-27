@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.actions;
 
 
-import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.DnDialog;
@@ -150,7 +150,7 @@ public class GotoDnNavigateMenuAction extends LocateInDitAction
         {
             clipboard = new Clipboard( Display.getCurrent() );
             Object contents = clipboard.getContents( TextTransfer.getInstance() );
-            if ( contents != null && contents instanceof String )
+            if ( contents instanceof String )
             {
                 return ( String ) contents;
             }

@@ -21,8 +21,8 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.entry;
 
 
-import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
-import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.entryeditors.EntryEditorExtension;
 import org.apache.directory.studio.entryeditors.EntryEditorInput;
 import org.apache.directory.studio.entryeditors.EntryEditorManager;
@@ -212,7 +212,7 @@ public class EntryEditorNavigationLocation extends NavigationLocation
     private EntryEditorInput getEntryEditorInput()
     {
         Object editorInput = getInput();
-        if ( editorInput != null && editorInput instanceof EntryEditorInput )
+        if ( editorInput instanceof EntryEditorInput )
         {
             EntryEditorInput entryEditorInput = ( EntryEditorInput ) editorInput;
             return entryEditorInput;

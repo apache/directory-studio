@@ -29,6 +29,7 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -61,15 +62,89 @@ public class CommonUIPlugin extends AbstractUIPlugin
     public void start( BundleContext context ) throws Exception
     {
         super.start( context );
+        
+        // Create the colors we use
+        CommonUIConstants.BLACK_COLOR = new Color( null, CommonUIConstants.BLACK );
+        CommonUIConstants.WHITE_COLOR = new Color( null, CommonUIConstants.WHITE );
+        
+        // Greys
+        CommonUIConstants.BD_GREY_COLOR = new Color( null, CommonUIConstants.M_GREY );
+        CommonUIConstants.D_GREY_COLOR = new Color( null, CommonUIConstants.M_GREY );
+        CommonUIConstants.MD_GREY_COLOR = new Color( null, CommonUIConstants.M_GREY );
+        CommonUIConstants.M_GREY_COLOR = new Color( null, CommonUIConstants.M_GREY );
+        CommonUIConstants.ML_GREY_COLOR = new Color( null, CommonUIConstants.M_GREY );
+        CommonUIConstants.L_GREY_COLOR = new Color( null, CommonUIConstants.M_GREY );
+        CommonUIConstants.WL_GREY_COLOR = new Color( null, CommonUIConstants.M_GREY );
+        
+        // Reds
+        CommonUIConstants.M_RED_COLOR = new Color( null, CommonUIConstants.M_RED );
+        CommonUIConstants.ML_RED_COLOR = new Color( null, CommonUIConstants.ML_RED );
+        CommonUIConstants.RED_COLOR = new Color( null, CommonUIConstants.RED );
+        
+        // Greens
+        CommonUIConstants.M_GREEN_COLOR = new Color( null, CommonUIConstants.M_GREEN );
+        CommonUIConstants.ML_GREEN_COLOR = new Color( null, CommonUIConstants.ML_GREEN );
+        CommonUIConstants.GREEN_COLOR = new Color( null, CommonUIConstants.GREEN );
+        
+        // Blues
+        CommonUIConstants.M_BLUE_COLOR = new Color( null, CommonUIConstants.M_BLUE );
+        CommonUIConstants.L_BLUE_COLOR = new Color( null, CommonUIConstants.L_BLUE );
+        CommonUIConstants.BLUE_COLOR = new Color( null, CommonUIConstants.BLUE );
+        
+        // Purples
+        CommonUIConstants.M_PURPLE_COLOR = new Color( null, CommonUIConstants.M_PURPLE );
+        CommonUIConstants.PURPLE_COLOR = new Color( null, CommonUIConstants.PURPLE );
+        
+        // Other colors
+        CommonUIConstants.R0_G127_B255_COLOR = new Color( null, CommonUIConstants.R0_G127_B255 );
+        CommonUIConstants.R95_G63_B159_COLOR = new Color( null, CommonUIConstants.R95_G63_B159 );
+        CommonUIConstants.R63_G127_B63_COLOR = new Color( null, CommonUIConstants.R63_G127_B63 );
     }
 
 
     /**
-     * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
+     * @see AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
      */
     public void stop( BundleContext context ) throws Exception
     {
         plugin = null;
+        
+        // Dispose the colors
+        CommonUIConstants.BLACK_COLOR.dispose();
+        CommonUIConstants.WHITE_COLOR.dispose();
+        
+        // greys
+        CommonUIConstants.M_GREY_COLOR.dispose();
+        CommonUIConstants.BD_GREY_COLOR.dispose();
+        CommonUIConstants.D_GREY_COLOR.dispose();
+        CommonUIConstants.MD_GREY_COLOR.dispose();
+        CommonUIConstants.M_GREY_COLOR.dispose();
+        CommonUIConstants.ML_GREY_COLOR.dispose();
+        CommonUIConstants.L_GREY_COLOR.dispose();
+        CommonUIConstants.WL_GREY_COLOR.dispose();
+
+        //Reds
+        CommonUIConstants.M_RED_COLOR.dispose();
+        CommonUIConstants.ML_RED_COLOR.dispose();
+        CommonUIConstants.RED_COLOR.dispose();
+        
+        // Greens
+        CommonUIConstants.M_GREEN_COLOR.dispose();
+        CommonUIConstants.ML_GREEN_COLOR.dispose();
+        CommonUIConstants.GREEN_COLOR.dispose();
+
+        // Blues
+        CommonUIConstants.M_BLUE_COLOR.dispose();
+        CommonUIConstants.L_BLUE_COLOR.dispose();
+        CommonUIConstants.BLUE_COLOR.dispose();
+        
+        // Purple
+        CommonUIConstants.M_PURPLE_COLOR.dispose();
+        CommonUIConstants.PURPLE_COLOR.dispose();
+        
+        // Other colors
+        CommonUIConstants.R0_G127_B255_COLOR.dispose();
+
         super.stop( context );
     }
 
@@ -113,7 +188,7 @@ public class CommonUIPlugin extends AbstractUIPlugin
     /**
      * Use this method to get SWT images. Use the IMG_ constants from
      * BrowserWidgetsConstants for the key. A ImageRegistry is used to manage the
-     * the key->Image mapping.
+     * the key-&gt;Image mapping.
      * <p>
      * Note: Don't dispose the returned SWT Image. It is disposed
      * automatically when the plugin is stopped.

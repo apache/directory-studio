@@ -21,11 +21,15 @@
 package org.apache.directory.studio.valueeditors.password;
 
 
+import org.apache.directory.api.ldap.model.constants.LdapSecurityConstants;
+import org.apache.directory.api.ldap.model.password.PasswordUtil;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.TextDialog;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.valueeditors.AbstractDialogBinaryValueEditor;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Shell;
 
 
@@ -36,7 +40,6 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class PasswordValueEditor extends AbstractDialogBinaryValueEditor
 {
-
     /**
      * {@inheritDoc}
      * 
@@ -45,20 +48,25 @@ public class PasswordValueEditor extends AbstractDialogBinaryValueEditor
     protected boolean openDialog( Shell shell )
     {
         Object value = getValue();
-        if ( value != null && value instanceof PasswordValueEditorRawValueWrapper )
+        
+        if ( value instanceof PasswordValueEditorRawValueWrapper )
         {
             PasswordValueEditorRawValueWrapper wrapper = ( PasswordValueEditorRawValueWrapper ) value;
-            if ( wrapper.password != null && wrapper.password instanceof byte[] )
+            
+            if ( wrapper.password instanceof byte[] )
             {
                 byte[] pw = ( byte[] ) wrapper.password;
                 PasswordDialog dialog = new PasswordDialog( shell, pw, wrapper.entry );
+                
                 if ( dialog.open() == TextDialog.OK )
                 {
                     setValue( dialog.getNewPassword() );
+                    
                     return true;
                 }
             }
         }
+        
         return false;
     }
 
@@ -81,25 +89,27 @@ public class PasswordValueEditor extends AbstractDialogBinaryValueEditor
         {
             if ( value == null )
             {
-                return "NULL"; //$NON-NLS-1$
+                return NULL; //$NON-NLS-1$
             }
 
-            String password = value.getStringValue();;
+            String password = value.getStringValue();
+            
             if ( password == null )
             {
-                return "NULL"; //$NON-NLS-1$
+                return NULL; //$NON-NLS-1$
             }
             else
             {
                 String text;
-                if ( "".equals( password ) ) //$NON-NLS-1$
+                
+                if ( EMPTY.equals( password ) ) //$NON-NLS-1$
                 {
                     text = Messages.getString( "PasswordValueEditor.EmptyPassword" ); //$NON-NLS-1$
                 }
-                else if ( password.indexOf( '{' ) == 0 && password.indexOf( '}' ) > 0 )
+                else if ( ( password.indexOf( '{' ) == 0  )&& ( password.indexOf( '}' ) > 0 ) )
                 {
-                    String hashMethod = password.substring( password.indexOf( '{' ) + 1, password.indexOf( '}' ) );
-                    text = hashMethod + Messages.getString( "PasswordValueEditor.HashedPassword" ); //$NON-NLS-1$
+                    text = NLS.bind(
+                        Messages.getString( "PasswordValueEditor.HashedPassword" ), getHashMethodName( password ) ); //$NON-NLS-1$
                 }
                 else
                 {
@@ -108,6 +118,25 @@ public class PasswordValueEditor extends AbstractDialogBinaryValueEditor
                 return text;
             }
         }
+    }
+
+
+    /**
+     * Gets the name of the hash method.
+     *
+     * @param s the hash method string
+     * @return the name of the associated hash method or the given string
+     */
+    private String getHashMethodName( String s )
+    {
+        LdapSecurityConstants hashMethod = PasswordUtil.findAlgorithm( Strings.getBytesUtf8( s ) );
+
+        if ( hashMethod != null )
+        {
+            return hashMethod.getName();
+        }
+
+        return s;
     }
 
 
@@ -131,8 +160,10 @@ public class PasswordValueEditor extends AbstractDialogBinaryValueEditor
     public Object getRawValue( IValue value )
     {
         Object password = super.getRawValue( value );
+        
         return new PasswordValueEditorRawValueWrapper( password, value.getAttribute().getEntry() );
     }
+    
 
     /**
      * The PasswordValueEditorRawValueWrapper is used to pass contextual 
@@ -161,5 +192,4 @@ public class PasswordValueEditor extends AbstractDialogBinaryValueEditor
             this.entry = entry;
         }
     }
-
 }

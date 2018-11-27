@@ -25,9 +25,9 @@ import javax.naming.NamingEnumeration;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.SearchResult;
 
-import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.model.message.SearchScope;
-import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.constants.SchemaConstants;
+import org.apache.directory.api.ldap.model.message.SearchScope;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
@@ -272,7 +272,7 @@ public class ReloadSchemaRunnable implements StudioConnectionBulkRunnableWithPro
                     if ( attribute.getID().equalsIgnoreCase( SchemaConstants.SUBSCHEMA_SUBENTRY_AT ) )
                     {
                         String value = ( String ) attribute.get();
-                        if ( Dn.isValid(value) )
+                        if ( Dn.isValid( value ) )
                         {
                             Dn dn = new Dn( value );
                             return dn;

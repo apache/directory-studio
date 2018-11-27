@@ -21,17 +21,32 @@ package org.apache.directory.studio.test.integration.ui.bots;
 
 
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 
 
 public class NewApacheDSServerWizardBot extends WizardBot
 {
 
-    private static final String NAME = "Name:";
+    private static final String TITLE = "New LDAP Server";
+    private static final String TYPE = "Select the server type:";
+    private static final String NAME = "Server Name:";
 
+    public NewApacheDSServerWizardBot()
+    {
+        super(TITLE);
+    }
 
     public void typeServerName( String serverName )
     {
         SWTBotText connText = bot.textWithLabel( NAME );
         connText.setText( serverName );
     }
+
+
+    public void selectApacheDS200()
+    {
+        SWTBotTree tree = bot.treeWithLabel( TYPE );
+        tree.expandNode( "Apache Software Foundation" ).select( "ApacheDS 2.0.0" );
+    }
+
 }

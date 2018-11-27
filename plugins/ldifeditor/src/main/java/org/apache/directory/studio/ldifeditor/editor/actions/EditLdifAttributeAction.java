@@ -21,8 +21,8 @@
 package org.apache.directory.studio.ldifeditor.editor.actions;
 
 
-import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
-import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.wizards.AttributeWizard;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;

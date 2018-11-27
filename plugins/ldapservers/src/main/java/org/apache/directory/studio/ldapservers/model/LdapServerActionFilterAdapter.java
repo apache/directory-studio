@@ -148,7 +148,7 @@ public class LdapServerActionFilterAdapter implements IActionFilter
                     .getConfigurationPageClassName();
 
                 boolean hasConfigurationPage = ( ( configurationPageClassName != null ) && ( !"" //$NON-NLS-1$
-                    .equals( configurationPageClassName ) ) );
+                .equals( configurationPageClassName ) ) );
 
                 return value.equalsIgnoreCase( hasConfigurationPage ? "true" : "false" ); //$NON-NLS-1$ //$NON-NLS-2$
             }

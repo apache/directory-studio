@@ -29,34 +29,30 @@ import org.eclipse.swtbot.swt.finder.utils.TableRow;
 public class ReferralDialogBot extends DialogBot
 {
 
-    public boolean isVisible()
+    public ReferralDialogBot()
     {
-        return super.isVisible( "Select Referral Connection" );
+        super( "Select Referral Connection" );
     }
 
 
     public void clickOkButton()
     {
         JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__init_entries_title_subonly );
-        super.clickButton( "OK" );
+        super.clickOkButton();
         watcher.waitUntilDone();
-    }
-
-
-    public void clickCancelButton()
-    {
-        super.clickButton( "Cancel" );
     }
 
 
     public void selectConnection( String connectionName )
     {
+        activate();
         bot.tree().select( connectionName );
     }
 
 
     public String getSelectedConnection()
     {
+        activate();
         TableCollection selection = bot.tree().selection();
         if ( selection != null && selection.rowCount() == 1 )
         {

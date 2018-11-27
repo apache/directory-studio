@@ -34,7 +34,7 @@ public class LdapFilterScanner
     // The string representation of an LDAP search filter is defined by the
     // following grammar, following the ABNF notation defined in [5]. The
     // filter format uses a prefix notation.
-    //	
+    //
     // filter = "(" filtercomp ")"
     // filtercomp = and / or / not / item
     // and = "&" filterlist
@@ -58,12 +58,12 @@ public class LdapFilterScanner
     // attr = AttributeDescription from Section 4.1.5 of [1]
     // matchingrule = MatchingRuleId from Section 4.1.9 of [1]
     // value = AttributeValue from Section 4.1.6 of [1]
-    //	
+    //
     // The attr, matchingrule, and value constructs are as described in the
     // corresponding section of [1] given above.
-    //	
+    //
     // If a value should contain any of the following characters
-    //	
+    //
     // Character ASCII value
     // ---------------------------
     // * 0x2a
@@ -71,7 +71,7 @@ public class LdapFilterScanner
     // ) 0x29
     // \ 0x5c
     // NUL 0x00
-    //	
+    //
     // the character must be encoded as the backslash '\' character (ASCII
     // 0x5c) followed by the two hexadecimal digits representing the ASCII
     // value of the encoded character. The case of the two hexadecimal

@@ -26,7 +26,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 
 
 /**
- * 
  * Abstract base class for value editors that handle string values
  * in a dialog. 
  *
@@ -34,7 +33,6 @@ import org.apache.directory.studio.ldapbrowser.core.model.IValue;
  */
 public abstract class AbstractDialogStringValueEditor extends AbstractDialogValueEditor
 {
-
     /**
      * Creates a new instance of AbstractDialogStringValueEditor.
      */
@@ -51,8 +49,8 @@ public abstract class AbstractDialogStringValueEditor extends AbstractDialogValu
      */
     public String getDisplayValue( IValue value )
     {
-        Object obj = this.getRawValue( value );
-        return obj == null ? "NULL" : obj.toString(); //$NON-NLS-1$
+        Object obj = getRawValue( value );
+        return StringValueEditorUtils.getDisplayValue( obj );
     }
 
 
@@ -83,44 +81,7 @@ public abstract class AbstractDialogStringValueEditor extends AbstractDialogValu
      */
     public Object getRawValue( IValue value )
     {
-        if ( value == null )
-        {
-            return null;
-        }
-        else if ( value.isString() )
-        {
-            return value.getStringValue();
-        }
-        else if ( value.isBinary() )
-        {
-            return isEditable( value.getBinaryValue() ) ? value.getStringValue() : null;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-
-    /**
-     * Small helper.
-     */
-    private boolean isEditable( byte[] b )
-    {
-        if ( b == null )
-        {
-            return false;
-        }
-
-        for ( int i = 0; i < b.length; i++ )
-        {
-            if ( !( b[i] == '\n' || b[i] == '\r' || ( b[i] >= '\u0020' && b[i] <= '\u007F' ) ) )
-            {
-                return false;
-            }
-        }
-
-        return true;
+        return StringValueEditorUtils.getRawValue( value );
     }
 
 
@@ -132,18 +93,6 @@ public abstract class AbstractDialogStringValueEditor extends AbstractDialogValu
      */
     public Object getStringOrBinaryValue( Object rawValue )
     {
-        if ( rawValue == null )
-        {
-            return null;
-        }
-        else if ( rawValue instanceof String )
-        {
-            return rawValue;
-        }
-        else
-        {
-            return null;
-        }
+        return StringValueEditorUtils.getStringOrBinaryValue( rawValue );
     }
-
 }

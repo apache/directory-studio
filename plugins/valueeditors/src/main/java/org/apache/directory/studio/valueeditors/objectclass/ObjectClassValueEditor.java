@@ -21,7 +21,7 @@
 package org.apache.directory.studio.valueeditors.objectclass;
 
 
-import org.apache.directory.shared.ldap.model.schema.ObjectClass;
+import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.TextDialog;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -47,7 +47,7 @@ public class ObjectClassValueEditor extends AbstractDialogStringValueEditor
     public boolean openDialog( Shell shell )
     {
         Object value = getValue();
-        if ( value != null && value instanceof ObjectClassValueEditorRawValueWrapper )
+        if ( value instanceof ObjectClassValueEditorRawValueWrapper )
         {
             ObjectClassValueEditorRawValueWrapper wrapper = ( ObjectClassValueEditorRawValueWrapper ) value;
             ObjectClassDialog dialog = new ObjectClassDialog( shell, wrapper.schema, wrapper.objectClass );
@@ -71,7 +71,7 @@ public class ObjectClassValueEditor extends AbstractDialogStringValueEditor
     {
         if ( getRawValue( value ) == null )
         {
-            return "NULL"; //$NON-NLS-1$
+            return NULL;
         }
 
         String displayValue = value.getStringValue();
@@ -135,17 +135,20 @@ public class ObjectClassValueEditor extends AbstractDialogStringValueEditor
     private Object getRawValue( IBrowserConnection connection, Object value )
     {
         Schema schema = null;
+        
         if ( connection != null )
         {
             schema = connection.getSchema();
         }
-        if ( schema == null || value == null || !( value instanceof String ) )
+        
+        if ( !( value instanceof String ) )
         {
             return null;
         }
 
         String ocValue = ( String ) value;
         ObjectClassValueEditorRawValueWrapper wrapper = new ObjectClassValueEditorRawValueWrapper( schema, ocValue );
+        
         return wrapper;
     }
 

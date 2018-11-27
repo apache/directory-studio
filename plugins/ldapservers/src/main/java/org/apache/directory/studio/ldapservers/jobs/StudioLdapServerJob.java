@@ -24,7 +24,6 @@ package org.apache.directory.studio.ldapservers.jobs;
 import org.apache.directory.studio.common.core.jobs.StudioJob;
 import org.apache.directory.studio.common.core.jobs.StudioRunnableWithProgress;
 import org.apache.directory.studio.ldapservers.model.LdapServer;
-import org.eclipse.core.runtime.jobs.Job;
 
 
 /**
@@ -48,7 +47,8 @@ public class StudioLdapServerJob extends StudioJob<StudioRunnableWithProgress>
     /**
     * {@inheritDoc}
     */
-    protected String[] getLockIdentifiers( Object[] objects )
+    @Override
+    protected String[] getLockIdentifiers( Object... objects )
     {
         String[] identifiers = new String[objects.length];
         for ( int i = 0; i < identifiers.length; i++ )

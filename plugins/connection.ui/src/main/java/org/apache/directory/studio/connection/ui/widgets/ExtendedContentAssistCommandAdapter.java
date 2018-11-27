@@ -36,7 +36,6 @@ import org.eclipse.ui.fieldassist.ContentAssistCommandAdapter;
  */
 public class ExtendedContentAssistCommandAdapter extends ContentAssistCommandAdapter
 {
-
     /**
      * Creates a new instance of ExtendedContentAssistCommandAdapter 
      * with the following settings:
@@ -58,7 +57,8 @@ public class ExtendedContentAssistCommandAdapter extends ContentAssistCommandAda
         IContentProposalProvider proposalProvider, String commandId, char[] autoActivationCharacters,
         boolean installDecoration )
     {
-        super( control, controlContentAdapter, proposalProvider, commandId, autoActivationCharacters, installDecoration );
+        super( control, controlContentAdapter, proposalProvider, commandId, autoActivationCharacters,
+            installDecoration );
 
         setProposalAcceptanceStyle( ContentProposalAdapter.PROPOSAL_REPLACE );
         setFilterStyle( ContentProposalAdapter.FILTER_NONE );
@@ -67,6 +67,9 @@ public class ExtendedContentAssistCommandAdapter extends ContentAssistCommandAda
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void closeProposalPopup()
     {
@@ -74,10 +77,12 @@ public class ExtendedContentAssistCommandAdapter extends ContentAssistCommandAda
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void openProposalPopup()
     {
         super.openProposalPopup();
     }
-
 }

@@ -30,7 +30,7 @@ import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.io.FileUtils;
+import org.apache.directory.api.util.FileUtils;
 import org.apache.directory.studio.connection.ui.wizards.ExportCertificateWizardPage.CertificateExportFormat;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -60,6 +60,7 @@ public class ExportCertificateWizard extends Wizard
      */
     public ExportCertificateWizard( X509Certificate certificate )
     {
+        super();
         this.certificate = certificate;
         setWindowTitle( Messages.getString( "ExportCertificateWizard.ExportCertificate" ) ); //$NON-NLS-1$
         setNeedsProgressMonitor( false );
@@ -78,6 +79,7 @@ public class ExportCertificateWizard extends Wizard
     /**
      * {@inheritDoc}
      */
+    @Override
     public void addPages()
     {
         page = new ExportCertificateWizardPage();
@@ -95,12 +97,13 @@ public class ExportCertificateWizard extends Wizard
 
         try
         {
-            switch ( format )
+            if ( format == CertificateExportFormat.DER )
             {
-                case DER:
-                    return exportAsDerFormat();
-                case PEM:
-                    return exportAsPemFormat();
+                return exportAsDerFormat();
+            }
+            else
+            {
+                return exportAsPemFormat();
             }
         }
         catch ( Exception e )
@@ -111,8 +114,6 @@ public class ExportCertificateWizard extends Wizard
                     e.getMessage() ) );
             return false;
         }
-
-        return false;
     }
 
 
@@ -148,14 +149,17 @@ public class ExportCertificateWizard extends Wizard
         File exportFile = page.getExportFile();
 
         // Exporting the certificate
-        FileOutputStream fos = new FileOutputStream( exportFile );
-        OutputStreamWriter osw = new OutputStreamWriter( fos, Charset.forName( "UTF-8" ) ); //$NON-NLS-1$
-        osw.write( "-----BEGIN CERTIFICATE-----\n" ); //$NON-NLS-1$
-        osw.write( stripLineToNChars( new String( Base64.encodeBase64( certificate.getEncoded() ),
-            Charset.forName( "UTF-8" ) ), 64 ) ); //$NON-NLS-1$
-        osw.write( "\n-----END CERTIFICATE-----\n" ); //$NON-NLS-1$
-        osw.flush();
-        fos.close();
+        try ( FileOutputStream fos = new FileOutputStream( exportFile ) )
+        {
+            try ( OutputStreamWriter osw = new OutputStreamWriter( fos, Charset.forName( "UTF-8" ) ) ) //$NON-NLS-1$
+            {
+                osw.write( "-----BEGIN CERTIFICATE-----\n" ); //$NON-NLS-1$
+                osw.write( stripLineToNChars( new String( Base64.encodeBase64( certificate.getEncoded() ),
+                    Charset.forName( "UTF-8" ) ), 64 ) ); //$NON-NLS-1$
+                osw.write( "\n-----END CERTIFICATE-----\n" ); //$NON-NLS-1$
+                osw.flush();
+            }
+        }
 
         return true;
     }

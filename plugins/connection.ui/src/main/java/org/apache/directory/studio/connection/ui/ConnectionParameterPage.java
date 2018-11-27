@@ -20,7 +20,7 @@
 package org.apache.directory.studio.connection.ui;
 
 
-import org.apache.directory.shared.ldap.model.url.LdapUrl;
+import org.apache.directory.api.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.swt.widgets.Composite;
@@ -40,7 +40,7 @@ public interface ConnectionParameterPage
      * 
      * @param parameter the connection parameter
      */
-    public void saveParameters( ConnectionParameter parameter );
+    void saveParameters( ConnectionParameter parameter );
 
 
     /**
@@ -48,7 +48,7 @@ public interface ConnectionParameterPage
      * 
      * @return true, if is valid
      */
-    public boolean isValid();
+    boolean isValid();
 
 
     /**
@@ -58,7 +58,7 @@ public interface ConnectionParameterPage
      * 
      * @return the error message
      */
-    public String getErrorMessage();
+    String getErrorMessage();
 
 
     /**
@@ -68,7 +68,7 @@ public interface ConnectionParameterPage
      * 
      * @return the message
      */
-    public String getMessage();
+    String getMessage();
 
 
     /**
@@ -78,7 +78,7 @@ public interface ConnectionParameterPage
      * 
      * @return the info message
      */
-    public String getInfoMessage();
+    String getInfoMessage();
 
 
     /**
@@ -88,13 +88,13 @@ public interface ConnectionParameterPage
      * @param listener the connection parameter page modify listener
      * @param parameter the initial connection parameter
      */
-    public void init( Composite parent, ConnectionParameterPageModifyListener listener, ConnectionParameter parameter );
+    void init( Composite parent, ConnectionParameterPageModifyListener listener, ConnectionParameter parameter );
 
 
     /**
      * Saves the dialog settings.
      */
-    public void saveDialogSettings();
+    void saveDialogSettings();
 
 
     /**
@@ -102,7 +102,7 @@ public interface ConnectionParameterPage
      * 
      * @param runnableContext the runnable context
      */
-    public void setRunnableContext( IRunnableContext runnableContext );
+    void setRunnableContext( IRunnableContext runnableContext );
 
 
     /**
@@ -110,7 +110,7 @@ public interface ConnectionParameterPage
      * 
      * @param pageId the page id
      */
-    public void setPageId( String pageId );
+    void setPageId( String pageId );
 
 
     /**
@@ -118,7 +118,7 @@ public interface ConnectionParameterPage
      * 
      * @return the page id
      */
-    public String getPageId();
+    String getPageId();
 
 
     /**
@@ -126,7 +126,7 @@ public interface ConnectionParameterPage
      * 
      * @param pageName the page name
      */
-    public void setPageName( String pageName );
+    void setPageName( String pageName );
 
 
     /**
@@ -134,7 +134,7 @@ public interface ConnectionParameterPage
      * 
      * @return the page name
      */
-    public String getPageName();
+    String getPageName();
 
 
     /**
@@ -142,7 +142,7 @@ public interface ConnectionParameterPage
      * 
      * @param pageDescription the page description
      */
-    public void setPageDescription( String pageDescription );
+    void setPageDescription( String pageDescription );
 
 
     /**
@@ -150,7 +150,7 @@ public interface ConnectionParameterPage
      * 
      * @return the page description
      */
-    public String getPageDescription();
+    String getPageDescription();
 
 
     /**
@@ -158,7 +158,7 @@ public interface ConnectionParameterPage
      * 
      * @param pageDependsOnId the page id this page depends on
      */
-    public void setPageDependsOnId( String pageDependsOnId );
+    void setPageDependsOnId( String pageDependsOnId );
 
 
     /**
@@ -166,13 +166,13 @@ public interface ConnectionParameterPage
      * 
      * @return the page id this page depends on
      */
-    public String getPageDependsOnId();
+    String getPageDependsOnId();
 
 
     /**
      * Sets the focus.
      */
-    public void setFocus();
+    void setFocus();
 
 
     /**
@@ -182,7 +182,7 @@ public interface ConnectionParameterPage
      *
      * @return true if a reconnection if required
      */
-    public boolean isReconnectionRequired();
+    boolean isReconnectionRequired();
 
 
     /**
@@ -191,7 +191,7 @@ public interface ConnectionParameterPage
      * 
      * @return true, if parameters were modified
      */
-    public boolean areParametersModifed();
+    boolean areParametersModifed();
 
 
     /**
@@ -200,7 +200,7 @@ public interface ConnectionParameterPage
      * @param parameter the source connection parameter
      * @param ldapUrl the target LDAP URL
      */
-    public void mergeParametersToLdapURL( ConnectionParameter parameter, LdapUrl ldapUrl );
+    void mergeParametersToLdapURL( ConnectionParameter parameter, LdapUrl ldapUrl );
 
 
     /**
@@ -209,5 +209,5 @@ public interface ConnectionParameterPage
      * @param ldapUrl the source LDAP URL
      * @param parameter the target connection parameter
      */
-    public void mergeLdapUrlToParameters( LdapUrl ldapUrl, ConnectionParameter parameter );
+    void mergeLdapUrlToParameters( LdapUrl ldapUrl, ConnectionParameter parameter );
 }

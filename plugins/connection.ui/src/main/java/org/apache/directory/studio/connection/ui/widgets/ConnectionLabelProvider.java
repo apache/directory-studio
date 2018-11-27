@@ -21,6 +21,7 @@
 package org.apache.directory.studio.connection.ui.widgets;
 
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionFolder;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
@@ -38,23 +39,26 @@ import org.eclipse.swt.graphics.Image;
  */
 public class ConnectionLabelProvider extends LabelProvider
 {
-
     /**
      * {@inheritDoc}
      * 
      * This implementation returns the connection name and appends information
      * about the used encryption method.
      */
+    @Override
     public String getText( Object obj )
     {
         if ( obj instanceof ConnectionFolder )
         {
             ConnectionFolder folder = ( ConnectionFolder ) obj;
+
             return folder.getName();
         }
+
         if ( obj instanceof Connection )
         {
             Connection conn = ( Connection ) obj;
+
             if ( conn.getEncryptionMethod() == EncryptionMethod.LDAPS )
             {
                 return conn.getName() + " (LDAPS)"; //$NON-NLS-1$
@@ -68,13 +72,13 @@ public class ConnectionLabelProvider extends LabelProvider
                 return conn.getName();
             }
         }
-        else if ( obj != null )
+        else if ( obj == null )
         {
-            return obj.toString();
+            return StringUtils.EMPTY; //$NON-NLS-1$
         }
         else
         {
-            return ""; //$NON-NLS-1$
+            return obj.toString();
         }
     }
 
@@ -84,6 +88,7 @@ public class ConnectionLabelProvider extends LabelProvider
      * 
      * This implementation returns a icon for connected or disconnected state.
      */
+    @Override
     public Image getImage( Object obj )
     {
         if ( obj instanceof ConnectionFolder )
@@ -93,18 +98,21 @@ public class ConnectionLabelProvider extends LabelProvider
         else if ( obj instanceof Connection )
         {
             Connection conn = ( Connection ) obj;
+
             if ( ( conn.getEncryptionMethod() == EncryptionMethod.LDAPS )
                 || ( conn.getEncryptionMethod() == EncryptionMethod.START_TLS ) )
             {
                 return conn.getConnectionWrapper().isConnected() ? ConnectionUIPlugin.getDefault().getImage(
-                    ConnectionUIConstants.IMG_CONNECTION_SSL_CONNECTED ) : ConnectionUIPlugin.getDefault().getImage(
-                    ConnectionUIConstants.IMG_CONNECTION_SSL_DISCONNECTED );
+                    ConnectionUIConstants.IMG_CONNECTION_SSL_CONNECTED )
+                    : ConnectionUIPlugin.getDefault().getImage(
+                        ConnectionUIConstants.IMG_CONNECTION_SSL_DISCONNECTED );
             }
             else
             {
                 return conn.getConnectionWrapper().isConnected() ? ConnectionUIPlugin.getDefault().getImage(
-                    ConnectionUIConstants.IMG_CONNECTION_CONNECTED ) : ConnectionUIPlugin.getDefault().getImage(
-                    ConnectionUIConstants.IMG_CONNECTION_DISCONNECTED );
+                    ConnectionUIConstants.IMG_CONNECTION_CONNECTED )
+                    : ConnectionUIPlugin.getDefault().getImage(
+                        ConnectionUIConstants.IMG_CONNECTION_DISCONNECTED );
             }
         }
         else
@@ -112,5 +120,4 @@ public class ConnectionLabelProvider extends LabelProvider
             return null;
         }
     }
-
 }

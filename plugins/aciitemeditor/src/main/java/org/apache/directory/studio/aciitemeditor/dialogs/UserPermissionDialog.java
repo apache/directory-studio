@@ -22,9 +22,9 @@ package org.apache.directory.studio.aciitemeditor.dialogs;
 
 import java.util.Collection;
 
-import org.apache.directory.shared.ldap.aci.GrantAndDenial;
-import org.apache.directory.shared.ldap.aci.ProtectedItem;
-import org.apache.directory.shared.ldap.aci.UserPermission;
+import org.apache.directory.api.ldap.aci.GrantAndDenial;
+import org.apache.directory.api.ldap.aci.ProtectedItem;
+import org.apache.directory.api.ldap.aci.UserPermission;
 import org.apache.directory.studio.aciitemeditor.ACIItemValueWithContext;
 import org.apache.directory.studio.aciitemeditor.Activator;
 import org.apache.directory.studio.aciitemeditor.widgets.ACIItemGrantsAndDenialsComposite;
@@ -112,7 +112,7 @@ public class UserPermissionDialog extends Dialog
     {
         try
         {
-            int precedence = precedenceCheckbox.getSelection() ? precedenceSpinner.getSelection() : -1;
+            Integer precedence = precedenceCheckbox.getSelection() ? precedenceSpinner.getSelection() : null;
             Collection<ProtectedItem> protectedItems = protectedItemsComposite.getProtectedItems();
             Collection<GrantAndDenial> grantsAndDenials = grantsAndDenialsComposite.getGrantsAndDenials();
             returnUserPermission = new UserPermission( precedence, grantsAndDenials, protectedItems );
@@ -175,7 +175,7 @@ public class UserPermissionDialog extends Dialog
         // set initial values
         if ( initialUserPermission != null )
         {
-            if ( initialUserPermission.getPrecedence() > -1 )
+            if ( ( initialUserPermission.getPrecedence() != null ) && ( initialUserPermission.getPrecedence() > -1 ) )
             {
                 precedenceCheckbox.setSelection( true );
                 precedenceSpinner.setEnabled( true );

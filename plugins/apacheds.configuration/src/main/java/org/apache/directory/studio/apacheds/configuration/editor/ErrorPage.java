@@ -20,9 +20,16 @@
 package org.apache.directory.studio.apacheds.configuration.editor;
 
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
@@ -35,28 +42,45 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 
 
 /**
- * This class represents the General Page of the Server Configuration Editor.
+ * This class represents the Error Page of the Server Configuration Editor.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ErrorPage extends FormPage
 {
     /** The Page ID*/
-    public static final String ID = ServerConfigurationEditor.ID + ".ErrorPage"; //$NON-NLS-1$
+    public static final String ID = ErrorPage.class.getName();
 
     /** The Page Title */
-    private static final String TITLE = Messages.getString( "ErrorPage.Error" ); //$NON-NLS-1$
+    private static final String TITLE = Messages.getString( "ErrorPage.ErrorOpeningEditor" ); //$NON-NLS-1$
+
+    private static final String DETAILS_CLOSED = NLS.bind( "{0} >>", Messages.getString( "ErrorPage.Details" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    private static final String DETAILS_OPEN = NLS.bind( "<< {0}", Messages.getString( "ErrorPage.Details" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+
+    /** The exception */
+    private Exception exception;
+
+    /** The flag indicating that the details are shown */
+    private boolean detailsShown = false;
+
+    // UI Controls
+    private FormToolkit toolkit;
+    private Composite parent;
+    private Button detailsButton;
+
+    private Text detailsText;
 
 
     /**
-     * Creates a new instance of GeneralPage.
+     * Creates a new instance of ErrorPage.
      *
      * @param editor
      *      the associated editor
      */
-    public ErrorPage( FormEditor editor )
+    public ErrorPage( FormEditor editor, Exception exception )
     {
         super( editor, ID, TITLE );
+        this.exception = exception;
     }
 
 
@@ -66,25 +90,88 @@ public class ErrorPage extends FormPage
     protected void createFormContent( IManagedForm managedForm )
     {
         ScrolledForm form = managedForm.getForm();
-        FormToolkit toolkit = managedForm.getToolkit();
-        Composite parent = form.getBody();
-        parent.setLayout( new GridLayout( 2, false ) );
+        form.setText( Messages.getString( "ErrorPage.ErrorOpeningEditor" ) ); //$NON-NLS-1$
+        form.setImage( Display.getCurrent().getSystemImage( SWT.ICON_ERROR ) );
 
-        // Error Image
-        Label errorImageLabel = toolkit.createLabel( parent, null );
-        errorImageLabel.setImage( Display.getCurrent().getSystemImage( SWT.ICON_ERROR ) );
+        parent = form.getBody();
+        GridLayout gl = new GridLayout( 2, false );
+        gl.marginHeight = 10;
+        gl.marginWidth = 10;
+        parent.setLayout( gl );
+        parent.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+
+        toolkit = managedForm.getToolkit();
+        toolkit.decorateFormHeading( form.getForm() );
 
         // Error Label
-        toolkit.createLabel( parent, Messages.getString( "ErrorPage.ErrorOpeningTheEditor" ) ); //$NON-NLS-1$
+        Label errorLabel = toolkit.createLabel( parent, "" ); //$NON-NLS-1$
+        errorLabel.setLayoutData( new GridData( SWT.FILL, SWT.NONE, true, false ) );
 
-        // Details Label
-        Label detailsLabel = toolkit.createLabel( parent, Messages.getString( "ErrorPage.Details" ) ); //$NON-NLS-1$
-        detailsLabel.setLayoutData( new GridData( SWT.NONE, SWT.NONE, false, false, 2, 1 ) );
+        // Details Button
+        detailsButton = new Button( parent, SWT.PUSH );
+        detailsButton.setText( DETAILS_CLOSED );
+        detailsButton.setLayoutData( new GridData( SWT.RIGHT, SWT.NONE, false, false ) );
+        detailsButton.addSelectionListener( new SelectionAdapter()
+        {
+            public void widgetSelected( SelectionEvent e )
+            {
+                showOrHideDetailsView();
+            }
+        } );
 
-        // Details Text
-        Text detailsText = toolkit.createText( parent, "", SWT.MULTI ); //$NON-NLS-1$
-        detailsText.setEditable( false );
-        detailsText.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true, 2, 1 ) );
-        detailsText.setText( ( ( ServerConfigurationEditor ) getEditor() ).getErrorMessage() );
+        // Initializing with the exception
+        if ( exception == null )
+        {
+            errorLabel.setText( Messages.getString( "ErrorPage.CouldNotOpenEditor" ) ); //$NON-NLS-1$
+            detailsButton.setVisible( false );
+        }
+        else
+        {
+            errorLabel.setText( NLS.bind( "Could not open the editor: {0}", exception.getMessage() ) ); //$NON-NLS-1$
+        }
+    }
+
+
+    /**
+     * Shows or hides the details view.
+     */
+    private void showOrHideDetailsView()
+    {
+        if ( detailsShown )
+        {
+            detailsButton.setText( DETAILS_CLOSED );
+
+            detailsText.dispose();
+        }
+        else
+        {
+            detailsButton.setText( DETAILS_OPEN );
+
+            detailsText = toolkit.createText( parent, getStackTrace( exception ), SWT.H_SCROLL | SWT.V_SCROLL );
+            detailsText.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true, 2, 1 ) );
+        }
+
+        parent.layout( true, true );
+
+        detailsShown = !detailsShown;
+    }
+
+
+    /**
+     * Gets the stackTrace of the given exception as a string.
+     *
+     * @param e
+     *      the exception
+     * @return
+     *      the stackTrace of the given exception as a string
+     */
+    private String getStackTrace( Exception e )
+    {
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter( sw, true );
+        e.printStackTrace( pw );
+        pw.flush();
+        sw.flush();
+        return sw.toString();
     }
 }

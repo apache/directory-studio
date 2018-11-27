@@ -28,17 +28,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.model.message.SearchScope;
-import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.api.ldap.model.constants.SchemaConstants;
+import org.apache.directory.api.ldap.model.message.SearchScope;
+import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
+import org.apache.directory.studio.common.ui.widgets.AbstractWidget;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
+import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.connection.core.StudioPagedResultsControl;
-import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyEvent;
-import org.apache.directory.studio.ldapbrowser.common.widgets.WidgetModifyListener;
 import org.apache.directory.studio.ldapbrowser.core.jobs.SearchRunnable;
 import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -66,7 +66,7 @@ import org.eclipse.swt.widgets.Text;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SearchPageWrapper extends BrowserWidget
+public class SearchPageWrapper extends AbstractWidget
 {
 
     /** The default style */
@@ -419,7 +419,7 @@ public class SearchPageWrapper extends BrowserWidget
             || isActive( RETURN_OPERATIONALATTRIBUTES_VISIBLE ) )
         {
             BaseWidgetUtils.createSpacer( composite, 1 );
-            Composite buttonComposite = BaseWidgetUtils.createColumnContainer( composite, 3, 1 );
+            Composite buttonComposite = BaseWidgetUtils.createColumnContainer( composite, 3, 2 );
             if ( isActive( RETURN_DN_VISIBLE ) )
             {
                 returnDnButton = BaseWidgetUtils.createCheckbox( buttonComposite, Messages
@@ -880,7 +880,7 @@ public class SearchPageWrapper extends BrowserWidget
                 int pageSize;
                 try
                 {
-                    pageSize = new Integer( pagedSearchControlSizeText.getText() ).intValue();
+                    pageSize = Integer.valueOf( pagedSearchControlSizeText.getText() );
                 }
                 catch ( NumberFormatException e )
                 {

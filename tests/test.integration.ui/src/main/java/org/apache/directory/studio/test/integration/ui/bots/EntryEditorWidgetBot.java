@@ -1,10 +1,31 @@
+/*
+ *  Licensed to the Apache Software Foundation (ASF) under one
+ *  or more contributor license agreements.  See the NOTICE file
+ *  distributed with this work for additional information
+ *  regarding copyright ownership.  The ASF licenses this file
+ *  to you under the Apache License, Version 2.0 (the
+ *  "License"); you may not use this file except in compliance
+ *  with the License.  You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License.
+ *
+ */
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.test.integration.ui.ContextMenuHelper;
+import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
@@ -14,6 +35,9 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 
 
+/**
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 class EntryEditorWidgetBot
 {
     private SWTBot bot;
@@ -58,14 +82,27 @@ class EntryEditorWidgetBot
         SWTBotPreferences.KEYBOARD_LAYOUT = "org.eclipse.swtbot.swt.finder.keyboard.EN_US";
         SWTBotText text = bot.text( 1 );
         text.setText( value );
+
+        JobWatcher jobWatcher = new JobWatcher( BrowserCoreMessages.jobs__execute_ldif_name );
         bot.tree().pressShortcut( Keystrokes.LF );
+        jobWatcher.waitUntilDone();
     }
 
 
     void cancelEditValue()
     {
         SWTBotTree tree = bot.tree( 0 );
-        tree.getTreeItem( "objectClass" ).click();
+        // TODO: Workaround for DIRAPI-228/DIRAPI-229
+        //tree.getTreeItem( "objectClass" ).click();
+        SWTBotTreeItem[] allItems = tree.getAllItems();
+        for ( SWTBotTreeItem item : allItems )
+        {
+            if ( "objectclass".equalsIgnoreCase( item.getText() ) )
+            {
+                item.click();
+                return;
+            }
+        }
     }
 
 
@@ -84,6 +121,15 @@ class EntryEditorWidgetBot
         treeItem.doubleClick();
     }
 
+    
+    void editValueWith( String attributeType, String value, String valueEditorLabel )
+    {
+        cancelEditValue();
+        SWTBotTreeItem treeItem = getTreeItem( attributeType, value );
+        treeItem.select();
+        ContextMenuHelper.clickContextMenu( bot.tree(), "Edit Value With", valueEditorLabel );
+    }
+
 
     DnEditorDialogBot editValueExpectingDnEditor( String attributeType, String value )
     {
@@ -92,6 +138,20 @@ class EntryEditorWidgetBot
     }
 
 
+    PasswordEditorDialogBot editValueExpectingPasswordEditor( String attributeType, String value )
+    {
+        editValue( attributeType, value );
+        return new PasswordEditorDialogBot();
+    }
+
+
+    TextEditorDialogBot editValueWithTextEditor( String attributeType, String value )
+    {
+        editValueWith( attributeType, value, "^Text Editor$" );
+        return new TextEditorDialogBot();
+    }
+
+    
     private SWTBotTreeItem getTreeItem( String attributeType, String value )
     {
         SWTBotTree tree = bot.tree();

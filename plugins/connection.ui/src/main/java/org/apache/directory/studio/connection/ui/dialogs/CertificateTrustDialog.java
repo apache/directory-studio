@@ -45,7 +45,6 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class CertificateTrustDialog extends Dialog
 {
-
     /** The title. */
     private String title;
 
@@ -61,15 +60,6 @@ public class CertificateTrustDialog extends Dialog
     /** The causes of failed certificate validation. */
     private List<ICertificateHandler.FailCause> failCauses;
 
-    /** The "Don't trust" button. */
-    private Button trustNotButton;
-
-    /** The "Trust in current session" button. */
-    private Button trustSessionButton;
-
-    /** The "Trust permanent" button. */
-    private Button trustPermanentButton;
-
 
     /**
      * Creates a new instance of CertificateTrustDialog.
@@ -84,14 +74,17 @@ public class CertificateTrustDialog extends Dialog
     {
         super( parentShell );
         super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
-        this.title = Messages.getString( "CertificateTrustDialog.CertificateTrust" ); //$NON-NLS-1$
+        title = Messages.getString( "CertificateTrustDialog.CertificateTrust" ); //$NON-NLS-1$
         this.host = host;
         this.certificateChain = certificateChain;
         this.failCauses = failCauses;
-        this.trustLevel = null;
+        trustLevel = null;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void configureShell( Shell shell )
     {
@@ -100,6 +93,9 @@ public class CertificateTrustDialog extends Dialog
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void createButtonsForButtonBar( Composite parent )
     {
@@ -109,6 +105,9 @@ public class CertificateTrustDialog extends Dialog
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void buttonPressed( int buttonId )
     {
@@ -116,45 +115,53 @@ public class CertificateTrustDialog extends Dialog
         {
             new CertificateInfoDialog( getShell(), certificateChain ).open();
         }
+        
         super.buttonPressed( buttonId );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Control createDialogArea( final Composite parent )
     {
         Composite composite = ( Composite ) super.createDialogArea( parent );
-        GridData gd = new GridData( GridData.FILL_BOTH );
-        gd.widthHint = convertHorizontalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH );
-        gd.heightHint = convertHorizontalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH / 2 );
-        composite.setLayoutData( gd );
+        GridData gridData = new GridData( GridData.FILL_BOTH );
+        gridData.widthHint = convertHorizontalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH );
+        gridData.heightHint = convertHorizontalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH / 2 );
+        composite.setLayoutData( gridData );
 
         BaseWidgetUtils.createWrappedLabel( composite, NLS.bind( Messages
             .getString( "CertificateTrustDialog.InvalidCertificate" ), host ), 1 ); //$NON-NLS-1$
 
         // failed cause
         Composite failedCauseContainer = BaseWidgetUtils.createColumnContainer( composite, 1, 1 );
+        
         for ( ICertificateHandler.FailCause failCause : failCauses )
         {
-            // BaseWidgetUtils.createRadioIndent( failedCauseContainer, 1 );
             switch ( failCause )
             {
                 case SelfSignedCertificate:
                     BaseWidgetUtils.createWrappedLabel( failedCauseContainer, Messages
                         .getString( "CertificateTrustDialog.SelfSignedCertificate" ), 1 ); //$NON-NLS-1$
                     break;
+                    
                 case CertificateExpired:
                     BaseWidgetUtils.createWrappedLabel( failedCauseContainer, Messages
                         .getString( "CertificateTrustDialog.CertificateExpired" ), 1 ); //$NON-NLS-1$
                     break;
+                    
                 case CertificateNotYetValid:
                     BaseWidgetUtils.createWrappedLabel( failedCauseContainer, Messages
                         .getString( "CertificateTrustDialog.CertificateNotYetValid" ), 1 ); //$NON-NLS-1$
                     break;
+                    
                 case NoValidCertificationPath:
                     BaseWidgetUtils.createWrappedLabel( failedCauseContainer, Messages
                         .getString( "CertificateTrustDialog.NoValidCertificationPath" ), 1 ); //$NON-NLS-1$
                     break;
+                    
                 case HostnameVerificationFailed:
                     BaseWidgetUtils.createWrappedLabel( failedCauseContainer, Messages
                         .getString( "CertificateTrustDialog.HostnameVerificationFailed" ), 1 ); //$NON-NLS-1$
@@ -168,32 +175,48 @@ public class CertificateTrustDialog extends Dialog
         BaseWidgetUtils.createWrappedLabel( composite, NLS.bind( Messages
             .getString( "CertificateTrustDialog.ChooseTrustLevel" ), host ), 1 ); //$NON-NLS-1$
 
-        trustNotButton = BaseWidgetUtils.createRadiobutton( composite, Messages
+        // The "Don't trust" button
+        Button trustNotButton = BaseWidgetUtils.createRadiobutton( composite, Messages
             .getString( "CertificateTrustDialog.DoNotTrust" ), 1 ); //$NON-NLS-1$
+        
         trustNotButton.addSelectionListener( new SelectionAdapter()
         {
-            public void widgetSelected( final SelectionEvent e )
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void widgetSelected( final SelectionEvent event )
             {
                 CertificateTrustDialog.this.trustLevel = ICertificateHandler.TrustLevel.Not;
             }
         } );
 
-        trustSessionButton = BaseWidgetUtils.createRadiobutton( composite, Messages
+        // The "Trust in current session" button.
+        Button trustSessionButton = BaseWidgetUtils.createRadiobutton( composite, Messages
             .getString( "CertificateTrustDialog.TrustForThisSession" ), 1 ); //$NON-NLS-1$
 
         trustSessionButton.addSelectionListener( new SelectionAdapter()
         {
-            public void widgetSelected( final SelectionEvent e )
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void widgetSelected( final SelectionEvent event )
             {
                 CertificateTrustDialog.this.trustLevel = ICertificateHandler.TrustLevel.Session;
             }
         } );
 
-        trustPermanentButton = BaseWidgetUtils.createRadiobutton( composite, Messages
+        // The "Trust permanent" button.
+        Button trustPermanentButton = BaseWidgetUtils.createRadiobutton( composite, Messages
             .getString( "CertificateTrustDialog.AlwaysTrust" ), 1 ); //$NON-NLS-1$
         trustPermanentButton.addSelectionListener( new SelectionAdapter()
         {
-            public void widgetSelected( final SelectionEvent e )
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public void widgetSelected( final SelectionEvent event )
             {
                 CertificateTrustDialog.this.trustLevel = ICertificateHandler.TrustLevel.Permanent;
             }
@@ -216,5 +239,4 @@ public class CertificateTrustDialog extends Dialog
     {
         return trustLevel;
     }
-
 }

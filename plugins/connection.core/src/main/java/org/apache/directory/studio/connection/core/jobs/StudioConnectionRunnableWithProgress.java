@@ -37,5 +37,5 @@ public interface StudioConnectionRunnableWithProgress extends StudioRunnableWith
      * 
      * @return the connections, null if none
      */
-    public Connection[] getConnections();
+    Connection[] getConnections();
 }

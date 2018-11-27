@@ -21,7 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 
-import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.ICompareableEntry;
 
@@ -69,7 +69,7 @@ public class BookmarkEntry extends DelegateEntry implements ICompareableEntry
     public boolean equals( Object o )
     {
         // check argument
-        if ( o == null || !( o instanceof ICompareableEntry ) )
+        if (!( o instanceof ICompareableEntry ) )
         {
             return false;
         }

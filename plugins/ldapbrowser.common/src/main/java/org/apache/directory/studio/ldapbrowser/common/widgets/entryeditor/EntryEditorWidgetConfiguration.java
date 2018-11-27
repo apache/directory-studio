@@ -34,7 +34,6 @@ import org.eclipse.jface.viewers.TreeViewer;
  */
 public class EntryEditorWidgetConfiguration
 {
-
     /** The disposed flag */
     private boolean disposed = false;
 
@@ -147,11 +146,11 @@ public class EntryEditorWidgetConfiguration
      * 
      * @return the label provider
      */
-    public EntryEditorWidgetLabelProvider getLabelProvider( TreeViewer viewer )
+    public EntryEditorWidgetLabelProvider getLabelProvider( ValueEditorManager valueEditorManager, TreeViewer viewer )
     {
         if ( labelProvider == null )
         {
-            labelProvider = new EntryEditorWidgetLabelProvider( viewer, getValueEditorManager( viewer ) );
+            labelProvider = new EntryEditorWidgetLabelProvider( viewer, valueEditorManager );
         }
 
         return labelProvider;
@@ -165,11 +164,11 @@ public class EntryEditorWidgetConfiguration
      * 
      * @return the cell modifier
      */
-    public EntryEditorWidgetCellModifier getCellModifier( TreeViewer viewer )
+    public EntryEditorWidgetCellModifier getCellModifier( ValueEditorManager valueEditorManager )
     {
         if ( cellModifier == null )
         {
-            cellModifier = new EntryEditorWidgetCellModifier( getValueEditorManager( viewer ) );
+            cellModifier = new EntryEditorWidgetCellModifier( valueEditorManager );
         }
 
         return cellModifier;
@@ -240,5 +239,4 @@ public class EntryEditorWidgetConfiguration
 
         return preferences;
     }
-
 }

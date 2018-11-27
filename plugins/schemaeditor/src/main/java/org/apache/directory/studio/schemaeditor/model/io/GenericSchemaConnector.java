@@ -30,22 +30,21 @@ import javax.naming.directory.Attribute;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 
-import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
-import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
-import org.apache.directory.shared.ldap.model.schema.MutableMatchingRule;
-import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
-import org.apache.directory.shared.ldap.model.schema.ObjectClass;
-import org.apache.directory.shared.ldap.model.schema.parsers.AttributeTypeDescriptionSchemaParser;
-import org.apache.directory.shared.ldap.model.schema.parsers.LdapSyntaxDescriptionSchemaParser;
-import org.apache.directory.shared.ldap.model.schema.parsers.MatchingRuleDescriptionSchemaParser;
-import org.apache.directory.shared.ldap.model.schema.parsers.ObjectClassDescriptionSchemaParser;
+import org.apache.directory.api.ldap.model.constants.LdapConstants;
+import org.apache.directory.api.ldap.model.constants.SchemaConstants;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
+import org.apache.directory.api.ldap.model.schema.LdapSyntax;
+import org.apache.directory.api.ldap.model.schema.MatchingRule;
+import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
+import org.apache.directory.api.ldap.model.schema.MutableMatchingRule;
+import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
+import org.apache.directory.api.ldap.model.schema.ObjectClass;
+import org.apache.directory.api.ldap.model.schema.parsers.AttributeTypeDescriptionSchemaParser;
+import org.apache.directory.api.ldap.model.schema.parsers.LdapSyntaxDescriptionSchemaParser;
+import org.apache.directory.api.ldap.model.schema.parsers.MatchingRuleDescriptionSchemaParser;
+import org.apache.directory.api.ldap.model.schema.parsers.ObjectClassDescriptionSchemaParser;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
-import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
@@ -61,10 +60,6 @@ import org.eclipse.osgi.util.NLS;
  */
 public class GenericSchemaConnector extends AbstractSchemaConnector implements SchemaConnector
 {
-    private static final AliasDereferencingMethod DEREF_ALIAS_METHOD = AliasDereferencingMethod.ALWAYS;
-    private static final ReferralHandlingMethod HANDLE_REFERALS_METHOD = ReferralHandlingMethod.FOLLOW;
-
-
     /**
      * {@inheritDoc}
      */
@@ -80,21 +75,22 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
         constraintSearch.setSearchScope( SearchControls.OBJECT_SCOPE );
         constraintSearch.setReturningAttributes( new String[]
             {
-            SchemaConstants.ATTRIBUTE_TYPES_AT,
-            SchemaConstants.COMPARATORS_AT,
-            SchemaConstants.DIT_CONTENT_RULES_AT,
-            SchemaConstants.DIT_STRUCTURE_RULES_AT,
-            SchemaConstants.LDAP_SYNTAXES_AT,
-            SchemaConstants.MATCHING_RULES_AT,
-            SchemaConstants.MATCHING_RULE_USE_AT,
-            SchemaConstants.NAME_FORMS_AT,
-            SchemaConstants.NORMALIZERS_AT,
-            SchemaConstants.OBJECT_CLASSES_AT,
-            SchemaConstants.SYNTAX_CHECKERS_AT
-            } );
+                SchemaConstants.ATTRIBUTE_TYPES_AT,
+                SchemaConstants.COMPARATORS_AT,
+                SchemaConstants.DIT_CONTENT_RULES_AT,
+                SchemaConstants.DIT_STRUCTURE_RULES_AT,
+                SchemaConstants.LDAP_SYNTAXES_AT,
+                SchemaConstants.MATCHING_RULES_AT,
+                SchemaConstants.MATCHING_RULE_USE_AT,
+                SchemaConstants.NAME_FORMS_AT,
+                SchemaConstants.NORMALIZERS_AT,
+                SchemaConstants.OBJECT_CLASSES_AT,
+                SchemaConstants.SYNTAX_CHECKERS_AT
+        } );
         String schemaDn = getSubschemaSubentry( wrapper, monitor );
-        NamingEnumeration<SearchResult> answer = wrapper.search( schemaDn, "(objectclass=subschema)", constraintSearch,
+        NamingEnumeration<SearchResult> answer = wrapper.search( schemaDn, "(objectclass=subschema)", constraintSearch, //$NON-NLS-1$
             DEREF_ALIAS_METHOD, HANDLE_REFERALS_METHOD, null, monitor, null );
+        
         if ( answer != null )
         {
             try
@@ -109,7 +105,6 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
 
                     getSchema( schema, wrapper, answer.next(), monitor );
                 }
-
             }
             catch ( SchemaConnectorException e )
             {
@@ -139,9 +134,9 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
         SearchControls constraintSearch = new SearchControls();
         constraintSearch.setSearchScope( SearchControls.OBJECT_SCOPE );
         constraintSearch.setReturningAttributes( new String[]
-            { "subschemaSubentry" } );
+            { "subschemaSubentry" } ); //$NON-NLS-1$
 
-        NamingEnumeration<SearchResult> answer = wrapper.search( "", "(objectclass=*)", constraintSearch, //$NON-NLS-1$ //$NON-NLS-2$
+        NamingEnumeration<SearchResult> answer = wrapper.search( "", LdapConstants.OBJECT_CLASS_STAR, constraintSearch, //$NON-NLS-1$ //$NON-NLS-2$
             DEREF_ALIAS_METHOD, HANDLE_REFERALS_METHOD, null, monitor, null );
 
         if ( answer != null )
@@ -152,7 +147,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                 {
                     SearchResult searchResult = answer.next();
 
-                    Attribute subschemaSubentryAttribute = searchResult.getAttributes().get( "subschemaSubentry" );
+                    Attribute subschemaSubentryAttribute = searchResult.getAttributes().get( "subschemaSubentry" ); //$NON-NLS-1$
                     if ( subschemaSubentryAttribute == null )
                     {
                         return null;
@@ -164,6 +159,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                     }
 
                     String subschemaSubentry = null;
+                    
                     try
                     {
                         subschemaSubentry = ( String ) subschemaSubentryAttribute.get();
@@ -192,10 +188,12 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
         // The counter for parser exceptions
         int parseErrorCount = 0;
 
-        Attribute attributeTypesAttribute = searchResult.getAttributes().get( "attributeTypes" );
+        Attribute attributeTypesAttribute = searchResult.getAttributes().get( SchemaConstants.ATTRIBUTE_TYPES_AT );
+        
         if ( attributeTypesAttribute != null )
         {
             NamingEnumeration<?> ne = attributeTypesAttribute.getAll();
+            
             if ( ne != null )
             {
                 while ( ne.hasMoreElements() )
@@ -228,7 +226,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                         // Active Directory hack
                         if ( impl.getSyntaxOid() != null && "OctetString".equalsIgnoreCase( impl.getSyntaxOid() ) ) //$NON-NLS-1$
                         {
-                            impl.setSyntaxOid( "1.3.6.1.4.1.1466.115.121.1.40" );
+                            impl.setSyntaxOid( SchemaConstants.OCTET_STRING_SYNTAX );
                         }
 
                         schema.addAttributeType( impl );
@@ -236,17 +234,19 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                     catch ( ParseException e )
                     {
                         // Logging the exception and incrementing the counter
-                        PluginUtils.logError( "Unable to parse the attribute type.", e );
+                        PluginUtils.logError( "Unable to parse the attribute type.", e ); //$NON-NLS-1$
                         parseErrorCount++;
                     }
                 }
             }
         }
 
-        Attribute objectClassesAttribute = searchResult.getAttributes().get( "objectClasses" );
+        Attribute objectClassesAttribute = searchResult.getAttributes().get( SchemaConstants.OBJECT_CLASSES_AT );
+        
         if ( objectClassesAttribute != null )
         {
             NamingEnumeration<?> ne = objectClassesAttribute.getAll();
+            
             if ( ne != null )
             {
                 while ( ne.hasMoreElements() )
@@ -274,17 +274,19 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                     catch ( ParseException e )
                     {
                         // Logging the exception and incrementing the counter
-                        PluginUtils.logError( "Unable to parse the object class.", e );
+                        PluginUtils.logError( "Unable to parse the object class.", e ); //$NON-NLS-1$
                         parseErrorCount++;
                     }
                 }
             }
         }
 
-        Attribute ldapSyntaxesAttribute = searchResult.getAttributes().get( "ldapSyntaxes" );
+        Attribute ldapSyntaxesAttribute = searchResult.getAttributes().get( SchemaConstants.LDAP_SYNTAXES_AT );
+        
         if ( ldapSyntaxesAttribute != null )
         {
             NamingEnumeration<?> ne = ldapSyntaxesAttribute.getAll();
+            
             if ( ne != null )
             {
                 while ( ne.hasMoreElements() )
@@ -310,7 +312,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                     catch ( ParseException e )
                     {
                         // Logging the exception and incrementing the counter
-                        PluginUtils.logError( "Unable to parse the syntax.", e );
+                        PluginUtils.logError( "Unable to parse the syntax.", e ); //$NON-NLS-1$
                         parseErrorCount++;
                     }
                 }
@@ -321,7 +323,8 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
         for ( AttributeType at : schema.getAttributeTypes() )
         {
             String syntaxOid = at.getSyntaxOid();
-            if ( syntaxOid != null && schema.getSyntax( syntaxOid ) == null )
+            
+            if ( ( syntaxOid != null ) && ( schema.getSyntax( syntaxOid ) == null ) )
             {
                 LdapSyntax impl = new LdapSyntax( syntaxOid );
                 impl.setSchemaName( schema.getSchemaName() );
@@ -333,10 +336,12 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
             }
         }
 
-        Attribute matchingRulesAttribute = searchResult.getAttributes().get( "matchingRules" );
+        Attribute matchingRulesAttribute = searchResult.getAttributes().get( SchemaConstants.MATCHING_RULES_AT );
+        
         if ( matchingRulesAttribute != null )
         {
             NamingEnumeration<?> ne = matchingRulesAttribute.getAll();
+            
             if ( ne != null )
             {
                 while ( ne.hasMoreElements() )
@@ -361,7 +366,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                     catch ( ParseException e )
                     {
                         // Logging the exception and incrementing the counter
-                        PluginUtils.logError( "Unable to parse the matching rule.", e );
+                        PluginUtils.logError( "Unable to parse the matching rule.", e ); //$NON-NLS-1$
                         parseErrorCount++;
                     }
                 }
@@ -400,7 +405,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
     {
         for ( String matchingRuleName : matchingRuleNames )
         {
-            if ( matchingRuleName != null && schema.getMatchingRule( matchingRuleName ) == null )
+            if ( ( matchingRuleName != null ) && ( schema.getMatchingRule( matchingRuleName ) == null ) )
             {
                 MatchingRule impl = new MatchingRule( matchingRuleName );
                 impl.setSchemaName( schema.getSchemaName() );

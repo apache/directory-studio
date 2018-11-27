@@ -79,11 +79,11 @@ public class EditorsUtils
 
                     String tooltip = editorPart.getTitleToolTip();
 
-                    if ( ( tooltip != null ) && ( !"".equals( tooltip ) ) )
+                    if ( ( tooltip != null ) && ( !"".equals( tooltip ) ) ) //$NON-NLS-1$
                     {
-                        sb.append( " [" );
+                        sb.append( " [" ); //$NON-NLS-1$
                         sb.append( tooltip );
-                        sb.append( "]" );
+                        sb.append( "]" ); //$NON-NLS-1$
                     }
 
                     return sb.toString();

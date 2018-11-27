@@ -36,7 +36,7 @@ public class AliasesStringParserTest extends TestCase
     {
         AliasesStringParser parser = new AliasesStringParser();
 
-        parser.parse( "" );
+        parser.parse( "" ); //$NON-NLS-1$
         List<Alias> aliases = parser.getAliases();
         assertEquals( 0, aliases.size() );
     }
@@ -46,10 +46,10 @@ public class AliasesStringParserTest extends TestCase
     {
         AliasesStringParser parser = new AliasesStringParser();
 
-        parser.parse( "test" );
+        parser.parse( "test" ); //$NON-NLS-1$
         List<Alias> aliases = parser.getAliases();
         assertEquals( 1, aliases.size() );
-        assertEquals( "test", aliases.get( 0 ).getAlias() );
+        assertEquals( "test", aliases.get( 0 ).getAlias() ); //$NON-NLS-1$
     }
 
 
@@ -57,11 +57,11 @@ public class AliasesStringParserTest extends TestCase
     {
         AliasesStringParser parser = new AliasesStringParser();
 
-        parser.parse( "test1, test2" );
+        parser.parse( "test1, test2" ); //$NON-NLS-1$
         List<Alias> aliases = parser.getAliases();
         assertEquals( 2, aliases.size() );
-        assertEquals( "test1", aliases.get( 0 ).getAlias() );
-        assertEquals( "test2", aliases.get( 1 ).getAlias() );
+        assertEquals( "test1", aliases.get( 0 ).getAlias() ); //$NON-NLS-1$
+        assertEquals( "test2", aliases.get( 1 ).getAlias() ); //$NON-NLS-1$
     }
 
 
@@ -69,12 +69,12 @@ public class AliasesStringParserTest extends TestCase
     {
         AliasesStringParser parser = new AliasesStringParser();
 
-        parser.parse( "test1, test2, test3" );
+        parser.parse( "test1, test2, test3" ); //$NON-NLS-1$
         List<Alias> aliases = parser.getAliases();
         assertEquals( 3, aliases.size() );
-        assertEquals( "test1", aliases.get( 0 ).getAlias() );
-        assertEquals( "test2", aliases.get( 1 ).getAlias() );
-        assertEquals( "test3", aliases.get( 2 ).getAlias() );
+        assertEquals( "test1", aliases.get( 0 ).getAlias() ); //$NON-NLS-1$
+        assertEquals( "test2", aliases.get( 1 ).getAlias() ); //$NON-NLS-1$
+        assertEquals( "test3", aliases.get( 2 ).getAlias() ); //$NON-NLS-1$
     }
 
 
@@ -82,7 +82,7 @@ public class AliasesStringParserTest extends TestCase
     {
         AliasesStringParser parser = new AliasesStringParser();
 
-        parser.parse( ",,,,,,,,,,,," );
+        parser.parse( ",,,,,,,,,,,," ); //$NON-NLS-1$
         List<Alias> aliases = parser.getAliases();
         assertEquals( 0, aliases.size() );
     }
@@ -92,7 +92,7 @@ public class AliasesStringParserTest extends TestCase
     {
         AliasesStringParser parser = new AliasesStringParser();
 
-        parser.parse( ", ,   ,    ,  , ,,,," );
+        parser.parse( ", ,   ,    ,  , ,,,," ); //$NON-NLS-1$
         List<Alias> aliases = parser.getAliases();
         assertEquals( 0, aliases.size() );
     }
@@ -102,11 +102,11 @@ public class AliasesStringParserTest extends TestCase
     {
         AliasesStringParser parser = new AliasesStringParser();
 
-        parser.parse( ",,test1,,,,,,test2,,,," );
+        parser.parse( ",,test1,,,,,,test2,,,," ); //$NON-NLS-1$
         List<Alias> aliases = parser.getAliases();
         assertEquals( 2, aliases.size() );
-        assertEquals( "test1", aliases.get( 0 ).getAlias() );
-        assertEquals( "test2", aliases.get( 1 ).getAlias() );
+        assertEquals( "test1", aliases.get( 0 ).getAlias() ); //$NON-NLS-1$
+        assertEquals( "test2", aliases.get( 1 ).getAlias() ); //$NON-NLS-1$
     }
 
 
@@ -114,10 +114,10 @@ public class AliasesStringParserTest extends TestCase
     {
         AliasesStringParser parser = new AliasesStringParser();
 
-        parser.parse( "1test" );
+        parser.parse( "1test" ); //$NON-NLS-1$
         List<Alias> aliases = parser.getAliases();
         assertEquals( 1, aliases.size() );
-        assertEquals( "1test", aliases.get( 0 ).getAlias() );
+        assertEquals( "1test", aliases.get( 0 ).getAlias() ); //$NON-NLS-1$
         assertEquals( AliasWithStartError.class, aliases.get( 0 ).getClass() );
     }
 
@@ -126,10 +126,10 @@ public class AliasesStringParserTest extends TestCase
     {
         AliasesStringParser parser = new AliasesStringParser();
 
-        parser.parse( "1" );
+        parser.parse( "1" ); //$NON-NLS-1$
         List<Alias> aliases = parser.getAliases();
         assertEquals( 1, aliases.size() );
-        assertEquals( "1", aliases.get( 0 ).getAlias() );
+        assertEquals( "1", aliases.get( 0 ).getAlias() ); //$NON-NLS-1$
         assertEquals( AliasWithStartError.class, aliases.get( 0 ).getClass() );
     }
 
@@ -138,10 +138,10 @@ public class AliasesStringParserTest extends TestCase
     {
         AliasesStringParser parser = new AliasesStringParser();
 
-        parser.parse( "tes/t" );
+        parser.parse( "tes/t" ); //$NON-NLS-1$
         List<Alias> aliases = parser.getAliases();
         assertEquals( 1, aliases.size() );
-        assertEquals( "tes/t", aliases.get( 0 ).getAlias() );
+        assertEquals( "tes/t", aliases.get( 0 ).getAlias() ); //$NON-NLS-1$
         assertEquals( AliasWithPartError.class, aliases.get( 0 ).getClass() );
     }
 
@@ -150,10 +150,10 @@ public class AliasesStringParserTest extends TestCase
     {
         AliasesStringParser parser = new AliasesStringParser();
 
-        parser.parse( "tes/" );
+        parser.parse( "tes/" ); //$NON-NLS-1$
         List<Alias> aliases = parser.getAliases();
         assertEquals( 1, aliases.size() );
-        assertEquals( "tes/", aliases.get( 0 ).getAlias() );
+        assertEquals( "tes/", aliases.get( 0 ).getAlias() ); //$NON-NLS-1$
         assertEquals( AliasWithPartError.class, aliases.get( 0 ).getClass() );
     }
 
@@ -162,12 +162,12 @@ public class AliasesStringParserTest extends TestCase
     {
         AliasesStringParser parser = new AliasesStringParser();
 
-        parser.parse( "tes/t, 1test" );
+        parser.parse( "tes/t, 1test" ); //$NON-NLS-1$
         List<Alias> aliases = parser.getAliases();
         assertEquals( 2, aliases.size() );
-        assertEquals( "tes/t", aliases.get( 0 ).getAlias() );
+        assertEquals( "tes/t", aliases.get( 0 ).getAlias() ); //$NON-NLS-1$
         assertEquals( AliasWithPartError.class, aliases.get( 0 ).getClass() );
-        assertEquals( "1test", aliases.get( 1 ).getAlias() );
+        assertEquals( "1test", aliases.get( 1 ).getAlias() ); //$NON-NLS-1$
         assertEquals( AliasWithStartError.class, aliases.get( 1 ).getClass() );
     }
 
@@ -176,12 +176,12 @@ public class AliasesStringParserTest extends TestCase
     {
         AliasesStringParser parser = new AliasesStringParser();
 
-        parser.parse( "tes/, 1" );
+        parser.parse( "tes/, 1" ); //$NON-NLS-1$
         List<Alias> aliases = parser.getAliases();
         assertEquals( 2, aliases.size() );
-        assertEquals( "tes/", aliases.get( 0 ).getAlias() );
+        assertEquals( "tes/", aliases.get( 0 ).getAlias() ); //$NON-NLS-1$
         assertEquals( AliasWithPartError.class, aliases.get( 0 ).getClass() );
-        assertEquals( "1", aliases.get( 1 ).getAlias() );
+        assertEquals( "1", aliases.get( 1 ).getAlias() ); //$NON-NLS-1$
         assertEquals( AliasWithStartError.class, aliases.get( 1 ).getClass() );
     }
 }

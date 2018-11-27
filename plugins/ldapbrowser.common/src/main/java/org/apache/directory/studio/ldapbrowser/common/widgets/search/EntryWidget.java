@@ -21,16 +21,16 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.search;
 
 
-import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
-import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.common.ui.HistoryUtils;
+import org.apache.directory.studio.common.ui.widgets.AbstractWidget;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.DnUtils;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.SelectEntryDialog;
-import org.apache.directory.studio.ldapbrowser.common.widgets.BrowserWidget;
 import org.apache.directory.studio.ldapbrowser.core.jobs.ReadEntryRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
@@ -47,19 +47,17 @@ import org.eclipse.swt.widgets.Composite;
 
 /**
  * The EntryWidget could be used to select an entry.
- * It is composed
+ * It is composed of :
  * <ul>
- * <li>a combo to manually enter an Dn or to choose one from
- *     the history
+ * <li>a combo to manually enter an Dn or to choose one from the history
  * <li>an up button to switch to the parent's Dn
  * <li>a browse button to open a {@link SelectEntryDialog}
  * </ul>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class EntryWidget extends BrowserWidget
+public class EntryWidget extends AbstractWidget
 {
-
     /** The Dn combo. */
     private Combo dnCombo;
 
@@ -87,8 +85,8 @@ public class EntryWidget extends BrowserWidget
      */
     public EntryWidget()
     {
-        this.browserConnection = null;
-        this.dn = null;
+        browserConnection = null;
+        dn = null;
     }
 
 
@@ -134,7 +132,7 @@ public class EntryWidget extends BrowserWidget
         dnCombo = BaseWidgetUtils.createCombo( textAndUpComposite, new String[0], -1, 1 );
         GridData gd = new GridData( GridData.FILL_HORIZONTAL );
         gd.horizontalSpan = 1;
-        gd.widthHint = 200;
+        gd.widthHint = 30;
         dnCombo.setLayoutData( gd );
 
         // Dn history
@@ -189,9 +187,11 @@ public class EntryWidget extends BrowserWidget
                 {
                     // get root entry
                     IEntry rootEntry = browserConnection.getRootDSE();
+
                     if ( suffix != null && suffix.size() > 0 )
                     {
                         rootEntry = browserConnection.getEntryFromCache( suffix );
+
                         if ( rootEntry == null )
                         {
                             ReadEntryRunnable runnable = new ReadEntryRunnable( browserConnection, suffix );
@@ -220,9 +220,11 @@ public class EntryWidget extends BrowserWidget
 
                     // get initial entry
                     IEntry entry = rootEntry;
+
                     if ( initialDn != null && initialDn.size() > 0 )
                     {
                         entry = browserConnection.getEntryFromCache( initialDn );
+
                         if ( entry == null )
                         {
                             ReadEntryRunnable runnable = new ReadEntryRunnable( browserConnection, initialDn );
@@ -241,10 +243,12 @@ public class EntryWidget extends BrowserWidget
                     if ( selectedEntry != null )
                     {
                         dn = selectedEntry.getDn();
+
                         if ( useLocalName && suffix != null && suffix.size() > 0 )
                         {
                             dn = DnUtils.getPrefixName( dn, suffix );
                         }
+
                         dnChanged();
                         internalSetEnabled();
                         notifyListeners();
@@ -263,7 +267,7 @@ public class EntryWidget extends BrowserWidget
      */
     private void dnChanged()
     {
-        if ( dnCombo != null && entryBrowseButton != null )
+        if ( ( dnCombo != null ) && ( entryBrowseButton != null ) )
         {
             dnCombo.setText( dn != null ? dn.getName() : "" ); //$NON-NLS-1$
         }
@@ -273,13 +277,13 @@ public class EntryWidget extends BrowserWidget
     /**
      * Sets the enabled state of the widget.
      *
-     * @param b true to enable the widget, false to disable the widget
+     * @param enabled true to enable the widget, false to disable the widget
      */
-    public void setEnabled( boolean b )
+    public void setEnabled( boolean enabled )
     {
-        dnCombo.setEnabled( b );
+        dnCombo.setEnabled( enabled );
 
-        if ( b )
+        if ( enabled )
         {
             this.dnChanged();
         }
@@ -363,7 +367,7 @@ public class EntryWidget extends BrowserWidget
      */
     public void setInput( IBrowserConnection browserConnection, Dn dn, Dn suffix, boolean useLocalName )
     {
-        if ( this.browserConnection != browserConnection || this.dn != dn || this.suffix != suffix )
+        if ( ( this.browserConnection != browserConnection ) || ( this.dn != dn ) || ( this.suffix != suffix ) )
         {
             this.browserConnection = browserConnection;
             this.dn = dn;
@@ -372,5 +376,4 @@ public class EntryWidget extends BrowserWidget
             dnChanged();
         }
     }
-
 }

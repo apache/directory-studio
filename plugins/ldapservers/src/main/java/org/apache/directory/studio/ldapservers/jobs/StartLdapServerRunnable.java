@@ -60,7 +60,7 @@ public class StartLdapServerRunnable implements StudioRunnableWithProgress
      */
     public String getErrorMessage()
     {
-        return NLS.bind( "Unable to start server ''{0}''", new String[]
+        return NLS.bind( Messages.getString( "StartLdapServerRunnable.UnableToStartServer" ), new String[] //$NON-NLS-1$
             { server.getName() } );
     }
 

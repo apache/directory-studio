@@ -19,57 +19,64 @@
   under the License.
 -->
 <plugin>
-    <extension-point id="org.apache.directory.studio.connectionparameterpages" name="%ExtensionPoint_ConnectionParameterPages_name" schema="src/main/resources/connectionParameterPages.exsd"/>
+  <extension-point id="org.apache.directory.studio.connectionparameterpages" name="%ExtensionPoint_ConnectionParameterPages_name" schema="src/main/resources/connectionParameterPages.exsd"/>
 
-   	<extension
-		point="org.eclipse.ui.propertyPages">
-		<page
+  <extension 
+      point="org.eclipse.ui.propertyPages">
+    <page
         class="org.apache.directory.studio.connection.ui.properties.ConnectionPropertyPage"
         id="%Prop_ConnectionPropertyPage_id"
         name="%Prop_ConnectionPropertyPage_name"
-        objectClass="org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider"/>            
+        objectClass="org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider"/>
+  </extension>
 
+  <extension 
+      point="org.eclipse.ui.newWizards">
+    <wizard
+        category="org.apache.directory.studio.ldapbrowser.newWizards"
+        class="org.apache.directory.studio.connection.ui.wizards.NewConnectionWizard"
+        hasPages="true"
+        icon="resources/icons/connection_add.gif"
+        id="%NewWizards_NewConnectionWizard_id"
+        name="%NewWizards_NewConnectionWizard_name"
+        project="false"/>
+  </extension>
+   
+  <extension
+      point="org.apache.directory.studio.connectionparameterpages">
+    <connectionParameterPage
+        class="org.apache.directory.studio.connection.ui.widgets.NetworkParameterPage"
+        dependsOnId="%ConnectionParameterPage_NetworkParameterPage_id"
+        description="%ConnectionParameterPage_NetworkParameterPage_description"
+        id="%ConnectionParameterPage_NetworkParameterPage_id"
+        name="%ConnectionParameterPage_NetworkParameterPage_name"/>
+        
+    <connectionParameterPage
+        class="org.apache.directory.studio.connection.ui.widgets.AuthenticationParameterPage"
+        dependsOnId="%ConnectionParameterPage_NetworkParameterPage_id"
+        description="%ConnectionParameterPage_AuthenticationParameterPage_description"
+        id="org.apache.directory.studio.connection.ui.widgets.AuthenticationParameterPage"
+        name="%ConnectionParameterPage_AuthenticationParameterPage_name"/>
    </extension>
+   
+  <extension
+      point="org.eclipse.ui.preferencePages">
+    <page
+        category="org.apache.directory.studio.StudioPreferencePage"
+        class="org.apache.directory.studio.connection.ui.preferences.ConnectionsPreferencePage"
+        id="%PrefPage_ConnectionsPreferencePage_id"
+        name="%PrefPage_ConnectionsPreferencePage_name"/>
 
-   <extension
-         point="org.eclipse.ui.newWizards">
-      <wizard
-            category="%NewWizards_Category_id"
-            class="org.apache.directory.studio.connection.ui.wizards.NewConnectionWizard"
-            hasPages="true"
-            icon="resources/icons/connection_add.gif"
-            id="%NewWizards_NewConnectionWizard_id"
-            name="%NewWizards_NewConnectionWizard_name"
-            project="false"/>
-   </extension>
-   <extension
-         point="org.apache.directory.studio.connectionparameterpages">
-      <connectionParameterPage
-            class="org.apache.directory.studio.connection.ui.widgets.NetworkParameterPage"
-            dependsOnId="%ConnectionParameterPage_NetworkParameterPage_id"
-            description="%ConnectionParameterPage_NetworkParameterPage_description"
-            id="%ConnectionParameterPage_NetworkParameterPage_id"
-            name="%ConnectionParameterPage_NetworkParameterPage_name"/>
-      <connectionParameterPage
-            class="org.apache.directory.studio.connection.ui.widgets.AuthenticationParameterPage"
-            dependsOnId="%ConnectionParameterPage_NetworkParameterPage_id"
-            description="%ConnectionParameterPage_AuthenticationParameterPage_description"
-            id="%ConnectionParameterPage_AuthenticationParameterPage_id"
-            name="%ConnectionParameterPage_AuthenticationParameterPage_name"/>
-   </extension>
-   <extension
-         point="org.eclipse.ui.preferencePages">
-      <page
-            category="%PrefPage_StudioPage_id"
-            class="org.apache.directory.studio.connection.ui.preferences.ConnectionsPreferencePage"
-            id="%PrefPage_ConnectionsPreferencePage_id"
-            name="%PrefPage_ConnectionsPreferencePage_name">
-      </page>
-      <page
-            category="%PrefPage_ConnectionsPreferencePage_id"
-            class="org.apache.directory.studio.connection.ui.preferences.CertificateValidationPreferencePage"
-            id="%PrefPage_CertificateValidationPreferencePage_id"
-            name="%PrefPage_CertificateValidationPreferencePage_name">
-      </page>
-   </extension>  
+    <page
+        category="%PrefPage_ConnectionsPreferencePage_id"
+        class="org.apache.directory.studio.connection.ui.preferences.CertificateValidationPreferencePage"
+        id="%PrefPage_CertificateValidationPreferencePage_id"
+        name="%PrefPage_CertificateValidationPreferencePage_name"/>
+
+    <page
+        category="%PrefPage_ConnectionsPreferencePage_id"
+        class="org.apache.directory.studio.connection.ui.preferences.PasswordsKeystorePreferencePage"
+        id="org.apache.directory.studio.connection.ui.preferences.PasswordsKeystorePreferencePage"
+        name="%PrefPage_PasswordsKeystorePreferencePage_name"/>
+  </extension>  
 </plugin>

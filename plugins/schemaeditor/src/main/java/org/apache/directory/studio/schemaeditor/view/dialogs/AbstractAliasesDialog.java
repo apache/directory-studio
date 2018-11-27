@@ -24,7 +24,7 @@ package org.apache.directory.studio.schemaeditor.view.dialogs;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.shared.util.Strings;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
 import org.eclipse.jface.action.Action;

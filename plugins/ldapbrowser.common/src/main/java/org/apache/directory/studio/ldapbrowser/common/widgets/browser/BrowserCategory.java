@@ -22,6 +22,7 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.browser;
 
 
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.eclipse.core.runtime.IAdaptable;
 
 
 /**
@@ -31,7 +32,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class BrowserCategory
+public class BrowserCategory implements IAdaptable
 {
 
     /** The Constant TYPE_DIT identifies DIT categories. */
@@ -117,4 +118,12 @@ public class BrowserCategory
         }
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
+    public Object getAdapter( Class adapter )
+    {
+        return null;
+    }
 }

@@ -28,9 +28,8 @@ package org.apache.directory.studio.aciitemeditor;
 public interface ACIITemConstants
 {
     /** The plug-in ID */
-    public static final String PLUGIN_ID = Activator.getDefault().getPluginProperties().getString( "Plugin_id" ); //$NON-NLS-1$
+    String PLUGIN_ID = ACIITemConstants.class.getPackage().getName();
 
     /** The ID for ACI Item Template */
-    public static final String ACI_ITEM_TEMPLATE_ID = Activator.getDefault().getPluginProperties().getString(
-        "CtxType_AciItem_Template_id" ); //$NON-NLS-1$
+    String ACI_ITEM_TEMPLATE_ID = PLUGIN_ID + ".templates"; //$NON-NLS-1$
 }

@@ -121,7 +121,7 @@ public class CopyEntryAsCsvAction extends CopyEntryAsAction
     {
         if ( this.mode == MODE_TABLE )
         {
-            return getInput() != null && getInput() instanceof ISearch
+            return getInput() instanceof ISearch
                 && ( ( ISearch ) getInput() ).getSearchResults() != null
                 && ( ( ISearch ) getInput() ).getSearchResults().length > 0;
         }
@@ -138,7 +138,7 @@ public class CopyEntryAsCsvAction extends CopyEntryAsAction
 
         if ( this.mode == MODE_TABLE )
         {
-            if ( getInput() != null && getInput() instanceof ISearch
+            if ( getInput() instanceof ISearch
                 && ( ( ISearch ) getInput() ).getSearchResults() != null
                 && ( ( ISearch ) getInput() ).getSearchResults().length > 0 )
             {

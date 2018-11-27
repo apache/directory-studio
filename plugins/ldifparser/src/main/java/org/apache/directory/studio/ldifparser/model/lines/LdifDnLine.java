@@ -21,22 +21,13 @@
 package org.apache.directory.studio.ldifparser.model.lines;
 
 
-import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.ldifparser.LdifParserConstants;
 import org.apache.directory.studio.ldifparser.LdifUtils;
 
 
 public class LdifDnLine extends LdifValueLineBase
 {
-
-    private static final long serialVersionUID = 6180172049870560007L;
-
-
-    protected LdifDnLine()
-    {
-    }
-
-
     public LdifDnLine( int offset, String rawDnSpec, String rawValueType, String rawDn, String rawNewLine )
     {
         super( offset, rawDnSpec, rawValueType, rawDn, rawNewLine );
@@ -67,29 +58,23 @@ public class LdifDnLine extends LdifValueLineBase
     }
 
 
-    public String toRawString()
-    {
-        return super.toRawString();
-    }
-
-
     public boolean isValid()
     {
-        return super.isValid() && Dn.isValid(getValueAsString());
+        return super.isValid() && Dn.isValid( getValueAsString() );
     }
 
 
     public String getInvalidString()
     {
-        if ( this.getUnfoldedDnSpec().length() == 0 )
+        if ( getUnfoldedDnSpec().length() == 0 )
         {
             return "Missing Dn spec 'dn'";
         }
-        else if ( this.getUnfoldedDn().length() == 0 )
+        else if ( getUnfoldedDn().length() == 0 )
         {
             return "Missing Dn";
         }
-        else if ( !Dn.isValid(getValueAsString()) )
+        else if ( !Dn.isValid( getValueAsString() ) )
         {
             return "Invalid Dn";
         }

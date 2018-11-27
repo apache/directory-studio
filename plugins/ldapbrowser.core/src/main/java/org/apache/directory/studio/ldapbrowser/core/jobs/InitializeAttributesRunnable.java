@@ -27,9 +27,9 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.model.message.SearchScope;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.api.ldap.model.constants.SchemaConstants;
+import org.apache.directory.api.ldap.model.message.SearchScope;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -103,9 +103,11 @@ public class InitializeAttributesRunnable implements StudioConnectionBulkRunnabl
      */
     public Object[] getLockedObjects()
     {
-        List<Object> l = new ArrayList<Object>();
-        l.addAll( Arrays.asList( entries ) );
-        return l.toArray();
+        Object[] lockedObjects = new Object[ entries.length ];
+        
+        System.arraycopy( entries, 0, lockedObjects, 0, entries.length );
+        
+        return lockedObjects;
     }
 
 
@@ -114,8 +116,14 @@ public class InitializeAttributesRunnable implements StudioConnectionBulkRunnabl
      */
     public String getErrorMessage()
     {
-        return entries.length == 1 ? BrowserCoreMessages.jobs__init_entries_error_1
-            : BrowserCoreMessages.jobs__init_entries_error_n;
+        if ( entries.length == 1 )
+        {
+            return BrowserCoreMessages.jobs__init_entries_error_1;
+        }
+        else
+        {
+            return BrowserCoreMessages.jobs__init_entries_error_n;
+        }
     }
 
 
@@ -127,16 +135,20 @@ public class InitializeAttributesRunnable implements StudioConnectionBulkRunnabl
         monitor.beginTask( " ", entries.length + 2 ); //$NON-NLS-1$
         monitor.reportProgress( " " ); //$NON-NLS-1$
 
-        for ( int pi = 0; pi < entries.length && !monitor.isCanceled(); pi++ )
+        for ( IEntry entry : entries )
         {
-            IEntry entry = entries[pi];
-
+            if ( monitor.isCanceled() )
+            {
+                break;
+            }
+            
             if ( entry != null )
             {
                 monitor.setTaskName( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_task,
                     new String[]
                         { entry.getDn().getName() } ) );
                 monitor.worked( 1 );
+                
                 if ( entry.getBrowserConnection() != null )
                 {
                     initializeAttributes( entry, monitor );
@@ -160,6 +172,7 @@ public class InitializeAttributesRunnable implements StudioConnectionBulkRunnabl
                 {
                     entry = entry.getBrowserConnection().getEntryFromCache( entry.getDn() );
                 }
+                
                 EventRegistry.fireEntryUpdated( new AttributesInitializedEvent( entry ), this );
             }
         }
@@ -180,6 +193,7 @@ public class InitializeAttributesRunnable implements StudioConnectionBulkRunnabl
         raSet.add( SchemaConstants.ALL_USER_ATTRIBUTES );
         boolean initOperationalAttributes = entry.getBrowserConnection().isFetchOperationalAttributes()
             || entry.isInitOperationalAttributes();
+        
         if ( initOperationalAttributes )
         {
             if ( entry.getBrowserConnection().getRootDSE().isFeatureSupported(
@@ -195,10 +209,12 @@ public class InitializeAttributesRunnable implements StudioConnectionBulkRunnabl
                 raSet.addAll( atdNames );
             }
         }
+        
         if ( entry.isReferral() )
         {
             raSet.add( SchemaConstants.REF_AT );
         }
+        
         returningAttributes = ( String[] ) raSet.toArray( new String[raSet.size()] );
 
         initializeAttributes( entry, returningAttributes, true, monitor );
@@ -229,10 +245,12 @@ public class InitializeAttributesRunnable implements StudioConnectionBulkRunnabl
         {
             AliasDereferencingMethod aliasesDereferencingMethod = entry.getBrowserConnection()
                 .getAliasesDereferencingMethod();
+            
             if ( entry.isAlias() )
             {
                 aliasesDereferencingMethod = AliasDereferencingMethod.NEVER;
             }
+            
             ReferralHandlingMethod referralsHandlingMethod = entry.getBrowserConnection().getReferralsHandlingMethod();
 
             if ( clearAllAttributes )
@@ -242,6 +260,7 @@ public class InitializeAttributesRunnable implements StudioConnectionBulkRunnabl
                 // requested attributes. If the user switches the "Show operational attributes"
                 // property then the operational attributes are not cleared.
                 IAttribute[] oldAttributes = entry.getAttributes();
+                
                 if ( oldAttributes != null )
                 {
                     for ( IAttribute oldAttribute : oldAttributes )

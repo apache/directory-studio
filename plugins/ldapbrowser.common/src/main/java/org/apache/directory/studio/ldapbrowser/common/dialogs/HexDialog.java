@@ -23,8 +23,9 @@ package org.apache.directory.studio.ldapbrowser.common.dialogs;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
-import org.apache.commons.io.FileUtils;
+import org.apache.directory.api.util.FileUtils;
 import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
@@ -53,6 +54,9 @@ public class HexDialog extends Dialog
 
     /** The default title. */
     private static final String DIALOG_TITLE = Messages.getString( "HexDialog.HexEditor" ); //$NON-NLS-1$
+
+    /** The button ID for the edit as text button. */
+    private static final int EDIT_AS_TEXT_BUTTON_ID = 9997;
 
     /** The button ID for the load button. */
     private static final int LOAD_BUTTON_ID = 9998;
@@ -93,11 +97,20 @@ public class HexDialog extends Dialog
         {
             returnData = currentData;
         }
+        else if ( buttonId == EDIT_AS_TEXT_BUTTON_ID )
+        {
+            TextDialog dialog = new TextDialog( getShell(), new String( currentData, StandardCharsets.UTF_8 ) );
+            if ( dialog.open() == TextDialog.OK )
+            {
+                String text = dialog.getText();
+                currentData = text.getBytes( StandardCharsets.UTF_8 );
+                hexText.setText( toFormattedHex( currentData ) );
+            }
+        }
         else if ( buttonId == SAVE_BUTTON_ID )
         {
             FileDialog fileDialog = new FileDialog( getShell(), SWT.SAVE );
             fileDialog.setText( Messages.getString( "HexDialog.SaveData" ) ); //$NON-NLS-1$
-            // fileDialog.setFilterExtensions(new String[]{"*.jpg"});
             String returnedFileName = fileDialog.open();
             if ( returnedFileName != null )
             {
@@ -145,6 +158,20 @@ public class HexDialog extends Dialog
 
 
     /**
+     * Small helper.
+     */
+    private boolean isEditable( byte[] b )
+    {
+        if ( b == null )
+        {
+            return false;
+        }
+
+        return !( new String( b, StandardCharsets.UTF_8 ).contains( "\uFFFD" ) );
+    }
+
+
+    /**
      * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
      */
     protected void configureShell( Shell shell )
@@ -160,6 +187,11 @@ public class HexDialog extends Dialog
      */
     protected void createButtonsForButtonBar( Composite parent )
     {
+        if ( isEditable( currentData ) )
+        {
+           createButton( parent, EDIT_AS_TEXT_BUTTON_ID, Messages.getString( "HexDialog.EditAsText" ), false ); //$NON-NLS-1$
+        }
+        
         createButton( parent, LOAD_BUTTON_ID, Messages.getString( "HexDialog.LoadDataButton" ), false ); //$NON-NLS-1$
         createButton( parent, SAVE_BUTTON_ID, Messages.getString( "HexDialog.SaveDataButton" ), false ); //$NON-NLS-1$
         createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false );
@@ -179,10 +211,8 @@ public class HexDialog extends Dialog
         hexText.setFont( JFaceResources.getFont( JFaceResources.TEXT_FONT ) );
 
         hexText.setText( toFormattedHex( currentData ) );
-        // GridData gd = new GridData(GridData.GRAB_HORIZONTAL |
-        // GridData.HORIZONTAL_ALIGN_FILL);
         GridData gd = new GridData( GridData.FILL_BOTH );
-        gd.widthHint = convertHorizontalDLUsToPixels( ( int ) ( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH * 1.6 ) );
+        gd.widthHint = convertHorizontalDLUsToPixels( ( int ) ( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH * 1.4 ) );
         gd.heightHint = convertHorizontalDLUsToPixels( IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH / 2 );
         hexText.setLayoutData( gd );
 
@@ -192,8 +222,8 @@ public class HexDialog extends Dialog
 
 
     /**
-     * Formats the binary data in two colums. One containing the hex
-     * presentation and one containting the ASCII presentation of each byte.
+     * Formats the binary data in two columns. One containing the hex
+     * presentation and one containing the ASCII presentation of each byte.
      * 
      * 91 a1 08 23 42 b1 c1 15  52 d1 f0 24 33 62 72 82     ...#B... R..$3br.
      * 09 0a 16 17 18 19 1a 25  26 27 28 29 2a 34 35 36     .......% &'()*456 
@@ -289,5 +319,4 @@ public class HexDialog extends Dialog
     {
         return returnData;
     }
-
 }

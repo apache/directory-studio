@@ -37,7 +37,7 @@ public interface TreeNode
      * @return
      *      the children of the element
      */
-    public List<TreeNode> getChildren();
+    List<TreeNode> getChildren();
 
 
     /**
@@ -46,7 +46,7 @@ public interface TreeNode
      * @return
      *      true if the element has children
      */
-    public boolean hasChildren();
+    boolean hasChildren();
 
 
     /**
@@ -55,7 +55,7 @@ public interface TreeNode
      * @return
      *      the parent of the element
      */
-    public TreeNode getParent();
+    TreeNode getParent();
 
 
     /**
@@ -64,7 +64,7 @@ public interface TreeNode
      * @param node
      *      the parent of the element
      */
-    public void setParent( TreeNode parent );
+    void setParent( TreeNode parent );
 
 
     /**
@@ -73,7 +73,7 @@ public interface TreeNode
      * @param node
      *      the node to add
      */
-    public void addChild( TreeNode node );
+    void addChild( TreeNode node );
 
 
     /**
@@ -82,7 +82,7 @@ public interface TreeNode
      * @param node
      *      the node to remove 
      */
-    public void removeChild( TreeNode node );
+    void removeChild( TreeNode node );
 
 
     /**
@@ -95,5 +95,5 @@ public interface TreeNode
      *      
      * @see java.util.List.addAll(Collection c)
      */
-    public boolean addAllChildren( Collection<? extends TreeNode> c );
+    boolean addAllChildren( Collection<? extends TreeNode> c );
 }

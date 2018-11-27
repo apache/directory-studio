@@ -36,41 +36,41 @@ import javax.naming.directory.SearchControls;
 import javax.naming.ldap.Control;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.directory.shared.asn1.EncoderException;
-import org.apache.directory.shared.dsmlv2.DsmlDecorator;
-import org.apache.directory.shared.dsmlv2.Dsmlv2Parser;
-import org.apache.directory.shared.dsmlv2.reponse.AddResponseDsml;
-import org.apache.directory.shared.dsmlv2.reponse.BatchResponseDsml;
-import org.apache.directory.shared.dsmlv2.reponse.BindResponseDsml;
-import org.apache.directory.shared.dsmlv2.reponse.CompareResponseDsml;
-import org.apache.directory.shared.dsmlv2.reponse.DelResponseDsml;
-import org.apache.directory.shared.dsmlv2.reponse.ExtendedResponseDsml;
-import org.apache.directory.shared.dsmlv2.reponse.ModDNResponseDsml;
-import org.apache.directory.shared.dsmlv2.reponse.ModifyResponseDsml;
-import org.apache.directory.shared.dsmlv2.request.BatchRequestDsml;
-import org.apache.directory.shared.dsmlv2.request.Dsmlv2Grammar;
-import org.apache.directory.shared.ldap.codec.api.LdapApiService;
-import org.apache.directory.shared.ldap.codec.api.LdapApiServiceFactory;
-import org.apache.directory.shared.ldap.model.entry.AttributeUtils;
-import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.Modification;
-import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
-import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.exception.LdapURLEncodingException;
-import org.apache.directory.shared.ldap.model.message.AddRequest;
-import org.apache.directory.shared.ldap.model.message.BindRequest;
-import org.apache.directory.shared.ldap.model.message.CompareRequest;
-import org.apache.directory.shared.ldap.model.message.DeleteRequest;
-import org.apache.directory.shared.ldap.model.message.ExtendedRequest;
-import org.apache.directory.shared.ldap.model.message.LdapResult;
-import org.apache.directory.shared.ldap.model.message.Message;
-import org.apache.directory.shared.ldap.model.message.MessageTypeEnum;
-import org.apache.directory.shared.ldap.model.message.ModifyDnRequest;
-import org.apache.directory.shared.ldap.model.message.ModifyRequest;
-import org.apache.directory.shared.ldap.model.message.Request;
-import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
-import org.apache.directory.shared.ldap.model.message.SearchRequest;
-import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.api.asn1.EncoderException;
+import org.apache.directory.api.dsmlv2.DsmlDecorator;
+import org.apache.directory.api.dsmlv2.Dsmlv2Parser;
+import org.apache.directory.api.dsmlv2.response.AddResponseDsml;
+import org.apache.directory.api.dsmlv2.response.BatchResponseDsml;
+import org.apache.directory.api.dsmlv2.response.BindResponseDsml;
+import org.apache.directory.api.dsmlv2.response.CompareResponseDsml;
+import org.apache.directory.api.dsmlv2.response.DelResponseDsml;
+import org.apache.directory.api.dsmlv2.response.ExtendedResponseDsml;
+import org.apache.directory.api.dsmlv2.response.ModDNResponseDsml;
+import org.apache.directory.api.dsmlv2.response.ModifyResponseDsml;
+import org.apache.directory.api.dsmlv2.request.BatchRequestDsml;
+import org.apache.directory.api.dsmlv2.request.Dsmlv2Grammar;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
+import org.apache.directory.api.ldap.model.entry.AttributeUtils;
+import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.entry.Modification;
+import org.apache.directory.api.ldap.model.entry.ModificationOperation;
+import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.exception.LdapURLEncodingException;
+import org.apache.directory.api.ldap.model.message.AddRequest;
+import org.apache.directory.api.ldap.model.message.BindRequest;
+import org.apache.directory.api.ldap.model.message.CompareRequest;
+import org.apache.directory.api.ldap.model.message.DeleteRequest;
+import org.apache.directory.api.ldap.model.message.ExtendedRequest;
+import org.apache.directory.api.ldap.model.message.LdapResult;
+import org.apache.directory.api.ldap.model.message.Message;
+import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
+import org.apache.directory.api.ldap.model.message.ModifyDnRequest;
+import org.apache.directory.api.ldap.model.message.ModifyRequest;
+import org.apache.directory.api.ldap.model.message.Request;
+import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
+import org.apache.directory.api.ldap.model.message.SearchRequest;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -100,7 +100,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
 
     /** The Save file to use */
     private File responseFile;
-    
+
     /** 
      * LDAP Codec used by DSML parser
      * @TODO by Alex - this should be removed completely
@@ -249,7 +249,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
             if ( errorsCount > 0 )
             {
                 monitor.reportError( BrowserCoreMessages.bind(
-                    "{0} errors occurred, see the response file for details", new String[]
+                    BrowserCoreMessages.dsml__n_errors_see_responsefile, new String[]
                         { "" + errorsCount } ) ); //$NON-NLS-1$
             }
         }
@@ -277,19 +277,20 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
      * @param batchResponseDsml
      *      the DSML batch response (can be <code>null</code>)
      * @throws NamingException 
-     * @throws org.apache.directory.shared.ldap.model.exception.LdapURLEncodingException
+     * @throws org.apache.directory.api.ldap.model.exception.LdapURLEncodingException
      * @throws LdapException
      */
-    private void processRequest( DsmlDecorator<? extends Request> request, BatchResponseDsml batchResponseDsml, StudioProgressMonitor monitor )
+    private void processRequest( DsmlDecorator<? extends Request> request, BatchResponseDsml batchResponseDsml,
+        StudioProgressMonitor monitor )
         throws NamingException, LdapURLEncodingException, LdapException
     {
-        switch( request.getDecorated().getType() )
+        switch ( request.getDecorated().getType() )
         {
             case BIND_REQUEST:
                 processBindRequest( ( BindRequest ) request, batchResponseDsml, monitor );
                 break;
             case ADD_REQUEST:
-                processAddRequest( (AddRequest) request, batchResponseDsml, monitor );
+                processAddRequest( ( AddRequest ) request, batchResponseDsml, monitor );
                 break;
             case COMPARE_REQUEST:
                 processCompareRequest( ( CompareRequest ) request, batchResponseDsml, monitor );
@@ -298,7 +299,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
                 processDelRequest( ( DeleteRequest ) request, batchResponseDsml, monitor );
                 break;
             case EXTENDED_REQUEST:
-                processExtendedRequest( ( ExtendedRequest<?> ) request, batchResponseDsml, monitor );
+                processExtendedRequest( ( ExtendedRequest ) request, batchResponseDsml, monitor );
                 break;
             case MODIFY_REQUEST:
                 processModifyRequest( ( ModifyRequest ) request, batchResponseDsml, monitor );
@@ -310,9 +311,9 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
                 processSearchRequest( ( SearchRequest ) request, batchResponseDsml, monitor );
                 break;
             default:
-                throw new IllegalArgumentException( 
-                    "Should not be encountering a request type of: " 
-                    + request.getDecorated().getType() );
+                throw new IllegalArgumentException(
+                    BrowserCoreMessages.dsml__should_not_be_encountering_request
+                        + request.getDecorated().getType() );
         }
     }
 
@@ -337,7 +338,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
             BindResponseDsml authResponseDsml = new BindResponseDsml( codec );
             LdapResult ldapResult = authResponseDsml.getLdapResult();
             ldapResult.setResultCode( ResultCodeEnum.UNWILLING_TO_PERFORM );
-            ldapResult.setDiagnosticMessage( "This kind of request is not yet supported." );
+            ldapResult.setDiagnosticMessage( BrowserCoreMessages.dsml__kind_request_not_supported );
             batchResponseDsml.addResponse( authResponseDsml );
         }
     }
@@ -359,7 +360,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
         browserConnection
             .getConnection()
             .getConnectionWrapper()
-            .createEntry( entry.getDn().getName(), AttributeUtils.toAttributes(entry), getControls( request ),
+            .createEntry( entry.getDn().getName(), AttributeUtils.toAttributes( entry ), getControls( request ),
                 monitor, null );
 
         // Creating the response
@@ -408,7 +409,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
             CompareResponseDsml compareResponseDsml = new CompareResponseDsml( codec );
             LdapResult ldapResult = compareResponseDsml.getLdapResult();
             ldapResult.setResultCode( ResultCodeEnum.UNWILLING_TO_PERFORM );
-            ldapResult.setDiagnosticMessage( "This kind of request is not yet supported." );
+            ldapResult.setDiagnosticMessage( BrowserCoreMessages.dsml__kind_request_not_supported );
             batchResponseDsml.addResponse( compareResponseDsml );
         }
     }
@@ -464,7 +465,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
      * @param batchResponseDsml
      *      the DSML batch response (can be <code>null</code>)
      */
-    private void processExtendedRequest( ExtendedRequest<?> request, BatchResponseDsml batchResponseDsml,
+    private void processExtendedRequest( ExtendedRequest request, BatchResponseDsml batchResponseDsml,
         StudioProgressMonitor monitor )
     {
         // We can not support extended requests at the moment,
@@ -476,7 +477,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
             ExtendedResponseDsml extendedResponseDsml = new ExtendedResponseDsml( codec );
             LdapResult ldapResult = extendedResponseDsml.getLdapResult();
             ldapResult.setResultCode( ResultCodeEnum.UNWILLING_TO_PERFORM );
-            ldapResult.setDiagnosticMessage( "This kind of request is not yet supported." );
+            ldapResult.setDiagnosticMessage( BrowserCoreMessages.dsml__kind_request_not_supported );
             batchResponseDsml.addResponse( extendedResponseDsml );
         }
     }
@@ -613,8 +614,8 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
      * @param batchResponseDsml
      *      the DSML batch response (can be <code>null</code>)
      * @throws NamingException 
-     * @throws org.apache.directory.shared.ldap.model.exception.LdapURLEncodingException
-     * @throws org.apache.directory.shared.ldap.model.exception.LdapException
+     * @throws org.apache.directory.api.ldap.model.exception.LdapURLEncodingException
+     * @throws org.apache.directory.api.ldap.model.exception.LdapException
      */
     private void processSearchRequest( SearchRequest request, BatchResponseDsml batchResponseDsml,
         StudioProgressMonitor monitor ) throws NamingException, LdapURLEncodingException, LdapException
@@ -720,11 +721,11 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
 
     private Control[] getControls( Message request )
     {
-        Collection<org.apache.directory.shared.ldap.model.message.Control> controls = request.getControls().values();
+        Collection<org.apache.directory.api.ldap.model.message.Control> controls = request.getControls().values();
         if ( controls != null )
         {
             List<Control> jndiControls = new ArrayList<Control>();
-            for ( org.apache.directory.shared.ldap.model.message.Control control : controls )
+            for ( org.apache.directory.api.ldap.model.message.Control control : controls )
             {
                 try
                 {

@@ -37,7 +37,7 @@ public interface ProjectsHandlerListener
      * @param project
      *      the added project
      */
-    public void projectAdded( Project project );
+    void projectAdded( Project project );
 
 
     /**
@@ -46,7 +46,7 @@ public interface ProjectsHandlerListener
      * @param project
      *      the removed project
      */
-    public void projectRemoved( Project project );
+    void projectRemoved( Project project );
 
 
     /**
@@ -57,5 +57,5 @@ public interface ProjectsHandlerListener
      * @param newProject
      *      the new opened project
      */
-    public void openProjectChanged( Project oldProject, Project newProject );
+    void openProjectChanged( Project oldProject, Project newProject );
 }

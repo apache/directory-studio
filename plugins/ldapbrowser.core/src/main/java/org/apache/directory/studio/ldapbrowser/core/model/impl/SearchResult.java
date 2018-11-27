@@ -23,7 +23,7 @@ package org.apache.directory.studio.ldapbrowser.core.model.impl;
 
 import java.util.ArrayList;
 
-import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.core.internal.search.LdapSearchPageScoreComputer;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
@@ -186,10 +186,7 @@ public class SearchResult implements ISearchResult
         {
             return true;
         }
-        if ( obj == null )
-        {
-            return false;
-        }
+
         if ( !( obj instanceof SearchResult ) )
         {
             return false;
