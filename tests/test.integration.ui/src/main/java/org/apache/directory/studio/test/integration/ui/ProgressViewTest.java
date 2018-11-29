@@ -21,20 +21,14 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import static org.junit.Assert.fail;
-
 import org.apache.directory.server.annotations.CreateLdapServer;
 import org.apache.directory.server.annotations.CreateTransport;
 import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
-import org.apache.directory.studio.connection.core.Messages;
-import org.apache.directory.studio.test.integration.ui.bots.BotUtils;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ProgressViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
 import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
 import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
-import org.eclipse.core.runtime.jobs.IJobManager;
-import org.eclipse.core.runtime.jobs.Job;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -86,17 +80,8 @@ public class ProgressViewTest extends AbstractLdapTestUnit
         connectionView.createTestConnection( "ProgressViewTest", ldapServer.getPort() );
         connectionView.createTestConnection( "ProgressViewTest", ldapServer.getPort() );
         connectionView.createTestConnection( "ProgressViewTest", ldapServer.getPort() );
-        BotUtils.sleep( 1000L );
 
-        IJobManager jobManager = Job.getJobManager();
-        Job[] jobs = jobManager.find( null );
-        for ( Job job : jobs )
-        {
-            if ( job.getName().equals( Messages.jobs__open_connections_name_1 ) )
-            {
-                fail( "No 'Open Connection' job expected" );
-            }
-        }
+        // actual assertion is done in Assertions.genericTearDownAssertions()
     }
 
 }

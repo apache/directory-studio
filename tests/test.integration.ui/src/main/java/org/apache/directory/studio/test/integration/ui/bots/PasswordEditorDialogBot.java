@@ -99,6 +99,12 @@ public class PasswordEditorDialogBot extends DialogBot
     }
 
 
+    public void activateNewPasswordTab()
+    {
+        bot.tabItem( "New Password" ).activate();
+    }
+
+
     public void setVerifyPassword( String password )
     {
         bot.text( 4 ).setText( password );

@@ -129,7 +129,7 @@ public class ModelConverter
                 attribute.addValue( new Value( attribute, value ) );
             }
             else if ( !( parts[i] instanceof LdifDnLine ) && !( parts[i] instanceof LdifSepLine )
-                && !( parts[i] instanceof LdifEOFPart ) )
+                && !( parts[i] instanceof LdifEOFPart ) && !( parts[i] instanceof LdifChangeTypeLine ) )
             {
                 String name = parts[i].toRawString();
                 name = name.replaceAll( "\n", "" ); //$NON-NLS-1$ //$NON-NLS-2$

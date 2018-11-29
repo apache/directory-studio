@@ -31,15 +31,15 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.FileUtils;
 import org.apache.directory.api.util.IOUtils;
 import org.apache.directory.server.annotations.CreateLdapServer;
 import org.apache.directory.server.annotations.CreateTransport;
 import org.apache.directory.server.core.annotations.ApplyLdifFiles;
-import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
 import org.apache.directory.server.core.api.partition.Partition;
+import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
 import org.apache.directory.server.core.partition.impl.avl.AvlPartition;
-import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
@@ -51,12 +51,12 @@ import org.apache.directory.studio.test.integration.ui.bots.ExportWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.ImportWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
 import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
+import org.apache.directory.studio.test.integration.ui.bots.utils.Characters;
 import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Preferences;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -70,8 +70,7 @@ import org.junit.runner.RunWith;
 @RunWith(FrameworkRunnerWithScreenshotCaptureListener.class)
 @CreateLdapServer(transports =
     { @CreateTransport(protocol = "LDAP") })
-@ApplyLdifFiles( clazz = ImportExportTest.class,
-    value = "org/apache/directory/studio/test/integration/ui/ImportExportTest.ldif" )
+@ApplyLdifFiles(clazz = ImportExportTest.class, value = "org/apache/directory/studio/test/integration/ui/ImportExportTest.ldif")
 public class ImportExportTest extends AbstractLdapTestUnit
 {
     private StudioBot studioBot;
@@ -136,7 +135,8 @@ public class ImportExportTest extends AbstractLdapTestUnit
         DeleteDialogBot dialogBot = browserViewBot.openDeleteDialog();
         assertTrue( dialogBot.isVisible() );
         dialogBot.clickOkButton();
-        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Wolfgang K\u00f6lbel" ) );
+        assertFalse(
+            browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Wolfgang K\u00f6lbel" ) );
 
         // import LDIF
         ImportWizardBot importWizardBot = browserViewBot.openImportLdifWizard();
@@ -144,7 +144,8 @@ public class ImportExportTest extends AbstractLdapTestUnit
         importWizardBot.clickFinishButton();
 
         // verify that entry with umlaut exists
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Wolfgang K\u00f6lbel" ) );
+        assertTrue(
+            browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Wolfgang K\u00f6lbel" ) );
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Wolfgang K\u00f6lbel" );
     }
 
@@ -186,7 +187,8 @@ public class ImportExportTest extends AbstractLdapTestUnit
         DeleteDialogBot dialogBot = browserViewBot.openDeleteDialog();
         assertTrue( dialogBot.isVisible() );
         dialogBot.clickOkButton();
-        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Wolfgang K\u00f6lbel" ) );
+        assertFalse(
+            browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Wolfgang K\u00f6lbel" ) );
 
         // import DSML
         ImportWizardBot importWizardBot = browserViewBot.openImportDsmlWizard();
@@ -194,7 +196,8 @@ public class ImportExportTest extends AbstractLdapTestUnit
         importWizardBot.clickFinishButton();
 
         // verify that entry with umlaut exists
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Wolfgang K\u00f6lbel" ) );
+        assertTrue(
+            browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Wolfgang K\u00f6lbel" ) );
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Wolfgang K\u00f6lbel" );
     }
 
@@ -212,7 +215,7 @@ public class ImportExportTest extends AbstractLdapTestUnit
     public void testImportContextEntryRefreshesRootDSE() throws Exception
     {
         // add a new partition
-        Partition partition = new AvlPartition(service.getSchemaManager(), service.getDnFactory());
+        Partition partition = new AvlPartition( service.getSchemaManager(), service.getDnFactory() );
         partition.setId( "example" );
         partition.setSuffixDn( new Dn( "dc=example,dc=com" ) );
         service.addPartition( partition );
@@ -341,4 +344,42 @@ public class ImportExportTest extends AbstractLdapTestUnit
             .contains( "description: person#homeEmailAddress#jhon.doe@apache.com" ) );
         assertTrue( entryEditorBot.getAttributeValues().contains( "description: Th\u00f6is \u00e5s a t\u00e4st yes" ) );
     }
+
+
+    /**
+     * Test LDIF with several modifications.
+     */
+    @Test
+    public void testLdifModification() throws Exception
+    {
+        URL url = Platform.getInstanceLocation().getURL();
+        String destFile = url.getFile() + "ImportExportTest_Modifications.ldif";
+        InputStream is = getClass().getResourceAsStream( "ImportExportTest_Modifications.ldif" );
+        String ldifContent = IOUtils.toString( is, StandardCharsets.UTF_8 );
+        FileUtils.writeStringToFile( new File( destFile ), ldifContent, StandardCharsets.UTF_8, false );
+
+        // import the LDIF
+        ImportWizardBot importWizardBot = browserViewBot.openImportLdifWizard();
+        importWizardBot.typeFile( destFile );
+        importWizardBot.clickFinishButton();
+
+        browserViewBot.waitForEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" );
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "uid=user.1,ou=users,ou=system" );
+        entryEditorBot.activate();
+        assertTrue( entryEditorBot.getAttributeValues().contains( "description: " + Characters.ALL ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "roomNumber: 0000" ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "roomNumber: 1234" ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "roomNumber: 2345" ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "roomNumber: 3456" ) );
+
+        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.2" ) );
+
+        browserViewBot.waitForEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.33" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.33" );
+        entryEditorBot.activate();
+        assertTrue( entryEditorBot.getAttributeValues().contains( "uid: user.33" ) );
+        assertFalse( entryEditorBot.getAttributeValues().contains( "uid: user.3" ) );
+    }
+
 }
