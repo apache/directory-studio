@@ -31,9 +31,7 @@ import org.apache.directory.studio.connection.ui.RunnableContextRunner;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.IJobManager;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
-import org.eclipse.jface.operation.ModalContext;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
@@ -144,6 +142,6 @@ public class JobWatcher
                 removeListeners();
                 return "Waited for jobs " + jobNames + " to finish";
             }
-        }, SWTBotPreferences.TIMEOUT * 2 );
+        }, SWTBotPreferences.TIMEOUT * 4 );
     }
 }

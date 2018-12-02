@@ -257,3 +257,8 @@ objectClass: inetOrgPerson
 sn: bbb
 cn: aaa
 uid: user.0,foo
+
+dn: ou=target,ou=system
+objectClass: top
+objectClass: organizationalUnit
+ou: target

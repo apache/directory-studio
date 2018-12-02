@@ -284,9 +284,6 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
                 Dn oldLdapDn = entry.getDn();
                 Rdn oldRdn = oldLdapDn.getRdn();
 
-                // reuse attributes of the entry to copy
-//                Attributes newAttributes = sr.getAttributes();
-
                 // compose new Dn
                 Rdn newRdn = oldLdapDn.getRdn();
                 if ( forceNewRdn != null )
@@ -294,6 +291,7 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
                     newRdn = forceNewRdn;
                 }
                 Dn newLdapDn = parentDn.add( newRdn );
+                entry.setDn( newLdapDn );
 
                 // apply new Rdn to the attributes
                 applyNewRdn( entry, oldRdn, newRdn );
@@ -360,6 +358,7 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
 
                                     // compose new Dn
                                     newLdapDn = parentDn.add( renamedRdn );
+                                    entry.setDn( newLdapDn );
 
                                     // create entry
                                     targetBrowserConnection.getConnection().getConnectionWrapper()
@@ -429,13 +428,13 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
         // remove old Rdn attributes and values
         for ( Ava atav : oldRdn )
         {
-            entry.remove( atav.getAttributeType(), atav.getValue() );
+            entry.remove( atav.getType(), atav.getValue() );
         }
 
         // add new Rdn attributes and values
         for ( Ava atav : newRdn )
         {
-            entry.add( atav.getAttributeType(), atav.getValue() );
+            entry.add( atav.getType(), atav.getValue() );
         }
     }
 }

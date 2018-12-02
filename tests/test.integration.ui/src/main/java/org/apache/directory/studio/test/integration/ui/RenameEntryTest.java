@@ -21,8 +21,6 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.apache.directory.server.annotations.CreateLdapServer;
@@ -31,9 +29,7 @@ import org.apache.directory.server.core.annotations.ApplyLdifFiles;
 import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
 import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
-import org.apache.directory.studio.test.integration.ui.bots.MoveEntriesDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.RenameEntryDialogBot;
-import org.apache.directory.studio.test.integration.ui.bots.SelectDnDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
 import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
 import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
@@ -44,7 +40,7 @@ import org.junit.runner.RunWith;
 
 
 /**
- * Tests the rename entry dialog.
+ * Tests entry renaming (modrdn) and the rename dialog.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -52,9 +48,9 @@ import org.junit.runner.RunWith;
 @RunWith(FrameworkRunnerWithScreenshotCaptureListener.class)
 @CreateLdapServer(transports =
     { @CreateTransport(protocol = "LDAP") })
-@ApplyLdifFiles( clazz = RenameEntryDialogTest.class,
+@ApplyLdifFiles( clazz = RenameEntryTest.class,
     value = "org/apache/directory/studio/test/integration/ui/RenameEntryDialogTest.ldif" )
-public class RenameEntryDialogTest extends AbstractLdapTestUnit
+public class RenameEntryTest extends AbstractLdapTestUnit
 {
     private StudioBot studioBot;
     private ConnectionsViewBot connectionsViewBot;
@@ -67,7 +63,7 @@ public class RenameEntryDialogTest extends AbstractLdapTestUnit
         studioBot = new StudioBot();
         studioBot.resetLdapPerspective();
         connectionsViewBot = studioBot.getConnectionView();
-        connectionsViewBot.createTestConnection( "RenameEntryDialogTest", ldapServer.getPort() );
+        connectionsViewBot.createTestConnection( "RenameEntryTest", ldapServer.getPort() );
         browserViewBot = studioBot.getBrowserView();
     }
 
@@ -176,45 +172,6 @@ public class RenameEntryDialogTest extends AbstractLdapTestUnit
 
         assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=A\\ " ) );
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=A\\ " );
-    }
-
-
-    @Test
-    public void testMoveUp() throws Exception
-    {
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Barbara Jensen+uid=bjensen" );
-
-        MoveEntriesDialogBot moveEntryDialog = browserViewBot.openMoveEntryDialog();
-        assertTrue( moveEntryDialog.isVisible() );
-        moveEntryDialog.setParentText( "ou=system" );
-        moveEntryDialog.clickOkButton();
-
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "cn=Barbara Jensen+uid=bjensen" ) );
-        assertFalse(
-            browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Barbara Jensen+uid=bjensen" ) );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "cn=Barbara Jensen+uid=bjensen" );
-    }
-
-
-    @Test
-    public void testMoveDown() throws Exception
-    {
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=\\#123456" );
-
-        MoveEntriesDialogBot moveEntryDialog = browserViewBot.openMoveEntryDialog();
-        assertTrue( moveEntryDialog.isVisible() );
-        SelectDnDialogBot selectDnBot = moveEntryDialog.clickBrowseButtonExpectingSelectDnDialog();
-        assertTrue( selectDnBot.isVisible() );
-        selectDnBot.selectEntry( "Root DSE", "ou=system", "ou=users", "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\"" );
-        selectDnBot.clickOkButton();
-        moveEntryDialog.activate();
-        assertEquals( "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system", moveEntryDialog.getParentText() );
-        moveEntryDialog.clickOkButton();
-
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users",
-            "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\"", "cn=\\#123456" ) );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users",
-            "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\"", "cn=\\#123456" );
     }
 
 }

@@ -20,7 +20,10 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
+import org.apache.mina.core.future.DefaultConnectFuture;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
+import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 
@@ -59,6 +62,27 @@ public abstract class DialogBot
     public void clickCancelButton()
     {
         clickButton( "Cancel" );
+    }
+
+
+    public void waitForDialog()
+    {
+        bot.waitUntil( new DefaultCondition()
+        {
+
+            @Override
+            public boolean test() throws Exception
+            {
+                return isVisible();
+            }
+
+
+            @Override
+            public String getFailureMessage()
+            {
+                return "Dialog did not appear: " + title;
+            }
+        }, SWTBotPreferences.TIMEOUT * 4 );
     }
 
 

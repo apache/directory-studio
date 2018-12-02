@@ -43,7 +43,8 @@ public class BrowserViewBot
     }
 
 
-    public String getSelectedEntry() {
+    public String getSelectedEntry()
+    {
         return browserBot.getSelectedEntry();
     }
 
@@ -187,6 +188,28 @@ public class BrowserViewBot
     public void paste()
     {
         ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Paste" );
+    }
+
+
+    public void pasteEntry()
+    {
+        JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__copy_entries_name_1 );
+        ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Paste" );
+        watcher.waitUntilDone();
+    }
+
+
+    public SelectCopyDepthDialogBot pasteEntriesExpectingSelectCopyDepthDialog( int numEntries )
+    {
+        ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Paste" );
+        return new SelectCopyDepthDialogBot( numEntries );
+    }
+
+
+    public SelectCopyStrategyBot pasteEntriesExpectingSelectCopyStrategy()
+    {
+        ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Paste" );
+        return new SelectCopyStrategyBot();
     }
 
 
