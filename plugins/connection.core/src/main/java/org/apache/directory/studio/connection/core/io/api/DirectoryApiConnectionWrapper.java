@@ -681,7 +681,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
 
             for ( int i = 0; i < controls.length; i++ )
             {
-                returningControls[i] = ldapConnection.getCodecService().fromJndiControl( controls[i] );
+                returningControls[i] = ldapConnection.getCodecService().fromJndiRequestControl( controls[i] );
             }
 
             return returningControls;

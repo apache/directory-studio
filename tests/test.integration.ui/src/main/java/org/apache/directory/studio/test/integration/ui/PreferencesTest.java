@@ -156,7 +156,7 @@ public class PreferencesTest extends AbstractLdapTestUnit
         Date startDate = new Date( System.currentTimeMillis() - 1000 );
         Date endDate = new Date( System.currentTimeMillis() + 1000 );
         X509Certificate certificate = CertificateUtils.createCertificate( "cn=localhost", "cn=localhost", startDate,
-            endDate, CertificateUtils.createKeyPair() );
+            endDate, CertificateUtils.createKeyPair( 1024 ) );
         ConnectionCorePlugin.getDefault().getPermanentTrustStoreManager().addCertificate( certificate );
 
         // verify there is one certificate now

@@ -22,7 +22,6 @@ package org.apache.directory.studio.test.integration.ui;
 
 
 import static org.apache.directory.studio.test.integration.ui.Constants.LOCALHOST;
-import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -449,6 +448,43 @@ public class CertificateValidationTest
 
 
     /**
+     * DIRSTUDIO-1205: SSL/TLS with small key size is not working.
+     */
+    @Test
+    public void testStartTlsCertificateValidationSmallKeysizeError() throws Exception
+    {
+        // prepare certificate
+        Date startDate = new Date( System.currentTimeMillis() - YEAR_MILLIS );
+        Date endDate = new Date( System.currentTimeMillis() + YEAR_MILLIS );
+        createCertificateAndUpdateInApacheDS( "cn=localhost", "cn=localhost", startDate, endDate, 512 );
+
+        // start ApacheDS
+        serversViewBot.runServer( serverName );
+        serversViewBot.waitForServerStart( serverName );
+
+        // enter connection parameter
+        wizardBot = connectionsViewBot.openNewConnectionWizard();
+        wizardBot.typeConnectionName( getConnectionName() );
+        wizardBot.typeHost( LOCALHOST );
+        wizardBot.typePort( ldapPort );
+        wizardBot.selectStartTlsEncryption();
+        wizardBot.clickNextButton();
+        wizardBot.typeUser( "uid=admin,ou=system" );
+        wizardBot.typePassword( "secret" );
+
+        // check the certificate, expecting the trust dialog
+        CertificateTrustDialogBot trustDialogBot = wizardBot
+            .clickCheckAuthenticationButtonExpectingCertificateTrustDialog();
+        trustDialogBot.selectTrustTemporary();
+
+        clickOkButtonExpectingCertficateErrorDialog( trustDialogBot, "Failed to verify certification path",
+            "Algorithm constraints check failed on keysize limits", "RSA 512bit key used" );
+
+        wizardBot.clickCancelButton();
+    }
+
+
+    /**
      * Tests StartTLS with an expired certificate.
      */
     @Test
@@ -530,15 +566,21 @@ public class CertificateValidationTest
     }
 
 
-    private void clickOkButtonExpectingCertficateErrorDialog( CertificateTrustDialogBot trustDialogBot )
+    private String clickOkButtonExpectingCertficateErrorDialog( CertificateTrustDialogBot trustDialogBot,
+        String... expectedMessages )
     {
         ErrorDialogBot errorBot = trustDialogBot.clickOkButtonExpectingErrorDialog();
-        // LDAP API: Failed to initialize the SSL context, root cause: TLS handshake failed
-        // JNDI: Untrusted certificate
-        assertThat( errorBot.getErrorMessage(),
-            anyOf( containsString( "Failed to initialize the SSL context" ), containsString( "TLS handshake failed" ),
-                containsString( "Untrusted certificate" ) ) );
+
+        String errorMessage = errorBot.getErrorMessage();
+
+        assertThat( errorMessage, containsString( "ERR_04120_TLS_HANDSHAKE_ERROR" ) );
+        assertThat( errorMessage, containsString( "The TLS handshake failed" ) );
+        for ( String expectedMessage : expectedMessages )
+        {
+            assertThat( errorMessage, containsString( expectedMessage ) );
+        }
         errorBot.clickOkButton();
+        return errorMessage;
     }
 
 
@@ -818,12 +860,20 @@ public class CertificateValidationTest
     private void createCertificateAndUpdateInApacheDS( String issuerDN, String subjectDN, Date startDate,
         Date expiryDate ) throws Exception
     {
+        createCertificateAndUpdateInApacheDS( issuerDN, subjectDN, startDate, expiryDate, 1024 );
+    }
+
+
+    private void createCertificateAndUpdateInApacheDS( String issuerDN, String subjectDN, Date startDate,
+        Date expiryDate, int keysize ) throws Exception
+    {
         // create certificate in key store file
         if ( ksFile != null && ksFile.exists() )
         {
             ksFile.delete();
         }
-        ksFile = CertificateUtils.createCertificateInKeyStoreFile( issuerDN, subjectDN, startDate, expiryDate );
+        ksFile = CertificateUtils.createCertificateInKeyStoreFile( issuerDN, subjectDN, startDate, expiryDate,
+            keysize );
 
         // configure certificate in ApacheDS
         ApacheDSConfigurationEditorBot editorBot = serversViewBot.openConfigurationEditor( serverName );

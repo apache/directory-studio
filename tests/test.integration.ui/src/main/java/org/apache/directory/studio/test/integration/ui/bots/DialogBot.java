@@ -20,7 +20,6 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
-import org.apache.mina.core.future.DefaultConnectFuture;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;

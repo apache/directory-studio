@@ -49,9 +49,9 @@ public class CertificateUtils
 {
 
     public static File createCertificateInKeyStoreFile( String issuerDN, String subjectDN, Date startDate,
-        Date expiryDate ) throws Exception
+        Date expiryDate, int keysize ) throws Exception
     {
-        KeyPair keypair = createKeyPair();
+        KeyPair keypair = createKeyPair( keysize );
         X509Certificate cert = createCertificate( issuerDN, subjectDN, startDate, expiryDate, keypair );
 
         // write key store file
@@ -69,7 +69,7 @@ public class CertificateUtils
 
     public static X509Certificate createCertificate( String issuerDN, String subjectDN, Date startDate, Date expiryDate,
         KeyPair keypair ) throws CertificateEncodingException, NoSuchProviderException, NoSuchAlgorithmException,
-            SignatureException, InvalidKeyException
+        SignatureException, InvalidKeyException
     {
         BigInteger serialNumber = BigInteger.valueOf( System.currentTimeMillis() );
         X509V1CertificateGenerator certGen = new X509V1CertificateGenerator();
@@ -87,10 +87,10 @@ public class CertificateUtils
     }
 
 
-    public static KeyPair createKeyPair() throws NoSuchAlgorithmException
+    public static KeyPair createKeyPair( int keysize ) throws NoSuchAlgorithmException
     {
         KeyPairGenerator generator = KeyPairGenerator.getInstance( "RSA" );
-        generator.initialize( 1024 );
+        generator.initialize( keysize );
         KeyPair keypair = generator.genKeyPair();
         return keypair;
     }

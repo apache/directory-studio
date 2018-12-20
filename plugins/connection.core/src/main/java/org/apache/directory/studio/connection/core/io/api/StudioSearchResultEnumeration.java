@@ -369,7 +369,7 @@ public class StudioSearchResultEnumeration
                 }
                 else
                 {
-                    wrapped = codec.newControl( control );
+                    wrapped = codec.newRequestControl( control );
                 }
 
                 if ( PagedResultsResponseControl.OID.equals( control.getOid() ) )
