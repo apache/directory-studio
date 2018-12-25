@@ -487,7 +487,6 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
     private static List<String> getStringValues( Entry entry, String schemaElement )
     {
         Attribute at = entry.get( schemaElement );
-        System.out.println( schemaElement + " => " + at );
         Spliterator<Value> spliterator = Optional.ofNullable( at ).map( Attribute::spliterator ).orElseGet( Spliterators::emptySpliterator );
         return StreamSupport.stream( spliterator, false ).map( Value::getValue ).collect( Collectors.toList() );
     }

@@ -102,14 +102,12 @@ public class SchemaViewBot
         SWTBotTreeItem schemaItem = getSchemaTree().getTreeItem( schema );
         schemaItem.expand();
         SWTBotTreeItem[] typeItems = schemaItem.getItems();
-        System.out.println( Arrays.asList( typeItems ) );
         for ( SWTBotTreeItem typeItem : typeItems )
         {
             if ( typeItem.getText().startsWith( type ) )
             {
                 typeItem.expand();
                 SWTBotTreeItem[] elementItems = typeItem.getItems();
-                System.out.println( Arrays.asList( elementItems ) );
                 for ( SWTBotTreeItem elementItem : elementItems )
                 {
                     if ( elementItem.getText().startsWith( schemaElement + "  [" ) )
