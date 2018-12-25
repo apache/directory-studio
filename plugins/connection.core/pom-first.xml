@@ -53,7 +53,7 @@
  org.apache.directory.studio.connection.core.jobs</Export-Package>
             
             <Import-Package>
- org.apache.commons.lang,
+ org.apache.commons.lang3,
  org.apache.commons.codec.digest,
  org.apache.http.conn.ssl,
  org.dom4j,

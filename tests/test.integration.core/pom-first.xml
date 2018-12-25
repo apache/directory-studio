@@ -70,8 +70,7 @@
  org.eclipse.ui,
  javax.annotation</Require-Bundle>
             
-            <Import-Package>org.apache.commons.lang,
- org.apache.commons.codec.digest,
+            <Import-Package>org.apache.commons.codec.digest,
  org.apache.http.conn.ssl,
  org.dom4j,
  org.dom4j.io</Import-Package>

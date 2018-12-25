@@ -25,8 +25,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-import org.apache.commons.collections.MultiMap;
-import org.apache.commons.collections.map.MultiValueMap;
+import org.apache.commons.collections4.MultiValuedMap;
+import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.LdapSyntax;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
@@ -53,9 +53,9 @@ public class DependenciesComputer
     private SchemaHandler schemaHandler;
 
     // The dependencies MultiMaps
-    private MultiMap schemasDependencies;
-    private MultiMap attributeTypesDependencies;
-    private MultiMap objectClassesDependencies;
+    private MultiValuedMap schemasDependencies;
+    private MultiValuedMap attributeTypesDependencies;
+    private MultiValuedMap objectClassesDependencies;
 
 
     /**
@@ -73,9 +73,9 @@ public class DependenciesComputer
         schemaHandler = new SchemaHandler();
 
         // Creating the dependencies MultiMaps
-        schemasDependencies = new MultiValueMap();
-        attributeTypesDependencies = new MultiValueMap();
-        objectClassesDependencies = new MultiValueMap();
+        schemasDependencies = new ArrayListValuedHashMap<>();
+        attributeTypesDependencies = new ArrayListValuedHashMap<>();
+        objectClassesDependencies = new ArrayListValuedHashMap<>();
 
         if ( schemas != null )
         {
@@ -425,7 +425,7 @@ public class DependenciesComputer
      * @return
      *      the schemasList dependencies MultiMap
      */
-    public MultiMap getSchemasDependencies()
+    public MultiValuedMap getSchemasDependencies()
     {
         return schemasDependencies;
     }
@@ -437,7 +437,7 @@ public class DependenciesComputer
      * @return
      *      the attribute types dependencies MultiMap
      */
-    public MultiMap getAttributeTypesDependencies()
+    public MultiValuedMap getAttributeTypesDependencies()
     {
         return attributeTypesDependencies;
     }
@@ -449,7 +449,7 @@ public class DependenciesComputer
      * @return
      *      the object classes dependencies MultiMap
      */
-    public MultiMap getObjectClassesDependencies()
+    public MultiValuedMap getObjectClassesDependencies()
     {
         return objectClassesDependencies;
     }

@@ -80,12 +80,12 @@
     <net.sf.ehcache.bundleversion>2.10.4</net.sf.ehcache.bundleversion>
     <org.apache.commons.codec.version>1.11</org.apache.commons.codec.version>
     <org.apache.commons.codec.bundleversion>1.11.0</org.apache.commons.codec.bundleversion>
-    <org.apache.commons.collections.version>3.2.2</org.apache.commons.collections.version>
-    <org.apache.commons.collections.bundleversion>3.2.2</org.apache.commons.collections.bundleversion>
+    <org.apache.commons.collections4.version>4.2</org.apache.commons.collections4.version>
+    <org.apache.commons.collections4.bundleversion>4.2.0</org.apache.commons.collections4.bundleversion>
     <org.apache.commons.io.version>2.6</org.apache.commons.io.version>
     <org.apache.commons.io.bundleversion>2.6.0</org.apache.commons.io.bundleversion>
-    <org.apache.commons.lang.version>2.6</org.apache.commons.lang.version>
-    <org.apache.commons.lang.bundleversion>2.6.0</org.apache.commons.lang.bundleversion>
+    <org.apache.commons.lang3.version>3.8.1</org.apache.commons.lang3.version>
+    <org.apache.commons.lang3.bundleversion>3.8.1</org.apache.commons.lang3.bundleversion>
     <org.apache.commons.pool.version>2.6.0</org.apache.commons.pool.version>
     <org.apache.commons.pool.bundleversion>2.6.0</org.apache.commons.pool.bundleversion>
     <org.apache.directory.api.version>2.0.0.AM3-SNAPSHOT</org.apache.directory.api.version>

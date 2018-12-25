@@ -25,7 +25,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections.map.MultiValueMap;
+import org.apache.commons.collections4.MultiValuedMap;
+import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.schemaeditor.model.Project;
 import org.apache.directory.studio.schemaeditor.model.Project.ProjectState;
@@ -53,7 +54,7 @@ public class ProjectsHandler
     private List<ProjectsHandlerListener> projectsHandlerListeners;
 
     /** The projects listeners */
-    private MultiValueMap projectsListeners;
+    private MultiValuedMap<Project, ProjectListener> projectsListeners;
 
     /** The open project */
     private Project openProject;
@@ -84,7 +85,7 @@ public class ProjectsHandler
         projectsList = new ArrayList<Project>();
         projectsMap = new HashMap<String, Project>();
         projectsHandlerListeners = new ArrayList<ProjectsHandlerListener>();
-        projectsListeners = new MultiValueMap();
+        projectsListeners = new ArrayListValuedHashMap();
     }
 
 
@@ -274,7 +275,7 @@ public class ProjectsHandler
      */
     public void addListener( Project project, ProjectListener listener )
     {
-        if ( !projectsListeners.containsValue( project, listener ) )
+        if ( !projectsListeners.containsMapping( project, listener ) )
         {
             projectsListeners.put( project, listener );
         }
@@ -291,7 +292,7 @@ public class ProjectsHandler
      */
     public void removeListener( Project project, ProjectListener listener )
     {
-        projectsListeners.remove( project, listener );
+        projectsListeners.removeMapping( project, listener );
     }
 
 

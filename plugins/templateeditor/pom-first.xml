@@ -59,6 +59,8 @@
             </Export-Package>
             
             <Import-Package>
+              org.apache.commons.collections4,
+              org.apache.commons.collections4.multimap,
               org.dom4j,
               org.dom4j.io,
               org.slf4j
@@ -69,7 +71,6 @@
               org.eclipse.ui,
               org.eclipse.ui.forms,
               org.eclipse.jface.text,
-              org.apache.commons.collections,
               org.apache.directory.api.ldap.model,
               org.apache.directory.api.util,
               org.apache.directory.studio.common.core,

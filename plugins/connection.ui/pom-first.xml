@@ -57,8 +57,8 @@
  org.apache.directory.studio.utils</Export-Package>
             
             <Import-Package>
- org.apache.commons.lang,
- org.apache.commons.lang.time,
+ org.apache.commons.lang3,
+ org.apache.commons.lang3.time,
  org.apache.commons.codec.binary,
  org.apache.commons.codec.digest,
  org.bouncycastle.asn1,

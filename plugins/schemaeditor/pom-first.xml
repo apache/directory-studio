@@ -69,8 +69,8 @@
  org.apache.directory.studio.schemaeditor.view.wrappers</Export-Package>
 
             <Import-Package>
- org.apache.commons.collections, 
- org.apache.commons.collections.map,
+ org.apache.commons.collections4,
+ org.apache.commons.collections4.multimap,
  org.dom4j,
  org.dom4j.io
             </Import-Package>

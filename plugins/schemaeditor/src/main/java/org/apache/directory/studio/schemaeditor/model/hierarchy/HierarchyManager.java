@@ -22,7 +22,8 @@ package org.apache.directory.studio.schemaeditor.model.hierarchy;
 
 import java.util.List;
 
-import org.apache.commons.collections.map.MultiValueMap;
+import org.apache.commons.collections4.MultiValuedMap;
+import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.SchemaObject;
@@ -40,10 +41,10 @@ import org.apache.directory.studio.schemaeditor.model.Schema;
 public class HierarchyManager
 {
     /** The parents map is used to store for each element its parents */
-    private MultiValueMap parentsMap;
+    private MultiValuedMap<Object, Object> parentsMap;
 
     /** The parents map is used to store for each element its children */
-    private MultiValueMap childrenMap;
+    private MultiValuedMap<Object, Object> childrenMap;
 
     /** The SchemaHandler */
     private SchemaHandler schemaHandler;
@@ -58,8 +59,8 @@ public class HierarchyManager
     public HierarchyManager()
     {
         // Initializing the maps
-        parentsMap = new MultiValueMap();
-        childrenMap = new MultiValueMap();
+        parentsMap = new ArrayListValuedHashMap<>();
+        childrenMap = new ArrayListValuedHashMap<>();
 
         // Getting the SchemaHandler
         schemaHandler = Activator.getDefault().getSchemaHandler();
@@ -200,7 +201,7 @@ public class HierarchyManager
         {
             for ( Object parent : parents )
             {
-                childrenMap.remove( parent, at );
+                childrenMap.removeMapping( parent, at );
             }
 
             parentsMap.remove( at );
@@ -245,7 +246,7 @@ public class HierarchyManager
                     for ( Object value : children )
                     {
                         childrenMap.put( object, value );
-                        parentsMap.remove( value, Strings.toLowerCase( alias ) );
+                        parentsMap.removeMapping( value, Strings.toLowerCase( alias ) );
                         parentsMap.put( value, object );
                     }
                     childrenMap.remove( Strings.toLowerCase( alias ) );
@@ -267,9 +268,9 @@ public class HierarchyManager
                     childrenMap.put( object, value );
                     if ( oid.equals( "2.5.6.0" ) ) //$NON-NLS-1$
                     {
-                        childrenMap.remove( root, value );
+                        childrenMap.removeMapping( root, value );
                     }
-                    parentsMap.remove( value, Strings.toLowerCase( oid ) );
+                    parentsMap.removeMapping( value, Strings.toLowerCase( oid ) );
                     parentsMap.put( value, object );
 
                 }
@@ -376,7 +377,7 @@ public class HierarchyManager
         {
             for ( Object parent : parents )
             {
-                childrenMap.remove( parent, oc );
+                childrenMap.removeMapping( parent, oc );
             }
 
             parentsMap.remove( oc );
@@ -414,16 +415,16 @@ public class HierarchyManager
             AttributeType superiorAT = schemaHandler.getAttributeType( superiorName );
             if ( superiorAT == null )
             {
-                childrenMap.remove( Strings.toLowerCase( superiorName ), at );
+                childrenMap.removeMapping( Strings.toLowerCase( superiorName ), at );
             }
             else
             {
-                childrenMap.remove( superiorAT, at );
+                childrenMap.removeMapping( superiorAT, at );
             }
         }
         else
         {
-            childrenMap.remove( root, at );
+            childrenMap.removeMapping( root, at );
         }
 
         // Attaching each child (if there are children) to the RootObject
@@ -434,7 +435,7 @@ public class HierarchyManager
             {
                 AttributeType childAT = ( AttributeType ) child;
 
-                parentsMap.remove( child, at );
+                parentsMap.removeMapping( child, at );
 
                 parentsMap.put( child, root );
                 childrenMap.put( root, child );
@@ -465,12 +466,12 @@ public class HierarchyManager
                     ObjectClass superClassOC = schemaHandler.getObjectClass( superClassName );
                     if ( superClassOC == null )
                     {
-                        childrenMap.remove( Strings.toLowerCase( superClassName ), oc );
-                        childrenMap.remove( root, oc );
+                        childrenMap.removeMapping( Strings.toLowerCase( superClassName ), oc );
+                        childrenMap.removeMapping( root, oc );
                     }
                     else
                     {
-                        childrenMap.remove( superClassOC, oc );
+                        childrenMap.removeMapping( superClassOC, oc );
                     }
                 }
             }
@@ -480,7 +481,7 @@ public class HierarchyManager
             if ( oc.getOid().equals( "2.5.6.0" ) ) //$NON-NLS-1$
             // The given object class is the "top (2.5.6.0)" object class
             {
-                childrenMap.remove( root, oc );
+                childrenMap.removeMapping( root, oc );
             }
             else
             {
@@ -488,12 +489,12 @@ public class HierarchyManager
                 if ( topOC != null )
                 // The "top (2.5.6.0)" object class exists
                 {
-                    childrenMap.remove( topOC, oc );
+                    childrenMap.removeMapping( topOC, oc );
                 }
                 else
                 // The "top (2.5.6.0)" object class does not exist
                 {
-                    childrenMap.remove( "2.5.6.0", oc ); //$NON-NLS-1$
+                    childrenMap.removeMapping( "2.5.6.0", oc ); //$NON-NLS-1$
                 }
             }
         }
@@ -506,7 +507,7 @@ public class HierarchyManager
             {
                 ObjectClass childOC = ( ObjectClass ) child;
 
-                parentsMap.remove( child, oc );
+                parentsMap.removeMapping( child, oc );
 
                 parentsMap.put( child, root );
                 childrenMap.put( root, child );

@@ -62,7 +62,7 @@
  org.apache.directory.studio.valueeditors</Export-Package>
 
             <Import-Package>
- org.apache.commons.lang
+ org.apache.commons.lang3
             </Import-Package>
 
             <Require-Bundle>

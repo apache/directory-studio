@@ -63,9 +63,7 @@
  org.apache.directory.studio.valueeditors.time,
  org.apache.directory.studio.valueeditors.uuid</Export-Package>
  
-            <Import-Package>
- org.apache.commons.lang,
- org.apache.commons.codec,
+            <Import-Package>org.apache.commons.codec,
  org.apache.commons.codec.binary
             </Import-Package>
             

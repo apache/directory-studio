@@ -19,7 +19,7 @@
   @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
 -->
 <?pde version="3.8"?>
-<target name="Apache Directory Studio Platform" sequenceNumber="363">
+<target name="Apache Directory Studio Platform" sequenceNumber="369">
   <locations>
 
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
@@ -31,9 +31,9 @@
 
       <!-- Commons jars -->
       <unit id="org.apache.commons.codec" version="${org.apache.commons.codec.bundleversion}"/>
-      <unit id="org.apache.commons.collections" version="${org.apache.commons.collections.bundleversion}"/>
+      <unit id="org.apache.commons.commons-collections4" version="${org.apache.commons.collections4.bundleversion}"/>
       <unit id="org.apache.commons.io" version="${org.apache.commons.io.bundleversion}"/>
-      <unit id="org.apache.commons.lang" version="${org.apache.commons.lang.bundleversion}"/>
+      <unit id="org.apache.commons.lang3" version="${org.apache.commons.lang3.bundleversion}"/>
       <unit id="org.apache.commons.commons-pool2" version="${org.apache.commons.pool.bundleversion}"/>
 
       <!-- LDAP API modules -->

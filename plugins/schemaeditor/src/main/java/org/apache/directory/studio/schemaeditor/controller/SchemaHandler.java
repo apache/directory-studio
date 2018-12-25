@@ -23,8 +23,8 @@ package org.apache.directory.studio.schemaeditor.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.collections.MultiMap;
-import org.apache.commons.collections.map.MultiValueMap;
+import org.apache.commons.collections4.MultiValuedMap;
+import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.LdapSyntax;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
@@ -64,15 +64,15 @@ public class SchemaHandler
     // The MultiMap (for fast searching)
     //
     /** The schemas MultiMap */
-    private MultiMap schemasMap;
+    private MultiValuedMap<String, Schema> schemasMap;
     /** The attribute types MultiMap */
-    private MultiMap attributeTypesMap;
+    private MultiValuedMap<String, AttributeType> attributeTypesMap;
     /** The matching rules MultiMap */
-    private MultiMap matchingRulesMap;
+    private MultiValuedMap<String, MatchingRule> matchingRulesMap;
     /** The object classes MultiMap */
-    private MultiMap objectClassesMap;
+    private MultiValuedMap<String, ObjectClass> objectClassesMap;
     /** The syntaxes MultiMap */
-    private MultiMap syntaxesMap;
+    private MultiValuedMap<String, LdapSyntax> syntaxesMap;
 
     //
     // The Listeners Lists
@@ -93,11 +93,11 @@ public class SchemaHandler
         syntaxesList = new ArrayList<LdapSyntax>();
 
         // Maps
-        schemasMap = new MultiValueMap();
-        attributeTypesMap = new MultiValueMap();
-        matchingRulesMap = new MultiValueMap();
-        objectClassesMap = new MultiValueMap();
-        syntaxesMap = new MultiValueMap();
+        schemasMap = new ArrayListValuedHashMap<>();
+        attributeTypesMap = new ArrayListValuedHashMap<>();
+        matchingRulesMap = new ArrayListValuedHashMap<>();
+        objectClassesMap = new ArrayListValuedHashMap<>();
+        syntaxesMap = new ArrayListValuedHashMap<>();
 
         // Listeners
         schemaHandlerListeners = new ArrayList<SchemaHandlerListener>();

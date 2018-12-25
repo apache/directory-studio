@@ -127,8 +127,8 @@
  org.apache.directory.studio.ldapbrowser.core.utils</Export-Package>
  
             <Import-Package>
- org.apache.commons.lang,
- org.apache.commons.collections,
+ org.apache.commons.lang3,
+ org.apache.commons.collections4,
  org.apache.commons.codec.digest,
  org.dom4j,
  org.dom4j.io,

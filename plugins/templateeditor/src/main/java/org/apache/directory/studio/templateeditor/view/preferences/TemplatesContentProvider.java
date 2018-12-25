@@ -23,7 +23,8 @@ package org.apache.directory.studio.templateeditor.view.preferences;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.collections.map.MultiValueMap;
+import org.apache.commons.collections4.MultiValuedMap;
+import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -60,7 +61,7 @@ public class TemplatesContentProvider implements ITreeContentProvider, Templates
     private List<Template> templates;
 
     /** The map where templates are organized by object classes */
-    private MultiValueMap objectClassesTemplatesMap;
+    private MultiValuedMap<ObjectClass, Template> objectClassesTemplatesMap;
 
 
     /**
@@ -78,7 +79,7 @@ public class TemplatesContentProvider implements ITreeContentProvider, Templates
         manager.addListener( this );
         store = EntryTemplatePlugin.getDefault().getPreferenceStore();
         templates = new ArrayList<Template>();
-        objectClassesTemplatesMap = new MultiValueMap();
+        objectClassesTemplatesMap = new ArrayListValuedHashMap<>();
     }
 
 
@@ -253,7 +254,7 @@ public class TemplatesContentProvider implements ITreeContentProvider, Templates
     public void templateRemoved( Template template )
     {
         // Removing the structural object class
-        objectClassesTemplatesMap.remove( EntryTemplatePluginUtils.getObjectClassDescriptionFromDefaultSchema( template
+        objectClassesTemplatesMap.removeMapping( EntryTemplatePluginUtils.getObjectClassDescriptionFromDefaultSchema( template
             .getStructuralObjectClass() ), template );
 
         // Removing the template

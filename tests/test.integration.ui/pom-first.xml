@@ -102,7 +102,7 @@
  org.eclipse.core.runtime,
  org.eclipse.ui</Require-Bundle>
             
-            <Import-Package>org.apache.commons.lang,
+            <Import-Package>org.apache.commons.lang3,
  org.apache.commons.codec.digest,
  org.apache.http.conn.ssl,
  org.apache.log4j,

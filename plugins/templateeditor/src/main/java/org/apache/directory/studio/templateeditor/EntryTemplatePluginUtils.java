@@ -34,7 +34,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.commons.collections.map.MultiValueMap;
+import org.apache.commons.collections4.MultiValuedMap;
+import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
@@ -315,7 +316,7 @@ public class EntryTemplatePluginUtils
         Template[] templates = manager.getTemplates();
 
         // Creating a MultiValueMap that holds the templates ordered by ObjectClassDescription object
-        MultiValueMap templatesByOcd = new MultiValueMap();
+        MultiValuedMap<ObjectClass, Template> templatesByOcd = new ArrayListValuedHashMap<>();
 
         // Populating this map
         for ( Template template : templates )

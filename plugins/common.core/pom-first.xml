@@ -50,7 +50,7 @@
             <Export-Package>org.apache.directory.studio.common.core.jobs</Export-Package>
             
             <Import-Package>
- org.apache.commons.lang
+ org.apache.commons.lang3
             </Import-Package>
             
             <Require-Bundle>
