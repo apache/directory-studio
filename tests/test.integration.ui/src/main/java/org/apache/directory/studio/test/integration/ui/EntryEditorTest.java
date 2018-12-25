@@ -240,7 +240,7 @@ public class EntryEditorTest extends AbstractLdapTestUnit
      *             the exception
      */
     @Test
-    public void testCopyPaste() throws Exception
+    public void testCopyPasteStringValue() throws Exception
     {
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Barbara Jensen" );
 
@@ -270,6 +270,46 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         Entry entry = service.getAdminSession()
             .lookup( new Dn( "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system" ) );
         assertTrue( "Should contain uid=bjensen: " + entry, entry.contains( "uid", "bjensen" ) );
+    }
+
+
+    @Test
+    public void testCopyPasteMultipleStringAndBinaryValues() throws Exception
+    {
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=hnelson" );
+
+        // copy the values
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "uid=hnelson,ou=users,ou=system" );
+        entryEditorBot.activate();
+        entryEditorBot.copyValues( "userpassword", "uid", "description", "jpegphoto" );
+
+        // go to another entry
+        browserViewBot
+            .selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\"" );
+        entryEditorBot = studioBot.getEntryEditorBot( "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system" );
+        entryEditorBot.activate();
+        assertEquals( 8, entryEditorBot.getAttributeValues().size() );
+
+        // paste values, wait till job is done
+        JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__execute_ldif_name );
+        entryEditorBot.pasteValues();
+        watcher.waitUntilDone();
+
+        // assert pasted values are visible in editor
+        SWTUtils.sleep( 1000 );
+        assertEquals( 12, entryEditorBot.getAttributeValues().size() );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "uid: hnelson" ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "description: " + Characters.ALL ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "jpegPhoto: JPEG-Image (1x1 Pixel, 631 Bytes)" ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "userPassword: SSHA-512 hashed password" ) );
+
+        // assert pasted values were written to directory
+        Entry entry = service.getAdminSession()
+            .lookup( new Dn( "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system" ) );
+        assertTrue( "Should contain uid=hnelson: " + entry, entry.contains( "uid", "hnelson" ) );
+        assertTrue( "Should contain description: " + entry, entry.contains( "description", Characters.ALL ) );
+        assertTrue( "Should contain userPassword: " + entry, entry.containsAttribute( "userPassword" ) );
+        assertTrue( "Should contain jpegPhoto: " + entry, entry.containsAttribute( "jpegPhoto" ) );
     }
 
 

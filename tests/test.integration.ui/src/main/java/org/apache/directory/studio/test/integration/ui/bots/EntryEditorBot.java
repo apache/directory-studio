@@ -125,9 +125,21 @@ public class EntryEditorBot
     }
 
 
+    public void copyValues( String... attributeTypes )
+    {
+        editorBot.copyValues( attributeTypes );
+    }
+
+
     public void pasteValue()
     {
         editorBot.pasteValue();
+    }
+
+
+    public void pasteValues()
+    {
+        editorBot.pasteValues();
     }
 
 }

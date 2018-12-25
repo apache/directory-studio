@@ -40,10 +40,45 @@ public class NewSchemaProjectWizardBot extends WizardBot
     }
 
 
+    public void selectOfflineSchema()
+    {
+        activate();
+        bot.radio( "Offline Schema" ).click();
+    }
+
+
+    public void selectOnlineSchema()
+    {
+        activate();
+        bot.radio( "Online Schema from a Directory Server" ).click();
+    }
+
+
+    public void selectApacheDS()
+    {
+        activate();
+        bot.radio( "ApacheDS" ).click();
+    }
+
+
+    public void selectOpenLDAP()
+    {
+        activate();
+        bot.radio( "OpenLDAP" ).click();
+    }
+
+
     public void selectAllSchemas()
     {
         activate();
         clickButton( "Select All" );
+    }
+
+
+    public void selectConnection( String connectionName )
+    {
+        activate();
+        bot.tree().select( connectionName );
     }
 
 }

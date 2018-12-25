@@ -101,6 +101,12 @@ public class StudioBot
     }
 
 
+    public SchemaViewBot getSchemaView()
+    {
+        return new SchemaViewBot();
+    }
+
+
     public SchemaSearchViewBot getSchemaSearchView()
     {
         return new SchemaSearchViewBot();

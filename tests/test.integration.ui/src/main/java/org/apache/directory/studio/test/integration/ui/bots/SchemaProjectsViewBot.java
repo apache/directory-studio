@@ -22,6 +22,7 @@ package org.apache.directory.studio.test.integration.ui.bots;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 
 
 public class SchemaProjectsViewBot
@@ -31,9 +32,27 @@ public class SchemaProjectsViewBot
 
     public NewSchemaProjectWizardBot openNewSchemaProjectWizard()
     {
-        SWTBotView view = bot.viewByTitle( "Projects" );
-        view.toolbarButton( "New Schema Project" ).click();
+        getProjectsTable().contextMenu( "New Schema Project" ).click();
         return new NewSchemaProjectWizardBot();
+    }
+
+
+    public void deleteAllProjects()
+    {
+        while ( getProjectsTable().rowCount() > 0 )
+        {
+            getProjectsTable().getTableItem( 0 ).contextMenu( "Delete Project" ).click();
+            new DeleteDialogBot( DeleteDialogBot.DELETE_PROJECT ).clickOkButton();
+        }
+    }
+
+
+    private SWTBotTable getProjectsTable()
+    {
+        SWTBotView view = bot.viewByTitle( "Projects" );
+        view.show();
+        SWTBotTable table = view.bot().table();
+        return table;
     }
 
 }

@@ -22,6 +22,9 @@ package org.apache.directory.studio.schemaeditor.model.io;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -484,7 +487,9 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
     private static List<String> getStringValues( Entry entry, String schemaElement )
     {
         Attribute at = entry.get( schemaElement );
-        return StreamSupport.stream( at.spliterator(), false ).map( Value::getValue ).collect( Collectors.toList() );
+        System.out.println( schemaElement + " => " + at );
+        Spliterator<Value> spliterator = Optional.ofNullable( at ).map( Attribute::spliterator ).orElseGet( Spliterators::emptySpliterator );
+        return StreamSupport.stream( spliterator, false ).map( Value::getValue ).collect( Collectors.toList() );
     }
 
 
