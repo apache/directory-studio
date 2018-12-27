@@ -31,7 +31,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.net.InetAddress;
 import java.security.KeyPair;
 import java.security.KeyStore;
 import java.security.PrivateKey;
@@ -154,15 +153,17 @@ public class CertificateValidationTest extends AbstractLdapTestUnit
 
     private static final String SELF_SIGNED_KEYSTORE_PATH = "target/classes/self-signed-keystore.ks";
 
+    private static final String UNTRUSTED_ROOT_CA_KEYSTORE_PATH = "target/classes/untrusted-root-ca-keystore.ks";
+
+    private static final String UNTRUSTED_KEYSTORE_PATH = "target/classes/untrusted-keystore.ks";
+
     private static final String MULTIPLE_ISSUES_KEYSTORE_PATH = "target/classes/multiple-issues-keystore.ks";
 
 
     @BeforeClass
     public static void installKeyStoreWithCertificate() throws Exception
     {
-        String hostName = InetAddress.getLocalHost().getHostName();
-        String issuerDn = TlsKeyGenerator.CERTIFICATE_PRINCIPAL_DN;
-        //String subjectDn = "CN=" + hostName;
+        String issuerDn = "CN=trusted-root-ca";
         String subjectDn = "CN=" + LOCALHOST;
         Date startDate = new Date();
         Date expiryDate = new Date( System.currentTimeMillis() + TlsKeyGenerator.YEAR_MILLIS );
@@ -170,8 +171,7 @@ public class CertificateValidationTest extends AbstractLdapTestUnit
         int keySize = 1024;
 
         // generate root CA, self-signed
-        String rootCaSubjectDn = issuerDn;
-        ROOT_CA_KEYSTORE = createKeyStore( rootCaSubjectDn, issuerDn, startDate, expiryDate, keyAlgo, keySize, null,
+        ROOT_CA_KEYSTORE = createKeyStore( issuerDn, issuerDn, startDate, expiryDate, keyAlgo, keySize, null,
             ROOT_CA_KEYSTORE_PATH );
         PrivateKey rootCaPrivateKey = ( PrivateKey ) ROOT_CA_KEYSTORE.getKey( "apacheds", KEYSTORE_PW.toCharArray() );
 
@@ -205,7 +205,16 @@ public class CertificateValidationTest extends AbstractLdapTestUnit
         createKeyStore( subjectDn, subjectDn, startDate, expiryDate, keyAlgo, keySize, null,
             SELF_SIGNED_KEYSTORE_PATH );
 
-        // generate a certificate with multipe issues: expired, wrong hostname, self-signed
+        // generate a certificate, signed by untrusted root CA
+        String untrustedRootCaIssuerDn = "CN=untrusted-root-ca";
+        createKeyStore( untrustedRootCaIssuerDn, untrustedRootCaIssuerDn, startDate, expiryDate, keyAlgo, keySize, null,
+            UNTRUSTED_ROOT_CA_KEYSTORE_PATH );
+        PrivateKey untrustedRootCaPrivateKey = ( PrivateKey ) ROOT_CA_KEYSTORE.getKey( "apacheds",
+            KEYSTORE_PW.toCharArray() );
+        createKeyStore( subjectDn, untrustedRootCaIssuerDn, startDate, expiryDate, keyAlgo, keySize, untrustedRootCaPrivateKey,
+            UNTRUSTED_KEYSTORE_PATH );
+
+        // generate a certificate with multiple issues: expired, wrong hostname, self-signed
         createKeyStore( wrongHostnameSubjectDn, wrongHostnameSubjectDn, expiredStartDate, expiredExpiryDate, keyAlgo,
             keySize, null, MULTIPLE_ISSUES_KEYSTORE_PATH );
     }
@@ -531,16 +540,10 @@ public class CertificateValidationTest extends AbstractLdapTestUnit
     /**
      * Tests StartTLS with a certificate without valid certification path.
      */
-    @CreateLdapServer(keyStore = VALID_KEYSTORE_PATH, certificatePassword = KEYSTORE_PW, extendedOpHandlers = StartTlsHandler.class)
+    @CreateLdapServer(keyStore = UNTRUSTED_KEYSTORE_PATH, certificatePassword = KEYSTORE_PW, extendedOpHandlers = StartTlsHandler.class)
     @Test
-    public void testStartTlsCertificateValidationHNoValidCertificationPath() throws Exception
+    public void testStartTlsCertificateValidationNoValidCertificationPath() throws Exception
     {
-        // delete custom Java key store settings
-        System.clearProperty( "javax.net.ssl.trustStore" );
-        System.clearProperty( "javax.net.ssl.trustStorePassword" );
-        System.clearProperty( "javax.net.ssl.keyStore" );
-        System.clearProperty( "javax.net.ssl.keyStorePassword" );
-
         wizardBotWithStartTls();
 
         // check the certificate, expecting the trust dialog
