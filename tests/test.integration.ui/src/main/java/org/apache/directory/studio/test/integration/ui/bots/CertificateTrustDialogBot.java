@@ -37,35 +37,35 @@ public class CertificateTrustDialogBot extends DialogBot
 
     public boolean isSelfSigned()
     {
-        return isErrorMessage( "self-signed" );
+        return hasErrorMessage( "self-signed" );
     }
 
 
     public boolean isHostNameMismatch()
     {
-        return isErrorMessage( "host name" );
+        return hasErrorMessage( "host name" );
     }
 
 
     public boolean isExpired()
     {
-        return isErrorMessage( "expired" );
+        return hasErrorMessage( "expired" );
     }
 
 
     public boolean isNotYetValid()
     {
-        return isErrorMessage( "not yet valid" );
+        return hasErrorMessage( "not yet valid" );
     }
 
 
     public boolean isIssuerUnkown()
     {
-        return isErrorMessage( "issuer certificate is unknown" );
+        return hasErrorMessage( "issuer certificate is unknown" );
     }
 
 
-    private boolean isErrorMessage( String needle )
+    public boolean hasErrorMessage( String needle )
     {
         List<String> errorMessages = getErrorMessages();
         for ( String string : errorMessages )

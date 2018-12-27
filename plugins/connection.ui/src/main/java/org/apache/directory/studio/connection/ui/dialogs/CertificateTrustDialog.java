@@ -20,9 +20,12 @@
 package org.apache.directory.studio.connection.ui.dialogs;
 
 
+import java.security.cert.CertPathValidatorException.BasicReason;
+import java.security.cert.CertPathValidatorException.Reason;
 import java.security.cert.X509Certificate;
-import java.util.List;
+import java.util.Collection;
 
+import org.apache.directory.api.ldap.model.exception.LdapTlsHandshakeFailCause;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.ICertificateHandler;
 import org.eclipse.jface.dialogs.Dialog;
@@ -58,7 +61,7 @@ public class CertificateTrustDialog extends Dialog
     private X509Certificate[] certificateChain;
 
     /** The causes of failed certificate validation. */
-    private List<ICertificateHandler.FailCause> failCauses;
+    private Collection<LdapTlsHandshakeFailCause> failCauses;
 
 
     /**
@@ -70,7 +73,7 @@ public class CertificateTrustDialog extends Dialog
      * @param failCauses the causes of failed certificate validation
      */
     public CertificateTrustDialog( Shell parentShell, String host, X509Certificate[] certificateChain,
-        List<ICertificateHandler.FailCause> failCauses )
+        Collection<LdapTlsHandshakeFailCause> failCauses )
     {
         super( parentShell );
         super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
@@ -115,7 +118,7 @@ public class CertificateTrustDialog extends Dialog
         {
             new CertificateInfoDialog( getShell(), certificateChain ).open();
         }
-        
+
         super.buttonPressed( buttonId );
     }
 
@@ -137,35 +140,38 @@ public class CertificateTrustDialog extends Dialog
 
         // failed cause
         Composite failedCauseContainer = BaseWidgetUtils.createColumnContainer( composite, 1, 1 );
-        
-        for ( ICertificateHandler.FailCause failCause : failCauses )
+
+        for ( LdapTlsHandshakeFailCause failCause : failCauses )
         {
-            switch ( failCause )
+            Reason reason = failCause.getReason();
+            if ( reason == BasicReason.EXPIRED )
             {
-                case SelfSignedCertificate:
-                    BaseWidgetUtils.createWrappedLabel( failedCauseContainer, Messages
-                        .getString( "CertificateTrustDialog.SelfSignedCertificate" ), 1 ); //$NON-NLS-1$
-                    break;
-                    
-                case CertificateExpired:
-                    BaseWidgetUtils.createWrappedLabel( failedCauseContainer, Messages
-                        .getString( "CertificateTrustDialog.CertificateExpired" ), 1 ); //$NON-NLS-1$
-                    break;
-                    
-                case CertificateNotYetValid:
-                    BaseWidgetUtils.createWrappedLabel( failedCauseContainer, Messages
-                        .getString( "CertificateTrustDialog.CertificateNotYetValid" ), 1 ); //$NON-NLS-1$
-                    break;
-                    
-                case NoValidCertificationPath:
-                    BaseWidgetUtils.createWrappedLabel( failedCauseContainer, Messages
-                        .getString( "CertificateTrustDialog.NoValidCertificationPath" ), 1 ); //$NON-NLS-1$
-                    break;
-                    
-                case HostnameVerificationFailed:
-                    BaseWidgetUtils.createWrappedLabel( failedCauseContainer, Messages
-                        .getString( "CertificateTrustDialog.HostnameVerificationFailed" ), 1 ); //$NON-NLS-1$
-                    break;
+                BaseWidgetUtils.createWrappedLabel( failedCauseContainer, Messages
+                    .getString( "CertificateTrustDialog.CertificateExpired" ), 1 ); //$NON-NLS-1$
+            }
+            else if ( reason == BasicReason.NOT_YET_VALID )
+            {
+                BaseWidgetUtils.createWrappedLabel( failedCauseContainer, Messages
+                    .getString( "CertificateTrustDialog.CertificateNotYetValid" ), 1 ); //$NON-NLS-1$
+            }
+            else if ( reason == LdapTlsHandshakeFailCause.LdapApiReason.HOST_NAME_VERIFICATION_FAILED )
+            {
+                BaseWidgetUtils.createWrappedLabel( failedCauseContainer, Messages
+                    .getString( "CertificateTrustDialog.HostnameVerificationFailed" ), 1 ); //$NON-NLS-1$
+            }
+            else if ( reason == LdapTlsHandshakeFailCause.LdapApiReason.NO_VALID_CERTIFICATION_PATH )
+            {
+                BaseWidgetUtils.createWrappedLabel( failedCauseContainer, Messages
+                    .getString( "CertificateTrustDialog.NoValidCertificationPath" ), 1 ); //$NON-NLS-1$
+            }
+            else if ( reason == LdapTlsHandshakeFailCause.LdapApiReason.SELF_SIGNED )
+            {
+                BaseWidgetUtils.createWrappedLabel( failedCauseContainer, Messages
+                    .getString( "CertificateTrustDialog.SelfSignedCertificate" ), 1 ); //$NON-NLS-1$
+            }
+            else
+            {
+                BaseWidgetUtils.createWrappedLabel( failedCauseContainer, "- " + failCause.getMessage(), 1 );
             }
         }
 
@@ -178,7 +184,7 @@ public class CertificateTrustDialog extends Dialog
         // The "Don't trust" button
         Button trustNotButton = BaseWidgetUtils.createRadiobutton( composite, Messages
             .getString( "CertificateTrustDialog.DoNotTrust" ), 1 ); //$NON-NLS-1$
-        
+
         trustNotButton.addSelectionListener( new SelectionAdapter()
         {
             /**

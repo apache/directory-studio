@@ -48,24 +48,6 @@ import org.bouncycastle.x509.X509V1CertificateGenerator;
 public class CertificateUtils
 {
 
-    public static File createCertificateInKeyStoreFile( String issuerDN, String subjectDN, Date startDate,
-        Date expiryDate, int keysize ) throws Exception
-    {
-        KeyPair keypair = createKeyPair( keysize );
-        X509Certificate cert = createCertificate( issuerDN, subjectDN, startDate, expiryDate, keypair );
-
-        // write key store file
-        File ksFile = File.createTempFile( "testStore", "ks" );
-        KeyStore ks = KeyStore.getInstance( KeyStore.getDefaultType() );
-        ks.load( null, null );
-        ks.setCertificateEntry( "apacheds", cert );
-        ks.setKeyEntry( "apacheds", keypair.getPrivate(), "changeit".toCharArray(), new Certificate[]
-            { cert } );
-        ks.store( new FileOutputStream( ksFile ), "changeit".toCharArray() );
-
-        return ksFile;
-    }
-
 
     public static X509Certificate createCertificate( String issuerDN, String subjectDN, Date startDate, Date expiryDate,
         KeyPair keypair ) throws CertificateEncodingException, NoSuchProviderException, NoSuchAlgorithmException,

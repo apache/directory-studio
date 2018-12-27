@@ -23,9 +23,11 @@ package org.apache.directory.studio.connection.core;
 import java.io.IOException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.PropertyResourceBundle;
 
+import org.apache.directory.api.ldap.model.exception.LdapTlsHandshakeFailCause;
 import org.apache.directory.studio.connection.core.event.CoreEventRunner;
 import org.apache.directory.studio.connection.core.event.EventRunner;
 import org.apache.directory.studio.connection.core.io.api.LdifModificationLogger;
@@ -369,7 +371,7 @@ public class ConnectionCorePlugin extends Plugin
             certificateHandler = new ICertificateHandler()
             {
                 public TrustLevel verifyTrustLevel( String host, X509Certificate[] certChain,
-                    List<ICertificateHandler.FailCause> failCauses )
+                    Collection<LdapTlsHandshakeFailCause> failCauses )
                 {
                     return TrustLevel.Not;
                 }

@@ -22,8 +22,9 @@ package org.apache.directory.studio.connection.ui;
 
 
 import java.security.cert.X509Certificate;
-import java.util.List;
+import java.util.Collection;
 
+import org.apache.directory.api.ldap.model.exception.LdapTlsHandshakeFailCause;
 import org.apache.directory.studio.connection.core.ICertificateHandler;
 import org.apache.directory.studio.connection.ui.dialogs.CertificateTrustDialog;
 import org.eclipse.ui.PlatformUI;
@@ -40,12 +41,11 @@ public class ConnectionUICertificateHandler implements ICertificateHandler
      * {@inheritDoc}
      */
     public TrustLevel verifyTrustLevel( final String host, final X509Certificate[] certChain,
-        final List<ICertificateHandler.FailCause> failCauses )
+        final Collection<LdapTlsHandshakeFailCause> failCauses )
     {
         // open dialog
         final TrustLevel[] trustLevel = new TrustLevel[1];
-        PlatformUI.getWorkbench().getDisplay().syncExec( () ->
-        {
+        PlatformUI.getWorkbench().getDisplay().syncExec( () -> {
             CertificateTrustDialog dialog = new CertificateTrustDialog( PlatformUI.getWorkbench().getDisplay()
                 .getActiveShell(), host, certChain, failCauses );
             dialog.open();

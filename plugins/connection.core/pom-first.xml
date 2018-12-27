@@ -54,6 +54,7 @@
             
             <Import-Package>
  org.apache.commons.lang3,
+ org.apache.commons.lang3.exception,
  org.apache.commons.codec.digest,
  org.apache.http.conn.ssl,
  org.dom4j,

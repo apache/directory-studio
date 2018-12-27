@@ -22,7 +22,9 @@ package org.apache.directory.studio.connection.core;
 
 
 import java.security.cert.X509Certificate;
-import java.util.List;
+import java.util.Collection;
+
+import org.apache.directory.api.ldap.model.exception.LdapTlsHandshakeFailCause;
 
 
 /**
@@ -49,27 +51,6 @@ public interface ICertificateHandler
         Permanent;
     }
 
-    /**
-     * The cause of certificate verification failure.
-     */
-    enum FailCause
-    {
-        /** No valid certification path, i.e. unknown issuer.  */
-        NoValidCertificationPath,
-
-        /** Certificate is not valid yet */
-        CertificateNotYetValid,
-
-        /** Certificate is expired */
-        CertificateExpired,
-
-        /** Certificate is self signed */
-        SelfSignedCertificate,
-
-        /** The host name of the server doesn't match the host name in certificate */
-        HostnameVerificationFailed
-    }
-
 
     /**
      * Verifies the trust level of the given certificate chain.
@@ -80,6 +61,6 @@ public interface ICertificateHandler
      * @return the trust level
      */
     TrustLevel verifyTrustLevel( String host, X509Certificate[] certChain,
-        List<ICertificateHandler.FailCause> failCauses );
+        Collection<LdapTlsHandshakeFailCause> failCauses );
 
 }

@@ -59,6 +59,7 @@
  org.apache.directory.server.annotations;bundle-version="${org.apache.directory.server.version}",
  org.apache.directory.server.core.annotations;bundle-version="${org.apache.directory.server.version}",
  org.apache.directory.server.core.api;bundle-version="${org.apache.directory.server.version}",
+ org.apache.directory.server.core;bundle-version="${org.apache.directory.server.version}",
  org.apache.directory.server.protocol.ldap;bundle-version="${org.apache.directory.server.version}",
  org.apache.directory.server.protocol.shared;bundle-version="${org.apache.directory.server.version}",
  org.apache.directory.server.jdbm.partition;bundle-version="${org.apache.directory.server.version}",
