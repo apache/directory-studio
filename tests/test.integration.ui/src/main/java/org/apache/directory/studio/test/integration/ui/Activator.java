@@ -40,6 +40,7 @@ public class Activator extends Plugin
 
         // Nasty hack to get the API bundles started. DO NOT REMOVE
         Platform.getBundle( "org.apache.directory.api.ldap.codec.core" ).start();
+        Platform.getBundle( "org.apache.directory.api.ldap.extras.codec" ).start();
         Platform.getBundle( "org.apache.directory.api.ldap.net.mina" ).start();
     }
 
