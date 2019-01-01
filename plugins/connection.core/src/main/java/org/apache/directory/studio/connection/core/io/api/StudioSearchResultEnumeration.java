@@ -31,7 +31,8 @@ import javax.naming.ldap.BasicControl;
 import javax.naming.ldap.Control;
 import javax.naming.ldap.PagedResultsResponseControl;
 
-import org.apache.directory.api.ldap.codec.api.CodecControl;
+import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.model.cursor.CursorException;
@@ -44,6 +45,7 @@ import org.apache.directory.api.ldap.model.message.SearchResultDone;
 import org.apache.directory.api.ldap.model.message.SearchResultEntry;
 import org.apache.directory.api.ldap.model.message.SearchResultEntryImpl;
 import org.apache.directory.api.ldap.model.message.SearchResultReference;
+import org.apache.directory.api.ldap.model.message.controls.OpaqueControl;
 import org.apache.directory.api.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
@@ -354,6 +356,9 @@ public class StudioSearchResultEnumeration
      */
     private Control[] convertControls( Collection<org.apache.directory.api.ldap.model.message.Control> controls )
     {
+        // TODO: get rid of JNDI controls!!!
+        // TODO: test paged search control?
+        // TODO: test other response controls?
         if ( controls != null )
         {
             List<Control> convertedControls = new ArrayList<Control>();
@@ -361,15 +366,27 @@ public class StudioSearchResultEnumeration
             for ( org.apache.directory.api.ldap.model.message.Control control : controls )
             {
                 Control convertedControl = null;
-                CodecControl<? extends org.apache.directory.api.ldap.model.message.Control> wrapped = null;
 
-                if ( control instanceof CodecControl )
+                ControlFactory<? extends org.apache.directory.api.ldap.model.message.Control> factory = codec
+                    .getResponseControlFactories().get( control.getOid() );
+                if ( factory == null )
                 {
-                    wrapped = ( org.apache.directory.api.ldap.codec.api.CodecControl<?> ) control;
+                    if ( control instanceof OpaqueControl )
+                    {
+                        convertedControl = new BasicControl( control.getOid(), control.isCritical(),
+                            ( ( OpaqueControl ) control ).getEncodedValue() );
+                    }
+                    else
+                    {
+                        convertedControl = new BasicControl( control.getOid(), control.isCritical(), null );
+                    }
                 }
                 else
                 {
-                    wrapped = codec.newRequestControl( control );
+                    Asn1Buffer asn1Buffer = new Asn1Buffer();
+                    factory.encodeValue( asn1Buffer, control );
+                    convertedControl = new BasicControl( control.getOid(), control.isCritical(),
+                        asn1Buffer.getBytes().array() );
                 }
 
                 if ( PagedResultsResponseControl.OID.equals( control.getOid() ) )
@@ -377,19 +394,14 @@ public class StudioSearchResultEnumeration
                     // Special case for the PagedResultsResponseControl
                     try
                     {
-                        convertedControl = new PagedResultsResponseControl( wrapped.getOid(), wrapped.isCritical(),
-                            wrapped.getValue() );
+                        convertedControl = new PagedResultsResponseControl( convertedControl.getID(),
+                            convertedControl.isCritical(),
+                            convertedControl.getEncodedValue() );
                     }
                     catch ( IOException e )
                     {
-                        convertedControl = new BasicControl( wrapped.getOid(), wrapped.isCritical(),
-                            wrapped.getValue() );
+                        // ignore, use basic control
                     }
-                }
-                else
-                {
-                    // Default case
-                    convertedControl = new BasicControl( wrapped.getOid(), wrapped.isCritical(), wrapped.getValue() );
                 }
 
                 convertedControls.add( convertedControl );
