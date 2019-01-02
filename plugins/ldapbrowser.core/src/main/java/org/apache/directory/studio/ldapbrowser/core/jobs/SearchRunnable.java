@@ -32,12 +32,12 @@ import java.util.Set;
 import javax.naming.directory.SearchControls;
 import javax.naming.ldap.BasicControl;
 import javax.naming.ldap.Control;
-import javax.naming.ldap.PagedResultsResponseControl;
 
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.SearchScope;
+import org.apache.directory.api.ldap.model.message.controls.PagedResults;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.url.LdapUrl;
 import org.apache.directory.api.util.Strings;
@@ -208,13 +208,14 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
                     // check response controls
                     ISearch clonedSearch = ( ISearch ) searchToPerform.clone();
                     clonedSearch.getResponseControls().clear();
-                    StudioPagedResultsControl sprResponseControl = null;
+                    PagedResults sprResponseControl = null;
                     StudioPagedResultsControl sprRequestControl = null;
-                    for ( StudioControl responseControl : searchToPerform.getResponseControls() )
+                    for ( org.apache.directory.api.ldap.model.message.Control responseControl : searchToPerform
+                        .getResponseControls() )
                     {
-                        if ( responseControl instanceof StudioPagedResultsControl )
+                        if ( responseControl instanceof PagedResults )
                         {
-                            sprResponseControl = ( StudioPagedResultsControl ) responseControl;
+                            sprResponseControl = ( PagedResults ) responseControl;
                         }
                     }
                     for ( Iterator<StudioControl> it = clonedSearch.getControls().iterator(); it.hasNext(); )
@@ -378,7 +379,7 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
                             .reportProgress( searchResultList.size() == 1 ? BrowserCoreMessages.model__retrieved_1_entry
                                 : BrowserCoreMessages.bind( BrowserCoreMessages.model__retrieved_n_entries,
                                     new String[]
-                                        { Integer.toString( searchResultList.size() ) } ) );
+                                    { Integer.toString( searchResultList.size() ) } ) );
                     }
                 }
                 catch ( Exception e )
@@ -399,28 +400,13 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
                 {
                     if ( enumeration != null )
                     {
-                        Control[] jndiControls = enumeration.getResponseControls();
-                        if ( jndiControls != null )
+                        for ( org.apache.directory.api.ldap.model.message.Control control : enumeration
+                            .getResponseControls() )
                         {
-                            for ( Control jndiControl : jndiControls )
+                            search.getResponseControls().add( control );
+                            if ( control instanceof PagedResults )
                             {
-                                if ( jndiControl instanceof PagedResultsResponseControl )
-                                {
-                                    PagedResultsResponseControl prrc = ( PagedResultsResponseControl ) jndiControl;
-                                    StudioPagedResultsControl studioControl = new StudioPagedResultsControl(
-                                        prrc.getResultSize(), prrc.getCookie(), prrc.isCritical(), false );
-                                    search.getResponseControls().add( studioControl );
-
-                                    search.setCountLimitExceeded( prrc.getCookie() != null );
-                                }
-                                else
-                                {
-                                    StudioControl studioControl = new StudioControl();
-                                    studioControl.setOid( jndiControl.getID() );
-                                    studioControl.setCritical( jndiControl.isCritical() );
-                                    studioControl.setControlValue( jndiControl.getEncodedValue() );
-                                    search.getResponseControls().add( studioControl );
-                                }
+                                search.setCountLimitExceeded( ( ( PagedResults ) control ).getCookieValue() > 0 );
                             }
                         }
                     }
@@ -432,7 +418,7 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
 
                 monitor.reportProgress( searchResultList.size() == 1 ? BrowserCoreMessages.model__retrieved_1_entry
                     : BrowserCoreMessages.bind( BrowserCoreMessages.model__retrieved_n_entries, new String[]
-                        { Integer.toString( searchResultList.size() ) } ) );
+                    { Integer.toString( searchResultList.size() ) } ) );
                 monitor.worked( 1 );
 
                 search.setSearchResults( ( ISearchResult[] ) searchResultList
@@ -722,19 +708,22 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
                             // hasChildren flag
                             if ( SchemaConstants.HAS_SUBORDINATES_AT.equalsIgnoreCase( attributeDescription ) )
                             {
-                                if ( "FALSE".equalsIgnoreCase( value ) ) { //$NON-NLS-1$
+                                if ( "FALSE".equalsIgnoreCase( value ) ) //$NON-NLS-1$
+                                {
                                     entry.setHasChildrenHint( false );
                                 }
                             }
                             if ( SchemaConstants.NUM_SUBORDINATES_AT.equalsIgnoreCase( attributeDescription ) )
                             {
-                                if ( "0".equalsIgnoreCase( value ) ) { //$NON-NLS-1$
+                                if ( "0".equalsIgnoreCase( value ) ) //$NON-NLS-1$
+                                {
                                     entry.setHasChildrenHint( false );
                                 }
                             }
                             if ( SchemaConstants.SUBORDINATE_COUNT_AT.equalsIgnoreCase( attributeDescription ) )
                             {
-                                if ( "0".equalsIgnoreCase( value ) ) { //$NON-NLS-1$
+                                if ( "0".equalsIgnoreCase( value ) ) //$NON-NLS-1$
+                                {
                                     entry.setHasChildrenHint( false );
                                 }
                             }

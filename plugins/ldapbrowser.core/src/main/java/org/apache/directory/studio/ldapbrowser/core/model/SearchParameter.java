@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -76,7 +77,7 @@ public class SearchParameter implements Serializable
     private List<StudioControl> controls;
 
     /** The response controls */
-    private List<StudioControl> responseControls;
+    private List<Control> responseControls;
 
     /** Flag indicating weather the hasChildren flag of IEntry should be initialized */
     private boolean initHasChildrenFlag;
@@ -112,7 +113,7 @@ public class SearchParameter implements Serializable
         aliasesDereferencingMethod = AliasDereferencingMethod.ALWAYS;
         referralsHandlingMethod = ReferralHandlingMethod.FOLLOW;
         controls = new ArrayList<StudioControl>();
-        responseControls = new ArrayList<StudioControl>();
+        responseControls = new ArrayList<>();
         initHasChildrenFlag = false;
     }
 
@@ -386,7 +387,7 @@ public class SearchParameter implements Serializable
      * 
      * @return the response controls
      */
-    public List<StudioControl> getResponseControls()
+    public List<Control> getResponseControls()
     {
         return responseControls;
     }

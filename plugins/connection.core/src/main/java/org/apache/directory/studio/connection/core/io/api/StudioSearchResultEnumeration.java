@@ -20,19 +20,15 @@
 package org.apache.directory.studio.connection.core.io.api;
 
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import javax.naming.directory.SearchControls;
-import javax.naming.ldap.BasicControl;
 import javax.naming.ldap.Control;
-import javax.naming.ldap.PagedResultsResponseControl;
 
-import org.apache.directory.api.asn1.util.Asn1Buffer;
-import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.model.cursor.CursorException;
@@ -45,7 +41,6 @@ import org.apache.directory.api.ldap.model.message.SearchResultDone;
 import org.apache.directory.api.ldap.model.message.SearchResultEntry;
 import org.apache.directory.api.ldap.model.message.SearchResultEntryImpl;
 import org.apache.directory.api.ldap.model.message.SearchResultReference;
-import org.apache.directory.api.ldap.model.message.controls.OpaqueControl;
 import org.apache.directory.api.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
@@ -330,7 +325,7 @@ public class StudioSearchResultEnumeration
      * 
      * @return the response controls, may be null
      */
-    public Control[] getResponseControls()
+    public Collection<org.apache.directory.api.ldap.model.message.Control> getResponseControls()
     {
         if ( searchResultDone != null )
         {
@@ -338,80 +333,11 @@ public class StudioSearchResultEnumeration
                 .getControls();
             if ( ( controlsMap != null ) && ( controlsMap.size() > 0 ) )
             {
-                return convertControls( controlsMap.values() );
+                return controlsMap.values();
             }
         }
 
-        return new Control[0];
+        return Collections.emptyList();
     }
 
-
-    /**
-     * Converts the controls.
-     *
-     * @param controls
-     *      an array of controls
-     * @return
-     *      an array of converted controls
-     */
-    private Control[] convertControls( Collection<org.apache.directory.api.ldap.model.message.Control> controls )
-    {
-        // TODO: get rid of JNDI controls!!!
-        // TODO: test paged search control?
-        // TODO: test other response controls?
-        if ( controls != null )
-        {
-            List<Control> convertedControls = new ArrayList<Control>();
-
-            for ( org.apache.directory.api.ldap.model.message.Control control : controls )
-            {
-                Control convertedControl = null;
-
-                ControlFactory<? extends org.apache.directory.api.ldap.model.message.Control> factory = codec
-                    .getResponseControlFactories().get( control.getOid() );
-                if ( factory == null )
-                {
-                    if ( control instanceof OpaqueControl )
-                    {
-                        convertedControl = new BasicControl( control.getOid(), control.isCritical(),
-                            ( ( OpaqueControl ) control ).getEncodedValue() );
-                    }
-                    else
-                    {
-                        convertedControl = new BasicControl( control.getOid(), control.isCritical(), null );
-                    }
-                }
-                else
-                {
-                    Asn1Buffer asn1Buffer = new Asn1Buffer();
-                    factory.encodeValue( asn1Buffer, control );
-                    convertedControl = new BasicControl( control.getOid(), control.isCritical(),
-                        asn1Buffer.getBytes().array() );
-                }
-
-                if ( PagedResultsResponseControl.OID.equals( control.getOid() ) )
-                {
-                    // Special case for the PagedResultsResponseControl
-                    try
-                    {
-                        convertedControl = new PagedResultsResponseControl( convertedControl.getID(),
-                            convertedControl.isCritical(),
-                            convertedControl.getEncodedValue() );
-                    }
-                    catch ( IOException e )
-                    {
-                        // ignore, use basic control
-                    }
-                }
-
-                convertedControls.add( convertedControl );
-            }
-
-            return convertedControls.toArray( new Control[0] );
-        }
-        else
-        {
-            return new Control[0];
-        }
-    }
 }

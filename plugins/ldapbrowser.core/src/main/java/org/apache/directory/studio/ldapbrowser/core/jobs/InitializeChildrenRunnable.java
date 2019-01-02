@@ -25,7 +25,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.SearchScope;
+import org.apache.directory.api.ldap.model.message.controls.PagedResults;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -242,12 +244,12 @@ public class InitializeChildrenRunnable implements StudioConnectionBulkRunnableW
                 }
 
                 StudioPagedResultsControl sprRequestControl = null;
-                StudioPagedResultsControl sprResponseControl = null;
-                for ( StudioControl responseControl : search.getResponseControls() )
+                PagedResults prResponseControl = null;
+                for ( Control responseControl : search.getResponseControls() )
                 {
-                    if ( responseControl instanceof StudioPagedResultsControl )
+                    if ( responseControl instanceof PagedResults )
                     {
-                        sprResponseControl = ( StudioPagedResultsControl ) responseControl;
+                        prResponseControl = ( PagedResults ) responseControl;
                     }
                 }
                 for ( StudioControl requestControl : search.getControls() )
@@ -258,7 +260,7 @@ public class InitializeChildrenRunnable implements StudioConnectionBulkRunnableW
                     }
                 }
 
-                if ( sprRequestControl != null && sprResponseControl != null )
+                if ( sprRequestControl != null && prResponseControl != null )
                 {
                     if ( sprRequestControl.isScrollMode() )
                     {
@@ -270,10 +272,10 @@ public class InitializeChildrenRunnable implements StudioConnectionBulkRunnableW
                             parent.setTopPageChildrenRunnable( topPageChildrenRunnable );
                         }
 
-                        if ( sprResponseControl.getCookie() != null )
+                        if ( prResponseControl.getCookieValue() > 0 )
                         {
                             StudioPagedResultsControl newSprc = new StudioPagedResultsControl( sprRequestControl
-                                .getSize(), sprResponseControl.getCookie(), sprRequestControl.isCritical(),
+                                .getSize(), prResponseControl.getCookie(), sprRequestControl.isCritical(),
                                 sprRequestControl.isScrollMode() );
                             InitializeChildrenRunnable nextPageChildrenRunnable = new InitializeChildrenRunnable(
                                 parent, newSprc );
@@ -283,14 +285,14 @@ public class InitializeChildrenRunnable implements StudioConnectionBulkRunnableW
                     else
                     {
                         // transparently continue search, till count limit is reached
-                        if ( sprResponseControl.getCookie() != null
+                        if ( prResponseControl.getCookie() != null
                             && ( search.getCountLimit() == 0 || search.getSearchResults().length < search
                                 .getCountLimit() ) )
                         {
 
                             search.setSearchResults( new ISearchResult[0] );
                             search.getResponseControls().clear();
-                            sprRequestControl.setCookie( sprResponseControl.getCookie() );
+                            sprRequestControl.setCookie( prResponseControl.getCookie() );
 
                             executeSearch( parent, search, monitor );
                             srs = search.getSearchResults();

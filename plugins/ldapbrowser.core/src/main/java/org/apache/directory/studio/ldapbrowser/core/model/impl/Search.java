@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.url.LdapUrl;
@@ -223,7 +224,7 @@ public class Search implements ISearch
     /**
      * {@inheritDoc}
      */
-    public List<StudioControl> getResponseControls()
+    public List<Control> getResponseControls()
     {
         return searchParameter.getResponseControls();
     }

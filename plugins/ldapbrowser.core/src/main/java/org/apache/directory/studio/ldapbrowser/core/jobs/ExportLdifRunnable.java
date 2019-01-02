@@ -27,14 +27,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.ldap.Control;
-import javax.naming.ldap.PagedResultsResponseControl;
-
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.message.controls.PagedResults;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
@@ -271,29 +269,25 @@ public class ExportLdifRunnable implements StudioConnectionRunnableWithProgress
                     return true;
                 }
 
-                Control[] jndiControls = enumeration.getResponseControls();
-                if ( jndiControls != null )
+                for ( org.apache.directory.api.ldap.model.message.Control control : enumeration.getResponseControls() )
                 {
-                    for ( Control jndiControl : jndiControls )
+                    if ( control instanceof PagedResults )
                     {
-                        if ( jndiControl instanceof PagedResultsResponseControl )
+                        PagedResults prrc = ( PagedResults ) control;
+                        byte[] cookie = prrc.getCookie();
+                        if ( cookie != null )
                         {
-                            PagedResultsResponseControl prrc = ( PagedResultsResponseControl ) jndiControl;
-                            byte[] cookie = prrc.getCookie();
-                            if ( cookie != null )
+                            // search again: pass the response cookie to the request control
+                            for ( StudioControl studioControl : parameter.getControls() )
                             {
-                                // search again: pass the response cookie to the request control
-                                for ( StudioControl studioControl : parameter.getControls() )
+                                if ( studioControl instanceof StudioPagedResultsControl )
                                 {
-                                    if ( studioControl instanceof StudioPagedResultsControl )
-                                    {
-                                        StudioPagedResultsControl sprc = ( StudioPagedResultsControl ) studioControl;
-                                        sprc.setCookie( cookie );
-                                    }
+                                    StudioPagedResultsControl sprc = ( StudioPagedResultsControl ) studioControl;
+                                    sprc.setCookie( cookie );
                                 }
-                                enumeration = SearchRunnable.search( browserConnection, parameter, monitor );
-                                return enumeration != null && enumeration.hasMore();
                             }
+                            enumeration = SearchRunnable.search( browserConnection, parameter, monitor );
+                            return enumeration != null && enumeration.hasMore();
                         }
                     }
                 }
