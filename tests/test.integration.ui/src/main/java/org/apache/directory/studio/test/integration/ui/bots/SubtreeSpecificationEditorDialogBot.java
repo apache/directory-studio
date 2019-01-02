@@ -20,31 +20,12 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
-public class DnEditorDialogBot extends DialogBot
+public class SubtreeSpecificationEditorDialogBot extends DialogBot
 {
 
-    public DnEditorDialogBot()
+    public SubtreeSpecificationEditorDialogBot()
     {
-        super( "DN Editor" );
-    }
-
-
-    public SelectDnDialogBot clickBrowseButtonExpectingSelectDnDialog()
-    {
-        super.clickButton( "Browse..." );
-        return new SelectDnDialogBot();
-    }
-
-
-    public void setDnText( String dn )
-    {
-        bot.comboBox().setText( dn );
-    }
-
-
-    public String getDnText()
-    {
-        return bot.comboBox().getText();
+        super( "Subtree Editor" );
     }
 
 }

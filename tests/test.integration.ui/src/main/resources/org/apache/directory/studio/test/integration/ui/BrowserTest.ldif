@@ -262,3 +262,30 @@ dn: ou=target,ou=system
 objectClass: top
 objectClass: organizationalUnit
 ou: target
+
+dn: ou=special,ou=system
+objectClass: top
+objectClass: organizationalUnit
+ou: special
+administrativeRole: accessControlSpecificArea
+
+dn: cn=alias,ou=special,ou=system
+objectClass: alias
+objectClass: top
+objectClass: extensibleObject
+cn: alias
+aliasedObjectName: ou=special,ou=system
+
+dn: cn=referral,ou=special,ou=system
+objectClass: referral
+objectClass: top
+objectClass: extensibleObject
+cn: referral
+ref: ldap://foo.example.com/ou=system
+
+dn: cn=subentry,ou=special,ou=system
+objectClass: subentry
+objectClass: top
+cn: subentry1
+subtreeSpecification: { }
+
