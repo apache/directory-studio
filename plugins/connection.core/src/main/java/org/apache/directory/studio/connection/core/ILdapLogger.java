@@ -154,7 +154,8 @@ public interface ILdapLogger
      * @param ex the LDAP exception if an error occurred, null otherwise
      */
     void logSearchRequest( Connection connection, String searchBase, String filter,
-        SearchControls searchControls, AliasDereferencingMethod aliasesDereferencingMethod, Control[] controls,
+        SearchControls searchControls, AliasDereferencingMethod aliasesDereferencingMethod,
+        org.apache.directory.api.ldap.model.message.Control[] controls,
         long requestNum, LdapException ex );
 
 

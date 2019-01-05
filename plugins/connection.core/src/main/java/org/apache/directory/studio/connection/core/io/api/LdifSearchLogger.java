@@ -285,7 +285,8 @@ public class LdifSearchLogger implements ILdapLogger
      * {@inheritDoc}
      */
     public void logSearchRequest( Connection connection, String searchBase, String filter,
-        SearchControls searchControls, AliasDereferencingMethod aliasesDereferencingMethod, Control[] controls,
+        SearchControls searchControls, AliasDereferencingMethod aliasesDereferencingMethod,
+        org.apache.directory.api.ldap.model.message.Control[] controls,
         long requestNum, LdapException ex )
     {
         if ( !isSearchRequestLogEnabled() )
@@ -326,9 +327,9 @@ public class LdifSearchLogger implements ILdapLogger
         lines.add( LdifCommentLine.create( "# attributes   : " + attributesAsString ) ); //$NON-NLS-1$
         if ( controls != null )
         {
-            for ( Control control : controls )
+            for ( org.apache.directory.api.ldap.model.message.Control control : controls )
             {
-                lines.add( LdifCommentLine.create( "# control      : " + control.getID() ) ); //$NON-NLS-1$
+                lines.add( LdifCommentLine.create( "# control      : " + control.getOid() ) ); //$NON-NLS-1$
             }
         }
         lines.add( LdifSepLine.create() );

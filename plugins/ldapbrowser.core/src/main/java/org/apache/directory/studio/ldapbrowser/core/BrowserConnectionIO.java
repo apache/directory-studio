@@ -21,18 +21,21 @@ package org.apache.directory.studio.ldapbrowser.core;
 
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.ldap.codec.api.ControlFactory;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Base64;
@@ -85,6 +88,8 @@ public class BrowserConnectionIO
     private static final String REFERRALS_HANDLING_METHOD_TAG = "referralsHandlingMethod"; //$NON-NLS-1$
     private static final String CONTROLS_TAG = "controls"; //$NON-NLS-1$
     private static final String CONTROL_TAG = "control"; //$NON-NLS-1$
+    private static final String OID_TAG = "oid"; //$NON-NLS-1$
+    private static final String IS_CRITICAL_TAG = "isCritical"; //$NON-NLS-1$
 
     private static final String BOOKMARKS_TAG = "bookmarks"; //$NON-NLS-1$
     private static final String BOOKMARK_PARAMETER_TAG = "bookmarkParameter"; //$NON-NLS-1$
@@ -336,30 +341,49 @@ public class BrowserConnectionIO
         Element controlsElement = searchParameterElement.element( CONTROLS_TAG );
         if ( controlsElement != null )
         {
+            LdapApiService codec = LdapApiServiceFactory.getSingleton();
             for ( Iterator<?> i = controlsElement.elementIterator( CONTROL_TAG ); i.hasNext(); )
             {
                 Element controlElement = ( Element ) i.next();
-
+                Attribute oidAttribute = controlElement.attribute( OID_TAG );
+                Attribute isCriticalAttribute = controlElement.attribute( IS_CRITICAL_TAG );
                 Attribute valueAttribute = controlElement.attribute( VALUE_TAG );
-                if ( valueAttribute != null )
+
+                try
                 {
-                    byte[] bytes = Base64.decode( valueAttribute.getValue().toCharArray() );
-                    ByteArrayInputStream bais = null;
-                    ObjectInputStream ois = null;
-                    try
+                    if ( oidAttribute != null && isCriticalAttribute != null && valueAttribute != null )
                     {
+                        ControlFactory<? extends Control> factory = codec.getRequestControlFactories()
+                            .get( oidAttribute.getValue() );
+                        Control control = factory.newControl();
+                        control.setCritical( Boolean.valueOf( isCriticalAttribute.getValue() ) );
+                        byte[] bytes = Base64.decode( valueAttribute.getValue().toCharArray() );
+                        factory.decodeValue( control, bytes );
+                        searchParameter.getControls().add( control );
+                    }
+                    else if ( valueAttribute != null )
+                    {
+                        // Backward compatibility: read objects using Java serialization
+                        byte[] bytes = Base64.decode( valueAttribute.getValue().toCharArray() );
+                        ByteArrayInputStream bais = null;
+                        ObjectInputStream ois = null;
                         bais = new ByteArrayInputStream( bytes );
                         ois = new ObjectInputStream( bais );
-                        StudioControl control = ( StudioControl ) ois.readObject();
+                        StudioControl studioControl = ( StudioControl ) ois.readObject();
+                        ControlFactory<? extends Control> factory = codec.getRequestControlFactories()
+                            .get( studioControl.getOid() );
+                        Control control = factory.newControl();
+                        control.setCritical( studioControl.isCritical() );
+                        factory.decodeValue( control, studioControl.getControlValue() );
                         searchParameter.getControls().add( control );
                         ois.close();
                     }
-                    catch ( Exception e )
-                    {
-                        throw new ConnectionIOException( NLS.bind(
-                            BrowserCoreMessages.BrowserConnectionIO_UnableToParseControl, new String[]
-                                { searchParameter.getName(), valueAttribute.getValue() } ) );
-                    }
+                }
+                catch ( Exception e )
+                {
+                    throw new ConnectionIOException( NLS.bind(
+                        BrowserCoreMessages.BrowserConnectionIO_UnableToParseControl, new String[]
+                        { searchParameter.getName(), valueAttribute.getValue() } ) );
                 }
             }
         }
@@ -513,16 +537,18 @@ public class BrowserConnectionIO
 
         // Controls
         Element controlsElement = searchParameterElement.addElement( CONTROLS_TAG );
-        for ( StudioControl studioControl : searchParameter.getControls() )
+        LdapApiService codec = LdapApiServiceFactory.getSingleton();
+        for ( Control control : searchParameter.getControls() )
         {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ObjectOutputStream oos = new ObjectOutputStream( baos );
-            oos.writeObject( studioControl );
-            oos.close();
-            byte[] bytes = baos.toByteArray();
+            ControlFactory<? extends Control> factory = codec.getRequestControlFactories().get( control.getOid() );
+            Asn1Buffer buffer = new Asn1Buffer();
+            factory.encodeValue( buffer, control );
+            byte[] bytes = buffer.getBytes().array();
             String controlsValue = new String( Base64.encode( bytes ) );
 
             Element controlElement = controlsElement.addElement( CONTROL_TAG );
+            controlElement.addAttribute( OID_TAG, control.getOid() );
+            controlElement.addAttribute( IS_CRITICAL_TAG, "" + control.isCritical() );
             controlElement.addAttribute( VALUE_TAG, controlsValue );
         }
     }

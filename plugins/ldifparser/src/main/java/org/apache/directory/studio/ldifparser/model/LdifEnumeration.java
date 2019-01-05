@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldifparser.model;
 
 
+import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
 
 
@@ -34,12 +35,12 @@ public interface LdifEnumeration
     /**
      * @return true if this enumeration has more elements.
      */
-    boolean hasNext() throws Exception;
+    boolean hasNext() throws LdapException;
 
 
     /**
      * 
      * @return the next LDIF container or null if hasNext() returns false.
      */
-    LdifContainer next() throws Exception;
+    LdifContainer next() throws LdapException;
 }

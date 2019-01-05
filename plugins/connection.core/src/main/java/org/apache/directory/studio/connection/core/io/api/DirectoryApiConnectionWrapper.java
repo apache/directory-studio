@@ -549,7 +549,8 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
      */
     public StudioSearchResultEnumeration search( final String searchBase, final String filter,
         final SearchControls searchControls, final AliasDereferencingMethod aliasesDereferencingMethod,
-        final ReferralHandlingMethod referralsHandlingMethod, final Control[] controls,
+        final ReferralHandlingMethod referralsHandlingMethod,
+        final org.apache.directory.api.ldap.model.message.Control[] controls,
         final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo )
     {
         final long requestNum = searchRequestNum++;
@@ -570,7 +571,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     {
                         request.addAttributes( searchControls.getReturningAttributes() );
                     }
-                    request.addAllControls( convertControls( controls ) );
+                    request.addAllControls( controls );
                     request.setSizeLimit( searchControls.getCountLimit() );
                     request.setTimeLimit( searchControls.getTimeLimit() );
                     request.setDerefAliases( convertAliasDerefMode( aliasesDereferencingMethod ) );

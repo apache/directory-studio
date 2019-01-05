@@ -606,7 +606,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
                 .getConnectionWrapper()
                 .search( request.getBase().getName(), request.getFilter().toString(),
                     getSearchControls( request ), getAliasDereferencingMethod( request ),
-                    ReferralHandlingMethod.IGNORE, getControls( request ), monitor, null );
+                    ReferralHandlingMethod.IGNORE, getControls2( request ), monitor, null );
 
             SearchParameter sp = new SearchParameter();
             sp.setReferralsHandlingMethod( browserConnection.getReferralsHandlingMethod() );
@@ -693,6 +693,15 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
             default:
                 return AliasDereferencingMethod.NEVER;
         }
+    }
+
+
+    private org.apache.directory.api.ldap.model.message.Control[] getControls2( Message request ) {
+        Collection<org.apache.directory.api.ldap.model.message.Control> controls = request.getControls().values();
+        if ( controls != null ) {
+            return controls.toArray( new org.apache.directory.api.ldap.model.message.Control[0] );
+        }
+        return null;
     }
 
 

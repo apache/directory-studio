@@ -31,10 +31,11 @@ import javax.naming.directory.SearchControls;
 
 import org.apache.directory.api.ldap.model.exception.LdapContextNotEmptyException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.StudioControl;
+import org.apache.directory.studio.connection.core.Controls;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
@@ -234,10 +235,10 @@ public class MoveEntriesRunnable implements StudioConnectionBulkRunnableWithProg
 
                 // add new entry to new parent
                 boolean hasMoreChildren = newParent.hasMoreChildren() || !newParent.isChildrenInitialized();
-                List<StudioControl> controls = new ArrayList<StudioControl>();
+                List<Control> controls = new ArrayList<>();
                 if ( oldEntry.isReferral() )
                 {
-                    controls.add( StudioControl.MANAGEDSAIT_CONTROL );
+                    controls.add( Controls.MANAGEDSAIT_CONTROL );
                 }
                 IEntry newEntry = ReadEntryRunnable.getEntry( browserConnection, newDn, controls, monitor );
                 newEntries[i] = newEntry;

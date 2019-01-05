@@ -102,7 +102,8 @@ public interface ConnectionWrapper
      */
     StudioSearchResultEnumeration search( final String searchBase, final String filter,
         final SearchControls searchControls, final AliasDereferencingMethod aliasesDereferencingMethod,
-        final ReferralHandlingMethod referralsHandlingMethod, final Control[] controls,
+        final ReferralHandlingMethod referralsHandlingMethod,
+        final org.apache.directory.api.ldap.model.message.Control[] controls,
         final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo );
 
 

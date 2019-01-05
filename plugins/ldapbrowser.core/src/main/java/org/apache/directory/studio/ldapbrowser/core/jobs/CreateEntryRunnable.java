@@ -31,7 +31,7 @@ import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.StudioControl;
+import org.apache.directory.studio.connection.core.Controls;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryAddedEvent;
@@ -131,14 +131,14 @@ public class CreateEntryRunnable implements StudioConnectionBulkRunnableWithProg
 
         if ( !monitor.errorsReported() && !monitor.isCanceled() )
         {
-            List<StudioControl> controls = new ArrayList<StudioControl>();
+            List<org.apache.directory.api.ldap.model.message.Control> controls = new ArrayList<>();
             if ( entryToCreate.isReferral() )
             {
-                controls.add( StudioControl.MANAGEDSAIT_CONTROL );
+                controls.add( Controls.MANAGEDSAIT_CONTROL );
             }
 
             // Here we try to read the created entry to be able to send the right event notification.
-            // In some cases this don't work:
+            // In some cases that doesn't work:
             // - if there was a referral and the entry was created on another (master) server and not yet sync'ed to the current server
             // So we use a dummy monitor to no bother the user with an error message.
             StudioProgressMonitor dummyMonitor = new StudioProgressMonitor( monitor );

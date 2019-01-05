@@ -31,7 +31,6 @@ import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider;
-import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.SearchContinuation;
 import org.apache.directory.studio.ldapbrowser.core.propertypageproviders.SearchPropertyPageProvider;
@@ -92,7 +91,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @return the controls
      */
-    List<StudioControl> getControls();
+    List<Control> getControls();
 
 
     /**

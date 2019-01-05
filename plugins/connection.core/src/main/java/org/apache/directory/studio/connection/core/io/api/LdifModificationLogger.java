@@ -414,7 +414,8 @@ public class LdifModificationLogger implements ILdapLogger
      * {@inheritDoc}
      */
     public void logSearchRequest( Connection connection, String searchBase, String filter,
-        SearchControls searchControls, AliasDereferencingMethod aliasesDereferencingMethod, Control[] controls,
+        SearchControls searchControls, AliasDereferencingMethod aliasesDereferencingMethod,
+        org.apache.directory.api.ldap.model.message.Control[] controls,
         long requestNum, LdapException ex )
     {
         // don't log searches

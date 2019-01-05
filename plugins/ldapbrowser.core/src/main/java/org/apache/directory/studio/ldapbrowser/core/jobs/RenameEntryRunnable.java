@@ -36,7 +36,7 @@ import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.StudioControl;
+import org.apache.directory.studio.connection.core.Controls;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryRenamedEvent;
@@ -218,10 +218,10 @@ public class RenameEntryRunnable implements StudioConnectionBulkRunnableWithProg
                 boolean hasMoreChildren = parent.hasMoreChildren();
                 parent.deleteChild( oldEntry );
 
-                List<StudioControl> controls = new ArrayList<StudioControl>();
+                List<org.apache.directory.api.ldap.model.message.Control> controls = new ArrayList<>();
                 if ( oldEntry.isReferral() )
                 {
-                    controls.add( StudioControl.MANAGEDSAIT_CONTROL );
+                    controls.add( Controls.MANAGEDSAIT_CONTROL );
                 }
 
                 // Here we try to read the renamed entry to be able to send the right event notification.

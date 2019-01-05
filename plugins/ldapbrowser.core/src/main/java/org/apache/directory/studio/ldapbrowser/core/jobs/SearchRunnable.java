@@ -30,19 +30,20 @@ import java.util.List;
 import java.util.Set;
 
 import javax.naming.directory.SearchControls;
-import javax.naming.ldap.BasicControl;
-import javax.naming.ldap.Control;
 
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.message.controls.PagedResults;
+import org.apache.directory.api.ldap.model.message.controls.PagedResultsImpl;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.url.LdapUrl;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.Controls;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.StudioControl;
@@ -208,39 +209,38 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
                     // check response controls
                     ISearch clonedSearch = ( ISearch ) searchToPerform.clone();
                     clonedSearch.getResponseControls().clear();
-                    PagedResults sprResponseControl = null;
-                    StudioPagedResultsControl sprRequestControl = null;
+                    PagedResults prResponseControl = null;
+                    PagedResults prRequestControl = null;
                     for ( org.apache.directory.api.ldap.model.message.Control responseControl : searchToPerform
                         .getResponseControls() )
                     {
                         if ( responseControl instanceof PagedResults )
                         {
-                            sprResponseControl = ( PagedResults ) responseControl;
+                            prResponseControl = ( PagedResults ) responseControl;
                         }
                     }
-                    for ( Iterator<StudioControl> it = clonedSearch.getControls().iterator(); it.hasNext(); )
+                    for ( Iterator<Control> it = clonedSearch.getControls().iterator(); it.hasNext(); )
                     {
-                        StudioControl requestControl = it.next();
-                        if ( requestControl instanceof StudioPagedResultsControl )
+                        Control requestControl = it.next();
+                        if ( requestControl instanceof PagedResults )
                         {
-                            sprRequestControl = ( StudioPagedResultsControl ) requestControl;
+                            prRequestControl = ( PagedResults ) requestControl;
                             it.remove();
                         }
                     }
                     searchToPerform = null;
 
                     // paged search
-                    if ( sprResponseControl != null && sprRequestControl != null )
+                    if ( prResponseControl != null && prRequestControl != null )
                     {
-                        StudioPagedResultsControl nextSpsc = new StudioPagedResultsControl(
-                            sprRequestControl.getSize(), sprResponseControl.getCookie(),
-                            sprRequestControl.isCritical(), sprRequestControl.isScrollMode() );
+                        PagedResults nextPrc = Controls.newPagedResultsControl( prRequestControl.getSize(),
+                            prResponseControl.getCookie() );
                         ISearch nextPageSearch = ( ISearch ) clonedSearch.clone();
                         nextPageSearch.getResponseControls().clear();
-                        nextPageSearch.getControls().add( nextSpsc );
-                        if ( sprRequestControl.isScrollMode() )
+                        nextPageSearch.getControls().add( nextPrc );
+                        if ( search.getBrowserConnection().isPagedSearchScrollMode() )
                         {
-                            if ( sprRequestControl.getCookie() != null )
+                            if ( prRequestControl.getCookieValue() > 0 )
                             {
                                 // create top page search runnable, same as original search
                                 ISearch topPageSearch = ( ISearch ) search.clone();
@@ -248,7 +248,7 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
                                 SearchRunnable topPageSearchRunnable = new SearchRunnable( search, topPageSearch );
                                 search.setTopPageSearchRunnable( topPageSearchRunnable );
                             }
-                            if ( sprResponseControl.getCookie() != null )
+                            if ( prResponseControl.getCookieValue() > 0 )
                             {
                                 // create next page search runnable
                                 SearchRunnable nextPageSearchRunnable = new SearchRunnable( search, nextPageSearch );
@@ -258,7 +258,7 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
                         else
                         {
                             // transparently continue search, till count limit is reached
-                            if ( sprResponseControl.getCookie() != null
+                            if ( prResponseControl.getCookieValue() > 0
                                 && ( search.getCountLimit() == 0 || search.getSearchResults().length < search
                                     .getCountLimit() ) )
                             {
@@ -447,52 +447,46 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
         }
 
         String searchBase = parameter.getSearchBase().getName();
-        SearchControls controls = new SearchControls();
+        SearchControls searchControls = new SearchControls();
         SearchScope scope = parameter.getScope();
 
         switch ( scope )
         {
             case OBJECT:
-                controls.setSearchScope( SearchControls.OBJECT_SCOPE );
+                searchControls.setSearchScope( SearchControls.OBJECT_SCOPE );
                 break;
             case ONELEVEL:
-                controls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
+                searchControls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
                 break;
             case SUBTREE:
-                controls.setSearchScope( SearchControls.SUBTREE_SCOPE );
+                searchControls.setSearchScope( SearchControls.SUBTREE_SCOPE );
                 break;
             default:
-                controls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
+                searchControls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
         }
 
-        controls.setReturningAttributes( parameter.getReturningAttributes() );
-        controls.setCountLimit( parameter.getCountLimit() );
+        searchControls.setReturningAttributes( parameter.getReturningAttributes() );
+        searchControls.setCountLimit( parameter.getCountLimit() );
         int timeLimit = parameter.getTimeLimit() * 1000;
         if ( timeLimit > 1 )
         {
             timeLimit--;
         }
-        controls.setTimeLimit( timeLimit );
+        searchControls.setTimeLimit( timeLimit );
         String filter = parameter.getFilter();
         AliasDereferencingMethod aliasesDereferencingMethod = parameter.getAliasesDereferencingMethod();
         ReferralHandlingMethod referralsHandlingMethod = parameter.getReferralsHandlingMethod();
 
-        Control[] jndiControls = null;
+        Control[] controls = null;
         if ( parameter.getControls() != null )
         {
-            List<StudioControl> ctls = parameter.getControls();
-            jndiControls = new Control[ctls.size()];
-            for ( int i = 0; i < ctls.size(); i++ )
-            {
-                StudioControl ctl = ctls.get( i );
-                jndiControls[i] = new BasicControl( ctl.getOid(), ctl.isCritical(), ctl.getControlValue() );
-            }
+            controls = parameter.getControls().toArray( new Control[0] );
         }
 
         StudioSearchResultEnumeration result = browserConnection
             .getConnection()
             .getConnectionWrapper()
-            .search( searchBase, filter, controls, aliasesDereferencingMethod, referralsHandlingMethod, jndiControls,
+            .search( searchBase, filter, searchControls, aliasesDereferencingMethod, referralsHandlingMethod, controls,
                 monitor, null );
         return result;
     }
@@ -572,10 +566,10 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
                 }
             }
 
-            List<StudioControl> controls = searchParameter.getControls();
-            for ( Iterator<StudioControl> it = controls.iterator(); it.hasNext(); )
+            List<Control> controls = searchParameter.getControls();
+            for ( Iterator<Control> it = controls.iterator(); it.hasNext(); )
             {
-                StudioControl control = it.next();
+                Control control = it.next();
                 if ( !supportedConrolSet.contains( Strings.toLowerCase( control.getOid() ) ) )
                 {
                     it.remove();

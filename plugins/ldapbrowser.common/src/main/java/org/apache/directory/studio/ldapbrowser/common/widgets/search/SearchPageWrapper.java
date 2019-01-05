@@ -29,7 +29,12 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.SearchScope;
+import org.apache.directory.api.ldap.model.message.controls.ManageDsaIT;
+import org.apache.directory.api.ldap.model.message.controls.PagedResults;
+import org.apache.directory.api.ldap.model.message.controls.PagedResultsImpl;
+import org.apache.directory.api.ldap.model.message.controls.Subentries;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.studio.common.ui.widgets.AbstractWidget;
@@ -37,8 +42,7 @@ import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyEvent;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.StudioControl;
-import org.apache.directory.studio.connection.core.StudioPagedResultsControl;
+import org.apache.directory.studio.connection.core.Controls;
 import org.apache.directory.studio.ldapbrowser.core.jobs.SearchRunnable;
 import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -705,25 +709,25 @@ public class SearchPageWrapper extends AbstractWidget
             }
             if ( subentriesControlButton != null )
             {
-                List<StudioControl> searchControls = search.getControls();
+                List<Control> searchControls = search.getControls();
                 if ( searchControls != null && searchControls.size() > 0 )
                 {
-                    for ( StudioControl c : searchControls )
+                    for ( Control c : searchControls )
                     {
-                        if ( StudioControl.MANAGEDSAIT_CONTROL.equals( c ) )
+                        if ( c instanceof ManageDsaIT )
                         {
                             manageDsaItControlButton.setSelection( true );
                         }
-                        else if ( StudioControl.SUBENTRIES_CONTROL.equals( c ) )
+                        else if ( c instanceof Subentries )
                         {
                             subentriesControlButton.setSelection( true );
                         }
-                        else if ( c.getOid().equalsIgnoreCase( StudioPagedResultsControl.OID ) )
+                        else if ( c instanceof PagedResults )
                         {
                             pagedSearchControlButton.setSelection( true );
-                            pagedSearchControlSizeText.setText( "" + ( ( StudioPagedResultsControl ) c ).getSize() ); //$NON-NLS-1$
-                            pagedSearchControlScrollButton.setSelection( ( ( StudioPagedResultsControl ) c )
-                                .isScrollMode() );
+                            pagedSearchControlSizeText.setText( "" + ( ( PagedResults ) c ).getSize() ); //$NON-NLS-1$
+                            pagedSearchControlScrollButton
+                                .setSelection( search.getBrowserConnection().isPagedSearchScrollMode() );
                         }
                     }
                 }
@@ -862,18 +866,18 @@ public class SearchPageWrapper extends AbstractWidget
         }
         if ( subentriesControlButton != null )
         {
-            Set<StudioControl> oldControls = new HashSet<StudioControl>();
+            Set<Control> oldControls = new HashSet<>();
             oldControls.addAll( search.getSearchParameter().getControls() );
 
             search.getSearchParameter().getControls().clear();
 
             if ( manageDsaItControlButton.getSelection() )
             {
-                search.getSearchParameter().getControls().add( StudioControl.MANAGEDSAIT_CONTROL );
+                search.getSearchParameter().getControls().add( Controls.MANAGEDSAIT_CONTROL );
             }
             if ( subentriesControlButton.getSelection() )
             {
-                search.getSearchParameter().getControls().add( StudioControl.SUBENTRIES_CONTROL );
+                search.getSearchParameter().getControls().add( Controls.SUBENTRIES_CONTROL );
             }
             if ( pagedSearchControlButton.getSelection() )
             {
@@ -887,11 +891,11 @@ public class SearchPageWrapper extends AbstractWidget
                     pageSize = 100;
                 }
                 boolean isScrollMode = pagedSearchControlScrollButton.getSelection();
-                StudioPagedResultsControl control = new StudioPagedResultsControl( pageSize, null, false, isScrollMode );
+                PagedResults control = Controls.newPagedResultsControl(pageSize);
                 search.getSearchParameter().getControls().add( control );
             }
 
-            Set<StudioControl> newControls = new HashSet<StudioControl>();
+            Set<Control> newControls = new HashSet<>();
             newControls.addAll( search.getSearchParameter().getControls() );
 
             if ( !oldControls.equals( newControls ) )

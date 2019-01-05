@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.naming.directory.SearchControls;
-import javax.naming.ldap.Control;
 
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
@@ -35,6 +34,7 @@ import org.apache.directory.api.ldap.model.cursor.CursorException;
 import org.apache.directory.api.ldap.model.cursor.SearchCursor;
 import org.apache.directory.api.ldap.model.entry.DefaultEntry;
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.api.ldap.model.message.Response;
 import org.apache.directory.api.ldap.model.message.SearchResultDone;
@@ -77,9 +77,6 @@ public class StudioSearchResultEnumeration
     private List<String> currentReferralUrlsList;
     private StudioSearchResultEnumeration referralEnumeration;
     private SearchResultDone searchResultDone;
-
-    // @TODO: By Alex: temporary fix until things are in order (needs to be fixed)
-    private LdapApiService codec = LdapApiServiceFactory.getSingleton();
 
 
     /**
@@ -325,11 +322,11 @@ public class StudioSearchResultEnumeration
      * 
      * @return the response controls, may be null
      */
-    public Collection<org.apache.directory.api.ldap.model.message.Control> getResponseControls()
+    public Collection<Control> getResponseControls()
     {
         if ( searchResultDone != null )
         {
-            Map<String, org.apache.directory.api.ldap.model.message.Control> controlsMap = searchResultDone
+            Map<String, Control> controlsMap = searchResultDone
                 .getControls();
             if ( ( controlsMap != null ) && ( controlsMap.size() > 0 ) )
             {

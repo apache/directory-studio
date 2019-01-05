@@ -32,7 +32,6 @@ import org.apache.directory.api.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
-import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
@@ -156,7 +155,7 @@ public class Search implements ISearch
     public Search( String searchName, IBrowserConnection conn, Dn searchBase, String filter,
         String[] returningAttributes, SearchScope scope, int countLimit, int timeLimit,
         AliasDereferencingMethod aliasesDereferencingMethod, ReferralHandlingMethod referralsHandlingMethod,
-        boolean initHasChildrenFlag, List<StudioControl> controls )
+        boolean initHasChildrenFlag, List<Control> controls )
     {
         this.connection = conn;
         this.searchResults = null;
@@ -215,7 +214,7 @@ public class Search implements ISearch
     /**
      * {@inheritDoc}
      */
-    public List<StudioControl> getControls()
+    public List<Control> getControls()
     {
         return searchParameter.getControls();
     }

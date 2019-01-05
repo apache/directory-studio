@@ -33,10 +33,10 @@ import org.apache.directory.studio.connection.core.jobs.StudioConnectionRunnable
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
-import org.apache.directory.studio.ldapbrowser.core.jobs.ExportLdifRunnable.JndiLdifEnumeration;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.apache.directory.studio.ldapbrowser.core.utils.JNDIUtils;
+import org.apache.directory.studio.ldifparser.model.LdifEnumeration;
 import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
 import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
 import org.eclipse.core.runtime.Preferences;
@@ -207,7 +207,7 @@ public class ExportOdfRunnable implements StudioConnectionRunnableWithProgress
     {
         try
         {
-            JndiLdifEnumeration enumeration = ExportLdifRunnable.search( browserConnection, searchParameter, monitor );
+            LdifEnumeration enumeration = ExportLdifRunnable.search( browserConnection, searchParameter, monitor );
             while ( !monitor.isCanceled() && !monitor.errorsReported() && enumeration.hasNext() )
             {
                 LdifContainer container = enumeration.next();

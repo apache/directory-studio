@@ -32,12 +32,11 @@ import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.controls.PagedResults;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.StudioControl;
-import org.apache.directory.studio.connection.core.StudioPagedResultsControl;
 import org.apache.directory.studio.connection.core.io.api.StudioSearchResultEnumeration;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
@@ -169,7 +168,7 @@ public class ExportLdifRunnable implements StudioConnectionRunnableWithProgress
     {
         try
         {
-            JndiLdifEnumeration enumeration = search( browserConnection, searchParameter, monitor );
+            LdifEnumeration enumeration = search( browserConnection, searchParameter, monitor );
             LdifFormatParameters ldifFormatParameters = Utils.getLdifFormatParameters();
 
             // add version spec
@@ -231,14 +230,14 @@ public class ExportLdifRunnable implements StudioConnectionRunnableWithProgress
     }
 
 
-    static JndiLdifEnumeration search( IBrowserConnection browserConnection, SearchParameter parameter,
+    static LdifEnumeration search( IBrowserConnection browserConnection, SearchParameter parameter,
         StudioProgressMonitor monitor )
     {
         StudioSearchResultEnumeration result = SearchRunnable.search( browserConnection, parameter, monitor );
-        return new JndiLdifEnumeration( result, browserConnection, parameter, monitor );
+        return new DefaultLdifEnumeration( result, browserConnection, parameter, monitor );
     }
 
-    static class JndiLdifEnumeration implements LdifEnumeration
+    static class DefaultLdifEnumeration implements LdifEnumeration
     {
 
         private StudioSearchResultEnumeration enumeration;
@@ -250,7 +249,7 @@ public class ExportLdifRunnable implements StudioConnectionRunnableWithProgress
         private StudioProgressMonitor monitor;
 
 
-        public JndiLdifEnumeration( StudioSearchResultEnumeration enumeration, IBrowserConnection browserConnection,
+        public DefaultLdifEnumeration( StudioSearchResultEnumeration enumeration, IBrowserConnection browserConnection,
             SearchParameter parameter, StudioProgressMonitor monitor )
         {
             this.enumeration = enumeration;
@@ -269,21 +268,20 @@ public class ExportLdifRunnable implements StudioConnectionRunnableWithProgress
                     return true;
                 }
 
-                for ( org.apache.directory.api.ldap.model.message.Control control : enumeration.getResponseControls() )
+                for ( Control responseControl : enumeration.getResponseControls() )
                 {
-                    if ( control instanceof PagedResults )
+                    if ( responseControl instanceof PagedResults )
                     {
-                        PagedResults prrc = ( PagedResults ) control;
+                        PagedResults prrc = ( PagedResults ) responseControl;
                         byte[] cookie = prrc.getCookie();
                         if ( cookie != null )
                         {
-                            // search again: pass the response cookie to the request control
-                            for ( StudioControl studioControl : parameter.getControls() )
+                            // search again: pass the response control cookie to the request control
+                            for ( Control requestControl : parameter.getControls() )
                             {
-                                if ( studioControl instanceof StudioPagedResultsControl )
+                                if ( requestControl instanceof PagedResults )
                                 {
-                                    StudioPagedResultsControl sprc = ( StudioPagedResultsControl ) studioControl;
-                                    sprc.setCookie( cookie );
+                                    ( ( PagedResults ) requestControl ).setCookie( cookie );
                                 }
                             }
                             enumeration = SearchRunnable.search( browserConnection, parameter, monitor );
