@@ -272,7 +272,7 @@ public class InitializeAttributesRunnable implements StudioConnectionBulkRunnabl
             // create search
             ISearch search = new Search( null, entry.getBrowserConnection(), entry.getDn(),
                 entry.isSubentry() ? ISearch.FILTER_SUBENTRY : ISearch.FILTER_TRUE, attributes, SearchScope.OBJECT, 0,
-                0, aliasesDereferencingMethod, referralsHandlingMethod, false, null );
+                0, aliasesDereferencingMethod, referralsHandlingMethod, false, null, false );
 
             // add controls
             if ( entry.isReferral() )

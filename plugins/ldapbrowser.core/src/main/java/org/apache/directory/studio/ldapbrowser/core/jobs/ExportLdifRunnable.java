@@ -272,11 +272,11 @@ public class ExportLdifRunnable implements StudioConnectionRunnableWithProgress
                 {
                     if ( responseControl instanceof PagedResults )
                     {
-                        PagedResults prrc = ( PagedResults ) responseControl;
-                        byte[] cookie = prrc.getCookie();
-                        if ( cookie != null )
+                        PagedResults prc = ( PagedResults ) responseControl;
+                        if ( prc.getCookieValue() > 0 )
                         {
                             // search again: pass the response control cookie to the request control
+                            byte[] cookie = prc.getCookie();
                             for ( Control requestControl : parameter.getControls() )
                             {
                                 if ( requestControl instanceof PagedResults )

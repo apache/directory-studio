@@ -20,6 +20,8 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
+import org.apache.directory.api.ldap.model.message.SearchScope;
+import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 
 
@@ -55,6 +57,101 @@ class SearchPageWrapperBot
     void setReturningAttributes( String string )
     {
         bot.comboBoxWithLabel( "Returning Attributes:" ).setText( string );
+    }
+
+
+    void setControlManageDsaIT( boolean enabled )
+    {
+        if ( enabled )
+        {
+            bot.checkBox( "ManageDsaIT" ).select();
+        }
+        else
+        {
+            bot.checkBox( "ManageDsaIT" ).deselect();
+        }
+    }
+
+
+    void setControlSubentries( boolean enabled )
+    {
+        if ( enabled )
+        {
+            bot.checkBox( "Subentries" ).select();
+        }
+        else
+        {
+            bot.checkBox( "Subentries" ).deselect();
+        }
+    }
+
+
+    void setControlPagedSearch( boolean enabled, int pageSize, boolean scrollMode )
+    {
+        if ( enabled )
+        {
+            bot.checkBox( "Paged Search" ).select();
+            bot.textInGroup( "Controls" ).setText( "" + pageSize );
+            if ( scrollMode )
+            {
+                bot.checkBox( "Scroll Mode" ).select();
+            }
+            else
+            {
+                bot.checkBox( "Scroll Mode" ).deselect();
+            }
+        }
+        else
+        {
+            bot.checkBox( "Paged Search" ).deselect();
+        }
+    }
+
+
+    void setAliasDereferencingMode( AliasDereferencingMethod mode )
+    {
+        switch ( mode )
+        {
+            case ALWAYS:
+                bot.checkBox( "Finding Base DN" ).select();
+                bot.checkBox( "Search" ).select();
+                break;
+            case FINDING:
+                bot.checkBox( "Finding Base DN" ).select();
+                bot.checkBox( "Search" ).deselect();
+                break;
+            case SEARCH:
+                bot.checkBox( "Finding Base DN" ).deselect();
+                bot.checkBox( "Search" ).select();
+                break;
+            case NEVER:
+                bot.checkBox( "Finding Base DN" ).deselect();
+                bot.checkBox( "Search" ).deselect();
+                break;
+        }
+    }
+
+
+    void setScope( SearchScope scope )
+    {
+        switch ( scope )
+        {
+            case OBJECT:
+                bot.radio( "Object" ).click();
+                break;
+            case ONELEVEL:
+                bot.radio( "One Level" ).click();
+                break;
+            case SUBTREE:
+                bot.radio( "Subtree" ).click();
+                break;
+        }
+    }
+
+
+    void setCountLimit( int countLimit )
+    {
+        bot.textWithLabel( "Count Limit:" ).setText( "" + countLimit );
     }
 
 }

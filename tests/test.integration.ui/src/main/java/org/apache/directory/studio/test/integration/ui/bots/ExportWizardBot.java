@@ -22,6 +22,8 @@ package org.apache.directory.studio.test.integration.ui.bots;
 
 import java.io.File;
 
+import org.apache.directory.api.ldap.model.message.SearchScope;
+import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
@@ -34,6 +36,7 @@ public class ExportWizardBot extends WizardBot
     public static final String EXPORT_DSML_TITLE = "DSML Export";
     public static final String EXPORT_CSV_TITLE = "CSV Export";
     private String title;
+    SearchPageWrapperBot searchPageWrapperBot;
 
 
     public ExportWizardBot()
@@ -46,12 +49,55 @@ public class ExportWizardBot extends WizardBot
     {
         super( title );
         this.title = title;
+        this.searchPageWrapperBot = new SearchPageWrapperBot( bot );
     }
 
 
-    public void typeReturningAttributes( String returningAttributes )
+    public void setFilter( String filter )
     {
-        bot.comboBoxWithLabel( "Returning Attributes:" ).setText( returningAttributes );
+        searchPageWrapperBot.setFilter( filter );
+    }
+
+
+    public void setReturningAttributes( String returningAttributes )
+    {
+        searchPageWrapperBot.setReturningAttributes( returningAttributes );
+    }
+
+
+    public void setScope( SearchScope scope )
+    {
+        searchPageWrapperBot.setScope( scope );
+    }
+
+
+    public void setCountLimit( int countLimit )
+    {
+        searchPageWrapperBot.setCountLimit( countLimit );
+    }
+
+
+    public void setControlManageDsaIT( boolean enabled )
+    {
+        searchPageWrapperBot.setControlManageDsaIT( enabled );
+    }
+
+
+    public void setControlSubentries( boolean enabled )
+    {
+        searchPageWrapperBot.setControlSubentries( enabled );
+    }
+
+
+    public void setControlPagedSearch( boolean enabled, int pageSize, boolean scrollMode )
+    {
+        searchPageWrapperBot.setControlPagedSearch( enabled, pageSize, scrollMode );
+    }
+
+
+    public void setAliasDereferencingMode( AliasDereferencingMethod mode )
+    {
+        searchPageWrapperBot.setAliasDereferencingMode( mode );
     }
 
 

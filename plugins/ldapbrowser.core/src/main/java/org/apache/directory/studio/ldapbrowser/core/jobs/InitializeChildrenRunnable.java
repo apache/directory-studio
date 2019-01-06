@@ -28,7 +28,6 @@ import java.util.List;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.message.controls.PagedResults;
-import org.apache.directory.api.ldap.model.message.controls.PagedResultsImpl;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -261,7 +260,7 @@ public class InitializeChildrenRunnable implements StudioConnectionBulkRunnableW
 
                 if ( prRequestControl != null && prResponseControl != null )
                 {
-                    if ( parent.getBrowserConnection().isPagedSearchScrollMode() )
+                    if ( search.isPagedSearchScrollMode() )
                     {
                         if ( prRequestControl.getCookieValue() > 0 )
                         {
@@ -402,9 +401,12 @@ public class InitializeChildrenRunnable implements StudioConnectionBulkRunnableW
 
         // create search
         ISearch search = new Search( null, parent.getBrowserConnection(), parent.getDn(), filter,
-            ISearch.NO_ATTRIBUTES, scope, parent.getBrowserConnection().getCountLimit(), parent.getBrowserConnection()
-                .getTimeLimit(), aliasesDereferencingMethod, referralsHandlingMethod, BrowserCorePlugin.getDefault()
-                .getPluginPreferences().getBoolean( BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN ), null );
+            ISearch.NO_ATTRIBUTES, scope, parent.getBrowserConnection().getCountLimit(),
+            parent.getBrowserConnection().getTimeLimit(),
+            aliasesDereferencingMethod, referralsHandlingMethod,
+            BrowserCorePlugin.getDefault()
+                .getPluginPreferences().getBoolean( BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN ),
+            null, parent.getBrowserConnection().isPagedSearchScrollMode() );
 
         // controls
         if ( parent.isReferral() || isReferralsSearch || parent.getBrowserConnection().isManageDsaIT() )

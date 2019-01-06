@@ -262,6 +262,7 @@ dn: ou=target,ou=system
 objectClass: top
 objectClass: organizationalUnit
 ou: target
+administrativeRole: accessControlSpecificArea
 
 dn: ou=special,ou=system
 objectClass: top
@@ -286,6 +287,6 @@ ref: ldap://foo.example.com/ou=system
 dn: cn=subentry,ou=special,ou=system
 objectClass: subentry
 objectClass: top
-cn: subentry1
+cn: subentry
 subtreeSpecification: { }
 

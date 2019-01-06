@@ -220,15 +220,22 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
         SearchControls searchControls = new SearchControls();
         searchControls.setCountLimit( 1 );
         searchControls.setReturningAttributes( new String[]
-            { SchemaConstants.ALL_USER_ATTRIBUTES, SchemaConstants.REF_AT } );
+            { SchemaConstants.ALL_USER_ATTRIBUTES } );
         searchControls.setSearchScope( SearchControls.OBJECT_SCOPE );
 
-        // ManageDsaIT control
+        // handle special entries
         org.apache.directory.api.ldap.model.message.Control[] controls = null;
         if ( entryToCopy.isReferral() )
         {
             controls = new org.apache.directory.api.ldap.model.message.Control[]
                 { Controls.MANAGEDSAIT_CONTROL };
+            searchControls.setReturningAttributes( new String[]
+                { SchemaConstants.ALL_USER_ATTRIBUTES, SchemaConstants.REF_AT } );
+        }
+        if ( entryToCopy.isSubentry() )
+        {
+            searchControls.setReturningAttributes( new String[]
+                { SchemaConstants.ALL_USER_ATTRIBUTES, SchemaConstants.SUBTREE_SPECIFICATION_AT } );
         }
 
         StudioSearchResultEnumeration result = entryToCopy

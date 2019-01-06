@@ -193,9 +193,25 @@ public class BrowserViewBot
 
     public void pasteEntry()
     {
-        JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__copy_entries_name_1 );
-        ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Paste" );
-        watcher.waitUntilDone();
+        pasteEntries( 1 );
+    }
+
+
+    public void pasteEntries( int numEntries )
+    {
+        if ( numEntries > 1 )
+        {
+            JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__copy_entries_name_n );
+            ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Paste" );
+            watcher.waitUntilDone();
+        }
+        else
+        {
+            JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__copy_entries_name_1 );
+            ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Paste" );
+            watcher.waitUntilDone();
+
+        }
     }
 
 

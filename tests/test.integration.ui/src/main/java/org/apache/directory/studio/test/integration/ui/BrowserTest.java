@@ -717,7 +717,7 @@ public class BrowserTest extends AbstractLdapTestUnit
     @Test
     public void testBrowseAliasEntry()
     {
-        // diaable alias dereferencing
+        // disable alias dereferencing
         connection.getConnectionParameter().setExtendedIntProperty(
             IBrowserConnection.CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD,
             AliasDereferencingMethod.NEVER.ordinal() );
@@ -752,7 +752,7 @@ public class BrowserTest extends AbstractLdapTestUnit
 
 
     @Test
-    public void testBrowseWithPagingInScrollMode()
+    public void testBrowseWithPagingWithScrollMode()
     {
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
 
@@ -783,6 +783,29 @@ public class BrowserTest extends AbstractLdapTestUnit
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "--- Top Page ---" );
         assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "--- Top Page ---" ) );
         assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "--- Next Page ---" ) );
+    }
+
+
+    @Test
+    public void testBrowseWithPagingWithoutScrollMode()
+    {
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+
+        // enable Simple Paged Results control
+        connection.getConnectionParameter().setExtendedBoolProperty(
+            IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH, true );
+        connection.getConnectionParameter().setExtendedIntProperty(
+            IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH_SIZE, 5 );
+        connection.getConnectionParameter().setExtendedBoolProperty(
+            IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH_SCROLL_MODE, false );
+
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "--- Top Page ---" ) );
+        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "--- Next Page ---" ) );
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users (13)" ) );
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" ) );
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.8" ) );
+
     }
 
 }

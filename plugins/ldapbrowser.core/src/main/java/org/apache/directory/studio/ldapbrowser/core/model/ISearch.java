@@ -326,7 +326,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @return the cloned search
      */
-    Object clone();
+    ISearch clone();
 
 
     /**
@@ -343,6 +343,22 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * @param searchParameter the search parameter
      */
     void setSearchParameter( SearchParameter searchParameter );
+
+
+    /**
+     * Gets the paged search scroll mode flag.
+     * 
+     * @return the paged search scroll mode flag
+     */
+    boolean isPagedSearchScrollMode();
+
+
+    /**
+     * Sets the paged search scroll mode flag.
+     * 
+     * @param isPagedSearchScrollMode paged search scroll mode flag
+     */
+    void setPagedSearchScrollMode( boolean isPagedSearchScrollMode );
 
 
     /**

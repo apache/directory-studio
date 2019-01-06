@@ -183,7 +183,7 @@ public class InitializeRootDSERunnable implements StudioConnectionBulkRunnableWi
         // load well-known Root DSE attributes and operational attributes
         ISearch search = new Search( null, browserConnection, Dn.EMPTY_DN, ISearch.FILTER_TRUE,
             ROOT_DSE_ATTRIBUTES, SearchScope.OBJECT, 0, 0, Connection.AliasDereferencingMethod.NEVER,
-            Connection.ReferralHandlingMethod.IGNORE, false, null );
+            Connection.ReferralHandlingMethod.IGNORE, false, null, false );
         SearchRunnable.searchAndUpdateModel( browserConnection, search, monitor );
 
         // Load all user attributes. This is done because the BEA "LDAP server" (so called) is stupid
@@ -191,7 +191,7 @@ public class InitializeRootDSERunnable implements StudioConnectionBulkRunnableWi
         // We have to do two searches...
         search = new Search( null, browserConnection, Dn.EMPTY_DN, ISearch.FILTER_TRUE, new String[]
             { SchemaConstants.ALL_USER_ATTRIBUTES }, SearchScope.OBJECT, 0, 0,
-            Connection.AliasDereferencingMethod.NEVER, Connection.ReferralHandlingMethod.IGNORE, false, null );
+            Connection.AliasDereferencingMethod.NEVER, Connection.ReferralHandlingMethod.IGNORE, false, null, false );
         SearchRunnable.searchAndUpdateModel( browserConnection, search, monitor );
 
         // the list of entries under the Root DSE
@@ -376,7 +376,7 @@ public class InitializeRootDSERunnable implements StudioConnectionBulkRunnableWi
         AliasDereferencingMethod derefAliasMethod = browserConnection.getAliasesDereferencingMethod();
         ReferralHandlingMethod handleReferralsMethod = browserConnection.getReferralsHandlingMethod();
         ISearch search = new Search( null, browserConnection, dn, ISearch.FILTER_TRUE, ISearch.NO_ATTRIBUTES,
-            SearchScope.OBJECT, 1, 0, derefAliasMethod, handleReferralsMethod, true, null );
+            SearchScope.OBJECT, 1, 0, derefAliasMethod, handleReferralsMethod, true, null, false );
         SearchRunnable.searchAndUpdateModel( browserConnection, search, monitor );
 
         ISearchResult[] results = search.getSearchResults();
@@ -445,7 +445,7 @@ public class InitializeRootDSERunnable implements StudioConnectionBulkRunnableWi
     {
         ISearch search = new Search( null, browserConnection, Dn.EMPTY_DN, ISearch.FILTER_TRUE,
             ISearch.NO_ATTRIBUTES, SearchScope.ONELEVEL, 0, 0, Connection.AliasDereferencingMethod.NEVER,
-            Connection.ReferralHandlingMethod.IGNORE, false, null );
+            Connection.ReferralHandlingMethod.IGNORE, false, null, false );
         SearchRunnable.searchAndUpdateModel( browserConnection, search, monitor );
 
         ISearchResult[] results = search.getSearchResults();

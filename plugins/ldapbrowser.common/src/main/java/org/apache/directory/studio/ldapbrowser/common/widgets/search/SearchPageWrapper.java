@@ -726,8 +726,7 @@ public class SearchPageWrapper extends AbstractWidget
                         {
                             pagedSearchControlButton.setSelection( true );
                             pagedSearchControlSizeText.setText( "" + ( ( PagedResults ) c ).getSize() ); //$NON-NLS-1$
-                            pagedSearchControlScrollButton
-                                .setSelection( search.getBrowserConnection().isPagedSearchScrollMode() );
+                            pagedSearchControlScrollButton.setSelection( search.isPagedSearchScrollMode() );
                         }
                     }
                 }
@@ -893,6 +892,7 @@ public class SearchPageWrapper extends AbstractWidget
                 boolean isScrollMode = pagedSearchControlScrollButton.getSelection();
                 PagedResults control = Controls.newPagedResultsControl(pageSize);
                 search.getSearchParameter().getControls().add( control );
+                search.getSearchParameter().setPagedSearchScrollMode( isScrollMode );
             }
 
             Set<Control> newControls = new HashSet<>();

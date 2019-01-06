@@ -571,7 +571,10 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     {
                         request.addAttributes( searchControls.getReturningAttributes() );
                     }
-                    request.addAllControls( controls );
+                    if ( controls != null )
+                    {
+                        request.addAllControls( controls );
+                    }
                     request.setSizeLimit( searchControls.getCountLimit() );
                     request.setTimeLimit( searchControls.getTimeLimit() );
                     request.setDerefAliases( convertAliasDerefMode( aliasesDereferencingMethod ) );

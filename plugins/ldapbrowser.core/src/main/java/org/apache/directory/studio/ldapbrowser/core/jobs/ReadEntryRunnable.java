@@ -158,7 +158,7 @@ public class ReadEntryRunnable implements StudioConnectionBulkRunnableWithProgre
 
             // search in directory
             ISearch search = new Search( null, browserConnection, dn, null, ISearch.NO_ATTRIBUTES, SearchScope.OBJECT,
-                1, 0, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, true, controls );
+                1, 0, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, true, controls, false );
             SearchRunnable.searchAndUpdateModel( browserConnection, search, monitor );
             ISearchResult[] srs = search.getSearchResults();
             if ( srs.length > 0 )

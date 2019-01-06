@@ -78,6 +78,9 @@ public class SearchParameter implements Serializable
     /** The response controls */
     private List<Control> responseControls;
 
+    /** The paged search scroll mode flag. */
+    protected boolean pagedSearchScrollModeFlag;
+
     /** Flag indicating weather the hasChildren flag of IEntry should be initialized */
     private boolean initHasChildrenFlag;
 
@@ -113,6 +116,7 @@ public class SearchParameter implements Serializable
         referralsHandlingMethod = ReferralHandlingMethod.FOLLOW;
         controls = new ArrayList<>();
         responseControls = new ArrayList<>();
+        pagedSearchScrollModeFlag = true;
         initHasChildrenFlag = false;
     }
 
@@ -344,6 +348,7 @@ public class SearchParameter implements Serializable
         clone.setReferralsHandlingMethod( getReferralsHandlingMethod() );
         clone.setInitHasChildrenFlag( isInitHasChildrenFlag() );
         clone.getControls().addAll( getControls() );
+        clone.getResponseControls().addAll( getResponseControls() );
         return clone;
     }
 
@@ -389,6 +394,18 @@ public class SearchParameter implements Serializable
     public List<Control> getResponseControls()
     {
         return responseControls;
+    }
+
+
+    public boolean isPagedSearchScrollMode()
+    {
+        return pagedSearchScrollModeFlag;
+    }
+
+
+    public void setPagedSearchScrollMode( boolean pagedSearchScrollModeFlag )
+    {
+        this.pagedSearchScrollModeFlag = pagedSearchScrollModeFlag;
     }
 
 }

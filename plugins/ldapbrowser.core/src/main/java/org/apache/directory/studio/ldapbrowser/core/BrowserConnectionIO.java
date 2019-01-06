@@ -86,6 +86,7 @@ public class BrowserConnectionIO
     private static final String COUNT_LIMIT_TAG = "countLimit"; //$NON-NLS-1$
     private static final String ALIASES_DEREFERENCING_METHOD_TAG = "aliasesDereferencingMethod"; //$NON-NLS-1$
     private static final String REFERRALS_HANDLING_METHOD_TAG = "referralsHandlingMethod"; //$NON-NLS-1$
+    private static final String PAGED_SEARCH_SCROLL_MODE = "pagedSearchScrollMode"; //$NON-NLS-1$
     private static final String CONTROLS_TAG = "controls"; //$NON-NLS-1$
     private static final String CONTROL_TAG = "control"; //$NON-NLS-1$
     private static final String OID_TAG = "oid"; //$NON-NLS-1$
@@ -337,6 +338,13 @@ public class BrowserConnectionIO
             }
         }
 
+        // Paged search scroll mode
+        Attribute pagedSearchScrollModeAttribute = searchParameterElement.attribute( PAGED_SEARCH_SCROLL_MODE );
+        if ( pagedSearchScrollModeAttribute != null )
+        {
+            searchParameter.setPagedSearchScrollMode( Boolean.valueOf( pagedSearchScrollModeAttribute.getValue() ) );
+        }
+
         // Controls
         Element controlsElement = searchParameterElement.element( CONTROLS_TAG );
         if ( controlsElement != null )
@@ -534,6 +542,9 @@ public class BrowserConnectionIO
         // Referrals handling method
         searchParameterElement.addAttribute( REFERRALS_HANDLING_METHOD_TAG, searchParameter
             .getReferralsHandlingMethod().toString() );
+
+        // Paged search scroll mode
+        searchParameterElement.addAttribute( PAGED_SEARCH_SCROLL_MODE, "" + searchParameter.isPagedSearchScrollMode() );
 
         // Controls
         Element controlsElement = searchParameterElement.addElement( CONTROLS_TAG );

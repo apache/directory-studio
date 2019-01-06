@@ -28,6 +28,9 @@ import org.apache.directory.server.annotations.CreateLdapServer;
 import org.apache.directory.server.annotations.CreateTransport;
 import org.apache.directory.server.core.annotations.ApplyLdifFiles;
 import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ModificationLogsViewBot;
@@ -58,6 +61,7 @@ public class CopyEntryTest extends AbstractLdapTestUnit
     private ConnectionsViewBot connectionsViewBot;
     private BrowserViewBot browserViewBot;
     private ModificationLogsViewBot modificationLogsViewBot;
+    private Connection connection;
 
 
     @Before
@@ -66,7 +70,7 @@ public class CopyEntryTest extends AbstractLdapTestUnit
         studioBot = new StudioBot();
         studioBot.resetLdapPerspective();
         connectionsViewBot = studioBot.getConnectionView();
-        connectionsViewBot.createTestConnection( "CopyEntryTest", ldapServer.getPort() );
+        connection = connectionsViewBot.createTestConnection( "CopyEntryTest", ldapServer.getPort() );
         browserViewBot = studioBot.getBrowserView();
         modificationLogsViewBot = studioBot.getModificationLogsViewBot();
     }
@@ -251,6 +255,54 @@ public class CopyEntryTest extends AbstractLdapTestUnit
             "changetype: add", "uid: user.1" );
         modificationLogsViewBot.assertContainsOk( "dn: uid=user.renamed,ou=users,ou=system", "changetype: add",
             "uid: user.renamed" );
+    }
+
+
+    @Test
+    public void testCopyPasteSpecialEntries() throws Exception
+    {
+        // disable alias dereferencing
+        connection.getConnectionParameter().setExtendedIntProperty(
+            IBrowserConnection.CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD,
+            AliasDereferencingMethod.NEVER.ordinal() );
+        // enable ManageDsaIT control
+        connection.getConnectionParameter().setExtendedBoolProperty(
+            IBrowserConnection.CONNECTION_PARAMETER_MANAGE_DSA_IT, true );
+        // enable Subentries control
+        connection.getConnectionParameter().setExtendedBoolProperty(
+            IBrowserConnection.CONNECTION_PARAMETER_FETCH_SUBENTRIES, true );
+
+        // expand the entries to avoid copy depth dialog
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=alias" );
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=referral" );
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=subentry" );
+
+        // select and copy the entries
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=special" );
+        String[] children =
+            { "cn=alias", "cn=referral", "cn=subentry" };
+        browserViewBot.selectChildrenOfEntry( children, "DIT", "Root DSE", "ou=system", "ou=special" );
+        browserViewBot.copy();
+
+        // select the parent entry where the copied entries should be pasted to
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=target" );
+        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=target", "cn=alias" ) );
+        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=target", "cn=referral" ) );
+        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=target", "cn=subentry" ) );
+
+        // paste the entries
+        browserViewBot.pasteEntries( 3 );
+
+        // verify the entries was copied
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=target", "cn=alias" ) );
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=target", "cn=referral" ) );
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=target", "cn=subentry" ) );
+
+        // verify in modification logs
+        modificationLogsViewBot.assertContainsOk( "dn: cn=alias,ou=target,ou=system", "changetype: add" );
+        modificationLogsViewBot.assertContainsOk( "dn: cn=referral,ou=target,ou=system",
+            "control: 2.16.840.1.113730.3.4.2 false", "changetype: add" );
+        modificationLogsViewBot.assertContainsOk( "dn: cn=subentry,ou=target,ou=system", "changetype: add" );
     }
 
 }

@@ -238,7 +238,7 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
                         ISearch nextPageSearch = ( ISearch ) clonedSearch.clone();
                         nextPageSearch.getResponseControls().clear();
                         nextPageSearch.getControls().add( nextPrc );
-                        if ( search.getBrowserConnection().isPagedSearchScrollMode() )
+                        if ( search.isPagedSearchScrollMode() )
                         {
                             if ( prRequestControl.getCookieValue() > 0 )
                             {

@@ -182,7 +182,7 @@ public class SearchContinuation extends Search implements IContinuation
     /**
      * {@inheritDoc}
      */
-    public Object clone()
+    public SearchContinuation clone()
     {
         SearchContinuation clone = new SearchContinuation( this, getUrl() );
         clone.state = this.state;
