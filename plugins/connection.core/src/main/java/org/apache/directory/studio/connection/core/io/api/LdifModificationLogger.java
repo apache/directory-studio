@@ -40,13 +40,13 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import javax.naming.directory.SearchControls;
-import javax.naming.ldap.Control;
 
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
@@ -56,6 +56,7 @@ import org.apache.directory.studio.connection.core.Connection.AliasDereferencing
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionManager;
+import org.apache.directory.studio.connection.core.Controls;
 import org.apache.directory.studio.connection.core.ILdapLogger;
 import org.apache.directory.studio.connection.core.ReferralsInfo;
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
@@ -238,7 +239,8 @@ public class LdifModificationLogger implements ILdapLogger
                 .log(
                     Level.ALL,
                     LdifCommentLine
-                        .create( "#!CONNECTION ldap://" + connection.getHost() + ":" + connection.getPort() ).toFormattedString( LdifFormatParameters.DEFAULT ) ); //$NON-NLS-1$ //$NON-NLS-2$
+                        .create( "#!CONNECTION ldap://" + connection.getHost() + ":" + connection.getPort() ) //$NON-NLS-1$//$NON-NLS-2$
+                        .toFormattedString( LdifFormatParameters.DEFAULT ) );
             logger.log( Level.ALL, LdifCommentLine
                 .create( "#!DATE " + df.format( new Date() ) ).toFormattedString( LdifFormatParameters.DEFAULT ) ); //$NON-NLS-1$
 
@@ -259,8 +261,7 @@ public class LdifModificationLogger implements ILdapLogger
     /**
      * {@inheritDoc}
      */
-    public void logChangetypeAdd( Connection connection, final Entry entry,
-        final Control[] controls, LdapException ex )
+    public void logChangetypeAdd( Connection connection, final Entry entry, final Control[] controls, LdapException ex )
     {
         if ( !isModificationLogEnabled() )
         {
@@ -415,8 +416,7 @@ public class LdifModificationLogger implements ILdapLogger
      */
     public void logSearchRequest( Connection connection, String searchBase, String filter,
         SearchControls searchControls, AliasDereferencingMethod aliasesDereferencingMethod,
-        org.apache.directory.api.ldap.model.message.Control[] controls,
-        long requestNum, LdapException ex )
+        Control[] controls, long requestNum, LdapException ex )
     {
         // don't log searches
     }
@@ -447,16 +447,16 @@ public class LdifModificationLogger implements ILdapLogger
      * @param record the recored
      * @param controls the controls
      */
-    private static void addControlLines( LdifChangeRecord record, Control[] controls )
+    private static void addControlLines( LdifChangeRecord record,Control[] controls )
     {
         if ( controls != null )
         {
             for ( Control control : controls )
             {
-                String oid = control.getID();
+                String oid = control.getOid();
                 boolean isCritical = control.isCritical();
-                byte[] controlValue = control.getEncodedValue();
-                LdifControlLine controlLine = LdifControlLine.create( oid, isCritical, controlValue );
+                byte[] bytes = Controls.getEncodedValue( control );
+                LdifControlLine controlLine = LdifControlLine.create( oid, isCritical, bytes );
                 record.addControl( controlLine );
             }
         }

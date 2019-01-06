@@ -30,10 +30,8 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.naming.directory.SearchControls;
-import javax.naming.ldap.Control;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.dsmlv2.DsmlDecorator;
 import org.apache.directory.api.dsmlv2.Dsmlv2Parser;
 import org.apache.directory.api.dsmlv2.request.BatchRequestDsml;
@@ -55,6 +53,7 @@ import org.apache.directory.api.ldap.model.exception.LdapURLEncodingException;
 import org.apache.directory.api.ldap.model.message.AddRequest;
 import org.apache.directory.api.ldap.model.message.BindRequest;
 import org.apache.directory.api.ldap.model.message.CompareRequest;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.DeleteRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.LdapResult;
@@ -606,7 +605,7 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
                 .getConnectionWrapper()
                 .search( request.getBase().getName(), request.getFilter().toString(),
                     getSearchControls( request ), getAliasDereferencingMethod( request ),
-                    ReferralHandlingMethod.IGNORE, getControls2( request ), monitor, null );
+                    ReferralHandlingMethod.IGNORE, getControls( request ), monitor, null );
 
             SearchParameter sp = new SearchParameter();
             sp.setReferralsHandlingMethod( browserConnection.getReferralsHandlingMethod() );
@@ -696,33 +695,10 @@ public class ImportDsmlRunnable implements StudioConnectionBulkRunnableWithProgr
     }
 
 
-    private org.apache.directory.api.ldap.model.message.Control[] getControls2( Message request ) {
-        Collection<org.apache.directory.api.ldap.model.message.Control> controls = request.getControls().values();
+    private Control[] getControls( Message request ) {
+        Collection<Control> controls = request.getControls().values();
         if ( controls != null ) {
-            return controls.toArray( new org.apache.directory.api.ldap.model.message.Control[0] );
-        }
-        return null;
-    }
-
-
-    private Control[] getControls( Message request )
-    {
-        Collection<org.apache.directory.api.ldap.model.message.Control> controls = request.getControls().values();
-        if ( controls != null )
-        {
-            List<Control> jndiControls = new ArrayList<Control>();
-            for ( org.apache.directory.api.ldap.model.message.Control control : controls )
-            {
-                try
-                {
-                    jndiControls.add( codec.toJndiControl( control ) );
-                }
-                catch ( EncoderException e )
-                {
-                    throw new RuntimeException( e );
-                }
-            }
-            return jndiControls.toArray( new Control[jndiControls.size()] );
+            return controls.toArray( new Control[0] );
         }
         return null;
     }

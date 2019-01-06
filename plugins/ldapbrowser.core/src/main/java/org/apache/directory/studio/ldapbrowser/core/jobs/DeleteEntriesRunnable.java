@@ -30,14 +30,13 @@ import java.util.List;
 import java.util.Set;
 
 import javax.naming.directory.SearchControls;
-import javax.naming.ldap.BasicControl;
-import javax.naming.ldap.Control;
-import javax.naming.ldap.ManageReferralControl;
 
 import org.apache.directory.api.ldap.model.exception.LdapContextNotEmptyException;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.Controls;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.StudioControl;
@@ -363,14 +362,12 @@ public class DeleteEntriesRunnable implements StudioConnectionBulkRunnableWithPr
         if ( useTreeDeleteControl
             && browserConnection.getRootDSE().isControlSupported( StudioControl.TREEDELETE_CONTROL.getOid() ) )
         {
-            Control treeDeleteControl = new BasicControl( StudioControl.TREEDELETE_CONTROL.getOid(),
-                StudioControl.TREEDELETE_CONTROL.isCritical(), StudioControl.TREEDELETE_CONTROL.getControlValue() );
-            controlList.add( treeDeleteControl );
+            controlList.add( Controls.TREEDELETE_CONTROL );
         }
         if ( useManageDsaItControl
             && browserConnection.getRootDSE().isControlSupported( StudioControl.MANAGEDSAIT_CONTROL.getOid() ) )
         {
-            controlList.add( new ManageReferralControl( false ) );
+            controlList.add( Controls.MANAGEDSAIT_CONTROL );
         }
         Control[] controls = controlList.toArray( new Control[controlList.size()] );
 

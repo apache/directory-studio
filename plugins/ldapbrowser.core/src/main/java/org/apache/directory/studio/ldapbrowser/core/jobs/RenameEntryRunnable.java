@@ -27,11 +27,10 @@ import java.util.List;
 import java.util.Set;
 
 import javax.naming.directory.SearchControls;
-import javax.naming.ldap.Control;
-import javax.naming.ldap.ManageReferralControl;
 
 import org.apache.directory.api.ldap.model.exception.LdapContextNotEmptyException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
@@ -218,7 +217,7 @@ public class RenameEntryRunnable implements StudioConnectionBulkRunnableWithProg
                 boolean hasMoreChildren = parent.hasMoreChildren();
                 parent.deleteChild( oldEntry );
 
-                List<org.apache.directory.api.ldap.model.message.Control> controls = new ArrayList<>();
+                List<Control> controls = new ArrayList<>();
                 if ( oldEntry.isReferral() )
                 {
                     controls.add( Controls.MANAGEDSAIT_CONTROL );
@@ -294,7 +293,7 @@ public class RenameEntryRunnable implements StudioConnectionBulkRunnableWithProg
         if ( entry.isReferral() )
         {
             controls = new Control[]
-                { new ManageReferralControl( false ) };
+                { Controls.MANAGEDSAIT_CONTROL };
         }
 
         if ( browserConnection.getConnection() != null )

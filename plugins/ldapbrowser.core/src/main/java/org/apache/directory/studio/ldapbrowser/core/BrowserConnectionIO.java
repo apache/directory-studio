@@ -30,16 +30,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.directory.api.asn1.util.Asn1Buffer;
-import org.apache.directory.api.ldap.codec.api.ControlFactory;
-import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Base64;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.Controls;
 import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.connection.core.io.ConnectionIOException;
 import org.apache.directory.studio.ldapbrowser.core.model.BookmarkParameter;
@@ -349,7 +346,6 @@ public class BrowserConnectionIO
         Element controlsElement = searchParameterElement.element( CONTROLS_TAG );
         if ( controlsElement != null )
         {
-            LdapApiService codec = LdapApiServiceFactory.getSingleton();
             for ( Iterator<?> i = controlsElement.elementIterator( CONTROL_TAG ); i.hasNext(); )
             {
                 Element controlElement = ( Element ) i.next();
@@ -361,12 +357,9 @@ public class BrowserConnectionIO
                 {
                     if ( oidAttribute != null && isCriticalAttribute != null && valueAttribute != null )
                     {
-                        ControlFactory<? extends Control> factory = codec.getRequestControlFactories()
-                            .get( oidAttribute.getValue() );
-                        Control control = factory.newControl();
-                        control.setCritical( Boolean.valueOf( isCriticalAttribute.getValue() ) );
                         byte[] bytes = Base64.decode( valueAttribute.getValue().toCharArray() );
-                        factory.decodeValue( control, bytes );
+                        Control control = Controls.create( oidAttribute.getValue(),
+                            Boolean.valueOf( isCriticalAttribute.getValue() ), bytes );
                         searchParameter.getControls().add( control );
                     }
                     else if ( valueAttribute != null )
@@ -378,11 +371,8 @@ public class BrowserConnectionIO
                         bais = new ByteArrayInputStream( bytes );
                         ois = new ObjectInputStream( bais );
                         StudioControl studioControl = ( StudioControl ) ois.readObject();
-                        ControlFactory<? extends Control> factory = codec.getRequestControlFactories()
-                            .get( studioControl.getOid() );
-                        Control control = factory.newControl();
-                        control.setCritical( studioControl.isCritical() );
-                        factory.decodeValue( control, studioControl.getControlValue() );
+                        Control control = Controls.create( studioControl.getOid(),
+                            studioControl.isCritical(), studioControl.getControlValue() );
                         searchParameter.getControls().add( control );
                         ois.close();
                     }
@@ -548,13 +538,9 @@ public class BrowserConnectionIO
 
         // Controls
         Element controlsElement = searchParameterElement.addElement( CONTROLS_TAG );
-        LdapApiService codec = LdapApiServiceFactory.getSingleton();
         for ( Control control : searchParameter.getControls() )
         {
-            ControlFactory<? extends Control> factory = codec.getRequestControlFactories().get( control.getOid() );
-            Asn1Buffer buffer = new Asn1Buffer();
-            factory.encodeValue( buffer, control );
-            byte[] bytes = buffer.getBytes().array();
+            byte[] bytes = Controls.getEncodedValue( control );
             String controlsValue = new String( Base64.encode( bytes ) );
 
             Element controlElement = controlsElement.addElement( CONTROL_TAG );

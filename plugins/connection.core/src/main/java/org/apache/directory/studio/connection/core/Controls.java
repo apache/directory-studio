@@ -21,6 +21,11 @@
 package org.apache.directory.studio.connection.core;
 
 
+import org.apache.directory.api.asn1.DecoderException;
+import org.apache.directory.api.asn1.util.Asn1Buffer;
+import org.apache.directory.api.ldap.codec.api.ControlFactory;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.controls.ManageDsaIT;
 import org.apache.directory.api.ldap.model.message.controls.ManageDsaITImpl;
@@ -63,5 +68,35 @@ public class Controls
         control.setSize( size );
         control.setCookie( cookie );
         return control;
+    }
+
+
+    public static Control create( String oid, boolean isCritical, byte[] value )
+    {
+        try
+        {
+            LdapApiService codec = LdapApiServiceFactory.getSingleton();
+            ControlFactory<? extends Control> factory = codec.getRequestControlFactories().get( oid );
+            Control control = factory.newControl();
+            control.setCritical( isCritical );
+            //byte[] bytes = Base64.decode( valueAttribute.getValue().toCharArray() );
+            factory.decodeValue( control, value );
+            return control;
+        }
+        catch ( DecoderException e )
+        {
+            throw new RuntimeException( e );
+        }
+    }
+
+
+    public static byte[] getEncodedValue( Control control )
+    {
+        LdapApiService codec = LdapApiServiceFactory.getSingleton();
+        ControlFactory<? extends Control> factory = codec.getRequestControlFactories().get( control.getOid() );
+        Asn1Buffer buffer = new Asn1Buffer();
+        factory.encodeValue( buffer, control );
+        byte[] bytes = buffer.getBytes().array();
+        return bytes;
     }
 }

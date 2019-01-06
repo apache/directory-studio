@@ -23,11 +23,11 @@ package org.apache.directory.studio.connection.core;
 import java.util.Collection;
 
 import javax.naming.directory.SearchControls;
-import javax.naming.ldap.Control;
 
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -49,8 +49,7 @@ public interface ILdapLogger
      * @param controls the controls
      * @param ex the LDAP exception if an error occurred, null otherwise
      */
-    void logChangetypeAdd( Connection connection, final Entry entry,
-        final Control[] controls, LdapException ex );
+    void logChangetypeAdd( Connection connection, final Entry entry, final Control[] controls, LdapException ex );
 
 
     /**
@@ -155,8 +154,7 @@ public interface ILdapLogger
      */
     void logSearchRequest( Connection connection, String searchBase, String filter,
         SearchControls searchControls, AliasDereferencingMethod aliasesDereferencingMethod,
-        org.apache.directory.api.ldap.model.message.Control[] controls,
-        long requestNum, LdapException ex );
+        Control[] controls, long requestNum, LdapException ex );
 
 
     /**

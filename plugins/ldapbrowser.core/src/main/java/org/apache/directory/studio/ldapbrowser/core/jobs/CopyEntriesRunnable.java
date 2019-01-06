@@ -27,14 +27,13 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.naming.directory.SearchControls;
-import javax.naming.ldap.Control;
-import javax.naming.ldap.ManageReferralControl;
 
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.exception.LdapEntryAlreadyExistsException;
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Ava;
 import org.apache.directory.api.ldap.model.name.Dn;
@@ -309,7 +308,7 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
                 if ( entry.hasObjectClass( SchemaConstants.REFERRAL_OC ) )
                 {
                     controls = new Control[]
-                        { new ManageReferralControl( false ) };
+                        { Controls.MANAGEDSAIT_CONTROL };
                 }
 
                 // create entry

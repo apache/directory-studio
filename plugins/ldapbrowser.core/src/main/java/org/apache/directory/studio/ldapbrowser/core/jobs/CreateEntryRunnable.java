@@ -24,11 +24,9 @@ package org.apache.directory.studio.ldapbrowser.core.jobs;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.ldap.Control;
-import javax.naming.ldap.ManageReferralControl;
-
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Controls;
@@ -201,7 +199,7 @@ public class CreateEntryRunnable implements StudioConnectionBulkRunnableWithProg
         if ( entryToCreate.isReferral() )
         {
             controls = new Control[]
-                { new ManageReferralControl( false ) };
+                { Controls.MANAGEDSAIT_CONTROL };
         }
 
         browserConnection.getConnection().getConnectionWrapper()

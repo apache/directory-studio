@@ -39,12 +39,12 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import javax.naming.directory.SearchControls;
-import javax.naming.ldap.Control;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.url.LdapUrl;
@@ -223,7 +223,8 @@ public class LdifSearchLogger implements ILdapLogger
                 .log(
                     Level.ALL,
                     LdifCommentLine
-                        .create( "#!CONNECTION ldap://" + connection.getHost() + ":" + connection.getPort() ).toFormattedString( LdifFormatParameters.DEFAULT ) ); //$NON-NLS-1$ //$NON-NLS-2$
+                        .create( "#!CONNECTION ldap://" + connection.getHost() + ":" + connection.getPort() ) //$NON-NLS-1$//$NON-NLS-2$
+                        .toFormattedString( LdifFormatParameters.DEFAULT ) );
             logger.log( Level.ALL, LdifCommentLine
                 .create( "#!DATE " + df.format( new Date() ) ).toFormattedString( LdifFormatParameters.DEFAULT ) ); //$NON-NLS-1$
 
@@ -244,8 +245,7 @@ public class LdifSearchLogger implements ILdapLogger
     /**
      * {@inheritDoc}
      */
-    public void logChangetypeAdd( Connection connection, final Entry entry,
-        final Control[] controls, LdapException ex )
+    public void logChangetypeAdd( Connection connection, final Entry entry, final Control[] controls, LdapException ex )
     {
         // don't log changetypes
     }
@@ -286,8 +286,7 @@ public class LdifSearchLogger implements ILdapLogger
      */
     public void logSearchRequest( Connection connection, String searchBase, String filter,
         SearchControls searchControls, AliasDereferencingMethod aliasesDereferencingMethod,
-        org.apache.directory.api.ldap.model.message.Control[] controls,
-        long requestNum, LdapException ex )
+        Control[] controls, long requestNum, LdapException ex )
     {
         if ( !isSearchRequestLogEnabled() )
         {
@@ -296,9 +295,11 @@ public class LdifSearchLogger implements ILdapLogger
 
         String scopeAsString = searchControls.getSearchScope() == SearchControls.SUBTREE_SCOPE ? "wholeSubtree (2)" //$NON-NLS-1$
             : searchControls.getSearchScope() == SearchControls.ONELEVEL_SCOPE ? "singleLevel (1)" : "baseObject (0)"; //$NON-NLS-1$ //$NON-NLS-2$
-        String attributesAsString = searchControls.getReturningAttributes() == null ? "*" : searchControls //$NON-NLS-1$
-            .getReturningAttributes().length == 0 ? "1.1" : StringUtils.join( searchControls.getReturningAttributes(), //$NON-NLS-1$
-            " " ); //$NON-NLS-1$
+        String attributesAsString = searchControls.getReturningAttributes() == null ? "*" //$NON-NLS-1$
+            : searchControls
+                .getReturningAttributes().length == 0 ? "1.1" //$NON-NLS-1$
+                    : StringUtils.join( searchControls.getReturningAttributes(),
+                        " " );
         String aliasAsString = aliasesDereferencingMethod == AliasDereferencingMethod.ALWAYS ? "derefAlways (3)" //$NON-NLS-1$
             : aliasesDereferencingMethod == AliasDereferencingMethod.FINDING ? "derefFindingBaseObj (2)" //$NON-NLS-1$
                 : aliasesDereferencingMethod == AliasDereferencingMethod.SEARCH ? "derefInSearching (1)" //$NON-NLS-1$
@@ -327,7 +328,7 @@ public class LdifSearchLogger implements ILdapLogger
         lines.add( LdifCommentLine.create( "# attributes   : " + attributesAsString ) ); //$NON-NLS-1$
         if ( controls != null )
         {
-            for ( org.apache.directory.api.ldap.model.message.Control control : controls )
+            for ( Control control : controls )
             {
                 lines.add( LdifCommentLine.create( "# control      : " + control.getOid() ) ); //$NON-NLS-1$
             }
@@ -356,7 +357,8 @@ public class LdifSearchLogger implements ILdapLogger
         }
 
         Collection<LdifLineBase> lines = new ArrayList<LdifLineBase>();
-        lines.add( LdifCommentLine.create( "# reference : " + ( referral != null ? referral.getLdapUrls() : "null" ) ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        lines
+            .add( LdifCommentLine.create( "# reference : " + ( referral != null ? referral.getLdapUrls() : "null" ) ) ); //$NON-NLS-1$ //$NON-NLS-2$
         lines.add( LdifSepLine.create() );
 
         String formattedString = ""; //$NON-NLS-1$

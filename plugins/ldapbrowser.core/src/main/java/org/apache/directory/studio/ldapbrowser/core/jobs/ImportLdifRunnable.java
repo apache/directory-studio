@@ -36,9 +36,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import javax.naming.ldap.BasicControl;
-import javax.naming.ldap.Control;
-
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.api.ldap.model.entry.DefaultModification;
@@ -49,10 +46,12 @@ import org.apache.directory.api.ldap.model.exception.LdapEntryAlreadyExistsExcep
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.exception.LdapSchemaException;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
+import org.apache.directory.studio.connection.core.Controls;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
@@ -548,7 +547,7 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
             for ( int i = 0; i < controlLines.length; i++ )
             {
                 LdifControlLine line = controlLines[i];
-                controls[i] = new BasicControl( line.getUnfoldedOid(), line.isCritical(),
+                controls[i] = Controls.create( line.getUnfoldedOid(), line.isCritical(),
                     line.getControlValueAsBinary() );
             }
         }
