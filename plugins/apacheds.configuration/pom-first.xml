@@ -55,7 +55,7 @@
  org.apache.directory.studio.apacheds.configuration.wizards</Export-Package>
  
             <Import-Package>
- net.sf.ehcache
+ org.ehcache
              </Import-Package>
             
             <Require-Bundle>

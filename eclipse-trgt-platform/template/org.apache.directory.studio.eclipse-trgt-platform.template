@@ -19,7 +19,7 @@
   @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
 -->
 <?pde version="3.8"?>
-<target name="Apache Directory Studio Platform" sequenceNumber="375">
+<target name="Apache Directory Studio Platform" sequenceNumber="383">
   <locations>
 
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
@@ -27,7 +27,7 @@
       <unit id="org.apache.servicemix.bundles.antlr" version="2.7.7.5"/>
       <unit id="org.apache.servicemix.bundles.dom4j" version="1.6.1.5"/>
       <unit id="org.apache.servicemix.bundles.xpp3" version="1.1.4.c"/>
-      <unit id="net.sf.ehcache" version="${net.sf.ehcache.bundleversion}"/>
+      <unit id="org.ehcache.ehcache" version="${org.ehcache.ehcache.bundleversion}"/>
 
       <!-- Commons jars -->
       <unit id="org.apache.commons.codec" version="${org.apache.commons.codec.bundleversion}"/>

@@ -84,9 +84,9 @@
 
     <!-- Ehcache module -->
     <dependency>
-      <groupId>net.sf.ehcache</groupId>
+      <groupId>org.ehcache</groupId>
       <artifactId>ehcache</artifactId>
-      <version>${net.sf.ehcache.version}</version>
+      <version>${org.ehcache.ehcache.version}</version>
     </dependency>
 
     <!-- LDAP API modules -->

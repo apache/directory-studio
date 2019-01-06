@@ -50,7 +50,7 @@
             <Export-Package>org.apache.directory.studio.openldap.config</Export-Package>
 
             <Import-Package>
- net.sf.ehcache,
+ org.ehcache,
  org.apache.directory.api.ldap.model.name,
  org.apache.directory.server.core.api.interceptor.context,
  org.apache.directory.api.ldap.schema.manager.impl
