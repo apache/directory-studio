@@ -42,7 +42,6 @@ import org.apache.directory.server.config.ConfigPartitionReader;
 import org.apache.directory.server.config.ReadOnlyConfigurationPartition;
 import org.apache.directory.server.config.beans.ConfigBean;
 import org.apache.directory.server.constants.ServerDNConstants;
-import org.apache.directory.server.core.api.CacheService;
 import org.apache.directory.server.core.api.DnFactory;
 import org.apache.directory.server.core.api.InstanceLayout;
 import org.apache.directory.server.core.partition.impl.btree.AbstractBTreePartition;
@@ -263,9 +262,6 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
         // Creating a partition associated from the input stream
         ReadOnlyConfigurationPartition configurationPartition = new ReadOnlyConfigurationPartition( is,
             ApacheDS2ConfigurationPlugin.getDefault().getSchemaManager() );
-        CacheService cacheService = new CacheService();
-        cacheService.initialize( null );
-        configurationPartition.setCacheService( cacheService );
 
         configurationPartition.initialize();
 
@@ -278,14 +274,11 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
     {
         InstanceLayout instanceLayout = new InstanceLayout( confDirectory.getParentFile() );
 
-        CacheService cacheService = new CacheService();
-        cacheService.initialize( null );
-
         SchemaManager schemaManager = ApacheDS2ConfigurationPlugin.getDefault().getSchemaManager();
 
         DnFactory dnFactory = null;
 
-        ConfigPartitionInitializer init = new ConfigPartitionInitializer( instanceLayout, dnFactory, cacheService, schemaManager );
+        ConfigPartitionInitializer init = new ConfigPartitionInitializer( instanceLayout, dnFactory, schemaManager );
         LdifPartition configurationPartition = init.initConfigPartition();
 
         return readConfiguration( configurationPartition );
@@ -333,9 +326,6 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
             // Creating and initializing the configuration partition
             EntryBasedConfigurationPartition configurationPartition = new EntryBasedConfigurationPartition(
                 schemaManager );
-            CacheService cacheService = new CacheService();
-            cacheService.initialize( null );
-            configurationPartition.setCacheService( cacheService );
             configurationPartition.initialize();
 
             // Opening the connection

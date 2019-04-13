@@ -357,7 +357,7 @@ public class ConfigurationReader
                 for ( Value objectClassValue : objectClassAttribute )
                 {
                     ObjectClass oc = OpenLdapServerConfigurationEditorUtils.getObjectClass( schemaManager,
-                        objectClassValue.getValue() );
+                        objectClassValue.getString() );
 
                     if ( ( oc != null ) && ( oc.isStructural() ) )
                     {
@@ -369,7 +369,7 @@ public class ConfigurationReader
                 for ( Value objectClassValue : objectClassAttribute )
                 {
                     ObjectClass oc = OpenLdapServerConfigurationEditorUtils.getObjectClass( schemaManager,
-                        objectClassValue.getValue() );
+                        objectClassValue.getString() );
 
                     if ( oc != null )
                     {
@@ -419,7 +419,7 @@ public class ConfigurationReader
                 for ( Value objectClassValue : objectClassAttribute )
                 {
                     ObjectClass oc = OpenLdapServerConfigurationEditorUtils.getObjectClass( schemaManager,
-                        objectClassValue.getValue() );
+                        objectClassValue.getString() );
 
                     if ( ( oc != null ) && ( oc.isAuxiliary() ) )
                     {
@@ -720,7 +720,7 @@ public class ConfigurationReader
         Class<?> type = field.getType();
         String addMethodName = "add" + Character.toUpperCase( field.getName().charAt( 0 ) )
             + field.getName().substring( 1 );
-        String valueStr = value.getValue();
+        String valueStr = value.getString();
 
         try
         {

@@ -41,9 +41,7 @@ import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueEx
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.LdapSyntax;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
-import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
-import org.apache.directory.api.ldap.model.schema.MutableMatchingRule;
-import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
+import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.api.ldap.model.schema.UsageEnum;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
@@ -108,7 +106,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
                     {
                         for ( Value cnValue : cnAttribute )
                         {
-                            Schema schema = getSchema( wrapper, cnValue.getValue(), monitor );
+                            Schema schema = getSchema( wrapper, cnValue.getString(), monitor );
                             schema.setProject( project );
                             schemas.add( schema );
                         }
@@ -215,7 +213,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
                             break;
                             
                         case OBJECT_CLASS:
-                            MutableObjectClass oc = createObjectClass( entry );
+                            ObjectClass oc = createObjectClass( entry );
                             oc.setSchemaName( name );
                             schema.addObjectClass( oc );
                             break;
@@ -288,7 +286,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      */
     private static AttributeType createAttributeType( Entry entry ) throws LdapInvalidAttributeValueException
     {
-        MutableAttributeType at = new MutableAttributeType( getStringValue( entry, MetaSchemaConstants.M_OID_AT ) );
+        AttributeType at = new AttributeType( getStringValue( entry, MetaSchemaConstants.M_OID_AT ) );
         at.setNames( getStringValues( entry, MetaSchemaConstants.M_NAME_AT ) );
         at.setDescription( getStringValue( entry, MetaSchemaConstants.M_DESCRIPTION_AT ) );
         at.setObsolete( getBooleanValue( entry, MetaSchemaConstants.M_OBSOLETE_AT ) );
@@ -315,9 +313,9 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      * ObjectClassImpl could be created
      * @throws LdapInvalidAttributeValueException
      */
-    private static MutableObjectClass createObjectClass( Entry sr ) throws LdapInvalidAttributeValueException
+    private static ObjectClass createObjectClass( Entry sr ) throws LdapInvalidAttributeValueException
     {
-        MutableObjectClass oc = new MutableObjectClass( getStringValue( sr, MetaSchemaConstants.M_OID_AT ) );
+        ObjectClass oc = new ObjectClass( getStringValue( sr, MetaSchemaConstants.M_OID_AT ) );
         oc.setNames( getStringValues( sr, MetaSchemaConstants.M_NAME_AT ) );
         oc.setDescription( getStringValue( sr, MetaSchemaConstants.M_DESCRIPTION_AT ) );
         oc.setObsolete( getBooleanValue( sr, MetaSchemaConstants.M_OBSOLETE_AT ) );
@@ -340,7 +338,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      */
     private static MatchingRule createMatchingRule( Entry entry ) throws LdapInvalidAttributeValueException
     {
-        MutableMatchingRule mr = new MutableMatchingRule( getStringValue( entry, MetaSchemaConstants.M_OID_AT ) );
+        MatchingRule mr = new MatchingRule( getStringValue( entry, MetaSchemaConstants.M_OID_AT ) );
         mr.setNames( getStringValues( entry, MetaSchemaConstants.M_NAME_AT ) );
         mr.setDescription( getStringValue( entry, MetaSchemaConstants.M_DESCRIPTION_AT ) );
         mr.setObsolete( getBooleanValue( entry, MetaSchemaConstants.M_OBSOLETE_AT ) );
@@ -488,7 +486,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
     {
         Attribute at = entry.get( schemaElement );
         Spliterator<Value> spliterator = Optional.ofNullable( at ).map( Attribute::spliterator ).orElseGet( Spliterators::emptySpliterator );
-        return StreamSupport.stream( spliterator, false ).map( Value::getValue ).collect( Collectors.toList() );
+        return StreamSupport.stream( spliterator, false ).map( Value::getString ).collect( Collectors.toList() );
     }
 
 

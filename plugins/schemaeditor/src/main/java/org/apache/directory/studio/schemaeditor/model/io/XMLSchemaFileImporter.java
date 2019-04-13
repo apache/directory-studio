@@ -26,10 +26,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.LdapSyntax;
-import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
-import org.apache.directory.api.ldap.model.schema.MutableMatchingRule;
-import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
+import org.apache.directory.api.ldap.model.schema.MatchingRule;
+import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.api.ldap.model.schema.UsageEnum;
 import org.apache.directory.studio.schemaeditor.model.Schema;
@@ -304,13 +304,13 @@ public class XMLSchemaFileImporter
      */
     private static void readAttributeType( Element element, Schema schema ) throws XMLSchemaFileImportException
     {
-        MutableAttributeType at = null;
+        AttributeType at = null;
 
         // OID
         Attribute oidAttribute = element.attribute( OID_TAG );
         if ( ( oidAttribute != null ) && ( !oidAttribute.getValue().equals( "" ) ) ) //$NON-NLS-1$
         {
-            at = new MutableAttributeType( oidAttribute.getValue() );
+            at = new AttributeType( oidAttribute.getValue() );
         }
         else
         {
@@ -474,13 +474,13 @@ public class XMLSchemaFileImporter
      */
     private static void readObjectClass( Element element, Schema schema ) throws XMLSchemaFileImportException
     {
-        MutableObjectClass oc = null;
+        ObjectClass oc = null;
 
         // OID
         Attribute oidAttribute = element.attribute( OID_TAG );
         if ( ( oidAttribute != null ) && ( !oidAttribute.getValue().equals( "" ) ) ) //$NON-NLS-1$
         {
-            oc = new MutableObjectClass( oidAttribute.getValue() );
+            oc = new ObjectClass( oidAttribute.getValue() );
         }
         else
         {
@@ -621,13 +621,13 @@ public class XMLSchemaFileImporter
      */
     private static void readMatchingRule( Element element, Schema schema ) throws XMLSchemaFileImportException
     {
-        MutableMatchingRule mr = null;
+        MatchingRule mr = null;
 
         // OID
         Attribute oidAttribute = element.attribute( OID_TAG );
         if ( ( oidAttribute != null ) && ( !oidAttribute.getValue().equals( "" ) ) ) //$NON-NLS-1$
         {
-            mr = new MutableMatchingRule( oidAttribute.getValue() );
+            mr = new MatchingRule( oidAttribute.getValue() );
         }
         else
         {

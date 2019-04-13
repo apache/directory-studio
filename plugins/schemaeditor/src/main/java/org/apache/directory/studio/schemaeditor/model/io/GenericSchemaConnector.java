@@ -36,9 +36,6 @@ import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueEx
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.LdapSyntax;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
-import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
-import org.apache.directory.api.ldap.model.schema.MutableMatchingRule;
-import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.parsers.AttributeTypeDescriptionSchemaParser;
 import org.apache.directory.api.ldap.model.schema.parsers.LdapSyntaxDescriptionSchemaParser;
@@ -200,9 +197,9 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                         AttributeTypeDescriptionSchemaParser parser = new AttributeTypeDescriptionSchemaParser();
                         parser.setQuirksMode( true );
 
-                        AttributeType atd = parser.parse( value.getValue() );
+                        AttributeType atd = parser.parse( value.getString() );
 
-                        MutableAttributeType impl = new MutableAttributeType( atd.getOid() );
+                        AttributeType impl = new AttributeType( atd.getOid() );
                         impl.setNames( atd.getNames().toArray( new String[0] ) );
                         impl.setDescription( atd.getDescription() );
                         impl.setSuperiorOid( atd.getSuperiorOid() );
@@ -244,9 +241,9 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                     {
                         ObjectClassDescriptionSchemaParser parser = new ObjectClassDescriptionSchemaParser();
                         parser.setQuirksMode( true );
-                        ObjectClass ocd = parser.parse( value.getValue() );
+                        ObjectClass ocd = parser.parse( value.getString() );
 
-                        MutableObjectClass impl = new MutableObjectClass( ocd.getOid() );
+                        ObjectClass impl = new ObjectClass( ocd.getOid() );
                         impl.setNames( ocd.getNames().toArray( new String[0] ) );
                         impl.setDescription( ocd.getDescription() );
                         impl.setSuperiorOids( ocd.getSuperiorOids() );
@@ -276,7 +273,7 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                     {
                         LdapSyntaxDescriptionSchemaParser parser = new LdapSyntaxDescriptionSchemaParser();
                         parser.setQuirksMode( true );
-                        LdapSyntax lsd = parser.parse( value.getValue() );
+                        LdapSyntax lsd = parser.parse( value.getString() );
 
                         LdapSyntax impl = new LdapSyntax( lsd.getOid() );
                         impl.setDescription( lsd.getDescription() );
@@ -323,9 +320,9 @@ public class GenericSchemaConnector extends AbstractSchemaConnector implements S
                     {
                         MatchingRuleDescriptionSchemaParser parser = new MatchingRuleDescriptionSchemaParser();
                         parser.setQuirksMode( true );
-                        MatchingRule mrd = parser.parse( value.getValue() );
+                        MatchingRule mrd = parser.parse( value.getString() );
 
-                        MutableMatchingRule impl = new MutableMatchingRule( mrd.getOid() );
+                        MatchingRule impl = new MatchingRule( mrd.getOid() );
                         impl.setDescription( mrd.getDescription() );
                         impl.setNames( mrd.getNames().toArray( new String[0] ) );
                         impl.setObsolete( mrd.isObsolete() );

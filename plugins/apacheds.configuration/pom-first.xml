@@ -53,12 +53,8 @@
  org.apache.directory.studio.apacheds.configuration.editor,
  org.apache.directory.studio.apacheds.configuration.jobs,
  org.apache.directory.studio.apacheds.configuration.wizards</Export-Package>
- 
-            <Import-Package>
- org.ehcache
-             </Import-Package>
-            
             <Require-Bundle>
+ com.github.ben-manes.caffeine;bundle-version="${com.github.ben-manes.caffeine.bundleversion}",
  org.apache.directory.api.util;bundle-version="${org.apache.directory.api.version}",
  org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.version}",
  org.apache.directory.api.ldap.schema;bundle-version="${org.apache.directory.api.version}",

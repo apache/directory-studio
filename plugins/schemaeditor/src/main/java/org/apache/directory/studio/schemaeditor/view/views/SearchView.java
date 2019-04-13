@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import org.apache.directory.api.ldap.model.schema.AttributeType;
-import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.SchemaObject;
 import org.apache.directory.studio.schemaeditor.Activator;
@@ -559,7 +558,7 @@ public class SearchView extends ViewPart
                 }
                 else if ( item instanceof ObjectClass )
                 {
-                    input = new ObjectClassEditorInput( ( MutableObjectClass ) item );
+                    input = new ObjectClassEditorInput( ( ObjectClass ) item );
                     editorId = ObjectClassEditor.ID;
                 }
 

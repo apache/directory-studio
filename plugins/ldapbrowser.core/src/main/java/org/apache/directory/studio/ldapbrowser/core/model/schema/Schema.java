@@ -41,8 +41,6 @@ import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.LdapSyntax;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
 import org.apache.directory.api.ldap.model.schema.MatchingRuleUse;
-import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
-import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.UsageEnum;
 import org.apache.directory.api.ldap.model.schema.parsers.AttributeTypeDescriptionSchemaParser;
@@ -330,15 +328,11 @@ public class Schema
         }
 
         // set extensibleObject may attributes
-        ObjectClass extensibleObjectOcd = this
-            .getObjectClassDescription( SchemaConstants.EXTENSIBLE_OBJECT_OC );
-        if ( extensibleObjectOcd instanceof MutableObjectClass )
-        {
-            Collection<AttributeType> userAtds = SchemaUtils.getUserAttributeDescriptions( this );
-            Collection<String> atdNames = SchemaUtils.getNames( userAtds );
-            List<String> atdNames2 = new ArrayList<String>( atdNames );
-            ( ( MutableObjectClass ) extensibleObjectOcd ).setMayAttributeTypeOids( atdNames2 );
-        }
+        ObjectClass extensibleObjectOcd = this.getObjectClassDescription( SchemaConstants.EXTENSIBLE_OBJECT_OC );
+        Collection<AttributeType> userAtds = SchemaUtils.getUserAttributeDescriptions( this );
+        Collection<String> atdNames = SchemaUtils.getNames( userAtds );
+        List<String> atdNames2 = new ArrayList<String>( atdNames );
+        extensibleObjectOcd.setMayAttributeTypeOids( atdNames2 );
     }
 
 
@@ -612,7 +606,7 @@ public class Schema
             // DUMMY
             List<String> attributeTypes = new ArrayList<String>();
             attributeTypes.add( attributeType );
-            MutableAttributeType atd = new MutableAttributeType( attributeType );
+            AttributeType atd = new AttributeType( attributeType );
             atd.setNames( attributeTypes );
             atd.setUserModifiable( true );
             atd.setUsage( UsageEnum.USER_APPLICATIONS );

@@ -25,7 +25,6 @@ import java.text.ParseException;
 import java.util.List;
 
 import org.apache.directory.api.ldap.model.schema.AttributeType;
-import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.api.ldap.model.schema.parsers.OpenLdapSchemaParser;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.model.io.OpenLdapSchemaFileExporter;
@@ -195,7 +194,7 @@ public class AttributeTypeEditorSourceCodePage extends AbstractAttributeTypeEdit
      */
     private void updateAttributeType( AttributeType atl )
     {
-        MutableAttributeType modifiedAttributeType = getModifiedAttributeType();
+        AttributeType modifiedAttributeType = getModifiedAttributeType();
 
         modifiedAttributeType.setCollective( atl.isCollective() );
         modifiedAttributeType.setDescription( atl.getDescription() );

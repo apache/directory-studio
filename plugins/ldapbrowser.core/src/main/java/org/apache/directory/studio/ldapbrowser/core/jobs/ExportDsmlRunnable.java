@@ -357,7 +357,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
             {
                 for ( Value value : refAttribute )
                 {
-                    srr.addSearchResultReference( new LdapUrl( ( String ) value.getValue() ) );
+                    srr.addSearchResultReference( new LdapUrl( ( String ) value.getString() ) );
                 }
             }
 

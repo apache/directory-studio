@@ -76,22 +76,22 @@
     <junit.version>4.11</junit.version>
     <log4j.log4j.version>1.2.17</log4j.log4j.version>
     <log4j.log4j.bundleversion>1.2.17</log4j.log4j.bundleversion>
-    <org.ehcache.ehcache.version>3.5.3</org.ehcache.ehcache.version>
-    <org.ehcache.ehcache.bundleversion>3.5.3</org.ehcache.ehcache.bundleversion>
-    <org.apache.commons.codec.version>1.11</org.apache.commons.codec.version>
-    <org.apache.commons.codec.bundleversion>1.11.0</org.apache.commons.codec.bundleversion>
-    <org.apache.commons.collections4.version>4.2</org.apache.commons.collections4.version>
-    <org.apache.commons.collections4.bundleversion>4.2.0</org.apache.commons.collections4.bundleversion>
+    <com.github.ben-manes.caffeine.version>2.7.0</com.github.ben-manes.caffeine.version>
+    <com.github.ben-manes.caffeine.bundleversion>2.7.0</com.github.ben-manes.caffeine.bundleversion>
+    <org.apache.commons.codec.version>1.12</org.apache.commons.codec.version>
+    <org.apache.commons.codec.bundleversion>1.12.0</org.apache.commons.codec.bundleversion>
+    <org.apache.commons.collections4.version>4.3</org.apache.commons.collections4.version>
+    <org.apache.commons.collections4.bundleversion>4.3.0</org.apache.commons.collections4.bundleversion>
     <org.apache.commons.io.version>2.6</org.apache.commons.io.version>
     <org.apache.commons.io.bundleversion>2.6.0</org.apache.commons.io.bundleversion>
     <org.apache.commons.lang3.version>3.8.1</org.apache.commons.lang3.version>
     <org.apache.commons.lang3.bundleversion>3.8.1</org.apache.commons.lang3.bundleversion>
-    <org.apache.commons.pool.version>2.6.0</org.apache.commons.pool.version>
-    <org.apache.commons.pool.bundleversion>2.6.0</org.apache.commons.pool.bundleversion>
+    <org.apache.commons.pool.version>2.6.1</org.apache.commons.pool.version>
+    <org.apache.commons.pool.bundleversion>2.6.1</org.apache.commons.pool.bundleversion>
     <org.apache.directory.api.version>2.0.0.AM3-SNAPSHOT</org.apache.directory.api.version>
     <org.apache.directory.server.version>2.0.0.AM26-SNAPSHOT</org.apache.directory.server.version>
-    <org.apache.mina.version>2.0.18</org.apache.mina.version>
-    <org.apache.mina.bundleversion>2.0.18</org.apache.mina.bundleversion>
+    <org.apache.mina.version>2.1.0</org.apache.mina.version>
+    <org.apache.mina.bundleversion>2.1.0</org.apache.mina.bundleversion>
     <org.apache.poi.version>3.9</org.apache.poi.version>
     <org.apache.poi.bundleversion>3.9.0</org.apache.poi.bundleversion>
     <org.apache.xmlgraphics.fop.version>1.0</org.apache.xmlgraphics.fop.version>

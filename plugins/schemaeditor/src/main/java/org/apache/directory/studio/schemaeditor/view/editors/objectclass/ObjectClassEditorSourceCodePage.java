@@ -24,7 +24,6 @@ package org.apache.directory.studio.schemaeditor.view.editors.objectclass;
 import java.text.ParseException;
 import java.util.List;
 
-import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.parsers.OpenLdapSchemaParser;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
@@ -191,7 +190,7 @@ public class ObjectClassEditorSourceCodePage extends AbstractObjectClassEditorPa
      */
     private void updateObjectClass( ObjectClass ocl )
     {
-        MutableObjectClass modifiedObjectClass = getModifiedObjectClass();
+        ObjectClass modifiedObjectClass = getModifiedObjectClass();
 
         modifiedObjectClass.setDescription( ocl.getDescription() );
         modifiedObjectClass.setMayAttributeTypeOids( ocl.getMayAttributeTypeOids() );

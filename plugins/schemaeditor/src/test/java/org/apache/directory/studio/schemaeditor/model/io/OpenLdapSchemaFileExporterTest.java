@@ -25,8 +25,8 @@ import static org.junit.Assert.assertEquals;
 import java.util.Arrays;
 import java.util.Collections;
 
-import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
-import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
+import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.api.ldap.model.schema.UsageEnum;
 import org.junit.Before;
@@ -39,21 +39,21 @@ import org.junit.Test;
 public class OpenLdapSchemaFileExporterTest
 {
 
-    private MutableObjectClass objectClassSimple;
-    private MutableObjectClass objectClassComplex;
+    private ObjectClass objectClassSimple;
+    private ObjectClass objectClassComplex;
 
-    private MutableAttributeType attributeTypeSimple;
-    private MutableAttributeType attributeTypeComplex;
+    private AttributeType attributeTypeSimple;
+    private AttributeType attributeTypeComplex;
 
     @Before
     public void setUp()
     {
-        objectClassSimple = new MutableObjectClass( "1.2.3.4" );
+        objectClassSimple = new ObjectClass( "1.2.3.4" );
         objectClassSimple.setNames( "name0" );
         objectClassSimple.setMustAttributeTypeOids( Arrays.asList( "att0" ) );
         objectClassSimple.setSchemaName( "dummy" );
 
-        objectClassComplex = new MutableObjectClass( "1.2.3.4" );
+        objectClassComplex = new ObjectClass( "1.2.3.4" );
         objectClassComplex.setNames( "name1", "name2" );
         objectClassComplex.setDescription( "description with 'quotes'" );
         objectClassComplex.setObsolete( true );
@@ -63,7 +63,7 @@ public class OpenLdapSchemaFileExporterTest
         objectClassComplex.setMayAttributeTypeOids( Arrays.asList( "att3", "att4" ) );
         objectClassComplex.setSchemaName( "dummy" );
         
-        attributeTypeSimple = new MutableAttributeType( "1.2.3.4" );
+        attributeTypeSimple = new AttributeType( "1.2.3.4" );
         attributeTypeSimple.setNames( "name0" );
         attributeTypeSimple.setEqualityOid( "matchingRule0" );
         attributeTypeSimple.setSyntaxOid( "2.3.4.5" );
@@ -71,7 +71,7 @@ public class OpenLdapSchemaFileExporterTest
         attributeTypeSimple.setCollective( true );
         attributeTypeSimple.setSchemaName( "dummy" );
 
-        attributeTypeComplex = new MutableAttributeType( "1.2.3.4" );
+        attributeTypeComplex = new AttributeType( "1.2.3.4" );
         attributeTypeComplex.setNames( "name1", "name2" );
         attributeTypeComplex.setDescription( "description with 'quotes'" );
         attributeTypeComplex.setObsolete( true );

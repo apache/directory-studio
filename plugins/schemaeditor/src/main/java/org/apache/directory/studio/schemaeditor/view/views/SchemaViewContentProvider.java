@@ -27,7 +27,6 @@ import java.util.List;
 import org.apache.commons.collections4.ListValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
-import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
@@ -186,7 +185,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
                                 }
                                 else if ( rootChild instanceof ObjectClass )
                                 {
-                                    MutableObjectClass oc = ( MutableObjectClass ) rootChild;
+                                    ObjectClass oc = ( ObjectClass ) rootChild;
                                     childNode = new ObjectClassWrapper( oc, ocFolder );
                                     ocFolder.addChild( childNode );
                                 }
@@ -320,7 +319,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
                 }
                 else if ( child instanceof ObjectClass )
                 {
-                    MutableObjectClass oc = ( MutableObjectClass ) child;
+                    ObjectClass oc = ( ObjectClass ) child;
                     childNode = new ObjectClassWrapper( oc, node );
                     node.addChild( childNode );
                 }
@@ -998,7 +997,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
 
                 for ( TreeNode createdWrapper : createdWrappers )
                 {
-                    ObjectClassWrapper ocw = new ObjectClassWrapper( ( MutableObjectClass ) child, createdWrapper );
+                    ObjectClassWrapper ocw = new ObjectClassWrapper( ( ObjectClass ) child, createdWrapper );
                     ocw.getParent().addChild( ocw );
                     elementsToWrappersMap.put( child, ocw );
                     addHierarchyChildren( ocw, hierarchyManager.getChildren( child ) );
@@ -1173,7 +1172,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
                             Folder folder = ( Folder ) rootChild;
                             if ( folder.getType().equals( FolderType.OBJECT_CLASS ) )
                             {
-                                ocw = new ObjectClassWrapper( ( MutableObjectClass ) child, folder );
+                                ocw = new ObjectClassWrapper( ( ObjectClass ) child, folder );
                                 break;
                             }
                         }
@@ -1181,7 +1180,7 @@ public class SchemaViewContentProvider implements IStructuredContentProvider, IT
                 }
                 else if ( group == PluginConstants.PREFS_SCHEMA_VIEW_GROUPING_MIXED )
                 {
-                    ocw = new ObjectClassWrapper( ( MutableObjectClass ) child, root );
+                    ocw = new ObjectClassWrapper( ( ObjectClass ) child, root );
                 }
 
                 ocw.getParent().addChild( ocw );

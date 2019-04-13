@@ -20,7 +20,7 @@
 package org.apache.directory.studio.schemaeditor.view.wizards;
 
 
-import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
+import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
@@ -76,7 +76,7 @@ public class NewObjectClassWizard extends Wizard implements INewWizard
     public boolean performFinish()
     {
         // Creating the new object class
-        MutableObjectClass newOC = new MutableObjectClass( generalPage.getOidValue() );
+        ObjectClass newOC = new ObjectClass( generalPage.getOidValue() );
         newOC.setSchemaName( generalPage.getSchemaValue() );
         newOC.setNames( generalPage.getAliasesValue() );
         newOC.setDescription( generalPage.getDescriptionValue() );

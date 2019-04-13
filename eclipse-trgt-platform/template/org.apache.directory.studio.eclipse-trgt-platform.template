@@ -19,18 +19,18 @@
   @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
 -->
 <?pde version="3.8"?>
-<target name="Apache Directory Studio Platform" sequenceNumber="383">
+<target name="Apache Directory Studio Platform" sequenceNumber="397">
   <locations>
 
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
       <!-- External jars -->
       <unit id="org.apache.servicemix.bundles.antlr" version="2.7.7.5"/>
-      <unit id="org.apache.servicemix.bundles.dom4j" version="1.6.1.5"/>
+      <unit id="org.apache.servicemix.bundles.dom4j" version="2.1.1.1"/>
       <unit id="org.apache.servicemix.bundles.xpp3" version="1.1.4.c"/>
-      <unit id="org.ehcache.ehcache" version="${org.ehcache.ehcache.bundleversion}"/>
+      <unit id="com.github.ben-manes.caffeine" version="${com.github.ben-manes.caffeine.bundleversion}"/>
 
       <!-- Commons jars -->
-      <unit id="org.apache.commons.codec" version="${org.apache.commons.codec.bundleversion}"/>
+      <unit id="org.apache.commons.commons-codec" version="${org.apache.commons.codec.bundleversion}"/>
       <unit id="org.apache.commons.commons-collections4" version="${org.apache.commons.collections4.bundleversion}"/>
       <unit id="org.apache.commons.io" version="${org.apache.commons.io.bundleversion}"/>
       <unit id="org.apache.commons.lang3" version="${org.apache.commons.lang3.bundleversion}"/>
@@ -138,7 +138,8 @@
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
       <unit id="org.eclipse.babel.nls_eclipse_de.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.babel.nls_eclipse_fr.feature.group" version="0.0.0"/>
-      <repository location="http://download.eclipse.org/technology/babel/update-site/R0.15.1/oxygen"/>
+      <repository location="http://archive.eclipse.org/technology/babel/update-site/R0.15.1/oxygen"/>
+      <!--<repository location="http://download.eclipse.org/technology/babel/update-site/R0.16.1/2018-12"/>-->
     </location>
 
   </locations>

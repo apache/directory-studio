@@ -82,11 +82,11 @@
       <version>${org.apache.mina.version}</version>
     </dependency>
 
-    <!-- Ehcache module -->
+    <!-- Caffeine module -->
     <dependency>
-      <groupId>org.ehcache</groupId>
-      <artifactId>ehcache</artifactId>
-      <version>${org.ehcache.ehcache.version}</version>
+      <groupId>com.github.ben-manes.caffeine</groupId>
+      <artifactId>caffeine</artifactId>
+      <version>${com.github.ben-manes.caffeine.version}</version>
     </dependency>
 
     <!-- LDAP API modules -->

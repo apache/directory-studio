@@ -47,6 +47,7 @@ import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.test.integration.ui.bots.BotUtils;
 import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.DeleteDialogBot;
@@ -272,6 +273,7 @@ public class ImportExportTest extends AbstractLdapTestUnit
         DeleteDialogBot dialogBot = browserViewBot.openDeleteDialog();
         assertTrue( dialogBot.isVisible() );
         dialogBot.clickOkButton();
+        BotUtils.sleep( 5000L );
         assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=alias" ) );
         assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=referral" ) );
         assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=subentry" ) );
@@ -358,6 +360,7 @@ public class ImportExportTest extends AbstractLdapTestUnit
         DeleteDialogBot dialogBot = browserViewBot.openDeleteDialog();
         assertTrue( dialogBot.isVisible() );
         dialogBot.clickOkButton();
+        BotUtils.sleep( 5000L );
         assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=alias" ) );
         assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=referral" ) );
         assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=subentry" ) );

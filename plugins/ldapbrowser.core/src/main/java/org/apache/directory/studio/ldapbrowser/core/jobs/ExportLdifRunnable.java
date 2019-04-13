@@ -308,7 +308,7 @@ public class ExportLdifRunnable implements StudioConnectionRunnableWithProgress
                 {
                     if ( value.isHumanReadable() )
                     {
-                        record.addAttrVal( LdifAttrValLine.create( attributeName, value.getValue() ) );
+                        record.addAttrVal( LdifAttrValLine.create( attributeName, value.getString() ) );
                     }
                     else
                     {

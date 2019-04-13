@@ -285,7 +285,7 @@ public class LdifModificationLogger implements ILdapLogger
                 {
                     if ( value.isHumanReadable() )
                     {
-                        record.addAttrVal( LdifAttrValLine.create( attributeName, value.getValue() ) );
+                        record.addAttrVal( LdifAttrValLine.create( attributeName, value.getString() ) );
                     }
                     else
                     {
@@ -365,7 +365,7 @@ public class LdifModificationLogger implements ILdapLogger
                 {
                     if ( value.isHumanReadable() )
                     {
-                        modSpec.addAttrVal( LdifAttrValLine.create( attributeName, value.getValue() ) );
+                        modSpec.addAttrVal( LdifAttrValLine.create( attributeName, value.getString() ) );
                     }
                     else
                     {

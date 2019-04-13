@@ -267,7 +267,7 @@ http://www.apache.org/licenses/
          unpack="false"/>
 
    <plugin
-         id="org.ehcache.ehcache"
+         id="com.github.ben-manes.caffeine"
          download-size="0"
          install-size="0"
          version="0.0.0"

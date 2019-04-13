@@ -695,7 +695,7 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
                 {
                     if ( valueObject.isHumanReadable() )
                     {
-                        String value = valueObject.getValue();
+                        String value = valueObject.getString();
 
                         if ( searchParameter.isInitHasChildrenFlag() )
                         {
@@ -859,7 +859,7 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
                     {
                         if ( value.isHumanReadable() )
                         {
-                            studioAttribute.addValue( new Value( studioAttribute, value.getValue() ) );
+                            studioAttribute.addValue( new Value( studioAttribute, value.getString() ) );
                         }
                         else
                         {

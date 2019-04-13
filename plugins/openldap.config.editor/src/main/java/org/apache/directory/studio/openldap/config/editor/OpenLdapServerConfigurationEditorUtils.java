@@ -37,7 +37,6 @@ import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.model.schema.registries.ObjectClassRegistry;
 import org.apache.directory.api.ldap.util.tree.DnNode;
 import org.apache.directory.api.util.DateUtils;
-import org.apache.directory.server.core.api.CacheService;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.common.ui.CommonUIUtils;
 import org.apache.directory.studio.common.ui.filesystem.PathEditorInput;
@@ -45,16 +44,6 @@ import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.jobs.ExecuteLdifRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.DirectoryDialog;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.PlatformUI;
 import org.apache.directory.studio.openldap.config.ExpandedLdifUtils;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPlugin;
 import org.apache.directory.studio.openldap.config.jobs.EntryBasedConfigurationPartition;
@@ -64,6 +53,15 @@ import org.apache.directory.studio.openldap.config.model.io.ConfigurationExcepti
 import org.apache.directory.studio.openldap.config.model.io.ConfigurationReader;
 import org.apache.directory.studio.openldap.config.model.io.ConfigurationUtils;
 import org.apache.directory.studio.openldap.config.model.io.ConfigurationWriter;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.DirectoryDialog;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IEditorInput;
 
 
 /**
@@ -467,12 +465,8 @@ public class OpenLdapServerConfigurationEditorUtils
     public static EntryBasedConfigurationPartition createConfigurationPartition( SchemaManager schemaManager,
         Dn configBaseDn ) throws LdapException
     {
-        CacheService cacheService = new CacheService();
-        cacheService.initialize( null );
-
         EntryBasedConfigurationPartition configurationPartition = new EntryBasedConfigurationPartition(
             schemaManager, configBaseDn );
-        configurationPartition.setCacheService(cacheService);
         configurationPartition.initialize();
 
         return configurationPartition;
