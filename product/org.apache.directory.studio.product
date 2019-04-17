@@ -16,9 +16,6 @@
    <launcherArgs>
       <programArgs>/studio-rcp/resources/icons/linux/studio.xpm
       </programArgs>
-      <programArgsLin>--launcher.GTK_version
-2
-      </programArgsLin>
       <vmArgs>-Dosgi.requiredJavaVersion=1.8
       </vmArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
@@ -35,7 +32,6 @@
    <launcher name="ApacheDirectoryStudio">
       <linux icon="icons/linux/studio.xpm"/>
       <macosx icon="icons/macosx/studio.icns"/>
-      <solaris/>
       <win useIco="true">
          <ico path="icons/windows/studio.ico"/>
          <bmp/>
@@ -257,12 +253,11 @@ http://www.apache.org/licenses/
    </features>
 
    <configurations>
-      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="4" />
+      <plugin id="org.apache.felix.scr" autoStart="true" startLevel="2" />
+      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="0" />
       <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
-      <plugin id="org.eclipse.equinox.ds" autoStart="true" startLevel="2" />
-      <plugin id="org.eclipse.equinox.p2.reconciler.dropins" autoStart="true" startLevel="4" />
+      <plugin id="org.eclipse.equinox.event" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
-      <plugin id="org.eclipse.update.configurator" autoStart="true" startLevel="4" />
       <property name="org.eclipse.update.reconcile" value="false" />
       <property name="osgi.instance.area.default" value="@user.home/.ApacheDirectoryStudio" />
    </configurations>

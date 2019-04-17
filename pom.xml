@@ -68,7 +68,7 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
 
-    <tycho.version>1.2.0</tycho.version>
+    <tycho.version>1.4.0</tycho.version>
 
     <!-- Set versions for dependencies -->
     <antlr.version>2.7.7</antlr.version>
@@ -163,19 +163,7 @@
             <environment>
               <os>linux</os>
               <ws>gtk</ws>
-              <arch>x86</arch>
-            </environment>
-
-            <environment>
-              <os>linux</os>
-              <ws>gtk</ws>
               <arch>x86_64</arch>
-            </environment>
-
-            <environment>
-              <os>win32</os>
-              <ws>win32</ws>
-              <arch>x86</arch>
             </environment>
 
             <environment>
