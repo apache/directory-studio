@@ -28,7 +28,7 @@
   </parent>
   
   <artifactId>org.apache.directory.studio.edirectory</artifactId>
-  <name>Apache Directory Studio eDirecotry</name>
+  <name>Apache Directory Studio eDirectory</name>
   <packaging>eclipse-plugin</packaging>
   <description />
 </project>
