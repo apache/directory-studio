@@ -31,11 +31,16 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.cert.X509Certificate;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.directory.api.ldap.model.constants.LdapSecurityConstants;
+import org.apache.directory.api.ldap.model.entry.DefaultModification;
 import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.entry.ModificationOperation;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.password.PasswordUtil;
 import org.apache.directory.api.util.FileUtils;
@@ -45,9 +50,11 @@ import org.apache.directory.server.annotations.CreateLdapServer;
 import org.apache.directory.server.annotations.CreateTransport;
 import org.apache.directory.server.core.annotations.ApplyLdifFiles;
 import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
+import org.apache.directory.server.core.security.CertificateUtil;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
 import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
+import org.apache.directory.studio.test.integration.ui.bots.BotUtils;
 import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.DnEditorDialogBot;
@@ -69,6 +76,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import sun.security.x509.X500Name;
 
 
 /**
@@ -469,13 +478,25 @@ public class EntryEditorTest extends AbstractLdapTestUnit
     @Test
     public void testCertificateValueEditor() throws Exception
     {
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "uid=admin" );
+        X500Name issuer = new X500Name( "Foo", "Bar", "Baz", "US" );
+        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance( "EC" );
+        keyPairGenerator.initialize( 256 );
+        KeyPair keyPair = keyPairGenerator.generateKeyPair();
+        X509Certificate certificate = CertificateUtil.generateSelfSignedCertificate( issuer, keyPair, 365,
+            "SHA256WithECDSA" );
+        getService().getAdminSession().modify( new Dn( "cn=Barbara Jensen,ou=users,ou=system" ),
+            new DefaultModification( ModificationOperation.ADD_ATTRIBUTE, "userCertificate",
+                certificate.getEncoded() ) );
 
-        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "uid=admin,ou=system" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Barbara Jensen" );
+
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "cn=Barbara Jensen,ou=users,ou=system" );
         entryEditorBot.activate();
 
+        BotUtils.sleep( 10000 );
+
         assertTrue( entryEditorBot.getAttributeValues()
-            .contains( "userCertificate: X.509v1: CN=ApacheDS,OU=Directory,O=ASF,C=US" ) );
+            .contains( "userCertificate: X.509v3: CN=Foo,OU=Bar,O=Baz,C=US" ) );
     }
 
 

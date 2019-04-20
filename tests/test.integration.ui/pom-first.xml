@@ -71,7 +71,7 @@
  org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.version}",
  org.apache.directory.api.ldap.net.mina;bundle-version="${org.apache.directory.api.version}",
  org.apache.directory.api.util;bundle-version="${org.apache.directory.api.version}",
- org.apache.mina.core;bundle-version="${org.apache.mina.version}",
+ org.apache.mina.core;bundle-version="${org.apache.mina.bundleversion}",
  
  org.apache.directory.studio.aciitemeditor,
  org.apache.directory.studio.apacheds.configuration,

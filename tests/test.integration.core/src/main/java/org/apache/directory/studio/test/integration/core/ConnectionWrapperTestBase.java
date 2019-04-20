@@ -33,6 +33,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.ByteArrayInputStream;
 import java.net.ConnectException;
 import java.nio.channels.UnresolvedAddressException;
+import java.nio.charset.StandardCharsets;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
@@ -75,6 +76,7 @@ import org.apache.mina.util.AvailablePortFinder;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -323,14 +325,9 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         StudioSearchResult entry = result.next();
         assertNotNull( entry );
 
-        Object userCertificateValue = entry.getEntry().get( "userCertificate" ).getBytes();
-        assertEquals( byte[].class, userCertificateValue.getClass() );
-
-        CertificateFactory cf = CertificateFactory.getInstance( "X.509" ); //$NON-NLS-1$
-        Certificate certificate = cf.generateCertificate( new ByteArrayInputStream( ( byte[] ) userCertificateValue ) );
-        assertTrue( certificate instanceof X509Certificate );
-        X509Certificate x509Certificate = ( X509Certificate ) certificate;
-        assertTrue( x509Certificate.getIssuerDN().getName().contains( "ApacheDS" ) );
+        Object userPasswordValue = entry.getEntry().get( "userPassword" ).getBytes();
+        assertEquals( byte[].class, userPasswordValue.getClass() );
+        assertEquals( "secret", new String( ( byte[] ) userPasswordValue, StandardCharsets.UTF_8 ) );
     }
 
 
