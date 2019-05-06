@@ -32,6 +32,7 @@
       <attribute attributeType="DirXML-DriverFilter"/>
       <attribute attributeType="DirXML-DriverStorage"/>
       <attribute attributeType="DirXML-EngineControlValues"/>
+      <attribute attributeType="DirXML-EntitlementResult"/>
       <attribute attributeType="DirXML-PersistentData"/>
       <attribute attributeType="DirXML-pkgExtensions"/>
       <attribute attributeType="DirXML-pkgInitialState"/>
