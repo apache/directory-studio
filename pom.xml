@@ -44,7 +44,8 @@
   <scm>
     <connection>scm:git:https://gitbox.apache.org/repos/asf/directory-studio.git</connection>
     <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/directory-studio.git</developerConnection>
-    <url>https://gitbox.apache.org/repos/asf?p=directory-studio.git;a=tag;h=refs/tags/${project.scm.tag}</url>
+    <url>https://github.com/apache/directory-studio/tree/${project.scm.tag}</url>
+    <tag<master</tag>
   </scm>
 
   <distributionManagement>
@@ -88,7 +89,7 @@
     <org.apache.commons.lang3.bundleversion>3.8.1</org.apache.commons.lang3.bundleversion>
     <org.apache.commons.pool.version>2.6.1</org.apache.commons.pool.version>
     <org.apache.commons.pool.bundleversion>2.6.1</org.apache.commons.pool.bundleversion>
-    <org.apache.directory.api.version>2.0.0.AM3-SNAPSHOT</org.apache.directory.api.version>
+    <org.apache.directory.api.version>2.0.0.AM3</org.apache.directory.api.version>
     <org.apache.directory.server.version>2.0.0.AM26-SNAPSHOT</org.apache.directory.server.version>
     <org.apache.mina.version>2.1.2</org.apache.mina.version>
     <org.apache.mina.bundleversion>2.1.2</org.apache.mina.bundleversion>
