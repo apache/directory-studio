@@ -23,8 +23,8 @@ package org.apache.directory.studio.schemaeditor.model.schemachecker;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.collections.MultiMap;
-import org.apache.commons.collections.map.MultiValueMap;
+import org.apache.commons.collections4.MultiValuedMap;
+import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.directory.api.ldap.model.exception.LdapSchemaException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.LdapSyntax;
@@ -63,13 +63,13 @@ public class SchemaChecker
     private SchemaManager schemaManager;
 
     /** The errors map */
-    private MultiMap errorsMap = new MultiValueMap();
+    private MultiValuedMap<Object, Object> errorsMap = new ArrayListValuedHashMap<>();
 
     /** The warnings list */
     private List<SchemaWarning> warningsList = new ArrayList<SchemaWarning>();
 
     /** The warnings map */
-    private MultiMap warningsMap = new MultiValueMap();
+    private MultiValuedMap<Object, Object> warningsMap = new ArrayListValuedHashMap<>();
 
     /** The lock object used to synchronize accesses to the errors and warnings maps*/
     private static Object lock = new Object();

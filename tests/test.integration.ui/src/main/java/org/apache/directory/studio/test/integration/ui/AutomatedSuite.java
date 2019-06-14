@@ -35,7 +35,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses(
     { BrowserTest.class, EntryEditorTest.class, ImportExportTest.class, NewConnectionWizardTest.class,
-        NewEntryWizardTest.class, PreferencesTest.class, ReferralDialogTest.class, RenameEntryDialogTest.class,
+        NewEntryWizardTest.class, PreferencesTest.class, ReferralDialogTest.class, RenameEntryTest.class,
         SearchTest.class })
 public class AutomatedSuite
 {

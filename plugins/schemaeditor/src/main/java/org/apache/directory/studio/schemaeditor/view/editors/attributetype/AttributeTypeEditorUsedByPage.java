@@ -24,7 +24,6 @@ package org.apache.directory.studio.schemaeditor.view.editors.attributetype;
 import java.util.List;
 
 import org.apache.directory.api.ldap.model.schema.AttributeType;
-import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
@@ -157,7 +156,7 @@ public class AttributeTypeEditorUsedByPage extends AbstractAttributeTypeEditorPa
                 IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
                 try
                 {
-                    page.openEditor( new ObjectClassEditorInput( ( MutableObjectClass ) selectedItem ),
+                    page.openEditor( new ObjectClassEditorInput( ( ObjectClass ) selectedItem ),
                         ObjectClassEditor.ID );
                 }
                 catch ( PartInitException exception )
@@ -181,7 +180,7 @@ public class AttributeTypeEditorUsedByPage extends AbstractAttributeTypeEditorPa
                 IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
                 try
                 {
-                    page.openEditor( new ObjectClassEditorInput( ( MutableObjectClass ) selectedItem ),
+                    page.openEditor( new ObjectClassEditorInput( ( ObjectClass ) selectedItem ),
                         ObjectClassEditor.ID );
                 }
                 catch ( PartInitException exception )

@@ -28,14 +28,16 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
 import java.security.cert.X509Certificate;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.directory.api.util.FileUtils;
 import org.apache.directory.server.annotations.CreateLdapServer;
 import org.apache.directory.server.annotations.CreateTransport;
 import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
+import org.apache.directory.server.core.security.CertificateUtil;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.PasswordsKeyStoreManager;
@@ -48,12 +50,15 @@ import org.apache.directory.studio.test.integration.ui.bots.PreferencesBot;
 import org.apache.directory.studio.test.integration.ui.bots.SetupMasterPasswordDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
 import org.apache.directory.studio.test.integration.ui.bots.VerifyMasterPasswordDialogBot;
+import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
 import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.eclipse.core.runtime.Platform;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import sun.security.x509.X500Name;
 
 
 /**
@@ -84,6 +89,7 @@ public class PreferencesTest extends AbstractLdapTestUnit
     public void tearDown() throws Exception
     {
         connectionsViewBot.deleteTestConnections();
+        Assertions.genericTearDownAssertions();
     }
 
 
@@ -151,10 +157,11 @@ public class PreferencesTest extends AbstractLdapTestUnit
         preferencesBot.clickCancelButton();
 
         // add a certificate (not possible via native file dialog)
-        Date startDate = new Date( System.currentTimeMillis() - 1000 );
-        Date endDate = new Date( System.currentTimeMillis() + 1000 );
-        X509Certificate certificate = CertificateUtils.createCertificate( "cn=localhost", "cn=localhost", startDate,
-            endDate, CertificateUtils.createKeyPair() );
+        X500Name issuer = new X500Name( "apacheds", "directory", "apache", "US" );
+        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance( "EC" );
+        keyPairGenerator.initialize( 256 );
+        KeyPair keyPair = keyPairGenerator.generateKeyPair();
+        X509Certificate certificate = CertificateUtil.generateSelfSignedCertificate( issuer, keyPair, 365, "SHA256WithECDSA" );
         ConnectionCorePlugin.getDefault().getPermanentTrustStoreManager().addCertificate( certificate );
 
         // verify there is one certificate now

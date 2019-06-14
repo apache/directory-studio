@@ -27,21 +27,28 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
+import org.apache.directory.api.ldap.model.entry.DefaultEntry;
+import org.apache.directory.api.ldap.model.entry.DefaultModification;
+import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.entry.Modification;
+import org.apache.directory.api.ldap.model.entry.ModificationOperation;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.server.annotations.CreateLdapServer;
 import org.apache.directory.server.annotations.CreateTransport;
 import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
-import org.apache.directory.api.ldap.model.entry.DefaultEntry;
-import org.apache.directory.api.ldap.model.entry.Entry;
-import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
-import org.apache.directory.studio.connection.core.ConnectionParameter.NetworkProvider;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
+import org.apache.directory.studio.test.integration.ui.bots.DnEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewEntryWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.ReferralDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
+import org.apache.directory.studio.test.integration.ui.bots.SubtreeSpecificationEditorDialogBot;
+import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
 import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
@@ -83,7 +90,7 @@ public class NewEntryWizardTest extends AbstractLdapTestUnit
         entry.setDn( new Dn( "cn=referral,ou=system" ) );
         entry.add( "objectClass", "top", "referral", "extensibleObject" );
         entry.add( "cn", "referral" );
-        entry.add( "ref", "ldap://"+LOCALHOST+":" + ldapServer.getPort() + "/ou=users,ou=system" );
+        entry.add( "ref", "ldap://" + LOCALHOST + ":" + ldapServer.getPort() + "/ou=users,ou=system" );
         service.getAdminSession().add( entry );
 
         studioBot = new StudioBot();
@@ -98,6 +105,7 @@ public class NewEntryWizardTest extends AbstractLdapTestUnit
     public void tearDown() throws Exception
     {
         connectionsViewBot.deleteTestConnections();
+        Assertions.genericTearDownAssertions();
     }
 
 
@@ -275,6 +283,106 @@ public class NewEntryWizardTest extends AbstractLdapTestUnit
     }
 
 
+    @Test
+    public void testCreateAliasEntry()
+    {
+        // disable alias dereferencing
+        connection.getConnectionParameter().setExtendedIntProperty(
+            IBrowserConnection.CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD,
+            AliasDereferencingMethod.NEVER.ordinal() );
+
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
+
+        NewEntryWizardBot wizardBot = browserViewBot.openNewEntryWizard();
+
+        wizardBot.selectCreateEntryFromScratch();
+        wizardBot.clickNextButton();
+
+        wizardBot.addObjectClasses( "alias", "extensibleObject" );
+        wizardBot.clickNextButton();
+
+        wizardBot.setRdnType( 1, "cn" );
+        wizardBot.setRdnValue( 1, "alias2" );
+        wizardBot.clickNextButton();
+
+        DnEditorDialogBot dnEditorBot = new DnEditorDialogBot();
+        dnEditorBot.setDnText( "ou=system" );
+        dnEditorBot.clickOkButton();
+        wizardBot.clickFinishButton();
+
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "cn=alias2" ) );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "cn=alias2" );
+    }
+
+
+    @Test
+    public void testCreateSubEntry() throws Exception
+    {
+        // set Subentries control
+        connection.getConnectionParameter().setExtendedBoolProperty(
+            IBrowserConnection.CONNECTION_PARAMETER_FETCH_SUBENTRIES, true );
+
+        // create accessControlSpecificArea
+        Modification modification = new DefaultModification( ModificationOperation.ADD_ATTRIBUTE,
+            new DefaultAttribute( "administrativeRole", "accessControlSpecificArea" ) );
+        service.getAdminSession().modify( new Dn( "ou=system" ), modification );
+
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
+
+        NewEntryWizardBot wizardBot = browserViewBot.openNewEntryWizard();
+
+        wizardBot.selectCreateEntryFromScratch();
+        wizardBot.clickNextButton();
+
+        wizardBot.addObjectClasses( "subentry" );
+        wizardBot.clickNextButton();
+
+        wizardBot.setRdnType( 1, "cn" );
+        wizardBot.setRdnValue( 1, "subentry2" );
+        wizardBot.clickNextButton();
+
+        SubtreeSpecificationEditorDialogBot subtreeEditorBot = new SubtreeSpecificationEditorDialogBot();
+        subtreeEditorBot.clickOkButton();
+        wizardBot.clickFinishButton();
+
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "cn=subentry2" ) );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "cn=subentry2" );
+    }
+
+
+    @Test
+    public void testCreateReferralEntry()
+    {
+        // set ManageDsaIT control
+        connection.getConnectionParameter().setExtendedIntProperty(
+            IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD,
+            ReferralHandlingMethod.IGNORE.ordinal() );
+        connection.getConnectionParameter().setExtendedBoolProperty(
+            IBrowserConnection.CONNECTION_PARAMETER_MANAGE_DSA_IT, true );
+
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
+
+        NewEntryWizardBot wizardBot = browserViewBot.openNewEntryWizard();
+
+        wizardBot.selectCreateEntryFromScratch();
+        wizardBot.clickNextButton();
+
+        wizardBot.addObjectClasses( "referral", "extensibleObject" );
+        wizardBot.clickNextButton();
+
+        wizardBot.setRdnType( 1, "cn" );
+        wizardBot.setRdnValue( 1, "referral2" );
+        wizardBot.clickNextButton();
+
+        wizardBot.editValue( "ref", "" );
+        wizardBot.typeValueAndFinish( "ldap://" + LOCALHOST + ":" + ldapServer.getPort() + "/ou=users,ou=system" );
+        wizardBot.clickFinishButton();
+
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "cn=referral2" ) );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "cn=referral2" );
+    }
+
+
     /**
      * Test for DIRSTUDIO-409.
      *
@@ -287,7 +395,8 @@ public class NewEntryWizardTest extends AbstractLdapTestUnit
     {
         // set ManageDsaIT control
         connection.getConnectionParameter().setExtendedIntProperty(
-            IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD, ReferralHandlingMethod.IGNORE.ordinal() );
+            IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD,
+            ReferralHandlingMethod.IGNORE.ordinal() );
         connection.getConnectionParameter().setExtendedBoolProperty(
             IBrowserConnection.CONNECTION_PARAMETER_MANAGE_DSA_IT, true );
 
@@ -333,7 +442,8 @@ public class NewEntryWizardTest extends AbstractLdapTestUnit
     {
         // set ManageDsaIT control
         connection.getConnectionParameter().setExtendedIntProperty(
-            IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD, ReferralHandlingMethod.IGNORE.ordinal() );
+            IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD,
+            ReferralHandlingMethod.IGNORE.ordinal() );
         connection.getConnectionParameter().setExtendedBoolProperty(
             IBrowserConnection.CONNECTION_PARAMETER_MANAGE_DSA_IT, true );
 

@@ -24,7 +24,6 @@ package org.apache.directory.studio.connection.ui.preferences;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
-import org.apache.directory.studio.connection.core.ConnectionParameter.NetworkProvider;
 import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.jface.preference.PreferencePage;
@@ -50,8 +49,6 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 public class ConnectionsPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
 {
 
-    private Combo networkProviderCombo;
-    private Text ldapContextFactoryText;
     private Button useKrb5SystemPropertiesButton;
     private Label krb5LoginModuleNoteLabel;
     private Text krb5LoginModuleText;
@@ -88,27 +85,7 @@ public class ConnectionsPreferencePage extends PreferencePage implements IWorkbe
         BaseWidgetUtils.createSpacer( composite, 1 );
         BaseWidgetUtils.createSpacer( composite, 1 );
 
-        Group defaultNetworkProviderGroup = BaseWidgetUtils.createGroup(
-            BaseWidgetUtils.createColumnContainer( composite, 1, 1 ),
-            Messages.getString( "ConnectionsPreferencePage.DefaultNetworkProvider" ), 1 ); //$NON-NLS-1$
-        NetworkProvider defaultNetworkProvider = ConnectionCorePlugin.getDefault().getDefaultNetworkProvider();
-        String[] networkProviders = new String[]
-            { "Apache Directory LDAP Client API", "JNDI (Java Naming and Directory Interface)" }; //$NON-NLS-1$ //$NON-NLS-2$
-        networkProviderCombo = BaseWidgetUtils.createReadonlyCombo( defaultNetworkProviderGroup,
-            networkProviders, 0, 2 );
-        networkProviderCombo.select( defaultNetworkProvider == NetworkProvider.APACHE_DIRECTORY_LDAP_API ? 0
-            : 1 );
-
-        Group ldapContextFactoryGroup = BaseWidgetUtils.createGroup( BaseWidgetUtils.createColumnContainer( composite,
-            1, 1 ), Messages.getString( "ConnectionsPreferencePage.ContextFactory" ), 1 ); //$NON-NLS-1$
         Preferences preferences = ConnectionCorePlugin.getDefault().getPluginPreferences();
-        String ldapCtxFactory = preferences.getString( ConnectionCoreConstants.PREFERENCE_LDAP_CONTEXT_FACTORY );
-        String defaultLdapCtxFactory = preferences
-            .getDefaultString( ConnectionCoreConstants.PREFERENCE_LDAP_CONTEXT_FACTORY );
-        String ldapCtxFactoryNote = NLS.bind( Messages
-            .getString( "ConnectionsPreferencePage.SystemDetectedContextFactory" ), defaultLdapCtxFactory ); //$NON-NLS-1$
-        ldapContextFactoryText = BaseWidgetUtils.createText( ldapContextFactoryGroup, ldapCtxFactory, 1 );
-        BaseWidgetUtils.createWrappedLabel( ldapContextFactoryGroup, ldapCtxFactoryNote, 1 );
 
         Group krb5SettingsGroup = BaseWidgetUtils.createGroup(
             BaseWidgetUtils.createColumnContainer( composite, 1, 1 ), Messages
@@ -161,14 +138,6 @@ public class ConnectionsPreferencePage extends PreferencePage implements IWorkbe
     @Override
     protected void performDefaults()
     {
-        NetworkProvider defaultdDefaultNetworkProvider = ConnectionCorePlugin.getDefault().getNetworkProvider(
-            ConnectionCorePlugin.getDefault().getPluginPreferences()
-                .getDefaultInt( ConnectionCoreConstants.PREFERENCE_DEFAULT_NETWORK_PROVIDER ) );
-        networkProviderCombo.select( defaultdDefaultNetworkProvider == NetworkProvider.APACHE_DIRECTORY_LDAP_API ? 0
-            : 1 );
-
-        ldapContextFactoryText.setText( ConnectionCorePlugin.getDefault().getPluginPreferences().getDefaultString(
-            ConnectionCoreConstants.PREFERENCE_LDAP_CONTEXT_FACTORY ) );
         krb5LoginModuleText.setText( ConnectionCorePlugin.getDefault().getPluginPreferences().getDefaultString(
             ConnectionCoreConstants.PREFERENCE_KRB5_LOGIN_MODULE ) );
         useKrb5SystemPropertiesButton.setSelection( ConnectionCorePlugin.getDefault().getPluginPreferences()
@@ -183,11 +152,6 @@ public class ConnectionsPreferencePage extends PreferencePage implements IWorkbe
      */
     public boolean performOk()
     {
-        ConnectionCorePlugin.getDefault().getPluginPreferences()
-            .setValue( ConnectionCoreConstants.PREFERENCE_DEFAULT_NETWORK_PROVIDER,
-                getNetworkProviderValue() );
-        ConnectionCorePlugin.getDefault().getPluginPreferences().setValue(
-            ConnectionCoreConstants.PREFERENCE_LDAP_CONTEXT_FACTORY, ldapContextFactoryText.getText() );
         ConnectionCorePlugin.getDefault().getPluginPreferences().setValue(
             ConnectionCoreConstants.PREFERENCE_KRB5_LOGIN_MODULE, krb5LoginModuleText.getText() );
         ConnectionCorePlugin.getDefault().getPluginPreferences()
@@ -199,21 +163,4 @@ public class ConnectionsPreferencePage extends PreferencePage implements IWorkbe
         return true;
     }
 
-
-    /**
-     * Gets the encyrption method.
-     * 
-     * @return the encyrption method
-     */
-    private int getNetworkProviderValue()
-    {
-        switch ( networkProviderCombo.getSelectionIndex() )
-        {
-            case 1:
-                return ConnectionCoreConstants.PREFERENCE_NETWORK_PROVIDER_JNDI;
-                
-            default:
-                return ConnectionCoreConstants.PREFERENCE_NETWORK_PROVIDER_APACHE_DIRECTORY_LDAP_API;
-        }
-    }
 }

@@ -37,21 +37,18 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
-import javax.naming.NamingEnumeration;
-import javax.naming.NamingException;
 import javax.naming.directory.SearchControls;
-import javax.naming.directory.SearchResult;
 
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
+import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
-import org.apache.directory.studio.connection.core.ConnectionParameter.NetworkProvider;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.connection.core.io.api.DirectoryApiConnectionWrapper;
+import org.apache.directory.studio.connection.core.io.api.StudioSearchResultEnumeration;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeRootDSERunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.BrowserConnection;
 import org.junit.Test;
@@ -65,22 +62,15 @@ import org.junit.Test;
  */
 public class DirectoryApiConnectionWrapperTest extends ConnectionWrapperTestBase
 {
-
-    public DirectoryApiConnectionWrapperTest()
-    {
-        super( NetworkProvider.APACHE_DIRECTORY_LDAP_API );
-    }
-
-
     // see tests in super class
 
     @Test
-    public void testSearchContinuationFollowParent() throws NamingException
+    public void testSearchContinuationFollowParent() throws Exception
     {
         StudioProgressMonitor monitor = getProgressMonitor();
         SearchControls searchControls = new SearchControls();
         searchControls.setSearchScope( SearchControls.SUBTREE_SCOPE );
-        NamingEnumeration<SearchResult> result = getConnectionWrapper( monitor ).search( "ou=referrals,ou=system",
+        StudioSearchResultEnumeration result = getConnectionWrapper( monitor ).search( "ou=referrals,ou=system",
             "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.FOLLOW, null,
             monitor, null );
 
@@ -88,7 +78,7 @@ public class DirectoryApiConnectionWrapperTest extends ConnectionWrapperTestBase
         assertFalse( monitor.errorsReported() );
         assertNotNull( result );
 
-        List<String> dns = consume( result, sr -> sr.getNameInNamespace() );
+        List<String> dns = consume( result, sr -> sr.getDn().getName() );
         assertEquals( 4, dns.size() );
         assertThat( dns, hasItems( "ou=referrals,ou=system", "ou=referrals,ou=system", "ou=users,ou=system",
             "uid=user.1,ou=users,ou=system" ) );
@@ -103,8 +93,8 @@ public class DirectoryApiConnectionWrapperTest extends ConnectionWrapperTestBase
     {
         StudioProgressMonitor monitor = getProgressMonitor();
         ConnectionParameter connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(),
-            EncryptionMethod.NONE, NetworkProvider.APACHE_DIRECTORY_LDAP_API, AuthenticationMethod.SIMPLE,
-            "uid=admin,ou=system", "secret", null, true, null, 30L );
+            EncryptionMethod.NONE, AuthenticationMethod.SIMPLE,
+            "uid=admin,ou=system", "secret", null, true, null, 30000L );
         Connection connection = new Connection( connectionParameter );
         BrowserConnection browserConnection = new BrowserConnection( connection );
 
@@ -124,8 +114,8 @@ public class DirectoryApiConnectionWrapperTest extends ConnectionWrapperTestBase
     {
         final StudioProgressMonitor monitor = getProgressMonitor();
         final ConnectionParameter connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(),
-            EncryptionMethod.NONE, NetworkProvider.APACHE_DIRECTORY_LDAP_API, AuthenticationMethod.SIMPLE,
-            "uid=admin,ou=system", "secret", null, true, null, 30L );
+            EncryptionMethod.NONE, AuthenticationMethod.SIMPLE,
+            "uid=admin,ou=system", "secret", null, true, null, 30000L );
         final Connection connection = new Connection( connectionParameter );
         final BrowserConnection browserConnection = new BrowserConnection( connection );
 

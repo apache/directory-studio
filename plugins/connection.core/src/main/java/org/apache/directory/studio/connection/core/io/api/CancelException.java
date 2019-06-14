@@ -6,49 +6,52 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *
+ *  
  *    http://www.apache.org/licenses/LICENSE-2.0
- *
+ *  
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License.
- *
+ *  under the License. 
+ *  
  */
-package org.apache.directory.studio.connection.core.io;
+
+package org.apache.directory.studio.connection.core.io.api;
 
 
-import javax.naming.NamingEnumeration;
-import javax.naming.NamingException;
-import javax.naming.directory.SearchResult;
-import javax.naming.ldap.Control;
-
-import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.api.ldap.model.exception.LdapException;
 
 
 /**
- * A naming enumeration that handles referrals itself. 
+ * A specific {@link LdapException} that represents the cancellation of an request.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface StudioNamingEnumeration extends NamingEnumeration<SearchResult>
+public class CancelException extends LdapException
 {
-    /**
-     * Gets the connection.
-     * 
-     * @return the connection
-     */
-    Connection getConnection();
+
+    private static final long serialVersionUID = 1L;
 
 
     /**
-     * Gets the response controls.
-     * 
-     * @return the response controls, may be null
-     * 
-     * @throws NamingException the naming exception
+     * Creates a new instance of CancelException.
      */
-    Control[] getResponseControls() throws NamingException;
+    public CancelException()
+    {
+        super();
+    }
+
+
+    /**
+     * Creates a new instance of CancelException.
+     *
+     * @param message the message
+     */
+    public CancelException( String message )
+    {
+        super( message );
+    }
+
 }

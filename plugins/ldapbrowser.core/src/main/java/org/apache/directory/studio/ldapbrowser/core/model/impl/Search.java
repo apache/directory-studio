@@ -25,13 +25,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
-import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
@@ -100,7 +100,7 @@ public class Search implements ISearch
         this(
             new SimpleDateFormat( "yyyy-MM-dd HH-mm-ss" ).format( new Date() ), //$NON-NLS-1$
             null, EMPTY_SEARCH_BASE, FILTER_TRUE, NO_ATTRIBUTES, SearchScope.ONELEVEL, 0, 0,
-            AliasDereferencingMethod.ALWAYS, ReferralHandlingMethod.FOLLOW, false, null );
+            AliasDereferencingMethod.ALWAYS, ReferralHandlingMethod.FOLLOW, false, null, true );
     }
 
 
@@ -155,7 +155,7 @@ public class Search implements ISearch
     public Search( String searchName, IBrowserConnection conn, Dn searchBase, String filter,
         String[] returningAttributes, SearchScope scope, int countLimit, int timeLimit,
         AliasDereferencingMethod aliasesDereferencingMethod, ReferralHandlingMethod referralsHandlingMethod,
-        boolean initHasChildrenFlag, List<StudioControl> controls )
+        boolean initHasChildrenFlag, List<Control> controls, boolean pagedSearchScrollModeFlag )
     {
         this.connection = conn;
         this.searchResults = null;
@@ -177,6 +177,7 @@ public class Search implements ISearch
         {
             this.searchParameter.getControls().addAll( controls );
         }
+        this.searchParameter.setPagedSearchScrollMode( pagedSearchScrollModeFlag );
     }
 
 
@@ -214,7 +215,7 @@ public class Search implements ISearch
     /**
      * {@inheritDoc}
      */
-    public List<StudioControl> getControls()
+    public List<Control> getControls()
     {
         return searchParameter.getControls();
     }
@@ -223,7 +224,7 @@ public class Search implements ISearch
     /**
      * {@inheritDoc}
      */
-    public List<StudioControl> getResponseControls()
+    public List<Control> getResponseControls()
     {
         return searchParameter.getResponseControls();
     }
@@ -464,6 +465,18 @@ public class Search implements ISearch
     }
 
 
+    public boolean isPagedSearchScrollMode()
+    {
+        return searchParameter.isPagedSearchScrollMode();
+    }
+
+
+    public void setPagedSearchScrollMode( boolean isPagedSearchScrollMode )
+    {
+        searchParameter.setPagedSearchScrollMode( isPagedSearchScrollMode );
+    }
+
+
     /**
      * {@inheritDoc}
      */
@@ -535,11 +548,11 @@ public class Search implements ISearch
     /**
      * {@inheritDoc}
      */
-    public Object clone()
+    public ISearch clone()
     {
         return new Search( getName(), getBrowserConnection(), getSearchBase(), getFilter(), getReturningAttributes(),
             getScope(), getCountLimit(), getTimeLimit(), getAliasesDereferencingMethod(), getReferralsHandlingMethod(),
-            isInitHasChildrenFlag(), getControls() );
+            isInitHasChildrenFlag(), getControls(), isPagedSearchScrollMode() );
     }
 
 
@@ -559,7 +572,6 @@ public class Search implements ISearch
     {
         this.searchParameter = searchParameter;
     }
-
 
     /**
      * {@inheritDoc}

@@ -20,8 +20,7 @@
 package org.apache.directory.studio.schemaeditor.controller.actions;
 
 
-import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
-import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
@@ -112,13 +111,12 @@ public class RenameSchemaElementAction extends Action implements IWorkbenchWindo
                 // ATTRIBUTE TYPE
                 else if ( selectedElement instanceof AttributeTypeWrapper )
                 {
-                    MutableAttributeType attributeType = ( MutableAttributeType ) ( ( AttributeTypeWrapper ) selectedElement )
-                        .getAttributeType();
+                    AttributeType attributeType = ( ( AttributeTypeWrapper ) selectedElement ).getAttributeType();
 
                     RenameAttributeTypeDialog dialog = new RenameAttributeTypeDialog( attributeType.getNames() );
                     if ( dialog.open() == RenameAttributeTypeDialog.OK )
                     {
-                        MutableAttributeType modifiedAttributeType = PluginUtils.getClone( attributeType );
+                        AttributeType modifiedAttributeType = PluginUtils.getClone( attributeType );
                         modifiedAttributeType.setNames( dialog.getAliases() );
                         Activator.getDefault().getSchemaHandler()
                             .modifyAttributeType( attributeType, modifiedAttributeType );
@@ -127,8 +125,7 @@ public class RenameSchemaElementAction extends Action implements IWorkbenchWindo
                 // OBJECT CLASS
                 else if ( selectedElement instanceof ObjectClassWrapper )
                 {
-                    MutableObjectClass objectClass = ( MutableObjectClass ) ( ( ObjectClassWrapper ) selectedElement )
-                        .getObjectClass();
+                    ObjectClass objectClass = ( ( ObjectClassWrapper ) selectedElement ).getObjectClass();
 
                     RenameObjectClassDialog dialog = new RenameObjectClassDialog( objectClass.getNames() );
                     if ( dialog.open() == RenameObjectClassDialog.OK )

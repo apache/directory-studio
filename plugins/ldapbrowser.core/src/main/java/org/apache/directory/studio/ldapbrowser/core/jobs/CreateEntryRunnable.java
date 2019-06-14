@@ -24,22 +24,19 @@ package org.apache.directory.studio.ldapbrowser.core.jobs;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.directory.Attributes;
-import javax.naming.directory.BasicAttributes;
-import javax.naming.ldap.Control;
-import javax.naming.ldap.ManageReferralControl;
-
+import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.StudioControl;
+import org.apache.directory.studio.connection.core.Controls;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryAddedEvent;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
-import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
-import org.apache.directory.studio.ldapbrowser.core.model.IValue;
+import org.apache.directory.studio.ldapbrowser.core.utils.ModelConverter;
 
 
 /**
@@ -121,18 +118,25 @@ public class CreateEntryRunnable implements StudioConnectionBulkRunnableWithProg
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
 
-        createEntry( browserConnection, entryToCreate, monitor );
+        try
+        {
+            createEntry( browserConnection, entryToCreate, monitor );
+        }
+        catch ( LdapException e )
+        {
+            monitor.reportError( e );
+        }
 
         if ( !monitor.errorsReported() && !monitor.isCanceled() )
         {
-            List<StudioControl> controls = new ArrayList<StudioControl>();
+            List<org.apache.directory.api.ldap.model.message.Control> controls = new ArrayList<>();
             if ( entryToCreate.isReferral() )
             {
-                controls.add( StudioControl.MANAGEDSAIT_CONTROL );
+                controls.add( Controls.MANAGEDSAIT_CONTROL );
             }
 
             // Here we try to read the created entry to be able to send the right event notification.
-            // In some cases this don't work:
+            // In some cases that doesn't work:
             // - if there was a referral and the entry was created on another (master) server and not yet sync'ed to the current server
             // So we use a dummy monitor to no bother the user with an error message.
             StudioProgressMonitor dummyMonitor = new StudioProgressMonitor( monitor );
@@ -186,42 +190,19 @@ public class CreateEntryRunnable implements StudioConnectionBulkRunnableWithProg
      * @param entryToCreate the entry to create
      * @param monitor the monitor
      */
-    static void createEntry( IBrowserConnection browserConnection, IEntry entryToCreate, StudioProgressMonitor monitor )
+    static void createEntry( IBrowserConnection browserConnection, IEntry entryToCreate, StudioProgressMonitor monitor ) throws LdapException
     {
-        // dn
-        String dn = entryToCreate.getDn().getName();
-
-        // attributes
-        Attributes jndiAttributes = new BasicAttributes();
-        IAttribute[] attributes = entryToCreate.getAttributes();
-        for ( int i = 0; i < attributes.length; i++ )
-        {
-            String description = attributes[i].getDescription();
-            IValue[] values = attributes[i].getValues();
-            for ( int ii = 0; ii < values.length; ii++ )
-            {
-                IValue value = values[ii];
-                Object rawValue = value.getRawValue();
-                if ( jndiAttributes.get( description ) != null )
-                {
-                    jndiAttributes.get( description ).add( rawValue );
-                }
-                else
-                {
-                    jndiAttributes.put( description, rawValue );
-                }
-            }
-        }
+        Entry entry = ModelConverter.toLdapApiEntry( entryToCreate );
 
         // ManageDsaIT control
         Control[] controls = null;
         if ( entryToCreate.isReferral() )
         {
             controls = new Control[]
-                { new ManageReferralControl( false ) };
+                { Controls.MANAGEDSAIT_CONTROL };
         }
 
         browserConnection.getConnection().getConnectionWrapper()
-            .createEntry( dn, jndiAttributes, controls, monitor, null );
+            .createEntry( entry, controls, monitor, null );
     }
 }

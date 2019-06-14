@@ -30,15 +30,16 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.directory.api.ldap.model.entry.DefaultEntry;
+import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.server.annotations.CreateLdapServer;
 import org.apache.directory.server.annotations.CreateTransport;
 import org.apache.directory.server.core.annotations.ApplyLdifFiles;
 import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
-import org.apache.directory.api.ldap.model.entry.DefaultEntry;
-import org.apache.directory.api.ldap.model.entry.Entry;
-import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
@@ -56,6 +57,7 @@ import org.apache.directory.studio.test.integration.ui.bots.ModificationLogsView
 import org.apache.directory.studio.test.integration.ui.bots.ReferralDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.SearchLogsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
+import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
 import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
 import org.eclipse.jface.dialogs.ErrorDialog;
@@ -79,8 +81,7 @@ import org.junit.runner.RunWith;
 @RunWith(FrameworkRunnerWithScreenshotCaptureListener.class)
 @CreateLdapServer(transports =
     { @CreateTransport(protocol = "LDAP") })
-@ApplyLdifFiles( clazz = BrowserTest.class,
-    value = "org/apache/directory/studio/test/integration/ui/BrowserTest.ldif" )
+@ApplyLdifFiles(clazz = BrowserTest.class, value = "org/apache/directory/studio/test/integration/ui/BrowserTest.ldif")
 public class BrowserTest extends AbstractLdapTestUnit
 {
     private StudioBot studioBot;
@@ -109,6 +110,7 @@ public class BrowserTest extends AbstractLdapTestUnit
     public void tearDown() throws Exception
     {
         connectionsViewBot.deleteTestConnections();
+        Assertions.genericTearDownAssertions();
     }
 
 
@@ -160,7 +162,14 @@ public class BrowserTest extends AbstractLdapTestUnit
 
         // delete
         String[] children = new String[]
-            { "uid=user.1", "uid=user.2", "uid=user.3", "uid=user.4", "uid=user.5", "uid=user.6", "uid=user.7",
+            {
+                "uid=user.1",
+                "uid=user.2",
+                "uid=user.3",
+                "uid=user.4",
+                "uid=user.5",
+                "uid=user.6",
+                "uid=user.7",
                 "uid=user.8" };
         browserViewBot.selectChildrenOfEntry( children, "DIT", "Root DSE", "ou=system", "ou=users" );
         DeleteDialogBot deleteDialog = browserViewBot.openDeleteDialog();
@@ -497,7 +506,8 @@ public class BrowserTest extends AbstractLdapTestUnit
             for ( int i = 0; i < 5; i++ )
             {
                 // select entry and refresh
-                browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=\\#ACL_AD-Projects_Author" );
+                browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users",
+                    "cn=\\#ACL_AD-Projects_Author" );
                 browserViewBot.refresh();
 
                 // select parent and refresh
@@ -645,13 +655,13 @@ public class BrowserTest extends AbstractLdapTestUnit
 
         // use navigation history to go back and forth, each step should set input only once
         studioBot.navigationHistoryBack();
-        browserViewBot.waitUntilEntryIsSelected("uid=user.2");
+        browserViewBot.waitUntilEntryIsSelected( "uid=user.2" );
         studioBot.navigationHistoryBack();
-        browserViewBot.waitUntilEntryIsSelected("uid=user.1");
+        browserViewBot.waitUntilEntryIsSelected( "uid=user.1" );
         studioBot.navigationHistoryForward();
-        browserViewBot.waitUntilEntryIsSelected("uid=user.2");
+        browserViewBot.waitUntilEntryIsSelected( "uid=user.2" );
         studioBot.navigationHistoryForward();
-        browserViewBot.waitUntilEntryIsSelected("uid=user.3");
+        browserViewBot.waitUntilEntryIsSelected( "uid=user.3" );
 
         // verify that input was only set 4 times.
         assertEquals( "Only 4 input changes expected.", 4, counter.get() );
@@ -701,6 +711,101 @@ public class BrowserTest extends AbstractLdapTestUnit
             "l=eu + l=de + l=Berlin + l=Brandenburger Tor" );
         assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users",
             "l=eu + l=de + l=Berlin + l=Brandenburger Tor", "cn=A" ) );
+    }
+
+
+    @Test
+    public void testBrowseAliasEntry()
+    {
+        // disable alias dereferencing
+        connection.getConnectionParameter().setExtendedIntProperty(
+            IBrowserConnection.CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD,
+            AliasDereferencingMethod.NEVER.ordinal() );
+
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=alias" );
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=alias" ) );
+    }
+
+
+    @Test
+    public void testBrowseReferralEntry()
+    {
+        // enable ManageDsaIT control
+        connection.getConnectionParameter().setExtendedBoolProperty(
+            IBrowserConnection.CONNECTION_PARAMETER_MANAGE_DSA_IT, true );
+
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=referral" );
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=referral" ) );
+    }
+
+
+    @Test
+    public void testBrowseSubEntry()
+    {
+        // enable Subentries control
+        connection.getConnectionParameter().setExtendedBoolProperty(
+            IBrowserConnection.CONNECTION_PARAMETER_FETCH_SUBENTRIES, true );
+
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=subentry" );
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=subentry" ) );
+    }
+
+
+    @Test
+    public void testBrowseWithPagingWithScrollMode()
+    {
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+
+        // enable Simple Paged Results control
+        connection.getConnectionParameter().setExtendedBoolProperty(
+            IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH, true );
+        connection.getConnectionParameter().setExtendedIntProperty(
+            IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH_SIZE, 5 );
+        connection.getConnectionParameter().setExtendedBoolProperty(
+            IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH_SCROLL_MODE, true );
+
+        // 1st page
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "--- Top Page ---" ) );
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "--- Next Page ---" ) );
+
+        // next page
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "--- Next Page ---" );
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "--- Top Page ---" ) );
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "--- Next Page ---" ) );
+
+        // last page
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "--- Next Page ---" );
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "--- Top Page ---" ) );
+        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "--- Next Page ---" ) );
+
+        // back to top
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "--- Top Page ---" );
+        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "--- Top Page ---" ) );
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "--- Next Page ---" ) );
+    }
+
+
+    @Test
+    public void testBrowseWithPagingWithoutScrollMode()
+    {
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+
+        // enable Simple Paged Results control
+        connection.getConnectionParameter().setExtendedBoolProperty(
+            IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH, true );
+        connection.getConnectionParameter().setExtendedIntProperty(
+            IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH_SIZE, 5 );
+        connection.getConnectionParameter().setExtendedBoolProperty(
+            IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH_SCROLL_MODE, false );
+
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "--- Top Page ---" ) );
+        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "--- Next Page ---" ) );
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users (13)" ) );
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" ) );
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.8" ) );
+
     }
 
 }

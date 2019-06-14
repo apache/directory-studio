@@ -43,6 +43,7 @@ import org.apache.directory.studio.test.integration.ui.bots.DeleteDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.ModificationLogsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewApacheDSServerWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
+import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
 import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.junit.After;
@@ -82,6 +83,7 @@ public class ApacheDSPluginTest
     {
         connectionsViewBot.deleteTestConnections();
         serversViewBot.deleteTestServers();
+        Assertions.genericTearDownAssertions();
     }
 
 

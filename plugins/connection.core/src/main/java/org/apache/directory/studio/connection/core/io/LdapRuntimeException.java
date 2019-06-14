@@ -17,41 +17,19 @@
  *  under the License. 
  *  
  */
-
-package org.apache.directory.studio.connection.core.io.jndi;
-
-
-import javax.naming.ldap.BasicControl;
+package org.apache.directory.studio.connection.core.io;
 
 
-/**
- * The Subentries control.
- *
- * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- */
-public class JNDISubentriesControl extends BasicControl
+import org.apache.directory.api.ldap.model.exception.LdapException;
+
+
+public class LdapRuntimeException extends RuntimeException
 {
-
-    private static final long serialVersionUID = -6614360496036854589L;
-
-    /**
-     * The Subentries control's OID is 1.3.6.1.4.1.4203.1.10.1.
-     */
-    public static final String OID = "1.3.6.1.4.1.4203.1.10.1"; //$NON-NLS-1$
-
-    /**
-     * The Subentries control's value.
-     */
-    public static final byte[] VALUE = new byte[]
-        { 0x01, 0x01, ( byte ) 0xFF };
+    private static final long serialVersionUID = 3618077059423567243L;
 
 
-    /**
-     * Creates a new instance of JNDISubentriesControl.
-     */
-    public JNDISubentriesControl()
+    public LdapRuntimeException( LdapException exception )
     {
-        super( OID, false, VALUE );
+        super( exception );
     }
-
 }

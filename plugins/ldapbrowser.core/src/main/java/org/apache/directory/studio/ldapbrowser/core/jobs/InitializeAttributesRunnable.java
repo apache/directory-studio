@@ -22,7 +22,6 @@ package org.apache.directory.studio.ldapbrowser.core.jobs;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -34,7 +33,7 @@ import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
-import org.apache.directory.studio.connection.core.StudioControl;
+import org.apache.directory.studio.connection.core.Controls;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.AttributesInitializedEvent;
@@ -273,12 +272,12 @@ public class InitializeAttributesRunnable implements StudioConnectionBulkRunnabl
             // create search
             ISearch search = new Search( null, entry.getBrowserConnection(), entry.getDn(),
                 entry.isSubentry() ? ISearch.FILTER_SUBENTRY : ISearch.FILTER_TRUE, attributes, SearchScope.OBJECT, 0,
-                0, aliasesDereferencingMethod, referralsHandlingMethod, false, null );
+                0, aliasesDereferencingMethod, referralsHandlingMethod, false, null, false );
 
             // add controls
             if ( entry.isReferral() )
             {
-                search.getControls().add( StudioControl.MANAGEDSAIT_CONTROL );
+                search.getControls().add( Controls.MANAGEDSAIT_CONTROL );
             }
 
             // search

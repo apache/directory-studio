@@ -22,27 +22,33 @@ package org.apache.directory.studio.schemaeditor.model.io;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
-import javax.naming.NamingEnumeration;
-import javax.naming.NamingException;
-import javax.naming.directory.Attribute;
 import javax.naming.directory.SearchControls;
-import javax.naming.directory.SearchResult;
 
 import org.apache.directory.api.ldap.model.constants.LdapConstants;
 import org.apache.directory.api.ldap.model.constants.MetaSchemaConstants;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
+import org.apache.directory.api.ldap.model.entry.Attribute;
+import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.entry.Value;
+import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.LdapSyntax;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
-import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
-import org.apache.directory.api.ldap.model.schema.MutableMatchingRule;
-import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
+import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.api.ldap.model.schema.UsageEnum;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
+import org.apache.directory.studio.connection.core.io.api.StudioSearchResult;
+import org.apache.directory.studio.connection.core.io.api.StudioSearchResultEnumeration;
 import org.apache.directory.studio.schemaeditor.model.Project;
 import org.apache.directory.studio.schemaeditor.model.Schema;
 
@@ -79,7 +85,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
         SearchControls constraintSearch = new SearchControls();
         constraintSearch.setSearchScope( SearchControls.ONELEVEL_SCOPE );
 
-        NamingEnumeration<SearchResult> answer = wrapper
+        StudioSearchResultEnumeration answer = wrapper
             .search( SchemaConstants.OU_SCHEMA, "(objectclass=metaSchema)", constraintSearch, DEREF_ALIAS_METHOD, //$NON-NLS-1$ //$NON-NLS-2$
                 HANDLE_REFERALS_METHOD, null, monitor, null );
         
@@ -89,20 +95,18 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
             {
                 while ( answer.hasMore() )
                 {
-                    SearchResult searchResult = answer.next();
+                    StudioSearchResult searchResult = answer.next();
 
                     // Getting the 'cn' Attribute
-                    Attribute cnAttribute = searchResult.getAttributes().get( SchemaConstants.CN_AT );
+                    Attribute cnAttribute = searchResult.getEntry()
+                        .get( SchemaConstants.CN_AT );
 
                     // Looping on the values
-                    NamingEnumeration<?> ne = cnAttribute.getAll();
-                    
-                    if ( ne != null )
+                    if ( cnAttribute != null )
                     {
-                        while ( ne.hasMore() )
+                        for ( Value cnValue : cnAttribute )
                         {
-                            String cnValue = (String)ne.next();
-                            Schema schema = getSchema( wrapper, cnValue, monitor );
+                            Schema schema = getSchema( wrapper, cnValue.getString(), monitor );
                             schema.setProject( project );
                             schemas.add( schema );
                         }
@@ -131,7 +135,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
         constraintSearch.setReturningAttributes( new String[]
             { SchemaConstants.ALL_OPERATIONAL_ATTRIBUTES } );
 
-        NamingEnumeration<SearchResult> answer = wrapper.search( "", LdapConstants.OBJECT_CLASS_STAR, constraintSearch, //$NON-NLS-1$ //$NON-NLS-2$
+        StudioSearchResultEnumeration answer = wrapper.search( "", LdapConstants.OBJECT_CLASS_STAR, constraintSearch, //$NON-NLS-1$ //$NON-NLS-2$
             DEREF_ALIAS_METHOD, HANDLE_REFERALS_METHOD, null, monitor, null );
 
         if ( answer != null )
@@ -140,9 +144,9 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
             {
                 if ( answer.hasMore() )
                 {
-                    SearchResult searchResult = answer.next();
+                    Entry entry = answer.next().getEntry();
 
-                    Attribute vendorNameAttribute = searchResult.getAttributes().get( SchemaConstants.VENDOR_NAME_AT );
+                    Attribute vendorNameAttribute = entry.get( SchemaConstants.VENDOR_NAME_AT );
                     
                     if ( vendorNameAttribute == null )
                     {
@@ -157,9 +161,9 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
                     String vendorName = null;
                     try
                     {
-                        vendorName = ( String ) vendorNameAttribute.get();
+                        vendorName = vendorNameAttribute.getString();
                     }
-                    catch ( NamingException e )
+                    catch ( LdapInvalidAttributeValueException e )
                     {
                         return false;
                     }
@@ -167,7 +171,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
                     return ( ( vendorName != null ) && vendorName.equalsIgnoreCase( "Apache Software Foundation" ) ); //$NON-NLS-1$
                 }
             }
-            catch ( NamingException e )
+            catch ( LdapException e )
             {
                 monitor.reportError( e );
             }
@@ -178,7 +182,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
 
 
     private static Schema getSchema( ConnectionWrapper wrapper, String name, StudioProgressMonitor monitor )
-        throws NamingException
+        throws LdapException
     {
         monitor.subTask( name );
 
@@ -189,7 +193,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
         SearchControls constraintSearch = new SearchControls();
         constraintSearch.setSearchScope( SearchControls.SUBTREE_SCOPE );
 
-        NamingEnumeration<SearchResult> answer = wrapper.search( "cn=" + name + ", ou=schema", LdapConstants.OBJECT_CLASS_STAR, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        StudioSearchResultEnumeration answer = wrapper.search( "cn=" + name + ", ou=schema", LdapConstants.OBJECT_CLASS_STAR, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             constraintSearch, DEREF_ALIAS_METHOD, HANDLE_REFERALS_METHOD, null, monitor, null );
         
         if ( answer != null )
@@ -198,30 +202,30 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
             {
                 while ( answer.hasMore() )
                 {
-                    SearchResult searchResult = answer.next();
+                    Entry entry = answer.next().getEntry();
                     
-                    switch ( getNodeType( searchResult ) )
+                    switch ( getNodeType( entry ) )
                     {
                         case ATTRIBUTE_TYPE:
-                            AttributeType at = createAttributeType( searchResult );
+                            AttributeType at = createAttributeType( entry );
                             at.setSchemaName( name );
                             schema.addAttributeType( at );
                             break;
                             
                         case OBJECT_CLASS:
-                            MutableObjectClass oc = createObjectClass( searchResult );
+                            ObjectClass oc = createObjectClass( entry );
                             oc.setSchemaName( name );
                             schema.addObjectClass( oc );
                             break;
                             
                         case MATCHING_RULE:
-                            MatchingRule mr = createMatchingRule( searchResult );
+                            MatchingRule mr = createMatchingRule( entry );
                             mr.setSchemaName( name );
                             schema.addMatchingRule( mr );
                             break;
                             
                         case SYNTAX:
-                            LdapSyntax syntax = createSyntax( searchResult );
+                            LdapSyntax syntax = createSyntax( entry );
                             syntax.setSchemaName( name );
                             schema.addSyntax( syntax );
                             break;
@@ -231,7 +235,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
                     }
                 }
             }
-            catch ( NamingException e )
+            catch ( LdapInvalidAttributeValueException e )
             {
                 monitor.reportError( e );
             }
@@ -244,68 +248,58 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
     /**
      * Gets the Type of node of the given SearchResult.
      * 
-     * @param sr the SearchResult to be identified
+     * @param entry the SearchResult to be identified
      * @return the Type of node
-     * @throws NamingException if an error occurrs when reading the SearchResult
      */
-    private static SchemaNodeTypes getNodeType( SearchResult sr ) throws NamingException
+    private static SchemaNodeTypes getNodeType( Entry entry )
     {
-        // Getting the 'ObjectClass' Attribute
-        Attribute objectClassAttribute = sr.getAttributes().get( SchemaConstants.OBJECT_CLASS_AT );
-
-        // Looping on the values
-        NamingEnumeration<?> ne = objectClassAttribute.getAll();
-        
-        while ( ne.hasMore() )
+        if ( entry.hasObjectClass( SchemaConstants.META_ATTRIBUTE_TYPE_OC ) )
         {
-            String value = ( String ) ne.next();
-            
-            if ( SchemaConstants.META_ATTRIBUTE_TYPE_OC.equalsIgnoreCase( value ) )
-            {
-                return SchemaNodeTypes.ATTRIBUTE_TYPE;
-            }
-            else if ( SchemaConstants.META_OBJECT_CLASS_OC.equalsIgnoreCase( value ) )
-            {
-                return SchemaNodeTypes.OBJECT_CLASS;
-            }
-            else if ( SchemaConstants.META_MATCHING_RULE_OC.equalsIgnoreCase( value ) )
-            {
-                return SchemaNodeTypes.MATCHING_RULE;
-            }
-            else if ( SchemaConstants.META_SYNTAX_OC.equalsIgnoreCase( value ) )
-            {
-                return SchemaNodeTypes.SYNTAX;
-            }
+            return SchemaNodeTypes.ATTRIBUTE_TYPE;
         }
-
-        return SchemaNodeTypes.UNKNOWN;
+        else if ( entry.hasObjectClass( SchemaConstants.META_OBJECT_CLASS_OC ) )
+        {
+            return SchemaNodeTypes.OBJECT_CLASS;
+        }
+        else if ( entry.hasObjectClass( SchemaConstants.META_MATCHING_RULE_OC ) )
+        {
+            return SchemaNodeTypes.MATCHING_RULE;
+        }
+        else if ( entry.hasObjectClass( SchemaConstants.META_SYNTAX_OC ) )
+        {
+            return SchemaNodeTypes.SYNTAX;
+        }
+        else
+        {
+            return SchemaNodeTypes.UNKNOWN;
+        }
     }
 
 
     /**
      * Create the AttributeTypeImpl associated with the given SearchResult.
      * 
-     * @param sr the SearchResult
+     * @param entry the search result entry
      * @return the AttributeTypeImpl associated with the SearchResult, or null if no
      * AttributeTypeImpl could be created
-     * @throws NamingException
+     * @throws LdapInvalidAttributeValueException
      */
-    private static AttributeType createAttributeType( SearchResult sr ) throws NamingException
+    private static AttributeType createAttributeType( Entry entry ) throws LdapInvalidAttributeValueException
     {
-        MutableAttributeType at = new MutableAttributeType( getStringValue( sr, MetaSchemaConstants.M_OID_AT ) );
-        at.setNames( getStringValues( sr, MetaSchemaConstants.M_NAME_AT ) );
-        at.setDescription( getStringValue( sr, MetaSchemaConstants.M_DESCRIPTION_AT ) );
-        at.setObsolete( getBooleanValue( sr, MetaSchemaConstants.M_OBSOLETE_AT ) );
-        at.setSuperiorOid( getStringValue( sr, MetaSchemaConstants.M_SUP_ATTRIBUTE_TYPE_AT ) );
-        at.setUsage( getUsage( sr ) );
-        at.setSyntaxOid( getStringValue( sr, MetaSchemaConstants.M_SYNTAX_AT ) );
-        at.setSyntaxLength( getSyntaxLength( sr ) );
-        at.setCollective( getBooleanValue( sr, MetaSchemaConstants.M_COLLECTIVE_AT ) );
-        at.setSingleValued( getBooleanValue( sr, MetaSchemaConstants.M_SINGLE_VALUE_AT ) );
-        at.setUserModifiable( getBooleanValue( sr, MetaSchemaConstants.M_NO_USER_MODIFICATION_AT ) );
-        at.setEqualityOid( getStringValue( sr, MetaSchemaConstants.M_EQUALITY_AT ) );
-        at.setOrderingOid( getStringValue( sr, MetaSchemaConstants.M_ORDERING_AT ) );
-        at.setSubstringOid( getStringValue( sr, MetaSchemaConstants.M_SUBSTR_AT ) );
+        AttributeType at = new AttributeType( getStringValue( entry, MetaSchemaConstants.M_OID_AT ) );
+        at.setNames( getStringValues( entry, MetaSchemaConstants.M_NAME_AT ) );
+        at.setDescription( getStringValue( entry, MetaSchemaConstants.M_DESCRIPTION_AT ) );
+        at.setObsolete( getBooleanValue( entry, MetaSchemaConstants.M_OBSOLETE_AT ) );
+        at.setSuperiorOid( getStringValue( entry, MetaSchemaConstants.M_SUP_ATTRIBUTE_TYPE_AT ) );
+        at.setUsage( getUsage( entry ) );
+        at.setSyntaxOid( getStringValue( entry, MetaSchemaConstants.M_SYNTAX_AT ) );
+        at.setSyntaxLength( getSyntaxLength( entry ) );
+        at.setCollective( getBooleanValue( entry, MetaSchemaConstants.M_COLLECTIVE_AT ) );
+        at.setSingleValued( getBooleanValue( entry, MetaSchemaConstants.M_SINGLE_VALUE_AT ) );
+        at.setUserModifiable( getBooleanValue( entry, MetaSchemaConstants.M_NO_USER_MODIFICATION_AT ) );
+        at.setEqualityOid( getStringValue( entry, MetaSchemaConstants.M_EQUALITY_AT ) );
+        at.setOrderingOid( getStringValue( entry, MetaSchemaConstants.M_ORDERING_AT ) );
+        at.setSubstringOid( getStringValue( entry, MetaSchemaConstants.M_SUBSTR_AT ) );
         
         return at;
     }
@@ -317,11 +311,11 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      * @param sr the SearchResult
      * @return the ObjectClassImpl associated with the SearchResult, or null if no
      * ObjectClassImpl could be created
-     * @throws NamingException
+     * @throws LdapInvalidAttributeValueException
      */
-    private static MutableObjectClass createObjectClass( SearchResult sr ) throws NamingException
+    private static ObjectClass createObjectClass( Entry sr ) throws LdapInvalidAttributeValueException
     {
-        MutableObjectClass oc = new MutableObjectClass( getStringValue( sr, MetaSchemaConstants.M_OID_AT ) );
+        ObjectClass oc = new ObjectClass( getStringValue( sr, MetaSchemaConstants.M_OID_AT ) );
         oc.setNames( getStringValues( sr, MetaSchemaConstants.M_NAME_AT ) );
         oc.setDescription( getStringValue( sr, MetaSchemaConstants.M_DESCRIPTION_AT ) );
         oc.setObsolete( getBooleanValue( sr, MetaSchemaConstants.M_OBSOLETE_AT ) );
@@ -337,18 +331,18 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
     /**
      * Create the MatchingRule associated with the given SearchResult.
      * 
-     * @param sr the SearchResult
+     * @param entry the SearchResult
      * @return the MatchingRule associated with the SearchResult, or null if no
      * ObjectClass could be created
-     * @throws NamingException
+     * @throws LdapInvalidAttributeValueException 
      */
-    private static MatchingRule createMatchingRule( SearchResult sr ) throws NamingException
+    private static MatchingRule createMatchingRule( Entry entry ) throws LdapInvalidAttributeValueException
     {
-        MutableMatchingRule mr = new MutableMatchingRule( getStringValue( sr, MetaSchemaConstants.M_OID_AT ) );
-        mr.setNames( getStringValues( sr, MetaSchemaConstants.M_NAME_AT ) );
-        mr.setDescription( getStringValue( sr, MetaSchemaConstants.M_DESCRIPTION_AT ) );
-        mr.setObsolete( getBooleanValue( sr, MetaSchemaConstants.M_OBSOLETE_AT ) );
-        mr.setSyntaxOid( getStringValue( sr, MetaSchemaConstants.M_SYNTAX_AT ) );
+        MatchingRule mr = new MatchingRule( getStringValue( entry, MetaSchemaConstants.M_OID_AT ) );
+        mr.setNames( getStringValues( entry, MetaSchemaConstants.M_NAME_AT ) );
+        mr.setDescription( getStringValue( entry, MetaSchemaConstants.M_DESCRIPTION_AT ) );
+        mr.setObsolete( getBooleanValue( entry, MetaSchemaConstants.M_OBSOLETE_AT ) );
+        mr.setSyntaxOid( getStringValue( entry, MetaSchemaConstants.M_SYNTAX_AT ) );
         
         return mr;
     }
@@ -357,18 +351,18 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
     /**
      * Create the MatchingRule associated with the given SearchResult.
      * 
-     * @param sr the SearchResult
+     * @param entry the SearchResult
      * @return the MatchingRule associated with the SearchResult, or null if no
      * ObjectClass could be created
-     * @throws NamingException
+     * @throws LdapInvalidAttributeValueException
      */
-    private static LdapSyntax createSyntax( SearchResult sr ) throws NamingException
+    private static LdapSyntax createSyntax( Entry entry ) throws LdapInvalidAttributeValueException
     {
-        LdapSyntax syntax = new LdapSyntax( getStringValue( sr, MetaSchemaConstants.M_OID_AT ) );
-        syntax.setNames( getStringValues( sr, MetaSchemaConstants.M_NAME_AT ) );
-        syntax.setDescription( getStringValue( sr, MetaSchemaConstants.M_DESCRIPTION_AT ) );
-        syntax.setObsolete( getBooleanValue( sr, MetaSchemaConstants.M_OBSOLETE_AT ) );
-        syntax.setHumanReadable( isHumanReadable( sr ) );
+        LdapSyntax syntax = new LdapSyntax( getStringValue( entry, MetaSchemaConstants.M_OID_AT ) );
+        syntax.setNames( getStringValues( entry, MetaSchemaConstants.M_NAME_AT ) );
+        syntax.setDescription( getStringValue( entry, MetaSchemaConstants.M_DESCRIPTION_AT ) );
+        syntax.setObsolete( getBooleanValue( entry, MetaSchemaConstants.M_OBSOLETE_AT ) );
+        syntax.setHumanReadable( isHumanReadable( entry ) );
         
         return syntax;
     }
@@ -379,11 +373,10 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      *
      * @param sr the SearchResult
      * @return the usage of the attribute type
-     * @throws NamingException if an error occurs when searching in the SearchResult
      */
-    private static UsageEnum getUsage( SearchResult sr ) throws NamingException
+    private static UsageEnum getUsage( Entry entry ) throws LdapInvalidAttributeValueException
     {
-        Attribute at = sr.getAttributes().get( MetaSchemaConstants.M_USAGE_AT );
+        Attribute at = entry.get( MetaSchemaConstants.M_USAGE_AT );
 
         if ( at == null )
         {
@@ -393,7 +386,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
         {
             try
             {
-                return UsageEnum.getUsage( ( String ) at.get() );
+                return UsageEnum.getUsage( at.getString() );
             }
             catch ( IllegalArgumentException e )
             {
@@ -410,13 +403,13 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
     /**
      * Gets the syntax length of the attribute type contained a SearchResult.
      *
-     * @param sr the SearchResult
+     * @param entry the SearchResult
      * @return the syntax length of the attribute type, or -1 if no syntax length was found
-     * @throws NamingException if an error occurs when searching in the SearchResult
+     * @throws LdapInvalidAttributeValueException if an error occurs when searching in the SearchResult
      */
-    private static int getSyntaxLength( SearchResult sr ) throws NamingException
+    private static int getSyntaxLength( Entry entry ) throws LdapInvalidAttributeValueException
     {
-        Attribute at = sr.getAttributes().get( MetaSchemaConstants.M_LENGTH_AT );
+        Attribute at = entry.get( MetaSchemaConstants.M_LENGTH_AT );
 
         if ( at == null )
         {
@@ -426,7 +419,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
         {
             try
             {
-                return Integer.parseInt( ( String ) at.get() );
+                return Integer.parseInt( at.getString() );
             }
             catch ( NumberFormatException e )
             {
@@ -442,11 +435,11 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
      * @param sr the SearchResult
      * @param schemaElement The Schema Element we are looking for
      * @return The String value if found
-     * @throws NamingException if an error occurs when searching in the SearchResult
+     * @throws LdapInvalidAttributeValueException 
      */
-    private static String getStringValue( SearchResult sr, String schemaElement ) throws NamingException
+    private static String getStringValue( Entry entry, String schemaElement ) throws LdapInvalidAttributeValueException
     {
-        Attribute at = sr.getAttributes().get( schemaElement );
+        Attribute at = entry.get( schemaElement );
 
         if ( at == null )
         {
@@ -454,7 +447,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
         }
         else
         {
-            return ( String ) at.get();
+            return at.getString();
         }
     }
 
@@ -462,14 +455,14 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
     /**
      * Gets the Boolean value for a Schema element of an attribute type contained in a SearchResult.
      *
-     * @param sr the SearchResult
+     * @param entry the SearchResult
      * @param schemaElement The Schema Element we are looking for
      * @return The boolean value if found
-     * @throws NamingException if an error occurs when searching in the SearchResult
+     * @throws LdapInvalidAttributeValueException 
      */
-    private static boolean getBooleanValue( SearchResult sr, String schemaElement ) throws NamingException
+    private static boolean getBooleanValue( Entry entry, String schemaElement ) throws LdapInvalidAttributeValueException
     {
-        Attribute at = sr.getAttributes().get( schemaElement );
+        Attribute at = entry.get( schemaElement );
 
         if ( at == null )
         {
@@ -477,7 +470,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
         }
         else
         {
-            return Boolean.parseBoolean( ( String ) at.get() );
+            return Boolean.parseBoolean( at.getString() );
         }
     }
 
@@ -485,42 +478,28 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
     /**
      * Gets the list of values for a schema element of an object class contained in a SearchResult.
      *
-     * @param sr the SearchResult
+     * @param entry the SearchResult
      * @param schemaElement The Schema Element we are looking for
      * @return the optional attribute types of the attribute type, or an empty array if no optional attribute type was found
-     * @throws NamingException
-     *      if an error occurrs when searching in the SearchResult
      */
-    private static List<String> getStringValues( SearchResult sr, String schemaElement ) throws NamingException
+    private static List<String> getStringValues( Entry entry, String schemaElement )
     {
-        List<String> names = new ArrayList<String>();
-
-        Attribute at = sr.getAttributes().get( schemaElement );
-        
-        if ( at != null )
-        {
-            NamingEnumeration<?> ne = at.getAll();
-            
-            while ( ne.hasMore() )
-            {
-                names.add( ( String ) ne.next() );
-            }
-        }
-
-        return names;
+        Attribute at = entry.get( schemaElement );
+        Spliterator<Value> spliterator = Optional.ofNullable( at ).map( Attribute::spliterator ).orElseGet( Spliterators::emptySpliterator );
+        return StreamSupport.stream( spliterator, false ).map( Value::getString ).collect( Collectors.toList() );
     }
 
 
     /**
      * Gets the type of the object class contained a SearchResult.
      *
-     * @param sr the SearchResult
+     * @param entry the SearchResult
      * @return the type of the object class
-     * @throws NamingException if an error occurrs when searching in the SearchResult
+     * @throws LdapInvalidAttributeValueException 
      */
-    private static ObjectClassTypeEnum getType( SearchResult sr ) throws NamingException
+    private static ObjectClassTypeEnum getType( Entry entry ) throws LdapInvalidAttributeValueException
     {
-        Attribute at = sr.getAttributes().get( MetaSchemaConstants.M_TYPE_OBJECT_CLASS_AT );
+        Attribute at = entry.get( MetaSchemaConstants.M_TYPE_OBJECT_CLASS_AT );
 
         if ( at == null )
         {
@@ -530,7 +509,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
         {
             try
             {
-                return ObjectClassTypeEnum.getClassType( ( String ) at.get() );
+                return ObjectClassTypeEnum.getClassType( at.getString() );
             }
             catch ( IllegalArgumentException e )
             {
@@ -547,13 +526,13 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
     /**
      * Gets whether or not the schema object contained a SearchResult is obsolete.
      *
-     * @param sr the SearchResult
+     * @param entry the SearchResult
      * @return true if the schema object is obsolete, false if not
-     * @throws NamingException if an error occurs when searching in the SearchResult
+     * @throws LdapInvalidAttributeValueException 
      */
-    private static boolean isHumanReadable( SearchResult sr ) throws NamingException
+    private static boolean isHumanReadable( Entry entry ) throws LdapInvalidAttributeValueException
     {
-        Attribute at = sr.getAttributes().get( MetaSchemaConstants.X_NOT_HUMAN_READABLE_AT );
+        Attribute at = entry.get( MetaSchemaConstants.X_NOT_HUMAN_READABLE_AT );
 
         if ( at == null )
         {
@@ -561,7 +540,7 @@ public class ApacheDsSchemaConnector extends AbstractSchemaConnector implements 
         }
         else
         {
-            return !Boolean.parseBoolean( ( String ) at.get() );
+            return !Boolean.parseBoolean( at.getString() );
         }
     }
 

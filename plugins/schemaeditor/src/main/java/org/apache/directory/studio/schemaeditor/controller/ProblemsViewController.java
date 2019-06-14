@@ -21,7 +21,6 @@ package org.apache.directory.studio.schemaeditor.controller;
 
 
 import org.apache.directory.api.ldap.model.schema.AttributeType;
-import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.SchemaObject;
 import org.apache.directory.studio.schemaeditor.Activator;
@@ -141,7 +140,7 @@ public class ProblemsViewController
                     }
                     else if ( object instanceof ObjectClass )
                     {
-                        input = new ObjectClassEditorInput( ( MutableObjectClass ) object );
+                        input = new ObjectClassEditorInput( ( ObjectClass ) object );
                         editorId = ObjectClassEditor.ID;
                     }
                 }

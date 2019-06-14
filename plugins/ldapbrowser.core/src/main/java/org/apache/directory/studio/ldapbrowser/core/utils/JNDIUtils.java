@@ -21,8 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.core.utils;
 
 
-import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
-import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.exception.LdapOperationException;
 
 
 /**
@@ -32,47 +31,6 @@ import org.apache.directory.api.ldap.model.name.Dn;
  */
 public class JNDIUtils
 {
-
-    /**
-     * Gets the LdapDN from a JNDI SearchResult object.
-     *
-     * @param sr the JNDI search result
-     * @return the LdapDN 
-     * @throws LdapInvalidDnException
-     */
-    public static Dn getDn( javax.naming.directory.SearchResult sr ) throws LdapInvalidDnException
-    {
-        String dn = sr.getNameInNamespace();
-        Dn ldapDn = new Dn( unescapeJndiName( dn ) );
-        return ldapDn;
-    }
-
-
-    /**
-     * Correct some JNDI encodings...
-     * 
-     * @param name the Dn
-     * @return the modified Dn
-     */
-    public static String unescapeJndiName( String name )
-    {
-        if ( name.startsWith( "\"" ) && name.endsWith( "\"" ) ) { //$NON-NLS-1$ //$NON-NLS-2$
-            name = name.substring( 1, name.length() - 1 );
-        }
-
-        name = name.replaceAll( "\\\\\\\\\"", "\\\\\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-        name = name.replaceAll( "\\\\2C", "\\\\," ); //$NON-NLS-1$ //$NON-NLS-2$
-        name = name.replaceAll( "\\\\3B", "\\\\;" ); //$NON-NLS-1$ //$NON-NLS-2$
-        name = name.replaceAll( "\\\\22", "\\\\\"" ); //$NON-NLS-1$ //$NON-NLS-2$
-        name = name.replaceAll( "\\\\3C", "\\\\<" ); //$NON-NLS-1$ //$NON-NLS-2$
-        name = name.replaceAll( "\\\\3E", "\\\\>" ); //$NON-NLS-1$ //$NON-NLS-2$
-        name = name.replaceAll( "\\\\2B", "\\\\+" ); //$NON-NLS-1$ //$NON-NLS-2$
-        name = name.replaceAll( "\\\\5C", "\\\\\\\\" ); //$NON-NLS-1$ //$NON-NLS-2$
-
-        return name;
-    }
-
-
     /**
      * Gets the LDAP status code from the exception.
      * 
@@ -83,6 +41,12 @@ public class JNDIUtils
     public static int getLdapStatusCode( Exception exception )
     {
         int ldapStatusCode = -1;
+
+        if ( exception instanceof LdapOperationException )
+        {
+            LdapOperationException loe = ( LdapOperationException ) exception;
+            loe.getResultCode().getValue();
+        }
 
         // get LDAP status code
         // [LDAP: error code 21 - telephoneNumber: value #0 invalid per syntax]

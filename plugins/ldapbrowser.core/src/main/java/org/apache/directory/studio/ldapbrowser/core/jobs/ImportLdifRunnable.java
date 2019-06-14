@@ -32,26 +32,26 @@ import java.io.Writer;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import javax.naming.NameAlreadyBoundException;
-import javax.naming.NamingException;
-import javax.naming.directory.Attribute;
-import javax.naming.directory.Attributes;
-import javax.naming.directory.BasicAttribute;
-import javax.naming.directory.BasicAttributes;
-import javax.naming.directory.DirContext;
-import javax.naming.directory.ModificationItem;
-import javax.naming.ldap.BasicControl;
-import javax.naming.ldap.Control;
-
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
+import org.apache.directory.api.ldap.model.entry.DefaultModification;
+import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.entry.Modification;
+import org.apache.directory.api.ldap.model.entry.ModificationOperation;
+import org.apache.directory.api.ldap.model.exception.LdapEntryAlreadyExistsException;
+import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.exception.LdapSchemaException;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
+import org.apache.directory.studio.connection.core.Controls;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
@@ -397,16 +397,14 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
      * @param record the LDIF record
      * @param updateIfEntryExists the update if entry exists flag
      * @param monitor the progress monitor
-     * 
-     * @throws NamingException the naming exception
      * @throws LdapInvalidDnException
      */
     static void importLdifRecord( IBrowserConnection browserConnection, LdifRecord record, boolean updateIfEntryExists,
-        StudioProgressMonitor monitor ) throws NamingException, LdapInvalidDnException
+        StudioProgressMonitor monitor ) throws LdapException
     {
         if ( !record.isValid() )
         {
-            throw new NamingException( BrowserCoreMessages.bind( BrowserCoreMessages.model__invalid_record,
+            throw new LdapSchemaException( BrowserCoreMessages.bind( BrowserCoreMessages.model__invalid_record,
                 record.getInvalidString() ) );
         }
 
@@ -414,12 +412,10 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
 
         if ( record instanceof LdifContentRecord || record instanceof LdifChangeAddRecord )
         {
-            LdifAttrValLine[] attrVals;
             IEntry dummyEntry;
             if ( record instanceof LdifContentRecord )
             {
                 LdifContentRecord attrValRecord = ( LdifContentRecord ) record;
-                attrVals = attrValRecord.getAttrVals();
                 try
                 {
                     dummyEntry = ModelConverter.ldifContentRecordToEntry( attrValRecord, browserConnection );
@@ -433,7 +429,6 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
             else
             {
                 LdifChangeAddRecord changeAddRecord = ( LdifChangeAddRecord ) record;
-                attrVals = changeAddRecord.getAttrVals();
                 try
                 {
                     dummyEntry = ModelConverter.ldifChangeAddRecordToEntry( changeAddRecord, browserConnection );
@@ -445,74 +440,67 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
                 }
             }
 
-            Attributes jndiAttributes = new BasicAttributes();
-            for ( LdifAttrValLine attrVal : attrVals )
-            {
-                String attributeName = attrVal.getUnfoldedAttributeDescription();
-                Object realValue = attrVal.getValueAsObject();
-
-                if ( jndiAttributes.get( attributeName ) != null )
-                {
-                    jndiAttributes.get( attributeName ).add( realValue );
-                }
-                else
-                {
-                    jndiAttributes.put( attributeName, realValue );
-                }
-            }
-
+            Entry entry = ModelConverter.toLdapApiEntry( dummyEntry );
             browserConnection.getConnection().getConnectionWrapper()
-                .createEntry( dn, jndiAttributes, getControls( record ), monitor, null );
+                .createEntry( entry, getControls( record ), monitor, null );
 
             if ( monitor.errorsReported() && updateIfEntryExists
-                && monitor.getException() instanceof NameAlreadyBoundException )
+                && monitor.getException() instanceof LdapEntryAlreadyExistsException )
             {
                 // creation failed with Error 68, now try to update the existing entry
                 monitor.reset();
 
-                ModificationItem[] mis = ModelConverter.entryToReplaceModificationItems( dummyEntry );
+                Collection<Modification> modifications = ModelConverter.toReplaceModifications( entry );
                 browserConnection.getConnection().getConnectionWrapper()
-                    .modifyEntry( dn, mis, getControls( record ), monitor, null );
+                    .modifyEntry( new Dn( dn ), modifications, getControls( record ), monitor, null );
             }
         }
         else if ( record instanceof LdifChangeDeleteRecord )
         {
             LdifChangeDeleteRecord changeDeleteRecord = ( LdifChangeDeleteRecord ) record;
             browserConnection.getConnection().getConnectionWrapper()
-                .deleteEntry( dn, getControls( changeDeleteRecord ), monitor, null );
+                .deleteEntry( new Dn( dn ), getControls( changeDeleteRecord ), monitor, null );
         }
         else if ( record instanceof LdifChangeModifyRecord )
         {
             LdifChangeModifyRecord modifyRecord = ( LdifChangeModifyRecord ) record;
             LdifModSpec[] modSpecs = modifyRecord.getModSpecs();
-            ModificationItem[] mis = new ModificationItem[modSpecs.length];
+            Collection<Modification> modifications = new ArrayList<>();
             for ( int ii = 0; ii < modSpecs.length; ii++ )
             {
                 LdifModSpecTypeLine modSpecType = modSpecs[ii].getModSpecType();
                 LdifAttrValLine[] attrVals = modSpecs[ii].getAttrVals();
 
-                Attribute attribute = new BasicAttribute( modSpecType.getUnfoldedAttributeDescription() );
+                DefaultAttribute attribute = new DefaultAttribute( modSpecType.getUnfoldedAttributeDescription() );
                 for ( int x = 0; x < attrVals.length; x++ )
                 {
-                    attribute.add( attrVals[x].getValueAsObject() );
+                    Object valueAsObject = attrVals[x].getValueAsObject();
+                    if ( valueAsObject instanceof String )
+                    {
+                        attribute.add( ( String ) valueAsObject );
+                    }
+                    else if ( valueAsObject instanceof byte[] )
+                    {
+                        attribute.add( ( byte[] ) valueAsObject );
+                    }
                 }
 
                 if ( modSpecType.isAdd() )
                 {
-                    mis[ii] = new ModificationItem( DirContext.ADD_ATTRIBUTE, attribute );
+                    modifications.add( new DefaultModification( ModificationOperation.ADD_ATTRIBUTE, attribute ) );
                 }
                 else if ( modSpecType.isDelete() )
                 {
-                    mis[ii] = new ModificationItem( DirContext.REMOVE_ATTRIBUTE, attribute );
+                    modifications.add( new DefaultModification( ModificationOperation.REMOVE_ATTRIBUTE, attribute ) );
                 }
                 else if ( modSpecType.isReplace() )
                 {
-                    mis[ii] = new ModificationItem( DirContext.REPLACE_ATTRIBUTE, attribute );
+                    modifications.add( new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE, attribute ) );
                 }
             }
 
             browserConnection.getConnection().getConnectionWrapper()
-                .modifyEntry( dn, mis, getControls( modifyRecord ), monitor, null );
+                .modifyEntry( new Dn( dn ), modifications, getControls( modifyRecord ), monitor, null );
         }
         else if ( record instanceof LdifChangeModDnRecord )
         {
@@ -535,7 +523,7 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
                 }
 
                 browserConnection.getConnection().getConnectionWrapper()
-                    .renameEntry( dn, newDn.toString(), deleteOldRdn, getControls( modDnRecord ), monitor, null );
+                    .renameEntry( new Dn( dn ), newDn, deleteOldRdn, getControls( modDnRecord ), monitor, null );
             }
         }
     }
@@ -559,7 +547,7 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
             for ( int i = 0; i < controlLines.length; i++ )
             {
                 LdifControlLine line = controlLines[i];
-                controls[i] = new BasicControl( line.getUnfoldedOid(), line.isCritical(),
+                controls[i] = Controls.create( line.getUnfoldedOid(), line.isCritical(),
                     line.getControlValueAsBinary() );
             }
         }

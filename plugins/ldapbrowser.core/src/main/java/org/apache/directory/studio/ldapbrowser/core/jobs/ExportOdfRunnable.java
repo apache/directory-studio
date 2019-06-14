@@ -25,20 +25,18 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import javax.naming.NamingException;
-
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
-import org.apache.directory.studio.ldapbrowser.core.jobs.ExportLdifRunnable.JndiLdifEnumeration;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.apache.directory.studio.ldapbrowser.core.utils.JNDIUtils;
+import org.apache.directory.studio.ldifparser.model.LdifEnumeration;
 import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
 import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
 import org.eclipse.core.runtime.Preferences;
@@ -209,7 +207,7 @@ public class ExportOdfRunnable implements StudioConnectionRunnableWithProgress
     {
         try
         {
-            JndiLdifEnumeration enumeration = ExportLdifRunnable.search( browserConnection, searchParameter, monitor );
+            LdifEnumeration enumeration = ExportLdifRunnable.search( browserConnection, searchParameter, monitor );
             while ( !monitor.isCanceled() && !monitor.errorsReported() && enumeration.hasNext() )
             {
                 LdifContainer container = enumeration.next();
@@ -228,7 +226,7 @@ public class ExportOdfRunnable implements StudioConnectionRunnableWithProgress
             }
 
         }
-        catch ( NamingException ne )
+        catch ( LdapException ne )
         {
             int ldapStatusCode = JNDIUtils.getLdapStatusCode( ne );
             if ( ldapStatusCode == 3 || ldapStatusCode == 4 || ldapStatusCode == 11 )
@@ -239,10 +237,6 @@ public class ExportOdfRunnable implements StudioConnectionRunnableWithProgress
             {
                 monitor.reportError( ne );
             }
-        }
-        catch ( LdapInvalidDnException e )
-        {
-            monitor.reportError( e );
         }
     }
 

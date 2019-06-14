@@ -26,17 +26,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.naming.ContextNotEmptyException;
 import javax.naming.directory.SearchControls;
-import javax.naming.ldap.Control;
-import javax.naming.ldap.ManageReferralControl;
 
+import org.apache.directory.api.ldap.model.exception.LdapContextNotEmptyException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.StudioControl;
+import org.apache.directory.studio.connection.core.Controls;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryRenamedEvent;
@@ -167,7 +166,7 @@ public class RenameEntryRunnable implements StudioConnectionBulkRunnableWithProg
         // do a simulated rename, if renaming of a non-leaf entry is not supported.
         if ( dummyMonitor.errorsReported() && !monitor.isCanceled() )
         {
-            if ( dialog != null && dummyMonitor.getException() instanceof ContextNotEmptyException )
+            if ( dialog != null && dummyMonitor.getException() instanceof LdapContextNotEmptyException )
             {
                 // open dialog
                 dialog.setEntryInfo( browserConnection, oldDn, newDn );
@@ -218,10 +217,10 @@ public class RenameEntryRunnable implements StudioConnectionBulkRunnableWithProg
                 boolean hasMoreChildren = parent.hasMoreChildren();
                 parent.deleteChild( oldEntry );
 
-                List<StudioControl> controls = new ArrayList<StudioControl>();
+                List<Control> controls = new ArrayList<>();
                 if ( oldEntry.isReferral() )
                 {
-                    controls.add( StudioControl.MANAGEDSAIT_CONTROL );
+                    controls.add( Controls.MANAGEDSAIT_CONTROL );
                 }
 
                 // Here we try to read the renamed entry to be able to send the right event notification.
@@ -289,22 +288,18 @@ public class RenameEntryRunnable implements StudioConnectionBulkRunnableWithProg
     static void renameEntry( IBrowserConnection browserConnection, IEntry entry, Dn newDn,
         StudioProgressMonitor monitor )
     {
-        // DNs
-        String oldDnString = entry.getDn().getName();
-        String newDnString = newDn.getName();
-
         // ManageDsaIT control
         Control[] controls = null;
         if ( entry.isReferral() )
         {
             controls = new Control[]
-                { new ManageReferralControl( false ) };
+                { Controls.MANAGEDSAIT_CONTROL };
         }
 
         if ( browserConnection.getConnection() != null )
         {
             browserConnection.getConnection().getConnectionWrapper()
-                .renameEntry( oldDnString, newDnString, true, controls, monitor, null );
+                .renameEntry( entry.getDn(), newDn, true, controls, monitor, null );
         }
     }
 }

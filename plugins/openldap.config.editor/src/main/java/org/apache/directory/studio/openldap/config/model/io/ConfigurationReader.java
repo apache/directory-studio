@@ -36,13 +36,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.naming.directory.SearchResult;
-
 import org.apache.directory.api.ldap.model.constants.LdapConstants;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.entry.Attribute;
-import org.apache.directory.api.ldap.model.entry.AttributeUtils;
-import org.apache.directory.api.ldap.model.entry.DefaultEntry;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
@@ -54,7 +50,8 @@ import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.util.tree.DnNode;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
+import org.apache.directory.studio.connection.core.io.api.StudioSearchResult;
+import org.apache.directory.studio.connection.core.io.api.StudioSearchResultEnumeration;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.jobs.SearchRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -360,7 +357,7 @@ public class ConfigurationReader
                 for ( Value objectClassValue : objectClassAttribute )
                 {
                     ObjectClass oc = OpenLdapServerConfigurationEditorUtils.getObjectClass( schemaManager,
-                        objectClassValue.getValue() );
+                        objectClassValue.getString() );
 
                     if ( ( oc != null ) && ( oc.isStructural() ) )
                     {
@@ -372,7 +369,7 @@ public class ConfigurationReader
                 for ( Value objectClassValue : objectClassAttribute )
                 {
                     ObjectClass oc = OpenLdapServerConfigurationEditorUtils.getObjectClass( schemaManager,
-                        objectClassValue.getValue() );
+                        objectClassValue.getString() );
 
                     if ( oc != null )
                     {
@@ -422,7 +419,7 @@ public class ConfigurationReader
                 for ( Value objectClassValue : objectClassAttribute )
                 {
                     ObjectClass oc = OpenLdapServerConfigurationEditorUtils.getObjectClass( schemaManager,
-                        objectClassValue.getValue() );
+                        objectClassValue.getString() );
 
                     if ( ( oc != null ) && ( oc.isAuxiliary() ) )
                     {
@@ -479,7 +476,7 @@ public class ConfigurationReader
 
         // Looking for the 'ou=config' base entry
         Entry configEntry = null;
-        StudioNamingEnumeration enumeration = SearchRunnable.search( browserConnection, configSearchParameter,
+        StudioSearchResultEnumeration enumeration = SearchRunnable.search( browserConnection, configSearchParameter,
             monitor );
 
         // Checking if an error occurred
@@ -492,9 +489,8 @@ public class ConfigurationReader
         if ( enumeration.hasMore() )
         {
             // Creating the base entry
-            SearchResult searchResult =  enumeration.next();
-            configEntry = new DefaultEntry( schemaManager, AttributeUtils.toEntry( searchResult.getAttributes(),
-                new Dn( searchResult.getNameInNamespace() ) ) );
+            StudioSearchResult searchResult =  enumeration.next();
+            configEntry = searchResult.getEntry();
         }
         enumeration.close();
 
@@ -526,7 +522,7 @@ public class ConfigurationReader
             searchParameter.setReturningAttributes( SchemaConstants.ALL_USER_ATTRIBUTES_ARRAY );
 
             // Looking for the children of the entry
-            StudioNamingEnumeration childrenEnumeration = SearchRunnable.search( browserConnection,
+            StudioSearchResultEnumeration childrenEnumeration = SearchRunnable.search( browserConnection,
                 searchParameter, monitor );
 
             // Checking if an error occurred
@@ -538,10 +534,8 @@ public class ConfigurationReader
             while ( childrenEnumeration.hasMore() )
             {
                 // Creating the child entry
-                SearchResult searchResult =  childrenEnumeration.next();
-                Entry childEntry = new DefaultEntry( schemaManager, AttributeUtils.toEntry(
-                    searchResult.getAttributes(),
-                    new Dn( searchResult.getNameInNamespace() ) ) );
+                StudioSearchResult searchResult =  childrenEnumeration.next();
+                Entry childEntry = searchResult.getEntry();
 
                 // Adding the children to the list of entries
                 entries.add( childEntry );
@@ -726,7 +720,7 @@ public class ConfigurationReader
         Class<?> type = field.getType();
         String addMethodName = "add" + Character.toUpperCase( field.getName().charAt( 0 ) )
             + field.getName().substring( 1 );
-        String valueStr = value.getValue();
+        String valueStr = value.getString();
 
         try
         {

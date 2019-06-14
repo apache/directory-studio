@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.api.ldap.model.schema.AttributeType;
-import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
@@ -63,7 +62,7 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
 
         if ( parentElement instanceof ObjectClass )
         {
-            MutableObjectClass oc = ( MutableObjectClass ) parentElement;
+            ObjectClass oc = ( ObjectClass ) parentElement;
 
             children = createTypeHierarchyObjectClass( oc );
         }
@@ -90,7 +89,7 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
      * @return
      *      the Type Hierarchy for an object class
      */
-    private List<TreeNode> createTypeHierarchyObjectClass( MutableObjectClass oc )
+    private List<TreeNode> createTypeHierarchyObjectClass( ObjectClass oc )
     {
         List<TreeNode> children = new ArrayList<TreeNode>();
 
@@ -146,7 +145,7 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
             {
                 if ( parent instanceof ObjectClass )
                 {
-                    MutableObjectClass parentOC = ( MutableObjectClass ) parent;
+                    ObjectClass parentOC = ( ObjectClass ) parent;
                     ObjectClassWrapper duplicatedOCW = ( ObjectClassWrapper ) duplicateTreeNode( ocw );
 
                     ObjectClassWrapper ocw2 = new ObjectClassWrapper( parentOC );
@@ -313,7 +312,7 @@ public class HierarchyViewContentProvider implements IStructuredContentProvider,
                 }
                 else if ( child instanceof ObjectClass )
                 {
-                    MutableObjectClass oc = ( MutableObjectClass ) child;
+                    ObjectClass oc = ( ObjectClass ) child;
                     childNode = new ObjectClassWrapper( oc, node );
                     node.addChild( childNode );
                 }

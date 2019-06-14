@@ -31,21 +31,30 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.cert.X509Certificate;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.directory.server.annotations.CreateLdapServer;
-import org.apache.directory.server.annotations.CreateTransport;
-import org.apache.directory.server.core.annotations.ApplyLdifFiles;
-import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.directory.api.ldap.model.constants.LdapSecurityConstants;
+import org.apache.directory.api.ldap.model.entry.DefaultModification;
 import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.entry.ModificationOperation;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.password.PasswordUtil;
 import org.apache.directory.api.util.FileUtils;
 import org.apache.directory.api.util.IOUtils;
 import org.apache.directory.api.util.Strings;
+import org.apache.directory.server.annotations.CreateLdapServer;
+import org.apache.directory.server.annotations.CreateTransport;
+import org.apache.directory.server.core.annotations.ApplyLdifFiles;
+import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
+import org.apache.directory.server.core.security.CertificateUtil;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
+import org.apache.directory.studio.ldifparser.LdifFormatParameters;
+import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
+import org.apache.directory.studio.test.integration.ui.bots.BotUtils;
 import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.DnEditorDialogBot;
@@ -57,6 +66,8 @@ import org.apache.directory.studio.test.integration.ui.bots.PasswordEditorDialog
 import org.apache.directory.studio.test.integration.ui.bots.SelectDnDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
 import org.apache.directory.studio.test.integration.ui.bots.TextEditorDialogBot;
+import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
+import org.apache.directory.studio.test.integration.ui.bots.utils.Characters;
 import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
 import org.eclipse.core.runtime.Platform;
@@ -65,6 +76,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import sun.security.x509.X500Name;
 
 
 /**
@@ -76,8 +89,8 @@ import org.junit.runner.RunWith;
 @RunWith(FrameworkRunnerWithScreenshotCaptureListener.class)
 @CreateLdapServer(transports =
     { @CreateTransport(protocol = "LDAP") })
-@ApplyLdifFiles( clazz=EntryEditorTest.class,
-    value = { "org/apache/directory/studio/test/integration/ui/EntryEditorTest.ldif" })
+@ApplyLdifFiles(clazz = EntryEditorTest.class, value =
+    { "org/apache/directory/studio/test/integration/ui/EntryEditorTest.ldif" })
 public class EntryEditorTest extends AbstractLdapTestUnit
 {
     private StudioBot studioBot;
@@ -102,6 +115,7 @@ public class EntryEditorTest extends AbstractLdapTestUnit
     public void tearDown() throws Exception
     {
         connectionsViewBot.deleteTestConnections();
+        Assertions.genericTearDownAssertions();
     }
 
 
@@ -235,7 +249,7 @@ public class EntryEditorTest extends AbstractLdapTestUnit
      *             the exception
      */
     @Test
-    public void testCopyPaste() throws Exception
+    public void testCopyPasteStringValue() throws Exception
     {
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Barbara Jensen" );
 
@@ -268,6 +282,46 @@ public class EntryEditorTest extends AbstractLdapTestUnit
     }
 
 
+    @Test
+    public void testCopyPasteMultipleStringAndBinaryValues() throws Exception
+    {
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=hnelson" );
+
+        // copy the values
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "uid=hnelson,ou=users,ou=system" );
+        entryEditorBot.activate();
+        entryEditorBot.copyValues( "userpassword", "uid", "description", "jpegphoto" );
+
+        // go to another entry
+        browserViewBot
+            .selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\"" );
+        entryEditorBot = studioBot.getEntryEditorBot( "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system" );
+        entryEditorBot.activate();
+        assertEquals( 8, entryEditorBot.getAttributeValues().size() );
+
+        // paste values, wait till job is done
+        JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__execute_ldif_name );
+        entryEditorBot.pasteValues();
+        watcher.waitUntilDone();
+
+        // assert pasted values are visible in editor
+        SWTUtils.sleep( 1000 );
+        assertEquals( 12, entryEditorBot.getAttributeValues().size() );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "uid: hnelson" ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "description: " + Characters.ALL ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "jpegPhoto: JPEG-Image (1x1 Pixel, 631 Bytes)" ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "userPassword: SSHA-512 hashed password" ) );
+
+        // assert pasted values were written to directory
+        Entry entry = service.getAdminSession()
+            .lookup( new Dn( "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system" ) );
+        assertTrue( "Should contain uid=hnelson: " + entry, entry.contains( "uid", "hnelson" ) );
+        assertTrue( "Should contain description: " + entry, entry.contains( "description", Characters.ALL ) );
+        assertTrue( "Should contain userPassword: " + entry, entry.containsAttribute( "userPassword" ) );
+        assertTrue( "Should contain jpegPhoto: " + entry, entry.containsAttribute( "jpegPhoto" ) );
+    }
+
+
     /**
      * DIRSTUDIO-738: Add support for modular crypt format password
      */
@@ -291,8 +345,9 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         PasswordEditorDialogBot pwdEditorBot = wizardBot.clickFinishButtonExpectingPasswordEditor();
         assertTrue( pwdEditorBot.isVisible() );
 
-        pwdEditorBot.setNewPassword1( "secret" );
-        pwdEditorBot.setNewPassword2( "secret" );
+        String random = RandomStringUtils.random( 20 );
+        pwdEditorBot.setNewPassword1( random );
+        pwdEditorBot.setNewPassword2( random );
         pwdEditorBot.setShowNewPasswordDetails( true );
 
         assertHashMethod( pwdEditorBot, LdapSecurityConstants.HASH_METHOD_MD5, PasswordUtil.MD5_LENGTH, 0 );
@@ -323,7 +378,7 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         pwdEditorBot = entryEditorBot.editValueExpectingPasswordEditor( "userPassword",
             "CRYPT-SHA-512 hashed password" );
         pwdEditorBot.activateCurrentPasswordTab();
-        pwdEditorBot.setVerifyPassword( "secret" );
+        pwdEditorBot.setVerifyPassword( random );
         assertNull( pwdEditorBot.clickVerifyButton() );
         assertNull( pwdEditorBot.clickBindButton() );
 
@@ -334,6 +389,19 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         assertThat( pwdEditorBot.clickBindButton(), startsWith( "The authentication failed" ) );
 
         pwdEditorBot.clickCancelButton();
+
+        // set a new password
+        pwdEditorBot = entryEditorBot.editValueExpectingPasswordEditor( "userPassword",
+            "CRYPT-SHA-512 hashed password" );
+        pwdEditorBot.activateNewPasswordTab();
+        random = RandomStringUtils.random( 20 );
+        pwdEditorBot.setNewPassword1( random );
+        pwdEditorBot.setNewPassword2( random );
+        pwdEditorBot.setShowNewPasswordDetails( true );
+        assertHashMethod( pwdEditorBot, LdapSecurityConstants.HASH_METHOD_SSHA256, PasswordUtil.SHA256_LENGTH, 8 );
+        pwdEditorBot.clickOkButton();
+        SWTUtils.sleep( 1000 );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "userPassword: SSHA-256 hashed password" ) );
     }
 
 
@@ -392,12 +460,15 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         TextEditorDialogBot textEditorBot = entryEditorBot.editValueWithTextEditor( "description",
             "testTextValueEditor 1" );
         assertTrue( textEditorBot.isVisible() );
-        textEditorBot.setText( "testTextValueEditor 2" );
+        String newValue = "testTextValueEditor 2 " + Characters.ALL;
+        textEditorBot.setText( newValue );
         textEditorBot.clickOkButton();
         assertEquals( 9, entryEditorBot.getAttributeValues().size() );
         assertFalse( entryEditorBot.getAttributeValues().contains( "description: testTextValueEditor 1" ) );
-        assertTrue( entryEditorBot.getAttributeValues().contains( "description: testTextValueEditor 2" ) );
-        modificationLogsViewBot.waitForText( "replace: description\ndescription: testTextValueEditor 2" );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "description: " + newValue ) );
+        String description2Ldif = LdifAttrValLine.create( "description", newValue )
+            .toFormattedString( LdifFormatParameters.DEFAULT );
+        modificationLogsViewBot.waitForText( "replace: description\n" + description2Ldif );
     }
 
 
@@ -407,13 +478,25 @@ public class EntryEditorTest extends AbstractLdapTestUnit
     @Test
     public void testCertificateValueEditor() throws Exception
     {
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "uid=admin" );
+        X500Name issuer = new X500Name( "Foo", "Bar", "Baz", "US" );
+        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance( "EC" );
+        keyPairGenerator.initialize( 256 );
+        KeyPair keyPair = keyPairGenerator.generateKeyPair();
+        X509Certificate certificate = CertificateUtil.generateSelfSignedCertificate( issuer, keyPair, 365,
+            "SHA256WithECDSA" );
+        getService().getAdminSession().modify( new Dn( "cn=Barbara Jensen,ou=users,ou=system" ),
+            new DefaultModification( ModificationOperation.ADD_ATTRIBUTE, "userCertificate",
+                certificate.getEncoded() ) );
 
-        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "uid=admin,ou=system" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Barbara Jensen" );
+
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "cn=Barbara Jensen,ou=users,ou=system" );
         entryEditorBot.activate();
 
+        BotUtils.sleep( 10000 );
+
         assertTrue( entryEditorBot.getAttributeValues()
-            .contains( "userCertificate: X.509v1: CN=ApacheDS,OU=Directory,O=ASF,C=US" ) );
+            .contains( "userCertificate: X.509v3: CN=Foo,OU=Bar,O=Baz,C=US" ) );
     }
 
 
@@ -445,10 +528,6 @@ public class EntryEditorTest extends AbstractLdapTestUnit
 
         // assert value after saved and reloaded from server
         SWTUtils.sleep( 1000 );
-        for ( String s : entryEditorBot.getAttributeValues() )
-        {
-            System.out.println( s );
-        }
         assertTrue( entryEditorBot.getAttributeValues().contains( "jpegPhoto: JPEG-Image (64x64 Pixel, 2014 Bytes)" ) );
     }
 

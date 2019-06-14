@@ -23,14 +23,15 @@ package org.apache.directory.studio.connection.core;
 import java.io.IOException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.PropertyResourceBundle;
 
-import org.apache.directory.studio.connection.core.ConnectionParameter.NetworkProvider;
+import org.apache.directory.api.ldap.model.exception.LdapTlsHandshakeFailCause;
 import org.apache.directory.studio.connection.core.event.CoreEventRunner;
 import org.apache.directory.studio.connection.core.event.EventRunner;
-import org.apache.directory.studio.connection.core.io.jndi.LdifModificationLogger;
-import org.apache.directory.studio.connection.core.io.jndi.LdifSearchLogger;
+import org.apache.directory.studio.connection.core.io.api.LdifModificationLogger;
+import org.apache.directory.studio.connection.core.io.api.LdifSearchLogger;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -85,8 +86,8 @@ public class ConnectionCorePlugin extends Plugin
     /** The certificate handler */
     private ICertificateHandler certificateHandler;
 
-    /** The JNDI loggers. */
-    private List<IJndiLogger> jndiLoggers;
+    /** The LDAP loggers. */
+    private List<ILdapLogger> ldapLoggers;
 
     /** The connection listeners. */
     private List<IConnectionListener> connectionListeners;
@@ -144,6 +145,7 @@ public class ConnectionCorePlugin extends Plugin
 
         // Nasty hack to get the API bundles started. DO NOT REMOVE
         Platform.getBundle( "org.apache.directory.api.ldap.codec.core" ).start();
+        Platform.getBundle( "org.apache.directory.api.ldap.extras.codec" ).start();
         Platform.getBundle( "org.apache.directory.api.ldap.net.mina" ).start();
     }
 
@@ -370,7 +372,7 @@ public class ConnectionCorePlugin extends Plugin
             certificateHandler = new ICertificateHandler()
             {
                 public TrustLevel verifyTrustLevel( String host, X509Certificate[] certChain,
-                    List<ICertificateHandler.FailCause> failCauses )
+                    Collection<LdapTlsHandshakeFailCause> failCauses )
                 {
                     return TrustLevel.Not;
                 }
@@ -399,12 +401,12 @@ public class ConnectionCorePlugin extends Plugin
      */
     public LdifModificationLogger getLdifModificationLogger()
     {
-        List<IJndiLogger> jndiLoggers = getJndiLoggers();
-        for ( IJndiLogger jndiLogger : jndiLoggers )
+        List<ILdapLogger> ldapLoggers = getLdapLoggers();
+        for ( ILdapLogger ldapLogger : ldapLoggers )
         {
-            if ( jndiLogger instanceof LdifModificationLogger )
+            if ( ldapLogger instanceof LdifModificationLogger )
             {
-                return ( LdifModificationLogger ) jndiLogger;
+                return ( LdifModificationLogger ) ldapLogger;
             }
         }
         return null;
@@ -418,12 +420,12 @@ public class ConnectionCorePlugin extends Plugin
      */
     public LdifSearchLogger getLdifSearchLogger()
     {
-        List<IJndiLogger> jndiLoggers = getJndiLoggers();
-        for ( IJndiLogger jndiLogger : jndiLoggers )
+        List<ILdapLogger> ldapLoggers = getLdapLoggers();
+        for ( ILdapLogger ldapLogger : ldapLoggers )
         {
-            if ( jndiLogger instanceof LdifSearchLogger )
+            if ( ldapLogger instanceof LdifSearchLogger )
             {
-                return ( LdifSearchLogger ) jndiLogger;
+                return ( LdifSearchLogger ) ldapLogger;
             }
         }
         return null;
@@ -431,39 +433,39 @@ public class ConnectionCorePlugin extends Plugin
 
 
     /**
-     * Gets the jndi loggers.
+     * Gets the LDAP loggers.
      * 
-     * @return the JNDI loggers
+     * @return the LDAP loggers
      */
-    public List<IJndiLogger> getJndiLoggers()
+    public List<ILdapLogger> getLdapLoggers()
     {
-        if ( jndiLoggers == null )
+        if ( ldapLoggers == null )
         {
-            jndiLoggers = new ArrayList<IJndiLogger>();
+            ldapLoggers = new ArrayList<ILdapLogger>();
 
             IExtensionRegistry registry = Platform.getExtensionRegistry();
-            IExtensionPoint extensionPoint = registry.getExtensionPoint( "org.apache.directory.studio.jndilogger" ); //$NON-NLS-1$
+            IExtensionPoint extensionPoint = registry.getExtensionPoint( "org.apache.directory.studio.ldaplogger" ); //$NON-NLS-1$
             IConfigurationElement[] members = extensionPoint.getConfigurationElements();
             for ( IConfigurationElement member : members )
             {
                 try
                 {
-                    IJndiLogger logger = ( IJndiLogger ) member.createExecutableExtension( "class" ); //$NON-NLS-1$
+                    ILdapLogger logger = ( ILdapLogger ) member.createExecutableExtension( "class" ); //$NON-NLS-1$
                     logger.setId( member.getAttribute( "id" ) ); //$NON-NLS-1$
                     logger.setName( member.getAttribute( "name" ) ); //$NON-NLS-1$
                     logger.setDescription( member.getAttribute( "description" ) ); //$NON-NLS-1$
-                    jndiLoggers.add( logger );
+                    ldapLoggers.add( logger );
                 }
                 catch ( Exception e )
                 {
                     getLog().log(
                         new Status( IStatus.ERROR, ConnectionCoreConstants.PLUGIN_ID, 1,
-                            Messages.error__unable_to_create_jndi_logger + member.getAttribute( "class" ), e ) ); //$NON-NLS-1$
+                            Messages.error__unable_to_create_ldap_logger + member.getAttribute( "class" ), e ) ); //$NON-NLS-1$
                 }
             }
         }
 
-        return jndiLoggers;
+        return ldapLoggers;
     }
 
 
@@ -530,44 +532,6 @@ public class ConnectionCorePlugin extends Plugin
 
 
     /**
-     * Gets the default LDAP context factory.
-     * 
-     * Right now the following context factories are supported:
-     * <ul>
-     * <li>com.sun.jndi.ldap.LdapCtxFactory</li>
-     * <li>org.apache.harmony.jndi.provider.ldap.LdapContextFactory</li>
-     * </ul>
-     * 
-     * @return the default LDAP context factory
-     */
-    public String getDefaultLdapContextFactory()
-    {
-        String defaultLdapContextFactory = ""; //$NON-NLS-1$
-
-        try
-        {
-            String sun = "com.sun.jndi.ldap.LdapCtxFactory"; //$NON-NLS-1$
-            Class.forName( sun );
-            defaultLdapContextFactory = sun;
-        }
-        catch ( ClassNotFoundException e )
-        {
-        }
-        try
-        {
-            String apache = "org.apache.harmony.jndi.provider.ldap.LdapContextFactory"; //$NON-NLS-1$
-            Class.forName( apache );
-            defaultLdapContextFactory = apache;
-        }
-        catch ( ClassNotFoundException e )
-        {
-        }
-
-        return defaultLdapContextFactory;
-    }
-
-
-    /**
      * Gets the default KRB5 login module.
      * 
      * Right now the following context factories are supported:
@@ -604,36 +568,4 @@ public class ConnectionCorePlugin extends Plugin
         return defaultKrb5LoginModule;
     }
 
-
-    /**
-     * Gets the default network provider from the preferences store.
-     *
-     * @return the default network provider
-     */
-    public NetworkProvider getDefaultNetworkProvider()
-    {
-        return getNetworkProvider( getPluginPreferences().getInt(
-            ConnectionCoreConstants.PREFERENCE_DEFAULT_NETWORK_PROVIDER ) );
-    }
-
-
-    /**
-     * Gets the network provider associated with the value.
-     *
-     * @param networkProviderValue the network provider value
-     *
-     * @return the network provider
-     */
-    public NetworkProvider getNetworkProvider( int networkProviderValue )
-    {
-        if ( networkProviderValue == ConnectionCoreConstants.PREFERENCE_NETWORK_PROVIDER_JNDI
-            && NetworkProvider.JNDI.isSupported() )
-        {
-            return NetworkProvider.JNDI;
-        }
-        else
-        {
-            return NetworkProvider.APACHE_DIRECTORY_LDAP_API;
-        }
-    }
 }

@@ -21,7 +21,6 @@
 package org.apache.directory.studio.schemaeditor.view.editors.objectclass;
 
 
-import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.view.editors.AbstractSchemaObjectEditorPage;
 
@@ -66,7 +65,7 @@ public abstract class AbstractObjectClassEditorPage extends AbstractSchemaObject
      * @return
      *      the modified object class
      */
-    public MutableObjectClass getModifiedObjectClass()
+    public ObjectClass getModifiedObjectClass()
     {
         return getEditor().getModifiedObjectClass();
     }

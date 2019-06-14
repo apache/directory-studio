@@ -39,6 +39,7 @@ import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ReferralDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
+import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
 import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.junit.After;
 import org.junit.Before;
@@ -101,6 +102,7 @@ public class ReferralDialogTest extends AbstractLdapTestUnit
     {
         connectionsViewBot.closeSelectedConnections();
         connectionsViewBot.deleteTestConnections();
+        Assertions.genericTearDownAssertions();
     }
 
 

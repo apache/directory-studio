@@ -539,7 +539,7 @@ public class PartitionDetailsPage implements IDetailsPage
                     while ( values.hasNext() )
                     {
                         Value value = values.next();
-                        elements.add( new AttributeValueObject( attribute.getId(), value.getValue() ) );
+                        elements.add( new AttributeValueObject( attribute.getId(), value.getString() ) );
                     }
                 }
 

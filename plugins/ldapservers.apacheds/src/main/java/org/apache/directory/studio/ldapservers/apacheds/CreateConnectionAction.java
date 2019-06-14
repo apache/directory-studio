@@ -195,9 +195,6 @@ public class CreateConnectionAction implements IObjectActionDelegate
         // Name
         connectionParameter.setName( server.getName() );
 
-        // Network Provider
-        connectionParameter.setNetworkProvider( ConnectionCorePlugin.getDefault().getDefaultNetworkProvider() );
-
         // Extended Properties
         connectionParameter.setExtendedProperty( DetectedConnectionProperties.CONNECTION_PARAMETER_SERVER_TYPE,
             ConnectionServerType.APACHEDS.toString() );

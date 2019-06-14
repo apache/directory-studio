@@ -24,7 +24,6 @@ package org.apache.directory.studio.test.integration.ui.bots;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
-import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 
 
 public class LdifEditorBot
@@ -41,7 +40,6 @@ public class LdifEditorBot
 
     public void typeText( String text )
     {
-        SWTBotPreferences.KEYBOARD_LAYOUT = "org.eclipse.swtbot.swt.finder.keyboard.EN_US";
         SWTBotEclipseEditor textEditor = editor.toTextEditor();
         textEditor.typeText( text );
     }

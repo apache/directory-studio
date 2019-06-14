@@ -43,7 +43,8 @@ public class BrowserViewBot
     }
 
 
-    public String getSelectedEntry() {
+    public String getSelectedEntry()
+    {
         return browserBot.getSelectedEntry();
     }
 
@@ -110,6 +111,13 @@ public class BrowserViewBot
     {
         ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Rename Entry..." );
         return new RenameEntryDialogBot();
+    }
+
+
+    public MoveEntriesDialogBot openMoveEntryDialog()
+    {
+        ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Move Entry..." );
+        return new MoveEntriesDialogBot();
     }
 
 
@@ -180,6 +188,44 @@ public class BrowserViewBot
     public void paste()
     {
         ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Paste" );
+    }
+
+
+    public void pasteEntry()
+    {
+        pasteEntries( 1 );
+    }
+
+
+    public void pasteEntries( int numEntries )
+    {
+        if ( numEntries > 1 )
+        {
+            JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__copy_entries_name_n );
+            ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Paste" );
+            watcher.waitUntilDone();
+        }
+        else
+        {
+            JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__copy_entries_name_1 );
+            ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Paste" );
+            watcher.waitUntilDone();
+
+        }
+    }
+
+
+    public SelectCopyDepthDialogBot pasteEntriesExpectingSelectCopyDepthDialog( int numEntries )
+    {
+        ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Paste" );
+        return new SelectCopyDepthDialogBot( numEntries );
+    }
+
+
+    public SelectCopyStrategyBot pasteEntriesExpectingSelectCopyStrategy()
+    {
+        ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Paste" );
+        return new SelectCopyStrategyBot();
     }
 
 

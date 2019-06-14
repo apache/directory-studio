@@ -18,40 +18,15 @@
  *  
  */
 
-package org.apache.directory.studio.connection.core.io.jndi;
+package org.apache.directory.studio.test.integration.ui.bots;
 
 
-import javax.naming.NamingException;
-
-
-/**
- * A specific {@link NamingException} that represents the cancellation of an request.
- *
- * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- */
-public class CancelException extends NamingException
+public class AttributeTypeEditorBot extends BaseSchemaEditorBot
 {
 
-    private static final long serialVersionUID = 1L;
-
-
-    /**
-     * Creates a new instance of CancelException.
-     */
-    public CancelException()
+    public AttributeTypeEditorBot( String title )
     {
-        super();
-    }
-
-
-    /**
-     * Creates a new instance of CancelException.
-     *
-     * @param message the message
-     */
-    public CancelException( String message )
-    {
-        super( message );
+        super( title );
     }
 
 }

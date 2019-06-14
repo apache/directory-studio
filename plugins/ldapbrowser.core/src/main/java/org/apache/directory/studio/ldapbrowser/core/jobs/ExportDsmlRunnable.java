@@ -28,23 +28,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.naming.NamingEnumeration;
-import javax.naming.NamingException;
-import javax.naming.directory.SearchResult;
-
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.directory.api.dsmlv2.DsmlDecorator;
+import org.apache.directory.api.dsmlv2.request.AddRequestDsml;
+import org.apache.directory.api.dsmlv2.request.BatchRequestDsml;
 import org.apache.directory.api.dsmlv2.response.BatchResponseDsml;
 import org.apache.directory.api.dsmlv2.response.SearchResponseDsml;
 import org.apache.directory.api.dsmlv2.response.SearchResultDoneDsml;
 import org.apache.directory.api.dsmlv2.response.SearchResultEntryDsml;
 import org.apache.directory.api.dsmlv2.response.SearchResultReferenceDsml;
-import org.apache.directory.api.dsmlv2.request.AddRequestDsml;
-import org.apache.directory.api.dsmlv2.request.BatchRequestDsml;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.model.entry.Attribute;
-import org.apache.directory.api.ldap.model.entry.AttributeUtils;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
@@ -55,11 +50,10 @@ import org.apache.directory.api.ldap.model.message.Response;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.message.SearchResultDone;
 import org.apache.directory.api.ldap.model.message.SearchResultDoneImpl;
-import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
+import org.apache.directory.studio.connection.core.io.api.StudioSearchResultEnumeration;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -197,7 +191,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
             StudioProgressMonitor dummyMonitor = new StudioProgressMonitor( monitor );
 
             // Searching for the requested entries
-            StudioNamingEnumeration ne = SearchRunnable.search( browserConnection, searchParameter, dummyMonitor );
+            StudioSearchResultEnumeration ne = SearchRunnable.search( browserConnection, searchParameter, dummyMonitor );
             monitor.worked( 1 );
 
             // Getting the DSML string associated to the search
@@ -240,19 +234,19 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
 
 
     /**
-     * Processes the {@link NamingEnumeration} as a DSML response.
+     * Processes the {@link StudioSearchResultEnumeration} as a DSML response.
      *
-     * @param ne the naming enumeration
+     * @param sre the search result enumeration
      * @param monitor the monitor
      * @return the associated DSML
      * @throws LdapException
      */
-    private String processAsDsmlResponse( StudioNamingEnumeration ne, StudioProgressMonitor monitor ) throws LdapException
+    private String processAsDsmlResponse( StudioSearchResultEnumeration sre, StudioProgressMonitor monitor ) throws LdapException
     {
         // Creating the batch reponse
         BatchResponseDsml batchResponse = new BatchResponseDsml();
 
-        processAsDsmlResponse( ne, batchResponse, monitor, searchParameter );
+        processAsDsmlResponse( sre, batchResponse, monitor, searchParameter );
 
         // Returning the associated DSML
         return batchResponse.toDsml();
@@ -260,10 +254,10 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
 
 
     /**
-     * Processes the {@link NamingEnumeration} as a DSML response.
+     * Processes the {@link StudioSearchResultEnumeration} as a DSML response.
      *
-     * @param ne
-     *      the naming enumeration
+     * @param sre
+     *      the search result enumeration
      * @param monitor 
      *      the monitor
      * @param searchParameter 
@@ -271,7 +265,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
      * @throws LdapURLEncodingException 
      * @throws org.apache.directory.api.ldap.model.exception.LdapException
      */
-    public static void processAsDsmlResponse( StudioNamingEnumeration ne, BatchResponseDsml batchResponse,
+    public static void processAsDsmlResponse( StudioSearchResultEnumeration sre, BatchResponseDsml batchResponse,
         StudioProgressMonitor monitor, SearchParameter searchParameter ) throws LdapException
     {
         // Creating and adding the search response
@@ -285,10 +279,10 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
             if ( !monitor.errorsReported() )
             {
                 // Creating and adding a search result entry or reference for each result
-                while ( ne.hasMore() )
+                while ( sre.hasMore() )
                 {
-                    SearchResult searchResult = ne.next();
-                    sr.addResponse( convertSearchResultToDsml( searchResult ) );
+                    Entry entry = sre.next().getEntry();
+                    sr.addResponse( convertSearchResultToDsml( entry ) );
 
                     count++;
                     monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__export_progress,
@@ -297,7 +291,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
                 }
             }
         }
-        catch ( NamingException e )
+        catch ( LdapException e )
         {
             int ldapStatusCode = JNDIUtils.getLdapStatusCode( e );
             if ( ldapStatusCode == 3 || ldapStatusCode == 4 || ldapStatusCode == 11 )
@@ -338,16 +332,13 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
     /**
      * Converts the given {@link SearchResult} to a {@link SearchResultEntryDsml}.
      *
-     * @param searchResult the search result
+     * @param entry2 the search result
      * @return the associated search result entry DSML
      * @throws org.apache.directory.api.ldap.model.exception.LdapException
      */
-    private static DsmlDecorator<? extends Response> convertSearchResultToDsml( SearchResult searchResult )
+    private static DsmlDecorator<? extends Response> convertSearchResultToDsml( Entry entry )
         throws LdapException
     {
-        Entry entry = AttributeUtils.toEntry( searchResult.getAttributes(),
-            new Dn( searchResult.getNameInNamespace() ) );
-
         if ( isReferral( entry ) )
         {
             // The search result is a referral
@@ -366,7 +357,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
             {
                 for ( Value value : refAttribute )
                 {
-                    srr.addSearchResultReference( new LdapUrl( ( String ) value.getValue() ) );
+                    srr.addSearchResultReference( new LdapUrl( ( String ) value.getString() ) );
                 }
             }
 
@@ -416,19 +407,18 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
 
 
     /**
-     * Processes the {@link NamingEnumeration} as a DSML request.
+     * Processes the {@link StudioSearchResultEnumeration} as a DSML request.
      *
-     * @param ne
-     *      the naming enumeration
+     * @param sre
+     *      the search result enumeration
      * @param monitor 
      *      the monitor
      * @return
      *      the associated DSML
-     * @throws NamingException 
      * @throws LdapException
      */
-    private String processAsDsmlRequest( StudioNamingEnumeration ne, StudioProgressMonitor monitor )
-        throws NamingException, LdapException
+    private String processAsDsmlRequest( StudioSearchResultEnumeration sre, StudioProgressMonitor monitor )
+        throws LdapException
     {
         // Creating the batch request
         BatchRequestDsml batchRequest = new BatchRequestDsml();
@@ -440,10 +430,10 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
             if ( !monitor.errorsReported() )
             {
                 // Creating and adding an add request for each result
-                while ( ne.hasMore() )
+                while ( sre.hasMore() )
                 {
-                    SearchResult searchResult = ne.next();
-                    AddRequestDsml arDsml = convertToAddRequestDsml( searchResult );
+                    Entry entry = sre.next().getEntry();
+                    AddRequestDsml arDsml = convertToAddRequestDsml( entry );
                     batchRequest.addRequest( arDsml );
 
                     count++;
@@ -453,7 +443,7 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
                 }
             }
         }
-        catch ( NamingException e )
+        catch ( LdapException e )
         {
             int ldapStatusCode = JNDIUtils.getLdapStatusCode( e );
             if ( ldapStatusCode == 3 || ldapStatusCode == 4 || ldapStatusCode == 11 )
@@ -474,18 +464,16 @@ public class ExportDsmlRunnable implements StudioConnectionRunnableWithProgress
     /**
      * Converts the given {@link SearchResult} to an {@link AddRequestDsml}.
      *
-     * @param searchResult
+     * @param entry2
      *      the {@link SearchResult}
      * @return
      *      the associated {@link AddRequestDsml}
      * @throws LdapException
      */
-    private AddRequestDsml convertToAddRequestDsml( SearchResult searchResult )
+    private AddRequestDsml convertToAddRequestDsml( Entry entry )
         throws LdapException
     {
         AddRequestDsml ar = new AddRequestDsml( codec );
-        Entry entry = AttributeUtils.toEntry( searchResult.getAttributes(),
-            new Dn( searchResult.getNameInNamespace() ) );
         ar.setEntry( entry );
 
         return ar;

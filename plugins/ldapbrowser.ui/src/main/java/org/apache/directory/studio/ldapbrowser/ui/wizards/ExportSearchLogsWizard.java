@@ -31,7 +31,7 @@ import java.io.OutputStream;
 import org.apache.directory.api.util.FileUtils;
 import org.apache.directory.api.util.IOUtils;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
-import org.apache.directory.studio.connection.core.io.jndi.LdifSearchLogger;
+import org.apache.directory.studio.connection.core.io.api.LdifSearchLogger;
 import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.eclipse.core.runtime.IStatus;

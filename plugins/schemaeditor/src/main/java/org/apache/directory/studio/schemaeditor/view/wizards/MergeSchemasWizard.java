@@ -29,8 +29,6 @@ import java.util.Set;
 
 import org.apache.directory.api.ldap.model.schema.AbstractSchemaObject;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
-import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
-import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.model.Project;
@@ -297,7 +295,7 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
                 }
 
                 // clone attribute type
-                MutableAttributeType clonedAttributeType = new MutableAttributeType( sourceAttributeType.getOid() );
+                AttributeType clonedAttributeType = new AttributeType( sourceAttributeType.getOid() );
                 clonedAttributeType.setNames( sourceAttributeType.getNames() );
                 clonedAttributeType.setDescription( sourceAttributeType.getDescription() );
                 clonedAttributeType.setSuperiorOid( sourceAttributeType.getSuperiorOid() );
@@ -421,7 +419,7 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
                 }
 
                 // create object class
-                MutableObjectClass clonedObjectClass = new MutableObjectClass( sourceObjectClass.getOid() );
+                ObjectClass clonedObjectClass = new ObjectClass( sourceObjectClass.getOid() );
                 clonedObjectClass.setOid( sourceObjectClass.getOid() );
                 clonedObjectClass.setNames( sourceObjectClass.getNames() );
                 clonedObjectClass.setDescription( sourceObjectClass.getDescription() );
@@ -500,7 +498,7 @@ public class MergeSchemasWizard extends Wizard implements IImportWizard
     }
 
 
-    private void pullUpAttributes( MutableObjectClass targetObjectClass, ObjectClass sourceSuperObjectClass,
+    private void pullUpAttributes( ObjectClass targetObjectClass, ObjectClass sourceSuperObjectClass,
         ObjectClass targetSuperObjectClass )
     {
         // must

@@ -36,6 +36,12 @@ public class DnEditorDialogBot extends DialogBot
     }
 
 
+    public void setDnText( String dn )
+    {
+        bot.comboBox().setText( dn );
+    }
+
+
     public String getDnText()
     {
         return bot.comboBox().getText();

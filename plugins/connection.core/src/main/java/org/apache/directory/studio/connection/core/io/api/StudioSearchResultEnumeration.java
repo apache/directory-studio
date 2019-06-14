@@ -20,31 +20,26 @@
 package org.apache.directory.studio.connection.core.io.api;
 
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import javax.naming.NamingException;
-import javax.naming.directory.BasicAttributes;
 import javax.naming.directory.SearchControls;
-import javax.naming.directory.SearchResult;
-import javax.naming.ldap.BasicControl;
-import javax.naming.ldap.Control;
-import javax.naming.ldap.PagedResultsResponseControl;
 
-import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.model.cursor.CursorException;
 import org.apache.directory.api.ldap.model.cursor.SearchCursor;
-import org.apache.directory.api.ldap.model.entry.AttributeUtils;
+import org.apache.directory.api.ldap.model.entry.DefaultEntry;
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.api.ldap.model.message.Response;
 import org.apache.directory.api.ldap.model.message.SearchResultDone;
 import org.apache.directory.api.ldap.model.message.SearchResultEntry;
+import org.apache.directory.api.ldap.model.message.SearchResultEntryImpl;
 import org.apache.directory.api.ldap.model.message.SearchResultReference;
 import org.apache.directory.api.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
@@ -52,13 +47,9 @@ import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
-import org.apache.directory.studio.connection.core.IJndiLogger;
-import org.apache.directory.studio.connection.core.Utils;
-import org.apache.directory.studio.connection.core.io.AbstractStudioNamingEnumeration;
+import org.apache.directory.studio.connection.core.ILdapLogger;
+import org.apache.directory.studio.connection.core.ReferralsInfo;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapperUtils;
-import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
-import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo;
-import org.apache.directory.studio.connection.core.io.jndi.StudioSearchResult;
 
 
 /**
@@ -66,20 +57,30 @@ import org.apache.directory.studio.connection.core.io.jndi.StudioSearchResult;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumeration
+public class StudioSearchResultEnumeration
 {
+    private Connection connection;
+
+    private String searchBase;
+    private String filter;
+    private SearchControls searchControls;
+    private AliasDereferencingMethod aliasesDereferencingMethod;
+    private ReferralHandlingMethod referralsHandlingMethod;
+    private Control[] controls;
+    private long requestNum;
+    private StudioProgressMonitor monitor;
+    private ReferralsInfo referralsInfo;
+    private long resultEntryCounter;
+
     private SearchCursor cursor;
     private SearchResultEntry currentSearchResultEntry;
     private List<String> currentReferralUrlsList;
-    private StudioNamingEnumeration cursorNamingEnumeration;
+    private StudioSearchResultEnumeration referralEnumeration;
     private SearchResultDone searchResultDone;
-
-    // @TODO: By Alex: temporary fix until things are in order (needs to be fixed)
-    private LdapApiService codec = LdapApiServiceFactory.getSingleton();
 
 
     /**
-     * Creates a new instance of ReferralNamingEnumeration.
+     * Creates a new instance of StudioSearchResultEnumeration.
      * 
      * @param connection the connection
      * @param cursor the search cursor
@@ -92,35 +93,36 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
      * @param monitor the progress monitor
      * @param referralsInfo the referrals info
      */
-    public CursorStudioNamingEnumeration( Connection connection, SearchCursor cursor, String searchBase, String filter,
+    public StudioSearchResultEnumeration( Connection connection, SearchCursor cursor, String searchBase, String filter,
         SearchControls searchControls, AliasDereferencingMethod aliasesDereferencingMethod,
         ReferralHandlingMethod referralsHandlingMethod, Control[] controls, long requestNum,
         StudioProgressMonitor monitor, ReferralsInfo referralsInfo )
     {
-        super( connection, searchBase, filter, searchControls, aliasesDereferencingMethod, referralsHandlingMethod,
-            controls, requestNum, monitor, referralsInfo );
-        this.connection = connection;
-        this.cursor = cursor;
+        //        super( connection, searchBase, filter, searchControls, aliasesDereferencingMethod, referralsHandlingMethod,
+        //            controls, requestNum, monitor, referralsInfo );
 
+        this.connection = connection;
         this.searchBase = searchBase;
         this.filter = filter;
         this.searchControls = searchControls;
         this.aliasesDereferencingMethod = aliasesDereferencingMethod;
         this.referralsHandlingMethod = referralsHandlingMethod;
         this.controls = controls;
+        this.requestNum = requestNum;
         this.monitor = monitor;
+        this.referralsInfo = referralsInfo;
+        this.resultEntryCounter = 0;
 
-        if ( super.referralsInfo == null )
+        if ( referralsInfo == null )
         {
-            super.referralsInfo = new ReferralsInfo( false );
+            this.referralsInfo = new ReferralsInfo( false );
         }
+
+        this.cursor = cursor;
     }
 
 
-    /**
-     * @see javax.naming.NamingEnumeration#close()
-     */
-    public void close() throws NamingException
+    public void close() throws LdapException
     {
         try
         {
@@ -128,15 +130,12 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
         }
         catch ( Exception e )
         {
-            throw new NamingException( e.getMessage() );
+            throw new LdapException( e.getMessage() );
         }
     }
 
 
-    /**
-     * @see javax.naming.NamingEnumeration#hasMore()
-     */
-    public boolean hasMore() throws NamingException
+    public boolean hasMore() throws LdapException
     {
         try
         {
@@ -203,7 +202,7 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
             // Are we following referrals automatically?
             else if ( referralsHandlingMethod == ReferralHandlingMethod.FOLLOW )
             {
-                if ( ( cursorNamingEnumeration != null ) && ( cursorNamingEnumeration.hasMore() ) )
+                if ( ( referralEnumeration != null ) && ( referralEnumeration.hasMore() ) )
                 {
                     // return true if there's at least one more entry in the current cursor naming enumeration
                     return true;
@@ -220,12 +219,15 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
                     if ( referralConnection != null )
                     {
                         String referralSearchBase = url.getDn() != null && !url.getDn().isEmpty()
-                            ? url.getDn().getName() : searchBase;
+                            ? url.getDn().getName()
+                            : searchBase;
                         String referralFilter = url.getFilter() != null && url.getFilter().length() == 0
-                            ? url.getFilter() : filter;
+                            ? url.getFilter()
+                            : filter;
                         SearchControls referralSearchControls = new SearchControls();
                         referralSearchControls.setSearchScope( url.getScope().getScope() > -1
-                            ? url.getScope().getScope() : searchControls.getSearchScope() );
+                            ? url.getScope().getScope()
+                            : searchControls.getSearchScope() );
                         referralSearchControls
                             .setReturningAttributes( url.getAttributes() != null && url.getAttributes().size() > 0
                                 ? url.getAttributes().toArray( new String[url.getAttributes().size()] )
@@ -235,54 +237,37 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
                         referralSearchControls.setDerefLinkFlag( searchControls.getDerefLinkFlag() );
                         referralSearchControls.setReturningObjFlag( searchControls.getReturningObjFlag() );
 
-                        cursorNamingEnumeration = referralConnection.getConnectionWrapper().search( referralSearchBase,
+                        referralEnumeration = referralConnection.getConnectionWrapper().search( referralSearchBase,
                             referralFilter, referralSearchControls, aliasesDereferencingMethod, referralsHandlingMethod,
                             controls, monitor, referralsInfo );
 
-                        return cursorNamingEnumeration.hasMore();
+                        return referralEnumeration.hasMore();
                     }
                 }
             }
 
-            for ( IJndiLogger logger : ConnectionCorePlugin.getDefault().getJndiLoggers() )
+            for ( ILdapLogger logger : ConnectionCorePlugin.getDefault().getLdapLoggers() )
             {
                 logger.logSearchResultDone( connection, resultEntryCounter, requestNum, null );
             }
 
             return false;
         }
-        catch ( CursorException | LdapException e )
+        catch ( CursorException e )
         {
-            throw new NamingException( e.getMessage() );
+            throw new LdapException( e.getMessage(), e );
         }
     }
 
 
-    /**
-     * @see java.util.Enumeration#hasMoreElements()
-     */
-    public boolean hasMoreElements()
-    {
-        throw new UnsupportedOperationException( "Call hasMore() instead of hasMoreElements() !" ); //$NON-NLS-1$
-    }
-
-
-    /**
-     * @see javax.naming.NamingEnumeration#next()
-     */
-    public StudioSearchResult next() throws NamingException
+    public StudioSearchResult next() throws LdapException
     {
         try
         {
             if ( currentSearchResultEntry != null )
             {
                 resultEntryCounter++;
-                SearchResult sr = new SearchResult( currentSearchResultEntry.getObjectName().toString(), null,
-                    Utils.toAttributes( currentSearchResultEntry.getEntry() ) );
-                sr.setNameInNamespace( currentSearchResultEntry.getObjectName().toString() );
-
-                // Converting the SearchResult to a StudioSearchResult
-                StudioSearchResult ssr = new StudioSearchResult( sr, connection, false, null );
+                StudioSearchResult ssr = new StudioSearchResult( currentSearchResultEntry, connection, false, null );
                 return ssr;
             }
 
@@ -297,35 +282,27 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
                     LdapUrl url = new LdapUrl( currentReferralUrlsList.remove( 0 ) );
 
                     // Building the search result
-                    SearchResult searchResult = new SearchResult( url.getDn().getName(), null, new BasicAttributes(),
-                        false );
-                    searchResult.setNameInNamespace( url.getDn().getName() );
+                    SearchResultEntry sre = new SearchResultEntryImpl();
+                    sre.setEntry( new DefaultEntry() );
+                    sre.setObjectName( url.getDn() );
 
-                    return new StudioSearchResult( searchResult, null, false, url );
+                    return new StudioSearchResult( sre, null, false, url );
                 }
             }
             // Are we following referrals automatically?
             else if ( referralsHandlingMethod == ReferralHandlingMethod.FOLLOW )
             {
                 resultEntryCounter++;
-                return new StudioSearchResult( cursorNamingEnumeration.next(), connection, true, null );
+                return new StudioSearchResult( referralEnumeration.next().getSearchResultEntry(), connection,
+                    true, null );
             }
 
             return null;
         }
         catch ( Exception e )
         {
-            throw new NamingException( e.getMessage() );
+            throw new LdapException( e.getMessage() );
         }
-    }
-
-
-    /**
-     * @see java.util.Enumeration#nextElement()
-     */
-    public StudioSearchResult nextElement()
-    {
-        throw new UnsupportedOperationException( "Call next() instead of nextElement() !" ); //$NON-NLS-1$
     }
 
 
@@ -344,81 +321,20 @@ public class CursorStudioNamingEnumeration extends AbstractStudioNamingEnumerati
      * Gets the response controls.
      * 
      * @return the response controls, may be null
-     * 
-     * @throws NamingException the naming exception
      */
-    public Control[] getResponseControls() throws NamingException
+    public Collection<Control> getResponseControls()
     {
         if ( searchResultDone != null )
         {
-            Map<String, org.apache.directory.api.ldap.model.message.Control> controlsMap = searchResultDone
+            Map<String, Control> controlsMap = searchResultDone
                 .getControls();
             if ( ( controlsMap != null ) && ( controlsMap.size() > 0 ) )
             {
-                return convertControls( controlsMap.values() );
+                return controlsMap.values();
             }
         }
 
-        return new Control[0];
+        return Collections.emptyList();
     }
 
-
-    /**
-     * Converts the controls.
-     *
-     * @param controls
-     *      an array of controls
-     * @return
-     *      an array of converted controls
-     */
-    private Control[] convertControls( Collection<org.apache.directory.api.ldap.model.message.Control> controls )
-    {
-        if ( controls != null )
-        {
-            List<Control> convertedControls = new ArrayList<Control>();
-
-            for ( org.apache.directory.api.ldap.model.message.Control control : controls )
-            {
-                Control convertedControl = null;
-                CodecControl<? extends org.apache.directory.api.ldap.model.message.Control> wrapped = null;
-
-                if ( control instanceof CodecControl )
-                {
-                    wrapped = ( org.apache.directory.api.ldap.codec.api.CodecControl<?> ) control;
-                }
-                else
-                {
-                    wrapped = codec.newControl( control );
-                }
-
-                if ( PagedResultsResponseControl.OID.equals( control.getOid() ) )
-                {
-                    // Special case for the PagedResultsResponseControl
-                    try
-                    {
-                        convertedControl = new PagedResultsResponseControl( wrapped.getOid(), wrapped.isCritical(),
-                            wrapped.getValue() );
-                    }
-                    catch ( IOException e )
-                    {
-                        convertedControl = new BasicControl( wrapped.getOid(), wrapped.isCritical(),
-                            wrapped.getValue() );
-                    }
-                }
-                else
-                {
-                    // Default case
-                    convertedControl = new BasicControl( wrapped.getOid(), wrapped.isCritical(), wrapped.getValue() );
-                }
-
-                convertedControls.add( convertedControl );
-            }
-
-            return convertedControls.toArray( new Control[0] );
-        }
-        else
-        {
-            return new Control[0];
-        }
-    }
 }

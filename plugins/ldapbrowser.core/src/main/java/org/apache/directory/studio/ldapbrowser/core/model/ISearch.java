@@ -25,12 +25,12 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.apache.directory.api.ldap.model.constants.LdapConstants;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider;
-import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.SearchContinuation;
 import org.apache.directory.studio.ldapbrowser.core.propertypageproviders.SearchPropertyPageProvider;
@@ -91,7 +91,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @return the controls
      */
-    List<StudioControl> getControls();
+    List<Control> getControls();
 
 
     /**
@@ -99,7 +99,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @return the response controls
      */
-    List<StudioControl> getResponseControls();
+    List<Control> getResponseControls();
 
 
     /**
@@ -326,7 +326,7 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * 
      * @return the cloned search
      */
-    Object clone();
+    ISearch clone();
 
 
     /**
@@ -343,6 +343,22 @@ public interface ISearch extends Serializable, IAdaptable, SearchPropertyPagePro
      * @param searchParameter the search parameter
      */
     void setSearchParameter( SearchParameter searchParameter );
+
+
+    /**
+     * Gets the paged search scroll mode flag.
+     * 
+     * @return the paged search scroll mode flag
+     */
+    boolean isPagedSearchScrollMode();
+
+
+    /**
+     * Sets the paged search scroll mode flag.
+     * 
+     * @param isPagedSearchScrollMode paged search scroll mode flag
+     */
+    void setPagedSearchScrollMode( boolean isPagedSearchScrollMode );
 
 
     /**

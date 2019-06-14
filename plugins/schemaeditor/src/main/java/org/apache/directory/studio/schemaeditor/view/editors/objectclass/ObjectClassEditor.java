@@ -21,7 +21,6 @@
 package org.apache.directory.studio.schemaeditor.view.editors.objectclass;
 
 
-import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
@@ -60,10 +59,10 @@ public class ObjectClassEditor extends FormEditor
     private boolean dirty = false;
 
     /** The original object class */
-    private MutableObjectClass originalObjectClass;
+    private ObjectClass originalObjectClass;
 
     /** The object class used to save modifications */
-    private MutableObjectClass modifiedObjectClass;
+    private ObjectClass modifiedObjectClass;
 
     /** The originalSchema */
     private Schema originalSchema;
@@ -161,7 +160,7 @@ public class ObjectClassEditor extends FormEditor
         setInput( input );
         setPartName( input.getName() );
 
-        originalObjectClass = ( MutableObjectClass ) ( ( ObjectClassEditorInput ) getEditorInput() ).getObjectClass();
+        originalObjectClass = ( ObjectClass ) ( ( ObjectClassEditorInput ) getEditorInput() ).getObjectClass();
         modifiedObjectClass = PluginUtils.getClone( originalObjectClass );
 
         SchemaHandler schemaHandler = Activator.getDefault().getSchemaHandler();
@@ -283,7 +282,7 @@ public class ObjectClassEditor extends FormEditor
      * @return
      *      the modified object class
      */
-    public MutableObjectClass getModifiedObjectClass()
+    public ObjectClass getModifiedObjectClass()
     {
         return modifiedObjectClass;
     }
@@ -295,7 +294,7 @@ public class ObjectClassEditor extends FormEditor
      * @param modifiedObjectClass
      *      the modified object class to set.
      */
-    public void setModifiedObjectClass( MutableObjectClass modifiedObjectClass )
+    public void setModifiedObjectClass( ObjectClass modifiedObjectClass )
     {
         this.modifiedObjectClass = modifiedObjectClass;
     }

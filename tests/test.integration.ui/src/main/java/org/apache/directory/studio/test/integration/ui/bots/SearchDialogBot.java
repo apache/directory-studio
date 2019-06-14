@@ -20,9 +20,13 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
+import org.apache.directory.api.ldap.model.message.SearchScope;
+import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
+
+
 public class SearchDialogBot extends DialogBot
 {
-    SearchPageWrapperBot searchPageWrapperBot;
+    private SearchPageWrapperBot searchPageWrapperBot;
 
 
     public SearchDialogBot()
@@ -53,6 +57,42 @@ public class SearchDialogBot extends DialogBot
     public void setReturningAttributes( String string )
     {
         searchPageWrapperBot.setReturningAttributes( string );
+    }
+
+
+    public void setScope( SearchScope scope )
+    {
+        searchPageWrapperBot.setScope( scope );
+    }
+
+
+    public void setCountLimit( int countLimit )
+    {
+        searchPageWrapperBot.setCountLimit( countLimit );
+    }
+
+
+    public void setControlManageDsaIT( boolean enabled )
+    {
+        searchPageWrapperBot.setControlManageDsaIT( enabled );
+    }
+
+
+    public void setControlSubentries( boolean enabled )
+    {
+        searchPageWrapperBot.setControlSubentries( enabled );
+    }
+
+
+    public void setControlPagedSearch( boolean enabled, int pageSize, boolean scrollMode )
+    {
+        searchPageWrapperBot.setControlPagedSearch( enabled, pageSize, scrollMode );
+    }
+
+
+    public void setAliasDereferencingMode( AliasDereferencingMethod mode )
+    {
+        searchPageWrapperBot.setAliasDereferencingMode( mode );
     }
 
 

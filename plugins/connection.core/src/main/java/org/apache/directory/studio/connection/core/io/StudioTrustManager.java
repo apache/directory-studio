@@ -22,25 +22,27 @@ package org.apache.directory.studio.connection.core.io;
 
 
 import java.security.KeyStore;
+import java.security.cert.CertPathValidatorException.Reason;
 import java.security.cert.CertificateException;
-import java.security.cert.CertificateExpiredException;
-import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.net.ssl.SSLException;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
-import javax.security.auth.x500.X500Principal;
 
+import org.apache.directory.api.ldap.model.exception.LdapTlsHandshakeExceptionClassifier;
+import org.apache.directory.api.ldap.model.exception.LdapTlsHandshakeFailCause;
+import org.apache.directory.api.ldap.model.exception.LdapTlsHandshakeFailCause.LdapApiReason;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ICertificateHandler;
 import org.apache.directory.studio.connection.core.Messages;
-import org.apache.directory.studio.connection.core.ICertificateHandler.FailCause;
-import org.apache.http.conn.ssl.BrowserCompatHostnameVerifier;
+import org.apache.http.conn.ssl.DefaultHostnameVerifier;
 
 
 /**
@@ -122,7 +124,8 @@ public class StudioTrustManager implements X509TrustManager
         }
 
         // below here no manually trusted certificate (either permanent or temporary) matched
-        List<ICertificateHandler.FailCause> failCauses = new ArrayList<ICertificateHandler.FailCause>();
+        Map<Reason, LdapTlsHandshakeFailCause> failCauses = new LinkedHashMap<>();
+        CertificateException certificateException = null;
 
         // perform trust check of JVM trust manager
         try
@@ -131,54 +134,35 @@ public class StudioTrustManager implements X509TrustManager
         }
         catch ( CertificateException ce )
         {
-            if ( ce instanceof CertificateExpiredException )
-            {
-                failCauses.add( FailCause.CertificateExpired );
-            }
-            else if ( ce instanceof CertificateNotYetValidException )
-            {
-                failCauses.add( FailCause.CertificateNotYetValid );
-            }
-            else
-            {
-                X500Principal issuerX500Principal = chain[0].getIssuerX500Principal();
-                X500Principal subjectX500Principal = chain[0].getSubjectX500Principal();
-                if ( issuerX500Principal.equals( subjectX500Principal ) )
-                {
-                    failCauses.add( FailCause.SelfSignedCertificate );
-                }
-                else
-                {
-                    failCauses.add( FailCause.NoValidCertificationPath );
-                }
+            certificateException = ce;
+            LdapTlsHandshakeFailCause failCause = LdapTlsHandshakeExceptionClassifier.classify( ce, chain[0] );
+            failCauses.put( failCause.getReason(), failCause );
+        }
 
-                try
-                {
-                    chain[0].checkValidity();
-                }
-                catch ( CertificateException ve )
-                {
-                    if ( ve instanceof CertificateExpiredException )
-                    {
-                        failCauses.add( FailCause.CertificateExpired );
-                    }
-                    else if ( ve instanceof CertificateNotYetValidException )
-                    {
-                        failCauses.add( FailCause.CertificateNotYetValid );
-                    }
-                }
-            }
+        // perform a certificate validity check
+        try
+        {
+            chain[0].checkValidity();
+        }
+        catch ( CertificateException ce )
+        {
+            certificateException = ce;
+            LdapTlsHandshakeFailCause failCause = LdapTlsHandshakeExceptionClassifier.classify( ce, chain[0] );
+            failCauses.put( failCause.getReason(), failCause );
         }
 
         // perform host name verification
         try
         {
-            BrowserCompatHostnameVerifier hostnameVerifier = new BrowserCompatHostnameVerifier();
+            DefaultHostnameVerifier hostnameVerifier = new DefaultHostnameVerifier();
             hostnameVerifier.verify( host, chain[0] );
         }
-        catch ( SSLException ce )
+        catch ( SSLException ssle )
         {
-            failCauses.add( FailCause.HostnameVerificationFailed );
+            certificateException = new CertificateException( ssle );
+            LdapTlsHandshakeFailCause failCause = new LdapTlsHandshakeFailCause( ssle, ssle,
+                LdapApiReason.HOST_NAME_VERIFICATION_FAILED, "Hostname verification failed" );
+            failCauses.put( failCause.getReason(), failCause );
         }
 
         if ( !failCauses.isEmpty() )
@@ -186,7 +170,7 @@ public class StudioTrustManager implements X509TrustManager
             // either trust check or host name verification
             // ask for confirmation
             ICertificateHandler ch = ConnectionCorePlugin.getDefault().getCertificateHandler();
-            ICertificateHandler.TrustLevel trustLevel = ch.verifyTrustLevel( host, chain, failCauses );
+            ICertificateHandler.TrustLevel trustLevel = ch.verifyTrustLevel( host, chain, failCauses.values() );
             switch ( trustLevel )
             {
                 case Permanent:
@@ -196,7 +180,7 @@ public class StudioTrustManager implements X509TrustManager
                     ConnectionCorePlugin.getDefault().getSessionTrustStoreManager().addCertificate( chain[0] );
                     break;
                 case Not:
-                    throw new CertificateException( Messages.error__untrusted_certificate );
+                    throw certificateException;
             }
         }
     }

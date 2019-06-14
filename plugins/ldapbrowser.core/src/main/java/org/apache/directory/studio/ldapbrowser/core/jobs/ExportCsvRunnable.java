@@ -29,22 +29,20 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.naming.NamingException;
-
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
-import org.apache.directory.studio.ldapbrowser.core.jobs.ExportLdifRunnable.JndiLdifEnumeration;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeDescription;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.apache.directory.studio.ldapbrowser.core.utils.JNDIUtils;
 import org.apache.directory.studio.ldifparser.LdifUtils;
+import org.apache.directory.studio.ldifparser.model.LdifEnumeration;
 import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
 import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
 import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
@@ -212,7 +210,7 @@ public class ExportCsvRunnable implements StudioConnectionRunnableWithProgress
     {
         try
         {
-            JndiLdifEnumeration enumeration = ExportLdifRunnable.search( browserConnection, searchParameter, monitor );
+            LdifEnumeration enumeration = ExportLdifRunnable.search( browserConnection, searchParameter, monitor );
             while ( !monitor.isCanceled() && !monitor.errorsReported() && enumeration.hasNext() )
             {
                 LdifContainer container = enumeration.next();
@@ -231,7 +229,7 @@ public class ExportCsvRunnable implements StudioConnectionRunnableWithProgress
                 }
             }
         }
-        catch ( NamingException ce )
+        catch ( LdapException ce )
         {
             int ldapStatusCode = JNDIUtils.getLdapStatusCode( ce );
             if ( ldapStatusCode == 3 || ldapStatusCode == 4 || ldapStatusCode == 11 )
@@ -242,10 +240,6 @@ public class ExportCsvRunnable implements StudioConnectionRunnableWithProgress
             {
                 monitor.reportError( ce );
             }
-        }
-        catch ( LdapInvalidDnException e )
-        {
-            monitor.reportError( e );
         }
     }
 

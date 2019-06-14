@@ -30,6 +30,7 @@ public class DeleteDialogBot extends DialogBot
     public static final String DELETE_ENTRIES_TITLE = "Delete Entries";
     public static final String DELETE_VALUE_TITLE = "Delete Value";
     public static final String DELETE_SERVER = "Delete Server";
+    public static final String DELETE_PROJECT = "Delete Project";
 
 
     public DeleteDialogBot( String title )
@@ -40,9 +41,17 @@ public class DeleteDialogBot extends DialogBot
 
     public void clickOkButton()
     {
-        JobWatcher watcher = new JobWatcher( getJobWatcherTitle( title ) );
-        super.clickOkButton();
-        watcher.waitUntilDone();
+        String jobWatcherTitle = getJobWatcherTitle( title );
+        if ( jobWatcherTitle != null )
+        {
+            JobWatcher watcher = new JobWatcher( jobWatcherTitle );
+            super.clickOkButton();
+            watcher.waitUntilDone();
+        }
+        else
+        {
+            super.clickOkButton();
+        }
     }
 
 
@@ -52,6 +61,8 @@ public class DeleteDialogBot extends DialogBot
         {
             case DELETE_VALUE_TITLE:
                 return BrowserCoreMessages.jobs__execute_ldif_name;
+            case DELETE_PROJECT:
+                return null;
             default:
                 return dialogTitle;
         }

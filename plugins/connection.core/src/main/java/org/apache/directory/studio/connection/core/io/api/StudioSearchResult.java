@@ -17,53 +17,70 @@
  *  under the License.
  *
  */
-package org.apache.directory.studio.connection.core.io.jndi;
+package org.apache.directory.studio.connection.core.io.api;
 
 
-import javax.naming.directory.SearchResult;
-
+import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.message.SearchResultEntry;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.connection.core.Connection;
 
 
 /**
- * Extension of {@link SearchResult} that holds a reference to the 
+ * Wrapper around {@link SearchResultEntry} that holds a reference to the 
  * underlying connection.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StudioSearchResult extends SearchResult
+public class StudioSearchResult
 {
 
-    private static final long serialVersionUID = 1L;
+    private final SearchResultEntry searchResultEntry;
 
     /** The connection. */
     private Connection connection;
 
     /** The is continued search result flag */
-    private boolean isContinuedSearchResult;
+    private final boolean isContinuedSearchResult;
 
     /** The URL with information on how to continue the search. */
-    private LdapUrl searchContinuationUrl;
+    private final LdapUrl searchContinuationUrl;
 
 
     /**
      * Creates a new instance of StudioSearchResult.
      * 
-     * @param searchResult the original search result
+     * @param searchResultEntry the original search result
      * @param connection the connection
      * @param isContinuedSearchResult if the search result is a result from a continued search
      * @param searchContinuationUrl the URL with information on how to continue the search
      */
-    public StudioSearchResult( SearchResult searchResult, Connection connection, boolean isContinuedSearchResult,
-        LdapUrl searchContinuationUrl )
+    public StudioSearchResult( SearchResultEntry searchResultEntry, Connection connection,
+        boolean isContinuedSearchResult, LdapUrl searchContinuationUrl )
     {
-        super( searchResult.getName(), searchResult.getClassName(), searchResult.getObject(), searchResult
-            .getAttributes(), searchResult.isRelative() );
-        super.setNameInNamespace( searchResult.getNameInNamespace() );
+        this.searchResultEntry = searchResultEntry;
         this.connection = connection;
         this.isContinuedSearchResult = isContinuedSearchResult;
         this.searchContinuationUrl = searchContinuationUrl;
+    }
+
+
+    SearchResultEntry getSearchResultEntry()
+    {
+        return searchResultEntry;
+    }
+
+
+    public Dn getDn()
+    {
+        return getEntry().getDn();
+    }
+
+
+    public Entry getEntry()
+    {
+        return searchResultEntry.getEntry();
     }
 
 

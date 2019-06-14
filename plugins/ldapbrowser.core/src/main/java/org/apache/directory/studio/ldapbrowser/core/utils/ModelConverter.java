@@ -21,16 +21,15 @@
 package org.apache.directory.studio.ldapbrowser.core.utils;
 
 
-/**
- * Utilities to convert between models
- */
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
-import javax.naming.directory.BasicAttribute;
-import javax.naming.directory.DirContext;
-import javax.naming.directory.ModificationItem;
-
+import org.apache.directory.api.ldap.model.entry.DefaultEntry;
+import org.apache.directory.api.ldap.model.entry.DefaultModification;
+import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.entry.Modification;
+import org.apache.directory.api.ldap.model.entry.ModificationOperation;
+import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.connection.core.StudioControl;
@@ -44,6 +43,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Value;
 import org.apache.directory.studio.ldifparser.LdifUtils;
+import org.apache.directory.studio.ldifparser.model.LdifEOFPart;
 import org.apache.directory.studio.ldifparser.model.LdifPart;
 import org.apache.directory.studio.ldifparser.model.container.LdifChangeAddRecord;
 import org.apache.directory.studio.ldifparser.model.container.LdifChangeRecord;
@@ -128,7 +128,8 @@ public class ModelConverter
                 }
                 attribute.addValue( new Value( attribute, value ) );
             }
-            else if ( !( parts[i] instanceof LdifDnLine ) && !( parts[i] instanceof LdifSepLine ) )
+            else if ( !( parts[i] instanceof LdifDnLine ) && !( parts[i] instanceof LdifSepLine )
+                && !( parts[i] instanceof LdifEOFPart ) && !( parts[i] instanceof LdifChangeTypeLine ) )
             {
                 String name = parts[i].toRawString();
                 name = name.replaceAll( "\n", "" ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -328,38 +329,35 @@ public class ModelConverter
     }
 
 
-    /**
-     * Converts the entry to JNDI replace modification items. Each attribute
-     * of the entry will become a replace modification item. 
-     * 
-     * @param entry the entry to convert
-     * 
-     * @return the modification items
-     */
-    public static ModificationItem[] entryToReplaceModificationItems( IEntry entry )
+    public static Entry toLdapApiEntry( IEntry entry ) throws LdapException
     {
-        List<ModificationItem> mis = new ArrayList<ModificationItem>();
-
-        for ( IAttribute attribute : entry.getAttributes() )
+        Entry ldapApiEntry = new DefaultEntry( entry.getDn() );
+        for ( IAttribute iAttribute : entry.getAttributes() )
         {
-            BasicAttribute jndiAttribute = new BasicAttribute( attribute.getDescription() );
-            boolean isLdifPart = false;
-            for ( IValue value : attribute.getValues() )
+            for ( IValue value : iAttribute.getValues() )
             {
-                if ( value.getRawValue() instanceof LdifPart )
+                String attributeType = value.getAttribute().getType();
+                if ( value.isString() )
                 {
-                    isLdifPart = true;
-                    break;
+                    ldapApiEntry.add( attributeType, value.getStringValue() );
                 }
-                jndiAttribute.add( value.getRawValue() );
-            }
-            if ( !isLdifPart )
-            {
-                ModificationItem mi = new ModificationItem( DirContext.REPLACE_ATTRIBUTE, jndiAttribute );
-                mis.add( mi );
+                else
+                {
+                    ldapApiEntry.add( attributeType, value.getBinaryValue() );
+                }
             }
         }
+        return ldapApiEntry;
+    }
 
-        return mis.toArray( new ModificationItem[mis.size()] );
+
+    public static Collection<Modification> toReplaceModifications( Entry entry )
+    {
+        Collection<Modification> modifications = entry.getAttributes()
+            .stream()
+            .map( attribute -> new DefaultModification(
+                ModificationOperation.REPLACE_ATTRIBUTE, attribute ) )
+            .collect( Collectors.toList() );
+        return modifications;
     }
 }

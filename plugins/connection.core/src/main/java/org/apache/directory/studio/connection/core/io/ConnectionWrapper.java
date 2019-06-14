@@ -22,15 +22,17 @@ package org.apache.directory.studio.connection.core.io;
 
 import java.util.Collection;
 
-import javax.naming.directory.Attributes;
-import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SearchControls;
-import javax.naming.ldap.Control;
 
+import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.entry.Modification;
+import org.apache.directory.api.ldap.model.message.Control;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
+import org.apache.directory.studio.connection.core.ReferralsInfo;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
-import org.apache.directory.studio.connection.core.io.jndi.ReferralsInfo;
+import org.apache.directory.studio.connection.core.io.api.StudioSearchResultEnumeration;
 
 
 /**
@@ -98,7 +100,7 @@ public interface ConnectionWrapper
      * 
      * @return the naming enumeration or null if an exception occurs.
      */
-    StudioNamingEnumeration search( final String searchBase, final String filter,
+    StudioSearchResultEnumeration search( final String searchBase, final String filter,
         final SearchControls searchControls, final AliasDereferencingMethod aliasesDereferencingMethod,
         final ReferralHandlingMethod referralsHandlingMethod, final Control[] controls,
         final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo );
@@ -108,12 +110,12 @@ public interface ConnectionWrapper
      * Modifies attributes of an entry.
      * 
      * @param dn the Dn
-     * @param modificationItems the modification items
+     * @param modifications the modification items
      * @param controls the controls
      * @param monitor the progress monitor
      * @param referralsInfo the referrals info
      */
-    void modifyEntry( final String dn, final ModificationItem[] modificationItems, final Control[] controls,
+    void modifyEntry( final Dn dn, final Collection<Modification> modifications, final Control[] controls,
         final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo );
 
 
@@ -127,21 +129,20 @@ public interface ConnectionWrapper
      * @param monitor the progress monitor
      * @param referralsInfo the referrals info
      */
-    void renameEntry( final String oldDn, final String newDn, final boolean deleteOldRdn,
+    void renameEntry( final Dn oldDn, final Dn newDn, final boolean deleteOldRdn,
         final Control[] controls, final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo );
 
 
     /**
      * Creates an entry.
      * 
-     * @param dn the entry's Dn
-     * @param attributes the entry's attributes
+     * @param entry the entry
      * @param controls the controls
      * @param monitor the progress monitor
      * @param referralsInfo the referrals info
      */
-    void createEntry( final String dn, final Attributes attributes, final Control[] controls,
-        final StudioProgressMonitor monitor, final ReferralsInfo referralsInfo );
+    void createEntry( final Entry entry, final Control[] controls, final StudioProgressMonitor monitor,
+        final ReferralsInfo referralsInfo );
 
 
     /**
@@ -152,6 +153,6 @@ public interface ConnectionWrapper
      * @param monitor the progress monitor
      * @param referralsInfo the referrals info
      */
-    void deleteEntry( final String dn, final Control[] controls, final StudioProgressMonitor monitor,
+    void deleteEntry( final Dn dn, final Control[] controls, final StudioProgressMonitor monitor,
         final ReferralsInfo referralsInfo );
 }

@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.apache.commons.lang.SystemUtils;
 import org.apache.directory.api.ldap.model.constants.SaslQoP;
 import org.apache.directory.api.ldap.model.constants.SaslSecurityStrength;
 
@@ -56,28 +55,6 @@ public class ConnectionParameter
 
         /** Encryption using Start TLS extension. */
         START_TLS
-    }
-
-    /**
-     * Enum for the network provider.
-     * 
-     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
-     */
-    public enum NetworkProvider
-    {
-        /** JNDI */
-        JNDI,
-
-        /** Apache Directory LDAP API */
-        APACHE_DIRECTORY_LDAP_API
-        ;
-        public boolean isSupported() {
-            if(this == APACHE_DIRECTORY_LDAP_API) {
-                return true;
-            } else /* JNDI */ {
-                return  SystemUtils.JAVA_VERSION_FLOAT < 9.0f;
-            }
-        }
     }
 
     /**
@@ -143,9 +120,6 @@ public class ConnectionParameter
 
     /** The encryption method. */
     private EncryptionMethod encryptionMethod;
-
-    /** The network provider. */
-    private NetworkProvider networkProvider;
 
     /** The authentication method. */
     private AuthenticationMethod authMethod;
@@ -221,7 +195,7 @@ public class ConnectionParameter
      * @param timeoutMillis the timeout in milliseconds
      */
     public ConnectionParameter( String name, String host, int port, EncryptionMethod encryptionMethod,
-        NetworkProvider networkProvider, AuthenticationMethod authMethod, String bindPrincipal, String bindPassword,
+        AuthenticationMethod authMethod, String bindPrincipal, String bindPassword,
         String saslRealm, boolean isReadOnly, Map<String, String> extendedProperties, long timeoutMillis )
     {
         this.id = createId();
@@ -229,7 +203,6 @@ public class ConnectionParameter
         this.host = host;
         this.port = port;
         this.encryptionMethod = encryptionMethod;
-        this.networkProvider = networkProvider;
         this.authMethod = authMethod;
         this.bindPrincipal = bindPrincipal;
         this.bindPassword = bindPassword;
@@ -375,28 +348,6 @@ public class ConnectionParameter
     public void setEncryptionMethod( EncryptionMethod encryptionMethod )
     {
         this.encryptionMethod = encryptionMethod;
-    }
-
-
-    /**
-     * Gets the network provider.
-     *
-     * @return the network provider
-     */
-    public NetworkProvider getNetworkProvider()
-    {
-        return networkProvider;
-    }
-
-
-    /**
-     * Sets the network provider.
-     *
-     * @param networkProvider the network provider
-     */
-    public void setNetworkProvider( NetworkProvider networkProvider )
-    {
-        this.networkProvider = networkProvider;
     }
 
 

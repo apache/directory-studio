@@ -59,6 +59,7 @@
  org.apache.directory.server.annotations;bundle-version="${org.apache.directory.server.version}",
  org.apache.directory.server.core.annotations;bundle-version="${org.apache.directory.server.version}",
  org.apache.directory.server.core.api;bundle-version="${org.apache.directory.server.version}",
+ org.apache.directory.server.core;bundle-version="${org.apache.directory.server.version}",
  org.apache.directory.server.protocol.ldap;bundle-version="${org.apache.directory.server.version}",
  org.apache.directory.server.protocol.shared;bundle-version="${org.apache.directory.server.version}",
  org.apache.directory.server.jdbm.partition;bundle-version="${org.apache.directory.server.version}",
@@ -70,7 +71,7 @@
  org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.version}",
  org.apache.directory.api.ldap.net.mina;bundle-version="${org.apache.directory.api.version}",
  org.apache.directory.api.util;bundle-version="${org.apache.directory.api.version}",
- org.apache.mina.core;bundle-version="${org.apache.mina.version}",
+ org.apache.mina.core;bundle-version="${org.apache.mina.bundleversion}",
  
  org.apache.directory.studio.aciitemeditor,
  org.apache.directory.studio.apacheds.configuration,
@@ -102,7 +103,7 @@
  org.eclipse.core.runtime,
  org.eclipse.ui</Require-Bundle>
             
-            <Import-Package>org.apache.commons.lang,
+            <Import-Package>org.apache.commons.lang3,
  org.apache.commons.codec.digest,
  org.apache.http.conn.ssl,
  org.apache.log4j,

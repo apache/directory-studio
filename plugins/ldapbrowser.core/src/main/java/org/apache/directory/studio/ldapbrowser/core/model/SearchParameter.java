@@ -26,11 +26,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
-import org.apache.directory.studio.connection.core.StudioControl;
 
 
 /**
@@ -73,10 +73,13 @@ public class SearchParameter implements Serializable
     private ReferralHandlingMethod referralsHandlingMethod;
 
     /** The controls */
-    private List<StudioControl> controls;
+    private List<Control> controls;
 
     /** The response controls */
-    private List<StudioControl> responseControls;
+    private List<Control> responseControls;
+
+    /** The paged search scroll mode flag. */
+    protected boolean pagedSearchScrollModeFlag;
 
     /** Flag indicating weather the hasChildren flag of IEntry should be initialized */
     private boolean initHasChildrenFlag;
@@ -111,8 +114,9 @@ public class SearchParameter implements Serializable
         countLimit = 0;
         aliasesDereferencingMethod = AliasDereferencingMethod.ALWAYS;
         referralsHandlingMethod = ReferralHandlingMethod.FOLLOW;
-        controls = new ArrayList<StudioControl>();
-        responseControls = new ArrayList<StudioControl>();
+        controls = new ArrayList<>();
+        responseControls = new ArrayList<>();
+        pagedSearchScrollModeFlag = true;
         initHasChildrenFlag = false;
     }
 
@@ -344,6 +348,7 @@ public class SearchParameter implements Serializable
         clone.setReferralsHandlingMethod( getReferralsHandlingMethod() );
         clone.setInitHasChildrenFlag( isInitHasChildrenFlag() );
         clone.getControls().addAll( getControls() );
+        clone.getResponseControls().addAll( getResponseControls() );
         return clone;
     }
 
@@ -371,11 +376,11 @@ public class SearchParameter implements Serializable
 
 
     /**
-     * Gets the controls.
+     * Gets the request controls.
      * 
-     * @return the controls
+     * @return the request controls
      */
-    public List<StudioControl> getControls()
+    public List<Control> getControls()
     {
         return controls;
     }
@@ -386,9 +391,21 @@ public class SearchParameter implements Serializable
      * 
      * @return the response controls
      */
-    public List<StudioControl> getResponseControls()
+    public List<Control> getResponseControls()
     {
         return responseControls;
+    }
+
+
+    public boolean isPagedSearchScrollMode()
+    {
+        return pagedSearchScrollModeFlag;
+    }
+
+
+    public void setPagedSearchScrollMode( boolean pagedSearchScrollModeFlag )
+    {
+        this.pagedSearchScrollModeFlag = pagedSearchScrollModeFlag;
     }
 
 }

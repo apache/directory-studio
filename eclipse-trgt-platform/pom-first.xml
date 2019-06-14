@@ -51,9 +51,9 @@
     </dependency>
 
     <dependency>
-      <groupId>commons-collections</groupId>
-      <artifactId>commons-collections</artifactId>
-      <version>${org.apache.commons.collections.version}</version>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-collections4</artifactId>
+      <version>${org.apache.commons.collections4.version}</version>
     </dependency>
 
     <dependency>
@@ -63,9 +63,9 @@
     </dependency>
 
     <dependency>
-      <groupId>commons-lang</groupId>
-      <artifactId>commons-lang</artifactId>
-      <version>${org.apache.commons.lang.version}</version>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>${org.apache.commons.lang3.version}</version>
     </dependency>
 
     <dependency>
@@ -82,11 +82,11 @@
       <version>${org.apache.mina.version}</version>
     </dependency>
 
-    <!-- Ehcache module -->
+    <!-- Caffeine module -->
     <dependency>
-      <groupId>net.sf.ehcache</groupId>
-      <artifactId>ehcache</artifactId>
-      <version>${net.sf.ehcache.version}</version>
+      <groupId>com.github.ben-manes.caffeine</groupId>
+      <artifactId>caffeine</artifactId>
+      <version>${com.github.ben-manes.caffeine.version}</version>
     </dependency>
 
     <!-- LDAP API modules -->

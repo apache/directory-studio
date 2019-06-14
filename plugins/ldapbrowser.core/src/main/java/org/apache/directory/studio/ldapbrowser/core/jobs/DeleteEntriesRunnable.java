@@ -29,20 +29,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import javax.naming.ContextNotEmptyException;
-import javax.naming.NamingEnumeration;
 import javax.naming.directory.SearchControls;
-import javax.naming.directory.SearchResult;
-import javax.naming.ldap.BasicControl;
-import javax.naming.ldap.Control;
-import javax.naming.ldap.ManageReferralControl;
 
+import org.apache.directory.api.ldap.model.exception.LdapContextNotEmptyException;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.Controls;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.StudioControl;
+import org.apache.directory.studio.connection.core.io.api.StudioSearchResultEnumeration;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
@@ -278,7 +276,7 @@ public class DeleteEntriesRunnable implements StudioConnectionBulkRunnableWithPr
                 new String[]
                     { "" + numberOfDeletedEntries } ) ); //$NON-NLS-1$
         }
-        else if ( dummyMonitor.getException() instanceof ContextNotEmptyException )
+        else if ( dummyMonitor.getException() instanceof LdapContextNotEmptyException )
         {
             // do not follow referrals or dereference aliases when deleting entries
             AliasDereferencingMethod aliasDereferencingMethod = AliasDereferencingMethod.NEVER;
@@ -295,7 +293,7 @@ public class DeleteEntriesRunnable implements StudioConnectionBulkRunnableWithPr
                 searchControls.setCountLimit( 1000 );
                 searchControls.setReturningAttributes( new String[0] );
                 searchControls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
-                NamingEnumeration<SearchResult> result = browserConnection
+                StudioSearchResultEnumeration result = browserConnection
                     .getConnection()
                     .getConnectionWrapper()
                     .search( dn.getName(), ISearch.FILTER_TRUE, searchControls, aliasDereferencingMethod,
@@ -306,8 +304,7 @@ public class DeleteEntriesRunnable implements StudioConnectionBulkRunnableWithPr
                     // delete all child entries
                     while ( !dummyMonitor.isCanceled() && !dummyMonitor.errorsReported() && result.hasMore() )
                     {
-                        SearchResult sr = result.next();
-                        Dn childDn = JNDIUtils.getDn( sr );
+                        Dn childDn = result.next().getDn();
 
                         numberOfDeletedEntries = optimisticDeleteEntryRecursive( browserConnection, childDn, false,
                             false, numberOfDeletedEntries, dummyMonitor, monitor );
@@ -365,14 +362,12 @@ public class DeleteEntriesRunnable implements StudioConnectionBulkRunnableWithPr
         if ( useTreeDeleteControl
             && browserConnection.getRootDSE().isControlSupported( StudioControl.TREEDELETE_CONTROL.getOid() ) )
         {
-            Control treeDeleteControl = new BasicControl( StudioControl.TREEDELETE_CONTROL.getOid(),
-                StudioControl.TREEDELETE_CONTROL.isCritical(), StudioControl.TREEDELETE_CONTROL.getControlValue() );
-            controlList.add( treeDeleteControl );
+            controlList.add( Controls.TREEDELETE_CONTROL );
         }
         if ( useManageDsaItControl
             && browserConnection.getRootDSE().isControlSupported( StudioControl.MANAGEDSAIT_CONTROL.getOid() ) )
         {
-            controlList.add( new ManageReferralControl( false ) );
+            controlList.add( Controls.MANAGEDSAIT_CONTROL );
         }
         Control[] controls = controlList.toArray( new Control[controlList.size()] );
 
@@ -380,7 +375,7 @@ public class DeleteEntriesRunnable implements StudioConnectionBulkRunnableWithPr
         if ( browserConnection.getConnection() != null )
         {
             browserConnection.getConnection().getConnectionWrapper()
-                .deleteEntry( dn.getName(), controls, monitor, null );
+                .deleteEntry( dn, controls, monitor, null );
         }
     }
 }

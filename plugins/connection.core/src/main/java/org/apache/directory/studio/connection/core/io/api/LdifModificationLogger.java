@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.studio.connection.core.io.jndi;
+package org.apache.directory.studio.connection.core.io.api;
 
 
 import java.io.File;
@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -38,16 +39,14 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import javax.naming.NamingEnumeration;
-import javax.naming.NamingException;
-import javax.naming.directory.Attribute;
-import javax.naming.directory.Attributes;
-import javax.naming.directory.DirContext;
-import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SearchControls;
-import javax.naming.ldap.Control;
 
-import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.entry.Attribute;
+import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.entry.Modification;
+import org.apache.directory.api.ldap.model.entry.Value;
+import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
@@ -57,7 +56,9 @@ import org.apache.directory.studio.connection.core.Connection.AliasDereferencing
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionManager;
-import org.apache.directory.studio.connection.core.IJndiLogger;
+import org.apache.directory.studio.connection.core.Controls;
+import org.apache.directory.studio.connection.core.ILdapLogger;
+import org.apache.directory.studio.connection.core.ReferralsInfo;
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
 import org.apache.directory.studio.ldifparser.model.container.LdifChangeAddRecord;
 import org.apache.directory.studio.ldifparser.model.container.LdifChangeDeleteRecord;
@@ -84,7 +85,7 @@ import org.eclipse.core.runtime.Preferences.PropertyChangeEvent;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LdifModificationLogger implements IJndiLogger
+public class LdifModificationLogger implements ILdapLogger
 {
 
     /** The ID. */
@@ -206,14 +207,7 @@ public class LdifModificationLogger implements IJndiLogger
     }
 
 
-    /**
-     * Logs the given text to the modification logger of the given connection.
-     * 
-     * @param text the text to log
-     * @param ex the naming exception if an error occurred, null otherwise
-     * @param connection the connection
-     */
-    private void log( String text, NamingException ex, Connection connection )
+    private void log( String text, LdapException ex, Connection connection )
     {
         String id = connection.getId();
         if ( !loggers.containsKey( id ) )
@@ -245,7 +239,8 @@ public class LdifModificationLogger implements IJndiLogger
                 .log(
                     Level.ALL,
                     LdifCommentLine
-                        .create( "#!CONNECTION ldap://" + connection.getHost() + ":" + connection.getPort() ).toFormattedString( LdifFormatParameters.DEFAULT ) ); //$NON-NLS-1$ //$NON-NLS-2$
+                        .create( "#!CONNECTION ldap://" + connection.getHost() + ":" + connection.getPort() ) //$NON-NLS-1$//$NON-NLS-2$
+                        .toFormattedString( LdifFormatParameters.DEFAULT ) );
             logger.log( Level.ALL, LdifCommentLine
                 .create( "#!DATE " + df.format( new Date() ) ).toFormattedString( LdifFormatParameters.DEFAULT ) ); //$NON-NLS-1$
 
@@ -266,70 +261,58 @@ public class LdifModificationLogger implements IJndiLogger
     /**
      * {@inheritDoc}
      */
-    public void logChangetypeAdd( Connection connection, final String dn, final Attributes attributes,
-        final Control[] controls, NamingException ex )
+    public void logChangetypeAdd( Connection connection, final Entry entry, final Control[] controls, LdapException ex )
     {
         if ( !isModificationLogEnabled() )
         {
             return;
         }
 
-        try
+        Set<String> maskedAttributes = getMaskedAttributes();
+        LdifChangeAddRecord record = new LdifChangeAddRecord( LdifDnLine.create( entry.getDn().getName() ) );
+        addControlLines( record, controls );
+        record.setChangeType( LdifChangeTypeLine.createAdd() );
+        for ( Attribute attribute : entry )
         {
-            Set<String> maskedAttributes = getMaskedAttributes();
-            LdifChangeAddRecord record = new LdifChangeAddRecord( LdifDnLine.create( dn ) );
-            addControlLines( record, controls );
-            record.setChangeType( LdifChangeTypeLine.createAdd() );
-            NamingEnumeration<? extends Attribute> attributeEnumeration = attributes.getAll();
-            while ( attributeEnumeration.hasMore() )
+            String attributeName = attribute.getUpId();
+            for ( Value value : attribute )
             {
-                Attribute attribute = attributeEnumeration.next();
-                String attributeName = attribute.getID();
-                NamingEnumeration<?> valueEnumeration = attribute.getAll();
-                while ( valueEnumeration.hasMore() )
+                if ( maskedAttributes.contains( Strings.toLowerCase( attributeName ) ) )
                 {
-                    Object o = valueEnumeration.next();
-
-                    if ( maskedAttributes.contains( Strings.toLowerCase( attributeName ) ) )
+                    record.addAttrVal( LdifAttrValLine.create( attributeName, "**********" ) ); //$NON-NLS-1$
+                }
+                else
+                {
+                    if ( value.isHumanReadable() )
                     {
-                        record.addAttrVal( LdifAttrValLine.create( attributeName, "**********" ) ); //$NON-NLS-1$
+                        record.addAttrVal( LdifAttrValLine.create( attributeName, value.getString() ) );
                     }
                     else
                     {
-                        if ( o instanceof String )
-                        {
-                            record.addAttrVal( LdifAttrValLine.create( attributeName, ( String ) o ) );
-                        }
-                        if ( o instanceof byte[] )
-                        {
-                            record.addAttrVal( LdifAttrValLine.create( attributeName, ( byte[] ) o ) );
-                        }
+                        record.addAttrVal( LdifAttrValLine.create( attributeName, value.getBytes() ) );
                     }
                 }
             }
-            record.finish( LdifSepLine.create() );
+        }
+        record.finish( LdifSepLine.create() );
 
-            String formattedString = record.toFormattedString( LdifFormatParameters.DEFAULT );
-            log( formattedString, ex, connection );
-        }
-        catch ( NamingException e )
-        {
-        }
+        String formattedString = record.toFormattedString( LdifFormatParameters.DEFAULT );
+        log( formattedString, ex, connection );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void logChangetypeDelete( Connection connection, final String dn, final Control[] controls,
-        NamingException ex )
+    public void logChangetypeDelete( Connection connection, final Dn dn, final Control[] controls,
+        LdapException ex )
     {
         if ( !isModificationLogEnabled() )
         {
             return;
         }
 
-        LdifChangeDeleteRecord record = new LdifChangeDeleteRecord( LdifDnLine.create( dn ) );
+        LdifChangeDeleteRecord record = new LdifChangeDeleteRecord( LdifDnLine.create( dn.getName() ) );
         addControlLines( record, controls );
         record.setChangeType( LdifChangeTypeLine.createDelete() );
         record.finish( LdifSepLine.create() );
@@ -342,105 +325,89 @@ public class LdifModificationLogger implements IJndiLogger
     /**
      * {@inheritDoc}
      */
-    public void logChangetypeModify( Connection connection, final String dn,
-        final ModificationItem[] modificationItems, final Control[] controls, NamingException ex )
+    public void logChangetypeModify( Connection connection, final Dn dn,
+        final Collection<Modification> modifications, final Control[] controls, LdapException ex )
     {
         if ( !isModificationLogEnabled() )
         {
             return;
         }
 
-        try
+        Set<String> maskedAttributes = getMaskedAttributes();
+        LdifChangeModifyRecord record = new LdifChangeModifyRecord( LdifDnLine.create( dn.getName() ) );
+        addControlLines( record, controls );
+        record.setChangeType( LdifChangeTypeLine.createModify() );
+        for ( Modification item : modifications )
         {
-            Set<String> maskedAttributes = getMaskedAttributes();
-            LdifChangeModifyRecord record = new LdifChangeModifyRecord( LdifDnLine.create( dn ) );
-            addControlLines( record, controls );
-            record.setChangeType( LdifChangeTypeLine.createModify() );
-            for ( ModificationItem item : modificationItems )
+            String attributeName = item.getAttribute().getUpId();
+            LdifModSpec modSpec;
+            switch ( item.getOperation() )
             {
-                Attribute attribute = item.getAttribute();
-                String attributeDescription = attribute.getID();
-                LdifModSpec modSpec;
-                switch ( item.getModificationOp() )
+                case ADD_ATTRIBUTE:
+                    modSpec = LdifModSpec.createAdd( attributeName );
+                    break;
+                case REMOVE_ATTRIBUTE:
+                    modSpec = LdifModSpec.createDelete( attributeName );
+                    break;
+                case REPLACE_ATTRIBUTE:
+                    modSpec = LdifModSpec.createReplace( attributeName );
+                    break;
+                default:
+                    continue;
+            }
+            for ( Value value : item.getAttribute() )
+            {
+                if ( maskedAttributes.contains( Strings.toLowerCase( attributeName ) ) )
                 {
-                    case DirContext.ADD_ATTRIBUTE:
-                        modSpec = LdifModSpec.createAdd( attributeDescription );
-                        break;
-                    case DirContext.REMOVE_ATTRIBUTE:
-                        modSpec = LdifModSpec.createDelete( attributeDescription );
-                        break;
-                    case DirContext.REPLACE_ATTRIBUTE:
-                        modSpec = LdifModSpec.createReplace( attributeDescription );
-                        break;
-                    default:
-                        continue;
+                    modSpec.addAttrVal( LdifAttrValLine.create( attributeName, "**********" ) ); //$NON-NLS-1$
                 }
-                NamingEnumeration<?> valueEnumeration = attribute.getAll();
-                while ( valueEnumeration.hasMore() )
+                else
                 {
-                    Object o = valueEnumeration.next();
-                    if ( maskedAttributes.contains( Strings.toLowerCase( attributeDescription ) ) )
+                    if ( value.isHumanReadable() )
                     {
-                        modSpec.addAttrVal( LdifAttrValLine.create( attributeDescription, "**********" ) ); //$NON-NLS-1$
+                        modSpec.addAttrVal( LdifAttrValLine.create( attributeName, value.getString() ) );
                     }
                     else
                     {
-                        if ( o instanceof String )
-                        {
-                            modSpec.addAttrVal( LdifAttrValLine.create( attributeDescription, ( String ) o ) );
-                        }
-                        if ( o instanceof byte[] )
-                        {
-                            modSpec.addAttrVal( LdifAttrValLine.create( attributeDescription, ( byte[] ) o ) );
-                        }
+                        modSpec.addAttrVal( LdifAttrValLine.create( attributeName, value.getBytes() ) );
                     }
                 }
-                modSpec.finish( LdifModSpecSepLine.create() );
-
-                record.addModSpec( modSpec );
             }
-            record.finish( LdifSepLine.create() );
+            modSpec.finish( LdifModSpecSepLine.create() );
 
-            String formattedString = record.toFormattedString( LdifFormatParameters.DEFAULT );
-            log( formattedString, ex, connection );
+            record.addModSpec( modSpec );
         }
-        catch ( NamingException e )
-        {
-        }
+        record.finish( LdifSepLine.create() );
+
+        String formattedString = record.toFormattedString( LdifFormatParameters.DEFAULT );
+        log( formattedString, ex, connection );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void logChangetypeModDn( Connection connection, final String oldDn, final String newDn,
-        final boolean deleteOldRdn, final Control[] controls, NamingException ex )
+    public void logChangetypeModDn( Connection connection, final Dn oldDn, final Dn newDn,
+        final boolean deleteOldRdn, final Control[] controls, LdapException ex )
     {
         if ( !isModificationLogEnabled() )
         {
             return;
         }
 
-        try
-        {
-            Dn dn = new Dn( newDn );
-            Rdn newrdn = dn.getRdn();
-            Dn newsuperior = dn.getParent();
+        Rdn newrdn = newDn.getRdn();
+        Dn newsuperior = newDn.getParent();
 
-            LdifChangeModDnRecord record = new LdifChangeModDnRecord( LdifDnLine.create( oldDn ) );
-            addControlLines( record, controls );
-            record.setChangeType( LdifChangeTypeLine.createModDn() );
-            record.setNewrdn( LdifNewrdnLine.create( newrdn.getName() ) );
-            record.setDeloldrdn( deleteOldRdn ? LdifDeloldrdnLine.create1() : LdifDeloldrdnLine.create0() );
-            record.setNewsuperior( LdifNewsuperiorLine.create( newsuperior.getName() ) );
-            record.finish( LdifSepLine.create() );
+        LdifChangeModDnRecord record = new LdifChangeModDnRecord( LdifDnLine.create( oldDn.getName() ) );
+        addControlLines( record, controls );
+        record.setChangeType( LdifChangeTypeLine.createModDn() );
+        record.setNewrdn( LdifNewrdnLine.create( newrdn.getName() ) );
+        record.setDeloldrdn( deleteOldRdn ? LdifDeloldrdnLine.create1() : LdifDeloldrdnLine.create0() );
+        record.setNewsuperior( LdifNewsuperiorLine.create( newsuperior.getName() ) );
+        record.finish( LdifSepLine.create() );
 
-            String formattedString = record.toFormattedString( LdifFormatParameters.DEFAULT );
-            log( formattedString, ex, connection );
-        }
-        catch ( LdapInvalidDnException e )
-        {
-        }
+        String formattedString = record.toFormattedString( LdifFormatParameters.DEFAULT );
+        log( formattedString, ex, connection );
     }
 
 
@@ -448,8 +415,8 @@ public class LdifModificationLogger implements IJndiLogger
      * {@inheritDoc}
      */
     public void logSearchRequest( Connection connection, String searchBase, String filter,
-        SearchControls searchControls, AliasDereferencingMethod aliasesDereferencingMethod, Control[] controls,
-        long requestNum, NamingException ex )
+        SearchControls searchControls, AliasDereferencingMethod aliasesDereferencingMethod,
+        Control[] controls, long requestNum, LdapException ex )
     {
         // don't log searches
     }
@@ -458,18 +425,8 @@ public class LdifModificationLogger implements IJndiLogger
     /**
      * {@inheritDoc}
      */
-    public void logSearchResultEntry( Connection connection, StudioSearchResult studioSearchResult, long requestNum,
-        NamingException ex )
-    {
-        // don't log searches 
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
     public void logSearchResultReference( Connection connection, Referral referral,
-        ReferralsInfo referralsInfo, long requestNum, NamingException ex )
+        ReferralsInfo referralsInfo, long requestNum, LdapException ex )
     {
         // don't log searches 
     }
@@ -478,7 +435,7 @@ public class LdifModificationLogger implements IJndiLogger
     /**
      * {@inheritDoc}
      */
-    public void logSearchResultDone( Connection connection, long count, long requestNum, NamingException ex )
+    public void logSearchResultDone( Connection connection, long count, long requestNum, LdapException ex )
     {
         // don't log searches 
     }
@@ -490,16 +447,16 @@ public class LdifModificationLogger implements IJndiLogger
      * @param record the recored
      * @param controls the controls
      */
-    private static void addControlLines( LdifChangeRecord record, Control[] controls )
+    private static void addControlLines( LdifChangeRecord record,Control[] controls )
     {
         if ( controls != null )
         {
             for ( Control control : controls )
             {
-                String oid = control.getID();
+                String oid = control.getOid();
                 boolean isCritical = control.isCritical();
-                byte[] controlValue = control.getEncodedValue();
-                LdifControlLine controlLine = LdifControlLine.create( oid, isCritical, controlValue );
+                byte[] bytes = Controls.getEncodedValue( control );
+                LdifControlLine controlLine = LdifControlLine.create( oid, isCritical, bytes );
                 record.addControl( controlLine );
             }
         }

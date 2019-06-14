@@ -31,31 +31,38 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import org.apache.directory.api.ldap.model.message.SearchScope;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.FileUtils;
 import org.apache.directory.api.util.IOUtils;
 import org.apache.directory.server.annotations.CreateLdapServer;
 import org.apache.directory.server.annotations.CreateTransport;
 import org.apache.directory.server.core.annotations.ApplyLdifFiles;
-import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
 import org.apache.directory.server.core.api.partition.Partition;
+import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
 import org.apache.directory.server.core.partition.impl.avl.AvlPartition;
-import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.test.integration.ui.bots.BotUtils;
 import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.DeleteDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.EntryEditorBot;
 import org.apache.directory.studio.test.integration.ui.bots.ExportWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.ImportWizardBot;
+import org.apache.directory.studio.test.integration.ui.bots.SearchLogsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
+import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
+import org.apache.directory.studio.test.integration.ui.bots.utils.Characters;
 import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Preferences;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -69,13 +76,14 @@ import org.junit.runner.RunWith;
 @RunWith(FrameworkRunnerWithScreenshotCaptureListener.class)
 @CreateLdapServer(transports =
     { @CreateTransport(protocol = "LDAP") })
-@ApplyLdifFiles( clazz = ImportExportTest.class,
-    value = "org/apache/directory/studio/test/integration/ui/ImportExportTest.ldif" )
+@ApplyLdifFiles(clazz = ImportExportTest.class, value = "org/apache/directory/studio/test/integration/ui/ImportExportTest.ldif")
 public class ImportExportTest extends AbstractLdapTestUnit
 {
     private StudioBot studioBot;
     private ConnectionsViewBot connectionsViewBot;
     private BrowserViewBot browserViewBot;
+    private Connection connection;
+    private SearchLogsViewBot searchLogsViewBot;
 
 
     @Before
@@ -84,8 +92,9 @@ public class ImportExportTest extends AbstractLdapTestUnit
         studioBot = new StudioBot();
         studioBot.resetLdapPerspective();
         connectionsViewBot = studioBot.getConnectionView();
-        connectionsViewBot.createTestConnection( "ImportExportTest", ldapServer.getPort() );
+        connection = connectionsViewBot.createTestConnection( "ImportExportTest", ldapServer.getPort() );
         browserViewBot = studioBot.getBrowserView();
+        searchLogsViewBot = studioBot.getSearchLogsViewBot();
     }
 
 
@@ -93,6 +102,7 @@ public class ImportExportTest extends AbstractLdapTestUnit
     public void tearDown() throws Exception
     {
         connectionsViewBot.deleteTestConnections();
+        Assertions.genericTearDownAssertions();
     }
 
 
@@ -111,7 +121,7 @@ public class ImportExportTest extends AbstractLdapTestUnit
     public void testExportImportLdifWithGermanUmlautInDN() throws Exception
     {
         URL url = Platform.getInstanceLocation().getURL();
-        final String file = url.getFile() + "ImportExportTest.ldif";
+        final String file = url.getFile() + "ImportExportWithGermanUmlautInDnTest.ldif";
 
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Wolfgang K\u00f6lbel" );
 
@@ -134,7 +144,8 @@ public class ImportExportTest extends AbstractLdapTestUnit
         DeleteDialogBot dialogBot = browserViewBot.openDeleteDialog();
         assertTrue( dialogBot.isVisible() );
         dialogBot.clickOkButton();
-        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Wolfgang K\u00f6lbel" ) );
+        assertFalse(
+            browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Wolfgang K\u00f6lbel" ) );
 
         // import LDIF
         ImportWizardBot importWizardBot = browserViewBot.openImportLdifWizard();
@@ -142,7 +153,8 @@ public class ImportExportTest extends AbstractLdapTestUnit
         importWizardBot.clickFinishButton();
 
         // verify that entry with umlaut exists
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Wolfgang K\u00f6lbel" ) );
+        assertTrue(
+            browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Wolfgang K\u00f6lbel" ) );
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Wolfgang K\u00f6lbel" );
     }
 
@@ -162,7 +174,7 @@ public class ImportExportTest extends AbstractLdapTestUnit
     public void testExportImportDsmlWithGermanUmlautInDN() throws Exception
     {
         URL url = Platform.getInstanceLocation().getURL();
-        final String file = url.getFile() + "ImportExportTest.dsml";
+        final String file = url.getFile() + "ImportExportWithGermanUmlautInDnTest.dsml";
 
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Wolfgang K\u00f6lbel" );
 
@@ -184,7 +196,8 @@ public class ImportExportTest extends AbstractLdapTestUnit
         DeleteDialogBot dialogBot = browserViewBot.openDeleteDialog();
         assertTrue( dialogBot.isVisible() );
         dialogBot.clickOkButton();
-        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Wolfgang K\u00f6lbel" ) );
+        assertFalse(
+            browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Wolfgang K\u00f6lbel" ) );
 
         // import DSML
         ImportWizardBot importWizardBot = browserViewBot.openImportDsmlWizard();
@@ -192,8 +205,209 @@ public class ImportExportTest extends AbstractLdapTestUnit
         importWizardBot.clickFinishButton();
 
         // verify that entry with umlaut exists
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Wolfgang K\u00f6lbel" ) );
+        assertTrue(
+            browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Wolfgang K\u00f6lbel" ) );
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Wolfgang K\u00f6lbel" );
+    }
+
+
+    @Test
+    public void testExportImportLdifSpecialEntries() throws Exception
+    {
+        // disable alias dereferencing
+        connection.getConnectionParameter().setExtendedIntProperty(
+            IBrowserConnection.CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD,
+            AliasDereferencingMethod.NEVER.ordinal() );
+        // enable ManageDsaIT control
+        connection.getConnectionParameter().setExtendedBoolProperty(
+            IBrowserConnection.CONNECTION_PARAMETER_MANAGE_DSA_IT, true );
+        // enable Subentries control
+        connection.getConnectionParameter().setExtendedBoolProperty(
+            IBrowserConnection.CONNECTION_PARAMETER_FETCH_SUBENTRIES, true );
+
+        URL url = Platform.getInstanceLocation().getURL();
+        final String file1 = url.getFile() + "ImportExportSpecialEntries1Test.ldif";
+        final String file2 = url.getFile() + "ImportExportSpecialEntries2Test.ldif";
+
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=special" );
+
+        // export first LDIF (alias and referral)
+        ExportWizardBot wizardBot = browserViewBot.openExportLdifWizard();
+        assertTrue( wizardBot.isVisible() );
+        wizardBot.setReturningAttributes( "ref" );
+        wizardBot.setScope( SearchScope.ONELEVEL );
+        wizardBot.setControlManageDsaIT( true );
+        wizardBot.setAliasDereferencingMode( AliasDereferencingMethod.NEVER );
+        wizardBot.clickNextButton();
+        wizardBot.typeFile( file1 );
+        wizardBot.clickFinishButton();
+        wizardBot.waitTillExportFinished( file1, 200 );
+
+        List<String> lines1 = FileUtils.readLines( new File( file1 ), StandardCharsets.UTF_8 );
+        assertEquals( "LDIF must start with version: 1", lines1.get( 0 ), "version: 1" );
+        assertTrue( lines1.contains( "dn: cn=referral,ou=special,ou=system" ) );
+        assertTrue( lines1.contains( "ref: ldap://foo.example.com/ou=system" ) );
+        assertTrue( lines1.contains( "dn: cn=alias,ou=special,ou=system" ) );
+
+        // export second LDIF (subentry)
+        wizardBot = browserViewBot.openExportLdifWizard();
+        assertTrue( wizardBot.isVisible() );
+        wizardBot.setReturningAttributes( "subtreeSpecification" );
+        wizardBot.setScope( SearchScope.ONELEVEL );
+        wizardBot.setControlSubentries( true );
+        wizardBot.clickNextButton();
+        wizardBot.typeFile( file2 );
+        wizardBot.clickFinishButton();
+        wizardBot.waitTillExportFinished( file2, 100 );
+
+        List<String> lines2 = FileUtils.readLines( new File( file2 ), StandardCharsets.UTF_8 );
+        assertEquals( "LDIF must start with version: 1", lines2.get( 0 ), "version: 1" );
+        assertTrue( lines2.contains( "dn: cn=subentry,ou=special,ou=system" ) );
+        assertTrue( lines2.contains( "subtreespecification: { }" ) );
+
+        // delete entries
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=special" );
+        String[] children =
+            { "cn=alias", "cn=referral", "cn=subentry" };
+        browserViewBot.selectChildrenOfEntry( children, "DIT", "Root DSE", "ou=system", "ou=special" );
+        DeleteDialogBot dialogBot = browserViewBot.openDeleteDialog();
+        assertTrue( dialogBot.isVisible() );
+        dialogBot.clickOkButton();
+        BotUtils.sleep( 5000L );
+        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=alias" ) );
+        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=referral" ) );
+        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=subentry" ) );
+
+        // import LDIFs
+        ImportWizardBot importWizardBot = browserViewBot.openImportLdifWizard();
+        importWizardBot.typeFile( file1 );
+        importWizardBot.clickFinishButton();
+        importWizardBot = browserViewBot.openImportLdifWizard();
+        importWizardBot.typeFile( file2 );
+        importWizardBot.clickFinishButton();
+
+        // verify that entries exist
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special" ) );
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=alias" ) );
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=referral" ) );
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=subentry" ) );
+    }
+
+
+    @Test
+    public void testExportImportDsmlSpecialEntries() throws Exception
+    {
+        // disable alias dereferencing
+        connection.getConnectionParameter().setExtendedIntProperty(
+            IBrowserConnection.CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD,
+            AliasDereferencingMethod.NEVER.ordinal() );
+        // enable ManageDsaIT control
+        connection.getConnectionParameter().setExtendedBoolProperty(
+            IBrowserConnection.CONNECTION_PARAMETER_MANAGE_DSA_IT, true );
+        // enable Subentries control
+        connection.getConnectionParameter().setExtendedBoolProperty(
+            IBrowserConnection.CONNECTION_PARAMETER_FETCH_SUBENTRIES, true );
+
+        URL url = Platform.getInstanceLocation().getURL();
+        final String file1 = url.getFile() + "ImportExportSpecialEntries1Test.dsml";
+        final String file2 = url.getFile() + "ImportExportSpecialEntries2Test.dsml";
+
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=special" );
+
+        // export first LDIF (alias and referral)
+        ExportWizardBot wizardBot = browserViewBot.openExportDsmlWizard();
+        assertTrue( wizardBot.isVisible() );
+        wizardBot.setReturningAttributes( "ref" );
+        wizardBot.setScope( SearchScope.ONELEVEL );
+        wizardBot.setControlManageDsaIT( true );
+        wizardBot.setAliasDereferencingMode( AliasDereferencingMethod.NEVER );
+        wizardBot.clickNextButton();
+        wizardBot.typeFile( file1 );
+        wizardBot.selectDsmlRequest();
+        wizardBot.clickFinishButton();
+        wizardBot.waitTillExportFinished( file1, 800 );
+
+        // verify that exported DSML contains the entries
+        String content1 = FileUtils.readFileToString( new File( file1 ), StandardCharsets.UTF_8 );
+        assertTrue( content1.contains( "dn=\"cn=referral,ou=special,ou=system\"" ) );
+        assertTrue( content1.contains( "<attr name=\"ref\">" ) );
+        assertTrue( content1.contains( "<value>ldap://foo.example.com/ou=system</value>" ) );
+        assertTrue( content1.contains( "dn=\"cn=alias,ou=special,ou=system\"" ) );
+
+        // export second LDIF (subentry)
+        wizardBot = browserViewBot.openExportDsmlWizard();
+        assertTrue( wizardBot.isVisible() );
+        wizardBot.setReturningAttributes( "subtreeSpecification" );
+        wizardBot.setScope( SearchScope.ONELEVEL );
+        wizardBot.setControlSubentries( true );
+        wizardBot.clickNextButton();
+        wizardBot.typeFile( file2 );
+        wizardBot.selectDsmlRequest();
+        wizardBot.clickFinishButton();
+        wizardBot.waitTillExportFinished( file2, 300 );
+
+        // verify that exported DSML contains the entries
+        String content2 = FileUtils.readFileToString( new File( file2 ), StandardCharsets.UTF_8 );
+        assertTrue( content2.contains( "dn=\"cn=subentry,ou=special,ou=system\"" ) );
+        assertTrue( content2.contains( "<attr name=\"subtreespecification\">" ) );
+        assertTrue( content2.contains( "<value>{ }</value>" ) );
+
+        // delete entries
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=special" );
+        String[] children =
+            { "cn=alias", "cn=referral", "cn=subentry" };
+        browserViewBot.selectChildrenOfEntry( children, "DIT", "Root DSE", "ou=system", "ou=special" );
+        DeleteDialogBot dialogBot = browserViewBot.openDeleteDialog();
+        assertTrue( dialogBot.isVisible() );
+        dialogBot.clickOkButton();
+        BotUtils.sleep( 5000L );
+        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=alias" ) );
+        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=referral" ) );
+        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=subentry" ) );
+
+        // import LDIFs
+        ImportWizardBot importWizardBot = browserViewBot.openImportDsmlWizard();
+        importWizardBot.typeFile( file1 );
+        importWizardBot.clickFinishButton();
+        importWizardBot = browserViewBot.openImportDsmlWizard();
+        importWizardBot.typeFile( file2 );
+        importWizardBot.clickFinishButton();
+
+        // verify that entries exist
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special" ) );
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=alias" ) );
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=referral" ) );
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=subentry" ) );
+    }
+
+
+    @Test
+    public void testExportWithPagedResultControl() throws Exception
+    {
+        URL url = Platform.getInstanceLocation().getURL();
+        final String file = url.getFile() + "ExportWithPagedResultControl.ldif";
+
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=schema" );
+
+        // export LDIF
+        ExportWizardBot wizardBot = browserViewBot.openExportLdifWizard();
+        assertTrue( wizardBot.isVisible() );
+        wizardBot.setScope( SearchScope.ONELEVEL );
+        wizardBot.setControlPagedSearch( true, 17, true );
+        wizardBot.clickNextButton();
+        wizardBot.typeFile( file );
+        wizardBot.clickFinishButton();
+        wizardBot.waitTillExportFinished( file, 2500 );
+
+        List<String> lines = FileUtils.readLines( new File( file ), StandardCharsets.UTF_8 );
+        assertEquals( "LDIF must start with version: 1", lines.get( 0 ), "version: 1" );
+        assertTrue( lines.contains( "dn: cn=adsconfig,ou=schema" ) );
+        assertTrue( lines.contains( "dn: cn=apachemeta,ou=schema" ) );
+        assertTrue( lines.contains( "dn: cn=core,ou=schema" ) );
+        assertTrue( lines.contains( "dn: cn=rfc2307bis,ou=schema" ) );
+        assertTrue( lines.contains( "dn: cn=system,ou=schema" ) );
+        searchLogsViewBot.getSearchLogsText().contains( "# numEntries : 17" );
+        searchLogsViewBot.getSearchLogsText().contains( "# control      : 1.2.840.113556.1.4.319" );
     }
 
 
@@ -210,7 +424,7 @@ public class ImportExportTest extends AbstractLdapTestUnit
     public void testImportContextEntryRefreshesRootDSE() throws Exception
     {
         // add a new partition
-        Partition partition = new AvlPartition(service.getSchemaManager(), service.getDnFactory());
+        Partition partition = new AvlPartition( service.getSchemaManager(), service.getDnFactory() );
         partition.setId( "example" );
         partition.setSuffixDn( new Dn( "dc=example,dc=com" ) );
         service.addPartition( partition );
@@ -291,7 +505,7 @@ public class ImportExportTest extends AbstractLdapTestUnit
         // export CSV
         ExportWizardBot wizardBot = browserViewBot.openExportCsvWizard();
         assertTrue( wizardBot.isVisible() );
-        wizardBot.typeReturningAttributes( "cn, description" );
+        wizardBot.setReturningAttributes( "cn, description" );
         wizardBot.clickNextButton();
         wizardBot.typeFile( file );
         wizardBot.clickFinishButton();
@@ -313,7 +527,6 @@ public class ImportExportTest extends AbstractLdapTestUnit
      *
      * @throws Exception
      */
-    @Ignore
     @Test
     public void testDIRSTUDIO_1160() throws Exception
     {
@@ -340,4 +553,42 @@ public class ImportExportTest extends AbstractLdapTestUnit
             .contains( "description: person#homeEmailAddress#jhon.doe@apache.com" ) );
         assertTrue( entryEditorBot.getAttributeValues().contains( "description: Th\u00f6is \u00e5s a t\u00e4st yes" ) );
     }
+
+
+    /**
+     * Test LDIF with several modifications.
+     */
+    @Test
+    public void testLdifModification() throws Exception
+    {
+        URL url = Platform.getInstanceLocation().getURL();
+        String destFile = url.getFile() + "ImportExportTest_Modifications.ldif";
+        InputStream is = getClass().getResourceAsStream( "ImportExportTest_Modifications.ldif" );
+        String ldifContent = IOUtils.toString( is, StandardCharsets.UTF_8 );
+        FileUtils.writeStringToFile( new File( destFile ), ldifContent, StandardCharsets.UTF_8, false );
+
+        // import the LDIF
+        ImportWizardBot importWizardBot = browserViewBot.openImportLdifWizard();
+        importWizardBot.typeFile( destFile );
+        importWizardBot.clickFinishButton();
+
+        browserViewBot.waitForEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" );
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "uid=user.1,ou=users,ou=system" );
+        entryEditorBot.activate();
+        assertTrue( entryEditorBot.getAttributeValues().contains( "description: " + Characters.ALL ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "roomNumber: 0000" ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "roomNumber: 1234" ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "roomNumber: 2345" ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "roomNumber: 3456" ) );
+
+        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.2" ) );
+
+        browserViewBot.waitForEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.33" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.33" );
+        entryEditorBot.activate();
+        assertTrue( entryEditorBot.getAttributeValues().contains( "uid: user.33" ) );
+        assertFalse( entryEditorBot.getAttributeValues().contains( "uid: user.3" ) );
+    }
+
 }

@@ -31,6 +31,7 @@ import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.RenameEntryDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
+import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
 import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.junit.After;
 import org.junit.Before;
@@ -39,7 +40,7 @@ import org.junit.runner.RunWith;
 
 
 /**
- * Tests the rename entry dialog.
+ * Tests entry renaming (modrdn) and the rename dialog.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -47,9 +48,9 @@ import org.junit.runner.RunWith;
 @RunWith(FrameworkRunnerWithScreenshotCaptureListener.class)
 @CreateLdapServer(transports =
     { @CreateTransport(protocol = "LDAP") })
-@ApplyLdifFiles( clazz = RenameEntryDialogTest.class,
+@ApplyLdifFiles( clazz = RenameEntryTest.class,
     value = "org/apache/directory/studio/test/integration/ui/RenameEntryDialogTest.ldif" )
-public class RenameEntryDialogTest extends AbstractLdapTestUnit
+public class RenameEntryTest extends AbstractLdapTestUnit
 {
     private StudioBot studioBot;
     private ConnectionsViewBot connectionsViewBot;
@@ -62,7 +63,7 @@ public class RenameEntryDialogTest extends AbstractLdapTestUnit
         studioBot = new StudioBot();
         studioBot.resetLdapPerspective();
         connectionsViewBot = studioBot.getConnectionView();
-        connectionsViewBot.createTestConnection( "RenameEntryDialogTest", ldapServer.getPort() );
+        connectionsViewBot.createTestConnection( "RenameEntryTest", ldapServer.getPort() );
         browserViewBot = studioBot.getBrowserView();
     }
 
@@ -71,6 +72,7 @@ public class RenameEntryDialogTest extends AbstractLdapTestUnit
     public void tearDown() throws Exception
     {
         connectionsViewBot.deleteTestConnections();
+        Assertions.genericTearDownAssertions();
     }
 
 

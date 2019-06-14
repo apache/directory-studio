@@ -23,13 +23,13 @@ package org.apache.directory.studio.ldapbrowser.core.jobs;
 
 import java.util.List;
 
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
-import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -144,7 +144,7 @@ public class ReadEntryRunnable implements StudioConnectionBulkRunnableWithProgre
      * 
      * @return the read entry
      */
-    static IEntry getEntry( IBrowserConnection browserConnection, Dn dn, List<StudioControl> controls,
+    static IEntry getEntry( IBrowserConnection browserConnection, Dn dn, List<Control> controls,
         StudioProgressMonitor monitor )
     {
         try
@@ -158,7 +158,7 @@ public class ReadEntryRunnable implements StudioConnectionBulkRunnableWithProgre
 
             // search in directory
             ISearch search = new Search( null, browserConnection, dn, null, ISearch.NO_ATTRIBUTES, SearchScope.OBJECT,
-                1, 0, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, true, controls );
+                1, 0, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, true, controls, false );
             SearchRunnable.searchAndUpdateModel( browserConnection, search, monitor );
             ISearchResult[] srs = search.getSearchResults();
             if ( srs.length > 0 )

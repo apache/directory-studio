@@ -211,14 +211,14 @@ http://www.apache.org/licenses/
          unpack="false"/>
 
    <plugin
-         id="org.apache.commons.codec"
+         id="org.apache.commons.commons-codec"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.apache.commons.collections"
+         id="org.apache.commons.commons-collections4"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -232,7 +232,7 @@ http://www.apache.org/licenses/
          unpack="false"/>
 
    <plugin
-         id="org.apache.commons.lang"
+         id="org.apache.commons.lang3"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -267,7 +267,7 @@ http://www.apache.org/licenses/
          unpack="false"/>
 
    <plugin
-         id="net.sf.ehcache"
+         id="com.github.ben-manes.caffeine"
          download-size="0"
          install-size="0"
          version="0.0.0"

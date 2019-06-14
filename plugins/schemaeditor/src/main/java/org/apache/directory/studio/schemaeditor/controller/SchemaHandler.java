@@ -23,13 +23,11 @@ package org.apache.directory.studio.schemaeditor.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.collections.MultiMap;
-import org.apache.commons.collections.map.MultiValueMap;
+import org.apache.commons.collections4.MultiValuedMap;
+import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.LdapSyntax;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
-import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
-import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.SchemaObject;
 import org.apache.directory.api.util.Strings;
@@ -64,15 +62,15 @@ public class SchemaHandler
     // The MultiMap (for fast searching)
     //
     /** The schemas MultiMap */
-    private MultiMap schemasMap;
+    private MultiValuedMap<String, Schema> schemasMap;
     /** The attribute types MultiMap */
-    private MultiMap attributeTypesMap;
+    private MultiValuedMap<String, AttributeType> attributeTypesMap;
     /** The matching rules MultiMap */
-    private MultiMap matchingRulesMap;
+    private MultiValuedMap<String, MatchingRule> matchingRulesMap;
     /** The object classes MultiMap */
-    private MultiMap objectClassesMap;
+    private MultiValuedMap<String, ObjectClass> objectClassesMap;
     /** The syntaxes MultiMap */
-    private MultiMap syntaxesMap;
+    private MultiValuedMap<String, LdapSyntax> syntaxesMap;
 
     //
     // The Listeners Lists
@@ -93,11 +91,11 @@ public class SchemaHandler
         syntaxesList = new ArrayList<LdapSyntax>();
 
         // Maps
-        schemasMap = new MultiValueMap();
-        attributeTypesMap = new MultiValueMap();
-        matchingRulesMap = new MultiValueMap();
-        objectClassesMap = new MultiValueMap();
-        syntaxesMap = new MultiValueMap();
+        schemasMap = new ArrayListValuedHashMap<>();
+        attributeTypesMap = new ArrayListValuedHashMap<>();
+        matchingRulesMap = new ArrayListValuedHashMap<>();
+        objectClassesMap = new ArrayListValuedHashMap<>();
+        syntaxesMap = new ArrayListValuedHashMap<>();
 
         // Listeners
         schemaHandlerListeners = new ArrayList<SchemaHandlerListener>();
@@ -246,13 +244,13 @@ public class SchemaHandler
      * @return
      *      the corresponding object class, or null if no one is found
      */
-    public MutableObjectClass getObjectClass( String id )
+    public ObjectClass getObjectClass( String id )
     {
         List<?> list = getObjectClassList( Strings.toLowerCase( id ) );
 
         if ( ( list != null ) && ( list.size() >= 1 ) )
         {
-            return ( MutableObjectClass ) list.get( 0 );
+            return ( ObjectClass ) list.get( 0 );
         }
         else
         {
@@ -657,7 +655,7 @@ public class SchemaHandler
      * @param at2
      *      the destination attribute type
      */
-    public void modifyAttributeType( MutableAttributeType at1, MutableAttributeType at2 )
+    public void modifyAttributeType( AttributeType at1, AttributeType at2 )
     {
         // Removing the references (in case of the names or oid have changed)
         removeSchemaObject( at1 );
@@ -710,7 +708,7 @@ public class SchemaHandler
      * @param oc
      *      the object class
      */
-    public void addObjectClass( MutableObjectClass oc )
+    public void addObjectClass( ObjectClass oc )
     {
         Schema schema = getSchema( oc.getSchemaName() );
 
@@ -731,7 +729,7 @@ public class SchemaHandler
      * @param oc2
      *      the destination object class
      */
-    public void modifyObjectClass( MutableObjectClass oc1, ObjectClass oc2 )
+    public void modifyObjectClass( ObjectClass oc1, ObjectClass oc2 )
     {
         // Removing the references (in case of the names or oid have changed)
         removeSchemaObject( oc1 );

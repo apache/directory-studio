@@ -32,11 +32,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.directory.api.util.FileUtils;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
-import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
-import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
+import org.apache.directory.api.util.FileUtils;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.schemaeditor.controller.ProjectsHandler;
@@ -89,9 +87,9 @@ public class PluginUtils
      * @return
      *      a clone of the given attribute type
      */
-    public static MutableAttributeType getClone( AttributeType at )
+    public static AttributeType getClone( AttributeType at )
     {
-        MutableAttributeType clone = new MutableAttributeType( at.getOid() );
+        AttributeType clone = new AttributeType( at.getOid() );
         clone.setNames( at.getNames() );
         clone.setSchemaName( at.getSchemaName() );
         clone.setDescription( at.getDescription() );
@@ -119,9 +117,9 @@ public class PluginUtils
      * @return
      *      a clone of the given object class
      */
-    public static MutableObjectClass getClone( ObjectClass oc )
+    public static ObjectClass getClone( ObjectClass oc )
     {
-        MutableObjectClass clone = new MutableObjectClass( oc.getOid() );
+        ObjectClass clone = new ObjectClass( oc.getOid() );
         clone.setNames( oc.getNames() );
         clone.setSchemaName( oc.getSchemaName() );
         clone.setDescription( oc.getDescription() );

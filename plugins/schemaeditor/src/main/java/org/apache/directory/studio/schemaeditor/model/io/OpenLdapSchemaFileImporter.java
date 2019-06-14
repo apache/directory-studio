@@ -31,8 +31,6 @@ import java.util.regex.MatchResult;
 
 import org.apache.directory.api.ldap.model.exception.LdapSchemaException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
-import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
-import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.parsers.OpenLdapSchemaParser;
 import org.apache.directory.studio.schemaeditor.model.Schema;
@@ -97,7 +95,7 @@ public class OpenLdapSchemaFileImporter
         List<?> ocs = parser.getObjectClasses();
         for ( int i = 0; i < ocs.size(); i++ )
         {
-            MutableObjectClass oc = convertObjectClass( ( ObjectClass ) ocs.get( i ) );
+            ObjectClass oc = convertObjectClass( ( ObjectClass ) ocs.get( i ) );
             oc.setSchemaName( schemaName );
             schema.addObjectClass( oc );
         }
@@ -138,7 +136,7 @@ public class OpenLdapSchemaFileImporter
      */
     private static AttributeType convertAttributeType( AttributeType at )
     {
-        MutableAttributeType newAT = new MutableAttributeType( at.getOid() );
+        AttributeType newAT = new AttributeType( at.getOid() );
         newAT.setNames( at.getNames() );
         newAT.setDescription( at.getDescription() );
         newAT.setSuperiorOid( at.getSuperiorOid() );
@@ -165,9 +163,9 @@ public class OpenLdapSchemaFileImporter
      * @return
      *      the corresponding ObjectClassImpl
      */
-    private static MutableObjectClass convertObjectClass( ObjectClass oc )
+    private static ObjectClass convertObjectClass( ObjectClass oc )
     {
-        MutableObjectClass newOC = new MutableObjectClass( oc.getOid() );
+        ObjectClass newOC = new ObjectClass( oc.getOid() );
         newOC.setNames( oc.getNames() );
         newOC.setDescription( oc.getDescription() );
         newOC.setSuperiorOids( oc.getSuperiorOids() );

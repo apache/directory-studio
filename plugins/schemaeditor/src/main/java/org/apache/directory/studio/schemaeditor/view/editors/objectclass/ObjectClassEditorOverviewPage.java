@@ -28,7 +28,6 @@ import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.LdapSyntax;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
-import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.studio.schemaeditor.Activator;
@@ -352,7 +351,7 @@ public class ObjectClassEditorOverviewPage extends AbstractObjectClassEditorPage
     {
         public void modifyText( ModifyEvent e )
         {
-            MutableObjectClass modifiedObjectClass = getModifiedObjectClass();
+            ObjectClass modifiedObjectClass = getModifiedObjectClass();
 
             if ( classTypeCombo.getSelectionIndex() == 0 )
             {
@@ -427,7 +426,7 @@ public class ObjectClassEditorOverviewPage extends AbstractObjectClassEditorPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            MutableObjectClass modifiedObjectClass = getModifiedObjectClass();
+            ObjectClass modifiedObjectClass = getModifiedObjectClass();
 
             AttributeTypeSelectionDialog dialog = new AttributeTypeSelectionDialog();
             List<AttributeType> hiddenATs = new ArrayList<AttributeType>();
@@ -492,7 +491,7 @@ public class ObjectClassEditorOverviewPage extends AbstractObjectClassEditorPage
                 return;
             }
 
-            MutableObjectClass modifiedObjectClass = getModifiedObjectClass();
+            ObjectClass modifiedObjectClass = getModifiedObjectClass();
 
             Object selectedElement = selection.getFirstElement();
             if ( selectedElement != null )
@@ -568,7 +567,7 @@ public class ObjectClassEditorOverviewPage extends AbstractObjectClassEditorPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            MutableObjectClass modifiedObjectClass = getModifiedObjectClass();
+            ObjectClass modifiedObjectClass = getModifiedObjectClass();
             AttributeTypeSelectionDialog dialog = new AttributeTypeSelectionDialog();
             List<AttributeType> hiddenATs = new ArrayList<AttributeType>();
             List<String> maysHidden = modifiedObjectClass.getMayAttributeTypeOids();
@@ -632,7 +631,7 @@ public class ObjectClassEditorOverviewPage extends AbstractObjectClassEditorPage
                 return;
             }
 
-            MutableObjectClass modifiedObjectClass = getModifiedObjectClass();
+            ObjectClass modifiedObjectClass = getModifiedObjectClass();
 
             Object selectedElement = selection.getFirstElement();
             if ( selectedElement != null )
@@ -685,7 +684,7 @@ public class ObjectClassEditorOverviewPage extends AbstractObjectClassEditorPage
                     IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
                     try
                     {
-                        page.openEditor( new ObjectClassEditorInput( ( MutableObjectClass ) selectedElement ),
+                        page.openEditor( new ObjectClassEditorInput( ( ObjectClass ) selectedElement ),
                             ObjectClassEditor.ID );
                     }
                     catch ( PartInitException exception )
@@ -708,7 +707,7 @@ public class ObjectClassEditorOverviewPage extends AbstractObjectClassEditorPage
     {
         public void widgetSelected( SelectionEvent e )
         {
-            MutableObjectClass modifiedObjectClass = getModifiedObjectClass();
+            ObjectClass modifiedObjectClass = getModifiedObjectClass();
             ObjectClassSelectionDialog dialog = new ObjectClassSelectionDialog();
             List<ObjectClass> hiddenOCs = new ArrayList<ObjectClass>();
             for ( String sup : modifiedObjectClass.getSuperiorOids() )
@@ -766,7 +765,7 @@ public class ObjectClassEditorOverviewPage extends AbstractObjectClassEditorPage
                 return;
             }
 
-            MutableObjectClass modifiedObjectClass = getModifiedObjectClass();
+            ObjectClass modifiedObjectClass = getModifiedObjectClass();
 
             Object selectedElement = selection.getFirstElement();
             if ( selectedElement != null )

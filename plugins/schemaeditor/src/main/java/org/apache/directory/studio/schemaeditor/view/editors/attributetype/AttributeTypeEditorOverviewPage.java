@@ -28,7 +28,6 @@ import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.LdapSyntax;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
-import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.UsageEnum;
 import org.apache.directory.studio.schemaeditor.Activator;
@@ -373,7 +372,7 @@ public class AttributeTypeEditorOverviewPage extends AbstractAttributeTypeEditor
     {
         public void selectionChanged( SelectionChangedEvent event )
         {
-            MutableAttributeType modifiedAttributeType = getModifiedAttributeType();
+            AttributeType modifiedAttributeType = getModifiedAttributeType();
             Object selectedItem = ( ( StructuredSelection ) supComboViewer.getSelection() ).getFirstElement();
 
             if ( selectedItem instanceof AttributeType )
@@ -411,7 +410,7 @@ public class AttributeTypeEditorOverviewPage extends AbstractAttributeTypeEditor
     {
         public void modifyText( ModifyEvent e )
         {
-            MutableAttributeType modifiedAttributeType = getModifiedAttributeType();
+            AttributeType modifiedAttributeType = getModifiedAttributeType();
             if ( usageCombo.getSelectionIndex() == 0 )
             {
                 modifiedAttributeType.setUsage( UsageEnum.DIRECTORY_OPERATION );
@@ -437,7 +436,7 @@ public class AttributeTypeEditorOverviewPage extends AbstractAttributeTypeEditor
     {
         public void selectionChanged( SelectionChangedEvent event )
         {
-            MutableAttributeType modifiedAttributeType = getModifiedAttributeType();
+            AttributeType modifiedAttributeType = getModifiedAttributeType();
             Object selectedItem = ( ( StructuredSelection ) syntaxComboViewer.getSelection() ).getFirstElement();
 
             if ( selectedItem instanceof LdapSyntax )
@@ -466,7 +465,7 @@ public class AttributeTypeEditorOverviewPage extends AbstractAttributeTypeEditor
     {
         public void modifyText( ModifyEvent e )
         {
-            MutableAttributeType modifiedAttributeType = getModifiedAttributeType();
+            AttributeType modifiedAttributeType = getModifiedAttributeType();
             if ( syntaxLengthText.getText().length() <= 0 )
             {
                 modifiedAttributeType.setSyntaxLength( -1 );
@@ -536,7 +535,7 @@ public class AttributeTypeEditorOverviewPage extends AbstractAttributeTypeEditor
     {
         public void selectionChanged( SelectionChangedEvent event )
         {
-            MutableAttributeType modifiedAttributeType = getModifiedAttributeType();
+            AttributeType modifiedAttributeType = getModifiedAttributeType();
             Object selectedItem = ( ( StructuredSelection ) equalityComboViewer.getSelection() ).getFirstElement();
 
             if ( selectedItem instanceof MatchingRule )
@@ -565,7 +564,7 @@ public class AttributeTypeEditorOverviewPage extends AbstractAttributeTypeEditor
     {
         public void selectionChanged( SelectionChangedEvent event )
         {
-            MutableAttributeType modifiedAttributeType = getModifiedAttributeType();
+            AttributeType modifiedAttributeType = getModifiedAttributeType();
             Object selectedItem = ( ( StructuredSelection ) orderingComboViewer.getSelection() ).getFirstElement();
 
             if ( selectedItem instanceof MatchingRule )
@@ -594,7 +593,7 @@ public class AttributeTypeEditorOverviewPage extends AbstractAttributeTypeEditor
     {
         public void selectionChanged( SelectionChangedEvent event )
         {
-            MutableAttributeType modifiedAttributeType = getModifiedAttributeType();
+            AttributeType modifiedAttributeType = getModifiedAttributeType();
             Object selectedItem = ( ( StructuredSelection ) substringComboViewer.getSelection() ).getFirstElement();
 
             if ( selectedItem instanceof MatchingRule )

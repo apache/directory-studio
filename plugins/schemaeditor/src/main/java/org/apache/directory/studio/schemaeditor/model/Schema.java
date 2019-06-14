@@ -26,7 +26,6 @@ import java.util.List;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.LdapSyntax;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
-import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.registries.DefaultSchema;
 
@@ -96,7 +95,7 @@ public class Schema extends DefaultSchema
      * @param oc
      *      the ObjectClass
      */
-    public boolean addObjectClass( MutableObjectClass oc )
+    public boolean addObjectClass( ObjectClass oc )
     {
         return objectClasses.add( oc );
     }

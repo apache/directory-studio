@@ -22,7 +22,8 @@ package org.apache.directory.studio.ldapservers.wizards;
 
 import java.util.List;
 
-import org.apache.commons.collections.map.MultiValueMap;
+import org.apache.commons.collections4.MultiValuedMap;
+import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.directory.studio.ldapservers.LdapServerAdapterExtensionsManager;
 import org.apache.directory.studio.ldapservers.model.LdapServerAdapterExtension;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -38,7 +39,7 @@ import org.eclipse.jface.viewers.Viewer;
 public class LdapServerAdapterExtensionsContentProvider implements ITreeContentProvider
 {
     /** The {@link MultiValueMap} used to store LDAP Server Adapter Extensions and order them by vendor (used as key) */
-    private MultiValueMap ldapServerAdapterExtensionsMap = new MultiValueMap();
+    private MultiValuedMap<String, LdapServerAdapterExtension> ldapServerAdapterExtensionsMap = new ArrayListValuedHashMap<>();
 
 
     /**
@@ -68,7 +69,7 @@ public class LdapServerAdapterExtensionsContentProvider implements ITreeContentP
      */
     public Object[] getChildren( Object parentElement )
     {
-        Object children = ldapServerAdapterExtensionsMap.get( parentElement );
+        Object children = ldapServerAdapterExtensionsMap.get( (String) parentElement );
         if ( children != null )
         {
             if ( children instanceof List )

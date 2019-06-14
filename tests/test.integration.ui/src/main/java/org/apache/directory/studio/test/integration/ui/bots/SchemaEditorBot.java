@@ -18,27 +18,15 @@
  *  
  */
 
-package org.apache.directory.studio.test.integration.core;
+package org.apache.directory.studio.test.integration.ui.bots;
 
 
-import org.apache.directory.studio.connection.core.ConnectionParameter.NetworkProvider;
-import org.apache.directory.studio.connection.core.io.jndi.JNDIConnectionWrapper;
-
-
-/**
- * Tests the {@link JNDIConnectionWrapper}.
- *
- * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$, $Date$
- */
-public class JNDIConnectionWrapperTest extends ConnectionWrapperTestBase
+public class SchemaEditorBot extends BaseSchemaEditorBot
 {
 
-    public JNDIConnectionWrapperTest()
+    public SchemaEditorBot( String title )
     {
-        super( NetworkProvider.JNDI );
+        super( title );
     }
-
-    // see tests in super class
 
 }

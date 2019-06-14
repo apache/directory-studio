@@ -24,7 +24,6 @@ package org.apache.directory.studio.schemaeditor.view.editors.schema;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.LdapSyntax;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
-import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
@@ -213,7 +212,7 @@ public class SchemaEditorOverviewPage extends FormPage
 
             if ( !selection.isEmpty() )
             {
-                MutableObjectClass oc = ( MutableObjectClass ) selection.getFirstElement();
+                ObjectClass oc = ( ObjectClass ) selection.getFirstElement();
 
                 try
                 {

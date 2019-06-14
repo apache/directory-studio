@@ -28,11 +28,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.directory.SearchResult;
-
 import org.apache.directory.api.ldap.model.constants.LdapConstants;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
-import org.apache.directory.api.ldap.model.entry.AttributeUtils;
 import org.apache.directory.api.ldap.model.entry.DefaultEntry;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.exception.LdapException;
@@ -40,14 +37,13 @@ import org.apache.directory.api.ldap.model.exception.LdapNoSuchObjectException;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
-import org.apache.directory.server.config.ConfigPartitionReader;
 import org.apache.directory.server.config.ConfigPartitionInitializer;
+import org.apache.directory.server.config.ConfigPartitionReader;
 import org.apache.directory.server.config.ReadOnlyConfigurationPartition;
 import org.apache.directory.server.config.beans.ConfigBean;
-import org.apache.directory.server.core.api.CacheService;
+import org.apache.directory.server.constants.ServerDNConstants;
 import org.apache.directory.server.core.api.DnFactory;
 import org.apache.directory.server.core.api.InstanceLayout;
-import org.apache.directory.server.constants.ServerDNConstants;
 import org.apache.directory.server.core.partition.impl.btree.AbstractBTreePartition;
 import org.apache.directory.server.core.partition.ldif.LdifPartition;
 import org.apache.directory.studio.apacheds.configuration.ApacheDS2ConfigurationPlugin;
@@ -62,7 +58,8 @@ import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.IConnectionListener;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
-import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
+import org.apache.directory.studio.connection.core.io.api.StudioSearchResult;
+import org.apache.directory.studio.connection.core.io.api.StudioSearchResultEnumeration;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.jobs.SearchRunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -265,9 +262,6 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
         // Creating a partition associated from the input stream
         ReadOnlyConfigurationPartition configurationPartition = new ReadOnlyConfigurationPartition( is,
             ApacheDS2ConfigurationPlugin.getDefault().getSchemaManager() );
-        CacheService cacheService = new CacheService();
-        cacheService.initialize( null );
-        configurationPartition.setCacheService( cacheService );
 
         configurationPartition.initialize();
 
@@ -280,14 +274,11 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
     {
         InstanceLayout instanceLayout = new InstanceLayout( confDirectory.getParentFile() );
 
-        CacheService cacheService = new CacheService();
-        cacheService.initialize( null );
-
         SchemaManager schemaManager = ApacheDS2ConfigurationPlugin.getDefault().getSchemaManager();
 
         DnFactory dnFactory = null;
 
-        ConfigPartitionInitializer init = new ConfigPartitionInitializer( instanceLayout, dnFactory, cacheService, schemaManager );
+        ConfigPartitionInitializer init = new ConfigPartitionInitializer( instanceLayout, dnFactory, schemaManager );
         LdifPartition configurationPartition = init.initConfigPartition();
 
         return readConfiguration( configurationPartition );
@@ -335,9 +326,6 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
             // Creating and initializing the configuration partition
             EntryBasedConfigurationPartition configurationPartition = new EntryBasedConfigurationPartition(
                 schemaManager );
-            CacheService cacheService = new CacheService();
-            cacheService.initialize( null );
-            configurationPartition.setCacheService( cacheService );
             configurationPartition.initialize();
 
             // Opening the connection
@@ -353,7 +341,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
 
             // Looking for the 'ou=config' base entry
             Entry configEntry = null;
-            StudioNamingEnumeration enumeration = SearchRunnable.search( browserConnection, configSearchParameter,
+            StudioSearchResultEnumeration enumeration = SearchRunnable.search( browserConnection, configSearchParameter,
                 monitor );
 
             // Checking if an error occurred
@@ -366,11 +354,10 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
             if ( enumeration.hasMore() )
             {
                 // Creating the 'ou=config' base entry
-                SearchResult searchResult = ( SearchResult ) enumeration.next();
-                configEntry = new DefaultEntry( schemaManager, AttributeUtils.toEntry(
-                    searchResult.getAttributes(), new Dn( searchResult.getNameInNamespace() ) ) );
+                StudioSearchResult searchResult = enumeration.next();
+                configEntry = new DefaultEntry( schemaManager, searchResult.getEntry() );
             }
-            
+
             enumeration.close();
 
             // Verifying we found the 'ou=config' base entry
@@ -404,7 +391,7 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
                 searchParameter.setReturningAttributes( SchemaConstants.ALL_USER_ATTRIBUTES_ARRAY );
 
                 // Looking for the children of the entry
-                StudioNamingEnumeration childrenEnumeration = SearchRunnable.search( browserConnection,
+                StudioSearchResultEnumeration childrenEnumeration = SearchRunnable.search( browserConnection,
                     searchParameter, monitor );
 
                 // Checking if an error occurred
@@ -415,13 +402,9 @@ public class LoadConfigurationRunnable implements StudioRunnableWithProgress
 
                 while ( childrenEnumeration.hasMore() )
                 {
-                    // Creating the child entry
-                    SearchResult searchResult = ( SearchResult ) childrenEnumeration.next();
-                    Entry childEntry = new DefaultEntry( schemaManager, AttributeUtils.toEntry(
-                        searchResult.getAttributes(), new Dn( searchResult.getNameInNamespace() ) ) );
-
                     // Adding the children to the list of entries
-                    entries.add( childEntry );
+                    StudioSearchResult searchResult = childrenEnumeration.next();
+                    entries.add( new DefaultEntry( schemaManager, searchResult.getEntry() ) );
                 }
                 
                 childrenEnumeration.close();

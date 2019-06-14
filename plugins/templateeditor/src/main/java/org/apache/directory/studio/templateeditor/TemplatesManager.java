@@ -33,7 +33,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import org.apache.commons.collections.map.MultiValueMap;
+import org.apache.commons.collections4.MultiValuedMap;
+import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -71,7 +72,7 @@ public class TemplatesManager
     private Map<String, Template> templatesByIdMap = new HashMap<String, Template>();
 
     /** The maps containing all the templates by ObjectClassDescription */
-    private MultiValueMap templatesByStructuralObjectClassMap = new MultiValueMap();
+    private MultiValuedMap<ObjectClass, Template> templatesByStructuralObjectClassMap = new ArrayListValuedHashMap<>();
 
     /** The list containing *only* the IDs of the disabled templates */
     private List<String> disabledTemplatesList = new ArrayList<String>();

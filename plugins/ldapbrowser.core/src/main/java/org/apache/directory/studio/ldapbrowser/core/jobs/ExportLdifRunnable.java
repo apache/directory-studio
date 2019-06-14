@@ -27,21 +27,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.NamingEnumeration;
-import javax.naming.NamingException;
-import javax.naming.directory.Attribute;
-import javax.naming.directory.SearchResult;
-import javax.naming.ldap.Control;
-import javax.naming.ldap.PagedResultsResponseControl;
-
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.entry.Attribute;
+import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.entry.Value;
+import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.message.Control;
+import org.apache.directory.api.ldap.model.message.controls.PagedResults;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.StudioControl;
-import org.apache.directory.studio.connection.core.StudioPagedResultsControl;
-import org.apache.directory.studio.connection.core.io.StudioNamingEnumeration;
+import org.apache.directory.studio.connection.core.io.api.StudioSearchResultEnumeration;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
@@ -172,7 +168,7 @@ public class ExportLdifRunnable implements StudioConnectionRunnableWithProgress
     {
         try
         {
-            JndiLdifEnumeration enumeration = search( browserConnection, searchParameter, monitor );
+            LdifEnumeration enumeration = search( browserConnection, searchParameter, monitor );
             LdifFormatParameters ldifFormatParameters = Utils.getLdifFormatParameters();
 
             // add version spec
@@ -219,36 +215,32 @@ public class ExportLdifRunnable implements StudioConnectionRunnableWithProgress
                 }
             }
         }
-        catch ( NamingException ne )
+        catch ( LdapException loe )
         {
-            int ldapStatusCode = JNDIUtils.getLdapStatusCode( ne );
+            int ldapStatusCode = JNDIUtils.getLdapStatusCode( loe );
             if ( ldapStatusCode == 3 || ldapStatusCode == 4 || ldapStatusCode == 11 )
             {
                 // ignore
             }
             else
             {
-                monitor.reportError( ne );
+                monitor.reportError( loe );
             }
         }
-        catch ( LdapInvalidDnException e )
-        {
-            monitor.reportError( e );
-        }
     }
 
 
-    static JndiLdifEnumeration search( IBrowserConnection browserConnection, SearchParameter parameter,
+    static LdifEnumeration search( IBrowserConnection browserConnection, SearchParameter parameter,
         StudioProgressMonitor monitor )
     {
-        StudioNamingEnumeration result = SearchRunnable.search( browserConnection, parameter, monitor );
-        return new JndiLdifEnumeration( result, browserConnection, parameter, monitor );
+        StudioSearchResultEnumeration result = SearchRunnable.search( browserConnection, parameter, monitor );
+        return new DefaultLdifEnumeration( result, browserConnection, parameter, monitor );
     }
 
-    static class JndiLdifEnumeration implements LdifEnumeration
+    static class DefaultLdifEnumeration implements LdifEnumeration
     {
 
-        private StudioNamingEnumeration enumeration;
+        private StudioSearchResultEnumeration enumeration;
 
         private IBrowserConnection browserConnection;
 
@@ -257,7 +249,7 @@ public class ExportLdifRunnable implements StudioConnectionRunnableWithProgress
         private StudioProgressMonitor monitor;
 
 
-        public JndiLdifEnumeration( StudioNamingEnumeration enumeration, IBrowserConnection browserConnection,
+        public DefaultLdifEnumeration( StudioSearchResultEnumeration enumeration, IBrowserConnection browserConnection,
             SearchParameter parameter, StudioProgressMonitor monitor )
         {
             this.enumeration = enumeration;
@@ -267,7 +259,7 @@ public class ExportLdifRunnable implements StudioConnectionRunnableWithProgress
         }
 
 
-        public boolean hasNext() throws NamingException
+        public boolean hasNext() throws LdapException
         {
             if ( enumeration != null )
             {
@@ -276,29 +268,24 @@ public class ExportLdifRunnable implements StudioConnectionRunnableWithProgress
                     return true;
                 }
 
-                Control[] jndiControls = enumeration.getResponseControls();
-                if ( jndiControls != null )
+                for ( Control responseControl : enumeration.getResponseControls() )
                 {
-                    for ( Control jndiControl : jndiControls )
+                    if ( responseControl instanceof PagedResults )
                     {
-                        if ( jndiControl instanceof PagedResultsResponseControl )
+                        PagedResults prc = ( PagedResults ) responseControl;
+                        if ( prc.getCookieValue() > 0 )
                         {
-                            PagedResultsResponseControl prrc = ( PagedResultsResponseControl ) jndiControl;
-                            byte[] cookie = prrc.getCookie();
-                            if ( cookie != null )
+                            // search again: pass the response control cookie to the request control
+                            byte[] cookie = prc.getCookie();
+                            for ( Control requestControl : parameter.getControls() )
                             {
-                                // search again: pass the response cookie to the request control
-                                for ( StudioControl studioControl : parameter.getControls() )
+                                if ( requestControl instanceof PagedResults )
                                 {
-                                    if ( studioControl instanceof StudioPagedResultsControl )
-                                    {
-                                        StudioPagedResultsControl sprc = ( StudioPagedResultsControl ) studioControl;
-                                        sprc.setCookie( cookie );
-                                    }
+                                    ( ( PagedResults ) requestControl ).setCookie( cookie );
                                 }
-                                enumeration = SearchRunnable.search( browserConnection, parameter, monitor );
-                                return enumeration != null && enumeration.hasMore();
                             }
+                            enumeration = SearchRunnable.search( browserConnection, parameter, monitor );
+                            return enumeration != null && enumeration.hasMore();
                         }
                     }
                 }
@@ -308,28 +295,24 @@ public class ExportLdifRunnable implements StudioConnectionRunnableWithProgress
         }
 
 
-        public LdifContainer next() throws NamingException, LdapInvalidDnException
+        public LdifContainer next() throws LdapException
         {
-            SearchResult sr = enumeration.next();
-            Dn dn = JNDIUtils.getDn( sr );
+            Entry entry = enumeration.next().getEntry();
+            Dn dn = entry.getDn();
             LdifContentRecord record = LdifContentRecord.create( dn.getName() );
 
-            NamingEnumeration<? extends Attribute> attributeEnumeration = sr.getAttributes().getAll();
-            while ( attributeEnumeration.hasMore() )
+            for ( Attribute attribute : entry )
             {
-                Attribute attribute = attributeEnumeration.next();
-                String attributeName = attribute.getID();
-                NamingEnumeration<?> valueEnumeration = attribute.getAll();
-                while ( valueEnumeration.hasMore() )
+                String attributeName = attribute.getUpId();
+                for ( Value value : attribute )
                 {
-                    Object o = valueEnumeration.next();
-                    if ( o instanceof String )
+                    if ( value.isHumanReadable() )
                     {
-                        record.addAttrVal( LdifAttrValLine.create( attributeName, ( String ) o ) );
+                        record.addAttrVal( LdifAttrValLine.create( attributeName, value.getString() ) );
                     }
-                    if ( o instanceof byte[] )
+                    else
                     {
-                        record.addAttrVal( LdifAttrValLine.create( attributeName, ( byte[] ) o ) );
+                        record.addAttrVal( LdifAttrValLine.create( attributeName, value.getBytes() ) );
                     }
                 }
             }

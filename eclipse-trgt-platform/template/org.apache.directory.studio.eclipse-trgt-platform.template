@@ -19,21 +19,21 @@
   @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
 -->
 <?pde version="3.8"?>
-<target name="Apache Directory Studio Platform" sequenceNumber="357">
+<target name="Apache Directory Studio Platform" sequenceNumber="425">
   <locations>
 
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
       <!-- External jars -->
       <unit id="org.apache.servicemix.bundles.antlr" version="2.7.7.5"/>
-      <unit id="org.apache.servicemix.bundles.dom4j" version="1.6.1.5"/>
+      <unit id="org.apache.servicemix.bundles.dom4j" version="2.1.1.1"/>
       <unit id="org.apache.servicemix.bundles.xpp3" version="1.1.4.c"/>
-      <unit id="net.sf.ehcache" version="${net.sf.ehcache.bundleversion}"/>
+      <unit id="com.github.ben-manes.caffeine" version="${com.github.ben-manes.caffeine.bundleversion}"/>
 
       <!-- Commons jars -->
-      <unit id="org.apache.commons.codec" version="${org.apache.commons.codec.bundleversion}"/>
-      <unit id="org.apache.commons.collections" version="${org.apache.commons.collections.bundleversion}"/>
+      <unit id="org.apache.commons.commons-codec" version="${org.apache.commons.codec.bundleversion}"/>
+      <unit id="org.apache.commons.commons-collections4" version="${org.apache.commons.collections4.bundleversion}"/>
       <unit id="org.apache.commons.io" version="${org.apache.commons.io.bundleversion}"/>
-      <unit id="org.apache.commons.lang" version="${org.apache.commons.lang.bundleversion}"/>
+      <unit id="org.apache.commons.lang3" version="${org.apache.commons.lang3.bundleversion}"/>
       <unit id="org.apache.commons.commons-pool2" version="${org.apache.commons.pool.bundleversion}"/>
 
       <!-- LDAP API modules -->
@@ -106,25 +106,25 @@
     </location>
 
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-      <unit id="org.eclipse.rcp.feature.group" version="4.9.0.v20180906-1121"/>
-      <unit id="org.eclipse.rcp.source.feature.group" version="4.9.0.v20180906-1121"/>
-      <unit id="org.eclipse.platform.feature.group" version="4.9.0.v20180906-1121"/>
-      <unit id="org.eclipse.platform.source.feature.group" version="4.9.0.v20180906-1121"/>
-      <unit id="org.eclipse.jdt.feature.group" version="3.15.0.v20180906-0745"/>
-      <unit id="org.eclipse.jdt.source.feature.group" version="3.15.0.v20180906-0745"/>
-      <unit id="org.eclipse.pde.feature.group" version="3.13.200.v20180906-0745"/>
-      <unit id="org.eclipse.pde.source.feature.group" version="3.13.200.v20180906-0745"/>
-      <unit id="org.eclipse.equinox.p2.user.ui.feature.group" version="2.4.100.v20180829-1443"/>
-      <unit id="org.eclipse.equinox.executable.feature.group" version="3.8.100.v20180827-1352"/>
-      <repository location="http://download.eclipse.org/eclipse/updates/4.9"/>
+      <unit id="org.eclipse.rcp.feature.group" version="4.11.0.v20190307-0500"/>
+      <unit id="org.eclipse.rcp.source.feature.group" version="4.11.0.v20190307-0500"/>
+      <unit id="org.eclipse.platform.feature.group" version="4.11.0.v20190307-0500"/>
+      <unit id="org.eclipse.platform.source.feature.group" version="4.11.0.v20190307-0500"/>
+      <unit id="org.eclipse.jdt.feature.group" version="3.17.0.v20190307-0500"/>
+      <unit id="org.eclipse.jdt.source.feature.group" version="3.17.0.v20190307-0500"/>
+      <unit id="org.eclipse.pde.feature.group" version="3.13.400.v20190307-0943"/>
+      <unit id="org.eclipse.pde.source.feature.group" version="3.13.400.v20190307-0943"/>
+      <unit id="org.eclipse.equinox.p2.user.ui.feature.group" version="2.4.300.v20190220-1158"/>
+      <unit id="org.eclipse.equinox.executable.feature.group" version="3.8.300.v20190213-1655"/>
+      <repository location="http://download.eclipse.org/eclipse/updates/4.11"/>
     </location>
 
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
       <unit id="javax.xml.stream" version="1.0.1.v201004272200"/>
       <unit id="org.slf4j.api" version="1.7.2.v20121108-1250"/>
       <unit id="org.slf4j.log4j" version="1.7.2.v20130115-1340"/>
-      <unit id="org.bouncycastle.bcprov" version="1.52.0.v20180328-2148"/>
-      <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20180606145124/repository/"/>
+      <unit id="org.bouncycastle.bcprov" version="1.60.0.v20181210-2057"/>
+      <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20190226160451/repository/"/>
     </location>
 
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
@@ -138,7 +138,7 @@
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
       <unit id="org.eclipse.babel.nls_eclipse_de.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.babel.nls_eclipse_fr.feature.group" version="0.0.0"/>
-      <repository location="http://download.eclipse.org/technology/babel/update-site/R0.15.1/oxygen"/>
+      <repository location="http://archive.eclipse.org/technology/babel/update-site/R0.15.1/oxygen"/>
     </location>
 
   </locations>

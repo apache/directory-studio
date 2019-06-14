@@ -20,7 +20,7 @@
 package org.apache.directory.studio.schemaeditor.view.wizards;
 
 
-import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
@@ -73,7 +73,7 @@ public class NewAttributeTypeWizard extends Wizard implements INewWizard
     public boolean performFinish()
     {
         // Creating the new attribute type
-        MutableAttributeType newAT = new MutableAttributeType( generalPage.getOidValue() );
+        AttributeType newAT = new AttributeType( generalPage.getOidValue() );
         newAT.setSchemaName( generalPage.getSchemaValue() );
         newAT.setNames( generalPage.getAliasesValue() );
         newAT.setDescription( generalPage.getDescriptionValue() );

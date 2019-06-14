@@ -25,13 +25,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.SearchScope;
+import org.apache.directory.api.ldap.model.message.controls.PagedResults;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
-import org.apache.directory.studio.connection.core.StudioControl;
-import org.apache.directory.studio.connection.core.StudioPagedResultsControl;
+import org.apache.directory.studio.connection.core.Controls;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
@@ -62,7 +63,7 @@ public class InitializeChildrenRunnable implements StudioConnectionBulkRunnableW
     private boolean purgeAllCaches;
 
     /** The paged search control, only used internally. */
-    private StudioControl pagedSearchControl;
+    private PagedResults pagedSearchControl;
 
 
     /**
@@ -84,7 +85,7 @@ public class InitializeChildrenRunnable implements StudioConnectionBulkRunnableW
      * @param entry the entry
      * @param pagedSearchControl the paged search control
      */
-    private InitializeChildrenRunnable( IEntry entry, StudioControl pagedSearchControl )
+    private InitializeChildrenRunnable( IEntry entry, PagedResults pagedSearchControl )
     {
         this.entries = new IEntry[]
             { entry };
@@ -162,8 +163,7 @@ public class InitializeChildrenRunnable implements StudioConnectionBulkRunnableW
 
                 if ( pagedSearchControl == null && browserConnection.isPagedSearch() )
                 {
-                    pagedSearchControl = new StudioPagedResultsControl( browserConnection.getPagedSearchSize(), null,
-                        false, browserConnection.isPagedSearchScrollMode() );
+                    pagedSearchControl = Controls.newPagedResultsControl( browserConnection.getPagedSearchSize() );
                 }
 
                 initializeChildren( entry, monitor, pagedSearchControl );
@@ -194,7 +194,7 @@ public class InitializeChildrenRunnable implements StudioConnectionBulkRunnableW
      * @param monitor the progress monitor
      * @param pagedSearchControl the paged search control
      */
-    private void initializeChildren( IEntry parent, StudioProgressMonitor monitor, StudioControl pagedSearchControl )
+    private void initializeChildren( IEntry parent, StudioProgressMonitor monitor, PagedResults pagedSearchControl )
     {
         monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_progress_sub,
             new String[]
@@ -241,28 +241,28 @@ public class InitializeChildrenRunnable implements StudioConnectionBulkRunnableW
                     scs = null;
                 }
 
-                StudioPagedResultsControl sprRequestControl = null;
-                StudioPagedResultsControl sprResponseControl = null;
-                for ( StudioControl responseControl : search.getResponseControls() )
+                PagedResults prRequestControl = null;
+                PagedResults prResponseControl = null;
+                for ( Control responseControl : search.getResponseControls() )
                 {
-                    if ( responseControl instanceof StudioPagedResultsControl )
+                    if ( responseControl instanceof PagedResults )
                     {
-                        sprResponseControl = ( StudioPagedResultsControl ) responseControl;
+                        prResponseControl = ( PagedResults ) responseControl;
                     }
                 }
-                for ( StudioControl requestControl : search.getControls() )
+                for ( Control requestControl : search.getControls() )
                 {
-                    if ( requestControl instanceof StudioPagedResultsControl )
+                    if ( requestControl instanceof PagedResults )
                     {
-                        sprRequestControl = ( StudioPagedResultsControl ) requestControl;
+                        prRequestControl = ( PagedResults ) requestControl;
                     }
                 }
 
-                if ( sprRequestControl != null && sprResponseControl != null )
+                if ( prRequestControl != null && prResponseControl != null )
                 {
-                    if ( sprRequestControl.isScrollMode() )
+                    if ( search.isPagedSearchScrollMode() )
                     {
-                        if ( sprRequestControl.getCookie() != null )
+                        if ( prRequestControl.getCookieValue() > 0 )
                         {
                             // create top page search runnable, same as original search
                             InitializeChildrenRunnable topPageChildrenRunnable = new InitializeChildrenRunnable(
@@ -270,27 +270,26 @@ public class InitializeChildrenRunnable implements StudioConnectionBulkRunnableW
                             parent.setTopPageChildrenRunnable( topPageChildrenRunnable );
                         }
 
-                        if ( sprResponseControl.getCookie() != null )
+                        if ( prResponseControl.getCookieValue() > 0 )
                         {
-                            StudioPagedResultsControl newSprc = new StudioPagedResultsControl( sprRequestControl
-                                .getSize(), sprResponseControl.getCookie(), sprRequestControl.isCritical(),
-                                sprRequestControl.isScrollMode() );
+                            PagedResults newPrc = Controls.newPagedResultsControl( prRequestControl.getSize(),
+                                prResponseControl.getCookie() );
                             InitializeChildrenRunnable nextPageChildrenRunnable = new InitializeChildrenRunnable(
-                                parent, newSprc );
+                                parent, newPrc );
                             parent.setNextPageChildrenRunnable( nextPageChildrenRunnable );
                         }
                     }
                     else
                     {
                         // transparently continue search, till count limit is reached
-                        if ( sprResponseControl.getCookie() != null
+                        if ( prResponseControl.getCookieValue() > 0
                             && ( search.getCountLimit() == 0 || search.getSearchResults().length < search
                                 .getCountLimit() ) )
                         {
 
                             search.setSearchResults( new ISearchResult[0] );
                             search.getResponseControls().clear();
-                            sprRequestControl.setCookie( sprResponseControl.getCookie() );
+                            prRequestControl.setCookie( prResponseControl.getCookie() );
 
                             executeSearch( parent, search, monitor );
                             srs = search.getSearchResults();
@@ -364,7 +363,7 @@ public class InitializeChildrenRunnable implements StudioConnectionBulkRunnableW
     }
 
 
-    private static ISearch createSearch( IEntry parent, StudioControl pagedSearchControl, boolean isSubentriesSearch,
+    private static ISearch createSearch( IEntry parent, PagedResults pagedSearchControl, boolean isSubentriesSearch,
         boolean isAliasSearch, boolean isReferralsSearch )
     {
         // scope
@@ -402,18 +401,21 @@ public class InitializeChildrenRunnable implements StudioConnectionBulkRunnableW
 
         // create search
         ISearch search = new Search( null, parent.getBrowserConnection(), parent.getDn(), filter,
-            ISearch.NO_ATTRIBUTES, scope, parent.getBrowserConnection().getCountLimit(), parent.getBrowserConnection()
-                .getTimeLimit(), aliasesDereferencingMethod, referralsHandlingMethod, BrowserCorePlugin.getDefault()
-                .getPluginPreferences().getBoolean( BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN ), null );
+            ISearch.NO_ATTRIBUTES, scope, parent.getBrowserConnection().getCountLimit(),
+            parent.getBrowserConnection().getTimeLimit(),
+            aliasesDereferencingMethod, referralsHandlingMethod,
+            BrowserCorePlugin.getDefault()
+                .getPluginPreferences().getBoolean( BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN ),
+            null, parent.getBrowserConnection().isPagedSearchScrollMode() );
 
         // controls
         if ( parent.isReferral() || isReferralsSearch || parent.getBrowserConnection().isManageDsaIT() )
         {
-            search.getSearchParameter().getControls().add( StudioControl.MANAGEDSAIT_CONTROL );
+            search.getSearchParameter().getControls().add( Controls.MANAGEDSAIT_CONTROL );
         }
         if ( isSubentriesSearch )
         {
-            search.getSearchParameter().getControls().add( StudioControl.SUBENTRIES_CONTROL );
+            search.getSearchParameter().getControls().add( Controls.SUBENTRIES_CONTROL );
         }
         if ( pagedSearchControl != null )
         {

@@ -54,7 +54,8 @@
  org.apache.directory.studio.ldapservers.actions</Export-Package>
  
             <Import-Package>
- org.apache.commons.collections.map,
+ org.apache.commons.collections4,
+ org.apache.commons.collections4.multimap,
  org.apache.commons.io.input,
  org.apache.mina.util,
  org.dom4j,

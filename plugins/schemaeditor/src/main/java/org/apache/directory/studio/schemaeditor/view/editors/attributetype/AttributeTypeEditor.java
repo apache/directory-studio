@@ -22,7 +22,6 @@ package org.apache.directory.studio.schemaeditor.view.editors.attributetype;
 
 
 import org.apache.directory.api.ldap.model.schema.AttributeType;
-import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginConstants;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
@@ -63,10 +62,10 @@ public class AttributeTypeEditor extends FormEditor
     private AttributeTypeEditorUsedByPage usedByPage;
 
     /** The original attribute type */
-    private MutableAttributeType originalAttributeType;
+    private AttributeType originalAttributeType;
 
     /** The attribute type used to save modifications */
-    private MutableAttributeType modifiedAttributeType;
+    private AttributeType modifiedAttributeType;
 
     /** The originalSchema */
     private Schema originalSchema;
@@ -166,7 +165,7 @@ public class AttributeTypeEditor extends FormEditor
         setInput( input );
         setPartName( input.getName() );
 
-        originalAttributeType = ( MutableAttributeType ) ( ( AttributeTypeEditorInput ) getEditorInput() )
+        originalAttributeType = ( AttributeType ) ( ( AttributeTypeEditorInput ) getEditorInput() )
             .getAttributeType();
         modifiedAttributeType = PluginUtils.getClone( originalAttributeType );
 
@@ -292,7 +291,7 @@ public class AttributeTypeEditor extends FormEditor
      * @return
      *      the modified attribute type
      */
-    public MutableAttributeType getModifiedAttributeType()
+    public AttributeType getModifiedAttributeType()
     {
         return modifiedAttributeType;
     }
@@ -304,7 +303,7 @@ public class AttributeTypeEditor extends FormEditor
      * @param modifiedAttributeType
      *      the modified attribute type to set.
      */
-    public void setModifiedAttributeType( MutableAttributeType modifiedAttributeType )
+    public void setModifiedAttributeType( AttributeType modifiedAttributeType )
     {
         this.modifiedAttributeType = modifiedAttributeType;
     }

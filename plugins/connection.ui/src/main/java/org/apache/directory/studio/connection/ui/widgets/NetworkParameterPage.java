@@ -22,11 +22,9 @@ package org.apache.directory.studio.connection.ui.widgets;
 
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.directory.api.ldap.model.url.LdapUrl;
 import org.apache.directory.api.ldap.model.url.LdapUrl.Extension;
 import org.apache.directory.api.util.Strings;
@@ -38,7 +36,6 @@ import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
-import org.apache.directory.studio.connection.core.ConnectionParameter.NetworkProvider;
 import org.apache.directory.studio.connection.core.jobs.CheckNetworkParameterRunnable;
 import org.apache.directory.studio.connection.ui.AbstractConnectionParameterPage;
 import org.apache.directory.studio.connection.ui.ConnectionUIConstants;
@@ -85,7 +82,6 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
  * | | |                      Server certificates for LDAP connections can | | |
  * | | |                      managed in the '<certificate validation>'    | | |
  * | | |                      preference page.                             | | |
- * | | |  Provider :          [ Apache Directory LDAP API              |v] | | |
  * | | |                                                                   | | |
  * | | |                                         (Check Network Parameter) | | |
  * | | +-------------------------------------------------------------------+ | |
@@ -108,12 +104,6 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
 
     private static final String X_ENCRYPTION_START_TLS = "StartTLS"; //$NON-NLS-1$
 
-    private static final String X_NETWORK_PROVIDER = "X-NETWORK-PROVIDER"; //$NON-NLS-1$
-
-    private static final String X_NETWORK_PROVIDER_JNDI = "JNDI"; //$NON-NLS-1$
-
-    private static final String X_NETWORK_PROVIDER_APACHE_DIRECTORY_LDAP_API = "ApacheDirectoryLdapApi"; //$NON-NLS-1$
-
     /** The connection name text widget */
     private Text nameText;
 
@@ -125,9 +115,6 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
 
     /** The combo to select the encryption method */
     private Combo encryptionMethodCombo;
-
-    /** The combo to select the network provider */
-    private Combo networkProviderCombo;
 
     /** The button to check the connection parameters */
     private Button checkConnectionButton;
@@ -232,22 +219,6 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
 
 
     /**
-     * Gets the network type (JNDI or Apache LDAP API)
-     *
-     * @return the network type
-     */
-    private ConnectionParameter.NetworkProvider getNetworkProvider()
-    {
-        if ( networkProviderCombo.getSelectionIndex() == 1 )
-        {
-            return ConnectionParameter.NetworkProvider.JNDI;
-        }
-
-        return ConnectionParameter.NetworkProvider.APACHE_DIRECTORY_LDAP_API;
-    }
-
-
-    /**
      * Gets a temporary connection with all connection parameter
      * entered in this page.
      *
@@ -256,8 +227,8 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
     private Connection getTestConnection()
     {
         ConnectionParameter connectionParameter = new ConnectionParameter( null, getHostName(), getPort(),
-            getEncyrptionMethod(),
-            getNetworkProvider(), ConnectionParameter.AuthenticationMethod.NONE, null, null, null, true, null, 30000L );
+            getEncyrptionMethod(), ConnectionParameter.AuthenticationMethod.NONE, null, null, null, true, null,
+            30000L );
 
         return new Connection( connectionParameter );
     }
@@ -345,21 +316,6 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
                 .getString( "NetworkParameterPage.WarningCertificateValidation" ), 2 ); //$NON-NLS-1$
         }
 
-        List<String> networkProviderList = new ArrayList<>();
-        networkProviderList.add( "Apache Directory LDAP Client API" ); //$NON-NLS-1$
-        if ( NetworkProvider.JNDI.isSupported() )
-        {
-            networkProviderList.add( "JNDI (Java Naming and Directory Interface)" ); //$NON-NLS-1$
-        }
-        String[] networkProviders = networkProviderList.toArray( new String[0] );
-
-        BaseWidgetUtils.createLabel( groupComposite, Messages.getString( "NetworkParameterPage.Provider" ), 1 ); //$NON-NLS-1$
-        networkProviderCombo = BaseWidgetUtils.createReadonlyCombo( groupComposite, networkProviders, 0, 2 );
-        networkProviderCombo
-            .select( ConnectionCorePlugin.getDefault()
-                .getDefaultNetworkProvider() == NetworkProvider.APACHE_DIRECTORY_LDAP_API ? 0
-                    : 1 );
-
         BaseWidgetUtils.createSpacer( groupComposite, 2 );
         checkConnectionButton = new Button( groupComposite, SWT.PUSH );
         GridData gridData = new GridData();
@@ -444,9 +400,6 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
         }
 
         encryptionMethodCombo.select( encryptionMethodIndex );
-        networkProviderCombo.select( parameter.getNetworkProvider() == NetworkProvider.APACHE_DIRECTORY_LDAP_API
-            || networkProviderCombo.getItemCount() < 2 ? 0
-                : 1 );
         readOnlyConnectionCheckbox.setSelection( parameter.isReadOnly() );
         timeoutSecondsText.setText( Long.toString( parameter.getTimeoutMillis() / 1000L ) );
 
@@ -473,18 +426,6 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
         portCombo.addModifyListener( event -> connectionPageModified() );
 
         encryptionMethodCombo.addSelectionListener( new SelectionAdapter()
-        {
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void widgetSelected( SelectionEvent event )
-            {
-                connectionPageModified();
-            }
-        } );
-
-        networkProviderCombo.addSelectionListener( new SelectionAdapter()
         {
             /**
              * {@inheritDoc}
@@ -552,7 +493,6 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
         parameter.setHost( getHostName() );
         parameter.setPort( getPort() );
         parameter.setEncryptionMethod( getEncyrptionMethod() );
-        parameter.setNetworkProvider( getNetworkProvider() );
         parameter.setReadOnly( isReadOnly() );
         parameter.setTimeoutMillis( getTimeoutSeconds() * 1000L );
     }
@@ -600,7 +540,6 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
             || ( !StringUtils.equals( connectionParameter.getHost(), getHostName() ) )
             || ( connectionParameter.getPort() != getPort() )
             || ( connectionParameter.getEncryptionMethod() != getEncyrptionMethod() )
-            || ( connectionParameter.getNetworkProvider() != getNetworkProvider() )
             || ( connectionParameter.isReadOnly() != isReadOnly() )
             || ( connectionParameter.getTimeoutMillis() != getTimeoutSeconds() * 1000L );
     }
@@ -629,16 +568,6 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
             case START_TLS:
                 ldapUrl.getExtensions().add( new Extension( false, X_ENCRYPTION, X_ENCRYPTION_START_TLS ) );
                 break;
-        }
-
-        if ( parameter.getNetworkProvider() == NetworkProvider.JNDI )
-        {
-            ldapUrl.getExtensions().add( new Extension( false, X_NETWORK_PROVIDER, X_NETWORK_PROVIDER_JNDI ) );
-        }
-        else
-        {
-            ldapUrl.getExtensions().add(
-                new Extension( false, X_NETWORK_PROVIDER, X_NETWORK_PROVIDER_APACHE_DIRECTORY_LDAP_API ) );
         }
     }
 
@@ -679,24 +608,6 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
         else
         {
             parameter.setEncryptionMethod( ConnectionParameter.EncryptionMethod.NONE );
-        }
-
-        // network provider, LDAP API if unknown or absent
-        String networkProvider = ldapUrl.getExtensionValue( X_NETWORK_PROVIDER );
-
-        if ( StringUtils.isNotEmpty( networkProvider )
-            && X_NETWORK_PROVIDER_APACHE_DIRECTORY_LDAP_API.equalsIgnoreCase( networkProvider ) )
-        {
-            parameter.setNetworkProvider( ConnectionParameter.NetworkProvider.APACHE_DIRECTORY_LDAP_API );
-        }
-        else if ( StringUtils.isNotEmpty( networkProvider )
-            && X_NETWORK_PROVIDER_JNDI.equalsIgnoreCase( networkProvider ) )
-        {
-            parameter.setNetworkProvider( ConnectionParameter.NetworkProvider.JNDI );
-        }
-        else
-        {
-            parameter.setNetworkProvider( ConnectionCorePlugin.getDefault().getDefaultNetworkProvider() );
         }
     }
 }

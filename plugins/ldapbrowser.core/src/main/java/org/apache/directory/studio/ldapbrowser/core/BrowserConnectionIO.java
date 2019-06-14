@@ -21,11 +21,9 @@ package org.apache.directory.studio.ldapbrowser.core;
 
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -33,10 +31,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Base64;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.Controls;
 import org.apache.directory.studio.connection.core.StudioControl;
 import org.apache.directory.studio.connection.core.io.ConnectionIOException;
 import org.apache.directory.studio.ldapbrowser.core.model.BookmarkParameter;
@@ -83,8 +83,11 @@ public class BrowserConnectionIO
     private static final String COUNT_LIMIT_TAG = "countLimit"; //$NON-NLS-1$
     private static final String ALIASES_DEREFERENCING_METHOD_TAG = "aliasesDereferencingMethod"; //$NON-NLS-1$
     private static final String REFERRALS_HANDLING_METHOD_TAG = "referralsHandlingMethod"; //$NON-NLS-1$
+    private static final String PAGED_SEARCH_SCROLL_MODE = "pagedSearchScrollMode"; //$NON-NLS-1$
     private static final String CONTROLS_TAG = "controls"; //$NON-NLS-1$
     private static final String CONTROL_TAG = "control"; //$NON-NLS-1$
+    private static final String OID_TAG = "oid"; //$NON-NLS-1$
+    private static final String IS_CRITICAL_TAG = "isCritical"; //$NON-NLS-1$
 
     private static final String BOOKMARKS_TAG = "bookmarks"; //$NON-NLS-1$
     private static final String BOOKMARK_PARAMETER_TAG = "bookmarkParameter"; //$NON-NLS-1$
@@ -332,6 +335,13 @@ public class BrowserConnectionIO
             }
         }
 
+        // Paged search scroll mode
+        Attribute pagedSearchScrollModeAttribute = searchParameterElement.attribute( PAGED_SEARCH_SCROLL_MODE );
+        if ( pagedSearchScrollModeAttribute != null )
+        {
+            searchParameter.setPagedSearchScrollMode( Boolean.valueOf( pagedSearchScrollModeAttribute.getValue() ) );
+        }
+
         // Controls
         Element controlsElement = searchParameterElement.element( CONTROLS_TAG );
         if ( controlsElement != null )
@@ -339,27 +349,39 @@ public class BrowserConnectionIO
             for ( Iterator<?> i = controlsElement.elementIterator( CONTROL_TAG ); i.hasNext(); )
             {
                 Element controlElement = ( Element ) i.next();
-
+                Attribute oidAttribute = controlElement.attribute( OID_TAG );
+                Attribute isCriticalAttribute = controlElement.attribute( IS_CRITICAL_TAG );
                 Attribute valueAttribute = controlElement.attribute( VALUE_TAG );
-                if ( valueAttribute != null )
+
+                try
                 {
-                    byte[] bytes = Base64.decode( valueAttribute.getValue().toCharArray() );
-                    ByteArrayInputStream bais = null;
-                    ObjectInputStream ois = null;
-                    try
+                    if ( oidAttribute != null && isCriticalAttribute != null && valueAttribute != null )
                     {
+                        byte[] bytes = Base64.decode( valueAttribute.getValue().toCharArray() );
+                        Control control = Controls.create( oidAttribute.getValue(),
+                            Boolean.valueOf( isCriticalAttribute.getValue() ), bytes );
+                        searchParameter.getControls().add( control );
+                    }
+                    else if ( valueAttribute != null )
+                    {
+                        // Backward compatibility: read objects using Java serialization
+                        byte[] bytes = Base64.decode( valueAttribute.getValue().toCharArray() );
+                        ByteArrayInputStream bais = null;
+                        ObjectInputStream ois = null;
                         bais = new ByteArrayInputStream( bytes );
                         ois = new ObjectInputStream( bais );
-                        StudioControl control = ( StudioControl ) ois.readObject();
+                        StudioControl studioControl = ( StudioControl ) ois.readObject();
+                        Control control = Controls.create( studioControl.getOid(),
+                            studioControl.isCritical(), studioControl.getControlValue() );
                         searchParameter.getControls().add( control );
                         ois.close();
                     }
-                    catch ( Exception e )
-                    {
-                        throw new ConnectionIOException( NLS.bind(
-                            BrowserCoreMessages.BrowserConnectionIO_UnableToParseControl, new String[]
-                                { searchParameter.getName(), valueAttribute.getValue() } ) );
-                    }
+                }
+                catch ( Exception e )
+                {
+                    throw new ConnectionIOException( NLS.bind(
+                        BrowserCoreMessages.BrowserConnectionIO_UnableToParseControl, new String[]
+                        { searchParameter.getName(), valueAttribute.getValue() } ) );
                 }
             }
         }
@@ -511,18 +533,19 @@ public class BrowserConnectionIO
         searchParameterElement.addAttribute( REFERRALS_HANDLING_METHOD_TAG, searchParameter
             .getReferralsHandlingMethod().toString() );
 
+        // Paged search scroll mode
+        searchParameterElement.addAttribute( PAGED_SEARCH_SCROLL_MODE, "" + searchParameter.isPagedSearchScrollMode() );
+
         // Controls
         Element controlsElement = searchParameterElement.addElement( CONTROLS_TAG );
-        for ( StudioControl studioControl : searchParameter.getControls() )
+        for ( Control control : searchParameter.getControls() )
         {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ObjectOutputStream oos = new ObjectOutputStream( baos );
-            oos.writeObject( studioControl );
-            oos.close();
-            byte[] bytes = baos.toByteArray();
+            byte[] bytes = Controls.getEncodedValue( control );
             String controlsValue = new String( Base64.encode( bytes ) );
 
             Element controlElement = controlsElement.addElement( CONTROL_TAG );
+            controlElement.addAttribute( OID_TAG, control.getOid() );
+            controlElement.addAttribute( IS_CRITICAL_TAG, "" + control.isCritical() );
             controlElement.addAttribute( VALUE_TAG, controlsValue );
         }
     }

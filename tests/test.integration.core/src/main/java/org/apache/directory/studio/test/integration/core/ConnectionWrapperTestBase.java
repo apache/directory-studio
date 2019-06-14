@@ -29,34 +29,30 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.ByteArrayInputStream;
 import java.net.ConnectException;
-import java.net.UnknownHostException;
 import java.nio.channels.UnresolvedAddressException;
+import java.nio.charset.StandardCharsets;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
-import javax.naming.AuthenticationException;
-import javax.naming.CommunicationException;
-import javax.naming.LinkLoopException;
-import javax.naming.NamingEnumeration;
-import javax.naming.NamingException;
-import javax.naming.directory.Attributes;
-import javax.naming.directory.DirContext;
-import javax.naming.directory.ModificationItem;
 import javax.naming.directory.SearchControls;
-import javax.naming.directory.SearchResult;
 
-import org.apache.directory.api.ldap.model.entry.AttributeUtils;
 import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.api.ldap.model.entry.DefaultEntry;
+import org.apache.directory.api.ldap.model.entry.DefaultModification;
 import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.entry.Modification;
+import org.apache.directory.api.ldap.model.entry.ModificationOperation;
+import org.apache.directory.api.ldap.model.exception.LdapAuthenticationException;
+import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.exception.LdapLoopDetectedException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.ldap.client.api.exception.InvalidConnectionException;
 import org.apache.directory.server.annotations.CreateLdapServer;
@@ -72,14 +68,15 @@ import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
-import org.apache.directory.studio.connection.core.ConnectionParameter.NetworkProvider;
 import org.apache.directory.studio.connection.core.IReferralHandler;
-import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
+import org.apache.directory.studio.connection.core.io.api.StudioSearchResult;
+import org.apache.directory.studio.connection.core.io.api.StudioSearchResultEnumeration;
 import org.apache.mina.util.AvailablePortFinder;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -97,14 +94,7 @@ import org.junit.runner.RunWith;
 public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
 {
 
-    protected NetworkProvider provider;
     protected ConnectionWrapper connectionWrapper;
-
-
-    public ConnectionWrapperTestBase( NetworkProvider provider )
-    {
-        this.provider = provider;
-    }
 
 
     @Before
@@ -175,7 +165,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
     {
         StudioProgressMonitor monitor = getProgressMonitor();
         ConnectionParameter connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(),
-            EncryptionMethod.NONE, NetworkProvider.JNDI, AuthenticationMethod.NONE, null, null, null, true, null, 30L );
+            EncryptionMethod.NONE, AuthenticationMethod.NONE, null, null, null, true, null, 30000L );
         Connection connection = new Connection( connectionParameter );
         ConnectionWrapper connectionWrapper = connection.getConnectionWrapper();
 
@@ -206,46 +196,28 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         // invalid port
         monitor = getProgressMonitor();
         connectionParameter = new ConnectionParameter( null, LOCALHOST, AvailablePortFinder.getNextAvailable(),
-            EncryptionMethod.NONE, provider, AuthenticationMethod.NONE, null, null, null, true, null, 30L );
+            EncryptionMethod.NONE, AuthenticationMethod.NONE, null, null, null, true, null, 30000L );
         connection = new Connection( connectionParameter );
         connectionWrapper = connection.getConnectionWrapper();
         connectionWrapper.connect( monitor );
         assertFalse( connectionWrapper.isConnected() );
         assertNotNull( monitor.getException() );
-        if ( provider == NetworkProvider.JNDI && NetworkProvider.JNDI.isSupported() )
-        {
-            assertTrue( monitor.getException() instanceof CommunicationException );
-            assertNotNull( monitor.getException().getCause() );
-            assertTrue( monitor.getException().getCause() instanceof ConnectException );
-        }
-        else
-        {
-            assertTrue( monitor.getException() instanceof InvalidConnectionException );
-            assertNotNull( monitor.getException().getCause() );
-            assertTrue( monitor.getException().getCause() instanceof ConnectException );
-        }
+        assertTrue( monitor.getException() instanceof InvalidConnectionException );
+        assertNotNull( monitor.getException().getCause() );
+        assertTrue( monitor.getException().getCause() instanceof ConnectException );
 
         // unknown host
         monitor = getProgressMonitor();
         connectionParameter = new ConnectionParameter( null, "555.555.555.555", ldapServer.getPort(),
-            EncryptionMethod.NONE, provider, AuthenticationMethod.NONE, null, null, null, true, null, 30L );
+            EncryptionMethod.NONE, AuthenticationMethod.NONE, null, null, null, true, null, 30000L );
         connection = new Connection( connectionParameter );
         connectionWrapper = connection.getConnectionWrapper();
         connectionWrapper.connect( monitor );
         assertFalse( connectionWrapper.isConnected() );
         assertNotNull( monitor.getException() );
-        if ( provider == NetworkProvider.JNDI && NetworkProvider.JNDI.isSupported() )
-        {
-            assertTrue( monitor.getException() instanceof CommunicationException );
-            assertNotNull( monitor.getException().getCause() );
-            assertTrue( monitor.getException().getCause() instanceof UnknownHostException );
-        }
-        else
-        {
-            assertTrue( monitor.getException() instanceof InvalidConnectionException );
-            assertNotNull( monitor.getException().getCause() );
-            assertTrue( monitor.getException().getCause() instanceof UnresolvedAddressException );
-        }
+        assertTrue( monitor.getException() instanceof InvalidConnectionException );
+        assertNotNull( monitor.getException().getCause() );
+        assertTrue( monitor.getException().getCause() instanceof UnresolvedAddressException );
 
         // TODO: SSL, StartTLS
     }
@@ -259,8 +231,8 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
     {
         StudioProgressMonitor monitor = getProgressMonitor();
         ConnectionParameter connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(),
-            EncryptionMethod.NONE, provider, AuthenticationMethod.SIMPLE, "uid=admin,ou=system", "secret", null, true,
-            null, 30L );
+            EncryptionMethod.NONE, AuthenticationMethod.SIMPLE, "uid=admin,ou=system", "secret", null, true,
+            null, 30000L );
         Connection connection = new Connection( connectionParameter );
         ConnectionWrapper connectionWrapper = connection.getConnectionWrapper();
 
@@ -291,42 +263,28 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         // simple auth without principal and credential
         monitor = getProgressMonitor();
         connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(), EncryptionMethod.NONE,
-            provider, AuthenticationMethod.SIMPLE, "uid=admin", "invalid", null, true, null, 30L );
+            AuthenticationMethod.SIMPLE, "uid=admin", "invalid", null, true, null, 30000L );
         connection = new Connection( connectionParameter );
         connectionWrapper = connection.getConnectionWrapper();
         connectionWrapper.connect( monitor );
         connectionWrapper.bind( monitor );
         assertFalse( connectionWrapper.isConnected() );
         assertNotNull( monitor.getException() );
-        if ( provider == NetworkProvider.JNDI && NetworkProvider.JNDI.isSupported() )
-        {
-            assertTrue( monitor.getException() instanceof NamingException );
-        }
-        else
-        {
-            assertTrue( monitor.getException() instanceof Exception );
-            assertTrue( monitor.getException().getMessage().contains( "error code 49 - INVALID_CREDENTIALS" ) );
-        }
+        assertTrue( monitor.getException() instanceof LdapAuthenticationException );
+        assertTrue( monitor.getException().getMessage().contains( "INVALID_CREDENTIALS" ) );
 
         // simple auth with invalid principal and credential
         monitor = getProgressMonitor();
         connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(), EncryptionMethod.NONE,
-            provider, AuthenticationMethod.SIMPLE, "uid=admin,ou=system", "bar", null, true, null, 30L );
+            AuthenticationMethod.SIMPLE, "uid=admin,ou=system", "bar", null, true, null, 30000L );
         connection = new Connection( connectionParameter );
         connectionWrapper = connection.getConnectionWrapper();
         connectionWrapper.connect( monitor );
         connectionWrapper.bind( monitor );
         assertFalse( connectionWrapper.isConnected() );
         assertNotNull( monitor.getException() );
-        if ( provider == NetworkProvider.JNDI && NetworkProvider.JNDI.isSupported() )
-        {
-            assertTrue( monitor.getException() instanceof AuthenticationException );
-        }
-        else
-        {
-            assertTrue( monitor.getException() instanceof Exception );
-            assertTrue( monitor.getException().getMessage().contains( "error code 49 - INVALID_CREDENTIALS" ) );
-        }
+        assertTrue( monitor.getException() instanceof LdapAuthenticationException );
+        assertTrue( monitor.getException().getMessage().contains( "INVALID_CREDENTIALS" ) );
     }
 
 
@@ -334,19 +292,18 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
      * Test searching.
      */
     @Test
-    public void testSearch() throws NamingException
+    public void testSearch() throws Exception
     {
         StudioProgressMonitor monitor = getProgressMonitor();
         SearchControls searchControls = new SearchControls();
-        NamingEnumeration<SearchResult> result = getConnectionWrapper( monitor ).search( "ou=system", "(objectClass=*)",
+        StudioSearchResultEnumeration result = getConnectionWrapper( monitor ).search( "ou=system", "(objectClass=*)",
             searchControls, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, null, monitor, null );
 
         assertFalse( monitor.isCanceled() );
         assertFalse( monitor.errorsReported() );
         assertNotNull( result );
         assertTrue( result.hasMore() );
-        SearchResult entry = result.next();
-        assertNotNull( entry );
+        assertNotNull( result.next() );
     }
 
 
@@ -359,32 +316,27 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         StudioProgressMonitor monitor = getProgressMonitor();
         SearchControls searchControls = new SearchControls();
         searchControls.setSearchScope( SearchControls.OBJECT_SCOPE );
-        NamingEnumeration<SearchResult> result = getConnectionWrapper( monitor ).search( "uid=admin,ou=system",
+        StudioSearchResultEnumeration result = getConnectionWrapper( monitor ).search( "uid=admin,ou=system",
             "(objectClass=*)",
             searchControls, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, null, monitor, null );
 
         assertNotNull( result );
         assertTrue( result.hasMore() );
-        SearchResult entry = result.next();
+        StudioSearchResult entry = result.next();
         assertNotNull( entry );
 
-        Object userCertificateValue = entry.getAttributes().get( "userCertificate" ).get();
-        assertEquals( byte[].class, userCertificateValue.getClass() );
-
-        CertificateFactory cf = CertificateFactory.getInstance( "X.509" ); //$NON-NLS-1$
-        Certificate certificate = cf.generateCertificate( new ByteArrayInputStream( ( byte[] ) userCertificateValue ) );
-        assertTrue( certificate instanceof X509Certificate );
-        X509Certificate x509Certificate = ( X509Certificate ) certificate;
-        assertTrue( x509Certificate.getIssuerDN().getName().contains( "ApacheDS" ) );
+        Object userPasswordValue = entry.getEntry().get( "userPassword" ).getBytes();
+        assertEquals( byte[].class, userPasswordValue.getClass() );
+        assertEquals( "secret", new String( ( byte[] ) userPasswordValue, StandardCharsets.UTF_8 ) );
     }
 
 
     @Test
-    public void testSearchContinuation_Follow_DirectReferral() throws NamingException
+    public void testSearchContinuation_Follow_DirectReferral() throws Exception
     {
         StudioProgressMonitor monitor = getProgressMonitor();
         SearchControls searchControls = new SearchControls();
-        NamingEnumeration<SearchResult> result = getConnectionWrapper( monitor ).search(
+        StudioSearchResultEnumeration result = getConnectionWrapper( monitor ).search(
             "cn=referral1,ou=referrals,ou=system", "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER,
             ReferralHandlingMethod.FOLLOW, null, monitor, null );
 
@@ -392,19 +344,19 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         assertFalse( monitor.errorsReported() );
         assertNotNull( result );
 
-        List<String> dns = consume( result, sr -> sr.getNameInNamespace() );
+        List<String> dns = consume( result, sr -> sr.getDn().getName() );
         assertEquals( 1, dns.size() );
         assertEquals( "uid=user.1,ou=users,ou=system", dns.get( 0 ) );
     }
 
 
     @Test
-    public void testSearchContinuation_Follow_IntermediateReferral() throws NamingException
+    public void testSearchContinuation_Follow_IntermediateReferral() throws Exception
     {
         StudioProgressMonitor monitor = getProgressMonitor();
         SearchControls searchControls = new SearchControls();
         searchControls.setSearchScope( SearchControls.SUBTREE_SCOPE );
-        NamingEnumeration<SearchResult> result = getConnectionWrapper( monitor ).search(
+        StudioSearchResultEnumeration result = getConnectionWrapper( monitor ).search(
             "cn=referral2,ou=referrals,ou=system", "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER,
             ReferralHandlingMethod.FOLLOW, null, monitor, null );
 
@@ -412,19 +364,19 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         assertFalse( monitor.errorsReported() );
         assertNotNull( result );
 
-        List<String> dns = consume( result, sr -> sr.getNameInNamespace() );
+        List<String> dns = consume( result, sr -> sr.getDn().getName() );
         assertEquals( 2, dns.size() );
         assertThat( dns, hasItems( "ou=users,ou=system", "uid=user.1,ou=users,ou=system" ) );
     }
 
 
     @Test
-    public void testSearchContinuation_Follow_ReferralToParent() throws NamingException
+    public void testSearchContinuation_Follow_ReferralToParent() throws Exception
     {
         StudioProgressMonitor monitor = getProgressMonitor();
         SearchControls searchControls = new SearchControls();
         searchControls.setSearchScope( SearchControls.SUBTREE_SCOPE );
-        NamingEnumeration<SearchResult> result = getConnectionWrapper( monitor ).search(
+        StudioSearchResultEnumeration result = getConnectionWrapper( monitor ).search(
             "cn=referral3,ou=referrals,ou=system", "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER,
             ReferralHandlingMethod.FOLLOW, null, monitor, null );
 
@@ -432,19 +384,19 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         assertFalse( monitor.errorsReported() );
         assertNotNull( result );
 
-        List<String> dns = consume( result, sr -> sr.getNameInNamespace() );
+        List<String> dns = consume( result, sr -> sr.getDn().getName() );
         assertEquals( 3, dns.size() );
         assertThat( dns, hasItems( "ou=referrals,ou=system", "ou=users,ou=system", "uid=user.1,ou=users,ou=system" ) );
     }
 
 
     @Test
-    public void testSearchContinuation_Follow_ReferralLoop() throws NamingException
+    public void testSearchContinuation_Follow_ReferralLoop() throws Exception
     {
         StudioProgressMonitor monitor = getProgressMonitor();
         SearchControls searchControls = new SearchControls();
         searchControls.setSearchScope( SearchControls.SUBTREE_SCOPE );
-        NamingEnumeration<SearchResult> result = getConnectionWrapper( monitor ).search(
+        StudioSearchResultEnumeration result = getConnectionWrapper( monitor ).search(
             "cn=referral4a,ou=referrals,ou=system", "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER,
             ReferralHandlingMethod.FOLLOW, null, monitor, null );
 
@@ -452,20 +404,20 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         assertFalse( monitor.errorsReported() );
         assertNotNull( result );
 
-        List<String> dns = consume( result, sr -> sr.getNameInNamespace() );
+        List<String> dns = consume( result, sr -> sr.getDn().getName() );
         assertEquals( 0, dns.size() );
     }
 
 
     @Test
-    public void testSearchContinuationFollowManually() throws NamingException
+    public void testSearchContinuationFollowManually() throws Exception
     {
         StudioProgressMonitor monitor = getProgressMonitor();
         SearchControls searchControls = new SearchControls();
         searchControls.setSearchScope( SearchControls.SUBTREE_SCOPE );
         ConnectionWrapper connectionWrapper = getConnectionWrapper( monitor );
         ConnectionCorePlugin.getDefault().setReferralHandler( null );
-        NamingEnumeration<SearchResult> result = connectionWrapper.search( "ou=referrals,ou=system", "(objectClass=*)",
+        StudioSearchResultEnumeration result = connectionWrapper.search( "ou=referrals,ou=system", "(objectClass=*)",
             searchControls, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.FOLLOW_MANUALLY, null, monitor,
             null );
 
@@ -473,7 +425,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         assertFalse( monitor.errorsReported() );
         assertNotNull( result );
 
-        List<String> dns = consume( result, sr -> sr.getNameInNamespace() );
+        List<String> dns = consume( result, sr -> sr.getDn().getName() );
         assertEquals( 6, dns.size() );
         assertThat( dns,
             hasItems( "ou=referrals,ou=system", "ou=users,ou=system", "cn=referral1,ou=referrals,ou=system",
@@ -482,12 +434,12 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
 
 
     @Test
-    public void testSearchContinuationIgnore() throws NamingException
+    public void testSearchContinuationIgnore() throws Exception
     {
         StudioProgressMonitor monitor = getProgressMonitor();
         SearchControls searchControls = new SearchControls();
         searchControls.setSearchScope( SearchControls.SUBTREE_SCOPE );
-        NamingEnumeration<SearchResult> result = getConnectionWrapper( monitor ).search( "ou=referrals,ou=system",
+        StudioSearchResultEnumeration result = getConnectionWrapper( monitor ).search( "ou=referrals,ou=system",
             "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, null,
             monitor, null );
 
@@ -495,19 +447,19 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         assertFalse( monitor.errorsReported() );
         assertNotNull( result );
 
-        List<String> dns = consume( result, sr -> sr.getNameInNamespace() );
+        List<String> dns = consume( result, sr -> sr.getDn().getName() );
         assertEquals( 1, dns.size() );
         assertThat( dns, hasItems( "ou=referrals,ou=system" ) );
     }
 
 
-    protected <T> List<T> consume( NamingEnumeration<SearchResult> result, Function<SearchResult, T> fn )
-        throws NamingException
+    protected <T> List<T> consume( StudioSearchResultEnumeration result, Function<StudioSearchResult, T> fn )
+        throws LdapException
     {
         List<T> list = new ArrayList<>();
         while ( result.hasMore() )
         {
-            SearchResult sr = result.next();
+            StudioSearchResult sr = result.next();
             list.add( fn.apply( sr ) );
         }
         return list;
@@ -522,9 +474,8 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
 
         // create entry under referral
         StudioProgressMonitor monitor = getProgressMonitor();
-        Attributes attributes = Utils.toAttributes(
-            new DefaultEntry( referralDn, "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" ) );
-        getConnectionWrapper( monitor ).createEntry( referralDn, attributes, null, monitor, null );
+        Entry entry = new DefaultEntry( referralDn, "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" );
+        getConnectionWrapper( monitor ).createEntry( entry, null, monitor, null );
 
         // should have created target entry
         assertFalse( monitor.isCanceled() );
@@ -541,9 +492,8 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
 
         // create entry under referral
         StudioProgressMonitor monitor = getProgressMonitor();
-        Attributes attributes = Utils.toAttributes(
-            new DefaultEntry( referralDn, "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" ) );
-        getConnectionWrapper( monitor ).createEntry( referralDn, attributes, null, monitor, null );
+        Entry entry = new DefaultEntry( referralDn, "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" );
+        getConnectionWrapper( monitor ).createEntry( entry, null, monitor, null );
 
         // should have created target entry
         assertFalse( monitor.isCanceled() );
@@ -559,15 +509,14 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
 
         // create entry under referral
         StudioProgressMonitor monitor = getProgressMonitor();
-        Attributes attributes = Utils.toAttributes(
-            new DefaultEntry( referralDn, "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" ) );
-        getConnectionWrapper( monitor ).createEntry( referralDn, attributes, null, monitor, null );
+        Entry entry = new DefaultEntry( referralDn, "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" );
+        getConnectionWrapper( monitor ).createEntry( entry, null, monitor, null );
 
         // should not have created target entry
         assertFalse( monitor.isCanceled() );
         assertTrue( monitor.errorsReported() );
         assertNotNull( monitor.getException() );
-        assertTrue( monitor.getException() instanceof LinkLoopException );
+        assertTrue( monitor.getException() instanceof LdapLoopDetectedException );
     }
 
 
@@ -583,10 +532,10 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
 
         // modify referral entry 
         StudioProgressMonitor monitor = getProgressMonitor();
-        ModificationItem[] modificationItems =
-            { new ModificationItem( DirContext.REPLACE_ATTRIBUTE,
-                AttributeUtils.toJndiAttribute( new DefaultAttribute( "sn", "modified" ) ) ) };
-        getConnectionWrapper( monitor ).modifyEntry( referralDn, modificationItems, null, monitor, null );
+        List<Modification> modifications = Collections.singletonList(
+            new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE,
+                new DefaultAttribute( "sn", "modified" ) ) );
+        getConnectionWrapper( monitor ).modifyEntry( new Dn( referralDn ), modifications, null, monitor, null );
 
         // should have modified the target entry
         assertFalse( monitor.isCanceled() );
@@ -608,10 +557,10 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
 
         // modify referral entry 
         StudioProgressMonitor monitor = getProgressMonitor();
-        ModificationItem[] modificationItems =
-            { new ModificationItem( DirContext.REPLACE_ATTRIBUTE,
-                AttributeUtils.toJndiAttribute( new DefaultAttribute( "sn", "modified" ) ) ) };
-        getConnectionWrapper( monitor ).modifyEntry( referralDn, modificationItems, null, monitor, null );
+        List<Modification> modifications = Collections.singletonList(
+            new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE,
+                new DefaultAttribute( "sn", "modified" ) ) );
+        getConnectionWrapper( monitor ).modifyEntry( new Dn( referralDn ), modifications, null, monitor, null );
 
         // should have modified the target entry
         assertFalse( monitor.isCanceled() );
@@ -633,16 +582,16 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
 
         // modify referral entry 
         StudioProgressMonitor monitor = getProgressMonitor();
-        ModificationItem[] modificationItems =
-            { new ModificationItem( DirContext.REPLACE_ATTRIBUTE,
-                AttributeUtils.toJndiAttribute( new DefaultAttribute( "sn", "modified" ) ) ) };
-        getConnectionWrapper( monitor ).modifyEntry( referralDn, modificationItems, null, monitor, null );
+        List<Modification> modifications = Collections.singletonList(
+            new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE,
+                new DefaultAttribute( "sn", "modified" ) ) );
+        getConnectionWrapper( monitor ).modifyEntry( new Dn( referralDn ), modifications, null, monitor, null );
 
         // should not have modified the target entry
         assertFalse( monitor.isCanceled() );
         assertTrue( monitor.errorsReported() );
         assertNotNull( monitor.getException() );
-        assertTrue( monitor.getException() instanceof LinkLoopException );
+        assertTrue( monitor.getException() instanceof LdapLoopDetectedException );
     }
 
 
@@ -658,7 +607,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
 
         // delete referral entry 
         StudioProgressMonitor monitor = getProgressMonitor();
-        getConnectionWrapper( monitor ).deleteEntry( referralDn, null, monitor, null );
+        getConnectionWrapper( monitor ).deleteEntry( new Dn( referralDn ), null, monitor, null );
 
         // should have deleted the target entry
         assertFalse( monitor.isCanceled() );
@@ -679,7 +628,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
 
         // delete referral entry 
         StudioProgressMonitor monitor = getProgressMonitor();
-        getConnectionWrapper( monitor ).deleteEntry( referralDn, null, monitor, null );
+        getConnectionWrapper( monitor ).deleteEntry( new Dn( referralDn ), null, monitor, null );
 
         // should have deleted the target entry
         assertFalse( monitor.isCanceled() );
@@ -700,13 +649,13 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
 
         // delete referral entry 
         StudioProgressMonitor monitor = getProgressMonitor();
-        getConnectionWrapper( monitor ).deleteEntry( referralDn, null, monitor, null );
+        getConnectionWrapper( monitor ).deleteEntry( new Dn( referralDn ), null, monitor, null );
 
         // should not have deleted the target entry
         assertFalse( monitor.isCanceled() );
         assertTrue( monitor.errorsReported() );
         assertNotNull( monitor.getException() );
-        assertTrue( monitor.getException() instanceof LinkLoopException );
+        assertTrue( monitor.getException() instanceof LdapLoopDetectedException );
         assertTrue( service.getAdminSession().exists( targetDn ) );
     }
 
@@ -722,7 +671,7 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
     {
         // simple auth without principal and credential
         ConnectionParameter connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(),
-            EncryptionMethod.NONE, provider, AuthenticationMethod.SIMPLE, "uid=admin,ou=system", "secret", null, false,
+            EncryptionMethod.NONE, AuthenticationMethod.SIMPLE, "uid=admin,ou=system", "secret", null, false,
             null, 30000L );
 
         Connection connection = new Connection( connectionParameter );

@@ -27,6 +27,7 @@ import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
+import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.ui.IViewReference;
@@ -38,6 +39,12 @@ import org.eclipse.ui.PlatformUI;
 
 public class StudioBot
 {
+
+    public StudioBot()
+    {
+        SWTBotPreferences.KEYBOARD_LAYOUT = "org.eclipse.swtbot.swt.finder.keyboard.EN_US";
+    }
+
 
     public ConnectionsViewBot getConnectionView()
     {
@@ -98,6 +105,12 @@ public class StudioBot
     public SchemaProjectsViewBot getSchemaProjectsView()
     {
         return new SchemaProjectsViewBot();
+    }
+
+
+    public SchemaViewBot getSchemaView()
+    {
+        return new SchemaViewBot();
     }
 
 

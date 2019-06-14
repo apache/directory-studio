@@ -21,6 +21,7 @@ package org.apache.directory.studio.test.integration.ui.bots;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
@@ -29,7 +30,6 @@ import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
-import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
@@ -79,7 +79,6 @@ class EntryEditorWidgetBot
 
     void typeValueAndFinish( String value, boolean wait )
     {
-        SWTBotPreferences.KEYBOARD_LAYOUT = "org.eclipse.swtbot.swt.finder.keyboard.EN_US";
         SWTBotText text = bot.text( 1 );
         text.setText( value );
 
@@ -128,7 +127,7 @@ class EntryEditorWidgetBot
         treeItem.doubleClick();
     }
 
-    
+
     void editValueWith( String attributeType, String value, String valueEditorLabel )
     {
         cancelEditValue();
@@ -158,7 +157,7 @@ class EntryEditorWidgetBot
         return new TextEditorDialogBot();
     }
 
-    
+
     private SWTBotTreeItem getTreeItem( String attributeType, String value )
     {
         SWTBotTree tree = bot.tree();
@@ -174,6 +173,23 @@ class EntryEditorWidgetBot
     }
 
 
+    private List<SWTBotTreeItem> getTreeItems( String... attributeTypes )
+    {
+        List<String> attributeTypeList = Arrays.asList( attributeTypes );
+        List<SWTBotTreeItem> items = new ArrayList<>();
+        SWTBotTree tree = bot.tree();
+        SWTBotTreeItem[] allItems = tree.getAllItems();
+        for ( SWTBotTreeItem item : allItems )
+        {
+            if ( attributeTypeList.contains( item.cell( 0 ) ) )
+            {
+                items.add( item );
+            }
+        }
+        return items;
+    }
+
+
     void deleteValue( String attributeType, String value )
     {
         SWTBotTreeItem treeItem = getTreeItem( attributeType, value );
@@ -186,15 +202,30 @@ class EntryEditorWidgetBot
 
     public void copyValue( String attributeType, String value )
     {
+
         SWTBotTreeItem treeItem = getTreeItem( attributeType, value );
         treeItem.select();
         ContextMenuHelper.clickContextMenu( bot.tree(), "Copy Value" );
     }
 
 
+    public void copyValues( String... attributeTypes )
+    {
+        List<SWTBotTreeItem> items = getTreeItems( attributeTypes );
+        bot.tree().select( items.toArray( new SWTBotTreeItem[0] ) );
+        ContextMenuHelper.clickContextMenu( bot.tree(), "Copy Values" );
+    }
+
+
     public void pasteValue()
     {
         ContextMenuHelper.clickContextMenu( bot.tree(), "Paste Value" );
+    }
+
+
+    public void pasteValues()
+    {
+        ContextMenuHelper.clickContextMenu( bot.tree(), "Paste Values" );
     }
 
 }

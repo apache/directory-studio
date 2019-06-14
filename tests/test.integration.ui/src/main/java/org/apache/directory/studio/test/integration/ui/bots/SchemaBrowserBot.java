@@ -54,7 +54,7 @@ public class SchemaBrowserBot
             @Override
             public String getFailureMessage()
             {
-                return "ApacheDS configuration editor not ready";
+                return "Schema Browser editor not ready";
             }
         } );
     }

@@ -27,7 +27,7 @@ import java.io.FileWriter;
 
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
-import org.apache.directory.studio.connection.core.io.jndi.LdifSearchLogger;
+import org.apache.directory.studio.connection.core.io.api.LdifSearchLogger;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.actions.BrowserSelectionUtils;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;

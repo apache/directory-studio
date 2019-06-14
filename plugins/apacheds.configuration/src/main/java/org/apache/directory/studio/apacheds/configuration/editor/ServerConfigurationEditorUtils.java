@@ -25,8 +25,6 @@ import java.io.File;
 import java.util.List;
 import java.util.UUID;
 
-import org.apache.directory.api.util.FileUtils;
-import org.apache.directory.api.util.Strings;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.csn.CsnFactory;
 import org.apache.directory.api.ldap.model.entry.DefaultEntry;
@@ -34,8 +32,9 @@ import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.ldif.LdifEntry;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
+import org.apache.directory.api.util.FileUtils;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.server.config.ConfigWriter;
-import org.apache.directory.server.core.api.CacheService;
 import org.apache.directory.server.core.api.DnFactory;
 import org.apache.directory.server.core.api.interceptor.context.AddOperationContext;
 import org.apache.directory.server.core.partition.impl.btree.AbstractBTreePartition;
@@ -313,9 +312,6 @@ public class ServerConfigurationEditorUtils
         SchemaManager schemaManager = ApacheDS2ConfigurationPlugin.getDefault().getSchemaManager();
         EntryBasedConfigurationPartition newconfigurationPartition = new EntryBasedConfigurationPartition(
             schemaManager );
-        CacheService cacheService = new CacheService();
-        cacheService.initialize( null );
-        newconfigurationPartition.setCacheService( cacheService );
         newconfigurationPartition.initialize();
         List<LdifEntry> convertedLdifEntries = configWriter.getConvertedLdifEntries();
         
@@ -389,9 +385,6 @@ public class ServerConfigurationEditorUtils
     {
         SchemaManager schemaManager = ApacheDS2ConfigurationPlugin.getDefault().getSchemaManager();
 
-        CacheService cacheService = new CacheService();
-        cacheService.initialize( null );
-
         DnFactory dnFactory = null;
 
         CsnFactory csnFactory = new CsnFactory( 0 );
@@ -413,7 +406,7 @@ public class ServerConfigurationEditorUtils
                     FileUtils.deleteDirectory( ouConfigDir );
                 }
 
-                configPartition = createMultiFileConfiguration( confDir, schemaManager, dnFactory, cacheService );
+                configPartition = createMultiFileConfiguration( confDir, schemaManager, dnFactory );
             }
             else
             {
@@ -422,7 +415,7 @@ public class ServerConfigurationEditorUtils
                     file.delete();
                 }
                 
-                configPartition = createSingleFileConfiguration( file, schemaManager, dnFactory, cacheService );
+                configPartition = createSingleFileConfiguration( file, schemaManager, dnFactory );
             }
 
             // write entries to partition
@@ -450,29 +443,27 @@ public class ServerConfigurationEditorUtils
 
 
     private static SingleFileLdifPartition createSingleFileConfiguration( File configFile, SchemaManager schemaManager,
-        DnFactory dnFactory, CacheService cacheService ) throws Exception
+        DnFactory dnFactory) throws Exception
     {
         SingleFileLdifPartition configPartition = new SingleFileLdifPartition( schemaManager, dnFactory );
         configPartition.setId( "config" );
         configPartition.setPartitionPath( configFile.toURI() );
         configPartition.setSuffixDn( new Dn( schemaManager, "ou=config" ) );
         configPartition.setSchemaManager( schemaManager );
-        configPartition.setCacheService( cacheService );
         configPartition.initialize();
         
         return configPartition;
     }
 
 
-    private static LdifPartition createMultiFileConfiguration( File confDir, SchemaManager schemaManager, DnFactory dnFactory,
-        CacheService cacheService ) throws Exception
+    private static LdifPartition createMultiFileConfiguration( File confDir, SchemaManager schemaManager,
+        DnFactory dnFactory ) throws Exception
     {
         LdifPartition configPartition = new LdifPartition( schemaManager, dnFactory );
         configPartition.setId( "config" );
         configPartition.setPartitionPath( confDir.toURI() );
         configPartition.setSuffixDn( new Dn( schemaManager, "ou=config" ) );
         configPartition.setSchemaManager( schemaManager );
-        configPartition.setCacheService( cacheService );
         configPartition.initialize();
         
         return configPartition;
@@ -487,9 +478,6 @@ public class ServerConfigurationEditorUtils
         SchemaManager schemaManager = ApacheDS2ConfigurationPlugin.getDefault().getSchemaManager();
         EntryBasedConfigurationPartition newconfigurationPartition = new EntryBasedConfigurationPartition(
             schemaManager );
-        CacheService cacheService = new CacheService();
-        cacheService.initialize( null );
-        newconfigurationPartition.setCacheService( cacheService );
         newconfigurationPartition.initialize();
         List<LdifEntry> convertedLdifEntries = configWriter.getConvertedLdifEntries();
         

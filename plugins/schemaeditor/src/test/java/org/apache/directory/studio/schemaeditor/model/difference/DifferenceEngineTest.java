@@ -26,8 +26,6 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.apache.directory.api.ldap.model.schema.AttributeType;
-import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
-import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.api.ldap.model.schema.UsageEnum;
@@ -102,7 +100,7 @@ public class DifferenceEngineTest extends TestCase
     public void testAddEqualityDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
-        MutableAttributeType o2 = new MutableAttributeType( "1.2.3.4" ); //$NON-NLS-1$
+        AttributeType o2 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
         o2.setEqualityOid( "Equality" ); //$NON-NLS-1$
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
@@ -128,7 +126,7 @@ public class DifferenceEngineTest extends TestCase
     public void testAddMandatoryATDifference() throws Exception
     {
         ObjectClass o1 = new ObjectClass( "1.2.3.4" ); //$NON-NLS-1$
-        MutableObjectClass o2 = new MutableObjectClass( "1.2.3.4" ); //$NON-NLS-1$
+        ObjectClass o2 = new ObjectClass( "1.2.3.4" ); //$NON-NLS-1$
         o2.setMustAttributeTypeOids( Arrays.asList( new String[]
             { "must" } ) ); //$NON-NLS-1$
 
@@ -156,7 +154,7 @@ public class DifferenceEngineTest extends TestCase
     public void testAddOptionalATDifference() throws Exception
     {
         ObjectClass o1 = new ObjectClass( "1.2.3.4" ); //$NON-NLS-1$
-        MutableObjectClass o2 = new MutableObjectClass( "1.2.3.4" ); //$NON-NLS-1$
+        ObjectClass o2 = new ObjectClass( "1.2.3.4" ); //$NON-NLS-1$
         o2.setMayAttributeTypeOids( Arrays.asList( new String[]
             { "may" } ) ); //$NON-NLS-1$
 
@@ -183,7 +181,7 @@ public class DifferenceEngineTest extends TestCase
     public void testAddOrderingDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
-        MutableAttributeType o2 = new MutableAttributeType( "1.2.3.4" ); //$NON-NLS-1$
+        AttributeType o2 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
         o2.setOrderingOid( "Ordering" ); //$NON-NLS-1$
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
@@ -209,7 +207,7 @@ public class DifferenceEngineTest extends TestCase
     public void testAddSubstringDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
-        MutableAttributeType o2 = new MutableAttributeType( "1.2.3.4" ); //$NON-NLS-1$
+        AttributeType o2 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
         o2.setSubstringOid( "Substring" ); //$NON-NLS-1$
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
@@ -235,7 +233,7 @@ public class DifferenceEngineTest extends TestCase
     public void testAddSuperiorATDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
-        MutableAttributeType o2 = new MutableAttributeType( "1.2.3.4" ); //$NON-NLS-1$
+        AttributeType o2 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
         o2.setSuperiorOid( "superiorAT" ); //$NON-NLS-1$
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
@@ -261,7 +259,7 @@ public class DifferenceEngineTest extends TestCase
     public void testAddSuperiorOCDifference() throws Exception
     {
         ObjectClass o1 = new ObjectClass( "1.2.3.4" ); //$NON-NLS-1$
-        MutableObjectClass o2 = new MutableObjectClass( "1.2.3.4" ); //$NON-NLS-1$
+        ObjectClass o2 = new ObjectClass( "1.2.3.4" ); //$NON-NLS-1$
         o2.setSuperiorOids( Arrays.asList( new String[]
             { "superiorOC" } ) ); //$NON-NLS-1$
 
@@ -288,7 +286,7 @@ public class DifferenceEngineTest extends TestCase
     public void testAddSyntaxDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
-        MutableAttributeType o2 = new MutableAttributeType( "1.2.3.4" ); //$NON-NLS-1$
+        AttributeType o2 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
         o2.setSyntaxOid( "1.2.3.4.5" ); //$NON-NLS-1$
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
@@ -314,7 +312,7 @@ public class DifferenceEngineTest extends TestCase
     public void testAddSyntaxLengthDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
-        MutableAttributeType o2 = new MutableAttributeType( "1.2.3.4" ); //$NON-NLS-1$
+        AttributeType o2 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
         o2.setSyntaxLength( 1234 );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
@@ -340,9 +338,9 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testModifyClassTypeDifference() throws Exception
     {
-        MutableObjectClass o1 = new MutableObjectClass( "1.2.3.4" ); //$NON-NLS-1$
+        ObjectClass o1 = new ObjectClass( "1.2.3.4" ); //$NON-NLS-1$
         o1.setType( ObjectClassTypeEnum.STRUCTURAL );
-        MutableObjectClass o2 = new MutableObjectClass( "1.2.3.4" ); //$NON-NLS-1$
+        ObjectClass o2 = new ObjectClass( "1.2.3.4" ); //$NON-NLS-1$
         o2.setType( ObjectClassTypeEnum.ABSTRACT );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
@@ -369,9 +367,9 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testModifyCollectiveDifference() throws Exception
     {
-        MutableAttributeType o1 = new MutableAttributeType( "1.2.3.4" ); //$NON-NLS-1$
+        AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
         o1.setCollective( true );
-        MutableAttributeType o2 = new MutableAttributeType( "1.2.3.4" ); //$NON-NLS-1$
+        AttributeType o2 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
         o2.setCollective( false );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
@@ -427,9 +425,9 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testModifyEqualityDifference() throws Exception
     {
-        MutableAttributeType o1 = new MutableAttributeType( "1.2.3.4" ); //$NON-NLS-1$
+        AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
         o1.setEqualityOid( "equalityName" ); //$NON-NLS-1$
-        MutableAttributeType o2 = new MutableAttributeType( "1.2.3.4" ); //$NON-NLS-1$
+        AttributeType o2 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
         o2.setEqualityOid( "newEqualityName" ); //$NON-NLS-1$
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
@@ -456,9 +454,9 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testModifyNoUserModificationDifference() throws Exception
     {
-        MutableAttributeType o1 = new MutableAttributeType( "1.2.3.4" ); //$NON-NLS-1$
+        AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
         o1.setUserModifiable( true );
-        MutableAttributeType o2 = new MutableAttributeType( "1.2.3.4" ); //$NON-NLS-1$
+        AttributeType o2 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
         o2.setUserModifiable( false );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
@@ -514,9 +512,9 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testModifyOrderingDifference() throws Exception
     {
-        MutableAttributeType o1 = new MutableAttributeType( "1.2.3.4" ); //$NON-NLS-1$
+        AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
         o1.setOrderingOid( "orderingName" ); //$NON-NLS-1$
-        MutableAttributeType o2 = new MutableAttributeType( "1.2.3.4" ); //$NON-NLS-1$
+        AttributeType o2 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
         o2.setOrderingOid( "newOrderingName" ); //$NON-NLS-1$
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
@@ -543,9 +541,9 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testModifySingleValueDifference() throws Exception
     {
-        MutableAttributeType o1 = new MutableAttributeType( "1.2.3.4" ); //$NON-NLS-1$
+        AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
         o1.setSingleValued( true );
-        MutableAttributeType o2 = new MutableAttributeType( "1.2.3.4" ); //$NON-NLS-1$
+        AttributeType o2 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
         o2.setSingleValued( false );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
@@ -572,9 +570,9 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testModifySubstringDifference() throws Exception
     {
-        MutableAttributeType o1 = new MutableAttributeType( "1.2.3.4" ); //$NON-NLS-1$
+        AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
         o1.setSubstringOid( "substrName" ); //$NON-NLS-1$
-        MutableAttributeType o2 = new MutableAttributeType( "1.2.3.4" ); //$NON-NLS-1$
+        AttributeType o2 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
         o2.setSubstringOid( "newSubstrName" ); //$NON-NLS-1$
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
@@ -601,9 +599,9 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testModifySuperiorATDifference() throws Exception
     {
-        MutableAttributeType o1 = new MutableAttributeType( "1.2.3.4" ); //$NON-NLS-1$
+        AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
         o1.setSuperiorOid( "superiorName" ); //$NON-NLS-1$
-        MutableAttributeType o2 = new MutableAttributeType( "1.2.3.4" ); //$NON-NLS-1$
+        AttributeType o2 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
         o2.setSuperiorOid( "newSuperiorName" ); //$NON-NLS-1$
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
@@ -630,9 +628,9 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testModifySyntaxDifference() throws Exception
     {
-        MutableAttributeType o1 = new MutableAttributeType( "1.2.3.4" ); //$NON-NLS-1$
+        AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
         o1.setSyntaxOid( "1.2.3.4.5" ); //$NON-NLS-1$
-        MutableAttributeType o2 = new MutableAttributeType( "1.2.3.4" ); //$NON-NLS-1$
+        AttributeType o2 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
         o2.setSyntaxOid( "1.2.3.4.6" ); //$NON-NLS-1$
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
@@ -658,9 +656,9 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testModifySyntaxLengthDifference() throws Exception
     {
-        MutableAttributeType o1 = new MutableAttributeType( "1.2.3.4" ); //$NON-NLS-1$
+        AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
         o1.setSyntaxLength( 1234 );
-        MutableAttributeType o2 = new MutableAttributeType( "1.2.3.4" ); //$NON-NLS-1$
+        AttributeType o2 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
         o2.setSyntaxLength( 12345 );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
@@ -687,9 +685,9 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testModifyUsageDifference() throws Exception
     {
-        MutableAttributeType o1 = new MutableAttributeType( "1.2.3.4" ); //$NON-NLS-1$
+        AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
         o1.setUsage( UsageEnum.DISTRIBUTED_OPERATION );
-        MutableAttributeType o2 = new MutableAttributeType( "1.2.3.4" ); //$NON-NLS-1$
+        AttributeType o2 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
         o2.setUsage( UsageEnum.DIRECTORY_OPERATION );
 
         List<PropertyDifference> differences = DifferenceEngine.getDifferences( o1, o2 );
@@ -773,7 +771,7 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testRemoveEqualityDifference() throws Exception
     {
-        MutableAttributeType o1 = new MutableAttributeType( "1.2.3.4" ); //$NON-NLS-1$
+        AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
         o1.setEqualityOid( "equalityName" ); //$NON-NLS-1$
         AttributeType o2 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
 
@@ -800,10 +798,10 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testRemoveMandatoryATDifference() throws Exception
     {
-        MutableObjectClass o1 = new MutableObjectClass( "1.2.3.4" ); //$NON-NLS-1$
+        ObjectClass o1 = new ObjectClass( "1.2.3.4" ); //$NON-NLS-1$
         o1.setMustAttributeTypeOids( Arrays.asList( new String[]
             { "must1", "must2" } ) ); //$NON-NLS-1$ //$NON-NLS-2$
-        MutableObjectClass o2 = new MutableObjectClass( "1.2.3.4" ); //$NON-NLS-1$
+        ObjectClass o2 = new ObjectClass( "1.2.3.4" ); //$NON-NLS-1$
         o2.setMustAttributeTypeOids( Arrays.asList( new String[]
             { "must2" } ) ); //$NON-NLS-1$
 
@@ -831,10 +829,10 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testRemoveOptionalATDifference() throws Exception
     {
-        MutableObjectClass o1 = new MutableObjectClass( "1.2.3.4" ); //$NON-NLS-1$
+        ObjectClass o1 = new ObjectClass( "1.2.3.4" ); //$NON-NLS-1$
         o1.setMayAttributeTypeOids( Arrays.asList( new String[]
             { "may1", "may2" } ) ); //$NON-NLS-1$ //$NON-NLS-2$
-        MutableObjectClass o2 = new MutableObjectClass( "1.2.3.4" ); //$NON-NLS-1$
+        ObjectClass o2 = new ObjectClass( "1.2.3.4" ); //$NON-NLS-1$
         o2.setMayAttributeTypeOids( Arrays.asList( new String[]
             { "may2" } ) ); //$NON-NLS-1$
 
@@ -862,7 +860,7 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testRemoveOrderingDifference() throws Exception
     {
-        MutableAttributeType o1 = new MutableAttributeType( "1.2.3.4" ); //$NON-NLS-1$
+        AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
         o1.setOrderingOid( "orderingName" ); //$NON-NLS-1$
         AttributeType o2 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
 
@@ -889,7 +887,7 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testRemoveSubstringDifference() throws Exception
     {
-        MutableAttributeType o1 = new MutableAttributeType( "1.2.3.4" ); //$NON-NLS-1$
+        AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
         o1.setSubstringOid( "substrName" ); //$NON-NLS-1$
         AttributeType o2 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
 
@@ -917,7 +915,7 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testRemoveSuperiorATDifference() throws Exception
     {
-        MutableAttributeType o1 = new MutableAttributeType( "1.2.3.4" ); //$NON-NLS-1$
+        AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
         o1.setSuperiorOid( "superiorName" ); //$NON-NLS-1$
         AttributeType o2 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
 
@@ -945,10 +943,10 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testRemoveSuperiorOCDifference() throws Exception
     {
-        MutableObjectClass o1 = new MutableObjectClass( "1.2.3.4" ); //$NON-NLS-1$
+        ObjectClass o1 = new ObjectClass( "1.2.3.4" ); //$NON-NLS-1$
         o1.setSuperiorOids( Arrays.asList( new String[]
             { "sup1", "sup2" } ) ); //$NON-NLS-1$ //$NON-NLS-2$
-        MutableObjectClass o2 = new MutableObjectClass( "1.2.3.4" ); //$NON-NLS-1$
+        ObjectClass o2 = new ObjectClass( "1.2.3.4" ); //$NON-NLS-1$
         o2.setSuperiorOids( Arrays.asList( new String[]
             { "sup2" } ) ); //$NON-NLS-1$
 
@@ -976,7 +974,7 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testRemoveSyntaxDifference() throws Exception
     {
-        MutableAttributeType o1 = new MutableAttributeType( "1.2.3.4" ); //$NON-NLS-1$
+        AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
         o1.setSyntaxOid( "1.2.3.4.5" ); //$NON-NLS-1$
         AttributeType o2 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
 
@@ -1003,7 +1001,7 @@ public class DifferenceEngineTest extends TestCase
      */
     public void testRemoveSyntaxLengthDifference() throws Exception
     {
-        MutableAttributeType o1 = new MutableAttributeType( "1.2.3.4" ); //$NON-NLS-1$
+        AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
         o1.setSyntaxLength( 1234 );
         AttributeType o2 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
 

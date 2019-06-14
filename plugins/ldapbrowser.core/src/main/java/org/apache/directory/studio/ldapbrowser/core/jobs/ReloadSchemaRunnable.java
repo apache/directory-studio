@@ -21,15 +21,13 @@
 package org.apache.directory.studio.ldapbrowser.core.jobs;
 
 
-import javax.naming.NamingEnumeration;
-import javax.naming.directory.Attribute;
-import javax.naming.directory.SearchResult;
-
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
+import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.connection.core.io.api.StudioSearchResultEnumeration;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.BrowserConnectionUpdateEvent;
@@ -211,25 +209,20 @@ public class ReloadSchemaRunnable implements StudioConnectionBulkRunnableWithPro
             sp.setScope( SearchScope.OBJECT );
             sp.setReturningAttributes( new String[]
                 { SchemaConstants.CREATE_TIMESTAMP_AT, SchemaConstants.MODIFY_TIMESTAMP_AT } );
-            NamingEnumeration<SearchResult> enumeration = SearchRunnable.search( browserConnection, sp, monitor );
+            StudioSearchResultEnumeration enumeration = SearchRunnable.search( browserConnection, sp, monitor );
             while ( enumeration != null && enumeration.hasMore() )
             {
                 String createTimestamp = null;
                 String modifyTimestamp = null;
 
-                SearchResult sr = enumeration.next();
-                NamingEnumeration<? extends Attribute> attributes = sr.getAttributes().getAll();
-                while ( attributes.hasMore() )
+                Entry entry = enumeration.next().getEntry();
+                if ( entry.hasObjectClass( SchemaConstants.MODIFY_TIMESTAMP_AT ) )
                 {
-                    Attribute attribute = attributes.next();
-                    if ( attribute.getID().equalsIgnoreCase( SchemaConstants.MODIFY_TIMESTAMP_AT ) )
-                    {
-                        modifyTimestamp = ( String ) attribute.get();
-                    }
-                    if ( attribute.getID().equalsIgnoreCase( SchemaConstants.CREATE_TIMESTAMP_AT ) )
-                    {
-                        createTimestamp = ( String ) attribute.get();
-                    }
+                    modifyTimestamp = entry.get( SchemaConstants.MODIFY_TIMESTAMP_AT ).getString();
+                }
+                if ( entry.hasObjectClass( SchemaConstants.CREATE_TIMESTAMP_AT ) )
+                {
+                    createTimestamp = entry.get( SchemaConstants.CREATE_TIMESTAMP_AT ).getString();
                 }
 
                 String schemaTimestamp = modifyTimestamp != null ? modifyTimestamp : createTimestamp;
@@ -261,22 +254,17 @@ public class ReloadSchemaRunnable implements StudioConnectionBulkRunnableWithPro
             sp.setScope( SearchScope.OBJECT );
             sp.setReturningAttributes( new String[]
                 { SchemaConstants.SUBSCHEMA_SUBENTRY_AT } );
-            NamingEnumeration<SearchResult> enumeration = SearchRunnable.search( browserConnection, sp, monitor );
+            StudioSearchResultEnumeration enumeration = SearchRunnable.search( browserConnection, sp, monitor );
             while ( enumeration != null && enumeration.hasMore() )
             {
-                SearchResult sr = enumeration.next();
-                NamingEnumeration<? extends Attribute> attributes = sr.getAttributes().getAll();
-                while ( attributes.hasMore() )
+                Entry entry = enumeration.next().getEntry();
+                if ( entry.containsAttribute( SchemaConstants.SUBSCHEMA_SUBENTRY_AT ) )
                 {
-                    Attribute attribute = attributes.next();
-                    if ( attribute.getID().equalsIgnoreCase( SchemaConstants.SUBSCHEMA_SUBENTRY_AT ) )
+                    String value = entry.get( SchemaConstants.SUBSCHEMA_SUBENTRY_AT ).getString();
+                    if ( Dn.isValid( value ) )
                     {
-                        String value = ( String ) attribute.get();
-                        if ( Dn.isValid( value ) )
-                        {
-                            Dn dn = new Dn( value );
-                            return dn;
-                        }
+                        Dn dn = new Dn( value );
+                        return dn;
                     }
                 }
             }

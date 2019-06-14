@@ -31,16 +31,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.naming.NamingException;
-
-import org.apache.directory.api.ldap.schema.converter.AttributeTypeHolder;
-import org.apache.directory.api.ldap.schema.converter.ObjectClassHolder;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.SchemaObjectSorter;
+import org.apache.directory.api.ldap.schema.converter.AttributeTypeHolder;
+import org.apache.directory.api.ldap.schema.converter.ObjectClassHolder;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.schemaeditor.Activator;
 import org.apache.directory.studio.schemaeditor.PluginUtils;
@@ -231,11 +229,9 @@ public class ExportSchemasForADSWizard extends Wizard implements IExportWizard
      *      the schema
      * @param sb
      *      the StringBuffer
-     * @throws NamingException
-     *      if an error occurs during the conversion
      * @throws LdapException
      */
-    private void toLdif( Schema schema, StringBuffer sb ) throws NamingException, LdapException
+    private void toLdif( Schema schema, StringBuffer sb ) throws LdapException
     {
         sb
             .append( NLS
