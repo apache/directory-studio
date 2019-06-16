@@ -28,7 +28,6 @@ Apache Directory Studio is a complete directory tooling platform intended to be 
 * JDK 8 or newer
 * Maven 3 or newer
 * Sufficient heap space for Maven: `export MAVEN_OPTS="-Xmx512m"`
-* FIXME: Windows users have to replace the repository location `file://${basedir}/target/repository` in `eclipse-trgt-platform/template/org.apache.directory.studio.eclipse-trgt-platform.template` with the actual path, e.g. `file:///C:/Development/studio/eclipse-trgt-platform/target/repository`
 
 ### Build
 

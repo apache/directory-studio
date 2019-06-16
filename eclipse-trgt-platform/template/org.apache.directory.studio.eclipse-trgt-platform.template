@@ -102,7 +102,7 @@
       <!-- MINA module -->
       <unit id="org.apache.mina.core" version="${org.apache.mina.bundleversion}"/>
 
-      <repository location="file://${basedir}/target/repository"/>
+      <repository location="${basedirUri}/target/repository"/>
     </location>
 
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
