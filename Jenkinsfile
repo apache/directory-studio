@@ -35,7 +35,7 @@ pipeline {
         docker {
           label 'ubuntu'
           image 'apachedirectory/maven-build:jdk-8'
-          args '-v $HOME/.m2:/home/hnelson/.m2'
+          //args '-v $HOME/.m2:/home/hnelson/.m2'
         }
       }
       steps {
@@ -57,7 +57,7 @@ pipeline {
             docker {
               label 'ubuntu'
               image 'apachedirectory/maven-build:jdk-8'
-              args '-v $HOME/.m2:/home/hnelson/.m2'
+              //args '-v $HOME/.m2:/home/hnelson/.m2'
             }
           }
           steps {
@@ -79,7 +79,7 @@ pipeline {
             docker {
               label 'ubuntu'
               image 'apachedirectory/maven-build:jdk-11'
-              args '-v $HOME/.m2:/home/hnelson/.m2'
+              //args '-v $HOME/.m2:/home/hnelson/.m2'
             }
           }
           steps {
@@ -99,7 +99,7 @@ pipeline {
             docker {
               label 'ubuntu'
               image 'apachedirectory/maven-build:jdk-12'
-              args '-v $HOME/.m2:/home/hnelson/.m2'
+              //args '-v $HOME/.m2:/home/hnelson/.m2'
             }
           }
           steps {

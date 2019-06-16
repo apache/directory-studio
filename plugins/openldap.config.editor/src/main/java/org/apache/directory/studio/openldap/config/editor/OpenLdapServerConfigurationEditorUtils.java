@@ -37,6 +37,7 @@ import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.model.schema.registries.ObjectClassRegistry;
 import org.apache.directory.api.ldap.util.tree.DnNode;
 import org.apache.directory.api.util.DateUtils;
+import org.apache.directory.api.util.TimeProvider;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.common.ui.CommonUIUtils;
 import org.apache.directory.studio.common.ui.filesystem.PathEditorInput;
@@ -296,7 +297,7 @@ public class OpenLdapServerConfigurationEditorUtils
         for ( LdifEntry entry : entries )
         {
             // Getting the current generalized time
-            String currentgeGeneralizedTime = DateUtils.getGeneralizedTime();
+            String currentgeGeneralizedTime = DateUtils.getGeneralizedTime( TimeProvider.DEFAULT );
 
             // 'createTimestamp' attribute
             entry.addAttribute( "createTimestamp", currentgeGeneralizedTime );
