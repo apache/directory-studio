@@ -61,7 +61,7 @@ pipeline {
             }
           }
           steps {
-            sh 'mvn -V -f pom-first.xml clean install && mvn -V clean install -Denable-ui-tests'
+            sh 'mvn -V -U -f pom-first.xml clean install && mvn -V clean install -Denable-ui-tests'
           }
           post {
             always {
@@ -83,7 +83,7 @@ pipeline {
             }
           }
           steps {
-            sh 'mvn -V -f pom-first.xml clean install && mvn -V clean install -Denable-ui-tests'
+            sh 'mvn -V -U -f pom-first.xml clean install && mvn -V clean install -Denable-ui-tests'
           }
           post {
             always {
@@ -103,7 +103,7 @@ pipeline {
             }
           }
           steps {
-            sh 'mvn -V -f pom-first.xml clean install && mvn -V clean install -Denable-ui-tests'
+            sh 'mvn -V -U -f pom-first.xml clean install && mvn -V clean install -Denable-ui-tests'
           }
           post {
             always {
@@ -122,8 +122,8 @@ pipeline {
             bat '''
             set JAVA_HOME=F:\\jenkins\\tools\\java\\latest1.8
             set MAVEN_OPTS="-Xmx512m"
-            F:\\jenkins\\tools\\maven\\latest3\\bin\\mvn -V -f pom-first.xml clean verify
-            F:\\jenkins\\tools\\maven\\latest3\\bin\\mvn -V clean verify
+            call F:\\jenkins\\tools\\maven\\latest3\\bin\\mvn -V -U -f pom-first.xml clean verify
+            call F:\\jenkins\\tools\\maven\\latest3\\bin\\mvn -V clean verify
             '''
           }
           post {
