@@ -267,13 +267,14 @@ public class ImportExportTest extends AbstractLdapTestUnit
 
         // delete entries
         browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=special" );
+        BotUtils.sleep( 5000L ); // TODO: wait until all entries are expanded and UI is updated
         String[] children =
             { "cn=alias", "cn=referral", "cn=subentry" };
         browserViewBot.selectChildrenOfEntry( children, "DIT", "Root DSE", "ou=system", "ou=special" );
         DeleteDialogBot dialogBot = browserViewBot.openDeleteDialog();
         assertTrue( dialogBot.isVisible() );
         dialogBot.clickOkButton();
-        BotUtils.sleep( 5000L );
+        BotUtils.sleep( 5000L ); // TODO: wait until all entries are deleted and UI is updated
         assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=alias" ) );
         assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=referral" ) );
         assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=subentry" ) );
@@ -314,7 +315,7 @@ public class ImportExportTest extends AbstractLdapTestUnit
 
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=special" );
 
-        // export first LDIF (alias and referral)
+        // export first DSML (alias and referral)
         ExportWizardBot wizardBot = browserViewBot.openExportDsmlWizard();
         assertTrue( wizardBot.isVisible() );
         wizardBot.setReturningAttributes( "ref" );
@@ -334,7 +335,7 @@ public class ImportExportTest extends AbstractLdapTestUnit
         assertTrue( content1.contains( "<value>ldap://foo.example.com/ou=system</value>" ) );
         assertTrue( content1.contains( "dn=\"cn=alias,ou=special,ou=system\"" ) );
 
-        // export second LDIF (subentry)
+        // export second DSML (subentry)
         wizardBot = browserViewBot.openExportDsmlWizard();
         assertTrue( wizardBot.isVisible() );
         wizardBot.setReturningAttributes( "subtreeSpecification" );
@@ -354,18 +355,19 @@ public class ImportExportTest extends AbstractLdapTestUnit
 
         // delete entries
         browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=special" );
+        BotUtils.sleep( 5000L ); // TODO: wait until all entries are expanded and UI is updated
         String[] children =
             { "cn=alias", "cn=referral", "cn=subentry" };
         browserViewBot.selectChildrenOfEntry( children, "DIT", "Root DSE", "ou=system", "ou=special" );
         DeleteDialogBot dialogBot = browserViewBot.openDeleteDialog();
         assertTrue( dialogBot.isVisible() );
         dialogBot.clickOkButton();
-        BotUtils.sleep( 5000L );
+        BotUtils.sleep( 5000L ); // TODO: wait until all entries are deleted and UI is updated
         assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=alias" ) );
         assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=referral" ) );
         assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=subentry" ) );
 
-        // import LDIFs
+        // import DSML
         ImportWizardBot importWizardBot = browserViewBot.openImportDsmlWizard();
         importWizardBot.typeFile( file1 );
         importWizardBot.clickFinishButton();
