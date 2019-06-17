@@ -39,7 +39,7 @@ pipeline {
         }
       }
       steps {
-        sh 'env'
+        sh 'export DISPLAY=:99; env; ps aux'
       }
       post {
         always {
@@ -61,7 +61,7 @@ pipeline {
             }
           }
           steps {
-            sh 'mvn -V -U -f pom-first.xml clean install && mvn -V clean install -Denable-ui-tests'
+            sh 'export DISPLAY=:99; mvn -V -U -f pom-first.xml clean install && mvn -V clean install -Denable-ui-tests'
           }
           post {
             always {
@@ -83,27 +83,7 @@ pipeline {
             }
           }
           steps {
-            sh 'mvn -V -U -f pom-first.xml clean install && mvn -V clean install -Denable-ui-tests'
-          }
-          post {
-            always {
-              deleteDir()
-            }
-          }
-        }
-        stage ('Linux Java 12') {
-          options {
-            timeout(time: 2, unit: 'HOURS')
-          }
-          agent {
-            docker {
-              label 'ubuntu'
-              image 'apachedirectory/maven-build:jdk-12'
-              //args '-v $HOME/.m2:/home/hnelson/.m2'
-            }
-          }
-          steps {
-            sh 'mvn -V -U -f pom-first.xml clean install && mvn -V clean install -Denable-ui-tests'
+            sh 'export DISPLAY=:99; mvn -V -U -f pom-first.xml clean install && mvn -V clean install -Denable-ui-tests'
           }
           post {
             always {
