@@ -51,6 +51,7 @@ import org.apache.directory.studio.connection.core.io.api.DirectoryApiConnection
 import org.apache.directory.studio.connection.core.io.api.StudioSearchResultEnumeration;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeRootDSERunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.BrowserConnection;
+import org.junit.Ignore;
 import org.junit.Test;
 
 
@@ -109,6 +110,7 @@ public class DirectoryApiConnectionWrapperTest extends ConnectionWrapperTestBase
     /**
      * DIRSTUDIO-1039
      */
+    @Ignore
     @Test
     public void testConcurrentUseAndCloseOfConnection() throws Exception
     {
