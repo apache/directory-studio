@@ -267,9 +267,10 @@ public class ImportExportTest extends AbstractLdapTestUnit
 
         // delete entries
         browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=special" );
-        BotUtils.sleep( 5000L ); // TODO: wait until all entries are expanded and UI is updated
         String[] children =
             { "cn=alias", "cn=referral", "cn=subentry" };
+        // select entries twice, sometimes one gets unselected, reason unknown
+        browserViewBot.selectChildrenOfEntry( children, "DIT", "Root DSE", "ou=system", "ou=special" );
         browserViewBot.selectChildrenOfEntry( children, "DIT", "Root DSE", "ou=system", "ou=special" );
         DeleteDialogBot dialogBot = browserViewBot.openDeleteDialog();
         assertTrue( dialogBot.isVisible() );
@@ -355,9 +356,10 @@ public class ImportExportTest extends AbstractLdapTestUnit
 
         // delete entries
         browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=special" );
-        BotUtils.sleep( 5000L ); // TODO: wait until all entries are expanded and UI is updated
         String[] children =
             { "cn=alias", "cn=referral", "cn=subentry" };
+        // select entries twice, sometimes one gets unselected, reason unknown
+        browserViewBot.selectChildrenOfEntry( children, "DIT", "Root DSE", "ou=system", "ou=special" );
         browserViewBot.selectChildrenOfEntry( children, "DIT", "Root DSE", "ou=system", "ou=special" );
         DeleteDialogBot dialogBot = browserViewBot.openDeleteDialog();
         assertTrue( dialogBot.isVisible() );
