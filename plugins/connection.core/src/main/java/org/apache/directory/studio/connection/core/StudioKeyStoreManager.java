@@ -151,7 +151,10 @@ public class StudioKeyStoreManager
             File file = ConnectionCorePlugin.getDefault().getStateLocation().append( filename ).toFile();
             if ( file.exists() && file.isFile() && file.canRead() )
             {
-                fileKeyStore.load( new FileInputStream( file ), password.toCharArray() );
+                try ( FileInputStream in = new FileInputStream( file ) )
+                {
+                    fileKeyStore.load( in, password.toCharArray() );
+                }
             }
             else
             {
@@ -216,7 +219,10 @@ public class StudioKeyStoreManager
             KeyStore fileKeyStore = getFileKeyStore();
             addToKeyStore( certificate, fileKeyStore );
             File file = ConnectionCorePlugin.getDefault().getStateLocation().append( filename ).toFile();
-            fileKeyStore.store( new FileOutputStream( file ), password.toCharArray() );
+            try ( FileOutputStream out = new FileOutputStream( file ) )
+            {
+                fileKeyStore.store( out, password.toCharArray() );
+            }
         }
         catch ( Exception e )
         {
@@ -314,7 +320,10 @@ public class StudioKeyStoreManager
             KeyStore fileKeyStore = getFileKeyStore();
             removeFromKeyStore( certificate, fileKeyStore );
             File file = ConnectionCorePlugin.getDefault().getStateLocation().append( filename ).toFile();
-            fileKeyStore.store( new FileOutputStream( file ), password.toCharArray() );
+            try ( FileOutputStream out = new FileOutputStream( file ) )
+            {
+                fileKeyStore.store( out, password.toCharArray() );
+            }
         }
         catch ( Exception e )
         {
