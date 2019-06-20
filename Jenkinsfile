@@ -66,7 +66,7 @@ pipeline {
           post {
             always {
               junit '**/target/surefire-reports/*.xml'
-              archiveArtifacts 'product/target/products/*.zip,product/target/products/*.tar.gz'
+              archiveArtifacts 'product/target/products/*.zip,product/target/products/*.tar.gz,tests/test.integration.ui/screenshots/*'
               deleteDir()
             }
           }
@@ -87,6 +87,7 @@ pipeline {
           }
           post {
             always {
+              archiveArtifacts 'tests/test.integration.ui/screenshots/*'
               deleteDir()
             }
           }
@@ -108,6 +109,7 @@ pipeline {
           }
           post {
             always {
+              archiveArtifacts 'tests/test.integration.ui/screenshots/*'
               deleteDir()
             }
           }
