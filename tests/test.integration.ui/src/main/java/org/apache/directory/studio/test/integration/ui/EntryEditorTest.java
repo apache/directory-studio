@@ -53,6 +53,7 @@ import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
 import org.apache.directory.server.core.security.CertificateUtil;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
+import org.apache.directory.studio.ldifparser.LdifParserConstants;
 import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
 import org.apache.directory.studio.test.integration.ui.bots.BotUtils;
 import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
@@ -467,7 +468,7 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         assertFalse( entryEditorBot.getAttributeValues().contains( "description: testTextValueEditor 1" ) );
         assertTrue( entryEditorBot.getAttributeValues().contains( "description: " + newValue ) );
         String description2Ldif = LdifAttrValLine.create( "description", newValue )
-            .toFormattedString( LdifFormatParameters.DEFAULT );
+            .toFormattedString( LdifFormatParameters.DEFAULT ).replace( LdifParserConstants.LINE_SEPARATOR, "\n" );
         modificationLogsViewBot.waitForText( "replace: description\n" + description2Ldif );
     }
 
@@ -493,8 +494,7 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "cn=Barbara Jensen,ou=users,ou=system" );
         entryEditorBot.activate();
 
-        BotUtils.sleep( 10000 );
-
+        BotUtils.sleep( 1000 );
         assertTrue( entryEditorBot.getAttributeValues()
             .contains( "userCertificate: X.509v3: CN=Foo,OU=Bar,O=Baz,C=US" ) );
     }
