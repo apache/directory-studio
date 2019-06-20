@@ -31,6 +31,7 @@ import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.ldifparser.LdifParserConstants;
 import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ModificationLogsViewBot;
@@ -223,7 +224,9 @@ public class CopyEntryTest extends AbstractLdapTestUnit
         modificationLogsViewBot.assertContainsError( "ENTRY_ALREADY_EXISTS", "dn: uid=user.1,ou=users,ou=system",
             "changetype: add", "uid: user.1" );
         modificationLogsViewBot.assertContainsOk( "dn: uid=user.1,ou=users,ou=system", "changetype: modify",
-            "replace: uid\nuid: user.1\n-", "replace: objectclass" );
+            "replace: uid" + LdifParserConstants.LINE_SEPARATOR + "uid: user.1" + LdifParserConstants.LINE_SEPARATOR
+                + "-",
+            "replace: objectclass" );
     }
 
 
