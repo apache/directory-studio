@@ -61,7 +61,7 @@ pipeline {
             }
           }
           steps {
-            sh 'export DISPLAY=:99; mvn -V -U -f pom-first.xml clean install && mvn -V clean install -Denable-ui-tests'
+            sh 'export DISPLAY=:99; mvn -V -U -f pom-first.xml clean install && mvn -V clean install -Dorg.eclipse.swtbot.search.timeout=20000 -Denable-ui-tests'
           }
           post {
             always {
@@ -83,7 +83,7 @@ pipeline {
             }
           }
           steps {
-            sh 'export DISPLAY=:99; mvn -V -U -f pom-first.xml clean install && mvn -V clean install -Denable-ui-tests'
+            sh 'export DISPLAY=:99; mvn -V -U -f pom-first.xml clean install && mvn -V clean install -Dorg.eclipse.swtbot.search.timeout=20000 -Denable-ui-tests'
           }
           post {
             always {
