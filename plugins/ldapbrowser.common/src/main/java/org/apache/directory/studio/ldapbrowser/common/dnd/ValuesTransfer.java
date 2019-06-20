@@ -223,7 +223,7 @@ public class ValuesTransfer extends ByteArrayTransfer
                                     break;
                                 }
                                 else if ( !isString && values[i].isBinary()
-                                    && test.equals( new String( values[i].getBinaryValue() ) ) )
+                                    && test.equals( new String( values[i].getBinaryValue(), "UTF-8" ) ) ) //$NON-NLS-1$
                                 {
                                     value = values[i];
                                     break;
