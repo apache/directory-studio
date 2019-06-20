@@ -150,7 +150,7 @@ public class PasswordsKeyStoreManager
         {
             try ( FileOutputStream fos = new FileOutputStream( getKeyStoreFile() ) )
             {
-                keystore.store( fox, masterPassword.toCharArray() );
+                keystore.store( fos, masterPassword.toCharArray() );
             }
             // Catch for the following exceptions that may be raised while
             // handling the keystore:
