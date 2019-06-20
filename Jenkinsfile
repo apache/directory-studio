@@ -102,8 +102,8 @@ pipeline {
             bat '''
             set JAVA_HOME=F:\\jenkins\\tools\\java\\latest1.8
             set MAVEN_OPTS="-Xmx512m"
-            call F:\\jenkins\\tools\\maven\\latest3\\bin\\mvn -V -U -f pom-first.xml clean verify
-            call F:\\jenkins\\tools\\maven\\latest3\\bin\\mvn -V clean verify
+            call F:\\jenkins\\tools\\maven\\latest3\\bin\\mvn -V -U -f pom-first.xml clean install
+            call F:\\jenkins\\tools\\maven\\latest3\\bin\\mvn -V clean install -Dorg.eclipse.swtbot.search.timeout=20000 -Denable-ui-tests
             '''
           }
           post {
