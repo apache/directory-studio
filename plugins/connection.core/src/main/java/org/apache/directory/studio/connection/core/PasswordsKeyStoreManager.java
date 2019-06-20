@@ -105,7 +105,10 @@ public class PasswordsKeyStoreManager
             // Checking if the keystore file is available on disk
             if ( keystoreFile.exists() && keystoreFile.isFile() && keystoreFile.canRead() )
             {
-                keystore.load( new FileInputStream( keystoreFile ), masterPassword.toCharArray() );
+                try ( FileInputStream fis = new FileInputStream( keystoreFile ) )
+                {
+                    keystore.load( fis, masterPassword.toCharArray() );
+                }
             }
             else
             {
@@ -145,9 +148,9 @@ public class PasswordsKeyStoreManager
     {
         if ( isLoaded() && ( masterPassword != null ) )
         {
-            try
+            try ( FileOutputStream fos = new FileOutputStream( getKeyStoreFile() ) )
             {
-                keystore.store( new FileOutputStream( getKeyStoreFile() ), masterPassword.toCharArray() );
+                keystore.store( fox, masterPassword.toCharArray() );
             }
             // Catch for the following exceptions that may be raised while
             // handling the keystore:
