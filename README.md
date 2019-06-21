@@ -74,9 +74,9 @@ To delete all Apache Directory related snapshots run:
 
 ## Setup Eclipse workspace
 
-Recommended IDE is 'Eclipse (Luna) for RCP Developers': <http://www.eclipse.org/downloads/packages/eclipse-rcp-and-rap-developers/lunasr2>
+Recommended IDE is 'Eclipse for RCP and RAP Developers': <https://www.eclipse.org/downloads/packages/>
 
-1. Import 'Eclipse Target Platorm' project first
+1. Import 'Eclipse Target Platform' project first
 
     * File -> Import... -> Maven -> Existing Maven Projects
     * Choose 'studio/eclipse-trgt-platform' as root directory
@@ -86,7 +86,7 @@ Recommended IDE is 'Eclipse (Luna) for RCP Developers': <http://www.eclipse.org/
 2. Initialize target platform
 
     * Open the `eclipse-trgt-platform.target` file with the 'Target Editor'
-    * In the top right corner click 'Set as Target Platform'
+    * Wait for the target platform to initialize, this takes multiple minutes!
 
 3. Import the main plugins
 

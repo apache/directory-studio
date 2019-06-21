@@ -33,7 +33,7 @@ pipeline {
       }
       agent {
         docker {
-          label 'ubuntu'
+          label 'ubuntu && !H28 && !H36 && !H40'
           image 'apachedirectory/maven-build:jdk-8'
           //args '-v $HOME/.m2:/home/hnelson/.m2'
         }
@@ -55,7 +55,7 @@ pipeline {
           }
           agent {
             docker {
-              label 'ubuntu'
+              label 'ubuntu && !H28 && !H36 && !H40'
               image 'apachedirectory/maven-build:jdk-8'
               //args '-v $HOME/.m2:/home/hnelson/.m2'
             }
@@ -66,7 +66,7 @@ pipeline {
           post {
             always {
               junit '**/target/surefire-reports/*.xml'
-              archiveArtifacts 'product/target/products/*.zip,product/target/products/*.tar.gz,tests/test.integration.ui/screenshots/*'
+              archiveArtifacts artifacts:'product/target/products/*.zip,product/target/products/*.tar.gz,tests/test.integration.ui/screenshots/*', allowEmptyArchive:true
               deleteDir()
             }
           }
@@ -77,7 +77,7 @@ pipeline {
           }
           agent {
             docker {
-              label 'ubuntu'
+              label 'ubuntu && !H28 && !H36 && !H40'
               image 'apachedirectory/maven-build:jdk-11'
               //args '-v $HOME/.m2:/home/hnelson/.m2'
             }
@@ -87,7 +87,8 @@ pipeline {
           }
           post {
             always {
-              archiveArtifacts 'tests/test.integration.ui/screenshots/*'
+              junit '**/target/surefire-reports/*.xml'
+              archiveArtifacts artifacts:'tests/test.integration.ui/screenshots/*', allowEmptyArchive:true
               deleteDir()
             }
           }
@@ -109,7 +110,8 @@ pipeline {
           }
           post {
             always {
-              archiveArtifacts 'tests/test.integration.ui/screenshots/*'
+              junit '**/target/surefire-reports/*.xml'
+              archiveArtifacts artifacts:'tests/test.integration.ui/screenshots/*', allowEmptyArchive:true
               deleteDir()
             }
           }
