@@ -53,7 +53,6 @@
  org.eclipse.swtbot.eclipse.core;bundle-version="2.2.1",
  org.eclipse.swtbot.forms.finder;bundle-version="2.2.1",
  org.eclipse.swtbot.junit4_x;bundle-version="2.2.1",
- org.bouncycastle.bcprov;bundle-version="1.52.0",
  
  org.apache.directory.server.apacheds-test-framework;bundle-version="${org.apache.directory.server.version}",
  org.apache.directory.server.annotations;bundle-version="${org.apache.directory.server.version}",
