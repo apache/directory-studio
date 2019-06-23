@@ -30,6 +30,8 @@ import org.apache.directory.server.core.annotations.ApplyLdifFiles;
 import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldifparser.LdifParserConstants;
 import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
@@ -82,6 +84,9 @@ public class CopyEntryTest extends AbstractLdapTestUnit
     {
         connectionsViewBot.deleteTestConnections();
         Assertions.genericTearDownAssertions();
+        // DIRSERVER-2133: reset check for children preference
+        BrowserCorePlugin.getDefault()
+            .getPluginPreferences().setValue( BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN, true );
     }
 
 
@@ -119,6 +124,10 @@ public class CopyEntryTest extends AbstractLdapTestUnit
     @Test
     public void testCopyPasteMultipleEntriesWithCopyDepthDialogObjectOnly() throws Exception
     {
+        // DIRSERVER-2133: disable check for children for this test
+        BrowserCorePlugin.getDefault()
+            .getPluginPreferences().setValue( BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN, false );
+
         // select and copy multiple entries
         browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
         String[] children =
