@@ -23,13 +23,13 @@ package org.apache.directory.studio.test.integration.ui;
 
 import static org.junit.Assert.assertTrue;
 
-import org.apache.commons.lang3.SystemUtils;
 import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
 import org.apache.directory.studio.test.integration.ui.bots.LdifEditorBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
 import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
 import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
+import org.apache.directory.studio.test.integration.ui.bots.utils.StudioSystemUtils;
 import org.junit.After;
 import org.junit.Assume;
 import org.junit.Before;
@@ -74,9 +74,9 @@ public class LdifEditorTest extends AbstractLdapTestUnit
     public void testNewLdifEditor() throws Exception
     {
         /*
-         * This test fails on Jenkins Windows Server 2012, to be investigated...
+         * This test fails on Jenkins Windows Server, to be investigated...
          */
-        Assume.assumeFalse( SystemUtils.IS_OS_WINDOWS_2012 );
+        Assume.assumeFalse( StudioSystemUtils.IS_OS_WINDOWS_SERVER );
 
         NewWizardBot newWizard = studioBot.openNewWizard();
         newWizard.selectLdifFile();

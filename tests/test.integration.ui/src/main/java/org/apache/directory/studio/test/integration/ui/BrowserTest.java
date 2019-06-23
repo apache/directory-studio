@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.SystemUtils;
 import org.apache.directory.api.ldap.model.entry.DefaultEntry;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.name.Dn;
@@ -61,6 +60,7 @@ import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
 import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
 import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
+import org.apache.directory.studio.test.integration.ui.bots.utils.StudioSystemUtils;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
@@ -606,9 +606,9 @@ public class BrowserTest extends AbstractLdapTestUnit
     public void testSetInputOnlyOnce() throws Exception
     {
         /*
-         * This test fails on Jenkins Windows Server 2012, to be investigated...
+         * This test fails on Jenkins Windows Server, to be investigated...
          */
-        Assume.assumeFalse( SystemUtils.IS_OS_WINDOWS_2012 );
+        Assume.assumeFalse( StudioSystemUtils.IS_OS_WINDOWS_SERVER );
 
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
         browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
