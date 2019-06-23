@@ -30,7 +30,7 @@ pipeline {
     stage ('Debug') {
       options {
         timeout(time: 1, unit: 'HOURS')
-        retry(1)
+        retry(2)
       }
       agent {
         docker {
@@ -53,7 +53,7 @@ pipeline {
         stage ('Linux Java 8') {
           options {
             timeout(time: 4, unit: 'HOURS')
-            retry(1)
+            retry(2)
           }
           agent {
             docker {
@@ -76,7 +76,7 @@ pipeline {
         stage ('Linux Java 11') {
           options {
             timeout(time: 4, unit: 'HOURS')
-            retry(1)
+            retry(2)
           }
           agent {
             docker {
@@ -99,7 +99,7 @@ pipeline {
         stage ('Windows Java 8') {
           options {
             timeout(time: 4, unit: 'HOURS')
-            retry(1)
+            retry(2)
           }
           agent {
             label 'Windows'
