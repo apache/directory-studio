@@ -529,7 +529,8 @@
 
       <plugin>
         <groupId>org.codehaus.gmaven</groupId>
-        <artifactId>gmaven-plugin</artifactId>
+        <artifactId>groovy-maven-plugin</artifactId>
+        <version>2.1.1</version>
         <executions>
           <execution>
             <id>set-basedir-uri</id>
@@ -539,7 +540,7 @@
             </goals>
             <configuration>
               <source>
-pom.properties['basedirUri']=project.basedir.toURI().toString();
+project.properties['basedirUri']=project.basedir.toURI().toString();
               </source>
             </configuration>
           </execution>
