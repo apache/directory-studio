@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.ui.editors.searchresult;
 
 
+import org.apache.directory.studio.common.ui.ClipboardUtils;
 import org.apache.directory.studio.ldapbrowser.common.actions.PasteAction;
 import org.apache.directory.studio.ldapbrowser.common.dnd.ValuesTransfer;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
@@ -116,7 +117,7 @@ public class SearchResultEditorPasteAction extends PasteAction
             && getSelectedAttributeHierarchies()[0].size() == 1 )
         {
 
-            Object content = this.getFromClipboard( ValuesTransfer.getInstance() );
+            Object content = ClipboardUtils.getFromClipboard( ValuesTransfer.getInstance() );
             if ( content instanceof IValue[] )
             {
                 IValue[] values = ( IValue[] ) content;

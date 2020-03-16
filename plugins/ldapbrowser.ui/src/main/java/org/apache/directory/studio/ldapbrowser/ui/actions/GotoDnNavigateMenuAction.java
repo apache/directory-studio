@@ -22,6 +22,7 @@ package org.apache.directory.studio.ldapbrowser.ui.actions;
 
 
 import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.studio.common.ui.ClipboardUtils;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.DnDialog;
@@ -33,9 +34,7 @@ import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.apache.directory.studio.ldapbrowser.ui.views.connection.ConnectionView;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
 
@@ -87,7 +86,7 @@ public class GotoDnNavigateMenuAction extends LocateInDitAction
                 .getBrowserConnection( selectedConnection );
 
             // Getting the DN from the clipboard (if any)
-            Dn dn = Utils.getLdapDn( getStringFromClipboard() );
+            Dn dn = Utils.getLdapDn( ClipboardUtils.getFromClipboard( TextTransfer.getInstance(), String.class ) );
 
             // Displaying the DN dialog
             DnDialog dialog = new DnDialog(
@@ -137,31 +136,4 @@ public class GotoDnNavigateMenuAction extends LocateInDitAction
         return null;
     }
 
-
-    /**
-     * Gets the string from the clipboard.
-     *
-     * @return the string from the clipboard
-     */
-    private String getStringFromClipboard()
-    {
-        Clipboard clipboard = null;
-        try
-        {
-            clipboard = new Clipboard( Display.getCurrent() );
-            Object contents = clipboard.getContents( TextTransfer.getInstance() );
-            if ( contents instanceof String )
-            {
-                return ( String ) contents;
-            }
-        }
-        finally
-        {
-            if ( clipboard != null )
-            {
-                clipboard.dispose();
-            }
-        }
-        return null;
-    }
 }

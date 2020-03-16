@@ -22,6 +22,7 @@ package org.apache.directory.studio.ldapbrowser.ui.actions;
 
 
 import org.apache.directory.api.ldap.model.message.SearchScope;
+import org.apache.directory.studio.common.ui.ClipboardUtils;
 import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.common.actions.PasteAction;
@@ -290,7 +291,7 @@ public class BrowserPasteAction extends PasteAction
             && getSelectedEntries().length == 1 )
         {
 
-            Object content = this.getFromClipboard( EntryTransfer.getInstance() );
+            Object content = ClipboardUtils.getFromClipboard( EntryTransfer.getInstance() );
             if ( content instanceof IEntry[] )
             {
                 IEntry[] entries = ( IEntry[] ) content;
@@ -315,7 +316,7 @@ public class BrowserPasteAction extends PasteAction
             + getSelectedConnections().length + getSelectedAttributes().length + getSelectedValues().length == 0
             && ( getSelectedSearches().length + getSelectedBrowserViewCategories().length > 0 ) )
         {
-            Object content = this.getFromClipboard( SearchTransfer.getInstance() );
+            Object content = ClipboardUtils.getFromClipboard( SearchTransfer.getInstance() );
             if ( content instanceof ISearch[] )
             {
                 ISearch[] searches = ( ISearch[] ) content;
@@ -343,7 +344,7 @@ public class BrowserPasteAction extends PasteAction
             || ( getSelectedAttributes().length + getSelectedValues().length + getSelectedEntries().length
                 + getSelectedBookmarks().length + getSelectedSearches().length + getSelectedConnections().length == 0 && ( getSelectedSearchResults().length == 1 ) ) )
         {
-            Object content = this.getFromClipboard( ValuesTransfer.getInstance() );
+            Object content = ClipboardUtils.getFromClipboard( ValuesTransfer.getInstance() );
             if ( content instanceof IValue[] )
             {
                 IValue[] values = ( IValue[] ) content;

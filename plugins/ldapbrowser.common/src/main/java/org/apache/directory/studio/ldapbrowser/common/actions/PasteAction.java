@@ -22,9 +22,6 @@ package org.apache.directory.studio.ldapbrowser.common.actions;
 
 
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.dnd.Clipboard;
-import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
@@ -63,27 +60,4 @@ public abstract class PasteAction extends BrowserAction
         return IWorkbenchActionDefinitionIds.PASTE;
     }
 
-
-    /**
-     * Retrieve the data of the specified type currently available on the system clipboard.
-     *
-     * @param dataType
-     *      the transfer agent for the type of data being requested
-     * @return
-     *      the data obtained from the clipboard or null if no data of this type is available
-     */
-    protected Object getFromClipboard( Transfer dataType )
-    {
-        Clipboard clipboard = null;
-        try
-        {
-            clipboard = new Clipboard( Display.getCurrent() );
-            return clipboard.getContents( dataType );
-        }
-        finally
-        {
-            if ( clipboard != null )
-                clipboard.dispose();
-        }
-    }
 }

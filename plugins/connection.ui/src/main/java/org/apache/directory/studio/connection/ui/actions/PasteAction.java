@@ -24,24 +24,14 @@ package org.apache.directory.studio.connection.ui.actions;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.directory.api.ldap.model.exception.LdapURLEncodingException;
-import org.apache.directory.api.ldap.model.url.LdapUrl;
+import org.apache.directory.studio.common.ui.ClipboardUtils;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionFolder;
 import org.apache.directory.studio.connection.core.ConnectionFolderManager;
 import org.apache.directory.studio.connection.core.ConnectionManager;
-import org.apache.directory.studio.connection.core.ConnectionParameter;
-import org.apache.directory.studio.connection.ui.ConnectionParameterPage;
-import org.apache.directory.studio.connection.ui.ConnectionParameterPageManager;
 import org.apache.directory.studio.connection.ui.dnd.ConnectionTransfer;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.dnd.Clipboard;
-import org.eclipse.swt.dnd.TextTransfer;
-import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchCommandConstants;
 import org.eclipse.ui.PlatformUI;
@@ -114,8 +104,7 @@ public class PasteAction extends StudioAction
      */
     public boolean isEnabled()
     {
-        return this.getFromClipboard( ConnectionTransfer.getInstance() ) != null
-            || !getConnectionsByLdapUrl().isEmpty();
+        return ClipboardUtils.isAvailable( ConnectionTransfer.getInstance() );
     }
 
 
@@ -177,9 +166,8 @@ public class PasteAction extends StudioAction
     {
         List<Connection> connections = new ArrayList<>();
 
-        // first check for Connection objects in the clipboard
-        Object content = getFromClipboard( ConnectionTransfer.getInstance() );
-        
+        Object content = ClipboardUtils.getFromClipboard( ConnectionTransfer.getInstance() );
+
         if ( content instanceof Object[] )
         {
             for ( Object object : ( Object[] )content )
@@ -187,58 +175,6 @@ public class PasteAction extends StudioAction
                 if ( object instanceof Connection )
                 {
                     connections.add( ( Connection ) object );
-                }
-            }
-        }
-
-        // if there are no Connection objects in the clipboard
-        // then check for LDAP URLs
-        if ( connections.isEmpty() )
-        {
-            List<Connection> connectionByLdapUrl = getConnectionsByLdapUrl();
-            connections.addAll( connectionByLdapUrl );
-        }
-
-        return connections;
-    }
-
-
-    private List<Connection> getConnectionsByLdapUrl()
-    {
-        List<Connection> connections = new ArrayList<>();
-
-        Object content = getFromClipboard( TextTransfer.getInstance() );
-        
-        if ( content instanceof String )
-        {
-            ConnectionParameterPage[] connectionParameterPages = ConnectionParameterPageManager
-                .getConnectionParameterPages();
-
-            String[] lines = ( ( String ) content ).split( ConnectionCoreConstants.LINE_SEPARATOR );
-            
-            for ( String line : lines )
-            {
-                line = line.trim();
-                
-                if ( StringUtils.isNotEmpty( line ) )
-                {
-                    try
-                    {
-                        LdapUrl ldapUrl = new LdapUrl( line );
-                        ConnectionParameter parameter = new ConnectionParameter();
-                        
-                        for ( ConnectionParameterPage connectionParameterPage : connectionParameterPages )
-                        {
-                            connectionParameterPage.mergeLdapUrlToParameters( ldapUrl, parameter );
-                        }
-                        
-                        Connection connection = new Connection( parameter );
-                        connections.add( connection );
-                    }
-                    catch ( LdapURLEncodingException e )
-                    {
-                        // this was a string that doesn't represent an LDAP URL, ignore
-                    }
                 }
             }
         }
@@ -256,8 +192,8 @@ public class PasteAction extends StudioAction
     {
         List<ConnectionFolder> folders = new ArrayList<>();
 
-        Object content = this.getFromClipboard( ConnectionTransfer.getInstance() );
-        
+        Object content = ClipboardUtils.getFromClipboard( ConnectionTransfer.getInstance() );
+
         if ( content instanceof Object[] )
         {
             for ( Object object : ( Object[] ) content )
@@ -272,29 +208,4 @@ public class PasteAction extends StudioAction
         return folders;
     }
 
-
-    /**
-     * Retrieve the data of the specified type currently available on the system clipboard.
-     *
-     * @param dataType the transfer agent for the type of data being requested
-     * @return the data obtained from the clipboard or null if no data of this type is available
-     */
-    protected Object getFromClipboard( Transfer dataType )
-    {
-        Clipboard clipboard = null;
-        
-        try
-        {
-            clipboard = new Clipboard( Display.getCurrent() );
-            
-            return clipboard.getContents( dataType );
-        }
-        finally
-        {
-            if ( clipboard != null )
-            {
-                clipboard.dispose();
-            }
-        }
-    }
 }

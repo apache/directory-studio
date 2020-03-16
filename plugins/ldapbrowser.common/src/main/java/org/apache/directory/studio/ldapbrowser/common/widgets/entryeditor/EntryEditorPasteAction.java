@@ -21,6 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor;
 
 
+import org.apache.directory.studio.common.ui.ClipboardUtils;
 import org.apache.directory.studio.ldapbrowser.common.actions.PasteAction;
 import org.apache.directory.studio.ldapbrowser.common.dnd.ValuesTransfer;
 import org.apache.directory.studio.ldapbrowser.core.model.AttributeHierarchy;
@@ -114,7 +115,7 @@ public class EntryEditorPasteAction extends PasteAction
     {
         if ( ( getInput() instanceof IEntry ) || ( getInput() instanceof AttributeHierarchy ) )
         {
-            Object content = getFromClipboard( ValuesTransfer.getInstance() );
+            Object content = ClipboardUtils.getFromClipboard( ValuesTransfer.getInstance() );
             
             if ( content instanceof IValue[] )
             {

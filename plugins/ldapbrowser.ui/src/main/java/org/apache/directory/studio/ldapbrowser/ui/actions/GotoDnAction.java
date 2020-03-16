@@ -22,6 +22,7 @@ package org.apache.directory.studio.ldapbrowser.ui.actions;
 
 
 import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.studio.common.ui.ClipboardUtils;
 import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.DnDialog;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.TextDialog;
@@ -29,9 +30,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
-import org.eclipse.swt.widgets.Display;
 
 
 /**
@@ -95,7 +94,7 @@ public class GotoDnAction extends LocateInDitAction
         {
             IBrowserConnection conn = ( IBrowserConnection ) getInput();
 
-            Dn dn = Utils.getLdapDn( getStringFromClipboard() );
+            Dn dn = Utils.getLdapDn( ClipboardUtils.getFromClipboard( TextTransfer.getInstance(), String.class ) );
 
             DnDialog dialog = new DnDialog(
                 getShell(),
@@ -110,26 +109,4 @@ public class GotoDnAction extends LocateInDitAction
         return null;
     }
 
-
-    private static String getStringFromClipboard()
-    {
-        Clipboard clipboard = null;
-        try
-        {
-            clipboard = new Clipboard( Display.getCurrent() );
-            Object contents = clipboard.getContents( TextTransfer.getInstance() );
-            if ( contents instanceof String )
-            {
-                return ( String ) contents;
-            }
-        }
-        finally
-        {
-            if ( clipboard != null )
-            {
-                clipboard.dispose();
-            }
-        }
-        return null;
-    }
 }
