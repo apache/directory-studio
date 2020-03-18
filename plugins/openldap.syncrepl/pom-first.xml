@@ -46,7 +46,7 @@
             <Bundle-Localization>plugin</Bundle-Localization>
             <Eclipse-LazyStart>true</Eclipse-LazyStart>
             <Require-Bundle>
-              org.apache.directory.api.util;bundle-version="${org.apache.directory.api.version}"
+              org.apache.directory.api.util;bundle-version="${org.apache.directory.api.bundleversion}"
             </Require-Bundle>
             <Export-Package>org.apache.directory.studio.openldap.syncrepl</Export-Package>
           </instructions>

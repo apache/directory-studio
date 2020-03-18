@@ -30,13 +30,9 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import java.io.ByteArrayInputStream;
 import java.net.ConnectException;
 import java.nio.channels.UnresolvedAddressException;
 import java.nio.charset.StandardCharsets;
-import java.security.cert.Certificate;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -44,6 +40,9 @@ import java.util.function.Function;
 
 import javax.naming.directory.SearchControls;
 
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
+import org.apache.directory.api.ldap.extras.extended.pwdModify.PasswordModifyRequest;
 import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.api.ldap.model.entry.DefaultEntry;
 import org.apache.directory.api.ldap.model.entry.DefaultModification;
@@ -53,13 +52,17 @@ import org.apache.directory.api.ldap.model.entry.ModificationOperation;
 import org.apache.directory.api.ldap.model.exception.LdapAuthenticationException;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapLoopDetectedException;
+import org.apache.directory.api.ldap.model.message.ExtendedResponse;
+import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.ldap.client.api.exception.InvalidConnectionException;
 import org.apache.directory.server.annotations.CreateLdapServer;
 import org.apache.directory.server.annotations.CreateTransport;
 import org.apache.directory.server.core.annotations.ApplyLdifFiles;
 import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
 import org.apache.directory.server.core.integ.FrameworkRunner;
+import org.apache.directory.server.ldap.handlers.extended.PwdModifyHandler;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -76,7 +79,6 @@ import org.apache.mina.util.AvailablePortFinder;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -89,7 +91,8 @@ import org.junit.runner.RunWith;
  */
 @RunWith(FrameworkRunner.class)
 @CreateLdapServer(transports =
-    { @CreateTransport(protocol = "LDAP"), @CreateTransport(protocol = "LDAPS") })
+    { @CreateTransport(protocol = "LDAP"), @CreateTransport(protocol = "LDAPS") }, extendedOpHandlers =
+    { PwdModifyHandler.class })
 @ApplyLdifFiles(clazz = ConnectionWrapperTestBase.class, value = "org/apache/directory/studio/test/integration/core/TestData.ldif")
 public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
 {
@@ -467,6 +470,22 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
 
 
     @Test
+    public void testAdd() throws Exception
+    {
+        String dn = "uid=user.X,ou=users,ou=system";
+
+        StudioProgressMonitor monitor = getProgressMonitor();
+        Entry entry = new DefaultEntry( dn, "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" );
+        getConnectionWrapper( monitor ).createEntry( entry, null, monitor, null );
+
+        // should have created entry
+        assertFalse( monitor.isCanceled() );
+        assertFalse( monitor.errorsReported() );
+        assertTrue( service.getAdminSession().exists( dn ) );
+    }
+
+
+    @Test
     public void testAddFollowsReferral_DirectReferral() throws Exception
     {
         String targetDn = "uid=user.X,ou=users,ou=system";
@@ -517,6 +536,30 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         assertTrue( monitor.errorsReported() );
         assertNotNull( monitor.getException() );
         assertTrue( monitor.getException() instanceof LdapLoopDetectedException );
+    }
+
+
+    @Test
+    public void testModify() throws Exception
+    {
+        String dn = "uid=user.X,ou=users,ou=system";
+
+        // create entry
+        service.getAdminSession().add( new DefaultEntry( service.getSchemaManager(), dn,
+            "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" ) );
+
+        // modify entry
+        StudioProgressMonitor monitor = getProgressMonitor();
+        List<Modification> modifications = Collections.singletonList(
+            new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE,
+                new DefaultAttribute( "sn", "modified" ) ) );
+        getConnectionWrapper( monitor ).modifyEntry( new Dn( dn ), modifications, null, monitor, null );
+
+        // should have modified the entry
+        assertFalse( monitor.isCanceled() );
+        assertFalse( monitor.errorsReported() );
+        Entry entry = service.getAdminSession().lookup( new Dn( dn ) );
+        assertEquals( "modified", entry.get( "sn" ).getString() );
     }
 
 
@@ -592,6 +635,26 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
         assertTrue( monitor.errorsReported() );
         assertNotNull( monitor.getException() );
         assertTrue( monitor.getException() instanceof LdapLoopDetectedException );
+    }
+
+
+    @Test
+    public void testDelete() throws Exception
+    {
+        String dn = "uid=user.X,ou=users,ou=system";
+
+        // create entry
+        service.getAdminSession().add( new DefaultEntry( service.getSchemaManager(), dn,
+            "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" ) );
+
+        // delete entry
+        StudioProgressMonitor monitor = getProgressMonitor();
+        getConnectionWrapper( monitor ).deleteEntry( new Dn( dn ), null, monitor, null );
+
+        // should have deleted the entry
+        assertFalse( monitor.isCanceled() );
+        assertFalse( monitor.errorsReported() );
+        assertFalse( service.getAdminSession().exists( dn ) );
     }
 
 
@@ -692,4 +755,33 @@ public abstract class ConnectionWrapperTestBase extends AbstractLdapTestUnit
 
         return connectionWrapper;
     }
+
+
+    @Test
+    public void testPasswordModifyRequestExtendedOperation() throws Exception
+    {
+        String dn = "uid=user.X,ou=users,ou=system";
+
+        // create target entry
+        service.getAdminSession().add( new DefaultEntry( service.getSchemaManager(), dn,
+            "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X", "userPassword:  secret" ) );
+
+        // modify password
+        LdapApiService ldapApiService = LdapApiServiceFactory.getSingleton();
+        PasswordModifyRequest request = ( PasswordModifyRequest ) ldapApiService.getExtendedRequestFactories()
+            .get( PasswordModifyRequest.EXTENSION_OID ).newRequest();
+        request.setUserIdentity( Strings.getBytesUtf8( dn ) );
+        request.setOldPassword( Strings.getBytesUtf8( "secret" ) );
+        request.setNewPassword( Strings.getBytesUtf8( "s3cre3t" ) );
+        StudioProgressMonitor monitor = getProgressMonitor();
+        ExtendedResponse response = getConnectionWrapper( monitor ).extended( request, monitor );
+
+        // should have modified password of the target entry
+        assertEquals( ResultCodeEnum.SUCCESS, response.getLdapResult().getResultCode() );
+        assertFalse( monitor.isCanceled() );
+        assertFalse( monitor.errorsReported() );
+        Entry entry = service.getAdminSession().lookup( new Dn( dn ) );
+        assertEquals( "s3cre3t", Strings.utf8ToString( entry.get( "userPassword" ).getBytes() ) );
+    }
+
 }

@@ -19,7 +19,7 @@
   @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
 -->
 <?pde version="3.8"?>
-<target name="Apache Directory Studio Platform" sequenceNumber="431">
+<target name="Apache Directory Studio Platform" sequenceNumber="439">
   <locations>
 
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
@@ -37,24 +37,24 @@
       <unit id="org.apache.commons.commons-pool2" version="${org.apache.commons.pool.bundleversion}"/>
 
       <!-- LDAP API modules -->
-      <unit id="org.apache.directory.api.asn1.api" version="${org.apache.directory.api.version}"/>
-      <unit id="org.apache.directory.api.asn1.ber" version="${org.apache.directory.api.version}"/>
-      <unit id="org.apache.directory.api.dsmlv2.engine" version="${org.apache.directory.api.version}"/>
-      <unit id="org.apache.directory.api.dsmlv2.parser" version="${org.apache.directory.api.version}"/>
-      <unit id="org.apache.directory.api.i18n" version="${org.apache.directory.api.version}"/>
-      <unit id="org.apache.directory.api.ldap.client.api" version="${org.apache.directory.api.version}"/>
-      <unit id="org.apache.directory.api.ldap.codec.core" version="${org.apache.directory.api.version}"/>
-      <unit id="org.apache.directory.api.ldap.extras.aci" version="${org.apache.directory.api.version}"/>
-      <unit id="org.apache.directory.api.ldap.extras.codec" version="${org.apache.directory.api.version}"/>
-      <unit id="org.apache.directory.api.ldap.extras.codec.api" version="${org.apache.directory.api.version}"/>
-      <unit id="org.apache.directory.api.ldap.extras.sp" version="${org.apache.directory.api.version}"/>
-      <unit id="org.apache.directory.api.ldap.extras.trigger" version="${org.apache.directory.api.version}"/>
-      <unit id="org.apache.directory.api.ldap.extras.util" version="${org.apache.directory.api.version}"/>
-      <unit id="org.apache.directory.api.ldap.model" version="${org.apache.directory.api.version}"/>
-      <unit id="org.apache.directory.api.ldap.net.mina" version="${org.apache.directory.api.version}"/>
-      <unit id="org.apache.directory.api.ldap.schema" version="${org.apache.directory.api.version}"/>
-      <unit id="org.apache.directory.api.ldap.schema.converter" version="${org.apache.directory.api.version}"/>
-      <unit id="org.apache.directory.api.util" version="${org.apache.directory.api.version}"/>
+      <unit id="org.apache.directory.api.asn1.api" version="${org.apache.directory.api.bundleversion}"/>
+      <unit id="org.apache.directory.api.asn1.ber" version="${org.apache.directory.api.bundleversion}"/>
+      <unit id="org.apache.directory.api.dsmlv2.engine" version="${org.apache.directory.api.bundleversion}"/>
+      <unit id="org.apache.directory.api.dsmlv2.parser" version="${org.apache.directory.api.bundleversion}"/>
+      <unit id="org.apache.directory.api.i18n" version="${org.apache.directory.api.bundleversion}"/>
+      <unit id="org.apache.directory.api.ldap.client.api" version="${org.apache.directory.api.bundleversion}"/>
+      <unit id="org.apache.directory.api.ldap.codec.core" version="${org.apache.directory.api.bundleversion}"/>
+      <unit id="org.apache.directory.api.ldap.extras.aci" version="${org.apache.directory.api.bundleversion}"/>
+      <unit id="org.apache.directory.api.ldap.extras.codec" version="${org.apache.directory.api.bundleversion}"/>
+      <unit id="org.apache.directory.api.ldap.extras.codec.api" version="${org.apache.directory.api.bundleversion}"/>
+      <unit id="org.apache.directory.api.ldap.extras.sp" version="${org.apache.directory.api.bundleversion}"/>
+      <unit id="org.apache.directory.api.ldap.extras.trigger" version="${org.apache.directory.api.bundleversion}"/>
+      <unit id="org.apache.directory.api.ldap.extras.util" version="${org.apache.directory.api.bundleversion}"/>
+      <unit id="org.apache.directory.api.ldap.model" version="${org.apache.directory.api.bundleversion}"/>
+      <unit id="org.apache.directory.api.ldap.net.mina" version="${org.apache.directory.api.bundleversion}"/>
+      <unit id="org.apache.directory.api.ldap.schema" version="${org.apache.directory.api.bundleversion}"/>
+      <unit id="org.apache.directory.api.ldap.schema.converter" version="${org.apache.directory.api.bundleversion}"/>
+      <unit id="org.apache.directory.api.util" version="${org.apache.directory.api.bundleversion}"/>
 
       <!-- LDAP server modules -->
       <unit id="org.apache.directory.server.core" version="${org.apache.directory.server.version}" />

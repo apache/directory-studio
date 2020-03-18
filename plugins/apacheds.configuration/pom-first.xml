@@ -55,9 +55,9 @@
  org.apache.directory.studio.apacheds.configuration.wizards</Export-Package>
             <Require-Bundle>
  com.github.ben-manes.caffeine;bundle-version="${com.github.ben-manes.caffeine.bundleversion}",
- org.apache.directory.api.util;bundle-version="${org.apache.directory.api.version}",
- org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.version}",
- org.apache.directory.api.ldap.schema;bundle-version="${org.apache.directory.api.version}",
+ org.apache.directory.api.util;bundle-version="${org.apache.directory.api.bundleversion}",
+ org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.bundleversion}",
+ org.apache.directory.api.ldap.schema;bundle-version="${org.apache.directory.api.bundleversion}",
  org.apache.directory.server.config;bundle-version="${org.apache.directory.server.version}",
  org.apache.directory.server.core.api;bundle-version="${org.apache.directory.server.version}",
  org.apache.directory.server.core.constants;bundle-version="${org.apache.directory.server.version}",

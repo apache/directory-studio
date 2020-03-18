@@ -64,12 +64,12 @@
  org.apache.directory.server.jdbm.partition;bundle-version="${org.apache.directory.server.version}",
  org.apache.directory.server.xdbm.partition;bundle-version="${org.apache.directory.server.version}",
  
- org.apache.directory.api.asn1.api;bundle-version="${org.apache.directory.api.version}",
- org.apache.directory.api.ldap.client.api;bundle-version="${org.apache.directory.api.version}",
- org.apache.directory.api.ldap.codec.core;bundle-version="${org.apache.directory.api.version}",
- org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.version}",
- org.apache.directory.api.ldap.net.mina;bundle-version="${org.apache.directory.api.version}",
- org.apache.directory.api.util;bundle-version="${org.apache.directory.api.version}",
+ org.apache.directory.api.asn1.api;bundle-version="${org.apache.directory.api.bundleversion}",
+ org.apache.directory.api.ldap.client.api;bundle-version="${org.apache.directory.api.bundleversion}",
+ org.apache.directory.api.ldap.codec.core;bundle-version="${org.apache.directory.api.bundleversion}",
+ org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.bundleversion}",
+ org.apache.directory.api.ldap.net.mina;bundle-version="${org.apache.directory.api.bundleversion}",
+ org.apache.directory.api.util;bundle-version="${org.apache.directory.api.bundleversion}",
  org.apache.mina.core;bundle-version="${org.apache.mina.bundleversion}",
  
  org.apache.directory.studio.aciitemeditor,
