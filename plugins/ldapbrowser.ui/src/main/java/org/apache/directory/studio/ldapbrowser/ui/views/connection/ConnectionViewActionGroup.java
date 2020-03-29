@@ -27,6 +27,7 @@ import org.apache.directory.studio.ldapbrowser.ui.actions.ExportConnectionsActio
 import org.apache.directory.studio.ldapbrowser.ui.actions.ImportConnectionsAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.ImportExportAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.OpenSchemaBrowserAction;
+import org.apache.directory.studio.ldapbrowser.ui.actions.PasswordModifyExtendedOperationAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.ReloadSchemaAction;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
@@ -83,6 +84,9 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
     /** The Constant reloadSchemaAction. */
     private static final String reloadSchemaAction = "reloadSchemaAction"; //$NON-NLS-1$
 
+    /** The Constant passwordModifyExtendedOperationAction. */
+    private static final String passwordModifyExtendedOperationAction = "passwordModifyExtendedOperation"; //$NON-NLS-1$
+
 
     /**
      * Creates a new instance of ConnectionViewActionGroup and creates
@@ -120,6 +124,9 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
             new OpenSchemaBrowserAction() ) );
         connectionActionMap.put( reloadSchemaAction, new ConnectionViewActionProxy( viewer, this,
             new ReloadSchemaAction() ) );
+
+        connectionActionMap.put( passwordModifyExtendedOperationAction, new ConnectionViewActionProxy( viewer, this,
+            new PasswordModifyExtendedOperationAction() ) );
     }
 
 
@@ -194,6 +201,10 @@ public class ConnectionViewActionGroup extends ConnectionActionGroup
 
         // additions
         menuManager.add( new Separator( IWorkbenchActionConstants.MB_ADDITIONS ) );
+        MenuManager extendedOperationsMenuManager = new MenuManager(
+            Messages.getString( "ConnectionViewActionGroup.ExtendedOperations" ) ); //$NON-NLS-1$
+        extendedOperationsMenuManager.add( connectionActionMap.get( passwordModifyExtendedOperationAction ) );
+        menuManager.add( extendedOperationsMenuManager );
         menuManager.add( new Separator() );
 
         // properties

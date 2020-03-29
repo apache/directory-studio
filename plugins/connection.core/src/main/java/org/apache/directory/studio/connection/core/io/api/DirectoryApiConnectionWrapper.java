@@ -1052,12 +1052,11 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     exception = e;
                 }
 
+                // TODO: logging?
                 LdapException le = toLdapException( exception );
 
                 for ( ILdapLogger logger : getLdapLoggers() )
                 {
-                    // TODO: logging
-                    // logger.log
                 }
             }
         };

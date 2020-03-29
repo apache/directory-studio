@@ -419,6 +419,12 @@ public class BrowserCoreMessages extends NLS
 
     public static String jobs__search_error_n;
 
+    public static String jobs__extended_operation_name;
+
+    public static String jobs__extended_operation_error;
+
+    public static String jobs__extended_operation_task;
+
     public static String model__empty_string_value;
 
     public static String model__empty_binary_value;

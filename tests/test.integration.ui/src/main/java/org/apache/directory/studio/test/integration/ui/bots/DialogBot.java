@@ -52,6 +52,20 @@ public abstract class DialogBot
     }
 
 
+    public boolean isOkButtonEnabled()
+    {
+        return isButtonEnabled( "OK" );
+    }
+
+
+    private boolean isButtonEnabled( String buttonTitle )
+    {
+        activate();
+        final SWTBotButton button = bot.button( buttonTitle );
+        return button.isEnabled();
+    }
+
+
     public void clickOkButton()
     {
         clickButton( "OK" );

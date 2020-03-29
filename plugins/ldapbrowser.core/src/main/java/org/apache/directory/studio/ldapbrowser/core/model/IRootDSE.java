@@ -53,6 +53,16 @@ public interface IRootDSE extends IEntry
 
 
     /**
+     * Checks if extension is supported.
+     * 
+     * @param oid the OID
+     * 
+     * @return true, if extension is supported
+     */
+    boolean isExtensionSupported( String oid );
+
+
+    /**
      * Checks if control is supported.
      * 
      * @param oid the OID

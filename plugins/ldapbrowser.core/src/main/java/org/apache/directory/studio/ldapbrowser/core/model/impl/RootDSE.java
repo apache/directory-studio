@@ -127,6 +127,16 @@ public final class RootDSE extends BaseDNEntry implements IRootDSE
 
 
     /**
+     * @see org.apache.directory.studio.ldapbrowser.core.model.IRootDSE#isExtensionSupported(java.lang.String)
+     */
+    public boolean isExtensionSupported( String oid )
+    {
+        String[] supportedExtensions = getSupportedExtensions();
+        return Arrays.asList( supportedExtensions ).contains( oid );
+    }
+
+
+    /**
      * @see org.apache.directory.studio.ldapbrowser.core.model.IRootDSE#isControlSupported(java.lang.String)
      */
     public boolean isControlSupported( String oid )
