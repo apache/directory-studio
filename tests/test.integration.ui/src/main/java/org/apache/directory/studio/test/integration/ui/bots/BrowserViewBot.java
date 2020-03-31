@@ -236,6 +236,13 @@ public class BrowserViewBot
     }
 
 
+    public PasswordModifyExtendedOperationDialogBot openPasswordModifyExtendedOperationDialog()
+    {
+        ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Extended Operations", "Password Modify..." );
+        return new PasswordModifyExtendedOperationDialogBot();
+    }
+
+
     public void typeQuickSearchAttributeType( String attributeType )
     {
         bot.comboBox( 0 ).setText( attributeType );

@@ -48,6 +48,7 @@ import org.apache.directory.studio.ldapbrowser.ui.actions.NewContextEntryAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.NewEntryAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.NewSearchAction;
 import org.apache.directory.studio.ldapbrowser.ui.actions.OpenEntryEditorAction;
+import org.apache.directory.studio.ldapbrowser.ui.actions.PasswordModifyExtendedOperationAction;
 import org.apache.directory.studio.utils.ActionUtils;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
@@ -190,6 +191,9 @@ public class BrowserViewActionGroup extends BrowserActionGroup
     /** The Constant openEntryEditorAction. */
     private static final String openEntryEditorAction = "openEntryEditor"; //$NON-NLS-1$
 
+    /** The Constant passwordModifyExtendedOperationAction. */
+    private static final String passwordModifyExtendedOperationAction = "passwordModifyExtendedOperation"; //$NON-NLS-1$
+
 
     /**
      * Creates a new instance of BrowserViewActionGroup and 
@@ -272,6 +276,8 @@ public class BrowserViewActionGroup extends BrowserActionGroup
         browserActionMap.put( fetchSubentriesAction, new BrowserViewActionProxy( viewer, new FetchSubentriesAction() ) );
 
         browserActionMap.put( openEntryEditorAction, new BrowserViewActionProxy( viewer, new OpenEntryEditorAction() ) );
+
+        browserActionMap.put( passwordModifyExtendedOperationAction, new BrowserViewActionProxy( viewer, new PasswordModifyExtendedOperationAction() ) );
     }
 
 
@@ -433,6 +439,10 @@ public class BrowserViewActionGroup extends BrowserActionGroup
 
         // additions
         menuManager.add( new Separator( IWorkbenchActionConstants.MB_ADDITIONS ) );
+        MenuManager extendedOperationsMenuManager = new MenuManager(
+            Messages.getString( "BrowserViewActionGroup.ExtendedOperations" ) ); //$NON-NLS-1$
+        extendedOperationsMenuManager.add( browserActionMap.get( passwordModifyExtendedOperationAction ) );
+        menuManager.add( extendedOperationsMenuManager );
         menuManager.add( new Separator() );
 
         // properties

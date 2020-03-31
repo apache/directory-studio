@@ -50,8 +50,8 @@
             <Export-Package>org.apache.directory.studio.aciitemeditor</Export-Package>
             
             <Require-Bundle>
- org.apache.directory.api.ldap.extras.aci;bundle-version="${org.apache.directory.api.version}",
- org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.version}",
+ org.apache.directory.api.ldap.extras.aci;bundle-version="${org.apache.directory.api.bundleversion}",
+ org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.bundleversion}",
  org.apache.directory.studio.common.ui,
  org.apache.directory.studio.connection.core,
  org.apache.directory.studio.connection.ui,

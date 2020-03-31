@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.schemaeditor.view.dialogs;
+package org.apache.directory.studio.common.ui.dialogs;
 
 
 import org.eclipse.jface.dialogs.IDialogConstants;

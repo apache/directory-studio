@@ -52,6 +52,8 @@ import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.DeleteRequest;
 import org.apache.directory.api.ldap.model.message.DeleteRequestImpl;
 import org.apache.directory.api.ldap.model.message.DeleteResponse;
+import org.apache.directory.api.ldap.model.message.ExtendedRequest;
+import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 import org.apache.directory.api.ldap.model.message.LdapResult;
 import org.apache.directory.api.ldap.model.message.ModifyDnRequest;
 import org.apache.directory.api.ldap.model.message.ModifyDnRequestImpl;
@@ -1017,6 +1019,67 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         {
             monitor.reportError( runnable.getException() );
         }
+    }
+
+    @Override
+    public ExtendedResponse extended( ExtendedRequest request, StudioProgressMonitor monitor )
+    {
+        if ( connection.isReadOnly() )
+        {
+            monitor
+                .reportError(
+                    new Exception( NLS.bind( Messages.error__connection_is_readonly, connection.getName() ) ) );
+            return null;
+        }
+
+        ExtendedResponse[] outerResponse = new ExtendedResponse[1];
+        InnerRunnable runnable = new InnerRunnable()
+        {
+            public void run()
+            {
+                try
+                {
+                    ExtendedResponse response = ldapConnection.extended( request );
+                    outerResponse[0] = response;
+
+                    // TODO: handle referrals?
+
+                    // Checking the response
+                    checkResponse( response );
+                }
+                catch ( Exception e )
+                {
+                    exception = e;
+                }
+
+                // TODO: logging?
+                LdapException le = toLdapException( exception );
+
+                for ( ILdapLogger logger : getLdapLoggers() )
+                {
+                }
+            }
+        };
+
+        try
+        {
+            checkConnectionAndRunAndMonitor( runnable, monitor );
+        }
+        catch ( Exception e )
+        {
+            monitor.reportError( e );
+        }
+
+        if ( runnable.isCanceled() )
+        {
+            monitor.setCanceled( true );
+        }
+        if ( runnable.getException() != null )
+        {
+            monitor.reportError( runnable.getException() );
+        }
+
+        return outerResponse[0];
     }
 
     /**

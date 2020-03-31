@@ -79,8 +79,6 @@ public class NewEntryWizardTest extends AbstractLdapTestUnit
     @Before
     public void setUp() throws Exception
     {
-        ErrorDialog.AUTOMATED_MODE = false;
-
         // enable krb5kdc and nis schemas
         ApacheDsUtils.enableSchema( ldapServer, "krb5kdc" );
         ApacheDsUtils.enableSchema( ldapServer, "nis" );

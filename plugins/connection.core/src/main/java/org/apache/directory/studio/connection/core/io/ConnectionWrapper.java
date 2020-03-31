@@ -27,6 +27,8 @@ import javax.naming.directory.SearchControls;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.message.Control;
+import org.apache.directory.api.ldap.model.message.ExtendedRequest;
+import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.ReferralsInfo;
@@ -155,4 +157,8 @@ public interface ConnectionWrapper
      */
     void deleteEntry( final Dn dn, final Control[] controls, final StudioProgressMonitor monitor,
         final ReferralsInfo referralsInfo );
+
+
+    ExtendedResponse extended( ExtendedRequest request, final StudioProgressMonitor monitor );
+
 }
