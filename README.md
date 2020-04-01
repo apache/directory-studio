@@ -327,6 +327,6 @@ Start OSGi console:
 
 List all IUs within a repository:
 
-    provliu http://download.eclipse.org/eclipse/updates/4.11/
+    provliu http://download.eclipse.org/eclipse/updates/4.15/
 
 

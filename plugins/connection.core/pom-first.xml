@@ -55,7 +55,7 @@
             <Import-Package>
  org.apache.commons.lang3,
  org.apache.commons.lang3.exception,
- org.apache.commons.codec.digest,
+ org.apache.commons.codec.digest",
  org.apache.http.conn.ssl,
  org.dom4j,
  org.dom4j.io
@@ -71,6 +71,7 @@
  org.apache.directory.api.util;bundle-version="${org.apache.directory.api.bundleversion}",
  org.apache.directory.studio.common.core,
  org.apache.directory.studio.ldifparser,
+ org.apache.commons.codec,
  org.eclipse.core.runtime,
  org.eclipse.ui
             </Require-Bundle>

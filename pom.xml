@@ -106,11 +106,6 @@
 
     <!-- Set versions for skins -->
     <skin.version>1.0.2</skin.version>
-
-    <!-- The repositories -->
-    <juno-repo.url>http://download.eclipse.org/releases/juno</juno-repo.url>
-    <kepler-repo.url>http://download.eclipse.org/releases/kepler</kepler-repo.url>
-    <luna-repo.url>http://download.eclipse.org/releases/luna</luna-repo.url>
   </properties>
 
   <modules>
