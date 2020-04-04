@@ -143,8 +143,7 @@ We release the following artifacts:
 
 ### Preparation
 
-Update the copyright year, see <http://svn.apache.org/viewvc?rev=1807191&view=rev>
-for the list of files that need to be changed.
+Update the copyright year. Full text search/replace "2006-2020". Also change in `plugins/rcp/src/main/resources/splash.bmp` image.
 
 Test the release build: rat check, javadoc and source jar generation, installer generation, GPG signing, userguide generation
 
