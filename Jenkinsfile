@@ -96,6 +96,29 @@ pipeline {
             }
           }
         }
+        stage ('Linux Java 14') {
+          options {
+            timeout(time: 4, unit: 'HOURS')
+            retry(2)
+          }
+          agent {
+            docker {
+              label 'ubuntu && !H28 && !H36 && !H40'
+              image 'apachedirectory/maven-build:jdk-14'
+              //args '-v $HOME/.m2:/home/hnelson/.m2'
+            }
+          }
+          steps {
+            sh 'export DISPLAY=:99; mvn -V -U -f pom-first.xml clean install && mvn -V clean install -Dorg.eclipse.swtbot.search.timeout=20000 -Denable-ui-tests'
+          }
+          post {
+            always {
+              junit '**/target/surefire-reports/*.xml'
+              archiveArtifacts artifacts:'tests/test.integration.ui/screenshots/*', allowEmptyArchive:true
+              deleteDir()
+            }
+          }
+        }
         stage ('Windows Java 8') {
           options {
             timeout(time: 4, unit: 'HOURS')
