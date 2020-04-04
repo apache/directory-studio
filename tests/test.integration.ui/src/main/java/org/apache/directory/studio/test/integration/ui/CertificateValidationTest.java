@@ -31,15 +31,25 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.math.BigInteger;
 import java.security.KeyPair;
+import java.security.KeyPairGenerator;
 import java.security.KeyStore;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.Security;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.Date;
 
+import javax.security.auth.x500.X500Principal;
+
+import org.apache.directory.api.ldap.model.constants.SchemaConstants;
+import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.DefaultEntry;
 import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.server.annotations.CreateLdapServer;
 import org.apache.directory.server.annotations.CreateTransport;
 import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
@@ -56,6 +66,12 @@ import org.apache.directory.studio.test.integration.ui.bots.PreferencesBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
 import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
 import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
+import org.bouncycastle.asn1.x509.BasicConstraints;
+import org.bouncycastle.asn1.x509.ExtendedKeyUsage;
+import org.bouncycastle.asn1.x509.Extension;
+import org.bouncycastle.asn1.x509.KeyPurposeId;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.x509.X509V3CertificateGenerator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -230,7 +246,7 @@ public class CertificateValidationTest extends AbstractLdapTestUnit
             goodKeyStoreFile.delete();
         }
         Entry entry = new DefaultEntry();
-        TlsKeyGenerator.addKeyPair( entry, issuerDn, subjectDn, startDate, expiryDate, keyAlgo, keySize,
+        addKeyPair( entry, issuerDn, subjectDn, startDate, expiryDate, keyAlgo, keySize,
             optionalSigningKey );
         KeyPair keyPair = TlsKeyGenerator.getKeyPair( entry );
         X509Certificate cert = TlsKeyGenerator.getCertificate( entry );
@@ -246,6 +262,84 @@ public class CertificateValidationTest extends AbstractLdapTestUnit
             keyStore.store( out, KEYSTORE_PW.toCharArray() );
         }
         return keyStore;
+    }
+
+    static
+    {
+        Security.addProvider( new BouncyCastleProvider() );
+    }
+
+    public static void addKeyPair( Entry entry, String issuerDN, String subjectDN, Date startDate, Date expiryDate,
+        String keyAlgo, int keySize, PrivateKey optionalSigningKey ) throws LdapException
+    {
+        Attribute objectClass = entry.get( SchemaConstants.OBJECT_CLASS_AT );
+
+        if ( objectClass == null )
+        {
+            entry.put( SchemaConstants.OBJECT_CLASS_AT, TlsKeyGenerator.TLS_KEY_INFO_OC,
+                SchemaConstants.INET_ORG_PERSON_OC );
+        }
+        else
+        {
+            objectClass.add( TlsKeyGenerator.TLS_KEY_INFO_OC, SchemaConstants.INET_ORG_PERSON_OC );
+        }
+
+        KeyPairGenerator generator = null;
+        try
+        {
+            generator = KeyPairGenerator.getInstance( keyAlgo );
+        }
+        catch ( NoSuchAlgorithmException e )
+        {
+            LdapException ne = new LdapException( "" );
+            ne.initCause( e );
+            throw ne;
+        }
+
+        generator.initialize( keySize );
+        KeyPair keypair = generator.genKeyPair();
+        entry.put( TlsKeyGenerator.KEY_ALGORITHM_AT, keyAlgo );
+
+        // Generate the private key attributes
+        PrivateKey privateKey = keypair.getPrivate();
+        entry.put( TlsKeyGenerator.PRIVATE_KEY_AT, privateKey.getEncoded() );
+        entry.put( TlsKeyGenerator.PRIVATE_KEY_FORMAT_AT, privateKey.getFormat() );
+
+        PublicKey publicKey = keypair.getPublic();
+        entry.put( TlsKeyGenerator.PUBLIC_KEY_AT, publicKey.getEncoded() );
+        entry.put( TlsKeyGenerator.PUBLIC_KEY_FORMAT_AT, publicKey.getFormat() );
+
+        // Generate the self-signed certificate
+        BigInteger serialNumber = BigInteger.valueOf( System.currentTimeMillis() );
+
+        X509V3CertificateGenerator certGen = new X509V3CertificateGenerator();
+        X500Principal issuerName = new X500Principal( issuerDN );
+        X500Principal subjectName = new X500Principal( subjectDN );
+
+        certGen.setSerialNumber( serialNumber );
+        certGen.setIssuerDN( issuerName );
+        certGen.setNotBefore( startDate );
+        certGen.setNotAfter( expiryDate );
+        certGen.setSubjectDN( subjectName );
+        certGen.setPublicKey( publicKey );
+        certGen.setSignatureAlgorithm( "SHA256With" + keyAlgo );
+        certGen.addExtension( Extension.basicConstraints, false, new BasicConstraints( true ) );
+        certGen.addExtension( Extension.extendedKeyUsage, true, new ExtendedKeyUsage(
+            new KeyPurposeId[]
+            { KeyPurposeId.id_kp_clientAuth, KeyPurposeId.id_kp_serverAuth } ) );
+
+        try
+        {
+            PrivateKey signingKey = optionalSigningKey != null ? optionalSigningKey : privateKey;
+            X509Certificate cert = certGen.generate( signingKey, "BC" );
+            entry.put( TlsKeyGenerator.USER_CERTIFICATE_AT, cert.getEncoded() );
+        }
+        catch ( Exception e )
+        {
+            LdapException ne = new LdapException( "" );
+            ne.initCause( e );
+            throw ne;
+        }
     }
 
 

@@ -19,7 +19,7 @@
   @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
 -->
 <?pde version="3.8"?>
-<target name="Apache Directory Studio Platform" sequenceNumber="449">
+<target name="Apache Directory Studio Platform" sequenceNumber="453">
   <locations>
 
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
@@ -28,6 +28,8 @@
       <unit id="org.apache.servicemix.bundles.dom4j" version="2.1.1.1"/>
       <unit id="org.apache.servicemix.bundles.xpp3" version="1.1.4.c"/>
       <unit id="com.github.ben-manes.caffeine" version="${com.github.ben-manes.caffeine.bundleversion}"/>
+      <unit id="org.apache.httpcomponents.httpclient" version="${org.apache.httpcomponents.httpclient.bundleversion}"/>
+      <unit id="org.apache.httpcomponents.httpcore" version="${org.apache.httpcomponents.httpcore.bundleversion}"/>
 
       <!-- Commons jars -->
       <unit id="org.apache.commons.commons-codec" version="${org.apache.commons.codec.bundleversion}"/>

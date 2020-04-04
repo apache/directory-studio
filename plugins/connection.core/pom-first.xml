@@ -71,7 +71,6 @@
  org.apache.directory.api.util;bundle-version="${org.apache.directory.api.bundleversion}",
  org.apache.directory.studio.common.core,
  org.apache.directory.studio.ldifparser,
- org.apache.commons.codec,
  org.eclipse.core.runtime,
  org.eclipse.ui
             </Require-Bundle>

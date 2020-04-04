@@ -89,6 +89,18 @@
       <version>${com.github.ben-manes.caffeine.version}</version>
     </dependency>
 
+    <!-- HTTP client module -->
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient-osgi</artifactId>
+      <version>${org.apache.httpcomponents.httpclient.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpcore-osgi</artifactId>
+      <version>${org.apache.httpcomponents.httpcore.version}</version>
+    </dependency>
+
     <!-- LDAP API modules -->
     <dependency>
       <groupId>org.apache.directory.api</groupId>

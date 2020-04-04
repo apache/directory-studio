@@ -98,7 +98,7 @@
  org.apache.directory.studio.schemaeditor,
  org.apache.directory.studio.schemaeditor.help,
  org.apache.directory.studio.valueeditors,
- 
+ bcprov,
  org.eclipse.core.runtime,
  org.eclipse.ui</Require-Bundle>
             
