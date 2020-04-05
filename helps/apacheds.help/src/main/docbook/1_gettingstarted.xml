@@ -24,7 +24,7 @@
 	</para>
 
 	&gettingstarted_download_install;
-	&gettingstarted_servers_view;
+	&gettingstarted_ldap_servers_view;
 	&gettingstarted_configuration_editor;
 
 </chapter>

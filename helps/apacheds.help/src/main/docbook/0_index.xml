@@ -3,7 +3,7 @@
 
   <!ENTITY gettingstarted SYSTEM "1_gettingstarted.xml">
   <!ENTITY gettingstarted_download_install SYSTEM "1.1_download_install.xml">
-  <!ENTITY gettingstarted_servers_view SYSTEM "1.2_servers_view.xml">
+  <!ENTITY gettingstarted_ldap_servers_view SYSTEM "1.2_ldap_servers_view.xml">
   <!ENTITY gettingstarted_configuration_editor SYSTEM "1.3_configuration_editor.xml">
   <!ENTITY gettingstarted_configuration_editor_overview SYSTEM "1.3.1_configuration_editor_overview.xml">
   <!ENTITY gettingstarted_configuration_editor_ldap_server SYSTEM "1.3.2_configuration_editor_ldap_server.xml">

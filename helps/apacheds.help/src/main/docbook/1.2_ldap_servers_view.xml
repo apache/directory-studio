@@ -16,39 +16,41 @@
 	specific language governing permissions and limitations
 	under the License.
 -->
-<section id="gettingstarted_servers_view">
+<section id="gettingstarted_ldapservers_view">
 	<title>LDAP Servers View</title>
 	<para>
-		The Servers view allows you to manage the servers. This view
+		The LDAP Servers view allows you to manage the servers. This view
 		displays a list of all your servers. You can use this view to
 		start or stop the servers.
 	</para>
 	<para>
-		Here is what the Servers view looks like:
+		Here is an example screenshot of the LDAP Servers view:
 		<screenshot>
 			<mediaobject>
-				<imageobject>
+				j<imageobject>
 					<imagedata scale="50"
-						fileref="images/views_servers-view.png"
+						fileref="images/views_ldap_servers.png"
 						format="PNG" />
 				</imageobject>
 			</mediaobject>
 		</screenshot>
 	</para>
 	<para>
-		Use the Servers view to perform the following tasks:
+		Use the LDAP Servers view to perform the following tasks:
 		<itemizedlist spacing="normal" mark="bullet">
 			<listitem>Create a server</listitem>
-			<listitem>Edit a server</listitem>
-			<listitem>Delete a server</listitem>
+			<listitem>Rename a server</listitem>
+			<listitem>Configure a server</listitem>
 			<listitem>Start a server</listitem>
+			<listitem>Create a connection to the server</listitem>
 			<listitem>Stop a server</listitem>
+			<listitem>Delete a server</listitem>
 		</itemizedlist>
 	</para>
 	<para>
-		The Servers view displays the current status of all the servers.
+		The LDAP Servers view displays the current status of all the servers.
 		The
-		<emphasis role="strong">Status</emphasis>
+		<emphasis role="strong">State</emphasis>
 		column indicates whether or not a server has been started. The
 		following lists the possible server status:
 		<itemizedlist spacing="normal" mark="bullet">
@@ -62,7 +64,7 @@
 		<emphasis role="strong">Toolbar</emphasis>
 	</para>
 	<para>
-		The toolbar of the Servers view contains the following actions:
+		The toolbar of the LDAP Servers view contains the following actions:
 		<itemizedlist spacing="normal" mark="bullet">
 			<listitem>
 				<imageobject>
@@ -70,8 +72,8 @@
 						fileref="images/icons_server_new.gif" format="GIF" />
 				</imageobject>
 				-
-				<emphasis>Create a new server</emphasis>
-				: Creates a new server.
+				<emphasis>New server</emphasis>
+				: Creates a new LDAP server.
 			</listitem>
 			<listitem>
 				<imageobject>
@@ -80,7 +82,7 @@
 				</imageobject>
 				-
 				<emphasis>Run</emphasis>
-				: Starts the selected server.
+				: Starts the selected LDAP server.
 			</listitem>
 			<listitem>
 				<imageobject>
@@ -89,14 +91,81 @@
 				</imageobject>
 				-
 				<emphasis>Stop</emphasis>
-				: Stops the selected server.
+				: Stops the selected LDAP server.
 			</listitem>
 		</itemizedlist>
 	</para>
 	<para>
+		<emphasis role="strong">Context Menu</emphasis>
+	</para>
+	<para>
+		The context menu of the LDAP Servers view contains the following actions:
+		<itemizedlist spacing="normal" mark="bullet">
+			<listitem>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/icons_server_new.gif" format="GIF" />
+				</imageobject>
+				-
+				<emphasis>New Server</emphasis>
+				: Creates a new LDAP server.
+			</listitem>
+			<listitem>
+				<emphasis>Open Configuration</emphasis>
+				: Opens the configuration editor.
+			</listitem>
+			<listitem>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/icons_delete.gif" format="GIF" />
+				</imageobject>
+				-
+				<emphasis>Delete</emphasis>
+				: Deletes the selected LDAP server.
+			</listitem>
+			<listitem>
+				<emphasis>Rename...</emphasis>
+				: Renames the selected LDAP server.
+			</listitem>
+			<listitem>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/icons_run.gif" format="GIF" />
+				</imageobject>
+				-
+				<emphasis>Run</emphasis>
+				: Starts the selected LDAP server.
+			</listitem>
+			<listitem>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/icons_stop.gif" format="GIF" />
+				</imageobject>
+				-
+				<emphasis>Stop</emphasis>
+				: Stops the selected LDAP server.
+			</listitem>
+			<listitem>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/icons_connection_add.gif" format="GIF" />
+				</imageobject>
+				-
+				<emphasis>Create a Connection</emphasis>
+				: Creates a preconfigured connection to the selected LDAP server.
+			</listitem>
+			<listitem>
+				<emphasis>Properties</emphasis>
+				: Opens the properties dialog of the selected LDAP server which shows details like version and the path the to configuration folder.
+			</listitem>
+		</itemizedlist>
+	</para>
+
+
+	<para>
 		<emphasis role="strong">Icons</emphasis>
 	</para>
-	<para>The following icons can appear in the Hierarchy view:</para>
+	<para>The following icons can appear in the LDAP Servers view:</para>
 	<para>
 		<informaltable>
 			<tgroup cols="2">

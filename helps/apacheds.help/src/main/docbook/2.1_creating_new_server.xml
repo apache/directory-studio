@@ -17,9 +17,9 @@
 	under the License.
 -->
 <section id="tasks_creating_new_server">
-	<title>Creating a new server</title>
+	<title>Creating a new LDAP server</title>
 	<para>
-		To create a new server, in the Servers view toolbar, click on
+		To create a new LDAP server, in the Servers view toolbar, click on
 		the
 		<imageobject>
 			<imagedata scale="50"
@@ -57,10 +57,18 @@
 				</thead>
 				<tbody>
 					<row>
-						<entry>Name</entry>
+						<entry>Server Type</entry>
 						<entry>
-							The name of the server. In the Servers view
-							the server is listed with this name. The
+							The type of the LDAP server. Currently only the
+							Apache Directory Server (ApacheDS) is available.
+						</entry>
+						<entry>empty</entry>
+					</row>
+					<row>
+						<entry>Server Name</entry>
+						<entry>
+							The name of the LDAP server. In the LDAP Servers
+							view the server is listed with this name. The
 							name must be unique.
 						</entry>
 						<entry>empty</entry>
