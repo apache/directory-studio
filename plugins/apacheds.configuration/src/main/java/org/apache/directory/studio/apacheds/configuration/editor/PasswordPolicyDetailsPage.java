@@ -412,11 +412,11 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
         validatorText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
 
         // Minimum Length (pwdMinLength)
-        minimumLengthCheckbox = toolkit.createButton( composite, "Enable Mimimum Length", SWT.CHECK );
+        minimumLengthCheckbox = toolkit.createButton( composite, "Enable Minimum Length", SWT.CHECK );
         minimumLengthCheckbox.setLayoutData( new GridData( SWT.BEGINNING, SWT.CENTER, false, false, 2, 1 ) );
-        Composite mimimumLengthRadioIndentComposite = createRadioIndentComposite( toolkit, composite,
+        Composite minimumLengthRadioIndentComposite = createRadioIndentComposite( toolkit, composite,
             "Number of characters:" );
-        minimumLengthText = toolkit.createText( mimimumLengthRadioIndentComposite, "" );
+        minimumLengthText = toolkit.createText( minimumLengthRadioIndentComposite, "" );
         minimumLengthText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
 
         // Maximum Length (pwdMaxLength)
@@ -452,7 +452,7 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
         section.setClient( composite );
 
         // Minimum Age (pwdMinAge)
-        toolkit.createLabel( composite, "Mimimum Age (seconds):" );
+        toolkit.createLabel( composite, "Minimum Age (seconds):" );
         minimumAgeText = toolkit.createText( composite, "" );
         minimumAgeText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
 
@@ -582,7 +582,7 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
         inHistoryText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
         
         // Minimum delay (pwdMinDelay)
-        toolkit.createLabel( composite, "Mimimum Delay (seconds):" );
+        toolkit.createLabel( composite, "Minimum Delay (seconds):" );
         minimumDelayText = toolkit.createText( composite, "" );
         minimumDelayText.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false ) );
 
@@ -777,7 +777,7 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
             passwordPolicy
                 .setPwdValidator( ServerConfigurationEditorUtils.checkEmptyString( validatorText.getText() ) );
 
-            // Miminum Length
+            // Mininum Length
             if ( minimumLengthCheckbox.getSelection() )
             {
                 try
@@ -1066,7 +1066,7 @@ public class PasswordPolicyDetailsPage implements IDetailsPage
             // Validator
             validatorText.setText( ServerConfigurationEditorUtils.checkNull( passwordPolicy.getPwdValidator() ) );
 
-            // Miminum Length
+            // Mininum Length
             int minimumLength = passwordPolicy.getPwdMinLength();
             minimumLengthCheckbox.setSelection( minimumLength != 0 );
             minimumLengthText.setText( "" + minimumLength );

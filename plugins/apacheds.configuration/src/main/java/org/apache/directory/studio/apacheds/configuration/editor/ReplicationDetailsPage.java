@@ -403,7 +403,7 @@ public class ReplicationDetailsPage implements IDetailsPage
     {
         Section section = toolkit.createSection( parent, Section.DESCRIPTION | Section.TITLE_BAR );
         section.marginWidth = 10;
-        section.setText( "Replication Consumer Details" );
+        section.setText( "Configuration" );
         section.setDescription( "Set the properties of the configuration." );
         TableWrapData td = new TableWrapData( TableWrapData.FILL, TableWrapData.TOP );
         td.grabHorizontal = true;

@@ -1066,9 +1066,9 @@ public class LdapLdapsServersPage extends ServerConfigurationEditorPage
         createLimitsSection( toolkit, leftComposite );
         createSslStartTlsKeystoreSection( toolkit, leftComposite );
         createSslAdvancedSettingsSection( toolkit, leftComposite );
-        createAdvancedSection( toolkit, leftComposite );
         createSupportedAuthenticationMechanismsSection( toolkit, rightComposite );
         createSaslSettingsSection( toolkit, rightComposite );
+        createAdvancedSection( toolkit, rightComposite );
 
         // Refreshing the UI
         refreshUI();
