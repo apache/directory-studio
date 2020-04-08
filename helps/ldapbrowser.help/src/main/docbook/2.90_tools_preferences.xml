@@ -409,7 +409,6 @@
 									Select the line spearator to use for LDIF files. 
 									Possible values are 
 									<emphasis role="strong">Windows</emphasis>,
-									<emphasis role="strong">Mac OS</emphasis> or
 									<emphasis role="strong">Unix</emphasis>
 								</entry>
 								<entry>The platform specific line separator</entry>
@@ -508,7 +507,6 @@
 									Select the line spearator to use. 
 									Possible values are 
 									<emphasis role="strong">Windows</emphasis>,
-									<emphasis role="strong">Mac OS</emphasis> or
 									<emphasis role="strong">Unix</emphasis>
 								</entry>
 								<entry>The platform specific line separator</entry>
@@ -602,7 +600,6 @@
 									Select the line spearator to use. 
 									Possible values are 
 									<emphasis role="strong">Windows</emphasis>,
-									<emphasis role="strong">Mac OS</emphasis> or
 									<emphasis role="strong">Unix</emphasis>
 								</entry>
 								<entry>The platform specific line separator</entry>
