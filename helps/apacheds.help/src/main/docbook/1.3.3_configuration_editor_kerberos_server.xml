@@ -20,9 +20,78 @@
 	<title>Kerberos Server Page</title>
 	<para>
 		The
-		<emphasis role="strong">Authentication Page</emphasis>
-		of the Configuration Editor allows you to edit the server
-		authentication settings.
+		<emphasis role="strong">Kerberos Page</emphasis>
+		of the configuration editor allows you to edit all Keberos
+		specific settings.
 	</para>
+	<para>
+		It contains the following sections :
+		<emphasis role="strong">Kerberos Server</emphasis>
+		,
+		<emphasis role="strong">Kerberos Settings</emphasis>
+		and
+		<emphasis role="strong">Ticket Settings</emphasis>
+		.
+	</para>
+	<para>
+		Here's what the
+		<emphasis role="strong">Kerberos Server page</emphasis>
+		looks like:
+		<screenshot>
+			<mediaobject>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/gettingstarted/editor_2.0.0_kerberos_server.png"
+						format="PNG" />
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+	</para>
+	
+	<simplesect
+		id="configuration_editor_2.0.0_keberos_server_kerberos_server">
+		<title>Kerberos Server</title>
+		<para>
+			This section allows you to enable/disable the Kerberos and Change Password protocols.
+			For each protocol you can specify
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>Port: the TCP port the server should listen to</listitem>
+				<listitem>Address: the IP address the server should bind to (default 0.0.0.0 means to bind to all network interfaces)</listitem>
+			</itemizedlist>
+		</para>
+	</simplesect>
+
+	<simplesect
+		id="configuration_editor_2.0.0_keberos_server_kerberos_settings">
+		<title>Kerberos Settings</title>
+		<para>
+			This section allows you to specify to the Kerberos server settings.
+		</para>
+		<para>
+			The
+			<emphasis role="strong">Primary KDC Realm</emphasis>
+			field represents the primary realm of the key distribution controller.
+		</para>
+		<para>
+			The
+			<emphasis role="strong">Search Base DN</emphasis>
+			field represents base DN in the LDAP server where principals
+			are searched.
+		</para>
+		<para>
+			<emphasis role="strong">Encryption Types</emphasis>
+			lets you select which encryption types are allowed to use.
+		</para>
+	</simplesect>
+
+	<simplesect
+		id="configuration_editor_2.0.0_keberos_server_ticket_settings">
+		<title>Ticket Settings</title>
+		<para>
+			This section allows you to specify to the Ticket specific settings.
+			Please refer to RFC 1510 and RFC 4120 for detailed information
+			about each setting.
+		</para>
+	</simplesect>
 
 </section>

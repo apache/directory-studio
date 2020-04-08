@@ -21,7 +21,7 @@
 	<para>
 		The
 		<emphasis role="strong">Partitions Page</emphasis>
-		of the Configuration Editor allows you to edit the server
+		of the configuration editor allows you to edit the server
 		partitions.
 	</para>
 	<para>
@@ -32,7 +32,7 @@
 			<mediaobject>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/gettingstarted/editor_1.5.7_partitions.png"
+						fileref="images/gettingstarted/editor_2.0.0_partitions.png"
 						format="PNG" />
 				</imageobject>
 			</mediaobject>
@@ -40,50 +40,40 @@
 	</para>
 	<para>The page is divided vertically in two parts.</para>
 	<para>
-		You can choose the orientation of the page by clicking on the
-		appropriate button ("Horizontal Orientation"
-		<imageobject>
-			<imagedata scale="50"
-				fileref="images/gettingstarted/horizontal_orientation.gif"
-				format="GIF" />
-		</imageobject>
-		or "Vertical Orientation"
-		<imageobject>
-			<imagedata scale="50"
-				fileref="images/gettingstarted/vertical_orientation.gif"
-				format="GIF" />
-		</imageobject>
-		) at the right of the page.
-	</para>
-	<para>
 		The left side of the page shows the partitions defined on the
 		server. This is where you can add or delete a partition.
 	</para>
-	<screenshot>
-		<mediaobject>
-			<imageobject>
-				<imagedata scale="50"
-					fileref="images/gettingstarted/editor_1.5.7_partitions_list.png"
-					format="PNG" />
-			</imageobject>
-		</mediaobject>
-	</screenshot>
+	<para>
+		The following icons appear:
+		<itemizedlist spacing="normal" mark="bullet">
+			<listitem>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/gettingstarted/partition.gif" format="GIF" />
+				</imageobject>
+				: Standard Partition
+			</listitem>
+			<listitem>
+				<imageobject>
+					<imagedata scale="50"
+						fileref="images/gettingstarted/partition_system.gif" format="GIF" />
+				</imageobject>
+				: System Partition
+			</listitem>
+		</itemizedlist>
+	</para>
 	<para>
 		The right side of the page display and lets you edit the details
 		of the selected partition in the left side.
 	</para>
 
-	<simplesect id="config1.5.4on_editor_1.5.7_partitions_details">
-		<title>Partition details</title>
-		<screenshot>
-			<mediaobject>
-				<imageobject>
-					<imagedata scale="50"
-						fileref="images/gettingstarted/editor_1.5.7_partitions_details.png"
-						format="PNG" />
-				</imageobject>
-			</mediaobject>
-		</screenshot>
+	<simplesect id="configuration_editor_2.0.0_partitions_details">
+		<title>Partition General Details</title>
+		<para>
+			<emphasis role="strong">Partiton Type</emphasis>
+			allows you to choose the partition type.
+			Available options are JDBM or Mavibot.
+		</para>
 		<para>
 			An
 			<emphasis role="strong">ID</emphasis>
@@ -91,18 +81,8 @@
 		</para>
 		<para>
 			A
-			<emphasis role="strong">Cache Size</emphasis>
-			is mandatory for the partition.
-		</para>
-		<para>
-			A
 			<emphasis role="strong">Suffix</emphasis>
-			is mandatory for the partition.
-		</para>
-		<para>
-			Check the
-			<emphasis role="strong">Enable Optimizer</emphasis>
-			checkbox to enable the optimizer for the partition.
+			is mandatory for the partition and defines the context entry DN.
 		</para>
 		<para>
 			Check the
@@ -112,22 +92,43 @@
 		</para>
 	</simplesect>
 
+	<simplesect id="configuration_editor_2.0.0_partitions_details">
+		<title>Context Entry</title>
+		<para>
+			Check the
+			<emphasis role="strong">Auto-generate context entry from suffix DN</emphasis>
+			to instruct the server to automatically generate
+			the context entry on first startup.
+		</para>
+		<para>
+			If you disable the auto-generation you have to specify all attributes.
+		</para>
+	</simplesect>
+
+	<simplesect id="configuration_editor_2.0.0_partition_specific_settings">
+		<title>Partition Specific Settings</title>
+		<para>
+			If you selected JDBM partition type the following settings are available.
+		</para>
+		<para>
+			The
+			<emphasis role="strong">Cache Size</emphasis>
+			defines the cache size of the partition.
+		</para>
+		<para>
+			Check the
+			<emphasis role="strong">Enable Optimizer</emphasis>
+			checkbox to enable the optimizer for the partition.
+		</para>
+	</simplesect>
+
 	<simplesect
-		id="configuration_editor_1.5.7_partitions_indexed_attributes">
+		id="configuration_editor_2.0.0_partitions_indexed_attributes">
 		<title>Indexed Attributes</title>
 		<para>
 			This section allows you to specify to the server the
 			attributes that should be indexed and their cache size.
 		</para>
-		<screenshot>
-			<mediaobject>
-				<imageobject>
-					<imagedata scale="50"
-						fileref="images/gettingstarted/editor_1.5.7_partitions_indexed_attributes.png"
-						format="PNG" />
-				</imageobject>
-			</mediaobject>
-		</screenshot>
 		<para>
 			Use the
 			<emphasis role="strong">Add...</emphasis>
@@ -138,45 +139,4 @@
 			buttons to set the indexed attributes.
 		</para>
 	</simplesect>
-	<para></para>
-	<para>The following icons can appear in the Partitions Page.</para>
-	<para>
-		<informaltable>
-			<tgroup cols="2">
-				<colspec colname="Icon" colwidth="1* " />
-				<colspec colname="Description" colwidth="3*" />
-				<thead>
-					<row>
-						<entry>Icon</entry>
-						<entry>Description</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry align="center">
-							<mediaobject>
-								<imageobject>
-									<imagedata scale="50"
-										fileref="images/gettingstarted/partition.gif" format="GIF" />
-								</imageobject>
-							</mediaobject>
-						</entry>
-						<entry>Standard Partition</entry>
-					</row>
-					<row>
-						<entry align="center">
-							<mediaobject>
-								<imageobject>
-									<imagedata scale="50"
-										fileref="images/gettingstarted/partition_system.gif"
-										format="GIF" />
-								</imageobject>
-							</mediaobject>
-						</entry>
-						<entry>System Partition</entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</informaltable>
-	</para>
 </section>

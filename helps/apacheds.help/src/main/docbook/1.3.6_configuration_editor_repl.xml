@@ -20,19 +20,19 @@
 	<title>Replication Page</title>
 	<para>
 		The
-		<emphasis role="strong">Extended Operations Page</emphasis>
-		of the Configuration Editor allows you to edit the server
-		extended operations.
+		<emphasis role="strong">Replication</emphasis>
+		of the configuration editor allows you to setup replication consumers.
+		See also RFC 4533 for a detailed description of the parameters.
 	</para>
 	<para>
 		Here's what the
-		<emphasis role="strong">Extended Operations Page</emphasis>
+		<emphasis role="strong">Replication Page</emphasis>
 		looks like:
 		<screenshot>
 			<mediaobject>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/gettingstarted/editor_1.5.7_extended_operations.png"
+						fileref="images/gettingstarted/editor_2.0.0_replication.png"
 						format="PNG" />
 				</imageobject>
 			</mediaobject>
@@ -40,92 +40,56 @@
 	</para>
 	<para>The page is divided vertically in two parts.</para>
 	<para>
-		You can choose the orientation of the page by clicking on the
-		appropriate button ("Horizontal Orientation"
-		<imageobject>
-			<imagedata scale="50"
-				fileref="images/gettingstarted/horizontal_orientation.gif"
-				format="GIF" />
-		</imageobject>
-		or "Vertical Orientation"
-		<imageobject>
-			<imagedata scale="50"
-				fileref="images/gettingstarted/vertical_orientation.gif"
-				format="GIF" />
-		</imageobject>
-		) at the right of the page.
+		The left side of the page shows the replication consumers defined
+		on the server. This is where you can add or delete an replication consumer.
 	</para>
 	<para>
-		The left side of the page shows the extended operations defined
-		on the server. This is where you can add or delete an extended
-		operation.
-	</para>
-	<screenshot>
-		<mediaobject>
-			<imageobject>
-				<imagedata scale="50"
-					fileref="images/gettingstarted/editor_1.5.7_extended_operations_list.png"
-					format="PNG" />
-			</imageobject>
-		</mediaobject>
-	</screenshot>
-	<para>
-		The right side of the page display and lets you see the details
-		of the selected extended operation in the left side.
+		The right side of the page display and lets you edit the details
+		of the selected replication consumer in the left side.
 	</para>
 
-	<simplesect id="configuration_editor_1.5.7_extended_operation_details">
-		<title>Extended Operation details</title>
-		<screenshot>
-			<mediaobject>
-				<imageobject>
-					<imagedata scale="50"
-						fileref="images/gettingstarted/editor_1.5.7_extended_operations_details.png"
-						format="PNG" />
-				</imageobject>
-			</mediaobject>
-		</screenshot>
+	<simplesect id="configuration_editor_2.0.0_replication_consumer_details">
+		<title>Replication Consumer Details</title>
 		<para>
-			The
-			<emphasis role="strong">Name</emphasis>
-			field displays the name of the extended operation.
+			Check the
+			<emphasis role="strong">Enabled</emphasis>
+			checkbox to enable the replication consumer.
 		</para>
 		<para>
-			The
+			An
+			<emphasis role="strong">ID</emphasis>
+			is mandatory for the replication consumer.
+		</para>
+		<para>
+			An
 			<emphasis role="strong">Description</emphasis>
-			field displays the description of the extended operation.
+			is optional for the replication consumer.
 		</para>
 	</simplesect>
-	<para></para>
-	<para>
-		The following icons can appear in the Extended Operations Page.
-	</para>
-	<para>
-		<informaltable>
-			<tgroup cols="2">
-				<colspec colname="Icon" colwidth="1* " />
-				<colspec colname="Description" colwidth="3*" />
-				<thead>
-					<row>
-						<entry>Icon</entry>
-						<entry>Description</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry align="center">
-							<mediaobject>
-								<imageobject>
-									<imagedata scale="50"
-										fileref="images/gettingstarted/extended_operation.gif"
-										format="GIF" />
-								</imageobject>
-							</mediaobject>
-						</entry>
-						<entry>Extended Operation</entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</informaltable>
-	</para>
+
+	<simplesect id="configuration_editor_2.0.0_replication_connection">
+		<title>Connection</title>
+		<para>
+			<emphasis role="strong">Replication Mode</emphasis>
+			defines the replication mode to use.
+			One of the following options can be chosen:
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>Refresh And Persist - Push based replication using persisten search</listitem>
+				<listitem>Refresh Only - Poll based replication</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			The reminder of the section allows to configure the connection parameters
+			to the replication provider.
+		</para>
+	</simplesect>
+
+	<simplesect id="configuration_editor_2.0.0_replication_configuration">
+		<title>Configuration</title>
+		<para>
+			The configuration section allows to define the search parameters
+			for the entries to replicate.
+		</para>
+	</simplesect>
+
 </section>

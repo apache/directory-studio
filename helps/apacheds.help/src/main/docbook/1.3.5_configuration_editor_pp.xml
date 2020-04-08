@@ -17,22 +17,24 @@
 	under the License.
 -->
 <section id="gettingstarted_configuration_editor_pp">
-	<title>Password Policy Page</title>
+	<title>Password Policies Page</title>
 	<para>
 		The
-		<emphasis role="strong">Interceptors Page</emphasis>
-		of the Configuration Editor allows you to edit the server
-		interceptors.
+		<emphasis role="strong">Password Policies Page</emphasis>
+		of the configuration editor allows you to edit the server's
+		password policies.
+		See also IETF draft-behera-ldap-password-policy-10 for a
+		detailed description of the password policy configuration.
 	</para>
 	<para>
 		Here's what the
-		<emphasis role="strong">Interceptors Page</emphasis>
+		<emphasis role="strong">Password Policies page</emphasis>
 		looks like:
 		<screenshot>
 			<mediaobject>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/gettingstarted/editor_1.5.7_interceptors.png"
+						fileref="images/gettingstarted/editor_2.0.0_passwordpolicies.png"
 						format="PNG" />
 				</imageobject>
 			</mediaobject>
@@ -40,94 +42,149 @@
 	</para>
 	<para>The page is divided vertically in two parts.</para>
 	<para>
-		You can choose the orientation of the page by clicking on the
-		appropriate button ("Horizontal Orientation"
-		<imageobject>
-			<imagedata scale="50"
-				fileref="images/gettingstarted/horizontal_orientation.gif"
-				format="GIF" />
-		</imageobject>
-		or "Vertical Orientation"
-		<imageobject>
-			<imagedata scale="50"
-				fileref="images/gettingstarted/vertical_orientation.gif"
-				format="GIF" />
-		</imageobject>
-		) at the right of the page.
+		The left side of the page shows the password policies defined on the
+		server. This is where you can add or delete a policy.
 	</para>
 	<para>
-		The left side of the page shows the interceptors defined on the
-		server. This is where you can add or delete an interceptor.
-	</para>
-	<para>
-		You can also choose the order of the interceptors in the
-		interceptors' chain using the "Up" and "Down" buttons.
-	</para>
-	<screenshot>
-		<mediaobject>
-			<imageobject>
-				<imagedata scale="50"
-					fileref="images/gettingstarted/editor_1.5.7_interceptors_list.png"
-					format="PNG" />
-			</imageobject>
-		</mediaobject>
-	</screenshot>
-	<para>
-		The right side of the page display and lets you see the details
-		of the selected interceptor in the left side.
+		The right side of the page display and lets you edit the details
+		of the selected password policy in the left side.
 	</para>
 
-	<simplesect id="configuration_editor_1.5.7_interceptors_details">
-		<title>Interceptor details</title>
-		<screenshot>
-			<mediaobject>
-				<imageobject>
-					<imagedata scale="50"
-						fileref="images/gettingstarted/editor_1.5.7_interceptors_details.png"
-						format="PNG" />
-				</imageobject>
-			</mediaobject>
-		</screenshot>
+	<simplesect id="configuration_editor_2.0.0_pp_details">
+		<title>Password Policy Details</title>
 		<para>
-			The
-			<emphasis role="strong">Name</emphasis>
-			field displays the name of the interceptor.
+			Check the
+			<emphasis role="strong">Enabled</emphasis>
+			checkbox to enable the password policy.
 		</para>
 		<para>
-			The
+			An
+			<emphasis role="strong">ID</emphasis>
+			is mandatory for the password policy.
+		</para>
+		<para>
+			An
 			<emphasis role="strong">Description</emphasis>
-			field displays the description of the interceptor.
+			is optional for the password policy.
 		</para>
 	</simplesect>
-	<para></para>
-	<para>
-		The following icons can appear in the Interceptors Page.
-	</para>
-	<para>
-		<informaltable>
-			<tgroup cols="2">
-				<colspec colname="Icon" colwidth="1* " />
-				<colspec colname="Description" colwidth="3*" />
-				<thead>
-					<row>
-						<entry>Icon</entry>
-						<entry>Description</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry align="center">
-							<mediaobject>
-								<imageobject>
-									<imagedata scale="50"
-										fileref="images/gettingstarted/interceptor.gif" format="GIF" />
-								</imageobject>
-							</mediaobject>
-						</entry>
-						<entry>Interceptor</entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</informaltable>
-	</para>
+
+	<simplesect id="configuration_editor_2.0.0_pp_quality">
+		<title>Quality</title>
+		<para>
+			<emphasis role="strong">Check Quality</emphasis>
+			defines which quality level a new password must fulfil.
+			One of the following options can be chosen:
+			<itemizedlist spacing="normal" mark="bullet">
+				<listitem>Disabled - Don't check the password</listitem>
+				<listitem>Relaxed - Check the password and accept passwords that can't be checked (hashed passwords)</listitem>
+				<listitem>Strict - Check the password but reject passwords that can't be checked (hashed passwords)</listitem>
+			</itemizedlist>
+		</para>
+		<para>
+			<emphasis role="strong">Validator</emphasis>
+			Defines the class that implements PasswordValidator interface (default
+			org.apache.directory.server.core.api.authn.ppolicy.DefaultPasswordValidator).
+		</para>
+		<para>
+			Check
+			<emphasis role="strong">Enable Minimum Length</emphasis>
+			to enable and specify the minimum password length.
+		</para>
+		<para>
+			Check
+			<emphasis role="strong">Enable Maximum Length</emphasis>
+			to enable and specify the maximum password length.
+		</para>
+	</simplesect>
+
+	<simplesect id="configuration_editor_2.0.0_pp_expiration">
+		<title>Expiration</title>
+		<para>
+			<emphasis role="strong">Minimum Age</emphasis>
+			defines the number of seconds that must elapse between modifications to the password.
+		</para>
+		<para>
+			<emphasis role="strong">Maximum Age</emphasis>
+			defines the number of seconds after which a modified password will expire.
+			Default value is 0, does not expire. If not 0, the value must be 
+			greater than or equal to the value of the minimum age.
+		</para>
+		<para>
+			Check
+			<emphasis role="strong">Enable Expire Warning</emphasis>
+			to enable and specify the number of seconds before password expiration a warning
+			message will be returned to an authentication user.
+		</para>
+		<para>
+			Check
+			<emphasis role="strong">Enable Grace Authentication Limit</emphasis>
+			to enable and specify the how often an expired password can be used to authenticate.
+		</para>
+		<para>
+			Check
+			<emphasis role="strong">Enable Grace Expire</emphasis>
+			to enable and specify the number of seconds for the grace period.
+		</para>
+	</simplesect>
+
+	<simplesect id="configuration_editor_2.0.0_pp_options">
+		<title>Options</title>
+		<para>
+			Check
+			<emphasis role="strong">Enable Must Change</emphasis>
+			to enforce that the password must be changed by the user after a password reset.
+		</para>
+		<para>
+			Check
+			<emphasis role="strong">Enable Allow User Change</emphasis>
+			to allow users to change their own password.
+		</para>
+		<para>
+			Check
+			<emphasis role="strong">Enable Safe Modify</emphasis>
+			to enforce that the existing password must be ent when changing the password.
+		</para>
+	</simplesect>
+
+	<simplesect id="configuration_editor_2.0.0_pp_lockout">
+		<title>Lockout</title>
+		<para>
+			Check
+			<emphasis role="strong">Enable Lockout</emphasis>
+			to enable password lockout.
+		</para>
+		<para>
+			<emphasis role="strong">Lockout Duraton</emphasis>
+			defines the number of seconds that the password cannot be used
+			to authenticate due to too many failed bind attempts.
+		</para>
+		<para>
+			<emphasis role="strong">Maximum consecutive Failrues</emphasis>
+			defines the number of consecutive failed bind attempts after
+			which the password may not be used to authenticate.
+		</para>
+		<para>
+			Check
+			<emphasis role="strong">Enable Maximum Idle</emphasis>
+			to enable and specify the number of seconds an account may
+			remain unused before it becomes locked.
+		</para>
+		<para>
+			Check
+			<emphasis role="strong">Enable In History</emphasis>
+			to enable and specify the maximum number of used password
+			history is preserved.
+		</para>
+		<para>
+			<emphasis role="strong">Minimum Delay</emphasis>
+			defines the number of seconds to delay responding to the
+			first failed authentication attempt. Default value 0, no delay
+		</para>
+		<para>
+			<emphasis role="strong">Maximum Delay</emphasis>
+			defines the maximum number of seconds to delay responding to the
+			first failed authentication attempt.
+		</para>
+	</simplesect>
 </section>

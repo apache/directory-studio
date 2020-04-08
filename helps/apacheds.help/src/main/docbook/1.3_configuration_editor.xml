@@ -20,7 +20,7 @@
 	<title>Apache DS Configuration Editor</title>
 	<para>
 		The Configuration Editor for Apache DS consists in a six pages
-		Editor:
+		editor:
 		<itemizedlist spacing="normal" mark="bullet">
 			<listitem>
 				The
@@ -30,9 +30,7 @@
 						Overview
 					</link>
 				</emphasis>
-				page allows you to set general settings about the
-				server such as enabling/disabling protocols, setting
-				protocols ports, limits, etc...
+				gives you a quick overview about enabled protocols, ports, and configured partitions.
 			</listitem>
 			<listitem>
 				The
@@ -49,7 +47,7 @@
 				<emphasis>
 					<link
 						linkend="gettingstarted_configuration_editor_kerberos_server">
-						LDAP/LDAPS Servers
+						Kerberos Server
 					</link>
 				</emphasis>
 				page allows you to configure the Kerberos server.
