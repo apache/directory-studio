@@ -204,21 +204,21 @@ public class ApacheDSConfigurationEditorBot
     public void setSaslHost( String saslHost )
     {
         activateLdapLdapsServersPage();
-        editor.bot().text( 17 ).setText( saslHost );
+        editor.bot().text( 15 ).setText( saslHost );
     }
 
 
     public void setSaslPrincipal( String saslPrincipal )
     {
         activateLdapLdapsServersPage();
-        editor.bot().text( 18 ).setText( saslPrincipal );
+        editor.bot().text( 16 ).setText( saslPrincipal );
     }
 
 
     public void setSaslSearchBase( String saslSearchBase )
     {
         activateLdapLdapsServersPage();
-        editor.bot().text( 19 ).setText( saslSearchBase );
+        editor.bot().text( 17 ).setText( saslSearchBase );
     }
 
 
