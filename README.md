@@ -57,10 +57,11 @@ or on Windows :
 
 * Unit tests included in src/test/java of each plugin are executed automatically and run in 'test' phase
 * Core integration tests in tests/test.integration.core are executed automatically and run in 'integration-test' phase
-* SWTBot based UI integration tests in tests/test.integration.ui are disabled by default. They can be enabled with `-Denable-ui-tests`. A failing test generates a screenshot. To not block the developer computer they can run within a virtual framebuffer:
+* SWTBot based UI integration tests in tests/test.integration.ui are disabled by default. They can be enabled with `-Denable-ui-tests`.
+  A failing test generates a screenshot. To not block the developer computer they can run within a virtual framebuffer:
 
-        export DISPLAY=:99
-        Xvfb :99 -screen 0 1024x768x16 &
+    export DISPLAY=:99
+    Xvfb :99 -screen 0 1024x768x16 &
 
 ### Build issues
 
@@ -111,8 +112,6 @@ The build produces binaries for all platforms. Archived versions can be found in
 
 ## Release
 
-**The release section needs to be updated after git migration!**
-
 ### Licenses
 
 The root directory contains LICENSE and NOTICE files for the source distribution.
@@ -136,7 +135,6 @@ We release the following artifacts:
     * Linux GTK 32bit tar.gz
     * Linux GTK 64bit tar.gz
     * maxOS 64bit dmg
-    * Windows 32bit exe installer and zip
     * Windows 64bit exe installer and zip
 * Userguides
 
