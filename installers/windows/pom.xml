@@ -34,7 +34,6 @@
   <description />
 
   <modules>
-    <module>32bit</module>
     <module>64bit</module>
   </modules>
 
