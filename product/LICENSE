@@ -206,11 +206,13 @@
 
 
 For
+* Caffeine
 * Ehcache
 * Streaming API for XML (StAX)
 * XML Commons API
 * Javax Inject API
-Licensed under the Apache License Version 2.0. 
+* all org.apache ASF components
+Licensed under the Apache License Version 2.0.
 
 
 ------------------------------------------------------------------------------
