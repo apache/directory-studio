@@ -132,7 +132,6 @@ We release the following artifacts:
     * the main features (LDAP Browser, Schema Editor, ApacheDS)
     * dependencies
 * Product archives and installers for
-    * Linux GTK 32bit tar.gz
     * Linux GTK 64bit tar.gz
     * maxOS 64bit dmg
     * Windows 64bit exe installer and zip
