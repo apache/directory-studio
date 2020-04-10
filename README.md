@@ -149,10 +149,11 @@ Test the release build: rat check, javadoc and source jar generation, installer 
 
 Note: During creation of the macOS installer (DMG) the ApacheDirectoryStudio.app is signed with the ASF "Developer ID Application" key. See https://issues.apache.org/jira/browse/INFRA-16978 for the process to get one.
 
-Run UI tests (if possible on all platforms)
+Run UI tests (if possible on all platforms):
 
     mvn clean install -Denable-ui-tests
 
+Test generated bin archives, installers, and update site (if possible on all platforms).
 
 ### Release build steps
 
