@@ -41,7 +41,8 @@ public class LdifEditorBot
     public void typeText( String text )
     {
         SWTBotEclipseEditor textEditor = editor.toTextEditor();
-        textEditor.typeText( text );
+        // note: typeText() doesn't work on macOS
+        textEditor.setText( text );
     }
 
 
