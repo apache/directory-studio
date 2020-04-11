@@ -608,7 +608,7 @@ public class BrowserTest extends AbstractLdapTestUnit
         /*
          * This test fails on Jenkins Windows Server, to be investigated...
          */
-        Assume.assumeFalse( StudioSystemUtils.IS_OS_WINDOWS_SERVER );
+        // Assume.assumeFalse( StudioSystemUtils.IS_OS_WINDOWS_SERVER );
 
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
         browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );

@@ -38,7 +38,6 @@ import org.apache.directory.studio.ldapbrowser.core.BrowserConnectionManager;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.test.integration.ui.bots.BotUtils;
 import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.SearchDialogBot;

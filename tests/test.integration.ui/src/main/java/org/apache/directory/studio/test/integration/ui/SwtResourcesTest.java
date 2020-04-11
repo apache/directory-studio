@@ -98,7 +98,7 @@ public class SwtResourcesTest extends AbstractLdapTestUnit
         int beforeObjectCount = getSwtObjectCount();
 
         // now lets run the new entry wizard it several times
-        for ( int i = 1; i < 25; i++ )
+        for ( int i = 1; i <= 8; i++ )
         {
             createAndDeleteEntry( "testSwtResourcesDelta" + i );
         }
@@ -106,9 +106,9 @@ public class SwtResourcesTest extends AbstractLdapTestUnit
         // get the SWT objects after the run
         int afterObjectCount = getSwtObjectCount();
 
-        // we expect not more than 10 additional SWT objects
+        // we expect none or only very few additional SWT objects
         assertTrue( "Too many SWT resources were allocated in testSwtResourcesDelta: before=" + beforeObjectCount
-            + ", after=" + afterObjectCount, afterObjectCount - beforeObjectCount < 10 );
+            + ", after=" + afterObjectCount, afterObjectCount - beforeObjectCount < 5 );
     }
 
 

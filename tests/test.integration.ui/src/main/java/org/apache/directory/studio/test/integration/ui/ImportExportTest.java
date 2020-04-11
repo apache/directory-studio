@@ -30,6 +30,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.function.Supplier;
 
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
@@ -275,10 +276,9 @@ public class ImportExportTest extends AbstractLdapTestUnit
         DeleteDialogBot dialogBot = browserViewBot.openDeleteDialog();
         assertTrue( dialogBot.isVisible() );
         dialogBot.clickOkButton();
-        BotUtils.sleep( 5000L ); // TODO: wait until all entries are deleted and UI is updated
-        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=alias" ) );
-        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=referral" ) );
-        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=subentry" ) );
+        waitAndAssert(false, () -> browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=alias" ));
+        waitAndAssert(false, () -> browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=referral" ));
+        waitAndAssert(false, () -> browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=subentry" ));
 
         // import LDIFs
         ImportWizardBot importWizardBot = browserViewBot.openImportLdifWizard();
@@ -364,10 +364,9 @@ public class ImportExportTest extends AbstractLdapTestUnit
         DeleteDialogBot dialogBot = browserViewBot.openDeleteDialog();
         assertTrue( dialogBot.isVisible() );
         dialogBot.clickOkButton();
-        BotUtils.sleep( 5000L ); // TODO: wait until all entries are deleted and UI is updated
-        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=alias" ) );
-        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=referral" ) );
-        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=subentry" ) );
+        waitAndAssert(false, () -> browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=alias" ));
+        waitAndAssert(false, () -> browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=referral" ));
+        waitAndAssert(false, () -> browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=subentry" ));
 
         // import DSML
         ImportWizardBot importWizardBot = browserViewBot.openImportDsmlWizard();
@@ -382,6 +381,27 @@ public class ImportExportTest extends AbstractLdapTestUnit
         assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=alias" ) );
         assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=referral" ) );
         assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=subentry" ) );
+    }
+
+
+    private void waitAndAssert( boolean expectedResult, Supplier<Boolean> fn )
+    {
+        for ( int i = 0; i < 30; i++ )
+        {
+            if ( fn.get() == expectedResult )
+            {
+                break;
+            }
+            BotUtils.sleep( 1000L );
+        }
+        if ( expectedResult == true )
+        {
+            assertTrue( fn.get() );
+        }
+        else
+        {
+            assertFalse( fn.get() );
+        }
     }
 
 

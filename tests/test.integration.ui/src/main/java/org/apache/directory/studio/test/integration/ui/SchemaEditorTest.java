@@ -99,7 +99,7 @@ public class SchemaEditorTest extends AbstractLdapTestUnit
         /*
          * This test fails on Jenkins Windows Server, to be investigated...
          */
-        Assume.assumeFalse( StudioSystemUtils.IS_OS_WINDOWS_SERVER );
+        // Assume.assumeFalse( StudioSystemUtils.IS_OS_WINDOWS_SERVER );
 
         createProject( "Project Search For Aliases" );
 

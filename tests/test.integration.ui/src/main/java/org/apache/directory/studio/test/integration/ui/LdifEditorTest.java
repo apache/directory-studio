@@ -76,7 +76,7 @@ public class LdifEditorTest extends AbstractLdapTestUnit
         /*
          * This test fails on Jenkins Windows Server, to be investigated...
          */
-        Assume.assumeFalse( StudioSystemUtils.IS_OS_WINDOWS_SERVER );
+        // Assume.assumeFalse( StudioSystemUtils.IS_OS_WINDOWS_SERVER );
 
         NewWizardBot newWizard = studioBot.openNewWizard();
         newWizard.selectLdifFile();
