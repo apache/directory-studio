@@ -222,7 +222,6 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         assertTrue( selectDnBot.isVisible() );
         selectDnBot.selectEntry( "Root DSE", "ou=system", "ou=users", "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\"" );
         selectDnBot.clickOkButton();
-        dnEditorBot.activate();
         assertEquals( "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system", dnEditorBot.getDnText() );
         dnEditorBot.clickOkButton();
 

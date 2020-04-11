@@ -31,6 +31,7 @@ public class DnEditorDialogBot extends DialogBot
 
     public SelectDnDialogBot clickBrowseButtonExpectingSelectDnDialog()
     {
+        activate();
         super.clickButton( "Browse..." );
         return new SelectDnDialogBot();
     }
@@ -38,12 +39,14 @@ public class DnEditorDialogBot extends DialogBot
 
     public void setDnText( String dn )
     {
+        activate();
         bot.comboBox().setText( dn );
     }
 
 
     public String getDnText()
     {
+        activate();
         return bot.comboBox().getText();
     }
 
