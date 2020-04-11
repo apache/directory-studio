@@ -25,7 +25,6 @@ import java.util.List;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
-import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarToggleButton;
 
@@ -47,7 +46,7 @@ public class SchemaSearchViewBot
         SWTBotToolbarToggleButton button = view.toolbarToggleButton( "Show Search Field" );
         button.select();
         view.bot().text().setText( text );
-        view.bot().text().pressShortcut( Keystrokes.LF );
+        view.bot().buttonWithTooltip( "Search" ).click();
     }
 
 

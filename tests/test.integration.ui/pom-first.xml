@@ -98,7 +98,6 @@
  org.apache.directory.studio.schemaeditor,
  org.apache.directory.studio.schemaeditor.help,
  org.apache.directory.studio.valueeditors,
- bcprov,
  org.eclipse.core.runtime,
  org.eclipse.ui</Require-Bundle>
             
@@ -106,6 +105,10 @@
  org.apache.commons.codec.digest,
  org.apache.http.conn.ssl,
  org.apache.log4j,
+ org.bouncycastle.asn1,
+ org.bouncycastle.asn1.x509,
+ org.bouncycastle.jce.provider,
+ org.bouncycastle.x509,
  org.dom4j,
  org.dom4j.io</Import-Package>
           

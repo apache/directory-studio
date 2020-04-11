@@ -22,10 +22,13 @@ package org.apache.directory.studio.test.integration.ui.bots;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
-import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
@@ -197,7 +200,32 @@ public class StudioBot
     {
         if ( SWTUtils.isMac() )
         {
-            new SWTBot().activeShell().pressShortcut( SWT.COMMAND, ',' );
+            // new SWTBot().activeShell().pressShortcut( SWT.COMMAND, ',' );
+            final IWorkbench workbench = PlatformUI.getWorkbench();
+            workbench.getDisplay().asyncExec( new Runnable()
+            {
+                public void run()
+                {
+                    IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
+                    if ( window != null )
+                    {
+                        Menu appMenu = workbench.getDisplay().getSystemMenu();
+                        for ( MenuItem item : appMenu.getItems() )
+                        {
+                            if ( item.getText().startsWith( "Preferences" ) )
+                            {
+                                Event event = new Event();
+                                event.time = ( int ) System.currentTimeMillis();
+                                event.widget = item;
+                                event.display = workbench.getDisplay();
+                                item.setSelection( true );
+                                item.notifyListeners( SWT.Selection, event );
+                                break;
+                            }
+                        }
+                    }
+                }
+            } );
         }
         else
         {
@@ -247,27 +275,17 @@ public class StudioBot
 
     public void navigationHistoryBack()
     {
-        if ( SWTUtils.isMac() )
-        {
-            new SWTBot().activeShell().pressShortcut( Keystrokes.COMMAND, Keystrokes.ALT, Keystrokes.LEFT );
-        }
-        else
-        {
-            new SWTBot().activeShell().pressShortcut( Keystrokes.ALT, Keystrokes.LEFT );
-        }
+        SWTBotMenu backMenu = new SWTWorkbenchBot().menu( "Navigate" ).menu( "Back" );
+        String firstItem = backMenu.menuItems().get( 0 );
+        backMenu.menu( firstItem ).click();
     }
 
 
     public void navigationHistoryForward()
     {
-        if ( SWTUtils.isMac() )
-        {
-            new SWTBot().activeShell().pressShortcut( Keystrokes.COMMAND, Keystrokes.ALT, Keystrokes.RIGHT );
-        }
-        else
-        {
-            new SWTBot().activeShell().pressShortcut( Keystrokes.ALT, Keystrokes.RIGHT );
-        }
+        SWTBotMenu forwardMenu = new SWTWorkbenchBot().menu( "Navigate" ).menu( "Forward" );
+        String firstItem = forwardMenu.menuItems().get( 0 );
+        forwardMenu.menu( firstItem ).click();
     }
 
 }
