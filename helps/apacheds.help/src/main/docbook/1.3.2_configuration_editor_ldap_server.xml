@@ -48,7 +48,7 @@
 		<screenshot>
 			<mediaobject>
 				<imageobject>
-					<imagedata scale="50"
+					<imagedata scale="33"
 						fileref="images/gettingstarted/editor_2.0.0_ldap_servers.png"
 						format="PNG" />
 				</imageobject>

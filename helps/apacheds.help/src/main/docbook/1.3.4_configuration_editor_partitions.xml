@@ -31,7 +31,7 @@
 		<screenshot>
 			<mediaobject>
 				<imageobject>
-					<imagedata scale="50"
+					<imagedata scale="33"
 						fileref="images/gettingstarted/editor_2.0.0_partitions.png"
 						format="PNG" />
 				</imageobject>
@@ -92,7 +92,7 @@
 		</para>
 	</simplesect>
 
-	<simplesect id="configuration_editor_2.0.0_partitions_details">
+	<simplesect id="configuration_editor_2.0.0_partitions_context_entry">
 		<title>Context Entry</title>
 		<para>
 			Check the

@@ -142,18 +142,30 @@ We release the following artifacts:
 
 Update the copyright year. Full text search/replace "2006-2020". Also change in `plugins/rcp/src/main/resources/splash.bmp` image.
 
-Test the release build: rat check, javadoc and source jar generation, installer generation, GPG signing, userguide generation
+Test the release build: rat check, javadoc and source jar generation, installer generation, GPG signing, userguide generation:
 
     mvn -f pom-first.xml clean install
     mvn -Papache-release,windows,macos -Duserguides clean install
 
 Note: During creation of the macOS installer (DMG) the ApacheDirectoryStudio.app is signed with the ASF "Developer ID Application" key. See https://issues.apache.org/jira/browse/INFRA-16978 for the process to get one.
 
+Test the build and sign process for distribution packages:
+
+    export VERSION=2.0.0-SNAPSHOT
+    export RELEASE_KEY=28686142
+    cd dist
+    ./dist.sh
+
+Test the distribution packages:
+
+* Test generated bin archives, installers, and update site (if possible on all platforms).
+* Review generated user guides (pdf, html, Eclipse help)
+* Review the generated source archive
+* Verify signatures and checksums
+
 Run UI tests (if possible on all platforms):
 
     mvn clean install -Denable-ui-tests
-
-Test generated bin archives, installers, and update site (if possible on all platforms).
 
 ### Release build steps
 
