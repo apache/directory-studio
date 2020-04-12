@@ -137,9 +137,16 @@ We release the following artifacts:
     * Windows 64bit exe installer and zip
 * Userguides
 
+### Signing keys
+
+Define the PGP key used to sign the artifacts and the Apple signing ID used to sign the DMG:
+
+    export RELEASE_KEY=28686142
+    export APPLE_SIGNING_ID=2GLGAFWEQD
+
+Note: those are Stefan's keys, replace with your own.
 
 ### Preparation
-
 Update the copyright year. Full text search/replace "2006-2020". Also change in `plugins/rcp/src/main/resources/splash.bmp` image.
 
 Test the release build: rat check, javadoc and source jar generation, installer generation, GPG signing, userguide generation:
@@ -152,7 +159,6 @@ Note: During creation of the macOS installer (DMG) the ApacheDirectoryStudio.app
 Test the build and sign process for distribution packages:
 
     export VERSION=2.0.0-SNAPSHOT
-    export RELEASE_KEY=28686142
     cd dist
     ./dist.sh
 
@@ -230,10 +236,6 @@ See https://repository.apache.org/#stagingRepositories
 
 There is a script that collects and signs all update sites and distribution packages.
 
-For non-interactive signing with GPG agent define env variable:
-
-    export RELEASE_KEY=28686142
-
 Run the dist script:
 
     cd dist
@@ -259,9 +261,9 @@ Afterwards all distribution packages and user guides are located in `target`.
     svn commit -m "Add release $VERSION"
     cd ../../..
 
-Note: This publishes the user guides directly to the production CMS!
+Note 1: This publishes the user guides directly to the production CMS!
 
-Also update the `content/extpaths.txt` and whitelist the new version.
+Note 2: In `content/extpaths.txt` the parent folder is already whitelisted.
 
 ### Call the vote
 

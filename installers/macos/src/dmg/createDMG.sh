@@ -39,7 +39,7 @@ mv DS_Store dmg/.DS_Store
 ln -s /Applications dmg/Applications
 
 # Codesign the App with the ASF key, and verify
-codesign --force --deep -s 2GLGAFWEQD dmg/ApacheDirectoryStudio.app
+codesign --force --deep -s ${APPLE_SIGNING_ID} dmg/ApacheDirectoryStudio.app
 codesign -dv --verbose=4 dmg/ApacheDirectoryStudio.app
 
 # Creating the disk image
