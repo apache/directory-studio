@@ -310,6 +310,10 @@ Update entry in Eclipse Marketplace: <https://marketplace.eclipse.org/content/ap
 
 Also test to install the plugins from marketplace.
 
+#### Mac Ports
+
+Update entry in Mac Ports: <https://ports.macports.org/port/directory-studio>
+
 #### Update Apache Reporter
 
 Add release to <https://reporter.apache.org/?directory>
