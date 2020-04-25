@@ -54,6 +54,7 @@
  org.eclipse.core.net,
  org.eclipse.core.resources,
  org.eclipse.core.runtime,
+ org.eclipse.e4.ui.css.swt.theme,
  org.eclipse.ui,
  org.eclipse.ui.ide,
  org.eclipse.ui.intro

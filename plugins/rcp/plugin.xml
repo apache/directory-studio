@@ -107,6 +107,11 @@
         class="org.apache.directory.studio.preferences.ShutdownPreferencesPage"
         id="org.apache.directory.studio.preferences.ShutdownPreferencesPage"
         name="%PrefPage_ShutdownPreferencesPage_name"/>
+    <page
+        category="org.eclipse.ui.preferencePages.Workbench"
+        class="org.eclipse.ui.ExtensionFactory:appearancePreferencePage"
+        id="org.eclipse.ui.preferencePages.Appearance"
+        name="Appearance"/>
   </extension>
    
   <extension
@@ -380,6 +385,11 @@
         activityId="%RCP_Hide_id"
         isEqualityPattern="true"
         pattern="org.eclipse.ui.ide/org.eclipse.e4.ui.importer.openDirectory.menu"/>
+
+    <activityPatternBinding
+        activityId="%RCP_Hide_id"
+        isEqualityPattern="true"
+        pattern="org.eclipse.text.quicksearch/org.eclipse.text.quicksearch.PreferencesPage"/>
   </extension>
 
   <extension

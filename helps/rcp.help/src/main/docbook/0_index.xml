@@ -13,6 +13,7 @@
   <!ENTITY apache_directory_studio SYSTEM "3.1.1_apache_directory_studio.xml">
   <!ENTITY general SYSTEM "3.1.2_general.xml">
   <!ENTITY network_connections SYSTEM "3.1.2.1_network_connections.xml">
+  <!ENTITY appearance SYSTEM "3.1.2.2_appearance.xml">
   <!ENTITY help SYSTEM "3.1.3_help.xml">
   <!ENTITY help_content SYSTEM "3.1.3.1_help_content.xml">
   <!ENTITY install_update SYSTEM "3.1.4_install_update.xml">
