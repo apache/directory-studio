@@ -28,6 +28,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.valueeditors.IValueEditor;
 import org.apache.directory.studio.valueeditors.ValueEditorManager;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.IFontProvider;
@@ -279,32 +280,41 @@ public class EntryEditorWidgetLabelProvider extends LabelProvider implements ITa
         {
             if ( attribute.isObjectClassAttribute() )
             {
-                RGB rgb = PreferenceConverter.getColor( BrowserCommonActivator.getDefault().getPreferenceStore(),
-                    BrowserCommonConstants.PREFERENCE_OBJECTCLASS_COLOR );
-                return BrowserCommonActivator.getDefault().getColor( rgb );
+                return getColorIfNotDefaultElseNull( BrowserCommonConstants.PREFERENCE_OBJECTCLASS_COLOR );
             }
             else if ( attribute.isMustAttribute() )
             {
-                RGB rgb = PreferenceConverter.getColor( BrowserCommonActivator.getDefault().getPreferenceStore(),
-                    BrowserCommonConstants.PREFERENCE_MUSTATTRIBUTE_COLOR );
-                return BrowserCommonActivator.getDefault().getColor( rgb );
+                return getColorIfNotDefaultElseNull( BrowserCommonConstants.PREFERENCE_MUSTATTRIBUTE_COLOR );
             }
             else if ( attribute.isOperationalAttribute() )
             {
-                RGB rgb = PreferenceConverter.getColor( BrowserCommonActivator.getDefault().getPreferenceStore(),
-                    BrowserCommonConstants.PREFERENCE_OPERATIONALATTRIBUTE_COLOR );
-                return BrowserCommonActivator.getDefault().getColor( rgb );
+                return getColorIfNotDefaultElseNull( BrowserCommonConstants.PREFERENCE_OPERATIONALATTRIBUTE_COLOR );
             }
             else
             {
-                RGB rgb = PreferenceConverter.getColor( BrowserCommonActivator.getDefault().getPreferenceStore(),
-                    BrowserCommonConstants.PREFERENCE_MAYATTRIBUTE_COLOR );
-                return BrowserCommonActivator.getDefault().getColor( rgb );
+                return getColorIfNotDefaultElseNull( BrowserCommonConstants.PREFERENCE_MAYATTRIBUTE_COLOR );
             }
         }
         else
         {
             return null;
+        }
+    }
+
+
+    private Color getColorIfNotDefaultElseNull( String color )
+    {
+        BrowserCommonActivator plugin = BrowserCommonActivator.getDefault();
+        IPreferenceStore preferenceStore = plugin.getPreferenceStore();
+        RGB rgb = PreferenceConverter.getColor( preferenceStore, color );
+        RGB defaultRgb = PreferenceConverter.getDefaultColor( preferenceStore, color );
+        if ( rgb.equals( defaultRgb ) )
+        {
+            return null;
+        }
+        else
+        {
+            return plugin.getColor( rgb );
         }
     }
 
