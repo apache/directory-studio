@@ -40,6 +40,7 @@ import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
+import org.apache.directory.studio.test.integration.ui.bots.FilterEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.SearchDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.SearchPropertiesDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.SearchResultEditorBot;
@@ -354,6 +355,34 @@ public class SearchTest extends AbstractLdapTestUnit
         assertTrue( browserViewBot.existsEntry( "Searches", searchName + " (15+)" ) );
         assertTrue( browserViewBot.existsEntry( "Searches", searchName, "uid=user.1" ) );
         assertTrue( browserViewBot.existsEntry( "Searches", searchName, "uid=user.8" ) );
+    }
+
+
+    @Test
+    public void testFilterEditor() throws Exception
+    {
+        String searchName = "Test filter editor";
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        SearchDialogBot dialogBot = browserViewBot.openSearchDialog();
+        assertTrue( dialogBot.isVisible() );
+        dialogBot.setSearchName( searchName );
+        dialogBot.setReturningAttributes( "objectClass,ou,cn,uid" );
+        dialogBot.setControlPagedSearch( true, 5, false );
+
+        FilterEditorDialogBot filterBot = dialogBot.openFilterEditor();
+        filterBot.setFilter( "(&(objectClass=*)(uid=user.1))" );
+        filterBot.clickFormatButton();
+        String formattetFilter = filterBot.getFilter();
+        // SWTUtils.sleep( 10000 );
+        filterBot.clickOkButton();
+        dialogBot.activate();
+        String filter = dialogBot.getFilter();
+        dialogBot.clickSearchButton();
+
+        browserViewBot.expandEntry( "Searches", searchName );
+        assertTrue( browserViewBot.existsEntry( "Searches", searchName, "uid=user.1" ) );
+        assertEquals( "(&(objectClass=*)(uid=user.1))", filter );
+        assertEquals( "(&\n    (objectClass=*)\n    (uid=user.1)\n)", formattetFilter );
     }
 
 }

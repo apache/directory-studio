@@ -269,4 +269,17 @@ public class PreferencesTest extends AbstractLdapTestUnit
         connectionsViewBot.closeSelectedConnections();
     }
 
+
+    @Test
+    public void testLdifEditorPreferencesPage() throws Exception
+    {
+        // open preferences dialog
+        PreferencesBot preferencesBot = studioBot.openPreferences();
+        assertTrue( preferencesBot.isVisible() );
+
+        // open LDIF editor syntax coloring page
+        preferencesBot.openLdifEditorSyntaxColoringPage();
+        preferencesBot.clickCancelButton();
+    }
+
 }

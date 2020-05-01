@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.common.ui.CommonUIConstants;
+import org.apache.directory.studio.common.ui.CommonUIPlugin;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.common.ui.widgets.TableWidget;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
@@ -207,7 +208,7 @@ public class MdbDatabaseSpecificDetailsBlock extends AbstractDatabaseSpecificDet
 
         // Directory Text. This is a MUST attribute (it will be red and bold)
         Label olcDirectory = toolkit.createLabel( databaseConfigurationComposite, Messages.getString( "OpenLDAPMDBConfiguration.Directory" ) );
-        olcDirectory.setForeground( CommonUIConstants.RED_COLOR );
+        olcDirectory.setForeground( CommonUIPlugin.getDefault().getColor( CommonUIConstants.ERROR_COLOR ) );
         FontDescriptor boldDescriptor = FontDescriptor.createFrom( olcDirectory.getFont() ).setStyle( SWT.BOLD );
         Font boldFont = boldDescriptor.createFont( olcDirectory.getDisplay() );
         olcDirectory.setFont( boldFont );

@@ -54,6 +54,12 @@ public class SearchDialogBot extends DialogBot
     }
 
 
+    public String getFilter()
+    {
+        return searchPageWrapperBot.getFilter();
+    }
+
+
     public void setReturningAttributes( String string )
     {
         searchPageWrapperBot.setReturningAttributes( string );
@@ -99,6 +105,12 @@ public class SearchDialogBot extends DialogBot
     public void clickSearchButton()
     {
         super.clickButton( "Search" );
+    }
+
+
+    public FilterEditorDialogBot openFilterEditor()
+    {
+        return searchPageWrapperBot.openFilterEditor();
     }
 
 }

@@ -60,4 +60,11 @@ public class PreferencesBot extends DialogBot
         return new PasswordsKeystorePreferencePageBot();
     }
 
+
+    public void openLdifEditorSyntaxColoringPage()
+    {
+        bot.tree().getTreeItem( "Apache Directory Studio" ).select().expand().getNode( "LDIF Editor" ).select()
+            .expand().getNode( "Syntax Coloring" ).select();
+    }
+
 }

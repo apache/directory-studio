@@ -151,6 +151,13 @@ class EntryEditorWidgetBot
     }
 
 
+    public AciItemEditorDialogBot editValueExpectingAciItemEditor( String attributeType, String value )
+    {
+        editValue( attributeType, value );
+        return new AciItemEditorDialogBot();
+    }
+
+
     TextEditorDialogBot editValueWithTextEditor( String attributeType, String value )
     {
         editValueWith( attributeType, value, "^Text Editor$" );
@@ -164,7 +171,7 @@ class EntryEditorWidgetBot
         SWTBotTreeItem[] allItems = tree.getAllItems();
         for ( SWTBotTreeItem item : allItems )
         {
-            if ( item.cell( 0 ).equals( attributeType ) && item.cell( 1 ).equals( value ) )
+            if ( item.cell( 0 ).equals( attributeType ) && ( value == null || item.cell( 1 ).equals( value ) ) )
             {
                 return item;
             }

@@ -27,4 +27,22 @@
             name="%Pref_StudioPage_name">
       </page>
    </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.apache.directory.studio.common.ui.CommonUIPreferencesInitializer">
+      </initializer>
+   </extension>
+
+  <extension point="org.eclipse.e4.ui.css.swt.theme">
+    <stylesheet uri="resources/css/dark.css">
+      <themeid refid="org.eclipse.e4.ui.css.theme.e4_dark">
+      </themeid>
+    </stylesheet>
+    <stylesheet uri="resources/css/default.css">
+      <themeid refid="org.eclipse.e4.ui.css.theme.e4_default">
+      </themeid>
+    </stylesheet>
+  </extension>
+
 </plugin>

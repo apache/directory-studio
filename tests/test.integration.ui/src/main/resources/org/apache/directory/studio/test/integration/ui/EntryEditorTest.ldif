@@ -30,6 +30,7 @@ objectClass: inetOrgPerson
 objectClass: organizationalPerson
 objectClass: person
 objectClass: top
+objectClass: extensibleObject
 cn: Horatio Nelson
 sn: Nelson
 uid: hnelson
@@ -48,6 +49,14 @@ jpegPhoto:: /9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw
  lKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba
  3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD3+iii
  gD//2Q==
+entryACI: { identificationTag "test", precedence 1, authenticationLevel none, 
+ itemOrUserFirst userFirst: { userClasses { subtree { { base "dc=example,dc=co
+ m", minimum 1, maximum 2, specificExclusions { chopBefore: "dc=example,dc=com
+ " } } }, allUsers, userGroup { "dc=example,dc=com" } }, userPermissions { { p
+ recedence 2, protectedItems { allUserAttributeTypes, attributeValue {userpass
+ word=*  }, maxImmSub 2, entry, maxValueCount {{ type userPassword, maxCount 2
+ }} }, grantsAndDenials { denyRemove, grantReturnDN, denyModify, denyAdd, deny
+ Rename, grantFilterMatch, grantBrowse, grantRead, grantCompare } } } } }
 
 # cn=\#\\\+\, \"öé\",ou=users,ou=system
 dn:: Y249XCNcXFwrXCwgXCLDtsOpXCIsb3U9dXNlcnMsb3U9c3lzdGVt

@@ -40,6 +40,7 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.editors.text.templates.ContributionContextTypeRegistry;
 import org.eclipse.ui.editors.text.templates.ContributionTemplateStore;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -99,12 +100,12 @@ public class BrowserCommonActivator extends AbstractUIPlugin
 
         if ( fontRegistry == null )
         {
-            fontRegistry = new FontRegistry( getWorkbench().getDisplay() );
+            fontRegistry = new FontRegistry( PlatformUI.getWorkbench().getDisplay() );
         }
 
         if ( colorRegistry == null )
         {
-            colorRegistry = new ColorRegistry( getWorkbench().getDisplay() );
+            colorRegistry = new ColorRegistry( PlatformUI.getWorkbench().getDisplay() );
         }
 
         valueEditorPreferences = new ValueEditorsPreferences();

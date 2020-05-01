@@ -23,6 +23,7 @@ package org.apache.directory.studio.test.integration.ui.bots;
 
 import java.util.List;
 
+import org.apache.directory.studio.test.integration.ui.ContextMenuHelper;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
@@ -107,6 +108,12 @@ public class EntryEditorBot
     }
 
 
+    public AciItemEditorDialogBot editValueExpectingAciItemEditor( String attributeType, String value )
+    {
+        return editorBot.editValueExpectingAciItemEditor( attributeType, value );
+    }
+
+
     public TextEditorDialogBot editValueWithTextEditor( String attributeType, String value )
     {
         return editorBot.editValueWithTextEditor( attributeType, value );
@@ -140,6 +147,12 @@ public class EntryEditorBot
     public void pasteValues()
     {
         editorBot.pasteValues();
+    }
+
+
+    public void fetchOperationalAttributes()
+    {
+        ContextMenuHelper.clickContextMenu( bot.tree(), "Fetch Operational Attributes" );
     }
 
 }

@@ -28,6 +28,7 @@ import org.apache.directory.server.config.beans.DirectoryServiceBean;
 import org.apache.directory.studio.apacheds.configuration.actions.EditorExportConfigurationAction;
 import org.apache.directory.studio.apacheds.configuration.actions.EditorImportConfigurationAction;
 import org.apache.directory.studio.common.ui.CommonUIConstants;
+import org.apache.directory.studio.common.ui.CommonUIPlugin;
 import org.apache.directory.studio.connection.core.Connection;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
@@ -460,7 +461,7 @@ public abstract class ServerConfigurationEditorPage extends FormPage
     {
         Label label = toolkit.createLabel( parent,
             NLS.bind( Messages.getString( "ServerConfigurationEditorPage.DefaultWithValue" ), text ), SWT.WRAP ); //$NON-NLS-1$
-        label.setForeground( CommonUIConstants.M_GREY_COLOR );
+        label.setForeground( CommonUIPlugin.getDefault().getColor( CommonUIConstants.KEYWORD_1_COLOR ) );
 
         return label;
     }

@@ -55,6 +55,7 @@ import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
 import org.apache.directory.studio.ldifparser.LdifParserConstants;
 import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
+import org.apache.directory.studio.test.integration.ui.bots.AciItemEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.BotUtils;
 import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
@@ -528,6 +529,36 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         // assert value after saved and reloaded from server
         SWTUtils.sleep( 1000 );
         assertTrue( entryEditorBot.getAttributeValues().contains( "jpegPhoto: JPEG-Image (64x64 Pixel, 2014 Bytes)" ) );
+    }
+
+    @Test
+    public void testAciItemEditor() throws Exception
+    {
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=hnelson" );
+
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "uid=hnelson,ou=users,ou=system" );
+        entryEditorBot.activate();
+        entryEditorBot.fetchOperationalAttributes();
+        SWTUtils.sleep( 1000 );
+
+        entryEditorBot.activate();
+        AciItemEditorDialogBot aciItemEditor = entryEditorBot.editValueExpectingAciItemEditor( "entryaci", null );
+
+        aciItemEditor.activateSourceTab();
+        aciItemEditor.activateVisualEditorTab();
+        aciItemEditor.activateSourceTab();
+        aciItemEditor.clickFormatButton();
+        // aciItemEditor.clickCheckSyntaxButton();
+
+        String source = aciItemEditor.getSource();
+        source = source.replace( "grantFilterMatch,", "" );
+        aciItemEditor.setSource( "invalid" );
+        aciItemEditor.setSource( source );
+        // SWTUtils.sleep( 10000 );
+        aciItemEditor.clickOkButton();
+
+        SWTUtils.sleep( 1000 );
+        modificationLogsViewBot.waitForText( "replace: entryaci\n" );
     }
 
 }

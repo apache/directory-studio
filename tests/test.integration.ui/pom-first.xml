@@ -99,6 +99,7 @@
  org.apache.directory.studio.schemaeditor.help,
  org.apache.directory.studio.valueeditors,
  org.eclipse.core.runtime,
+ org.eclipse.e4.ui.css.swt.theme,
  org.eclipse.ui</Require-Bundle>
             
             <Import-Package>org.apache.commons.lang3,

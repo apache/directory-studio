@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.directory.studio.common.ui.CommonUIConstants;
+import org.apache.directory.studio.common.ui.CommonUIPlugin;
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.swt.SWT;
 
@@ -38,7 +39,6 @@ public class ACITextAttributeProvider
     public static final String DEFAULT_ATTRIBUTE = "__pos_aci_default_attribute"; //$NON-NLS-1$
     public static final String KEYWORD_ATTRIBUTE = "__pos_aci_keyword_attribute"; //$NON-NLS-1$
     public static final String STRING_ATTRIBUTE = "__pos_aci_string_attribute"; //$NON-NLS-1$
-    public static final String GRANT_DENY_ATTRIBUTE = "__pos_aci_grant_deny_attribute"; //$NON-NLS-1$
     public static final String IDENTIFICATION_ATTRIBUTE = "__pos_aci_identification_attribute"; //$NON-NLS-1$
     public static final String PRECEDENCE_ATTRIBUTE = "__pos_aci_precedence_attribute"; //$NON-NLS-1$
     public static final String AUTHENTICATIONLEVEL_ATTRIBUTE = "__pos_aci_authenticationlevel_attribute"; //$NON-NLS-1$
@@ -56,18 +56,17 @@ public class ACITextAttributeProvider
      */
     public ACITextAttributeProvider()
     {
-        attributes.put( DEFAULT_ATTRIBUTE, new TextAttribute( CommonUIConstants.BLACK_COLOR ) );
-        attributes.put( KEYWORD_ATTRIBUTE, new TextAttribute( CommonUIConstants.M_PURPLE_COLOR, null, SWT.BOLD ) );
-        attributes.put( STRING_ATTRIBUTE, new TextAttribute( CommonUIConstants.BLUE_COLOR ) );
-        attributes.put( GRANT_DENY_ATTRIBUTE, new TextAttribute( CommonUIConstants.M_GREY_COLOR ) );
-        attributes.put( GRANT_VALUE, new TextAttribute( CommonUIConstants.ML_GREEN_COLOR ) );
-        attributes.put( DENY_VALUE, new TextAttribute( CommonUIConstants.ML_RED_COLOR ) );
-        attributes.put( IDENTIFICATION_ATTRIBUTE, new TextAttribute( CommonUIConstants.M_RED_COLOR, null, SWT.BOLD ) );
-        attributes.put( PRECEDENCE_ATTRIBUTE, new TextAttribute( CommonUIConstants.M_BLUE_COLOR, null, SWT.BOLD ) );
-        attributes.put( AUTHENTICATIONLEVEL_ATTRIBUTE, new TextAttribute( CommonUIConstants.M_GREEN_COLOR, null, SWT.BOLD ) );
-        attributes.put( ITEMORUSERFIRST_ATTRIBUTE, new TextAttribute( CommonUIConstants.M_PURPLE_COLOR, null, SWT.BOLD ) );
-        attributes.put( USER_ATTRIBUTE, new TextAttribute( CommonUIConstants.R0_G127_B255_COLOR, null, SWT.BOLD ) );
-
+        CommonUIPlugin plugin = CommonUIPlugin.getDefault();
+        attributes.put( DEFAULT_ATTRIBUTE, new TextAttribute( plugin.getColor( CommonUIConstants.DEFAULT_COLOR ) ) );
+        attributes.put( KEYWORD_ATTRIBUTE, new TextAttribute( plugin.getColor( CommonUIConstants.ATTRIBUTE_TYPE_COLOR ), null, SWT.BOLD ) );
+        attributes.put( STRING_ATTRIBUTE, new TextAttribute( plugin.getColor( CommonUIConstants.VALUE_COLOR ) ) );
+        attributes.put( GRANT_VALUE, new TextAttribute( plugin.getColor( CommonUIConstants.ADD_COLOR ) ) );
+        attributes.put( DENY_VALUE, new TextAttribute( plugin.getColor( CommonUIConstants.DELETE_COLOR ) ) );
+        attributes.put( IDENTIFICATION_ATTRIBUTE, new TextAttribute( plugin.getColor( CommonUIConstants.KEYWORD_1_COLOR ), null, SWT.BOLD ) );
+        attributes.put( PRECEDENCE_ATTRIBUTE, new TextAttribute( plugin.getColor( CommonUIConstants.KEYWORD_1_COLOR ), null, SWT.BOLD ) );
+        attributes.put( AUTHENTICATIONLEVEL_ATTRIBUTE, new TextAttribute( plugin.getColor( CommonUIConstants.KEYWORD_1_COLOR ), null, SWT.BOLD ) );
+        attributes.put( ITEMORUSERFIRST_ATTRIBUTE, new TextAttribute( plugin.getColor( CommonUIConstants.KEYWORD_1_COLOR ), null, SWT.BOLD ) );
+        attributes.put( USER_ATTRIBUTE, new TextAttribute( plugin.getColor( CommonUIConstants.KEYWORD_1_COLOR ), null, SWT.BOLD ) );
     }
 
 

@@ -20,6 +20,10 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
+import java.util.Random;
+
+import org.eclipse.e4.ui.css.swt.theme.IThemeEngine;
+import org.eclipse.e4.ui.css.swt.theme.IThemeManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
@@ -148,6 +152,18 @@ public class StudioBot
 
                     IWorkbench workbench = PlatformUI.getWorkbench();
                     IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
+
+                    // set default/dark theme
+                    IThemeManager tm = workbench.getService( IThemeManager.class );
+                    IThemeEngine te = tm.getEngineForDisplay( Display.getCurrent() );
+                    if ( new Random().nextBoolean() )
+                    {
+                        te.setTheme( "org.eclipse.e4.ui.css.theme.e4_dark", false );
+                    }
+                    else
+                    {
+                        te.setTheme( "org.eclipse.e4.ui.css.theme.e4_default", false );
+                    }
 
                     // close welcome view
                     IWorkbenchPage page = window.getActivePage();

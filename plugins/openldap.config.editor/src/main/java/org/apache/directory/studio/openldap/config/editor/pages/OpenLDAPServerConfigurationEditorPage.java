@@ -21,6 +21,7 @@ package org.apache.directory.studio.openldap.config.editor.pages;
 
 
 import org.apache.directory.studio.common.ui.CommonUIConstants;
+import org.apache.directory.studio.common.ui.CommonUIPlugin;
 import org.apache.directory.studio.common.ui.widgets.TableWidget;
 import org.apache.directory.studio.common.ui.widgets.WidgetModifyListener;
 import org.apache.directory.studio.openldap.config.actions.EditorExportConfigurationAction;
@@ -259,7 +260,7 @@ public abstract class OpenLDAPServerConfigurationEditorPage extends FormPage
     protected Label createDefaultValueLabel( FormToolkit toolkit, Composite parent, String text )
     {
         Label label = toolkit.createLabel( parent, NLS.bind( "(Default: {0})", text ) );
-        label.setForeground( CommonUIConstants.M_GREY_COLOR );
+        label.setForeground( CommonUIPlugin.getDefault().getColor( CommonUIConstants.KEYWORD_1_COLOR ) );
 
         return label;
     }

@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.studio.common.ui.CommonUIConstants;
+import org.apache.directory.studio.common.ui.CommonUIPlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilter;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterParser;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterToken;
@@ -92,12 +93,12 @@ public class FilterReconcilingStrategy implements IReconcilingStrategy
         {
             AnnotationPainter ap = new AnnotationPainter( sourceViewer, null );
             ap.addAnnotationType( "DEFAULT" ); //$NON-NLS-1$
-            ap.setAnnotationTypeColor( "DEFAULT", CommonUIConstants.RED_COLOR ); //$NON-NLS-1$
+            ap.setAnnotationTypeColor( "DEFAULT", CommonUIPlugin.getDefault().getColor( CommonUIConstants.ERROR_COLOR ) ); //$NON-NLS-1$
             sourceViewer.getAnnotationModel().addAnnotationModelListener( ap );
 
             FilterCharacterPairMatcher cpm = new FilterCharacterPairMatcher( sourceViewer, parser );
             MatchingCharacterPainter mcp = new MatchingCharacterPainter( sourceViewer, cpm );
-            mcp.setColor( CommonUIConstants.ML_GREY_COLOR );
+            mcp.setColor( CommonUIPlugin.getDefault().getColor( CommonUIConstants.KEYWORD_1_COLOR ) );
 
             paintManager = new PaintManager( sourceViewer );
             paintManager.addPainter( ap );

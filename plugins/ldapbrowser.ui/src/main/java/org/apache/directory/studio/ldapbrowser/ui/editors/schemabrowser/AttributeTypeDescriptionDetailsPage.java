@@ -29,9 +29,11 @@ import org.apache.directory.api.ldap.model.schema.MatchingRule;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.UsageEnum;
 import org.apache.directory.studio.common.ui.CommonUIConstants;
+import org.apache.directory.studio.common.ui.CommonUIPlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.SchemaUtils;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -353,38 +355,38 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         // set flags
         if ( ( atd != null ) && ( atd.isSingleValued() ) )
         {
-            singleValuedLabel.setForeground( CommonUIConstants.BLACK_COLOR );
+            singleValuedLabel.setForeground( getColor( CommonUIConstants.DEFAULT_COLOR ) );
         }
         else
         {
-            singleValuedLabel.setForeground( CommonUIConstants.ML_GREY_COLOR );
+            singleValuedLabel.setForeground( getColor( CommonUIConstants.DISABLED_COLOR ) );
         }
 
         if ( atd != null && atd.isObsolete() )
         {
-            isObsoleteLabel.setForeground( CommonUIConstants.BLACK_COLOR );
+            isObsoleteLabel.setForeground( getColor( CommonUIConstants.DEFAULT_COLOR ) );
         }
         else
         {
-            isObsoleteLabel.setForeground( CommonUIConstants.ML_GREY_COLOR );
+            isObsoleteLabel.setForeground( getColor( CommonUIConstants.DISABLED_COLOR ) );
         }
 
         if ( atd != null && atd.isCollective() )
         {
-            collectiveLabel.setForeground( CommonUIConstants.BLACK_COLOR );
+            collectiveLabel.setForeground( getColor( CommonUIConstants.DEFAULT_COLOR ) );
         }
         else
         {
-            collectiveLabel.setForeground( CommonUIConstants.ML_GREY_COLOR );
+            collectiveLabel.setForeground( getColor( CommonUIConstants.DISABLED_COLOR ) );
         }
 
         if ( atd != null && !atd.isUserModifiable() )
         {
-            noUserModificationLabel.setForeground( CommonUIConstants.BLACK_COLOR );
+            noUserModificationLabel.setForeground( getColor( CommonUIConstants.DEFAULT_COLOR ) );
         }
         else
         {
-            noUserModificationLabel.setForeground( CommonUIConstants.ML_GREY_COLOR );
+            noUserModificationLabel.setForeground( getColor( CommonUIConstants.DISABLED_COLOR ) );
         }
 
         flagSection.layout();
@@ -479,6 +481,12 @@ public class AttributeTypeDescriptionDetailsPage extends SchemaDetailsPage
         createRawContents( atd );
 
         detailForm.reflow( true );
+    }
+
+
+    private Color getColor( String color )
+    {
+        return CommonUIPlugin.getDefault().getColor( color );
     }
 
 

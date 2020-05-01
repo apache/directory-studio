@@ -54,6 +54,12 @@ class SearchPageWrapperBot
     }
 
 
+    String getFilter()
+    {
+        return bot.comboBoxWithLabel( "Filter:" ).getText();
+    }
+
+
     void setReturningAttributes( String string )
     {
         bot.comboBoxWithLabel( "Returning Attributes:" ).setText( string );
@@ -152,6 +158,13 @@ class SearchPageWrapperBot
     void setCountLimit( int countLimit )
     {
         bot.textWithLabel( "Count Limit:" ).setText( "" + countLimit );
+    }
+
+
+    public FilterEditorDialogBot openFilterEditor()
+    {
+        bot.button( "Filter Editor..." ).click();
+        return new FilterEditorDialogBot();
     }
 
 }

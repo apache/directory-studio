@@ -1,0 +1,40 @@
+/*
+ *  Licensed to the Apache Software Foundation (ASF) under one
+ *  or more contributor license agreements.  See the NOTICE file
+ *  distributed with this work for additional information
+ *  regarding copyright ownership.  The ASF licenses this file
+ *  to you under the Apache License, Version 2.0 (the
+ *  "License"); you may not use this file except in compliance
+ *  with the License.  You may obtain a copy of the License at
+ *  
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License. 
+ *  
+ */
+
+/* Overrides default preference values defined in CommonUIPreferencesInitializer */
+
+IEclipsePreferences#org-apache-directory-studio-common-ui {
+	preferences:
+		'defaultColor=255,255,255'       /* white        */
+		'disabledColor=192,192,192'      /* silver       */
+		'errorColor=255,69,0'            /* orangered    */
+		'commentColor=46,139,87'         /* seagren      */
+		'keyword1Color=192,192,192'      /* silver       */
+		'keyword2Color=201,105,30'       /* chocolate    */
+		'objectClassColor=50,205,50'     /* limegreen    */
+		'attributeTypeColor=238,130,238' /* violet       */
+		'oidColor=255,99,71'             /* tomato       */
+		'separatorColor=255,99,71'       /* tomato       */
+		'valueColor=135,206,250'         /* lightskyblu  */
+		'addColor=50,205,50'             /* limegreen    */
+		'deleteColor=255,69,0'           /* orangered    */
+		'modifyColor=218,165,32'         /* goldenrod    */
+		'renameColor=30,144,255'         /* dodgerblue   */
+}
