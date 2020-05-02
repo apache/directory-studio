@@ -45,7 +45,6 @@ public class LdifEditorTest extends AbstractLdapTestUnit
 {
     private StudioBot studioBot;
 
-
     @Before
     public void setUp() throws Exception
     {
@@ -71,22 +70,29 @@ public class LdifEditorTest extends AbstractLdapTestUnit
     @Test
     public void testNewLdifEditor() throws Exception
     {
-        /*
-         * This test fails on Jenkins Windows Server, to be investigated...
-         */
-        // Assume.assumeFalse( StudioSystemUtils.IS_OS_WINDOWS_SERVER );
-
+        // Open first LDIF editor
         NewWizardBot newWizard = studioBot.openNewWizard();
         newWizard.selectLdifFile();
         assertTrue( newWizard.isFinishButtonEnabled() );
         newWizard.clickFinishButton();
 
-        // TODO: use matcher instead of hard code editor number
-        LdifEditorBot ldifEditorBot = new LdifEditorBot( "LDIF 3" );
+        LdifEditorBot ldifEditorBot = new LdifEditorBot( "LDIF" );
         ldifEditorBot.activate();
         ldifEditorBot.typeText( "dn: dc=test\nobjectClass: domain\n\n" );
         assertTrue( ldifEditorBot.isDirty() );
         ldifEditorBot.close();
+
+        // Open second LDIF editor
+        NewWizardBot newWizard2 = studioBot.openNewWizard();
+        newWizard2.selectLdifFile();
+        assertTrue( newWizard2.isFinishButtonEnabled() );
+        newWizard2.clickFinishButton();
+
+        LdifEditorBot ldifEditorBot2 = new LdifEditorBot( "LDIF" );
+        ldifEditorBot2.activate();
+        ldifEditorBot2.typeText( "dn: dc=test\nobjectClass: domain\n\n" );
+        assertTrue( ldifEditorBot2.isDirty() );
+        ldifEditorBot2.close();
     }
 
 }
