@@ -20,7 +20,6 @@
 package org.apache.directory.studio.test.integration.ui.bots.utils;
 
 
-import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -28,6 +27,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.apache.directory.studio.common.core.jobs.StudioJob;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionRunnableWithProgress;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
+import org.apache.directory.studio.test.integration.ui.bots.BotUtils;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.IJobManager;
@@ -51,7 +51,6 @@ public class JobWatcher
     private final JobChangeAdapter jobChangeListener;
     private final RunnableContextRunner.Listener runnnableContextRunnerListener;
     private final List<String> jobNames;
-
 
     private void removeListeners()
     {
@@ -119,11 +118,9 @@ public class JobWatcher
     public void waitUntilDone()
     {
         // System.out.println( "Wait for jobs: " + jobNames );
-        Instant start = Instant.now();
         SWTBot bot = new SWTBot();
         bot.waitUntil( new DefaultCondition()
         {
-
             public boolean test() throws Exception
             {
                 if ( done.get() )
@@ -143,5 +140,8 @@ public class JobWatcher
                 return "Waited for jobs " + jobNames + " to finish";
             }
         }, SWTBotPreferences.TIMEOUT * 4 );
+
+        // Wait a bit longer after job is done to allow UI update
+        BotUtils.sleep( 1000L );
     }
 }

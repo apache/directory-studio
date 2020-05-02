@@ -87,7 +87,7 @@ public class ModificationLogsViewBot extends AbstractLogsViewBot
                 return;
             }
         }
-        throw new AssertionError( "Expeted to find all parts " + parts + " in\n" + text );
+        throw new AssertionError( "Expected to find all parts " + parts + " in\n" + text );
     }
 
 

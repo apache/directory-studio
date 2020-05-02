@@ -210,7 +210,6 @@ public class BrowserViewBot
             JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__copy_entries_name_1 );
             ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Paste" );
             watcher.waitUntilDone();
-
         }
     }
 

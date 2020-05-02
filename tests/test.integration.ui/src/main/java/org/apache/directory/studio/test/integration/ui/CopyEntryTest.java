@@ -305,7 +305,7 @@ public class CopyEntryTest extends AbstractLdapTestUnit
         // paste the entries
         browserViewBot.pasteEntries( 3 );
 
-        // verify the entries was copied
+        // verify the entries were copied
         assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=target", "cn=alias" ) );
         assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=target", "cn=referral" ) );
         assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=target", "cn=subentry" ) );
