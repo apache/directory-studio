@@ -42,7 +42,6 @@ class EntryEditorWidgetBot
 {
     private SWTBot bot;
 
-
     EntryEditorWidgetBot( SWTBot bot )
     {
         this.bot = bot;
@@ -151,10 +150,17 @@ class EntryEditorWidgetBot
     }
 
 
-    public AciItemEditorDialogBot editValueExpectingAciItemEditor( String attributeType, String value )
+    AciItemEditorDialogBot editValueExpectingAciItemEditor( String attributeType, String value )
     {
         editValue( attributeType, value );
         return new AciItemEditorDialogBot();
+    }
+
+
+    HexEditorDialogBot editValueExpectingHexEditor( String attributeType, String value )
+    {
+        editValue( attributeType, value );
+        return new HexEditorDialogBot();
     }
 
 

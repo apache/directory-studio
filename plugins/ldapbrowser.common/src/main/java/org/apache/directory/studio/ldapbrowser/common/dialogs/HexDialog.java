@@ -255,7 +255,7 @@ public class HexDialog extends Dialog
             sb.append( s ).append( " " ); //$NON-NLS-1$
 
             // extra space after 8 hex numbers
-            if ( ( i + 1 ) % 8 == 0 )
+            if ( ( i + 1 ) % 8 == 0 && ( i + 1 ) % 16 != 0 )
             {
                 sb.append( " " ); //$NON-NLS-1$
             }
@@ -272,16 +272,15 @@ public class HexDialog extends Dialog
                     }
                     i++;
                 }
-                sb.append( " " ); //$NON-NLS-1$
             }
 
             // print ASCII characters after 16 hex numbers 
             if ( ( i + 1 ) % 16 == 0 )
             {
-                sb.append( "   " ); //$NON-NLS-1$
+                sb.append( "    " ); //$NON-NLS-1$
                 for ( int x = i - 16 + 1; x <= i && x < data.length; x++ )
                 {
-                    // print ASCII charachter if printable
+                    // print ASCII character if printable
                     // otherwise print a dot
                     if ( data[x] > 32 && data[x] < 127 )
                     {

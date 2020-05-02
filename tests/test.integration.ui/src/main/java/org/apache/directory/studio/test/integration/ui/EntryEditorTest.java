@@ -61,6 +61,7 @@ import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.DnEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.EntryEditorBot;
+import org.apache.directory.studio.test.integration.ui.bots.HexEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.ImageEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.ModificationLogsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewAttributeWizardBot;
@@ -99,7 +100,6 @@ public class EntryEditorTest extends AbstractLdapTestUnit
     private ConnectionsViewBot connectionsViewBot;
     private BrowserViewBot browserViewBot;
     private ModificationLogsViewBot modificationLogsViewBot;
-
 
     @Before
     public void setUp() throws Exception
@@ -531,6 +531,7 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         assertTrue( entryEditorBot.getAttributeValues().contains( "jpegPhoto: JPEG-Image (64x64 Pixel, 2014 Bytes)" ) );
     }
 
+
     @Test
     public void testAciItemEditor() throws Exception
     {
@@ -559,6 +560,46 @@ public class EntryEditorTest extends AbstractLdapTestUnit
 
         SWTUtils.sleep( 1000 );
         modificationLogsViewBot.waitForText( "replace: entryaci\n" );
+    }
+
+
+    /**
+     * Test for DIRSTUDIO-1249: userSMIMECertificate is a binary attribute.
+     */
+    @Test
+    public void testHexEditor() throws Exception
+    {
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=hnelson" );
+
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "uid=hnelson,ou=users,ou=system" );
+        entryEditorBot.activate();
+        // SWTUtils.sleep( 10000 );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "usersmimecertificate: Binary Data (255 Bytes)" ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "usersmimecertificate: Binary Data (256 Bytes)" ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "usersmimecertificate: Binary Data (257 Bytes)" ) );
+
+        HexEditorDialogBot hexEditorDialogBot = entryEditorBot.editValueExpectingHexEditor( "usersmimecertificate",
+            "Binary Data (256 Bytes)" );
+        String hexText = hexEditorDialogBot.getHexText();
+        assertTrue( hexText.contains( "00 01 02 03 04 05 06 07  08 09 0a 0b 0c 0d 0e 0f     ........ ........" ) );
+        assertTrue( hexText.contains( "70 71 72 73 74 75 76 77  78 79 7a 7b 7c 7d 7e 7f     pqrstuvw xyz{|}~." ) );
+        assertTrue( hexText.contains( "80 81 82 83 84 85 86 87  88 89 8a 8b 8c 8d 8e 8f     ........ ........" ) );
+        assertTrue( hexText.contains( "f0 f1 f2 f3 f4 f5 f6 f7  f8 f9 fa fb fc fd fe ff     ........ ........" ) );
+        // SWTUtils.sleep( 10000 );
+        hexEditorDialogBot.clickCancelButton();
+
+        hexEditorDialogBot = entryEditorBot.editValueExpectingHexEditor( "usersmimecertificate",
+            "Binary Data (255 Bytes)" );
+        hexText = hexEditorDialogBot.getHexText();
+        assertTrue( hexText.contains( "f0 f1 f2 f3 f4 f5 f6 f7  f8 f9 fa fb fc fd fe        ........ ......." ) );
+        hexEditorDialogBot.clickCancelButton();
+
+        hexEditorDialogBot = entryEditorBot.editValueExpectingHexEditor( "usersmimecertificate",
+            "Binary Data (257 Bytes)" );
+        hexText = hexEditorDialogBot.getHexText();
+        assertTrue( hexText.contains( "f0 f1 f2 f3 f4 f5 f6 f7  f8 f9 fa fb fc fd fe ff     ........ ........" ) );
+        assertTrue( hexText.contains( "00                                                   ." ) );
+        hexEditorDialogBot.clickCancelButton();
     }
 
 }

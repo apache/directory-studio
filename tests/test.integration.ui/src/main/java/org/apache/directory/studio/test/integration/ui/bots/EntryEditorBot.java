@@ -36,7 +36,6 @@ public class EntryEditorBot
     private SWTBot bot;
     private EntryEditorWidgetBot editorBot;
 
-
     public EntryEditorBot( String title )
     {
         SWTWorkbenchBot bot = new SWTWorkbenchBot();
@@ -111,6 +110,12 @@ public class EntryEditorBot
     public AciItemEditorDialogBot editValueExpectingAciItemEditor( String attributeType, String value )
     {
         return editorBot.editValueExpectingAciItemEditor( attributeType, value );
+    }
+
+
+    public HexEditorDialogBot editValueExpectingHexEditor( String attributeType, String value )
+    {
+        return editorBot.editValueExpectingHexEditor( attributeType, value );
     }
 
 
