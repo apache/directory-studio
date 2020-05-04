@@ -21,17 +21,23 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Supplier;
 
+import org.apache.directory.api.ldap.model.entry.DefaultEntry;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.FileUtils;
@@ -55,6 +61,7 @@ import org.apache.directory.studio.test.integration.ui.bots.DeleteDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.EntryEditorBot;
 import org.apache.directory.studio.test.integration.ui.bots.ExportWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.ImportWizardBot;
+import org.apache.directory.studio.test.integration.ui.bots.ModificationLogsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.SearchLogsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
 import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
@@ -85,7 +92,7 @@ public class ImportExportTest extends AbstractLdapTestUnit
     private BrowserViewBot browserViewBot;
     private Connection connection;
     private SearchLogsViewBot searchLogsViewBot;
-
+    private ModificationLogsViewBot modificationLogsViewBot;
 
     @Before
     public void setUp() throws Exception
@@ -96,6 +103,7 @@ public class ImportExportTest extends AbstractLdapTestUnit
         connection = connectionsViewBot.createTestConnection( "ImportExportTest", ldapServer.getPort() );
         browserViewBot = studioBot.getBrowserView();
         searchLogsViewBot = studioBot.getSearchLogsViewBot();
+        modificationLogsViewBot = studioBot.getModificationLogsViewBot();
     }
 
 
@@ -276,9 +284,12 @@ public class ImportExportTest extends AbstractLdapTestUnit
         DeleteDialogBot dialogBot = browserViewBot.openDeleteDialog();
         assertTrue( dialogBot.isVisible() );
         dialogBot.clickOkButton();
-        waitAndAssert(false, () -> browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=alias" ));
-        waitAndAssert(false, () -> browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=referral" ));
-        waitAndAssert(false, () -> browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=subentry" ));
+        waitAndAssert( false,
+            () -> browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=alias" ) );
+        waitAndAssert( false,
+            () -> browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=referral" ) );
+        waitAndAssert( false,
+            () -> browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=subentry" ) );
 
         // import LDIFs
         ImportWizardBot importWizardBot = browserViewBot.openImportLdifWizard();
@@ -364,9 +375,12 @@ public class ImportExportTest extends AbstractLdapTestUnit
         DeleteDialogBot dialogBot = browserViewBot.openDeleteDialog();
         assertTrue( dialogBot.isVisible() );
         dialogBot.clickOkButton();
-        waitAndAssert(false, () -> browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=alias" ));
-        waitAndAssert(false, () -> browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=referral" ));
-        waitAndAssert(false, () -> browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=subentry" ));
+        waitAndAssert( false,
+            () -> browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=alias" ) );
+        waitAndAssert( false,
+            () -> browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=referral" ) );
+        waitAndAssert( false,
+            () -> browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=subentry" ) );
 
         // import DSML
         ImportWizardBot importWizardBot = browserViewBot.openImportDsmlWizard();
@@ -485,20 +499,15 @@ public class ImportExportTest extends AbstractLdapTestUnit
     @Test
     public void testImportDoesNotUpdateUI() throws Exception
     {
-        URL url = Platform.getInstanceLocation().getURL();
-        String destFile = url.getFile() + "ImportDontUpdateUiTest.ldif";
-        InputStream is = getClass().getResourceAsStream( "ImportExportTest_ImportDontUpdateUI.ldif" );
-        String ldifContent = IOUtils.toString( is, StandardCharsets.UTF_8 );
-        FileUtils.writeStringToFile( new File( destFile ), ldifContent, StandardCharsets.UTF_8, false );
-
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
         browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
 
         long fireCount0 = EventRegistry.getFireCount();
 
         // import the LDIF
+        String file = prepareInputFile( "ImportExportTest_ImportDontUpdateUI.ldif" );
         ImportWizardBot importWizardBot = browserViewBot.openImportLdifWizard();
-        importWizardBot.typeFile( destFile );
+        importWizardBot.typeFile( file );
         importWizardBot.clickFinishButton();
         browserViewBot.waitForEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=User.1" );
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=User.1" );
@@ -554,15 +563,10 @@ public class ImportExportTest extends AbstractLdapTestUnit
     @Test
     public void testDIRSTUDIO_1160() throws Exception
     {
-        URL url = Platform.getInstanceLocation().getURL();
-        String destFile = url.getFile() + "DIRSTUDIO-1160.ldif";
-        InputStream is = getClass().getResourceAsStream( "DIRSTUDIO-1160.ldif" );
-        String ldifContent = IOUtils.toString( is, StandardCharsets.UTF_8 );
-        FileUtils.writeStringToFile( new File( destFile ), ldifContent, StandardCharsets.UTF_8, false );
-
         // import the LDIF
+        String file = prepareInputFile( "DIRSTUDIO-1160.ldif" );
         ImportWizardBot importWizardBot = browserViewBot.openImportLdifWizard();
-        importWizardBot.typeFile( destFile );
+        importWizardBot.typeFile( file );
         importWizardBot.clickFinishButton();
 
         browserViewBot.waitForEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=U0034692" );
@@ -585,15 +589,10 @@ public class ImportExportTest extends AbstractLdapTestUnit
     @Test
     public void testLdifModification() throws Exception
     {
-        URL url = Platform.getInstanceLocation().getURL();
-        String destFile = url.getFile() + "ImportExportTest_Modifications.ldif";
-        InputStream is = getClass().getResourceAsStream( "ImportExportTest_Modifications.ldif" );
-        String ldifContent = IOUtils.toString( is, StandardCharsets.UTF_8 );
-        FileUtils.writeStringToFile( new File( destFile ), ldifContent, StandardCharsets.UTF_8, false );
-
         // import the LDIF
+        String file = prepareInputFile( "ImportExportTest_Modifications.ldif" );
         ImportWizardBot importWizardBot = browserViewBot.openImportLdifWizard();
-        importWizardBot.typeFile( destFile );
+        importWizardBot.typeFile( file );
         importWizardBot.clickFinishButton();
 
         browserViewBot.waitForEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" );
@@ -613,6 +612,84 @@ public class ImportExportTest extends AbstractLdapTestUnit
         entryEditorBot.activate();
         assertTrue( entryEditorBot.getAttributeValues().contains( "uid: user.33" ) );
         assertFalse( entryEditorBot.getAttributeValues().contains( "uid: user.3" ) );
+    }
+
+
+    @Test
+    public void testImportUpdateExistingEntriesFalse() throws Exception
+    {
+        String dn = "uid=User.1,ou=users,ou=system";
+        service.getAdminSession().add( new DefaultEntry( service.getSchemaManager(), dn,
+            "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: User.1" ) );
+
+        // import the LDIF
+        String file = prepareInputFile( "ImportExportTest_ImportDontUpdateUI.ldif" );
+        ImportWizardBot importWizardBot = browserViewBot.openImportLdifWizard();
+        importWizardBot.typeFile( file );
+        importWizardBot.setUpdateExistingEntries( false );
+        importWizardBot.setContinueOnError( false );
+        importWizardBot.clickFinishButton();
+
+        // check entry was not updated
+        browserViewBot.waitForEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=User.1" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=User.1" );
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( dn );
+        entryEditorBot.activate();
+        assertTrue( entryEditorBot.getAttributeValues().contains( "sn: X" ) );
+        assertFalse( entryEditorBot.getAttributeValues().contains( "sn: Amar" ) );
+        assertFalse( entryEditorBot.getAttributeValues().contains( "roomNumber: 1388" ) );
+
+        // check error in modifications logs view
+        modificationLogsViewBot.assertContainsError( "[LDAP result code 68 - entryAlreadyExists]",
+            "dn: uid=User.1,ou=users,ou=system", "changetype: add" );
+        // check error in LDIF log file
+        String logContent = FileUtils.readFileToString( new File( file + ".log" ), StandardCharsets.UTF_8 );
+        assertThat( logContent, containsString( "[LDAP result code 68 - entryAlreadyExists]" ) );
+    }
+
+
+    @Test
+    public void testImportUpdateExistingEntriesTrue() throws Exception
+    {
+        String dn = "uid=User.1,ou=users,ou=system";
+        service.getAdminSession().add( new DefaultEntry( service.getSchemaManager(), dn,
+            "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: User.1" ) );
+
+        // import the LDIF
+        String file = prepareInputFile( "ImportExportTest_ImportDontUpdateUI.ldif" );
+        ImportWizardBot importWizardBot = browserViewBot.openImportLdifWizard();
+        importWizardBot.typeFile( file );
+        importWizardBot.setUpdateExistingEntries( true );
+        importWizardBot.setContinueOnError( false );
+        importWizardBot.clickFinishButton();
+
+        // check entry was updated
+        browserViewBot.waitForEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=User.1" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=User.1" );
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( dn );
+        entryEditorBot.activate();
+        assertFalse( entryEditorBot.getAttributeValues().contains( "sn: X" ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "sn: Amar" ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "roomNumber: 1388" ) );
+
+        // check error and update in modifications logs view
+        modificationLogsViewBot.assertContainsError( "[LDAP result code 68 - entryAlreadyExists]",
+            "dn: uid=User.1,ou=users,ou=system", "changetype: add" );
+        modificationLogsViewBot.assertContainsOk( "dn: uid=User.1,ou=users,ou=system", "changetype: modify" );
+        // check no error but update in LDIF log file
+        String logContent = FileUtils.readFileToString( new File( file + ".log" ), StandardCharsets.UTF_8 );
+        assertThat( logContent, not( containsString( "[LDAP result code 68 - entryAlreadyExists]" ) ) );
+    }
+
+
+    private String prepareInputFile( String inputFileName ) throws IOException
+    {
+        URL url = Platform.getInstanceLocation().getURL();
+        String destFile = url.getFile() + UUID.randomUUID().toString();
+        InputStream is = getClass().getResourceAsStream( inputFileName );
+        String ldifContent = IOUtils.toString( is, StandardCharsets.UTF_8 );
+        FileUtils.writeStringToFile( new File( destFile ), ldifContent, StandardCharsets.UTF_8, false );
+        return destFile;
     }
 
 }

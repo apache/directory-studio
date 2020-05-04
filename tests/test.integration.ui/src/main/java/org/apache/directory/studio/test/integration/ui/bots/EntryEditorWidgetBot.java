@@ -94,6 +94,13 @@ class EntryEditorWidgetBot
     }
 
 
+    public ErrorDialogBot typeValueAndFinishAndExpectErrorDialog( String value )
+    {
+        String shellText = BotUtils.shell( () -> typeValueAndFinish( value, false ), "Error" ).getText();
+        return new ErrorDialogBot( shellText );
+    }
+
+
     void cancelEditValue()
     {
         SWTBotTree tree = bot.tree( 0 );
@@ -210,6 +217,16 @@ class EntryEditorWidgetBot
         ContextMenuHelper.clickContextMenu( bot.tree(), "Delete Value" );
         DeleteDialogBot deleteDialogBot = new DeleteDialogBot( DeleteDialogBot.DELETE_VALUE_TITLE );
         deleteDialogBot.clickOkButton();
+    }
+
+
+    public ErrorDialogBot deleteValueExpectingErrorDialog( String attributeType, String value )
+    {
+        SWTBotTreeItem treeItem = getTreeItem( attributeType, value );
+        treeItem.select();
+        ContextMenuHelper.clickContextMenu( bot.tree(), "Delete Value" );
+        DeleteDialogBot deleteDialogBot = new DeleteDialogBot( DeleteDialogBot.DELETE_VALUE_TITLE );
+        return deleteDialogBot.clickOkButtonExpectingErrorDialog();
     }
 
 

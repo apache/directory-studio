@@ -83,6 +83,12 @@ public class EntryEditorBot
     }
 
 
+    public ErrorDialogBot typeValueAndFinishAndExpectErrorDialog( String value )
+    {
+        return editorBot.typeValueAndFinishAndExpectErrorDialog( value );
+    }
+
+
     public void addValue( String attributeType )
     {
         editorBot.addValue( attributeType );
@@ -128,6 +134,12 @@ public class EntryEditorBot
     public void deleteValue( String attributeType, String value )
     {
         editorBot.deleteValue( attributeType, value );
+    }
+
+
+    public ErrorDialogBot deleteValueExpectingErrorDialog( String attributeType, String value )
+    {
+        return editorBot.deleteValueExpectingErrorDialog( attributeType, value );
     }
 
 

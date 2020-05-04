@@ -41,12 +41,8 @@ import java.util.logging.Logger;
 import javax.naming.directory.SearchControls;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.directory.api.ldap.model.entry.Entry;
-import org.apache.directory.api.ldap.model.entry.Modification;
-import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Referral;
-import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -56,6 +52,7 @@ import org.apache.directory.studio.connection.core.ConnectionManager;
 import org.apache.directory.studio.connection.core.ILdapLogger;
 import org.apache.directory.studio.connection.core.ReferralsInfo;
 import org.apache.directory.studio.connection.core.Utils;
+import org.apache.directory.studio.connection.core.io.StudioLdapException;
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
 import org.apache.directory.studio.ldifparser.model.lines.LdifCommentLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifLineBase;
@@ -191,7 +188,7 @@ public class LdifSearchLogger implements ILdapLogger
     }
 
 
-    private void log( String text, String type, LdapException ex, Connection connection )
+    private void log( String text, String type, StudioLdapException ex, Connection connection )
     {
         String id = connection.getId();
         if ( !loggers.containsKey( id ) )
@@ -245,48 +242,9 @@ public class LdifSearchLogger implements ILdapLogger
     /**
      * {@inheritDoc}
      */
-    public void logChangetypeAdd( Connection connection, final Entry entry, final Control[] controls, LdapException ex )
-    {
-        // don't log changetypes
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void logChangetypeDelete( Connection connection, final Dn dn, final Control[] controls,
-        LdapException ex )
-    {
-        // don't log changetypes
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void logChangetypeModify( Connection connection, final Dn dn,
-        final Collection<Modification> modifications, final Control[] controls, LdapException ex )
-    {
-        // don't log changetypes
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void logChangetypeModDn( Connection connection, final Dn oldDn, final Dn newDn,
-        final boolean deleteOldRdn, final Control[] controls, LdapException ex )
-    {
-        // don't log changetypes
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
     public void logSearchRequest( Connection connection, String searchBase, String filter,
         SearchControls searchControls, AliasDereferencingMethod aliasesDereferencingMethod,
-        Control[] controls, long requestNum, LdapException ex )
+        Control[] controls, long requestNum, StudioLdapException ex )
     {
         if ( !isSearchRequestLogEnabled() )
         {
@@ -349,7 +307,7 @@ public class LdifSearchLogger implements ILdapLogger
      * {@inheritDoc}
      */
     public void logSearchResultReference( Connection connection, Referral referral,
-        ReferralsInfo referralsInfo, long requestNum, LdapException ex )
+        ReferralsInfo referralsInfo, long requestNum, StudioLdapException ex )
     {
         if ( !isSearchResultEntryLogEnabled() )
         {
@@ -373,7 +331,7 @@ public class LdifSearchLogger implements ILdapLogger
     /**
      * {@inheritDoc}
      */
-    public void logSearchResultDone( Connection connection, long count, long requestNum, LdapException ex )
+    public void logSearchResultDone( Connection connection, long count, long requestNum, StudioLdapException ex )
     {
         if ( !isSearchRequestLogEnabled() )
         {

@@ -498,7 +498,7 @@ public class NewConnectionWizardTest extends AbstractLdapTestUnit
         // click "Check Network Parameter" button
         String result = wizardBot.clickCheckAuthenticationButton();
         assertNotNull( "Expected Error", result );
-        assertTrue( "'INVALID_CREDENTIALS' message must occur in error message", result.contains( "INVALID_CREDENTIALS" ) );
+        assertThat( result, containsString( "[LDAP result code 49 - invalidCredentials]" ) );
 
         wizardBot.clickCancelButton();
     }

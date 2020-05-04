@@ -123,6 +123,7 @@ public class PasswordModifyExtendedOperationAction extends BrowserAction
     public boolean isEnabled()
     {
         return getConnectionAndEntry() != null
+            && getConnectionAndEntry().connection != null
             && getConnectionAndEntry().connection.getRootDSE()
                 .isExtensionSupported( PasswordModifyRequest.EXTENSION_OID );
     }

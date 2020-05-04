@@ -20,9 +20,6 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
-
-
 public class PasswordModifyExtendedOperationDialogBot extends DialogBot
 {
     public PasswordModifyExtendedOperationDialogBot()
@@ -121,21 +118,6 @@ public class PasswordModifyExtendedOperationDialogBot extends DialogBot
         {
             bot.checkBox( 2 ).deselect();
         }
-    }
-
-
-    public ErrorDialogBot clickOkButtonExpectingErrorDialog()
-    {
-        SWTBotShell shell = BotUtils.shell( new Runnable()
-        {
-            public void run()
-            {
-                clickOkButton();
-            }
-        }, "Error" );
-        String shellText = shell.getText();
-
-        return new ErrorDialogBot( shellText );
     }
 
 }

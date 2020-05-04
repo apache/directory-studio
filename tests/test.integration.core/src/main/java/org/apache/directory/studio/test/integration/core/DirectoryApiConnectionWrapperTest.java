@@ -89,6 +89,7 @@ import org.apache.directory.studio.connection.core.ConnectionParameter.Authentic
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
+import org.apache.directory.studio.connection.core.io.StudioLdapException;
 import org.apache.directory.studio.connection.core.io.api.DirectoryApiConnectionWrapper;
 import org.apache.directory.studio.connection.core.io.api.StudioSearchResult;
 import org.apache.directory.studio.connection.core.io.api.StudioSearchResultEnumeration;
@@ -118,7 +119,6 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
 {
 
     protected ConnectionWrapper connectionWrapper;
-
 
     @Before
     public void setUp() throws Exception
@@ -225,9 +225,11 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
         connectionWrapper.connect( monitor );
         assertFalse( connectionWrapper.isConnected() );
         assertNotNull( monitor.getException() );
-        assertTrue( monitor.getException() instanceof InvalidConnectionException );
+        assertTrue( monitor.getException() instanceof StudioLdapException );
         assertNotNull( monitor.getException().getCause() );
-        assertTrue( monitor.getException().getCause() instanceof ConnectException );
+        assertTrue( monitor.getException().getCause() instanceof InvalidConnectionException );
+        assertNotNull( monitor.getException().getCause().getCause() );
+        assertTrue( monitor.getException().getCause().getCause() instanceof ConnectException );
 
         // unknown host
         monitor = getProgressMonitor();
@@ -238,9 +240,11 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
         connectionWrapper.connect( monitor );
         assertFalse( connectionWrapper.isConnected() );
         assertNotNull( monitor.getException() );
-        assertTrue( monitor.getException() instanceof InvalidConnectionException );
+        assertTrue( monitor.getException() instanceof StudioLdapException );
         assertNotNull( monitor.getException().getCause() );
-        assertTrue( monitor.getException().getCause() instanceof UnresolvedAddressException );
+        assertTrue( monitor.getException().getCause() instanceof InvalidConnectionException );
+        assertNotNull( monitor.getException().getCause().getCause() );
+        assertTrue( monitor.getException().getCause().getCause() instanceof UnresolvedAddressException );
 
         // TODO: SSL, StartTLS
     }
@@ -293,8 +297,11 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
         connectionWrapper.bind( monitor );
         assertFalse( connectionWrapper.isConnected() );
         assertNotNull( monitor.getException() );
-        assertTrue( monitor.getException() instanceof LdapAuthenticationException );
+        assertTrue( monitor.getException() instanceof StudioLdapException );
+        assertTrue( monitor.getException().getMessage().contains( "[LDAP result code 49 - invalidCredentials]" ) );
         assertTrue( monitor.getException().getMessage().contains( "INVALID_CREDENTIALS" ) );
+        assertTrue( monitor.getException().getCause() instanceof LdapAuthenticationException );
+        assertTrue( monitor.getException().getCause().getMessage().contains( "INVALID_CREDENTIALS" ) );
 
         // simple auth with invalid principal and credential
         monitor = getProgressMonitor();
@@ -306,8 +313,11 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
         connectionWrapper.bind( monitor );
         assertFalse( connectionWrapper.isConnected() );
         assertNotNull( monitor.getException() );
-        assertTrue( monitor.getException() instanceof LdapAuthenticationException );
+        assertTrue( monitor.getException() instanceof StudioLdapException );
+        assertTrue( monitor.getException().getMessage().contains( "[LDAP result code 49 - invalidCredentials]" ) );
         assertTrue( monitor.getException().getMessage().contains( "INVALID_CREDENTIALS" ) );
+        assertTrue( monitor.getException().getCause() instanceof LdapAuthenticationException );
+        assertTrue( monitor.getException().getCause().getMessage().contains( "INVALID_CREDENTIALS" ) );
     }
 
 
@@ -555,7 +565,10 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
         assertFalse( monitor.isCanceled() );
         assertTrue( monitor.errorsReported() );
         assertNotNull( monitor.getException() );
-        assertTrue( monitor.getException() instanceof LdapLoopDetectedException );
+        assertTrue( monitor.getException() instanceof StudioLdapException );
+        assertTrue( monitor.getException().getMessage().contains( "[LDAP result code 54 - loopDetect]" ) );
+        assertTrue( monitor.getException().getMessage().contains( "already processed" ) );
+        assertTrue( monitor.getException().getCause() instanceof LdapLoopDetectedException );
     }
 
 
@@ -654,7 +667,10 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
         assertFalse( monitor.isCanceled() );
         assertTrue( monitor.errorsReported() );
         assertNotNull( monitor.getException() );
-        assertTrue( monitor.getException() instanceof LdapLoopDetectedException );
+        assertTrue( monitor.getException() instanceof StudioLdapException );
+        assertTrue( monitor.getException().getMessage().contains( "[LDAP result code 54 - loopDetect]" ) );
+        assertTrue( monitor.getException().getMessage().contains( "already processed" ) );
+        assertTrue( monitor.getException().getCause() instanceof LdapLoopDetectedException );
     }
 
 
@@ -738,7 +754,10 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
         assertFalse( monitor.isCanceled() );
         assertTrue( monitor.errorsReported() );
         assertNotNull( monitor.getException() );
-        assertTrue( monitor.getException() instanceof LdapLoopDetectedException );
+        assertTrue( monitor.getException() instanceof StudioLdapException );
+        assertTrue( monitor.getException().getMessage().contains( "[LDAP result code 54 - loopDetect]" ) );
+        assertTrue( monitor.getException().getMessage().contains( "already processed" ) );
+        assertTrue( monitor.getException().getCause() instanceof LdapLoopDetectedException );
         assertTrue( service.getAdminSession().exists( targetDn ) );
     }
 
@@ -945,24 +964,23 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
         assertEquals( "uid=admin,ou=system", response.getDn().toString() );
     }
 
-
     /*
     @Ignore
     @Test
     public void testStartEndTransactionExtendedOperation() throws Exception
     {
         LdapApiService ldapApiService = LdapApiServiceFactory.getSingleton();
-
+    
         StartTransactionRequest request1 = ( StartTransactionRequest ) ldapApiService.getExtendedRequestFactories()
             .get( StartTransactionRequest.EXTENSION_OID ).newRequest();
         StudioProgressMonitor monitor1 = getProgressMonitor();
         StartTransactionResponse response1 = ( StartTransactionResponse ) getConnectionWrapper( monitor1 )
             .extended( request1, monitor1 );
-
+    
         assertEquals( ResultCodeEnum.SUCCESS, response1.getLdapResult().getResultCode() );
         assertFalse( monitor1.isCanceled() );
         assertFalse( monitor1.errorsReported() );
-
+    
         EndTransactionRequest request2 = ( EndTransactionRequest ) ldapApiService.getExtendedRequestFactories()
             .get( EndTransactionRequest.EXTENSION_OID ).newRequest();
         request2.setTransactionId( response1.getTransactionId() );
@@ -970,7 +988,7 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
         StudioProgressMonitor monitor2 = getProgressMonitor();
         EndTransactionResponse response2 = ( EndTransactionResponse ) getConnectionWrapper( monitor2 )
             .extended( request2, monitor2 );
-
+    
         assertEquals( ResultCodeEnum.SUCCESS, response2.getLdapResult().getResultCode() );
         assertFalse( monitor2.isCanceled() );
         assertFalse( monitor2.errorsReported() );

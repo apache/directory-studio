@@ -37,6 +37,7 @@ import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.EntryEditorBot;
 import org.apache.directory.studio.test.integration.ui.bots.ErrorDialogBot;
+import org.apache.directory.studio.test.integration.ui.bots.ModificationLogsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.PasswordEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.PasswordModifyExtendedOperationDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
@@ -64,6 +65,7 @@ public class ExtendedOperationsTest extends AbstractLdapTestUnit
     private StudioBot studioBot;
     private ConnectionsViewBot connectionsViewBot;
     private BrowserViewBot browserViewBot;
+    private ModificationLogsViewBot modificationLogsViewBot;
 
 
     @Before
@@ -74,6 +76,7 @@ public class ExtendedOperationsTest extends AbstractLdapTestUnit
         connectionsViewBot = studioBot.getConnectionView();
         connectionsViewBot.createTestConnection( "BrowserTest", ldapServer.getPort() );
         browserViewBot = studioBot.getBrowserView();
+        modificationLogsViewBot = studioBot.getModificationLogsViewBot();
     }
 
 

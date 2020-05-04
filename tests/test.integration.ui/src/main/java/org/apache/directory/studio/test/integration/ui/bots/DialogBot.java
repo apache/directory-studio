@@ -72,6 +72,13 @@ public abstract class DialogBot
     }
 
 
+    public ErrorDialogBot clickOkButtonExpectingErrorDialog()
+    {
+        String shellText = BotUtils.shell( () -> clickButton( "OK" ), "Error", "Problem Occurred" ).getText();
+        return new ErrorDialogBot( shellText );
+    }
+
+
     public void clickCancelButton()
     {
         clickButton( "Cancel" );

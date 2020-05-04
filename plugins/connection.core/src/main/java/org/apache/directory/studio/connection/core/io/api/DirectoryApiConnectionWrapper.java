@@ -91,6 +91,7 @@ import org.apache.directory.studio.connection.core.Messages;
 import org.apache.directory.studio.connection.core.ReferralsInfo;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapperUtils;
+import org.apache.directory.studio.connection.core.io.StudioLdapException;
 import org.apache.directory.studio.connection.core.io.StudioTrustManager;
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.osgi.util.NLS;
@@ -243,7 +244,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                 }
                 catch ( Exception e )
                 {
-                    exception = e;
+                    exception = toStudioLdapException( e );
 
                     try
                     {
@@ -493,7 +494,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     }
                     catch ( Exception e )
                     {
-                        exception = e;
+                        exception = toStudioLdapException( e );
                     }
                 }
             };
@@ -593,23 +594,21 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                 }
                 catch ( Exception e )
                 {
-                    exception = e;
+                    exception = toStudioLdapException( e );
                 }
-
-                LdapException le = toLdapException( exception );
 
                 for ( ILdapLogger logger : getLdapLoggers() )
                 {
                     if ( searchResultEnumeration != null )
                     {
                         logger.logSearchRequest( connection, searchBase, filter, searchControls,
-                            aliasesDereferencingMethod, controls, requestNum, le );
+                            aliasesDereferencingMethod, controls, requestNum, exception );
                     }
                     else
                     {
                         logger.logSearchRequest( connection, searchBase, filter, searchControls,
-                            aliasesDereferencingMethod, controls, requestNum, le );
-                        logger.logSearchResultDone( connection, 0, requestNum, le );
+                            aliasesDereferencingMethod, controls, requestNum, exception );
+                        logger.logSearchResultDone( connection, 0, requestNum, exception );
                     }
                 }
             }
@@ -750,14 +749,12 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                 }
                 catch ( Exception e )
                 {
-                    exception = e;
+                    exception = toStudioLdapException( e );
                 }
-
-                LdapException le = toLdapException( exception );
 
                 for ( ILdapLogger logger : getLdapLoggers() )
                 {
-                    logger.logChangetypeModify( connection, dn, modifications, controls, le );
+                    logger.logChangetypeModify( connection, dn, modifications, controls, exception );
                 }
             }
         };
@@ -831,14 +828,12 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                 }
                 catch ( Exception e )
                 {
-                    exception = e;
+                    exception = toStudioLdapException( e );
                 }
-
-                LdapException le = toLdapException( exception );
 
                 for ( ILdapLogger logger : getLdapLoggers() )
                 {
-                    logger.logChangetypeModDn( connection, oldDn, newDn, deleteOldRdn, controls, le );
+                    logger.logChangetypeModDn( connection, oldDn, newDn, deleteOldRdn, controls, exception );
                 }
             }
         };
@@ -912,14 +907,12 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                 }
                 catch ( Exception e )
                 {
-                    exception = e;
+                    exception = toStudioLdapException( e );
                 }
-
-                LdapException le = toLdapException( exception );
 
                 for ( ILdapLogger logger : getLdapLoggers() )
                 {
-                    logger.logChangetypeAdd( connection, entry, controls, le );
+                    logger.logChangetypeAdd( connection, entry, controls, exception );
                 }
             }
         };
@@ -990,14 +983,12 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                 }
                 catch ( Exception e )
                 {
-                    exception = e;
+                    exception = toStudioLdapException( e );
                 }
-
-                LdapException le = toLdapException( exception );
 
                 for ( ILdapLogger logger : getLdapLoggers() )
                 {
-                    logger.logChangetypeDelete( connection, dn, controls, le );
+                    logger.logChangetypeDelete( connection, dn, controls, exception );
                 }
             }
         };
@@ -1049,11 +1040,8 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                 }
                 catch ( Exception e )
                 {
-                    exception = e;
+                    exception = toStudioLdapException( e );
                 }
-
-                // TODO: logging?
-                LdapException le = toLdapException( exception );
 
                 for ( ILdapLogger logger : getLdapLoggers() )
                 {
@@ -1090,7 +1078,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     abstract class InnerRunnable implements Runnable
     {
         protected StudioSearchResultEnumeration searchResultEnumeration = null;
-        protected Exception exception = null;
+        protected StudioLdapException exception = null;
         protected boolean canceled = false;
 
 
@@ -1357,7 +1345,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     }
 
 
-    private LdapException toLdapException( Exception exception )
+    private StudioLdapException toStudioLdapException( Exception exception )
     {
         if ( exception == null )
         {
@@ -1365,11 +1353,11 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         }
         else if ( exception instanceof LdapException )
         {
-            return ( LdapException ) exception;
+            return new StudioLdapException( ( LdapException ) exception );
         }
         else
         {
-            return new LdapException( exception.getMessage(), exception );
+            return new StudioLdapException( exception );
         }
     }
 

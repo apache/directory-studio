@@ -30,7 +30,6 @@ public class ImportWizardBot extends WizardBot
     public static final String IMPORT_DSML_TITLE = "DSML Import";
     private String title;
 
-
     public ImportWizardBot()
     {
         this( "Import" );
@@ -68,6 +67,32 @@ public class ImportWizardBot extends WizardBot
         if ( watcher != null )
         {
             watcher.waitUntilDone();
+        }
+    }
+
+
+    public void setContinueOnError( boolean enabled )
+    {
+        if ( enabled )
+        {
+            bot.checkBox( "Continue on error" ).select();
+        }
+        else
+        {
+            bot.checkBox( "Continue on error" ).deselect();
+        }
+    }
+
+
+    public void setUpdateExistingEntries( boolean enabled )
+    {
+        if ( enabled )
+        {
+            bot.checkBox( "Update existing entries" ).select();
+        }
+        else
+        {
+            bot.checkBox( "Update existing entries" ).deselect();
         }
     }
 

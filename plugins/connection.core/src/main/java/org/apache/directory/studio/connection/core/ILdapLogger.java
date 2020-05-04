@@ -26,11 +26,11 @@ import javax.naming.directory.SearchControls;
 
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Modification;
-import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
+import org.apache.directory.studio.connection.core.io.StudioLdapException;
 
 
 /**
@@ -49,7 +49,10 @@ public interface ILdapLogger
      * @param controls the controls
      * @param ex the LDAP exception if an error occurred, null otherwise
      */
-    void logChangetypeAdd( Connection connection, final Entry entry, final Control[] controls, LdapException ex );
+    default void logChangetypeAdd( Connection connection, final Entry entry, final Control[] controls,
+        StudioLdapException ex )
+    {
+    }
 
 
     /**
@@ -61,8 +64,11 @@ public interface ILdapLogger
      * @param ex the LDAP exception if an error occurred, null otherwise
      * 
      */
-    void logChangetypeDelete( Connection connection, final Dn dn, final Control[] controls,
-        LdapException ex );
+    default void logChangetypeDelete( Connection connection, final Dn dn, final Control[] controls,
+        StudioLdapException ex )
+    {
+
+    }
 
 
     /**
@@ -74,8 +80,10 @@ public interface ILdapLogger
      * @param ex the LDAP exception if an error occurred, null otherwise
      * @param controls the controls
      */
-    void logChangetypeModify( Connection connection, final Dn dn,
-        final Collection<Modification> modifications, final Control[] controls, LdapException ex );
+    default void logChangetypeModify( Connection connection, final Dn dn,
+        final Collection<Modification> modifications, final Control[] controls, StudioLdapException ex )
+    {
+    }
 
 
     /**
@@ -88,8 +96,10 @@ public interface ILdapLogger
      * @param controls the controls
      * @param ex the LDAP exception if an error occurred, null otherwise
      */
-    void logChangetypeModDn( Connection connection, final Dn oldDn, final Dn newDn,
-        final boolean deleteOldRdn, final Control[] controls, LdapException ex );
+    default void logChangetypeModDn( Connection connection, final Dn oldDn, final Dn newDn,
+        final boolean deleteOldRdn, final Control[] controls, StudioLdapException ex )
+    {
+    }
 
 
     /**
@@ -152,9 +162,11 @@ public interface ILdapLogger
      * @param requestNum the request number
      * @param ex the LDAP exception if an error occurred, null otherwise
      */
-    void logSearchRequest( Connection connection, String searchBase, String filter,
+    default void logSearchRequest( Connection connection, String searchBase, String filter,
         SearchControls searchControls, AliasDereferencingMethod aliasesDereferencingMethod,
-        Control[] controls, long requestNum, LdapException ex );
+        Control[] controls, long requestNum, StudioLdapException ex )
+    {
+    }
 
 
     /**
@@ -166,8 +178,10 @@ public interface ILdapLogger
      * @param requestNum the request number
      * @param ex the LDAP exception if an error occurred, null otherwise
      */
-    void logSearchResultReference( Connection connection, Referral referral,
-        ReferralsInfo referralsInfo, long requestNum, LdapException ex );
+    default void logSearchResultReference( Connection connection, Referral referral,
+        ReferralsInfo referralsInfo, long requestNum, StudioLdapException ex )
+    {
+    }
 
 
     /**
@@ -178,6 +192,8 @@ public interface ILdapLogger
      * @param requestNum the request number
      * @param ex the LDAP exception if an error occurred, null otherwise
      */
-    void logSearchResultDone( Connection connection, long count, long requestNum, LdapException ex );
+    default void logSearchResultDone( Connection connection, long count, long requestNum, StudioLdapException ex )
+    {
+    }
 
 }

@@ -40,4 +40,10 @@ public class ErrorDialogBot extends DialogBot
         return bot.label( 1 ).getText();
     }
 
+
+    public String getErrorDetails()
+    {
+        return bot.label( 2 ).getText();
+    }
+
 }

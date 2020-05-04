@@ -230,7 +230,7 @@ public class CopyEntryTest extends AbstractLdapTestUnit
         dialog.clickOkButton();
 
         // verify in modification logs
-        modificationLogsViewBot.assertContainsError( "ENTRY_ALREADY_EXISTS", "dn: uid=user.1,ou=users,ou=system",
+        modificationLogsViewBot.assertContainsError( "[LDAP result code 68 - entryAlreadyExists]", "dn: uid=user.1,ou=users,ou=system",
             "changetype: add", "uid: user.1" );
         modificationLogsViewBot.assertContainsOk( "dn: uid=user.1,ou=users,ou=system", "changetype: modify",
             "replace: uid" + LdifParserConstants.LINE_SEPARATOR + "uid: user.1" + LdifParserConstants.LINE_SEPARATOR
@@ -263,7 +263,7 @@ public class CopyEntryTest extends AbstractLdapTestUnit
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.renamed" );
 
         // verify in modification logs
-        modificationLogsViewBot.assertContainsError( "ENTRY_ALREADY_EXISTS", "dn: uid=user.1,ou=users,ou=system",
+        modificationLogsViewBot.assertContainsError( "[LDAP result code 68 - entryAlreadyExists]", "dn: uid=user.1,ou=users,ou=system",
             "changetype: add", "uid: user.1" );
         modificationLogsViewBot.assertContainsOk( "dn: uid=user.renamed,ou=users,ou=system", "changetype: add",
             "uid: user.renamed" );

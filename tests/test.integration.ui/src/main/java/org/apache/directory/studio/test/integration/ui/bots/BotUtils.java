@@ -24,7 +24,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.directory.ldap.client.api.LdapConnectionConfig;
-import org.apache.directory.ldap.client.api.LdapNetworkConnection;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;

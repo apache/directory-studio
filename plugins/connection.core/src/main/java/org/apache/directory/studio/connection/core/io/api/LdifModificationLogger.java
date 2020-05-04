@@ -39,26 +39,21 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import javax.naming.directory.SearchControls;
-
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.entry.Value;
-import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.Control;
-import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionManager;
 import org.apache.directory.studio.connection.core.Controls;
 import org.apache.directory.studio.connection.core.ILdapLogger;
-import org.apache.directory.studio.connection.core.ReferralsInfo;
+import org.apache.directory.studio.connection.core.io.StudioLdapException;
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
 import org.apache.directory.studio.ldifparser.model.container.LdifChangeAddRecord;
 import org.apache.directory.studio.ldifparser.model.container.LdifChangeDeleteRecord;
@@ -207,7 +202,7 @@ public class LdifModificationLogger implements ILdapLogger
     }
 
 
-    private void log( String text, LdapException ex, Connection connection )
+    private void log( String text, StudioLdapException ex, Connection connection )
     {
         String id = connection.getId();
         if ( !loggers.containsKey( id ) )
@@ -261,7 +256,7 @@ public class LdifModificationLogger implements ILdapLogger
     /**
      * {@inheritDoc}
      */
-    public void logChangetypeAdd( Connection connection, final Entry entry, final Control[] controls, LdapException ex )
+    public void logChangetypeAdd( Connection connection, final Entry entry, final Control[] controls, StudioLdapException ex )
     {
         if ( !isModificationLogEnabled() )
         {
@@ -305,7 +300,7 @@ public class LdifModificationLogger implements ILdapLogger
      * {@inheritDoc}
      */
     public void logChangetypeDelete( Connection connection, final Dn dn, final Control[] controls,
-        LdapException ex )
+        StudioLdapException ex )
     {
         if ( !isModificationLogEnabled() )
         {
@@ -326,7 +321,7 @@ public class LdifModificationLogger implements ILdapLogger
      * {@inheritDoc}
      */
     public void logChangetypeModify( Connection connection, final Dn dn,
-        final Collection<Modification> modifications, final Control[] controls, LdapException ex )
+        final Collection<Modification> modifications, final Control[] controls, StudioLdapException ex )
     {
         if ( !isModificationLogEnabled() )
         {
@@ -388,7 +383,7 @@ public class LdifModificationLogger implements ILdapLogger
      * {@inheritDoc}
      */
     public void logChangetypeModDn( Connection connection, final Dn oldDn, final Dn newDn,
-        final boolean deleteOldRdn, final Control[] controls, LdapException ex )
+        final boolean deleteOldRdn, final Control[] controls, StudioLdapException ex )
     {
         if ( !isModificationLogEnabled() )
         {
@@ -408,36 +403,6 @@ public class LdifModificationLogger implements ILdapLogger
 
         String formattedString = record.toFormattedString( LdifFormatParameters.DEFAULT );
         log( formattedString, ex, connection );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void logSearchRequest( Connection connection, String searchBase, String filter,
-        SearchControls searchControls, AliasDereferencingMethod aliasesDereferencingMethod,
-        Control[] controls, long requestNum, LdapException ex )
-    {
-        // don't log searches
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void logSearchResultReference( Connection connection, Referral referral,
-        ReferralsInfo referralsInfo, long requestNum, LdapException ex )
-    {
-        // don't log searches 
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void logSearchResultDone( Connection connection, long count, long requestNum, LdapException ex )
-    {
-        // don't log searches 
     }
 
 

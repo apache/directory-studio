@@ -31,7 +31,6 @@ import java.util.Set;
 
 import javax.naming.directory.SearchControls;
 
-import org.apache.directory.api.ldap.model.exception.LdapContextNotEmptyException;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
@@ -40,6 +39,7 @@ import org.apache.directory.studio.connection.core.Controls;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.StudioControl;
+import org.apache.directory.studio.connection.core.io.StudioLdapException;
 import org.apache.directory.studio.connection.core.io.api.StudioSearchResultEnumeration;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
@@ -276,7 +276,7 @@ public class DeleteEntriesRunnable implements StudioConnectionBulkRunnableWithPr
                 new String[]
                     { "" + numberOfDeletedEntries } ) ); //$NON-NLS-1$
         }
-        else if ( dummyMonitor.getException() instanceof LdapContextNotEmptyException )
+        else if ( StudioLdapException.isContextNotEmptyException( dummyMonitor.getException() ) )
         {
             // do not follow referrals or dereference aliases when deleting entries
             AliasDereferencingMethod aliasDereferencingMethod = AliasDereferencingMethod.NEVER;
