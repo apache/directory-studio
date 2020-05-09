@@ -33,14 +33,16 @@ pipeline {
         retry(2)
       }
       agent {
-        docker {
-          label 'ubuntu && !H28 && !H36 && !H40'
-          image 'apachedirectory/maven-build:jdk-8'
-          //args '-v $HOME/.m2:/home/hnelson/.m2'
-        }
+        label 'ubuntu && !H28 && !H36 && !H40'
       }
       steps {
-        sh 'export DISPLAY=:99; env; ps aux'
+        script {
+          docker.image('osixia/openldap:1.3.0').withRun() { openldap ->
+            docker.image('apachedirectory/maven-build:jdk-8').inside("--link=${openldap.id}:openldap -e OPENLDAP_HOST=openldap -e OPENLDAP_PORT=389") {
+              sh 'export DISPLAY=:99; env; ps aux'
+            }
+          }
+        }
       }
       post {
         always {
@@ -56,14 +58,16 @@ pipeline {
             retry(2)
           }
           agent {
-            docker {
-              label 'ubuntu && !H28 && !H36 && !H40'
-              image 'apachedirectory/maven-build:jdk-8'
-              //args '-v $HOME/.m2:/home/hnelson/.m2'
-            }
+            label 'ubuntu && !H28 && !H36 && !H40'
           }
           steps {
-            sh 'export DISPLAY=:99; mvn -V -U -f pom-first.xml clean install && mvn -V clean install -Dorg.eclipse.swtbot.search.timeout=20000 -Denable-ui-tests'
+            script {
+              docker.image('osixia/openldap:1.3.0').withRun() { openldap ->
+                docker.image('apachedirectory/maven-build:jdk-8').inside("--link=${openldap.id}:openldap -e OPENLDAP_HOST=openldap -e OPENLDAP_PORT=389") {
+                  sh 'export DISPLAY=:99; mvn -V -U -f pom-first.xml clean install && mvn -V clean install -Dorg.eclipse.swtbot.search.timeout=20000 -Denable-ui-tests'
+                }
+              }
+            }
           }
           post {
             always {
@@ -79,14 +83,16 @@ pipeline {
             retry(2)
           }
           agent {
-            docker {
-              label 'ubuntu && !H28 && !H36 && !H40'
-              image 'apachedirectory/maven-build:jdk-11'
-              //args '-v $HOME/.m2:/home/hnelson/.m2'
-            }
+            label 'ubuntu && !H28 && !H36 && !H40'
           }
           steps {
-            sh 'export DISPLAY=:99; mvn -V -U -f pom-first.xml clean install && mvn -V clean install -Dorg.eclipse.swtbot.search.timeout=20000 -Denable-ui-tests'
+            script {
+              docker.image('osixia/openldap:1.3.0').withRun() { openldap ->
+                docker.image('apachedirectory/maven-build:jdk-11').inside("--link=${openldap.id}:openldap -e OPENLDAP_HOST=openldap -e OPENLDAP_PORT=389") {
+                  sh 'export DISPLAY=:99; mvn -V -U -f pom-first.xml clean install && mvn -V clean install -Dorg.eclipse.swtbot.search.timeout=20000 -Denable-ui-tests'
+                }
+              }
+            }
           }
           post {
             always {
@@ -102,14 +108,16 @@ pipeline {
             retry(2)
           }
           agent {
-            docker {
-              label 'ubuntu && !H28 && !H36 && !H40'
-              image 'apachedirectory/maven-build:jdk-14'
-              //args '-v $HOME/.m2:/home/hnelson/.m2'
-            }
+            label 'ubuntu && !H28 && !H36 && !H40'
           }
           steps {
-            sh 'export DISPLAY=:99; mvn -V -U -f pom-first.xml clean install && mvn -V clean install -Dorg.eclipse.swtbot.search.timeout=20000 -Denable-ui-tests'
+            script {
+              docker.image('osixia/openldap:1.3.0').withRun() { openldap ->
+                docker.image('apachedirectory/maven-build:jdk-14').inside("--link=${openldap.id}:openldap -e OPENLDAP_HOST=openldap -e OPENLDAP_PORT=389") {
+                  sh 'export DISPLAY=:99; mvn -V -U -f pom-first.xml clean install && mvn -V clean install -Dorg.eclipse.swtbot.search.timeout=20000 -Denable-ui-tests'
+                }
+              }
+            }
           }
           post {
             always {
