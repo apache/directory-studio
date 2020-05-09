@@ -69,6 +69,8 @@
  org.apache.directory.api.ldap.codec.core;bundle-version="${org.apache.directory.api.bundleversion}",
  org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.bundleversion}",
  org.apache.directory.api.ldap.net.mina;bundle-version="${org.apache.directory.api.bundleversion}",
+ org.apache.directory.api.ldap.schema;bundle-version="${org.apache.directory.api.bundleversion}",
+ org.apache.directory.api.ldap.schema.converter;bundle-version="${org.apache.directory.api.bundleversion}",
  org.apache.directory.api.util;bundle-version="${org.apache.directory.api.bundleversion}",
  org.apache.mina.core;bundle-version="${org.apache.mina.bundleversion}",
  

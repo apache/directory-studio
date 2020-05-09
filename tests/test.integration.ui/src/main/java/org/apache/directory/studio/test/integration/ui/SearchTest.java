@@ -367,7 +367,6 @@ public class SearchTest extends AbstractLdapTestUnit
         assertTrue( dialogBot.isVisible() );
         dialogBot.setSearchName( searchName );
         dialogBot.setReturningAttributes( "objectClass,ou,cn,uid" );
-        dialogBot.setControlPagedSearch( true, 5, false );
 
         FilterEditorDialogBot filterBot = dialogBot.openFilterEditor();
         filterBot.setFilter( "(&(objectClass=*)(uid=user.1))" );

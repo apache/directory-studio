@@ -55,13 +55,16 @@ or on Windows :
 
 ### Tests
 
-* Unit tests included in src/test/java of each plugin are executed automatically and run in 'test' phase
-* Core integration tests in tests/test.integration.core are executed automatically and run in 'integration-test' phase
-* SWTBot based UI integration tests in tests/test.integration.ui are disabled by default. They can be enabled with `-Denable-ui-tests`.
-  A failing test generates a screenshot. To not block the developer computer they can run within a virtual framebuffer:
+* Unit tests included in `src/test/java` of each plugin are executed automatically and run in 'test' phase
+* Core integration tests in `tests/test.integration.core` are executed automatically and run in 'integration-test' phase
+* UI integration tests based on SWTBot in `tests/test.integration.ui` are disabled by default. They can be enabled with `-Denable-ui-tests`. A failing test generates a screenshot. To not block the developer computer they can run within a virtual framebuffer:
 
     export DISPLAY=:99
     Xvfb :99 -screen 0 1024x768x16 &
+
+* Some UI integration tests expect a running OpenLDAP server and are skipped otherwise:
+
+    docker run -it --rm -p 20389:389 -p 20636:636 --name openldap osixia/openldap:1.3.0
 
 ### Build issues
 

@@ -48,7 +48,6 @@ public class ConnectionsViewBot
 {
     private SWTWorkbenchBot bot = new SWTWorkbenchBot();
 
-
     public NewConnectionWizardBot openNewConnectionWizard()
     {
         ContextMenuHelper.clickContextMenu( getConnectionsTree(), "New Connection..." );
@@ -163,17 +162,23 @@ public class ConnectionsViewBot
      */
     public Connection createTestConnection( String name, int port ) throws Exception
     {
+        return createTestConnection( name, LOCALHOST, port, "uid=admin,ou=system", "secret" );
+    }
+
+
+    public Connection createTestConnection( String name, String host, int port, String bindDn, String bindPassword ) throws Exception
+    {
         name = name + "_" + System.currentTimeMillis();
 
         ConnectionManager connectionManager = ConnectionCorePlugin.getDefault().getConnectionManager();
         ConnectionParameter connectionParameter = new ConnectionParameter();
         connectionParameter.setName( name );
-        connectionParameter.setHost( LOCALHOST );
+        connectionParameter.setHost( host );
         connectionParameter.setPort( port );
         connectionParameter.setEncryptionMethod( EncryptionMethod.NONE );
         connectionParameter.setAuthMethod( AuthenticationMethod.SIMPLE );
-        connectionParameter.setBindPrincipal( "uid=admin,ou=system" );
-        connectionParameter.setBindPassword( "secret" );
+        connectionParameter.setBindPrincipal( bindDn );
+        connectionParameter.setBindPassword( bindPassword );
         Connection connection = new Connection( connectionParameter );
         connectionManager.addConnection( connection );
 
