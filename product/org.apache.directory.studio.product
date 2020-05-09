@@ -15,8 +15,23 @@
 
    <launcherArgs>
       <programArgs>/studio-rcp/resources/icons/linux/studio.xpm
+###
+#Uncomment_to_configure_the_language
+#https://directory.apache.org/studio/faqs.html#how-to-set-the-language-of-studio
+#-nl
+#en
+###
+#Uncomment_to_configure_Java_version_to_use
+#https://directory.apache.org/studio/faqs.html#how-to-set-the-java-vm-to-use
+#-vm
+#/usr/lib/jvm/java-11-openjdk/bin/java
       </programArgs>
       <vmArgs>-Dosgi.requiredJavaVersion=1.8
+###
+#Uncomment_to_configure_heap_memory
+#https://directory.apache.org/studio/faqs.html#how-to-increase-the-heap-memory
+#-Xms1g
+#-Xmx2g
       </vmArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
       </vmArgsMac>
