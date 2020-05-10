@@ -113,20 +113,15 @@ public class SwtResourcesTest extends AbstractLdapTestUnit
 
 
     /**
-     * Ensure that we have not allocated more the 1000 SWT resources during the
+     * Ensure that we have not allocated too many SWT resources during the
      * complete test suite.
-     *
-     * 1000 is not a fix number but it is a good starting point.
-     *
-     * @throws Exception
-     *             the exception
      */
     @Test
     public void testSwtResourcesCount() throws Exception
     {
         int swtObjectCount = getSwtObjectCount();
         System.out.println("### SWT resouces count: " + swtObjectCount);
-        assertTrue( "Too many SWT resources were allocated: " + swtObjectCount, swtObjectCount < 1000 );
+        assertTrue( "Too many SWT resources were allocated: " + swtObjectCount, swtObjectCount < 1500 );
     }
 
 
