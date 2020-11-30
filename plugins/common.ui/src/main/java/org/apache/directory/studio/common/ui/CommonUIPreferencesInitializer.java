@@ -23,8 +23,6 @@ package org.apache.directory.studio.common.ui;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.preference.PreferenceConverter;
-import org.eclipse.swt.graphics.RGB;
 
 
 /**
@@ -42,22 +40,22 @@ public class CommonUIPreferencesInitializer extends AbstractPreferenceInitialize
         IPreferenceStore store = CommonUIPlugin.getDefault().getPreferenceStore();
 
         // Actual colors are defined in default.css and dark.css
-        RGB black = new RGB( 0, 0, 0 );
-        PreferenceConverter.setDefault( store, CommonUIConstants.DEFAULT_COLOR, black );
-        PreferenceConverter.setDefault( store, CommonUIConstants.DISABLED_COLOR, black );
-        PreferenceConverter.setDefault( store, CommonUIConstants.ERROR_COLOR, black );
-        PreferenceConverter.setDefault( store, CommonUIConstants.COMMENT_COLOR, black );
-        PreferenceConverter.setDefault( store, CommonUIConstants.KEYWORD_1_COLOR, black );
-        PreferenceConverter.setDefault( store, CommonUIConstants.KEYWORD_2_COLOR, black );
-        PreferenceConverter.setDefault( store, CommonUIConstants.OBJECT_CLASS_COLOR, black );
-        PreferenceConverter.setDefault( store, CommonUIConstants.ATTRIBUTE_TYPE_COLOR, black );
-        PreferenceConverter.setDefault( store, CommonUIConstants.VALUE_COLOR, black );
-        PreferenceConverter.setDefault( store, CommonUIConstants.OID_COLOR, black );
-        PreferenceConverter.setDefault( store, CommonUIConstants.SEPARATOR_COLOR, black );
-        PreferenceConverter.setDefault( store, CommonUIConstants.ADD_COLOR, black );
-        PreferenceConverter.setDefault( store, CommonUIConstants.DELETE_COLOR, black );
-        PreferenceConverter.setDefault( store, CommonUIConstants.MODIFY_COLOR, black );
-        PreferenceConverter.setDefault( store, CommonUIConstants.RENAME_COLOR, black );
+        String dflt = IPreferenceStore.STRING_DEFAULT_DEFAULT;
+        store.setDefault( CommonUIConstants.DEFAULT_COLOR, dflt );
+        store.setDefault( CommonUIConstants.DISABLED_COLOR, dflt );
+        store.setDefault( CommonUIConstants.ERROR_COLOR, dflt );
+        store.setDefault( CommonUIConstants.COMMENT_COLOR, dflt );
+        store.setDefault( CommonUIConstants.KEYWORD_1_COLOR, dflt );
+        store.setDefault( CommonUIConstants.KEYWORD_2_COLOR, dflt );
+        store.setDefault( CommonUIConstants.OBJECT_CLASS_COLOR, dflt );
+        store.setDefault( CommonUIConstants.ATTRIBUTE_TYPE_COLOR, dflt );
+        store.setDefault( CommonUIConstants.VALUE_COLOR, dflt );
+        store.setDefault( CommonUIConstants.OID_COLOR, dflt );
+        store.setDefault( CommonUIConstants.SEPARATOR_COLOR, dflt );
+        store.setDefault( CommonUIConstants.ADD_COLOR, dflt );
+        store.setDefault( CommonUIConstants.DELETE_COLOR, dflt );
+        store.setDefault( CommonUIConstants.MODIFY_COLOR, dflt );
+        store.setDefault( CommonUIConstants.RENAME_COLOR, dflt );
     }
 
 }

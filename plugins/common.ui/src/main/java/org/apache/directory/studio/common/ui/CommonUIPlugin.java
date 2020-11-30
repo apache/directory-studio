@@ -54,7 +54,6 @@ public class CommonUIPlugin extends AbstractUIPlugin
     /** The color registry */
     private ColorRegistry colorRegistry;
 
-
     /**
      * The constructor
      */
@@ -185,6 +184,7 @@ public class CommonUIPlugin extends AbstractUIPlugin
         return properties;
     }
 
+
     /**
      * Use this method to get SWT colors. A ColorRegistry is used to manage
      * the RGB->Color mapping.
@@ -206,9 +206,19 @@ public class CommonUIPlugin extends AbstractUIPlugin
     }
 
 
+    /**
+     * Returns the current value of the color-valued preference with the
+     * given name in the preference store.
+     * Return <code>null</code> if it's the default, This is important
+     * to not override the system color when a high-contrast theme is used.
+     */
     public Color getColor( String name )
     {
         IPreferenceStore store = getPreferenceStore();
+        if ( store.isDefault( name ) )
+        {
+            return null;
+        }
         RGB rgb = PreferenceConverter.getColor( store, name );
         Color color = getColor( rgb );
         return color;

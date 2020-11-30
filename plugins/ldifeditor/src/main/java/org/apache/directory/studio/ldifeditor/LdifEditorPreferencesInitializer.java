@@ -27,7 +27,7 @@ import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.graphics.Color;
 
 
 /**
@@ -58,62 +58,70 @@ public class LdifEditorPreferencesInitializer extends AbstractPreferenceInitiali
         store.setDefault( LdifEditorConstants.PREFERENCE_LDIFEDITOR_OPTIONS_UPDATEIFENTRYEXISTS, false );
         store.setDefault( LdifEditorConstants.PREFERENCE_LDIFEDITOR_OPTIONS_CONTINUEONERROR, true );
 
-        PreferenceConverter.setDefault( store, LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_COMMENT
+        setDefaultColor( store, LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_COMMENT
             + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_RGB_SUFFIX,
-            getColor( CommonUIConstants.COMMENT_COLOR ) );
+            CommonUIConstants.COMMENT_COLOR );
         store.setDefault( LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_COMMENT
             + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_STYLE_SUFFIX, SWT.NORMAL );
-        PreferenceConverter.setDefault( store, LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_KEYWORD
+        setDefaultColor( store, LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_KEYWORD
             + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_RGB_SUFFIX,
-            getColor( CommonUIConstants.KEYWORD_1_COLOR ) );
+            CommonUIConstants.KEYWORD_1_COLOR );
         store.setDefault( LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_KEYWORD
             + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_STYLE_SUFFIX, SWT.BOLD );
-        PreferenceConverter.setDefault( store, LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_DN
+        setDefaultColor( store, LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_DN
             + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_RGB_SUFFIX,
-            getColor( CommonUIConstants.DEFAULT_COLOR ) );
+            CommonUIConstants.DEFAULT_COLOR );
         store.setDefault( LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_DN
             + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_STYLE_SUFFIX, SWT.BOLD );
-        PreferenceConverter.setDefault( store, LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_ATTRIBUTE
+        setDefaultColor( store, LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_ATTRIBUTE
             + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_RGB_SUFFIX,
-            getColor( CommonUIConstants.ATTRIBUTE_TYPE_COLOR ) );
+            CommonUIConstants.ATTRIBUTE_TYPE_COLOR );
         store.setDefault( LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_ATTRIBUTE
             + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_STYLE_SUFFIX, SWT.BOLD );
-        PreferenceConverter.setDefault( store, LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_VALUETYPE
+        setDefaultColor( store, LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_VALUETYPE
             + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_RGB_SUFFIX,
-            getColor( CommonUIConstants.SEPARATOR_COLOR ) );
+            CommonUIConstants.SEPARATOR_COLOR );
         store.setDefault( LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_VALUETYPE
             + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_STYLE_SUFFIX, SWT.BOLD );
-        PreferenceConverter.setDefault( store, LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_VALUE
+        setDefaultColor( store, LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_VALUE
             + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_RGB_SUFFIX,
-            getColor( CommonUIConstants.VALUE_COLOR ) );
+            CommonUIConstants.VALUE_COLOR );
         store.setDefault( LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_VALUE
             + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_STYLE_SUFFIX, SWT.NORMAL );
-        PreferenceConverter.setDefault( store, LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_CHANGETYPEADD
+        setDefaultColor( store, LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_CHANGETYPEADD
             + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_RGB_SUFFIX,
-            getColor( CommonUIConstants.ADD_COLOR ) );
+            CommonUIConstants.ADD_COLOR );
         store.setDefault( LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_CHANGETYPEADD
             + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_STYLE_SUFFIX, SWT.BOLD );
-        PreferenceConverter.setDefault( store, LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_CHANGETYPEMODIFY
+        setDefaultColor( store, LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_CHANGETYPEMODIFY
             + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_RGB_SUFFIX,
-            getColor( CommonUIConstants.MODIFY_COLOR ) );
+            CommonUIConstants.MODIFY_COLOR );
         store.setDefault( LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_CHANGETYPEMODIFY
             + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_STYLE_SUFFIX, SWT.BOLD );
-        PreferenceConverter.setDefault( store, LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_CHANGETYPEDELETE
+        setDefaultColor( store, LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_CHANGETYPEDELETE
             + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_RGB_SUFFIX,
-            getColor( CommonUIConstants.DELETE_COLOR ) );
+            CommonUIConstants.DELETE_COLOR );
         store.setDefault( LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_CHANGETYPEDELETE
             + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_STYLE_SUFFIX, SWT.BOLD );
-        PreferenceConverter.setDefault( store, LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_CHANGETYPEMODDN
+        setDefaultColor( store, LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_CHANGETYPEMODDN
             + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_RGB_SUFFIX,
-            getColor( CommonUIConstants.RENAME_COLOR ) );
+            CommonUIConstants.RENAME_COLOR );
         store.setDefault( LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_CHANGETYPEMODDN
             + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_STYLE_SUFFIX, SWT.BOLD );
     }
 
 
-    private RGB getColor( String color )
+    private void setDefaultColor( IPreferenceStore store, String preferenceName, String colorName )
     {
-        return CommonUIPlugin.getDefault().getColor( color ).getRGB();
+        Color color = CommonUIPlugin.getDefault().getColor( colorName );
+        if ( color == null )
+        {
+            store.setDefault( preferenceName, IPreferenceStore.STRING_DEFAULT_DEFAULT );
+        }
+        else
+        {
+            PreferenceConverter.setDefault( store, preferenceName, color.getRGB() );
+        }
     }
 
 }

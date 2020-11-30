@@ -66,7 +66,6 @@ public class EntryEditorWidgetLabelProvider extends LabelProvider implements ITa
     /** The value editor manager. */
     private ValueEditorManager valueEditorManager;
 
-
     /**
      * Creates a new instance of EntryEditorWidgetLabelProvider.
      * 
@@ -117,7 +116,8 @@ public class EntryEditorWidgetLabelProvider extends LabelProvider implements ITa
             {
                 return NLS
                     .bind(
-                        Messages.getString( "EntryEditorWidgetLabelProvider.AttributeLabel" ), attribute.getDescription(), getNumberOfValues( attribute ) ); //$NON-NLS-1$
+                        Messages.getString( "EntryEditorWidgetLabelProvider.AttributeLabel" ), //$NON-NLS-1$
+                        attribute.getDescription(), getNumberOfValues( attribute ) );
             }
             else
             {
@@ -267,7 +267,7 @@ public class EntryEditorWidgetLabelProvider extends LabelProvider implements ITa
                 return CommonUIPlugin.getDefault().getColor( CommonUIConstants.ERROR_COLOR );
             }
         }
-        
+
         if ( attribute != null && value == null )
         {
             if ( !attribute.isConsistent() )
@@ -307,16 +307,13 @@ public class EntryEditorWidgetLabelProvider extends LabelProvider implements ITa
     {
         BrowserCommonActivator plugin = BrowserCommonActivator.getDefault();
         IPreferenceStore preferenceStore = plugin.getPreferenceStore();
-        RGB rgb = PreferenceConverter.getColor( preferenceStore, color );
-        RGB defaultRgb = PreferenceConverter.getDefaultColor( preferenceStore, color );
-        if ( rgb.equals( defaultRgb ) )
+
+        if ( preferenceStore.isDefault( color ) )
         {
             return null;
         }
-        else
-        {
-            return plugin.getColor( rgb );
-        }
+        RGB rgb = PreferenceConverter.getColor( preferenceStore, color );
+        return plugin.getColor( rgb );
     }
 
 

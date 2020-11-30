@@ -75,20 +75,15 @@ public class LdifDamagerRepairer implements IPresentationDamager, IPresentationR
 
     private Map<String, Object> textAttributeKeyToValueMap;
 
-
-    // private IDocument document;
-
     public LdifDamagerRepairer( ILdifEditor editor )
     {
         super();
         this.editor = editor;
-        // this.document = null;
     }
 
 
     public void setDocument( IDocument document )
     {
-        // this.document = document;
     }
 
 
@@ -104,47 +99,46 @@ public class LdifDamagerRepairer implements IPresentationDamager, IPresentationR
         LdifFile ldifModel = this.editor.getLdifModel();
         List<LdifContainer> allContainers = ldifModel.getContainers();
         List<LdifContainer> containerList = new ArrayList<LdifContainer>();
-        
+
         for ( LdifContainer ldifContainer : allContainers )
         {
             Region containerRegion = new Region( ldifContainer.getOffset(), ldifContainer.getLength() );
-            
+
             if ( TextUtilities.overlaps( containerRegion, damage ) )
             {
                 containerList.add( ldifContainer );
             }
         }
-        
+
         LdifContainer[] containers = ( LdifContainer[] ) containerList
             .toArray( new LdifContainer[containerList.size()] );
         this.highlight( containers, presentation, damage );
     }
 
-    private TextAttribute geTextAttribute( String key )
+
+    private TextAttribute getTextAttribute( String key )
     {
         IPreferenceStore store = LdifEditorActivator.getDefault().getPreferenceStore();
 
-        RGB rgb = PreferenceConverter.getColor( store, key
-            + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_RGB_SUFFIX );
-        int style = store.getInt( key + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_STYLE_SUFFIX );
+        String colorKey = key + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_RGB_SUFFIX;
+        String styleKey = key + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_STYLE_SUFFIX;
+
+        RGB rgb = PreferenceConverter.getColor( store, colorKey );
+        int style = store.getInt( styleKey );
 
         if ( textAttributeKeyToValueMap != null )
         {
-            if ( textAttributeKeyToValueMap.containsKey( key
-                + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_RGB_SUFFIX ) )
+            if ( textAttributeKeyToValueMap.containsKey( colorKey ) )
             {
-                rgb = ( RGB ) textAttributeKeyToValueMap.get( key
-                    + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_RGB_SUFFIX );
+                rgb = ( RGB ) textAttributeKeyToValueMap.get( colorKey );
             }
-            if ( textAttributeKeyToValueMap.containsKey( key
-                + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_STYLE_SUFFIX ) )
+            if ( textAttributeKeyToValueMap.containsKey( styleKey ) )
             {
-                style = ( ( Integer ) textAttributeKeyToValueMap.get( key
-                    + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_STYLE_SUFFIX ) ).intValue();
+                style = ( ( Integer ) textAttributeKeyToValueMap.get( styleKey ) ).intValue();
             }
         }
 
-        Color color = LdifEditorActivator.getDefault().getColor( rgb );
+        Color color = store.isDefault( colorKey ) ? null : LdifEditorActivator.getDefault().getColor( rgb );
         TextAttribute textAttribute = new TextAttribute( color, null, style );
         return textAttribute;
     }
@@ -176,20 +170,24 @@ public class LdifDamagerRepairer implements IPresentationDamager, IPresentationR
 
     private void highlight( LdifContainer[] containers, TextPresentation presentation, ITypedRegion damage )
     {
-
-        // TextAttribute DEFAULT_TEXT_ATTRIBUTE = new
-        // TextAttribute(Activator.getDefault().getColor(CommonUIConstants.COLOR_BLACK));
-
-        TextAttribute COMMENT_TEXT_ATTRIBUTE = geTextAttribute( LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_COMMENT );
-        TextAttribute KEYWORD_TEXT_ATTRIBUTE = geTextAttribute( LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_KEYWORD );
-        TextAttribute DN_TEXT_ATTRIBUTE = geTextAttribute( LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_DN );
-        TextAttribute ATTRIBUTE_TEXT_ATTRIBUTE = geTextAttribute( LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_ATTRIBUTE );
-        TextAttribute VALUETYPE_TEXT_ATTRIBUTE = geTextAttribute( LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_VALUETYPE );
-        TextAttribute VALUE_TEXT_ATTRIBUTE = geTextAttribute( LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_VALUE );
-        TextAttribute ADD_TEXT_ATTRIBUTE = geTextAttribute( LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_CHANGETYPEADD );
-        TextAttribute MODIFY_TEXT_ATTRIBUTE = geTextAttribute( LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_CHANGETYPEMODIFY );
-        TextAttribute DELETE_TEXT_ATTRIBUTE = geTextAttribute( LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_CHANGETYPEDELETE );
-        TextAttribute MODDN_TEXT_ATTRIBUTE = geTextAttribute( LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_CHANGETYPEMODDN );
+        TextAttribute COMMENT_TEXT_ATTRIBUTE = getTextAttribute(
+            LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_COMMENT );
+        TextAttribute KEYWORD_TEXT_ATTRIBUTE = getTextAttribute(
+            LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_KEYWORD );
+        TextAttribute DN_TEXT_ATTRIBUTE = getTextAttribute( LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_DN );
+        TextAttribute ATTRIBUTE_TEXT_ATTRIBUTE = getTextAttribute(
+            LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_ATTRIBUTE );
+        TextAttribute VALUETYPE_TEXT_ATTRIBUTE = getTextAttribute(
+            LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_VALUETYPE );
+        TextAttribute VALUE_TEXT_ATTRIBUTE = getTextAttribute( LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_VALUE );
+        TextAttribute ADD_TEXT_ATTRIBUTE = getTextAttribute(
+            LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_CHANGETYPEADD );
+        TextAttribute MODIFY_TEXT_ATTRIBUTE = getTextAttribute(
+            LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_CHANGETYPEMODIFY );
+        TextAttribute DELETE_TEXT_ATTRIBUTE = getTextAttribute(
+            LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_CHANGETYPEDELETE );
+        TextAttribute MODDN_TEXT_ATTRIBUTE = getTextAttribute(
+            LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_CHANGETYPEMODDN );
 
         for ( int z = 0; z < containers.length; z++ )
         {

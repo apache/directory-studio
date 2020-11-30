@@ -156,13 +156,18 @@ public class StudioBot
                     // set default/dark theme
                     IThemeManager tm = workbench.getService( IThemeManager.class );
                     IThemeEngine te = tm.getEngineForDisplay( Display.getCurrent() );
-                    if ( new Random().nextBoolean() )
+                    int random = new Random().nextInt( 3 );
+                    switch ( random )
                     {
-                        te.setTheme( "org.eclipse.e4.ui.css.theme.e4_dark", false );
-                    }
-                    else
-                    {
-                        te.setTheme( "org.eclipse.e4.ui.css.theme.e4_default", false );
+                        case 0:
+                            te.setTheme( "org.eclipse.e4.ui.css.theme.e4_dark", false );
+                            break;
+                        case 1:
+                            te.setTheme( "org.eclipse.e4.ui.css.theme.e4_default", false );
+                            break;
+                        case 2:
+                            te.setTheme( "org.eclipse.e4.ui.css.theme.high-contrast", false );
+                            break;
                     }
 
                     // close welcome view

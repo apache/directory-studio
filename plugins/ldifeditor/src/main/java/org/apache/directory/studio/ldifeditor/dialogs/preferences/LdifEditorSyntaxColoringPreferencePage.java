@@ -156,7 +156,7 @@ public class LdifEditorSyntaxColoringPreferencePage extends PreferencePage imple
 
         void loadPreferences()
         {
-            IPreferenceStore store = LdifEditorActivator.getDefault().getPreferenceStore();
+            IPreferenceStore store = getPreferenceStore();
             this.rgb = PreferenceConverter.getColor( store, key
                 + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_RGB_SUFFIX );
             int style = store.getInt( key + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_STYLE_SUFFIX );
@@ -166,7 +166,7 @@ public class LdifEditorSyntaxColoringPreferencePage extends PreferencePage imple
 
         void savePreferences()
         {
-            IPreferenceStore store = LdifEditorActivator.getDefault().getPreferenceStore();
+            IPreferenceStore store = getPreferenceStore();
             PreferenceConverter
                 .setValue( store, key + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_RGB_SUFFIX, rgb );
             store.setValue( key + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_STYLE_SUFFIX, getStyle() );
@@ -175,11 +175,18 @@ public class LdifEditorSyntaxColoringPreferencePage extends PreferencePage imple
 
         void loadDefaultPreferences()
         {
-            IPreferenceStore store = LdifEditorActivator.getDefault().getPreferenceStore();
-            this.rgb = PreferenceConverter.getDefaultColor( store, key
-                + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_RGB_SUFFIX );
-            int style = store.getDefaultInt( key + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_STYLE_SUFFIX );
+            IPreferenceStore store = getPreferenceStore();
+            String colorKey = key + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_RGB_SUFFIX;
+            store.setToDefault( colorKey);
+            String styleKey = key + LdifEditorConstants.PREFERENCE_LDIFEDITOR_SYNTAX_STYLE_SUFFIX;
+            store.setToDefault( styleKey);
+            this.rgb = PreferenceConverter.getDefaultColor( store, colorKey );
+            int style = store.getDefaultInt( styleKey );
             setStyle( style );
+
+            System.out.println( colorKey + ": isDefault=" + store.isDefault( colorKey ) );
+            System.out.println( colorKey + ": string=" + store.getString( colorKey ) );
+            System.out.println( colorKey + ": rgb=" + PreferenceConverter.getColor( store, colorKey ) );
         }
 
 
