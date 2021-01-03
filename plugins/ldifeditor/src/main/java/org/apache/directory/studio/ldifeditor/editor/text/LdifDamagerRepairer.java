@@ -138,7 +138,12 @@ public class LdifDamagerRepairer implements IPresentationDamager, IPresentationR
             }
         }
 
-        Color color = store.isDefault( colorKey ) ? null : LdifEditorActivator.getDefault().getColor( rgb );
+        /*
+         * Use color <code>null</code> if the default is the default string, This is important
+         * to not override the system color when a high-contrast theme is used.
+         */
+        boolean isDefaultDefaultKey = IPreferenceStore.STRING_DEFAULT_DEFAULT.equals( store.getString( colorKey ) );
+        Color color = isDefaultDefaultKey ? null : LdifEditorActivator.getDefault().getColor( rgb );
         TextAttribute textAttribute = new TextAttribute( color, null, style );
         return textAttribute;
     }

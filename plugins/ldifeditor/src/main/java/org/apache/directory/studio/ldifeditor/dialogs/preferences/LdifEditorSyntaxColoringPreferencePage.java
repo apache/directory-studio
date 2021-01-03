@@ -183,10 +183,6 @@ public class LdifEditorSyntaxColoringPreferencePage extends PreferencePage imple
             this.rgb = PreferenceConverter.getDefaultColor( store, colorKey );
             int style = store.getDefaultInt( styleKey );
             setStyle( style );
-
-            System.out.println( colorKey + ": isDefault=" + store.isDefault( colorKey ) );
-            System.out.println( colorKey + ": string=" + store.getString( colorKey ) );
-            System.out.println( colorKey + ": rgb=" + PreferenceConverter.getColor( store, colorKey ) );
         }
 
 
