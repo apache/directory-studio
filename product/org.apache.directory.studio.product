@@ -26,7 +26,7 @@
 #-vm
 #/usr/lib/jvm/java-11-openjdk/bin/java
       </programArgs>
-      <vmArgs>-Dosgi.requiredJavaVersion=1.8
+      <vmArgs>-Dosgi.requiredJavaVersion=11
 ###
 #Uncomment_to_configure_heap_memory
 #https://directory.apache.org/studio/faqs.html#how-to-increase-the-heap-memory
@@ -271,8 +271,8 @@ http://www.apache.org/licenses/
       <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.equinox.event" autoStart="true" startLevel="2" />
       <plugin id="org.eclipse.equinox.simpleconfigurator" autoStart="true" startLevel="1" />
-      <property name="org.eclipse.update.reconcile" value="false" />
       <property name="osgi.instance.area.default" value="@user.home/.ApacheDirectoryStudio" />
+      <property name="org.eclipse.update.reconcile" value="false" />
    </configurations>
 
    <preferencesInfo>

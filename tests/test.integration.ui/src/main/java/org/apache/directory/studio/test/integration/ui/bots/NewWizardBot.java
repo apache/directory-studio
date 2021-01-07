@@ -28,7 +28,7 @@ public class NewWizardBot extends WizardBot
 
     public NewWizardBot()
     {
-        super( "New" );
+        super( "Select a wizard" );
     }
 
 

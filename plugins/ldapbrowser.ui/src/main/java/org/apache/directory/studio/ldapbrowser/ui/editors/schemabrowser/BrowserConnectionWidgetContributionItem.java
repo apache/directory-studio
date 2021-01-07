@@ -31,7 +31,6 @@ import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.apache.directory.studio.ldapbrowser.common.widgets.search.BrowserConnectionWidget;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.eclipse.jface.action.ContributionItem;
-import org.eclipse.jface.util.Assert;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -141,7 +140,7 @@ public class BrowserConnectionWidgetContributionItem extends ContributionItem im
      */
     public final void fill( Menu parent, int index )
     {
-        Assert.isTrue( false, Messages.getString( "BrowserConnectionWidgetContributionItem.CantAddControl" ) );//$NON-NLS-1$
+        throw new UnsupportedOperationException( Messages.getString( "BrowserConnectionWidgetContributionItem.CantAddControl" ) ); //$NON-NLS-1$
     }
 
 
