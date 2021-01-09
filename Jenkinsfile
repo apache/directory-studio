@@ -52,31 +52,6 @@ pipeline {
     }
     stage ('Build and Test') {
       parallel {
-        stage ('Linux Java 8') {
-          options {
-            timeout(time: 4, unit: 'HOURS')
-            retry(2)
-          }
-          agent {
-            label 'ubuntu && !H28 && !H36 && !H40'
-          }
-          steps {
-            script {
-              docker.image('osixia/openldap:1.3.0').withRun() { openldap ->
-                docker.image('apachedirectory/maven-build:jdk-8').inside("--link=${openldap.id}:openldap -e OPENLDAP_HOST=openldap -e OPENLDAP_PORT=389") {
-                  sh 'export DISPLAY=:99; mvn -V -U -f pom-first.xml clean install && mvn -V clean install -Dorg.eclipse.swtbot.search.timeout=20000 -Denable-ui-tests'
-                }
-              }
-            }
-          }
-          post {
-            always {
-              junit '**/target/surefire-reports/*.xml'
-              archiveArtifacts artifacts:'product/target/products/*.zip,product/target/products/*.tar.gz,tests/test.integration.ui/screenshots/*', allowEmptyArchive:true
-              deleteDir()
-            }
-          }
-        }
         stage ('Linux Java 11') {
           options {
             timeout(time: 4, unit: 'HOURS')
@@ -97,7 +72,7 @@ pipeline {
           post {
             always {
               junit '**/target/surefire-reports/*.xml'
-              archiveArtifacts artifacts:'tests/test.integration.ui/screenshots/*', allowEmptyArchive:true
+              archiveArtifacts artifacts:'product/target/products/*.zip,product/target/products/*.tar.gz,tests/test.integration.ui/screenshots/*', allowEmptyArchive:true
               deleteDir()
             }
           }
@@ -127,7 +102,7 @@ pipeline {
             }
           }
         }
-        stage ('Windows Java 8') {
+        stage ('Windows Java 11') {
           options {
             timeout(time: 4, unit: 'HOURS')
             retry(2)
@@ -137,7 +112,7 @@ pipeline {
           }
           steps {
             bat '''
-            set JAVA_HOME=F:\\jenkins\\tools\\java\\latest1.8
+            set JAVA_HOME=F:\\jenkins\\tools\\java\\latest11
             set MAVEN_OPTS="-Xmx512m"
             call F:\\jenkins\\tools\\maven\\latest3\\bin\\mvn -V -U -f pom-first.xml clean install
             call F:\\jenkins\\tools\\maven\\latest3\\bin\\mvn -V clean install -Dorg.eclipse.swtbot.search.timeout=20000 -Denable-ui-tests
