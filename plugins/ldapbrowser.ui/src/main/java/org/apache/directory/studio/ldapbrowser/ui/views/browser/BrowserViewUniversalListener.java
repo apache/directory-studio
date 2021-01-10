@@ -550,9 +550,9 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
 
         if ( ( search instanceof IQuickSearch ) && ( searchUpdateEvent.getDetail() == EventDetail.SEARCH_REMOVED ) )
         {
-            if ( widget.getQuickSearch() == search )
+            if ( search.getBrowserConnection().getSearchManager().getQuickSearch() == search )
             {
-                widget.setQuickSearch( null );
+                search.getBrowserConnection().getSearchManager().setQuickSearch( null );
             }
         }
 
@@ -568,7 +568,7 @@ public class BrowserViewUniversalListener extends BrowserUniversalListener imple
         }
         else if ( ( search instanceof IQuickSearch ) && ( searchUpdateEvent.getDetail() != EventDetail.SEARCH_REMOVED ) )
         {
-            if ( widget.getQuickSearch() == search )
+            if ( search.getBrowserConnection().getSearchManager().getQuickSearch() == search )
             {
                 viewer.setSelection( new StructuredSelection( search ), true );
             }

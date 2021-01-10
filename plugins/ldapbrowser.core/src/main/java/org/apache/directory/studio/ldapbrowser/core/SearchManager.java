@@ -28,6 +28,7 @@ import java.util.List;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.events.SearchUpdateEvent;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IQuickSearch;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.eclipse.osgi.util.NLS;
 
@@ -49,6 +50,8 @@ public class SearchManager implements Serializable
     /** The connection. */
     private IBrowserConnection connection;
 
+    /** The quick search. */
+    private IQuickSearch quickSearch;
 
     /**
      * Creates a new instance of SearchManager.
@@ -208,5 +211,27 @@ public class SearchManager implements Serializable
     public int getSearchCount()
     {
         return searchList.size();
+    }
+
+
+    /**
+     * Sets the quick search.
+     * 
+     * @param quickSearch the new quick search
+     */
+    public void setQuickSearch( IQuickSearch quickSearch )
+    {
+        this.quickSearch = quickSearch;
+    }
+
+
+    /**
+     * Gets the quick search.
+     * 
+     * @return the quick search
+     */
+    public IQuickSearch getQuickSearch()
+    {
+        return quickSearch;
     }
 }

@@ -60,9 +60,6 @@ import org.eclipse.jface.viewers.Viewer;
  */
 public class BrowserContentProvider implements ITreeContentProvider
 {
-    /** The browser widget */
-    private BrowserWidget widget;
-
     /** The viewer. */
     private TreeViewer viewer;
 
@@ -106,7 +103,6 @@ public class BrowserContentProvider implements ITreeContentProvider
      */
     public BrowserContentProvider( BrowserWidget widget, BrowserPreferences preferences, BrowserSorter sorter )
     {
-        this.widget = widget;
         this.viewer = widget.getViewer();
         this.preferences = preferences;
         this.sorter = sorter;
@@ -353,6 +349,7 @@ public class BrowserContentProvider implements ITreeContentProvider
         else if ( parent instanceof IEntry )
         {
             final IEntry parentEntry = ( IEntry ) parent;
+            IQuickSearch quickSearch = parentEntry.getBrowserConnection().getSearchManager().getQuickSearch();
 
             if ( parentEntry instanceof IContinuation )
             {
@@ -384,10 +381,10 @@ public class BrowserContentProvider implements ITreeContentProvider
 
                 List<Object> objects = new ArrayList<Object>();
 
-                if ( widget.getQuickSearch() != null
-                    && parentEntry.getDn().equals( widget.getQuickSearch().getSearchBase() ) )
+                if ( quickSearch != null
+                    && parentEntry.getDn().equals( quickSearch.getSearchBase() ) )
                 {
-                    objects.add( widget.getQuickSearch() );
+                    objects.add( quickSearch );
                 }
 
                 if ( parentEntry.getTopPageChildrenRunnable() != null )
@@ -410,10 +407,10 @@ public class BrowserContentProvider implements ITreeContentProvider
 
                 List<Object> objects = new ArrayList<Object>();
 
-                if ( widget.getQuickSearch() != null
-                    && parentEntry.getDn().equals( widget.getQuickSearch().getSearchBase() ) )
+                if ( quickSearch != null
+                    && parentEntry.getDn().equals( quickSearch.getSearchBase() ) )
                 {
-                    objects.add( widget.getQuickSearch() );
+                    objects.add( quickSearch );
                 }
 
                 objects.addAll( Arrays.asList( entryPages ) );
