@@ -154,6 +154,7 @@ public class StudioBot
                     IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
 
                     // set default/dark theme
+                    /*
                     IThemeManager tm = workbench.getService( IThemeManager.class );
                     IThemeEngine te = tm.getEngineForDisplay( Display.getCurrent() );
                     int random = new Random().nextInt( 3 );
@@ -169,6 +170,7 @@ public class StudioBot
                             te.setTheme( "org.eclipse.e4.ui.css.theme.high-contrast", false );
                             break;
                     }
+                    */
 
                     // close welcome view
                     IWorkbenchPage page = window.getActivePage();

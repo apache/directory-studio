@@ -60,6 +60,7 @@ public abstract class WizardBot extends DialogBot
 
     protected boolean isButtonEnabled( String buttonTitle )
     {
+        activate();
         return bot.button( buttonTitle ).isEnabled();
     }
 
