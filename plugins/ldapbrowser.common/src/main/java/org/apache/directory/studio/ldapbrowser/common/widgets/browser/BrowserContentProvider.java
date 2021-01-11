@@ -349,7 +349,7 @@ public class BrowserContentProvider implements ITreeContentProvider
         else if ( parent instanceof IEntry )
         {
             final IEntry parentEntry = ( IEntry ) parent;
-            IQuickSearch quickSearch = parentEntry.getBrowserConnection().getSearchManager().getQuickSearch();
+            IQuickSearch quickSearch = parentEntry.getBrowserConnection().getQuickSearch();
 
             if ( parentEntry instanceof IContinuation )
             {

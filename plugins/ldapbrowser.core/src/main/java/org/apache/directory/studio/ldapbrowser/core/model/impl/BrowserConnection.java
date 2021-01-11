@@ -37,6 +37,7 @@ import org.apache.directory.studio.ldapbrowser.core.SearchManager;
 import org.apache.directory.studio.ldapbrowser.core.internal.search.LdapSearchPageScoreComputer;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.IQuickSearch;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
@@ -68,6 +69,9 @@ public class BrowserConnection implements IBrowserConnection, Serializable
 
     /** The bookmark manager. */
     private BookmarkManager bookmarkManager;
+
+    /** The quick search. */
+    private IQuickSearch quickSearch;
 
     /** The dn to entry cache. */
     private volatile Map<String, IEntry> dnToEntryCache;
@@ -492,6 +496,24 @@ public class BrowserConnection implements IBrowserConnection, Serializable
         connection.getConnectionParameter().setExtendedIntProperty( CONNECTION_PARAMETER_MODIFY_ORDER,
             mode.getOrdinal() );
         ConnectionEventRegistry.fireConnectionUpdated( connection, this );
+    }
+
+
+    /** 
+     * {@inheritDoc}
+     */
+    public void setQuickSearch( IQuickSearch quickSearch )
+    {
+        this.quickSearch = quickSearch;
+    }
+
+
+    /** 
+     * {@inheritDoc}
+     */
+    public IQuickSearch getQuickSearch()
+    {
+        return quickSearch;
     }
 
 

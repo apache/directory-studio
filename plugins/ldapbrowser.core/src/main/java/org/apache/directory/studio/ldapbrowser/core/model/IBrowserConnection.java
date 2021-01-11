@@ -456,6 +456,22 @@ public interface IBrowserConnection extends Serializable, IAdaptable, Connection
 
 
     /**
+     * Sets the quick search.
+     * 
+     * @param quickSearch the new quick search
+     */
+     void setQuickSearch( IQuickSearch quickSearch );
+
+
+    /**
+     * Gets the quick search.
+     * 
+     * @return the quick search
+     */
+    IQuickSearch getQuickSearch();
+
+
+    /**
      * Gets the root DSE.
      * 
      * @return the root DSE

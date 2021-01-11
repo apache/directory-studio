@@ -54,7 +54,7 @@ public class OpenQuickSearchAction extends BrowserAction
         if ( browserConnection != null )
         {
             // Getting the current quick search
-            IQuickSearch quickSearch = browserConnection.getSearchManager().getQuickSearch();
+            IQuickSearch quickSearch = browserConnection.getQuickSearch();
 
             // Creating a new quick search with the currently selected entry
             // if there's no current quick search or quick search isn't selected
@@ -74,7 +74,7 @@ public class OpenQuickSearchAction extends BrowserAction
 
                 // Creating a new quick search
                 quickSearch = new QuickSearch( searchBase, browserConnection );
-                browserConnection.getSearchManager().setQuickSearch( quickSearch );
+                browserConnection.setQuickSearch( quickSearch );
             }
 
             // Creating and opening the dialog
