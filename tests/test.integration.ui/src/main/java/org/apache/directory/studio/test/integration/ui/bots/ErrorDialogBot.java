@@ -19,6 +19,7 @@
  */
 package org.apache.directory.studio.test.integration.ui.bots;
 
+import org.apache.commons.lang3.StringUtils;
 
 public class ErrorDialogBot extends DialogBot
 {
@@ -37,13 +38,17 @@ public class ErrorDialogBot extends DialogBot
 
     public String getErrorMessage()
     {
-        return bot.label( 1 ).getText();
+        // label(0) may be the image
+        int index = StringUtils.isBlank( bot.label( 0 ).getText() ) ? 1 : 0;
+        return bot.label( index ).getText();
     }
 
 
     public String getErrorDetails()
     {
-        return bot.label( 2 ).getText();
+        // label(0) may be the image
+        int index = StringUtils.isBlank( bot.label( 0 ).getText() ) ? 2 : 1;
+        return bot.label( index ).getText();
     }
 
 }

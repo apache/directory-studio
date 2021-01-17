@@ -20,6 +20,7 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
@@ -126,7 +127,12 @@ public abstract class DialogBot
         }, "Error", title );
 
         String shellText = shell.getText();
-        String labelText = bot.label( 1 ).getText(); // label(0) is the image
+        // label(0) may be the image
+        String labelText = bot.label( 0 ).getText();
+        if ( StringUtils.isBlank( labelText ) )
+        {
+            labelText = bot.label( 1 ).getText();
+        }
         bot.button( "OK" ).click();
         parentShell.activate();
 

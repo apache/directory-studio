@@ -77,7 +77,7 @@ pipeline {
             }
           }
         }
-        stage ('Linux Java 14') {
+        stage ('Linux Java 15') {
           options {
             timeout(time: 4, unit: 'HOURS')
             retry(2)
@@ -88,7 +88,7 @@ pipeline {
           steps {
             script {
               docker.image('osixia/openldap:1.3.0').withRun() { openldap ->
-                docker.image('apachedirectory/maven-build:jdk-14').inside("--link=${openldap.id}:openldap -e OPENLDAP_HOST=openldap -e OPENLDAP_PORT=389") {
+                docker.image('apachedirectory/maven-build:jdk-15').inside("--link=${openldap.id}:openldap -e OPENLDAP_HOST=openldap -e OPENLDAP_PORT=389") {
                   sh 'export DISPLAY=:99; mvn -V -U -f pom-first.xml clean install && mvn -V clean install -Dorg.eclipse.swtbot.search.timeout=20000 -Denable-ui-tests'
                 }
               }
