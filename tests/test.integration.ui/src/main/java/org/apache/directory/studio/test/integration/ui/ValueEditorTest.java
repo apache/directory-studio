@@ -176,6 +176,12 @@ public class ValueEditorTest
                         .expectedRawValue( DESCR_OID ).expectedDisplayValue( DESCR_OID ).expectedHasValue( true )
                         .expectedStringOrBinaryValue( DESCR_OID ) },
 
+                { "InPlaceOidValueEditor - relaxed descr OID",
+                    Data.data().valueEditorClass( InPlaceOidValueEditor.class ).attribute( CN )
+                        .rawValue( "orclDBEnterpriseRole_82" ).expectedRawValue( "orclDBEnterpriseRole_82" )
+                        .expectedDisplayValue( "orclDBEnterpriseRole_82" ).expectedHasValue( true )
+                        .expectedStringOrBinaryValue("orclDBEnterpriseRole_82" ) },
+
                 { "InPlaceOidValueEditor - INVALID",
                     Data.data().valueEditorClass( InPlaceOidValueEditor.class ).attribute( CN ).rawValue( "in valid" )
                         .expectedRawValue( null ).expectedDisplayValue( IValueEditor.NULL ).expectedHasValue( true )

@@ -64,7 +64,9 @@ public class InPlaceOidValueEditor extends AbstractInPlaceStringValueEditor
     {
         Object rawValue = super.getRawValue( value );
 
-        if ( rawValue instanceof String && OidSyntaxChecker.INSTANCE.isValidSyntax( rawValue ) )
+        // DIRSTUDIO-1216: allows relaxed OID syntax with underscore, e.g. for Oracle or DirX
+        if ( rawValue instanceof String
+            && OidSyntaxChecker.INSTANCE.isValidSyntax( ( ( String ) rawValue ).replace( "_", "-" ) ) )
         {
             return rawValue;
         }
