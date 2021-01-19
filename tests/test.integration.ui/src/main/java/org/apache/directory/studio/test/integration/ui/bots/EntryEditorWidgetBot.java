@@ -164,6 +164,13 @@ class EntryEditorWidgetBot
     }
 
 
+    SubtreeSpecificationEditorDialogBot editValueExpectingSubtreeSpecificationEditor( String attributeType, String value )
+    {
+        editValue( attributeType, value );
+        return new SubtreeSpecificationEditorDialogBot();
+    }
+
+
     HexEditorDialogBot editValueExpectingHexEditor( String attributeType, String value )
     {
         editValue( attributeType, value );

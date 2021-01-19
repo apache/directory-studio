@@ -31,6 +31,7 @@ objectClass: organizationalPerson
 objectClass: person
 objectClass: top
 objectClass: extensibleObject
+objectclass: accessControlSubentry
 cn: Horatio Nelson
 sn: Nelson
 uid: hnelson
@@ -72,6 +73,14 @@ userSMIMECertificate:: AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8gISIjJCUmJyg
  Y2RlZmdoaWprbG1ub3BxcnN0dXZ3eHl6e3x9fn+AgYKDhIWGh4iJiouMjY6PkJGSk5SVlpeYmZqbn
  J2en6ChoqOkpaanqKmqq6ytrq+wsbKztLW2t7i5uru8vb6/wMHCw8TFxsfIycrLzM3Oz9DR0tPU1d
  bX2Nna29zd3t/g4eLj5OXm5+jp6uvs7e7v8PHy8/T19vf4+fr7/P3+
+subtreeSpecification: {}
+prescriptiveACI: { identificationTag "allUsersACI", precedence 10, authenticat
+ ionLevel simple, itemOrUserFirst userFirst: { userClasses { allUsers }, userP
+ ermissions { { protectedItems { allUserAttributeTypesAndValues, entry }, gran
+ tsAndDenials { grantReturnDN, grantCompare, grantRead, grantDiscloseOnError, 
+ grantFilterMatch, grantBrowse } }, { protectedItems { attributeType { userPas
+ sword } }, grantsAndDenials { denyCompare, denyRead, denyFilterMatch } } } } 
+ }
 
 # cn=\#\\\+\, \"öé\",ou=users,ou=system
 dn:: Y249XCNcXFwrXCwgXCLDtsOpXCIsb3U9dXNlcnMsb3U9c3lzdGVt

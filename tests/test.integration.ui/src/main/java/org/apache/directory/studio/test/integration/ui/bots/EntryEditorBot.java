@@ -119,6 +119,12 @@ public class EntryEditorBot
     }
 
 
+    public SubtreeSpecificationEditorDialogBot editValueExpectingSubtreeSpecificationEditor( String attributeType, String value )
+    {
+        return editorBot.editValueExpectingSubtreeSpecificationEditor( attributeType, value );
+    }
+
+
     public HexEditorDialogBot editValueExpectingHexEditor( String attributeType, String value )
     {
         return editorBot.editValueExpectingHexEditor( attributeType, value );

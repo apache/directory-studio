@@ -68,6 +68,7 @@ import org.apache.directory.studio.test.integration.ui.bots.NewAttributeWizardBo
 import org.apache.directory.studio.test.integration.ui.bots.PasswordEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.SelectDnDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
+import org.apache.directory.studio.test.integration.ui.bots.SubtreeSpecificationEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.TextEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
 import org.apache.directory.studio.test.integration.ui.bots.utils.Characters;
@@ -533,7 +534,7 @@ public class EntryEditorTest extends AbstractLdapTestUnit
 
 
     @Test
-    public void testAciItemEditor() throws Exception
+    public void testAciItemEditorEntryAci() throws Exception
     {
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=hnelson" );
 
@@ -560,6 +561,50 @@ public class EntryEditorTest extends AbstractLdapTestUnit
 
         SWTUtils.sleep( 1000 );
         modificationLogsViewBot.waitForText( "replace: entryaci\n" );
+    }
+
+
+    @Test
+    public void testAciItemEditorPrescriptiveAci() throws Exception
+    {
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=hnelson" );
+
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "uid=hnelson,ou=users,ou=system" );
+        entryEditorBot.activate();
+        entryEditorBot.fetchOperationalAttributes();
+        SWTUtils.sleep( 1000 );
+
+        entryEditorBot.activate();
+        AciItemEditorDialogBot aciItemEditor = entryEditorBot.editValueExpectingAciItemEditor( "prescriptiveaci",
+            null );
+
+        aciItemEditor.activateSourceTab();
+        aciItemEditor.clickFormatButton();
+        aciItemEditor.activateVisualEditorTab();
+
+        aciItemEditor.clickOkButton();
+
+        SWTUtils.sleep( 1000 );
+        modificationLogsViewBot.waitForText( "replace: prescriptiveaci\n" );
+    }
+
+
+    @Test
+    public void testSubtreeSpecificationEditor() throws Exception
+    {
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=hnelson" );
+
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "uid=hnelson,ou=users,ou=system" );
+        entryEditorBot.activate();
+        entryEditorBot.fetchOperationalAttributes();
+        SWTUtils.sleep( 1000 );
+
+        entryEditorBot.activate();
+        SubtreeSpecificationEditorDialogBot subtreeEditorBot = entryEditorBot
+            .editValueExpectingSubtreeSpecificationEditor( "subtreespecification",
+                null );
+
+        subtreeEditorBot.clickOkButton();
     }
 
 
