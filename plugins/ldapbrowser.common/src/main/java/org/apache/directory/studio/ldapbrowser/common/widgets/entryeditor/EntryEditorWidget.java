@@ -86,7 +86,7 @@ public class EntryEditorWidget extends ViewFormWidget
         quickFilterWidget.createComposite( parent );
 
         // create tree widget and viewer
-        tree = new Tree( parent, SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION
+        tree = new Tree( parent, SWT.VIRTUAL | SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION
             | SWT.HIDE_SELECTION );
         GridData data = new GridData( GridData.FILL_BOTH );
         data.widthHint = 450;
