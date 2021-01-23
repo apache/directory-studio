@@ -37,6 +37,7 @@ import java.security.cert.X509Certificate;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.directory.api.ldap.model.constants.AuthenticationLevel;
 import org.apache.directory.api.ldap.model.constants.LdapSecurityConstants;
 import org.apache.directory.api.ldap.model.entry.DefaultModification;
 import org.apache.directory.api.ldap.model.entry.Entry;
@@ -534,7 +535,7 @@ public class EntryEditorTest extends AbstractLdapTestUnit
 
 
     @Test
-    public void testAciItemEditorEntryAci() throws Exception
+    public void testAciItemEditorAllOptions() throws Exception
     {
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=hnelson" );
 
@@ -548,15 +549,132 @@ public class EntryEditorTest extends AbstractLdapTestUnit
 
         aciItemEditor.activateSourceTab();
         aciItemEditor.activateVisualEditorTab();
+
+        aciItemEditor.setIdentificationTag( "Test 1234" );
+
+        aciItemEditor.setPrecedence( 1 );
+        aciItemEditor.setPrecedence( 10 );
+        aciItemEditor.setPrecedence( 100 );
+
+        aciItemEditor.setAuthenticationLevel( AuthenticationLevel.NONE );
+        aciItemEditor.setAuthenticationLevel( AuthenticationLevel.SIMPLE );
+        aciItemEditor.setAuthenticationLevel( AuthenticationLevel.STRONG );
+
+        aciItemEditor.setUserFirst();
+
+        aciItemEditor.enableUserClassAllUsers();
+        aciItemEditor.disableUserClassAllUsers();
+        aciItemEditor.enableUserClassThisEntry();
+        aciItemEditor.disableUserClassThisEntry();
+        aciItemEditor.enableUserClassParentOfEntry();
+        aciItemEditor.disableUserClassParentOfEntry();
+        aciItemEditor.enableUserClassName();
+        aciItemEditor.disableUserClassName();
+        aciItemEditor.enableUserClassUserGroup();
+        aciItemEditor.disableUserClassUserGroup();
+        aciItemEditor.enableUserClassSubtree();
+        aciItemEditor.disableUserClassSubtree();
+
+        aciItemEditor.setItemFirst();
+
+        aciItemEditor.enableProtectedItemEntry();
+        aciItemEditor.disableProtectedItemEntry();
+        aciItemEditor.enableProtectedItemAllUserAttributeTypes();
+        aciItemEditor.disableProtectedItemAllUserAttributeTypes();
+        aciItemEditor.enableProtectedItemAttributeType();
+        aciItemEditor.disableProtectedItemAttributeType();
+        aciItemEditor.enableProtectedItemAllAttributeValues();
+        aciItemEditor.disableProtectedItemAllAttributeValues();
+        aciItemEditor.enableProtectedItemAllUserAttributeTypesAndValues();
+        aciItemEditor.disableProtectedItemAllUserAttributeTypesAndValues();
+        aciItemEditor.enableProtectedItemAttributeValues();
+        aciItemEditor.disableProtectedItemAttributeValues();
+        aciItemEditor.enableProtectedItemSelfValue();
+        aciItemEditor.disableProtectedItemSelfValue();
+        aciItemEditor.enableProtectedItemRangeOfValues();
+        aciItemEditor.disableProtectedItemRangeOfValues();
+        aciItemEditor.enableProtectedItemMaxValueCount();
+        aciItemEditor.disableProtectedItemMaxValueCount();
+        aciItemEditor.enableProtectedItemMaxNumberOfImmediateSubordinates();
+        aciItemEditor.disableProtectedItemMaxNumberOfImmediateSubordinates();
+        aciItemEditor.enableProtectedItemRestrictedBy();
+        aciItemEditor.disableProtectedItemRestrictedBy();
+        aciItemEditor.enableProtectedItemClasses();
+        aciItemEditor.disableProtectedItemClasses();
+
+        aciItemEditor.clickCancelButton();
+    }
+
+
+    /**
+     * Test for DIRSTUDIO-1135
+     */
+    @Test
+    public void testAllAttributesValuesParser() throws Exception
+    {
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=hnelson" );
+
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "uid=hnelson,ou=users,ou=system" );
+        entryEditorBot.activate();
+        entryEditorBot.fetchOperationalAttributes();
+        SWTUtils.sleep( 1000 );
+
+        entryEditorBot.activate();
+        AciItemEditorDialogBot aciItemEditor = entryEditorBot.editValueExpectingAciItemEditor( "entryaci", null );
+
+        aciItemEditor.activateSourceTab();
+        aciItemEditor.setSource(
+            "{ identificationTag \"Test\", precedence 0, authenticationLevel none, itemOrUserFirst itemFirst: { protectedItems { allAttributeValues { cn } }, itemPermissions { } } }" );
+        aciItemEditor.clickCheckSyntaxButtonOk();
+
+        aciItemEditor.activateVisualEditorTab();
+        aciItemEditor.clickCheckSyntaxButtonOk();
+
+        aciItemEditor.activateSourceTab();
+        aciItemEditor.clickCheckSyntaxButtonOk();
+
+        aciItemEditor.activateVisualEditorTab();
+        aciItemEditor.clickCheckSyntaxButtonOk();
+
+        aciItemEditor.clickOkButton();
+
+        SWTUtils.sleep( 1000 );
+        modificationLogsViewBot.waitForText( "replace: entryaci\n" );
+    }
+
+
+    @Test
+    public void testAciItemEditorEntryAci() throws Exception
+    {
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=hnelson" );
+
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "uid=hnelson,ou=users,ou=system" );
+        entryEditorBot.activate();
+        entryEditorBot.fetchOperationalAttributes();
+        SWTUtils.sleep( 1000 );
+
+        entryEditorBot.activate();
+        AciItemEditorDialogBot aciItemEditor = entryEditorBot.editValueExpectingAciItemEditor( "entryaci", null );
+
+        aciItemEditor.activateSourceTab();
+        aciItemEditor.clickCheckSyntaxButtonOk();
+
+        aciItemEditor.activateVisualEditorTab();
+        aciItemEditor.clickCheckSyntaxButtonOk();
+
         aciItemEditor.activateSourceTab();
         aciItemEditor.clickFormatButton();
-        // aciItemEditor.clickCheckSyntaxButton();
+        aciItemEditor.clickCheckSyntaxButtonOk();
 
         String source = aciItemEditor.getSource();
         source = source.replace( "grantFilterMatch,", "" );
+
         aciItemEditor.setSource( "invalid" );
+        aciItemEditor.clickCheckSyntaxButtonError();
+
         aciItemEditor.setSource( source );
-        // SWTUtils.sleep( 10000 );
+        aciItemEditor.clickCheckSyntaxButtonOk();
+
         aciItemEditor.clickOkButton();
 
         SWTUtils.sleep( 1000 );
@@ -580,7 +698,10 @@ public class EntryEditorTest extends AbstractLdapTestUnit
 
         aciItemEditor.activateSourceTab();
         aciItemEditor.clickFormatButton();
+        aciItemEditor.clickCheckSyntaxButtonOk();
+
         aciItemEditor.activateVisualEditorTab();
+        aciItemEditor.clickCheckSyntaxButtonOk();
 
         aciItemEditor.clickOkButton();
 
