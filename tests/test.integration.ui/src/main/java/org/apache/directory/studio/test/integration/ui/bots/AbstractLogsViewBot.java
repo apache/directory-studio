@@ -20,6 +20,7 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
@@ -64,7 +65,7 @@ public class AbstractLogsViewBot
                 {
                     refreshButton.click();
                 }
-                return view.bot().styledText().getText().contains( text );
+                return StringUtils.containsIgnoreCase( view.bot().styledText().getText(), text );
             }
 
 

@@ -125,9 +125,6 @@ public class EntryEditorTest extends AbstractLdapTestUnit
 
     /**
      * Test adding, editing and deleting of attributes in the entry editor.
-     *
-     * @throws Exception
-     *             the exception
      */
     @Test
     public void testAddEditDeleteAttribute() throws Exception
@@ -165,7 +162,6 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         entryEditorBot.editValue( "description", "This is the 2nd description." );
         entryEditorBot.typeValueAndFinish( "This is the 3rd description." );
         assertEquals( 10, entryEditorBot.getAttributeValues().size() );
-        assertEquals( 10, entryEditorBot.getAttributeValues().size() );
         assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the 1st description." ) );
         assertFalse( entryEditorBot.getAttributeValues().contains( "description: This is the 2nd description." ) );
         assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the 3rd description." ) );
@@ -185,15 +181,65 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         assertEquals( 9, entryEditorBot.getAttributeValues().size() );
         assertFalse( entryEditorBot.getAttributeValues().contains( "description: This is the 1st description." ) );
         assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the final description." ) );
-        modificationLogsViewBot.waitForText( "replace: description\ndescription: This is the final description." );
+        modificationLogsViewBot.waitForText( "delete: description\ndescription: This is the 1st description." );
+        modificationLogsViewBot.waitForText( "add: description\ndescription: This is the final description." );
 
         // delete 1st value/attribute
         entryEditorBot.deleteValue( "description", "This is the final description." );
         assertEquals( 8, entryEditorBot.getAttributeValues().size() );
         assertFalse( entryEditorBot.getAttributeValues().contains( "description: This is the final description." ) );
-        modificationLogsViewBot.waitForText( "delete: description\n-" );
+        modificationLogsViewBot.waitForText( "delete: description\ndescription: This is the final description.\n-" );
 
         assertEquals( "Expected 6 modifications.", 6,
+            StringUtils.countMatches( modificationLogsViewBot.getModificationLogsText(), "#!RESULT OK" ) );
+    }
+
+
+    /**
+     * Test adding, editing and deleting of attributes without equality matching rule in the entry editor.
+     */
+    @Test
+    public void testAddEditDeleteAttributeWithoutEqualityMatchingRule() throws Exception
+    {
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Barbara Jensen" );
+
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "cn=Barbara Jensen,ou=users,ou=system" );
+        entryEditorBot.activate();
+        String dn = entryEditorBot.getDnText();
+        assertEquals( "DN: cn=Barbara Jensen,ou=users,ou=system", dn );
+        assertEquals( 8, entryEditorBot.getAttributeValues().size() );
+        assertEquals( "", modificationLogsViewBot.getModificationLogsText() );
+
+        // add facsimileTelephoneNumber attribute
+        entryEditorBot.activate();
+        NewAttributeWizardBot wizardBot = entryEditorBot.openNewAttributeWizard();
+        assertTrue( wizardBot.isVisible() );
+        wizardBot.typeAttributeType( "facsimileTelephoneNumber" );
+        wizardBot.clickFinishButton();
+        entryEditorBot.typeValueAndFinish( "+1 234 567 890" );
+        assertEquals( 9, entryEditorBot.getAttributeValues().size() );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "facsimileTelephoneNumber: +1 234 567 890" ) );
+        modificationLogsViewBot
+            .waitForText( "add: facsimileTelephoneNumber\nfacsimileTelephoneNumber: +1 234 567 890" );
+
+        // edit value
+        entryEditorBot.editValue( "facsimileTelephoneNumber", "+1 234 567 890" );
+        entryEditorBot.typeValueAndFinish( "000000000000" );
+        assertEquals( 9, entryEditorBot.getAttributeValues().size() );
+        assertFalse( entryEditorBot.getAttributeValues().contains( "facsimileTelephoneNumber: +1 234 567 890" ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "facsimileTelephoneNumber: 000000000000" ) );
+        modificationLogsViewBot
+            .waitForText( "delete: facsimileTelephoneNumber\nfacsimileTelephoneNumber: +1 234 567 890" );
+        modificationLogsViewBot.waitForText( "add: facsimileTelephoneNumber\nfacsimileTelephoneNumber: 000000000000" );
+
+        // delete 1st value/attribute
+        entryEditorBot.deleteValue( "facsimileTelephoneNumber", "000000000000" );
+        assertEquals( 8, entryEditorBot.getAttributeValues().size() );
+        assertFalse( entryEditorBot.getAttributeValues().contains( "facsimileTelephoneNumber: 000000000000" ) );
+        modificationLogsViewBot
+            .waitForText( "delete: facsimileTelephoneNumber\nfacsimileTelephoneNumber: 000000000000\n-" );
+
+        assertEquals( "Expected 3 modifications.", 3,
             StringUtils.countMatches( modificationLogsViewBot.getModificationLogsText(), "#!RESULT OK" ) );
     }
 
@@ -471,7 +517,8 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         assertTrue( entryEditorBot.getAttributeValues().contains( "description: " + newValue ) );
         String description2Ldif = LdifAttrValLine.create( "description", newValue )
             .toFormattedString( LdifFormatParameters.DEFAULT ).replace( LdifParserConstants.LINE_SEPARATOR, "\n" );
-        modificationLogsViewBot.waitForText( "replace: description\n" + description2Ldif );
+        modificationLogsViewBot.waitForText( "delete: description\ndescription: testTextValueEditor 1" );
+        modificationLogsViewBot.waitForText( "add: description\n" + description2Ldif );
     }
 
 
@@ -639,7 +686,8 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         aciItemEditor.clickOkButton();
 
         SWTUtils.sleep( 1000 );
-        modificationLogsViewBot.waitForText( "replace: entryaci\n" );
+        modificationLogsViewBot.waitForText( "delete: entryaci\n" );
+        modificationLogsViewBot.waitForText( "add: entryaci\n" );
     }
 
 
@@ -678,7 +726,8 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         aciItemEditor.clickOkButton();
 
         SWTUtils.sleep( 1000 );
-        modificationLogsViewBot.waitForText( "replace: entryaci\n" );
+        modificationLogsViewBot.waitForText( "delete: entryaci\n" );
+        modificationLogsViewBot.waitForText( "add: entryaci\n" );
     }
 
 
@@ -706,7 +755,8 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         aciItemEditor.clickOkButton();
 
         SWTUtils.sleep( 1000 );
-        modificationLogsViewBot.waitForText( "replace: prescriptiveaci\n" );
+        modificationLogsViewBot.waitForText( "delete: prescriptiveaci\n" );
+        modificationLogsViewBot.waitForText( "add: prescriptiveaci\n" );
     }
 
 

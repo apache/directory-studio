@@ -195,7 +195,8 @@ public class ErrorHandlingTest extends AbstractLdapTestUnit
 
         // verify in modification logs
         modificationLogsViewBot.assertContainsError( "[LDAP result code 21 - invalidAttributeSyntax]",
-            "dn: uid=user.1,ou=users,ou=system", "changetype: modify", "replace: telephonenumber",
+            "dn: uid=user.1,ou=users,ou=system", "changetype: modify", "delete: telephonenumber",
+            "telephonenumber: 976-893-3312", "-", "add: telephonenumber",
             "telephonenumber: Invalid phone number" );
     }
 

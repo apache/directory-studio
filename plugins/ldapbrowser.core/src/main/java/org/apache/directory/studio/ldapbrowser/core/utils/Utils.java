@@ -30,6 +30,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -406,7 +407,7 @@ public class Utils
         ModifyOrder modifyAddDeleteOrder = oldEntry.getBrowserConnection().getModifyAddDeleteOrder();
 
         // get all attribute descriptions
-        Set<String> attributeDescriptions = new HashSet<>();
+        Set<String> attributeDescriptions = new LinkedHashSet<>();
         
         for ( IAttribute oldAttr : oldEntry.getAttributes() )
         {
@@ -487,6 +488,10 @@ public class Utils
                 {
                     // delete all
                     modSpec = LdifModSpec.createDelete( attributeDescription );
+                    for ( IValue value : oldAttribute.getValues() )
+                    {
+                        modSpec.addAttrVal( computeDiffCreateAttrValLine( value ) );
+                    }
                 }
                 
                 modSpec.finish( LdifModSpecSepLine.create() );
@@ -558,16 +563,12 @@ public class Utils
                     /*
                      *  we use add/del in the following cases:
                      *  - add/del is forced in the connection configuration
-                     *  - only values to add
-                     *  - only values to delete
-                     *  - the sum of adds and deletes is smaller or equal than the number of replaces
+                     *  - for attributes w/o X-ORDERED 'VALUES'
                      *  
                      *  we use replace in the following cases:
-                     *  - the number of replaces is smaller to the sum of adds and deletes
                      *  - for attributes with X-ORDERED 'VALUES'
                      */
-                    if ( isAddDelForced || ( toAdd.size() + toDel.size() <= newAttrValLines.size() && !isOrderedValue )
-                        || ( !toDel.isEmpty() && toAdd.isEmpty() ) || ( !toAdd.isEmpty() && toDel.isEmpty() ) )
+                    if ( isAddDelForced || !isOrderedValue )
                     {
                         // add/del del/add
                         LdifModSpec addModSpec = LdifModSpec.createAdd( attributeDescription );

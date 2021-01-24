@@ -24,6 +24,7 @@ package org.apache.directory.studio.test.integration.ui;
 import static org.apache.directory.studio.test.integration.ui.Constants.LOCALHOST;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -33,15 +34,21 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.directory.api.ldap.model.exception.LdapAuthenticationException;
 import org.apache.directory.api.ldap.model.ldif.LdifEntry;
 import org.apache.directory.api.ldap.model.ldif.LdifReader;
 import org.apache.directory.ldap.client.api.LdapNetworkConnection;
 import org.apache.directory.ldap.client.api.exception.InvalidConnectionException;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ModifyMode;
 import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
+import org.apache.directory.studio.test.integration.ui.bots.EntryEditorBot;
+import org.apache.directory.studio.test.integration.ui.bots.ModificationLogsViewBot;
+import org.apache.directory.studio.test.integration.ui.bots.NewAttributeWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewConnectionWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.SearchDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
@@ -101,6 +108,7 @@ public class OpenLdapTest
     private StudioBot studioBot;
     private ConnectionsViewBot connectionsViewBot;
     private BrowserViewBot browserViewBot;
+    private ModificationLogsViewBot modificationLogsViewBot;
 
     private Connection connection;
 
@@ -113,6 +121,7 @@ public class OpenLdapTest
         connection = connectionsViewBot.createTestConnection( "OpenLdapTest", OPENLDAP_HOST, OPENLDAP_PORT,
             OPENLDAP_ADMIN_DN, OPENLDAP_ADMIN_PASSWORD );
         browserViewBot = studioBot.getBrowserView();
+        modificationLogsViewBot = studioBot.getModificationLogsViewBot();
 
         try ( LdapNetworkConnection connection = new LdapNetworkConnection( OPENLDAP_HOST, OPENLDAP_PORT );
             LdifReader ldifReader = new LdifReader( OpenLdapTest.class.getResourceAsStream( "OpenLdapTest.ldif" ) ) )
@@ -291,6 +300,130 @@ public class OpenLdapTest
         assertThat( result, containsString( "[LDAP result code 49 - invalidCredentials]" ) );
 
         wizardBot.clickCancelButton();
+    }
+
+
+    /**
+     * Test adding, editing and deleting of attributes in the entry editor.
+     */
+    @Test
+    public void testAddEditDeleteAttribute() throws Exception
+    {
+        browserViewBot.selectEntry( "DIT", "Root DSE", "dc=example,dc=org", "ou=users", "uid=user.1" );
+
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "uid=user.1,ou=users,dc=example,dc=org" );
+        entryEditorBot.activate();
+        String dn = entryEditorBot.getDnText();
+        assertEquals( "DN: uid=user.1,ou=users,dc=example,dc=org", dn );
+        assertEquals( 22, entryEditorBot.getAttributeValues().size() );
+        assertEquals( "", modificationLogsViewBot.getModificationLogsText() );
+
+        // add description attribute
+        entryEditorBot.activate();
+        NewAttributeWizardBot wizardBot = entryEditorBot.openNewAttributeWizard();
+        assertTrue( wizardBot.isVisible() );
+        wizardBot.typeAttributeType( "description" );
+        wizardBot.clickFinishButton();
+        entryEditorBot.typeValueAndFinish( "This is the 1st description." );
+        assertEquals( 23, entryEditorBot.getAttributeValues().size() );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the 1st description." ) );
+        modificationLogsViewBot.waitForText( "add: description\ndescription: This is the 1st description." );
+
+        // add second value
+        entryEditorBot.activate();
+        entryEditorBot.addValue( "description" );
+        entryEditorBot.typeValueAndFinish( "This is the 2nd description." );
+        assertEquals( 24, entryEditorBot.getAttributeValues().size() );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the 1st description." ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the 2nd description." ) );
+        modificationLogsViewBot.waitForText( "add: description\ndescription: This is the 2nd description." );
+
+        // edit second value
+        entryEditorBot.editValue( "description", "This is the 2nd description." );
+        entryEditorBot.typeValueAndFinish( "This is the 3rd description." );
+        assertEquals( 24, entryEditorBot.getAttributeValues().size() );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the 1st description." ) );
+        assertFalse( entryEditorBot.getAttributeValues().contains( "description: This is the 2nd description." ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the 3rd description." ) );
+        modificationLogsViewBot.waitForText( "delete: description\ndescription: This is the 2nd description." );
+        modificationLogsViewBot.waitForText( "add: description\ndescription: This is the 3rd description." );
+
+        // delete second value
+        entryEditorBot.deleteValue( "description", "This is the 3rd description." );
+        assertEquals( 23, entryEditorBot.getAttributeValues().size() );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the 1st description." ) );
+        assertFalse( entryEditorBot.getAttributeValues().contains( "description: This is the 3rd description." ) );
+        modificationLogsViewBot.waitForText( "delete: description\ndescription: This is the 3rd description." );
+
+        // edit 1st value
+        entryEditorBot.editValue( "description", "This is the 1st description." );
+        entryEditorBot.typeValueAndFinish( "This is the final description." );
+        assertEquals( 23, entryEditorBot.getAttributeValues().size() );
+        assertFalse( entryEditorBot.getAttributeValues().contains( "description: This is the 1st description." ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the final description." ) );
+        modificationLogsViewBot.waitForText( "delete: description\ndescription: This is the 1st description." );
+        modificationLogsViewBot.waitForText( "add: description\ndescription: This is the final description." );
+
+        // delete 1st value/attribute
+        entryEditorBot.deleteValue( "description", "This is the final description." );
+        assertEquals( 22, entryEditorBot.getAttributeValues().size() );
+        assertFalse( entryEditorBot.getAttributeValues().contains( "description: This is the final description." ) );
+        modificationLogsViewBot.waitForText( "delete: description\ndescription: This is the final description.\n-" );
+
+        assertEquals( "Expected 6 modifications.", 6,
+            StringUtils.countMatches( modificationLogsViewBot.getModificationLogsText(), "#!RESULT OK" ) );
+    }
+
+
+    /**
+     * Test adding, editing and deleting of attributes without equality matching rule in the entry editor.
+     */
+    @Test
+    public void testAddEditDeleteAttributeWithoutEqualityMatchingRule() throws Exception
+    {
+        IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
+            .getBrowserConnection( connection );
+        browserConnection.setModifyModeNoEMR( ModifyMode.REPLACE );
+
+        browserViewBot.selectEntry( "DIT", "Root DSE", "dc=example,dc=org", "ou=users", "uid=user.1" );
+
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "uid=user.1,ou=users,dc=example,dc=org" );
+        entryEditorBot.activate();
+        String dn = entryEditorBot.getDnText();
+        assertEquals( "DN: uid=user.1,ou=users,dc=example,dc=org", dn );
+        assertEquals( 22, entryEditorBot.getAttributeValues().size() );
+        assertEquals( "", modificationLogsViewBot.getModificationLogsText() );
+
+        // add facsimileTelephoneNumber attribute
+        entryEditorBot.activate();
+        NewAttributeWizardBot wizardBot = entryEditorBot.openNewAttributeWizard();
+        assertTrue( wizardBot.isVisible() );
+        wizardBot.typeAttributeType( "facsimileTelephoneNumber" );
+        wizardBot.clickFinishButton();
+        entryEditorBot.typeValueAndFinish( "+1 234 567 890" );
+        assertEquals( 23, entryEditorBot.getAttributeValues().size() );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "facsimileTelephoneNumber: +1 234 567 890" ) );
+        modificationLogsViewBot
+            .waitForText( "replace: facsimileTelephoneNumber\nfacsimileTelephoneNumber: +1 234 567 890" );
+
+        // edit value
+        entryEditorBot.editValue( "facsimileTelephoneNumber", "+1 234 567 890" );
+        entryEditorBot.typeValueAndFinish( "000000000000" );
+        assertEquals( 23, entryEditorBot.getAttributeValues().size() );
+        assertFalse( entryEditorBot.getAttributeValues().contains( "facsimileTelephoneNumber: +1 234 567 890" ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "facsimileTelephoneNumber: 000000000000" ) );
+        modificationLogsViewBot
+            .waitForText( "replace: facsimileTelephoneNumber\nfacsimileTelephoneNumber: 000000000000" );
+
+        // delete 1st value/attribute
+        entryEditorBot.deleteValue( "facsimileTelephoneNumber", "000000000000" );
+        assertEquals( 22, entryEditorBot.getAttributeValues().size() );
+        assertFalse( entryEditorBot.getAttributeValues().contains( "facsimileTelephoneNumber: 000000000000" ) );
+        modificationLogsViewBot
+            .waitForText( "replace: facsimileTelephoneNumber\n-" );
+
+        assertEquals( "Expected 3 modifications.", 3,
+            StringUtils.countMatches( modificationLogsViewBot.getModificationLogsText(), "#!RESULT OK" ) );
     }
 
 }

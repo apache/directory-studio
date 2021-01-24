@@ -191,7 +191,8 @@ class EntryEditorWidgetBot
         SWTBotTreeItem[] allItems = tree.getAllItems();
         for ( SWTBotTreeItem item : allItems )
         {
-            if ( item.cell( 0 ).equals( attributeType ) && ( value == null || item.cell( 1 ).equals( value ) ) )
+            if ( item.cell( 0 ).equalsIgnoreCase( attributeType )
+                && ( value == null || item.cell( 1 ).equals( value ) ) )
             {
                 return item;
             }

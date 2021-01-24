@@ -42,7 +42,6 @@ l: Tallahassee
 st: DE
 postalCode: 67698
 postalAddress: Aaccf Amar$27919 Broadway Street$Tallahassee, DE  67698
-description: This is the description for Aaccf Amar.
 roomNumber: 1388
 
 dn: uid=user.2,ou=users,dc=example,dc=org

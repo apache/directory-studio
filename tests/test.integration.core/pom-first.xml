@@ -48,6 +48,7 @@
             <Bundle-Activator>org.apache.directory.studio.test.integration.core.Activator</Bundle-Activator>
             
             <Require-Bundle>org.junit;bundle-version="4.11.0",
+ org.hamcrest.library;bundle-version="1.3.0",
  org.apache.directory.server.apacheds-test-framework;bundle-version="${org.apache.directory.server.version}",
  org.apache.directory.server.annotations;bundle-version="${org.apache.directory.server.version}",
  org.apache.directory.server.xdbm.partition;bundle-version="${org.apache.directory.server.version}",
