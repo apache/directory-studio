@@ -35,6 +35,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.exception.LdapAuthenticationException;
 import org.apache.directory.api.ldap.model.ldif.LdifEntry;
 import org.apache.directory.api.ldap.model.ldif.LdifReader;
@@ -44,12 +45,15 @@ import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ModifyMode;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.EntryEditorBot;
+import org.apache.directory.studio.test.integration.ui.bots.ErrorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.ModificationLogsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewAttributeWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewConnectionWizardBot;
+import org.apache.directory.studio.test.integration.ui.bots.SchemaBrowserBot;
 import org.apache.directory.studio.test.integration.ui.bots.SearchDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
 import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
@@ -83,6 +87,8 @@ public class OpenLdapTest
     private static final int OPENLDAP_PORT = Integer.parseInt( getOrDefault( "OPENLDAP_PORT", "20389" ) );
     private static final String OPENLDAP_ADMIN_DN = getOrDefault( "OPENLDAP_ADMIN_DN", "cn=admin,dc=example,dc=org" );
     private static final String OPENLDAP_ADMIN_PASSWORD = getOrDefault( "OPENLDAP_ADMIN_PASSWORD", "admin" );
+    private static final String OPENLDAP_CONFIG_DN = getOrDefault( "OPENLDAP_CONFIG_DN", "cn=admin,cn=config" );
+    private static final String OPENLDAP_CONFIG_PASSWORD = getOrDefault( "OPENLDAP_CONFIG_PASSWORD", "config" );
 
     @BeforeClass
     public static void skipOpenLdapTestIfNotRunning() throws Exception
@@ -130,6 +136,19 @@ public class OpenLdapTest
             for ( LdifEntry entry : ldifReader )
             {
                 connection.add( entry.getEntry() );
+            }
+        }
+
+        try ( LdapNetworkConnection connection = new LdapNetworkConnection( OPENLDAP_HOST, OPENLDAP_PORT );
+            LdifReader ldifReader = new LdifReader( OpenLdapTest.class.getResourceAsStream( "OpenLdapConfig.ldif" ) ) )
+        {
+            connection.bind( OPENLDAP_CONFIG_DN, OPENLDAP_CONFIG_PASSWORD );
+            for ( LdifEntry entry : ldifReader )
+            {
+                for ( Modification modification : entry.getModifications() )
+                {
+                    connection.modify( entry.getDn(), modification );
+                }
             }
         }
     }
@@ -424,6 +443,35 @@ public class OpenLdapTest
 
         assertEquals( "Expected 3 modifications.", 3,
             StringUtils.countMatches( modificationLogsViewBot.getModificationLogsText(), "#!RESULT OK" ) );
+    }
+
+
+    @Test
+    public void testNoPermissionToReadSchema() throws Exception
+    {
+        // Close connection and reset cached schema
+        connectionsViewBot.closeSelectedConnections();
+        IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
+            .getBrowserConnection( connection );
+        browserConnection.setSchema( Schema.DEFAULT_SCHEMA );
+
+        // Open connection as uid=user.1 which is not allowed to read cn=subschema
+        connection.setBindPrincipal( "uid=user.1,ou=users,dc=example,dc=org" );
+        connection.setBindPassword( "password" );
+        ErrorDialogBot errorDialog = connectionsViewBot.openSelectedConnectionExpectingNoSchemaProvidedErrorDialog();
+        assertThat( errorDialog.getErrorDetails(),
+            containsString( "No schema information returned by server, using default schema." ) );
+        errorDialog.clickOkButton();
+
+        // Verify default schema is used
+        SchemaBrowserBot schemaBrowser = connectionsViewBot.openSchemaBrowser();
+        schemaBrowser.selectObjectClass( "DEFAULTSCHEMA" );
+        String rawSchemaDefinition = schemaBrowser.getRawSchemaDefinition();
+        assertNotNull( rawSchemaDefinition );
+        assertTrue( rawSchemaDefinition.contains( "This is the Default Schema" ) );
+
+        // Verify browser
+        browserViewBot.selectEntry( "DIT", "Root DSE" );
     }
 
 }

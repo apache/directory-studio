@@ -82,6 +82,17 @@ public class ConnectionsViewBot
     }
 
 
+    public ErrorDialogBot openSelectedConnectionExpectingNoSchemaProvidedErrorDialog()
+    {
+        String shellText = BotUtils.shell( () -> {
+            JobWatcher watcher = new JobWatcher( Messages.jobs__open_connections_name_1 );
+            getConnectionsTree().contextMenu( "Open Connection" ).click();
+            watcher.waitUntilDone();
+        }, "Problem Occurred" ).getText();
+        return new ErrorDialogBot( shellText );
+    }
+
+
     public void closeSelectedConnections()
     {
         JobWatcher watcher = new JobWatcher( Messages.jobs__close_connections_name_1 );
