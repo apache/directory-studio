@@ -317,6 +317,8 @@ public class RcpAppTest extends AbstractLdapTestUnit
 
         assertTrue( prefs.pageExists( "General", "Network Connections" ) );
         assertTrue( prefs.pageExists( "General", "Appearance" ) );
+        assertTrue( prefs.pageExists( "General", "Appearance", "Text Editors" ) );
+        assertTrue( prefs.pageExists( "General", "Appearance", "Colors and Fonts" ) );
         assertTrue( prefs.pageExists( "Help" ) );
         assertTrue( prefs.pageExists( "Install/Update" ) );
 
