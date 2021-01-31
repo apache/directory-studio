@@ -57,7 +57,8 @@ public class BrowserViewBot
 
     public void selectEntry( String... path )
     {
-        boolean wait = !"Quick Search".equals( path[path.length - 1] )
+        boolean wait = !path[path.length - 1].startsWith( "Quick Search" )
+            && !path[path.length - 1].equals( "No Results" )
             && !"Searches".equals( path[0] );
         browserBot.selectEntry( wait, path );
     }

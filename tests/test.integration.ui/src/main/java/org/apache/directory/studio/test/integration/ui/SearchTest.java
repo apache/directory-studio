@@ -73,7 +73,6 @@ public class SearchTest extends AbstractLdapTestUnit
     private Connection connection1;
     private Connection connection2;
 
-
     @Before
     public void setUp() throws Exception
     {
@@ -172,6 +171,52 @@ public class SearchTest extends AbstractLdapTestUnit
         // verify that only one event was fired
         long fireCount = fireCount1 - fireCount0;
         assertEquals( "Only 1 event firings expected when running quick search.", 1, fireCount );
+    }
+
+
+    @Test
+    public void testQuickSearch() throws Exception
+    {
+        // quick search on context entry
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system" );
+
+        browserViewBot.typeQuickSearchAttributeType( "ou" );
+        browserViewBot.typeQuickSearchValue( "*" );
+        browserViewBot.clickRunQuickSearchButton();
+
+        browserViewBot.waitForEntry( "DIT", "Root DSE", "ou=system", "Quick Search (5)" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "Quick Search (5)" );
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "Quick Search (5)" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "Quick Search (5)", "ou=users,ou=system" );
+
+        // quick search on non-leaf entry
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+
+        browserViewBot.typeQuickSearchAttributeType( "uid" );
+        browserViewBot.typeQuickSearchValue( "user.1" );
+        browserViewBot.clickRunQuickSearchButton();
+
+        browserViewBot.waitForEntry( "DIT", "Root DSE", "ou=system", "ou=users", "Quick Search (1)" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "Quick Search (1)" );
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users", "Quick Search (1)" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "Quick Search (1)",
+            "uid=user.1,ou=users,ou=system" );
+
+        // quick search on leaf entry
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" );
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" );
+
+        browserViewBot.typeQuickSearchAttributeType( "uid" );
+        browserViewBot.typeQuickSearchValue( "user.1" );
+        browserViewBot.clickRunQuickSearchButton();
+
+        browserViewBot.waitForEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1", "Quick Search (0)" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1", "Quick Search (0)" );
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1", "Quick Search (0)" );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1", "Quick Search (0)",
+            "No Results" );
     }
 
 

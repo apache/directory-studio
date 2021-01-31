@@ -349,7 +349,6 @@ public class BrowserContentProvider implements ITreeContentProvider
         else if ( parent instanceof IEntry )
         {
             final IEntry parentEntry = ( IEntry ) parent;
-            IQuickSearch quickSearch = parentEntry.getBrowserConnection().getQuickSearch();
 
             if ( parentEntry instanceof IContinuation )
             {
@@ -362,6 +361,14 @@ public class BrowserContentProvider implements ITreeContentProvider
                 {
                     return new Object[0];
                 }
+            }
+
+            List<Object> objects = new ArrayList<Object>();
+
+            IQuickSearch quickSearch = getQuickSearchForEntry( parentEntry );
+            if ( quickSearch != null )
+            {
+                objects.add( quickSearch );
             }
 
             if ( !parentEntry.isChildrenInitialized() )
@@ -378,14 +385,6 @@ public class BrowserContentProvider implements ITreeContentProvider
                 }
 
                 IEntry[] results = parentEntry.getChildren();
-
-                List<Object> objects = new ArrayList<Object>();
-
-                if ( quickSearch != null
-                    && parentEntry.getDn().equals( quickSearch.getSearchBase() ) )
-                {
-                    objects.add( quickSearch );
-                }
 
                 if ( parentEntry.getTopPageChildrenRunnable() != null )
                 {
@@ -404,14 +403,6 @@ public class BrowserContentProvider implements ITreeContentProvider
             else
             {
                 BrowserEntryPage[] entryPages = getEntryPages( parentEntry );
-
-                List<Object> objects = new ArrayList<Object>();
-
-                if ( quickSearch != null
-                    && parentEntry.getDn().equals( quickSearch.getSearchBase() ) )
-                {
-                    objects.add( quickSearch );
-                }
 
                 objects.addAll( Arrays.asList( entryPages ) );
 
@@ -552,7 +543,7 @@ public class BrowserContentProvider implements ITreeContentProvider
         if ( parent instanceof IEntry )
         {
             IEntry parentEntry = ( IEntry ) parent;
-            return parentEntry.hasChildren();
+            return parentEntry.hasChildren() || getQuickSearchForEntry( parentEntry ) != null;
         }
         else if ( parent instanceof SearchContinuation )
         {
@@ -582,6 +573,19 @@ public class BrowserContentProvider implements ITreeContentProvider
         {
             return false;
         }
+    }
+
+
+    private IQuickSearch getQuickSearchForEntry( IEntry parentEntry )
+    {
+        IQuickSearch quickSearch = parentEntry.getBrowserConnection().getQuickSearch();
+        if ( quickSearch != null
+            && parentEntry.getDn().equals( quickSearch.getSearchBase() ) )
+        {
+            return quickSearch;
+        }
+
+        return null;
     }
 
 
