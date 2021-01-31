@@ -56,6 +56,7 @@
  org.eclipse.core.runtime,
  org.eclipse.e4.ui.css.swt.theme,
  org.eclipse.ui,
+ org.eclipse.ui.editors,
  org.eclipse.ui.ide,
  org.eclipse.ui.intro
             </Require-Bundle>
