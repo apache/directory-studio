@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.FileHandler;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
@@ -41,9 +42,13 @@ import java.util.logging.Logger;
 import javax.naming.directory.SearchControls;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.directory.api.ldap.model.entry.Attribute;
+import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.api.ldap.model.url.LdapUrl;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
@@ -54,7 +59,10 @@ import org.apache.directory.studio.connection.core.ReferralsInfo;
 import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.connection.core.io.StudioLdapException;
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
+import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
+import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifCommentLine;
+import org.apache.directory.studio.ldifparser.model.lines.LdifDnLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifLineBase;
 import org.apache.directory.studio.ldifparser.model.lines.LdifSepLine;
 import org.eclipse.core.runtime.Preferences.IPropertyChangeListener;
@@ -300,6 +308,58 @@ public class LdifSearchLogger implements ILdapLogger
         }
 
         log( formattedString, "SEARCH REQUEST (" + requestNum + ")", ex, connection ); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void logSearchResultEntry( Connection connection, StudioSearchResult studioSearchResult, long requestNum,
+        StudioLdapException ex )
+    {
+        if ( !isSearchResultEntryLogEnabled() )
+        {
+            return;
+        }
+
+        String formattedString;
+        if ( studioSearchResult != null )
+        {
+            Set<String> maskedAttributes = getMaskedAttributes();
+            Entry entry = studioSearchResult.getEntry();
+
+            LdifContentRecord record = new LdifContentRecord( LdifDnLine.create( entry.getDn().getName() ) );
+            for ( Attribute attribute : entry )
+            {
+                String attributeName = attribute.getUpId();
+                for ( Value value : attribute )
+                {
+                    if ( maskedAttributes.contains( Strings.toLowerCase( attributeName ) ) )
+                    {
+                        record.addAttrVal( LdifAttrValLine.create( attributeName, "**********" ) ); //$NON-NLS-1$
+                    }
+                    else
+                    {
+                        if ( value.isHumanReadable() )
+                        {
+                            record.addAttrVal( LdifAttrValLine.create( attributeName, value.getString() ) );
+                        }
+                        else
+                        {
+                            record.addAttrVal( LdifAttrValLine.create( attributeName, value.getBytes() ) );
+                        }
+                    }
+                }
+            }
+            record.finish( LdifSepLine.create() );
+            formattedString = record.toFormattedString( LdifFormatParameters.DEFAULT );
+        }
+        else
+        {
+            formattedString = LdifFormatParameters.DEFAULT.getLineSeparator();
+        }
+
+        log( formattedString, "SEARCH RESULT ENTRY (" + requestNum + ")", ex, connection ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 

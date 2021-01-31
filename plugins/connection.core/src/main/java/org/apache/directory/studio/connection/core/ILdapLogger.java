@@ -21,6 +21,8 @@ package org.apache.directory.studio.connection.core;
 
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.naming.directory.SearchControls;
 
@@ -29,8 +31,10 @@ import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.io.StudioLdapException;
+import org.apache.directory.studio.connection.core.io.api.StudioSearchResult;
 
 
 /**
@@ -170,6 +174,20 @@ public interface ILdapLogger
 
 
     /**
+     * Logs a search result entry.
+     * 
+     * @param connection the connection
+     * @param studioSearchResult the search result entry
+     * @param requestNum the request number
+     * @param ex the LDAP exception if an error occurred, null otherwise
+     */
+    default void logSearchResultEntry( Connection connection, StudioSearchResult studioSearchResult, long requestNum,
+        StudioLdapException ex )
+    {
+    }
+
+
+    /**
      * Logs a search result reference.
      *
      * @param connection the connection
@@ -194,6 +212,27 @@ public interface ILdapLogger
      */
     default void logSearchResultDone( Connection connection, long count, long requestNum, StudioLdapException ex )
     {
+    }
+
+    /**
+     * Gets the masked attributes.
+     * 
+     * @return the masked attributes
+     */
+    default Set<String> getMaskedAttributes()
+    {
+        Set<String> maskedAttributes = new HashSet<String>();
+
+        String maskedAttributeString = ConnectionCorePlugin.getDefault().getPluginPreferences().getString(
+            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_MASKED_ATTRIBUTES );
+        String[] splitted = maskedAttributeString.split( "," ); //$NON-NLS-1$
+
+        for ( String s : splitted )
+        {
+            maskedAttributes.add( Strings.toLowerCase( s ) );
+        }
+
+        return maskedAttributes;
     }
 
 }

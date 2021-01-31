@@ -29,7 +29,6 @@ import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.FileHandler;
@@ -532,28 +531,6 @@ public class LdifModificationLogger implements ILdapLogger
     {
         return ConnectionCorePlugin.getDefault().getPluginPreferences().getInt(
             ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_FILE_SIZE );
-    }
-
-
-    /**
-     * Gets the masked attributes.
-     * 
-     * @return the masked attributes
-     */
-    private Set<String> getMaskedAttributes()
-    {
-        Set<String> maskedAttributes = new HashSet<String>();
-
-        String maskedAttributeString = ConnectionCorePlugin.getDefault().getPluginPreferences().getString(
-            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_MASKED_ATTRIBUTES );
-        String[] splitted = maskedAttributeString.split( "," ); //$NON-NLS-1$
-
-        for ( String s : splitted )
-        {
-            maskedAttributes.add( Strings.toLowerCase( s ) );
-        }
-
-        return maskedAttributes;
     }
 
 
