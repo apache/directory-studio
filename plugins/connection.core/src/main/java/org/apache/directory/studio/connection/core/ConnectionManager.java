@@ -23,7 +23,6 @@ package org.apache.directory.studio.connection.core;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashSet;
@@ -33,7 +32,6 @@ import org.apache.directory.api.util.FileUtils;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.connection.core.event.ConnectionUpdateListener;
 import org.apache.directory.studio.connection.core.io.ConnectionIO;
-import org.apache.directory.studio.connection.core.io.ConnectionIOException;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -360,29 +358,29 @@ public class ConnectionManager implements ConnectionUpdateListener
     public synchronized void saveConnections()
     {
         Set<ConnectionParameter> connectionParameters = new HashSet<>();
-        
+
         for ( Connection connection : connectionList )
         {
             connectionParameters.add( connection.getConnectionParameter() );
         }
 
+        File file = new File( getConnectionStoreFileName() );
+        File tempFile = new File( getConnectionStoreFileName() + TEMP_SUFFIX );
+
         // To avoid a corrupt file, save object to a temp file first 
-        try
+        try ( FileOutputStream fileOutputStream = new FileOutputStream( tempFile ) )
         {
-            ConnectionIO
-                .save( connectionParameters, new FileOutputStream( getConnectionStoreFileName() + TEMP_SUFFIX ) );
+            ConnectionIO.save( connectionParameters, fileOutputStream );
         }
         catch ( IOException e )
         {
             Status status = new Status( IStatus.ERROR, ConnectionCoreConstants.PLUGIN_ID,
                 Messages.error__saving_connections + e.getMessage(), e );
             ConnectionCorePlugin.getDefault().getLog().log( status );
+            return;
         }
 
         // move temp file to good file
-        File file = new File( getConnectionStoreFileName() );
-        File tempFile = new File( getConnectionStoreFileName() + TEMP_SUFFIX );
-        
         if ( file.exists() )
         {
             file.delete();
@@ -398,6 +396,7 @@ public class ConnectionManager implements ConnectionUpdateListener
             Status status = new Status( IStatus.ERROR, ConnectionCoreConstants.PLUGIN_ID,
                 Messages.error__saving_connections + e.getMessage(), e );
             ConnectionCorePlugin.getDefault().getLog().log( status );
+            return;
         }
     }
 
@@ -409,29 +408,15 @@ public class ConnectionManager implements ConnectionUpdateListener
     {
         Set<ConnectionParameter> connectionParameters = null;
 
-        try
+        try ( FileInputStream fileInputStream = new FileInputStream( getConnectionStoreFileName() ) )
         {
-            connectionParameters = ConnectionIO.load( new FileInputStream( getConnectionStoreFileName() ) );
+            connectionParameters = ConnectionIO.load( fileInputStream );
         }
         catch ( Exception e )
         {
-            // If loading failed, try with temp file
-            try
-            {
-                connectionParameters = ConnectionIO.load( new FileInputStream( getConnectionStoreFileName()
-                    + TEMP_SUFFIX ) );
-            }
-            catch ( FileNotFoundException e1 )
-            {
-                // ignore, this is a fresh workspace
-                return;
-            }
-            catch ( ConnectionIOException e1 )
-            {
-                Status status = new Status( IStatus.ERROR, ConnectionCoreConstants.PLUGIN_ID,
-                    Messages.error__loading_connections + e.getMessage(), e );
-                ConnectionCorePlugin.getDefault().getLog().log( status );
-            }
+            Status status = new Status( IStatus.ERROR, ConnectionCoreConstants.PLUGIN_ID,
+                Messages.error__loading_connections + e.getMessage(), e );
+            ConnectionCorePlugin.getDefault().getLog().log( status );
         }
 
         if ( connectionParameters != null )

@@ -233,7 +233,7 @@ public class PreferencesTest extends AbstractLdapTestUnit
         assertTrue( passwordsKeyStoreManager.isLoaded() );
 
         // verify connection can be opened because keystore is already loaded
-        connectionsViewBot.selectConnection( connection.getName() );
+        connectionsViewBot.select( connection.getName() );
         connectionsViewBot.openSelectedConnection();
         connectionsViewBot.closeSelectedConnections();
 
@@ -242,7 +242,7 @@ public class PreferencesTest extends AbstractLdapTestUnit
         assertFalse( passwordsKeyStoreManager.isLoaded() );
 
         // verify master password prompt when opening the connection
-        connectionsViewBot.selectConnection( connection.getName() );
+        connectionsViewBot.select( connection.getName() );
         connectionsViewBot.openSelectedConnectionExpectingVerifyMasterPasswordDialog( "secret12" );
         connectionsViewBot.closeSelectedConnections();
 
@@ -264,7 +264,7 @@ public class PreferencesTest extends AbstractLdapTestUnit
         assertFalse( passwordsKeyStoreManager.isLoaded() );
 
         // verify connection can be opened and connections password was kept
-        connectionsViewBot.selectConnection( connection.getName() );
+        connectionsViewBot.select( connection.getName() );
         connectionsViewBot.openSelectedConnection();
         connectionsViewBot.closeSelectedConnections();
     }

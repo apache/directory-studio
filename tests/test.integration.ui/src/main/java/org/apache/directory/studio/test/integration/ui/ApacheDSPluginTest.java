@@ -124,7 +124,7 @@ public class ApacheDSPluginTest
         assertEquals( 1, getBrowserConnectionsCount() );
 
         // Opening the connection
-        connectionsViewBot.selectConnection( serverName );
+        connectionsViewBot.select( serverName );
         connectionsViewBot.openSelectedConnection();
 
         // Getting the associated connection object
@@ -134,7 +134,7 @@ public class ApacheDSPluginTest
         assertTrue( connection.getConnectionWrapper().isConnected() );
 
         // Closing the connection
-        connectionsViewBot.selectConnection( serverName );
+        connectionsViewBot.select( serverName );
         connectionsViewBot.closeSelectedConnections();
 
         // Checking if the connection is closed
@@ -350,7 +350,7 @@ public class ApacheDSPluginTest
         connectionFromServerDialogBot.clickOkButton();
 
         // Open the connection
-        connectionsViewBot.selectConnection( serverName );
+        connectionsViewBot.select( serverName );
         connectionsViewBot.openSelectedConnection();
 
         // Open the config editor and load remote config
@@ -389,7 +389,7 @@ public class ApacheDSPluginTest
         localEditorBot.close();
 
         // Close the connection
-        connectionsViewBot.selectConnection( serverName );
+        connectionsViewBot.select( serverName );
         connectionsViewBot.closeSelectedConnections();
 
         // Delete the connection

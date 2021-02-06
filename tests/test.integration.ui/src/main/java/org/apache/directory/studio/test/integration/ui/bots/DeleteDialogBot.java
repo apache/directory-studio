@@ -26,6 +26,8 @@ import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
 
 public class DeleteDialogBot extends DialogBot
 {
+    public static final String DELETE_CONNECTION = "Delete Connection";
+    public static final String DELETE_CONNECTION_FOLDER = "Delete Connection Folder";
     public static final String DELETE_ENTRY_TITLE = "Delete Entry";
     public static final String DELETE_ENTRIES_TITLE = "Delete Entries";
     public static final String DELETE_VALUE_TITLE = "Delete Value";
@@ -61,6 +63,8 @@ public class DeleteDialogBot extends DialogBot
         {
             case DELETE_VALUE_TITLE:
                 return BrowserCoreMessages.jobs__execute_ldif_name;
+            case DELETE_CONNECTION:
+            case DELETE_CONNECTION_FOLDER:
             case DELETE_PROJECT:
                 return null;
             default:

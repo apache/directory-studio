@@ -79,7 +79,7 @@ public class SchemaBrowserTest extends AbstractLdapTestUnit
     @Test
     public void testRawSchemaDefinitionIsFilled() throws Exception
     {
-        connectionsViewBot.selectConnection( connection.getName() );
+        connectionsViewBot.select( connection.getName() );
         SchemaBrowserBot schemaBrowser = connectionsViewBot.openSchemaBrowser();
         //schemaBrowser.activateObjectClassesTab();
         schemaBrowser.selectObjectClass( "account" );

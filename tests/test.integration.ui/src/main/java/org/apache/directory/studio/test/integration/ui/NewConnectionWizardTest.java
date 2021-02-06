@@ -357,7 +357,7 @@ public class NewConnectionWizardTest extends AbstractLdapTestUnit
         assertEquals( "secret", connection.getBindPassword() );
 
         // ensure connection is visible in Connections view
-        assertEquals( 1, connectionsViewBot.getConnectionCount() );
+        assertEquals( 1, connectionsViewBot.getCount() );
 
         // close connection
         connectionsViewBot.closeSelectedConnections();

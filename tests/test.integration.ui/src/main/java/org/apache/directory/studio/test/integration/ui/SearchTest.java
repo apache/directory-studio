@@ -112,7 +112,7 @@ public class SearchTest extends AbstractLdapTestUnit
         assertEquals( 0, browserConnection2.getSearchManager().getSearches().size() );
 
         // create a search for in connection 1
-        connectionsViewBot.selectConnection( connection1.getName() );
+        connectionsViewBot.select( connection1.getName() );
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
         SearchDialogBot dialogBot = browserViewBot.openSearchDialog();
         assertTrue( dialogBot.isVisible() );
@@ -129,7 +129,7 @@ public class SearchTest extends AbstractLdapTestUnit
 
         // copy/paste the created search from connection 1 to connection 2
         browserViewBot.copy();
-        connectionsViewBot.selectConnection( connection2.getName() );
+        connectionsViewBot.select( connection2.getName() );
         browserViewBot.selectEntry( "Searches" );
         SearchPropertiesDialogBot searchPropertiesDialogBot = browserViewBot.pasteSearch();
         assertTrue( searchPropertiesDialogBot.isVisible() );
