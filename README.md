@@ -165,6 +165,13 @@ Test the build and sign process for distribution packages:
     cd dist
     ./dist.sh
 
+Test the notarization of the macOS installer (requires app-specific password generated at https://appleid.apple.com/):
+
+    cd target/dist/$VERSION
+    xcrun altool --notarize-app --primary-bundle-id "org.apache.directory.studio" --username "you@apache.org" --password "app-specific-password" --file ApacheDirectoryStudio-*.dmg
+
+Wait for the successful notarization (email notification).
+
 Test the distribution packages:
 
 * Test generated bin archives, installers, and update site (if possible on all platforms).
@@ -245,6 +252,15 @@ Run the dist script:
     ./dist.sh
 
 Afterwards all distribution packages and user guides are located in `target`.
+
+#### Notarize the macOS installer
+
+    cd target/dist/$VERSION
+    xcrun altool --notarize-app --primary-bundle-id "org.apache.directory.studio" --username "you@apache.org" --password "app-specific-password" --file ApacheDirectoryStudio-*.dmg
+
+Wait for the successful notarization (email notification), then staple (attach) the notarization ticket to DMG:
+
+    xcrun stapler staple ApacheDirectoryStudio-*.dmg
 
 #### Upload the distribution packages to SVN
 
