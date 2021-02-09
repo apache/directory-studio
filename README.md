@@ -150,7 +150,7 @@ Define the PGP key used to sign the artifacts and the Apple signing ID used to s
 Note: those are Stefan's keys, replace with your own.
 
 ### Preparation
-Update the copyright year. Full text search/replace "2006-2020". Also change in `plugins/rcp/src/main/resources/splash.bmp` image.
+Update the copyright year. Full text search/replace "2006-2021". Also change in `plugins/rcp/src/main/resources/splash.bmp` image.
 
 Test the release build: rat check, javadoc and source jar generation, installer generation, GPG signing, userguide generation:
 
