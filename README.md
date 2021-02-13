@@ -25,7 +25,7 @@ Apache Directory Studio is a complete directory tooling platform intended to be 
 
 ### Prerequisites
 
-* JDK 8 or newer
+* JDK 11 or newer
 * Maven 3 or newer
 * Sufficient heap space for Maven: `export MAVEN_OPTS="-Xmx512m"`
 
@@ -159,18 +159,18 @@ Test the release build: rat check, javadoc and source jar generation, installer 
 
 Note: During creation of the macOS installer (DMG) the ApacheDirectoryStudio.app is signed with the ASF "Developer ID Application" key. See https://issues.apache.org/jira/browse/INFRA-16978 for the process to get one.
 
+Test the notarization of the macOS installer (requires app-specific password generated at https://appleid.apple.com/):
+
+    cd installers/macos/target
+    xcrun altool --notarize-app --primary-bundle-id "org.apache.directory.studio" --username "you@apache.org" --password "app-specific-password" --file ApacheDirectoryStudio-*.dmg
+
+Wait for the successful notarization (email notification).
+
 Test the build and sign process for distribution packages:
 
     export VERSION=2.0.0-SNAPSHOT
     cd dist
     ./dist.sh
-
-Test the notarization of the macOS installer (requires app-specific password generated at https://appleid.apple.com/):
-
-    cd target/dist/$VERSION
-    xcrun altool --notarize-app --primary-bundle-id "org.apache.directory.studio" --username "you@apache.org" --password "app-specific-password" --file ApacheDirectoryStudio-*.dmg
-
-Wait for the successful notarization (email notification).
 
 Test the distribution packages:
 
@@ -242,6 +242,16 @@ Run the actual release within a fresh checkout to ensure no previous build artif
 
 See https://repository.apache.org/#stagingRepositories
 
+#### Notarize the macOS installer
+
+    cd installers/macos/target
+    xcrun altool --notarize-app --primary-bundle-id "org.apache.directory.studio" --username "you@apache.org" --password "app-specific-password" --file ApacheDirectoryStudio-*.dmg
+    cd ../../..
+
+Wait for the successful notarization (email notification), then staple (attach) the notarization ticket to the DMG:
+
+    xcrun stapler staple ApacheDirectoryStudio-*.dmg
+
 #### Package and sign distribution packages
 
 There is a script that collects and signs all update sites and distribution packages.
@@ -252,15 +262,6 @@ Run the dist script:
     ./dist.sh
 
 Afterwards all distribution packages and user guides are located in `target`.
-
-#### Notarize the macOS installer
-
-    cd target/dist/$VERSION
-    xcrun altool --notarize-app --primary-bundle-id "org.apache.directory.studio" --username "you@apache.org" --password "app-specific-password" --file ApacheDirectoryStudio-*.dmg
-
-Wait for the successful notarization (email notification), then staple (attach) the notarization ticket to DMG:
-
-    xcrun stapler staple ApacheDirectoryStudio-*.dmg
 
 #### Upload the distribution packages to SVN
 
@@ -273,16 +274,7 @@ Wait for the successful notarization (email notification), then staple (attach) 
 
 #### Upload the user guides to SVN
 
-    cd target/ug/$VERSION
-    svn mkdir https://svn.apache.org/repos/infra/websites/production/directory/content/studio/users-guide/$VERSION -m "Create user guides area for release $VERSION"
-    svn co https://svn.apache.org/repos/infra/websites/production/directory/content/studio/users-guide/$VERSION .
-    svn add *
-    svn commit -m "Add release $VERSION"
-    cd ../../..
-
-Note 1: This publishes the user guides directly to the production CMS!
-
-Note 2: In `content/extpaths.txt` the parent folder is already whitelisted.
+Upload the content of `target/ug/$VERSION` using WebDAVs to `nightlies.apache.org/directory/studio/$VERSION/userguide`.
 
 ### Call the vote
 
@@ -302,26 +294,24 @@ Wait 24h for mirror rsync.
 
 #### Update site
 
-The update site https://svn.apache.org/repos/asf/directory/site/trunk/content/studio/update needs to be updated.
+The update site needs to be updated.
 
 In the following files
 
-* `compositeArtifacts--xml.html`
-* `compositeContent--xml.html`
-* `product/compositeArtifacts--xml.html`
-* `product/compositeContent--xml.html`
+* `static/studio/update/compositeArtifacts--xml.html`
+* `static/studio/update/compositeContent--xml.html`
+* `static/studio/update/product/compositeArtifacts--xml.html`
+* `static/studio/update/product/compositeContent--xml.html`
 
 change the location path to the new release and also update the `p2.timestamp` to the current timestamp milliseconds (hint: `date +%s000`)
 
 #### Website
 
-Update news and download links
+Update version, changelog, and news:
 
-* `lib/path.pm`: `$version_studio` and `$version_studio_name`
-* `content/index.mdtext`: version string
-* `content/studio/changelog.mdtext`
-* `content/studio/news.mdtext`
-* `content/studio/users-guide.mdtext`
+* `config.toml`: `version_studio` and `version_studio_name`
+* `source/studio/changelog.md`
+* `source/studio/news.md`
 
 #### Eclipse Marketplace
 
