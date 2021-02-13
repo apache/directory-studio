@@ -408,15 +408,19 @@ public class ConnectionManager implements ConnectionUpdateListener
     {
         Set<ConnectionParameter> connectionParameters = null;
 
-        try ( FileInputStream fileInputStream = new FileInputStream( getConnectionStoreFileName() ) )
+        File file = new File( getConnectionStoreFileName() );
+        if ( file.exists() )
         {
-            connectionParameters = ConnectionIO.load( fileInputStream );
-        }
-        catch ( Exception e )
-        {
-            Status status = new Status( IStatus.ERROR, ConnectionCoreConstants.PLUGIN_ID,
-                Messages.error__loading_connections + e.getMessage(), e );
-            ConnectionCorePlugin.getDefault().getLog().log( status );
+            try ( FileInputStream fileInputStream = new FileInputStream( file ) )
+            {
+                connectionParameters = ConnectionIO.load( fileInputStream );
+            }
+            catch ( Exception e )
+            {
+                Status status = new Status( IStatus.ERROR, ConnectionCoreConstants.PLUGIN_ID,
+                    Messages.error__loading_connections + e.getMessage(), e );
+                ConnectionCorePlugin.getDefault().getLog().log( status );
+            }
         }
 
         if ( connectionParameters != null )

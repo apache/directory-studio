@@ -409,15 +409,19 @@ public class ConnectionFolderManager implements ConnectionUpdateListener
     {
         ConnectionEventRegistry.suspendEventFiringInCurrentThread();
 
-        try ( FileInputStream fileInputStream = new FileInputStream( getConnectionFolderStoreFileName() ) )
+        File file = new File( getConnectionFolderStoreFileName() );
+        if ( file.exists() )
         {
-            folderList = ConnectionIO.loadConnectionFolders( fileInputStream );
-        }
-        catch ( Exception e )
-        {
-            Status status = new Status( IStatus.ERROR, ConnectionCoreConstants.PLUGIN_ID,
-                Messages.error__saving_connections + e.getMessage(), e );
-            ConnectionCorePlugin.getDefault().getLog().log( status );
+            try ( FileInputStream fileInputStream = new FileInputStream( file ) )
+            {
+                folderList = ConnectionIO.loadConnectionFolders( fileInputStream );
+            }
+            catch ( Exception e )
+            {
+                Status status = new Status( IStatus.ERROR, ConnectionCoreConstants.PLUGIN_ID,
+                    Messages.error__loading_connections + e.getMessage(), e );
+                ConnectionCorePlugin.getDefault().getLog().log( status );
+            }
         }
 
         if ( !folderList.isEmpty() )
