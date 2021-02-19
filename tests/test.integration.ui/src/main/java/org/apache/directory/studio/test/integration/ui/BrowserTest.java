@@ -810,7 +810,45 @@ public class BrowserTest extends AbstractLdapTestUnit
         assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users (13)" ) );
         assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" ) );
         assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.8" ) );
+    }
 
+    @Test
+    public void testDeleteClearsEntryCache() throws Exception
+    {
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" );
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "uid=user.1,ou=users,ou=system" );
+        List<String> attributeValues = entryEditorBot.getAttributeValues();
+        assertEquals( 23, attributeValues.size() );
+        assertTrue( attributeValues.contains( "uid: user.1" ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "initials: AA" ) );
+
+        DeleteDialogBot deleteDialog = browserViewBot.openDeleteDialog();
+        deleteDialog.clickOkButton();
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" ) );
+
+        Entry entry = new DefaultEntry( service.getSchemaManager() );
+        entry.setDn( new Dn( "uid=user.1,ou=users,ou=system" ) );
+        entry.add( "objectClass", "top", "person", "organizationalPerson", "inetOrgPerson" );
+        entry.add( "uid", "user.1" );
+        entry.add( "givenName", "Foo" );
+        entry.add( "sn", "Bar" );
+        entry.add( "cn", "Foo Bar" );
+        entry.add( "initials", "FB" );
+        service.getAdminSession().add( entry );
+
+        browserViewBot.refresh();
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" ) );
+
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" );
+        entryEditorBot = studioBot.getEntryEditorBot( "uid=user.1,ou=users,ou=system" );
+        attributeValues = entryEditorBot.getAttributeValues();
+        assertEquals( 9, attributeValues.size() );
+        assertTrue( attributeValues.contains( "uid: user.1" ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "initials: FB" ) );
     }
 
 }

@@ -608,6 +608,9 @@ public class BrowserConnection implements IBrowserConnection, Serializable
     protected synchronized void uncacheEntry( IEntry entry )
     {
         dnToEntryCache.remove( Utils.getNormalizedOidString( entry.getDn(), getSchema() ) );
+        setAttributeInfo( entry, null );
+        setChildrenInfo( entry, null );
+        setChildrenFilter(entry, null);
     }
 
 
@@ -625,17 +628,6 @@ public class BrowserConnection implements IBrowserConnection, Serializable
             }
         }
         uncacheEntry( entry );
-    }
-
-
-    /**
-     * Removes the entry from the cache.
-     * 
-     * @param dn the Dn of the entry to remove from cache
-     */
-    protected synchronized void uncacheEntry( Dn dn )
-    {
-        dnToEntryCache.remove( Utils.getNormalizedOidString( dn, getSchema() ) );
     }
 
 
