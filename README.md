@@ -206,7 +206,9 @@ Define a variable for later use:
 
 #### Remove OpenLDAP feature
 
-As long as the `org.apache.directory.studio.openldap.feature` is not ready for release it needs to be removed from `product/org.apache.directory.studio.product`.
+As long as the `org.apache.directory.studio.openldap.feature` is not ready for release it needs to be removed from `product/org.apache.directory.studio.product` then commit
+
+    git commit -am "Remove openldap feature for release"
 
 #### Set the version and commit
 
@@ -215,7 +217,7 @@ As long as the `org.apache.directory.studio.openldap.feature` is not ready for r
     sed -i 's/2.0.0-SNAPSHOT/'$VERSION'/' pom.xml
     mvn -f pom-first.xml clean install
     git checkout pom.xml
-    mvn org.eclipse.tycho:tycho-versions-plugin:1.2.0:set-version -DnewVersion=$VERSION
+    mvn org.eclipse.tycho:tycho-versions-plugin:1.7.0:set-version -DnewVersion=$VERSION
     git commit -am "Set version number for release $VERSION"
     git push origin $VERSION-prepare
 
@@ -246,7 +248,6 @@ See https://repository.apache.org/#stagingRepositories
 
     cd installers/macos/target
     xcrun altool --notarize-app --primary-bundle-id "org.apache.directory.studio" --username "you@apache.org" --password "app-specific-password" --file ApacheDirectoryStudio-*.dmg
-    cd ../../..
 
 Wait for the successful notarization (email notification), then staple (attach) the notarization ticket to the DMG:
 
@@ -272,7 +273,7 @@ Afterwards all distribution packages and user guides are located in `target`.
     svn commit -m "Add release $VERSION"
     cd ../../..
 
-#### Upload the user guides to SVN
+#### Upload the user guides
 
 Upload the content of `target/ug/$VERSION` using WebDAVs to `nightlies.apache.org/directory/studio/$VERSION/userguide`.
 
@@ -310,6 +311,7 @@ change the location path to the new release and also update the `p2.timestamp` t
 Update version, changelog, and news:
 
 * `config.toml`: `version_studio` and `version_studio_name`
+* `static/studio/.htaccess`
 * `source/studio/changelog.md`
 * `source/studio/news.md`
 
@@ -325,7 +327,7 @@ Update entry in Mac Ports: <https://ports.macports.org/port/directory-studio>
 
 #### Update Apache Reporter
 
-Add release to <https://reporter.apache.org/?directory>
+Add release to <https://reporter.apache.org/addrelease.html?directory>
 
 #### Send announce email
 
