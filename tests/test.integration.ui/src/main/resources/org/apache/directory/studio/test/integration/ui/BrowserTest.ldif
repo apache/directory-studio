@@ -221,6 +221,12 @@ objectClass: person
 cn: #ACL_AD-Projects_Author
 sn: #ACL_AD-Projects_Author
 
+dn: cn=My Group,ou=groups,ou=system
+objectClass: groupOfNames
+objectClass: top
+cn: My Group
+member: cn=\#ACL_AD-Projects_Author,ou=users,ou=system
+
 dn: cn=nghZwwtHgxgyvVbTQCYyeY\+O4cc=,ou=users,ou=system
 objectClass: top
 objectClass: person

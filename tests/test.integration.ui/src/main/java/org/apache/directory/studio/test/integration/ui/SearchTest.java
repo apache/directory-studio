@@ -429,4 +429,58 @@ public class SearchTest extends AbstractLdapTestUnit
         assertEquals( "(&\n    (objectClass=*)\n    (uid=user.1)\n)", formattetFilter );
     }
 
+
+    /**
+     * Test for DIRSTUDIO-1078/DIRAPI-365: unable to use # pound hash sign in LDAP filters
+     */
+    @Test
+    public void testFilterForDnWithLeadingHash() throws Exception
+    {
+        String searchName = "Test filter for DN with leading hash character";
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
+        SearchDialogBot dialogBot = browserViewBot.openSearchDialog();
+        assertTrue( dialogBot.isVisible() );
+        dialogBot.setSearchName( searchName );
+        dialogBot.setReturningAttributes( "objectClass,ou,cn,uid" );
+
+        FilterEditorDialogBot filterBot = dialogBot.openFilterEditor();
+        filterBot.setFilter( "member=CN=\\5c#ACL_AD-Projects_Author,ou=users,ou=system" );
+        filterBot.clickFormatButton();
+        filterBot.clickOkButton();
+        dialogBot.activate();
+        String filter = dialogBot.getFilter();
+        dialogBot.clickSearchButton();
+
+        browserViewBot.expandEntry( "Searches", searchName );
+        assertTrue( browserViewBot.existsEntry( "Searches", searchName, "cn=My Group,ou=groups,ou=system" ) );
+        assertEquals( "(member=CN=\\5c#ACL_AD-Projects_Author,ou=users,ou=system)", filter );
+    }
+
+
+    /**
+     * Test for DIRSTUDIO-1078/DIRAPI-365: unable to use # pound hash sign in LDAP filters
+     */
+    @Test
+    public void testFilterForDnWithLeadingHashHex() throws Exception
+    {
+        String searchName = "Test filter for DN with leading hash character";
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
+        SearchDialogBot dialogBot = browserViewBot.openSearchDialog();
+        assertTrue( dialogBot.isVisible() );
+        dialogBot.setSearchName( searchName );
+        dialogBot.setReturningAttributes( "objectClass,ou,cn,uid" );
+
+        FilterEditorDialogBot filterBot = dialogBot.openFilterEditor();
+        filterBot.setFilter( "member=CN=\\5C23ACL_AD-Projects_Author,ou=users,ou=system" );
+        filterBot.clickFormatButton();
+        filterBot.clickOkButton();
+        dialogBot.activate();
+        String filter = dialogBot.getFilter();
+        dialogBot.clickSearchButton();
+
+        browserViewBot.expandEntry( "Searches", searchName );
+        assertTrue( browserViewBot.existsEntry( "Searches", searchName, "cn=My Group,ou=groups,ou=system" ) );
+        assertEquals( "(member=CN=\\5C23ACL_AD-Projects_Author,ou=users,ou=system)", filter );
+    }
+
 }
