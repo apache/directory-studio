@@ -149,6 +149,11 @@
     <activityPatternBinding
         activityId="%RCP_Hide_id"
         isEqualityPattern="false"
+        pattern="org.eclipse.ui.net.*"/>
+
+    <activityPatternBinding
+        activityId="%RCP_Hide_id"
+        isEqualityPattern="false"
         pattern="org.eclipse.ui.ide.application.*"/>
 
     <activityPatternBinding

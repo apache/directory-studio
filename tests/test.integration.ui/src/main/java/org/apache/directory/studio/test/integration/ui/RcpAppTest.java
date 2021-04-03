@@ -315,7 +315,6 @@ public class RcpAppTest extends AbstractLdapTestUnit
         assertTrue( prefs.pageExists( "Apache Directory Studio", "Schema Editor", "Search View" ) );
         assertTrue( prefs.pageExists( "Apache Directory Studio", "Shutdown" ) );
 
-        assertTrue( prefs.pageExists( "General", "Network Connections" ) );
         assertTrue( prefs.pageExists( "General", "Appearance" ) );
         assertTrue( prefs.pageExists( "General", "Appearance", "Text Editors" ) );
         assertTrue( prefs.pageExists( "General", "Appearance", "Colors and Fonts" ) );
@@ -342,6 +341,7 @@ public class RcpAppTest extends AbstractLdapTestUnit
         assertFalse( prefs.pageExists( "Maven" ) );
         assertFalse( prefs.pageExists( "Java" ) );
         assertFalse( prefs.pageExists( "General", "Quick Search" ) );
+        assertFalse( prefs.pageExists( "General", "Network Connections" ) );
 
         prefs.clickCancelButton();
     }
