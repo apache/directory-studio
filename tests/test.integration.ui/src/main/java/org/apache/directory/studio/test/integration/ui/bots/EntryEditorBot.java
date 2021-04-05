@@ -101,6 +101,12 @@ public class EntryEditorBot
     }
 
 
+    public EditAttributeWizardBot editAttribute( String attributeType, String value )
+    {
+        return editorBot.editAttribute( attributeType, value );
+    }
+
+
     public DnEditorDialogBot editValueExpectingDnEditor( String attributeType, String value )
     {
         return editorBot.editValueExpectingDnEditor( attributeType, value );
@@ -119,9 +125,16 @@ public class EntryEditorBot
     }
 
 
-    public SubtreeSpecificationEditorDialogBot editValueExpectingSubtreeSpecificationEditor( String attributeType, String value )
+    public SubtreeSpecificationEditorDialogBot editValueExpectingSubtreeSpecificationEditor( String attributeType,
+        String value )
     {
         return editorBot.editValueExpectingSubtreeSpecificationEditor( attributeType, value );
+    }
+
+
+    public CertificateEditorDialogBot editValueExpectingCertificateEditor( String attributeType, String value )
+    {
+        return editorBot.editValueExpectingCertificateEditor( attributeType, value );
     }
 
 

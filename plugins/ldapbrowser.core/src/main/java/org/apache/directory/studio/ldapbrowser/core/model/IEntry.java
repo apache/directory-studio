@@ -24,18 +24,11 @@ package org.apache.directory.studio.ldapbrowser.core.model;
 import java.io.Serializable;
 import java.util.Collection;
 
-import org.apache.directory.api.ldap.model.entry.Attribute;
-import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
-import org.apache.directory.api.ldap.model.entry.DefaultEntry;
-import org.apache.directory.api.ldap.model.entry.Entry;
-import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.url.LdapUrl;
 import org.apache.directory.studio.connection.core.ConnectionPropertyPageProvider;
-import org.apache.directory.studio.connection.core.io.LdapRuntimeException;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.propertypageproviders.EntryPropertyPageProvider;
 import org.eclipse.core.runtime.IAdaptable;
@@ -471,38 +464,4 @@ public interface IEntry extends Serializable, IAdaptable, EntryPropertyPageProvi
      */
     Collection<ObjectClass> getObjectClassDescriptions();
 
-
-    default Entry toEntry()
-    {
-        try
-        {
-            Entry entry = new DefaultEntry( getDn() );
-            for ( IAttribute iAttribute : getAttributes() )
-            {
-                Attribute attribute = new DefaultAttribute( iAttribute.getType() );
-                for ( IValue iValue : iAttribute.getValues() )
-                {
-                    Object rawValue = iValue.getRawValue();
-                    if ( rawValue instanceof String )
-                    {
-                        attribute.add( ( String ) rawValue );
-                    }
-                    else if ( rawValue instanceof byte[] )
-                    {
-                        attribute.add( ( byte[] ) rawValue );
-                    }
-                    else
-                    {
-                        attribute.add( ( String ) null );
-                    }
-                }
-                entry.add( attribute );
-            }
-            return entry;
-        }
-        catch ( LdapException e )
-        {
-            throw new LdapRuntimeException( e );
-        }
-    }
 }

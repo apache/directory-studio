@@ -126,6 +126,16 @@ class EntryEditorWidgetBot
     }
 
 
+    EditAttributeWizardBot editAttribute( String attributeType, String value )
+    {
+        cancelEditValue();
+        SWTBotTreeItem treeItem = getTreeItem( attributeType, value );
+        treeItem.select();
+        ContextMenuHelper.clickContextMenu( bot.tree(), "Edit Attribute Description" );
+        return new EditAttributeWizardBot();
+    }
+
+
     void editValue( String attributeType, String value )
     {
         cancelEditValue();
@@ -164,10 +174,18 @@ class EntryEditorWidgetBot
     }
 
 
-    SubtreeSpecificationEditorDialogBot editValueExpectingSubtreeSpecificationEditor( String attributeType, String value )
+    SubtreeSpecificationEditorDialogBot editValueExpectingSubtreeSpecificationEditor( String attributeType,
+        String value )
     {
         editValue( attributeType, value );
         return new SubtreeSpecificationEditorDialogBot();
+    }
+
+
+    CertificateEditorDialogBot editValueExpectingCertificateEditor( String attributeType, String value )
+    {
+        editValue( attributeType, value );
+        return new CertificateEditorDialogBot();
     }
 
 

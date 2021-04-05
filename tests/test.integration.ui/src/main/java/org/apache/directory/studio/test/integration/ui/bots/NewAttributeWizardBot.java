@@ -35,6 +35,19 @@ public class NewAttributeWizardBot extends WizardBot
     }
 
 
+    public void setLanguageTag( String lang, String country )
+    {
+        bot.comboBox( 0 ).setText( lang );
+        bot.comboBox( 1 ).setText( country );
+    }
+
+
+    public void selectBinaryOption()
+    {
+        bot.checkBox().select();
+    }
+
+
     public DnEditorDialogBot clickFinishButtonExpectingDnEditor()
     {
         clickFinishButton();
@@ -53,6 +66,20 @@ public class NewAttributeWizardBot extends WizardBot
     {
         clickFinishButton();
         return new ImageEditorDialogBot();
+    }
+
+
+    public CertificateEditorDialogBot clickFinishButtonExpectingCertificateEditor()
+    {
+        clickFinishButton();
+        return new CertificateEditorDialogBot();
+    }
+
+
+    public HexEditorDialogBot clickFinishButtonExpectingHexEditor()
+    {
+        clickFinishButton();
+        return new HexEditorDialogBot();
     }
 
 }

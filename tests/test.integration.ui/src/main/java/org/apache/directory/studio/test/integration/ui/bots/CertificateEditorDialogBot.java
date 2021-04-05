@@ -20,27 +20,21 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
-import org.apache.directory.studio.ldapbrowser.common.dialogs.HexDialog;
+import org.apache.directory.studio.valueeditors.certificate.CertificateDialog;
 
 
-public class HexEditorDialogBot extends DialogBot
+public class CertificateEditorDialogBot extends DialogBot
 {
 
-    public HexEditorDialogBot()
+    public CertificateEditorDialogBot()
     {
-        super( "Hex Editor" );
+        super( "Certificate Editor" );
     }
 
 
     public void typeFile( String file )
     {
-        bot.textWithTooltip( HexDialog.LOAD_FILE_NAME_TOOLTIP ).setText( file );
-    }
-
-
-    public String getHexText()
-    {
-        return bot.text().getText();
+        bot.textWithTooltip( CertificateDialog.LOAD_FILE_NAME_TOOLTIP ).setText( file );
     }
 
 }

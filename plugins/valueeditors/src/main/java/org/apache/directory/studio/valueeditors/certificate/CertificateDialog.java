@@ -41,11 +41,15 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 
 
 /**
@@ -57,6 +61,8 @@ import org.eclipse.swt.widgets.Shell;
 public class CertificateDialog extends Dialog
 {
 
+    public static final String LOAD_FILE_NAME_TOOLTIP = "LoadFileName";
+
     /** The default title. */
     private static final String DIALOG_TITLE = Messages.getString( "CertificateDialog.CertificateDialog" ); //$NON-NLS-1$
 
@@ -65,6 +71,9 @@ public class CertificateDialog extends Dialog
 
     /** The button ID for the save button. */
     private static final int SAVE_BUTTON_ID = 9999;
+
+    /** Hidden text to set the filename, used for UI tests. */
+    private Text loadFilenameText;
 
     /** The current certificate binary data. */
     private byte[] currentData;
@@ -130,18 +139,7 @@ public class CertificateDialog extends Dialog
             String returnedFileName = fileDialog.open();
             if ( returnedFileName != null )
             {
-                try
-                {
-                    File file = new File( returnedFileName );
-                    currentData = FileUtils.readFileToByteArray( file );
-                    updateInput();
-                }
-                catch ( IOException e )
-                {
-                    ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
-                        new Status( IStatus.ERROR, ValueEditorsConstants.PLUGIN_ID, IStatus.ERROR, Messages
-                            .getString( "CertificateDialog.CantReadFile" ), e ) ); //$NON-NLS-1$
-                }
+                loadFile( returnedFileName );
             }
         }
         else
@@ -150,6 +148,23 @@ public class CertificateDialog extends Dialog
         }
 
         super.buttonPressed( buttonId );
+    }
+
+
+    private void loadFile( String fileName )
+    {
+        try
+        {
+            File file = new File( fileName );
+            currentData = FileUtils.readFileToByteArray( file );
+            updateInput();
+        }
+        catch ( IOException e )
+        {
+            ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
+                new Status( IStatus.ERROR, ValueEditorsConstants.PLUGIN_ID, IStatus.ERROR, Messages
+                    .getString( "CertificateDialog.CantReadFile" ), e ) ); //$NON-NLS-1$
+        }
     }
 
 
@@ -169,6 +184,18 @@ public class CertificateDialog extends Dialog
      */
     protected void createButtonsForButtonBar( Composite parent )
     {
+        ((GridLayout) parent.getLayout()).numColumns++;
+        loadFilenameText = new Text( parent, SWT.NONE );
+        loadFilenameText.setToolTipText( LOAD_FILE_NAME_TOOLTIP );
+        loadFilenameText.setBackground( parent.getBackground() );
+        loadFilenameText.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent e )
+            {
+                loadFile( loadFilenameText.getText() );
+            }
+        } );
+
         createButton( parent, LOAD_BUTTON_ID, Messages.getString( "CertificateDialog.LoadCertificateButton" ), false ); //$NON-NLS-1$
         createButton( parent, SAVE_BUTTON_ID, Messages.getString( "CertificateDialog.SaveCertificateButton" ), false ); //$NON-NLS-1$
         createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false );

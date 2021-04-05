@@ -336,14 +336,14 @@ public class ModelConverter
         {
             for ( IValue value : iAttribute.getValues() )
             {
-                String attributeType = value.getAttribute().getType();
+                String attributeDescription = value.getAttribute().getDescription();
                 if ( value.isString() )
                 {
-                    ldapApiEntry.add( attributeType, value.getStringValue() );
+                    ldapApiEntry.add( attributeDescription, value.getStringValue() );
                 }
                 else
                 {
-                    ldapApiEntry.add( attributeType, value.getBinaryValue() );
+                    ldapApiEntry.add( attributeDescription, value.getBinaryValue() );
                 }
             }
         }

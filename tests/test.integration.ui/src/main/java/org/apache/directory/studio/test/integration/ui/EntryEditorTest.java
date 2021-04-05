@@ -28,37 +28,25 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
-import java.io.InputStream;
-import java.net.URL;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.cert.X509Certificate;
-
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.directory.api.ldap.model.constants.AuthenticationLevel;
 import org.apache.directory.api.ldap.model.constants.LdapSecurityConstants;
-import org.apache.directory.api.ldap.model.entry.DefaultModification;
 import org.apache.directory.api.ldap.model.entry.Entry;
-import org.apache.directory.api.ldap.model.entry.ModificationOperation;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.password.PasswordUtil;
-import org.apache.directory.api.util.FileUtils;
-import org.apache.directory.api.util.IOUtils;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.server.annotations.CreateLdapServer;
 import org.apache.directory.server.annotations.CreateTransport;
 import org.apache.directory.server.core.annotations.ApplyLdifFiles;
 import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
-import org.apache.directory.server.core.security.CertificateUtil;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
 import org.apache.directory.studio.ldifparser.LdifParserConstants;
 import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
 import org.apache.directory.studio.test.integration.ui.bots.AciItemEditorDialogBot;
-import org.apache.directory.studio.test.integration.ui.bots.BotUtils;
 import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
+import org.apache.directory.studio.test.integration.ui.bots.CertificateEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.DnEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.EntryEditorBot;
@@ -75,14 +63,11 @@ import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
 import org.apache.directory.studio.test.integration.ui.bots.utils.Characters;
 import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import sun.security.x509.X500Name;
 
 
 /**
@@ -523,29 +508,33 @@ public class EntryEditorTest extends AbstractLdapTestUnit
 
 
     /**
-     * DIRSTUDIO-1199, DIRSTUDIO-1204: Binary attributes
+     * DIRSTUDIO-1199, DIRSTUDIO-1204, DIRSTUDIO-1267: Binary attributes
      */
     @Test
     public void testCertificateValueEditor() throws Exception
     {
-        X500Name issuer = new X500Name( "Foo", "Bar", "Baz", "US" );
-        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance( "EC" );
-        keyPairGenerator.initialize( 256 );
-        KeyPair keyPair = keyPairGenerator.generateKeyPair();
-        X509Certificate certificate = CertificateUtil.generateSelfSignedCertificate( issuer, keyPair, 365,
-            "SHA256WithECDSA" );
-        getService().getAdminSession().modify( new Dn( "cn=Barbara Jensen,ou=users,ou=system" ),
-            new DefaultModification( ModificationOperation.ADD_ATTRIBUTE, "userCertificate",
-                certificate.getEncoded() ) );
+        String certFile = ResourceUtils.prepareInputFile( "rfc5280_cert2.cer" );
 
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Barbara Jensen" );
 
         EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "cn=Barbara Jensen,ou=users,ou=system" );
         entryEditorBot.activate();
 
-        BotUtils.sleep( 1000 );
+        NewAttributeWizardBot wizardBot = entryEditorBot.openNewAttributeWizard();
+        assertTrue( wizardBot.isVisible() );
+        wizardBot.typeAttributeType( "userCertificate" );
+        wizardBot.clickNextButton();
+        wizardBot.selectBinaryOption();
+        CertificateEditorDialogBot certEditorBot = wizardBot.clickFinishButtonExpectingCertificateEditor();
+
+        assertTrue( certEditorBot.isVisible() );
+        certEditorBot.typeFile( certFile );
+
+        certEditorBot.clickOkButton();
+
+        modificationLogsViewBot.waitForText( "add: userCertificate;binary\nuserCertificate;binary:: " );
         assertTrue( entryEditorBot.getAttributeValues()
-            .contains( "userCertificate: X.509v3: CN=Foo,OU=Bar,O=Baz,C=US" ) );
+            .contains( "userCertificate: X.509v3: CN=End Entity,DC=example,DC=com" ) );
     }
 
 
@@ -555,11 +544,7 @@ public class EntryEditorTest extends AbstractLdapTestUnit
     @Test
     public void testImageValueEditor() throws Exception
     {
-        URL url = Platform.getInstanceLocation().getURL();
-        String destFile = url.getFile() + "studio_64x64.jpg";
-        InputStream is = getClass().getResourceAsStream( "studio_64x64.jpg" );
-        byte[] data = IOUtils.toByteArray( is, 2014 );
-        FileUtils.writeByteArrayToFile( new File( destFile ), data );
+        String imgFile = ResourceUtils.prepareInputFile( "studio_64x64.jpg" );
 
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Barbara Jensen" );
 
@@ -572,11 +557,11 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         wizardBot.typeAttributeType( "jpegPhoto" );
         ImageEditorDialogBot imageEditorBot = wizardBot.clickFinishButtonExpectingImageEditor();
         assertTrue( imageEditorBot.isVisible() );
-        imageEditorBot.typeFile( destFile );
+        imageEditorBot.typeFile( imgFile );
         imageEditorBot.clickOkButton();
 
         // assert value after saved and reloaded from server
-        SWTUtils.sleep( 1000 );
+        modificationLogsViewBot.waitForText( "add: jpegPhoto\njpegPhoto:: " );
         assertTrue( entryEditorBot.getAttributeValues().contains( "jpegPhoto: JPEG-Image (64x64 Pixel, 2014 Bytes)" ) );
     }
 
@@ -780,7 +765,7 @@ public class EntryEditorTest extends AbstractLdapTestUnit
 
 
     /**
-     * Test for DIRSTUDIO-1249: userSMIMECertificate is a binary attribute.
+     * Test for DIRSTUDIO-1249, DIRSTUDIO-1267: userSMIMECertificate is a binary attribute.
      */
     @Test
     public void testHexEditor() throws Exception
@@ -789,7 +774,6 @@ public class EntryEditorTest extends AbstractLdapTestUnit
 
         EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "uid=hnelson,ou=users,ou=system" );
         entryEditorBot.activate();
-        // SWTUtils.sleep( 10000 );
         assertTrue( entryEditorBot.getAttributeValues().contains( "usersmimecertificate: Binary Data (255 Bytes)" ) );
         assertTrue( entryEditorBot.getAttributeValues().contains( "usersmimecertificate: Binary Data (256 Bytes)" ) );
         assertTrue( entryEditorBot.getAttributeValues().contains( "usersmimecertificate: Binary Data (257 Bytes)" ) );
@@ -801,7 +785,6 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         assertTrue( hexText.contains( "70 71 72 73 74 75 76 77  78 79 7a 7b 7c 7d 7e 7f     pqrstuvw xyz{|}~." ) );
         assertTrue( hexText.contains( "80 81 82 83 84 85 86 87  88 89 8a 8b 8c 8d 8e 8f     ........ ........" ) );
         assertTrue( hexText.contains( "f0 f1 f2 f3 f4 f5 f6 f7  f8 f9 fa fb fc fd fe ff     ........ ........" ) );
-        // SWTUtils.sleep( 10000 );
         hexEditorDialogBot.clickCancelButton();
 
         hexEditorDialogBot = entryEditorBot.editValueExpectingHexEditor( "usersmimecertificate",
@@ -816,6 +799,25 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         assertTrue( hexText.contains( "f0 f1 f2 f3 f4 f5 f6 f7  f8 f9 fa fb fc fd fe ff     ........ ........" ) );
         assertTrue( hexText.contains( "00                                                   ." ) );
         hexEditorDialogBot.clickCancelButton();
+
+        String crtFile = ResourceUtils.prepareInputFile( "rfc5280_cert2.cer" );
+
+        entryEditorBot.activate();
+        NewAttributeWizardBot wizardBot = entryEditorBot.openNewAttributeWizard();
+        assertTrue( wizardBot.isVisible() );
+        wizardBot.typeAttributeType( "userSMIMECertificate" );
+        wizardBot.clickNextButton();
+        wizardBot.selectBinaryOption();
+        HexEditorDialogBot hexEditorBot = wizardBot.clickFinishButtonExpectingHexEditor();
+
+        assertTrue( hexEditorBot.isVisible() );
+        hexEditorBot.typeFile( crtFile );
+
+        hexEditorBot.clickOkButton();
+
+        modificationLogsViewBot.waitForText( "add: userSMIMECertificate;binary\nuserSMIMECertificate;binary:: " );
+        assertTrue( entryEditorBot.getAttributeValues()
+            .contains( "usersmimecertificate: Binary Data (629 Bytes)" ) );
     }
 
 }
