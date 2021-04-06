@@ -20,27 +20,31 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
-import org.apache.directory.studio.ldapbrowser.common.dialogs.HexDialog;
-
-
-public class HexEditorDialogBot extends DialogBot
+public class EditAttributeWizardBot extends WizardBot
 {
 
-    public HexEditorDialogBot()
+    public EditAttributeWizardBot()
     {
-        super( "Hex Editor" );
+        super( "Edit Attribute Description" );
     }
 
 
-    public void typeFile( String file )
+    public void typeAttributeType( String text )
     {
-        bot.textWithTooltip( HexDialog.LOAD_FILE_NAME_TOOLTIP ).setText( file );
+        bot.comboBox().setText( text );
     }
 
 
-    public String getHexText()
+    public void setLanguageTag( String lang, String country )
     {
-        return bot.text().getText();
+        bot.comboBox( 0 ).setText( lang );
+        bot.comboBox( 1 ).setText( country );
+    }
+
+
+    public void selectBinaryOption()
+    {
+        bot.checkBox().select();
     }
 
 }

@@ -103,6 +103,12 @@ delete: l
 add: description
 description:: QSDDqSDigqwg0K8gzrsg16kg2Lkg4ruhIA==
 -
+add: description;lang-en
+description;lang-en: English
+-
+add: description;lang-de
+description;lang-de: Deutsch
+-
 add: roomNumber
 roomNumber: 1234
 roomNumber: 2345
@@ -114,8 +120,22 @@ replace: employeeType
 employeeType: Intern
 -
 replace: mail
-mail: mail: user.1@example.com
-mail: mail: Aaccf.Amar@example.com
+mail: user.1@example.com
+mail: Aaccf.Amar@example.com
+-
+add: userCertificate;binary
+userCertificate;binary:: MIICcTCCAdqgAwIBAgIBEjANBgkqhkiG9w0BAQUFADBDMRMwEQYKCZImiZPy
+ LGQBGRYDY29tMRcwFQYKCZImiZPyLGQBGRYHZXhhbXBsZTETMBEGA1UEAxMKRXhhbXBsZSBDQTAeF
+ w0wNDA5MTUxMTQ4MjFaFw0wNTAzMTUxMTQ4MjFaMEMxEzARBgoJkiaJk/IsZAEZFgNjb20xFzAVBg
+ oJkiaJk/IsZAEZFgdleGFtcGxlMRMwEQYDVQQDEwpFbmQgRW50aXR5MIGfMA0GCSqGSIb3DQEBAQU
+ AA4GNADCBiQKBgQDhauQDMJcCPPQQ87UeTX8Ue/b10HjppIrwo3Xs7bZWln+ImYWa8j5od4frntGf
+ wLQX3KuJI6QdfhYjTE+oTfUxuHyq4xpJCfRLJtsnZzCCEgFK6Rq2wQxTi2z8L3pD7DM2fjKye9Wqz
+ wEUxhLsE/ItFHqLIVgUE0xGo5ryFpX/IwIDAQABo3UwczAhBgNVHREEGjAYgRZlbmQuZW50aXR5QG
+ V4YW1wbGUuY29tMB0GA1UdDgQWBBQXe5Iw/0TWZuGQECJsFk/AjkHdbTAfBgNVHSMEGDAWgBQIaK+
+ FM8g5Snr4gpOOcGpKIIQsMjAOBgNVHQ8BAf8EBAMCBsAwDQYJKoZIhvcNAQEFBQADgYEAACAoNFto
+ MgG7CjYOrXHFlRrhBM+urcdiFKQbNjHA4gw92R7AANwQoLqFb0HLYnq3TGOBJl7SgEVeM+dwRTs5O
+ yZKnDvyJjZpCHm7+5ZDd0thi6GrkWTg8zdhPBqjpMmKsr9z1E3kWORi6rwgdJKGDs6EYHbpc7vHhd
+ ORRepiXc0=
 
 
 dn: uid=user.2,ou=users,ou=system

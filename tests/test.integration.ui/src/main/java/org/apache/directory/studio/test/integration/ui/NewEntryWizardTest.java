@@ -42,14 +42,21 @@ import org.apache.directory.studio.connection.core.Connection.AliasDereferencing
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
+import org.apache.directory.studio.test.integration.ui.bots.CertificateEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.DnEditorDialogBot;
+import org.apache.directory.studio.test.integration.ui.bots.EditAttributeWizardBot;
+import org.apache.directory.studio.test.integration.ui.bots.EntryEditorBot;
+import org.apache.directory.studio.test.integration.ui.bots.HexEditorDialogBot;
+import org.apache.directory.studio.test.integration.ui.bots.ModificationLogsViewBot;
+import org.apache.directory.studio.test.integration.ui.bots.NewAttributeWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewEntryWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.ReferralDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
 import org.apache.directory.studio.test.integration.ui.bots.SubtreeSpecificationEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
 import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -71,9 +78,9 @@ public class NewEntryWizardTest extends AbstractLdapTestUnit
     private StudioBot studioBot;
     private ConnectionsViewBot connectionsViewBot;
     private BrowserViewBot browserViewBot;
+    private ModificationLogsViewBot modificationLogsViewBot;
 
     private Connection connection;
-
 
     @Before
     public void setUp() throws Exception
@@ -95,6 +102,7 @@ public class NewEntryWizardTest extends AbstractLdapTestUnit
         connectionsViewBot = studioBot.getConnectionView();
         connection = connectionsViewBot.createTestConnection( "NewEntryWizardTest", ldapServer.getPort() );
         browserViewBot = studioBot.getBrowserView();
+        modificationLogsViewBot = studioBot.getModificationLogsViewBot();
     }
 
 
@@ -570,4 +578,120 @@ public class NewEntryWizardTest extends AbstractLdapTestUnit
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "l=eu+l=de+l=Berlin" );
     }
 
+
+    /**
+     * DIRSTUDIO-1267: Test creation of new entry with binary option and language tags.
+     */
+    @Test
+    public void testCreateEntryWithBinaryOptionAndLanguageTags() throws Exception
+    {
+        String certFile = ResourceUtils.prepareInputFile( "rfc5280_cert1.cer" );
+        String crlFile = ResourceUtils.prepareInputFile( "rfc5280_crl.crl" );
+
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
+
+        NewEntryWizardBot wizardBot = browserViewBot.openNewEntryWizard();
+
+        wizardBot.selectCreateEntryFromScratch();
+        wizardBot.clickNextButton();
+        wizardBot.addObjectClasses( "organizationalRole" );
+        wizardBot.addObjectClasses( "certificationAuthority" );
+        wizardBot.clickNextButton();
+
+        wizardBot.setRdnType( 1, "cn" );
+        wizardBot.setRdnValue( 1, "asdf" );
+        wizardBot.clickNextButton();
+
+        // by default the hex or certificate editor is opened, close it
+        try
+        {
+            new HexEditorDialogBot().clickCancelButton();
+        }
+        catch ( WidgetNotFoundException e )
+        {
+        }
+        try
+        {
+            new CertificateEditorDialogBot().clickCancelButton();
+        }
+        catch ( WidgetNotFoundException e )
+        {
+        }
+
+        wizardBot.activate();
+        NewAttributeWizardBot newAttributeWizardBot = wizardBot.openNewAttributeWizard();
+        assertTrue( newAttributeWizardBot.isVisible() );
+        newAttributeWizardBot.typeAttributeType( "description" );
+        newAttributeWizardBot.clickNextButton();
+        newAttributeWizardBot.setLanguageTag( "en", "us" );
+        newAttributeWizardBot.clickFinishButton();
+        wizardBot.cancelEditValue();
+        wizardBot.activate();
+        wizardBot.editValue( "description;lang-en-us", null );
+        SWTUtils.sleep( 1000 );
+        wizardBot.typeValueAndFinish( "English description" );
+
+        wizardBot.activate();
+        EditAttributeWizardBot editAttributeBot = wizardBot.editAttribute( "cACertificate", null );
+        editAttributeBot.clickNextButton();
+        editAttributeBot.selectBinaryOption();
+        editAttributeBot.clickFinishButton();
+
+        wizardBot.activate();
+        wizardBot.editValue( "cACertificate;binary", null );
+        CertificateEditorDialogBot certEditorBot = new CertificateEditorDialogBot();
+        assertTrue( certEditorBot.isVisible() );
+        certEditorBot.typeFile( certFile );
+        certEditorBot.clickOkButton();
+
+        wizardBot.activate();
+        editAttributeBot = wizardBot.editAttribute( "certificateRevocationList", null );
+        editAttributeBot.clickNextButton();
+        editAttributeBot.selectBinaryOption();
+        editAttributeBot.clickFinishButton();
+
+        wizardBot.activate();
+        wizardBot.editValue( "certificateRevocationList;binary", null );
+        HexEditorDialogBot hexEditorBot = new HexEditorDialogBot();
+        assertTrue( hexEditorBot.isVisible() );
+        hexEditorBot.typeFile( crlFile );
+        hexEditorBot.clickOkButton();
+
+        wizardBot.activate();
+        editAttributeBot = wizardBot.editAttribute( "authorityRevocationList", null );
+        editAttributeBot.clickNextButton();
+        editAttributeBot.selectBinaryOption();
+        editAttributeBot.clickFinishButton();
+
+        wizardBot.activate();
+        wizardBot.editValue( "authorityRevocationList;binary", null );
+        assertTrue( hexEditorBot.isVisible() );
+        hexEditorBot.typeFile( crlFile );
+        hexEditorBot.clickOkButton();
+
+        wizardBot.activate();
+        wizardBot.clickFinishButton();
+
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "cn=asdf" ) );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "cn=asdf" );
+
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "cn=asdf,ou=system" );
+        entryEditorBot.activate();
+
+        modificationLogsViewBot.waitForText( "cACertificate;binary:: MIICPjCCAaeg" );
+        assertTrue( entryEditorBot.getAttributeValues()
+            .contains( "cACertificate;binary: X.509v3: CN=Example CA,DC=example,DC=com" ) );
+
+        modificationLogsViewBot.waitForText( "certificateRevocationList;binary:: MIIBYDCBygIB" );
+        assertTrue( entryEditorBot.getAttributeValues()
+            .contains( "certificateRevocationList;binary: Binary Data (356 Bytes)" ) );
+
+        modificationLogsViewBot.waitForText( "authorityRevocationList;binary:: MIIBYDCBygIB" );
+        assertTrue( entryEditorBot.getAttributeValues()
+            .contains( "authorityRevocationList;binary: Binary Data (356 Bytes)" ) );
+
+        modificationLogsViewBot.waitForText( "description;lang-en-us: English description" );
+        assertTrue( entryEditorBot.getAttributeValues()
+            .contains( "description;lang-en-us: English description" ) );
+    }
 }

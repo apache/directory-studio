@@ -47,17 +47,24 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ModifyMode;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
+import org.apache.directory.studio.test.integration.ui.bots.CertificateEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
+import org.apache.directory.studio.test.integration.ui.bots.DeleteDialogBot;
+import org.apache.directory.studio.test.integration.ui.bots.EditAttributeWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.EntryEditorBot;
 import org.apache.directory.studio.test.integration.ui.bots.ErrorDialogBot;
+import org.apache.directory.studio.test.integration.ui.bots.HexEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.ModificationLogsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewAttributeWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewConnectionWizardBot;
+import org.apache.directory.studio.test.integration.ui.bots.NewEntryWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.SchemaBrowserBot;
 import org.apache.directory.studio.test.integration.ui.bots.SearchDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
 import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
 import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
 import org.junit.After;
 import org.junit.Assume;
 import org.junit.Before;
@@ -472,6 +479,225 @@ public class OpenLdapTest
 
         // Verify browser
         browserViewBot.selectEntry( "DIT", "Root DSE" );
+    }
+
+
+    /**
+     * DIRSTUDIO-1267: Test creation of new entry with binary option and language tags.
+     */
+    @Test
+    public void testCreateEntryWithBinaryOptionAndLanguageTags() throws Exception
+    {
+        String certFile = ResourceUtils.prepareInputFile( "rfc5280_cert1.cer" );
+        String crlFile = ResourceUtils.prepareInputFile( "rfc5280_crl.crl" );
+
+        browserViewBot.selectEntry( "DIT", "Root DSE", "dc=example,dc=org", "ou=users" );
+
+        NewEntryWizardBot wizardBot = browserViewBot.openNewEntryWizard();
+
+        wizardBot.selectCreateEntryFromScratch();
+        wizardBot.clickNextButton();
+        wizardBot.addObjectClasses( "organizationalRole" );
+        wizardBot.addObjectClasses( "certificationAuthority" );
+        wizardBot.clickNextButton();
+
+        wizardBot.setRdnType( 1, "cn" );
+        wizardBot.setRdnValue( 1, "asdf" );
+        wizardBot.clickNextButton();
+
+        // by default the hex or certificate editor is opened, close it
+        try
+        {
+            new HexEditorDialogBot().clickCancelButton();
+        }
+        catch ( WidgetNotFoundException e )
+        {
+        }
+        try
+        {
+            new CertificateEditorDialogBot().clickCancelButton();
+        }
+        catch ( WidgetNotFoundException e )
+        {
+        }
+
+        wizardBot.activate();
+        NewAttributeWizardBot newAttributeWizardBot = wizardBot.openNewAttributeWizard();
+        assertTrue( newAttributeWizardBot.isVisible() );
+        newAttributeWizardBot.typeAttributeType( "description" );
+        newAttributeWizardBot.clickNextButton();
+        newAttributeWizardBot.setLanguageTag( "en", "us" );
+        newAttributeWizardBot.clickFinishButton();
+        wizardBot.cancelEditValue();
+        wizardBot.activate();
+        wizardBot.editValue( "description;lang-en-us", null );
+        SWTUtils.sleep( 1000 );
+        wizardBot.typeValueAndFinish( "English description" );
+
+        wizardBot.activate();
+        EditAttributeWizardBot editAttributeBot = wizardBot.editAttribute( "cACertificate", null );
+        editAttributeBot.clickNextButton();
+        editAttributeBot.selectBinaryOption();
+        editAttributeBot.clickFinishButton();
+
+        wizardBot.activate();
+        wizardBot.editValue( "cACertificate;binary", null );
+        CertificateEditorDialogBot certEditorBot = new CertificateEditorDialogBot();
+        assertTrue( certEditorBot.isVisible() );
+        certEditorBot.typeFile( certFile );
+        certEditorBot.clickOkButton();
+
+        wizardBot.activate();
+        editAttributeBot = wizardBot.editAttribute( "certificateRevocationList", null );
+        editAttributeBot.clickNextButton();
+        editAttributeBot.selectBinaryOption();
+        editAttributeBot.clickFinishButton();
+
+        wizardBot.activate();
+        wizardBot.editValue( "certificateRevocationList;binary", null );
+        HexEditorDialogBot hexEditorBot = new HexEditorDialogBot();
+        assertTrue( hexEditorBot.isVisible() );
+        hexEditorBot.typeFile( crlFile );
+        hexEditorBot.clickOkButton();
+
+        wizardBot.activate();
+        editAttributeBot = wizardBot.editAttribute( "authorityRevocationList", null );
+        editAttributeBot.clickNextButton();
+        editAttributeBot.selectBinaryOption();
+        editAttributeBot.clickFinishButton();
+
+        wizardBot.activate();
+        wizardBot.editValue( "authorityRevocationList;binary", null );
+        assertTrue( hexEditorBot.isVisible() );
+        hexEditorBot.typeFile( crlFile );
+        hexEditorBot.clickOkButton();
+
+        wizardBot.activate();
+        wizardBot.clickFinishButton();
+
+        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "dc=example,dc=org", "ou=users", "cn=asdf" ) );
+        browserViewBot.selectEntry( "DIT", "Root DSE", "dc=example,dc=org", "ou=users", "cn=asdf" );
+
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "cn=asdf,ou=users,dc=example,dc=org" );
+        entryEditorBot.activate();
+
+        modificationLogsViewBot.waitForText( "cACertificate;binary:: MIICPjCCAaeg" );
+        assertTrue( entryEditorBot.getAttributeValues()
+            .contains( "cACertificate;binary: X.509v3: CN=Example CA,DC=example,DC=com" ) );
+
+        modificationLogsViewBot.waitForText( "certificateRevocationList;binary:: MIIBYDCBygIB" );
+        assertTrue( entryEditorBot.getAttributeValues()
+            .contains( "certificateRevocationList;binary: Binary Data (356 Bytes)" ) );
+
+        modificationLogsViewBot.waitForText( "authorityRevocationList;binary:: MIIBYDCBygIB" );
+        assertTrue( entryEditorBot.getAttributeValues()
+            .contains( "authorityRevocationList;binary: Binary Data (356 Bytes)" ) );
+
+        modificationLogsViewBot.waitForText( "description;lang-en-us: English description" );
+        assertTrue( entryEditorBot.getAttributeValues()
+            .contains( "description;lang-en-us: English description" ) );
+
+        browserViewBot.selectEntry( "DIT", "Root DSE", "dc=example,dc=org", "ou=users", "cn=asdf" );
+        DeleteDialogBot deleteDialogBot = browserViewBot.openDeleteDialog();
+        deleteDialogBot.clickOkButton();
+    }
+
+
+    /**
+     * DIRSTUDIO-1267: Test adding, editing and deleting of attributes with binary option in the entry editor. 
+     */
+    @Test
+    public void testAddEditDeleteAttributeWithBinaryOption() throws Exception
+    {
+        String cert2File = ResourceUtils.prepareInputFile( "rfc5280_cert2.cer" );
+        String cert3File = ResourceUtils.prepareInputFile( "rfc5280_cert3.cer" );
+
+        browserViewBot.selectEntry( "DIT", "Root DSE", "dc=example,dc=org", "ou=users", "uid=user.1" );
+
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "uid=user.1,ou=users,dc=example,dc=org" );
+        entryEditorBot.activate();
+
+        // add userCertificate;binary
+        NewAttributeWizardBot wizardBot = entryEditorBot.openNewAttributeWizard();
+        assertTrue( wizardBot.isVisible() );
+        wizardBot.typeAttributeType( "userCertificate" );
+        wizardBot.clickNextButton();
+        wizardBot.selectBinaryOption();
+        CertificateEditorDialogBot certEditorBot = wizardBot.clickFinishButtonExpectingCertificateEditor();
+        assertTrue( certEditorBot.isVisible() );
+        certEditorBot.typeFile( cert2File );
+        certEditorBot.clickOkButton();
+        modificationLogsViewBot.waitForText( "add: userCertificate;binary\nuserCertificate;binary:: MIICcTCCAdqg" );
+        assertTrue( entryEditorBot.getAttributeValues()
+            .contains( "userCertificate;binary: X.509v3: CN=End Entity,DC=example,DC=com" ) );
+
+        // edit userCertificate;binary
+        certEditorBot = entryEditorBot.editValueExpectingCertificateEditor( "userCertificate;binary",
+            "X.509v3: CN=End Entity,DC=example,DC=com" );
+        assertTrue( certEditorBot.isVisible() );
+        certEditorBot.typeFile( cert3File );
+        certEditorBot.clickOkButton();
+        modificationLogsViewBot.waitForText( "delete: userCertificate;binary\nuserCertificate;binary:: MIICcTCCAdqg" );
+        modificationLogsViewBot.waitForText( "add: userCertificate;binary\nuserCertificate;binary:: MIIDjjCCA06g" );
+        assertFalse( entryEditorBot.getAttributeValues()
+            .contains( "userCertificate;binary: X.509v3: CN=End Entity,DC=example,DC=com" ) );
+        assertTrue( entryEditorBot.getAttributeValues()
+            .contains( "userCertificate;binary: X.509v3: CN=DSA End Entity,DC=example,DC=com" ) );
+
+        // delete userCertificate;binary
+        entryEditorBot.deleteValue( "userCertificate;binary", "X.509v3: CN=DSA End Entity,DC=example,DC=com" );
+        modificationLogsViewBot.waitForText( "delete: userCertificate;binary\nuserCertificate;binary:: MIIDjjCCA06g" );
+        assertFalse( entryEditorBot.getAttributeValues()
+            .contains( "userCertificate;binary: X.509v3: CN=DSA End Entity,DC=example,DC=com" ) );
+
+    }
+
+
+    /**
+     * DIRSTUDIO-1267:Test adding, editing and deleting of attributes with language tag in the entry editor.
+     */
+    @Test
+    public void testAddEditDeleteAttributeWithLanguageTag() throws Exception
+    {
+        browserViewBot.selectEntry( "DIT", "Root DSE", "dc=example,dc=org", "ou=users", "uid=user.1" );
+
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "uid=user.1,ou=users,dc=example,dc=org" );
+        entryEditorBot.activate();
+
+        // add attribute description;lang-en
+        entryEditorBot.activate();
+        NewAttributeWizardBot wizardBot = entryEditorBot.openNewAttributeWizard();
+        assertTrue( wizardBot.isVisible() );
+        wizardBot.typeAttributeType( "description" );
+        wizardBot.clickNextButton();
+        wizardBot.setLanguageTag( "en", "" );
+        wizardBot.clickFinishButton();
+        entryEditorBot.typeValueAndFinish( "English" );
+        modificationLogsViewBot.waitForText( "add: description;lang-en\ndescription;lang-en: English\n-" );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "description;lang-en: English" ) );
+
+        // edit the attribute to description;lang-en
+        EditAttributeWizardBot editWizardBot = entryEditorBot.editAttribute( "description;lang-en", "English" );
+        editWizardBot.clickNextButton();
+        editWizardBot.setLanguageTag( "en", "us" );
+        editWizardBot.clickFinishButton();
+        modificationLogsViewBot.waitForText( "delete: description;lang-en\ndescription;lang-en: English\n-" );
+        modificationLogsViewBot.waitForText( "add: description;lang-en-us\ndescription;lang-en-us: English\n-" );
+        assertFalse( entryEditorBot.getAttributeValues().contains( "description;lang-en: English" ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "description;lang-en-us: English" ) );
+
+        // edit the value
+        entryEditorBot.editValue( "description;lang-en-us", "English" );
+        entryEditorBot.typeValueAndFinish( "English US" );
+        modificationLogsViewBot.waitForText( "delete: description;lang-en-us\ndescription;lang-en-us: English\n-" );
+        modificationLogsViewBot.waitForText( "add: description;lang-en-us\ndescription;lang-en-us: English US\n-" );
+        assertFalse( entryEditorBot.getAttributeValues().contains( "description;lang-en-us: English" ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "description;lang-en-us: English US" ) );
+
+        // delete the attribute
+        entryEditorBot.deleteValue( "description;lang-en-us", "English US" );
+        modificationLogsViewBot.waitForText( "delete: description;lang-en-us\ndescription;lang-en-us: English US\n-" );
+        assertFalse( entryEditorBot.getAttributeValues().contains( "description;lang-en-us: English US" ) );
     }
 
 }

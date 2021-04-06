@@ -30,18 +30,15 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.UUID;
 import java.util.function.Supplier;
 
 import org.apache.directory.api.ldap.model.entry.DefaultEntry;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.FileUtils;
-import org.apache.directory.api.util.IOUtils;
 import org.apache.directory.server.annotations.CreateLdapServer;
 import org.apache.directory.server.annotations.CreateTransport;
 import org.apache.directory.server.core.annotations.ApplyLdifFiles;
@@ -604,6 +601,11 @@ public class ImportExportTest extends AbstractLdapTestUnit
         assertTrue( entryEditorBot.getAttributeValues().contains( "roomNumber: 1234" ) );
         assertTrue( entryEditorBot.getAttributeValues().contains( "roomNumber: 2345" ) );
         assertTrue( entryEditorBot.getAttributeValues().contains( "roomNumber: 3456" ) );
+        assertTrue( entryEditorBot.getAttributeValues()
+            .contains( "userCertificate: X.509v3: CN=End Entity,DC=example,DC=com" ) );
+        modificationLogsViewBot.waitForText( "add: userCertificate;binary\nuserCertificate;binary:: " );
+        modificationLogsViewBot.waitForText( "add: description;lang-en\ndescription;lang-en: " );
+        modificationLogsViewBot.waitForText( "add: description;lang-de\ndescription;lang-de: " );
 
         assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.2" ) );
 
@@ -684,12 +686,7 @@ public class ImportExportTest extends AbstractLdapTestUnit
 
     private String prepareInputFile( String inputFileName ) throws IOException
     {
-        URL url = Platform.getInstanceLocation().getURL();
-        String destFile = url.getFile() + UUID.randomUUID().toString();
-        InputStream is = getClass().getResourceAsStream( inputFileName );
-        String ldifContent = IOUtils.toString( is, StandardCharsets.UTF_8 );
-        FileUtils.writeStringToFile( new File( destFile ), ldifContent, StandardCharsets.UTF_8, false );
-        return destFile;
+        return ResourceUtils.prepareInputFile( inputFileName );
     }
 
 }

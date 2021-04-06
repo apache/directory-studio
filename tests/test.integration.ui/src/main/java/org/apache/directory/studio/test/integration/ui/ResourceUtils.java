@@ -17,30 +17,34 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.test.integration.ui.bots;
+package org.apache.directory.studio.test.integration.ui;
 
 
-import org.apache.directory.studio.ldapbrowser.common.dialogs.HexDialog;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.UUID;
+
+import org.apache.directory.api.util.IOUtils;
+import org.eclipse.core.runtime.Platform;
 
 
-public class HexEditorDialogBot extends DialogBot
+public class ResourceUtils
 {
-
-    public HexEditorDialogBot()
+    public static String prepareInputFile( String inputFileName ) throws IOException
     {
-        super( "Hex Editor" );
-    }
+        URL url = Platform.getInstanceLocation().getURL();
+        String destFile = url.getFile() + UUID.randomUUID().toString();
 
+        try ( InputStream is = ResourceUtils.class.getResourceAsStream( inputFileName );
+            FileOutputStream fos = new FileOutputStream( new File( destFile ) ); )
+        {
+            IOUtils.copy( is, fos );
+        }
 
-    public void typeFile( String file )
-    {
-        bot.textWithTooltip( HexDialog.LOAD_FILE_NAME_TOOLTIP ).setText( file );
-    }
-
-
-    public String getHexText()
-    {
-        return bot.text().getText();
+        return destFile;
     }
 
 }
