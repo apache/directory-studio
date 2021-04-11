@@ -21,18 +21,21 @@
 package org.apache.directory.studio.test.integration.core;
 
 
-import static org.apache.directory.studio.test.integration.core.Constants.LOCALHOST;
+import static org.apache.directory.studio.test.integration.junit5.Constants.LOCALHOST;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.CONTEXT_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.REFERRALS_OU_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.USERS_OU_DN;
 import static org.hamcrest.CoreMatchers.hasItems;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.net.ConnectException;
 import java.nio.channels.UnresolvedAddressException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -69,24 +72,15 @@ import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.ldap.client.api.exception.InvalidConnectionException;
-import org.apache.directory.server.annotations.CreateLdapServer;
-import org.apache.directory.server.annotations.CreateTransport;
-import org.apache.directory.server.core.annotations.ApplyLdifFiles;
-import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
-import org.apache.directory.server.core.integ.FrameworkRunner;
-//import org.apache.directory.server.ldap.handlers.extended.EndTransactionHandler;
-import org.apache.directory.server.ldap.handlers.extended.PwdModifyHandler;
-//import org.apache.directory.server.ldap.handlers.extended.StartTransactionHandler;
-import org.apache.directory.server.ldap.handlers.extended.WhoAmIHandler;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
-import org.apache.directory.studio.connection.core.IReferralHandler;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
+import org.apache.directory.studio.connection.core.IReferralHandler;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
 import org.apache.directory.studio.connection.core.io.StudioLdapException;
@@ -95,13 +89,18 @@ import org.apache.directory.studio.connection.core.io.api.StudioSearchResult;
 import org.apache.directory.studio.connection.core.io.api.StudioSearchResultEnumeration;
 import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeRootDSERunnable;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.BrowserConnection;
+import org.apache.directory.studio.test.integration.junit5.LdapServerType;
+import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
+import org.apache.directory.studio.test.integration.junit5.SkipTestIfLdapServerIsNotAvailableInterceptor;
+import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
 import org.apache.mina.util.AvailablePortFinder;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
 
 
 /**
@@ -110,67 +109,27 @@ import org.junit.runner.RunWith;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-@RunWith(FrameworkRunner.class)
-@CreateLdapServer(transports =
-    { @CreateTransport(protocol = "LDAP"), @CreateTransport(protocol = "LDAPS") }, extendedOpHandlers =
-    { PwdModifyHandler.class, WhoAmIHandler.class })
-@ApplyLdifFiles(clazz = DirectoryApiConnectionWrapperTest.class, value = "org/apache/directory/studio/test/integration/core/TestData.ldif")
-public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
+@ExtendWith(SkipTestIfLdapServerIsNotAvailableInterceptor.class)
+public class DirectoryApiConnectionWrapperTest
 {
 
     protected ConnectionWrapper connectionWrapper;
 
-    @Before
-    public void setUp() throws Exception
+    @BeforeAll
+    public static void suspendEventFiringInCurrentThread()
     {
-        // create referral entries
-        Entry referralsOu = new DefaultEntry( getService().getSchemaManager() );
-        referralsOu.setDn( new Dn( "ou=referrals,ou=system" ) );
-        referralsOu.add( "objectClass", "top", "organizationalUnit" );
-        referralsOu.add( "ou", "referrals" );
-        service.getAdminSession().add( referralsOu );
-
-        // direct referral
-        Entry r1 = new DefaultEntry( getService().getSchemaManager() );
-        r1.setDn( new Dn( "cn=referral1,ou=referrals,ou=system" ) );
-        r1.add( "objectClass", "top", "referral", "extensibleObject" );
-        r1.add( "cn", "referral1" );
-        r1.add( "ref", "ldap://" + LOCALHOST + ":" + ldapServer.getPort() + "/ou=users,ou=system" );
-        service.getAdminSession().add( r1 );
-
-        // referral via another immediate referral
-        Entry r2 = new DefaultEntry( getService().getSchemaManager() );
-        r2.setDn( new Dn( "cn=referral2,ou=referrals,ou=system" ) );
-        r2.add( "objectClass", "top", "referral", "extensibleObject" );
-        r2.add( "cn", "referral2" );
-        r2.add( "ref", "ldap://" + LOCALHOST + ":" + ldapServer.getPort() + "/cn=referral1,ou=referrals,ou=system" );
-        service.getAdminSession().add( r2 );
-
-        // referral to parent which contains this referral
-        Entry r3 = new DefaultEntry( getService().getSchemaManager() );
-        r3.setDn( new Dn( "cn=referral3,ou=referrals,ou=system" ) );
-        r3.add( "objectClass", "top", "referral", "extensibleObject" );
-        r3.add( "cn", "referral3" );
-        r3.add( "ref", "ldap://" + LOCALHOST + ":" + ldapServer.getPort() + "/ou=referrals,ou=system" );
-        service.getAdminSession().add( r3 );
-
-        // referrals pointing to each other (loop)
-        Entry r4a = new DefaultEntry( getService().getSchemaManager() );
-        r4a.setDn( new Dn( "cn=referral4a,ou=referrals,ou=system" ) );
-        r4a.add( "objectClass", "top", "referral", "extensibleObject" );
-        r4a.add( "cn", "referral4a" );
-        r4a.add( "ref", "ldap://" + LOCALHOST + ":" + ldapServer.getPort() + "/cn=referral4b,ou=referrals,ou=system" );
-        service.getAdminSession().add( r4a );
-        Entry r4b = new DefaultEntry( getService().getSchemaManager() );
-        r4b.setDn( new Dn( "cn=referral4b,ou=referrals,ou=system" ) );
-        r4b.add( "objectClass", "top", "referral", "extensibleObject" );
-        r4b.add( "cn", "referral4b" );
-        r4b.add( "ref", "ldap://" + LOCALHOST + ":" + ldapServer.getPort() + "/cn=referral4a,ou=referrals,ou=system" );
-        service.getAdminSession().add( r4b );
+        ConnectionEventRegistry.suspendEventFiringInCurrentThread();
     }
 
 
-    @After
+    @AfterAll
+    public static void resumeEventFiringInCurrentThread()
+    {
+        ConnectionEventRegistry.resumeEventFiringInCurrentThread();
+    }
+
+
+    @AfterEach
     public void tearDown() throws Exception
     {
         if ( connectionWrapper != null )
@@ -183,8 +142,9 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
     /**
      * Tests connecting to the server.
      */
-    @Test
-    public void testConnect()
+    @ParameterizedTest
+    @LdapServersSource
+    public void testConnect( TestLdapServer ldapServer )
     {
         StudioProgressMonitor monitor = getProgressMonitor();
         ConnectionParameter connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(),
@@ -208,8 +168,9 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
     /**
      * Test failed connections to the server.
      */
-    @Test
-    public void testConnectFailures()
+    @ParameterizedTest
+    @LdapServersSource
+    public void testConnectFailures( TestLdapServer ldapServer )
     {
         StudioProgressMonitor monitor = null;
         ConnectionParameter connectionParameter = null;
@@ -253,13 +214,14 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
     /**
      * Test binding to the server.
      */
-    @Test
-    public void testBind()
+    @ParameterizedTest
+    @LdapServersSource
+    public void testBind( TestLdapServer ldapServer )
     {
         StudioProgressMonitor monitor = getProgressMonitor();
         ConnectionParameter connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(),
-            EncryptionMethod.NONE, AuthenticationMethod.SIMPLE, "uid=admin,ou=system", "secret", null, true,
-            null, 30000L );
+            EncryptionMethod.NONE, AuthenticationMethod.SIMPLE, ldapServer.getAdminDn(), ldapServer.getAdminPassword(),
+            null, true, null, 30000L );
         Connection connection = new Connection( connectionParameter );
         ConnectionWrapper connectionWrapper = connection.getConnectionWrapper();
 
@@ -279,18 +241,19 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
     /**
      * Test failed binds to the server.
      */
-    @Test
-    public void testBindFailures()
+    @ParameterizedTest
+    @LdapServersSource
+    public void testBindFailures( TestLdapServer ldapServer )
     {
         StudioProgressMonitor monitor = null;
         ConnectionParameter connectionParameter = null;
         Connection connection = null;
         ConnectionWrapper connectionWrapper = null;
 
-        // simple auth without principal and credential
+        // simple auth with invalid user
         monitor = getProgressMonitor();
         connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(), EncryptionMethod.NONE,
-            AuthenticationMethod.SIMPLE, "uid=admin", "invalid", null, true, null, 30000L );
+            AuthenticationMethod.SIMPLE, "cn=invalid," + USERS_OU_DN, "invalid", null, true, null, 30000L );
         connection = new Connection( connectionParameter );
         connectionWrapper = connection.getConnectionWrapper();
         connectionWrapper.connect( monitor );
@@ -299,14 +262,17 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
         assertNotNull( monitor.getException() );
         assertTrue( monitor.getException() instanceof StudioLdapException );
         assertTrue( monitor.getException().getMessage().contains( "[LDAP result code 49 - invalidCredentials]" ) );
-        assertTrue( monitor.getException().getMessage().contains( "INVALID_CREDENTIALS" ) );
         assertTrue( monitor.getException().getCause() instanceof LdapAuthenticationException );
-        assertTrue( monitor.getException().getCause().getMessage().contains( "INVALID_CREDENTIALS" ) );
+        if ( ldapServer.getType() == LdapServerType.ApacheDS )
+        {
+            assertTrue( monitor.getException().getMessage().contains( "INVALID_CREDENTIALS" ) );
+            assertTrue( monitor.getException().getCause().getMessage().contains( "INVALID_CREDENTIALS" ) );
+        }
 
-        // simple auth with invalid principal and credential
+        // simple auth with invalid password
         monitor = getProgressMonitor();
         connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(), EncryptionMethod.NONE,
-            AuthenticationMethod.SIMPLE, "uid=admin,ou=system", "bar", null, true, null, 30000L );
+            AuthenticationMethod.SIMPLE, ldapServer.getAdminDn(), "invalid", null, true, null, 30000L );
         connection = new Connection( connectionParameter );
         connectionWrapper = connection.getConnectionWrapper();
         connectionWrapper.connect( monitor );
@@ -315,22 +281,27 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
         assertNotNull( monitor.getException() );
         assertTrue( monitor.getException() instanceof StudioLdapException );
         assertTrue( monitor.getException().getMessage().contains( "[LDAP result code 49 - invalidCredentials]" ) );
-        assertTrue( monitor.getException().getMessage().contains( "INVALID_CREDENTIALS" ) );
         assertTrue( monitor.getException().getCause() instanceof LdapAuthenticationException );
-        assertTrue( monitor.getException().getCause().getMessage().contains( "INVALID_CREDENTIALS" ) );
+        if ( ldapServer.getType() == LdapServerType.ApacheDS )
+        {
+            assertTrue( monitor.getException().getMessage().contains( "INVALID_CREDENTIALS" ) );
+            assertTrue( monitor.getException().getCause().getMessage().contains( "INVALID_CREDENTIALS" ) );
+        }
     }
 
 
     /**
      * Test searching.
      */
-    @Test
-    public void testSearch() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testSearch( TestLdapServer ldapServer ) throws Exception
     {
         StudioProgressMonitor monitor = getProgressMonitor();
         SearchControls searchControls = new SearchControls();
-        StudioSearchResultEnumeration result = getConnectionWrapper( monitor ).search( "ou=system", "(objectClass=*)",
-            searchControls, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, null, monitor, null );
+        StudioSearchResultEnumeration result = getConnectionWrapper( monitor, ldapServer ).search( CONTEXT_DN,
+            "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, null,
+            monitor, null );
 
         assertFalse( monitor.isCanceled() );
         assertFalse( monitor.errorsReported() );
@@ -343,15 +314,16 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
     /**
      * Test binary attributes.
      */
-    @Test
-    public void testSearchBinaryAttributes() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testSearchBinaryAttributes( TestLdapServer ldapServer ) throws Exception
     {
         StudioProgressMonitor monitor = getProgressMonitor();
         SearchControls searchControls = new SearchControls();
         searchControls.setSearchScope( SearchControls.OBJECT_SCOPE );
-        StudioSearchResultEnumeration result = getConnectionWrapper( monitor ).search( "uid=admin,ou=system",
-            "(objectClass=*)",
-            searchControls, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, null, monitor, null );
+        StudioSearchResultEnumeration result = getConnectionWrapper( monitor, ldapServer ).search(
+            "uid=user.1,ou=users,dc=example,dc=org", "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER,
+            ReferralHandlingMethod.IGNORE, null, monitor, null );
 
         assertNotNull( result );
         assertTrue( result.hasMore() );
@@ -360,17 +332,18 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
 
         Object userPasswordValue = entry.getEntry().get( "userPassword" ).getBytes();
         assertEquals( byte[].class, userPasswordValue.getClass() );
-        assertEquals( "secret", new String( ( byte[] ) userPasswordValue, StandardCharsets.UTF_8 ) );
     }
 
 
-    @Test
-    public void testSearchContinuation_Follow_DirectReferral() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testSearchContinuation_Follow_DirectReferral( TestLdapServer ldapServer ) throws Exception
     {
         StudioProgressMonitor monitor = getProgressMonitor();
         SearchControls searchControls = new SearchControls();
-        StudioSearchResultEnumeration result = getConnectionWrapper( monitor ).search(
-            "cn=referral1,ou=referrals,ou=system", "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER,
+        StudioSearchResultEnumeration result = getConnectionWrapper( monitor, ldapServer ).search(
+            "cn=referral1," + REFERRALS_OU_DN, "(objectClass=*)", searchControls,
+            AliasDereferencingMethod.NEVER,
             ReferralHandlingMethod.FOLLOW, null, monitor, null );
 
         assertFalse( monitor.isCanceled() );
@@ -378,19 +351,25 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
         assertNotNull( result );
 
         List<String> dns = consume( result, sr -> sr.getDn().getName() );
-        assertEquals( 1, dns.size() );
-        assertEquals( "uid=user.1,ou=users,ou=system", dns.get( 0 ) );
+        if ( ldapServer.getType() != LdapServerType.Fedora389ds )
+        {
+            // TODO: check why 389ds returns ou=users
+            assertEquals( 8, dns.size() );
+            assertThat( dns, hasItems( "uid=user.1," + USERS_OU_DN, "uid=user.8," + USERS_OU_DN ) );
+        }
     }
 
 
-    @Test
-    public void testSearchContinuation_Follow_IntermediateReferral() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testSearchContinuation_Follow_IntermediateReferral( TestLdapServer ldapServer ) throws Exception
     {
         StudioProgressMonitor monitor = getProgressMonitor();
         SearchControls searchControls = new SearchControls();
         searchControls.setSearchScope( SearchControls.SUBTREE_SCOPE );
-        StudioSearchResultEnumeration result = getConnectionWrapper( monitor ).search(
-            "cn=referral2,ou=referrals,ou=system", "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER,
+        StudioSearchResultEnumeration result = getConnectionWrapper( monitor, ldapServer ).search(
+            "cn=referral2," + REFERRALS_OU_DN, "(objectClass=*)", searchControls,
+            AliasDereferencingMethod.NEVER,
             ReferralHandlingMethod.FOLLOW, null, monitor, null );
 
         assertFalse( monitor.isCanceled() );
@@ -398,19 +377,24 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
         assertNotNull( result );
 
         List<String> dns = consume( result, sr -> sr.getDn().getName() );
-        assertEquals( 2, dns.size() );
-        assertThat( dns, hasItems( "ou=users,ou=system", "uid=user.1,ou=users,ou=system" ) );
+        if ( ldapServer.getType() != LdapServerType.Fedora389ds )
+        {
+            // TODO: check why 389ds returns ou=users only
+            assertEquals( 9, dns.size() );
+            assertThat( dns, hasItems( USERS_OU_DN, "uid=user.1," + USERS_OU_DN, "uid=user.8," + USERS_OU_DN ) );
+        }
     }
 
 
-    @Test
-    public void testSearchContinuation_Follow_ReferralToParent() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testSearchContinuation_Follow_ReferralToParent( TestLdapServer ldapServer ) throws Exception
     {
         StudioProgressMonitor monitor = getProgressMonitor();
         SearchControls searchControls = new SearchControls();
         searchControls.setSearchScope( SearchControls.SUBTREE_SCOPE );
-        StudioSearchResultEnumeration result = getConnectionWrapper( monitor ).search(
-            "cn=referral3,ou=referrals,ou=system", "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER,
+        StudioSearchResultEnumeration result = getConnectionWrapper( monitor, ldapServer ).search(
+            "cn=referral3," + REFERRALS_OU_DN, "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER,
             ReferralHandlingMethod.FOLLOW, null, monitor, null );
 
         assertFalse( monitor.isCanceled() );
@@ -418,19 +402,25 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
         assertNotNull( result );
 
         List<String> dns = consume( result, sr -> sr.getDn().getName() );
-        assertEquals( 3, dns.size() );
-        assertThat( dns, hasItems( "ou=referrals,ou=system", "ou=users,ou=system", "uid=user.1,ou=users,ou=system" ) );
+        if ( ldapServer.getType() != LdapServerType.Fedora389ds )
+        {
+            // TODO: check why 389ds returns nothing
+            assertEquals( 10, dns.size() );
+            assertThat( dns,
+                hasItems( REFERRALS_OU_DN, USERS_OU_DN, "uid=user.1," + USERS_OU_DN, "uid=user.8," + USERS_OU_DN ) );
+        }
     }
 
 
-    @Test
-    public void testSearchContinuation_Follow_ReferralLoop() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testSearchContinuation_Follow_ReferralLoop( TestLdapServer ldapServer ) throws Exception
     {
         StudioProgressMonitor monitor = getProgressMonitor();
         SearchControls searchControls = new SearchControls();
         searchControls.setSearchScope( SearchControls.SUBTREE_SCOPE );
-        StudioSearchResultEnumeration result = getConnectionWrapper( monitor ).search(
-            "cn=referral4a,ou=referrals,ou=system", "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER,
+        StudioSearchResultEnumeration result = getConnectionWrapper( monitor, ldapServer ).search(
+            "cn=referral4a," + REFERRALS_OU_DN, "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER,
             ReferralHandlingMethod.FOLLOW, null, monitor, null );
 
         assertFalse( monitor.isCanceled() );
@@ -442,15 +432,16 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
     }
 
 
-    @Test
-    public void testSearchContinuationFollowManually() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testSearchContinuationFollowManually( TestLdapServer ldapServer ) throws Exception
     {
         StudioProgressMonitor monitor = getProgressMonitor();
         SearchControls searchControls = new SearchControls();
         searchControls.setSearchScope( SearchControls.SUBTREE_SCOPE );
-        ConnectionWrapper connectionWrapper = getConnectionWrapper( monitor );
+        ConnectionWrapper connectionWrapper = getConnectionWrapper( monitor, ldapServer );
         ConnectionCorePlugin.getDefault().setReferralHandler( null );
-        StudioSearchResultEnumeration result = connectionWrapper.search( "ou=referrals,ou=system", "(objectClass=*)",
+        StudioSearchResultEnumeration result = connectionWrapper.search( REFERRALS_OU_DN, "(objectClass=*)",
             searchControls, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.FOLLOW_MANUALLY, null, monitor,
             null );
 
@@ -461,18 +452,19 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
         List<String> dns = consume( result, sr -> sr.getDn().getName() );
         assertEquals( 6, dns.size() );
         assertThat( dns,
-            hasItems( "ou=referrals,ou=system", "ou=users,ou=system", "cn=referral1,ou=referrals,ou=system",
-                "cn=referral4a,ou=referrals,ou=system", "cn=referral4b,ou=referrals,ou=system" ) );
+            hasItems( REFERRALS_OU_DN, USERS_OU_DN, "cn=referral1," + REFERRALS_OU_DN,
+                "cn=referral4a," + REFERRALS_OU_DN, "cn=referral4b," + REFERRALS_OU_DN ) );
     }
 
 
-    @Test
-    public void testSearchContinuationIgnore() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testSearchContinuationIgnore( TestLdapServer ldapServer ) throws Exception
     {
         StudioProgressMonitor monitor = getProgressMonitor();
         SearchControls searchControls = new SearchControls();
         searchControls.setSearchScope( SearchControls.SUBTREE_SCOPE );
-        StudioSearchResultEnumeration result = getConnectionWrapper( monitor ).search( "ou=referrals,ou=system",
+        StudioSearchResultEnumeration result = getConnectionWrapper( monitor, ldapServer ).search( REFERRALS_OU_DN,
             "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, null,
             monitor, null );
 
@@ -482,7 +474,33 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
 
         List<String> dns = consume( result, sr -> sr.getDn().getName() );
         assertEquals( 1, dns.size() );
-        assertThat( dns, hasItems( "ou=referrals,ou=system" ) );
+        assertThat( dns, hasItems( REFERRALS_OU_DN ) );
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource
+    public void testSearchContinuationFollowParent( TestLdapServer ldapServer ) throws Exception
+    {
+        StudioProgressMonitor monitor = getProgressMonitor();
+        SearchControls searchControls = new SearchControls();
+        searchControls.setSearchScope( SearchControls.SUBTREE_SCOPE );
+        StudioSearchResultEnumeration result = getConnectionWrapper( monitor, ldapServer ).search( REFERRALS_OU_DN,
+            "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.FOLLOW, null,
+            monitor, null );
+
+        assertFalse( monitor.isCanceled() );
+        assertFalse( monitor.errorsReported() );
+        assertNotNull( result );
+
+        List<String> dns = consume( result, sr -> sr.getDn().getName() );
+        if ( ldapServer.getType() != LdapServerType.Fedora389ds )
+        {
+            // TODO: check why 389ds missed uid=user.1
+            assertEquals( 11, dns.size() );
+            assertThat( dns, hasItems( REFERRALS_OU_DN, REFERRALS_OU_DN, USERS_OU_DN,
+                "uid=user.1," + USERS_OU_DN, "uid=user.8," + USERS_OU_DN ) );
+        }
     }
 
 
@@ -499,67 +517,71 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
     }
 
 
-    @Test
-    public void testAdd() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testAdd( TestLdapServer ldapServer ) throws Exception
     {
-        String dn = "uid=user.X,ou=users,ou=system";
+        String dn = "uid=user.X," + USERS_OU_DN;
 
         StudioProgressMonitor monitor = getProgressMonitor();
         Entry entry = new DefaultEntry( dn, "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" );
-        getConnectionWrapper( monitor ).createEntry( entry, null, monitor, null );
+        getConnectionWrapper( monitor, ldapServer ).createEntry( entry, null, monitor, null );
 
         // should have created entry
         assertFalse( monitor.isCanceled() );
         assertFalse( monitor.errorsReported() );
-        assertTrue( service.getAdminSession().exists( dn ) );
+        assertTrue( ldapServer.withAdminConnectionAndGet( connection -> connection.exists( dn ) ) );
     }
 
 
-    @Test
-    public void testAddFollowsReferral_DirectReferral() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testAddFollowsReferral_DirectReferral( TestLdapServer ldapServer ) throws Exception
     {
-        String targetDn = "uid=user.X,ou=users,ou=system";
-        String referralDn = "uid=user.X,cn=referral1,ou=referrals,ou=system";
+        String targetDn = "uid=user.X," + USERS_OU_DN;
+        String referralDn = "uid=user.X,cn=referral1," + REFERRALS_OU_DN;
 
         // create entry under referral
         StudioProgressMonitor monitor = getProgressMonitor();
         Entry entry = new DefaultEntry( referralDn, "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" );
-        getConnectionWrapper( monitor ).createEntry( entry, null, monitor, null );
+        getConnectionWrapper( monitor, ldapServer ).createEntry( entry, null, monitor, null );
 
         // should have created target entry
         assertFalse( monitor.isCanceled() );
         assertFalse( monitor.errorsReported() );
-        assertTrue( service.getAdminSession().exists( targetDn ) );
+        assertTrue( ldapServer.withAdminConnectionAndGet( connection -> connection.exists( targetDn ) ) );
     }
 
 
-    @Test
-    public void testAddFollowsReferral_IntermediateReferral() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testAddFollowsReferral_IntermediateReferral( TestLdapServer ldapServer ) throws Exception
     {
-        String targetDn = "uid=user.X,ou=users,ou=system";
-        String referralDn = "uid=user.X,cn=referral2,ou=referrals,ou=system";
+        String targetDn = "uid=user.X," + USERS_OU_DN;
+        String referralDn = "uid=user.X,cn=referral2," + REFERRALS_OU_DN;
 
         // create entry under referral
         StudioProgressMonitor monitor = getProgressMonitor();
         Entry entry = new DefaultEntry( referralDn, "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" );
-        getConnectionWrapper( monitor ).createEntry( entry, null, monitor, null );
+        getConnectionWrapper( monitor, ldapServer ).createEntry( entry, null, monitor, null );
 
         // should have created target entry
         assertFalse( monitor.isCanceled() );
         assertFalse( monitor.errorsReported() );
-        assertTrue( service.getAdminSession().exists( targetDn ) );
+        assertTrue( ldapServer.withAdminConnectionAndGet( connection -> connection.exists( targetDn ) ) );
     }
 
 
-    @Test
-    public void testAddFollowsReferral_ReferralLoop() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testAddFollowsReferral_ReferralLoop( TestLdapServer ldapServer ) throws Exception
     {
-        String referralDn = "uid=user.X,cn=referral4a,ou=referrals,ou=system";
+        String referralDn = "uid=user.X,cn=referral4a," + REFERRALS_OU_DN;
 
         // create entry under referral
         StudioProgressMonitor monitor = getProgressMonitor();
         Entry entry = new DefaultEntry( referralDn, "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" );
-        getConnectionWrapper( monitor ).createEntry( entry, null, monitor, null );
+        getConnectionWrapper( monitor, ldapServer ).createEntry( entry, null, monitor, null );
 
         // should not have created target entry
         assertFalse( monitor.isCanceled() );
@@ -572,96 +594,103 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
     }
 
 
-    @Test
-    public void testModify() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testModify( TestLdapServer ldapServer ) throws Exception
     {
-        String dn = "uid=user.X,ou=users,ou=system";
+        String dn = "uid=user.X," + USERS_OU_DN;
 
         // create entry
-        service.getAdminSession().add( new DefaultEntry( service.getSchemaManager(), dn,
-            "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" ) );
+        ldapServer.withAdminConnection( connection -> connection.add( new DefaultEntry( dn,
+            "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" ) ) );
 
         // modify entry
         StudioProgressMonitor monitor = getProgressMonitor();
         List<Modification> modifications = Collections.singletonList(
             new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE,
                 new DefaultAttribute( "sn", "modified" ) ) );
-        getConnectionWrapper( monitor ).modifyEntry( new Dn( dn ), modifications, null, monitor, null );
+        getConnectionWrapper( monitor, ldapServer ).modifyEntry( new Dn( dn ), modifications, null, monitor, null );
 
         // should have modified the entry
         assertFalse( monitor.isCanceled() );
         assertFalse( monitor.errorsReported() );
-        Entry entry = service.getAdminSession().lookup( new Dn( dn ) );
+        Entry entry = ldapServer.withAdminConnectionAndGet( connection -> connection.lookup( new Dn( dn ) ) );
         assertEquals( "modified", entry.get( "sn" ).getString() );
     }
 
 
-    @Test
-    public void testModifyFollowsReferral_DirectReferral() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testModifyFollowsReferral_DirectReferral( TestLdapServer ldapServer ) throws Exception
     {
-        String targetDn = "uid=user.X,ou=users,ou=system";
-        String referralDn = "uid=user.X,cn=referral1,ou=referrals,ou=system";
+        String targetDn = "uid=user.X," + USERS_OU_DN;
+        String referralDn = "uid=user.X,cn=referral1," + REFERRALS_OU_DN;
 
         // create target entry
-        service.getAdminSession().add( new DefaultEntry( service.getSchemaManager(), targetDn,
-            "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" ) );
+        ldapServer.withAdminConnection( connection -> connection.add( new DefaultEntry( targetDn,
+            "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" ) ) );
 
         // modify referral entry 
         StudioProgressMonitor monitor = getProgressMonitor();
         List<Modification> modifications = Collections.singletonList(
             new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE,
                 new DefaultAttribute( "sn", "modified" ) ) );
-        getConnectionWrapper( monitor ).modifyEntry( new Dn( referralDn ), modifications, null, monitor, null );
+        getConnectionWrapper( monitor, ldapServer ).modifyEntry( new Dn( referralDn ), modifications, null, monitor,
+            null );
 
         // should have modified the target entry
         assertFalse( monitor.isCanceled() );
         assertFalse( monitor.errorsReported() );
-        Entry entry = service.getAdminSession().lookup( new Dn( targetDn ) );
+        Entry entry = ldapServer.withAdminConnectionAndGet( connection -> connection.lookup( new Dn( targetDn ) ) );
         assertEquals( "modified", entry.get( "sn" ).getString() );
     }
 
 
-    @Test
-    public void testModifyFollowsReferral_IntermediateReferral() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testModifyFollowsReferral_IntermediateReferral( TestLdapServer ldapServer ) throws Exception
     {
-        String targetDn = "uid=user.X,ou=users,ou=system";
-        String referralDn = "uid=user.X,cn=referral2,ou=referrals,ou=system";
+        String targetDn = "uid=user.X," + USERS_OU_DN;
+        String referralDn = "uid=user.X,cn=referral2," + REFERRALS_OU_DN;
 
         // create target entry
-        service.getAdminSession().add( new DefaultEntry( service.getSchemaManager(), targetDn,
-            "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" ) );
+        ldapServer.withAdminConnection( connection -> connection.add( new DefaultEntry( targetDn,
+            "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" ) ) );
 
         // modify referral entry 
         StudioProgressMonitor monitor = getProgressMonitor();
         List<Modification> modifications = Collections.singletonList(
             new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE,
                 new DefaultAttribute( "sn", "modified" ) ) );
-        getConnectionWrapper( monitor ).modifyEntry( new Dn( referralDn ), modifications, null, monitor, null );
+        getConnectionWrapper( monitor, ldapServer ).modifyEntry( new Dn( referralDn ), modifications, null, monitor,
+            null );
 
         // should have modified the target entry
         assertFalse( monitor.isCanceled() );
         assertFalse( monitor.errorsReported() );
-        Entry entry = service.getAdminSession().lookup( new Dn( targetDn ) );
+        Entry entry = ldapServer.withAdminConnectionAndGet( connection -> connection.lookup( new Dn( targetDn ) ) );
         assertEquals( "modified", entry.get( "sn" ).getString() );
     }
 
 
-    @Test
-    public void testModifyFollowsReferral_ReferralLoop() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testModifyFollowsReferral_ReferralLoop( TestLdapServer ldapServer ) throws Exception
     {
-        String targetDn = "uid=user.X,ou=users,ou=system";
-        String referralDn = "uid=user.X,cn=referral4a,ou=referrals,ou=system";
+        String targetDn = "uid=user.X," + USERS_OU_DN;
+        String referralDn = "uid=user.X,cn=referral4a," + REFERRALS_OU_DN;
 
         // create target entry
-        service.getAdminSession().add( new DefaultEntry( service.getSchemaManager(), targetDn,
-            "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" ) );
+        ldapServer.withAdminConnection( connection -> connection.add( new DefaultEntry( targetDn,
+            "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" ) ) );
 
         // modify referral entry 
         StudioProgressMonitor monitor = getProgressMonitor();
         List<Modification> modifications = Collections.singletonList(
             new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE,
                 new DefaultAttribute( "sn", "modified" ) ) );
-        getConnectionWrapper( monitor ).modifyEntry( new Dn( referralDn ), modifications, null, monitor, null );
+        getConnectionWrapper( monitor, ldapServer ).modifyEntry( new Dn( referralDn ), modifications, null, monitor,
+            null );
 
         // should not have modified the target entry
         assertFalse( monitor.isCanceled() );
@@ -674,81 +703,85 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
     }
 
 
-    @Test
-    public void testDelete() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testDelete( TestLdapServer ldapServer ) throws Exception
     {
-        String dn = "uid=user.X,ou=users,ou=system";
+        String dn = "uid=user.X," + USERS_OU_DN;
 
         // create entry
-        service.getAdminSession().add( new DefaultEntry( service.getSchemaManager(), dn,
-            "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" ) );
+        ldapServer.withAdminConnection( connection -> connection.add( new DefaultEntry( dn,
+            "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" ) ) );
 
         // delete entry
         StudioProgressMonitor monitor = getProgressMonitor();
-        getConnectionWrapper( monitor ).deleteEntry( new Dn( dn ), null, monitor, null );
+        getConnectionWrapper( monitor, ldapServer ).deleteEntry( new Dn( dn ), null, monitor, null );
 
         // should have deleted the entry
         assertFalse( monitor.isCanceled() );
         assertFalse( monitor.errorsReported() );
-        assertFalse( service.getAdminSession().exists( dn ) );
+        assertFalse( ldapServer.withAdminConnectionAndGet( connection -> connection.exists( dn ) ) );
     }
 
 
-    @Test
-    public void testDeleteFollowsReferral_DirectReferral() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testDeleteFollowsReferral_DirectReferral( TestLdapServer ldapServer ) throws Exception
     {
-        String targetDn = "uid=user.X,ou=users,ou=system";
-        String referralDn = "uid=user.X,cn=referral1,ou=referrals,ou=system";
+        String targetDn = "uid=user.X," + USERS_OU_DN;
+        String referralDn = "uid=user.X,cn=referral1," + REFERRALS_OU_DN;
 
         // create target entry
-        service.getAdminSession().add( new DefaultEntry( service.getSchemaManager(), targetDn,
-            "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" ) );
+        ldapServer.withAdminConnection( connection -> connection.add( new DefaultEntry( targetDn,
+            "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" ) ) );
 
         // delete referral entry 
         StudioProgressMonitor monitor = getProgressMonitor();
-        getConnectionWrapper( monitor ).deleteEntry( new Dn( referralDn ), null, monitor, null );
+        getConnectionWrapper( monitor, ldapServer ).deleteEntry( new Dn( referralDn ), null, monitor, null );
 
         // should have deleted the target entry
         assertFalse( monitor.isCanceled() );
         assertFalse( monitor.errorsReported() );
-        assertFalse( service.getAdminSession().exists( targetDn ) );
+        assertFalse( ldapServer.withAdminConnectionAndGet( connection -> connection.exists( targetDn ) ) );
     }
 
 
-    @Test
-    public void testDeleteFollowsReferral_IntermediateReferral() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testDeleteFollowsReferral_IntermediateReferral( TestLdapServer ldapServer ) throws Exception
     {
-        String targetDn = "uid=user.X,ou=users,ou=system";
-        String referralDn = "uid=user.X,cn=referral2,ou=referrals,ou=system";
+        String targetDn = "uid=user.X," + USERS_OU_DN;
+        String referralDn = "uid=user.X,cn=referral2," + REFERRALS_OU_DN;
 
         // create target entry
-        service.getAdminSession().add( new DefaultEntry( service.getSchemaManager(), targetDn,
-            "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" ) );
+        ldapServer.withAdminConnection( connection -> connection.add( new DefaultEntry( targetDn,
+            "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" ) ) );
 
         // delete referral entry 
         StudioProgressMonitor monitor = getProgressMonitor();
-        getConnectionWrapper( monitor ).deleteEntry( new Dn( referralDn ), null, monitor, null );
+        getConnectionWrapper( monitor, ldapServer ).deleteEntry( new Dn( referralDn ), null, monitor, null );
 
         // should have deleted the target entry
         assertFalse( monitor.isCanceled() );
         assertFalse( monitor.errorsReported() );
-        assertFalse( service.getAdminSession().exists( targetDn ) );
+        assertFalse( ldapServer.withAdminConnectionAndGet( connection -> connection.exists( targetDn ) ) );
     }
 
 
-    @Test
-    public void testDeleteFollowsReferral_ReferralLoop() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testDeleteFollowsReferral_ReferralLoop( TestLdapServer ldapServer ) throws Exception
     {
-        String targetDn = "uid=user.X,ou=users,ou=system";
-        String referralDn = "uid=user.X,cn=referral4a,ou=referrals,ou=system";
+        String targetDn = "uid=user.X," + USERS_OU_DN;
+        String referralDn = "uid=user.X,cn=referral4a," + REFERRALS_OU_DN;
 
         // create target entry
-        service.getAdminSession().add( new DefaultEntry( service.getSchemaManager(), targetDn,
-            "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" ) );
+        ldapServer.withAdminConnection( connection -> connection.add( new DefaultEntry( targetDn,
+            "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" ) ) );
 
         // delete referral entry 
         StudioProgressMonitor monitor = getProgressMonitor();
-        getConnectionWrapper( monitor ).deleteEntry( new Dn( referralDn ), null, monitor, null );
+        getConnectionWrapper( monitor, ldapServer ).deleteEntry( new Dn( referralDn ), null, monitor, null );
 
         // should not have deleted the target entry
         assertFalse( monitor.isCanceled() );
@@ -758,41 +791,21 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
         assertTrue( monitor.getException().getMessage().contains( "[LDAP result code 54 - loopDetect]" ) );
         assertTrue( monitor.getException().getMessage().contains( "already processed" ) );
         assertTrue( monitor.getException().getCause() instanceof LdapLoopDetectedException );
-        assertTrue( service.getAdminSession().exists( targetDn ) );
-    }
-
-
-    @Test
-    public void testSearchContinuationFollowParent() throws Exception
-    {
-        StudioProgressMonitor monitor = getProgressMonitor();
-        SearchControls searchControls = new SearchControls();
-        searchControls.setSearchScope( SearchControls.SUBTREE_SCOPE );
-        StudioSearchResultEnumeration result = getConnectionWrapper( monitor ).search( "ou=referrals,ou=system",
-            "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.FOLLOW, null,
-            monitor, null );
-
-        assertFalse( monitor.isCanceled() );
-        assertFalse( monitor.errorsReported() );
-        assertNotNull( result );
-
-        List<String> dns = consume( result, sr -> sr.getDn().getName() );
-        assertEquals( 4, dns.size() );
-        assertThat( dns, hasItems( "ou=referrals,ou=system", "ou=referrals,ou=system", "ou=users,ou=system",
-            "uid=user.1,ou=users,ou=system" ) );
+        assertTrue( ldapServer.withAdminConnectionAndGet( connection -> connection.exists( targetDn ) ) );
     }
 
 
     /**
      * Test initializing of Root DSE.
      */
-    @Test
-    public void testInitializeAttributesRunnable() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testInitializeAttributesRunnable( TestLdapServer ldapServer ) throws Exception
     {
         StudioProgressMonitor monitor = getProgressMonitor();
-        ConnectionParameter connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(),
-            EncryptionMethod.NONE, AuthenticationMethod.SIMPLE,
-            "uid=admin,ou=system", "secret", null, true, null, 30000L );
+        ConnectionParameter connectionParameter = new ConnectionParameter( null, ldapServer.getHost(),
+            ldapServer.getPort(), EncryptionMethod.NONE, AuthenticationMethod.SIMPLE,
+            ldapServer.getAdminDn(), ldapServer.getAdminPassword(), null, true, null, 30000L );
         Connection connection = new Connection( connectionParameter );
         BrowserConnection browserConnection = new BrowserConnection( connection );
 
@@ -807,14 +820,16 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
     /**
      * DIRSTUDIO-1039
      */
-    @Ignore
-    @Test
-    public void testConcurrentUseAndCloseOfConnection() throws Exception
+    @Disabled("Flaky test")
+    @ParameterizedTest
+    @LdapServersSource
+    public void testConcurrentUseAndCloseOfConnection( TestLdapServer ldapServer ) throws Exception
     {
         final StudioProgressMonitor monitor = getProgressMonitor();
-        final ConnectionParameter connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(),
+        final ConnectionParameter connectionParameter = new ConnectionParameter( null, ldapServer.getHost(),
+            ldapServer.getPort(),
             EncryptionMethod.NONE, AuthenticationMethod.SIMPLE,
-            "uid=admin,ou=system", "secret", null, true, null, 30000L );
+            ldapServer.getAdminDn(), ldapServer.getAdminPassword(), null, true, null, 30000L );
         final Connection connection = new Connection( connectionParameter );
         final BrowserConnection browserConnection = new BrowserConnection( connection );
 
@@ -876,14 +891,20 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
     }
 
 
-    @Test
-    public void testPasswordModifyRequestExtendedOperation_AdminChangesUserPassword() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testPasswordModifyRequestExtendedOperation_AdminChangesUserPassword( TestLdapServer ldapServer )
+        throws Exception
     {
-        String dn = "uid=user.X,ou=users,ou=system";
+        String dn = "uid=user.X," + USERS_OU_DN;
 
         // create target entry
-        service.getAdminSession().add( new DefaultEntry( service.getSchemaManager(), dn,
-            "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X", "userPassword:  secret" ) );
+        String password0 = "{SSHA}VHg6ewDaPUmVWw3efXL5NF6bVuRHGWhrCRH1xA==";
+        ldapServer.withAdminConnection( connection -> connection.add( new DefaultEntry( dn,
+            "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X",
+            "userPassword: " + password0 ) ) );
+        Entry entry0 = ldapServer.withAdminConnectionAndGet( connection -> connection.lookup( new Dn( dn ) ) );
+        assertEquals( password0, Strings.utf8ToString( entry0.get( "userPassword" ).getBytes() ) );
 
         // modify password
         LdapApiService ldapApiService = LdapApiServiceFactory.getSingleton();
@@ -892,42 +913,66 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
         request.setUserIdentity( Strings.getBytesUtf8( dn ) );
         request.setNewPassword( Strings.getBytesUtf8( "s3cre3t" ) );
         StudioProgressMonitor monitor = getProgressMonitor();
-        ExtendedResponse response = getConnectionWrapper( monitor ).extended( request, monitor );
+        ExtendedResponse response = getConnectionWrapper( monitor, ldapServer ).extended( request, monitor );
 
-        // should have modified password of the target entry
-        assertEquals( ResultCodeEnum.SUCCESS, response.getLdapResult().getResultCode() );
-        assertFalse( monitor.isCanceled() );
-        assertFalse( monitor.errorsReported() );
-        Entry entry = service.getAdminSession().lookup( new Dn( dn ) );
-        assertEquals( "s3cre3t", Strings.utf8ToString( entry.get( "userPassword" ).getBytes() ) );
+        if ( ldapServer.getType() == LdapServerType.Fedora389ds )
+        {
+            assertEquals( ResultCodeEnum.CONFIDENTIALITY_REQUIRED, response.getLdapResult().getResultCode() );
+            assertFalse( monitor.isCanceled() );
+            assertTrue( monitor.errorsReported() );
+        }
+        else
+        {
+            // should have modified password of the target entry
+            assertEquals( ResultCodeEnum.SUCCESS, response.getLdapResult().getResultCode() );
+            assertFalse( monitor.isCanceled() );
+            assertFalse( monitor.errorsReported() );
+            Entry entry = ldapServer.withAdminConnectionAndGet( connection -> connection.lookup( new Dn( dn ) ) );
+            assertNotEquals( password0, Strings.utf8ToString( entry.get( "userPassword" ).getBytes() ) );
+        }
     }
 
 
-    @Test
-    public void testPasswordModifyRequestExtendedOperation_UserChangesOwnPassword() throws Exception
+    @ParameterizedTest
+    @LdapServersSource(types =
+        { LdapServerType.ApacheDS, LdapServerType.OpenLdap })
+    public void testPasswordModifyRequestExtendedOperation_UserChangesOwnPassword( TestLdapServer ldapServer )
+        throws Exception
     {
-        LdapApiService ldapApiService = LdapApiServiceFactory.getSingleton();
-        String dn = "uid=user.X,ou=users,ou=system";
+        String dn = "uid=user.X," + USERS_OU_DN;
 
         // create target entry
-        service.getAdminSession().add( new DefaultEntry( service.getSchemaManager(), dn,
-            "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X", "userPassword:  secret" ) );
+        String password0 = "{SSHA}VHg6ewDaPUmVWw3efXL5NF6bVuRHGWhrCRH1xA==";
+        ldapServer.withAdminConnection( connection -> connection.add( new DefaultEntry( dn,
+            "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X",
+            "userPassword: " + password0 ) ) );
+        Entry entry0 = ldapServer.withAdminConnectionAndGet( connection -> connection.lookup( new Dn( dn ) ) );
+        assertEquals( password0, Strings.utf8ToString( entry0.get( "userPassword" ).getBytes() ) );
 
         // modify password with wrong old password
+        LdapApiService ldapApiService = LdapApiServiceFactory.getSingleton();
         PasswordModifyRequest request1 = ( PasswordModifyRequest ) ldapApiService.getExtendedRequestFactories()
             .get( PasswordModifyRequest.EXTENSION_OID ).newRequest();
         request1.setUserIdentity( Strings.getBytesUtf8( dn ) );
         request1.setOldPassword( Strings.getBytesUtf8( "wrong" ) );
         request1.setNewPassword( Strings.getBytesUtf8( "s3cre3t" ) );
         StudioProgressMonitor monitor1 = getProgressMonitor();
-        ExtendedResponse response1 = getConnectionWrapper( monitor1, dn, "secret" ).extended( request1, monitor1 );
+        ExtendedResponse response1 = getConnectionWrapper( monitor1, ldapServer, dn, "secret" ).extended( request1,
+            monitor1 );
 
         // should not have modified password of the target entry
-        assertEquals( ResultCodeEnum.INVALID_CREDENTIALS, response1.getLdapResult().getResultCode() );
+        if ( ldapServer.getType() == LdapServerType.OpenLdap )
+        {
+            assertEquals( ResultCodeEnum.UNWILLING_TO_PERFORM, response1.getLdapResult().getResultCode() );
+        }
+        else
+        {
+            assertEquals( ResultCodeEnum.INVALID_CREDENTIALS, response1.getLdapResult().getResultCode() );
+        }
         assertFalse( monitor1.isCanceled() );
         assertTrue( monitor1.errorsReported() );
-        Entry entry1 = service.getAdminSession().lookup( new Dn( dn ) );
-        assertEquals( "secret", Strings.utf8ToString( entry1.get( "userPassword" ).getBytes() ) );
+        Entry entry1 = ldapServer.withAdminConnectionAndGet( connection -> connection.lookup( new Dn( dn ) ) );
+        assertEquals( password0, Strings.utf8ToString( entry1.get( "userPassword" ).getBytes() ) );
 
         // modify password with correct old password
         PasswordModifyRequest request2 = ( PasswordModifyRequest ) ldapApiService.getExtendedRequestFactories()
@@ -936,38 +981,41 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
         request2.setOldPassword( Strings.getBytesUtf8( "secret" ) );
         request2.setNewPassword( Strings.getBytesUtf8( "s3cre3t" ) );
         StudioProgressMonitor monitor2 = getProgressMonitor();
-        ExtendedResponse response2 = getConnectionWrapper( monitor2, dn, "secret" ).extended( request2, monitor2 );
+        ExtendedResponse response2 = getConnectionWrapper( monitor2, ldapServer, dn, "secret" ).extended( request2,
+            monitor2 );
 
         // should have modified password of the target entry
         assertEquals( ResultCodeEnum.SUCCESS, response2.getLdapResult().getResultCode() );
         assertFalse( monitor2.isCanceled() );
         assertFalse( monitor2.errorsReported() );
-        Entry entry2 = service.getAdminSession().lookup( new Dn( dn ) );
-        assertEquals( "s3cre3t", Strings.utf8ToString( entry2.get( "userPassword" ).getBytes() ) );
+        Entry entry2 = ldapServer.withAdminConnectionAndGet( connection -> connection.lookup( new Dn( dn ) ) );
+        assertNotEquals( password0, Strings.utf8ToString( entry2.get( "userPassword" ).getBytes() ) );
     }
 
 
-    @Ignore
-    @Test
-    public void testWhoAmIExtendedOperation() throws Exception
+    @ParameterizedTest
+    @LdapServersSource(types =
+        { LdapServerType.OpenLdap, LdapServerType.Fedora389ds })
+    public void testWhoAmIExtendedOperation( TestLdapServer ldapServer ) throws Exception
     {
         LdapApiService ldapApiService = LdapApiServiceFactory.getSingleton();
         WhoAmIRequest request = ( WhoAmIRequest ) ldapApiService.getExtendedRequestFactories()
             .get( WhoAmIRequest.EXTENSION_OID ).newRequest();
         StudioProgressMonitor monitor = getProgressMonitor();
-        WhoAmIResponse response = ( WhoAmIResponse ) getConnectionWrapper( monitor ).extended( request, monitor );
+        WhoAmIResponse response = ( WhoAmIResponse ) getConnectionWrapper( monitor, ldapServer ).extended( request,
+            monitor );
 
         assertEquals( ResultCodeEnum.SUCCESS, response.getLdapResult().getResultCode() );
         assertFalse( monitor.isCanceled() );
         assertFalse( monitor.errorsReported() );
         assertTrue( response.isDnAuthzId() );
-        assertEquals( "uid=admin,ou=system", response.getDn().toString() );
+        assertEquals( ldapServer.getAdminDn().toLowerCase(), response.getDn().toString().toLowerCase().trim() );
     }
 
     /*
     @Ignore
     @Test
-    public void testStartEndTransactionExtendedOperation() throws Exception
+    public void testStartEndTransactionExtendedOperation( TestLdapServer ldapServer ) throws Exception
     {
         LdapApiService ldapApiService = LdapApiServiceFactory.getSingleton();
     
@@ -1003,17 +1051,39 @@ public class DirectoryApiConnectionWrapperTest extends AbstractLdapTestUnit
     }
 
 
-    protected ConnectionWrapper getConnectionWrapper( StudioProgressMonitor monitor )
-    {
-        return getConnectionWrapper( monitor, "uid=admin,ou=system", "secret" );
-    }
-
-
-    protected ConnectionWrapper getConnectionWrapper( StudioProgressMonitor monitor, String dn, String password )
+    protected ConnectionWrapper getConnectionWrapper( StudioProgressMonitor monitor, TestLdapServer ldapServer,
+        String dn, String password )
     {
         // simple auth without principal and credential
         ConnectionParameter connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(),
             EncryptionMethod.NONE, AuthenticationMethod.SIMPLE, dn, password, null, false, null, 30000L );
+
+        Connection connection = new Connection( connectionParameter );
+
+        connectionWrapper = connection.getConnectionWrapper();
+        connectionWrapper.connect( monitor );
+        connectionWrapper.bind( monitor );
+
+        assertTrue( connectionWrapper.isConnected() );
+
+        IReferralHandler referralHandler = referralUrls -> {
+            return connection;
+        };
+        ConnectionCorePlugin.getDefault().setReferralHandler( referralHandler );
+
+        assertTrue( connectionWrapper.isConnected() );
+        assertNull( monitor.getException() );
+
+        return connectionWrapper;
+    }
+
+
+    protected ConnectionWrapper getConnectionWrapper( StudioProgressMonitor monitor, TestLdapServer ldapServer )
+    {
+        // simple auth without principal and credential
+        ConnectionParameter connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(),
+            EncryptionMethod.NONE, AuthenticationMethod.SIMPLE, ldapServer.getAdminDn(), ldapServer.getAdminPassword(),
+            null, false, null, 30000L );
 
         Connection connection = new Connection( connectionParameter );
 

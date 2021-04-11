@@ -25,7 +25,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
-import static org.junit.Assert.assertNull;
+import static org.hamcrest.Matchers.nullValue;
 
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
@@ -41,8 +41,8 @@ import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.ldifparser.LdifParserConstants;
 import org.apache.directory.studio.ldifparser.model.LdifFile;
 import org.apache.directory.studio.ldifparser.model.container.LdifChangeModifyRecord;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 
 public class ComputeDiffTest
@@ -90,7 +90,7 @@ public class ComputeDiffTest
 
     }
 
-    @Before
+    @BeforeEach
     public void setup() throws Exception
     {
         ConnectionEventRegistry.suspendEventFiringInCurrentThread();
@@ -104,18 +104,18 @@ public class ComputeDiffTest
     public void shouldReturnNullForEqualEntries()
     {
         // entries without attribute
-        assertNull( Utils.computeDiff( oldEntry, newEntry ) );
-        assertNull( Utils.computeDiff( oldEntry, oldEntry ) );
-        assertNull( Utils.computeDiff( newEntry, newEntry ) );
+        assertThat( Utils.computeDiff( oldEntry, newEntry ), nullValue() );
+        assertThat( Utils.computeDiff( oldEntry, oldEntry ), nullValue() );
+        assertThat( Utils.computeDiff( newEntry, newEntry ), nullValue() );
 
         // entries with attributes
         addAttribute( oldEntry, "cn", "1" );
         addAttribute( oldEntry, "member", "cn=1", "cn=2", "cn=3" );
         addAttribute( newEntry, "cn", "1" );
         addAttribute( newEntry, "member", "cn=1", "cn=2", "cn=3" );
-        assertNull( Utils.computeDiff( oldEntry, newEntry ) );
-        assertNull( Utils.computeDiff( oldEntry, oldEntry ) );
-        assertNull( Utils.computeDiff( newEntry, newEntry ) );
+        assertThat( Utils.computeDiff( oldEntry, newEntry ), nullValue() );
+        assertThat( Utils.computeDiff( oldEntry, oldEntry ), nullValue() );
+        assertThat( Utils.computeDiff( newEntry, newEntry ), nullValue() );
     }
 
 

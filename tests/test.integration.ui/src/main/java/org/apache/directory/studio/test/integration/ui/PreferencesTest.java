@@ -28,16 +28,17 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
 import java.security.cert.X509Certificate;
+import java.util.Date;
 import java.util.List;
 
+import org.apache.directory.api.ldap.model.entry.DefaultEntry;
+import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.util.FileUtils;
 import org.apache.directory.server.annotations.CreateLdapServer;
 import org.apache.directory.server.annotations.CreateTransport;
 import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
-import org.apache.directory.server.core.security.CertificateUtil;
+import org.apache.directory.server.core.security.TlsKeyGenerator;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.PasswordsKeyStoreManager;
@@ -57,8 +58,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import sun.security.x509.X500Name;
 
 
 /**
@@ -157,11 +156,15 @@ public class PreferencesTest extends AbstractLdapTestUnit
         preferencesBot.clickCancelButton();
 
         // add a certificate (not possible via native file dialog)
-        X500Name issuer = new X500Name( "apacheds", "directory", "apache", "US" );
-        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance( "EC" );
-        keyPairGenerator.initialize( 256 );
-        KeyPair keyPair = keyPairGenerator.generateKeyPair();
-        X509Certificate certificate = CertificateUtil.generateSelfSignedCertificate( issuer, keyPair, 365, "SHA256WithECDSA" );
+        Entry entry = new DefaultEntry();
+        String issuerDn = "cn=apacheds,ou=directory,o=apache,c=US";
+        Date startDate = new Date();
+        Date expiryDate = new Date( System.currentTimeMillis() + TlsKeyGenerator.YEAR_MILLIS );
+        String keyAlgo = "RSA";
+        int keySize = 1024;
+        CertificateValidationTest.addKeyPair( entry, issuerDn, issuerDn, startDate, expiryDate, keyAlgo, keySize,
+            null );
+        X509Certificate certificate = TlsKeyGenerator.getCertificate( entry );
         ConnectionCorePlugin.getDefault().getPermanentTrustStoreManager().addCertificate( certificate );
 
         // verify there is one certificate now
