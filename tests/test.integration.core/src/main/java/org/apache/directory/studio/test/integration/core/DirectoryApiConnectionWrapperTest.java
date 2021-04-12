@@ -21,7 +21,6 @@
 package org.apache.directory.studio.test.integration.core;
 
 
-import static org.apache.directory.studio.test.integration.junit5.Constants.LOCALHOST;
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.CONTEXT_DN;
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.REFERRALS_OU_DN;
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.USERS_OU_DN;
@@ -147,8 +146,9 @@ public class DirectoryApiConnectionWrapperTest
     public void testConnect( TestLdapServer ldapServer )
     {
         StudioProgressMonitor monitor = getProgressMonitor();
-        ConnectionParameter connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(),
-            EncryptionMethod.NONE, AuthenticationMethod.NONE, null, null, null, true, null, 30000L );
+        ConnectionParameter connectionParameter = new ConnectionParameter( null, ldapServer.getHost(),
+            ldapServer.getPort(), EncryptionMethod.NONE, AuthenticationMethod.NONE, null, null, null, true, null,
+            30000L );
         Connection connection = new Connection( connectionParameter );
         ConnectionWrapper connectionWrapper = connection.getConnectionWrapper();
 
@@ -179,8 +179,9 @@ public class DirectoryApiConnectionWrapperTest
 
         // invalid port
         monitor = getProgressMonitor();
-        connectionParameter = new ConnectionParameter( null, LOCALHOST, AvailablePortFinder.getNextAvailable(),
-            EncryptionMethod.NONE, AuthenticationMethod.NONE, null, null, null, true, null, 30000L );
+        connectionParameter = new ConnectionParameter( null, ldapServer.getHost(),
+            AvailablePortFinder.getNextAvailable(), EncryptionMethod.NONE, AuthenticationMethod.NONE, null, null, null,
+            true, null, 30000L );
         connection = new Connection( connectionParameter );
         connectionWrapper = connection.getConnectionWrapper();
         connectionWrapper.connect( monitor );
@@ -219,9 +220,9 @@ public class DirectoryApiConnectionWrapperTest
     public void testBind( TestLdapServer ldapServer )
     {
         StudioProgressMonitor monitor = getProgressMonitor();
-        ConnectionParameter connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(),
-            EncryptionMethod.NONE, AuthenticationMethod.SIMPLE, ldapServer.getAdminDn(), ldapServer.getAdminPassword(),
-            null, true, null, 30000L );
+        ConnectionParameter connectionParameter = new ConnectionParameter( null, ldapServer.getHost(),
+            ldapServer.getPort(), EncryptionMethod.NONE, AuthenticationMethod.SIMPLE, ldapServer.getAdminDn(),
+            ldapServer.getAdminPassword(), null, true, null, 30000L );
         Connection connection = new Connection( connectionParameter );
         ConnectionWrapper connectionWrapper = connection.getConnectionWrapper();
 
@@ -252,8 +253,9 @@ public class DirectoryApiConnectionWrapperTest
 
         // simple auth with invalid user
         monitor = getProgressMonitor();
-        connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(), EncryptionMethod.NONE,
-            AuthenticationMethod.SIMPLE, "cn=invalid," + USERS_OU_DN, "invalid", null, true, null, 30000L );
+        connectionParameter = new ConnectionParameter( null, ldapServer.getHost(), ldapServer.getPort(),
+            EncryptionMethod.NONE, AuthenticationMethod.SIMPLE, "cn=invalid," + USERS_OU_DN, "invalid", null, true,
+            null, 30000L );
         connection = new Connection( connectionParameter );
         connectionWrapper = connection.getConnectionWrapper();
         connectionWrapper.connect( monitor );
@@ -271,8 +273,9 @@ public class DirectoryApiConnectionWrapperTest
 
         // simple auth with invalid password
         monitor = getProgressMonitor();
-        connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(), EncryptionMethod.NONE,
-            AuthenticationMethod.SIMPLE, ldapServer.getAdminDn(), "invalid", null, true, null, 30000L );
+        connectionParameter = new ConnectionParameter( null, ldapServer.getHost(), ldapServer.getPort(),
+            EncryptionMethod.NONE, AuthenticationMethod.SIMPLE, ldapServer.getAdminDn(), "invalid", null, true, null,
+            30000L );
         connection = new Connection( connectionParameter );
         connectionWrapper = connection.getConnectionWrapper();
         connectionWrapper.connect( monitor );
@@ -1055,8 +1058,9 @@ public class DirectoryApiConnectionWrapperTest
         String dn, String password )
     {
         // simple auth without principal and credential
-        ConnectionParameter connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(),
-            EncryptionMethod.NONE, AuthenticationMethod.SIMPLE, dn, password, null, false, null, 30000L );
+        ConnectionParameter connectionParameter = new ConnectionParameter( null, ldapServer.getHost(),
+            ldapServer.getPort(), EncryptionMethod.NONE, AuthenticationMethod.SIMPLE, dn, password, null, false, null,
+            30000L );
 
         Connection connection = new Connection( connectionParameter );
 
@@ -1081,9 +1085,9 @@ public class DirectoryApiConnectionWrapperTest
     protected ConnectionWrapper getConnectionWrapper( StudioProgressMonitor monitor, TestLdapServer ldapServer )
     {
         // simple auth without principal and credential
-        ConnectionParameter connectionParameter = new ConnectionParameter( null, LOCALHOST, ldapServer.getPort(),
-            EncryptionMethod.NONE, AuthenticationMethod.SIMPLE, ldapServer.getAdminDn(), ldapServer.getAdminPassword(),
-            null, false, null, 30000L );
+        ConnectionParameter connectionParameter = new ConnectionParameter( null, ldapServer.getHost(),
+            ldapServer.getPort(), EncryptionMethod.NONE, AuthenticationMethod.SIMPLE, ldapServer.getAdminDn(),
+            ldapServer.getAdminPassword(), null, false, null, 30000L );
 
         Connection connection = new Connection( connectionParameter );
 

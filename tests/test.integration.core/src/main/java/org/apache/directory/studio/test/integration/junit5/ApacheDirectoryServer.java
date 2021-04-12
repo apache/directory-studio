@@ -39,7 +39,7 @@ import org.apache.mina.util.AvailablePortFinder;
 /**
  * An ApacheDS implementation of a test LDAP server.
  * 
- * This implementation starts an embedded LdapServer and adds a partition dc=example,dc=org.
+ * This implementation starts an embedded ApacheDS and adds a partition dc=example,dc=org.
  */
 public class ApacheDirectoryServer extends TestLdapServer
 {
