@@ -248,3 +248,49 @@ postalAddress: Abahri Abazari$81023 River Street$Monroe, SD  51865
 description: This is the description for Abahri Abazari.
 roomNumber: 1963
 
+dn: ou=referrals,dc=example,dc=org
+objectClass: organizationalUnit
+objectClass: top
+ou: referrals
+
+dn: cn=referral-to-user.1,ou=referrals,dc=example,dc=org
+objectClass: top
+objectClass: referral
+objectClass: extensibleObject
+cn: referral-to-user.1
+ref: ldap://replace-with-host-port/uid=user.1,ou=users,dc=example,dc=org
+
+dn: cn=referral-to-users,ou=referrals,dc=example,dc=org
+objectClass: top
+objectClass: referral
+objectClass: extensibleObject
+cn: referral-to-users
+ref: ldap://replace-with-host-port/ou=users,dc=example,dc=org
+
+dn: cn=referral-to-referral-to-users,ou=referrals,dc=example,dc=org
+objectClass: top
+objectClass: referral
+objectClass: extensibleObject
+cn: referral-to-referral-to-users
+ref: ldap://replace-with-host-port/cn=referral-to-users,ou=referrals,dc=example,dc=org
+
+dn: cn=referral-to-referrals,ou=referrals,dc=example,dc=org
+objectClass: top
+objectClass: referral
+objectClass: extensibleObject
+cn: referral-to-referrals
+ref: ldap://replace-with-host-port/ou=referrals,dc=example,dc=org
+
+dn: cn=referral-loop-1,ou=referrals,dc=example,dc=org
+objectClass: top
+objectClass: referral
+objectClass: extensibleObject
+cn: referral-loop-1
+ref: ldap://replace-with-host-port/cn=referral-loop-2,ou=referrals,dc=example,dc=org
+
+dn: cn=referral-loop-2,ou=referrals,dc=example,dc=org
+objectClass: top
+objectClass: referral
+objectClass: extensibleObject
+cn: referral-loop-2
+ref: ldap://replace-with-host-port/cn=referral-loop-1,ou=referrals,dc=example,dc=org

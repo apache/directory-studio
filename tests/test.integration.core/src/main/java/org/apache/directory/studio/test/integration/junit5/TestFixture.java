@@ -27,8 +27,11 @@ import java.util.Optional;
 
 import org.apache.directory.api.ldap.model.cursor.EntryCursor;
 import org.apache.directory.api.ldap.model.cursor.SearchCursor;
+import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.DefaultEntry;
 import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.ldif.LdifEntry;
 import org.apache.directory.api.ldap.model.ldif.LdifReader;
 import org.apache.directory.api.ldap.model.message.Control;
@@ -50,17 +53,50 @@ import org.apache.directory.studio.connection.core.Controls;
 public class TestFixture
 {
 
+    public static Dn dn( String dn )
+    {
+        try
+        {
+            return new Dn( dn );
+        }
+        catch ( LdapInvalidDnException e )
+        {
+            throw new RuntimeException( e );
+        }
+    }
+
+
+    public static Dn dn( String rdn, Dn dn )
+    {
+        try
+        {
+            return dn.add( rdn );
+        }
+        catch ( LdapInvalidDnException e )
+        {
+            throw new RuntimeException( e );
+        }
+    }
+
     public static final String OBJECT_CLASS_ALL_FILTER = "(objectClass=*)";
 
     public static final String TEST_FIXTURE_LDIF = "TestFixture.ldif";
 
-    public static final String CONTEXT_DN = "dc=example,dc=org";
+    public static final Dn CONTEXT_DN = dn( "dc=example,dc=org" );
 
-    public static final String MISC_OU_DN = "ou=misc," + CONTEXT_DN;
+    public static final Dn MISC_DN = dn( "ou=misc", CONTEXT_DN );
 
-    public static final String USERS_OU_DN = "ou=users," + CONTEXT_DN;
+    public static final Dn USERS_DN = dn( "ou=users", CONTEXT_DN );
+    public static final Dn USER1_DN = dn( "uid=user.1", USERS_DN );
+    public static final Dn USER8_DN = dn( "uid=user.8", USERS_DN );
 
-    public static final String REFERRALS_OU_DN = "ou=referrals," + CONTEXT_DN;
+    public static final Dn REFERRALS_DN = dn( "ou=referrals", CONTEXT_DN );
+    public static final Dn REFERRAL_TO_USERS_DN = dn( "cn=referral-to-users", REFERRALS_DN );
+    public static final Dn REFERRAL_TO_USER1_DN = dn( "cn=referral-to-user.1", REFERRALS_DN );
+    public static final Dn REFERRAL_TO_REFERRAL_TO_USERS_DN = dn( "cn=referral-to-referral-to-users", REFERRALS_DN );
+    public static final Dn REFERRAL_TO_REFERRALS_DN = dn( "cn=referral-to-referrals", REFERRALS_DN );
+    public static final Dn REFERRAL_LOOP_1_DN = dn( "cn=referral-loop-1", REFERRALS_DN );
+    public static final Dn REFERRAL_LOOP_2_DN = dn( "cn=referral-loop-2", REFERRALS_DN );
 
     /**
      * Creates the context entry "dc=example,dc=org" if it doesn't exist yet.
@@ -84,6 +120,7 @@ public class TestFixture
             {
                 for ( LdifEntry entry : ldifReader )
                 {
+                    replaceRefLdapUrl( ldapServer, entry );
                     connection.add( entry.getEntry() );
                 }
             }
@@ -91,56 +128,18 @@ public class TestFixture
     }
 
 
-    public static void importReferrals( TestLdapServer ldapServer )
+    private static void replaceRefLdapUrl( TestLdapServer ldapServer, LdifEntry entry )
+        throws LdapInvalidAttributeValueException
     {
-        ldapServer.withAdminConnection( connection -> {
-            connection.bind( ldapServer.getAdminDn(), ldapServer.getAdminPassword() );
-
-            // create referral entries
-            Entry referralsOu = new DefaultEntry( connection.getSchemaManager() );
-            referralsOu.setDn( new Dn( REFERRALS_OU_DN ) );
-            referralsOu.add( "objectClass", "top", "organizationalUnit" );
-            referralsOu.add( "ou", "referrals" );
-            connection.add( referralsOu );
-
-            // direct referral
-            Entry r1 = new DefaultEntry( connection.getSchemaManager() );
-            r1.setDn( new Dn( "cn=referral1", REFERRALS_OU_DN ) );
-            r1.add( "objectClass", "top", "referral", "extensibleObject" );
-            r1.add( "cn", "referral1" );
-            r1.add( "ref", ldapServer.getLdapUrl() + "/" + TestFixture.USERS_OU_DN );
-            connection.add( r1 );
-
-            // referral via another immediate referral
-            Entry r2 = new DefaultEntry( connection.getSchemaManager() );
-            r2.setDn( new Dn( "cn=referral2", REFERRALS_OU_DN ) );
-            r2.add( "objectClass", "top", "referral", "extensibleObject" );
-            r2.add( "cn", "referral2" );
-            r2.add( "ref", ldapServer.getLdapUrl() + "/" + r1.getDn().getName() );
-            connection.add( r2 );
-
-            // referral to parent which contains this referral
-            Entry r3 = new DefaultEntry( connection.getSchemaManager() );
-            r3.setDn( new Dn( "cn=referral3", REFERRALS_OU_DN ) );
-            r3.add( "objectClass", "top", "referral", "extensibleObject" );
-            r3.add( "cn", "referral3" );
-            r3.add( "ref", ldapServer.getLdapUrl() + "/" + REFERRALS_OU_DN );
-            connection.add( r3 );
-
-            // referrals pointing to each other (loop)
-            Entry r4a = new DefaultEntry( connection.getSchemaManager() );
-            r4a.setDn( new Dn( "cn=referral4a", REFERRALS_OU_DN ) );
-            r4a.add( "objectClass", "top", "referral", "extensibleObject" );
-            r4a.add( "cn", "referral4a" );
-            r4a.add( "ref", ldapServer.getLdapUrl() + "/cn=referral4b," + REFERRALS_OU_DN );
-            connection.add( r4a );
-            Entry r4b = new DefaultEntry( connection.getSchemaManager() );
-            r4b.setDn( new Dn( "cn=referral4b", REFERRALS_OU_DN ) );
-            r4b.add( "objectClass", "top", "referral", "extensibleObject" );
-            r4b.add( "cn", "referral4b" );
-            r4b.add( "ref", ldapServer.getLdapUrl() + "/cn=referral4a," + REFERRALS_OU_DN );
-            connection.add( r4b );
-        } );
+        Attribute ref = entry.get( "ref" );
+        if ( ref != null )
+        {
+            String oldRefLdapUrl = ref.getString();
+            String newRefLdapUrl = oldRefLdapUrl.replace( "replace-with-host-port",
+                ldapServer.getHost() + ":" + ldapServer.getPort() );
+            ref.remove( oldRefLdapUrl );
+            ref.add( newRefLdapUrl );
+        }
     }
 
 
@@ -157,21 +156,21 @@ public class TestFixture
             }
 
             // delete ou=referrals
-            deleteTree( connection, REFERRALS_OU_DN, Optional.of( Controls.MANAGEDSAIT_CONTROL ) );
+            deleteTree( connection, REFERRALS_DN, Optional.of( Controls.MANAGEDSAIT_CONTROL ) );
             // delete ou=users
-            deleteTree( connection, USERS_OU_DN, Optional.empty() );
+            deleteTree( connection, USERS_DN, Optional.empty() );
             // delete ou=misc
-            deleteTree( connection, MISC_OU_DN, Optional.empty() );
+            deleteTree( connection, MISC_DN, Optional.empty() );
         } );
 
     }
 
 
-    private static void deleteTree( LdapConnection connection, String baseDn, Optional<Control> control )
+    private static void deleteTree( LdapConnection connection, Dn baseDn, Optional<Control> control )
         throws Exception
     {
         SearchRequest searchRequest = new SearchRequestImpl();
-        searchRequest.setBase( new Dn( baseDn ) );
+        searchRequest.setBase( baseDn );
         searchRequest.setFilter( OBJECT_CLASS_ALL_FILTER );
         searchRequest.setScope( SearchScope.SUBTREE );
         control.ifPresent( c -> searchRequest.addControl( c ) );

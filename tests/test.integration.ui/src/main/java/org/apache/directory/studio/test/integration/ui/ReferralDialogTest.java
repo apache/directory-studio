@@ -21,30 +21,29 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import static org.apache.directory.studio.test.integration.ui.Constants.LOCALHOST;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.CONTEXT_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.REFERRALS_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.REFERRAL_LOOP_1_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.REFERRAL_LOOP_2_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.REFERRAL_TO_REFERRALS_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.REFERRAL_TO_REFERRAL_TO_USERS_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.REFERRAL_TO_USER1_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.REFERRAL_TO_USERS_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.USER1_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.USERS_DN;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.apache.directory.server.annotations.CreateLdapServer;
-import org.apache.directory.server.annotations.CreateTransport;
-import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
-import org.apache.directory.api.ldap.model.entry.DefaultEntry;
-import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
-import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
+import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
+import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
 import org.apache.directory.studio.test.integration.ui.bots.ReferralDialogBot;
-import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
-import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
-import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.params.ParameterizedTest;
 
 
 /**
@@ -53,56 +52,24 @@ import org.junit.runner.RunWith;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-@RunWith(FrameworkRunnerWithScreenshotCaptureListener.class)
-@CreateLdapServer(transports =
-    { @CreateTransport(protocol = "LDAP") })
-public class ReferralDialogTest extends AbstractLdapTestUnit
+public class ReferralDialogTest extends AbstractTestBase
 {
-    private StudioBot studioBot;
-    private ConnectionsViewBot connectionsViewBot;
-    private BrowserViewBot browserViewBot;
 
-    private Connection connection;
-
-    private String[] parentPath;
-    private String[] referralPath;
-    private String[] targetPath;
-
-
-    @Before
-    public void setUp() throws Exception
+    static String[] path( String[] parents, String leaf )
     {
-        studioBot = new StudioBot();
-        studioBot.resetLdapPerspective();
-        connectionsViewBot = studioBot.getConnectionView();
-        connection = connectionsViewBot.createTestConnection( "ReferralDialogTest", ldapServer.getPort() );
-        browserViewBot = studioBot.getBrowserView();
-
-        // create referral entry
-        Entry entry = new DefaultEntry( service.getSchemaManager() );
-        entry.setDn( new Dn( "cn=referralDialogTest,ou=system" ) );
-        entry.add( "objectClass", "top", "referral", "extensibleObject" );
-        entry.add( "cn", "referralDialogTest" );
-        entry.add( "ref", "ldap://" + LOCALHOST + ":" + ldapServer.getPort() + "/ou=users,ou=system" );
-        service.getAdminSession().add( entry );
-
-        // get paths
-        parentPath = new String[]
-            { "DIT", "Root DSE", "ou=system" };
-        referralPath = new String[]
-            { "DIT", "Root DSE", "ou=system", "cn=referralDialogTest" };
-        targetPath = new String[]
-            { "DIT", "Root DSE", "ou=system",
-                "ldap://" + LOCALHOST + ":" + ldapServer.getPort() + "/ou=users,ou=system" };
+        return ArrayUtils.addAll( parents, leaf );
     }
 
+    public static final String[] ROOT_DSE_PATH =
+        { "DIT", "Root DSE" };
+    public static final String[] CONTEXT_PATH = path( ROOT_DSE_PATH, CONTEXT_DN.getName() );
+    public static final String[] USERS_PATH = path( CONTEXT_PATH, USERS_DN.getRdn().getName() );
+    public static final String[] REFERRALS_PATH = path( CONTEXT_PATH, REFERRALS_DN.getRdn().getName() );
 
-    @After
-    public void tearDown() throws Exception
+    public static String[] pathWithRefLdapUrl( TestLdapServer ldapServer, Dn dn )
     {
-        connectionsViewBot.closeSelectedConnections();
-        connectionsViewBot.deleteTestConnections();
-        Assertions.genericTearDownAssertions();
+        String s = ldapServer.getLdapUrl() + "/" + dn.getName();
+        return path( REFERRALS_PATH, s );
     }
 
 
@@ -111,26 +78,33 @@ public class ReferralDialogTest extends AbstractLdapTestUnit
      *
      * Follows a continuation reference.
      */
-    @Test
-    public void testBrowseAndFollowContinuationReference()
+    @ParameterizedTest
+    @LdapServersSource
+    public void testBrowseAndFollowContinuationReference( TestLdapServer server ) throws Exception
     {
         // ensure that referrals handling method is FOLLOW
+        Connection connection = connectionsViewBot.createTestConnection( server );
         connection.getConnectionParameter().setExtendedIntProperty(
-            IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD, ReferralHandlingMethod.FOLLOW.ordinal() );
+            IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD,
+            ReferralHandlingMethod.FOLLOW.ordinal() );
         int referralsHandlingMethodOrdinal = connection.getConnectionParameter().getExtendedIntProperty(
             IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD );
         assertEquals( ReferralHandlingMethod.FOLLOW.ordinal(), referralsHandlingMethodOrdinal );
 
-        // expand ou=system, that reads the referral and opens the referral dialog
-        ReferralDialogBot referralDialogBot = browserViewBot.expandEntryExpectingReferralDialog( parentPath );
+        // expand ou=referrals, that reads the referrals and opens the referral dialog
+        ReferralDialogBot referralDialogBot = browserViewBot.expandEntryExpectingReferralDialog( REFERRALS_PATH );
         assertTrue( referralDialogBot.isVisible() );
         assertEquals( connection.getName(), referralDialogBot.getSelectedConnection() );
         referralDialogBot.clickOkButton();
 
-        // ensure that the target exists, the referral is not visible
-        assertFalse( browserViewBot.existsEntry( referralPath ) );
-        assertTrue( browserViewBot.existsEntry( targetPath ) );
-        browserViewBot.selectEntry( targetPath );
+        // ensure that the continuation URLs are visible and can be expanded, but not the referrals entries
+        assertReferralEntriesAreNotVisible();
+        assertTrue( browserViewBot.existsEntry( pathWithRefLdapUrl( server, USER1_DN ) ) );
+        assertTrue( browserViewBot.existsEntry( pathWithRefLdapUrl( server, USERS_DN ) ) );
+        browserViewBot.expandEntry( pathWithRefLdapUrl( server, USERS_DN ) );
+        assertTrue( browserViewBot.existsEntry( pathWithRefLdapUrl( server, REFERRALS_DN ) ) );
+        browserViewBot.expandEntry( pathWithRefLdapUrl( server, REFERRALS_DN ) );
+
     }
 
 
@@ -140,59 +114,68 @@ public class ReferralDialogTest extends AbstractLdapTestUnit
      * Does not follow a continuation reference by clicking the cancel button in
      * the referral dialog.
      */
-    @Test
-    public void testBrowseAndCancelFollowingContinuationReference()
+    @ParameterizedTest
+    @LdapServersSource
+    public void testBrowseAndCancelFollowingContinuationReference( TestLdapServer server ) throws Exception
     {
         // ensure that referrals handling method is FOLLOW
+        Connection connection = connectionsViewBot.createTestConnection( server );
         connection.getConnectionParameter().setExtendedIntProperty(
-            IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD, ReferralHandlingMethod.FOLLOW.ordinal() );
+            IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD,
+            ReferralHandlingMethod.FOLLOW.ordinal() );
         int referralsHandlingMethodOrdinal = connection.getConnectionParameter().getExtendedIntProperty(
             IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD );
         assertEquals( ReferralHandlingMethod.FOLLOW.ordinal(), referralsHandlingMethodOrdinal );
 
-        // expand ou=system, that reads the referral and opens the referral dialog
-        ReferralDialogBot referralDialogBot = browserViewBot.expandEntryExpectingReferralDialog( parentPath );
+        // expand ou=referrals, that reads the referral and opens the referral dialog
+        ReferralDialogBot referralDialogBot = browserViewBot.expandEntryExpectingReferralDialog( REFERRALS_PATH );
         assertTrue( referralDialogBot.isVisible() );
         assertEquals( connection.getName(), referralDialogBot.getSelectedConnection() );
         referralDialogBot.clickCancelButton();
 
-        // ensure that neither the target, nor the referral exist
-        assertFalse( browserViewBot.existsEntry( referralPath ) );
-        assertFalse( browserViewBot.existsEntry( targetPath ) );
+        // ensure that neither the continuation URLs, nor the referral entries are visible
+        assertReferralEntriesAreNotVisible();
+        assertRefLdapUrlsAreNotVisible( server );
     }
 
 
     /**
      * Tests ignore referral by setting the connection property to IGNORE.
      */
-    @Test
-    public void testBrowseAndIgnoreReferral()
+    @ParameterizedTest
+    @LdapServersSource
+    public void testBrowseAndIgnoreReferral( TestLdapServer server ) throws Exception
     {
         // ensure that referrals handling method is IGNORE
+        Connection connection = connectionsViewBot.createTestConnection( server );
         connection.getConnectionParameter().setExtendedIntProperty(
-            IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD, ReferralHandlingMethod.IGNORE.ordinal() );
+            IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD,
+            ReferralHandlingMethod.IGNORE.ordinal() );
         int referralsHandlingMethodOrdinal = connection.getConnectionParameter().getExtendedIntProperty(
             IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD );
         assertEquals( ReferralHandlingMethod.IGNORE.ordinal(), referralsHandlingMethodOrdinal );
 
-        // expand ou=system, no referral dialog expected
-        browserViewBot.expandEntry( parentPath );
+        // expand ou=referrals, no referral dialog expected
+        browserViewBot.expandEntry( REFERRALS_PATH );
 
-        // ensure that neither the target, nor the referral exist
-        assertFalse( browserViewBot.existsEntry( referralPath ) );
-        assertFalse( browserViewBot.existsEntry( targetPath ) );
+        // ensure that neither the continuation URLs, nor the referral entries are visible
+        assertReferralEntriesAreNotVisible();
+        assertRefLdapUrlsAreNotVisible( server );
     }
 
 
     /**
      * Tests manage referral entry by setting the ManageDsaIT control.
      */
-    @Test
-    public void testBrowseAndManageReferralEntry()
+    @ParameterizedTest
+    @LdapServersSource
+    public void testBrowseAndManageReferralEntry( TestLdapServer server ) throws Exception
     {
         // ensure that ManageDsaIT is set
+        Connection connection = connectionsViewBot.createTestConnection( server );
         connection.getConnectionParameter().setExtendedIntProperty(
-            IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD, ReferralHandlingMethod.IGNORE.ordinal() );
+            IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD,
+            ReferralHandlingMethod.IGNORE.ordinal() );
         connection.getConnectionParameter().setExtendedBoolProperty(
             IBrowserConnection.CONNECTION_PARAMETER_MANAGE_DSA_IT, true );
         int referralsHandlingMethodOrdinal = connection.getConnectionParameter().getExtendedIntProperty(
@@ -202,23 +185,29 @@ public class ReferralDialogTest extends AbstractLdapTestUnit
         assertEquals( ReferralHandlingMethod.IGNORE.ordinal(), referralsHandlingMethodOrdinal );
         assertTrue( manageDsaIT );
 
-        // expand ou=system, that reads the referral object
-        browserViewBot.expandEntry( parentPath );
+        // expand ou=referrals, that reads the referral object
+        browserViewBot.expandEntry( REFERRALS_PATH );
 
-        // ensure that the referral entry exists
-        assertTrue( browserViewBot.existsEntry( referralPath ) );
-        assertFalse( browserViewBot.existsEntry( targetPath ) );
-        browserViewBot.selectEntry( referralPath );
+        // ensure that the referral entries are visible, but not the continuation URLs
+        assertRefLdapUrlsAreNotVisible( server );
+        browserViewBot.selectEntry( path( REFERRALS_PATH, REFERRAL_TO_USER1_DN.getRdn().getName() ) );
+        browserViewBot.selectEntry( path( REFERRALS_PATH, REFERRAL_TO_USERS_DN.getRdn().getName() ) );
+        browserViewBot.selectEntry( path( REFERRALS_PATH, REFERRAL_TO_REFERRAL_TO_USERS_DN.getRdn().getName() ) );
+        browserViewBot.selectEntry( path( REFERRALS_PATH, REFERRAL_TO_REFERRALS_DN.getRdn().getName() ) );
+        browserViewBot.selectEntry( path( REFERRALS_PATH, REFERRAL_LOOP_1_DN.getRdn().getName() ) );
+        browserViewBot.selectEntry( path( REFERRALS_PATH, REFERRAL_LOOP_2_DN.getRdn().getName() ) );
     }
 
 
     /**
      * Tests manual referral following.
      */
-    @Test
-    public void testBrowseAndFollowManuallyContinuationReference()
+    @ParameterizedTest
+    @LdapServersSource
+    public void testBrowseAndFollowManuallyContinuationReference( TestLdapServer server ) throws Exception
     {
         // ensure that referrals handling method is FOLLOW_MANUALLY
+        Connection connection = connectionsViewBot.createTestConnection( server );
         connection.getConnectionParameter().setExtendedIntProperty(
             IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD,
             ReferralHandlingMethod.FOLLOW_MANUALLY.ordinal() );
@@ -226,22 +215,56 @@ public class ReferralDialogTest extends AbstractLdapTestUnit
             IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD );
         assertEquals( ReferralHandlingMethod.FOLLOW_MANUALLY.ordinal(), referralsHandlingMethodOrdinal );
 
-        // expand ou=system, no referral dialog expected yet
-        browserViewBot.expandEntry( parentPath );
+        // expand ou=referrals, no referral dialog expected yet
+        browserViewBot.expandEntry( REFERRALS_PATH );
 
-        // ensure that the target exists, the referral is not visible
-        assertFalse( browserViewBot.existsEntry( referralPath ) );
-        assertTrue( browserViewBot.existsEntry( targetPath ) );
+        // ensure that only the referral targets are visible, not the referrals
+        assertReferralEntriesAreNotVisible();
+        assertTrue( browserViewBot.existsEntry( pathWithRefLdapUrl( server, USER1_DN ) ) );
+        assertTrue( browserViewBot.existsEntry( pathWithRefLdapUrl( server, USERS_DN ) ) );
+        assertTrue( browserViewBot.existsEntry( pathWithRefLdapUrl( server, REFERRAL_TO_USERS_DN ) ) );
+        assertTrue( browserViewBot.existsEntry( pathWithRefLdapUrl( server, REFERRALS_DN ) ) );
+        assertTrue( browserViewBot.existsEntry( pathWithRefLdapUrl( server, REFERRAL_LOOP_1_DN ) ) );
+        assertTrue( browserViewBot.existsEntry( pathWithRefLdapUrl( server, REFERRAL_LOOP_2_DN ) ) );
 
-        // select the target, that should popup the referral dialog
-        ReferralDialogBot referralDialogBot = browserViewBot.selectEntryExpectingReferralDialog( targetPath );
+        // select one target, that should popup the referral dialog
+        ReferralDialogBot referralDialogBot = browserViewBot
+            .selectEntryExpectingReferralDialog( pathWithRefLdapUrl( server, USER1_DN ) );
         assertTrue( referralDialogBot.isVisible() );
         assertEquals( connection.getName(), referralDialogBot.getSelectedConnection() );
         referralDialogBot.clickOkButton();
 
-        // ensure that the target exists, the referral is not visible
-        assertFalse( browserViewBot.existsEntry( referralPath ) );
-        assertTrue( browserViewBot.existsEntry( targetPath ) );
-        browserViewBot.selectEntry( targetPath );
+        // now all ref URLs can be expanded, no additional referral dialog is expected
+        browserViewBot.expandEntry( pathWithRefLdapUrl( server, USER1_DN ) );
+        browserViewBot.expandEntry( pathWithRefLdapUrl( server, USERS_DN ) );
+        browserViewBot.expandEntry( pathWithRefLdapUrl( server, REFERRAL_TO_USERS_DN ) );
+        browserViewBot.expandEntry( pathWithRefLdapUrl( server, REFERRALS_DN ) );
+        browserViewBot.expandEntry( pathWithRefLdapUrl( server, REFERRAL_LOOP_1_DN ) );
+        browserViewBot.expandEntry( pathWithRefLdapUrl( server, REFERRAL_LOOP_2_DN ) );
     }
+
+
+    private void assertRefLdapUrlsAreNotVisible( TestLdapServer server )
+    {
+        assertFalse( browserViewBot.existsEntry( pathWithRefLdapUrl( server, USER1_DN ) ) );
+        assertFalse( browserViewBot.existsEntry( pathWithRefLdapUrl( server, USERS_DN ) ) );
+        assertFalse( browserViewBot.existsEntry( pathWithRefLdapUrl( server, REFERRAL_TO_USERS_DN ) ) );
+        assertFalse( browserViewBot.existsEntry( pathWithRefLdapUrl( server, REFERRALS_DN ) ) );
+        assertFalse( browserViewBot.existsEntry( pathWithRefLdapUrl( server, REFERRAL_LOOP_1_DN ) ) );
+        assertFalse( browserViewBot.existsEntry( pathWithRefLdapUrl( server, REFERRAL_LOOP_2_DN ) ) );
+    }
+
+
+    private void assertReferralEntriesAreNotVisible()
+    {
+        assertFalse( browserViewBot.existsEntry( path( REFERRALS_PATH, REFERRAL_TO_USER1_DN.getRdn().getName() ) ) );
+        assertFalse( browserViewBot.existsEntry( path( REFERRALS_PATH, REFERRAL_TO_USERS_DN.getRdn().getName() ) ) );
+        assertFalse(
+            browserViewBot.existsEntry( path( REFERRALS_PATH, REFERRAL_TO_REFERRAL_TO_USERS_DN.getRdn().getName() ) ) );
+        assertFalse(
+            browserViewBot.existsEntry( path( REFERRALS_PATH, REFERRAL_TO_REFERRALS_DN.getRdn().getName() ) ) );
+        assertFalse( browserViewBot.existsEntry( path( REFERRALS_PATH, REFERRAL_LOOP_1_DN.getRdn().getName() ) ) );
+        assertFalse( browserViewBot.existsEntry( path( REFERRALS_PATH, REFERRAL_LOOP_2_DN.getRdn().getName() ) ) );
+    }
+
 }

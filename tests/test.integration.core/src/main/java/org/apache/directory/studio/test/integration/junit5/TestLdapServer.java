@@ -124,7 +124,6 @@ public abstract class TestLdapServer
         TestFixture.createContextEntry( this );
         TestFixture.cleanup( this );
         TestFixture.importData( this );
-        TestFixture.importReferrals( this );
     }
 
 

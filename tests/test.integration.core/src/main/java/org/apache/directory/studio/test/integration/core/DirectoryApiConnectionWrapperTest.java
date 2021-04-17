@@ -22,8 +22,16 @@ package org.apache.directory.studio.test.integration.core;
 
 
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.CONTEXT_DN;
-import static org.apache.directory.studio.test.integration.junit5.TestFixture.REFERRALS_OU_DN;
-import static org.apache.directory.studio.test.integration.junit5.TestFixture.USERS_OU_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.REFERRALS_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.REFERRAL_LOOP_1_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.REFERRAL_LOOP_2_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.REFERRAL_TO_REFERRALS_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.REFERRAL_TO_REFERRAL_TO_USERS_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.REFERRAL_TO_USERS_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.USER1_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.USER8_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.USERS_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.dn;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -254,7 +262,7 @@ public class DirectoryApiConnectionWrapperTest
         // simple auth with invalid user
         monitor = getProgressMonitor();
         connectionParameter = new ConnectionParameter( null, ldapServer.getHost(), ldapServer.getPort(),
-            EncryptionMethod.NONE, AuthenticationMethod.SIMPLE, "cn=invalid," + USERS_OU_DN, "invalid", null, true,
+            EncryptionMethod.NONE, AuthenticationMethod.SIMPLE, "cn=invalid," + USERS_DN, "invalid", null, true,
             null, 30000L );
         connection = new Connection( connectionParameter );
         connectionWrapper = connection.getConnectionWrapper();
@@ -302,7 +310,7 @@ public class DirectoryApiConnectionWrapperTest
     {
         StudioProgressMonitor monitor = getProgressMonitor();
         SearchControls searchControls = new SearchControls();
-        StudioSearchResultEnumeration result = getConnectionWrapper( monitor, ldapServer ).search( CONTEXT_DN,
+        StudioSearchResultEnumeration result = getConnectionWrapper( monitor, ldapServer ).search( CONTEXT_DN.getName(),
             "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, null,
             monitor, null );
 
@@ -345,7 +353,7 @@ public class DirectoryApiConnectionWrapperTest
         StudioProgressMonitor monitor = getProgressMonitor();
         SearchControls searchControls = new SearchControls();
         StudioSearchResultEnumeration result = getConnectionWrapper( monitor, ldapServer ).search(
-            "cn=referral1," + REFERRALS_OU_DN, "(objectClass=*)", searchControls,
+            REFERRAL_TO_USERS_DN.getName(), "(objectClass=*)", searchControls,
             AliasDereferencingMethod.NEVER,
             ReferralHandlingMethod.FOLLOW, null, monitor, null );
 
@@ -353,12 +361,12 @@ public class DirectoryApiConnectionWrapperTest
         assertFalse( monitor.errorsReported() );
         assertNotNull( result );
 
-        List<String> dns = consume( result, sr -> sr.getDn().getName() );
+        List<Dn> dns = consume( result, sr -> sr.getDn() );
         if ( ldapServer.getType() != LdapServerType.Fedora389ds )
         {
             // TODO: check why 389ds returns ou=users
             assertEquals( 8, dns.size() );
-            assertThat( dns, hasItems( "uid=user.1," + USERS_OU_DN, "uid=user.8," + USERS_OU_DN ) );
+            assertThat( dns, hasItems( USER1_DN, USER8_DN ) );
         }
     }
 
@@ -371,7 +379,7 @@ public class DirectoryApiConnectionWrapperTest
         SearchControls searchControls = new SearchControls();
         searchControls.setSearchScope( SearchControls.SUBTREE_SCOPE );
         StudioSearchResultEnumeration result = getConnectionWrapper( monitor, ldapServer ).search(
-            "cn=referral2," + REFERRALS_OU_DN, "(objectClass=*)", searchControls,
+            REFERRAL_TO_REFERRAL_TO_USERS_DN.getName(), "(objectClass=*)", searchControls,
             AliasDereferencingMethod.NEVER,
             ReferralHandlingMethod.FOLLOW, null, monitor, null );
 
@@ -379,12 +387,12 @@ public class DirectoryApiConnectionWrapperTest
         assertFalse( monitor.errorsReported() );
         assertNotNull( result );
 
-        List<String> dns = consume( result, sr -> sr.getDn().getName() );
+        List<Dn> dns = consume( result, sr -> sr.getDn() );
         if ( ldapServer.getType() != LdapServerType.Fedora389ds )
         {
             // TODO: check why 389ds returns ou=users only
             assertEquals( 9, dns.size() );
-            assertThat( dns, hasItems( USERS_OU_DN, "uid=user.1," + USERS_OU_DN, "uid=user.8," + USERS_OU_DN ) );
+            assertThat( dns, hasItems( USERS_DN, USER1_DN, USER8_DN ) );
         }
     }
 
@@ -397,20 +405,19 @@ public class DirectoryApiConnectionWrapperTest
         SearchControls searchControls = new SearchControls();
         searchControls.setSearchScope( SearchControls.SUBTREE_SCOPE );
         StudioSearchResultEnumeration result = getConnectionWrapper( monitor, ldapServer ).search(
-            "cn=referral3," + REFERRALS_OU_DN, "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER,
+            REFERRAL_TO_REFERRALS_DN.getName(), "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER,
             ReferralHandlingMethod.FOLLOW, null, monitor, null );
 
         assertFalse( monitor.isCanceled() );
         assertFalse( monitor.errorsReported() );
         assertNotNull( result );
 
-        List<String> dns = consume( result, sr -> sr.getDn().getName() );
+        List<Dn> dns = consume( result, sr -> sr.getDn() );
         if ( ldapServer.getType() != LdapServerType.Fedora389ds )
         {
             // TODO: check why 389ds returns nothing
-            assertEquals( 10, dns.size() );
-            assertThat( dns,
-                hasItems( REFERRALS_OU_DN, USERS_OU_DN, "uid=user.1," + USERS_OU_DN, "uid=user.8," + USERS_OU_DN ) );
+            assertEquals( 11, dns.size() );
+            assertThat( dns, hasItems( REFERRALS_DN, USERS_DN, USER1_DN, USER8_DN ) );
         }
     }
 
@@ -423,7 +430,7 @@ public class DirectoryApiConnectionWrapperTest
         SearchControls searchControls = new SearchControls();
         searchControls.setSearchScope( SearchControls.SUBTREE_SCOPE );
         StudioSearchResultEnumeration result = getConnectionWrapper( monitor, ldapServer ).search(
-            "cn=referral4a," + REFERRALS_OU_DN, "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER,
+            REFERRAL_LOOP_1_DN.getName(), "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER,
             ReferralHandlingMethod.FOLLOW, null, monitor, null );
 
         assertFalse( monitor.isCanceled() );
@@ -444,7 +451,7 @@ public class DirectoryApiConnectionWrapperTest
         searchControls.setSearchScope( SearchControls.SUBTREE_SCOPE );
         ConnectionWrapper connectionWrapper = getConnectionWrapper( monitor, ldapServer );
         ConnectionCorePlugin.getDefault().setReferralHandler( null );
-        StudioSearchResultEnumeration result = connectionWrapper.search( REFERRALS_OU_DN, "(objectClass=*)",
+        StudioSearchResultEnumeration result = connectionWrapper.search( REFERRALS_DN.getName(), "(objectClass=*)",
             searchControls, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.FOLLOW_MANUALLY, null, monitor,
             null );
 
@@ -452,11 +459,10 @@ public class DirectoryApiConnectionWrapperTest
         assertFalse( monitor.errorsReported() );
         assertNotNull( result );
 
-        List<String> dns = consume( result, sr -> sr.getDn().getName() );
-        assertEquals( 6, dns.size() );
-        assertThat( dns,
-            hasItems( REFERRALS_OU_DN, USERS_OU_DN, "cn=referral1," + REFERRALS_OU_DN,
-                "cn=referral4a," + REFERRALS_OU_DN, "cn=referral4b," + REFERRALS_OU_DN ) );
+        List<Dn> dns = consume( result, sr -> sr.getDn() );
+        assertEquals( 7, dns.size() );
+        assertThat( dns, hasItems( REFERRALS_DN, USER1_DN, USERS_DN, REFERRAL_TO_USERS_DN, REFERRAL_LOOP_1_DN,
+            REFERRAL_LOOP_2_DN ) );
     }
 
 
@@ -467,17 +473,17 @@ public class DirectoryApiConnectionWrapperTest
         StudioProgressMonitor monitor = getProgressMonitor();
         SearchControls searchControls = new SearchControls();
         searchControls.setSearchScope( SearchControls.SUBTREE_SCOPE );
-        StudioSearchResultEnumeration result = getConnectionWrapper( monitor, ldapServer ).search( REFERRALS_OU_DN,
-            "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.IGNORE, null,
-            monitor, null );
+        StudioSearchResultEnumeration result = getConnectionWrapper( monitor, ldapServer ).search(
+            REFERRALS_DN.getName(), "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER,
+            ReferralHandlingMethod.IGNORE, null, monitor, null );
 
         assertFalse( monitor.isCanceled() );
         assertFalse( monitor.errorsReported() );
         assertNotNull( result );
 
-        List<String> dns = consume( result, sr -> sr.getDn().getName() );
+        List<Dn> dns = consume( result, sr -> sr.getDn() );
         assertEquals( 1, dns.size() );
-        assertThat( dns, hasItems( REFERRALS_OU_DN ) );
+        assertThat( dns, hasItems( REFERRALS_DN ) );
     }
 
 
@@ -488,21 +494,20 @@ public class DirectoryApiConnectionWrapperTest
         StudioProgressMonitor monitor = getProgressMonitor();
         SearchControls searchControls = new SearchControls();
         searchControls.setSearchScope( SearchControls.SUBTREE_SCOPE );
-        StudioSearchResultEnumeration result = getConnectionWrapper( monitor, ldapServer ).search( REFERRALS_OU_DN,
-            "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER, ReferralHandlingMethod.FOLLOW, null,
-            monitor, null );
+        StudioSearchResultEnumeration result = getConnectionWrapper( monitor, ldapServer ).search(
+            REFERRALS_DN.getName(), "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER,
+            ReferralHandlingMethod.FOLLOW, null, monitor, null );
 
         assertFalse( monitor.isCanceled() );
         assertFalse( monitor.errorsReported() );
         assertNotNull( result );
 
-        List<String> dns = consume( result, sr -> sr.getDn().getName() );
+        List<Dn> dns = consume( result, sr -> sr.getDn() );
         if ( ldapServer.getType() != LdapServerType.Fedora389ds )
         {
             // TODO: check why 389ds missed uid=user.1
-            assertEquals( 11, dns.size() );
-            assertThat( dns, hasItems( REFERRALS_OU_DN, REFERRALS_OU_DN, USERS_OU_DN,
-                "uid=user.1," + USERS_OU_DN, "uid=user.8," + USERS_OU_DN ) );
+            assertEquals( 12, dns.size() );
+            assertThat( dns, hasItems( REFERRALS_DN, REFERRALS_DN, USERS_DN, USER1_DN, USER8_DN ) );
         }
     }
 
@@ -524,7 +529,7 @@ public class DirectoryApiConnectionWrapperTest
     @LdapServersSource
     public void testAdd( TestLdapServer ldapServer ) throws Exception
     {
-        String dn = "uid=user.X," + USERS_OU_DN;
+        String dn = "uid=user.X," + USERS_DN;
 
         StudioProgressMonitor monitor = getProgressMonitor();
         Entry entry = new DefaultEntry( dn, "objectClass: inetOrgPerson", "sn: X", "cn: X", "uid: user.X" );
@@ -541,8 +546,8 @@ public class DirectoryApiConnectionWrapperTest
     @LdapServersSource
     public void testAddFollowsReferral_DirectReferral( TestLdapServer ldapServer ) throws Exception
     {
-        String targetDn = "uid=user.X," + USERS_OU_DN;
-        String referralDn = "uid=user.X,cn=referral1," + REFERRALS_OU_DN;
+        Dn targetDn = dn( "uid=user.X", USERS_DN );
+        Dn referralDn = dn( "uid=user.X", REFERRAL_TO_USERS_DN );
 
         // create entry under referral
         StudioProgressMonitor monitor = getProgressMonitor();
@@ -560,8 +565,8 @@ public class DirectoryApiConnectionWrapperTest
     @LdapServersSource
     public void testAddFollowsReferral_IntermediateReferral( TestLdapServer ldapServer ) throws Exception
     {
-        String targetDn = "uid=user.X," + USERS_OU_DN;
-        String referralDn = "uid=user.X,cn=referral2," + REFERRALS_OU_DN;
+        Dn targetDn = dn( "uid=user.X", USERS_DN );
+        Dn referralDn = dn( "uid=user.X", REFERRAL_TO_REFERRAL_TO_USERS_DN );
 
         // create entry under referral
         StudioProgressMonitor monitor = getProgressMonitor();
@@ -579,7 +584,7 @@ public class DirectoryApiConnectionWrapperTest
     @LdapServersSource
     public void testAddFollowsReferral_ReferralLoop( TestLdapServer ldapServer ) throws Exception
     {
-        String referralDn = "uid=user.X,cn=referral4a," + REFERRALS_OU_DN;
+        Dn referralDn = dn( "uid=user.X", REFERRAL_LOOP_1_DN );
 
         // create entry under referral
         StudioProgressMonitor monitor = getProgressMonitor();
@@ -601,7 +606,7 @@ public class DirectoryApiConnectionWrapperTest
     @LdapServersSource
     public void testModify( TestLdapServer ldapServer ) throws Exception
     {
-        String dn = "uid=user.X," + USERS_OU_DN;
+        String dn = "uid=user.X," + USERS_DN;
 
         // create entry
         ldapServer.withAdminConnection( connection -> connection.add( new DefaultEntry( dn,
@@ -626,8 +631,8 @@ public class DirectoryApiConnectionWrapperTest
     @LdapServersSource
     public void testModifyFollowsReferral_DirectReferral( TestLdapServer ldapServer ) throws Exception
     {
-        String targetDn = "uid=user.X," + USERS_OU_DN;
-        String referralDn = "uid=user.X,cn=referral1," + REFERRALS_OU_DN;
+        Dn targetDn = dn( "uid=user.X", USERS_DN );
+        Dn referralDn = dn( "uid=user.X", REFERRAL_TO_USERS_DN );
 
         // create target entry
         ldapServer.withAdminConnection( connection -> connection.add( new DefaultEntry( targetDn,
@@ -638,13 +643,13 @@ public class DirectoryApiConnectionWrapperTest
         List<Modification> modifications = Collections.singletonList(
             new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE,
                 new DefaultAttribute( "sn", "modified" ) ) );
-        getConnectionWrapper( monitor, ldapServer ).modifyEntry( new Dn( referralDn ), modifications, null, monitor,
+        getConnectionWrapper( monitor, ldapServer ).modifyEntry( referralDn, modifications, null, monitor,
             null );
 
         // should have modified the target entry
         assertFalse( monitor.isCanceled() );
         assertFalse( monitor.errorsReported() );
-        Entry entry = ldapServer.withAdminConnectionAndGet( connection -> connection.lookup( new Dn( targetDn ) ) );
+        Entry entry = ldapServer.withAdminConnectionAndGet( connection -> connection.lookup( targetDn ) );
         assertEquals( "modified", entry.get( "sn" ).getString() );
     }
 
@@ -653,8 +658,8 @@ public class DirectoryApiConnectionWrapperTest
     @LdapServersSource
     public void testModifyFollowsReferral_IntermediateReferral( TestLdapServer ldapServer ) throws Exception
     {
-        String targetDn = "uid=user.X," + USERS_OU_DN;
-        String referralDn = "uid=user.X,cn=referral2," + REFERRALS_OU_DN;
+        Dn targetDn = dn( "uid=user.X", USERS_DN );
+        Dn referralDn = dn( "uid=user.X", REFERRAL_TO_REFERRAL_TO_USERS_DN );
 
         // create target entry
         ldapServer.withAdminConnection( connection -> connection.add( new DefaultEntry( targetDn,
@@ -665,13 +670,13 @@ public class DirectoryApiConnectionWrapperTest
         List<Modification> modifications = Collections.singletonList(
             new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE,
                 new DefaultAttribute( "sn", "modified" ) ) );
-        getConnectionWrapper( monitor, ldapServer ).modifyEntry( new Dn( referralDn ), modifications, null, monitor,
+        getConnectionWrapper( monitor, ldapServer ).modifyEntry( referralDn, modifications, null, monitor,
             null );
 
         // should have modified the target entry
         assertFalse( monitor.isCanceled() );
         assertFalse( monitor.errorsReported() );
-        Entry entry = ldapServer.withAdminConnectionAndGet( connection -> connection.lookup( new Dn( targetDn ) ) );
+        Entry entry = ldapServer.withAdminConnectionAndGet( connection -> connection.lookup( targetDn ) );
         assertEquals( "modified", entry.get( "sn" ).getString() );
     }
 
@@ -680,8 +685,8 @@ public class DirectoryApiConnectionWrapperTest
     @LdapServersSource
     public void testModifyFollowsReferral_ReferralLoop( TestLdapServer ldapServer ) throws Exception
     {
-        String targetDn = "uid=user.X," + USERS_OU_DN;
-        String referralDn = "uid=user.X,cn=referral4a," + REFERRALS_OU_DN;
+        Dn targetDn = dn( "uid=user.X", USERS_DN );
+        Dn referralDn = dn( "uid=user.X", REFERRAL_LOOP_1_DN );
 
         // create target entry
         ldapServer.withAdminConnection( connection -> connection.add( new DefaultEntry( targetDn,
@@ -692,7 +697,7 @@ public class DirectoryApiConnectionWrapperTest
         List<Modification> modifications = Collections.singletonList(
             new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE,
                 new DefaultAttribute( "sn", "modified" ) ) );
-        getConnectionWrapper( monitor, ldapServer ).modifyEntry( new Dn( referralDn ), modifications, null, monitor,
+        getConnectionWrapper( monitor, ldapServer ).modifyEntry( referralDn, modifications, null, monitor,
             null );
 
         // should not have modified the target entry
@@ -710,7 +715,7 @@ public class DirectoryApiConnectionWrapperTest
     @LdapServersSource
     public void testDelete( TestLdapServer ldapServer ) throws Exception
     {
-        String dn = "uid=user.X," + USERS_OU_DN;
+        String dn = "uid=user.X," + USERS_DN;
 
         // create entry
         ldapServer.withAdminConnection( connection -> connection.add( new DefaultEntry( dn,
@@ -731,8 +736,8 @@ public class DirectoryApiConnectionWrapperTest
     @LdapServersSource
     public void testDeleteFollowsReferral_DirectReferral( TestLdapServer ldapServer ) throws Exception
     {
-        String targetDn = "uid=user.X," + USERS_OU_DN;
-        String referralDn = "uid=user.X,cn=referral1," + REFERRALS_OU_DN;
+        Dn targetDn = dn( "uid=user.X", USERS_DN );
+        Dn referralDn = dn( "uid=user.X", REFERRAL_TO_USERS_DN );
 
         // create target entry
         ldapServer.withAdminConnection( connection -> connection.add( new DefaultEntry( targetDn,
@@ -740,7 +745,7 @@ public class DirectoryApiConnectionWrapperTest
 
         // delete referral entry 
         StudioProgressMonitor monitor = getProgressMonitor();
-        getConnectionWrapper( monitor, ldapServer ).deleteEntry( new Dn( referralDn ), null, monitor, null );
+        getConnectionWrapper( monitor, ldapServer ).deleteEntry( referralDn, null, monitor, null );
 
         // should have deleted the target entry
         assertFalse( monitor.isCanceled() );
@@ -753,8 +758,8 @@ public class DirectoryApiConnectionWrapperTest
     @LdapServersSource
     public void testDeleteFollowsReferral_IntermediateReferral( TestLdapServer ldapServer ) throws Exception
     {
-        String targetDn = "uid=user.X," + USERS_OU_DN;
-        String referralDn = "uid=user.X,cn=referral2," + REFERRALS_OU_DN;
+        Dn targetDn = dn( "uid=user.X", USERS_DN );
+        Dn referralDn = dn( "uid=user.X", REFERRAL_TO_REFERRAL_TO_USERS_DN );
 
         // create target entry
         ldapServer.withAdminConnection( connection -> connection.add( new DefaultEntry( targetDn,
@@ -762,7 +767,7 @@ public class DirectoryApiConnectionWrapperTest
 
         // delete referral entry 
         StudioProgressMonitor monitor = getProgressMonitor();
-        getConnectionWrapper( monitor, ldapServer ).deleteEntry( new Dn( referralDn ), null, monitor, null );
+        getConnectionWrapper( monitor, ldapServer ).deleteEntry( referralDn, null, monitor, null );
 
         // should have deleted the target entry
         assertFalse( monitor.isCanceled() );
@@ -775,8 +780,8 @@ public class DirectoryApiConnectionWrapperTest
     @LdapServersSource
     public void testDeleteFollowsReferral_ReferralLoop( TestLdapServer ldapServer ) throws Exception
     {
-        String targetDn = "uid=user.X," + USERS_OU_DN;
-        String referralDn = "uid=user.X,cn=referral4a," + REFERRALS_OU_DN;
+        Dn targetDn = dn( "uid=user.X", USERS_DN );
+        Dn referralDn = dn( "uid=user.X", REFERRAL_LOOP_1_DN );
 
         // create target entry
         ldapServer.withAdminConnection( connection -> connection.add( new DefaultEntry( targetDn,
@@ -784,7 +789,7 @@ public class DirectoryApiConnectionWrapperTest
 
         // delete referral entry 
         StudioProgressMonitor monitor = getProgressMonitor();
-        getConnectionWrapper( monitor, ldapServer ).deleteEntry( new Dn( referralDn ), null, monitor, null );
+        getConnectionWrapper( monitor, ldapServer ).deleteEntry( referralDn, null, monitor, null );
 
         // should not have deleted the target entry
         assertFalse( monitor.isCanceled() );
@@ -899,7 +904,7 @@ public class DirectoryApiConnectionWrapperTest
     public void testPasswordModifyRequestExtendedOperation_AdminChangesUserPassword( TestLdapServer ldapServer )
         throws Exception
     {
-        String dn = "uid=user.X," + USERS_OU_DN;
+        String dn = "uid=user.X," + USERS_DN;
 
         // create target entry
         String password0 = "{SSHA}VHg6ewDaPUmVWw3efXL5NF6bVuRHGWhrCRH1xA==";
@@ -942,7 +947,7 @@ public class DirectoryApiConnectionWrapperTest
     public void testPasswordModifyRequestExtendedOperation_UserChangesOwnPassword( TestLdapServer ldapServer )
         throws Exception
     {
-        String dn = "uid=user.X," + USERS_OU_DN;
+        String dn = "uid=user.X," + USERS_DN;
 
         // create target entry
         String password0 = "{SSHA}VHg6ewDaPUmVWw3efXL5NF6bVuRHGWhrCRH1xA==";
