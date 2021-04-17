@@ -23,6 +23,8 @@ package org.apache.directory.studio.test.integration.ui.bots;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
@@ -42,7 +44,6 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 class BrowserWidgetBot
 {
     private SWTBot bot;
-
 
     BrowserWidgetBot( SWTBot bot )
     {
@@ -243,7 +244,7 @@ class BrowserWidgetBot
         List<String> nodes = entry.getNodes();
         for ( String node : nodes )
         {
-            if ( node.toUpperCase().startsWith( nodeName.toUpperCase() ) )
+            if ( matches( node, nodeName ) )
             {
                 return node;
             }
@@ -258,12 +259,24 @@ class BrowserWidgetBot
         for ( SWTBotTreeItem item : allItems )
         {
             String node = item.getText();
-            if ( node.toUpperCase().startsWith( nodeName.toUpperCase() ) )
+            if ( matches( node, nodeName ) )
             {
                 return node;
             }
         }
         return nodeName;
+    }
+
+
+    private boolean matches( String node, String nodeName )
+    {
+        Pattern pattern = Pattern.compile( "(.*) \\(\\d+\\+?\\)" );
+        Matcher matcher = pattern.matcher( node );
+        if ( matcher.matches() )
+        {
+            node = matcher.group( 1 );
+        }
+        return node.toUpperCase().equals( nodeName.toUpperCase() );
     }
 
 

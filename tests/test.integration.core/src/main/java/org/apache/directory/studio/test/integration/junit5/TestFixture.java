@@ -41,6 +41,7 @@ import org.apache.directory.api.ldap.model.message.SearchRequest;
 import org.apache.directory.api.ldap.model.message.SearchRequestImpl;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.api.ldap.model.schema.comparators.DnComparator;
 import org.apache.directory.ldap.client.api.EntryCursorImpl;
 import org.apache.directory.ldap.client.api.LdapConnection;
@@ -58,6 +59,19 @@ public class TestFixture
         try
         {
             return new Dn( dn );
+        }
+        catch ( LdapInvalidDnException e )
+        {
+            throw new RuntimeException( e );
+        }
+    }
+
+
+    public static Dn dn( Rdn rdn, Dn dn )
+    {
+        try
+        {
+            return dn.add( rdn );
         }
         catch ( LdapInvalidDnException e )
         {
@@ -85,6 +99,22 @@ public class TestFixture
     public static final Dn CONTEXT_DN = dn( "dc=example,dc=org" );
 
     public static final Dn MISC_DN = dn( "ou=misc", CONTEXT_DN );
+    public static final Dn MISC1_DN = dn( "ou=misc.1", MISC_DN );
+    public static final Dn MISC11_DN = dn( "ou=misc.1.1", MISC1_DN );
+    public static final Dn MISC111_DN = dn( "ou=misc.1.1.1", MISC11_DN );
+    public static final Dn MISC2_DN = dn( "ou=misc.2", MISC_DN );
+    public static final Dn MISC21_DN = dn( "ou=misc.2.1", MISC2_DN );
+    public static final Dn MISC211_DN = dn( "ou=misc.2.1.1", MISC21_DN );
+    public static final Dn MISC212_DN = dn( "ou=misc.2.1.2", MISC21_DN );
+    public static final Dn MISC22_DN = dn( "ou=misc.2.2", MISC2_DN );
+    public static final Dn MISC221_DN = dn( "ou=misc.2.2.1", MISC22_DN );
+    public static final Dn MISC222_DN = dn( "ou=misc.2.2.2", MISC22_DN );
+    public static final Dn MULTI_VALUED_RDN_DN = dn( "cn=Barbara Jensen+uid=bjensen", MISC_DN );
+    public static final Dn LEADING_SHARP_DN_BACKSLASH_PREFIXED = dn( "cn=\\#123456", MISC_DN );
+    public static final Dn LEADING_SHARP_DN_HEX_ESCAPED = dn( "cn=\\23123456", MISC_DN );
+    public static final Dn RDN_WITH_ESCAPED_CHARACTERS_DN_BACKSLASH_PREFIXED = dn( "cn=\\#\\\\\\+\\, \\\"öé\\\"",
+        MISC_DN );
+    public static final Dn RDN_WITH_ESCAPED_CHARACTERS_DN_HEX_ESCAPED = dn( "cn=\\23\\5C\\2B\\2C \\22öé\\22", MISC_DN );
 
     public static final Dn USERS_DN = dn( "ou=users", CONTEXT_DN );
     public static final Dn USER1_DN = dn( "uid=user.1", USERS_DN );

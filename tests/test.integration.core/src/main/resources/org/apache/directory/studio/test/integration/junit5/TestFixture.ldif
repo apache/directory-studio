@@ -37,6 +37,76 @@ sn: Jensen
 givenName: Barbara
 uid: bjensen
 
+# cn=\#\\\+\, \"öé\",ou=misc,dc=example,dc=org
+dn:: Y249XCNcXFwrXCwgXCLDtsOpXCIsb3U9bWlzYyxkYz1leGFtcGxlLGRjPW9yZw==
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+cn:: I1wrLCAiw7bDqSI=
+sn:: I1wrLCAiw7bDqSI=
+givenName:: I1wrLCAiw7bDqSI=
+
+dn: cn=\#123456,ou=misc,dc=example,dc=org
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+cn: #123456
+sn: #123456
+givenName: #123456
+uid: #123456
+
+dn: ou=misc.1,ou=misc,dc=example,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: misc.1
+
+dn: ou=misc.1.1,ou=misc.1,ou=misc,dc=example,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: misc.1.1
+
+dn: ou=misc.1.1.1,ou=misc.1.1,ou=misc.1,ou=misc,dc=example,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: misc.1.1.1
+
+dn: ou=misc.2,ou=misc,dc=example,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: misc.2
+
+dn: ou=misc.2.1,ou=misc.2,ou=misc,dc=example,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: misc.2.1
+
+dn: ou=misc.2.1.1,ou=misc.2.1,ou=misc.2,ou=misc,dc=example,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: misc.2.1.1
+
+dn: ou=misc.2.1.2,ou=misc.2.1,ou=misc.2,ou=misc,dc=example,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: misc.2.1.2
+
+dn: ou=misc.2.2,ou=misc.2,ou=misc,dc=example,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: misc.2.2
+
+dn: ou=misc.2.2.1,ou=misc.2.2,ou=misc.2,ou=misc,dc=example,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: misc.2.2.1
+
+dn: ou=misc.2.2.2,ou=misc.2.2,ou=misc.2,ou=misc,dc=example,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: misc.2.2.2
+
 #
 # ou=users
 # Fixed number of users used by severals search tests that expect a fixed entry set.
@@ -247,6 +317,11 @@ postalCode: 51865
 postalAddress: Abahri Abazari$81023 River Street$Monroe, SD  51865
 description: This is the description for Abahri Abazari.
 roomNumber: 1963
+
+#
+# ou=referrals
+# Entries for referral specific test scenarios.
+#
 
 dn: ou=referrals,dc=example,dc=org
 objectClass: organizationalUnit

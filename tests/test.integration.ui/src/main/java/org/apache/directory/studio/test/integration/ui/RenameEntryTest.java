@@ -21,22 +21,23 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.LEADING_SHARP_DN_BACKSLASH_PREFIXED;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.LEADING_SHARP_DN_HEX_ESCAPED;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.MULTI_VALUED_RDN_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.RDN_WITH_ESCAPED_CHARACTERS_DN_BACKSLASH_PREFIXED;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.RDN_WITH_ESCAPED_CHARACTERS_DN_HEX_ESCAPED;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.dn;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.apache.directory.server.annotations.CreateLdapServer;
-import org.apache.directory.server.annotations.CreateTransport;
-import org.apache.directory.server.core.annotations.ApplyLdifFiles;
-import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
-import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
-import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
+import org.apache.directory.api.ldap.model.name.Ava;
+import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.name.Rdn;
+import org.apache.directory.studio.test.integration.junit5.LdapServerType;
+import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
+import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
 import org.apache.directory.studio.test.integration.ui.bots.RenameEntryDialogBot;
-import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
-import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
-import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.params.ParameterizedTest;
 
 
 /**
@@ -45,59 +46,37 @@ import org.junit.runner.RunWith;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-@RunWith(FrameworkRunnerWithScreenshotCaptureListener.class)
-@CreateLdapServer(transports =
-    { @CreateTransport(protocol = "LDAP") })
-@ApplyLdifFiles( clazz = RenameEntryTest.class,
-    value = "org/apache/directory/studio/test/integration/ui/RenameEntryDialogTest.ldif" )
-public class RenameEntryTest extends AbstractLdapTestUnit
+public class RenameEntryTest extends AbstractTestBase
 {
-    private StudioBot studioBot;
-    private ConnectionsViewBot connectionsViewBot;
-    private BrowserViewBot browserViewBot;
-
-
-    @Before
-    public void setUp() throws Exception
-    {
-        studioBot = new StudioBot();
-        studioBot.resetLdapPerspective();
-        connectionsViewBot = studioBot.getConnectionView();
-        connectionsViewBot.createTestConnection( "RenameEntryTest", ldapServer.getPort() );
-        browserViewBot = studioBot.getBrowserView();
-    }
-
-
-    @After
-    public void tearDown() throws Exception
-    {
-        connectionsViewBot.deleteTestConnections();
-        Assertions.genericTearDownAssertions();
-    }
-
 
     /**
      * Test for DIRSTUDIO-318.
      *
      * Renames a multi-valued RDN by changing both RDN attributes.
-     *
-     * @throws Exception
-     *             the exception
      */
-    @Test
-    public void testRenameMultiValuedRdn() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testRenameMultiValuedRdn( TestLdapServer server ) throws Exception
     {
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Barbara Jensen+uid=bjensen" );
+        Dn oldDn = MULTI_VALUED_RDN_DN;
+        Rdn newRdn = new Rdn( new Ava( "cn", "Babs Jensen" ), new Ava( "uid", "dj" ) );
+        Dn newDn = dn( newRdn, oldDn.getParent() );
+
+        connectionsViewBot.createTestConnection( server );
+        browserViewBot.selectEntry( path( oldDn ) );
 
         RenameEntryDialogBot renameDialogBot = browserViewBot.openRenameDialog();
         assertTrue( renameDialogBot.isVisible() );
-        renameDialogBot.setRdnValue( 1, "Babs Jensen" );
-        renameDialogBot.setRdnValue( 2, "babsjens" );
+        for ( int i = 0; i < newRdn.size(); i++ )
+        {
+            renameDialogBot.setRdnType( i + 1, newRdn.getAva( i ).getType() );
+            renameDialogBot.setRdnValue( i + 1, newRdn.getAva( i ).getValue().getString() );
+        }
         renameDialogBot.clickOkButton();
 
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users",
-            "cn=Babs Jensen+uid=babsjens" ) );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Babs Jensen+uid=babsjens" );
+        assertTrue( browserViewBot.existsEntry( path( newDn ) ) );
+        browserViewBot.selectEntry( path( newDn ) );
+        assertFalse( browserViewBot.existsEntry( path( oldDn ) ) );
     }
 
 
@@ -105,45 +84,63 @@ public class RenameEntryTest extends AbstractLdapTestUnit
      * Test for DIRSTUDIO-484.
      *
      * Renames a RDN with escaped characters.
-     *
-     * @throws Exception
-     *             the exception
      */
-    @Test
-    public void testRenameRdnWithEscapedCharacters() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testRenameRdnWithEscapedCharacters( TestLdapServer server ) throws Exception
     {
-        browserViewBot
-            .selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\"" );
+        Dn oldDn = RDN_WITH_ESCAPED_CHARACTERS_DN_BACKSLASH_PREFIXED;
+        Dn newDn = dn( "cn=\\#\\\\\\+\\, \\\"öé\\\" 2", oldDn.getParent() );
+        if ( server.getType() == LdapServerType.OpenLdap || server.getType() == LdapServerType.Fedora389ds )
+        {
+            // OpenLDAP and 389ds escape all characters with hex digits 
+            oldDn = RDN_WITH_ESCAPED_CHARACTERS_DN_HEX_ESCAPED;
+            newDn = dn( "cn=\\23\\5C\\2B\\2C \\22öé\\22 2", oldDn.getParent() );
+        }
+
+        connectionsViewBot.createTestConnection( server );
+        browserViewBot.selectEntry( path( oldDn ) );
 
         RenameEntryDialogBot renameDialogBot = browserViewBot.openRenameDialog();
         assertTrue( renameDialogBot.isVisible() );
-        renameDialogBot.setRdnValue( 1, "#\\+, \"\u00F6\u00E9\"2" );
+        renameDialogBot.setRdnValue( 1, "#\\+, \"öé\" 2" );
         renameDialogBot.clickOkButton();
 
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users",
-            "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\"2" ) );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users",
-            "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\"2" );
+        assertTrue( browserViewBot.existsEntry( path( newDn ) ) );
+        browserViewBot.selectEntry( path( newDn ) );
+        assertFalse( browserViewBot.existsEntry( path( oldDn ) ) );
     }
 
 
     /**
      * Test for DIRSTUDIO-589, DIRSTUDIO-591, DIRSHARED-38.
      *
-     * Rename an entry with sharp in DN: cn=\#123456.
+     * Rename an entry with leading sharp in DN: cn=\#123456.
      */
-    @Test
-    public void testRenameRdnWithSharp() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testRenameRdnWithSharp( TestLdapServer server ) throws Exception
     {
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=\\#123456" );
+        Dn oldDn = LEADING_SHARP_DN_BACKSLASH_PREFIXED;
+        Dn newDn = dn( "cn=\\#ABCDEF", oldDn.getParent() );
+        if ( server.getType() == LdapServerType.OpenLdap || server.getType() == LdapServerType.Fedora389ds )
+        {
+            // OpenLDAP and 389ds escape all characters with hex digits 
+            oldDn = LEADING_SHARP_DN_HEX_ESCAPED;
+            newDn = dn( "cn=\\23ABCDEF", oldDn.getParent() );
+        }
+
+        connectionsViewBot.createTestConnection( server );
+        browserViewBot.selectEntry( path( oldDn ) );
 
         RenameEntryDialogBot renameDialogBot = browserViewBot.openRenameDialog();
         assertTrue( renameDialogBot.isVisible() );
         renameDialogBot.setRdnValue( 1, "#ABCDEF" );
         renameDialogBot.clickOkButton();
 
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=\\#ABCDEF" ) );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=\\#ABCDEF" );
+        assertTrue( browserViewBot.existsEntry( path( newDn ) ) );
+        browserViewBot.selectEntry( path( newDn ) );
+        assertFalse( browserViewBot.existsEntry( path( oldDn ) ) );
     }
 
 
@@ -152,26 +149,43 @@ public class RenameEntryTest extends AbstractLdapTestUnit
      *
      * Rename an entry with trailing space in RDN.
      */
-    @Test
-    public void testRenameRdnWithTrailingSpace() throws Exception
+    @ParameterizedTest
+    @LdapServersSource(types =
+        { LdapServerType.ApacheDS, LdapServerType.OpenLdap })
+    public void testRenameRdnWithTrailingSpace( TestLdapServer server ) throws Exception
     {
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=\\#123456" );
+        Dn oldDn = LEADING_SHARP_DN_BACKSLASH_PREFIXED;
+        Dn newDn1 = dn( "cn=\\#ABCDEF\\ ", oldDn.getParent() );
+        Dn newDn2 = dn( "cn=A\\ ", oldDn.getParent() );
+        if ( server.getType() == LdapServerType.OpenLdap )
+        {
+            // OpenLDAP and 389ds escape all characters with hex digits 
+            oldDn = LEADING_SHARP_DN_HEX_ESCAPED;
+            newDn1 = dn( "cn=\\23ABCDEF\\20", oldDn.getParent() );
+            newDn2 = dn( "cn=A\\20", oldDn.getParent() );
+        }
+
+        connectionsViewBot.createTestConnection( server );
+        browserViewBot.selectEntry( path( oldDn ) );
 
         RenameEntryDialogBot renameDialogBot = browserViewBot.openRenameDialog();
         assertTrue( renameDialogBot.isVisible() );
         renameDialogBot.setRdnValue( 1, "#ABCDEF " );
         renameDialogBot.clickOkButton();
 
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=\\#ABCDEF\\ " ) );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=\\#ABCDEF\\ " );
+        assertTrue( browserViewBot.existsEntry( path( newDn1 ) ) );
+        browserViewBot.selectEntry( path( newDn1 ) );
+        assertFalse( browserViewBot.existsEntry( path( oldDn ) ) );
 
         renameDialogBot = browserViewBot.openRenameDialog();
         assertTrue( renameDialogBot.isVisible() );
         renameDialogBot.setRdnValue( 1, "A " );
         renameDialogBot.clickOkButton();
 
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=A\\ " ) );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=A\\ " );
+        assertTrue( browserViewBot.existsEntry( path( newDn2 ) ) );
+        browserViewBot.selectEntry( path( newDn2 ) );
+        assertFalse( browserViewBot.existsEntry( path( newDn1 ) ) );
+        assertFalse( browserViewBot.existsEntry( path( oldDn ) ) );
     }
 
 }

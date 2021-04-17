@@ -21,7 +21,6 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import static org.apache.directory.studio.test.integration.junit5.TestFixture.CONTEXT_DN;
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.REFERRALS_DN;
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.REFERRAL_LOOP_1_DN;
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.REFERRAL_LOOP_2_DN;
@@ -35,8 +34,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -54,24 +51,6 @@ import org.junit.jupiter.params.ParameterizedTest;
  */
 public class ReferralDialogTest extends AbstractTestBase
 {
-
-    static String[] path( String[] parents, String leaf )
-    {
-        return ArrayUtils.addAll( parents, leaf );
-    }
-
-    public static final String[] ROOT_DSE_PATH =
-        { "DIT", "Root DSE" };
-    public static final String[] CONTEXT_PATH = path( ROOT_DSE_PATH, CONTEXT_DN.getName() );
-    public static final String[] USERS_PATH = path( CONTEXT_PATH, USERS_DN.getRdn().getName() );
-    public static final String[] REFERRALS_PATH = path( CONTEXT_PATH, REFERRALS_DN.getRdn().getName() );
-
-    public static String[] pathWithRefLdapUrl( TestLdapServer ldapServer, Dn dn )
-    {
-        String s = ldapServer.getLdapUrl() + "/" + dn.getName();
-        return path( REFERRALS_PATH, s );
-    }
-
 
     /**
      * Test for DIRSTUDIO-343.
@@ -92,7 +71,7 @@ public class ReferralDialogTest extends AbstractTestBase
         assertEquals( ReferralHandlingMethod.FOLLOW.ordinal(), referralsHandlingMethodOrdinal );
 
         // expand ou=referrals, that reads the referrals and opens the referral dialog
-        ReferralDialogBot referralDialogBot = browserViewBot.expandEntryExpectingReferralDialog( REFERRALS_PATH );
+        ReferralDialogBot referralDialogBot = browserViewBot.expandEntryExpectingReferralDialog( path( REFERRALS_DN ) );
         assertTrue( referralDialogBot.isVisible() );
         assertEquals( connection.getName(), referralDialogBot.getSelectedConnection() );
         referralDialogBot.clickOkButton();
@@ -128,7 +107,7 @@ public class ReferralDialogTest extends AbstractTestBase
         assertEquals( ReferralHandlingMethod.FOLLOW.ordinal(), referralsHandlingMethodOrdinal );
 
         // expand ou=referrals, that reads the referral and opens the referral dialog
-        ReferralDialogBot referralDialogBot = browserViewBot.expandEntryExpectingReferralDialog( REFERRALS_PATH );
+        ReferralDialogBot referralDialogBot = browserViewBot.expandEntryExpectingReferralDialog( path( REFERRALS_DN ) );
         assertTrue( referralDialogBot.isVisible() );
         assertEquals( connection.getName(), referralDialogBot.getSelectedConnection() );
         referralDialogBot.clickCancelButton();
@@ -156,7 +135,7 @@ public class ReferralDialogTest extends AbstractTestBase
         assertEquals( ReferralHandlingMethod.IGNORE.ordinal(), referralsHandlingMethodOrdinal );
 
         // expand ou=referrals, no referral dialog expected
-        browserViewBot.expandEntry( REFERRALS_PATH );
+        browserViewBot.expandEntry( path( REFERRALS_DN ) );
 
         // ensure that neither the continuation URLs, nor the referral entries are visible
         assertReferralEntriesAreNotVisible();
@@ -186,16 +165,16 @@ public class ReferralDialogTest extends AbstractTestBase
         assertTrue( manageDsaIT );
 
         // expand ou=referrals, that reads the referral object
-        browserViewBot.expandEntry( REFERRALS_PATH );
+        browserViewBot.expandEntry( path( REFERRALS_DN ) );
 
         // ensure that the referral entries are visible, but not the continuation URLs
         assertRefLdapUrlsAreNotVisible( server );
-        browserViewBot.selectEntry( path( REFERRALS_PATH, REFERRAL_TO_USER1_DN.getRdn().getName() ) );
-        browserViewBot.selectEntry( path( REFERRALS_PATH, REFERRAL_TO_USERS_DN.getRdn().getName() ) );
-        browserViewBot.selectEntry( path( REFERRALS_PATH, REFERRAL_TO_REFERRAL_TO_USERS_DN.getRdn().getName() ) );
-        browserViewBot.selectEntry( path( REFERRALS_PATH, REFERRAL_TO_REFERRALS_DN.getRdn().getName() ) );
-        browserViewBot.selectEntry( path( REFERRALS_PATH, REFERRAL_LOOP_1_DN.getRdn().getName() ) );
-        browserViewBot.selectEntry( path( REFERRALS_PATH, REFERRAL_LOOP_2_DN.getRdn().getName() ) );
+        browserViewBot.selectEntry( path( REFERRAL_TO_USER1_DN ) );
+        browserViewBot.selectEntry( path( REFERRAL_TO_USERS_DN ) );
+        browserViewBot.selectEntry( path( REFERRAL_TO_REFERRAL_TO_USERS_DN ) );
+        browserViewBot.selectEntry( path( REFERRAL_TO_REFERRALS_DN ) );
+        browserViewBot.selectEntry( path( REFERRAL_LOOP_1_DN ) );
+        browserViewBot.selectEntry( path( REFERRAL_LOOP_2_DN ) );
     }
 
 
@@ -216,7 +195,7 @@ public class ReferralDialogTest extends AbstractTestBase
         assertEquals( ReferralHandlingMethod.FOLLOW_MANUALLY.ordinal(), referralsHandlingMethodOrdinal );
 
         // expand ou=referrals, no referral dialog expected yet
-        browserViewBot.expandEntry( REFERRALS_PATH );
+        browserViewBot.expandEntry( path( REFERRALS_DN ) );
 
         // ensure that only the referral targets are visible, not the referrals
         assertReferralEntriesAreNotVisible();
@@ -257,14 +236,12 @@ public class ReferralDialogTest extends AbstractTestBase
 
     private void assertReferralEntriesAreNotVisible()
     {
-        assertFalse( browserViewBot.existsEntry( path( REFERRALS_PATH, REFERRAL_TO_USER1_DN.getRdn().getName() ) ) );
-        assertFalse( browserViewBot.existsEntry( path( REFERRALS_PATH, REFERRAL_TO_USERS_DN.getRdn().getName() ) ) );
-        assertFalse(
-            browserViewBot.existsEntry( path( REFERRALS_PATH, REFERRAL_TO_REFERRAL_TO_USERS_DN.getRdn().getName() ) ) );
-        assertFalse(
-            browserViewBot.existsEntry( path( REFERRALS_PATH, REFERRAL_TO_REFERRALS_DN.getRdn().getName() ) ) );
-        assertFalse( browserViewBot.existsEntry( path( REFERRALS_PATH, REFERRAL_LOOP_1_DN.getRdn().getName() ) ) );
-        assertFalse( browserViewBot.existsEntry( path( REFERRALS_PATH, REFERRAL_LOOP_2_DN.getRdn().getName() ) ) );
+        assertFalse( browserViewBot.existsEntry( path( REFERRAL_TO_USER1_DN ) ) );
+        assertFalse( browserViewBot.existsEntry( path( REFERRAL_TO_USERS_DN ) ) );
+        assertFalse( browserViewBot.existsEntry( path( REFERRAL_TO_REFERRAL_TO_USERS_DN ) ) );
+        assertFalse( browserViewBot.existsEntry( path( REFERRAL_TO_REFERRALS_DN ) ) );
+        assertFalse( browserViewBot.existsEntry( path( REFERRAL_LOOP_1_DN ) ) );
+        assertFalse( browserViewBot.existsEntry( path( REFERRAL_LOOP_2_DN ) ) );
     }
 
 }
