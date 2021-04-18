@@ -13,8 +13,11 @@ import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.studio.test.integration.junit5.SkipTestIfLdapServerIsNotAvailableInterceptor;
 import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
+import org.apache.directory.studio.test.integration.ui.bots.ApacheDSServersViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
+import org.apache.directory.studio.test.integration.ui.bots.ModificationLogsViewBot;
+import org.apache.directory.studio.test.integration.ui.bots.SearchLogsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
 import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
@@ -33,22 +36,29 @@ public class AbstractTestBase
     protected StudioBot studioBot;
     protected ConnectionsViewBot connectionsViewBot;
     protected BrowserViewBot browserViewBot;
+    protected SearchLogsViewBot searchLogsViewBot;
+    protected ModificationLogsViewBot modificationLogsViewBot;
+    protected ApacheDSServersViewBot serversViewBot;
 
     @BeforeEach
-    void setUp() throws Exception
+    final void setUpBase() throws Exception
     {
         bot = new SWTWorkbenchBot();
         studioBot = new StudioBot();
         studioBot.resetLdapPerspective();
         connectionsViewBot = studioBot.getConnectionView();
         browserViewBot = studioBot.getBrowserView();
+        searchLogsViewBot = studioBot.getSearchLogsViewBot();
+        modificationLogsViewBot = studioBot.getModificationLogsViewBot();
+        serversViewBot = studioBot.getApacheDSServersViewBot();
     }
 
 
     @AfterEach
-    void tearDown() throws Exception
+    final void tearDownBase() throws Exception
     {
         connectionsViewBot.deleteTestConnections();
+        serversViewBot.deleteTestServers();
         Assertions.genericTearDownAssertions();
     }
 
@@ -56,9 +66,15 @@ public class AbstractTestBase
         { "DIT", "Root DSE" };
     public static final String[] CONTEXT_PATH = path( ROOT_DSE_PATH, CONTEXT_DN.getName() );
 
-    private static String[] path( String[] parents, String leaf )
+    public static String[] path( String[] parents, String leaf )
     {
         return ArrayUtils.addAll( parents, leaf );
+    }
+
+
+    public static String[] path( Dn dn, String leaf )
+    {
+        return ArrayUtils.addAll( path( dn ), leaf );
     }
 
 

@@ -21,12 +21,12 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import static org.apache.directory.studio.test.integration.junit5.TestFixture.LEADING_SHARP_DN_BACKSLASH_PREFIXED;
-import static org.apache.directory.studio.test.integration.junit5.TestFixture.LEADING_SHARP_DN_HEX_ESCAPED;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.DN_WITH_LEADING_SHARP_BACKSLASH_PREFIXED;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.DN_WITH_LEADING_SHARP_HEX_PAIR_ESCAPED;
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.MISC111_DN;
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.MISC_DN;
-import static org.apache.directory.studio.test.integration.junit5.TestFixture.RDN_WITH_ESCAPED_CHARACTERS_DN_BACKSLASH_PREFIXED;
-import static org.apache.directory.studio.test.integration.junit5.TestFixture.RDN_WITH_ESCAPED_CHARACTERS_DN_HEX_ESCAPED;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.DN_WITH_ESCAPED_CHARACTERS_BACKSLASH_PREFIXED;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.DN_WITH_ESCAPED_CHARACTERS_HEX_PAIR_ESCAPED;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -75,13 +75,13 @@ public class MoveEntryTest extends AbstractTestBase
     @LdapServersSource
     public void testMoveDown( TestLdapServer server ) throws Exception
     {
-        Dn dnToMove = RDN_WITH_ESCAPED_CHARACTERS_DN_BACKSLASH_PREFIXED;
-        Dn newParentDn = LEADING_SHARP_DN_BACKSLASH_PREFIXED;
+        Dn dnToMove = DN_WITH_ESCAPED_CHARACTERS_BACKSLASH_PREFIXED;
+        Dn newParentDn = DN_WITH_LEADING_SHARP_BACKSLASH_PREFIXED;
         if ( server.getType() == LdapServerType.OpenLdap || server.getType() == LdapServerType.Fedora389ds )
         {
             // OpenLDAP and 389ds escape all characters with hex digits 
-            dnToMove = RDN_WITH_ESCAPED_CHARACTERS_DN_HEX_ESCAPED;
-            newParentDn = LEADING_SHARP_DN_HEX_ESCAPED;
+            dnToMove = DN_WITH_ESCAPED_CHARACTERS_HEX_PAIR_ESCAPED;
+            newParentDn = DN_WITH_LEADING_SHARP_HEX_PAIR_ESCAPED;
         }
 
         connectionsViewBot.createTestConnection( server );

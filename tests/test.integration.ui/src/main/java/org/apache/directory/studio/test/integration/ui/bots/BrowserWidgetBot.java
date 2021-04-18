@@ -268,15 +268,16 @@ class BrowserWidgetBot
     }
 
 
-    private boolean matches( String node, String nodeName )
+    private boolean matches( String candidate, String needle )
     {
         Pattern pattern = Pattern.compile( "(.*) \\(\\d+\\+?\\)" );
-        Matcher matcher = pattern.matcher( node );
-        if ( matcher.matches() )
+        Matcher candidateMatcher = pattern.matcher( candidate );
+        Matcher needleMatcher = pattern.matcher( needle );
+        if ( candidateMatcher.matches() && !needleMatcher.matches() )
         {
-            node = matcher.group( 1 );
+            candidate = candidateMatcher.group( 1 );
         }
-        return node.toUpperCase().equals( nodeName.toUpperCase() );
+        return candidate.toUpperCase().equals( needle.toUpperCase() );
     }
 
 

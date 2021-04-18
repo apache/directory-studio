@@ -34,6 +34,7 @@ import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueEx
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.ldif.LdifEntry;
 import org.apache.directory.api.ldap.model.ldif.LdifReader;
+import org.apache.directory.api.ldap.model.message.AliasDerefMode;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.DeleteRequest;
 import org.apache.directory.api.ldap.model.message.DeleteRequestImpl;
@@ -102,22 +103,21 @@ public class TestFixture
     public static final Dn MISC1_DN = dn( "ou=misc.1", MISC_DN );
     public static final Dn MISC11_DN = dn( "ou=misc.1.1", MISC1_DN );
     public static final Dn MISC111_DN = dn( "ou=misc.1.1.1", MISC11_DN );
-    public static final Dn MISC2_DN = dn( "ou=misc.2", MISC_DN );
-    public static final Dn MISC21_DN = dn( "ou=misc.2.1", MISC2_DN );
-    public static final Dn MISC211_DN = dn( "ou=misc.2.1.1", MISC21_DN );
-    public static final Dn MISC212_DN = dn( "ou=misc.2.1.2", MISC21_DN );
-    public static final Dn MISC22_DN = dn( "ou=misc.2.2", MISC2_DN );
-    public static final Dn MISC221_DN = dn( "ou=misc.2.2.1", MISC22_DN );
-    public static final Dn MISC222_DN = dn( "ou=misc.2.2.2", MISC22_DN );
     public static final Dn MULTI_VALUED_RDN_DN = dn( "cn=Barbara Jensen+uid=bjensen", MISC_DN );
-    public static final Dn LEADING_SHARP_DN_BACKSLASH_PREFIXED = dn( "cn=\\#123456", MISC_DN );
-    public static final Dn LEADING_SHARP_DN_HEX_ESCAPED = dn( "cn=\\23123456", MISC_DN );
-    public static final Dn RDN_WITH_ESCAPED_CHARACTERS_DN_BACKSLASH_PREFIXED = dn( "cn=\\#\\\\\\+\\, \\\"öé\\\"",
+    public static final Dn DN_WITH_LEADING_SHARP_BACKSLASH_PREFIXED = dn( "cn=\\#123456", MISC_DN );
+    public static final Dn DN_WITH_LEADING_SHARP_HEX_PAIR_ESCAPED = dn( "cn=\\23123456", MISC_DN );
+    public static final Dn DN_WITH_ESCAPED_CHARACTERS_BACKSLASH_PREFIXED = dn( "cn=\\\"\\+\\,\\;\\<\\>\\\\", MISC_DN );
+    public static final Dn DN_WITH_ESCAPED_CHARACTERS_HEX_PAIR_ESCAPED = dn( "cn=\\22\\2B\\2C\\3B\\3C\\3E\\5C",
         MISC_DN );
-    public static final Dn RDN_WITH_ESCAPED_CHARACTERS_DN_HEX_ESCAPED = dn( "cn=\\23\\5C\\2B\\2C \\22öé\\22", MISC_DN );
+    public static final Dn DN_WITH_TRAILING_EQUALS_CHARACTER = dn( "cn=trailing=", MISC_DN );
+    public static final Dn DN_WITH_TRAILING_EQUALS_CHARACTER_HEX_PAIR_ESCAPED = dn( "cn=trailing\\3D", MISC_DN );
+    public static final Dn DN_WITH_IP_HOST_NUMBER = dn( "cn=loopback+ipHostNumber=127.0.0.1", MISC_DN );
+    public static final Dn ALIAS_DN = dn( "cn=alias", MISC_DN );
 
     public static final Dn USERS_DN = dn( "ou=users", CONTEXT_DN );
     public static final Dn USER1_DN = dn( "uid=user.1", USERS_DN );
+    public static final Dn USER2_DN = dn( "uid=user.2", USERS_DN );
+    public static final Dn USER3_DN = dn( "uid=user.3", USERS_DN );
     public static final Dn USER8_DN = dn( "uid=user.8", USERS_DN );
 
     public static final Dn REFERRALS_DN = dn( "ou=referrals", CONTEXT_DN );
@@ -127,6 +127,7 @@ public class TestFixture
     public static final Dn REFERRAL_TO_REFERRALS_DN = dn( "cn=referral-to-referrals", REFERRALS_DN );
     public static final Dn REFERRAL_LOOP_1_DN = dn( "cn=referral-loop-1", REFERRALS_DN );
     public static final Dn REFERRAL_LOOP_2_DN = dn( "cn=referral-loop-2", REFERRALS_DN );
+    public static final Dn REFERRAL_TO_MISC_DN = dn( "cn=referral-to-misc", REFERRALS_DN );
 
     /**
      * Creates the context entry "dc=example,dc=org" if it doesn't exist yet.
@@ -190,9 +191,9 @@ public class TestFixture
             // delete ou=users
             deleteTree( connection, USERS_DN, Optional.empty() );
             // delete ou=misc
+            deleteTree( connection, MISC_DN, Optional.of( Controls.SUBENTRIES_CONTROL ) );
             deleteTree( connection, MISC_DN, Optional.empty() );
         } );
-
     }
 
 
@@ -203,6 +204,7 @@ public class TestFixture
         searchRequest.setBase( baseDn );
         searchRequest.setFilter( OBJECT_CLASS_ALL_FILTER );
         searchRequest.setScope( SearchScope.SUBTREE );
+        searchRequest.setDerefAliases( AliasDerefMode.NEVER_DEREF_ALIASES );
         control.ifPresent( c -> searchRequest.addControl( c ) );
 
         try ( SearchCursor searchCursor = connection.search( searchRequest );

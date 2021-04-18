@@ -21,9 +21,11 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.MISC_DN;
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.REFERRALS_DN;
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.REFERRAL_LOOP_1_DN;
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.REFERRAL_LOOP_2_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.REFERRAL_TO_MISC_DN;
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.REFERRAL_TO_REFERRALS_DN;
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.REFERRAL_TO_REFERRAL_TO_USERS_DN;
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.REFERRAL_TO_USER1_DN;
@@ -83,7 +85,8 @@ public class ReferralDialogTest extends AbstractTestBase
         browserViewBot.expandEntry( pathWithRefLdapUrl( server, USERS_DN ) );
         assertTrue( browserViewBot.existsEntry( pathWithRefLdapUrl( server, REFERRALS_DN ) ) );
         browserViewBot.expandEntry( pathWithRefLdapUrl( server, REFERRALS_DN ) );
-
+        assertTrue( browserViewBot.existsEntry( pathWithRefLdapUrl( server, MISC_DN ) ) );
+        browserViewBot.expandEntry( pathWithRefLdapUrl( server, MISC_DN ) );
     }
 
 
@@ -169,12 +172,13 @@ public class ReferralDialogTest extends AbstractTestBase
 
         // ensure that the referral entries are visible, but not the continuation URLs
         assertRefLdapUrlsAreNotVisible( server );
-        browserViewBot.selectEntry( path( REFERRAL_TO_USER1_DN ) );
-        browserViewBot.selectEntry( path( REFERRAL_TO_USERS_DN ) );
-        browserViewBot.selectEntry( path( REFERRAL_TO_REFERRAL_TO_USERS_DN ) );
-        browserViewBot.selectEntry( path( REFERRAL_TO_REFERRALS_DN ) );
-        browserViewBot.selectEntry( path( REFERRAL_LOOP_1_DN ) );
-        browserViewBot.selectEntry( path( REFERRAL_LOOP_2_DN ) );
+        assertTrue( browserViewBot.existsEntry( path( REFERRAL_TO_USER1_DN ) ) );
+        assertTrue( browserViewBot.existsEntry( path( REFERRAL_TO_USERS_DN ) ) );
+        assertTrue( browserViewBot.existsEntry( path( REFERRAL_TO_REFERRAL_TO_USERS_DN ) ) );
+        assertTrue( browserViewBot.existsEntry( path( REFERRAL_TO_REFERRALS_DN ) ) );
+        assertTrue( browserViewBot.existsEntry( path( REFERRAL_LOOP_1_DN ) ) );
+        assertTrue( browserViewBot.existsEntry( path( REFERRAL_LOOP_2_DN ) ) );
+        assertTrue( browserViewBot.existsEntry( path( REFERRAL_TO_MISC_DN ) ) );
     }
 
 
@@ -205,6 +209,7 @@ public class ReferralDialogTest extends AbstractTestBase
         assertTrue( browserViewBot.existsEntry( pathWithRefLdapUrl( server, REFERRALS_DN ) ) );
         assertTrue( browserViewBot.existsEntry( pathWithRefLdapUrl( server, REFERRAL_LOOP_1_DN ) ) );
         assertTrue( browserViewBot.existsEntry( pathWithRefLdapUrl( server, REFERRAL_LOOP_2_DN ) ) );
+        assertTrue( browserViewBot.existsEntry( pathWithRefLdapUrl( server, MISC_DN ) ) );
 
         // select one target, that should popup the referral dialog
         ReferralDialogBot referralDialogBot = browserViewBot
@@ -220,6 +225,7 @@ public class ReferralDialogTest extends AbstractTestBase
         browserViewBot.expandEntry( pathWithRefLdapUrl( server, REFERRALS_DN ) );
         browserViewBot.expandEntry( pathWithRefLdapUrl( server, REFERRAL_LOOP_1_DN ) );
         browserViewBot.expandEntry( pathWithRefLdapUrl( server, REFERRAL_LOOP_2_DN ) );
+        browserViewBot.expandEntry( pathWithRefLdapUrl( server, MISC_DN ) );
     }
 
 
@@ -231,6 +237,7 @@ public class ReferralDialogTest extends AbstractTestBase
         assertFalse( browserViewBot.existsEntry( pathWithRefLdapUrl( server, REFERRALS_DN ) ) );
         assertFalse( browserViewBot.existsEntry( pathWithRefLdapUrl( server, REFERRAL_LOOP_1_DN ) ) );
         assertFalse( browserViewBot.existsEntry( pathWithRefLdapUrl( server, REFERRAL_LOOP_2_DN ) ) );
+        assertFalse( browserViewBot.existsEntry( pathWithRefLdapUrl( server, MISC_DN ) ) );
     }
 
 
@@ -242,6 +249,7 @@ public class ReferralDialogTest extends AbstractTestBase
         assertFalse( browserViewBot.existsEntry( path( REFERRAL_TO_REFERRALS_DN ) ) );
         assertFalse( browserViewBot.existsEntry( path( REFERRAL_LOOP_1_DN ) ) );
         assertFalse( browserViewBot.existsEntry( path( REFERRAL_LOOP_2_DN ) ) );
+        assertFalse( browserViewBot.existsEntry( path( REFERRAL_TO_MISC_DN ) ) );
     }
 
 }

@@ -69,6 +69,7 @@ public class ApacheDirectoryServer extends TestLdapServer
                 new File( service.getInstanceLayout().getPartitionsDirectory(), "example.org" ) );
             partition.initialize();
             service.addPartition( partition );
+            service.getSchemaManager().enable( "nis", "krb5kdc" );
 
             server = new LdapServer();
             server.setDirectoryService( service );

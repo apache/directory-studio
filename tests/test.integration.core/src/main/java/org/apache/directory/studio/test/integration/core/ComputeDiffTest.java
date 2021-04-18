@@ -291,7 +291,6 @@ public class ComputeDiffTest
 
     private void assertChangeModify( LdifFile diff, String... lines )
     {
-        // System.out.println( diff.toRawString() );
         assertThat( diff.isChangeType(), equalTo( true ) );
         assertThat( diff.getContainers(), hasSize( 1 ) );
         assertThat( diff.getLastContainer(), instanceOf( LdifChangeModifyRecord.class ) );

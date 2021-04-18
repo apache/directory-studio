@@ -46,11 +46,18 @@ public class LdapServersArgumentsProvider implements ArgumentsProvider
         {
             if ( types.contains( type ) )
             {
-                if ( type.getLdapServer().isAvailable() )
+                try
                 {
-                    type.getLdapServer().prepare();
+                    if ( type.getLdapServer().isAvailable() )
+                    {
+                        type.getLdapServer().prepare();
+                    }
+                    arguments.add( Arguments.of( type.getLdapServer() ) );
                 }
-                arguments.add( Arguments.of( type.getLdapServer() ) );
+                catch ( Exception e )
+                {
+                    throw new RuntimeException( "Prepare failed for LDAP server type " + type, e );
+                }
             }
         }
 

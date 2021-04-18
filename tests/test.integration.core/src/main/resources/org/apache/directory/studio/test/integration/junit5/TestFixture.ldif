@@ -25,8 +25,9 @@
 dn: ou=misc,dc=example,dc=org
 objectClass: top
 objectClass: organizationalUnit
-ou: users
+ou: misc
 
+# Multi-valued RDN
 dn: cn=Barbara Jensen+uid=bjensen,ou=misc,dc=example,dc=org
 objectClass: inetOrgPerson
 objectClass: organizationalPerson
@@ -37,16 +38,16 @@ sn: Jensen
 givenName: Barbara
 uid: bjensen
 
-# cn=\#\\\+\, \"öé\",ou=misc,dc=example,dc=org
-dn:: Y249XCNcXFwrXCwgXCLDtsOpXCIsb3U9bWlzYyxkYz1leGFtcGxlLGRjPW9yZw==
+# DN with escaped characters: '"', '+', ',', ';', '<', '>',  or '\'
+dn: cn=\"\+\,\;\<\>\\,ou=misc,dc=example,dc=org
 objectClass: inetOrgPerson
 objectClass: organizationalPerson
 objectClass: person
 objectClass: top
-cn:: I1wrLCAiw7bDqSI=
-sn:: I1wrLCAiw7bDqSI=
-givenName:: I1wrLCAiw7bDqSI=
+cn: "+,;<>\
+sn: "+,;<>\
 
+# DN with leading sharp/hash/pound/number sign
 dn: cn=\#123456,ou=misc,dc=example,dc=org
 objectClass: inetOrgPerson
 objectClass: organizationalPerson
@@ -57,10 +58,32 @@ sn: #123456
 givenName: #123456
 uid: #123456
 
+# DN with trailing equals character =
+dn: cn=trailing=,ou=misc,dc=example,dc=org
+objectClass: top
+objectClass: person
+cn: trailing=
+sn: trailing=
+
+# Multi-valued RDN with IP address
+dn: cn=loopback+ipHostNumber=127.0.0.1,ou=misc,dc=example,dc=org
+objectClass: top
+objectClass: device
+objectClass: ipHost
+cn: loopback
+ipHostNumber: 127.0.0.1
+
 dn: ou=misc.1,ou=misc,dc=example,dc=org
 objectClass: top
 objectClass: organizationalUnit
 ou: misc.1
+
+dn: cn=alias,ou=misc,dc=example,dc=org
+objectClass: alias
+objectClass: top
+objectClass: extensibleObject
+cn: alias
+aliasedObjectName: ou=misc,dc=example,dc=org
 
 dn: ou=misc.1.1,ou=misc.1,ou=misc,dc=example,dc=org
 objectClass: top
@@ -71,41 +94,6 @@ dn: ou=misc.1.1.1,ou=misc.1.1,ou=misc.1,ou=misc,dc=example,dc=org
 objectClass: top
 objectClass: organizationalUnit
 ou: misc.1.1.1
-
-dn: ou=misc.2,ou=misc,dc=example,dc=org
-objectClass: top
-objectClass: organizationalUnit
-ou: misc.2
-
-dn: ou=misc.2.1,ou=misc.2,ou=misc,dc=example,dc=org
-objectClass: top
-objectClass: organizationalUnit
-ou: misc.2.1
-
-dn: ou=misc.2.1.1,ou=misc.2.1,ou=misc.2,ou=misc,dc=example,dc=org
-objectClass: top
-objectClass: organizationalUnit
-ou: misc.2.1.1
-
-dn: ou=misc.2.1.2,ou=misc.2.1,ou=misc.2,ou=misc,dc=example,dc=org
-objectClass: top
-objectClass: organizationalUnit
-ou: misc.2.1.2
-
-dn: ou=misc.2.2,ou=misc.2,ou=misc,dc=example,dc=org
-objectClass: top
-objectClass: organizationalUnit
-ou: misc.2.2
-
-dn: ou=misc.2.2.1,ou=misc.2.2,ou=misc.2,ou=misc,dc=example,dc=org
-objectClass: top
-objectClass: organizationalUnit
-ou: misc.2.2.1
-
-dn: ou=misc.2.2.2,ou=misc.2.2,ou=misc.2,ou=misc,dc=example,dc=org
-objectClass: top
-objectClass: organizationalUnit
-ou: misc.2.2.2
 
 #
 # ou=users
@@ -369,3 +357,11 @@ objectClass: referral
 objectClass: extensibleObject
 cn: referral-loop-2
 ref: ldap://replace-with-host-port/cn=referral-loop-1,ou=referrals,dc=example,dc=org
+
+dn: cn=referral-to-misc,ou=referrals,dc=example,dc=org
+objectClass: top
+objectClass: referral
+objectClass: extensibleObject
+cn: referral-to-misc
+ref: ldap://replace-with-host-port/ou=misc,dc=example,dc=org
+

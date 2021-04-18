@@ -22,6 +22,7 @@ package org.apache.directory.studio.test.integration.core;
 
 
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.CONTEXT_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.MISC_DN;
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.REFERRALS_DN;
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.REFERRAL_LOOP_1_DN;
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.REFERRAL_LOOP_2_DN;
@@ -403,7 +404,7 @@ public class DirectoryApiConnectionWrapperTest
     {
         StudioProgressMonitor monitor = getProgressMonitor();
         SearchControls searchControls = new SearchControls();
-        searchControls.setSearchScope( SearchControls.SUBTREE_SCOPE );
+        searchControls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
         StudioSearchResultEnumeration result = getConnectionWrapper( monitor, ldapServer ).search(
             REFERRAL_TO_REFERRALS_DN.getName(), "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER,
             ReferralHandlingMethod.FOLLOW, null, monitor, null );
@@ -416,8 +417,8 @@ public class DirectoryApiConnectionWrapperTest
         if ( ldapServer.getType() != LdapServerType.Fedora389ds )
         {
             // TODO: check why 389ds returns nothing
-            assertEquals( 11, dns.size() );
-            assertThat( dns, hasItems( REFERRALS_DN, USERS_DN, USER1_DN, USER8_DN ) );
+            assertEquals( 5, dns.size() );
+            assertThat( dns, hasItems( REFERRALS_DN, USERS_DN, USER1_DN, MISC_DN ) );
         }
     }
 
@@ -460,9 +461,9 @@ public class DirectoryApiConnectionWrapperTest
         assertNotNull( result );
 
         List<Dn> dns = consume( result, sr -> sr.getDn() );
-        assertEquals( 7, dns.size() );
+        assertEquals( 8, dns.size() );
         assertThat( dns, hasItems( REFERRALS_DN, USER1_DN, USERS_DN, REFERRAL_TO_USERS_DN, REFERRAL_LOOP_1_DN,
-            REFERRAL_LOOP_2_DN ) );
+            REFERRAL_LOOP_2_DN, MISC_DN ) );
     }
 
 
@@ -493,7 +494,7 @@ public class DirectoryApiConnectionWrapperTest
     {
         StudioProgressMonitor monitor = getProgressMonitor();
         SearchControls searchControls = new SearchControls();
-        searchControls.setSearchScope( SearchControls.SUBTREE_SCOPE );
+        searchControls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
         StudioSearchResultEnumeration result = getConnectionWrapper( monitor, ldapServer ).search(
             REFERRALS_DN.getName(), "(objectClass=*)", searchControls, AliasDereferencingMethod.NEVER,
             ReferralHandlingMethod.FOLLOW, null, monitor, null );
@@ -503,12 +504,8 @@ public class DirectoryApiConnectionWrapperTest
         assertNotNull( result );
 
         List<Dn> dns = consume( result, sr -> sr.getDn() );
-        if ( ldapServer.getType() != LdapServerType.Fedora389ds )
-        {
-            // TODO: check why 389ds missed uid=user.1
-            assertEquals( 12, dns.size() );
-            assertThat( dns, hasItems( REFERRALS_DN, REFERRALS_DN, USERS_DN, USER1_DN, USER8_DN ) );
-        }
+        assertEquals( 5, dns.size() );
+        assertThat( dns, hasItems( REFERRALS_DN, USERS_DN, USER1_DN, MISC_DN ) );
     }
 
 

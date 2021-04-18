@@ -398,8 +398,8 @@ public class SearchTest extends AbstractLdapTestUnit
         assertFalse( browserViewBot.existsEntry( "Searches", searchName, "--- Top Page ---" ) );
         assertFalse( browserViewBot.existsEntry( "Searches", searchName, "--- Next Page ---" ) );
         assertTrue( browserViewBot.existsEntry( "Searches", searchName + " (15+)" ) );
-        assertTrue( browserViewBot.existsEntry( "Searches", searchName, "uid=user.1" ) );
-        assertTrue( browserViewBot.existsEntry( "Searches", searchName, "uid=user.8" ) );
+        assertTrue( browserViewBot.existsEntry( "Searches", searchName, "uid=user.1,ou=users,ou=system" ) );
+        assertTrue( browserViewBot.existsEntry( "Searches", searchName, "uid=user.8,ou=users,ou=system" ) );
     }
 
 
@@ -424,7 +424,7 @@ public class SearchTest extends AbstractLdapTestUnit
         dialogBot.clickSearchButton();
 
         browserViewBot.expandEntry( "Searches", searchName );
-        assertTrue( browserViewBot.existsEntry( "Searches", searchName, "uid=user.1" ) );
+        assertTrue( browserViewBot.existsEntry( "Searches", searchName, "uid=user.1,ou=users,ou=system" ) );
         assertEquals( "(&(objectClass=*)(uid=user.1))", filter );
         assertEquals( "(&\n    (objectClass=*)\n    (uid=user.1)\n)", formattetFilter );
     }
