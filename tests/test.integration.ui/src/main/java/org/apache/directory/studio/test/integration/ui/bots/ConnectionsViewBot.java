@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionFolder;
@@ -38,9 +37,9 @@ import org.apache.directory.studio.connection.core.ConnectionParameter.Encryptio
 import org.apache.directory.studio.connection.core.Messages;
 import org.apache.directory.studio.connection.core.jobs.OpenConnectionsRunnable;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionJob;
+import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
 import org.apache.directory.studio.test.integration.ui.ContextMenuHelper;
 import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
-import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.utils.TableCollection;
@@ -217,7 +216,7 @@ public class ConnectionsViewBot
 
     public Connection createTestConnection( TestLdapServer server ) throws Exception
     {
-        return createTestConnection( server.getType() + "_" + RandomStringUtils.randomAscii( 10 ), server.getHost(),
+        return createTestConnection( server.getType().name(), server.getHost(),
             server.getPort(), server.getAdminDn(),
             server.getAdminPassword() );
     }

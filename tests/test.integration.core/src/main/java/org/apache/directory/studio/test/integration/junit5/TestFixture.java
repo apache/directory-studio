@@ -103,6 +103,8 @@ public class TestFixture
     public static final Dn MISC1_DN = dn( "ou=misc.1", MISC_DN );
     public static final Dn MISC11_DN = dn( "ou=misc.1.1", MISC1_DN );
     public static final Dn MISC111_DN = dn( "ou=misc.1.1.1", MISC11_DN );
+    public static final Dn BJENSEN_DN = dn( "cn=Barbara Jensen", MISC_DN );
+    public static final Dn HNELSON_DN = dn( "uid=hnelson", MISC_DN );
     public static final Dn MULTI_VALUED_RDN_DN = dn( "cn=Barbara Jensen+uid=bjensen", MISC_DN );
     public static final Dn DN_WITH_LEADING_SHARP_BACKSLASH_PREFIXED = dn( "cn=\\#123456", MISC_DN );
     public static final Dn DN_WITH_LEADING_SHARP_HEX_PAIR_ESCAPED = dn( "cn=\\23123456", MISC_DN );
@@ -119,6 +121,9 @@ public class TestFixture
     public static final Dn USER2_DN = dn( "uid=user.2", USERS_DN );
     public static final Dn USER3_DN = dn( "uid=user.3", USERS_DN );
     public static final Dn USER8_DN = dn( "uid=user.8", USERS_DN );
+
+    public static final Dn GROUPS_DN = dn( "ou=groups", CONTEXT_DN );
+    public static final Dn GROUP1_DN = dn( "cn=group.1", GROUPS_DN );
 
     public static final Dn REFERRALS_DN = dn( "ou=referrals", CONTEXT_DN );
     public static final Dn REFERRAL_TO_USERS_DN = dn( "cn=referral-to-users", REFERRALS_DN );
@@ -149,6 +154,7 @@ public class TestFixture
         ldapServer.withAdminConnection( connection -> {
             try ( LdifReader ldifReader = new LdifReader( TestFixture.class.getResourceAsStream( TEST_FIXTURE_LDIF ) ) )
             {
+                ldifReader.setSchemaManager( connection.getSchemaManager() );
                 for ( LdifEntry entry : ldifReader )
                 {
                     replaceRefLdapUrl( ldapServer, entry );
@@ -188,6 +194,8 @@ public class TestFixture
 
             // delete ou=referrals
             deleteTree( connection, REFERRALS_DN, Optional.of( Controls.MANAGEDSAIT_CONTROL ) );
+            // delete ou=groups
+            deleteTree( connection, GROUPS_DN, Optional.empty() );
             // delete ou=users
             deleteTree( connection, USERS_DN, Optional.empty() );
             // delete ou=misc

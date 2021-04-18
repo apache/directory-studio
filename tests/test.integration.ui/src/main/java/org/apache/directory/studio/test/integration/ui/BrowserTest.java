@@ -47,10 +47,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.directory.api.ldap.model.entry.DefaultEntry;
-import org.apache.directory.api.ldap.model.entry.DefaultModification;
 import org.apache.directory.api.ldap.model.entry.Entry;
-import org.apache.directory.api.ldap.model.entry.Modification;
-import org.apache.directory.api.ldap.model.entry.ModificationOperation;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
@@ -799,20 +796,6 @@ public class BrowserTest extends AbstractTestBase
     public void testBrowseSubEntry( TestLdapServer server ) throws Exception
     {
         Dn subentryDn = dn( "cn=subentry", MISC_DN );
-
-        server.withAdminConnection( connection -> {
-
-            Modification mod = new DefaultModification( ModificationOperation.ADD_ATTRIBUTE,
-                "administrativeRole", "accessControlSpecificArea" );
-            connection.modify( subentryDn.getParent(), mod );
-
-            Entry subentry = new DefaultEntry( connection.getSchemaManager() );
-            subentry.setDn( subentryDn );
-            subentry.add( "objectClass", "top", "subentry" );
-            subentry.add( "cn", "subentry" );
-            subentry.add( "subtreeSpecification", "{}" );
-            connection.add( subentry );
-        } );
 
         // enable Subentries control
         Connection connection = connectionsViewBot.createTestConnection( server );

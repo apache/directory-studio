@@ -23,6 +23,8 @@ package org.apache.directory.studio.test.integration.junit5;
 
 import org.apache.directory.api.ldap.model.exception.LdapAuthenticationException;
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.ldif.LdifEntry;
+import org.apache.directory.api.ldap.model.ldif.LdifReader;
 import org.apache.directory.ldap.client.api.LdapConnection;
 import org.apache.directory.ldap.client.api.LdapNetworkConnection;
 import org.apache.directory.ldap.client.api.exception.InvalidConnectionException;
@@ -124,6 +126,32 @@ public abstract class TestLdapServer
         TestFixture.createContextEntry( this );
         TestFixture.cleanup( this );
         TestFixture.importData( this );
+
+        String serverSpecificLdif = getType().name() + ".ldif";
+        if ( TestFixture.class.getResource( serverSpecificLdif ) != null )
+        {
+            withAdminConnection( connection -> {
+                try ( LdifReader ldifReader = new LdifReader(
+                    TestFixture.class.getResourceAsStream( serverSpecificLdif ) ) )
+                {
+                    for ( LdifEntry entry : ldifReader )
+                    {
+                        if ( entry.isChangeModify() )
+                        {
+                            connection.modify( entry.getDn(), entry.getModificationArray() );
+                        }
+                        if ( entry.isChangeAdd() )
+                        {
+                            connection.add( entry.getEntry() );
+                        }
+                    }
+                }
+                catch ( Exception e )
+                {
+                    throw new RuntimeException( "Unexpected exception: " + e, e );
+                }
+            } );
+        }
     }
 
 

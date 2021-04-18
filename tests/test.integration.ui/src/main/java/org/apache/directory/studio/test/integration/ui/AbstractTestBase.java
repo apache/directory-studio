@@ -72,12 +72,6 @@ public class AbstractTestBase
     }
 
 
-    public static String[] path( Dn dn, String leaf )
-    {
-        return ArrayUtils.addAll( path( dn ), leaf );
-    }
-
-
     /**
      * Gets the path to the DN in the LDAP browser tree.
      * The path starts with "DIT", "Root DSE", and the context entry.
@@ -104,14 +98,24 @@ public class AbstractTestBase
      */
     public static String[] path( Dn dn, Rdn rdn )
     {
-        return ArrayUtils.add( path( dn ), rdn.getName() );
+        return path( dn, rdn.getName() );
+    }
+
+
+    /**
+     * Gets the path to the leaf  below the DN in the LDAP browser tree.
+     * The path starts with "DIT", "Root DSE", and the context entry.
+     */
+    public static String[] path( Dn dn, String leaf )
+    {
+        return ArrayUtils.addAll( path( dn ), leaf );
     }
 
 
     public static String[] pathWithRefLdapUrl( TestLdapServer ldapServer, Dn dn )
     {
-        String s = ldapServer.getLdapUrl() + "/" + dn.getName();
-        return path( path( REFERRALS_DN ), s );
+        String leaf = ldapServer.getLdapUrl() + "/" + dn.getName();
+        return path( REFERRALS_DN, leaf );
     }
 
 }
