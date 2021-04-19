@@ -106,7 +106,7 @@ public class AbstractTestBase
      * Gets the path to the leaf  below the DN in the LDAP browser tree.
      * The path starts with "DIT", "Root DSE", and the context entry.
      */
-    public static String[] path( Dn dn, String leaf )
+    public static String[] path( Dn dn, String... leaf )
     {
         return ArrayUtils.addAll( path( dn ), leaf );
     }

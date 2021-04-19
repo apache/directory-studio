@@ -115,6 +115,7 @@ public class TestFixture
     public static final Dn DN_WITH_TRAILING_EQUALS_CHARACTER_HEX_PAIR_ESCAPED = dn( "cn=trailing\\3D", MISC_DN );
     public static final Dn DN_WITH_IP_HOST_NUMBER = dn( "cn=loopback+ipHostNumber=127.0.0.1", MISC_DN );
     public static final Dn ALIAS_DN = dn( "cn=alias", MISC_DN );
+    public static final Dn SUBENTRY_DN = dn( "cn=subentry", MISC_DN );
 
     public static final Dn USERS_DN = dn( "ou=users", CONTEXT_DN );
     public static final Dn USER1_DN = dn( "uid=user.1", USERS_DN );
@@ -193,7 +194,7 @@ public class TestFixture
             }
 
             // delete ou=referrals
-            deleteTree( connection, REFERRALS_DN, Optional.of( Controls.MANAGEDSAIT_CONTROL ) );
+            deleteTree( connection, REFERRALS_DN, Optional.empty() );
             // delete ou=groups
             deleteTree( connection, GROUPS_DN, Optional.empty() );
             // delete ou=users
@@ -213,6 +214,7 @@ public class TestFixture
         searchRequest.setFilter( OBJECT_CLASS_ALL_FILTER );
         searchRequest.setScope( SearchScope.SUBTREE );
         searchRequest.setDerefAliases( AliasDerefMode.NEVER_DEREF_ALIASES );
+        searchRequest.addControl( Controls.MANAGEDSAIT_CONTROL );
         control.ifPresent( c -> searchRequest.addControl( c ) );
 
         try ( SearchCursor searchCursor = connection.search( searchRequest );
@@ -228,6 +230,7 @@ public class TestFixture
             {
                 DeleteRequest deleteRequest = new DeleteRequestImpl();
                 deleteRequest.setName( dn );
+                deleteRequest.addControl( Controls.MANAGEDSAIT_CONTROL );
                 control.ifPresent( c -> deleteRequest.addControl( c ) );
                 connection.delete( deleteRequest );
             }
