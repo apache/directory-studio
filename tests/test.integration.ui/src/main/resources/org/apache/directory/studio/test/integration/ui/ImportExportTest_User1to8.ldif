@@ -15,7 +15,7 @@
 #  specific language governing permissions and limitations
 #  under the License.
 #
-dn: uid=User.1,ou=users,ou=system
+dn: uid=User.1,ou=misc.1.1.1,ou=misc.1.1,ou=misc.1,ou=misc,dc=example,dc=org
 objectClass: top
 objectClass: person
 objectClass: organizationalPerson
@@ -40,7 +40,7 @@ postalAddress: Aaccf Amar$27919 Broadway Street$Tallahassee, DE  67698
 description: This is the description for Aaccf Amar.
 roomNumber: 1388
 
-dn: uid=user.2,ou=users,ou=system
+dn: uid=user.2,ou=misc.1.1.1,ou=misc.1.1,ou=misc.1,ou=misc,dc=example,dc=org
 objectClass: top
 objectClass: person
 objectClass: organizationalPerson
@@ -65,7 +65,7 @@ postalAddress: Aaren Atp$36109 Center Street$Harlingen, CO  21733
 description: This is the description for Aaren Atp.
 roomNumber: 1198
 
-dn: uid=user.3,ou=users,ou=system
+dn: uid=user.3,ou=misc.1.1.1,ou=misc.1.1,ou=misc.1,ou=misc,dc=example,dc=org
 objectClass: top
 objectClass: person
 objectClass: organizationalPerson
@@ -90,7 +90,7 @@ postalAddress: Aarika Atpco$14730 Fourteenth Street$Evansville, ND  95526
 description: This is the description for Aarika Atpco.
 roomNumber: 1135
 
-dn: uid=user.4,ou=users,ou=system
+dn: uid=user.4,ou=misc.1.1.1,ou=misc.1.1,ou=misc.1,ou=misc,dc=example,dc=org
 objectClass: top
 objectClass: person
 objectClass: organizationalPerson
@@ -115,7 +115,7 @@ postalAddress: Aaron Atrc$98495 Fifteenth Street$Miami, PA  16887
 description: This is the description for Aaron Atrc.
 roomNumber: 1311
 
-dn: uid=user.5,ou=users,ou=system
+dn: uid=user.5,ou=misc.1.1.1,ou=misc.1.1,ou=misc.1,ou=misc,dc=example,dc=org
 objectClass: top
 objectClass: person
 objectClass: organizationalPerson
@@ -140,7 +140,7 @@ postalAddress: Aartjan Aalders$52408 Ridge Street$Omaha, AR  08015
 description: This is the description for Aartjan Aalders.
 roomNumber: 1090
 
-dn: uid=user.6,ou=users,ou=system
+dn: uid=user.6,ou=misc.1.1.1,ou=misc.1.1,ou=misc.1,ou=misc,dc=example,dc=org
 objectClass: top
 objectClass: person
 objectClass: organizationalPerson
@@ -165,7 +165,7 @@ postalAddress: Abagael Aasen$87514 Dogwood Street$Bloomington, ID  56762
 description: This is the description for Abagael Aasen.
 roomNumber: 1449
 
-dn: uid=user.7,ou=users,ou=system
+dn: uid=user.7,ou=misc.1.1.1,ou=misc.1.1,ou=misc.1,ou=misc,dc=example,dc=org
 objectClass: top
 objectClass: person
 objectClass: organizationalPerson
@@ -190,7 +190,7 @@ postalAddress: Abagail Abadines$60751 Main Street$Macon, MI  38755
 description: This is the description for Abagail Abadines.
 roomNumber: 1312
 
-dn: uid=user.8,ou=users,ou=system
+dn: uid=user.8,ou=misc.1.1.1,ou=misc.1.1,ou=misc.1,ou=misc,dc=example,dc=org
 objectClass: top
 objectClass: person
 objectClass: organizationalPerson

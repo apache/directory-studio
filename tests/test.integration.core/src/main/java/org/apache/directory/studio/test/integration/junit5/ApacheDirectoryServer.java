@@ -44,20 +44,24 @@ import org.apache.mina.util.AvailablePortFinder;
 public class ApacheDirectoryServer extends TestLdapServer
 {
 
-    private static DirectoryService service;
-    private static LdapServer server;
+    private static ApacheDirectoryServer instance;
 
-    public static ApacheDirectoryServer getInstance()
+    private DirectoryService service;
+    private LdapServer server;
+
+    public static synchronized ApacheDirectoryServer getInstance()
     {
-        if ( server == null )
+        if ( instance == null )
         {
-            startServer();
+            int port = AvailablePortFinder.getNextAvailable( 1024 );
+            instance = new ApacheDirectoryServer( port );
+            instance.startServer();
         }
-        return new ApacheDirectoryServer();
+        return instance;
     }
 
 
-    private static void startServer()
+    private void startServer()
     {
         try
         {
@@ -88,9 +92,15 @@ public class ApacheDirectoryServer extends TestLdapServer
     }
 
 
-    private ApacheDirectoryServer()
+    public DirectoryService getService()
     {
-        super( LdapServerType.ApacheDS, LOCALHOST, server.getPort(), "uid=admin,ou=system", "secret" );
+        return service;
+    }
+
+
+    private ApacheDirectoryServer( int port )
+    {
+        super( LdapServerType.ApacheDS, LOCALHOST, port, "uid=admin,ou=system", "secret" );
     }
 
 }

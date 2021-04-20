@@ -105,6 +105,7 @@ public class TestFixture
     public static final Dn MISC111_DN = dn( "ou=misc.1.1.1", MISC11_DN );
     public static final Dn BJENSEN_DN = dn( "cn=Barbara Jensen", MISC_DN );
     public static final Dn HNELSON_DN = dn( "uid=hnelson", MISC_DN );
+    public static final Dn GERMAN_UMLAUT_DN = dn( "cn=Wolfgang K\u00f6lbel", MISC_DN );
     public static final Dn MULTI_VALUED_RDN_DN = dn( "cn=Barbara Jensen+uid=bjensen", MISC_DN );
     public static final Dn DN_WITH_LEADING_SHARP_BACKSLASH_PREFIXED = dn( "cn=\\#123456", MISC_DN );
     public static final Dn DN_WITH_LEADING_SHARP_HEX_PAIR_ESCAPED = dn( "cn=\\23123456", MISC_DN );

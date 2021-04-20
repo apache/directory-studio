@@ -77,6 +77,15 @@ userSMIMECertificate:: AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8gISIjJCUmJyg
  J2en6ChoqOkpaanqKmqq6ytrq+wsbKztLW2t7i5uru8vb6/wMHCw8TFxsfIycrLzM3Oz9DR0tPU1d
  bX2Nna29zd3t/g4eLj5OXm5+jp6uvs7e7v8PHy8/T19vf4+fr7/P3+
 
+dn:: Y249V29sZmdhbmcgS8O2bGJlbCxvdT1taXNjLGRjPWV4YW1wbGUsZGM9b3Jn
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: top
+cn:: V29sZmdhbmcgS8O2bGJlbA==
+sn:: S8O2bGJlbA==
+description: =1+1
+
 # Multi-valued RDN
 dn: cn=Barbara Jensen+uid=bjensen,ou=misc,dc=example,dc=org
 objectClass: inetOrgPerson

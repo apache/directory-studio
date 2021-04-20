@@ -243,19 +243,19 @@ public class CopyEntryTest extends AbstractTestBase
             IBrowserConnection.CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD,
             AliasDereferencingMethod.NEVER.ordinal() );
 
-        // expand the entries to avoid copy depth dialog
+        // expand the entry to avoid copy depth dialog
         browserViewBot.expandEntry( path( ALIAS_DN ) );
         browserViewBot.selectEntry( path( ALIAS_DN ) );
         browserViewBot.copy();
 
-        // select the parent entry where the copied entries should be pasted to
+        // select the parent entry where the copied entry should be pasted to
         browserViewBot.selectEntry( path( MISC111_DN ) );
         assertFalse( browserViewBot.existsEntry( path( MISC111_DN, ALIAS_DN.getRdn() ) ) );
 
-        // paste the entries
+        // paste the entry
         browserViewBot.pasteEntries( 1 );
 
-        // verify the entries were copied
+        // verify the entyr was copied
         assertTrue( browserViewBot.existsEntry( path( MISC111_DN, ALIAS_DN.getRdn() ) ) );
 
         // verify in modification logs
@@ -272,19 +272,19 @@ public class CopyEntryTest extends AbstractTestBase
         connection.getConnectionParameter().setExtendedBoolProperty(
             IBrowserConnection.CONNECTION_PARAMETER_MANAGE_DSA_IT, true );
 
-        // expand the entries to avoid copy depth dialog
+        // expand the entry to avoid copy depth dialog
         browserViewBot.expandEntry( path( REFERRAL_TO_USER1_DN ) );
         browserViewBot.selectEntry( path( REFERRAL_TO_USER1_DN ) );
         browserViewBot.copy();
 
-        // select the parent entry where the copied entries should be pasted to
+        // select the parent entry where the copied entry should be pasted to
         browserViewBot.selectEntry( path( MISC111_DN ) );
         assertFalse( browserViewBot.existsEntry( path( MISC111_DN, REFERRAL_TO_USER1_DN.getRdn() ) ) );
 
-        // paste the entries
+        // paste the entry
         browserViewBot.pasteEntries( 1 );
 
-        // verify the entries were copied
+        // verify the entry was copied
         assertTrue( browserViewBot.existsEntry( path( MISC111_DN, REFERRAL_TO_USER1_DN.getRdn() ) ) );
 
         // verify in modification logs
