@@ -21,37 +21,41 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.ALIAS_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.CONTEXT_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.DN_WITH_LEADING_SHARP_BACKSLASH_PREFIXED;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.DN_WITH_LEADING_SHARP_HEX_PAIR_ESCAPED;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.GROUP1_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.GROUPS_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.MISC_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.REFERRAL_TO_USER1_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.SUBENTRY_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.USER1_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.USER8_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.USERS_DN;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.directory.api.ldap.model.message.ModifyRequest;
 import org.apache.directory.api.ldap.model.message.ModifyRequestImpl;
-import org.apache.directory.api.ldap.model.name.Dn;
-import org.apache.directory.server.annotations.CreateLdapServer;
-import org.apache.directory.server.annotations.CreateTransport;
-import org.apache.directory.server.core.annotations.ApplyLdifFiles;
-import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
+import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.ldapbrowser.core.BrowserConnectionManager;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.events.EventRegistry;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
-import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
-import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
+import org.apache.directory.studio.test.integration.junit5.LdapServerType;
+import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
+import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
 import org.apache.directory.studio.test.integration.ui.bots.FilterEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.SearchDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.SearchPropertiesDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.SearchResultEditorBot;
-import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
-import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
-import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.params.ParameterizedTest;
 
 
 /**
@@ -60,49 +64,21 @@ import org.junit.runner.RunWith;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-@RunWith(FrameworkRunnerWithScreenshotCaptureListener.class)
-@CreateLdapServer(transports =
-    { @CreateTransport(protocol = "LDAP") })
-@ApplyLdifFiles(clazz = BrowserTest.class, value = "org/apache/directory/studio/test/integration/ui/BrowserTest.ldif")
-public class SearchTest extends AbstractLdapTestUnit
+public class SearchTest extends AbstractTestBase
 {
-    private StudioBot studioBot;
-    private ConnectionsViewBot connectionsViewBot;
-    private BrowserViewBot browserViewBot;
-
-    private Connection connection1;
-    private Connection connection2;
-
-    @Before
-    public void setUp() throws Exception
-    {
-        studioBot = new StudioBot();
-        studioBot.resetLdapPerspective();
-        connectionsViewBot = studioBot.getConnectionView();
-        connection1 = connectionsViewBot.createTestConnection( "SearchTest1", ldapServer.getPort() );
-        connection2 = connectionsViewBot.createTestConnection( "SearchTest2", ldapServer.getPort() );
-        browserViewBot = studioBot.getBrowserView();
-    }
-
-
-    @After
-    public void tearDown() throws Exception
-    {
-        connectionsViewBot.deleteTestConnections();
-        Assertions.genericTearDownAssertions();
-    }
-
 
     /**
      * Test for DIRSTUDIO-490.
      *
      * Copy/Paste a search between connections and verify that the associated browser connection is correct.
-     *
-     * @throws Exception
      */
-    @Test
-    public void testCopyPasteSearchBetweenConnections() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testCopyPasteSearchBetweenConnections( TestLdapServer server ) throws Exception
     {
+        Connection connection1 = connectionsViewBot.createTestConnection( server );
+        Connection connection2 = connectionsViewBot.createTestConnection( server );
+
         BrowserConnectionManager browserConnectionManager = BrowserCorePlugin.getDefault().getConnectionManager();
         IBrowserConnection browserConnection1 = browserConnectionManager.getBrowserConnectionByName( connection1
             .getName() );
@@ -113,7 +89,7 @@ public class SearchTest extends AbstractLdapTestUnit
 
         // create a search for in connection 1
         connectionsViewBot.select( connection1.getName() );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
+        browserViewBot.selectEntry( path( CONTEXT_DN ) );
         SearchDialogBot dialogBot = browserViewBot.openSearchDialog();
         assertTrue( dialogBot.isVisible() );
         dialogBot.setSearchName( "Search all persons" );
@@ -149,24 +125,24 @@ public class SearchTest extends AbstractLdapTestUnit
      * Test for DIRSTUDIO-587 (UI flickers on quick search).
      *
      * When performing a quick search only one UI update should be fired.
-     *
-     * @throws Exception
      */
-    @Test
-    public void testOnlyOneUiUpdateOnQuickSearch() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testOnlyOneUiUpdateOnQuickSearch( TestLdapServer server ) throws Exception
     {
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
-        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system" );
+        connectionsViewBot.createTestConnection( server );
+        browserViewBot.selectEntry( path( CONTEXT_DN ) );
+        browserViewBot.expandEntry( path( CONTEXT_DN ) );
 
         browserViewBot.typeQuickSearchAttributeType( "ou" );
         browserViewBot.typeQuickSearchValue( "*" );
 
         long fireCount0 = EventRegistry.getFireCount();
         browserViewBot.clickRunQuickSearchButton();
-        browserViewBot.waitForEntry( "DIT", "Root DSE", "ou=system", "Quick Search" );
+        browserViewBot.waitForEntry( path( CONTEXT_DN, "Quick Search" ) );
         long fireCount1 = EventRegistry.getFireCount();
 
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "Quick Search" );
+        browserViewBot.selectEntry( path( CONTEXT_DN, "Quick Search" ) );
 
         // verify that only one event was fired
         long fireCount = fireCount1 - fireCount0;
@@ -174,99 +150,103 @@ public class SearchTest extends AbstractLdapTestUnit
     }
 
 
-    @Test
-    public void testQuickSearch() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testQuickSearch( TestLdapServer server ) throws Exception
     {
+        connectionsViewBot.createTestConnection( server );
         // quick search on context entry
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
-        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system" );
+        browserViewBot.selectEntry( path( CONTEXT_DN ) );
+        browserViewBot.expandEntry( path( CONTEXT_DN ) );
 
         browserViewBot.typeQuickSearchAttributeType( "ou" );
         browserViewBot.typeQuickSearchValue( "*" );
         browserViewBot.clickRunQuickSearchButton();
 
-        browserViewBot.waitForEntry( "DIT", "Root DSE", "ou=system", "Quick Search (5)" );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "Quick Search (5)" );
-        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "Quick Search (5)" );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "Quick Search (5)", "ou=users,ou=system" );
+        browserViewBot.waitForEntry( path( CONTEXT_DN, "Quick Search (5)" ) );
+        browserViewBot.selectEntry( path( CONTEXT_DN, "Quick Search (5)" ) );
+        browserViewBot.expandEntry( path( CONTEXT_DN, "Quick Search (5)" ) );
+        browserViewBot.selectEntry( path( CONTEXT_DN, "Quick Search (5)", USERS_DN.getName() ) );
 
         // quick search on non-leaf entry
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
-        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        browserViewBot.selectEntry( path( USERS_DN ) );
+        browserViewBot.expandEntry( path( USERS_DN ) );
 
         browserViewBot.typeQuickSearchAttributeType( "uid" );
         browserViewBot.typeQuickSearchValue( "user.1" );
         browserViewBot.clickRunQuickSearchButton();
 
-        browserViewBot.waitForEntry( "DIT", "Root DSE", "ou=system", "ou=users", "Quick Search (1)" );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "Quick Search (1)" );
-        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users", "Quick Search (1)" );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "Quick Search (1)",
-            "uid=user.1,ou=users,ou=system" );
+        browserViewBot.waitForEntry( path( USERS_DN, "Quick Search (1)" ) );
+        browserViewBot.selectEntry( path( USERS_DN, "Quick Search (1)" ) );
+        browserViewBot.expandEntry( path( USERS_DN, "Quick Search (1)" ) );
+        browserViewBot.selectEntry( path( USERS_DN, "Quick Search (1)", USER1_DN.getName() ) );
 
         // quick search on leaf entry
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" );
-        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" );
+        browserViewBot.selectEntry( path( USER1_DN ) );
+        browserViewBot.expandEntry( path( USER1_DN ) );
 
         browserViewBot.typeQuickSearchAttributeType( "uid" );
         browserViewBot.typeQuickSearchValue( "user.1" );
         browserViewBot.clickRunQuickSearchButton();
 
-        browserViewBot.waitForEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1", "Quick Search (0)" );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1", "Quick Search (0)" );
-        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1", "Quick Search (0)" );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1", "Quick Search (0)",
-            "No Results" );
+        browserViewBot.waitForEntry( path( USER1_DN, "Quick Search (0)" ) );
+        browserViewBot.selectEntry( path( USER1_DN, "Quick Search (0)" ) );
+        browserViewBot.expandEntry( path( USER1_DN, "Quick Search (0)" ) );
+        browserViewBot.selectEntry( path( USER1_DN, "Quick Search (0)", "No Results" ) );
     }
 
 
     /**
      * Test for DIRSTUDIO-601.
      * (The 'Perform Search/Search Again' button in the Search Result Editor does not work correctly)
-     *
-     * @throws Exception
      */
-    @Test
-    public void testRefresh() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testRefresh( TestLdapServer server ) throws Exception
     {
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
+        connectionsViewBot.createTestConnection( server );
+        browserViewBot.selectEntry( path( GROUPS_DN ) );
         SearchDialogBot dialogBot = browserViewBot.openSearchDialog();
         assertTrue( dialogBot.isVisible() );
-        dialogBot.setSearchName( "Search Admin" );
-        dialogBot.setFilter( "(uid=admin)" );
-        dialogBot.setReturningAttributes( "objectClass, uid, description" );
+        dialogBot.setSearchName( "Search Group" );
+        dialogBot.setFilter( "(" + GROUP1_DN.getRdn().getName() + ")" );
+        dialogBot.setReturningAttributes( "objectClass, cn, description" );
         dialogBot.clickSearchButton();
-        browserViewBot.selectEntry( "Searches", "Search Admin" );
+        browserViewBot.selectEntry( "Searches", "Search Group" );
 
-        SearchResultEditorBot srEditorBot = studioBot.getSearchResultEditorBot( "Search Admin" );
+        SearchResultEditorBot srEditorBot = studioBot.getSearchResultEditorBot( "Search Group" );
         srEditorBot.activate();
         assertTrue( srEditorBot.isEnabled() );
 
         // assert that description attribute is empty
-        assertEquals( "uid=admin,ou=system", srEditorBot.getContent( 1, 1 ) );
+        assertEquals( GROUP1_DN.getName(), srEditorBot.getContent( 1, 1 ) );
         assertEquals( "", srEditorBot.getContent( 1, 4 ) );
 
         // add description
         ModifyRequest request = new ModifyRequestImpl();
-        request.setName( new Dn( "uid=admin,ou=system" ) );
+        request.setName( GROUP1_DN );
         request.replace( "description", "The 1st description." );
-        service.getAdminSession().modify( request );
+        server.withAdminConnection( conn -> {
+            conn.modify( request );
+        } );
 
         // refresh the search, using the toolbar icon
         srEditorBot.refresh();
         SWTUtils.sleep( 1000 );
 
         // assert the description attribute value is displayed now
-        assertEquals( "uid=admin,ou=system", srEditorBot.getContent( 1, 1 ) );
+        assertEquals( GROUP1_DN.getName(), srEditorBot.getContent( 1, 1 ) );
         assertEquals( "The 1st description.", srEditorBot.getContent( 1, 4 ) );
     }
 
 
-    @Test
-    public void testSearchAlias() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testSearchAlias( TestLdapServer server ) throws Exception
     {
+        connectionsViewBot.createTestConnection( server );
         String searchName = "Search Alias";
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
+        browserViewBot.selectEntry( path( CONTEXT_DN ) );
         SearchDialogBot dialogBot = browserViewBot.openSearchDialog();
         assertTrue( dialogBot.isVisible() );
         dialogBot.setSearchName( searchName );
@@ -277,52 +257,58 @@ public class SearchTest extends AbstractLdapTestUnit
 
         // assert search result exists in tree
         browserViewBot.expandEntry( "Searches", "Search Alias" );
-        assertTrue( browserViewBot.existsEntry( "Searches", "Search Alias", "cn=alias,ou=special,ou=system" ) );
+        assertTrue( browserViewBot.existsEntry( "Searches", "Search Alias", ALIAS_DN.getName() ) );
 
         // assert attributes in search result editor
         browserViewBot.selectEntry( "Searches", "Search Alias" );
         SearchResultEditorBot srEditorBot = studioBot.getSearchResultEditorBot( "Search Alias" );
         srEditorBot.activate();
         assertTrue( srEditorBot.isEnabled() );
-        assertEquals( "cn=alias,ou=special,ou=system", srEditorBot.getContent( 1, 1 ) );
+        assertEquals( ALIAS_DN.getName(), srEditorBot.getContent( 1, 1 ) );
         assertEquals( "alias", srEditorBot.getContent( 1, 2 ) );
-        assertEquals( "ou=special,ou=system", srEditorBot.getContent( 1, 3 ) );
+        assertEquals( MISC_DN, srEditorBot.getContent( 1, 3 ) );
     }
 
 
-    @Test
-    public void testSearchReferral() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testSearchReferral( TestLdapServer server ) throws Exception
     {
+        connectionsViewBot.createTestConnection( server );
         String searchName = "Search Referral";
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
+        browserViewBot.selectEntry( path( CONTEXT_DN ) );
         SearchDialogBot dialogBot = browserViewBot.openSearchDialog();
         assertTrue( dialogBot.isVisible() );
         dialogBot.setSearchName( searchName );
-        dialogBot.setFilter( "(objectClass=referral)" );
+        dialogBot.setFilter( "(&(objectClass=referral)(" + REFERRAL_TO_USER1_DN.getRdn().getName() + "))" );
         dialogBot.setReturningAttributes( "cn,ref" );
         dialogBot.setControlManageDsaIT( true );
         dialogBot.clickSearchButton();
 
         // assert search result exists in tree
         browserViewBot.expandEntry( "Searches", searchName );
-        assertTrue( browserViewBot.existsEntry( "Searches", searchName, "cn=referral,ou=special,ou=system" ) );
+        assertTrue(
+            browserViewBot.existsEntry( "Searches", searchName, Utils.shorten( REFERRAL_TO_USER1_DN.getName(), 50 ) ) );
 
         // assert attributes in search result editor
         browserViewBot.selectEntry( "Searches", searchName );
         SearchResultEditorBot srEditorBot = studioBot.getSearchResultEditorBot( searchName );
         srEditorBot.activate();
         assertTrue( srEditorBot.isEnabled() );
-        assertEquals( "cn=referral,ou=special,ou=system", srEditorBot.getContent( 1, 1 ) );
-        assertEquals( "referral", srEditorBot.getContent( 1, 2 ) );
-        assertEquals( "ldap://foo.example.com/ou=system", srEditorBot.getContent( 1, 3 ) );
+        assertEquals( REFERRAL_TO_USER1_DN.getName(), srEditorBot.getContent( 1, 1 ) );
+        assertEquals( REFERRAL_TO_USER1_DN.getRdn().getValue(), srEditorBot.getContent( 1, 2 ) );
+        assertEquals( StringUtils.abbreviate( server.getLdapUrl() + "/" + USER1_DN.getName(), 50 ),
+            srEditorBot.getContent( 1, 3 ) );
     }
 
 
-    @Test
-    public void testSearchSubentry() throws Exception
+    @ParameterizedTest
+    @LdapServersSource(types = LdapServerType.ApacheDS)
+    public void testSearchSubentry( TestLdapServer server ) throws Exception
     {
+        connectionsViewBot.createTestConnection( server );
         String searchName = "Search Subentry";
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
+        browserViewBot.selectEntry( path( CONTEXT_DN ) );
         SearchDialogBot dialogBot = browserViewBot.openSearchDialog();
         assertTrue( dialogBot.isVisible() );
         dialogBot.setSearchName( searchName );
@@ -333,30 +319,32 @@ public class SearchTest extends AbstractLdapTestUnit
 
         // assert search result exists in tree
         browserViewBot.expandEntry( "Searches", searchName );
-        assertTrue( browserViewBot.existsEntry( "Searches", searchName, "cn=subentry,ou=special,ou=system" ) );
+        assertTrue( browserViewBot.existsEntry( "Searches", searchName, SUBENTRY_DN.getName() ) );
 
         // assert attributes in search result editor
         browserViewBot.selectEntry( "Searches", searchName );
         SearchResultEditorBot srEditorBot = studioBot.getSearchResultEditorBot( searchName );
         srEditorBot.activate();
         assertTrue( srEditorBot.isEnabled() );
-        assertEquals( "cn=subentry,ou=special,ou=system", srEditorBot.getContent( 1, 1 ) );
-        assertEquals( "subentry", srEditorBot.getContent( 1, 2 ) );
-        assertEquals( "{ }", srEditorBot.getContent( 1, 3 ) );
+        assertEquals( SUBENTRY_DN.getName(), srEditorBot.getContent( 1, 1 ) );
+        assertEquals( SUBENTRY_DN.getRdn().getValue(), srEditorBot.getContent( 1, 2 ) );
+        assertEquals( "{}", srEditorBot.getContent( 1, 3 ) );
     }
 
 
-    @Test
-    public void testSearchWithPagingWithScrollMode() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testSearchWithPagingWithScrollMode( TestLdapServer server ) throws Exception
     {
+        connectionsViewBot.createTestConnection( server );
         String searchName = "Paged search with scroll mode";
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        browserViewBot.selectEntry( path( USERS_DN ) );
         SearchDialogBot dialogBot = browserViewBot.openSearchDialog();
         assertTrue( dialogBot.isVisible() );
         dialogBot.setSearchName( searchName );
         dialogBot.setFilter( "(objectClass=*)" );
         dialogBot.setReturningAttributes( "objectClass,ou,cn,uid" );
-        dialogBot.setControlPagedSearch( true, 5, true );
+        dialogBot.setControlPagedSearch( true, 3, true );
         dialogBot.clickSearchButton();
 
         // 1st page
@@ -381,33 +369,37 @@ public class SearchTest extends AbstractLdapTestUnit
     }
 
 
-    @Test
-    public void testSearchWithPagingWithoutScrollMode() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testSearchWithPagingWithoutScrollMode( TestLdapServer server ) throws Exception
     {
+        connectionsViewBot.createTestConnection( server );
         String searchName = "Paged search without scroll mode";
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        browserViewBot.selectEntry( path( USERS_DN ) );
         SearchDialogBot dialogBot = browserViewBot.openSearchDialog();
         assertTrue( dialogBot.isVisible() );
         dialogBot.setSearchName( searchName );
         dialogBot.setFilter( "(objectClass=*)" );
         dialogBot.setReturningAttributes( "objectClass,ou,cn,uid" );
-        dialogBot.setControlPagedSearch( true, 5, false );
+        dialogBot.setControlPagedSearch( true, 3, false );
         dialogBot.clickSearchButton();
 
         browserViewBot.expandEntry( "Searches", searchName );
         assertFalse( browserViewBot.existsEntry( "Searches", searchName, "--- Top Page ---" ) );
         assertFalse( browserViewBot.existsEntry( "Searches", searchName, "--- Next Page ---" ) );
-        assertTrue( browserViewBot.existsEntry( "Searches", searchName + " (15+)" ) );
-        assertTrue( browserViewBot.existsEntry( "Searches", searchName, "uid=user.1,ou=users,ou=system" ) );
-        assertTrue( browserViewBot.existsEntry( "Searches", searchName, "uid=user.8,ou=users,ou=system" ) );
+        assertTrue( browserViewBot.existsEntry( "Searches", searchName + " (9+)" ) );
+        assertTrue( browserViewBot.existsEntry( "Searches", searchName, USER1_DN.getName() ) );
+        assertTrue( browserViewBot.existsEntry( "Searches", searchName, USER8_DN.getName() ) );
     }
 
 
-    @Test
-    public void testFilterEditor() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testFilterEditor( TestLdapServer server ) throws Exception
     {
+        connectionsViewBot.createTestConnection( server );
         String searchName = "Test filter editor";
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        browserViewBot.selectEntry( path( USERS_DN ) );
         SearchDialogBot dialogBot = browserViewBot.openSearchDialog();
         assertTrue( dialogBot.isVisible() );
         dialogBot.setSearchName( searchName );
@@ -417,14 +409,13 @@ public class SearchTest extends AbstractLdapTestUnit
         filterBot.setFilter( "(&(objectClass=*)(uid=user.1))" );
         filterBot.clickFormatButton();
         String formattetFilter = filterBot.getFilter();
-        // SWTUtils.sleep( 10000 );
         filterBot.clickOkButton();
         dialogBot.activate();
         String filter = dialogBot.getFilter();
         dialogBot.clickSearchButton();
 
         browserViewBot.expandEntry( "Searches", searchName );
-        assertTrue( browserViewBot.existsEntry( "Searches", searchName, "uid=user.1,ou=users,ou=system" ) );
+        assertTrue( browserViewBot.existsEntry( "Searches", searchName, USER1_DN.getName() ) );
         assertEquals( "(&(objectClass=*)(uid=user.1))", filter );
         assertEquals( "(&\n    (objectClass=*)\n    (uid=user.1)\n)", formattetFilter );
     }
@@ -433,18 +424,21 @@ public class SearchTest extends AbstractLdapTestUnit
     /**
      * Test for DIRSTUDIO-1078/DIRAPI-365: unable to use # pound hash sign in LDAP filters
      */
-    @Test
-    public void testFilterForDnWithLeadingHash() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testFilterForDnWithLeadingHash( TestLdapServer server ) throws Exception
     {
+        connectionsViewBot.createTestConnection( server );
         String searchName = "Test filter for DN with leading hash character";
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
+        browserViewBot.selectEntry( path( CONTEXT_DN ) );
         SearchDialogBot dialogBot = browserViewBot.openSearchDialog();
         assertTrue( dialogBot.isVisible() );
         dialogBot.setSearchName( searchName );
         dialogBot.setReturningAttributes( "objectClass,ou,cn,uid" );
 
+        String filterValue = DN_WITH_LEADING_SHARP_BACKSLASH_PREFIXED.getName().replace( "\\#", "\\5c#" );
         FilterEditorDialogBot filterBot = dialogBot.openFilterEditor();
-        filterBot.setFilter( "member=CN=\\5c#ACL_AD-Projects_Author,ou=users,ou=system" );
+        filterBot.setFilter( "member=" + filterValue );
         filterBot.clickFormatButton();
         filterBot.clickOkButton();
         dialogBot.activate();
@@ -452,26 +446,29 @@ public class SearchTest extends AbstractLdapTestUnit
         dialogBot.clickSearchButton();
 
         browserViewBot.expandEntry( "Searches", searchName );
-        assertTrue( browserViewBot.existsEntry( "Searches", searchName, "cn=My Group,ou=groups,ou=system" ) );
-        assertEquals( "(member=CN=\\5c#ACL_AD-Projects_Author,ou=users,ou=system)", filter );
+        assertTrue( browserViewBot.existsEntry( "Searches", searchName, GROUP1_DN.getName() ) );
+        assertEquals( "(member=" + filterValue + ")", filter );
     }
 
 
     /**
      * Test for DIRSTUDIO-1078/DIRAPI-365: unable to use # pound hash sign in LDAP filters
      */
-    @Test
-    public void testFilterForDnWithLeadingHashHex() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testFilterForDnWithLeadingHashHex( TestLdapServer server ) throws Exception
     {
+        connectionsViewBot.createTestConnection( server );
         String searchName = "Test filter for DN with leading hash character";
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
+        browserViewBot.selectEntry( path( CONTEXT_DN ) );
         SearchDialogBot dialogBot = browserViewBot.openSearchDialog();
         assertTrue( dialogBot.isVisible() );
         dialogBot.setSearchName( searchName );
         dialogBot.setReturningAttributes( "objectClass,ou,cn,uid" );
 
+        String filterValue = DN_WITH_LEADING_SHARP_HEX_PAIR_ESCAPED.getName().replace( "\\23", "\\5C23" );
         FilterEditorDialogBot filterBot = dialogBot.openFilterEditor();
-        filterBot.setFilter( "member=CN=\\5C23ACL_AD-Projects_Author,ou=users,ou=system" );
+        filterBot.setFilter( "member=" + filterValue );
         filterBot.clickFormatButton();
         filterBot.clickOkButton();
         dialogBot.activate();
@@ -479,8 +476,8 @@ public class SearchTest extends AbstractLdapTestUnit
         dialogBot.clickSearchButton();
 
         browserViewBot.expandEntry( "Searches", searchName );
-        assertTrue( browserViewBot.existsEntry( "Searches", searchName, "cn=My Group,ou=groups,ou=system" ) );
-        assertEquals( "(member=CN=\\5C23ACL_AD-Projects_Author,ou=users,ou=system)", filter );
+        assertTrue( browserViewBot.existsEntry( "Searches", searchName, GROUP1_DN.getName() ) );
+        assertEquals( "(member=" + filterValue + ")", filter );
     }
 
 }

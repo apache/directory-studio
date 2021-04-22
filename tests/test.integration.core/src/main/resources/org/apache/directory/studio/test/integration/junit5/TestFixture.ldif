@@ -388,6 +388,7 @@ member: uid=user.5,ou=users,dc=example,dc=org
 member: uid=user.6,ou=users,dc=example,dc=org
 member: uid=user.7,ou=users,dc=example,dc=org
 member: uid=user.8,ou=users,dc=example,dc=org
+member: cn=\#123456,ou=misc,dc=example,dc=org
 
 #
 # ou=target

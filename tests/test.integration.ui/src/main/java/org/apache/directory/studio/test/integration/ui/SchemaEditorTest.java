@@ -29,25 +29,21 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import org.apache.directory.server.annotations.CreateLdapServer;
-import org.apache.directory.server.annotations.CreateTransport;
-import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.test.integration.junit5.LdapServerType;
+import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
+import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
 import org.apache.directory.studio.test.integration.ui.bots.AttributeTypeEditorBot;
-import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewSchemaProjectWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.ObjectClassEditorBot;
 import org.apache.directory.studio.test.integration.ui.bots.SchemaEditorBot;
 import org.apache.directory.studio.test.integration.ui.bots.SchemaProjectsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.SchemaSearchViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.SchemaViewBot;
-import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
-import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
-import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
 
 
 /**
@@ -56,35 +52,24 @@ import org.junit.runner.RunWith;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-@RunWith(FrameworkRunnerWithScreenshotCaptureListener.class)
-@CreateLdapServer(transports =
-    { @CreateTransport(protocol = "LDAP") })
-public class SchemaEditorTest extends AbstractLdapTestUnit
+public class SchemaEditorTest extends AbstractTestBase
 {
-    private StudioBot studioBot;
     private SchemaProjectsViewBot projectsView;
     private SchemaViewBot schemaView;
-    private ConnectionsViewBot connectionsViewBot;
-    private Connection connection;
 
-
-    @Before
+    @BeforeEach
     public void setUp() throws Exception
     {
-        studioBot = new StudioBot();
         studioBot.resetSchemaPerspective();
         projectsView = studioBot.getSchemaProjectsView();
         schemaView = studioBot.getSchemaView();
-        connectionsViewBot = studioBot.getConnectionView();
     }
 
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception
     {
-        connectionsViewBot.deleteTestConnections();
         projectsView.deleteAllProjects();
-        Assertions.genericTearDownAssertions();
     }
 
 
@@ -94,11 +79,6 @@ public class SchemaEditorTest extends AbstractLdapTestUnit
     @Test
     public void testSearchForAliases() throws Exception
     {
-        /*
-         * This test fails on Jenkins Windows Server, to be investigated...
-         */
-        // Assume.assumeFalse( StudioSystemUtils.IS_OS_WINDOWS_SERVER );
-
         createProject( "Project Search For Aliases" );
 
         SchemaSearchViewBot searchView = studioBot.getSchemaSearchView();
@@ -180,11 +160,12 @@ public class SchemaEditorTest extends AbstractLdapTestUnit
     }
 
 
-    @Test
-    public void testCreateSchemaOnlineApacheDS() throws Exception
+    @ParameterizedTest
+    @LdapServersSource(types = LdapServerType.ApacheDS)
+    public void testCreateSchemaOnlineApacheDS( TestLdapServer server ) throws Exception
     {
         studioBot.resetLdapPerspective();
-        connection = connectionsViewBot.createTestConnection( "SchemaEditorTest", ldapServer.getPort() );
+        Connection connection = connectionsViewBot.createTestConnection( server );
         studioBot.resetSchemaPerspective();
 
         SchemaProjectsViewBot projectsView = studioBot.getSchemaProjectsView();
@@ -208,6 +189,58 @@ public class SchemaEditorTest extends AbstractLdapTestUnit
 
         assertTrue( schemaView.existsAttributeType( "system", "objectClass" ) );
         assertTrue( schemaView.existsAttributeType( "adsconfig", "ads-maxTimeLimit" ) );
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(types = LdapServerType.OpenLdap)
+    public void testCreateSchemaOnlineOpenLDAP( TestLdapServer server ) throws Exception
+    {
+        studioBot.resetLdapPerspective();
+        Connection connection = connectionsViewBot.createTestConnection( server );
+        studioBot.resetSchemaPerspective();
+
+        SchemaProjectsViewBot projectsView = studioBot.getSchemaProjectsView();
+        NewSchemaProjectWizardBot wizard = projectsView.openNewSchemaProjectWizard();
+        wizard.typeProjectName( "Project Online OpenLDAP" );
+        wizard.selectOnlineSchema();
+        wizard.clickNextButton();
+        wizard.selectConnection( connection.getName() );
+        wizard.clickFinishButton();
+
+        assertTrue( schemaView.existsSchema( "schema" ) );
+
+        assertTrue( schemaView.existsObjectClass( "schema", "top" ) );
+        assertTrue( schemaView.existsObjectClass( "schema", "olcGlobal" ) );
+
+        assertTrue( schemaView.existsAttributeType( "schema", "objectClass" ) );
+        assertTrue( schemaView.existsAttributeType( "schema", "olcBackend" ) );
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(types = LdapServerType.Fedora389ds)
+    public void testCreateSchemaOnline389ds( TestLdapServer server ) throws Exception
+    {
+        studioBot.resetLdapPerspective();
+        Connection connection = connectionsViewBot.createTestConnection( server );
+        studioBot.resetSchemaPerspective();
+
+        SchemaProjectsViewBot projectsView = studioBot.getSchemaProjectsView();
+        NewSchemaProjectWizardBot wizard = projectsView.openNewSchemaProjectWizard();
+        wizard.typeProjectName( "Project Online 389ds" );
+        wizard.selectOnlineSchema();
+        wizard.clickNextButton();
+        wizard.selectConnection( connection.getName() );
+        wizard.clickFinishButton();
+
+        assertTrue( schemaView.existsSchema( "schema" ) );
+
+        assertTrue( schemaView.existsObjectClass( "schema", "top" ) );
+        assertTrue( schemaView.existsObjectClass( "schema", "nsConfig" ) );
+
+        assertTrue( schemaView.existsAttributeType( "schema", "objectClass" ) );
+        assertTrue( schemaView.existsAttributeType( "schema", "nsBaseDN" ) );
     }
 
 

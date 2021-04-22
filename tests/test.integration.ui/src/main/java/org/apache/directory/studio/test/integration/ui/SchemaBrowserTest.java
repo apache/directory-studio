@@ -24,19 +24,11 @@ package org.apache.directory.studio.test.integration.ui;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import org.apache.directory.server.annotations.CreateLdapServer;
-import org.apache.directory.server.annotations.CreateTransport;
-import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
 import org.apache.directory.studio.connection.core.Connection;
-import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
+import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
+import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
 import org.apache.directory.studio.test.integration.ui.bots.SchemaBrowserBot;
-import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
-import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
-import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.params.ParameterizedTest;
 
 
 /**
@@ -44,41 +36,17 @@ import org.junit.runner.RunWith;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(FrameworkRunnerWithScreenshotCaptureListener.class)
-@CreateLdapServer(transports =
-    { @CreateTransport(protocol = "LDAP") })
-public class SchemaBrowserTest extends AbstractLdapTestUnit
+public class SchemaBrowserTest extends AbstractTestBase
 {
-    private StudioBot studioBot;
-    private ConnectionsViewBot connectionsViewBot;
-
-    private Connection connection;
-
-
-    @Before
-    public void setUp() throws Exception
-    {
-        studioBot = new StudioBot();
-        studioBot.resetLdapPerspective();
-        connectionsViewBot = studioBot.getConnectionView();
-        connection = connectionsViewBot.createTestConnection( "SchemaBrowserTest", ldapServer.getPort() );
-    }
-
-
-    @After
-    public void tearDown() throws Exception
-    {
-        connectionsViewBot.deleteTestConnections();
-        Assertions.genericTearDownAssertions();
-    }
-
 
     /**
      * Test for DIRSTUDIO-1061 (RawSchemaDefinition always shows single hyphen/dash)
      */
-    @Test
-    public void testRawSchemaDefinitionIsFilled() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testRawSchemaDefinitionIsFilled( TestLdapServer server ) throws Exception
     {
+        Connection connection = connectionsViewBot.createTestConnection( server );
         connectionsViewBot.select( connection.getName() );
         SchemaBrowserBot schemaBrowser = connectionsViewBot.openSchemaBrowser();
         //schemaBrowser.activateObjectClassesTab();
