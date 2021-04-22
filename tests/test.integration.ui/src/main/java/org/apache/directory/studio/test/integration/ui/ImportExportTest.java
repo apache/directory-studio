@@ -462,7 +462,6 @@ public class ImportExportTest extends AbstractTestBase
 
         // verify that exported DSML
         String content = FileUtils.readFileToString( new File( file ), StandardCharsets.UTF_8 );
-        System.out.println( content );
         assertTrue( content.contains( "dn=\"" + SUBENTRY_DN.getName() + "\"" ) );
         assertTrue( content.contains( "<attr name=\"subtreespecification\">" ) );
         assertTrue( content.contains( "<value>{}</value>" ) );

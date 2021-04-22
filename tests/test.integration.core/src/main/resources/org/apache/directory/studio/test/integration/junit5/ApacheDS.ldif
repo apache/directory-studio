@@ -22,7 +22,7 @@ add: administrativeRole
 administrativeRole: accessControlSpecificArea
 -
 
-dn: ou=misc.1.1.1,ou=misc.1.1,ou=misc.1,ou=misc,dc=example,dc=org
+dn: ou=target,dc=example,dc=org
 changetype: modify
 add: administrativeRole
 administrativeRole: accessControlSpecificArea

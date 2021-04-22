@@ -127,6 +127,8 @@ public class TestFixture
     public static final Dn GROUPS_DN = dn( "ou=groups", CONTEXT_DN );
     public static final Dn GROUP1_DN = dn( "cn=group.1", GROUPS_DN );
 
+    public static final Dn TARGET_DN = dn( "ou=target", CONTEXT_DN );
+
     public static final Dn REFERRALS_DN = dn( "ou=referrals", CONTEXT_DN );
     public static final Dn REFERRAL_TO_USERS_DN = dn( "cn=referral-to-users", REFERRALS_DN );
     public static final Dn REFERRAL_TO_USER1_DN = dn( "cn=referral-to-user.1", REFERRALS_DN );
@@ -203,6 +205,9 @@ public class TestFixture
             // delete ou=misc
             deleteTree( connection, MISC_DN, Optional.of( Controls.SUBENTRIES_CONTROL ) );
             deleteTree( connection, MISC_DN, Optional.empty() );
+            // delete ou=target
+            deleteTree( connection, TARGET_DN, Optional.of( Controls.SUBENTRIES_CONTROL ) );
+            deleteTree( connection, TARGET_DN, Optional.empty() );
         } );
     }
 

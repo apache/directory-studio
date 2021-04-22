@@ -23,7 +23,7 @@ package org.apache.directory.studio.test.integration.ui;
 
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.ALIAS_DN;
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.CONTEXT_DN;
-import static org.apache.directory.studio.test.integration.junit5.TestFixture.MISC111_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.TARGET_DN;
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.REFERRAL_TO_USER1_DN;
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.SUBENTRY_DN;
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.USER1_DN;
@@ -70,7 +70,7 @@ public class CopyEntryTest extends AbstractTestBase
     @LdapServersSource
     public void testCopyPasteSingleEntryWithoutCopyDepthDialog( TestLdapServer server ) throws Exception
     {
-        Dn newDn = dn( USER1_DN.getRdn(), MISC111_DN );
+        Dn newDn = dn( USER1_DN.getRdn(), TARGET_DN );
 
         // expand the entry to avoid copy depth dialog
         connectionsViewBot.createTestConnection( server );
@@ -81,7 +81,7 @@ public class CopyEntryTest extends AbstractTestBase
         browserViewBot.copy();
 
         // select the parent entry where the copied entry should be pasted to
-        browserViewBot.selectEntry( path( MISC111_DN ) );
+        browserViewBot.selectEntry( path( TARGET_DN ) );
         assertFalse( browserViewBot.existsEntry( path( newDn ) ) );
 
         // paste the entry
@@ -113,8 +113,8 @@ public class CopyEntryTest extends AbstractTestBase
         browserViewBot.copy();
 
         // select the parent entry where the copied entries should be pasted to
-        browserViewBot.selectEntry( path( MISC111_DN ) );
-        assertFalse( browserViewBot.existsEntry( path( MISC111_DN, "uid=user.1" ) ) );
+        browserViewBot.selectEntry( path( TARGET_DN ) );
+        assertFalse( browserViewBot.existsEntry( path( TARGET_DN, "uid=user.1" ) ) );
 
         // paste the entry
         SelectCopyDepthDialogBot dialog = browserViewBot.pasteEntriesExpectingSelectCopyDepthDialog( 4 );
@@ -122,16 +122,16 @@ public class CopyEntryTest extends AbstractTestBase
         dialog.clickOkButton();
 
         // verify the entries were copied
-        assertTrue( browserViewBot.existsEntry( path( MISC111_DN, "uid=user.1" ) ) );
-        assertTrue( browserViewBot.existsEntry( path( MISC111_DN, "uid=user.2" ) ) );
-        assertTrue( browserViewBot.existsEntry( path( MISC111_DN, "uid=user.3" ) ) );
-        assertTrue( browserViewBot.existsEntry( path( MISC111_DN, "uid=user.4" ) ) );
+        assertTrue( browserViewBot.existsEntry( path( TARGET_DN, "uid=user.1" ) ) );
+        assertTrue( browserViewBot.existsEntry( path( TARGET_DN, "uid=user.2" ) ) );
+        assertTrue( browserViewBot.existsEntry( path( TARGET_DN, "uid=user.3" ) ) );
+        assertTrue( browserViewBot.existsEntry( path( TARGET_DN, "uid=user.4" ) ) );
 
         // verify in modification logs
-        modificationLogsViewBot.assertContainsOk( "dn: " + dn( "uid=user.1", MISC111_DN ), "changetype: add" );
-        modificationLogsViewBot.assertContainsOk( "dn: " + dn( "uid=user.2", MISC111_DN ), "changetype: add" );
-        modificationLogsViewBot.assertContainsOk( "dn: " + dn( "uid=user.3", MISC111_DN ), "changetype: add" );
-        modificationLogsViewBot.assertContainsOk( "dn: " + dn( "uid=user.4", MISC111_DN ), "changetype: add" );
+        modificationLogsViewBot.assertContainsOk( "dn: " + dn( "uid=user.1", TARGET_DN ), "changetype: add" );
+        modificationLogsViewBot.assertContainsOk( "dn: " + dn( "uid=user.2", TARGET_DN ), "changetype: add" );
+        modificationLogsViewBot.assertContainsOk( "dn: " + dn( "uid=user.3", TARGET_DN ), "changetype: add" );
+        modificationLogsViewBot.assertContainsOk( "dn: " + dn( "uid=user.4", TARGET_DN ), "changetype: add" );
     }
 
 
@@ -148,9 +148,9 @@ public class CopyEntryTest extends AbstractTestBase
         browserViewBot.copy();
 
         // select the parent entry where the copied entries should be pasted to
-        browserViewBot.selectEntry( path( MISC111_DN ) );
-        assertFalse( browserViewBot.existsEntry( path( MISC111_DN, "ou=users" ) ) );
-        assertFalse( browserViewBot.existsEntry( path( MISC111_DN, "ou=groups" ) ) );
+        browserViewBot.selectEntry( path( TARGET_DN ) );
+        assertFalse( browserViewBot.existsEntry( path( TARGET_DN, "ou=users" ) ) );
+        assertFalse( browserViewBot.existsEntry( path( TARGET_DN, "ou=groups" ) ) );
 
         // paste the entry
         SelectCopyDepthDialogBot dialog = browserViewBot.pasteEntriesExpectingSelectCopyDepthDialog( 2 );
@@ -158,15 +158,15 @@ public class CopyEntryTest extends AbstractTestBase
         dialog.clickOkButton();
 
         // verify the entries were copied
-        assertTrue( browserViewBot.existsEntry( path( MISC111_DN, "ou=users" ) ) );
-        assertTrue( browserViewBot.existsEntry( path( MISC111_DN, "ou=users", "uid=user.1" ) ) );
-        assertTrue( browserViewBot.existsEntry( path( MISC111_DN, "ou=users", "uid=user.8" ) ) );
-        assertTrue( browserViewBot.existsEntry( path( MISC111_DN, "ou=groups" ) ) );
-        assertTrue( browserViewBot.existsEntry( path( MISC111_DN, "ou=groups", "cn=group.1" ) ) );
+        assertTrue( browserViewBot.existsEntry( path( TARGET_DN, "ou=users" ) ) );
+        assertTrue( browserViewBot.existsEntry( path( TARGET_DN, "ou=users", "uid=user.1" ) ) );
+        assertTrue( browserViewBot.existsEntry( path( TARGET_DN, "ou=users", "uid=user.8" ) ) );
+        assertTrue( browserViewBot.existsEntry( path( TARGET_DN, "ou=groups" ) ) );
+        assertTrue( browserViewBot.existsEntry( path( TARGET_DN, "ou=groups", "cn=group.1" ) ) );
 
         // verify in modification logs
-        modificationLogsViewBot.assertContainsOk( "dn: " + dn( "ou=users", MISC111_DN ), "changetype: add" );
-        modificationLogsViewBot.assertContainsOk( "dn: " + dn( "ou=groups", MISC111_DN ), "changetype: add" );
+        modificationLogsViewBot.assertContainsOk( "dn: " + dn( "ou=users", TARGET_DN ), "changetype: add" );
+        modificationLogsViewBot.assertContainsOk( "dn: " + dn( "ou=groups", TARGET_DN ), "changetype: add" );
     }
 
 
@@ -249,17 +249,17 @@ public class CopyEntryTest extends AbstractTestBase
         browserViewBot.copy();
 
         // select the parent entry where the copied entry should be pasted to
-        browserViewBot.selectEntry( path( MISC111_DN ) );
-        assertFalse( browserViewBot.existsEntry( path( MISC111_DN, ALIAS_DN.getRdn() ) ) );
+        browserViewBot.selectEntry( path( TARGET_DN ) );
+        assertFalse( browserViewBot.existsEntry( path( TARGET_DN, ALIAS_DN.getRdn() ) ) );
 
         // paste the entry
         browserViewBot.pasteEntries( 1 );
 
         // verify the entyr was copied
-        assertTrue( browserViewBot.existsEntry( path( MISC111_DN, ALIAS_DN.getRdn() ) ) );
+        assertTrue( browserViewBot.existsEntry( path( TARGET_DN, ALIAS_DN.getRdn() ) ) );
 
         // verify in modification logs
-        modificationLogsViewBot.assertContainsOk( "dn: " + dn( ALIAS_DN.getRdn(), MISC111_DN ), "changetype: add" );
+        modificationLogsViewBot.assertContainsOk( "dn: " + dn( ALIAS_DN.getRdn(), TARGET_DN ), "changetype: add" );
     }
 
 
@@ -278,17 +278,17 @@ public class CopyEntryTest extends AbstractTestBase
         browserViewBot.copy();
 
         // select the parent entry where the copied entry should be pasted to
-        browserViewBot.selectEntry( path( MISC111_DN ) );
-        assertFalse( browserViewBot.existsEntry( path( MISC111_DN, REFERRAL_TO_USER1_DN.getRdn() ) ) );
+        browserViewBot.selectEntry( path( TARGET_DN ) );
+        assertFalse( browserViewBot.existsEntry( path( TARGET_DN, REFERRAL_TO_USER1_DN.getRdn() ) ) );
 
         // paste the entry
         browserViewBot.pasteEntries( 1 );
 
         // verify the entry was copied
-        assertTrue( browserViewBot.existsEntry( path( MISC111_DN, REFERRAL_TO_USER1_DN.getRdn() ) ) );
+        assertTrue( browserViewBot.existsEntry( path( TARGET_DN, REFERRAL_TO_USER1_DN.getRdn() ) ) );
 
         // verify in modification logs
-        modificationLogsViewBot.assertContainsOk( "dn: " + dn( REFERRAL_TO_USER1_DN.getRdn(), MISC111_DN ),
+        modificationLogsViewBot.assertContainsOk( "dn: " + dn( REFERRAL_TO_USER1_DN.getRdn(), TARGET_DN ),
             "changetype: add" );
     }
 
@@ -308,17 +308,17 @@ public class CopyEntryTest extends AbstractTestBase
         browserViewBot.copy();
 
         // select the parent entry where the copied entry should be pasted to
-        browserViewBot.selectEntry( path( MISC111_DN ) );
-        assertFalse( browserViewBot.existsEntry( path( MISC111_DN, SUBENTRY_DN.getRdn() ) ) );
+        browserViewBot.selectEntry( path( TARGET_DN ) );
+        assertFalse( browserViewBot.existsEntry( path( TARGET_DN, SUBENTRY_DN.getRdn() ) ) );
 
         // paste the entry
         browserViewBot.pasteEntries( 1 );
 
         // verify the entry was copied
-        assertTrue( browserViewBot.existsEntry( path( MISC111_DN, SUBENTRY_DN.getRdn() ) ) );
+        assertTrue( browserViewBot.existsEntry( path( TARGET_DN, SUBENTRY_DN.getRdn() ) ) );
 
         // verify in modification logs
-        modificationLogsViewBot.assertContainsOk( "dn: " + dn( SUBENTRY_DN.getRdn(), MISC111_DN ), "changetype: add" );
+        modificationLogsViewBot.assertContainsOk( "dn: " + dn( SUBENTRY_DN.getRdn(), TARGET_DN ), "changetype: add" );
     }
 
 }
