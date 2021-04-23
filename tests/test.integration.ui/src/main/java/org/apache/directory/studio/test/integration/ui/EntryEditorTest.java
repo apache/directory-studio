@@ -253,7 +253,7 @@ public class EntryEditorTest extends AbstractTestBase
         entryEditorBot.activate();
         String dn = entryEditorBot.getDnText();
         assertEquals( "DN: " + GROUP1_DN.getName(), dn );
-        assertEquals( 11, entryEditorBot.getAttributeValues().size() );
+        assertEquals( 12, entryEditorBot.getAttributeValues().size() );
 
         // add member attribute
         NewAttributeWizardBot wizardBot = entryEditorBot.openNewAttributeWizard();
@@ -270,7 +270,7 @@ public class EntryEditorTest extends AbstractTestBase
 
         // assert value after saved and reloaded from server
         SWTUtils.sleep( 1000 );
-        assertEquals( 12, entryEditorBot.getAttributeValues().size() );
+        assertEquals( 13, entryEditorBot.getAttributeValues().size() );
         assertTrue( entryEditorBot.getAttributeValues().contains( "member: " + MULTI_VALUED_RDN_DN.getName() ) );
         dnEditorBot = entryEditorBot.editValueExpectingDnEditor( "member", MULTI_VALUED_RDN_DN.getName() );
         assertEquals( MULTI_VALUED_RDN_DN.getName(), dnEditorBot.getDnText() );
