@@ -28,6 +28,7 @@ import static org.junit.Assert.assertNull;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
@@ -36,25 +37,17 @@ import javax.security.auth.kerberos.KerberosPrincipal;
 import org.apache.directory.api.util.FileUtils;
 import org.apache.directory.api.util.IOUtils;
 import org.apache.directory.studio.test.integration.ui.bots.ApacheDSConfigurationEditorBot;
-import org.apache.directory.studio.test.integration.ui.bots.ApacheDSServersViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
-import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
-import org.apache.directory.studio.test.integration.ui.bots.DeleteDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.ImportWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewApacheDSServerWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewConnectionWizardBot;
-import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
-import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
-import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.eclipse.core.runtime.Platform;
-import org.junit.After;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 
 
 /**
@@ -63,42 +56,15 @@ import org.junit.runner.RunWith;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-@RunWith(FrameworkRunnerWithScreenshotCaptureListener.class)
-public class GssApiTest
+public class GssApiTest extends AbstractTestBase
 {
     private static final String serverName = "GssApiTest";
 
-    @Rule
-    public TestName name = new TestName();
-
     private static int ldapPort;
     private static int kdcPort;
+    private TestInfo testInfo;
 
-    private static StudioBot studioBot;
-    private static ApacheDSServersViewBot serversViewBot;
-    private static ConnectionsViewBot connectionsViewBot;
-
-
-    @BeforeClass
-    public static void setUpClass() throws Exception
-    {
-        studioBot = new StudioBot();
-        studioBot.resetLdapPerspective();
-        serversViewBot = studioBot.getApacheDSServersViewBot();
-        connectionsViewBot = studioBot.getConnectionView();
-
-        // ErrorDialog.AUTOMATED_MODE = false;
-    }
-
-
-    @Before
-    public void setUp() throws Exception
-    {
-        studioBot.resetLdapPerspective();
-    }
-
-
-    @BeforeClass
+    @BeforeAll
     public static void skipGssApiTestIfNoDefaultRealmIsConfigured()
     {
         try
@@ -112,31 +78,31 @@ public class GssApiTest
         }
         catch ( IllegalArgumentException e )
         {
-            Assume.assumeNoException( "Skipping tests as no default realm (/etc/krb5.conf) is configured", e );
+            Assumptions.assumeTrue( false, "Skipping tests as no default realm (/etc/krb5.conf) is configured" );
         }
     }
 
 
-    @After
-    public void tearDown() throws Exception
+    @BeforeEach
+    public void beforeEach( TestInfo testInfo )
     {
-        connectionsViewBot.deleteTestConnections();
+        this.testInfo = testInfo;
+    }
 
+
+    @AfterEach
+    public void afterEach() throws Exception
+    {
         // stop ApacheDS
         serversViewBot.stopServer( serverName );
         serversViewBot.waitForServerStop( serverName );
-
-        // delete ApacheDS
-        DeleteDialogBot deleteDialogBot = serversViewBot.openDeleteServerDialog();
-        deleteDialogBot.clickOkButton();
-
-        Assertions.genericTearDownAssertions();
     }
 
 
     private String getConnectionName()
     {
-        return "GssApiTest." + name.getMethodName();
+        return testInfo.getTestMethod().map( Method::getName ).orElse( "null" ) + " "
+            + testInfo.getDisplayName();
     }
 
 
@@ -222,7 +188,7 @@ public class GssApiTest
     }
 
 
-    private static void createServer( String serverName )
+    private void createServer( String serverName )
     {
         // Showing view
         serversViewBot.show();
@@ -240,7 +206,7 @@ public class GssApiTest
     }
 
 
-    private static void configureApacheDS( String serverName ) throws Exception
+    private void configureApacheDS( String serverName ) throws Exception
     {
         ApacheDSConfigurationEditorBot editorBot = serversViewBot.openConfigurationEditor( serverName );
 

@@ -59,7 +59,7 @@ public class NewConnectionWizardTest extends AbstractTestBase
     private TestInfo testInfo;
 
     @BeforeEach
-    public void xxx( TestInfo testInfo )
+    public void beforeEach( TestInfo testInfo )
     {
         this.wizardBot = connectionsViewBot.openNewConnectionWizard();
         this.testInfo = testInfo;
