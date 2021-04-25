@@ -707,7 +707,7 @@ public class BrowserTest extends AbstractTestBase
     @ParameterizedTest
     @LdapServersSource(types =
         { LdapServerType.ApacheDS, LdapServerType.Fedora389ds })
-    // Multi-valued RDN with same attribute is not suupported by OpenLDAP
+    // Multi-valued RDN with same attribute is not supported by OpenLDAP
     public void testBrowseAndRefreshEntryWithMvRdn( TestLdapServer server ) throws Exception
     {
         Dn entryDn = dn( "l=Berlin+l=Brandenburger Tor+l=de+l=eu", MISC_DN );
