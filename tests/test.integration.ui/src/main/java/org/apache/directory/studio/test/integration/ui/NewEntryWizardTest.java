@@ -158,8 +158,7 @@ public class NewEntryWizardTest extends AbstractTestBase
      * retrieved entries still are in upper case.
      */
     @ParameterizedTest
-    @LdapServersSource(types =
-        { LdapServerType.ApacheDS, LdapServerType.Fedora389ds })
+    @LdapServersSource(except = LdapServerType.OpenLdap, reason = "Attributes type is not case sensitive in OpenLDAP")
     public void testCreateUpperCaseOrganizationEntries( TestLdapServer server ) throws Exception
     {
         connectionsViewBot.createTestConnection( server );
@@ -276,7 +275,7 @@ public class NewEntryWizardTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(types = LdapServerType.ApacheDS)
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "ApacheDS specific test")
     public void testCreateSubEntry( TestLdapServer server ) throws Exception
     {
         // set Subentries control
@@ -529,9 +528,7 @@ public class NewEntryWizardTest extends AbstractTestBase
      * Create and browse entry with multi-valued RDN with same attribute type.
      */
     @ParameterizedTest
-    @LdapServersSource(types =
-        { LdapServerType.ApacheDS, LdapServerType.Fedora389ds })
-    // Multi-valued RDN with same attribute is not supported by OpenLDAP
+    @LdapServersSource(except = LdapServerType.OpenLdap, reason = "Multi-valued RDN with same attribute is not supported by OpenLDAP")
     public void testCreateMvRdnWithSameAttribute( TestLdapServer server ) throws Exception
     {
         connectionsViewBot.createTestConnection( server );

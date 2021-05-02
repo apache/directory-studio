@@ -22,11 +22,9 @@ package org.apache.directory.studio.test.integration.ui;
 
 
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.MISC_DN;
-
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import org.apache.directory.studio.test.integration.junit5.LdapServerType;
 import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
 import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
 import org.apache.directory.studio.test.integration.ui.bots.DeleteDialogBot;
@@ -54,7 +52,7 @@ public class SwtResourcesTest extends AbstractTestBase
      * allocate too much SWT resources during the run.
      */
     @ParameterizedTest
-    @LdapServersSource(types = LdapServerType.ApacheDS)
+    @LdapServersSource
     public void testSwtResourcesDelta( TestLdapServer server ) throws Exception
     {
         connectionsViewBot.createTestConnection( server );
@@ -86,7 +84,7 @@ public class SwtResourcesTest extends AbstractTestBase
      * complete test suite.
      */
     @ParameterizedTest
-    @LdapServersSource(types = LdapServerType.ApacheDS)
+    @LdapServersSource
     public void testSwtResourcesCount( TestLdapServer server ) throws Exception
     {
         connectionsViewBot.createTestConnection( server );

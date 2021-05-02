@@ -245,8 +245,7 @@ public class EntryEditorTest extends AbstractTestBase
      * DIRSTUDIO-1267:Test adding, editing and deleting of attributes with language tag in the entry editor.
      */
     @ParameterizedTest
-    @LdapServersSource(types =
-        { LdapServerType.OpenLdap, LdapServerType.Fedora389ds })
+    @LdapServersSource(except = LdapServerType.ApacheDS, reason = "Language tags not yet supported by ApacheDS")
     public void testAddEditDeleteAttributeWithLanguageTag( TestLdapServer server ) throws Exception
     {
         connectionsViewBot.createTestConnection( server );
@@ -696,7 +695,7 @@ public class EntryEditorTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(types = LdapServerType.ApacheDS)
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "ApacheDS specific test")
     public void testAciItemEditorAllOptions( TestLdapServer server ) throws Exception
     {
         connectionsViewBot.createTestConnection( server );
@@ -773,7 +772,7 @@ public class EntryEditorTest extends AbstractTestBase
      * Test for DIRSTUDIO-1135
      */
     @ParameterizedTest
-    @LdapServersSource(types = LdapServerType.ApacheDS)
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "ApacheDS specific test")
     public void testAciItemEditorAllAttributesValuesParser( TestLdapServer server ) throws Exception
     {
         connectionsViewBot.createTestConnection( server );
@@ -810,7 +809,7 @@ public class EntryEditorTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(types = LdapServerType.ApacheDS)
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "ApacheDS specific test")
     public void testAciItemEditorEntryAci( TestLdapServer server ) throws Exception
     {
         connectionsViewBot.createTestConnection( server );
@@ -852,7 +851,7 @@ public class EntryEditorTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(types = LdapServerType.ApacheDS)
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "ApacheDS specific test")
     public void testAciItemEditorPrescriptiveAci( TestLdapServer server ) throws Exception
     {
         connectionsViewBot.createTestConnection( server );
@@ -883,7 +882,7 @@ public class EntryEditorTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(types = LdapServerType.ApacheDS)
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "ApacheDS specific test")
     public void testSubtreeSpecificationEditor( TestLdapServer server ) throws Exception
     {
         connectionsViewBot.createTestConnection( server );

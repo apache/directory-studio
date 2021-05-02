@@ -329,7 +329,7 @@ public class CertificateValidationTest extends AbstractTestBase
      * Tests ldaps:// with a valid certificate.
      */
     @ParameterizedTest
-    @LdapServersSource(types = LdapServerType.ApacheDS)
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "Update of keystore only implemented for ApacheDS")
     public void testLdapsCertificateValidationOK( ApacheDirectoryServer server ) throws Exception
     {
         server.setKeystore( VALID_KEYSTORE_PATH );
@@ -347,7 +347,7 @@ public class CertificateValidationTest extends AbstractTestBase
      * Tests ldaps:// with an expired certificate.
      */
     @ParameterizedTest
-    @LdapServersSource(types = LdapServerType.ApacheDS)
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "Update of keystore only implemented for ApacheDS")
     public void testLdapsCertificateValidationExpired( ApacheDirectoryServer server ) throws Exception
     {
         server.setKeystore( EXPIRED_KEYSTORE_PATH );
@@ -486,7 +486,7 @@ public class CertificateValidationTest extends AbstractTestBase
      * by putting the root certificate into a temporary key store.
      */
     @ParameterizedTest
-    @LdapServersSource(types = LdapServerType.ApacheDS)
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "Update of keystore only implemented for ApacheDS")
     public void testStartTlsCertificateValidationOK( ApacheDirectoryServer server ) throws Exception
     {
         server.setKeystore( VALID_KEYSTORE_PATH );
@@ -519,7 +519,7 @@ public class CertificateValidationTest extends AbstractTestBase
      * DIRSTUDIO-1205: SSL/TLS with small key size is not working.
      */
     @ParameterizedTest
-    @LdapServersSource(types = LdapServerType.ApacheDS)
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "Update of keystore only implemented for ApacheDS")
     public void testStartTlsCertificateValidationSmallKeysizeError( ApacheDirectoryServer server ) throws Exception
     {
         server.setKeystore( SMALL_KEYSIZE_KEYSTORE_PATH );
@@ -546,7 +546,7 @@ public class CertificateValidationTest extends AbstractTestBase
      * Tests StartTLS with an expired certificate.
      */
     @ParameterizedTest
-    @LdapServersSource(types = LdapServerType.ApacheDS)
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "Update of keystore only implemented for ApacheDS")
     public void testStartTlsCertificateValidationExpired( ApacheDirectoryServer server ) throws Exception
     {
         server.setKeystore( EXPIRED_KEYSTORE_PATH );
@@ -571,7 +571,7 @@ public class CertificateValidationTest extends AbstractTestBase
      * Tests StartTLS with an not yet valid certificate.
      */
     @ParameterizedTest
-    @LdapServersSource(types = LdapServerType.ApacheDS)
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "Update of keystore only implemented for ApacheDS")
     public void testStartTlsCertificateValidationNotYetValid( ApacheDirectoryServer server ) throws Exception
     {
         server.setKeystore( NOT_YET_VALID_KEYSTORE_PATH );
@@ -597,7 +597,7 @@ public class CertificateValidationTest extends AbstractTestBase
      * doesn't match the server's host name (localhost)
      */
     @ParameterizedTest
-    @LdapServersSource(types = LdapServerType.ApacheDS)
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "Update of keystore only implemented for ApacheDS")
     public void testStartTlsCertificateValidationHostnameMismatch( ApacheDirectoryServer server ) throws Exception
     {
         server.setKeystore( WRONG_HOSTNAME_KEYSTORE_PATH );
@@ -622,7 +622,7 @@ public class CertificateValidationTest extends AbstractTestBase
      * Tests StartTLS with a certificate without valid certification path.
      */
     @ParameterizedTest
-    @LdapServersSource(types = LdapServerType.ApacheDS)
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "Update of keystore only implemented for ApacheDS")
     public void testStartTlsCertificateValidationNoValidCertificationPath( ApacheDirectoryServer server )
         throws Exception
     {
@@ -649,7 +649,7 @@ public class CertificateValidationTest extends AbstractTestBase
      * Tests StartTLS with a self-signed certificate.
      */
     @ParameterizedTest
-    @LdapServersSource(types = LdapServerType.ApacheDS)
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "Update of keystore only implemented for ApacheDS")
     public void testStartTlsCertificateValidationSelfSigned( ApacheDirectoryServer server ) throws Exception
     {
         server.setKeystore( SELF_SIGNED_KEYSTORE_PATH );
@@ -675,7 +675,7 @@ public class CertificateValidationTest extends AbstractTestBase
      * Tests StartTLS with a certificate with multiple issues.
      */
     @ParameterizedTest
-    @LdapServersSource(types = LdapServerType.ApacheDS)
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "Update of keystore only implemented for ApacheDS")
     public void testStartTlsCertificateValidationExpiredAndWrongHostnameAndSelfSigned( ApacheDirectoryServer server )
         throws Exception
     {

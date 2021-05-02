@@ -120,8 +120,7 @@ public class ExtendedOperationsTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(types =
-        { LdapServerType.ApacheDS, LdapServerType.OpenLdap })
+    @LdapServersSource(except = LdapServerType.Fedora389ds, reason = "389ds requires secure connection")
     public void testPasswordModifyExtendedOperationDialogSetNewPassword( TestLdapServer server ) throws Exception
     {
         connectionsViewBot.createTestConnection( server );
@@ -154,8 +153,7 @@ public class ExtendedOperationsTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(types =
-        { LdapServerType.ApacheDS, LdapServerType.OpenLdap })
+    @LdapServersSource(except = LdapServerType.Fedora389ds, reason = "389ds requires secure connection")
     public void testPasswordModifyExtendedOperationDialogGenerateNewPassword( TestLdapServer server ) throws Exception
     {
         connectionsViewBot.createTestConnection( server );
@@ -204,7 +202,7 @@ public class ExtendedOperationsTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(types = LdapServerType.Fedora389ds)
+    @LdapServersSource(only = LdapServerType.Fedora389ds, reason = "389ds requires secure connection")
     public void testPasswordModifyExtendedOperationRequiresSecureConnection( TestLdapServer server ) throws Exception
     {
         connectionsViewBot.createTestConnection( server );

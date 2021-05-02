@@ -66,7 +66,7 @@ public class SchemaBrowserTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(types = LdapServerType.OpenLdap)
+    @LdapServersSource(only = LdapServerType.OpenLdap, reason = "OpenLDAP specific test")
     public void testNoPermissionToReadSchema( TestLdapServer server ) throws Exception
     {
         Connection connection = connectionsViewBot.createTestConnection( server );

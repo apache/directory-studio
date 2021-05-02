@@ -36,6 +36,7 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 @ArgumentsSource(LdapServersArgumentsProvider.class)
 public @interface LdapServersSource
 {
-    LdapServerType[] types() default
-        { LdapServerType.ApacheDS, LdapServerType.OpenLdap, LdapServerType.Fedora389ds };
+    LdapServerType[] only() default {};
+    LdapServerType[] except() default {};
+    String reason() default "";
 }

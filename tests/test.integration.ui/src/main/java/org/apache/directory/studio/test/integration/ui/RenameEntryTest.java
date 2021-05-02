@@ -147,8 +147,7 @@ public class RenameEntryTest extends AbstractTestBase
      * Rename an entry with leading and trailing space in RDN.
      */
     @ParameterizedTest
-    @LdapServersSource(types =
-        { LdapServerType.ApacheDS, LdapServerType.OpenLdap })
+    @LdapServersSource(except = LdapServerType.Fedora389ds, reason = "Leading and trailing space is trimmed by 389ds")
     public void testRenameRdnWithTrailingSpace( TestLdapServer server ) throws Exception
     {
         Dn oldDn = DN_WITH_LEADING_SHARP_BACKSLASH_PREFIXED;
@@ -180,8 +179,7 @@ public class RenameEntryTest extends AbstractTestBase
      * Rename an entry with leading and trailing space in RDN.
      */
     @ParameterizedTest
-    @LdapServersSource(types =
-        { LdapServerType.ApacheDS, LdapServerType.OpenLdap })
+    @LdapServersSource(except = LdapServerType.Fedora389ds, reason = "Leading and trailing space is trimmed by 389ds")
     public void testRenameRdnWithLeadingAndTrailingSpace( TestLdapServer server ) throws Exception
     {
         Dn oldDn = DN_WITH_LEADING_SHARP_BACKSLASH_PREFIXED;

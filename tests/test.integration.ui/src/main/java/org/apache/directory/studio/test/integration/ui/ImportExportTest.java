@@ -286,7 +286,7 @@ public class ImportExportTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(types = LdapServerType.ApacheDS)
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "ApacheDS specific test")
     public void testExportImportLdifSubentry( TestLdapServer server ) throws Exception
     {
         Connection connection = connectionsViewBot.createTestConnection( server );
@@ -435,7 +435,7 @@ public class ImportExportTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(types = LdapServerType.ApacheDS)
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "ApacheDS specific test")
     public void testExportImportDsmlSubentry( TestLdapServer server ) throws Exception
     {
         Connection connection = connectionsViewBot.createTestConnection( server );
@@ -507,7 +507,7 @@ public class ImportExportTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(types = LdapServerType.ApacheDS)
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "ApacheDS specific test")
     public void testExportWithPagedResultControl( TestLdapServer server ) throws Exception
     {
         connectionsViewBot.createTestConnection( server );
@@ -545,7 +545,7 @@ public class ImportExportTest extends AbstractTestBase
      * show the new context entry in the LDAP Browser view.
      */
     @ParameterizedTest
-    @LdapServersSource(types = LdapServerType.ApacheDS)
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "ApacheDS specific test")
     public void testImportContextEntryRefreshesRootDSE( TestLdapServer server ) throws Exception
     {
         connectionsViewBot.createTestConnection( server );

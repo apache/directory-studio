@@ -939,8 +939,7 @@ public class DirectoryApiConnectionWrapperTest
 
 
     @ParameterizedTest
-    @LdapServersSource(types =
-        { LdapServerType.ApacheDS, LdapServerType.OpenLdap })
+    @LdapServersSource(except = LdapServerType.Fedora389ds, reason = "389ds requires secure connection")
     public void testPasswordModifyRequestExtendedOperation_UserChangesOwnPassword( TestLdapServer ldapServer )
         throws Exception
     {
@@ -999,8 +998,7 @@ public class DirectoryApiConnectionWrapperTest
 
 
     @ParameterizedTest
-    @LdapServersSource(types =
-        { LdapServerType.OpenLdap, LdapServerType.Fedora389ds })
+    @LdapServersSource(except = LdapServerType.ApacheDS, reason = "OSGi issue when using WhoAmI extended operation in ApacheDS")
     public void testWhoAmIExtendedOperation( TestLdapServer ldapServer ) throws Exception
     {
         LdapApiService ldapApiService = LdapApiServiceFactory.getSingleton();

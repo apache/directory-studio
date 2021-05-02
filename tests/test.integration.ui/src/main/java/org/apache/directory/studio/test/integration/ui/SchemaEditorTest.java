@@ -161,7 +161,7 @@ public class SchemaEditorTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(types = LdapServerType.ApacheDS)
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "ApacheDS specific test")
     public void testCreateSchemaOnlineApacheDS( TestLdapServer server ) throws Exception
     {
         studioBot.resetLdapPerspective();
@@ -193,7 +193,7 @@ public class SchemaEditorTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(types = LdapServerType.OpenLdap)
+    @LdapServersSource(only = LdapServerType.OpenLdap, reason = "OpenLDAP specific test")
     public void testCreateSchemaOnlineOpenLDAP( TestLdapServer server ) throws Exception
     {
         studioBot.resetLdapPerspective();
@@ -219,7 +219,7 @@ public class SchemaEditorTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(types = LdapServerType.Fedora389ds)
+    @LdapServersSource(only = LdapServerType.Fedora389ds, reason = "389ds specific test")
     public void testCreateSchemaOnline389ds( TestLdapServer server ) throws Exception
     {
         studioBot.resetLdapPerspective();

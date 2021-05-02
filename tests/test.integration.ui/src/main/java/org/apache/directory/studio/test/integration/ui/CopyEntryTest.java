@@ -294,7 +294,7 @@ public class CopyEntryTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(types = LdapServerType.ApacheDS)
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "ApacheDS specific test")
     public void testCopyPasteSubentry( TestLdapServer server ) throws Exception
     {
         // enable Subentries control

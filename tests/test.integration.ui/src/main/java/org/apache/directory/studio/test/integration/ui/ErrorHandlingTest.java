@@ -46,7 +46,7 @@ public class ErrorHandlingTest extends AbstractTestBase
 {
 
     @ParameterizedTest
-    @LdapServersSource(types = LdapServerType.ApacheDS)
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "ApacheDS specific test")
     public void testDeleteObjectClassTopSchemaEntryShouldFail( TestLdapServer server ) throws Exception
     {
         connectionsViewBot.createTestConnection( server );

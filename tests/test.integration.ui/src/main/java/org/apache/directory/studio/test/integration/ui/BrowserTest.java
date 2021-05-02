@@ -464,8 +464,10 @@ public class BrowserTest extends AbstractTestBase
      * Test for DIRSTUDIO-1172: Studio doesn't display entries with trailing =.
      */
     @ParameterizedTest
-    @LdapServersSource(types = LdapServerType.ApacheDS)
-    // Empty RDN value is not supported by OpenLDAP and 389ds
+    @LdapServersSource(except =
+        {
+            LdapServerType.OpenLdap,
+            LdapServerType.Fedora389ds }, reason = "Empty RDN value is not supported by OpenLDAP and 389ds")
     public void testBrowseDnWithEmptyRdnValue( TestLdapServer server ) throws Exception
     {
 
@@ -705,9 +707,7 @@ public class BrowserTest extends AbstractTestBase
      * Browse and refresh entry with multi-valued RDN with same attribute type.
      */
     @ParameterizedTest
-    @LdapServersSource(types =
-        { LdapServerType.ApacheDS, LdapServerType.Fedora389ds })
-    // Multi-valued RDN with same attribute is not supported by OpenLDAP
+    @LdapServersSource(except = LdapServerType.OpenLdap, reason = "Multi-valued RDN with same attribute is not supported by OpenLDAP")
     public void testBrowseAndRefreshEntryWithMvRdn( TestLdapServer server ) throws Exception
     {
         Dn entryDn = dn( "l=Berlin+l=Brandenburger Tor+l=de+l=eu", MISC_DN );
@@ -792,7 +792,7 @@ public class BrowserTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(types = LdapServerType.ApacheDS)
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "ApacheDS specific test")
     public void testBrowseSubEntry( TestLdapServer server ) throws Exception
     {
         Dn subentryDn = dn( "cn=subentry", MISC_DN );

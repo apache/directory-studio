@@ -303,7 +303,7 @@ public class SearchTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(types = LdapServerType.ApacheDS)
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "ApacheDS specifc test")
     public void testSearchSubentry( TestLdapServer server ) throws Exception
     {
         connectionsViewBot.createTestConnection( server );

@@ -23,7 +23,10 @@ package org.apache.directory.studio.test.integration.junit5;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -37,31 +40,47 @@ public class LdapServersArgumentsProvider implements ArgumentsProvider
     @Override
     public Stream<Arguments> provideArguments( ExtensionContext context ) throws Exception
     {
-        List<LdapServerType> types = Arrays
-            .asList( context.getTestMethod().get().getAnnotation( LdapServersSource.class ).types() );
-
-        List<Arguments> arguments = new ArrayList<>();
-
-        for ( LdapServerType type : LdapServerType.values() )
+        // Determine possible server types by checking only/except annotation attributes
+        LdapServersSource annotation = context.getTestMethod().get().getAnnotation( LdapServersSource.class );
+        List<LdapServerType> types = new ArrayList<>();
+        types.addAll( Arrays.asList( annotation.only() ) );
+        if ( types.isEmpty() )
         {
-            if ( types.contains( type ) )
+            types.addAll( Arrays.asList( LdapServerType.values() ) );
+        }
+        types.removeAll( Arrays.asList( annotation.except() ) );
+
+        // Filter available server types
+        List<LdapServerType> available = types.stream().filter( type -> type.getLdapServer().isAvailable() )
+            .collect( Collectors.toList() );
+
+        if ( !available.isEmpty() )
+        {
+            // Pick a random one
+            available = Collections.singletonList( available.get( new Random().nextInt( available.size() ) ) );
+
+            // Prepare the available servers
+            for ( LdapServerType type : available )
             {
                 try
                 {
-                    if ( type.getLdapServer().isAvailable() )
-                    {
-                        type.getLdapServer().prepare();
-                    }
-                    arguments.add( Arguments.of( type.getLdapServer() ) );
+                    type.getLdapServer().prepare();
                 }
                 catch ( Exception e )
                 {
                     throw new RuntimeException( "Prepare failed for LDAP server type " + type, e );
                 }
             }
+
+            // Return the available/picked servers
+            return available.stream().map( LdapServerType::getLdapServer ).map( Arguments::of );
+        }
+        else
+        {
+            // Return all types even if not available, will be skipped in SkipTestIfLdapServerIsNotAvailableInterceptor
+            return types.stream().map( LdapServerType::getLdapServer ).map( Arguments::of );
         }
 
-        return arguments.stream();
     }
 
 }
