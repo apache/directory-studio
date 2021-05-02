@@ -348,7 +348,7 @@ public class NewConnectionWizardTest extends AbstractTestBase
 
         // click "Check Network Parameter" button
         String result1 = wizardBot.clickCheckNetworkParameterButton();
-        assertNull( "Expected OK", result1 );
+        assertNull( result1, "Expected OK" );
 
         // enter connection parameter with IPv4 address
         wizardBot.typeHost( InetAddress.getByName( server.getHost() ).getHostAddress() );
@@ -356,7 +356,7 @@ public class NewConnectionWizardTest extends AbstractTestBase
 
         // click "Check Network Parameter" button
         String result2 = wizardBot.clickCheckNetworkParameterButton();
-        assertNull( "Expected OK", result2 );
+        assertNull( result2, "Expected OK" );
 
         //
         // Don't know why this doesn't work with SWTBot.
@@ -445,7 +445,7 @@ public class NewConnectionWizardTest extends AbstractTestBase
 
         // click "Check Network Parameter" button
         String result = wizardBot.clickCheckAuthenticationButton();
-        assertNull( "Expected OK", result );
+        assertNull( result, "Expected OK" );
 
         wizardBot.clickCancelButton();
     }

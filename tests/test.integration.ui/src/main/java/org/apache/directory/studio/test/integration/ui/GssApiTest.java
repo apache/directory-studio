@@ -141,7 +141,7 @@ public class GssApiTest extends AbstractTestBase
 
         // check the connection
         String result = wizardBot.clickCheckAuthenticationButton();
-        assertNull( "Expected OK", result );
+        assertNull( result, "Expected OK" );
 
         wizardBot.clickCancelButton();
     }
@@ -183,7 +183,7 @@ public class GssApiTest extends AbstractTestBase
 
         // check the connection
         String result = wizardBot.clickCheckAuthenticationButton();
-        assertNull( "Expected OK", result );
+        assertNull( result, "Expected OK" );
 
         wizardBot.clickCancelButton();
     }

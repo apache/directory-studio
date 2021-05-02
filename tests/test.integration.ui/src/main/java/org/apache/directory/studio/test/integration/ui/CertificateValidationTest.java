@@ -337,7 +337,7 @@ public class CertificateValidationTest extends AbstractTestBase
 
         // check the certificate, should be OK
         String result = wizardBot.clickCheckAuthenticationButton();
-        assertNull( "Expected OK, valid and trusted certificate", result );
+        assertNull( result, "Expected OK, valid and trusted certificate" );
 
         wizardBot.clickCancelButton();
     }
@@ -442,7 +442,7 @@ public class CertificateValidationTest extends AbstractTestBase
         // check trust again, now the certificate is already trusted
         wizardBot.activate();
         String result = wizardBot.clickCheckAuthenticationButton();
-        assertNull( "Expected OK, valid and trusted certificate", result );
+        assertNull( result, "Expected OK, valid and trusted certificate" );
 
         wizardBot.clickCancelButton();
     }
@@ -475,7 +475,7 @@ public class CertificateValidationTest extends AbstractTestBase
         // check trust again, now the certificate is already trusted
         wizardBot.activate();
         String result = wizardBot.clickCheckAuthenticationButton();
-        assertNull( "Expected OK, valid and trusted certificate", result );
+        assertNull( result, "Expected OK, valid and trusted certificate" );
 
         wizardBot.clickCancelButton();
     }
@@ -500,7 +500,7 @@ public class CertificateValidationTest extends AbstractTestBase
 
         // check the certificate, should be OK
         String result = wizardBot.clickCheckNetworkParameterButton();
-        assertNull( "Expected OK, valid and trusted certificate", result );
+        assertNull( result, "Expected OK, valid and trusted certificate" );
 
         // enter correct authentication parameter
         wizardBot.clickNextButton();
@@ -509,7 +509,7 @@ public class CertificateValidationTest extends AbstractTestBase
 
         // check the certificate again, should be OK
         String result2 = wizardBot.clickCheckAuthenticationButton();
-        assertNull( "Expected OK, valid and trusted certificate", result2 );
+        assertNull( result2, "Expected OK, valid and trusted certificate" );
 
         wizardBot.clickCancelButton();
     }
@@ -779,7 +779,7 @@ public class CertificateValidationTest extends AbstractTestBase
         // check trust again, now the certificate is already trusted
         wizardBot.activate();
         String result = wizardBot.clickCheckAuthenticationButton();
-        assertNull( "Expected OK, valid and trusted certificate", result );
+        assertNull( result, "Expected OK, valid and trusted certificate" );
 
         wizardBot.clickCancelButton();
 
@@ -821,7 +821,7 @@ public class CertificateValidationTest extends AbstractTestBase
         // check trust again, now the certificate is already trusted
         wizardBot.activate();
         String result = wizardBot.clickCheckAuthenticationButton();
-        assertNull( "Expected OK, valid and trusted certificate", result );
+        assertNull( result, "Expected OK, valid and trusted certificate" );
 
         wizardBot.clickCancelButton();
 
