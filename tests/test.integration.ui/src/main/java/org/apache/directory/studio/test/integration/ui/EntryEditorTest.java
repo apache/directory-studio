@@ -22,8 +22,8 @@ package org.apache.directory.studio.test.integration.ui;
 
 
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.BJENSEN_DN;
-import static org.apache.directory.studio.test.integration.junit5.TestFixture.HNELSON_DN;
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.GROUP1_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.HNELSON_DN;
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.MULTI_VALUED_RDN_DN;
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.USER1_DN;
 import static org.hamcrest.CoreMatchers.startsWith;
@@ -55,6 +55,7 @@ import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
 import org.apache.directory.studio.test.integration.ui.bots.AciItemEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.CertificateEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.DnEditorDialogBot;
+import org.apache.directory.studio.test.integration.ui.bots.EditAttributeWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.EntryEditorBot;
 import org.apache.directory.studio.test.integration.ui.bots.HexEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.ImageEditorDialogBot;
@@ -236,6 +237,57 @@ public class EntryEditorTest extends AbstractTestBase
 
         assertEquals( "Expected 3 modifications.", 3,
             StringUtils.countMatches( modificationLogsViewBot.getModificationLogsText(), "#!RESULT OK" ) );
+    }
+
+
+    /**
+     * DIRSTUDIO-1267:Test adding, editing and deleting of attributes with language tag in the entry editor.
+     */
+    @ParameterizedTest
+    @LdapServersSource(types =
+        { LdapServerType.OpenLdap, LdapServerType.Fedora389ds })
+    public void testAddEditDeleteAttributeWithLanguageTag( TestLdapServer server ) throws Exception
+    {
+        connectionsViewBot.createTestConnection( server );
+        browserViewBot.selectEntry( path( USER1_DN ) );
+
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( USER1_DN.getName() );
+        entryEditorBot.activate();
+
+        // add attribute description;lang-en
+        entryEditorBot.activate();
+        NewAttributeWizardBot wizardBot = entryEditorBot.openNewAttributeWizard();
+        assertTrue( wizardBot.isVisible() );
+        wizardBot.typeAttributeType( "description" );
+        wizardBot.clickNextButton();
+        wizardBot.setLanguageTag( "en", "" );
+        wizardBot.clickFinishButton();
+        entryEditorBot.typeValueAndFinish( "English" );
+        modificationLogsViewBot.waitForText( "add: description;lang-en\ndescription;lang-en: English\n-" );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "description;lang-en: English" ) );
+
+        // edit the attribute to description;lang-en
+        EditAttributeWizardBot editWizardBot = entryEditorBot.editAttribute( "description;lang-en", "English" );
+        editWizardBot.clickNextButton();
+        editWizardBot.setLanguageTag( "en", "us" );
+        editWizardBot.clickFinishButton();
+        modificationLogsViewBot.waitForText( "delete: description;lang-en\ndescription;lang-en: English\n-" );
+        modificationLogsViewBot.waitForText( "add: description;lang-en-us\ndescription;lang-en-us: English\n-" );
+        assertFalse( entryEditorBot.getAttributeValues().contains( "description;lang-en: English" ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "description;lang-en-us: English" ) );
+
+        // edit the value
+        entryEditorBot.editValue( "description;lang-en-us", "English" );
+        entryEditorBot.typeValueAndFinish( "English US" );
+        modificationLogsViewBot.waitForText( "delete: description;lang-en-us\ndescription;lang-en-us: English\n-" );
+        modificationLogsViewBot.waitForText( "add: description;lang-en-us\ndescription;lang-en-us: English US\n-" );
+        assertFalse( entryEditorBot.getAttributeValues().contains( "description;lang-en-us: English" ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "description;lang-en-us: English US" ) );
+
+        // delete the attribute
+        entryEditorBot.deleteValue( "description;lang-en-us", "English US" );
+        modificationLogsViewBot.waitForText( "delete: description;lang-en-us\ndescription;lang-en-us: English US\n-" );
+        assertFalse( entryEditorBot.getAttributeValues().contains( "description;lang-en-us: English US" ) );
     }
 
 
@@ -521,7 +573,8 @@ public class EntryEditorTest extends AbstractTestBase
 
 
     /**
-     * DIRSTUDIO-1199, DIRSTUDIO-1204, DIRSTUDIO-1267: Binary attributes
+     * DIRSTUDIO-1199, DIRSTUDIO-1204, DIRSTUDIO-1267: Binary attributes.
+     * Test adding, editing and deleting of attributes with binary option in the entry editor.
      */
     @ParameterizedTest
     @LdapServersSource
@@ -529,24 +582,23 @@ public class EntryEditorTest extends AbstractTestBase
     {
         connectionsViewBot.createTestConnection( server );
         String certFile = ResourceUtils.prepareInputFile( "rfc5280_cert2.cer" );
+        String cert3File = ResourceUtils.prepareInputFile( "rfc5280_cert3.cer" );
 
         browserViewBot.selectEntry( path( BJENSEN_DN ) );
 
         EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( BJENSEN_DN.getName() );
         entryEditorBot.activate();
 
+        // add userCertificate;binary
         NewAttributeWizardBot wizardBot = entryEditorBot.openNewAttributeWizard();
         assertTrue( wizardBot.isVisible() );
         wizardBot.typeAttributeType( "userCertificate" );
         wizardBot.clickNextButton();
         wizardBot.selectBinaryOption();
         CertificateEditorDialogBot certEditorBot = wizardBot.clickFinishButtonExpectingCertificateEditor();
-
         assertTrue( certEditorBot.isVisible() );
         certEditorBot.typeFile( certFile );
-
         certEditorBot.clickOkButton();
-
         modificationLogsViewBot.waitForText( "add: userCertificate;binary\nuserCertificate;binary:: " );
         if ( server.getType() == LdapServerType.OpenLdap || server.getType() == LdapServerType.Fedora389ds )
         {
@@ -557,6 +609,57 @@ public class EntryEditorTest extends AbstractTestBase
         {
             assertTrue( entryEditorBot.getAttributeValues()
                 .contains( "userCertificate: X.509v3: CN=End Entity,DC=example,DC=com" ) );
+        }
+
+        // edit userCertificate;binary
+        if ( server.getType() == LdapServerType.OpenLdap || server.getType() == LdapServerType.Fedora389ds )
+        {
+            certEditorBot = entryEditorBot.editValueExpectingCertificateEditor( "userCertificate;binary",
+                "X.509v3: CN=End Entity,DC=example,DC=com" );
+        }
+        else
+        {
+            certEditorBot = entryEditorBot.editValueExpectingCertificateEditor( "userCertificate",
+                "X.509v3: CN=End Entity,DC=example,DC=com" );
+        }
+        assertTrue( certEditorBot.isVisible() );
+        certEditorBot.typeFile( cert3File );
+        certEditorBot.clickOkButton();
+        if ( server.getType() == LdapServerType.OpenLdap || server.getType() == LdapServerType.Fedora389ds )
+        {
+            modificationLogsViewBot
+                .waitForText( "delete: userCertificate;binary\nuserCertificate;binary:: MIICcTCCAdqg" );
+            modificationLogsViewBot.waitForText( "add: userCertificate;binary\nuserCertificate;binary:: MIIDjjCCA06g" );
+            assertFalse( entryEditorBot.getAttributeValues()
+                .contains( "userCertificate;binary: X.509v3: CN=End Entity,DC=example,DC=com" ) );
+            assertTrue( entryEditorBot.getAttributeValues()
+                .contains( "userCertificate;binary: X.509v3: CN=DSA End Entity,DC=example,DC=com" ) );
+        }
+        else
+        {
+            modificationLogsViewBot.waitForText( "delete: userCertificate\nuserCertificate:: MIICcTCCAdqg" );
+            modificationLogsViewBot.waitForText( "add: userCertificate\nuserCertificate:: MIIDjjCCA06g" );
+            assertFalse( entryEditorBot.getAttributeValues()
+                .contains( "userCertificate: X.509v3: CN=End Entity,DC=example,DC=com" ) );
+            assertTrue( entryEditorBot.getAttributeValues()
+                .contains( "userCertificate: X.509v3: CN=DSA End Entity,DC=example,DC=com" ) );
+        }
+
+        // delete userCertificate;binary
+        if ( server.getType() == LdapServerType.OpenLdap || server.getType() == LdapServerType.Fedora389ds )
+        {
+            entryEditorBot.deleteValue( "userCertificate;binary", "X.509v3: CN=DSA End Entity,DC=example,DC=com" );
+            modificationLogsViewBot
+                .waitForText( "delete: userCertificate;binary\nuserCertificate;binary:: MIIDjjCCA06g" );
+            assertFalse( entryEditorBot.getAttributeValues()
+                .contains( "userCertificate;binary: X.509v3: CN=DSA End Entity,DC=example,DC=com" ) );
+        }
+        else
+        {
+            entryEditorBot.deleteValue( "userCertificate", "X.509v3: CN=DSA End Entity,DC=example,DC=com" );
+            modificationLogsViewBot.waitForText( "delete: userCertificate\nuserCertificate:: MIIDjjCCA06g" );
+            assertFalse( entryEditorBot.getAttributeValues()
+                .contains( "userCertificate: X.509v3: CN=DSA End Entity,DC=example,DC=com" ) );
         }
     }
 

@@ -21,12 +21,20 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.USER1_DN;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.apache.directory.studio.connection.core.Connection;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
+import org.apache.directory.studio.test.integration.junit5.LdapServerType;
 import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
 import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
+import org.apache.directory.studio.test.integration.ui.bots.ErrorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.SchemaBrowserBot;
 import org.junit.jupiter.params.ParameterizedTest;
 
@@ -56,4 +64,35 @@ public class SchemaBrowserTest extends AbstractTestBase
         assertTrue( rawSchemaDefinition.contains( "account" ) );
     }
 
+
+    @ParameterizedTest
+    @LdapServersSource(types = LdapServerType.OpenLdap)
+    public void testNoPermissionToReadSchema( TestLdapServer server ) throws Exception
+    {
+        Connection connection = connectionsViewBot.createTestConnection( server );
+
+        // Close connection and reset cached schema
+        connectionsViewBot.closeSelectedConnections();
+        IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
+            .getBrowserConnection( connection );
+        browserConnection.setSchema( Schema.DEFAULT_SCHEMA );
+
+        // Open connection as uid=user.1 which is not allowed to read cn=subschema
+        connection.setBindPrincipal( USER1_DN.getName() );
+        connection.setBindPassword( "password" );
+        ErrorDialogBot errorDialog = connectionsViewBot.openSelectedConnectionExpectingNoSchemaProvidedErrorDialog();
+        assertThat( errorDialog.getErrorDetails(),
+            containsString( "No schema information returned by server, using default schema." ) );
+        errorDialog.clickOkButton();
+
+        // Verify default schema is used
+        SchemaBrowserBot schemaBrowser = connectionsViewBot.openSchemaBrowser();
+        schemaBrowser.selectObjectClass( "DEFAULTSCHEMA" );
+        String rawSchemaDefinition = schemaBrowser.getRawSchemaDefinition();
+        assertNotNull( rawSchemaDefinition );
+        assertTrue( rawSchemaDefinition.contains( "This is the Default Schema" ) );
+
+        // Verify browser
+        browserViewBot.selectEntry( ROOT_DSE_PATH );
+    }
 }
