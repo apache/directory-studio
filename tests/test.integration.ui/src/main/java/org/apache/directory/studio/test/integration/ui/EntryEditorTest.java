@@ -28,10 +28,10 @@ import static org.apache.directory.studio.test.integration.junit5.TestFixture.MU
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.USER1_DN;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -148,8 +148,8 @@ public class EntryEditorTest extends AbstractTestBase
         assertFalse( entryEditorBot.getAttributeValues().contains( "description: This is the final description." ) );
         modificationLogsViewBot.waitForText( "delete: description\ndescription: This is the final description.\n-" );
 
-        assertEquals( "Expected 6 modifications.", 6,
-            StringUtils.countMatches( modificationLogsViewBot.getModificationLogsText(), "#!RESULT OK" ) );
+        assertEquals( 6, StringUtils.countMatches( modificationLogsViewBot.getModificationLogsText(), "#!RESULT OK" ),
+            "Expected 6 modifications." );
     }
 
 
@@ -235,8 +235,8 @@ public class EntryEditorTest extends AbstractTestBase
                 .waitForText( "delete: facsimileTelephoneNumber\nfacsimileTelephoneNumber: 000000000000\n-" );
         }
 
-        assertEquals( "Expected 3 modifications.", 3,
-            StringUtils.countMatches( modificationLogsViewBot.getModificationLogsText(), "#!RESULT OK" ) );
+        assertEquals( 3, StringUtils.countMatches( modificationLogsViewBot.getModificationLogsText(), "#!RESULT OK" ),
+            "Expected 3 modifications." );
     }
 
 
@@ -329,8 +329,8 @@ public class EntryEditorTest extends AbstractTestBase
         dnEditorBot.clickCancelButton();
 
         modificationLogsViewBot.waitForText( "#!RESULT OK" );
-        assertEquals( "Expected 1 modification.", 1,
-            StringUtils.countMatches( modificationLogsViewBot.getModificationLogsText(), "#!RESULT OK" ) );
+        assertEquals( 1, StringUtils.countMatches( modificationLogsViewBot.getModificationLogsText(), "#!RESULT OK" ),
+            "Expected 1 modification." );
     }
 
 
@@ -363,13 +363,13 @@ public class EntryEditorTest extends AbstractTestBase
 
         // assert pasted value visible in editor
         assertEquals( 24, entryEditorBot.getAttributeValues().size() );
-        assertTrue( "Should contain uid=bjensen: " + entryEditorBot.getAttributeValues(),
-            entryEditorBot.getAttributeValues().contains( "uid: bjensen" ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "uid: bjensen" ),
+            "Should contain uid=bjensen: " + entryEditorBot.getAttributeValues() );
 
         // assert pasted value was written to directory
         server.withAdminConnection( conn -> {
             Entry entry = conn.lookup( USER1_DN );
-            assertTrue( "Should contain uid=bjensen: " + entry, entry.contains( "uid", "bjensen" ) );
+            assertTrue( entry.contains( "uid", "bjensen" ), "Should contain uid=bjensen: " + entry );
 
         } );
     }
@@ -409,10 +409,10 @@ public class EntryEditorTest extends AbstractTestBase
         // assert pasted values were written to directory
         server.withAdminConnection( conn -> {
             Entry entry = conn.lookup( USER1_DN );
-            assertTrue( "Should contain uid=hnelson: " + entry, entry.contains( "uid", "hnelson" ) );
-            assertTrue( "Should contain description: " + entry, entry.contains( "description", Characters.ALL ) );
-            assertTrue( "Should contain userPassword: " + entry, entry.containsAttribute( "userPassword" ) );
-            assertTrue( "Should contain jpegPhoto: " + entry, entry.containsAttribute( "jpegPhoto" ) );
+            assertTrue( entry.contains( "uid", "hnelson" ), "Should contain uid=hnelson: " + entry );
+            assertTrue( entry.contains( "description", Characters.ALL ), "Should contain description: " + entry );
+            assertTrue( entry.containsAttribute( "userPassword" ), "Should contain userPassword: " + entry );
+            assertTrue( entry.containsAttribute( "jpegPhoto" ), "Should contain jpegPhoto: " + entry );
         } );
     }
 

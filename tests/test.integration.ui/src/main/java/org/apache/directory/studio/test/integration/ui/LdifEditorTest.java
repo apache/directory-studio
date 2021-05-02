@@ -21,7 +21,7 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.directory.studio.test.integration.ui.bots.LdifEditorBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewWizardBot;

@@ -23,8 +23,8 @@ package org.apache.directory.studio.test.integration.ui;
 
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.MISC_DN;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.apache.directory.studio.test.integration.junit5.LdapServerType;
 import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
@@ -75,8 +75,9 @@ public class SwtResourcesTest extends AbstractTestBase
         int afterObjectCount = getSwtObjectCount();
 
         // we expect none or only very few additional SWT objects
-        assertTrue( "Too many SWT resources were allocated in testSwtResourcesDelta: before=" + beforeObjectCount
-            + ", after=" + afterObjectCount, afterObjectCount - beforeObjectCount < 5 );
+        assertTrue( afterObjectCount - beforeObjectCount < 5,
+            "Too many SWT resources were allocated in testSwtResourcesDelta: before=" + beforeObjectCount
+                + ", after=" + afterObjectCount );
     }
 
 
@@ -91,7 +92,7 @@ public class SwtResourcesTest extends AbstractTestBase
         connectionsViewBot.createTestConnection( server );
         int swtObjectCount = getSwtObjectCount();
         System.out.println( "### SWT resouces count: " + swtObjectCount );
-        assertTrue( "Too many SWT resources were allocated: " + swtObjectCount, swtObjectCount < 1500 );
+        assertTrue( swtObjectCount < 1500, "Too many SWT resources were allocated: " + swtObjectCount );
     }
 
 

@@ -20,7 +20,7 @@
 package org.apache.directory.studio.test.integration.ui.bots.utils;
 
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.apache.directory.studio.connection.core.Messages;
 import org.apache.directory.studio.test.integration.ui.bots.BotUtils;

@@ -29,8 +29,8 @@ import static org.apache.directory.studio.test.integration.junit5.TestFixture.SU
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.USER1_DN;
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.USERS_DN;
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.dn;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.connection.core.Connection;

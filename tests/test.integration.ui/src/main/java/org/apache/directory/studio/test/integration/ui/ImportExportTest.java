@@ -34,9 +34,9 @@ import static org.apache.directory.studio.test.integration.junit5.TestFixture.dn
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -167,8 +167,8 @@ public class ImportExportTest extends AbstractTestBase
 
         // verify that exported DSML contains the Base64 encoded DN
         String content = FileUtils.readFileToString( new File( file ), StandardCharsets.UTF_8 );
-        assertTrue( "DSML must contain DN with umlaut.",
-            content.contains( "dn=\"" + GERMAN_UMLAUT_DN.getName() + "\"" ) );
+        assertTrue( content.contains( "dn=\"" + GERMAN_UMLAUT_DN.getName() + "\"" ),
+            "DSML must contain DN with umlaut." );
 
         // delete entry
         DeleteDialogBot dialogBot = browserViewBot.openDeleteDialog();
@@ -606,7 +606,7 @@ public class ImportExportTest extends AbstractTestBase
 
         // verify that only three two events were fired between Import
         long fireCount = fireCount1 - fireCount0;
-        assertEquals( "Only 2 event firings expected when importing LDIF.", 2, fireCount );
+        assertEquals( 2, fireCount, "Only 2 event firings expected when importing LDIF." );
     }
 
 

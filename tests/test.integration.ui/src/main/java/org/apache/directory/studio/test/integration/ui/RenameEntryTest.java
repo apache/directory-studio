@@ -27,8 +27,8 @@ import static org.apache.directory.studio.test.integration.junit5.TestFixture.MU
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.DN_WITH_ESCAPED_CHARACTERS_BACKSLASH_PREFIXED;
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.DN_WITH_ESCAPED_CHARACTERS_HEX_PAIR_ESCAPED;
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.dn;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.directory.api.ldap.model.name.Ava;
 import org.apache.directory.api.ldap.model.name.Dn;

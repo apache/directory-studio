@@ -38,9 +38,9 @@ import static org.apache.directory.studio.test.integration.junit5.TestFixture.US
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.USER3_DN;
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.USERS_DN;
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.dn;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -110,7 +110,7 @@ public class BrowserTest extends AbstractTestBase
         text = searchLogsViewBot.getSearchLogsText();
         int countMatchesAfter = StringUtils.countMatches( text, "#!SEARCH REQUEST" );
 
-        assertEquals( "Expected exactly 1 search request", 1, countMatchesAfter - countMatchesBefore );
+        assertEquals( 1, countMatchesAfter - countMatchesBefore, "Expected exactly 1 search request" );
 
         assertEquals( "No modification expected", "", modificationLogsViewBot.getModificationLogsText() );
     }
@@ -151,7 +151,7 @@ public class BrowserTest extends AbstractTestBase
 
         // verify that only two events were fired during deletion
         long fireCount = fireCount1 - fireCount0;
-        assertEquals( "Only 2 event firings expected when deleting multiple entries.", 2, fireCount );
+        assertEquals( 2, fireCount, "Only 2 event firings expected when deleting multiple entries." );
     }
 
 
@@ -679,7 +679,7 @@ public class BrowserTest extends AbstractTestBase
         browserViewBot.selectEntry( path( USER3_DN ) );
 
         // verify that input was only set 3 times.
-        assertEquals( "Only 3 input changes expected.", 3, counter.get() );
+        assertEquals( 3, counter.get(), "Only 3 input changes expected." );
 
         // reset counter
         counter.set( 0 );
@@ -695,7 +695,7 @@ public class BrowserTest extends AbstractTestBase
         browserViewBot.waitUntilEntryIsSelected( USER3_DN.getRdn().getName() );
 
         // verify that input was only set 4 times.
-        assertEquals( "Only 4 input changes expected.", 4, counter.get() );
+        assertEquals( 4, counter.get(), "Only 4 input changes expected." );
     }
 
 

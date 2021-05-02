@@ -33,9 +33,9 @@ import static org.apache.directory.studio.test.integration.junit5.TestFixture.SU
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.USER1_DN;
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.USER8_DN;
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.USERS_DN;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.directory.api.ldap.model.message.ModifyRequest;
@@ -146,7 +146,7 @@ public class SearchTest extends AbstractTestBase
 
         // verify that only one event was fired
         long fireCount = fireCount1 - fireCount0;
-        assertEquals( "Only 1 event firings expected when running quick search.", 1, fireCount );
+        assertEquals( 1, fireCount, "Only 1 event firings expected when running quick search." );
     }
 
 
