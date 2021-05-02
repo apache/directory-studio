@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.test.integration.ui.bots.utils;
+package org.apache.directory.studio.test.integration.ui.utils;
 
 
 import static org.junit.jupiter.api.Assertions.fail;

@@ -46,6 +46,7 @@ import org.apache.directory.studio.test.integration.ui.bots.NewAttributeWizardBo
 import org.apache.directory.studio.test.integration.ui.bots.NewEntryWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.ReferralDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.SubtreeSpecificationEditorDialogBot;
+import org.apache.directory.studio.test.integration.ui.utils.ResourceUtils;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
 import org.junit.jupiter.params.ParameterizedTest;

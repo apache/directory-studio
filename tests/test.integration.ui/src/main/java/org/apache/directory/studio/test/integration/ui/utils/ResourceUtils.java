@@ -17,21 +17,34 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.test.integration.ui.bots.utils;
+package org.apache.directory.studio.test.integration.ui.utils;
 
 
-import org.apache.commons.lang3.SystemUtils;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.UUID;
+
+import org.apache.directory.api.util.IOUtils;
+import org.eclipse.core.runtime.Platform;
 
 
-public class StudioSystemUtils extends SystemUtils
+public class ResourceUtils
 {
-    public static final boolean IS_OS_WINDOWS_SERVER = isOSNameMatch( SystemUtils.OS_NAME, "Windows Server");
+    public static String prepareInputFile( String inputFileName ) throws IOException
+    {
+        URL url = Platform.getInstanceLocation().getURL();
+        String destFile = url.getFile() + UUID.randomUUID().toString();
 
-    static boolean isOSNameMatch(final String osName, final String osNamePrefix) {
-        if (osName == null) {
-            return false;
+        try ( InputStream is = ResourceUtils.class.getResourceAsStream( inputFileName );
+            FileOutputStream fos = new FileOutputStream( new File( destFile ) ); )
+        {
+            IOUtils.copy( is, fos );
         }
-        return osName.startsWith(osNamePrefix);
+
+        return destFile;
     }
 
 }

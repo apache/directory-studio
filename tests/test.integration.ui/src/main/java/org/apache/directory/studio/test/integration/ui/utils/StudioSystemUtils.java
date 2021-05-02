@@ -17,16 +17,21 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.test.integration.ui;
+package org.apache.directory.studio.test.integration.ui.utils;
 
 
-import org.apache.directory.api.util.Network;
+import org.apache.commons.lang3.SystemUtils;
 
 
-public final class Constants
+public class StudioSystemUtils extends SystemUtils
 {
-    public static final String LOCALHOST = Network.LOOPBACK_HOSTNAME;
+    public static final boolean IS_OS_WINDOWS_SERVER = isOSNameMatch( SystemUtils.OS_NAME, "Windows Server");
 
-    public static final String LOCALHOST_ADDRESS = Network.LOOPBACK.getHostAddress();
+    static boolean isOSNameMatch(final String osName, final String osNamePrefix) {
+        if (osName == null) {
+            return false;
+        }
+        return osName.startsWith(osNamePrefix);
+    }
 
 }

@@ -64,8 +64,9 @@ import org.apache.directory.studio.test.integration.ui.bots.PasswordEditorDialog
 import org.apache.directory.studio.test.integration.ui.bots.SelectDnDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.SubtreeSpecificationEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.TextEditorDialogBot;
-import org.apache.directory.studio.test.integration.ui.bots.utils.Characters;
-import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
+import org.apache.directory.studio.test.integration.ui.utils.Characters;
+import org.apache.directory.studio.test.integration.ui.utils.JobWatcher;
+import org.apache.directory.studio.test.integration.ui.utils.ResourceUtils;
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
 import org.junit.jupiter.params.ParameterizedTest;
 

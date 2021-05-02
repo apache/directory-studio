@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.test.integration.ui.bots.utils;
+package org.apache.directory.studio.test.integration.ui.utils;
 
 
 import java.nio.charset.StandardCharsets;
