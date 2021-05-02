@@ -44,14 +44,17 @@ public abstract class TestLdapServer
     protected final LdapServerType type;
     protected final String host;
     protected final int port;
+    protected final int portSSL;
     protected final String adminDn;
     protected final String adminPassword;
 
-    protected TestLdapServer( LdapServerType type, String host, int port, String adminDn, String adminPassword )
+    protected TestLdapServer( LdapServerType type, String host, int port, int portSSL, String adminDn,
+        String adminPassword )
     {
         this.type = type;
         this.host = host;
         this.port = port;
+        this.portSSL = portSSL;
         this.adminDn = adminDn;
         this.adminPassword = adminPassword;
     }
@@ -170,6 +173,12 @@ public abstract class TestLdapServer
     public int getPort()
     {
         return port;
+    }
+
+
+    public int getPortSSL()
+    {
+        return portSSL;
     }
 
 

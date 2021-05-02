@@ -28,8 +28,10 @@ import java.io.File;
 import org.apache.directory.server.core.api.DirectoryService;
 import org.apache.directory.server.core.api.partition.Partition;
 import org.apache.directory.server.core.factory.DefaultDirectoryServiceFactory;
+import org.apache.directory.server.core.security.CertificateUtil;
 import org.apache.directory.server.ldap.LdapServer;
 import org.apache.directory.server.ldap.handlers.extended.PwdModifyHandler;
+import org.apache.directory.server.ldap.handlers.extended.StartTlsHandler;
 import org.apache.directory.server.ldap.handlers.extended.WhoAmIHandler;
 import org.apache.directory.server.protocol.shared.transport.TcpTransport;
 import org.apache.directory.server.protocol.shared.transport.Transport;
@@ -48,13 +50,15 @@ public class ApacheDirectoryServer extends TestLdapServer
 
     private DirectoryService service;
     private LdapServer server;
+    private String defaultKeyStoreFile;
 
     public static synchronized ApacheDirectoryServer getInstance()
     {
         if ( instance == null )
         {
             int port = AvailablePortFinder.getNextAvailable( 1024 );
-            instance = new ApacheDirectoryServer( port );
+            int portSSL = AvailablePortFinder.getNextAvailable( port + 1 );
+            instance = new ApacheDirectoryServer( port, portSSL );
             instance.startServer();
         }
         return instance;
@@ -77,11 +81,19 @@ public class ApacheDirectoryServer extends TestLdapServer
 
             server = new LdapServer();
             server.setDirectoryService( service );
-            int port = AvailablePortFinder.getNextAvailable( 1024 );
             Transport ldap = new TcpTransport( port );
             server.addTransports( ldap );
+            Transport ldaps = new TcpTransport( portSSL );
+            ldaps.setEnableSSL( true );
+            server.addTransports( ldaps );
+            server.addExtendedOperationHandler( new StartTlsHandler() );
             server.addExtendedOperationHandler( new PwdModifyHandler() );
             server.addExtendedOperationHandler( new WhoAmIHandler() );
+
+            defaultKeyStoreFile = CertificateUtil.createTempKeyStore( "testStore", "changeit".toCharArray() )
+                .getAbsolutePath();
+            server.setKeystoreFile( defaultKeyStoreFile );
+            server.setCertificatePassword( "changeit" );
 
             server.start();
         }
@@ -92,15 +104,42 @@ public class ApacheDirectoryServer extends TestLdapServer
     }
 
 
+    @Override
+    public void prepare()
+    {
+        super.prepare();
+
+        try
+        {
+            if ( !defaultKeyStoreFile.equals( server.getKeystoreFile() ) )
+            {
+                server.setKeystoreFile( defaultKeyStoreFile );
+                server.reloadSslContext();
+            }
+        }
+        catch ( Exception e )
+        {
+            throw new RuntimeException( e );
+        }
+    }
+
+
+    public void setKeystore( String keystorePath ) throws Exception
+    {
+        server.setKeystoreFile( keystorePath );
+        server.reloadSslContext();
+    }
+
+
     public DirectoryService getService()
     {
         return service;
     }
 
 
-    private ApacheDirectoryServer( int port )
+    private ApacheDirectoryServer( int port, int portSSL )
     {
-        super( LdapServerType.ApacheDS, LOCALHOST, port, "uid=admin,ou=system", "secret" );
+        super( LdapServerType.ApacheDS, LOCALHOST, port, portSSL, "uid=admin,ou=system", "secret" );
     }
 
 }

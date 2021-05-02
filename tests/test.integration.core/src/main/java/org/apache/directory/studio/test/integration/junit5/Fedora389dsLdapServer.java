@@ -34,6 +34,8 @@ public class Fedora389dsLdapServer extends TestLdapServer
 {
     private static final String FEDORA_389DS_HOST = getEnvOrDefault( "FEDORA_389DS_HOST", LOCALHOST );
     private static final int FEDORA_389DS_PORT = Integer.parseInt( getEnvOrDefault( "FEDORA_389DS_PORT", "21389" ) );
+    private static final int FEDORA_389DS_PORT_SSL = Integer
+        .parseInt( getEnvOrDefault( "FEDORA_389DS_PORT_SSL", "21636" ) );
     private static final String FEDORA_389DS_ADMIN_DN = getEnvOrDefault( "FEDORA_389DS_ADMIN_DN",
         "cn=Directory Manager" );
     private static final String FEDORA_389DS_ADMIN_PASSWORD = getEnvOrDefault( "FEDORA_389DS_ADMIN_PASSWORD", "admin" );
@@ -46,8 +48,8 @@ public class Fedora389dsLdapServer extends TestLdapServer
 
     private Fedora389dsLdapServer()
     {
-        super( LdapServerType.Fedora389ds, FEDORA_389DS_HOST, FEDORA_389DS_PORT, FEDORA_389DS_ADMIN_DN,
-            FEDORA_389DS_ADMIN_PASSWORD );
+        super( LdapServerType.Fedora389ds, FEDORA_389DS_HOST, FEDORA_389DS_PORT, FEDORA_389DS_PORT_SSL,
+            FEDORA_389DS_ADMIN_DN, FEDORA_389DS_ADMIN_PASSWORD );
     }
 
 }

@@ -39,6 +39,7 @@ public class OpenLdapServer extends TestLdapServer
 {
     private static final String OPENLDAP_HOST = getEnvOrDefault( "OPENLDAP_HOST", LOCALHOST );
     private static final int OPENLDAP_PORT = Integer.parseInt( getEnvOrDefault( "OPENLDAP_PORT", "20389" ) );
+    private static final int OPENLDAP_PORT_SSL = Integer.parseInt( getEnvOrDefault( "OPENLDAP_PORT_SSL", "20636" ) );
     private static final String OPENLDAP_ADMIN_DN = getEnvOrDefault( "OPENLDAP_ADMIN_DN",
         "cn=admin,dc=example,dc=org" );
     private static final String OPENLDAP_ADMIN_PASSWORD = getEnvOrDefault( "OPENLDAP_ADMIN_PASSWORD", "admin" );
@@ -53,7 +54,8 @@ public class OpenLdapServer extends TestLdapServer
 
     private OpenLdapServer()
     {
-        super( LdapServerType.OpenLdap, OPENLDAP_HOST, OPENLDAP_PORT, OPENLDAP_ADMIN_DN, OPENLDAP_ADMIN_PASSWORD );
+        super( LdapServerType.OpenLdap, OPENLDAP_HOST, OPENLDAP_PORT, OPENLDAP_PORT_SSL, OPENLDAP_ADMIN_DN,
+            OPENLDAP_ADMIN_PASSWORD );
     }
 
 
