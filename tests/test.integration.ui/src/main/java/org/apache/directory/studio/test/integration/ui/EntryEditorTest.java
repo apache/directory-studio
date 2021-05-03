@@ -52,6 +52,7 @@ import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
 import org.apache.directory.studio.test.integration.junit5.LdapServerType;
 import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
 import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
+import org.apache.directory.studio.test.integration.junit5.LdapServersSource.Mode;
 import org.apache.directory.studio.test.integration.ui.bots.AciItemEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.CertificateEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.DnEditorDialogBot;
@@ -158,7 +159,7 @@ public class EntryEditorTest extends AbstractTestBase
      * Test adding, editing and deleting of attributes without equality matching rule in the entry editor.
      */
     @ParameterizedTest
-    @LdapServersSource
+    @LdapServersSource(mode = Mode.All)
     public void testAddEditDeleteAttributeWithoutEqualityMatchingRule( TestLdapServer server ) throws Exception
     {
         Connection connection = connectionsViewBot.createTestConnection( server );

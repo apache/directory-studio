@@ -62,6 +62,7 @@ import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.apache.directory.studio.ldapbrowser.ui.editors.entry.EntryEditor;
 import org.apache.directory.studio.test.integration.junit5.LdapServerType;
 import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
+import org.apache.directory.studio.test.integration.junit5.LdapServersSource.Mode;
 import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
 import org.apache.directory.studio.test.integration.ui.bots.DeleteDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.EntryEditorBot;
@@ -112,7 +113,7 @@ public class BrowserTest extends AbstractTestBase
 
         assertEquals( 1, countMatchesAfter - countMatchesBefore, "Expected exactly 1 search request" );
 
-        assertEquals( "No modification expected", "", modificationLogsViewBot.getModificationLogsText() );
+        assertEquals( "", modificationLogsViewBot.getModificationLogsText(), "No modification expected" );
     }
 
 
@@ -183,7 +184,7 @@ public class BrowserTest extends AbstractTestBase
         assertEquals( 23, attributeValues.size() );
         assertTrue( attributeValues.contains( "uid: user.1" ) );
 
-        assertEquals( "No modification expected", "", modificationLogsViewBot.getModificationLogsText() );
+        assertEquals( "", modificationLogsViewBot.getModificationLogsText(), "No modification expected" );
     }
 
 
@@ -423,7 +424,7 @@ public class BrowserTest extends AbstractTestBase
      * (Error reading objects with # in DN)
      */
     @ParameterizedTest
-    @LdapServersSource
+    @LdapServersSource(mode = Mode.All)
     public void testBrowseDnWithSharpAndHexSequence( TestLdapServer server ) throws Exception
     {
         Dn dn = DN_WITH_LEADING_SHARP_BACKSLASH_PREFIXED;
@@ -436,7 +437,7 @@ public class BrowserTest extends AbstractTestBase
         assertTrue( browserViewBot.existsEntry( path( dn ) ) );
         browserViewBot.selectEntry( path( dn ) );
 
-        assertEquals( "No modification expected", "", modificationLogsViewBot.getModificationLogsText() );
+        assertEquals( "", modificationLogsViewBot.getModificationLogsText(), "No modification expected" );
     }
 
 
@@ -444,7 +445,7 @@ public class BrowserTest extends AbstractTestBase
      * Test for DIRSTUDIO-1172: Studio doesn't display entries with trailing =.
      */
     @ParameterizedTest
-    @LdapServersSource
+    @LdapServersSource(mode = Mode.All)
     public void testBrowseDnWithTrailingEqualsCharacter( TestLdapServer server ) throws Exception
     {
         Dn dn = DN_WITH_TRAILING_EQUALS_CHARACTER;
@@ -494,7 +495,7 @@ public class BrowserTest extends AbstractTestBase
      * Test for DIRSTUDIO-1151: DN with backslash not displayed
      */
     @ParameterizedTest
-    @LdapServersSource
+    @LdapServersSource(mode = Mode.All)
     public void testBrowseDnWithBackslash( TestLdapServer server ) throws Exception
     {
         Dn dn = DN_WITH_ESCAPED_CHARACTERS_BACKSLASH_PREFIXED;
@@ -558,7 +559,7 @@ public class BrowserTest extends AbstractTestBase
 
         // check that modification logs is still empty
         // to ensure that no modification was sent to the server
-        assertEquals( "No modification expected", "", modificationLogsViewBot.getModificationLogsText() );
+        assertEquals( "", modificationLogsViewBot.getModificationLogsText(), "No modification expected" );
     }
 
 

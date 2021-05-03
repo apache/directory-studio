@@ -114,10 +114,10 @@ public class ImportExportTest extends AbstractTestBase
 
         List<String> lines = FileUtils.readLines( new File( file ), StandardCharsets.UTF_8 );
         // verify that the first line of exported LDIF is "version: 1"
-        assertEquals( "LDIF must start with version: 1", lines.get( 0 ), "version: 1" );
+        assertEquals( lines.get( 0 ), "version: 1", "LDIF must start with version: 1" );
         // verify that the third line of exported LDIF is the Base64 encoded DN
-        assertEquals( "Expected Base64 encoded DN", lines.get( 2 ),
-            "dn:: Y249V29sZmdhbmcgS8O2bGJlbCxvdT1taXNjLGRjPWV4YW1wbGUsZGM9b3Jn" );
+        assertEquals( lines.get( 2 ), "dn:: Y249V29sZmdhbmcgS8O2bGJlbCxvdT1taXNjLGRjPWV4YW1wbGUsZGM9b3Jn",
+            "Expected Base64 encoded DN" );
 
         // delete entry
         DeleteDialogBot dialogBot = browserViewBot.openDeleteDialog();
@@ -215,7 +215,7 @@ public class ImportExportTest extends AbstractTestBase
         wizardBot.waitTillExportFinished( file, 50 );
 
         List<String> lines = FileUtils.readLines( new File( file ), StandardCharsets.UTF_8 );
-        assertEquals( "LDIF must start with version: 1", lines.get( 0 ), "version: 1" );
+        assertEquals( lines.get( 0 ), "version: 1", "LDIF must start with version: 1" );
         assertTrue( lines.contains( "dn: " + ALIAS_DN.getName() ) );
 
         // delete entry
@@ -263,7 +263,7 @@ public class ImportExportTest extends AbstractTestBase
         wizardBot.waitTillExportFinished( file, 20 );
 
         List<String> lines = FileUtils.readLines( new File( file ), StandardCharsets.UTF_8 );
-        assertEquals( "LDIF must start with version: 1", lines.get( 0 ), "version: 1" );
+        assertEquals( lines.get( 0 ), "version: 1", "LDIF must start with version: 1" );
         assertTrue( lines.contains( "dn: " + REFERRAL_TO_USER1_DN.getName() ) );
         assertTrue( lines.contains( "ref: " + server.getLdapUrl() + "/" + USER1_DN.getName() ) );
 
@@ -312,7 +312,7 @@ public class ImportExportTest extends AbstractTestBase
         wizardBot.waitTillExportFinished( file, 20 );
 
         List<String> lines = FileUtils.readLines( new File( file ), StandardCharsets.UTF_8 );
-        assertEquals( "LDIF must start with version: 1", lines.get( 0 ), "version: 1" );
+        assertEquals( lines.get( 0 ), "version: 1", "LDIF must start with version: 1" );
         assertTrue( lines.contains( "dn: " + SUBENTRY_DN.getName() ) );
         assertTrue( lines.contains( "subtreeSpecification: {}" ) );
 
@@ -527,7 +527,7 @@ public class ImportExportTest extends AbstractTestBase
         wizardBot.waitTillExportFinished( file, 2500 );
 
         List<String> lines = FileUtils.readLines( new File( file ), StandardCharsets.UTF_8 );
-        assertEquals( "LDIF must start with version: 1", lines.get( 0 ), "version: 1" );
+        assertEquals( lines.get( 0 ), "version: 1", "LDIF must start with version: 1" );
         assertTrue( lines.contains( "dn: cn=adsconfig,ou=schema" ) );
         assertTrue( lines.contains( "dn: cn=apachemeta,ou=schema" ) );
         assertTrue( lines.contains( "dn: cn=core,ou=schema" ) );

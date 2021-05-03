@@ -28,6 +28,7 @@ import java.net.URL;
 import java.util.UUID;
 
 import org.apache.directory.api.util.IOUtils;
+import org.apache.directory.studio.test.integration.ui.Activator;
 import org.eclipse.core.runtime.Platform;
 
 
@@ -38,7 +39,7 @@ public class ResourceUtils
         URL url = Platform.getInstanceLocation().getURL();
         String destFile = url.getFile() + UUID.randomUUID().toString();
 
-        try ( InputStream is = ResourceUtils.class.getResourceAsStream( inputFileName );
+        try ( InputStream is = Activator.class.getResourceAsStream( inputFileName );
             FileOutputStream fos = new FileOutputStream( new File( destFile ) ); )
         {
             IOUtils.copy( is, fos );

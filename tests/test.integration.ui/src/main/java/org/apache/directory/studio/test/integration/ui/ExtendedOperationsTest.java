@@ -32,6 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.directory.studio.test.integration.junit5.LdapServerType;
 import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
+import org.apache.directory.studio.test.integration.junit5.LdapServersSource.Mode;
 import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
 import org.apache.directory.studio.test.integration.ui.bots.BotUtils;
 import org.apache.directory.studio.test.integration.ui.bots.EntryEditorBot;
@@ -153,7 +154,7 @@ public class ExtendedOperationsTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(except = LdapServerType.Fedora389ds, reason = "389ds requires secure connection")
+    @LdapServersSource(mode=Mode.All, except = LdapServerType.Fedora389ds, reason = "389ds requires secure connection")
     public void testPasswordModifyExtendedOperationDialogGenerateNewPassword( TestLdapServer server ) throws Exception
     {
         connectionsViewBot.createTestConnection( server );
@@ -227,7 +228,7 @@ public class ExtendedOperationsTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource
+    @LdapServersSource(mode=Mode.All)
     public void testPasswordModifyExtendedOperationDialogError( TestLdapServer server ) throws Exception
     {
         connectionsViewBot.createTestConnection( server );

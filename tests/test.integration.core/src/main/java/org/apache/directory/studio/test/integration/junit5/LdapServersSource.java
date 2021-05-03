@@ -36,7 +36,21 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 @ArgumentsSource(LdapServersArgumentsProvider.class)
 public @interface LdapServersSource
 {
-    LdapServerType[] only() default {};
-    LdapServerType[] except() default {};
+    Mode mode() default Mode.One;
+
+
+    LdapServerType[] only() default
+        {};
+
+
+    LdapServerType[] except() default
+        {};
+
+
     String reason() default "";
+
+    enum Mode
+    {
+        One, All;
+    }
 }

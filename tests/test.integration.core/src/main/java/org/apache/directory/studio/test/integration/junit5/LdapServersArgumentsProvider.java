@@ -29,6 +29,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.directory.studio.test.integration.junit5.LdapServersSource.Mode;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
@@ -57,7 +58,10 @@ public class LdapServersArgumentsProvider implements ArgumentsProvider
         if ( !available.isEmpty() )
         {
             // Pick a random one
-            available = Collections.singletonList( available.get( new Random().nextInt( available.size() ) ) );
+            if ( annotation.mode() == Mode.One )
+            {
+                available = Collections.singletonList( available.get( new Random().nextInt( available.size() ) ) );
+            }
 
             // Prepare the available servers
             for ( LdapServerType type : available )
