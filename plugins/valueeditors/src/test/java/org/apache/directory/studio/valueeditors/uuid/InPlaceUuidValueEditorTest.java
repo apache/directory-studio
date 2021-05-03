@@ -21,10 +21,11 @@
 package org.apache.directory.studio.valueeditors.uuid;
 
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.apache.directory.api.util.Strings;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 
 public class InPlaceUuidValueEditorTest
@@ -99,9 +100,26 @@ public class InPlaceUuidValueEditorTest
 
         // test too long
         byte[] bytes2 = new byte[]
-            { ( byte ) 0x00, ( byte ) 0x00, ( byte ) 0x00, ( byte ) 0x00, ( byte ) 0x00, ( byte ) 0x00, ( byte ) 0x00,
-                ( byte ) 0x00, ( byte ) 0x00, ( byte ) 0x00, ( byte ) 0x00, ( byte ) 0x00, ( byte ) 0x00,
-                ( byte ) 0x00, ( byte ) 0x00, ( byte ) 0x00, ( byte ) 0x00, ( byte ) 0x00, ( byte ) 0x00,
+            {
+                ( byte ) 0x00,
+                ( byte ) 0x00,
+                ( byte ) 0x00,
+                ( byte ) 0x00,
+                ( byte ) 0x00,
+                ( byte ) 0x00,
+                ( byte ) 0x00,
+                ( byte ) 0x00,
+                ( byte ) 0x00,
+                ( byte ) 0x00,
+                ( byte ) 0x00,
+                ( byte ) 0x00,
+                ( byte ) 0x00,
+                ( byte ) 0x00,
+                ( byte ) 0x00,
+                ( byte ) 0x00,
+                ( byte ) 0x00,
+                ( byte ) 0x00,
+                ( byte ) 0x00,
                 ( byte ) 0x00, };
         String displayValue2 = editor.convertToString( bytes2 );
         assertEquals( Messages.getString( "InPlaceUuidValueEditor.InvalidUuid" ), displayValue2 ); //$NON-NLS-1$

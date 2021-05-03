@@ -20,9 +20,11 @@
 package org.apache.directory.studio.schemaeditor.model.alias;
 
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.List;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 
 /**
@@ -30,8 +32,9 @@ import junit.framework.TestCase;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class AliasesStringParserTest extends TestCase
+public class AliasesStringParserTest
 {
+    @Test
     public void testNoAlias() throws Exception
     {
         AliasesStringParser parser = new AliasesStringParser();
@@ -42,6 +45,7 @@ public class AliasesStringParserTest extends TestCase
     }
 
 
+    @Test
     public void testOneAlias() throws Exception
     {
         AliasesStringParser parser = new AliasesStringParser();
@@ -53,6 +57,7 @@ public class AliasesStringParserTest extends TestCase
     }
 
 
+    @Test
     public void testTwoAliases() throws Exception
     {
         AliasesStringParser parser = new AliasesStringParser();
@@ -65,6 +70,7 @@ public class AliasesStringParserTest extends TestCase
     }
 
 
+    @Test
     public void testThreeAliases() throws Exception
     {
         AliasesStringParser parser = new AliasesStringParser();
@@ -78,6 +84,7 @@ public class AliasesStringParserTest extends TestCase
     }
 
 
+    @Test
     public void testMultipleCommasNoAlias() throws Exception
     {
         AliasesStringParser parser = new AliasesStringParser();
@@ -88,6 +95,7 @@ public class AliasesStringParserTest extends TestCase
     }
 
 
+    @Test
     public void testMultipleCommasAndWhiteSpacesNoAlias() throws Exception
     {
         AliasesStringParser parser = new AliasesStringParser();
@@ -98,6 +106,7 @@ public class AliasesStringParserTest extends TestCase
     }
 
 
+    @Test
     public void testTwoAliasesMultipleCommas() throws Exception
     {
         AliasesStringParser parser = new AliasesStringParser();
@@ -110,6 +119,7 @@ public class AliasesStringParserTest extends TestCase
     }
 
 
+    @Test
     public void testOneAliasWithStartError() throws Exception
     {
         AliasesStringParser parser = new AliasesStringParser();
@@ -122,6 +132,7 @@ public class AliasesStringParserTest extends TestCase
     }
 
 
+    @Test
     public void testOneAliasWithStartError2() throws Exception
     {
         AliasesStringParser parser = new AliasesStringParser();
@@ -134,6 +145,7 @@ public class AliasesStringParserTest extends TestCase
     }
 
 
+    @Test
     public void testOneAliasWithPartError() throws Exception
     {
         AliasesStringParser parser = new AliasesStringParser();
@@ -146,6 +158,7 @@ public class AliasesStringParserTest extends TestCase
     }
 
 
+    @Test
     public void testOneAliasWithPartError2() throws Exception
     {
         AliasesStringParser parser = new AliasesStringParser();
@@ -158,6 +171,7 @@ public class AliasesStringParserTest extends TestCase
     }
 
 
+    @Test
     public void testOneAliasWithPartErrorAndOneAliasWithStartError() throws Exception
     {
         AliasesStringParser parser = new AliasesStringParser();
@@ -172,6 +186,7 @@ public class AliasesStringParserTest extends TestCase
     }
 
 
+    @Test
     public void testOneAliasWithPartErrorAndOneAliasWithStartError2() throws Exception
     {
         AliasesStringParser parser = new AliasesStringParser();

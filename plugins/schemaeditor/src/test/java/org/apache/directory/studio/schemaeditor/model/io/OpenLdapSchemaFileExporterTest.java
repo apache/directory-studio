@@ -20,7 +20,7 @@
 package org.apache.directory.studio.schemaeditor.model.io;
 
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -29,9 +29,8 @@ import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.api.ldap.model.schema.UsageEnum;
-import org.junit.Before;
-import org.junit.Test;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -45,7 +44,7 @@ public class OpenLdapSchemaFileExporterTest
     private AttributeType attributeTypeSimple;
     private AttributeType attributeTypeComplex;
 
-    @Before
+    @BeforeEach
     public void setUp()
     {
         objectClassSimple = new ObjectClass( "1.2.3.4" );

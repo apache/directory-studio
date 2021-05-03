@@ -20,8 +20,8 @@
 package org.apache.directory.studio.ldapbrowser.core.utils;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
@@ -38,8 +38,8 @@ import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
 import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifDnLine;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 
 public class AttributeComparatorTest
@@ -63,8 +63,7 @@ public class AttributeComparatorTest
 
     private AttributeComparator comparator;
 
-
-    @Before
+    @BeforeEach
     public void setup() throws Exception
     {
         ConnectionEventRegistry.suspendEventFiringInCurrentThread();
@@ -139,9 +138,9 @@ public class AttributeComparatorTest
         assertEquals( 0, less + greater );
     }
 
-
     // TODO: objectclass, may, operational
     // TODO: objectclass < must < may < operational
+
 
     @Test
     public void testValuesDiffer()

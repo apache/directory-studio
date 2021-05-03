@@ -21,14 +21,18 @@
 package org.apache.directory.studio.ldifparser.model.lines;
 
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
 
+import org.junit.jupiter.api.Test;
 
-public class LdifDnLineTest extends TestCase
+
+public class LdifDnLineTest
 {
 
+    @Test
     public void testToFormattedStringSimple()
     {
         LdifDnLine dnLine = LdifDnLine.create( "cn=abc,ou=department,o=org,dc=example,dc=com" ); //$NON-NLS-1$
@@ -38,6 +42,7 @@ public class LdifDnLineTest extends TestCase
     }
 
 
+    @Test
     public void testToFormattedStringNewline()
     {
         LdifDnLine dnLine = LdifDnLine.create( "cn=abc,ou=department,o=org,dc=example,dc=com" ); //$NON-NLS-1$
@@ -47,6 +52,7 @@ public class LdifDnLineTest extends TestCase
     }
 
 
+    @Test
     public void testToFormattedStringLineWrap()
     {
         LdifDnLine dnLine = LdifDnLine
@@ -58,6 +64,7 @@ public class LdifDnLineTest extends TestCase
     }
 
 
+    @Test
     public void testToFormattedStringNoSpaceAfterColon()
     {
         LdifDnLine dnLine = LdifDnLine.create( "cn=abc,ou=department,o=org,dc=example,dc=com" ); //$NON-NLS-1$
@@ -67,6 +74,7 @@ public class LdifDnLineTest extends TestCase
     }
 
 
+    @Test
     public void testToFormattedStringBase64()
     {
         LdifDnLine dnLine = LdifDnLine.create( "cn=\u00e4\u00f6\u00fc,ou=department,o=org,dc=example,dc=com" ); //$NON-NLS-1$
@@ -80,6 +88,7 @@ public class LdifDnLineTest extends TestCase
      * Test for DIRSTUDIO-598
      * (Base64 encoded Dn marked as invalid in LDIF editor)
      */
+    @Test
     public void testIsValid()
     {
         LdifDnLine dnLine = LdifDnLine.create( "cn=\\#\\\\\\+\\, \\\"\u00f6\u00e9\\\",ou=users,ou=system" ); //$NON-NLS-1$
