@@ -578,7 +578,7 @@ public class EntryEditorTest extends AbstractTestBase
      * Test adding, editing and deleting of attributes with binary option in the entry editor.
      */
     @ParameterizedTest
-    @LdapServersSource
+    @LdapServersSource(mode = Mode.All)
     public void testCertificateValueEditor( TestLdapServer server ) throws Exception
     {
         connectionsViewBot.createTestConnection( server );
@@ -907,7 +907,7 @@ public class EntryEditorTest extends AbstractTestBase
      * Test for DIRSTUDIO-1249, DIRSTUDIO-1267: userSMIMECertificate is a binary attribute.
      */
     @ParameterizedTest
-    @LdapServersSource
+    @LdapServersSource(mode = Mode.All)
     public void testHexEditor( TestLdapServer server ) throws Exception
     {
         Connection connection = connectionsViewBot.createTestConnection( server );

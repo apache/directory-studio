@@ -37,6 +37,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.test.integration.junit5.LdapServerType;
 import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
 import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
+import org.apache.directory.studio.test.integration.junit5.LdapServersSource.Mode;
 import org.apache.directory.studio.test.integration.ui.bots.CertificateEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.DnEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.EditAttributeWizardBot;
@@ -307,7 +308,7 @@ public class NewEntryWizardTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource
+    @LdapServersSource(mode = Mode.All)
     public void testCreateReferralEntry( TestLdapServer server ) throws Exception
     {
         // set ManageDsaIT control
@@ -453,7 +454,7 @@ public class NewEntryWizardTest extends AbstractTestBase
      * Create an entry with sharp in DN: cn=\#123456.
      */
     @ParameterizedTest
-    @LdapServersSource
+    @LdapServersSource(mode = Mode.All)
     public void testCreateEntryWithSharp( TestLdapServer server ) throws Exception
     {
         connectionsViewBot.createTestConnection( server );
@@ -528,7 +529,7 @@ public class NewEntryWizardTest extends AbstractTestBase
      * Create and browse entry with multi-valued RDN with same attribute type.
      */
     @ParameterizedTest
-    @LdapServersSource(except = LdapServerType.OpenLdap, reason = "Multi-valued RDN with same attribute is not supported by OpenLDAP")
+    @LdapServersSource(mode = Mode.All, except = LdapServerType.OpenLdap, reason = "Multi-valued RDN with same attribute is not supported by OpenLDAP")
     public void testCreateMvRdnWithSameAttribute( TestLdapServer server ) throws Exception
     {
         connectionsViewBot.createTestConnection( server );

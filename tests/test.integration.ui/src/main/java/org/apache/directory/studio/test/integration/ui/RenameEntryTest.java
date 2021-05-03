@@ -36,6 +36,7 @@ import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.studio.test.integration.junit5.LdapServerType;
 import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
 import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
+import org.apache.directory.studio.test.integration.junit5.LdapServersSource.Mode;
 import org.apache.directory.studio.test.integration.ui.bots.RenameEntryDialogBot;
 import org.junit.jupiter.params.ParameterizedTest;
 
@@ -86,7 +87,7 @@ public class RenameEntryTest extends AbstractTestBase
      * Renames a RDN with escaped characters.
      */
     @ParameterizedTest
-    @LdapServersSource
+    @LdapServersSource(mode = Mode.All)
     public void testRenameRdnWithEscapedCharacters( TestLdapServer server ) throws Exception
     {
         Dn oldDn = DN_WITH_ESCAPED_CHARACTERS_BACKSLASH_PREFIXED;
@@ -116,7 +117,7 @@ public class RenameEntryTest extends AbstractTestBase
      * Rename an entry with leading sharp in DN: cn=\#123456.
      */
     @ParameterizedTest
-    @LdapServersSource
+    @LdapServersSource(mode = Mode.All)
     public void testRenameRdnWithLeadingSharp( TestLdapServer server ) throws Exception
     {
         Dn oldDn = DN_WITH_LEADING_SHARP_BACKSLASH_PREFIXED;
@@ -147,7 +148,7 @@ public class RenameEntryTest extends AbstractTestBase
      * Rename an entry with leading and trailing space in RDN.
      */
     @ParameterizedTest
-    @LdapServersSource(except = LdapServerType.Fedora389ds, reason = "Leading and trailing space is trimmed by 389ds")
+    @LdapServersSource(mode = Mode.All, except = LdapServerType.Fedora389ds, reason = "Leading and trailing space is trimmed by 389ds")
     public void testRenameRdnWithTrailingSpace( TestLdapServer server ) throws Exception
     {
         Dn oldDn = DN_WITH_LEADING_SHARP_BACKSLASH_PREFIXED;
@@ -179,7 +180,7 @@ public class RenameEntryTest extends AbstractTestBase
      * Rename an entry with leading and trailing space in RDN.
      */
     @ParameterizedTest
-    @LdapServersSource(except = LdapServerType.Fedora389ds, reason = "Leading and trailing space is trimmed by 389ds")
+    @LdapServersSource(mode = Mode.All, except = LdapServerType.Fedora389ds, reason = "Leading and trailing space is trimmed by 389ds")
     public void testRenameRdnWithLeadingAndTrailingSpace( TestLdapServer server ) throws Exception
     {
         Dn oldDn = DN_WITH_LEADING_SHARP_BACKSLASH_PREFIXED;

@@ -39,6 +39,7 @@ import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionManager;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
+import org.apache.directory.studio.test.integration.junit5.LdapServersSource.Mode;
 import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
 import org.apache.directory.studio.test.integration.ui.bots.NewConnectionWizardBot;
 import org.apache.mina.util.AvailablePortFinder;
@@ -379,7 +380,7 @@ public class NewConnectionWizardTest extends AbstractTestBase
      * Tests the "Check Network Parameter" button.
      */
     @ParameterizedTest
-    @LdapServersSource
+    @LdapServersSource(mode = Mode.All)
     public void testCheckNetworkParameterButtonNotOK( TestLdapServer server )
     {
         // enter connection parameter with invalid port

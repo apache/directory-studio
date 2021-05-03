@@ -101,6 +101,7 @@ import org.apache.directory.studio.test.integration.junit5.LdapServerType;
 import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
 import org.apache.directory.studio.test.integration.junit5.SkipTestIfLdapServerIsNotAvailableInterceptor;
 import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
+import org.apache.directory.studio.test.integration.junit5.LdapServersSource.Mode;
 import org.apache.mina.util.AvailablePortFinder;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.jupiter.api.AfterAll;
@@ -897,7 +898,7 @@ public class DirectoryApiConnectionWrapperTest
 
 
     @ParameterizedTest
-    @LdapServersSource
+    @LdapServersSource(mode = Mode.All)
     public void testPasswordModifyRequestExtendedOperation_AdminChangesUserPassword( TestLdapServer ldapServer )
         throws Exception
     {
@@ -939,7 +940,7 @@ public class DirectoryApiConnectionWrapperTest
 
 
     @ParameterizedTest
-    @LdapServersSource(except = LdapServerType.Fedora389ds, reason = "389ds requires secure connection")
+    @LdapServersSource(mode = Mode.All, except = LdapServerType.Fedora389ds, reason = "389ds requires secure connection")
     public void testPasswordModifyRequestExtendedOperation_UserChangesOwnPassword( TestLdapServer ldapServer )
         throws Exception
     {

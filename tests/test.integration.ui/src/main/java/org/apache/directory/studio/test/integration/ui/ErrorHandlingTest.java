@@ -28,6 +28,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import org.apache.directory.studio.test.integration.junit5.LdapServerType;
 import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
 import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
+import org.apache.directory.studio.test.integration.junit5.LdapServersSource.Mode;
 import org.apache.directory.studio.test.integration.ui.bots.DeleteDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.EntryEditorBot;
 import org.apache.directory.studio.test.integration.ui.bots.ErrorDialogBot;
@@ -66,7 +67,7 @@ public class ErrorHandlingTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource
+    @LdapServersSource(mode = Mode.All)
     public void testDeleteObjectClassAttributeShouldFail( TestLdapServer server ) throws Exception
     {
         connectionsViewBot.createTestConnection( server );
@@ -92,7 +93,7 @@ public class ErrorHandlingTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource
+    @LdapServersSource(mode = Mode.All)
     public void testDeleteRdnAttributeShouldFail( TestLdapServer server ) throws Exception
     {
         connectionsViewBot.createTestConnection( server );
@@ -138,7 +139,7 @@ public class ErrorHandlingTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource
+    @LdapServersSource(mode = Mode.All)
     public void testDeleteOperationalAttributeShouldFail( TestLdapServer server ) throws Exception
     {
         connectionsViewBot.createTestConnection( server );

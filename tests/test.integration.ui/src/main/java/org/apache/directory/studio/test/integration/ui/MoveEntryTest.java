@@ -36,6 +36,7 @@ import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.test.integration.junit5.LdapServerType;
 import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
 import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
+import org.apache.directory.studio.test.integration.junit5.LdapServersSource.Mode;
 import org.apache.directory.studio.test.integration.ui.bots.MoveEntriesDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.SelectDnDialogBot;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -72,7 +73,7 @@ public class MoveEntryTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource
+    @LdapServersSource(mode = Mode.All)
     public void testMoveDown( TestLdapServer server ) throws Exception
     {
         Dn dnToMove = DN_WITH_ESCAPED_CHARACTERS_BACKSLASH_PREFIXED;

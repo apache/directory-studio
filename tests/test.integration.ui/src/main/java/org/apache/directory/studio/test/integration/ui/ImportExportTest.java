@@ -62,6 +62,7 @@ import org.apache.directory.studio.test.integration.junit5.ApacheDirectoryServer
 import org.apache.directory.studio.test.integration.junit5.LdapServerType;
 import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
 import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
+import org.apache.directory.studio.test.integration.junit5.LdapServersSource.Mode;
 import org.apache.directory.studio.test.integration.ui.bots.BotUtils;
 import org.apache.directory.studio.test.integration.ui.bots.DeleteDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.EntryEditorBot;
@@ -681,7 +682,7 @@ public class ImportExportTest extends AbstractTestBase
      * Test LDIF with several modifications.
      */
     @ParameterizedTest
-    @LdapServersSource
+    @LdapServersSource(mode = Mode.All)
     public void testLdifModification( TestLdapServer server ) throws Exception
     {
         connectionsViewBot.createTestConnection( server );
