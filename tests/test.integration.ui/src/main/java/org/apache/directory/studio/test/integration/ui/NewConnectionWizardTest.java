@@ -41,6 +41,7 @@ import org.apache.directory.studio.connection.core.ConnectionParameter.Authentic
 import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
 import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
 import org.apache.directory.studio.test.integration.ui.bots.NewConnectionWizardBot;
+import org.apache.mina.util.AvailablePortFinder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -384,7 +385,7 @@ public class NewConnectionWizardTest extends AbstractTestBase
         // enter connection parameter with invalid port
         wizardBot.typeConnectionName( getConnectionName() );
         wizardBot.typeHost( server.getHost() );
-        wizardBot.typePort( server.getPort() + 1 );
+        wizardBot.typePort( AvailablePortFinder.getNextAvailable( server.getPort() ) );
 
         // click "Check Network Parameter" button and get the result
         String result1 = wizardBot.clickCheckNetworkParameterButton();
