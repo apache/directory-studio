@@ -38,8 +38,8 @@ import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionManager;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
+import org.apache.directory.studio.test.integration.junit5.Constants;
 import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
-import org.apache.directory.studio.test.integration.junit5.LdapServersSource.Mode;
 import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
 import org.apache.directory.studio.test.integration.ui.bots.NewConnectionWizardBot;
 import org.apache.mina.util.AvailablePortFinder;
@@ -379,18 +379,17 @@ public class NewConnectionWizardTest extends AbstractTestBase
     /**
      * Tests the "Check Network Parameter" button.
      */
-    @ParameterizedTest
-    @LdapServersSource(mode = Mode.All)
-    public void testCheckNetworkParameterButtonNotOK( TestLdapServer server )
+    @Test
+    public void testCheckNetworkParameterButtonNotOK()
     {
         // enter connection parameter with invalid port
         wizardBot.typeConnectionName( getConnectionName() );
-        wizardBot.typeHost( server.getHost() );
-        wizardBot.typePort( AvailablePortFinder.getNextAvailable( server.getPort() ) );
+        wizardBot.typeHost( Constants.LOCALHOST );
+        wizardBot.typePort( AvailablePortFinder.getNextAvailable( 1024 ) );
 
         // click "Check Network Parameter" button and get the result
         String result1 = wizardBot.clickCheckNetworkParameterButton();
-        assertNotNull( "Expected Error", result1 );
+        assertNotNull( result1 );
         // LDAP API: Connection refused
         // JNDI: The connection failed
         assertThat( result1,
@@ -399,7 +398,7 @@ public class NewConnectionWizardTest extends AbstractTestBase
         // enter connection parameter with invalid host name
         String hostname = "qwertzuiop.asdfghjkl.yxcvbnm";
         wizardBot.typeHost( hostname );
-        wizardBot.typePort( server.getPort() );
+        wizardBot.typePort( 389 );
 
         // click "Check Network Parameter" button and get the result
         String result2 = wizardBot.clickCheckNetworkParameterButton();
@@ -472,7 +471,7 @@ public class NewConnectionWizardTest extends AbstractTestBase
 
         // click "Check Network Parameter" button
         String result = wizardBot.clickCheckAuthenticationButton();
-        assertNotNull( "Expected Error", result );
+        assertNotNull( result );
         assertThat( result, containsString( "[LDAP result code 49 - invalidCredentials]" ) );
 
         wizardBot.clickCancelButton();
