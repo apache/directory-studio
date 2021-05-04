@@ -118,7 +118,7 @@ pipeline {
           }
           steps {
             bat '''
-            rmdir /S /Q F:\\hudson\\m2_repository\\p2\\osgi\\bundle\\org.apache.directory.api.ldap.model
+            rem rmdir /S /Q F:\\hudson\\m2_repository\\p2\\osgi\\bundle\\org.apache.directory.api.ldap.model
             set JAVA_HOME=F:\\jenkins\\tools\\java\\latest11
             set MAVEN_OPTS="-Xmx512m"
             call F:\\jenkins\\tools\\maven\\latest3\\bin\\mvn -V -U -f pom-first.xml clean install
