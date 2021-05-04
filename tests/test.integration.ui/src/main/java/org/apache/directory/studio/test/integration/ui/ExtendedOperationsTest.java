@@ -21,32 +21,26 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.USER1_DN;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.directory.server.annotations.CreateLdapServer;
-import org.apache.directory.server.annotations.CreateTransport;
-import org.apache.directory.server.core.annotations.ApplyLdifFiles;
-import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
-import org.apache.directory.server.ldap.handlers.extended.PwdModifyHandler;
+import org.apache.directory.studio.test.integration.junit5.LdapServerType;
+import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
+import org.apache.directory.studio.test.integration.junit5.LdapServersSource.Mode;
+import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
 import org.apache.directory.studio.test.integration.ui.bots.BotUtils;
-import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
-import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.EntryEditorBot;
 import org.apache.directory.studio.test.integration.ui.bots.ErrorDialogBot;
-import org.apache.directory.studio.test.integration.ui.bots.ModificationLogsViewBot;
+import org.apache.directory.studio.test.integration.ui.bots.GeneratedPasswordDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.PasswordEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.PasswordModifyExtendedOperationDialogBot;
-import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
-import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
-import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.params.ParameterizedTest;
 
 
 /**
@@ -55,50 +49,22 @@ import org.junit.runner.RunWith;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-@RunWith(FrameworkRunnerWithScreenshotCaptureListener.class)
-@CreateLdapServer(transports =
-    { @CreateTransport(protocol = "LDAP") }, extendedOpHandlers =
-    { PwdModifyHandler.class })
-@ApplyLdifFiles(clazz = ExtendedOperationsTest.class, value = "org/apache/directory/studio/test/integration/ui/BrowserTest.ldif")
-public class ExtendedOperationsTest extends AbstractLdapTestUnit
+public class ExtendedOperationsTest extends AbstractTestBase
 {
-    private StudioBot studioBot;
-    private ConnectionsViewBot connectionsViewBot;
-    private BrowserViewBot browserViewBot;
-    private ModificationLogsViewBot modificationLogsViewBot;
 
-
-    @Before
-    public void setUp() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testPasswordModifyExtendedOperationDialogValidation( TestLdapServer server ) throws Exception
     {
-        studioBot = new StudioBot();
-        studioBot.resetLdapPerspective();
-        connectionsViewBot = studioBot.getConnectionView();
-        connectionsViewBot.createTestConnection( "BrowserTest", ldapServer.getPort() );
-        browserViewBot = studioBot.getBrowserView();
-        modificationLogsViewBot = studioBot.getModificationLogsViewBot();
-    }
-
-
-    @After
-    public void tearDown() throws Exception
-    {
-        connectionsViewBot.deleteTestConnections();
-        Assertions.genericTearDownAssertions();
-    }
-
-
-    @Test
-    public void testPasswordModifyExtendedOperationDialogValidation()
-    {
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" );
+        connectionsViewBot.createTestConnection( server );
+        browserViewBot.selectEntry( path( USER1_DN ) );
 
         // Open dialog
         PasswordModifyExtendedOperationDialogBot dialogBot = browserViewBot.openPasswordModifyExtendedOperationDialog();
         assertTrue( dialogBot.isVisible() );
 
         // Verify default UI state
-        assertEquals( "uid=user.1,ou=users,ou=system", dialogBot.getUserIdentity() );
+        assertEquals( USER1_DN.getName(), dialogBot.getUserIdentity() );
         assertFalse( dialogBot.useBindUserIdentity() );
         assertEquals( "", dialogBot.getOldPassword() );
         assertFalse( dialogBot.noOldPassword() );
@@ -154,17 +120,18 @@ public class ExtendedOperationsTest extends AbstractLdapTestUnit
     }
 
 
-    @Test
-    public void testPasswordModifyExtendedOperationDialogOk()
+    @ParameterizedTest
+    @LdapServersSource(except = LdapServerType.Fedora389ds, reason = "389ds requires secure connection")
+    public void testPasswordModifyExtendedOperationDialogSetNewPassword( TestLdapServer server ) throws Exception
     {
+        connectionsViewBot.createTestConnection( server );
         String random = RandomStringUtils.random( 20 );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" );
-        String dn = "uid=user.1,ou=users,ou=system";
+        browserViewBot.selectEntry( path( USER1_DN ) );
 
         // Open dialog
         PasswordModifyExtendedOperationDialogBot dialogBot = browserViewBot.openPasswordModifyExtendedOperationDialog();
         assertTrue( dialogBot.isVisible() );
-        assertEquals( dn, dialogBot.getUserIdentity() );
+        assertEquals( USER1_DN.getName(), dialogBot.getUserIdentity() );
 
         // Change password
         dialogBot.noOldPassword( true );
@@ -174,24 +141,100 @@ public class ExtendedOperationsTest extends AbstractLdapTestUnit
         // Verify and bind with the correct password
         browserViewBot.refresh();
         BotUtils.sleep( 1000L );
-        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( dn );
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( USER1_DN.getName() );
         entryEditorBot.activate();
-        PasswordEditorDialogBot pwdEditorBot = entryEditorBot.editValueExpectingPasswordEditor( "userPassword",
-            "Plain text password" );
+        PasswordEditorDialogBot pwdEditorBot = entryEditorBot.editValueExpectingPasswordEditor( "userPassword", null );
         pwdEditorBot.activateCurrentPasswordTab();
         pwdEditorBot.setVerifyPassword( random );
         assertNull( pwdEditorBot.clickVerifyButton() );
         assertNull( pwdEditorBot.clickBindButton() );
+
         pwdEditorBot.clickCancelButton();
     }
 
 
-    @Test
-    public void testPasswordModifyExtendedOperationDialogError()
+    @ParameterizedTest
+    @LdapServersSource(mode=Mode.All, except = LdapServerType.Fedora389ds, reason = "389ds requires secure connection")
+    public void testPasswordModifyExtendedOperationDialogGenerateNewPassword( TestLdapServer server ) throws Exception
     {
+        connectionsViewBot.createTestConnection( server );
+        browserViewBot.selectEntry( path( USER1_DN ) );
+
+        // Open dialog
+        PasswordModifyExtendedOperationDialogBot dialogBot = browserViewBot.openPasswordModifyExtendedOperationDialog();
+        assertTrue( dialogBot.isVisible() );
+        assertEquals( USER1_DN.getName(), dialogBot.getUserIdentity() );
+
+        // Generate password
+        dialogBot.noOldPassword( true );
+        dialogBot.generateNewPassword( true );
+
+        // ApacheDS does not support password generation
+        if ( server.getType() == LdapServerType.ApacheDS )
+        {
+            ErrorDialogBot errorBot = dialogBot.clickOkButtonExpectingErrorDialog();
+            assertThat( errorBot.getErrorMessage(), containsString( "null new password" ) );
+            errorBot.clickOkButton();
+            dialogBot.activate();
+            dialogBot.clickCancelButton();
+        }
+        else
+        {
+            dialogBot.clickOkButton();
+            GeneratedPasswordDialogBot generatedPasswordDialogBot = new GeneratedPasswordDialogBot();
+            String generatedPassword = generatedPasswordDialogBot.getGeneratedPassword();
+            generatedPasswordDialogBot.clickOkButton();
+
+            // Verify and bind with the correct password
+            browserViewBot.refresh();
+            BotUtils.sleep( 1000L );
+            EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( USER1_DN.getName() );
+            entryEditorBot.activate();
+            PasswordEditorDialogBot pwdEditorBot = entryEditorBot.editValueExpectingPasswordEditor( "userPassword",
+                null );
+            pwdEditorBot.activateCurrentPasswordTab();
+            pwdEditorBot.setVerifyPassword( generatedPassword );
+            assertNull( pwdEditorBot.clickVerifyButton() );
+            assertNull( pwdEditorBot.clickBindButton() );
+            pwdEditorBot.clickCancelButton();
+        }
+
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(only = LdapServerType.Fedora389ds, reason = "389ds requires secure connection")
+    public void testPasswordModifyExtendedOperationRequiresSecureConnection( TestLdapServer server ) throws Exception
+    {
+        connectionsViewBot.createTestConnection( server );
         String random = RandomStringUtils.random( 20 );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" );
-        String dn = "uid=user.1,ou=users,ou=system";
+        browserViewBot.selectEntry( path( USER1_DN ) );
+
+        // Open dialog
+        PasswordModifyExtendedOperationDialogBot dialogBot = browserViewBot.openPasswordModifyExtendedOperationDialog();
+        assertTrue( dialogBot.isVisible() );
+        assertEquals( USER1_DN.getName(), dialogBot.getUserIdentity() );
+
+        // Change password
+        dialogBot.noOldPassword( true );
+        dialogBot.setNewPassword( random );
+        ErrorDialogBot errorBot = dialogBot.clickOkButtonExpectingErrorDialog();
+        assertThat( errorBot.getErrorMessage(), containsString( "Operation requires a secure connection" ) );
+        errorBot.clickOkButton();
+
+        dialogBot.activate();
+        dialogBot.clickCancelButton();
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(mode=Mode.All)
+    public void testPasswordModifyExtendedOperationDialogError( TestLdapServer server ) throws Exception
+    {
+        connectionsViewBot.createTestConnection( server );
+        String random = RandomStringUtils.random( 20 );
+        browserViewBot.selectEntry( path( USER1_DN ) );
+        String dn = USER1_DN.getName();
 
         // Open dialog
         PasswordModifyExtendedOperationDialogBot dialogBot = browserViewBot.openPasswordModifyExtendedOperationDialog();
@@ -204,7 +247,18 @@ public class ExtendedOperationsTest extends AbstractLdapTestUnit
         dialogBot.setOldPassword( "wrong password" );
         dialogBot.setNewPassword( random );
         ErrorDialogBot errorBot = dialogBot.clickOkButtonExpectingErrorDialog();
-        assertTrue( errorBot.getErrorMessage().contains( "invalid credentials" ) );
+        if ( server.getType() == LdapServerType.OpenLdap )
+        {
+            assertThat( errorBot.getErrorMessage(), containsString( "unwilling to verify old password" ) );
+        }
+        else if ( server.getType() == LdapServerType.Fedora389ds )
+        {
+            assertThat( errorBot.getErrorMessage(), containsString( "Operation requires a secure connection" ) );
+        }
+        else
+        {
+            assertThat( errorBot.getErrorMessage(), containsString( "invalid credentials" ) );
+        }
         errorBot.clickOkButton();
 
         // Not existing entry
@@ -213,17 +267,31 @@ public class ExtendedOperationsTest extends AbstractLdapTestUnit
         dialogBot.noOldPassword( true );
         dialogBot.setNewPassword( random );
         errorBot = dialogBot.clickOkButtonExpectingErrorDialog();
-        assertTrue( errorBot.getErrorMessage().contains( "The entry does not exist" ) );
+        if ( server.getType() == LdapServerType.OpenLdap )
+        {
+            assertThat( errorBot.getErrorMessage(), containsString( "unable to retrieve SASL username" ) );
+        }
+        else if ( server.getType() == LdapServerType.Fedora389ds )
+        {
+            assertThat( errorBot.getErrorMessage(), containsString( "Operation requires a secure connection" ) );
+        }
+        else
+        {
+            assertThat( errorBot.getErrorMessage(), containsString( "The entry does not exist" ) );
+        }
         errorBot.clickOkButton();
 
         // ApacheDS does not support password generation
-        dialogBot.activate();
-        dialogBot.setUserIdentity( dn );
-        dialogBot.noOldPassword( true );
-        dialogBot.generateNewPassword( true );
-        errorBot = dialogBot.clickOkButtonExpectingErrorDialog();
-        assertTrue( errorBot.getErrorMessage().contains( "null new password" ) );
-        errorBot.clickOkButton();
+        if ( server.getType() == LdapServerType.ApacheDS )
+        {
+            dialogBot.activate();
+            dialogBot.setUserIdentity( dn );
+            dialogBot.noOldPassword( true );
+            dialogBot.generateNewPassword( true );
+            errorBot = dialogBot.clickOkButtonExpectingErrorDialog();
+            assertThat( errorBot.getErrorMessage(), containsString( "null new password" ) );
+            errorBot.clickOkButton();
+        }
 
         dialogBot.activate();
         dialogBot.clickCancelButton();

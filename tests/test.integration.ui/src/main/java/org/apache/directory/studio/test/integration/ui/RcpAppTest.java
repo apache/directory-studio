@@ -21,24 +21,16 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
 import org.apache.directory.studio.test.integration.ui.bots.ExportWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.ImportWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.PreferencesBot;
 import org.apache.directory.studio.test.integration.ui.bots.ShowViewsBot;
-import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
-import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
-import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
-import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
 
 /**
@@ -47,29 +39,8 @@ import org.junit.runner.RunWith;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-@RunWith(FrameworkRunnerWithScreenshotCaptureListener.class)
-public class RcpAppTest extends AbstractLdapTestUnit
+public class RcpAppTest extends AbstractTestBase
 {
-    private SWTWorkbenchBot bot;
-    private StudioBot studioBot;
-
-
-    @Before
-    public void setUp() throws Exception
-    {
-        bot = new SWTWorkbenchBot();
-        studioBot = new StudioBot();
-        studioBot.resetLdapPerspective();
-    }
-
-
-    @After
-    public void tearDown() throws Exception
-    {
-        Assertions.genericTearDownAssertions();
-    }
-
-
     /**
      * Verify views in LDAP perspective.
      */

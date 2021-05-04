@@ -21,15 +21,18 @@
 package org.apache.directory.studio.ldifparser.parser;
 
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
 import org.apache.directory.studio.ldifparser.model.LdifFile;
 
+import org.junit.jupiter.api.Test;
 
-public class LdifParserTest extends TestCase
+
+public class LdifParserTest
 {
 
+    @Test
     public void testLdifNull()
     {
         String ldif = null;
@@ -41,6 +44,7 @@ public class LdifParserTest extends TestCase
     }
 
 
+    @Test
     public void testParseAndFormatWithLdifWindowsLineBreak()
     {
         String ldif = ""
@@ -62,6 +66,7 @@ public class LdifParserTest extends TestCase
     }
 
 
+    @Test
     public void testParseAndFormatWithLdifUnixLineBreak()
     {
         String ldif = ""

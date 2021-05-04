@@ -22,7 +22,7 @@ package org.apache.directory.studio.test.integration.ui.bots;
 
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
-import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
+import org.apache.directory.studio.test.integration.ui.utils.JobWatcher;
 
 
 public class NewEntryWizardBot extends WizardBot

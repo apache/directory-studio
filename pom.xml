@@ -69,12 +69,13 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
 
-    <tycho.version>1.7.0</tycho.version>
+    <tycho.version>2.3.0</tycho.version>
 
     <!-- Set versions for dependencies -->
     <antlr.version>2.7.7</antlr.version>
     <antlr.bundleversion>2.7.7</antlr.bundleversion>
-    <junit.version>4.11</junit.version>
+    <junit.platform.version>1.7.1</junit.platform.version>
+    <junit.jupiter.version>5.7.1</junit.jupiter.version>
     <log4j.log4j.version>1.2.17</log4j.log4j.version>
     <log4j.log4j.bundleversion>1.2.17</log4j.log4j.bundleversion>
     <com.github.ben-manes.caffeine.version>2.7.0</com.github.ben-manes.caffeine.version>

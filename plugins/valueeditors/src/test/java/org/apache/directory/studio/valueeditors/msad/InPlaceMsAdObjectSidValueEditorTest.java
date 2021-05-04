@@ -21,9 +21,9 @@
 package org.apache.directory.studio.valueeditors.msad;
 
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 
 public class InPlaceMsAdObjectSidValueEditorTest
@@ -48,7 +48,7 @@ public class InPlaceMsAdObjectSidValueEditorTest
                 ( byte ) 0x00,
                 ( byte ) 0x00,
                 ( byte ) 0x00 //
-        };
+            };
         String displayValue = editor.convertToString( bytes );
         assertEquals( "S-1-5-4", displayValue ); //$NON-NLS-1$
     }
@@ -77,7 +77,7 @@ public class InPlaceMsAdObjectSidValueEditorTest
                 ( byte ) 0x02,
                 ( byte ) 0x00,
                 ( byte ) 0x00 //
-        };
+            };
         String displayValue = editor.convertToString( bytes );
         assertEquals( "S-1-5-32-549", displayValue ); //$NON-NLS-1$
     }
@@ -119,7 +119,7 @@ public class InPlaceMsAdObjectSidValueEditorTest
                 ( byte ) 0x01,
                 ( byte ) 0x00,
                 ( byte ) 0x00 //
-        };
+            };
         String displayValue = editor.convertToString( bytes );
         assertEquals( "S-1-5-21-666267311-2692216076-1860112551-500", displayValue ); //$NON-NLS-1$
     }
@@ -206,7 +206,7 @@ public class InPlaceMsAdObjectSidValueEditorTest
                 ( byte ) 0x00,
                 ( byte ) 0x00,
                 ( byte ) 0x00 //
-        };
+            };
         String displayValue3 = editor.convertToString( bytes3 );
         assertEquals( Messages.getString( "InPlaceMsAdObjectSidValueEditor.InvalidSid" ), displayValue3 ); //$NON-NLS-1$
     }

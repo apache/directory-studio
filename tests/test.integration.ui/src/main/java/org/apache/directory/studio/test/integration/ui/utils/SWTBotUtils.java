@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.studio.test.integration.ui;
+package org.apache.directory.studio.test.integration.ui.utils;
 
 
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;

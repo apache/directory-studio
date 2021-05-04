@@ -21,9 +21,13 @@
 package org.apache.directory.studio.ldapbrowser.core.model;
 
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterParser;
+
+import org.junit.jupiter.api.Test;
 
 
 /**
@@ -31,7 +35,7 @@ import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilt
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LdapFilterParserTest extends TestCase
+public class LdapFilterParserTest
 {
     private LdapFilterParser parser = new LdapFilterParser();
 
@@ -39,6 +43,7 @@ public class LdapFilterParserTest extends TestCase
     /**
      * Tests an equals filter
      */
+    @Test
     public void testEqualsFilter()
     {
         parser.parse( "(cn=test)" ); //$NON-NLS-1$
@@ -51,6 +56,7 @@ public class LdapFilterParserTest extends TestCase
     /**
      * Tests an greater equals filter
      */
+    @Test
     public void testGreaterEqualsFilter()
     {
         parser.parse( "(cn>=test)" ); //$NON-NLS-1$
@@ -63,6 +69,7 @@ public class LdapFilterParserTest extends TestCase
     /**
      * Tests an less equals filter
      */
+    @Test
     public void testLessEqualsFilter()
     {
         parser.parse( "(cn<=test)" ); //$NON-NLS-1$
@@ -75,6 +82,7 @@ public class LdapFilterParserTest extends TestCase
     /**
      * Tests an aprox filter
      */
+    @Test
     public void testAproxFilter()
     {
         parser.parse( "(cn~=test)" ); //$NON-NLS-1$
@@ -87,6 +95,7 @@ public class LdapFilterParserTest extends TestCase
     /**
      * Tests an substring filter
      */
+    @Test
     public void testSubstringFilter()
     {
         parser.parse( "(cn=te*st)" ); //$NON-NLS-1$
@@ -99,6 +108,7 @@ public class LdapFilterParserTest extends TestCase
     /**
      * Tests an present filter
      */
+    @Test
     public void testPresentFilter()
     {
         parser.parse( "(cn=*)" ); //$NON-NLS-1$
@@ -111,6 +121,7 @@ public class LdapFilterParserTest extends TestCase
     /**
      * Tests an simple filter
      */
+    @Test
     public void testRFC4515_1()
     {
         parser.parse( "(cn=Babs Jensen)" ); //$NON-NLS-1$
@@ -123,6 +134,7 @@ public class LdapFilterParserTest extends TestCase
     /**
      * Tests an not filter
      */
+    @Test
     public void testRFC4515_2()
     {
         parser.parse( "(!(cn=Tim Howes))" ); //$NON-NLS-1$
@@ -135,6 +147,7 @@ public class LdapFilterParserTest extends TestCase
     /**
      * Tests an and/or filter
      */
+    @Test
     public void testRFC4515_3()
     {
         parser.parse( "(&(objectClass=Person)(|(sn=Jensen)(cn=Babs J*)))" ); //$NON-NLS-1$
@@ -147,6 +160,7 @@ public class LdapFilterParserTest extends TestCase
     /**
      * Tests an substring filter
      */
+    @Test
     public void testRFC4515_4()
     {
         parser.parse( "(o=univ*of*mich*)" ); //$NON-NLS-1$
@@ -159,6 +173,7 @@ public class LdapFilterParserTest extends TestCase
     /**
      * Tests an empty assertion value
      */
+    @Test
     public void testRFC4515_5()
     {
         parser.parse( "(seeAlso=)" ); //$NON-NLS-1$
@@ -175,6 +190,7 @@ public class LdapFilterParserTest extends TestCase
      * The first example shows the use of the escaping mechanism to
      * represent parenthesis characters.  
      */
+    @Test
     public void testEscapeRFC4515_1()
     {
         parser.parse( "(o=Parens R Us \\28for all your parenthetical needs\\29)" ); //$NON-NLS-1$
@@ -193,6 +209,7 @@ public class LdapFilterParserTest extends TestCase
      * a "*" in an assertion value, preventing it from being interpreted as
      * a substring indicator.
      */
+    @Test
     public void testEscapeRFC4515_2()
     {
         parser.parse( "(cn=*\\2A*)" ); //$NON-NLS-1$
@@ -208,6 +225,7 @@ public class LdapFilterParserTest extends TestCase
      * From RFC4515:
      * The third illustrates the escaping of the backslash character.
      */
+    @Test
     public void testEscapeRFC4515_3()
     {
         parser.parse( "(filename=C:\\5cMyFile)" ); //$NON-NLS-1$
@@ -225,6 +243,7 @@ public class LdapFilterParserTest extends TestCase
      * 00 00 00 04 (hex), illustrating the use of the escaping mechanism to
      * represent arbitrary data, including NUL characters.
      */
+    @Test
     public void testEscapeRFC4515_4()
     {
         parser.parse( "(bin=\\00\\00\\00\\04)" ); //$NON-NLS-1$
@@ -245,6 +264,7 @@ public class LdapFilterParserTest extends TestCase
      * SMALL LETTER C WITH CARON (U+010D), LATIN SMALL LETTER I (U+0069),
      * and LATIN SMALL LETTER C WITH ACUTE (U+0107).
      */
+    @Test
     public void testEscapeRFC4515_5()
     {
         parser.parse( "(sn=Lu\\c4\\8di\\c4\\87)" ); //$NON-NLS-1$
@@ -261,6 +281,7 @@ public class LdapFilterParserTest extends TestCase
      * The sixth and final example demonstrates assertion of a BER-encoded
      * value.
      */
+    @Test
     public void testEscapeRFC4515_6()
     {
         parser.parse( "(1.3.6.1.4.1.1466.0=\\04\\02\\48\\69)" ); //$NON-NLS-1$
@@ -276,6 +297,7 @@ public class LdapFilterParserTest extends TestCase
      * From RFC4515:
      * The first example shows use of the matching rule "caseExactMatch."
      */
+    @Test
     public void testExtensibleFilterRFC4515_1()
     {
         parser.parse( "(cn:caseExactMatch:=Fred Flintstone)" ); //$NON-NLS-1$
@@ -292,6 +314,7 @@ public class LdapFilterParserTest extends TestCase
      * The second example demonstrates use of a MatchingRuleAssertion form
      * without a matchingRule.
      */
+    @Test
     public void testExtensibleFilterRFC4515_2()
     {
         parser.parse( "(cn:=Betty Rubble)" ); //$NON-NLS-1$
@@ -311,6 +334,7 @@ public class LdapFilterParserTest extends TestCase
      * entry's distinguished name should be considered part of the entry
      * when evaluating the match (indicated by the use of ":dn").
      */
+    @Test
     public void testExtensibleFilterRFC4515_3()
     {
         parser.parse( "(sn:dn:2.4.6.8.10:=Barney Rubble)" ); //$NON-NLS-1$
@@ -328,6 +352,7 @@ public class LdapFilterParserTest extends TestCase
      * components should be considered part of the entry when doing the
      * match.
      */
+    @Test
     public void testExtensibleFilterRFC4515_4()
     {
         parser.parse( "(o:dn:=Ace Industry)" ); //$NON-NLS-1$
@@ -345,6 +370,7 @@ public class LdapFilterParserTest extends TestCase
      * supporting the matching rule given (since the &lt;attr> has been
      * omitted).
      */
+    @Test
     public void testExtensibleFilterRFC4515_5()
     {
         parser.parse( "(:1.2.3:=Wilma Flintstone)" ); //$NON-NLS-1$
@@ -363,6 +389,7 @@ public class LdapFilterParserTest extends TestCase
      * supporting the matching rule contained in the Dn should also be
      * considered.
      */
+    @Test
     public void testExtensibleFilterRFC4515_6()
     {
         parser.parse( "(:Dn:2.4.6.8.10:=Dino)" ); //$NON-NLS-1$
@@ -375,6 +402,7 @@ public class LdapFilterParserTest extends TestCase
     /**
      * Test for DIRSTUIO-210.
      */
+    @Test
     public void testDIRSTUDIO210()
     {
         parser.parse( "(objectClass>=z*) " ); //$NON-NLS-1$
@@ -387,6 +415,7 @@ public class LdapFilterParserTest extends TestCase
     /**
      * Test for DIRSTUIO-279.
      */
+    @Test
     public void testDIRSTUDIO279()
     {
         parser.parse( " (&\n    (objectClass=person)\n    (cn=a*)\n) " ); //$NON-NLS-1$

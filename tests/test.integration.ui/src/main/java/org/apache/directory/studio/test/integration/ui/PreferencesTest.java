@@ -21,44 +21,36 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
 import java.security.cert.X509Certificate;
+import java.util.Date;
 import java.util.List;
 
+import org.apache.directory.api.ldap.model.entry.DefaultEntry;
+import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.util.FileUtils;
-import org.apache.directory.server.annotations.CreateLdapServer;
-import org.apache.directory.server.annotations.CreateTransport;
-import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
-import org.apache.directory.server.core.security.CertificateUtil;
+import org.apache.directory.server.core.security.TlsKeyGenerator;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.PasswordsKeyStoreManager;
+import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
+import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
 import org.apache.directory.studio.test.integration.ui.bots.CertificateValidationPreferencePageBot;
 import org.apache.directory.studio.test.integration.ui.bots.CertificateViewerDialogBot;
-import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.KeepConnectionsPasswordsDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.PasswordsKeystorePreferencePageBot;
 import org.apache.directory.studio.test.integration.ui.bots.PreferencesBot;
 import org.apache.directory.studio.test.integration.ui.bots.SetupMasterPasswordDialogBot;
-import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
 import org.apache.directory.studio.test.integration.ui.bots.VerifyMasterPasswordDialogBot;
-import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
-import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.eclipse.core.runtime.Platform;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import sun.security.x509.X500Name;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
 
 
 /**
@@ -67,37 +59,12 @@ import sun.security.x509.X500Name;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-@RunWith(FrameworkRunnerWithScreenshotCaptureListener.class)
-@CreateLdapServer(transports =
-    { @CreateTransport(protocol = "LDAP") })
-public class PreferencesTest extends AbstractLdapTestUnit
+public class PreferencesTest extends AbstractTestBase
 {
-    private StudioBot studioBot;
-    private ConnectionsViewBot connectionsViewBot;
-
-
-    @Before
-    public void setUp() throws Exception
-    {
-        studioBot = new StudioBot();
-        studioBot.resetLdapPerspective();
-        connectionsViewBot = studioBot.getConnectionView();
-    }
-
-
-    @After
-    public void tearDown() throws Exception
-    {
-        connectionsViewBot.deleteTestConnections();
-        Assertions.genericTearDownAssertions();
-    }
-
 
     /**
      * Test for DIRSTUDIO-580
      * (Setting "Validate certificates for secure LDAP connections" is not saved).
-     *
-     * @throws Exception
      */
     @Test
     public void testCertificatValidationSettingsSaved() throws Exception
@@ -157,11 +124,15 @@ public class PreferencesTest extends AbstractLdapTestUnit
         preferencesBot.clickCancelButton();
 
         // add a certificate (not possible via native file dialog)
-        X500Name issuer = new X500Name( "apacheds", "directory", "apache", "US" );
-        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance( "EC" );
-        keyPairGenerator.initialize( 256 );
-        KeyPair keyPair = keyPairGenerator.generateKeyPair();
-        X509Certificate certificate = CertificateUtil.generateSelfSignedCertificate( issuer, keyPair, 365, "SHA256WithECDSA" );
+        Entry entry = new DefaultEntry();
+        String issuerDn = "cn=apacheds,ou=directory,o=apache,c=US";
+        Date startDate = new Date();
+        Date expiryDate = new Date( System.currentTimeMillis() + TlsKeyGenerator.YEAR_MILLIS );
+        String keyAlgo = "RSA";
+        int keySize = 1024;
+        CertificateValidationTest.addKeyPair( entry, issuerDn, issuerDn, startDate, expiryDate, keyAlgo, keySize,
+            null );
+        X509Certificate certificate = TlsKeyGenerator.getCertificate( entry );
         ConnectionCorePlugin.getDefault().getPermanentTrustStoreManager().addCertificate( certificate );
 
         // verify there is one certificate now
@@ -197,10 +168,11 @@ public class PreferencesTest extends AbstractLdapTestUnit
      * Test for DIRSTUDIO-1179
      * (java.io.IOException: Invalid secret key format after Java update).
      */
-    @Test
-    public void testConnectionPasswordsKeystore() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testConnectionPasswordsKeystore( TestLdapServer server ) throws Exception
     {
-        Connection connection = connectionsViewBot.createTestConnection( "BrowserTest", ldapServer.getPort() );
+        Connection connection = connectionsViewBot.createTestConnection( server );
         connectionsViewBot.closeSelectedConnections();
 
         // the global password keystore manager
@@ -251,7 +223,8 @@ public class PreferencesTest extends AbstractLdapTestUnit
         pageBot = preferencesBot.openPasswordsKeystorePage();
         assertTrue( pageBot.isPasswordsKeystoreEnabled() );
         KeepConnectionsPasswordsDialogBot keepConnectionsPasswordsDialogBot = pageBot.disablePasswordsKeystore();
-        VerifyMasterPasswordDialogBot verifyMasterPasswordDialog = keepConnectionsPasswordsDialogBot.clickYesButtonExpectingVerifyMasterPasswordDialog();
+        VerifyMasterPasswordDialogBot verifyMasterPasswordDialog = keepConnectionsPasswordsDialogBot
+            .clickYesButtonExpectingVerifyMasterPasswordDialog();
         verifyMasterPasswordDialog.enterMasterPassword( "secret12" );
         verifyMasterPasswordDialog.clickOkButton();
         assertFalse( pageBot.isPasswordsKeystoreEnabled() );

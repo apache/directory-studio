@@ -21,27 +21,19 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import static org.junit.Assert.fail;
-import static org.junit.Assert.assertTrue;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.MISC_DN;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import org.apache.directory.server.annotations.CreateLdapServer;
-import org.apache.directory.server.annotations.CreateTransport;
-import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
-import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
-import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
+import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
+import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
 import org.apache.directory.studio.test.integration.ui.bots.DeleteDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewEntryWizardBot;
-import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
-import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
-import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.eclipse.swt.graphics.DeviceData;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.IntResult;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.params.ParameterizedTest;
 
 
 /**
@@ -50,47 +42,21 @@ import org.junit.runner.RunWith;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-@RunWith(FrameworkRunnerWithScreenshotCaptureListener.class)
-@CreateLdapServer(transports =
-    { @CreateTransport(protocol = "LDAP") })
-public class SwtResourcesTest extends AbstractLdapTestUnit
+public class SwtResourcesTest extends AbstractTestBase
 {
-    private StudioBot studioBot;
-    private ConnectionsViewBot connectionsViewBot;
-    private BrowserViewBot browserViewBot;
-
-
-    @Before
-    public void setUp() throws Exception
-    {
-        studioBot = new StudioBot();
-        studioBot.resetLdapPerspective();
-        connectionsViewBot = studioBot.getConnectionView();
-        connectionsViewBot.createTestConnection( "SwtResourcesTest", ldapServer.getPort() );
-        browserViewBot = studioBot.getBrowserView();
-    }
-
-
-    @After
-    public void tearDown() throws Exception
-    {
-        connectionsViewBot.deleteTestConnections();
-        Assertions.genericTearDownAssertions();
-    }
-
 
     /**
      * Test for DIRSTUDIO-319.
      *
      * Creates multiple entries using the New Entry wizard. Checks that we don't
      * allocate too much SWT resources during the run.
-     *
-     * @throws Exception
-     *             the exception
      */
-    @Test
-    public void testSwtResourcesDelta() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testSwtResourcesDelta( TestLdapServer server ) throws Exception
     {
+        connectionsViewBot.createTestConnection( server );
+
         // run the new entry wizard once to ensure all SWT resources are created
         createAndDeleteEntry( "testSwtResourcesDelta" + 0 );
 
@@ -107,8 +73,9 @@ public class SwtResourcesTest extends AbstractLdapTestUnit
         int afterObjectCount = getSwtObjectCount();
 
         // we expect none or only very few additional SWT objects
-        assertTrue( "Too many SWT resources were allocated in testSwtResourcesDelta: before=" + beforeObjectCount
-            + ", after=" + afterObjectCount, afterObjectCount - beforeObjectCount < 5 );
+        assertTrue( afterObjectCount - beforeObjectCount < 5,
+            "Too many SWT resources were allocated in testSwtResourcesDelta: before=" + beforeObjectCount
+                + ", after=" + afterObjectCount );
     }
 
 
@@ -116,12 +83,14 @@ public class SwtResourcesTest extends AbstractLdapTestUnit
      * Ensure that we have not allocated too many SWT resources during the
      * complete test suite.
      */
-    @Test
-    public void testSwtResourcesCount() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testSwtResourcesCount( TestLdapServer server ) throws Exception
     {
+        connectionsViewBot.createTestConnection( server );
         int swtObjectCount = getSwtObjectCount();
-        System.out.println("### SWT resouces count: " + swtObjectCount);
-        assertTrue( "Too many SWT resources were allocated: " + swtObjectCount, swtObjectCount < 1500 );
+        System.out.println( "### SWT resouces count: " + swtObjectCount );
+        assertTrue( swtObjectCount < 1500, "Too many SWT resources were allocated: " + swtObjectCount );
     }
 
 
@@ -135,7 +104,8 @@ public class SwtResourcesTest extends AbstractLdapTestUnit
                 DeviceData info = bot.getDisplay().getDeviceData();
                 if ( !info.tracking )
                 {
-                    fail( "To run this test options 'org.eclipse.ui/debug' and 'org.eclipse.ui/trace/graphics' must be true." );
+                    fail(
+                        "To run this test options 'org.eclipse.ui/debug' and 'org.eclipse.ui/trace/graphics' must be true." );
                 }
                 return info.objects.length;
             }
@@ -145,8 +115,8 @@ public class SwtResourcesTest extends AbstractLdapTestUnit
 
     private void createAndDeleteEntry( final String name ) throws Exception
     {
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
-        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system" );
+        browserViewBot.selectEntry( path( MISC_DN ) );
+        browserViewBot.expandEntry( path( MISC_DN ) );
         NewEntryWizardBot wizardBot = browserViewBot.openNewEntryWizard();
 
         wizardBot.selectCreateEntryFromScratch();
@@ -161,8 +131,8 @@ public class SwtResourcesTest extends AbstractLdapTestUnit
 
         wizardBot.clickFinishButton();
 
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "o=" + name ) );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "o=" + name );
+        assertTrue( browserViewBot.existsEntry( path( MISC_DN, "o=" + name ) ) );
+        browserViewBot.selectEntry( path( MISC_DN, "o=" + name ) );
         DeleteDialogBot dialog = browserViewBot.openDeleteDialog();
         dialog.clickOkButton();
     }

@@ -17,13 +17,11 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.test.integration.ui.bots.utils;
+package org.apache.directory.studio.test.integration.ui.utils;
 
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-
-import org.junit.Test;
 
 
 public class Characters
@@ -60,7 +58,6 @@ public class Characters
     }
 
 
-    @Test
     public void print()
     {
         System.out.println( LATIN_A );

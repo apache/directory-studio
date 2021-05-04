@@ -21,10 +21,11 @@
 package org.apache.directory.studio.valueeditors.msad;
 
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.apache.directory.api.util.Strings;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 
 public class InPlaceMsAdObjectGuidValueEditorTest

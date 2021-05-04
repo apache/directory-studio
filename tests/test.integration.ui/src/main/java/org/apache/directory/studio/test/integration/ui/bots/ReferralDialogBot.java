@@ -21,7 +21,7 @@ package org.apache.directory.studio.test.integration.ui.bots;
 
 
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
-import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
+import org.apache.directory.studio.test.integration.ui.utils.JobWatcher;
 import org.eclipse.swtbot.swt.finder.utils.TableCollection;
 import org.eclipse.swtbot.swt.finder.utils.TableRow;
 

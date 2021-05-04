@@ -22,14 +22,14 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor;
 
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.DummyEntry;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Value;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 
 /**
@@ -45,7 +45,7 @@ public class EntryEditorWidgetSorterTest
     private Value empytValue2;
 
 
-    @Before
+    @BeforeEach
     public void setup()
     {
         sorter = new EntryEditorWidgetSorter( null );

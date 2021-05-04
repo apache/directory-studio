@@ -20,7 +20,7 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
-import org.apache.directory.studio.test.integration.ui.bots.utils.TreeBot;
+import org.apache.directory.studio.test.integration.ui.utils.TreeBot;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 

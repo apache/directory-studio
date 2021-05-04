@@ -25,7 +25,7 @@ import java.io.File;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
-import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
+import org.apache.directory.studio.test.integration.ui.utils.JobWatcher;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 

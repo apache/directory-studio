@@ -17,21 +17,40 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.test.integration.ui.bots.utils;
+
+package org.apache.directory.studio.test.integration.junit5;
 
 
-import org.apache.commons.lang3.SystemUtils;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+import org.junit.jupiter.params.provider.ArgumentsSource;
 
 
-public class StudioSystemUtils extends SystemUtils
+@Documented
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+@ArgumentsSource(LdapServersArgumentsProvider.class)
+public @interface LdapServersSource
 {
-    public static final boolean IS_OS_WINDOWS_SERVER = isOSNameMatch( SystemUtils.OS_NAME, "Windows Server");
+    Mode mode() default Mode.One;
 
-    static boolean isOSNameMatch(final String osName, final String osNamePrefix) {
-        if (osName == null) {
-            return false;
-        }
-        return osName.startsWith(osNamePrefix);
+
+    LdapServerType[] only() default
+        {};
+
+
+    LdapServerType[] except() default
+        {};
+
+
+    String reason() default "";
+
+    enum Mode
+    {
+        One, All;
     }
-
 }

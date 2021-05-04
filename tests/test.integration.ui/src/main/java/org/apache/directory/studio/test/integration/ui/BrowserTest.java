@@ -21,11 +21,26 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import static org.apache.directory.studio.test.integration.ui.Constants.LOCALHOST;
-import static org.apache.directory.studio.test.integration.ui.Constants.LOCALHOST_ADDRESS;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.ALIAS_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.CONTEXT_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.DN_WITH_ESCAPED_CHARACTERS_BACKSLASH_PREFIXED;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.DN_WITH_ESCAPED_CHARACTERS_HEX_PAIR_ESCAPED;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.DN_WITH_IP_HOST_NUMBER;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.DN_WITH_LEADING_SHARP_BACKSLASH_PREFIXED;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.DN_WITH_LEADING_SHARP_HEX_PAIR_ESCAPED;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.DN_WITH_TRAILING_EQUALS_CHARACTER;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.DN_WITH_TRAILING_EQUALS_CHARACTER_HEX_PAIR_ESCAPED;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.MISC_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.MULTI_VALUED_RDN_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.REFERRAL_TO_USERS_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.USER1_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.USER2_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.USER3_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.USERS_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.dn;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -34,10 +49,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.directory.api.ldap.model.entry.DefaultEntry;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.name.Dn;
-import org.apache.directory.server.annotations.CreateLdapServer;
-import org.apache.directory.server.annotations.CreateTransport;
-import org.apache.directory.server.core.annotations.ApplyLdifFiles;
-import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
@@ -49,27 +60,21 @@ import org.apache.directory.studio.ldapbrowser.core.model.impl.Bookmark;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIConstants;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
 import org.apache.directory.studio.ldapbrowser.ui.editors.entry.EntryEditor;
-import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
-import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
+import org.apache.directory.studio.test.integration.junit5.LdapServerType;
+import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
+import org.apache.directory.studio.test.integration.junit5.LdapServersSource.Mode;
+import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
 import org.apache.directory.studio.test.integration.ui.bots.DeleteDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.EntryEditorBot;
-import org.apache.directory.studio.test.integration.ui.bots.ModificationLogsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ReferralDialogBot;
-import org.apache.directory.studio.test.integration.ui.bots.SearchLogsViewBot;
-import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
-import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
-import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
-import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
+import org.apache.directory.studio.test.integration.ui.utils.JobWatcher;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IPropertyListener;
 import org.eclipse.ui.PlatformUI;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.params.ParameterizedTest;
 
 
 /**
@@ -78,70 +83,37 @@ import org.junit.runner.RunWith;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-@RunWith(FrameworkRunnerWithScreenshotCaptureListener.class)
-@CreateLdapServer(transports =
-    { @CreateTransport(protocol = "LDAP") })
-@ApplyLdifFiles(clazz = BrowserTest.class, value = "org/apache/directory/studio/test/integration/ui/BrowserTest.ldif")
-public class BrowserTest extends AbstractLdapTestUnit
+public class BrowserTest extends AbstractTestBase
 {
-    private StudioBot studioBot;
-    private ConnectionsViewBot connectionsViewBot;
-    private BrowserViewBot browserViewBot;
-    private SearchLogsViewBot searchLogsViewBot;
-    private ModificationLogsViewBot modificationLogsViewBot;
-
-    private Connection connection;
-
-
-    @Before
-    public void setUp() throws Exception
-    {
-        studioBot = new StudioBot();
-        studioBot.resetLdapPerspective();
-        connectionsViewBot = studioBot.getConnectionView();
-        connection = connectionsViewBot.createTestConnection( "BrowserTest", ldapServer.getPort() );
-        browserViewBot = studioBot.getBrowserView();
-        searchLogsViewBot = studioBot.getSearchLogsViewBot();
-        modificationLogsViewBot = studioBot.getModificationLogsViewBot();
-    }
-
-
-    @After
-    public void tearDown() throws Exception
-    {
-        connectionsViewBot.deleteTestConnections();
-        Assertions.genericTearDownAssertions();
-    }
-
 
     /**
      * Test for DIRSTUDIO-463.
      *
      * When expanding an entry in the browser only one search request
      * should be send to the server
-     *
-     * @throws Exception
      */
-    @Test
-    public void testOnlyOneSearchRequestWhenExpandingEntry() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testOnlyOneSearchRequestWhenExpandingEntry( TestLdapServer server ) throws Exception
     {
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
+        connectionsViewBot.createTestConnection( server );
+        browserViewBot.selectEntry( path( CONTEXT_DN ) );
 
         // get number of search requests before expanding the entry
         String text = searchLogsViewBot.getSearchLogsText();
         int countMatchesBefore = StringUtils.countMatches( text, "#!SEARCH REQUEST" );
 
         // expand
-        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system" );
-        browserViewBot.waitForEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        browserViewBot.expandEntry( path( CONTEXT_DN ) );
+        browserViewBot.waitForEntry( path( USERS_DN ) );
 
         // get number of search requests after expanding the entry
         text = searchLogsViewBot.getSearchLogsText();
         int countMatchesAfter = StringUtils.countMatches( text, "#!SEARCH REQUEST" );
 
-        assertEquals( "Expected exactly 1 search request", 1, countMatchesAfter - countMatchesBefore );
+        assertEquals( 1, countMatchesAfter - countMatchesBefore, "Expected exactly 1 search request" );
 
-        assertEquals( "No modification expected", "", modificationLogsViewBot.getModificationLogsText() );
+        assertEquals( "", modificationLogsViewBot.getModificationLogsText(), "No modification expected" );
     }
 
 
@@ -149,14 +121,14 @@ public class BrowserTest extends AbstractLdapTestUnit
      * Test for DIRSTUDIO-512.
      *
      * Verify minimum UI updates when deleting multiple entries.
-     *
-     * @throws Exception
      */
-    @Test
-    public void testDeleteDontUpdateUI() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testDeleteDoesNotUpdateUI( TestLdapServer server ) throws Exception
     {
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
-        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        connectionsViewBot.createTestConnection( server );
+        browserViewBot.selectEntry( path( USERS_DN ) );
+        browserViewBot.expandEntry( path( USERS_DN ) );
 
         long fireCount0 = EventRegistry.getFireCount();
 
@@ -171,16 +143,16 @@ public class BrowserTest extends AbstractLdapTestUnit
                 "uid=user.6",
                 "uid=user.7",
                 "uid=user.8" };
-        browserViewBot.selectChildrenOfEntry( children, "DIT", "Root DSE", "ou=system", "ou=users" );
+        browserViewBot.selectChildrenOfEntry( children, path( USERS_DN ) );
         DeleteDialogBot deleteDialog = browserViewBot.openDeleteDialog();
         deleteDialog.clickOkButton();
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        browserViewBot.selectEntry( path( USERS_DN ) );
 
         long fireCount1 = EventRegistry.getFireCount();
 
         // verify that only two events were fired during deletion
         long fireCount = fireCount1 - fireCount0;
-        assertEquals( "Only 2 event firings expected when deleting multiple entries.", 2, fireCount );
+        assertEquals( 2, fireCount, "Only 2 event firings expected when deleting multiple entries." );
     }
 
 
@@ -189,30 +161,30 @@ public class BrowserTest extends AbstractLdapTestUnit
      *
      * When opening a bookmark the entry editor should be opened and the
      * bookmark entry's attributes should be displayed.
-     *
-     * @throws Exception
      */
-    @Test
-    public void testBookmark() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testBookmark( TestLdapServer server ) throws Exception
     {
         // create a bookmark
+        Connection connection = connectionsViewBot.createTestConnection( server );
         IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
             .getBrowserConnection( connection );
         browserConnection.getBookmarkManager().addBookmark(
-            new Bookmark( browserConnection, new Dn( "uid=user.1,ou=users,ou=system" ), "Existing Bookmark" ) );
+            new Bookmark( browserConnection, USER1_DN, "Existing Bookmark" ) );
 
         // select the bookmark
         browserViewBot.selectEntry( "Bookmarks", "Existing Bookmark" );
 
         // check that entry editor was opened and attributes are visible
-        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "uid=user.1,ou=users,ou=system" );
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( USER1_DN.getName() );
         String dn = entryEditorBot.getDnText();
-        assertEquals( "DN: uid=user.1,ou=users,ou=system", dn );
+        assertEquals( "DN: " + USER1_DN.getName(), dn );
         List<String> attributeValues = entryEditorBot.getAttributeValues();
         assertEquals( 23, attributeValues.size() );
         assertTrue( attributeValues.contains( "uid: user.1" ) );
 
-        assertEquals( "No modification expected", "", modificationLogsViewBot.getModificationLogsText() );
+        assertEquals( "", modificationLogsViewBot.getModificationLogsText(), "No modification expected" );
     }
 
 
@@ -220,49 +192,54 @@ public class BrowserTest extends AbstractLdapTestUnit
      * Test for DIRSTUDIO-481.
      *
      * Check proper operation of refresh action.
-     *
-     * @throws Exception
      */
-    @Test
-    public void testRefreshParent() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testRefreshParent( TestLdapServer server ) throws Exception
     {
         // check the entry doesn't exist yet
-        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
-        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
+        connectionsViewBot.createTestConnection( server );
+        browserViewBot.expandEntry( path( MISC_DN ) );
+        Dn refreshDn = dn( "cn=refresh", MISC_DN );
+        assertFalse( browserViewBot.existsEntry( path( refreshDn ) ) );
 
         // add the entry directly in the server
-        Entry entry = new DefaultEntry( service.getSchemaManager() );
-        entry.setDn( new Dn( "cn=refresh,ou=users,ou=system" ) );
-        entry.add( "objectClass", "top", "person" );
-        entry.add( "cn", "refresh" );
-        entry.add( "sn", "refresh" );
-        ldapServer.getDirectoryService().getAdminSession().add( entry );
+        server.withAdminConnection( conn -> {
+            Entry entry = new DefaultEntry( conn.getSchemaManager() );
+            entry.setDn( refreshDn );
+            entry.add( "objectClass", "top", "person" );
+            entry.add( "cn", "refresh" );
+            entry.add( "sn", "refresh" );
+            conn.add( entry );
+        } );
 
         // check the entry still isn't visible in the tree
-        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
+        assertFalse( browserViewBot.existsEntry( path( refreshDn ) ) );
 
         // refresh parent
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        browserViewBot.selectEntry( path( MISC_DN ) );
         browserViewBot.refresh();
 
         // check the entry exists now
-        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" );
+        browserViewBot.expandEntry( path( MISC_DN ) );
+        assertTrue( browserViewBot.existsEntry( path( refreshDn ) ) );
+        browserViewBot.selectEntry( path( refreshDn ) );
 
         // delete the entry directly in the server
-        ldapServer.getDirectoryService().getAdminSession().delete( new Dn( "cn=refresh,ou=users,ou=system" ) );
+        server.withAdminConnection( conn -> {
+            conn.delete( refreshDn );
+        } );
 
-        // check the entry still is now visible in the tree
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
+        // check the entry still is visible in the tree
+        assertTrue( browserViewBot.existsEntry( path( refreshDn ) ) );
 
         // refresh parent
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        browserViewBot.selectEntry( path( MISC_DN ) );
         browserViewBot.refresh();
 
         // check the entry doesn't exist now
-        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
-        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
+        browserViewBot.expandEntry( path( MISC_DN ) );
+        assertFalse( browserViewBot.existsEntry( path( refreshDn ) ) );
     }
 
 
@@ -273,46 +250,53 @@ public class BrowserTest extends AbstractLdapTestUnit
      *
      * @throws Exception
      */
-    @Test
-    public void testRefreshContextEntry() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testRefreshContextEntry( TestLdapServer server ) throws Exception
     {
         // check the entry doesn't exist yet
-        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
-        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
+        connectionsViewBot.createTestConnection( server );
+        browserViewBot.expandEntry( path( MISC_DN ) );
+        Dn refreshDn = dn( "cn=refresh", MISC_DN );
+        assertFalse( browserViewBot.existsEntry( path( refreshDn ) ) );
 
         // add the entry directly in the server
-        Entry entry = new DefaultEntry( service.getSchemaManager() );
-        entry.setDn( new Dn( "cn=refresh,ou=users,ou=system" ) );
-        entry.add( "objectClass", "top", "person" );
-        entry.add( "cn", "refresh" );
-        entry.add( "sn", "refresh" );
-        ldapServer.getDirectoryService().getAdminSession().add( entry );
+        server.withAdminConnection( conn -> {
+            Entry entry = new DefaultEntry( conn.getSchemaManager() );
+            entry.setDn( refreshDn );
+            entry.add( "objectClass", "top", "person" );
+            entry.add( "cn", "refresh" );
+            entry.add( "sn", "refresh" );
+            conn.add( entry );
+        } );
 
         // check the entry still isn't visible in the tree
-        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
+        assertFalse( browserViewBot.existsEntry( path( refreshDn ) ) );
 
         // refresh context entry
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
+        browserViewBot.selectEntry( path( CONTEXT_DN ) );
         browserViewBot.refresh();
 
         // check the entry exists now
-        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" );
+        browserViewBot.expandEntry( path( MISC_DN ) );
+        assertTrue( browserViewBot.existsEntry( path( refreshDn ) ) );
+        browserViewBot.selectEntry( path( refreshDn ) );
 
         // delete the entry directly in the server
-        ldapServer.getDirectoryService().getAdminSession().delete( new Dn( "cn=refresh,ou=users,ou=system" ) );
+        server.withAdminConnection( connection -> {
+            connection.delete( refreshDn );
+        } );
 
-        // check the entry still is now visible in the tree
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
+        // check the entry still is visible in the tree
+        assertTrue( browserViewBot.existsEntry( path( refreshDn ) ) );
 
         // refresh context entry
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system" );
+        browserViewBot.selectEntry( path( CONTEXT_DN ) );
         browserViewBot.refresh();
 
         // check the entry doesn't exist now
-        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
-        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
+        browserViewBot.expandEntry( path( MISC_DN ) );
+        assertFalse( browserViewBot.existsEntry( path( refreshDn ) ) );
     }
 
 
@@ -320,49 +304,54 @@ public class BrowserTest extends AbstractLdapTestUnit
      * Test for DIRSTUDIO-481.
      *
      * Check proper operation of refresh action.
-     *
-     * @throws Exception
      */
-    @Test
-    public void testRefreshRootDSE() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testRefreshRootDSE( TestLdapServer server ) throws Exception
     {
         // check the entry doesn't exist yet
-        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
-        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
+        connectionsViewBot.createTestConnection( server );
+        browserViewBot.expandEntry( path( MISC_DN ) );
+        Dn refreshDn = dn( "cn=refresh", MISC_DN );
+        assertFalse( browserViewBot.existsEntry( path( refreshDn ) ) );
 
         // add the entry directly in the server
-        Entry entry = new DefaultEntry( service.getSchemaManager() );
-        entry.setDn( new Dn( "cn=refresh,ou=users,ou=system" ) );
-        entry.add( "objectClass", "top", "person" );
-        entry.add( "cn", "refresh" );
-        entry.add( "sn", "refresh" );
-        ldapServer.getDirectoryService().getAdminSession().add( entry );
+        server.withAdminConnection( connection -> {
+            Entry entry = new DefaultEntry( connection.getSchemaManager() );
+            entry.setDn( refreshDn );
+            entry.add( "objectClass", "top", "person" );
+            entry.add( "cn", "refresh" );
+            entry.add( "sn", "refresh" );
+            connection.add( entry );
+        } );
 
         // check the entry still isn't visible in the tree
-        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
+        assertFalse( browserViewBot.existsEntry( path( refreshDn ) ) );
 
         // refresh Root DSE
-        browserViewBot.selectEntry( "DIT", "Root DSE" );
+        browserViewBot.selectEntry( ROOT_DSE_PATH );
         browserViewBot.refresh();
 
         // check the entry exists now
-        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" );
+        browserViewBot.expandEntry( path( MISC_DN ) );
+        assertTrue( browserViewBot.existsEntry( path( refreshDn ) ) );
+        browserViewBot.selectEntry( path( refreshDn ) );
 
         // delete the entry directly in the server
-        ldapServer.getDirectoryService().getAdminSession().delete( new Dn( "cn=refresh,ou=users,ou=system" ) );
+        server.withAdminConnection( connection -> {
+            connection.delete( refreshDn );
+        } );
 
         // check the entry still is now visible in the tree
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
+        assertTrue( browserViewBot.existsEntry( path( refreshDn ) ) );
 
         // refresh Root DSE
-        browserViewBot.selectEntry( "DIT", "Root DSE" );
+        browserViewBot.selectEntry( ROOT_DSE_PATH );
         browserViewBot.refresh();
 
         // check the entry doesn't exist now
-        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
-        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=refresh" ) );
+        browserViewBot.expandEntry( path( MISC_DN ) );
+        assertFalse( browserViewBot.existsEntry( path( refreshDn ) ) );
     }
 
 
@@ -370,116 +359,162 @@ public class BrowserTest extends AbstractLdapTestUnit
      * Test for DIRSTUDIO-481.
      *
      * Check proper operation of refresh action.
-     *
-     * @throws Exception
      */
-    @Test
-    public void testRefreshSearchContinuation() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testRefreshSearchContinuation( TestLdapServer server ) throws Exception
     {
-        // preparation: add referral entry and set referral handling
-        String url = "ldap://" + LOCALHOST + ":" + ldapServer.getPort() + "/ou=users,ou=system";
-        Entry refEntry = new DefaultEntry( service.getSchemaManager() );
-        refEntry.setDn( new Dn( "cn=referral,ou=system" ) );
-        refEntry.add( "objectClass", "top", "referral", "extensibleObject" );
-        refEntry.add( "cn", "referral" );
-        refEntry.add( "ref", url );
-        ldapServer.getDirectoryService().getAdminSession().add( refEntry );
+        Connection connection = connectionsViewBot.createTestConnection( server );
+        Dn refreshDn = dn( "cn=refresh", MISC_DN );
+        String[] pathToReferral = pathWithRefLdapUrl( server, MISC_DN );
+        String[] pathToRefreshViaReferral = path( pathToReferral, "cn=refresh" );
         connection.getConnectionParameter().setExtendedIntProperty(
             IBrowserConnection.CONNECTION_PARAMETER_REFERRALS_HANDLING_METHOD,
             ReferralHandlingMethod.FOLLOW_MANUALLY.ordinal() );
-        browserViewBot.selectEntry( "DIT", "Root DSE" );
+        browserViewBot.selectEntry( ROOT_DSE_PATH );
         browserViewBot.refresh();
 
         // check the entry doesn't exist yet
-        ReferralDialogBot refDialog = browserViewBot.expandEntryExpectingReferralDialog( "DIT", "Root DSE",
-            "ou=system", url );
+        ReferralDialogBot refDialog = browserViewBot.expandEntryExpectingReferralDialog( pathToReferral );
         refDialog.clickOkButton();
-        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", url, "cn=refresh" ) );
+        assertFalse( browserViewBot.existsEntry( pathToRefreshViaReferral ) );
 
         // add the entry directly in the server
-        Entry entry = new DefaultEntry( service.getSchemaManager() );
-        entry.setDn( new Dn( "cn=refresh,ou=users,ou=system" ) );
-        entry.add( "objectClass", "top", "person" );
-        entry.add( "cn", "refresh" );
-        entry.add( "sn", "refresh" );
-        ldapServer.getDirectoryService().getAdminSession().add( entry );
+        server.withAdminConnection( conn -> {
+            Entry entry = new DefaultEntry( conn.getSchemaManager() );
+            entry.setDn( refreshDn );
+            entry.add( "objectClass", "top", "person" );
+            entry.add( "cn", "refresh" );
+            entry.add( "sn", "refresh" );
+            conn.add( entry );
+        } );
 
         // check the entry still isn't visible in the tree
-        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", url, "cn=refresh" ) );
+        assertFalse( browserViewBot.existsEntry( pathToRefreshViaReferral ) );
 
         // refresh search continuation
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", url );
+        browserViewBot.selectEntry( pathToReferral );
         browserViewBot.refresh();
 
         // check the entry exists now
-        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", url );
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", url, "cn=refresh" ) );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", url, "cn=refresh" );
+        browserViewBot.expandEntry( pathToReferral );
+        assertTrue( browserViewBot.existsEntry( pathToRefreshViaReferral ) );
+        browserViewBot.selectEntry( pathToRefreshViaReferral );
 
         // delete the entry directly in the server
-        ldapServer.getDirectoryService().getAdminSession().delete( new Dn( "cn=refresh,ou=users,ou=system" ) );
+        server.withAdminConnection( conn -> {
+            conn.delete( refreshDn );
+        } );
 
-        // check the entry still is now visible in the tree
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", url, "cn=refresh" ) );
+        // check the entry still is visible in the tree
+        assertTrue( browserViewBot.existsEntry( pathToRefreshViaReferral ) );
 
         // refresh search continuation
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", url );
+        browserViewBot.selectEntry( pathToReferral );
         browserViewBot.refresh();
 
         // check the entry doesn't exist now
-        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", url );
-        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", url, "cn=refresh" ) );
+        browserViewBot.expandEntry( pathToReferral );
+        assertFalse( browserViewBot.existsEntry( pathToRefreshViaReferral ) );
     }
 
 
     /**
      * Test for DIRSTUDIO-591.
      * (Error reading objects with # in DN)
-     *
-     * @throws Exception
      */
-    @Test
-    public void testBrowseDnWithSharpAndHexSequence() throws Exception
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All)
+    public void testBrowseDnWithSharpAndHexSequence( TestLdapServer server ) throws Exception
     {
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users",
-            "cn=\\#ACL_AD-Projects_Author" ) );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=\\#ACL_AD-Projects_Author" );
+        Dn dn = DN_WITH_LEADING_SHARP_BACKSLASH_PREFIXED;
+        if ( server.getType() == LdapServerType.OpenLdap || server.getType() == LdapServerType.Fedora389ds )
+        {
+            dn = DN_WITH_LEADING_SHARP_HEX_PAIR_ESCAPED;
+        }
 
-        assertEquals( "No modification expected", "", modificationLogsViewBot.getModificationLogsText() );
+        connectionsViewBot.createTestConnection( server );
+        assertTrue( browserViewBot.existsEntry( path( dn ) ) );
+        browserViewBot.selectEntry( path( dn ) );
+
+        assertEquals( "", modificationLogsViewBot.getModificationLogsText(), "No modification expected" );
     }
 
 
     /**
      * Test for DIRSTUDIO-1172: Studio doesn't display entries with trailing =.
      */
-    @Test
-    public void testBrowseDnWithTrailingEqualsCharacter() throws Exception
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All)
+    public void testBrowseDnWithTrailingEqualsCharacter( TestLdapServer server ) throws Exception
     {
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users",
-            "cn=nghZwwtHgxgyvVbTQCYyeY\\+O4cc=" ) );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=nghZwwtHgxgyvVbTQCYyeY\\+O4cc=" );
+        Dn dn = DN_WITH_TRAILING_EQUALS_CHARACTER;
+        if ( server.getType() == LdapServerType.OpenLdap )
+        {
+            dn = DN_WITH_TRAILING_EQUALS_CHARACTER_HEX_PAIR_ESCAPED;
+        }
 
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users",
-            "cn=nghZwwtHgxgyvVbTQCYyeY+email=" ) );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=nghZwwtHgxgyvVbTQCYyeY+email=" );
+        connectionsViewBot.createTestConnection( server );
+
+        assertTrue( browserViewBot.existsEntry( path( dn ) ) );
+        browserViewBot.selectEntry( path( dn ) );
+    }
+
+
+    /**
+     * Test for DIRSTUDIO-1172: Studio doesn't display entries with trailing =.
+     */
+    @ParameterizedTest
+    @LdapServersSource(except =
+        {
+            LdapServerType.OpenLdap,
+            LdapServerType.Fedora389ds }, reason = "Empty RDN value is not supported by OpenLDAP and 389ds")
+    public void testBrowseDnWithEmptyRdnValue( TestLdapServer server ) throws Exception
+    {
+
+        Dn dn = dn( "cn=nghZwwtHgxgyvVbTQCYyeY+email=", MISC_DN );
+
+        server.withAdminConnection( connection -> {
+            Entry entry = new DefaultEntry( connection.getSchemaManager() );
+            entry.setDn( dn );
+            entry.add( "objectClass", "top", "person", "extensibleObject" );
+            entry.add( "cn", "nghZwwtHgxgyvVbTQCYyeY" );
+            entry.add( "sn", "nghZwwtHgxgyvVbTQCYyeY" );
+            entry.add( "email", "" );
+            connection.add( entry );
+        } );
+
+        connectionsViewBot.createTestConnection( server );
+
+        assertTrue( browserViewBot.existsEntry( path( dn ) ) );
+        browserViewBot.selectEntry( path( dn ) );
     }
 
 
     /**
      * Test for DIRSTUDIO-1151: DN with backslash not displayed
      */
-    @Test
-    public void testBrowseDnWithBackslash() throws Exception
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All)
+    public void testBrowseDnWithBackslash( TestLdapServer server ) throws Exception
     {
+        Dn dn = DN_WITH_ESCAPED_CHARACTERS_BACKSLASH_PREFIXED;
+        if ( server.getType() == LdapServerType.OpenLdap || server.getType() == LdapServerType.Fedora389ds )
+        {
+            dn = DN_WITH_ESCAPED_CHARACTERS_HEX_PAIR_ESCAPED;
+        }
+
+        connectionsViewBot.createTestConnection( server );
+
         // expand parent and verify entry is visible
-        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.0\\,foo" ) );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.0\\,foo" );
+        browserViewBot.expandEntry( path( dn.getParent() ) );
+        assertTrue( browserViewBot.existsEntry( path( dn ) ) );
+        browserViewBot.selectEntry( path( dn ) );
 
         // refresh entry and verify child is still visible
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        browserViewBot.selectEntry( path( dn.getParent() ) );
         browserViewBot.refresh();
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.0\\,foo" ) );
+        assertTrue( browserViewBot.existsEntry( path( dn ) ) );
     }
 
 
@@ -489,9 +524,12 @@ public class BrowserTest extends AbstractLdapTestUnit
      *
      * @throws Exception
      */
-    @Test
-    public void testNoModificationWhileBrowsingAndRefreshing() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testNoModificationWhileBrowsingAndRefreshing( TestLdapServer server ) throws Exception
     {
+        connectionsViewBot.createTestConnection( server );
+
         boolean errorDialogAutomatedMode = ErrorDialog.AUTOMATED_MODE;
         ErrorDialog.AUTOMATED_MODE = false;
 
@@ -500,18 +538,16 @@ public class BrowserTest extends AbstractLdapTestUnit
 
         try
         {
-            assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users",
-                "cn=\\#ACL_AD-Projects_Author" ) );
+            assertTrue( browserViewBot.existsEntry( path( MULTI_VALUED_RDN_DN ) ) );
 
             for ( int i = 0; i < 5; i++ )
             {
                 // select entry and refresh
-                browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users",
-                    "cn=\\#ACL_AD-Projects_Author" );
+                browserViewBot.selectEntry( path( MULTI_VALUED_RDN_DN ) );
                 browserViewBot.refresh();
 
                 // select parent and refresh
-                browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+                browserViewBot.selectEntry( path( MULTI_VALUED_RDN_DN.getParent() ) );
                 browserViewBot.refresh();
             }
         }
@@ -523,7 +559,7 @@ public class BrowserTest extends AbstractLdapTestUnit
 
         // check that modification logs is still empty
         // to ensure that no modification was sent to the server
-        assertEquals( "No modification expected", "", modificationLogsViewBot.getModificationLogsText() );
+        assertEquals( "", modificationLogsViewBot.getModificationLogsText(), "No modification expected" );
     }
 
 
@@ -531,53 +567,43 @@ public class BrowserTest extends AbstractLdapTestUnit
      * Test for DIRSTUDIO-603, DIRSHARED-41.
      * (Error browsing/entering rfc2307 compliant host entry.)
      */
-    @Test
-    public void testBrowseDnWithIpHostNumber() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testBrowseDnWithIpHostNumber( TestLdapServer server ) throws Exception
     {
-        ApacheDsUtils.enableSchema( ldapServer, "nis" );
+        connectionsViewBot.createTestConnection( server );
 
-        // create entry with multi-valued RDN containing an IP address value
-        Entry entry = new DefaultEntry( service.getSchemaManager() );
-        entry.setDn( new Dn( "cn=loopback+ipHostNumber=" + LOCALHOST_ADDRESS + ",ou=users,ou=system" ) );
-        entry.add( "objectClass", "top", "device", "ipHost" );
-        entry.add( "cn", "loopback" );
-        entry.add( "ipHostNumber", LOCALHOST_ADDRESS );
-        ldapServer.getDirectoryService().getAdminSession().add( entry );
-
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users",
-            "cn=loopback+ipHostNumber=" + LOCALHOST_ADDRESS ) );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users",
-            "cn=loopback+ipHostNumber=" + LOCALHOST_ADDRESS );
+        assertTrue( browserViewBot.existsEntry( path( DN_WITH_IP_HOST_NUMBER ) ) );
+        browserViewBot.selectEntry( path( DN_WITH_IP_HOST_NUMBER ) );
     }
 
 
     /**
      * DIRSTUDIO-637: copy/paste of attributes no longer works.
      * Test copy/paste of a value to a bookmark.
-     *
-     * @throws Exception
-     *             the exception
      */
-    @Test
-    public void testCopyPasteValueToBookmark() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testCopyPasteValueToBookmark( TestLdapServer server ) throws Exception
     {
         // create a bookmark
+        Connection connection = connectionsViewBot.createTestConnection( server );
         IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
             .getBrowserConnection( connection );
         browserConnection.getBookmarkManager().addBookmark(
-            new Bookmark( browserConnection, new Dn( "uid=user.2,ou=users,ou=system" ), "My Bookmark" ) );
+            new Bookmark( browserConnection, MULTI_VALUED_RDN_DN, "My Bookmark" ) );
 
         // copy a value
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" );
-        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "uid=user.1,ou=users,ou=system" );
+        browserViewBot.selectEntry( path( USER1_DN ) );
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( USER1_DN.getName() );
         entryEditorBot.activate();
         entryEditorBot.copyValue( "uid", "user.1" );
 
         // select the bookmark
         browserViewBot.selectEntry( "Bookmarks", "My Bookmark" );
-        entryEditorBot = studioBot.getEntryEditorBot( "uid=user.2,ou=users,ou=system" );
+        entryEditorBot = studioBot.getEntryEditorBot( MULTI_VALUED_RDN_DN.getName() );
         entryEditorBot.activate();
-        assertEquals( 23, entryEditorBot.getAttributeValues().size() );
+        assertEquals( 8, entryEditorBot.getAttributeValues().size() );
 
         // paste the value
         JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__execute_ldif_name );
@@ -585,13 +611,14 @@ public class BrowserTest extends AbstractLdapTestUnit
         watcher.waitUntilDone();
 
         // assert pasted value visible in editor
-        assertEquals( 24, entryEditorBot.getAttributeValues().size() );
+        assertEquals( 9, entryEditorBot.getAttributeValues().size() );
         entryEditorBot.getAttributeValues().contains( "uid: user.1" );
 
         // assert pasted value was written to directory
-        Entry entry = ldapServer.getDirectoryService().getAdminSession().lookup(
-            new Dn( "uid=user.2,ou=users,ou=system" ) );
-        assertTrue( entry.contains( "uid", "user.1" ) );
+        server.withAdminConnection( conn -> {
+            Entry entry = conn.lookup( MULTI_VALUED_RDN_DN );
+            assertTrue( entry.contains( "uid", "user.1" ) );
+        } );
     }
 
 
@@ -600,16 +627,18 @@ public class BrowserTest extends AbstractLdapTestUnit
      *
      * Verify input is set only once when entry is selected.
      */
-    @Test
-    public void testSetInputOnlyOnce() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testSetInputOnlyOnce( TestLdapServer server ) throws Exception
     {
         /*
          * This test fails on Jenkins Windows Server, to be investigated...
          */
         // Assume.assumeFalse( StudioSystemUtils.IS_OS_WINDOWS_SERVER );
+        connectionsViewBot.createTestConnection( server );
 
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
-        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        browserViewBot.selectEntry( path( USERS_DN ) );
+        browserViewBot.expandEntry( path( USERS_DN ) );
 
         // verify link-with-editor is enabled
         assertTrue( BrowserUIPlugin.getDefault().getPreferenceStore()
@@ -645,31 +674,31 @@ public class BrowserTest extends AbstractLdapTestUnit
         } );
 
         // select 3 different entries, select one twice should not set the input again
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.2" );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.2" );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.3" );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.3" );
+        browserViewBot.selectEntry( path( USER1_DN ) );
+        browserViewBot.selectEntry( path( USER1_DN ) );
+        browserViewBot.selectEntry( path( USER2_DN ) );
+        browserViewBot.selectEntry( path( USER2_DN ) );
+        browserViewBot.selectEntry( path( USER3_DN ) );
+        browserViewBot.selectEntry( path( USER3_DN ) );
 
         // verify that input was only set 3 times.
-        assertEquals( "Only 3 input changes expected.", 3, counter.get() );
+        assertEquals( 3, counter.get(), "Only 3 input changes expected." );
 
         // reset counter
         counter.set( 0 );
 
         // use navigation history to go back and forth, each step should set input only once
         studioBot.navigationHistoryBack();
-        browserViewBot.waitUntilEntryIsSelected( "uid=user.2" );
+        browserViewBot.waitUntilEntryIsSelected( USER2_DN.getRdn().getName() );
         studioBot.navigationHistoryBack();
-        browserViewBot.waitUntilEntryIsSelected( "uid=user.1" );
+        browserViewBot.waitUntilEntryIsSelected( USER1_DN.getRdn().getName() );
         studioBot.navigationHistoryForward();
-        browserViewBot.waitUntilEntryIsSelected( "uid=user.2" );
+        browserViewBot.waitUntilEntryIsSelected( USER2_DN.getRdn().getName() );
         studioBot.navigationHistoryForward();
-        browserViewBot.waitUntilEntryIsSelected( "uid=user.3" );
+        browserViewBot.waitUntilEntryIsSelected( USER3_DN.getRdn().getName() );
 
         // verify that input was only set 4 times.
-        assertEquals( "Only 4 input changes expected.", 4, counter.get() );
+        assertEquals( 4, counter.get(), "Only 4 input changes expected." );
     }
 
 
@@ -677,149 +706,181 @@ public class BrowserTest extends AbstractLdapTestUnit
      * Test for DIRSTUDIO-987, DIRSTUDIO-271.
      *
      * Browse and refresh entry with multi-valued RDN with same attribute type.
-     *
-     * @throws Exception
      */
-    @Test
-    public void testBrowseAndRefreshEntryWithMvRdn() throws Exception
+    @ParameterizedTest
+    @LdapServersSource(except = LdapServerType.OpenLdap, reason = "Multi-valued RDN with same attribute is not supported by OpenLDAP")
+    public void testBrowseAndRefreshEntryWithMvRdn( TestLdapServer server ) throws Exception
     {
+        Dn entryDn = dn( "l=Berlin+l=Brandenburger Tor+l=de+l=eu", MISC_DN );
+        Dn childDn = dn( "cn=A", entryDn );
+
+        server.withAdminConnection( connection -> {
+            Entry entry1 = new DefaultEntry( connection.getSchemaManager() );
+            entry1.setDn( entryDn );
+            entry1.add( "objectClass", "top", "locality" );
+            entry1.add( "l", "eu", "de", "Berlin", "Brandenburger Tor" );
+            connection.add( entry1 );
+
+            Entry entry2 = new DefaultEntry( connection.getSchemaManager() );
+            entry2.setDn( childDn );
+            entry2.add( "objectClass", "top", "person" );
+            entry2.add( "cn", "A" );
+            entry2.add( "sn", "A" );
+            connection.add( entry2 );
+        } );
+
+        String[] pathToParent = path( entryDn.getParent() );
+        String[] pathToEntry = path( entryDn );
+        String[] pathToChild = path( childDn );
+
+        connectionsViewBot.createTestConnection( server );
+
         // expand parent and verify entry is visible
-        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users",
-            "l=eu + l=de + l=Berlin + l=Brandenburger Tor" ) );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users",
-            "l=eu + l=de + l=Berlin + l=Brandenburger Tor" );
+        browserViewBot.expandEntry( pathToParent );
+        assertTrue( browserViewBot.existsEntry( pathToEntry ) );
+        browserViewBot.selectEntry( pathToEntry );
 
         // expand entry and verify child is visible
-        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users",
-            "l=eu + l=de + l=Berlin + l=Brandenburger Tor" );
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users",
-            "l=eu + l=de + l=Berlin + l=Brandenburger Tor", "cn=A" ) );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users",
-            "l=eu + l=de + l=Berlin + l=Brandenburger Tor", "cn=A" );
+        browserViewBot.expandEntry( pathToEntry );
+        assertTrue( browserViewBot.existsEntry( pathToChild ) );
+        browserViewBot.selectEntry( pathToChild );
 
         // refresh entry and verify child is still visible
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users",
-            "l=eu + l=de + l=Berlin + l=Brandenburger Tor" );
+        browserViewBot.selectEntry( pathToEntry );
         browserViewBot.refresh();
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users",
-            "l=eu + l=de + l=Berlin + l=Brandenburger Tor", "cn=A" ) );
+        assertTrue( browserViewBot.existsEntry( pathToChild ) );
 
         // refresh parent and verify entry is still visible
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        browserViewBot.selectEntry( pathToParent );
         browserViewBot.refresh();
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users",
-            "l=eu + l=de + l=Berlin + l=Brandenburger Tor" ) );
+        assertTrue( browserViewBot.existsEntry( pathToEntry ) );
 
         // expand entry and verify child is visible
-        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users",
-            "l=eu + l=de + l=Berlin + l=Brandenburger Tor" );
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users",
-            "l=eu + l=de + l=Berlin + l=Brandenburger Tor", "cn=A" ) );
+        browserViewBot.expandEntry( pathToEntry );
+        assertTrue( browserViewBot.existsEntry( pathToChild ) );
     }
 
 
-    @Test
-    public void testBrowseAliasEntry()
+    @ParameterizedTest
+    @LdapServersSource
+    public void testBrowseAliasEntry( TestLdapServer server ) throws Exception
     {
         // disable alias dereferencing
+        Connection connection = connectionsViewBot.createTestConnection( server );
         connection.getConnectionParameter().setExtendedIntProperty(
             IBrowserConnection.CONNECTION_PARAMETER_ALIASES_DEREFERENCING_METHOD,
             AliasDereferencingMethod.NEVER.ordinal() );
 
-        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=alias" );
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=alias" ) );
+        browserViewBot.expandEntry( path( ALIAS_DN.getParent() ) );
+        assertTrue( browserViewBot.existsEntry( path( ALIAS_DN ) ) );
+        browserViewBot.selectEntry( path( ALIAS_DN ) );
     }
 
 
-    @Test
-    public void testBrowseReferralEntry()
+    @ParameterizedTest
+    @LdapServersSource
+    public void testBrowseReferralEntry( TestLdapServer server ) throws Exception
     {
         // enable ManageDsaIT control
+        Connection connection = connectionsViewBot.createTestConnection( server );
         connection.getConnectionParameter().setExtendedBoolProperty(
             IBrowserConnection.CONNECTION_PARAMETER_MANAGE_DSA_IT, true );
 
-        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=referral" );
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=referral" ) );
+        browserViewBot.expandEntry( path( REFERRAL_TO_USERS_DN.getParent() ) );
+        assertTrue( browserViewBot.existsEntry( path( REFERRAL_TO_USERS_DN ) ) );
+        browserViewBot.selectEntry( path( REFERRAL_TO_USERS_DN ) );
     }
 
 
-    @Test
-    public void testBrowseSubEntry()
+    @ParameterizedTest
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "ApacheDS specific test")
+    public void testBrowseSubEntry( TestLdapServer server ) throws Exception
     {
+        Dn subentryDn = dn( "cn=subentry", MISC_DN );
+
         // enable Subentries control
+        Connection connection = connectionsViewBot.createTestConnection( server );
         connection.getConnectionParameter().setExtendedBoolProperty(
             IBrowserConnection.CONNECTION_PARAMETER_FETCH_SUBENTRIES, true );
 
-        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=subentry" );
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=special", "cn=subentry" ) );
+        browserViewBot.expandEntry( path( subentryDn.getParent() ) );
+        assertTrue( browserViewBot.existsEntry( path( subentryDn ) ) );
+        browserViewBot.selectEntry( path( subentryDn ) );
     }
 
 
-    @Test
-    public void testBrowseWithPagingWithScrollMode()
+    @ParameterizedTest
+    @LdapServersSource
+    public void testBrowseWithPagingWithScrollMode( TestLdapServer server ) throws Exception
     {
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        Connection connection = connectionsViewBot.createTestConnection( server );
+        browserViewBot.selectEntry( path( USERS_DN ) );
 
         // enable Simple Paged Results control
         connection.getConnectionParameter().setExtendedBoolProperty(
             IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH, true );
         connection.getConnectionParameter().setExtendedIntProperty(
-            IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH_SIZE, 5 );
+            IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH_SIZE, 3 );
         connection.getConnectionParameter().setExtendedBoolProperty(
             IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH_SCROLL_MODE, true );
 
         // 1st page
-        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
-        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "--- Top Page ---" ) );
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "--- Next Page ---" ) );
+        browserViewBot.expandEntry( path( USERS_DN ) );
+        assertFalse( browserViewBot.existsEntry( path( USERS_DN, "--- Top Page ---" ) ) );
+        assertTrue( browserViewBot.existsEntry( path( USERS_DN, "--- Next Page ---" ) ) );
 
         // next page
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "--- Next Page ---" );
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "--- Top Page ---" ) );
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "--- Next Page ---" ) );
+        browserViewBot.selectEntry( path( USERS_DN, "--- Next Page ---" ) );
+        assertTrue( browserViewBot.existsEntry( path( USERS_DN, "--- Top Page ---" ) ) );
+        assertTrue( browserViewBot.existsEntry( path( USERS_DN, "--- Next Page ---" ) ) );
 
         // last page
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "--- Next Page ---" );
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "--- Top Page ---" ) );
-        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "--- Next Page ---" ) );
+        browserViewBot.selectEntry( path( USERS_DN, "--- Next Page ---" ) );
+        assertTrue( browserViewBot.existsEntry( path( USERS_DN, "--- Top Page ---" ) ) );
+        assertFalse( browserViewBot.existsEntry( path( USERS_DN, "--- Next Page ---" ) ) );
 
         // back to top
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "--- Top Page ---" );
-        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "--- Top Page ---" ) );
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "--- Next Page ---" ) );
+        browserViewBot.selectEntry( path( USERS_DN, "--- Top Page ---" ) );
+        assertFalse( browserViewBot.existsEntry( path( USERS_DN, "--- Top Page ---" ) ) );
+        assertTrue( browserViewBot.existsEntry( path( USERS_DN, "--- Next Page ---" ) ) );
     }
 
 
-    @Test
-    public void testBrowseWithPagingWithoutScrollMode()
+    @ParameterizedTest
+    @LdapServersSource
+    public void testBrowseWithPagingWithoutScrollMode( TestLdapServer server ) throws Exception
     {
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
+        Connection connection = connectionsViewBot.createTestConnection( server );
+        browserViewBot.selectEntry( path( USERS_DN ) );
 
         // enable Simple Paged Results control
         connection.getConnectionParameter().setExtendedBoolProperty(
             IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH, true );
         connection.getConnectionParameter().setExtendedIntProperty(
-            IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH_SIZE, 5 );
+            IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH_SIZE, 3 );
         connection.getConnectionParameter().setExtendedBoolProperty(
             IBrowserConnection.CONNECTION_PARAMETER_PAGED_SEARCH_SCROLL_MODE, false );
 
-        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
-        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "--- Top Page ---" ) );
-        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "--- Next Page ---" ) );
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users (13)" ) );
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" ) );
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.8" ) );
+        browserViewBot.expandEntry( path( USERS_DN ) );
+        assertFalse( browserViewBot.existsEntry( path( USERS_DN, "--- Top Page ---" ) ) );
+        assertFalse( browserViewBot.existsEntry( path( USERS_DN, "--- Next Page ---" ) ) );
+        assertTrue( browserViewBot.existsEntry( path( USERS_DN ) ) );
+        assertTrue( browserViewBot.existsEntry( path( USERS_DN, "uid=user.1" ) ) );
+        assertTrue( browserViewBot.existsEntry( path( USERS_DN, "uid=user.8" ) ) );
     }
 
-    @Test
-    public void testDeleteClearsEntryCache() throws Exception
-    {
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
-        browserViewBot.expandEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
 
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" );
-        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "uid=user.1,ou=users,ou=system" );
+    @ParameterizedTest
+    @LdapServersSource
+    public void x( TestLdapServer server ) throws Exception
+    {
+        connectionsViewBot.createTestConnection( server );
+
+        browserViewBot.selectEntry( path( USERS_DN ) );
+        browserViewBot.expandEntry( path( USERS_DN ) );
+
+        browserViewBot.selectEntry( path( USER1_DN ) );
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( USER1_DN.getName() );
         List<String> attributeValues = entryEditorBot.getAttributeValues();
         assertEquals( 23, attributeValues.size() );
         assertTrue( attributeValues.contains( "uid: user.1" ) );
@@ -827,24 +888,26 @@ public class BrowserTest extends AbstractLdapTestUnit
 
         DeleteDialogBot deleteDialog = browserViewBot.openDeleteDialog();
         deleteDialog.clickOkButton();
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users" );
-        assertFalse( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" ) );
+        browserViewBot.selectEntry( path( USERS_DN ) );
+        assertFalse( browserViewBot.existsEntry( path( USER1_DN ) ) );
 
-        Entry entry = new DefaultEntry( service.getSchemaManager() );
-        entry.setDn( new Dn( "uid=user.1,ou=users,ou=system" ) );
-        entry.add( "objectClass", "top", "person", "organizationalPerson", "inetOrgPerson" );
-        entry.add( "uid", "user.1" );
-        entry.add( "givenName", "Foo" );
-        entry.add( "sn", "Bar" );
-        entry.add( "cn", "Foo Bar" );
-        entry.add( "initials", "FB" );
-        service.getAdminSession().add( entry );
+        server.withAdminConnection( conn -> {
+            Entry entry = new DefaultEntry( conn.getSchemaManager() );
+            entry.setDn( USER1_DN );
+            entry.add( "objectClass", "top", "person", "organizationalPerson", "inetOrgPerson" );
+            entry.add( "uid", "user.1" );
+            entry.add( "givenName", "Foo" );
+            entry.add( "sn", "Bar" );
+            entry.add( "cn", "Foo Bar" );
+            entry.add( "initials", "FB" );
+            conn.add( entry );
+        } );
 
         browserViewBot.refresh();
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" ) );
+        assertTrue( browserViewBot.existsEntry( path( USER1_DN ) ) );
 
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" );
-        entryEditorBot = studioBot.getEntryEditorBot( "uid=user.1,ou=users,ou=system" );
+        browserViewBot.selectEntry( path( USER1_DN ) );
+        entryEditorBot = studioBot.getEntryEditorBot( USER1_DN.getName() );
         attributeValues = entryEditorBot.getAttributeValues();
         assertEquals( 9, attributeValues.size() );
         assertTrue( attributeValues.contains( "uid: user.1" ) );

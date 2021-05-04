@@ -21,18 +21,11 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import org.apache.directory.server.annotations.CreateLdapServer;
-import org.apache.directory.server.annotations.CreateTransport;
-import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
-import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
+import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
+import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
 import org.apache.directory.studio.test.integration.ui.bots.ProgressViewBot;
-import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
-import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
-import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
 
 
 /**
@@ -40,29 +33,8 @@ import org.junit.runner.RunWith;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(FrameworkRunnerWithScreenshotCaptureListener.class)
-@CreateLdapServer(transports =
-    { @CreateTransport(protocol = "LDAP") })
-public class ProgressViewTest extends AbstractLdapTestUnit
+public class ProgressViewTest extends AbstractTestBase
 {
-    private StudioBot studioBot;
-
-
-    @Before
-    public void setUp() throws Exception
-    {
-        studioBot = new StudioBot();
-        studioBot.resetLdapPerspective();
-    }
-
-
-    @After
-    public void tearDown() throws Exception
-    {
-        studioBot.getConnectionView().deleteTestConnections();
-        Assertions.genericTearDownAssertions();
-    }
-
 
     @Test
     public void testRemoveAllFinishedOperations() throws Exception
@@ -72,14 +44,13 @@ public class ProgressViewTest extends AbstractLdapTestUnit
     }
 
 
-    @Test
-    public void testNoRemainingOpenConnectionJobs() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testNoRemainingOpenConnectionJobs( TestLdapServer server ) throws Exception
     {
-        ConnectionsViewBot connectionView = studioBot.getConnectionView();
-
-        connectionView.createTestConnection( "ProgressViewTest", ldapServer.getPort() );
-        connectionView.createTestConnection( "ProgressViewTest", ldapServer.getPort() );
-        connectionView.createTestConnection( "ProgressViewTest", ldapServer.getPort() );
+        connectionsViewBot.createTestConnection( server );
+        connectionsViewBot.createTestConnection( server );
+        connectionsViewBot.createTestConnection( server );
 
         // actual assertion is done in Assertions.genericTearDownAssertions()
     }

@@ -20,15 +20,19 @@
 package org.apache.directory.studio.schemaeditor.model.difference;
 
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.util.Arrays;
 import java.util.List;
-
-import junit.framework.TestCase;
 
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.api.ldap.model.schema.UsageEnum;
+
+import org.junit.jupiter.api.Test;
 
 
 /**
@@ -36,13 +40,14 @@ import org.apache.directory.api.ldap.model.schema.UsageEnum;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class DifferenceEngineTest extends TestCase
+public class DifferenceEngineTest
 {
     /**
      * Tests the AddAliasDifference.
      *
      * @throws Exception
      */
+    @Test
     public void testAddAliasDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
@@ -70,6 +75,7 @@ public class DifferenceEngineTest extends TestCase
      *
      * @throws Exception
      */
+    @Test
     public void testAddDescriptionDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
@@ -97,6 +103,7 @@ public class DifferenceEngineTest extends TestCase
      *
      * @throws Exception
      */
+    @Test
     public void testAddEqualityDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
@@ -123,6 +130,7 @@ public class DifferenceEngineTest extends TestCase
      *
      * @throws Exception
      */
+    @Test
     public void testAddMandatoryATDifference() throws Exception
     {
         ObjectClass o1 = new ObjectClass( "1.2.3.4" ); //$NON-NLS-1$
@@ -151,6 +159,7 @@ public class DifferenceEngineTest extends TestCase
      *
      * @throws Exception
      */
+    @Test
     public void testAddOptionalATDifference() throws Exception
     {
         ObjectClass o1 = new ObjectClass( "1.2.3.4" ); //$NON-NLS-1$
@@ -164,7 +173,8 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof OptionalATDifference ) || ( !difference.getType().equals( DifferenceType.ADDED ) ) )
+        if ( !( difference instanceof OptionalATDifference )
+            || ( !difference.getType().equals( DifferenceType.ADDED ) ) )
         {
             fail();
         }
@@ -178,6 +188,7 @@ public class DifferenceEngineTest extends TestCase
      *
      * @throws Exception
      */
+    @Test
     public void testAddOrderingDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
@@ -204,6 +215,7 @@ public class DifferenceEngineTest extends TestCase
      *
      * @throws Exception
      */
+    @Test
     public void testAddSubstringDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
@@ -216,7 +228,8 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof SubstringDifference ) || ( !difference.getType().equals( DifferenceType.ADDED ) ) )
+        if ( !( difference instanceof SubstringDifference )
+            || ( !difference.getType().equals( DifferenceType.ADDED ) ) )
         {
             fail();
         }
@@ -230,6 +243,7 @@ public class DifferenceEngineTest extends TestCase
      *
      * @throws Exception
      */
+    @Test
     public void testAddSuperiorATDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
@@ -242,7 +256,8 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof SuperiorATDifference ) || ( !difference.getType().equals( DifferenceType.ADDED ) ) )
+        if ( !( difference instanceof SuperiorATDifference )
+            || ( !difference.getType().equals( DifferenceType.ADDED ) ) )
         {
             fail();
         }
@@ -256,6 +271,7 @@ public class DifferenceEngineTest extends TestCase
      *
      * @throws Exception
      */
+    @Test
     public void testAddSuperiorOCDifference() throws Exception
     {
         ObjectClass o1 = new ObjectClass( "1.2.3.4" ); //$NON-NLS-1$
@@ -269,7 +285,8 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof SuperiorOCDifference ) || ( !difference.getType().equals( DifferenceType.ADDED ) ) )
+        if ( !( difference instanceof SuperiorOCDifference )
+            || ( !difference.getType().equals( DifferenceType.ADDED ) ) )
         {
             fail();
         }
@@ -283,6 +300,7 @@ public class DifferenceEngineTest extends TestCase
      *
      * @throws Exception
      */
+    @Test
     public void testAddSyntaxDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
@@ -309,6 +327,7 @@ public class DifferenceEngineTest extends TestCase
      *
      * @throws Exception
      */
+    @Test
     public void testAddSyntaxLengthDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
@@ -336,6 +355,7 @@ public class DifferenceEngineTest extends TestCase
      *
      * @throws Exception
      */
+    @Test
     public void testModifyClassTypeDifference() throws Exception
     {
         ObjectClass o1 = new ObjectClass( "1.2.3.4" ); //$NON-NLS-1$
@@ -365,6 +385,7 @@ public class DifferenceEngineTest extends TestCase
      *
      * @throws Exception
      */
+    @Test
     public void testModifyCollectiveDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
@@ -394,6 +415,7 @@ public class DifferenceEngineTest extends TestCase
      *
      * @throws Exception
      */
+    @Test
     public void testModifyDescriptionDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
@@ -423,6 +445,7 @@ public class DifferenceEngineTest extends TestCase
      *
      * @throws Exception
      */
+    @Test
     public void testModifyEqualityDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
@@ -452,6 +475,7 @@ public class DifferenceEngineTest extends TestCase
      *
      * @throws Exception
      */
+    @Test
     public void testModifyNoUserModificationDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
@@ -481,6 +505,7 @@ public class DifferenceEngineTest extends TestCase
      *
      * @throws Exception
      */
+    @Test
     public void testModifyObsoleteDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
@@ -510,6 +535,7 @@ public class DifferenceEngineTest extends TestCase
      *
      * @throws Exception
      */
+    @Test
     public void testModifyOrderingDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
@@ -539,6 +565,7 @@ public class DifferenceEngineTest extends TestCase
      *
      * @throws Exception
      */
+    @Test
     public void testModifySingleValueDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
@@ -568,6 +595,7 @@ public class DifferenceEngineTest extends TestCase
      *
      * @throws Exception
      */
+    @Test
     public void testModifySubstringDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
@@ -597,6 +625,7 @@ public class DifferenceEngineTest extends TestCase
      *
      * @throws Exception
      */
+    @Test
     public void testModifySuperiorATDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
@@ -626,6 +655,7 @@ public class DifferenceEngineTest extends TestCase
      *
      * @throws Exception
      */
+    @Test
     public void testModifySyntaxDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
@@ -639,7 +669,8 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof SyntaxDifference ) || ( !difference.getType().equals( DifferenceType.MODIFIED ) ) )
+        if ( !( difference instanceof SyntaxDifference )
+            || ( !difference.getType().equals( DifferenceType.MODIFIED ) ) )
         {
             fail();
         }
@@ -654,6 +685,7 @@ public class DifferenceEngineTest extends TestCase
      *
      * @throws Exception
      */
+    @Test
     public void testModifySyntaxLengthDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
@@ -683,6 +715,7 @@ public class DifferenceEngineTest extends TestCase
      *
      * @throws Exception
      */
+    @Test
     public void testModifyUsageDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
@@ -711,6 +744,7 @@ public class DifferenceEngineTest extends TestCase
      *
      * @throws Exception
      */
+    @Test
     public void testRemoveAliasDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
@@ -741,6 +775,7 @@ public class DifferenceEngineTest extends TestCase
      *
      * @throws Exception
      */
+    @Test
     public void testRemoveDescriptionDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
@@ -769,6 +804,7 @@ public class DifferenceEngineTest extends TestCase
      *
      * @throws Exception
      */
+    @Test
     public void testRemoveEqualityDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
@@ -781,7 +817,8 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof EqualityDifference ) || ( !difference.getType().equals( DifferenceType.REMOVED ) ) )
+        if ( !( difference instanceof EqualityDifference )
+            || ( !difference.getType().equals( DifferenceType.REMOVED ) ) )
         {
             fail();
         }
@@ -796,6 +833,7 @@ public class DifferenceEngineTest extends TestCase
      *
      * @throws Exception
      */
+    @Test
     public void testRemoveMandatoryATDifference() throws Exception
     {
         ObjectClass o1 = new ObjectClass( "1.2.3.4" ); //$NON-NLS-1$
@@ -827,6 +865,7 @@ public class DifferenceEngineTest extends TestCase
      *
      * @throws Exception
      */
+    @Test
     public void testRemoveOptionalATDifference() throws Exception
     {
         ObjectClass o1 = new ObjectClass( "1.2.3.4" ); //$NON-NLS-1$
@@ -858,6 +897,7 @@ public class DifferenceEngineTest extends TestCase
      *
      * @throws Exception
      */
+    @Test
     public void testRemoveOrderingDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
@@ -870,7 +910,8 @@ public class DifferenceEngineTest extends TestCase
 
         Difference difference = differences.get( 0 );
 
-        if ( !( difference instanceof OrderingDifference ) || ( !difference.getType().equals( DifferenceType.REMOVED ) ) )
+        if ( !( difference instanceof OrderingDifference )
+            || ( !difference.getType().equals( DifferenceType.REMOVED ) ) )
         {
             fail();
         }
@@ -885,6 +926,7 @@ public class DifferenceEngineTest extends TestCase
      *
      * @throws Exception
      */
+    @Test
     public void testRemoveSubstringDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
@@ -913,6 +955,7 @@ public class DifferenceEngineTest extends TestCase
      *
      * @throws Exception
      */
+    @Test
     public void testRemoveSuperiorATDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
@@ -941,6 +984,7 @@ public class DifferenceEngineTest extends TestCase
      *
      * @throws Exception
      */
+    @Test
     public void testRemoveSuperiorOCDifference() throws Exception
     {
         ObjectClass o1 = new ObjectClass( "1.2.3.4" ); //$NON-NLS-1$
@@ -972,6 +1016,7 @@ public class DifferenceEngineTest extends TestCase
      *
      * @throws Exception
      */
+    @Test
     public void testRemoveSyntaxDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$
@@ -999,6 +1044,7 @@ public class DifferenceEngineTest extends TestCase
      *
      * @throws Exception
      */
+    @Test
     public void testRemoveSyntaxLengthDifference() throws Exception
     {
         AttributeType o1 = new AttributeType( "1.2.3.4" ); //$NON-NLS-1$

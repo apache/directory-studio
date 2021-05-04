@@ -21,18 +21,11 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
 import org.apache.directory.studio.test.integration.ui.bots.LdifEditorBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewWizardBot;
-import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
-import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
-import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
 
 /**
@@ -40,29 +33,8 @@ import org.junit.runner.RunWith;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(FrameworkRunnerWithScreenshotCaptureListener.class)
-public class LdifEditorTest extends AbstractLdapTestUnit
+public class LdifEditorTest extends AbstractTestBase
 {
-    private StudioBot studioBot;
-
-    @Before
-    public void setUp() throws Exception
-    {
-        studioBot = new StudioBot();
-        studioBot.resetLdapPerspective();
-
-        // activate search and modifications logs, they also include an LDIF editor and increment the counter
-        studioBot.getSearchLogsViewBot().getSearchLogsText();
-        studioBot.getModificationLogsViewBot().getModificationLogsText();
-    }
-
-
-    @After
-    public void tearDown() throws Exception
-    {
-        Assertions.genericTearDownAssertions();
-    }
-
 
     /**
      * Test for DIRSTUDIO-1043 (First open of LDIF editor fails)

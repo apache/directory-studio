@@ -21,16 +21,17 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import static org.apache.directory.studio.test.integration.ui.Constants.LOCALHOST;
+import static org.apache.directory.studio.test.integration.ui.utils.Constants.LOCALHOST;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -50,35 +51,29 @@ import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.DefaultEntry;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.server.annotations.CreateLdapServer;
-import org.apache.directory.server.annotations.CreateTransport;
-import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
 import org.apache.directory.server.core.security.TlsKeyGenerator;
-import org.apache.directory.server.ldap.handlers.extended.StartTlsHandler;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.test.integration.junit5.ApacheDirectoryServer;
+import org.apache.directory.studio.test.integration.junit5.LdapServerType;
+import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
+import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
 import org.apache.directory.studio.test.integration.ui.bots.CertificateTrustDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.CertificateValidationPreferencePageBot;
 import org.apache.directory.studio.test.integration.ui.bots.CheckAuthenticationDialogBot;
-import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ErrorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewConnectionWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.PreferencesBot;
-import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
-import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
-import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.bouncycastle.asn1.x509.BasicConstraints;
 import org.bouncycastle.asn1.x509.ExtendedKeyUsage;
 import org.bouncycastle.asn1.x509.Extension;
 import org.bouncycastle.asn1.x509.KeyPurposeId;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.x509.X509V3CertificateGenerator;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.params.ParameterizedTest;
 
 
 /**
@@ -87,34 +82,18 @@ import org.junit.runner.RunWith;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-@RunWith(FrameworkRunnerWithScreenshotCaptureListener.class)
-//@CreateDS(allowAnonAccess = true, name = "KeyStoreIT-class")
-public class CertificateValidationTest extends AbstractLdapTestUnit
+public class CertificateValidationTest extends AbstractTestBase
 {
     static final long YEAR_MILLIS = 365L * 24L * 3600L * 1000L;
 
-    @Rule
-    public TestName name = new TestName();
+    private TestInfo testInfo;
 
-    private static StudioBot studioBot;
-    private static ConnectionsViewBot connectionsViewBot;
     private static NewConnectionWizardBot wizardBot;
 
-
-    @BeforeClass
-    public static void setUpClass() throws Exception
+    @BeforeEach
+    public void setUp( TestInfo testInfo ) throws Exception
     {
-        studioBot = new StudioBot();
-        studioBot.resetLdapPerspective();
-        connectionsViewBot = studioBot.getConnectionView();
-        // ErrorDialog.AUTOMATED_MODE = false;
-    }
-
-
-    @Before
-    public void setUp() throws Exception
-    {
-        studioBot.resetLdapPerspective();
+        this.testInfo = testInfo;
 
         // let Java use the key store
         System.setProperty( "javax.net.ssl.trustStore", ROOT_CA_KEYSTORE_PATH );
@@ -124,11 +103,9 @@ public class CertificateValidationTest extends AbstractLdapTestUnit
     }
 
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception
     {
-        connectionsViewBot.deleteTestConnections();
-
         // delete custom trust stores
         X509Certificate[] permanentCertificates = ConnectionCorePlugin.getDefault().getPermanentTrustStoreManager()
             .getCertificates();
@@ -148,8 +125,6 @@ public class CertificateValidationTest extends AbstractLdapTestUnit
         System.clearProperty( "javax.net.ssl.trustStorePassword" );
         System.clearProperty( "javax.net.ssl.keyStore" );
         System.clearProperty( "javax.net.ssl.keyStorePassword" );
-
-        Assertions.genericTearDownAssertions();
     }
 
     private static final String KEYSTORE_PW = "changeit";
@@ -175,8 +150,7 @@ public class CertificateValidationTest extends AbstractLdapTestUnit
 
     private static final String MULTIPLE_ISSUES_KEYSTORE_PATH = "target/classes/multiple-issues-keystore.ks";
 
-
-    @BeforeClass
+    @BeforeAll
     public static void installKeyStoreWithCertificate() throws Exception
     {
         String issuerDn = "CN=trusted-root-ca";
@@ -227,7 +201,8 @@ public class CertificateValidationTest extends AbstractLdapTestUnit
             UNTRUSTED_ROOT_CA_KEYSTORE_PATH );
         PrivateKey untrustedRootCaPrivateKey = ( PrivateKey ) ROOT_CA_KEYSTORE.getKey( "apacheds",
             KEYSTORE_PW.toCharArray() );
-        createKeyStore( subjectDn, untrustedRootCaIssuerDn, startDate, expiryDate, keyAlgo, keySize, untrustedRootCaPrivateKey,
+        createKeyStore( subjectDn, untrustedRootCaIssuerDn, startDate, expiryDate, keyAlgo, keySize,
+            untrustedRootCaPrivateKey,
             UNTRUSTED_KEYSTORE_PATH );
 
         // generate a certificate with multiple issues: expired, wrong hostname, self-signed
@@ -345,22 +320,24 @@ public class CertificateValidationTest extends AbstractLdapTestUnit
 
     private String getConnectionName()
     {
-        return "NewConnectionWizardTest." + name.getMethodName();
+        return testInfo.getTestMethod().map( Method::getName ).orElse( "null" ) + " "
+            + testInfo.getDisplayName();
     }
 
 
     /**
      * Tests ldaps:// with a valid certificate.
      */
-    @CreateLdapServer(keyStore = VALID_KEYSTORE_PATH, certificatePassword = KEYSTORE_PW)
-    @Test
-    public void testLdapsCertificateValidationOK() throws Exception
+    @ParameterizedTest
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "Update of keystore only implemented for ApacheDS")
+    public void testLdapsCertificateValidationOK( ApacheDirectoryServer server ) throws Exception
     {
-        wizardBotWithLdaps();
+        server.setKeystore( VALID_KEYSTORE_PATH );
+        wizardBotWithLdaps( server );
 
         // check the certificate, should be OK
         String result = wizardBot.clickCheckAuthenticationButton();
-        assertNull( "Expected OK, valid and trusted certificate", result );
+        assertNull( result, "Expected OK, valid and trusted certificate" );
 
         wizardBot.clickCancelButton();
     }
@@ -369,11 +346,12 @@ public class CertificateValidationTest extends AbstractLdapTestUnit
     /**
      * Tests ldaps:// with an expired certificate.
      */
-    @CreateLdapServer(keyStore = EXPIRED_KEYSTORE_PATH, certificatePassword = KEYSTORE_PW)
-    @Test
-    public void testLdapsCertificateValidationExpired() throws Exception
+    @ParameterizedTest
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "Update of keystore only implemented for ApacheDS")
+    public void testLdapsCertificateValidationExpired( ApacheDirectoryServer server ) throws Exception
     {
-        wizardBotWithLdaps();
+        server.setKeystore( EXPIRED_KEYSTORE_PATH );
+        wizardBotWithLdaps( server );
 
         // check the certificate, expecting the trust dialog
         CertificateTrustDialogBot trustDialogBot = wizardBot
@@ -396,11 +374,11 @@ public class CertificateValidationTest extends AbstractLdapTestUnit
      * Tests that when selecting "Don't trust" the certificate is not trusted
      * and not added to any key store.
      */
-    @CreateLdapServer(keyStore = EXPIRED_KEYSTORE_PATH, certificatePassword = KEYSTORE_PW)
-    @Test
-    public void testLdapsCertificateDoNotTrust() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testLdapsCertificateDoNotTrust( TestLdapServer server ) throws Exception
     {
-        wizardBotWithLdaps();
+        wizardBotWithLdaps( server );
 
         // check trust, expect trust dialog, select don't trust
         CertificateTrustDialogBot trustDialogBot = wizardBot
@@ -441,11 +419,11 @@ public class CertificateValidationTest extends AbstractLdapTestUnit
      * Tests that when selecting "Trust temporary" the certificate is trusted
      * and added to the session key store.
      */
-    @CreateLdapServer(keyStore = EXPIRED_KEYSTORE_PATH, certificatePassword = KEYSTORE_PW)
-    @Test
-    public void testLdapsCertificateTrustTemporary() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testLdapsCertificateTrustTemporary( TestLdapServer server ) throws Exception
     {
-        wizardBotWithLdaps();
+        wizardBotWithLdaps( server );
 
         // check trust, expect trust dialog, select trust temporary
         CertificateTrustDialogBot trustDialogBot = wizardBot
@@ -464,7 +442,7 @@ public class CertificateValidationTest extends AbstractLdapTestUnit
         // check trust again, now the certificate is already trusted
         wizardBot.activate();
         String result = wizardBot.clickCheckAuthenticationButton();
-        assertNull( "Expected OK, valid and trusted certificate", result );
+        assertNull( result, "Expected OK, valid and trusted certificate" );
 
         wizardBot.clickCancelButton();
     }
@@ -474,11 +452,11 @@ public class CertificateValidationTest extends AbstractLdapTestUnit
      * Tests that when selecting "Trust permanent" the certificate is trusted
      * and added to the permanent key store.
      */
-    @CreateLdapServer(keyStore = EXPIRED_KEYSTORE_PATH, certificatePassword = KEYSTORE_PW)
-    @Test
-    public void testLdapsCertificateTrustPermanent() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testLdapsCertificateTrustPermanent( TestLdapServer server ) throws Exception
     {
-        wizardBotWithLdaps();
+        wizardBotWithLdaps( server );
 
         // check trust, expect trust dialog, select trust temporary
         CertificateTrustDialogBot trustDialogBot = wizardBot
@@ -497,7 +475,7 @@ public class CertificateValidationTest extends AbstractLdapTestUnit
         // check trust again, now the certificate is already trusted
         wizardBot.activate();
         String result = wizardBot.clickCheckAuthenticationButton();
-        assertNull( "Expected OK, valid and trusted certificate", result );
+        assertNull( result, "Expected OK, valid and trusted certificate" );
 
         wizardBot.clickCancelButton();
     }
@@ -507,20 +485,22 @@ public class CertificateValidationTest extends AbstractLdapTestUnit
      * Tests StartTLS with an valid certificate. This is simulated
      * by putting the root certificate into a temporary key store.
      */
-    @Test
-    @CreateLdapServer(keyStore = VALID_KEYSTORE_PATH, certificatePassword = KEYSTORE_PW, extendedOpHandlers = StartTlsHandler.class)
-    public void testStartTlsCertificateValidationOK() throws Exception
+    @ParameterizedTest
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "Update of keystore only implemented for ApacheDS")
+    public void testStartTlsCertificateValidationOK( ApacheDirectoryServer server ) throws Exception
     {
+        server.setKeystore( VALID_KEYSTORE_PATH );
+
         // enter connection parameter
         wizardBot = connectionsViewBot.openNewConnectionWizard();
         wizardBot.typeConnectionName( getConnectionName() );
         wizardBot.typeHost( LOCALHOST );
-        wizardBot.typePort( ldapServer.getPort() );
+        wizardBot.typePort( server.getPort() );
         wizardBot.selectStartTlsEncryption();
 
         // check the certificate, should be OK
         String result = wizardBot.clickCheckNetworkParameterButton();
-        assertNull( "Expected OK, valid and trusted certificate", result );
+        assertNull( result, "Expected OK, valid and trusted certificate" );
 
         // enter correct authentication parameter
         wizardBot.clickNextButton();
@@ -529,7 +509,7 @@ public class CertificateValidationTest extends AbstractLdapTestUnit
 
         // check the certificate again, should be OK
         String result2 = wizardBot.clickCheckAuthenticationButton();
-        assertNull( "Expected OK, valid and trusted certificate", result2 );
+        assertNull( result2, "Expected OK, valid and trusted certificate" );
 
         wizardBot.clickCancelButton();
     }
@@ -538,11 +518,12 @@ public class CertificateValidationTest extends AbstractLdapTestUnit
     /**
      * DIRSTUDIO-1205: SSL/TLS with small key size is not working.
      */
-    @CreateLdapServer(keyStore = SMALL_KEYSIZE_KEYSTORE_PATH, certificatePassword = KEYSTORE_PW, extendedOpHandlers = StartTlsHandler.class)
-    @Test
-    public void testStartTlsCertificateValidationSmallKeysizeError() throws Exception
+    @ParameterizedTest
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "Update of keystore only implemented for ApacheDS")
+    public void testStartTlsCertificateValidationSmallKeysizeError( ApacheDirectoryServer server ) throws Exception
     {
-        wizardBotWithStartTls();
+        server.setKeystore( SMALL_KEYSIZE_KEYSTORE_PATH );
+        wizardBotWithStartTls( server );
 
         // check the certificate, expecting the trust dialog
         CertificateTrustDialogBot trustDialogBot = wizardBot
@@ -564,11 +545,12 @@ public class CertificateValidationTest extends AbstractLdapTestUnit
     /**
      * Tests StartTLS with an expired certificate.
      */
-    @CreateLdapServer(keyStore = EXPIRED_KEYSTORE_PATH, certificatePassword = KEYSTORE_PW, extendedOpHandlers = StartTlsHandler.class)
-    @Test
-    public void testStartTlsCertificateValidationExpired() throws Exception
+    @ParameterizedTest
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "Update of keystore only implemented for ApacheDS")
+    public void testStartTlsCertificateValidationExpired( ApacheDirectoryServer server ) throws Exception
     {
-        wizardBotWithStartTls();
+        server.setKeystore( EXPIRED_KEYSTORE_PATH );
+        wizardBotWithStartTls( server );
 
         // check the certificate, expecting the trust dialog
         CertificateTrustDialogBot trustDialogBot = wizardBot
@@ -588,11 +570,12 @@ public class CertificateValidationTest extends AbstractLdapTestUnit
     /**
      * Tests StartTLS with an not yet valid certificate.
      */
-    @CreateLdapServer(keyStore = NOT_YET_VALID_KEYSTORE_PATH, certificatePassword = KEYSTORE_PW, extendedOpHandlers = StartTlsHandler.class)
-    @Test
-    public void testStartTlsCertificateValidationNotYetValid() throws Exception
+    @ParameterizedTest
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "Update of keystore only implemented for ApacheDS")
+    public void testStartTlsCertificateValidationNotYetValid( ApacheDirectoryServer server ) throws Exception
     {
-        wizardBotWithStartTls();
+        server.setKeystore( NOT_YET_VALID_KEYSTORE_PATH );
+        wizardBotWithStartTls( server );
 
         // check the certificate, expecting the trust dialog
         CertificateTrustDialogBot trustDialogBot = wizardBot
@@ -613,11 +596,12 @@ public class CertificateValidationTest extends AbstractLdapTestUnit
      * Tests StartTLS with a certificate where the certificate's host name
      * doesn't match the server's host name (localhost)
      */
-    @CreateLdapServer(keyStore = WRONG_HOSTNAME_KEYSTORE_PATH, certificatePassword = KEYSTORE_PW, extendedOpHandlers = StartTlsHandler.class)
-    @Test
-    public void testStartTlsCertificateValidationHostnameMismatch() throws Exception
+    @ParameterizedTest
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "Update of keystore only implemented for ApacheDS")
+    public void testStartTlsCertificateValidationHostnameMismatch( ApacheDirectoryServer server ) throws Exception
     {
-        wizardBotWithStartTls();
+        server.setKeystore( WRONG_HOSTNAME_KEYSTORE_PATH );
+        wizardBotWithStartTls( server );
 
         // check the certificate, expecting the trust dialog
         CertificateTrustDialogBot trustDialogBot = wizardBot
@@ -637,11 +621,13 @@ public class CertificateValidationTest extends AbstractLdapTestUnit
     /**
      * Tests StartTLS with a certificate without valid certification path.
      */
-    @CreateLdapServer(keyStore = UNTRUSTED_KEYSTORE_PATH, certificatePassword = KEYSTORE_PW, extendedOpHandlers = StartTlsHandler.class)
-    @Test
-    public void testStartTlsCertificateValidationNoValidCertificationPath() throws Exception
+    @ParameterizedTest
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "Update of keystore only implemented for ApacheDS")
+    public void testStartTlsCertificateValidationNoValidCertificationPath( ApacheDirectoryServer server )
+        throws Exception
     {
-        wizardBotWithStartTls();
+        server.setKeystore( UNTRUSTED_KEYSTORE_PATH );
+        wizardBotWithStartTls( server );
 
         // check the certificate, expecting the trust dialog
         CertificateTrustDialogBot trustDialogBot = wizardBot
@@ -662,11 +648,12 @@ public class CertificateValidationTest extends AbstractLdapTestUnit
     /**
      * Tests StartTLS with a self-signed certificate.
      */
-    @CreateLdapServer(extendedOpHandlers = StartTlsHandler.class, keyStore = SELF_SIGNED_KEYSTORE_PATH, certificatePassword = KEYSTORE_PW)
-    @Test
-    public void testStartTlsCertificateValidationSelfSigned() throws Exception
+    @ParameterizedTest
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "Update of keystore only implemented for ApacheDS")
+    public void testStartTlsCertificateValidationSelfSigned( ApacheDirectoryServer server ) throws Exception
     {
-        wizardBotWithStartTls();
+        server.setKeystore( SELF_SIGNED_KEYSTORE_PATH );
+        wizardBotWithStartTls( server );
 
         // check the certificate, expecting the trust dialog
         CertificateTrustDialogBot trustDialogBot = wizardBot
@@ -687,11 +674,13 @@ public class CertificateValidationTest extends AbstractLdapTestUnit
     /**
      * Tests StartTLS with a certificate with multiple issues.
      */
-    @CreateLdapServer(extendedOpHandlers = StartTlsHandler.class, keyStore = MULTIPLE_ISSUES_KEYSTORE_PATH, certificatePassword = KEYSTORE_PW)
-    @Test
-    public void testStartTlsCertificateValidationExpiredAndWrongHostnameAndSelfSigned() throws Exception
+    @ParameterizedTest
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "Update of keystore only implemented for ApacheDS")
+    public void testStartTlsCertificateValidationExpiredAndWrongHostnameAndSelfSigned( ApacheDirectoryServer server )
+        throws Exception
     {
-        wizardBotWithStartTls();
+        server.setKeystore( MULTIPLE_ISSUES_KEYSTORE_PATH );
+        wizardBotWithStartTls( server );
 
         // check the certificate, expecting the trust dialog
         CertificateTrustDialogBot trustDialogBot = wizardBot
@@ -712,11 +701,11 @@ public class CertificateValidationTest extends AbstractLdapTestUnit
      * Tests that when selecting "Don't trust" the certificate is not trusted
      * and not added to any key store.
      */
-    @CreateLdapServer(transports = @CreateTransport(protocol = "LDAP"), extendedOpHandlers = StartTlsHandler.class, keyStore = EXPIRED_KEYSTORE_PATH, certificatePassword = KEYSTORE_PW)
-    @Test
-    public void testStartTlsCertificateDoNotTrust() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testStartTlsCertificateDoNotTrust( TestLdapServer server ) throws Exception
     {
-        wizardBotWithStartTls();
+        wizardBotWithStartTls( server );
 
         // check trust, expect trust dialog, select don't trust
         CertificateTrustDialogBot trustDialogBot = wizardBot
@@ -767,11 +756,11 @@ public class CertificateValidationTest extends AbstractLdapTestUnit
      * Tests that when selecting "Trust temporary" the certificate is trusted
      * and added to the session key store.
      */
-    @CreateLdapServer(transports = @CreateTransport(protocol = "LDAP"), extendedOpHandlers = StartTlsHandler.class, keyStore = EXPIRED_KEYSTORE_PATH, certificatePassword = KEYSTORE_PW)
-    @Test
-    public void testStartTlsCertificateTrustTemporary() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testStartTlsCertificateTrustTemporary( TestLdapServer server ) throws Exception
     {
-        wizardBotWithStartTls();
+        wizardBotWithStartTls( server );
 
         // check trust, expect trust dialog, select trust temporary
         CertificateTrustDialogBot trustDialogBot = wizardBot
@@ -790,7 +779,7 @@ public class CertificateValidationTest extends AbstractLdapTestUnit
         // check trust again, now the certificate is already trusted
         wizardBot.activate();
         String result = wizardBot.clickCheckAuthenticationButton();
-        assertNull( "Expected OK, valid and trusted certificate", result );
+        assertNull( result, "Expected OK, valid and trusted certificate" );
 
         wizardBot.clickCancelButton();
 
@@ -809,11 +798,11 @@ public class CertificateValidationTest extends AbstractLdapTestUnit
      * Tests that when selecting "Trust permanent" the certificate is trusted
      * and added to the permanent key store.
      */
-    @CreateLdapServer(transports = @CreateTransport(protocol = "LDAP"), extendedOpHandlers = StartTlsHandler.class, keyStore = EXPIRED_KEYSTORE_PATH, certificatePassword = KEYSTORE_PW)
-    @Test
-    public void testStartTlsCertificateTrustPermanent() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testStartTlsCertificateTrustPermanent( TestLdapServer server ) throws Exception
     {
-        wizardBotWithStartTls();
+        wizardBotWithStartTls( server );
 
         // check trust, expect trust dialog, select trust temporary
         CertificateTrustDialogBot trustDialogBot = wizardBot
@@ -832,7 +821,7 @@ public class CertificateValidationTest extends AbstractLdapTestUnit
         // check trust again, now the certificate is already trusted
         wizardBot.activate();
         String result = wizardBot.clickCheckAuthenticationButton();
-        assertNull( "Expected OK, valid and trusted certificate", result );
+        assertNull( result, "Expected OK, valid and trusted certificate" );
 
         wizardBot.clickCancelButton();
 
@@ -847,31 +836,31 @@ public class CertificateValidationTest extends AbstractLdapTestUnit
     }
 
 
-    private void wizardBotWithLdaps()
+    private void wizardBotWithLdaps( TestLdapServer server )
     {
         // enter connection parameter and authentication parameter
         wizardBot = connectionsViewBot.openNewConnectionWizard();
         wizardBot.typeConnectionName( getConnectionName() );
-        wizardBot.typeHost( LOCALHOST );
-        wizardBot.typePort( ldapServer.getPortSSL() );
+        wizardBot.typeHost( server.getHost() );
+        wizardBot.typePort( server.getPortSSL() );
         wizardBot.selectLdapsEncryption();
         wizardBot.clickNextButton();
-        wizardBot.typeUser( "uid=admin,ou=system" );
-        wizardBot.typePassword( "secret" );
+        wizardBot.typeUser( server.getAdminDn() );
+        wizardBot.typePassword( server.getAdminPassword() );
     }
 
 
-    private void wizardBotWithStartTls()
+    private void wizardBotWithStartTls( TestLdapServer server )
     {
         // enter connection parameter and authentication parameter
         wizardBot = connectionsViewBot.openNewConnectionWizard();
         wizardBot.typeConnectionName( getConnectionName() );
-        wizardBot.typeHost( LOCALHOST );
-        wizardBot.typePort( ldapServer.getPort() );
+        wizardBot.typeHost( server.getHost() );
+        wizardBot.typePort( server.getPort() );
         wizardBot.selectStartTlsEncryption();
         wizardBot.clickNextButton();
-        wizardBot.typeUser( "uid=admin,ou=system" );
-        wizardBot.typePassword( "secret" );
+        wizardBot.typeUser( server.getAdminDn() );
+        wizardBot.typePassword( server.getAdminPassword() );
     }
 
 

@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.test.integration.ui.bots.utils;
+package org.apache.directory.studio.test.integration.ui.utils;
 
 
 import java.util.Arrays;
@@ -142,6 +142,6 @@ public class JobWatcher
         }, SWTBotPreferences.TIMEOUT * 4 );
 
         // Wait a bit longer after job is done to allow UI update
-        BotUtils.sleep( 1000L );
+        BotUtils.sleep( 100L );
     }
 }

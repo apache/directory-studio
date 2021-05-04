@@ -62,10 +62,11 @@ or on Windows :
     export DISPLAY=:99
     Xvfb :99 -screen 0 1024x768x16 &
 
-* Some UI integration tests expect a running OpenLDAP server and are skipped otherwise:
+* The core and UI integration tests run against ApacheDS, OpenLDAP, and 389ds. The ApacheDS is always started in embedded mode. The others are expected to run, e.g. with the following commands, otherwise those tests are skipped. 
 
-    docker run -it --rm -p 20389:389 -p 20636:636 --name openldap osixia/openldap:1.3.0
-
+    docker run -it --rm -p 20389:389 -p 20636:636 --name openldap -e LDAP_TLS_VERIFY_CLIENT=never osixia/openldap:1.3.0
+    docker run -it --rm -p 21389:3389 -p 21636:3636  --name fedora389ds -e DS_DM_PASSWORD=admin 389ds/dirsrv bash -c "set -m; /usr/lib/dirsrv/dscontainer -r & while ! /usr/lib/dirsrv/dscontainer -H; do sleep 5; done; sleep 5; /usr/sbin/dsconf localhost backend create --suffix dc=example,dc=org --be-name example; fg"
+	
 ### Build issues
 
 Tycho doesn't handle snapshot dependencies well. The first time a snapshot dependency is used within the build it is cached in `~/.m2/repository/p2`. Afterwards any change in the dependency (e.g. ApacheDS or LDAP API) is not considered unless it is deleted from the cache.

@@ -17,34 +17,16 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.test.integration.ui;
+package org.apache.directory.studio.test.integration.ui.utils;
 
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.UUID;
-
-import org.apache.directory.api.util.IOUtils;
-import org.eclipse.core.runtime.Platform;
+import org.apache.directory.api.util.Network;
 
 
-public class ResourceUtils
+public final class Constants
 {
-    public static String prepareInputFile( String inputFileName ) throws IOException
-    {
-        URL url = Platform.getInstanceLocation().getURL();
-        String destFile = url.getFile() + UUID.randomUUID().toString();
+    public static final String LOCALHOST = Network.LOOPBACK_HOSTNAME;
 
-        try ( InputStream is = ResourceUtils.class.getResourceAsStream( inputFileName );
-            FileOutputStream fos = new FileOutputStream( new File( destFile ) ); )
-        {
-            IOUtils.copy( is, fos );
-        }
-
-        return destFile;
-    }
+    public static final String LOCALHOST_ADDRESS = Network.LOOPBACK.getHostAddress();
 
 }

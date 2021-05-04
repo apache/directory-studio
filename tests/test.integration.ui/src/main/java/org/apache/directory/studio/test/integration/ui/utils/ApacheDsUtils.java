@@ -18,10 +18,10 @@
  *  
  */
 
-package org.apache.directory.studio.test.integration.ui;
+package org.apache.directory.studio.test.integration.ui.utils;
 
 
-import static org.apache.directory.studio.test.integration.ui.Constants.LOCALHOST;
+import static org.apache.directory.studio.test.integration.ui.utils.Constants.LOCALHOST;
 
 import java.util.Hashtable;
 

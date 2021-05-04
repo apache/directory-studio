@@ -17,16 +17,29 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.studio.test.integration.ui;
+
+package org.apache.directory.studio.test.integration.junit5;
 
 
-import org.apache.directory.api.util.Network;
-
-
-public final class Constants
+public enum LdapServerType
 {
-    public static final String LOCALHOST = Network.LOOPBACK_HOSTNAME;
+    ApacheDS,
+    OpenLdap,
+    Fedora389ds,
+    ;
 
-    public static final String LOCALHOST_ADDRESS = Network.LOOPBACK.getHostAddress();
-
+    public TestLdapServer getLdapServer()
+    {
+        switch ( this )
+        {
+            case ApacheDS:
+                return ApacheDirectoryServer.getInstance();
+            case OpenLdap:
+                return OpenLdapServer.getInstance();
+            case Fedora389ds:
+                return Fedora389dsLdapServer.getInstance();
+            default:
+                throw new IllegalArgumentException( "Unknown LDAP server type " + this );
+        }
+    }
 }

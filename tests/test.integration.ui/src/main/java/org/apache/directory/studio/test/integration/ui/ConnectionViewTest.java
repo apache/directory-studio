@@ -21,27 +21,18 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import static org.apache.directory.studio.test.integration.ui.Constants.LOCALHOST;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.net.URL;
 
-import org.apache.directory.server.annotations.CreateLdapServer;
-import org.apache.directory.server.annotations.CreateTransport;
-import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
-import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
+import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
+import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
 import org.apache.directory.studio.test.integration.ui.bots.ExportConnectionsWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.ImportConnectionsWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewConnectionFolderDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewConnectionWizardBot;
-import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
-import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
-import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.eclipse.core.runtime.Platform;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.params.ParameterizedTest;
 
 
 /**
@@ -50,36 +41,15 @@ import org.junit.runner.RunWith;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-@RunWith(FrameworkRunnerWithScreenshotCaptureListener.class)
-@CreateLdapServer(transports =
-    { @CreateTransport(protocol = "LDAP") })
-public class ConnectionViewTest extends AbstractLdapTestUnit
+public class ConnectionViewTest extends AbstractTestBase
 {
-    private StudioBot studioBot;
-    private ConnectionsViewBot connectionsViewBot;
 
-    @Before
-    public void setUp() throws Exception
-    {
-        studioBot = new StudioBot();
-        studioBot.resetLdapPerspective();
-        connectionsViewBot = studioBot.getConnectionView();
-    }
-
-
-    @After
-    public void tearDown() throws Exception
-    {
-        connectionsViewBot.deleteTestConnections();
-        Assertions.genericTearDownAssertions();
-    }
-
-
-    @Test
-    public void testCreateAndDeleteConnections()
+    @ParameterizedTest
+    @LdapServersSource
+    public void testCreateAndDeleteConnections( TestLdapServer server )
     {
         String connectionName = "Test connection 1";
-        createConnection( connectionName );
+        createConnection( connectionName, server );
 
         // ensure connection is visible in Connections view
         assertEquals( 1, connectionsViewBot.getCount() );
@@ -93,8 +63,9 @@ public class ConnectionViewTest extends AbstractLdapTestUnit
     }
 
 
-    @Test
-    public void testCreateAndDeleteConnectionFolders()
+    @ParameterizedTest
+    @LdapServersSource
+    public void testCreateAndDeleteConnectionFolders( TestLdapServer server )
     {
         String folderName = "Connection folder 1";
         String subFolder1Name = "Connection folder 2";
@@ -131,8 +102,9 @@ public class ConnectionViewTest extends AbstractLdapTestUnit
     }
 
 
-    @Test
-    public void testExportImportConnections() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testExportImportConnections( TestLdapServer server ) throws Exception
     {
         String connection1Name = "Test connection 1";
         String connection2Name = "Test connection 2";
@@ -142,14 +114,14 @@ public class ConnectionViewTest extends AbstractLdapTestUnit
         String subFolder2Name = "Connection folder 3";
 
         // create connections and folders
-        createConnection( connection1Name );
+        createConnection( connection1Name, server );
         createConnectionFolder( folderName );
         connectionsViewBot.select( folderName );
-        createConnection( connection2Name );
+        createConnection( connection2Name, server );
         connectionsViewBot.select( folderName );
         createConnectionFolder( subFolder1Name );
         connectionsViewBot.select( folderName, subFolder1Name );
-        createConnection( connection3Name );
+        createConnection( connection3Name, server );
         connectionsViewBot.select( folderName );
         createConnectionFolder( subFolder2Name );
 
@@ -164,7 +136,7 @@ public class ConnectionViewTest extends AbstractLdapTestUnit
 
         // export connections and folders
         URL url = Platform.getInstanceLocation().getURL();
-        final String file = url.getFile() + "ImportExportConnections.zip";
+        final String file = url.getFile() + "ImportExportConnections" + server.getType() + ".zip";
         ExportConnectionsWizardBot exportConnectionsWizardBot = connectionsViewBot.openExportConnectionsWizard();
         exportConnectionsWizardBot.typeFile( file );
         exportConnectionsWizardBot.clickFinishButton();
@@ -189,25 +161,24 @@ public class ConnectionViewTest extends AbstractLdapTestUnit
     }
 
 
-    private void createConnection( String connectionName )
+    private void createConnection( String connectionName, TestLdapServer server )
     {
         NewConnectionWizardBot wizardBot = connectionsViewBot.openNewConnectionWizard();
 
         // enter connection parameter
         wizardBot.typeConnectionName( connectionName );
-        wizardBot.typeHost( LOCALHOST );
-        wizardBot.typePort( ldapServer.getPort() );
+        wizardBot.typeHost( server.getHost() );
+        wizardBot.typePort( server.getPort() );
 
         // jump to auth page
         wizardBot.clickNextButton();
 
         // enter authentication parameters
-        wizardBot.typeUser( "uid=admin,ou=system" );
-        wizardBot.typePassword( "secret" );
+        wizardBot.typeUser( server.getAdminDn() );
+        wizardBot.typePassword( server.getAdminPassword() );
 
         // finish dialog
         wizardBot.clickFinishButton( true );
-        // connectionsViewBot.waitForConnection( connectionName );
     }
 
 

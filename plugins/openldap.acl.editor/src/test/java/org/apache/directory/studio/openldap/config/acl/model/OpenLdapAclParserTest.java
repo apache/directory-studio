@@ -20,13 +20,13 @@
 package org.apache.directory.studio.openldap.config.acl.model;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,23 +34,22 @@ import java.util.List;
 import antlr.RecognitionException;
 
 import org.apache.directory.studio.openldap.config.acl.model.AclAttribute;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
+//assertThrows(ParseException.class, () -> parser.parse( "" ));
 
 /**
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class OpenLdapAclParserTest
 {
-    @Test( expected = ParseException.class )
+    @Test
     public void testEmpty() throws Exception
     {
         System.out.println( "\n--> testEmpty" );
         OpenLdapAclParser parser = new OpenLdapAclParser();
-        parser.parse( "" );
-
-        fail();
+        assertThrows(ParseException.class, () -> parser.parse( "" ));
     }
 
 
@@ -134,14 +133,12 @@ public class OpenLdapAclParserTest
     }
 
 
-    @Test( expected = ParseException.class )
+    @Test
     public void testWhatTwoStars() throws Exception
     {
         System.out.println( "\n--> testWhatTwoStars" );
         OpenLdapAclParser parser = new OpenLdapAclParser();
-        parser.parse( "to * * by *" );
-
-        fail();
+        assertThrows(ParseException.class, () -> parser.parse( "to * * by *" ));
     }
 
     
@@ -172,7 +169,7 @@ public class OpenLdapAclParserTest
     }
 
     
-    @Test( expected = ParseException.class )
+    @Test
     public void testWhatDnStar() throws Exception
     {
         System.out.println( "\n--> testWhatDnStar" );
@@ -180,13 +177,11 @@ public class OpenLdapAclParserTest
         OpenLdapAclParser parser = new OpenLdapAclParser();
 
         // Testing the ACL item
-        parser.parse( "access to dn=* by *" );
-        
-        fail();
+        assertThrows(ParseException.class, () -> parser.parse( "access to dn=* by *" ));
     }
 
     
-    @Test( expected=ParseException.class)
+    @Test
     public void testWhatDnValidDnNoQuote() throws Exception
     {
         System.out.println( "\n--> testWhatDnValidDnNoQuote" );
@@ -196,13 +191,11 @@ public class OpenLdapAclParserTest
         OpenLdapAclParser parser = new OpenLdapAclParser();
 
         // Testing the ACL item
-        parser.parse( "access to dn=" + dnPattern + "\n by *" );
-        
-        fail();
+        assertThrows(ParseException.class, () -> parser.parse( "access to dn=" + dnPattern + "\n by *" ));
     }
 
-    @Ignore
-    @Test ( expected=ParseException.class)
+    @Disabled
+    @Test
     public void testWhatDnBadDn() throws Exception
     {
         System.out.println( "\n--> testWhatDnBadDn" );
@@ -212,9 +205,7 @@ public class OpenLdapAclParserTest
         OpenLdapAclParser parser = new OpenLdapAclParser();
 
         // Testing the ACL item
-        parser.parse( "access to dn=\"" + dnPattern + "\"\n by *" );
-        
-        fail();
+        assertThrows(ParseException.class, () -> parser.parse( "access to dn=\"" + dnPattern + "\"\n by *" ));
     }
 
     
@@ -248,7 +239,7 @@ public class OpenLdapAclParserTest
     }
     
     
-    @Test ( expected=ParseException.class)
+    @Test
     public void testWhatDnBasicDnExactNoQuote() throws Exception
     {
         System.out.println( "\n--> testWhatDnBasicDnExactNoQuote" );
@@ -258,13 +249,11 @@ public class OpenLdapAclParserTest
         OpenLdapAclParser parser = new OpenLdapAclParser();
 
         // Testing the ACL item
-        parser.parse( "access to dn.exact=" + dnPattern + " by *" );
-        
-        fail();
+        assertThrows(ParseException.class, () -> parser.parse( "access to dn.exact=" + dnPattern + " by *" ));
     }
     
     
-    @Test ( expected=ParseException.class)
+    @Test
     public void testWhatDnBasicDnExactBadDn() throws Exception
     {
         System.out.println( "\n--> testWhatDnBasicDnExactBadDn" );
@@ -274,9 +263,7 @@ public class OpenLdapAclParserTest
         OpenLdapAclParser parser = new OpenLdapAclParser();
 
         // Testing the ACL item
-        parser.parse( "access to dn.exact=" + dnPattern + " by *" );
-        
-        fail();
+        assertThrows(ParseException.class, () -> parser.parse( "access to dn.exact=" + dnPattern + " by *" ));
     }
     
     
@@ -310,7 +297,7 @@ public class OpenLdapAclParserTest
     }
     
     
-    @Test( expected=ParseException.class)
+    @Test
     public void testWhatDnBasicDnRegexNoQuote() throws Exception
     {
         System.out.println( "\n--> testWhatDnBasicDnRegexNoQuote" );
@@ -320,9 +307,7 @@ public class OpenLdapAclParserTest
         OpenLdapAclParser parser = new OpenLdapAclParser();
 
         // Testing the ACL item
-        AclItem aclItem = parser.parse( "access to dn.regex=" + dnPattern + " by *" );
-        
-        fail();
+        assertThrows(ParseException.class, () -> parser.parse( "access to dn.regex=" + dnPattern + " by *" ));
     }
     
     
@@ -544,7 +529,7 @@ public class OpenLdapAclParserTest
     }
 
     
-    @Test( expected=ParseException.class)
+    @Test
     public void testWhatDnScopeOneNoQuotedDn() throws Exception
     {
         System.out.println( "\n--> testWhatDnScopeOneNoQuotedDn" );
@@ -554,11 +539,11 @@ public class OpenLdapAclParserTest
         OpenLdapAclParser parser = new OpenLdapAclParser();
 
         // Testing the ACL item
-        parser.parse( "access to dn.one=" + dnPattern + " by *" );
+        assertThrows(ParseException.class, () -> parser.parse( "access to dn.one=" + dnPattern + " by *" ));
     }
 
     
-    @Test( expected=ParseException.class)
+    @Test
     public void testWhatDnScopeOneNoDn() throws Exception
     {
         System.out.println( "\n--> testWhatDnScopeOneNoDn" );
@@ -567,11 +552,11 @@ public class OpenLdapAclParserTest
         OpenLdapAclParser parser = new OpenLdapAclParser();
 
         // Testing the ACL item
-        parser.parse( "access to dn.one= by *" );
+        assertThrows(ParseException.class, () -> parser.parse( "access to dn.one= by *" ));
     }
 
     
-    @Test( expected=ParseException.class)
+    @Test
     public void testWhatDnScopeOneStar() throws Exception
     {
         System.out.println( "\n--> testWhatDnScopeOneStar" );
@@ -580,7 +565,7 @@ public class OpenLdapAclParserTest
         OpenLdapAclParser parser = new OpenLdapAclParser();
 
         // Testing the ACL item
-        parser.parse( "access to dn.one=* by *" );
+        assertThrows(ParseException.class, () -> parser.parse( "access to dn.one=* by *" ));
     }
     
     
@@ -641,7 +626,7 @@ public class OpenLdapAclParserTest
     }
 
 
-    @Test( expected=ParseException.class)
+    @Test
     public void testWhatFilterWrongSimple() throws Exception
     {
         System.out.println( "\n--> testWhatFilterWrongSimple" );
@@ -651,15 +636,13 @@ public class OpenLdapAclParserTest
         OpenLdapAclParser parser = new OpenLdapAclParser();
 
         // Testing the ACL item
-        parser.parse( "access to filter=" + filter + " by *" );
-        
-        fail();
+        assertThrows(ParseException.class, () -> parser.parse( "access to filter=" + filter + " by *" ));
     }
  
 
     
 
-    @Ignore
+    @Disabled
     @Test
     public void testFail() throws Exception
     {
@@ -3853,7 +3836,7 @@ public class OpenLdapAclParserTest
 
 
     @Test
-    @Ignore
+    @Disabled
     public void testWhoAccessLevelSelfPrivMinusMWRSCX() throws Exception
     {
         // Create parser

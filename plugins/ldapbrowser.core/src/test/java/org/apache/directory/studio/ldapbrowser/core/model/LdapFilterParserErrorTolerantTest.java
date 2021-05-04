@@ -21,7 +21,11 @@
 package org.apache.directory.studio.ldapbrowser.core.model;
 
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilter;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilterComponent;
@@ -29,17 +33,19 @@ import org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilterItemC
 import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterParser;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterToken;
 
+import org.junit.jupiter.api.Test;
+
 
 /**
  * Tests the filter parser for error tolerance. 
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LdapFilterParserErrorTolerantTest extends TestCase
+public class LdapFilterParserErrorTolerantTest
 {
     private LdapFilterParser parser = new LdapFilterParser();
 
-
+    @Test
     public void testLpar()
     {
         parser.parse( "(" ); //$NON-NLS-1$
@@ -62,6 +68,7 @@ public class LdapFilterParserErrorTolerantTest extends TestCase
     }
 
 
+    @Test
     public void testLparAttr()
     {
         parser.parse( "(objectClass" ); //$NON-NLS-1$
@@ -94,6 +101,7 @@ public class LdapFilterParserErrorTolerantTest extends TestCase
     }
 
 
+    @Test
     public void testLparAttrEquals()
     {
         parser.parse( "(objectClass=" ); //$NON-NLS-1$
@@ -132,6 +140,7 @@ public class LdapFilterParserErrorTolerantTest extends TestCase
     }
 
 
+    @Test
     public void testLparAttrEqualsRpar()
     {
         parser.parse( "(objectClass=)" ); //$NON-NLS-1$

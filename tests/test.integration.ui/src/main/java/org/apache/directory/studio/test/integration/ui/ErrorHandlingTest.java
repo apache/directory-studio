@@ -21,29 +21,20 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.USER1_DN;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import org.apache.directory.server.annotations.CreateLdapServer;
-import org.apache.directory.server.annotations.CreateTransport;
-import org.apache.directory.server.core.annotations.ApplyLdifFiles;
-import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
-import org.apache.directory.server.ldap.handlers.extended.PwdModifyHandler;
-import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
-import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
+import org.apache.directory.studio.test.integration.junit5.LdapServerType;
+import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
+import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
+import org.apache.directory.studio.test.integration.junit5.LdapServersSource.Mode;
 import org.apache.directory.studio.test.integration.ui.bots.DeleteDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.EntryEditorBot;
 import org.apache.directory.studio.test.integration.ui.bots.ErrorDialogBot;
-import org.apache.directory.studio.test.integration.ui.bots.ModificationLogsViewBot;
-import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
-import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
-import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.params.ParameterizedTest;
 
 
 /**
@@ -52,41 +43,14 @@ import org.junit.runner.RunWith;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-@RunWith(FrameworkRunnerWithScreenshotCaptureListener.class)
-@CreateLdapServer(transports =
-    { @CreateTransport(protocol = "LDAP") }, extendedOpHandlers =
-    { PwdModifyHandler.class })
-@ApplyLdifFiles(clazz = ErrorHandlingTest.class, value = "org/apache/directory/studio/test/integration/ui/BrowserTest.ldif")
-public class ErrorHandlingTest extends AbstractLdapTestUnit
+public class ErrorHandlingTest extends AbstractTestBase
 {
-    private StudioBot studioBot;
-    private ConnectionsViewBot connectionsViewBot;
-    private BrowserViewBot browserViewBot;
-    private ModificationLogsViewBot modificationLogsViewBot;
 
-    @Before
-    public void setUp() throws Exception
+    @ParameterizedTest
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "ApacheDS specific test")
+    public void testDeleteObjectClassTopSchemaEntryShouldFail( TestLdapServer server ) throws Exception
     {
-        studioBot = new StudioBot();
-        studioBot.resetLdapPerspective();
-        connectionsViewBot = studioBot.getConnectionView();
-        connectionsViewBot.createTestConnection( "BrowserTest", ldapServer.getPort() );
-        browserViewBot = studioBot.getBrowserView();
-        modificationLogsViewBot = studioBot.getModificationLogsViewBot();
-    }
-
-
-    @After
-    public void tearDown() throws Exception
-    {
-        connectionsViewBot.deleteTestConnections();
-        Assertions.genericTearDownAssertions();
-    }
-
-
-    @Test
-    public void testDeleteObjectClassTopSchemaEntryShouldFail() throws Exception
-    {
+        connectionsViewBot.createTestConnection( server );
         browserViewBot.selectEntry( "DIT", "Root DSE", "ou=schema", "cn=system", "ou=objectClasses", "m-oid=2.5.6.0" );
         browserViewBot.expandEntry( "DIT", "Root DSE", "ou=schema", "cn=system", "ou=objectClasses", "m-oid=2.5.6.0" );
         DeleteDialogBot deleteDialog = browserViewBot.openDeleteDialog();
@@ -102,48 +66,65 @@ public class ErrorHandlingTest extends AbstractLdapTestUnit
     }
 
 
-    @Test
-    public void testDeleteObjectClassAttributeShouldFail() throws Exception
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All)
+    public void testDeleteObjectClassAttributeShouldFail( TestLdapServer server ) throws Exception
     {
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" );
-        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "uid=user.1,ou=users,ou=system" );
+        connectionsViewBot.createTestConnection( server );
+        browserViewBot.selectEntry( path( ( USER1_DN ) ) );
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( USER1_DN.getName() );
         entryEditorBot.activate();
-        ErrorDialogBot errorDialog = entryEditorBot.deleteValueExpectingErrorDialog( "objectclass",
+        ErrorDialogBot errorDialog = entryEditorBot.deleteValueExpectingErrorDialog( "objectClass",
             "inetOrgPerson (structural)" );
 
+        String expectedError = "65 - objectClassViolation";
+        if ( server.getType() == LdapServerType.OpenLdap )
+        {
+            expectedError = "69 - objectClassModsProhibited";
+        }
+
         // verify message in error dialog
-        assertThat( errorDialog.getErrorMessage(), containsString( "[LDAP result code 65 - objectClassViolation]" ) );
+        assertThat( errorDialog.getErrorMessage(), containsString( "[LDAP result code " + expectedError + "]" ) );
         errorDialog.clickOkButton();
 
-        // verify in modification logs
-        modificationLogsViewBot.assertContainsError( "[LDAP result code 65 - objectClassViolation]",
-            "dn: uid=user.1,ou=users,ou=system", "changetype: modify" );
+        modificationLogsViewBot.assertContainsError( "[LDAP result code " + expectedError + "]",
+            "dn: " + USER1_DN.getName(), "changetype: modify" );
     }
 
 
-    @Test
-    public void testDeleteRdnAttributeShouldFail() throws Exception
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All)
+    public void testDeleteRdnAttributeShouldFail( TestLdapServer server ) throws Exception
     {
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" );
-        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "uid=user.1,ou=users,ou=system" );
+        connectionsViewBot.createTestConnection( server );
+        browserViewBot.selectEntry( path( ( USER1_DN ) ) );
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( USER1_DN.getName() );
         entryEditorBot.activate();
         ErrorDialogBot errorDialog = entryEditorBot.deleteValueExpectingErrorDialog( "uid", "user.1" );
 
+        String expectedError = "67 - notAllowedOnRDN";
+        if ( server.getType() == LdapServerType.OpenLdap )
+        {
+            expectedError = "64 - namingViolation";
+        }
+
         // verify message in error dialog
-        assertThat( errorDialog.getErrorMessage(), containsString( "[LDAP result code 67 - notAllowedOnRDN]" ) );
+        assertThat( errorDialog.getErrorMessage(), containsString( "[LDAP result code " + expectedError + "]" ) );
         errorDialog.clickOkButton();
 
         // verify in modification logs
-        modificationLogsViewBot.assertContainsError( "[LDAP result code 67 - notAllowedOnRDN]",
-            "dn: uid=user.1,ou=users,ou=system", "changetype: modify", "delete: uid" );
+        modificationLogsViewBot.assertContainsError( "[LDAP result code " + expectedError + "]",
+            "dn: " + USER1_DN.getName(), "changetype: modify", "delete: uid" );
     }
 
 
-    @Test
-    public void testDeleteMustAttributeShouldFail() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testDeleteMustAttributeShouldFail( TestLdapServer server ) throws Exception
     {
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" );
-        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "uid=user.1,ou=users,ou=system" );
+        connectionsViewBot.createTestConnection( server );
+        browserViewBot.selectEntry( path( ( USER1_DN ) ) );
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( USER1_DN.getName() );
         entryEditorBot.activate();
         ErrorDialogBot errorDialog = entryEditorBot.deleteValueExpectingErrorDialog( "sn", "Amar" );
 
@@ -153,40 +134,54 @@ public class ErrorHandlingTest extends AbstractLdapTestUnit
 
         // verify in modification logs
         modificationLogsViewBot.assertContainsError( "[LDAP result code 65 - objectClassViolation]",
-            "dn: uid=user.1,ou=users,ou=system", "changetype: modify", "delete: sn" );
+            "dn: " + USER1_DN.getName(), "changetype: modify", "delete: sn" );
     }
 
 
-    @Test
-    public void testDeleteOperationalAttributeShouldFail() throws Exception
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All)
+    public void testDeleteOperationalAttributeShouldFail( TestLdapServer server ) throws Exception
     {
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" );
-        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "uid=user.1,ou=users,ou=system" );
+        connectionsViewBot.createTestConnection( server );
+        browserViewBot.selectEntry( path( ( USER1_DN ) ) );
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( USER1_DN.getName() );
         entryEditorBot.activate();
         entryEditorBot.fetchOperationalAttributes();
         SWTUtils.sleep( 1000 );
         entryEditorBot.activate();
-        ErrorDialogBot errorDialog = entryEditorBot.deleteValueExpectingErrorDialog( "nbChildren", "0" );
+        ErrorDialogBot errorDialog = entryEditorBot.deleteValueExpectingErrorDialog( "creatorsName", null );
+
+        String expectedError = "50 - insufficientAccessRights";
+        if ( server.getType() == LdapServerType.OpenLdap )
+        {
+            expectedError = "19 - constraintViolation";
+        }
+        if ( server.getType() == LdapServerType.Fedora389ds )
+        {
+            expectedError = "53 - unwillingToPerform";
+        }
 
         // verify message in error dialog
         assertThat( errorDialog.getErrorMessage(),
-            containsString( "[LDAP result code 50 - insufficientAccessRights]" ) );
+            containsString( "[LDAP result code " + expectedError + "]" ) );
         errorDialog.clickOkButton();
 
         // verify in modification logs
-        modificationLogsViewBot.assertContainsError( "[LDAP result code 50 - insufficientAccessRights]",
-            "dn: uid=user.1,ou=users,ou=system", "changetype: modify", "delete: nbChildren" );
+        modificationLogsViewBot.assertContainsError( "[LDAP result code " + expectedError + "]",
+            "dn: " + USER1_DN.getName(), "changetype: modify", "delete: creatorsName" );
     }
 
 
-    @Test
-    public void testModifyInvalidSyntaxShouldFail() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testModifyInvalidSyntaxShouldFail( TestLdapServer server ) throws Exception
     {
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=user.1" );
-        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "uid=user.1,ou=users,ou=system" );
+        connectionsViewBot.createTestConnection( server );
+        browserViewBot.selectEntry( path( ( USER1_DN ) ) );
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( USER1_DN.getName() );
         entryEditorBot.activate();
-        entryEditorBot.editValue( "telephonenumber", "976-893-3312" );
-        ErrorDialogBot errorDialog = entryEditorBot.typeValueAndFinishAndExpectErrorDialog( "Invalid phone number" );
+        entryEditorBot.editValue( "mail", null );
+        ErrorDialogBot errorDialog = entryEditorBot.typeValueAndFinishAndExpectErrorDialog( "äöüß" );
 
         // verify message in error dialog
         assertThat( errorDialog.getErrorMessage(),
@@ -195,22 +190,22 @@ public class ErrorHandlingTest extends AbstractLdapTestUnit
 
         // verify in modification logs
         modificationLogsViewBot.assertContainsError( "[LDAP result code 21 - invalidAttributeSyntax]",
-            "dn: uid=user.1,ou=users,ou=system", "changetype: modify", "delete: telephonenumber",
-            "telephonenumber: 976-893-3312", "-", "add: telephonenumber",
-            "telephonenumber: Invalid phone number" );
+            "dn: " + USER1_DN.getName(), "changetype: modify", "delete: mail" );
     }
 
 
-    @Ignore("Until DIRSERVER-2308 is fixed")
-    @Test
-    public void testRenameAlreadyExistingEntry() throws Exception
+    @Disabled("Until DIRSERVER-2308 is fixed")
+    @ParameterizedTest
+    @LdapServersSource
+    public void testRenameAlreadyExistingEntry( TestLdapServer server ) throws Exception
     {
     }
 
 
-    @Ignore("Until DIRSERVER-2308 is fixed")
-    @Test
-    public void testMoveAlreadyExistingEntry() throws Exception
+    @Disabled("Until DIRSERVER-2308 is fixed")
+    @ParameterizedTest
+    @LdapServersSource
+    public void testMoveAlreadyExistingEntry( TestLdapServer server ) throws Exception
     {
     }
 

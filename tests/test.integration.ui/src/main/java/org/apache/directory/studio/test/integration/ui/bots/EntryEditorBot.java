@@ -23,7 +23,7 @@ package org.apache.directory.studio.test.integration.ui.bots;
 
 import java.util.List;
 
-import org.apache.directory.studio.test.integration.ui.ContextMenuHelper;
+import org.apache.directory.studio.test.integration.ui.utils.ContextMenuHelper;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;

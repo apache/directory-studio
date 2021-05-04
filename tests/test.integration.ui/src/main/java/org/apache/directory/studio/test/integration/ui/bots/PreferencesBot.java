@@ -19,7 +19,7 @@
  */
 package org.apache.directory.studio.test.integration.ui.bots;
 
-import org.apache.directory.studio.test.integration.ui.bots.utils.TreeBot;
+import org.apache.directory.studio.test.integration.ui.utils.TreeBot;
 
 
 public class PreferencesBot extends DialogBot

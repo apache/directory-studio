@@ -21,7 +21,11 @@
 package org.apache.directory.studio.ldapbrowser.core.model;
 
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.jupiter.api.Test;
 
 
 /**
@@ -29,11 +33,12 @@ import junit.framework.TestCase;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class PasswordTest extends TestCase
+public class PasswordTest
 {
     /**
      * Null Password should not be accepted
      */
+    @Test
     public void testNullPassword()
     {
         try
@@ -51,6 +56,7 @@ public class PasswordTest extends TestCase
     /**
      * 
      */
+    @Test
     public void testPasswordSHAEncrypted()
     {
         Password password = new Password( "{SHA}5en6G6MezRroT3XKqkdPOmY/BfQ=" ); //$NON-NLS-1$
@@ -62,6 +68,7 @@ public class PasswordTest extends TestCase
     /**
      * 
      */
+    @Test
     public void testPasswordSHAEncryptedLowercase()
     {
         Password password = new Password( "{sha}5en6G6MezRroT3XKqkdPOmY/BfQ=" ); //$NON-NLS-1$
@@ -73,6 +80,7 @@ public class PasswordTest extends TestCase
     /**
      * 
      */
+    @Test
     public void testPasswordSSHAEncrypted()
     {
         Password password = new Password( "{SSHA}mjVVxasFkk59wMW4L1Ldt+YCblfhULHs03WW7g==" ); //$NON-NLS-1$
@@ -84,6 +92,7 @@ public class PasswordTest extends TestCase
     /**
      * 
      */
+    @Test
     public void testPasswordSSHAEncryptedLowercase()
     {
         Password password = new Password( "{ssha}mjVVxasFkk59wMW4L1Ldt+YCblfhULHs03WW7g==" ); //$NON-NLS-1$
@@ -95,6 +104,7 @@ public class PasswordTest extends TestCase
     /**
      * 
      */
+    @Test
     public void testPasswordMD5Encrypted()
     {
         Password password = new Password( "{MD5}Xr4ilOzQ4PCOq3aQ0qbuaQ==" ); //$NON-NLS-1$
@@ -106,6 +116,7 @@ public class PasswordTest extends TestCase
     /**
      * 
      */
+    @Test
     public void testPasswordMD5EncryptedLowercase()
     {
         Password password = new Password( "{md5}Xr4ilOzQ4PCOq3aQ0qbuaQ==" ); //$NON-NLS-1$
@@ -117,6 +128,7 @@ public class PasswordTest extends TestCase
     /**
      * 
      */
+    @Test
     public void testPasswordSMD5Encrypted()
     {
         Password password = new Password( "{SMD5}tQ9wo/VBuKsqBtylMMCcORbnYOJFMyDJ" ); //$NON-NLS-1$
@@ -128,6 +140,7 @@ public class PasswordTest extends TestCase
     /**
      * 
      */
+    @Test
     public void testPasswordSMD5EncryptedLowercase()
     {
         Password password = new Password( "{smd5}tQ9wo/VBuKsqBtylMMCcORbnYOJFMyDJ" ); //$NON-NLS-1$
@@ -139,6 +152,7 @@ public class PasswordTest extends TestCase
     /**
      * 
      */
+    @Test
     public void testPasswordCRYPTEncrypted()
     {
         Password password = new Password( "{CRYPT}qFkH8Z1woBlXw" ); //$NON-NLS-1$
@@ -150,6 +164,7 @@ public class PasswordTest extends TestCase
     /**
      * 
      */
+    @Test
     public void testPasswordCRYPTEncryptedLowercase()
     {
         Password password = new Password( "{crypt}qFkH8Z1woBlXw" ); //$NON-NLS-1$
@@ -161,6 +176,7 @@ public class PasswordTest extends TestCase
     /**
      * 
      */
+    @Test
     public void testPasswordBadAlgorithm()
     {
         Password password = new Password( "{CRYPTE}qFkH8Z1woBlXw" ); //$NON-NLS-1$

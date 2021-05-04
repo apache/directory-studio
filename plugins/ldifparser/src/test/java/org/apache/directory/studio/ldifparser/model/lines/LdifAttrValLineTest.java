@@ -21,14 +21,17 @@
 package org.apache.directory.studio.ldifparser.model.lines;
 
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
 
+import org.junit.jupiter.api.Test;
 
-public class LdifAttrValLineTest extends TestCase
+
+public class LdifAttrValLineTest
 {
 
+    @Test
     public void testToFormattedStringSimple()
     {
         LdifAttrValLine line = LdifAttrValLine.create( "cn", "abc" ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -38,6 +41,7 @@ public class LdifAttrValLineTest extends TestCase
     }
 
 
+    @Test
     public void testToFormattedStringLineWrap()
     {
         LdifAttrValLine line = LdifAttrValLine.create( "cn", //$NON-NLS-1$
@@ -49,6 +53,7 @@ public class LdifAttrValLineTest extends TestCase
     }
 
 
+    @Test
     public void testToFormattedStringNoSpaceAfterColon()
     {
         LdifAttrValLine line = LdifAttrValLine.create( "cn", "abc" ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -58,6 +63,7 @@ public class LdifAttrValLineTest extends TestCase
     }
 
 
+    @Test
     public void testToFormattedStringBase64()
     {
         LdifAttrValLine line = LdifAttrValLine.create( "cn", "\u00e4\u00f6\u00fc" ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -67,6 +73,7 @@ public class LdifAttrValLineTest extends TestCase
     }
 
 
+    @Test
     public void testToFormattedString_DIRSERVER_285()
     {
         LdifAttrValLine line = LdifAttrValLine.create( "cn", "abc::def:<ghi" ); //$NON-NLS-1$ //$NON-NLS-2$

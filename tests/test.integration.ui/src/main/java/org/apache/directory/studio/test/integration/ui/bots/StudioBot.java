@@ -203,11 +203,8 @@ public class StudioBot
                     }
 
                     // reset LDAP perspective
-                    if ( page.getActivePart() != null )
-                    {
-                        page.closeAllEditors( false );
-                        page.resetPerspective();
-                    }
+                    page.closeAllEditors( false );
+                    page.resetPerspective();
                 }
                 catch ( Exception e )
                 {
