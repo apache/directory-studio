@@ -21,6 +21,7 @@ package org.apache.directory.studio.test.integration.ui.bots;
 
 
 import org.apache.directory.studio.ldapbrowser.common.dialogs.HexDialog;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 
 
 public class HexEditorDialogBot extends DialogBot
@@ -29,6 +30,7 @@ public class HexEditorDialogBot extends DialogBot
     public HexEditorDialogBot()
     {
         super( "Hex Editor" );
+        super.setWaitAfterClickOkButton( true, BrowserCoreMessages.jobs__execute_ldif_name );
     }
 
 

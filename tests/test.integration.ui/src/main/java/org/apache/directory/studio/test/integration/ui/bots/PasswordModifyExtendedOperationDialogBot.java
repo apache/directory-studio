@@ -20,11 +20,15 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
+
+
 public class PasswordModifyExtendedOperationDialogBot extends DialogBot
 {
     public PasswordModifyExtendedOperationDialogBot()
     {
         super( "Password Modify Extended Operation (RFC 3062)" );
+        super.setWaitAfterClickOkButton( true, BrowserCoreMessages.jobs__extended_operation_name );
     }
 
 

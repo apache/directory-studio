@@ -21,7 +21,6 @@ package org.apache.directory.studio.test.integration.ui.bots;
 
 
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
-import org.apache.directory.studio.test.integration.ui.utils.JobWatcher;
 
 
 public class DeleteDialogBot extends DialogBot
@@ -34,26 +33,11 @@ public class DeleteDialogBot extends DialogBot
     public static final String DELETE_SERVER = "Delete Server";
     public static final String DELETE_PROJECT = "Delete Project";
 
-
     public DeleteDialogBot( String title )
     {
         super( title );
-    }
-
-
-    public void clickOkButton()
-    {
-        String jobWatcherTitle = getJobWatcherTitle( title );
-        if ( jobWatcherTitle != null )
-        {
-            JobWatcher watcher = new JobWatcher( jobWatcherTitle );
-            super.clickOkButton();
-            watcher.waitUntilDone();
-        }
-        else
-        {
-            super.clickOkButton();
-        }
+        String jobName = getJobWatcherTitle( title );
+        super.setWaitAfterClickOkButton( jobName != null, jobName );
     }
 
 
@@ -72,9 +56,4 @@ public class DeleteDialogBot extends DialogBot
         }
     }
 
-
-    public void clickCancelButton()
-    {
-        super.clickButton( "Cancel" );
-    }
 }

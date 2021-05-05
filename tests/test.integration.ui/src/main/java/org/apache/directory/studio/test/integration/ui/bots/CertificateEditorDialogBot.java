@@ -20,6 +20,7 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.valueeditors.certificate.CertificateDialog;
 
 
@@ -29,6 +30,7 @@ public class CertificateEditorDialogBot extends DialogBot
     public CertificateEditorDialogBot()
     {
         super( "Certificate Editor" );
+        super.setWaitAfterClickOkButton( true, BrowserCoreMessages.jobs__execute_ldif_name );
     }
 
 

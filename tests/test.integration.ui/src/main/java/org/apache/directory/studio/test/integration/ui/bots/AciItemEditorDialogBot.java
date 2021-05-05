@@ -21,6 +21,7 @@ package org.apache.directory.studio.test.integration.ui.bots;
 
 
 import org.apache.directory.api.ldap.model.constants.AuthenticationLevel;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 
 
 public class AciItemEditorDialogBot extends DialogBot
@@ -29,6 +30,7 @@ public class AciItemEditorDialogBot extends DialogBot
     public AciItemEditorDialogBot()
     {
         super( "ACI Item Editor" );
+        super.setWaitAfterClickOkButton( true, BrowserCoreMessages.jobs__execute_ldif_name );
     }
 
 

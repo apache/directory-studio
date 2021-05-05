@@ -322,7 +322,6 @@ public class EntryEditorTest extends AbstractTestBase
         dnEditorBot.clickOkButton();
 
         // assert value after saved and reloaded from server
-        SWTUtils.sleep( 1000 );
         assertEquals( 13, entryEditorBot.getAttributeValues().size() );
         assertTrue( entryEditorBot.getAttributeValues().contains( "member: " + MULTI_VALUED_RDN_DN.getName() ) );
         dnEditorBot = entryEditorBot.editValueExpectingDnEditor( "member", MULTI_VALUED_RDN_DN.getName() );
@@ -400,7 +399,6 @@ public class EntryEditorTest extends AbstractTestBase
         watcher.waitUntilDone();
 
         // assert pasted values are visible in editor
-        SWTUtils.sleep( 1000 );
         assertEquals( 27, entryEditorBot.getAttributeValues().size() );
         assertTrue( entryEditorBot.getAttributeValues().contains( "uid: hnelson" ) );
         assertTrue( entryEditorBot.getAttributeValues().contains( "description: " + Characters.ALL ) );
@@ -422,7 +420,7 @@ public class EntryEditorTest extends AbstractTestBase
      * DIRSTUDIO-738: Add support for modular crypt format password
      */
     @ParameterizedTest
-    @LdapServersSource
+    @LdapServersSource(mode=Mode.All)
     public void testPasswordValueEditor( TestLdapServer server ) throws Exception
     {
         connectionsViewBot.createTestConnection( server );
@@ -469,7 +467,6 @@ public class EntryEditorTest extends AbstractTestBase
         pwdEditorBot.clickOkButton();
 
         // assert value after saved and reloaded from server
-        SWTUtils.sleep( 1000 );
         assertTrue( entryEditorBot.getAttributeValues().contains( "userPassword: CRYPT-SHA-512 hashed password" ) );
 
         // verify and bind with the correct password
@@ -498,11 +495,8 @@ public class EntryEditorTest extends AbstractTestBase
         pwdEditorBot.setShowNewPasswordDetails( true );
         assertHashMethod( pwdEditorBot, LdapSecurityConstants.HASH_METHOD_SSHA256, PasswordUtil.SHA256_LENGTH, 8 );
         pwdEditorBot.clickOkButton();
-        SWTUtils.sleep( 1000 );
         assertTrue( entryEditorBot.getAttributeValues().contains( "userPassword: SSHA-256 hashed password" ) );
     }
-
-
     private void assertHashMethod( PasswordEditorDialogBot passwordEditorBot, LdapSecurityConstants hashMethod,
         int passwordLength, int saltLength ) throws Exception
     {
@@ -803,7 +797,6 @@ public class EntryEditorTest extends AbstractTestBase
 
         aciItemEditor.clickOkButton();
 
-        SWTUtils.sleep( 1000 );
         modificationLogsViewBot.waitForText( "delete: entryACI\n" );
         modificationLogsViewBot.waitForText( "add: entryACI\n" );
     }
@@ -845,7 +838,6 @@ public class EntryEditorTest extends AbstractTestBase
 
         aciItemEditor.clickOkButton();
 
-        SWTUtils.sleep( 1000 );
         modificationLogsViewBot.waitForText( "delete: entryACI\n" );
         modificationLogsViewBot.waitForText( "add: entryACI\n" );
     }
@@ -876,7 +868,6 @@ public class EntryEditorTest extends AbstractTestBase
 
         aciItemEditor.clickOkButton();
 
-        SWTUtils.sleep( 1000 );
         modificationLogsViewBot.waitForText( "delete: prescriptiveACI\n" );
         modificationLogsViewBot.waitForText( "add: prescriptiveACI\n" );
     }

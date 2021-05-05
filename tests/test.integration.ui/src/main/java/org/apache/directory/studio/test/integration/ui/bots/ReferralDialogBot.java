@@ -21,7 +21,6 @@ package org.apache.directory.studio.test.integration.ui.bots;
 
 
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
-import org.apache.directory.studio.test.integration.ui.utils.JobWatcher;
 import org.eclipse.swtbot.swt.finder.utils.TableCollection;
 import org.eclipse.swtbot.swt.finder.utils.TableRow;
 
@@ -32,16 +31,9 @@ public class ReferralDialogBot extends DialogBot
     public ReferralDialogBot()
     {
         super( "Select Referral Connection" );
-    }
-
-
-    public void clickOkButton()
-    {
-        JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__init_entries_title_subonly,
-            BrowserCoreMessages.jobs__init_entries_title_attonly,
-            BrowserCoreMessages.jobs__create_entry_name_1 );
-        super.clickOkButton();
-        watcher.waitUntilDone();
+        super.setWaitAfterClickOkButton( true,
+            BrowserCoreMessages.jobs__init_entries_title_subonly,
+            BrowserCoreMessages.jobs__init_entries_title_attonly, BrowserCoreMessages.jobs__create_entry_name_1 );
     }
 
 

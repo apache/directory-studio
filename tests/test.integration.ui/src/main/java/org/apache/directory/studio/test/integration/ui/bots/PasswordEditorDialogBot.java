@@ -21,6 +21,7 @@ package org.apache.directory.studio.test.integration.ui.bots;
 
 
 import org.apache.directory.api.ldap.model.constants.LdapSecurityConstants;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 
 
 public class PasswordEditorDialogBot extends DialogBot
@@ -29,18 +30,7 @@ public class PasswordEditorDialogBot extends DialogBot
     public PasswordEditorDialogBot()
     {
         super( "Password Editor" );
-    }
-
-
-    public void clickOkButton()
-    {
-        super.clickButton( "OK" );
-    }
-
-
-    public void clickCancelButton()
-    {
-        super.clickButton( "Cancel" );
+        super.setWaitAfterClickOkButton( true, BrowserCoreMessages.jobs__execute_ldif_name );
     }
 
 

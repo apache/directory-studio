@@ -29,18 +29,6 @@ public class TextEditorDialogBot extends DialogBot
     }
 
 
-    public void clickOkButton()
-    {
-        super.clickButton( "OK" );
-    }
-
-
-    public void clickCancelButton()
-    {
-        super.clickButton( "Cancel" );
-    }
-
-
     public void setText( String text )
     {
         bot.text( 0 ).setText( text );

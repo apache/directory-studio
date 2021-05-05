@@ -19,6 +19,7 @@
  */
 package org.apache.directory.studio.test.integration.ui.bots;
 
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 
 public class ImageEditorDialogBot extends DialogBot
 {
@@ -26,6 +27,7 @@ public class ImageEditorDialogBot extends DialogBot
     public ImageEditorDialogBot()
     {
         super( "Image Editor" );
+        super.setWaitAfterClickOkButton( true, BrowserCoreMessages.jobs__execute_ldif_name );
     }
 
 

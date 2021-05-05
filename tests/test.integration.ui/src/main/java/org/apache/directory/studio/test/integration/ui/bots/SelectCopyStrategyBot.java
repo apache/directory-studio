@@ -21,7 +21,6 @@ package org.apache.directory.studio.test.integration.ui.bots;
 
 
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
-import org.apache.directory.studio.test.integration.ui.utils.JobWatcher;
 
 
 public class SelectCopyStrategyBot extends DialogBot
@@ -29,6 +28,7 @@ public class SelectCopyStrategyBot extends DialogBot
     public SelectCopyStrategyBot()
     {
         super( "Select copy strategy" );
+        super.setWaitAfterClickOkButton( true, BrowserCoreMessages.jobs__copy_entries_name_1 );
         waitForDialog();
         activate();
     }
@@ -69,14 +69,6 @@ public class SelectCopyStrategyBot extends DialogBot
     {
         int index = number - 1;
         bot.comboBox( index ).setText( text );
-    }
-
-
-    public void clickOkButton()
-    {
-        JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__copy_entries_name_1 );
-        super.clickOkButton();
-        watcher.waitUntilDone();
     }
 
 }

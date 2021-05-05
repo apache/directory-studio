@@ -266,6 +266,7 @@ public class NewEntryWizardTest extends AbstractTestBase
         wizardBot.clickNextButton();
 
         DnEditorDialogBot dnEditorBot = new DnEditorDialogBot();
+        dnEditorBot.setWaitAfterClickOkButton( false );
         dnEditorBot.setDnText( USER1_DN.getName() );
         dnEditorBot.clickOkButton();
         wizardBot.clickFinishButton();
@@ -299,6 +300,7 @@ public class NewEntryWizardTest extends AbstractTestBase
         wizardBot.clickNextButton();
 
         SubtreeSpecificationEditorDialogBot subtreeEditorBot = new SubtreeSpecificationEditorDialogBot();
+        subtreeEditorBot.setWaitAfterClickOkButton( false );
         subtreeEditorBot.clickOkButton();
         wizardBot.clickFinishButton();
 
@@ -632,6 +634,7 @@ public class NewEntryWizardTest extends AbstractTestBase
         wizardBot.activate();
         wizardBot.editValue( "cACertificate;binary", null );
         CertificateEditorDialogBot certEditorBot = new CertificateEditorDialogBot();
+        certEditorBot.setWaitAfterClickOkButton( false );
         assertTrue( certEditorBot.isVisible() );
         certEditorBot.typeFile( certFile );
         certEditorBot.clickOkButton();
@@ -645,6 +648,7 @@ public class NewEntryWizardTest extends AbstractTestBase
         wizardBot.activate();
         wizardBot.editValue( "certificateRevocationList;binary", null );
         HexEditorDialogBot hexEditorBot = new HexEditorDialogBot();
+        hexEditorBot.setWaitAfterClickOkButton( false );
         assertTrue( hexEditorBot.isVisible() );
         hexEditorBot.typeFile( crlFile );
         hexEditorBot.clickOkButton();

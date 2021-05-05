@@ -235,10 +235,10 @@ public class BrowserViewBot
     }
 
 
-    public SearchPropertiesDialogBot pasteSearch()
+    public SearchPropertiesDialogBot pasteSearch( String searchName )
     {
         ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Paste" );
-        return new SearchPropertiesDialogBot();
+        return new SearchPropertiesDialogBot( searchName );
     }
 
 

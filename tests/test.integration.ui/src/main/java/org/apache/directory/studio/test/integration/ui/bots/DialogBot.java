@@ -21,6 +21,7 @@ package org.apache.directory.studio.test.integration.ui.bots;
 
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.directory.studio.test.integration.ui.utils.JobWatcher;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
@@ -33,11 +34,24 @@ public abstract class DialogBot
 
     protected SWTWorkbenchBot bot = new SWTWorkbenchBot();
     protected String title;
-
+    protected String[] okButtonJobWatcherJobNames = null;
 
     protected DialogBot( String title )
     {
         this.title = title;
+    }
+
+
+    public void setWaitAfterClickOkButton( boolean wait, String... jobNames )
+    {
+        if ( wait )
+        {
+            this.okButtonJobWatcherJobNames = jobNames;
+        }
+        else
+        {
+            this.okButtonJobWatcherJobNames = null;
+        }
     }
 
 
@@ -69,7 +83,16 @@ public abstract class DialogBot
 
     public void clickOkButton()
     {
-        clickButton( "OK" );
+        if ( okButtonJobWatcherJobNames != null )
+        {
+            JobWatcher jobWatcher = new JobWatcher( okButtonJobWatcherJobNames );
+            clickButton( "OK" );
+            jobWatcher.waitUntilDone();
+        }
+        else
+        {
+            clickButton( "OK" );
+        }
     }
 
 

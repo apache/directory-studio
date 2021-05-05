@@ -34,7 +34,6 @@ import org.apache.directory.studio.test.integration.junit5.LdapServerType;
 import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
 import org.apache.directory.studio.test.integration.junit5.LdapServersSource.Mode;
 import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
-import org.apache.directory.studio.test.integration.ui.bots.BotUtils;
 import org.apache.directory.studio.test.integration.ui.bots.EntryEditorBot;
 import org.apache.directory.studio.test.integration.ui.bots.ErrorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.GeneratedPasswordDialogBot;
@@ -121,7 +120,7 @@ public class ExtendedOperationsTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(except = LdapServerType.Fedora389ds, reason = "389ds requires secure connection")
+    @LdapServersSource(mode=Mode.All, except = LdapServerType.Fedora389ds, reason = "389ds requires secure connection")
     public void testPasswordModifyExtendedOperationDialogSetNewPassword( TestLdapServer server ) throws Exception
     {
         connectionsViewBot.createTestConnection( server );
@@ -140,7 +139,6 @@ public class ExtendedOperationsTest extends AbstractTestBase
 
         // Verify and bind with the correct password
         browserViewBot.refresh();
-        BotUtils.sleep( 1000L );
         EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( USER1_DN.getName() );
         entryEditorBot.activate();
         PasswordEditorDialogBot pwdEditorBot = entryEditorBot.editValueExpectingPasswordEditor( "userPassword", null );
@@ -151,7 +149,6 @@ public class ExtendedOperationsTest extends AbstractTestBase
 
         pwdEditorBot.clickCancelButton();
     }
-
 
     @ParameterizedTest
     @LdapServersSource(mode=Mode.All, except = LdapServerType.Fedora389ds, reason = "389ds requires secure connection")
@@ -187,7 +184,6 @@ public class ExtendedOperationsTest extends AbstractTestBase
 
             // Verify and bind with the correct password
             browserViewBot.refresh();
-            BotUtils.sleep( 1000L );
             EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( USER1_DN.getName() );
             entryEditorBot.activate();
             PasswordEditorDialogBot pwdEditorBot = entryEditorBot.editValueExpectingPasswordEditor( "userPassword",

@@ -94,12 +94,6 @@ public abstract class WizardBot extends DialogBot
     }
 
 
-    public void clickCancelButton()
-    {
-        clickButton( "Cancel" );
-    }
-
-
     public boolean existsCategory( String category )
     {
         TreeBot treeBot = new TreeBot( bot.tree() );

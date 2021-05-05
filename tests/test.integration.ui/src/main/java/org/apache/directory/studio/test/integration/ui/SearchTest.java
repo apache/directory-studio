@@ -107,7 +107,7 @@ public class SearchTest extends AbstractTestBase
         browserViewBot.copy();
         connectionsViewBot.select( connection2.getName() );
         browserViewBot.selectEntry( "Searches" );
-        SearchPropertiesDialogBot searchPropertiesDialogBot = browserViewBot.pasteSearch();
+        SearchPropertiesDialogBot searchPropertiesDialogBot = browserViewBot.pasteSearch( "Search all persons" );
         assertTrue( searchPropertiesDialogBot.isVisible() );
         searchPropertiesDialogBot.clickCancelButton();
 
