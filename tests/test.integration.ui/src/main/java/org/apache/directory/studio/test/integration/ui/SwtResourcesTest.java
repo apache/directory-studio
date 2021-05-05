@@ -115,8 +115,7 @@ public class SwtResourcesTest extends AbstractTestBase
 
     private void createAndDeleteEntry( final String name ) throws Exception
     {
-        browserViewBot.selectEntry( path( MISC_DN ) );
-        browserViewBot.expandEntry( path( MISC_DN ) );
+        browserViewBot.selectAndExpandEntry( path( MISC_DN ) );
         NewEntryWizardBot wizardBot = browserViewBot.openNewEntryWizard();
 
         wizardBot.selectCreateEntryFromScratch();

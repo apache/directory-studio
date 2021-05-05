@@ -44,6 +44,8 @@ import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
 import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
 import org.apache.directory.studio.test.integration.ui.bots.SelectCopyDepthDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.SelectCopyStrategyBot;
+import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
+import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.params.ParameterizedTest;
 
@@ -61,8 +63,10 @@ public class CopyEntryTest extends AbstractTestBase
     public void resetPreferences()
     {
         // DIRSERVER-2133: reset check for children preference
-        BrowserCorePlugin.getDefault()
-            .getPluginPreferences().setValue( BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN, true );
+        UIThreadRunnable.syncExec( () -> {
+            BrowserCorePlugin.getDefault()
+                .getPluginPreferences().setValue( BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN, true );
+        } );
     }
 
 
@@ -101,8 +105,10 @@ public class CopyEntryTest extends AbstractTestBase
     public void testCopyPasteMultipleEntriesWithCopyDepthDialogObjectOnly( TestLdapServer server ) throws Exception
     {
         // DIRSERVER-2133: disable check for children for this test
-        BrowserCorePlugin.getDefault()
-            .getPluginPreferences().setValue( BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN, false );
+        UIThreadRunnable.syncExec( () -> {
+            BrowserCorePlugin.getDefault()
+                .getPluginPreferences().setValue( BrowserCoreConstants.PREFERENCE_CHECK_FOR_CHILDREN, false );
+        } );
 
         // select and copy multiple entries
         connectionsViewBot.createTestConnection( server );

@@ -124,6 +124,7 @@ public class PasswordModifyExtendedOperationAction extends BrowserAction
     {
         return getConnectionAndEntry() != null
             && getConnectionAndEntry().connection != null
+            && getConnectionAndEntry().connection.getRootDSE() != null
             && getConnectionAndEntry().connection.getRootDSE()
                 .isExtensionSupported( PasswordModifyRequest.EXTENSION_OID );
     }

@@ -32,7 +32,6 @@ public class BrowserViewBot
     private SWTWorkbenchBot bot;
     private BrowserWidgetBot browserBot;
 
-
     public BrowserViewBot()
     {
         bot = new SWTWorkbenchBot();
@@ -73,6 +72,13 @@ public class BrowserViewBot
     public ReferralDialogBot selectEntryExpectingReferralDialog( String... path )
     {
         return browserBot.selectEntryExpectingReferralDialog( path );
+    }
+
+
+    public void selectAndExpandEntry( String... path )
+    {
+        selectEntry( path );
+        expandEntry( path );
     }
 
 
