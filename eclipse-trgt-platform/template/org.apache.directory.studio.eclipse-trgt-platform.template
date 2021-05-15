@@ -19,12 +19,13 @@
   @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
 -->
 <?pde version="3.8"?>
-<target name="Apache Directory Studio Platform" sequenceNumber="465">
+<target name="Apache Directory Studio Platform" sequenceNumber="467">
   <locations>
 
     <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
       <!-- External jars -->
       <unit id="bcprov" version="1.62.0"/>
+      <unit id="bcpkix" version="1.62.0"/>
       <unit id="org.apache.servicemix.bundles.antlr" version="2.7.7.5"/>
       <unit id="org.apache.servicemix.bundles.dom4j" version="2.1.3.1"/>
       <unit id="org.apache.servicemix.bundles.xpp3" version="1.1.4.c"/>

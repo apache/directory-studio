@@ -537,7 +537,7 @@ public class CertificateValidationTest extends AbstractTestBase
 
         trustDialogBot.selectDontTrust();
         clickOkButtonExpectingCertficateErrorDialog( trustDialogBot, "Failed to verify certification path",
-            "Algorithm constraints check failed on keysize limits", "RSA 512bit key used" );
+            "Algorithm constraints check failed on keysize limits", "RSA 512", "bit key used" );
         wizardBot.clickCancelButton();
     }
 

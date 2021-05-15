@@ -86,6 +86,14 @@
             
             <Import-Package>org.apache.commons.codec.digest,
  org.apache.http.conn.ssl,
+ org.bouncycastle.asn1,
+ org.bouncycastle.asn1.x509,
+ org.bouncycastle.cert,
+ org.bouncycastle.cert.jcajce,
+ org.bouncycastle.jce.provider,
+ org.bouncycastle.operator,
+ org.bouncycastle.operator.jcajce,
+ org.bouncycastle.x509,
  org.dom4j,
  org.dom4j.io</Import-Package>
           

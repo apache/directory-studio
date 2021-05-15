@@ -28,7 +28,6 @@ import java.io.File;
 import org.apache.directory.server.core.api.DirectoryService;
 import org.apache.directory.server.core.api.partition.Partition;
 import org.apache.directory.server.core.factory.DefaultDirectoryServiceFactory;
-import org.apache.directory.server.core.security.CertificateUtil;
 import org.apache.directory.server.ldap.LdapServer;
 import org.apache.directory.server.ldap.handlers.extended.PwdModifyHandler;
 import org.apache.directory.server.ldap.handlers.extended.StartTlsHandler;
