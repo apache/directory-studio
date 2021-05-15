@@ -293,6 +293,8 @@
               <exclude>**/rfc*/rfc*.txt</exclude>
               <exclude>tools/**/*</exclude>
               <exclude>**/p2.index</exclude>
+              <!-- exclude GitHub files (codeql-analysis.yml) -->
+              <exclude>.github/**</exclude>
             </excludes>
           </configuration>
          </plugin>
