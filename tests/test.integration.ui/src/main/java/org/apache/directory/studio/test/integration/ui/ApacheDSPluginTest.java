@@ -43,6 +43,8 @@ import org.apache.directory.studio.test.integration.ui.bots.NewApacheDSServerWiz
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledForJreRange;
+import org.junit.jupiter.api.condition.JRE;
 
 
 /**
@@ -51,6 +53,7 @@ import org.junit.jupiter.api.Test;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
+@DisabledForJreRange(min = JRE.JAVA_16)
 public class ApacheDSPluginTest extends AbstractTestBase
 {
     protected ConsoleViewBot consoleViewBot;

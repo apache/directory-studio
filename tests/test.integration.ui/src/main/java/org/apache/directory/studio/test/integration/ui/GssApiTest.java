@@ -49,6 +49,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.condition.DisabledForJreRange;
+import org.junit.jupiter.api.condition.JRE;
 
 
 /**
@@ -57,6 +59,7 @@ import org.junit.jupiter.api.TestInfo;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
+@DisabledForJreRange(min = JRE.JAVA_16)
 public class GssApiTest extends AbstractTestBase
 {
     private static final String serverName = "GssApiTest";
