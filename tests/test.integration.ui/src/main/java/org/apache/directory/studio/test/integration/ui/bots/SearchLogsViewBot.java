@@ -20,6 +20,9 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
+
+
 public class SearchLogsViewBot extends AbstractLogsViewBot
 {
     public SearchLogsViewBot()
@@ -31,5 +34,27 @@ public class SearchLogsViewBot extends AbstractLogsViewBot
     public String getSearchLogsText()
     {
         return super.getLogsText();
+    }
+
+
+    public void enableSearchRequestLogs( boolean b )
+    {
+        view.show();
+        SWTBotMenu menuItem = view.viewMenu( "Enable Search Request Logs" );
+        if ( menuItem.isChecked() != b )
+        {
+            menuItem.click();
+        }
+    }
+
+
+    public void enableSearchResultEntryLogs( boolean b )
+    {
+        view.show();
+        SWTBotMenu menuItem = view.viewMenu( "Enable Search Result Entry Logs (!)" );
+        if ( menuItem.isChecked() != b )
+        {
+            menuItem.click();
+        }
     }
 }

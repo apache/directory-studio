@@ -122,6 +122,8 @@ public class TestFixture
     public static final Dn USER1_DN = dn( "uid=user.1", USERS_DN );
     public static final Dn USER2_DN = dn( "uid=user.2", USERS_DN );
     public static final Dn USER3_DN = dn( "uid=user.3", USERS_DN );
+    public static final Dn USER4_DN = dn( "uid=user.4", USERS_DN );
+    public static final Dn USER5_DN = dn( "uid=user.5", USERS_DN );
     public static final Dn USER8_DN = dn( "uid=user.8", USERS_DN );
 
     public static final Dn GROUPS_DN = dn( "ou=groups", CONTEXT_DN );

@@ -30,8 +30,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarPushButton;
 public class AbstractLogsViewBot
 {
 
-    private SWTBotView view;
-
+    protected SWTBotView view;
 
     public AbstractLogsViewBot( String title )
     {
@@ -77,4 +76,43 @@ public class AbstractLogsViewBot
 
         } );
     }
+
+
+    public void clear()
+    {
+        view.show();
+        view.toolbarPushButton( "Clear" ).click();
+        new DialogBot( "Delete" )
+        {
+        }.clickOkButton();
+    }
+
+
+    public boolean isOlderButtonEnabled()
+    {
+        view.show();
+        return view.toolbarPushButton( "Older" ).isEnabled();
+    }
+
+
+    public void clickOlderButton()
+    {
+        view.show();
+        view.toolbarPushButton( "Older" ).click();
+    }
+
+
+    public boolean isNewerButtonEnabled()
+    {
+        view.show();
+        return view.toolbarPushButton( "Newer" ).isEnabled();
+    }
+
+
+    public void clickNewerButton()
+    {
+        view.show();
+        view.toolbarPushButton( "Newer" ).click();
+    }
+
 }

@@ -35,6 +35,7 @@ import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.io.StudioLdapException;
 import org.apache.directory.studio.connection.core.io.api.StudioSearchResult;
+import org.eclipse.core.runtime.Platform;
 
 
 /**
@@ -223,13 +224,13 @@ public interface ILdapLogger
     {
         Set<String> maskedAttributes = new HashSet<String>();
 
-        String maskedAttributeString = ConnectionCorePlugin.getDefault().getPluginPreferences().getString(
-            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_MASKED_ATTRIBUTES );
+        String maskedAttributeString = Platform.getPreferencesService().getString( ConnectionCoreConstants.PLUGIN_ID,
+            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_MASKED_ATTRIBUTES, "", null );
         String[] splitted = maskedAttributeString.split( "," ); //$NON-NLS-1$
 
         for ( String s : splitted )
         {
-            maskedAttributes.add( Strings.toLowerCase( s ) );
+            maskedAttributes.add( Strings.toLowerCaseAscii( s ) );
         }
 
         return maskedAttributes;

@@ -23,15 +23,16 @@ package org.apache.directory.studio.connection.core.io.api;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.StringJoiner;
 import java.util.logging.FileHandler;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
@@ -65,8 +66,9 @@ import org.apache.directory.studio.ldifparser.model.lines.LdifCommentLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifDnLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifLineBase;
 import org.apache.directory.studio.ldifparser.model.lines.LdifSepLine;
-import org.eclipse.core.runtime.Preferences.IPropertyChangeListener;
-import org.eclipse.core.runtime.Preferences.PropertyChangeEvent;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 
 
 /**
@@ -92,52 +94,48 @@ public class LdifSearchLogger implements ILdapLogger
     /** The loggers. */
     private Map<String, Logger> loggers = new HashMap<String, Logger>();
 
-
     /**
      * Creates a new instance of LdifSearchLogger.
      */
     public LdifSearchLogger()
     {
-        ConnectionCorePlugin.getDefault().getPluginPreferences().addPropertyChangeListener(
-            new IPropertyChangeListener()
+        IEclipsePreferences prefs = InstanceScope.INSTANCE.getNode( ConnectionCoreConstants.PLUGIN_ID );
+        prefs.addPreferenceChangeListener( event -> {
+            if ( ConnectionCoreConstants.PREFERENCE_SEARCHLOGS_FILE_COUNT.equals( event.getKey() )
+                || ConnectionCoreConstants.PREFERENCE_SEARCHLOGS_FILE_SIZE.equals( event.getKey() ) )
             {
-                public void propertyChange( PropertyChangeEvent event )
+                // dispose all loggers/handlers
+                for ( Logger logger : loggers.values() )
                 {
-                    if ( ConnectionCoreConstants.PREFERENCE_SEARCHLOGS_FILE_COUNT.equals( event.getProperty() )
-                        || ConnectionCoreConstants.PREFERENCE_SEARCHLOGS_FILE_SIZE.equals( event.getProperty() ) )
+                    for ( Handler handler : logger.getHandlers() )
                     {
-                        // dispose all loggers/handlers
-                        for ( Logger logger : loggers.values() )
-                        {
-                            for ( Handler handler : logger.getHandlers() )
-                            {
-                                handler.close();
-                            }
-                        }
-
-                        // delete files with index greater than new file count
-                        for ( FileHandler fh : fileHandlers.values() )
-                        {
-                            try
-                            {
-                                File[] logFiles = getLogFiles( fh );
-                                for ( int i = getFileCount(); i < logFiles.length; i++ )
-                                {
-                                    if ( logFiles[i] != null && logFiles[i].exists() )
-                                    {
-                                        logFiles[i].delete();
-                                    }
-                                }
-                            }
-                            catch ( Exception e )
-                            {
-                            }
-                        }
-
-                        loggers.clear();
+                        handler.close();
                     }
                 }
-            } );
+
+                // delete files with index greater than new file count
+                Connection[] connections = ConnectionCorePlugin.getDefault().getConnectionManager().getConnections();
+                for ( Connection connection : connections )
+                {
+                    try
+                    {
+                        File[] logFiles = getLogFiles( connection );
+                        for ( int i = getFileCount(); i < logFiles.length; i++ )
+                        {
+                            if ( logFiles[i] != null && logFiles[i].exists() )
+                            {
+                                logFiles[i].delete();
+                            }
+                        }
+                    }
+                    catch ( Exception e )
+                    {
+                    }
+                }
+
+                loggers.clear();
+            }
+        } );
     }
 
 
@@ -209,29 +207,27 @@ public class LdifSearchLogger implements ILdapLogger
 
         if ( loggers.containsKey( id ) )
         {
-            Logger logger = loggers.get( id );
+            StringJoiner lines = new StringJoiner( "" );
             DateFormat df = new SimpleDateFormat( ConnectionCoreConstants.DATEFORMAT );
             df.setTimeZone( ConnectionCoreConstants.UTC_TIME_ZONE );
 
             if ( ex != null )
             {
-                logger.log( Level.ALL, LdifCommentLine
-                    .create( "#!" + type + " ERROR" ).toFormattedString( LdifFormatParameters.DEFAULT ) ); //$NON-NLS-1$ //$NON-NLS-2$
+                lines.add( LdifCommentLine.create( "#!" + type + " ERROR" ) //$NON-NLS-1$//$NON-NLS-2$
+                    .toFormattedString( LdifFormatParameters.DEFAULT ) );
             }
             else
             {
-                logger.log( Level.ALL, LdifCommentLine
-                    .create( "#!" + type + " OK" ).toFormattedString( LdifFormatParameters.DEFAULT ) ); //$NON-NLS-1$ //$NON-NLS-2$
+                lines.add( LdifCommentLine.create( "#!" + type + " OK" ) //$NON-NLS-1$ //$NON-NLS-2$
+                    .toFormattedString( LdifFormatParameters.DEFAULT ) );
             }
 
-            logger
-                .log(
-                    Level.ALL,
-                    LdifCommentLine
-                        .create( "#!CONNECTION ldap://" + connection.getHost() + ":" + connection.getPort() ) //$NON-NLS-1$//$NON-NLS-2$
-                        .toFormattedString( LdifFormatParameters.DEFAULT ) );
-            logger.log( Level.ALL, LdifCommentLine
-                .create( "#!DATE " + df.format( new Date() ) ).toFormattedString( LdifFormatParameters.DEFAULT ) ); //$NON-NLS-1$
+            lines.add(
+                LdifCommentLine
+                    .create( "#!CONNECTION ldap://" + connection.getHost() + ":" + connection.getPort() ) //$NON-NLS-1$//$NON-NLS-2$
+                    .toFormattedString( LdifFormatParameters.DEFAULT ) );
+            lines.add( LdifCommentLine.create( "#!DATE " + df.format( new Date() ) ) //$NON-NLS-1$
+                .toFormattedString( LdifFormatParameters.DEFAULT ) );
 
             if ( ex != null )
             {
@@ -239,10 +235,12 @@ public class LdifSearchLogger implements ILdapLogger
                 errorComment = errorComment.replaceAll( "\r", " " ); //$NON-NLS-1$ //$NON-NLS-2$
                 errorComment = errorComment.replaceAll( "\n", " " ); //$NON-NLS-1$ //$NON-NLS-2$
                 LdifCommentLine errorCommentLine = LdifCommentLine.create( errorComment );
-                logger.log( Level.ALL, errorCommentLine.toFormattedString( LdifFormatParameters.DEFAULT ) );
+                lines.add( errorCommentLine.toFormattedString( LdifFormatParameters.DEFAULT ) );
             }
 
-            logger.log( Level.ALL, text );
+            lines.add( text );
+            Logger logger = loggers.get( id );
+            logger.log( Level.ALL, lines.toString() );
         }
     }
 
@@ -334,7 +332,7 @@ public class LdifSearchLogger implements ILdapLogger
                 String attributeName = attribute.getUpId();
                 for ( Value value : attribute )
                 {
-                    if ( maskedAttributes.contains( Strings.toLowerCase( attributeName ) ) )
+                    if ( maskedAttributes.contains( Strings.toLowerCaseAscii( attributeName ) ) )
                     {
                         record.addAttrVal( LdifAttrValLine.create( attributeName, "**********" ) ); //$NON-NLS-1$
                     }
@@ -431,7 +429,7 @@ public class LdifSearchLogger implements ILdapLogger
 
         try
         {
-            return getLogFiles( fileHandlers.get( id ) );
+            return getLogFiles( connection );
         }
         catch ( Exception e )
         {
@@ -446,39 +444,18 @@ public class LdifSearchLogger implements ILdapLogger
      * @param fileHandler the file handler
      * 
      * @return the log files
-     * 
-     * @throws Exception the exception
      */
-    private static File[] getLogFiles( FileHandler fileHandler ) throws Exception
+    private static File[] getLogFiles( Connection connection )
     {
-        Field field = getFieldFromClass( "java.util.logging.FileHandler", "files" ); //$NON-NLS-1$ //$NON-NLS-2$
-        field.setAccessible( true );
-        File[] files = ( File[] ) field.get( fileHandler );
+        String logfileNamePattern = ConnectionManager.getSearchLogFileName( connection );
+        File file = new File( logfileNamePattern );
+        String pattern = file.getName().replace( "%u", "\\d+" ).replace( "%g", "\\d+" );
+        File dir = file.getParentFile();
+        File[] files = dir.listFiles( ( d, f ) -> {
+            return f.matches( pattern );
+        } );
+        Arrays.sort( files );
         return files;
-    }
-
-
-    /**
-     * Gets the field from class.
-     * 
-     * @param className the class name
-     * @param fieldName the field name
-     * 
-     * @return the field from class
-     * 
-     * @throws Exception the exception
-     */
-    private static Field getFieldFromClass( String className, String fieldName ) throws Exception
-    {
-        Class<?> clazz = Class.forName( className );
-        Field[] fields = clazz.getDeclaredFields();
-
-        for ( int i = 0; i < fields.length; i++ )
-        {
-            if ( fields[i].getName().equals( fieldName ) )
-                return fields[i];
-        }
-        return null;
     }
 
 
@@ -489,8 +466,8 @@ public class LdifSearchLogger implements ILdapLogger
      */
     private boolean isSearchRequestLogEnabled()
     {
-        return ConnectionCorePlugin.getDefault().getPluginPreferences().getBoolean(
-            ConnectionCoreConstants.PREFERENCE_SEARCHREQUESTLOGS_ENABLE );
+        return Platform.getPreferencesService().getBoolean( ConnectionCoreConstants.PLUGIN_ID,
+            ConnectionCoreConstants.PREFERENCE_SEARCHREQUESTLOGS_ENABLE, true, null );
     }
 
 
@@ -501,8 +478,8 @@ public class LdifSearchLogger implements ILdapLogger
      */
     private boolean isSearchResultEntryLogEnabled()
     {
-        return ConnectionCorePlugin.getDefault().getPluginPreferences().getBoolean(
-            ConnectionCoreConstants.PREFERENCE_SEARCHRESULTENTRYLOGS_ENABLE );
+        return Platform.getPreferencesService().getBoolean( ConnectionCoreConstants.PLUGIN_ID,
+            ConnectionCoreConstants.PREFERENCE_SEARCHRESULTENTRYLOGS_ENABLE, false, null );
     }
 
 
@@ -513,8 +490,8 @@ public class LdifSearchLogger implements ILdapLogger
      */
     private int getFileCount()
     {
-        return ConnectionCorePlugin.getDefault().getPluginPreferences().getInt(
-            ConnectionCoreConstants.PREFERENCE_SEARCHLOGS_FILE_COUNT );
+        return Platform.getPreferencesService().getInt( ConnectionCoreConstants.PLUGIN_ID,
+            ConnectionCoreConstants.PREFERENCE_SEARCHLOGS_FILE_COUNT, 10, null );
     }
 
 
@@ -525,8 +502,8 @@ public class LdifSearchLogger implements ILdapLogger
      */
     private int getFileSizeInKb()
     {
-        return ConnectionCorePlugin.getDefault().getPluginPreferences().getInt(
-            ConnectionCoreConstants.PREFERENCE_SEARCHLOGS_FILE_SIZE );
+        return Platform.getPreferencesService().getInt( ConnectionCoreConstants.PLUGIN_ID,
+            ConnectionCoreConstants.PREFERENCE_SEARCHLOGS_FILE_SIZE, 100, null );
     }
 
 
