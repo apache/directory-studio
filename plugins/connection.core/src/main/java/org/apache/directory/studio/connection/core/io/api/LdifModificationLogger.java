@@ -194,6 +194,12 @@ public class LdifModificationLogger implements ILdapLogger
                 handler.close();
             }
 
+            File[] files = getLogFiles( connection );
+            for ( File file : files )
+            {
+                deleteFileWithRetry( file );
+            }
+
             loggers.remove( id );
         }
     }

@@ -23,7 +23,6 @@ package org.apache.directory.studio.ldapbrowser.ui.views.searchlogs;
 
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
@@ -165,9 +164,8 @@ public class SearchLogsViewUniversalListener implements BrowserConnectionUpdateL
                 int i = input.getIndex();
                 if ( 0 <= i && i < files.length && files[i] != null && files[i].exists() && files[i].canRead() )
                 {
-                    try
+                    try ( FileReader fr = new FileReader( files[i] ) )
                     {
-                        FileReader fr = new FileReader( files[i] );
                         char[] cbuf = new char[4096];
                         for ( int length = fr.read( cbuf ); length > 0; length = fr.read( cbuf ) )
                         {
@@ -280,29 +278,10 @@ public class SearchLogsViewUniversalListener implements BrowserConnectionUpdateL
     {
         if ( input.getBrowserConnection().getConnection() != null )
         {
-            StringBuffer sb = new StringBuffer( "" ); //$NON-NLS-1$
-            FileWriter fw = null;
             LdifSearchLogger searchLogger = ConnectionCorePlugin.getDefault().getLdifSearchLogger();
-            File[] files = searchLogger.getFiles( input.getBrowserConnection().getConnection() );
             searchLogger.dispose( input.getBrowserConnection().getConnection() );
-            for ( int i = 0; i < files.length; i++ )
-            {
-                try
-                {
-                    if ( files[i] != null && files[i].exists() && !files[i].delete() )
-                    {
-                        fw = new FileWriter( files[i] );
-                        fw.write( "" ); //$NON-NLS-1$
-                    }
-
-                }
-                catch ( Exception e )
-                {
-                    sb.append( e.getMessage() );
-                }
-            }
             view.getMainWidget().getSourceViewer().setTopIndex( 0 );
-            view.getMainWidget().getSourceViewer().getDocument().set( sb.toString() );
+            view.getMainWidget().getSourceViewer().getDocument().set( "" );
         }
     }
 

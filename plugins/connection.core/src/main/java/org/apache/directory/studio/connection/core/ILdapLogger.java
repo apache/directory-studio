@@ -20,6 +20,7 @@
 package org.apache.directory.studio.connection.core;
 
 
+import java.io.File;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -236,4 +237,28 @@ public interface ILdapLogger
         return maskedAttributes;
     }
 
+
+    /**
+     * Deletes a file. Retries up to 5 times to work around Windows file delete issues.
+     */
+    default void deleteFileWithRetry( File file )
+    {
+        for ( int i = 0; i < 6; i++ )
+        {
+            if ( file != null && file.exists() )
+            {
+                if ( file.delete() )
+                {
+                    break;
+                }
+                try
+                {
+                    Thread.sleep( 500L );
+                }
+                catch ( InterruptedException e )
+                {
+                }
+            }
+        }
+    }
 }
