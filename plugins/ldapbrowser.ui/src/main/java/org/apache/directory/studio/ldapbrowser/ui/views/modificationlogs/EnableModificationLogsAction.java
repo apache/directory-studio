@@ -23,6 +23,7 @@ package org.apache.directory.studio.ldapbrowser.ui.views.modificationlogs;
 
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jface.action.Action;
 
 
@@ -42,8 +43,7 @@ public class EnableModificationLogsAction extends Action
         super( Messages.getString( "EnableModificationLogsAction.EnableModificationLogs" ), AS_CHECK_BOX ); //$NON-NLS-1$
         setToolTipText( getText() );
         setEnabled( true );
-        setChecked( ConnectionCorePlugin.getDefault().getPluginPreferences().getBoolean(
-            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_ENABLE ) );
+        setChecked( ConnectionCorePlugin.getDefault().isModificationLogsEnabled() );
     }
 
 
@@ -52,9 +52,10 @@ public class EnableModificationLogsAction extends Action
      */
     public void run()
     {
-        ConnectionCorePlugin.getDefault().getPluginPreferences().setValue(
-            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_ENABLE, super.isChecked() );
-        ConnectionCorePlugin.getDefault().savePluginPreferences();
+        IEclipsePreferences instancePreferences = ConnectionCorePlugin.getDefault().getInstanceScopePreferences();
+        instancePreferences.putBoolean( ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_ENABLE,
+            super.isChecked() );
+        ConnectionCorePlugin.getDefault().flushInstanceScopePreferences();
     }
 
 }

@@ -24,7 +24,6 @@ package org.apache.directory.studio.ldapbrowser.ui.views.searchlogs;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.ActionHandlerManager;
 import org.apache.directory.studio.ldapbrowser.ui.actions.proxy.SearchLogsViewActionProxy;
@@ -145,10 +144,10 @@ public class SearchLogsViewActionGroup implements ActionHandlerManager, IMenuLis
         {
             public void menuAboutToShow( IMenuManager manager )
             {
-                enableSearchRequestLogsAction.setChecked( ConnectionCorePlugin.getDefault().getPluginPreferences()
-                    .getBoolean( ConnectionCoreConstants.PREFERENCE_SEARCHREQUESTLOGS_ENABLE ) );
-                enableSearchResultEntryLogsAction.setChecked( ConnectionCorePlugin.getDefault().getPluginPreferences()
-                    .getBoolean( ConnectionCoreConstants.PREFERENCE_SEARCHRESULTENTRYLOGS_ENABLE ) );
+                enableSearchRequestLogsAction
+                    .setChecked( ConnectionCorePlugin.getDefault().isSearchRequestLogsEnabled() );
+                enableSearchResultEntryLogsAction
+                    .setChecked( ConnectionCorePlugin.getDefault().isSearchResultEntryLogsEnabled() );
             }
         } );
     }

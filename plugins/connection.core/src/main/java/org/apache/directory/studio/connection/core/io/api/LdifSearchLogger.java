@@ -66,7 +66,6 @@ import org.apache.directory.studio.ldifparser.model.lines.LdifCommentLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifDnLine;
 import org.apache.directory.studio.ldifparser.model.lines.LdifLineBase;
 import org.apache.directory.studio.ldifparser.model.lines.LdifSepLine;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 
@@ -472,8 +471,7 @@ public class LdifSearchLogger implements ILdapLogger
      */
     private boolean isSearchRequestLogEnabled()
     {
-        return Platform.getPreferencesService().getBoolean( ConnectionCoreConstants.PLUGIN_ID,
-            ConnectionCoreConstants.PREFERENCE_SEARCHREQUESTLOGS_ENABLE, true, null );
+        return ConnectionCorePlugin.getDefault().isSearchRequestLogsEnabled();
     }
 
 
@@ -484,8 +482,7 @@ public class LdifSearchLogger implements ILdapLogger
      */
     private boolean isSearchResultEntryLogEnabled()
     {
-        return Platform.getPreferencesService().getBoolean( ConnectionCoreConstants.PLUGIN_ID,
-            ConnectionCoreConstants.PREFERENCE_SEARCHRESULTENTRYLOGS_ENABLE, false, null );
+        return ConnectionCorePlugin.getDefault().isSearchResultEntryLogsEnabled();
     }
 
 
@@ -496,8 +493,7 @@ public class LdifSearchLogger implements ILdapLogger
      */
     private int getFileCount()
     {
-        return Platform.getPreferencesService().getInt( ConnectionCoreConstants.PLUGIN_ID,
-            ConnectionCoreConstants.PREFERENCE_SEARCHLOGS_FILE_COUNT, 10, null );
+        return ConnectionCorePlugin.getDefault().getSearchLogsFileCount();
     }
 
 
@@ -508,8 +504,7 @@ public class LdifSearchLogger implements ILdapLogger
      */
     private int getFileSizeInKb()
     {
-        return Platform.getPreferencesService().getInt( ConnectionCoreConstants.PLUGIN_ID,
-            ConnectionCoreConstants.PREFERENCE_SEARCHLOGS_FILE_SIZE, 100, null );
+        return ConnectionCorePlugin.getDefault().getSearchLogsFileSize();
     }
 
 
