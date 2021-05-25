@@ -44,8 +44,10 @@ import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
 import org.apache.directory.studio.test.integration.ui.bots.CertificateValidationPreferencePageBot;
 import org.apache.directory.studio.test.integration.ui.bots.CertificateViewerDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.KeepConnectionsPasswordsDialogBot;
+import org.apache.directory.studio.test.integration.ui.bots.ModificationLogsViewPreferencePageBot;
 import org.apache.directory.studio.test.integration.ui.bots.PasswordsKeystorePreferencePageBot;
 import org.apache.directory.studio.test.integration.ui.bots.PreferencesBot;
+import org.apache.directory.studio.test.integration.ui.bots.SearchLogsViewPreferencePageBot;
 import org.apache.directory.studio.test.integration.ui.bots.SetupMasterPasswordDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.VerifyMasterPasswordDialogBot;
 import org.eclipse.core.runtime.Platform;
@@ -69,10 +71,7 @@ public class PreferencesTest extends AbstractTestBase
     @Test
     public void testCertificatValidationSettingsSaved() throws Exception
     {
-        URL url = Platform.getInstanceLocation().getURL();
-        File file = new File( url.getFile()
-            + ".metadata/.plugins/org.eclipse.core.runtime/.settings/org.apache.directory.studio.connection.core.prefs" );
-        assertFalse( file.exists() );
+        File file = getConnectionCorePreferencesFile();
 
         // open preferences dialog
         PreferencesBot preferencesBot = studioBot.openPreferences();
@@ -101,9 +100,26 @@ public class PreferencesTest extends AbstractTestBase
         pageBot.clickRestoreDefaultsButton();
         assertTrue( pageBot.isValidateCertificatesSelected() );
 
-        // click OK, this should remove the property file as only defaults are set
+        // click OK, this should remove the property or the whole file
         preferencesBot.clickOkButton();
-        assertFalse( file.exists() );
+        if ( file.exists() )
+        {
+            lines = FileUtils.readLines( file, StandardCharsets.UTF_8 );
+            assertFalse( lines.contains( "validateCertificates=false" ) );
+        }
+        else
+        {
+            assertFalse( file.exists() );
+        }
+    }
+
+
+    private File getConnectionCorePreferencesFile()
+    {
+        URL url = Platform.getInstanceLocation().getURL();
+        File file = new File( url.getFile()
+            + ".metadata/.plugins/org.eclipse.core.runtime/.settings/org.apache.directory.studio.connection.core.prefs" );
+        return file;
     }
 
 
@@ -253,6 +269,84 @@ public class PreferencesTest extends AbstractTestBase
         // open LDIF editor syntax coloring page
         preferencesBot.openLdifEditorSyntaxColoringPage();
         preferencesBot.clickCancelButton();
+    }
+
+
+    @Test
+    public void testSearchLogsViewPreferencesPage() throws Exception
+    {
+        File file = getConnectionCorePreferencesFile();
+
+        // open preferences dialog
+        PreferencesBot preferencesBot = studioBot.openPreferences();
+        SearchLogsViewPreferencePageBot page = preferencesBot.openSearchLogsViewPage();
+
+        page.setEnableSearchRequestLogs( false );
+        page.setEnableSearchResultEntryLogs( true );
+        page.setLogFileCount( 7 );
+        page.setLogFileSize( 77 );
+        page.clickApplyButton();
+
+        assertTrue( file.exists() );
+        List<String> lines = FileUtils.readLines( file, StandardCharsets.UTF_8 );
+        assertTrue( lines.contains( "searchRequestLogsEnable=false" ) );
+        assertTrue( lines.contains( "searchResultEntryLogsEnable=true" ) );
+        assertTrue( lines.contains( "searchLogsFileCount=7" ) );
+        assertTrue( lines.contains( "searchLogsFileSize=77" ) );
+
+        page.clickRestoreDefaultsButton();
+        preferencesBot.clickOkButton();
+        if ( file.exists() )
+        {
+            lines = FileUtils.readLines( file, StandardCharsets.UTF_8 );
+            assertFalse( lines.contains( "searchRequestLogsEnable=false" ) );
+            assertFalse( lines.contains( "searchResultEntryLogsEnable=true" ) );
+            assertFalse( lines.contains( "searchLogsFileCount=7" ) );
+            assertFalse( lines.contains( "searchLogsFileSize=77" ) );
+        }
+        else
+        {
+            assertFalse( file.exists() );
+        }
+    }
+
+
+    @Test
+    public void testModificationLogsViewPreferencesPage() throws Exception
+    {
+        File file = getConnectionCorePreferencesFile();
+
+        // open preferences dialog
+        PreferencesBot preferencesBot = studioBot.openPreferences();
+        ModificationLogsViewPreferencePageBot page = preferencesBot.openModificationLogsViewPage();
+
+        page.setEnableModificationLogs( false );
+        page.setMaskedAttributes( "userPassword" );
+        page.setLogFileCount( 2 );
+        page.setLogFileSize( 22 );
+        page.clickApplyButton();
+
+        assertTrue( file.exists() );
+        List<String> lines = FileUtils.readLines( file, StandardCharsets.UTF_8 );
+        assertTrue( lines.contains( "modificationLogsEnable=false" ) );
+        assertTrue( lines.contains( "modificationLogsMaskedAttributes=userPassword" ) );
+        assertTrue( lines.contains( "modificationLogsFileCount=2" ) );
+        assertTrue( lines.contains( "modificationLogsFileSize=22" ) );
+
+        page.clickRestoreDefaultsButton();
+        preferencesBot.clickOkButton();
+        if ( file.exists() )
+        {
+            lines = FileUtils.readLines( file, StandardCharsets.UTF_8 );
+            assertFalse( lines.contains( "modificationLogsEnable=false" ) );
+            assertFalse( lines.contains( "modificationLogsMaskedAttributes=userPassword" ) );
+            assertFalse( lines.contains( "modificationLogsFileCount=2" ) );
+            assertFalse( lines.contains( "modificationLogsFileSize=22" ) );
+        }
+        else
+        {
+            assertFalse( file.exists() );
+        }
     }
 
 }

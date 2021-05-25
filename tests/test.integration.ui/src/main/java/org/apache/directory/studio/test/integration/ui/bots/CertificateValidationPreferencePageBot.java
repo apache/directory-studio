@@ -20,29 +20,10 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
-public class CertificateValidationPreferencePageBot extends DialogBot
+public class CertificateValidationPreferencePageBot extends PreferencePageBot
 {
 
     private static final String VALIDATE_CERTIFICATES_FOR_SECURE_LDAP_CONNECTIONS = "Validate certificates for secure LDAP connections";
-
-
-    public CertificateValidationPreferencePageBot()
-    {
-        super( "Preferences" );
-    }
-
-
-    public void clickApplyButton()
-    {
-        super.clickButton( "Apply" );
-    }
-
-
-    public void clickRestoreDefaultsButton()
-    {
-        super.clickButton( "Restore Defaults" );
-    }
-
 
     public boolean isValidateCertificatesSelected()
     {

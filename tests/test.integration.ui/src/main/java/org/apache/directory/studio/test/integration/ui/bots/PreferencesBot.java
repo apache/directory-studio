@@ -19,6 +19,7 @@
  */
 package org.apache.directory.studio.test.integration.ui.bots;
 
+
 import org.apache.directory.studio.test.integration.ui.utils.TreeBot;
 
 
@@ -65,6 +66,22 @@ public class PreferencesBot extends DialogBot
     {
         bot.tree().getTreeItem( "Apache Directory Studio" ).select().expand().getNode( "LDIF Editor" ).select()
             .expand().getNode( "Syntax Coloring" ).select();
+    }
+
+
+    public SearchLogsViewPreferencePageBot openSearchLogsViewPage()
+    {
+        bot.tree().getTreeItem( "Apache Directory Studio" ).select().expand().getNode( "LDAP Browser" ).select()
+            .expand().getNode( "Views" ).expand().getNode( "Search Logs View" ).select();
+        return new SearchLogsViewPreferencePageBot();
+    }
+
+
+    public ModificationLogsViewPreferencePageBot openModificationLogsViewPage()
+    {
+        bot.tree().getTreeItem( "Apache Directory Studio" ).select().expand().getNode( "LDAP Browser" ).select()
+            .expand().getNode( "Views" ).expand().getNode( "Modification Logs View" ).select();
+        return new ModificationLogsViewPreferencePageBot();
     }
 
 }

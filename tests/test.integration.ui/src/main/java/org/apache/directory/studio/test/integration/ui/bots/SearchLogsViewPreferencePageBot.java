@@ -20,29 +20,46 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
-public class PasswordsKeystorePreferencePageBot extends PreferencePageBot
+public class SearchLogsViewPreferencePageBot extends PreferencePageBot
 {
 
-    public boolean isPasswordsKeystoreEnabled()
+    public void setEnableSearchRequestLogs( boolean b )
     {
         activate();
-        return bot.checkBox().isChecked();
+        if ( b )
+        {
+            bot.checkBox( 0 ).select();
+        }
+        else
+        {
+            bot.checkBox( 0 ).deselect();
+        }
     }
 
 
-    public SetupMasterPasswordDialogBot enablePasswordsKeystore()
+    public void setEnableSearchResultEntryLogs( boolean b )
     {
         activate();
-        bot.checkBox().click();
-        return new SetupMasterPasswordDialogBot();
+        if ( b )
+        {
+            bot.checkBox( 1 ).select();
+        }
+        else
+        {
+            bot.checkBox( 1 ).deselect();
+        }
     }
 
 
-    public KeepConnectionsPasswordsDialogBot disablePasswordsKeystore()
+    public void setLogFileCount( int i )
     {
-        activate();
-        bot.checkBox().click();
-        return new KeepConnectionsPasswordsDialogBot();
+        bot.text( 1 ).setText( "" + i );
+    }
+
+
+    public void setLogFileSize( int i )
+    {
+        bot.text( 2 ).setText( "" + i );
     }
 
 }
