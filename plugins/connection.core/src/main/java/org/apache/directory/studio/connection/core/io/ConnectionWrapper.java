@@ -20,6 +20,7 @@
 package org.apache.directory.studio.connection.core.io;
 
 
+import java.security.cert.X509Certificate;
 import java.util.Collection;
 
 import javax.naming.directory.SearchControls;
@@ -49,7 +50,7 @@ public interface ConnectionWrapper
      * 
      * @param monitor the progres monitor
      */
-    void connect( StudioProgressMonitor monitor );
+    X509Certificate[] connect( StudioProgressMonitor monitor );
 
 
     /**

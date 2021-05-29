@@ -83,6 +83,9 @@ public class NewConnectionWizardTest extends AbstractTestBase
     {
         assertTrue( wizardBot.isVisible() );
 
+        // check network parameter buttons
+        assertFalse( wizardBot.isViewCertificateButtonEnabled() );
+        assertFalse( wizardBot.isCheckNetworkParameterButtonEnabled() );
         // ensure "Next >" and "Finish" buttons are disabled
         assertFalse( wizardBot.isBackButtonEnabled() );
         assertFalse( wizardBot.isNextButtonEnabled() );
@@ -93,6 +96,9 @@ public class NewConnectionWizardTest extends AbstractTestBase
         wizardBot.typeConnectionName( getConnectionName() );
         wizardBot.typeHost( "test.example.com" );
         wizardBot.typePort( 389 );
+        // check network parameter buttons
+        assertFalse( wizardBot.isViewCertificateButtonEnabled() );
+        assertTrue( wizardBot.isCheckNetworkParameterButtonEnabled() );
         // ensure "Next >" button is enabled
         assertFalse( wizardBot.isBackButtonEnabled() );
         assertTrue( wizardBot.isNextButtonEnabled() );
@@ -101,6 +107,9 @@ public class NewConnectionWizardTest extends AbstractTestBase
 
         // clear host
         wizardBot.typeHost( "" );
+        // check network parameter buttons
+        assertFalse( wizardBot.isViewCertificateButtonEnabled() );
+        assertFalse( wizardBot.isCheckNetworkParameterButtonEnabled() );
         // ensure "Next >" is disabled
         assertFalse( wizardBot.isBackButtonEnabled() );
         assertFalse( wizardBot.isNextButtonEnabled() );
@@ -109,7 +118,43 @@ public class NewConnectionWizardTest extends AbstractTestBase
 
         // enter host again
         wizardBot.typeHost( "test.example.com" );
+        // check network parameter buttons
+        assertFalse( wizardBot.isViewCertificateButtonEnabled() );
+        assertTrue( wizardBot.isCheckNetworkParameterButtonEnabled() );
         // ensure "Next >" button is enabled
+        assertFalse( wizardBot.isBackButtonEnabled() );
+        assertTrue( wizardBot.isNextButtonEnabled() );
+        assertFalse( wizardBot.isFinishButtonEnabled() );
+        assertTrue( wizardBot.isCancelButtonEnabled() );
+
+        // set StartTLS encryption
+        wizardBot.selectStartTlsEncryption();
+        // check network parameter buttons
+        assertTrue( wizardBot.isViewCertificateButtonEnabled() );
+        assertTrue( wizardBot.isCheckNetworkParameterButtonEnabled() );
+        // check wizard buttons
+        assertFalse( wizardBot.isBackButtonEnabled() );
+        assertTrue( wizardBot.isNextButtonEnabled() );
+        assertFalse( wizardBot.isFinishButtonEnabled() );
+        assertTrue( wizardBot.isCancelButtonEnabled() );
+
+        // set SSL encryption
+        wizardBot.selectLdapsEncryption();
+        // check network parameter buttons
+        assertTrue( wizardBot.isViewCertificateButtonEnabled() );
+        assertTrue( wizardBot.isCheckNetworkParameterButtonEnabled() );
+        // check wizard buttons
+        assertFalse( wizardBot.isBackButtonEnabled() );
+        assertTrue( wizardBot.isNextButtonEnabled() );
+        assertFalse( wizardBot.isFinishButtonEnabled() );
+        assertTrue( wizardBot.isCancelButtonEnabled() );
+
+        // set no encryption
+        wizardBot.selectNoEncryption();
+        // check network parameter buttons
+        assertFalse( wizardBot.isViewCertificateButtonEnabled() );
+        assertTrue( wizardBot.isCheckNetworkParameterButtonEnabled() );
+        // check wizard buttons
         assertFalse( wizardBot.isBackButtonEnabled() );
         assertTrue( wizardBot.isNextButtonEnabled() );
         assertFalse( wizardBot.isFinishButtonEnabled() );
@@ -428,7 +473,7 @@ public class NewConnectionWizardTest extends AbstractTestBase
 
 
     /**
-     * Tests the "Check Network Parameter" button.
+     * Tests the "Check Authentication" button.
      */
     @ParameterizedTest
     @LdapServersSource

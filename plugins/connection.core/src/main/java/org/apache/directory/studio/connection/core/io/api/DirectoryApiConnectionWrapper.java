@@ -21,10 +21,12 @@ package org.apache.directory.studio.connection.core.io.api;
 
 
 import java.security.KeyStore;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import javax.naming.directory.SearchControls;
 import javax.net.ssl.TrustManager;
@@ -134,7 +136,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     /** The SASL PLAIN authzid */
     private String authzId;
 
-
     /**
      * Creates a new instance of DirectoryApiConnectionWrapper.
      * 
@@ -149,7 +150,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     /**
      * {@inheritDoc}
      */
-    public void connect( StudioProgressMonitor monitor )
+    public X509Certificate[] connect( StudioProgressMonitor monitor )
     {
         ldapConnection = null;
         isConnected = false;
@@ -157,17 +158,18 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
 
         try
         {
-            doConnect( monitor );
+            return doConnect( monitor );
         }
         catch ( Exception e )
         {
             disconnect();
             monitor.reportError( e );
+            return null;
         }
     }
 
 
-    private void doConnect( final StudioProgressMonitor monitor ) throws Exception
+    private X509Certificate[] doConnect( final StudioProgressMonitor monitor ) throws Exception
     {
         ldapConnection = null;
         isConnected = true;
@@ -187,6 +189,8 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
 
         binaryAttributeDetector = new DefaultConfigurableBinaryAttributeDetector();
         ldapConnectionConfig.setBinaryAttributeDetector( binaryAttributeDetector );
+
+        AtomicReference<StudioTrustManager> studioTrustmanager = new AtomicReference<>();
 
         if ( ( connection.getEncryptionMethod() == EncryptionMethod.LDAPS )
             || ( connection.getEncryptionMethod() == EncryptionMethod.START_TLS ) )
@@ -210,6 +214,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     trustManagers[i] = new StudioTrustManager( ( X509TrustManager ) defaultTrustManagers[i] );
                     trustManagers[i].setHost( connection.getHost() );
                 }
+                studioTrustmanager.set( trustManagers[0] );
 
                 ldapConnectionConfig.setTrustManagers( trustManagers );
             }
@@ -219,6 +224,8 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                 throw new RuntimeException( e );
             }
         }
+
+        AtomicReference<X509Certificate[]> serverCertificates = new AtomicReference<>();
 
         InnerRunnable runnable = new InnerRunnable()
         {
@@ -233,6 +240,18 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     // Connecting
                     ldapConnection = new LdapNetworkConnection( ldapConnectionConfig );
                     boolean connected = ldapConnection.connect();
+
+                    // Establish TLS layer if TLS is enabled and SSL is not
+                    if ( ldapConnectionConfig.isUseTls() && !ldapConnectionConfig.isUseSsl() )
+                    {
+                        ldapConnection.startTls();
+                    }
+
+                    // Capture the server certificates
+                    if ( studioTrustmanager.get() != null )
+                    {
+                        serverCertificates.set( studioTrustmanager.get().getChain() );
+                    }
 
                     if ( !connected )
                     {
@@ -272,6 +291,8 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         {
             throw runnable.getException();
         }
+
+        return serverCertificates.get();
     }
 
 
@@ -1012,6 +1033,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         }
     }
 
+
     @Override
     public ExtendedResponse extended( ExtendedRequest request, StudioProgressMonitor monitor )
     {
@@ -1081,7 +1103,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         protected StudioLdapException exception = null;
         protected boolean canceled = false;
 
-
         /**
          * Gets the exception.
          * 
@@ -1134,7 +1155,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
 
     }
 
-
     private boolean checkAndHandleReferral( ResultResponse response, StudioProgressMonitor monitor,
         ReferralsInfo referralsInfo, ReferralHandlingDataConsumer consumer ) throws LdapException
     {
@@ -1180,7 +1200,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         String referralDn;
         ReferralsInfo newReferralsInfo;
 
-
         ReferralHandlingData( ConnectionWrapper connectionWrapper, String referralDn, ReferralsInfo newReferralsInfo )
         {
             this.connectionWrapper = connectionWrapper;
@@ -1188,7 +1207,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
             this.newReferralsInfo = newReferralsInfo;
         }
     }
-
 
     private void checkConnectionAndRunAndMonitor( final InnerRunnable runnable, final StudioProgressMonitor monitor )
         throws Exception
@@ -1282,7 +1300,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         private String krb5LoginModule;
         private AppConfigurationEntry[] configList = null;
 
-
         public InnerConfiguration( String krb5LoginModule )
         {
             this.krb5LoginModule = krb5LoginModule;
@@ -1320,7 +1337,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         {
         }
     }
-
 
     private List<ILdapLogger> getLdapLoggers()
     {

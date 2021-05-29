@@ -36,6 +36,7 @@ public class NewConnectionWizardBot extends WizardBot
     private static final String PORT = "Port:";
     private static final String CHECK_AUTHENTICATION = "Check Authentication";
     private static final String CHECK_NETWORK_PARAMETER = "Check Network Parameter";
+    private static final String VIEW_CERTIFICATE = "View Certificate...";
     private static final String BASE_DN = "Base DN:";
     private static final String GET_BASE_DNS_FROM_ROOT_DSE = "Get base DNs from Root DSE";
     private static final String SAVE_PASSWORD = "Save password";
@@ -49,7 +50,7 @@ public class NewConnectionWizardBot extends WizardBot
     private static final String SIMPLE_AUTHENTICATION = "Simple Authentication";
     private static final String AUTHENTICATION_METHOD = "Authentication Method";
     private static final String ENCRYPTION_METHOD = "Encryption method:";
-    private static final String NO_ENCRYPTION = "No Encryption";
+    private static final String NO_ENCRYPTION = "No encryption";
     private static final String START_TLS_ENCRYPTION = "Use StartTLS extension";
     private static final String LDAPS_ENCRYPTION = "Use SSL encryption (ldaps://)";
     private static final String USE_NATIVE_TGT = "Use native TGT";
@@ -60,7 +61,6 @@ public class NewConnectionWizardBot extends WizardBot
     private static final String KERBEROS_REALM = "Kerberos Realm:";
     private static final String KDC_HOST = "KDC Host:";
     private static final String KDC_PORT = "KDC Port:";
-
 
     public NewConnectionWizardBot()
     {
@@ -367,6 +367,25 @@ public class NewConnectionWizardBot extends WizardBot
     {
         SWTBotCombo dnCombo = bot.comboBoxWithLabel( BASE_DN );
         dnCombo.setText( baseDn );
+    }
+
+
+    public boolean isViewCertificateButtonEnabled()
+    {
+        return bot.button( VIEW_CERTIFICATE ).isEnabled();
+    }
+
+
+    public CertificateViewerDialogBot clickViewCertificateButton()
+    {
+        bot.button( VIEW_CERTIFICATE ).click();
+        return new CertificateViewerDialogBot();
+    }
+
+
+    public boolean isCheckNetworkParameterButtonEnabled()
+    {
+        return bot.button( CHECK_NETWORK_PARAMETER ).isEnabled();
     }
 
 

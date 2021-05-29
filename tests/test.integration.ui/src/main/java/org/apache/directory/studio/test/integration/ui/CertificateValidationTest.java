@@ -59,6 +59,7 @@ import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
 import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
 import org.apache.directory.studio.test.integration.ui.bots.CertificateTrustDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.CertificateValidationPreferencePageBot;
+import org.apache.directory.studio.test.integration.ui.bots.CertificateViewerDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.CheckAuthenticationDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.ErrorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewConnectionWizardBot;
@@ -333,11 +334,24 @@ public class CertificateValidationTest extends AbstractTestBase
     public void testLdapsCertificateValidationOK( ApacheDirectoryServer server ) throws Exception
     {
         server.setKeystore( VALID_KEYSTORE_PATH );
-        wizardBotWithLdaps( server );
+        wizardBotWithLdaps( server, false );
 
         // check the certificate, should be OK
-        String result = wizardBot.clickCheckAuthenticationButton();
+        String result = wizardBot.clickCheckNetworkParameterButton();
         assertNull( result, "Expected OK, valid and trusted certificate" );
+
+        // view the certificate
+        CertificateViewerDialogBot certificateViewerBot = wizardBot.clickViewCertificateButton();
+        certificateViewerBot.clickCloseButton();
+
+        // enter correct authentication parameter
+        wizardBot.clickNextButton();
+        wizardBot.typeUser( "uid=admin,ou=system" );
+        wizardBot.typePassword( "secret" );
+
+        // check the certificate again, should be OK
+        String result2 = wizardBot.clickCheckAuthenticationButton();
+        assertNull( result2, "Expected OK, valid and trusted certificate" );
 
         wizardBot.clickCancelButton();
     }
@@ -351,11 +365,11 @@ public class CertificateValidationTest extends AbstractTestBase
     public void testLdapsCertificateValidationExpired( ApacheDirectoryServer server ) throws Exception
     {
         server.setKeystore( EXPIRED_KEYSTORE_PATH );
-        wizardBotWithLdaps( server );
+        wizardBotWithLdaps( server, false );
 
         // check the certificate, expecting the trust dialog
         CertificateTrustDialogBot trustDialogBot = wizardBot
-            .clickCheckAuthenticationButtonExpectingCertificateTrustDialog();
+            .clickCheckNetworkParameterButtonExpectingCertificateTrustDialog();
         assertTrue( trustDialogBot.isExpired() );
         assertFalse( trustDialogBot.isSelfSigned() );
         assertFalse( trustDialogBot.isNotYetValid() );
@@ -378,7 +392,7 @@ public class CertificateValidationTest extends AbstractTestBase
     @LdapServersSource
     public void testLdapsCertificateDoNotTrust( TestLdapServer server ) throws Exception
     {
-        wizardBotWithLdaps( server );
+        wizardBotWithLdaps( server, true );
 
         // check trust, expect trust dialog, select don't trust
         CertificateTrustDialogBot trustDialogBot = wizardBot
@@ -423,7 +437,7 @@ public class CertificateValidationTest extends AbstractTestBase
     @LdapServersSource
     public void testLdapsCertificateTrustTemporary( TestLdapServer server ) throws Exception
     {
-        wizardBotWithLdaps( server );
+        wizardBotWithLdaps( server, true );
 
         // check trust, expect trust dialog, select trust temporary
         CertificateTrustDialogBot trustDialogBot = wizardBot
@@ -456,7 +470,7 @@ public class CertificateValidationTest extends AbstractTestBase
     @LdapServersSource
     public void testLdapsCertificateTrustPermanent( TestLdapServer server ) throws Exception
     {
-        wizardBotWithLdaps( server );
+        wizardBotWithLdaps( server, true );
 
         // check trust, expect trust dialog, select trust temporary
         CertificateTrustDialogBot trustDialogBot = wizardBot
@@ -502,6 +516,10 @@ public class CertificateValidationTest extends AbstractTestBase
         String result = wizardBot.clickCheckNetworkParameterButton();
         assertNull( result, "Expected OK, valid and trusted certificate" );
 
+        // view the certificate
+        CertificateViewerDialogBot certificateViewerBot = wizardBot.clickViewCertificateButton();
+        certificateViewerBot.clickCloseButton();
+
         // enter correct authentication parameter
         wizardBot.clickNextButton();
         wizardBot.typeUser( "uid=admin,ou=system" );
@@ -523,11 +541,11 @@ public class CertificateValidationTest extends AbstractTestBase
     public void testStartTlsCertificateValidationSmallKeysizeError( ApacheDirectoryServer server ) throws Exception
     {
         server.setKeystore( SMALL_KEYSIZE_KEYSTORE_PATH );
-        wizardBotWithStartTls( server );
+        wizardBotWithStartTls( server, false );
 
         // check the certificate, expecting the trust dialog
         CertificateTrustDialogBot trustDialogBot = wizardBot
-            .clickCheckAuthenticationButtonExpectingCertificateTrustDialog();
+            .clickCheckNetworkParameterButtonExpectingCertificateTrustDialog();
         assertFalse( trustDialogBot.isExpired() );
         assertFalse( trustDialogBot.isSelfSigned() );
         assertFalse( trustDialogBot.isNotYetValid() );
@@ -550,11 +568,11 @@ public class CertificateValidationTest extends AbstractTestBase
     public void testStartTlsCertificateValidationExpired( ApacheDirectoryServer server ) throws Exception
     {
         server.setKeystore( EXPIRED_KEYSTORE_PATH );
-        wizardBotWithStartTls( server );
+        wizardBotWithStartTls( server, false );
 
         // check the certificate, expecting the trust dialog
         CertificateTrustDialogBot trustDialogBot = wizardBot
-            .clickCheckAuthenticationButtonExpectingCertificateTrustDialog();
+            .clickCheckNetworkParameterButtonExpectingCertificateTrustDialog();
         assertTrue( trustDialogBot.isExpired() );
         assertFalse( trustDialogBot.isSelfSigned() );
         assertFalse( trustDialogBot.isNotYetValid() );
@@ -575,7 +593,7 @@ public class CertificateValidationTest extends AbstractTestBase
     public void testStartTlsCertificateValidationNotYetValid( ApacheDirectoryServer server ) throws Exception
     {
         server.setKeystore( NOT_YET_VALID_KEYSTORE_PATH );
-        wizardBotWithStartTls( server );
+        wizardBotWithStartTls( server, true );
 
         // check the certificate, expecting the trust dialog
         CertificateTrustDialogBot trustDialogBot = wizardBot
@@ -601,7 +619,7 @@ public class CertificateValidationTest extends AbstractTestBase
     public void testStartTlsCertificateValidationHostnameMismatch( ApacheDirectoryServer server ) throws Exception
     {
         server.setKeystore( WRONG_HOSTNAME_KEYSTORE_PATH );
-        wizardBotWithStartTls( server );
+        wizardBotWithStartTls( server, true );
 
         // check the certificate, expecting the trust dialog
         CertificateTrustDialogBot trustDialogBot = wizardBot
@@ -627,7 +645,7 @@ public class CertificateValidationTest extends AbstractTestBase
         throws Exception
     {
         server.setKeystore( UNTRUSTED_KEYSTORE_PATH );
-        wizardBotWithStartTls( server );
+        wizardBotWithStartTls( server, true );
 
         // check the certificate, expecting the trust dialog
         CertificateTrustDialogBot trustDialogBot = wizardBot
@@ -653,7 +671,7 @@ public class CertificateValidationTest extends AbstractTestBase
     public void testStartTlsCertificateValidationSelfSigned( ApacheDirectoryServer server ) throws Exception
     {
         server.setKeystore( SELF_SIGNED_KEYSTORE_PATH );
-        wizardBotWithStartTls( server );
+        wizardBotWithStartTls( server, true );
 
         // check the certificate, expecting the trust dialog
         CertificateTrustDialogBot trustDialogBot = wizardBot
@@ -680,7 +698,7 @@ public class CertificateValidationTest extends AbstractTestBase
         throws Exception
     {
         server.setKeystore( MULTIPLE_ISSUES_KEYSTORE_PATH );
-        wizardBotWithStartTls( server );
+        wizardBotWithStartTls( server, true );
 
         // check the certificate, expecting the trust dialog
         CertificateTrustDialogBot trustDialogBot = wizardBot
@@ -705,7 +723,7 @@ public class CertificateValidationTest extends AbstractTestBase
     @LdapServersSource
     public void testStartTlsCertificateDoNotTrust( TestLdapServer server ) throws Exception
     {
-        wizardBotWithStartTls( server );
+        wizardBotWithStartTls( server, true );
 
         // check trust, expect trust dialog, select don't trust
         CertificateTrustDialogBot trustDialogBot = wizardBot
@@ -760,7 +778,7 @@ public class CertificateValidationTest extends AbstractTestBase
     @LdapServersSource
     public void testStartTlsCertificateTrustTemporary( TestLdapServer server ) throws Exception
     {
-        wizardBotWithStartTls( server );
+        wizardBotWithStartTls( server, true );
 
         // check trust, expect trust dialog, select trust temporary
         CertificateTrustDialogBot trustDialogBot = wizardBot
@@ -802,7 +820,7 @@ public class CertificateValidationTest extends AbstractTestBase
     @LdapServersSource
     public void testStartTlsCertificateTrustPermanent( TestLdapServer server ) throws Exception
     {
-        wizardBotWithStartTls( server );
+        wizardBotWithStartTls( server, true );
 
         // check trust, expect trust dialog, select trust temporary
         CertificateTrustDialogBot trustDialogBot = wizardBot
@@ -836,7 +854,7 @@ public class CertificateValidationTest extends AbstractTestBase
     }
 
 
-    private void wizardBotWithLdaps( TestLdapServer server )
+    private void wizardBotWithLdaps( TestLdapServer server, boolean continueToAuthenticationPage )
     {
         // enter connection parameter and authentication parameter
         wizardBot = connectionsViewBot.openNewConnectionWizard();
@@ -844,13 +862,16 @@ public class CertificateValidationTest extends AbstractTestBase
         wizardBot.typeHost( server.getHost() );
         wizardBot.typePort( server.getPortSSL() );
         wizardBot.selectLdapsEncryption();
-        wizardBot.clickNextButton();
-        wizardBot.typeUser( server.getAdminDn() );
-        wizardBot.typePassword( server.getAdminPassword() );
+        if ( continueToAuthenticationPage )
+        {
+            wizardBot.clickNextButton();
+            wizardBot.typeUser( server.getAdminDn() );
+            wizardBot.typePassword( server.getAdminPassword() );
+        }
     }
 
 
-    private void wizardBotWithStartTls( TestLdapServer server )
+    private void wizardBotWithStartTls( TestLdapServer server, boolean continueToAuthenticationPage )
     {
         // enter connection parameter and authentication parameter
         wizardBot = connectionsViewBot.openNewConnectionWizard();
@@ -858,9 +879,12 @@ public class CertificateValidationTest extends AbstractTestBase
         wizardBot.typeHost( server.getHost() );
         wizardBot.typePort( server.getPort() );
         wizardBot.selectStartTlsEncryption();
-        wizardBot.clickNextButton();
-        wizardBot.typeUser( server.getAdminDn() );
-        wizardBot.typePassword( server.getAdminPassword() );
+        if ( continueToAuthenticationPage )
+        {
+            wizardBot.clickNextButton();
+            wizardBot.typeUser( server.getAdminDn() );
+            wizardBot.typePassword( server.getAdminPassword() );
+        }
     }
 
 
