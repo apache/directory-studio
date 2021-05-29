@@ -24,6 +24,8 @@ package org.apache.directory.studio.test.integration.junit5;
 import static org.apache.directory.studio.test.integration.junit5.Constants.LOCALHOST;
 
 import java.io.File;
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 import org.apache.directory.server.core.api.DirectoryService;
 import org.apache.directory.server.core.api.partition.Partition;
@@ -32,6 +34,9 @@ import org.apache.directory.server.ldap.LdapServer;
 import org.apache.directory.server.ldap.handlers.extended.PwdModifyHandler;
 import org.apache.directory.server.ldap.handlers.extended.StartTlsHandler;
 import org.apache.directory.server.ldap.handlers.extended.WhoAmIHandler;
+import org.apache.directory.server.ldap.handlers.sasl.SimpleMechanismHandler;
+import org.apache.directory.server.ldap.handlers.sasl.cramMD5.CramMd5MechanismHandler;
+import org.apache.directory.server.ldap.handlers.sasl.digestMD5.DigestMd5MechanismHandler;
 import org.apache.directory.server.protocol.shared.transport.TcpTransport;
 import org.apache.directory.server.protocol.shared.transport.Transport;
 import org.apache.mina.util.AvailablePortFinder;
@@ -77,6 +82,11 @@ public class ApacheDirectoryServer extends TestLdapServer
             partition.initialize();
             service.addPartition( partition );
             service.getSchemaManager().enable( "nis", "krb5kdc" );
+            service.getInterceptor( "passwordHashingInterceptor" );
+            service.setInterceptors( service.getInterceptors().stream()
+                .filter( i -> !i.getName().equals( "ConfigurableHashingInterceptor" ) )
+                .collect( Collectors.toList() ) );
+            System.out.println( service.getInterceptors() );
 
             server = new LdapServer();
             server.setDirectoryService( service );
@@ -85,6 +95,13 @@ public class ApacheDirectoryServer extends TestLdapServer
             Transport ldaps = new TcpTransport( portSSL );
             ldaps.setEnableSSL( true );
             server.addTransports( ldaps );
+
+            server.addSaslMechanismHandler( "SIMPLE", new SimpleMechanismHandler() );
+            server.addSaslMechanismHandler( "DIGEST-MD5", new DigestMd5MechanismHandler() );
+            server.setSaslRealms( Collections.singletonList( "EXAMPLE.ORG" ) );
+            server.setSaslHost( getHost() );
+            server.setSearchBaseDn( TestFixture.CONTEXT_DN.getName() );
+
             server.addExtendedOperationHandler( new StartTlsHandler() );
             server.addExtendedOperationHandler( new PwdModifyHandler() );
             server.addExtendedOperationHandler( new WhoAmIHandler() );

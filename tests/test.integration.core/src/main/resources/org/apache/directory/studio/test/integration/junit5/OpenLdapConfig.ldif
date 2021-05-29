@@ -23,3 +23,21 @@ olcAccess: {0}to * by dn.exact=gidNumber=0+uidNumber=0,cn=peercred,cn=external
 olcAccess: {1}to dn.exact="" by * read
 olcAccess: {2}to dn.base="cn=Subschema" by dn.exact="uid=user.1,ou=users,dc=example,dc=org" none by * read
 -
+
+dn: olcDatabase={1}mdb,cn=config
+changetype: modify
+replace: olcAccess
+olcAccess: {0}to * by dn.exact=gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth manage by * break
+olcAccess: {1}to attrs=userPassword,shadowLastChange by self write by dn="cn=a dmin,dc=example,dc=org" write by anonymous auth by * none
+olcAccess: {2}to * by self read by dn="cn=admin,dc=example,dc=org" write by anonymous auth by * none
+-
+
+dn: cn=config
+changetype: modify
+replace: olcAuthzRegexp
+olcAuthzRegexp: uid=([^,]*),cn=digest-md5,cn=auth uid=$1,ou=users,dc=example,dc=org
+-
+replace: olcSaslSecProps
+olcSaslSecProps: noplain,noanonymous,minssf=128
+-
+

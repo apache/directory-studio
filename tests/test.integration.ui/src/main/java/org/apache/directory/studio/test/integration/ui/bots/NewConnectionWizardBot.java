@@ -20,6 +20,8 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
+import org.apache.directory.api.ldap.model.constants.SaslQoP;
+import org.apache.directory.api.ldap.model.constants.SaslSecurityStrength;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.test.integration.ui.utils.JobWatcher;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
@@ -41,6 +43,8 @@ public class NewConnectionWizardBot extends WizardBot
     private static final String GET_BASE_DNS_FROM_ROOT_DSE = "Get base DNs from Root DSE";
     private static final String SAVE_PASSWORD = "Save password";
     private static final String SASL_REALM = "SASL Realm:";
+    private static final String SASL_QUALITY_OF_PROTECTION = "Quality of Protection:";
+    private static final String SASL_PROTECTION_STRENGH = "Protection Strength:";
     private static final String BIND_PASSWORD = "Bind password:";
     private static final String BIND_DN_OR_USER = "Bind DN or user:";
     private static final String CRAM_MD5_SASL = "CRAM-MD5 (SASL)";
@@ -208,8 +212,44 @@ public class NewConnectionWizardBot extends WizardBot
 
     public void typeRealm( String realm )
     {
-        SWTBotCombo dnCombo = bot.comboBoxWithLabel( SASL_REALM );
-        dnCombo.setText( realm );
+        SWTBotCombo combo = bot.comboBoxWithLabel( SASL_REALM );
+        combo.setText( realm );
+    }
+
+
+    public void selectQualityOfProtection( SaslQoP saslQoP )
+    {
+        SWTBotCombo combo = bot.comboBoxWithLabel( SASL_QUALITY_OF_PROTECTION );
+        switch ( saslQoP )
+        {
+            case AUTH:
+                combo.setSelection( 0 );
+                break;
+            case AUTH_INT:
+                combo.setSelection( 1 );
+                break;
+            case AUTH_CONF:
+                combo.setSelection( 2 );
+                break;
+        }
+    }
+
+
+    public void selectProtectionStrength( SaslSecurityStrength saslSecurityStrength )
+    {
+        SWTBotCombo combo = bot.comboBoxWithLabel( SASL_PROTECTION_STRENGH );
+        switch ( saslSecurityStrength )
+        {
+            case HIGH:
+                combo.setSelection( 0 );
+                break;
+            case MEDIUM:
+                combo.setSelection( 1 );
+                break;
+            case LOW:
+                combo.setSelection( 2 );
+                break;
+        }
     }
 
 
