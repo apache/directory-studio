@@ -107,20 +107,6 @@ public class CertificateValidationTest extends AbstractTestBase
     @AfterEach
     public void tearDown() throws Exception
     {
-        // delete custom trust stores
-        X509Certificate[] permanentCertificates = ConnectionCorePlugin.getDefault().getPermanentTrustStoreManager()
-            .getCertificates();
-        for ( X509Certificate certificate : permanentCertificates )
-        {
-            ConnectionCorePlugin.getDefault().getPermanentTrustStoreManager().removeCertificate( certificate );
-        }
-        X509Certificate[] temporaryCertificates = ConnectionCorePlugin.getDefault().getSessionTrustStoreManager()
-            .getCertificates();
-        for ( X509Certificate certificate : temporaryCertificates )
-        {
-            ConnectionCorePlugin.getDefault().getSessionTrustStoreManager().removeCertificate( certificate );
-        }
-
         // delete custom Java key store settings
         System.clearProperty( "javax.net.ssl.trustStore" );
         System.clearProperty( "javax.net.ssl.trustStorePassword" );

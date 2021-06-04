@@ -36,8 +36,9 @@ dn: cn=config
 changetype: modify
 replace: olcAuthzRegexp
 olcAuthzRegexp: uid=([^,]*),cn=digest-md5,cn=auth uid=$1,ou=users,dc=example,dc=org
+olcAuthzRegexp: uid=([^,]*),cn=cram-md5,cn=auth uid=$1,ou=users,dc=example,dc=org
 -
 replace: olcSaslSecProps
-olcSaslSecProps: noplain,noanonymous,minssf=128
+olcSaslSecProps: noplain,noanonymous,minssf=0
 -
 

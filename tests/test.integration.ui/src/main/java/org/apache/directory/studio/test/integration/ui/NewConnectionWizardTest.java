@@ -21,7 +21,6 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -40,11 +39,13 @@ import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionManager;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
-import org.apache.directory.studio.test.integration.junit5.Constants;
+import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
 import org.apache.directory.studio.test.integration.junit5.LdapServerType;
 import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
 import org.apache.directory.studio.test.integration.junit5.LdapServersSource.Mode;
 import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
+import org.apache.directory.studio.test.integration.ui.bots.CertificateTrustDialogBot;
+import org.apache.directory.studio.test.integration.ui.bots.ErrorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewConnectionWizardBot;
 import org.apache.mina.util.AvailablePortFinder;
 import org.junit.jupiter.api.BeforeEach;
@@ -342,17 +343,56 @@ public class NewConnectionWizardTest extends AbstractTestBase
     }
 
 
-    /**
-     * Creates a new connection using the new connection wizard.
-     */
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All)
+    public void testCreateConnectionNoEncryptionNoAuthOK( TestLdapServer server )
+    {
+        setConnectionParameters( server, EncryptionMethod.NONE );
+
+        wizardBot.selectNoAuthentication();
+
+        finishAndAssertConnection( server, EncryptionMethod.NONE, AuthenticationMethod.NONE, "", "" );
+    }
+
+
     @ParameterizedTest
     @LdapServersSource
-    public void testCreateConnection( TestLdapServer server )
+    public void testCreateConnectionNoEncryptionNoAuthInvalidHostname( TestLdapServer server )
+    {
+        setConnectionParameters( server, EncryptionMethod.NONE );
+
+        wizardBot.clickBackButton();
+        String hostname = getInvalidHostName();
+        wizardBot.typeHost( hostname );
+        wizardBot.clickNextButton();
+        wizardBot.selectNoAuthentication();
+
+        finishAndAssertConnectionError( hostname );
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All)
+    public void testCreateConnectionNoEncryptionSimpleAuthOK( TestLdapServer server ) throws UnknownHostException
     {
         // enter connection parameter
         wizardBot.typeConnectionName( getConnectionName() );
         wizardBot.typeHost( server.getHost() );
         wizardBot.typePort( server.getPort() );
+
+        // click "Check Network Parameter" button
+        String result = wizardBot.clickCheckNetworkParameterButton();
+        assertNull( result, "Expected OK" );
+
+        // enter IPv4 address as host
+        wizardBot.typeHost( InetAddress.getByName( server.getHost() ).getHostAddress() );
+
+        // click "Check Network Parameter" button
+        result = wizardBot.clickCheckNetworkParameterButton();
+        assertNull( result, "Expected OK" );
+
+        // enter hostname as host again
+        wizardBot.typeHost( server.getHost() );
 
         // jump to auth page
         wizardBot.clickNextButton();
@@ -361,8 +401,405 @@ public class NewConnectionWizardTest extends AbstractTestBase
         wizardBot.typeUser( server.getAdminDn() );
         wizardBot.typePassword( server.getAdminPassword() );
 
-        // finish dialog
+        // click "Check Network Parameter" button
+        result = wizardBot.clickCheckAuthenticationButton();
+        assertNull( result, "Expected OK" );
+
+        finishAndAssertConnection( server, EncryptionMethod.NONE, AuthenticationMethod.SIMPLE,
+            server.getAdminDn(), server.getAdminPassword() );
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All)
+    public void testCreateConnectionNoEncryptionSimpleAuthConfidentialityRequired( TestLdapServer server )
+
+    {
+        setConnectionParameters( server, EncryptionMethod.NONE );
+
+        wizardBot.selectSimpleAuthentication();
+        wizardBot.typeUser( server.getAdminDn() );
+        wizardBot.typePassword( server.getAdminPassword() );
+
+        server.setConfidentialityRequired( true );
+
+        String result = wizardBot.clickCheckAuthenticationButton();
+        assertThat( result, containsString( "[LDAP result code 13 - confidentialityRequired]" ) );
+
+        finishAndAssertConnectionError( "[LDAP result code 13 - confidentialityRequired]" );
+
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All, except = LdapServerType.Fedora389ds, reason = "SASL not configured for 389ds")
+    public void testCreateConnectionNoEncryptionSaslCramMd5OK( TestLdapServer server )
+    {
+        setConnectionParameters( server, EncryptionMethod.NONE );
+
+        wizardBot.selectCramMD5Authentication();
+        wizardBot.typeUser( "user.1" );
+        wizardBot.typePassword( "password" );
+        wizardBot.selectQualityOfProtection( SaslQoP.AUTH );
+        wizardBot.selectProtectionStrength( SaslSecurityStrength.HIGH );
+
+        String result = wizardBot.clickCheckAuthenticationButton();
+        assertNull( result, "Expected OK" );
+
+        finishAndAssertConnection( server, EncryptionMethod.NONE, AuthenticationMethod.SASL_CRAM_MD5,
+            "user.1", "password" );
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All, except = LdapServerType.Fedora389ds, reason = "SASL not configured for 389ds")
+    public void testCreateConnectionNoEncryptionSaslDigestMd5OK( TestLdapServer server )
+    {
+        setConnectionParameters( server, EncryptionMethod.NONE );
+
+        wizardBot.selectDigestMD5Authentication();
+        wizardBot.typeUser( "user.1" );
+        wizardBot.typePassword( "password" );
+        if ( server.getType() == LdapServerType.ApacheDS )
+        {
+            wizardBot.typeRealm( "EXAMPLE.ORG" );
+        }
+        wizardBot.selectQualityOfProtection( SaslQoP.AUTH );
+        wizardBot.selectProtectionStrength( SaslSecurityStrength.HIGH );
+
+        String result = wizardBot.clickCheckAuthenticationButton();
+        assertNull( result, "Expected OK" );
+
+        finishAndAssertConnection( server, EncryptionMethod.NONE, AuthenticationMethod.SASL_DIGEST_MD5,
+            "user.1", "password" );
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All, except = LdapServerType.Fedora389ds, reason = "SASL not configured for 389ds")
+    public void testCreateConnectionNoEncryptionSaslDigestMd5ConfidentialityRequired( TestLdapServer server )
+    {
+        setConnectionParameters( server, EncryptionMethod.NONE );
+
+        wizardBot.selectDigestMD5Authentication();
+        wizardBot.typeUser( "user.1" );
+        wizardBot.typePassword( "password" );
+        wizardBot.selectQualityOfProtection( SaslQoP.AUTH );
+        wizardBot.selectProtectionStrength( SaslSecurityStrength.HIGH );
+
+        server.setConfidentialityRequired( true );
+
+        finishAndAssertConnectionError( "[LDAP result code 13 - confidentialityRequired]" );
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All)
+    public void testCreateConnectionLdapsEncryptionNoAuthOK( TestLdapServer server )
+    {
+        setConnectionParameters( server, EncryptionMethod.LDAPS );
+
+        wizardBot.selectNoAuthentication();
+
+        finishAndAssertConnection( server, EncryptionMethod.LDAPS, AuthenticationMethod.NONE, "", "" );
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All)
+    public void testCreateConnectionLdapsEncryptionSimpleAuthOK( TestLdapServer server )
+    {
+        setConnectionParameters( server, EncryptionMethod.LDAPS );
+
+        wizardBot.typeUser( server.getAdminDn() );
+        wizardBot.typePassword( server.getAdminPassword() );
+
+        finishAndAssertConnection( server, EncryptionMethod.LDAPS, AuthenticationMethod.SIMPLE,
+            server.getAdminDn(), server.getAdminPassword() );
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All)
+    public void testCreateConnectionLdapsEncryptionSimpleAuthInvalidCredentials( TestLdapServer server )
+    {
+        setConnectionParameters( server, EncryptionMethod.LDAPS );
+
+        wizardBot.selectSimpleAuthentication();
+        wizardBot.typeUser( "cn=invalid" );
+        wizardBot.typePassword( "invalid" );
+
+        String result = wizardBot.clickCheckAuthenticationButton();
+        assertThat( result, containsString( "[LDAP result code 49 - invalidCredentials]" ) );
+
+        finishAndAssertConnectionError( "[LDAP result code 49 - invalidCredentials]" );
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All, except = LdapServerType.Fedora389ds, reason = "SASL not configured for 389ds")
+    public void testCreateConnectionLdapsEncryptionSaslDigestMd5Ok( TestLdapServer server )
+    {
+        setConnectionParameters( server, EncryptionMethod.LDAPS );
+
+        wizardBot.selectDigestMD5Authentication();
+        wizardBot.typeUser( "user.1" );
+        wizardBot.typePassword( "password" );
+        if ( server.getType() == LdapServerType.ApacheDS )
+        {
+            wizardBot.typeRealm( "EXAMPLE.ORG" );
+        }
+        wizardBot.selectQualityOfProtection( SaslQoP.AUTH );
+        wizardBot.selectProtectionStrength( SaslSecurityStrength.HIGH );
+
+        finishAndAssertConnection( server, EncryptionMethod.LDAPS, AuthenticationMethod.SASL_DIGEST_MD5,
+            "user.1", "password" );
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All, except = LdapServerType.Fedora389ds, reason = "SASL not configured for 389ds")
+    public void testCreateConnectionLdapsEncryptionSaslDigestMd5InvalidCredentials( TestLdapServer server )
+    {
+        setConnectionParameters( server, EncryptionMethod.LDAPS );
+
+        wizardBot.selectDigestMD5Authentication();
+        wizardBot.typeUser( "user.1" );
+        wizardBot.typePassword( "invalid" );
+        if ( server.getType() == LdapServerType.ApacheDS )
+        {
+            wizardBot.typeRealm( "EXAMPLE.ORG" );
+        }
+        wizardBot.selectQualityOfProtection( SaslQoP.AUTH );
+        wizardBot.selectProtectionStrength( SaslSecurityStrength.HIGH );
+
+        String result = wizardBot.clickCheckAuthenticationButton();
+        assertThat( result, containsString( "[LDAP result code 49 - invalidCredentials]" ) );
+
+        finishAndAssertConnectionError( "[LDAP result code 49 - invalidCredentials]" );
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All, except = LdapServerType.Fedora389ds, reason = "SASL not configured for 389ds")
+    public void testCreateConnectionLdapsEncryptionSaslDigestMd5InvalidRealm( TestLdapServer server )
+    {
+        setConnectionParameters( server, EncryptionMethod.LDAPS );
+
+        wizardBot.selectDigestMD5Authentication();
+        wizardBot.typeUser( "user.1" );
+        wizardBot.typePassword( "password" );
+        wizardBot.typeRealm( "APACHE.ORG" );
+        wizardBot.selectQualityOfProtection( SaslQoP.AUTH );
+        wizardBot.selectProtectionStrength( SaslSecurityStrength.HIGH );
+
+        String result = wizardBot.clickCheckAuthenticationButton();
+        assertThat( result, containsString( "[LDAP result code" ) );
+
+        finishAndAssertConnectionError( "[LDAP result code" );
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All)
+    public void testCreateConnectionStartTlsEncryptionNoAuthOK( TestLdapServer server )
+    {
+        setConnectionParameters( server, EncryptionMethod.START_TLS );
+
+        wizardBot.selectNoAuthentication();
+
+        finishAndAssertConnection( server, EncryptionMethod.START_TLS, AuthenticationMethod.NONE, "", "" );
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All)
+    public void testCreateConnectionStartTlsEncryptionSimpleAuthOK( TestLdapServer server )
+    {
+        setConnectionParameters( server, EncryptionMethod.START_TLS );
+
+        wizardBot.typeUser( server.getAdminDn() );
+        wizardBot.typePassword( server.getAdminPassword() );
+
+        finishAndAssertConnection( server, EncryptionMethod.START_TLS, AuthenticationMethod.SIMPLE,
+            server.getAdminDn(), server.getAdminPassword() );
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All)
+    public void testCreateConnectionStartTlsEncryptionSimpleAuthInvalidCredentials( TestLdapServer server )
+    {
+        setConnectionParameters( server, EncryptionMethod.START_TLS );
+
+        wizardBot.selectSimpleAuthentication();
+        wizardBot.typeUser( "cn=invalid" );
+        wizardBot.typePassword( "invalid" );
+
+        String result = wizardBot.clickCheckAuthenticationButton();
+        assertThat( result, containsString( "[LDAP result code 49 - invalidCredentials]" ) );
+
+        finishAndAssertConnectionError( "[LDAP result code 49 - invalidCredentials]" );
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All, except = LdapServerType.Fedora389ds, reason = "SASL not configured for 389ds")
+    public void testCreateConnectionStartTlsEncryptionSaslDigestMd5OK( TestLdapServer server )
+    {
+        setConnectionParameters( server, EncryptionMethod.START_TLS );
+
+        wizardBot.selectDigestMD5Authentication();
+        wizardBot.typeUser( "user.1" );
+        wizardBot.typePassword( "password" );
+        if ( server.getType() == LdapServerType.ApacheDS )
+        {
+            wizardBot.typeRealm( "EXAMPLE.ORG" );
+        }
+        wizardBot.selectQualityOfProtection( SaslQoP.AUTH );
+        wizardBot.selectProtectionStrength( SaslSecurityStrength.HIGH );
+
+        finishAndAssertConnection( server, EncryptionMethod.START_TLS, AuthenticationMethod.SASL_DIGEST_MD5,
+            "user.1", "password" );
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All, except = LdapServerType.Fedora389ds, reason = "SASL not configured for 389ds")
+    public void testCreateConnectionStartTlsEncryptionSaslDigestMd5InvalidCredentials( TestLdapServer server )
+    {
+        setConnectionParameters( server, EncryptionMethod.START_TLS );
+
+        wizardBot.selectDigestMD5Authentication();
+        wizardBot.typeUser( "user.1" );
+        wizardBot.typePassword( "invalid" );
+        if ( server.getType() == LdapServerType.ApacheDS )
+        {
+            wizardBot.typeRealm( "EXAMPLE.ORG" );
+        }
+        wizardBot.selectQualityOfProtection( SaslQoP.AUTH );
+        wizardBot.selectProtectionStrength( SaslSecurityStrength.HIGH );
+
+        String result = wizardBot.clickCheckAuthenticationButton();
+        assertThat( result, containsString( "[LDAP result code 49 - invalidCredentials]" ) );
+
+        finishAndAssertConnectionError( "[LDAP result code 49 - invalidCredentials]" );
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All)
+    public void testCheckNetworkParameterButtonNoEncryptionNotOk( TestLdapServer server )
+    {
+        setConnectionParameters( server, EncryptionMethod.NONE );
+        wizardBot.clickBackButton();
+
+        // Invalid port
+        wizardBot.typePort( getInvalidPort() );
+        String result = wizardBot.clickCheckNetworkParameterButton();
+        assertThat( result, containsString( "The connection failed" ) );
+
+        // Invalid host
+        String hostname = getInvalidHostName();
+        wizardBot.typeHost( hostname );
+        result = wizardBot.clickCheckNetworkParameterButton();
+        assertThat( result, containsString( "The connection failed" ) );
+        assertThat( "Unknown host name must occur in error message", result, containsString( hostname ) );
+
+        wizardBot.clickCancelButton();
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All)
+    public void testCheckNetworkParameterButtonLdapsEncryptionNotOk( TestLdapServer server )
+    {
+        setConnectionParameters( server, EncryptionMethod.LDAPS );
+        wizardBot.clickBackButton();
+
+        // Invalid port
+        wizardBot.typePort( getInvalidPort() );
+        String result = wizardBot.clickCheckNetworkParameterButton();
+        assertThat( result, containsString( "The connection failed" ) );
+
+        // Non ldaps port
+        wizardBot.typePort( server.getPort() );
+        result = wizardBot.clickCheckNetworkParameterButton();
+        assertThat( result, containsString( "The connection failed" ) );
+
+        // Invalid host
+        String hostname = getInvalidHostName();
+        wizardBot.typeHost( hostname );
+        result = wizardBot.clickCheckNetworkParameterButton();
+        assertThat( result, containsString( "The connection failed" ) );
+        assertThat( "Unknown host name must occur in error message", result, containsString( hostname ) );
+
+        wizardBot.clickCancelButton();
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All)
+    public void testCheckNetworkParameterButtonStartTlsEncryptionNotOk( TestLdapServer server )
+    {
+        setConnectionParameters( server, EncryptionMethod.START_TLS );
+        wizardBot.clickBackButton();
+
+        // Invalid port
+        wizardBot.typePort( getInvalidPort() );
+        String result = wizardBot.clickCheckNetworkParameterButton();
+        assertThat( result, containsString( "The connection failed" ) );
+
+        // Ldaps port
+        wizardBot.typePort( server.getPortSSL() );
+        result = wizardBot.clickCheckNetworkParameterButton();
+        assertThat( result, containsString( "The connection failed" ) );
+
+        // Invalid host
+        String hostname = getInvalidHostName();
+        wizardBot.typeHost( hostname );
+        result = wizardBot.clickCheckNetworkParameterButton();
+        assertThat( result, containsString( "The connection failed" ) );
+        assertThat( "Unknown host name must occur in error message", result, containsString( hostname ) );
+
+        wizardBot.clickCancelButton();
+    }
+
+
+    private void setConnectionParameters( TestLdapServer server, EncryptionMethod encryptionMethod )
+    {
+        wizardBot.typeConnectionName( getConnectionName() );
+        wizardBot.typeHost( server.getHost() );
+        wizardBot.typePort( encryptionMethod == EncryptionMethod.LDAPS ? server.getPortSSL() : server.getPort() );
+
+        if ( encryptionMethod == EncryptionMethod.LDAPS )
+        {
+            wizardBot.selectLdapsEncryption();
+        }
+        if ( encryptionMethod == EncryptionMethod.START_TLS )
+        {
+            wizardBot.selectStartTlsEncryption();
+        }
+
+        if ( encryptionMethod != EncryptionMethod.NONE )
+        {
+            server.setConfidentialityRequired( true );
+            CertificateTrustDialogBot trustDialog = wizardBot
+                .clickCheckNetworkParameterButtonExpectingCertificateTrustDialog();
+            trustDialog.selectTrustPermanent();
+            trustDialog.clickOkButton();
+            bot.button( "OK" ).click();
+        }
+
+        wizardBot.clickNextButton();
+    }
+
+
+    private void finishAndAssertConnection( TestLdapServer server, EncryptionMethod encryptionMethod,
+        AuthenticationMethod authenticationMethod, String user, String password )
+    {
         wizardBot.clickFinishButton( true );
+
         connectionsViewBot.waitForConnection( getConnectionName() );
 
         // ensure connection was created
@@ -372,10 +809,20 @@ public class NewConnectionWizardTest extends AbstractTestBase
         Connection connection = connectionManager.getConnections()[0];
         assertEquals( getConnectionName(), connection.getName() );
         assertEquals( server.getHost(), connection.getHost() );
-        assertEquals( server.getPort(), connection.getPort() );
-        assertEquals( AuthenticationMethod.SIMPLE, connection.getAuthMethod() );
-        assertEquals( server.getAdminDn(), connection.getBindPrincipal() );
-        assertEquals( server.getAdminPassword(), connection.getBindPassword() );
+        assertEquals( encryptionMethod == EncryptionMethod.LDAPS ? server.getPortSSL() : server.getPort(),
+            connection.getPort() );
+        assertEquals( user, connection.getBindPrincipal() );
+        assertEquals( password, connection.getBindPassword() );
+        assertEquals( authenticationMethod, connection.getAuthMethod() );
+        assertTrue( connection.getConnectionWrapper().isConnected() );
+        if ( encryptionMethod == EncryptionMethod.NONE )
+        {
+            assertFalse( connection.getConnectionWrapper().isSecured() );
+        }
+        else
+        {
+            assertTrue( connection.getConnectionWrapper().isSecured() );
+        }
 
         // ensure connection is visible in Connections view
         assertEquals( 1, connectionsViewBot.getCount() );
@@ -385,237 +832,39 @@ public class NewConnectionWizardTest extends AbstractTestBase
     }
 
 
-    /**
-     * Tests the "Check Network Parameter" button.
-     */
-    @ParameterizedTest
-    @LdapServersSource
-    public void testCheckNetworkParameterButtonOK( TestLdapServer server ) throws UnknownHostException
+    private void finishAndAssertConnectionError( String errorText )
     {
-        // enter connection parameter with host name
-        wizardBot.typeConnectionName( getConnectionName() );
-        wizardBot.typeHost( server.getHost() );
-        wizardBot.typePort( server.getPort() );
+        ErrorDialogBot errorBot = wizardBot.clickFinishButtonExpectingError();
 
-        // click "Check Network Parameter" button
-        String result1 = wizardBot.clickCheckNetworkParameterButton();
-        assertNull( result1, "Expected OK" );
+        String errorMessage = errorBot.getErrorMessage();
+        String errorDetails = errorBot.getErrorDetails();
+        assertNotNull( errorMessage );
+        assertNotNull( errorDetails );
+        assertThat( errorDetails, containsString( errorText ) );
+        errorBot.clickOkButton();
 
-        // enter connection parameter with IPv4 address
-        wizardBot.typeHost( InetAddress.getByName( server.getHost() ).getHostAddress() );
-        wizardBot.typePort( server.getPort() );
+        ConnectionManager connectionManager = ConnectionCorePlugin.getDefault().getConnectionManager();
+        assertNotNull( connectionManager.getConnections() );
+        assertEquals( 1, connectionManager.getConnections().length );
+        Connection connection = connectionManager.getConnections()[0];
+        assertEquals( getConnectionName(), connection.getName() );
+        assertFalse( connection.getConnectionWrapper().isConnected() );
+        assertFalse( connection.getConnectionWrapper().isSecured() );
 
-        // click "Check Network Parameter" button
-        String result2 = wizardBot.clickCheckNetworkParameterButton();
-        assertNull( result2, "Expected OK" );
-
-        //
-        // Don't know why this doesn't work with SWTBot.
-        // When testing manually it works.
-        //
-        // // enter connection parameter with IPv6 address
-        // wizardBot.typeHost( "[::1]" );
-        // wizardBot.typePort( ldapService.getPort() );
-        //
-        // // click "Check Network Parameter" button
-        // String result3 = wizardBot.clickCheckNetworkParameterButton();
-        // assertNull( "Expected OK", result3 );
-
-        wizardBot.clickCancelButton();
+        // ensure connection is visible in Connections view
+        assertEquals( 1, connectionsViewBot.getCount() );
     }
 
 
-    /**
-     * Tests the "Check Network Parameter" button.
-     */
-    @Test
-    public void testCheckNetworkParameterButtonNotOK()
+    private int getInvalidPort()
     {
-        // enter connection parameter with invalid port
-        wizardBot.typeConnectionName( getConnectionName() );
-        wizardBot.typeHost( Constants.LOCALHOST );
-        wizardBot.typePort( AvailablePortFinder.getNextAvailable( 1024 ) );
-
-        // click "Check Network Parameter" button and get the result
-        String result1 = wizardBot.clickCheckNetworkParameterButton();
-        assertNotNull( result1 );
-        // LDAP API: Connection refused
-        // JNDI: The connection failed
-        assertThat( result1,
-            anyOf( containsString( "Connection refused" ), containsString( "The connection failed" ) ) );
-
-        // enter connection parameter with invalid host name
-        String hostname = "qwertzuiop.asdfghjkl.yxcvbnm";
-        wizardBot.typeHost( hostname );
-        wizardBot.typePort( 389 );
-
-        // click "Check Network Parameter" button and get the result
-        String result2 = wizardBot.clickCheckNetworkParameterButton();
-        assertNotNull( "Expected Error", result2 );
-        // LDAP API: could not be resolved
-        // JNDI: The connection failed
-        assertThat( result2,
-            anyOf( containsString( "could not be resolved" ), containsString( "The connection failed" ) ) );
-        assertThat( "Unknown host name must occur in error message", result2, containsString( hostname ) );
-
-        // disabled this test because it does not work properly
-        // as it depends from the network connection settings.
-        //        // enter connection parameter with non-routed IP address
-        //        String ipAddress = "10.11.12.13";
-        //        wizardBot.typeHost( ipAddress );
-        //        wizardBot.typePort( ldapServer.getPort() );
-        //
-        //        // click "Check Network Parameter" button and get the result
-        //        String result3 = wizardBot.clickCheckNetworkParameterButton();
-        //        assertNotNull( "Expected Error", result3 );
-        //        assertTrue( "'No route to host' or 'Network is unreachable' message must occur in error message", //
-        //            result3.contains( "No route to host" ) || result3.contains( "Network is unreachable" ) );
-        //        assertTrue( "IP address must occur in error message", result3.contains( ipAddress ) );
-
-        wizardBot.clickCancelButton();
+        return AvailablePortFinder.getNextAvailable( 1025 );
     }
 
 
-    /**
-     * Tests the "Check Authentication" button.
-     */
-    @ParameterizedTest
-    @LdapServersSource
-    public void testCheckAuthenticationButtonSimpleAuthOK( TestLdapServer server )
+    private static String getInvalidHostName()
     {
-        // enter connection parameter
-        wizardBot.typeConnectionName( getConnectionName() );
-        wizardBot.typeHost( server.getHost() );
-        wizardBot.typePort( server.getPort() );
-        wizardBot.clickNextButton();
-
-        // enter correct authentication parameter
-        wizardBot.typeUser( server.getAdminDn() );
-        wizardBot.typePassword( server.getAdminPassword() );
-
-        // click "Check Network Parameter" button
-        String result = wizardBot.clickCheckAuthenticationButton();
-        assertNull( result, "Expected OK" );
-
-        wizardBot.clickCancelButton();
-    }
-
-
-    /**
-     * Tests the "Check Authentication" button.
-     */
-    @ParameterizedTest
-    @LdapServersSource
-    public void testCheckAuthenticationButtonSimpleAuthNotOK( TestLdapServer server )
-    {
-        // enter connection parameter
-        wizardBot.typeConnectionName( getConnectionName() );
-        wizardBot.typeHost( server.getHost() );
-        wizardBot.typePort( server.getPort() );
-        wizardBot.clickNextButton();
-
-        // enter incorrect authentication parameter
-        wizardBot.typeUser( server.getAdminDn() );
-        wizardBot.typePassword( "secret45" );
-
-        // click "Check Network Parameter" button
-        String result = wizardBot.clickCheckAuthenticationButton();
-        assertNotNull( result );
-        assertThat( result, containsString( "[LDAP result code 49 - invalidCredentials]" ) );
-
-        wizardBot.clickCancelButton();
-    }
-
-
-    /**
-     * Tests the "Check Authentication" button.
-     */
-    @ParameterizedTest
-    @LdapServersSource(mode = Mode.All, except = LdapServerType.Fedora389ds)
-    public void testCheckAuthenticationButtonDigestMD5OK( TestLdapServer server )
-    {
-        // enter connection parameter
-        wizardBot.typeConnectionName( getConnectionName() );
-        wizardBot.typeHost( server.getHost() );
-        wizardBot.typePort( server.getPort() );
-        wizardBot.clickNextButton();
-
-        // enter correct authentication parameter
-        wizardBot.selectDigestMD5Authentication();
-        wizardBot.typeUser( "user.8" );
-        wizardBot.typePassword( "password" );
-        if ( server.getType() == LdapServerType.ApacheDS )
-        {
-            wizardBot.typeRealm( "EXAMPLE.ORG" );
-        }
-        wizardBot.selectQualityOfProtection( SaslQoP.AUTH_CONF );
-        wizardBot.selectProtectionStrength( SaslSecurityStrength.HIGH );
-
-        // click "Check Network Parameter" button
-        String result = wizardBot.clickCheckAuthenticationButton();
-        assertNull( result, "Expected OK" );
-
-        wizardBot.clickCancelButton();
-    }
-
-
-    /**
-     * Tests the "Check Authentication" button.
-     */
-    @ParameterizedTest
-    @LdapServersSource(only = LdapServerType.OpenLdap)
-    public void testCheckAuthenticationButtonDigestMD5OKTooWeek( TestLdapServer server )
-    {
-        // enter connection parameter
-        wizardBot.typeConnectionName( getConnectionName() );
-        wizardBot.typeHost( server.getHost() );
-        wizardBot.typePort( server.getPort() );
-        wizardBot.clickNextButton();
-
-        // enter correct authentication parameter
-        wizardBot.selectDigestMD5Authentication();
-        wizardBot.typeUser( "user.8" );
-        wizardBot.typePassword( "password" );
-        wizardBot.selectQualityOfProtection( SaslQoP.AUTH );
-        wizardBot.selectProtectionStrength( SaslSecurityStrength.LOW );
-
-        // click "Check Network Parameter" button
-        String result = wizardBot.clickCheckAuthenticationButton();
-        assertThat( result, containsString( "DIGEST-MD5: No common protection layer between client and server" ) );
-
-        wizardBot.clickCancelButton();
-    }
-
-
-    /**
-     * Tests the "Check Authentication" button.
-     */
-    @ParameterizedTest
-    @LdapServersSource(mode = Mode.All, except = LdapServerType.Fedora389ds)
-    public void testCheckAuthenticationButtonDigestMD5NotOKWrongPassword( TestLdapServer server )
-    {
-        // enter connection parameter
-        wizardBot.typeConnectionName( getConnectionName() );
-        wizardBot.typeHost( server.getHost() );
-        wizardBot.typePort( server.getPort() );
-        wizardBot.clickNextButton();
-
-        // enter correct authentication parameter
-        wizardBot.selectDigestMD5Authentication();
-        wizardBot.typeUser( "user.8" );
-        wizardBot.typePassword( "wrong" );
-        if ( server.getType() == LdapServerType.ApacheDS )
-        {
-            wizardBot.typeRealm( "EXAMPLE.ORG" );
-        }
-        wizardBot.selectQualityOfProtection( SaslQoP.AUTH_CONF );
-        wizardBot.selectProtectionStrength( SaslSecurityStrength.HIGH );
-
-        // click "Check Network Parameter" button
-        String result = wizardBot.clickCheckAuthenticationButton();
-        assertThat( result, containsString( "[LDAP result code 49 - invalidCredentials]" ) );
-
-        wizardBot.clickCancelButton();
+        return "qwertzuiop.asdfghjkl.yxcvbnm";
     }
 
 }

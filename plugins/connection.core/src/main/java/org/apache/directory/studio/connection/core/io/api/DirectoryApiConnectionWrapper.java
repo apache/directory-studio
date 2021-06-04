@@ -76,7 +76,6 @@ import org.apache.directory.ldap.client.api.LdapNetworkConnection;
 import org.apache.directory.ldap.client.api.SaslCramMd5Request;
 import org.apache.directory.ldap.client.api.SaslDigestMd5Request;
 import org.apache.directory.ldap.client.api.SaslGssApiRequest;
-import org.apache.directory.ldap.client.api.SaslPlainRequest;
 import org.apache.directory.ldap.client.api.exception.InvalidConnectionException;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
@@ -109,32 +108,20 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     /** The search request number */
     private static int searchRequestNum = 0;
 
-    /** The connection*/
+    /** The Studio connection  */
     private Connection connection;
 
-    /** The LDAP Connection Configuration */
+    /** The LDAP connection configuration */
     private LdapConnectionConfig ldapConnectionConfig;
 
-    /** The LDAP Connection */
+    /** The LDAP connection */
     private LdapNetworkConnection ldapConnection;
 
     /** The binary attribute detector */
     private DefaultConfigurableBinaryAttributeDetector binaryAttributeDetector;
 
-    /** Indicates if the wrapper is connected */
-    private boolean isConnected = false;
-
     /** The current job thread */
     private Thread jobThread;
-
-    /** The bind principal */
-    private String bindPrincipal;
-
-    /** The bind password */
-    private String bindPassword;
-
-    /** The SASL PLAIN authzid */
-    private String authzId;
 
     /**
      * Creates a new instance of DirectoryApiConnectionWrapper.
@@ -153,7 +140,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     public X509Certificate[] connect( StudioProgressMonitor monitor )
     {
         ldapConnection = null;
-        isConnected = false;
         jobThread = null;
 
         try
@@ -172,7 +158,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     private X509Certificate[] doConnect( final StudioProgressMonitor monitor ) throws Exception
     {
         ldapConnection = null;
-        isConnected = true;
 
         ldapConnectionConfig = new LdapConnectionConfig();
         ldapConnectionConfig.setLdapHost( connection.getHost() );
@@ -231,6 +216,12 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         {
             public void run()
             {
+                /*
+                 * Use local temp variable while the connection is being established and secured.
+                 * This process can take a while and the user might be asked to inspect the server
+                 * certificate. During that process the connection must not be used.
+                 */
+                LdapNetworkConnection ldapConnectionUnderConstruction = null;
                 try
                 {
                     // Set lower timeout for connecting
@@ -238,13 +229,13 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     ldapConnectionConfig.setTimeout( Math.min( oldTimeout, 5000L ) );
 
                     // Connecting
-                    ldapConnection = new LdapNetworkConnection( ldapConnectionConfig );
-                    boolean connected = ldapConnection.connect();
+                    ldapConnectionUnderConstruction = new LdapNetworkConnection( ldapConnectionConfig );
+                    ldapConnectionUnderConstruction.connect();
 
-                    // Establish TLS layer if TLS is enabled and SSL is not
+                    // DIRSTUDIO-1219: Establish TLS layer if TLS is enabled and SSL is not
                     if ( ldapConnectionConfig.isUseTls() && !ldapConnectionConfig.isUseSsl() )
                     {
-                        ldapConnection.startTls();
+                        ldapConnectionUnderConstruction.startTls();
                     }
 
                     // Capture the server certificates
@@ -253,9 +244,21 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                         serverCertificates.set( studioTrustmanager.get().getChain() );
                     }
 
-                    if ( !connected )
+                    // Now set the LDAP connection once the (optional) security layer is in place
+                    ldapConnection = ldapConnectionUnderConstruction;
+
+                    if ( !isConnected() )
                     {
                         throw new Exception( Messages.DirectoryApiConnectionWrapper_UnableToConnect );
+                    }
+
+                    // DIRSTUDIO-1219: Verify secure connection if ldaps:// or StartTLS is configured
+                    if ( ldapConnectionConfig.isUseTls() || ldapConnectionConfig.isUseSsl() )
+                    {
+                        if ( !isSecured() || serverCertificates.get() == null )
+                        {
+                            throw new Exception( Messages.DirectoryApiConnectionWrapper_UnsecuredConnection );
+                        }
                     }
 
                     // Set old timeout again
@@ -267,9 +270,9 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
 
                     try
                     {
-                        if ( ldapConnection != null )
+                        if ( ldapConnectionUnderConstruction != null )
                         {
-                            ldapConnection.close();
+                            ldapConnectionUnderConstruction.close();
                         }
                     }
                     catch ( Exception exception )
@@ -320,7 +323,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
             ldapConnection = null;
             binaryAttributeDetector = null;
         }
-        isConnected = false;
     }
 
 
@@ -351,26 +353,9 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     }
 
 
-    private BindResponse bindSaslPlain() throws LdapException
-    {
-        SaslPlainRequest saslPlainRequest = new SaslPlainRequest();
-        saslPlainRequest.setUsername( bindPrincipal );
-        saslPlainRequest.setCredentials( bindPassword );
-        saslPlainRequest.setAuthorizationId( authzId );
-        saslPlainRequest
-            .setQualityOfProtection( connection.getConnectionParameter().getSaslQop() );
-        saslPlainRequest.setSecurityStrength( connection.getConnectionParameter()
-            .getSaslSecurityStrength() );
-        saslPlainRequest.setMutualAuthentication( connection.getConnectionParameter()
-            .isSaslMutualAuthentication() );
-
-        return ldapConnection.bindSaslPlain( bindPrincipal, bindPassword, authzId );
-    }
-
-
     private void doBind( final StudioProgressMonitor monitor ) throws Exception
     {
-        if ( ldapConnection != null && isConnected )
+        if ( isConnected() )
         {
             InnerRunnable runnable = new InnerRunnable()
             {
@@ -413,21 +398,14 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                                 monitor.reportError( Messages.model__no_credentials, exception );
                                 throw exception;
                             }
-                            bindPrincipal = credentials.getBindPrincipal();
-                            bindPassword = credentials.getBindPassword();
+                            String bindPrincipal = credentials.getBindPrincipal();
+                            String bindPassword = credentials.getBindPassword();
 
                             switch ( connection.getConnectionParameter().getAuthMethod() )
                             {
                                 case SIMPLE:
                                     // Simple Authentication
                                     bindResponse = bindSimple( bindPrincipal, bindPassword );
-
-                                    break;
-
-                                case SASL_PLAIN:
-                                    // SASL Plain authentication
-                                    bindResponse = bindSaslPlain();
-
                                     break;
 
                                 case SASL_CRAM_MD5:
@@ -549,6 +527,15 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     public boolean isConnected()
     {
         return ( ldapConnection != null && ldapConnection.isConnected() );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isSecured()
+    {
+        return isConnected() && ldapConnection.isSecured();
     }
 
 
@@ -1212,7 +1199,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         throws Exception
     {
         // check connection
-        if ( !isConnected || ldapConnection == null )
+        if ( !isConnected() )
         {
             doConnect( monitor );
             doBind( monitor );
@@ -1266,11 +1253,8 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                         {
                         }
 
-                        isConnected = false;
                         ldapConnection = null;
                     }
-
-                    isConnected = false;
                 }
             };
 

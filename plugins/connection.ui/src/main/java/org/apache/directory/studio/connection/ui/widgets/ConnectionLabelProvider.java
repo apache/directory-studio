@@ -59,13 +59,17 @@ public class ConnectionLabelProvider extends LabelProvider
         {
             Connection conn = ( Connection ) obj;
 
+            boolean isConnected = conn.getConnectionWrapper().isConnected();
+            boolean isSecured = conn.getConnectionWrapper().isSecured();
+            String unsecuredWarning = isConnected && !isSecured ? " UNSECURED! " : ""; //$NON-NLS-1$ //$NON-NLS-2$
+
             if ( conn.getEncryptionMethod() == EncryptionMethod.LDAPS )
             {
-                return conn.getName() + " (LDAPS)"; //$NON-NLS-1$
+                return conn.getName() + unsecuredWarning + " (LDAPS)"; //$NON-NLS-1$
             }
             else if ( conn.getEncryptionMethod() == EncryptionMethod.START_TLS )
             {
-                return conn.getName() + " (StartTLS)"; //$NON-NLS-1$
+                return conn.getName() + unsecuredWarning + " (StartTLS)"; //$NON-NLS-1$
             }
             else
             {
@@ -99,18 +103,21 @@ public class ConnectionLabelProvider extends LabelProvider
         {
             Connection conn = ( Connection ) obj;
 
-            if ( ( conn.getEncryptionMethod() == EncryptionMethod.LDAPS )
-                || ( conn.getEncryptionMethod() == EncryptionMethod.START_TLS ) )
+            boolean isConnected = conn.getConnectionWrapper().isConnected();
+            boolean isSecured = conn.getConnectionWrapper().isSecured();
+            boolean isEncryptionConfigured = conn.getEncryptionMethod().isEncrytped();
+
+            if ( isConnected )
             {
-                return conn.getConnectionWrapper().isConnected() ? ConnectionUIPlugin.getDefault().getImage(
+                return isSecured ? ConnectionUIPlugin.getDefault().getImage(
                     ConnectionUIConstants.IMG_CONNECTION_SSL_CONNECTED )
                     : ConnectionUIPlugin.getDefault().getImage(
-                        ConnectionUIConstants.IMG_CONNECTION_SSL_DISCONNECTED );
+                        ConnectionUIConstants.IMG_CONNECTION_CONNECTED );
             }
             else
             {
-                return conn.getConnectionWrapper().isConnected() ? ConnectionUIPlugin.getDefault().getImage(
-                    ConnectionUIConstants.IMG_CONNECTION_CONNECTED )
+                return isEncryptionConfigured ? ConnectionUIPlugin.getDefault().getImage(
+                    ConnectionUIConstants.IMG_CONNECTION_SSL_DISCONNECTED )
                     : ConnectionUIPlugin.getDefault().getImage(
                         ConnectionUIConstants.IMG_CONNECTION_DISCONNECTED );
             }

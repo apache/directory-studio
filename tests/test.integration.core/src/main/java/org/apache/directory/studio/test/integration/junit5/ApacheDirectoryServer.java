@@ -86,7 +86,7 @@ public class ApacheDirectoryServer extends TestLdapServer
             service.setInterceptors( service.getInterceptors().stream()
                 .filter( i -> !i.getName().equals( "ConfigurableHashingInterceptor" ) )
                 .collect( Collectors.toList() ) );
-            System.out.println( service.getInterceptors() );
+            service.setAllowAnonymousAccess( true );
 
             server = new LdapServer();
             server.setDirectoryService( service );
@@ -97,6 +97,7 @@ public class ApacheDirectoryServer extends TestLdapServer
             server.addTransports( ldaps );
 
             server.addSaslMechanismHandler( "SIMPLE", new SimpleMechanismHandler() );
+            server.addSaslMechanismHandler( "CRAM-MD5", new CramMd5MechanismHandler() );
             server.addSaslMechanismHandler( "DIGEST-MD5", new DigestMd5MechanismHandler() );
             server.setSaslRealms( Collections.singletonList( "EXAMPLE.ORG" ) );
             server.setSaslHost( getHost() );
@@ -150,6 +151,13 @@ public class ApacheDirectoryServer extends TestLdapServer
     public DirectoryService getService()
     {
         return service;
+    }
+
+
+    @Override
+    public void setConfidentialityRequired( boolean confidentialityRequired )
+    {
+        server.setConfidentialityRequired( confidentialityRequired );
     }
 
 

@@ -55,6 +55,13 @@ public class ConnectionParameter
 
         /** Encryption using Start TLS extension. */
         START_TLS
+
+        ;
+
+        public boolean isEncrytped()
+        {
+            return this != NONE;
+        }
     }
 
     /**
@@ -77,18 +84,15 @@ public class ConnectionParameter
         SASL_CRAM_MD5(3),
 
         /** SASL authentication using GSSAPI. */
-        SASL_GSSAPI(4),
-        
-        /** SASL PLAIN authentication */
-        SASL_PLAIN(5);
-        
-        
+        SASL_GSSAPI(4);
+
         private int value;
-        
+
         private AuthenticationMethod( int value )
         {
             this.value = value;
         }
+
 
         public int getValue()
         {
@@ -165,10 +169,9 @@ public class ConnectionParameter
 
     /** The extended properties. */
     private Map<String, String> extendedProperties;
-    
+
     /** The connection timeout. Default to 30 seconds */
     private long timeoutMillis = 30000L;
-
 
     /**
      * Creates a new instance of ConnectionParameter.
@@ -756,7 +759,7 @@ public class ConnectionParameter
     public int getExtendedIntProperty( String key )
     {
         String s = extendedProperties.get( key );
-        
+
         if ( s != null )
         {
             return Integer.parseInt( s );
@@ -790,7 +793,7 @@ public class ConnectionParameter
     public boolean getExtendedBoolProperty( String key )
     {
         String s = extendedProperties.get( key );
-        
+
         if ( s != null )
         {
             return Boolean.parseBoolean( s );

@@ -32,9 +32,9 @@ import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
-import org.apache.directory.studio.connection.core.ReferralsInfo;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
+import org.apache.directory.studio.connection.core.ReferralsInfo;
 import org.apache.directory.studio.connection.core.io.api.StudioSearchResultEnumeration;
 
 
@@ -79,6 +79,14 @@ public interface ConnectionWrapper
      * @return true, if is connected
      */
     boolean isConnected();
+
+
+    /**
+     * Checks if the connection is secured.
+     * 
+     * @return true, if is secured
+     */
+    boolean isSecured();
 
 
     /**

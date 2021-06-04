@@ -23,6 +23,10 @@ package org.apache.directory.studio.test.integration.junit5;
 
 import static org.apache.directory.studio.test.integration.junit5.Constants.LOCALHOST;
 
+import org.apache.directory.api.ldap.model.entry.DefaultModification;
+import org.apache.directory.api.ldap.model.entry.Modification;
+import org.apache.directory.api.ldap.model.entry.ModificationOperation;
+
 
 /**
  * An 389ds implementation of a test LDAP server.
@@ -52,4 +56,15 @@ public class Fedora389dsLdapServer extends TestLdapServer
             FEDORA_389DS_ADMIN_DN, FEDORA_389DS_ADMIN_PASSWORD );
     }
 
+
+    @Override
+    public void setConfidentialityRequired( boolean confidentialityRequired )
+    {
+        withAdminConnection( connection -> {
+            Modification modification = new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE,
+                "nsslapd-require-secure-binds", confidentialityRequired ? "on" : "off" );
+            connection.modify( "cn=config", modification );
+        } );
+
+    }
 }

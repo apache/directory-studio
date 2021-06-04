@@ -26,7 +26,9 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.ldif.LdifEntry;
 import org.apache.directory.api.ldap.model.ldif.LdifReader;
 import org.apache.directory.ldap.client.api.LdapConnection;
+import org.apache.directory.ldap.client.api.LdapConnectionConfig;
 import org.apache.directory.ldap.client.api.LdapNetworkConnection;
+import org.apache.directory.ldap.client.api.NoVerificationTrustManager;
 import org.apache.directory.ldap.client.api.exception.InvalidConnectionException;
 
 
@@ -83,9 +85,21 @@ public abstract class TestLdapServer
 
     public LdapConnection openAdminConnection() throws LdapException
     {
-        LdapConnection connection = new LdapNetworkConnection( host, port );
-        connection.connect();
+        LdapConnection connection = openConnection();
         connection.bind( adminDn, adminPassword );
+        return connection;
+    }
+
+
+    public LdapConnection openConnection() throws LdapException
+    {
+        LdapConnectionConfig config = new LdapConnectionConfig();
+        config.setLdapHost( host );
+        config.setLdapPort( port );
+        config.setUseTls( true );
+        config.setTrustManagers( new NoVerificationTrustManager() );
+        LdapConnection connection = new LdapNetworkConnection( config );
+        connection.connect();
         return connection;
     }
 
@@ -129,6 +143,7 @@ public abstract class TestLdapServer
         TestFixture.createContextEntry( this );
         TestFixture.cleanup( this );
         TestFixture.importData( this );
+        setConfidentialityRequired( false );
 
         String serverSpecificLdif = getType().name() + ".ldif";
         if ( TestFixture.class.getResource( serverSpecificLdif ) != null )
@@ -198,6 +213,9 @@ public abstract class TestLdapServer
     {
         return adminPassword;
     }
+
+
+    public abstract void setConfidentialityRequired( boolean confidentialityRequired );
 
 
     @Override

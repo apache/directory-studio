@@ -94,6 +94,13 @@ public abstract class WizardBot extends DialogBot
     }
 
 
+    public ErrorDialogBot clickFinishButtonExpectingError()
+    {
+        String shellText = BotUtils.shell( () -> clickFinishButton(), "Error", "Problem Occurred" ).getText();
+        return new ErrorDialogBot( shellText );
+    }
+
+
     public boolean existsCategory( String category )
     {
         TreeBot treeBot = new TreeBot( bot.tree() );

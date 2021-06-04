@@ -23,10 +23,13 @@ package org.apache.directory.studio.test.integration.junit5;
 
 import static org.apache.directory.studio.test.integration.junit5.Constants.LOCALHOST;
 
+import org.apache.directory.api.ldap.model.entry.DefaultModification;
 import org.apache.directory.api.ldap.model.entry.Modification;
+import org.apache.directory.api.ldap.model.entry.ModificationOperation;
+import org.apache.directory.api.ldap.model.exception.LdapNoSuchAttributeException;
 import org.apache.directory.api.ldap.model.ldif.LdifEntry;
 import org.apache.directory.api.ldap.model.ldif.LdifReader;
-import org.apache.directory.ldap.client.api.LdapNetworkConnection;
+import org.apache.directory.ldap.client.api.LdapConnection;
 
 
 /**
@@ -63,7 +66,7 @@ public class OpenLdapServer extends TestLdapServer
     {
         super.prepare();
 
-        try ( LdapNetworkConnection connection = new LdapNetworkConnection( OPENLDAP_HOST, OPENLDAP_PORT );
+        try ( LdapConnection connection = openConnection();
             LdifReader ldifReader = new LdifReader( TestFixture.class.getResourceAsStream( "OpenLdapConfig.ldif" ) ) )
         {
             connection.bind( OPENLDAP_CONFIG_DN, OPENLDAP_CONFIG_PASSWORD );
@@ -74,6 +77,27 @@ public class OpenLdapServer extends TestLdapServer
                     connection.modify( entry.getDn(), modification );
                 }
             }
+        }
+        catch ( Exception e )
+        {
+            throw new RuntimeException( "Unexpected exception: " + e, e );
+        }
+    }
+
+
+    @Override
+    public void setConfidentialityRequired( boolean confidentialityRequired )
+    {
+        try ( LdapConnection connection = openConnection() )
+        {
+            connection.bind( OPENLDAP_CONFIG_DN, OPENLDAP_CONFIG_PASSWORD );
+            Modification modification = new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE,
+                "olcSecurity", confidentialityRequired ? "ssf=256 tls=256" : "ssf=0 tls=0" );
+            connection.modify( "cn=config", modification );
+        }
+        catch ( LdapNoSuchAttributeException e )
+        {
+            // ignore
         }
         catch ( Exception e )
         {

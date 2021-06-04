@@ -44,6 +44,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.ConnectException;
 import java.nio.channels.UnresolvedAddressException;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -66,6 +67,8 @@ import org.apache.directory.api.ldap.extras.extended.pwdModify.PasswordModifyReq
 //import org.apache.directory.api.ldap.extras.extended.startTransaction.StartTransactionResponse;
 import org.apache.directory.api.ldap.extras.extended.whoAmI.WhoAmIRequest;
 import org.apache.directory.api.ldap.extras.extended.whoAmI.WhoAmIResponse;
+import org.apache.directory.api.ldap.model.constants.SaslQoP;
+import org.apache.directory.api.ldap.model.constants.SaslSecurityStrength;
 import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.api.ldap.model.entry.DefaultEntry;
 import org.apache.directory.api.ldap.model.entry.DefaultModification;
@@ -73,6 +76,7 @@ import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.entry.ModificationOperation;
 import org.apache.directory.api.ldap.model.exception.LdapAuthenticationException;
+import org.apache.directory.api.ldap.model.exception.LdapAuthenticationNotSupportedException;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapLoopDetectedException;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
@@ -88,6 +92,7 @@ import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
+import org.apache.directory.studio.connection.core.ICertificateHandler.TrustLevel;
 import org.apache.directory.studio.connection.core.IReferralHandler;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
@@ -99,9 +104,9 @@ import org.apache.directory.studio.ldapbrowser.core.jobs.InitializeRootDSERunnab
 import org.apache.directory.studio.ldapbrowser.core.model.impl.BrowserConnection;
 import org.apache.directory.studio.test.integration.junit5.LdapServerType;
 import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
+import org.apache.directory.studio.test.integration.junit5.LdapServersSource.Mode;
 import org.apache.directory.studio.test.integration.junit5.SkipTestIfLdapServerIsNotAvailableInterceptor;
 import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
-import org.apache.directory.studio.test.integration.junit5.LdapServersSource.Mode;
 import org.apache.mina.util.AvailablePortFinder;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.jupiter.api.AfterAll;
@@ -128,6 +133,7 @@ public class DirectoryApiConnectionWrapperTest
     public static void suspendEventFiringInCurrentThread()
     {
         ConnectionEventRegistry.suspendEventFiringInCurrentThread();
+        ConnectionCorePlugin.getDefault().setCertificateHandler( null );
     }
 
 
@@ -149,29 +155,76 @@ public class DirectoryApiConnectionWrapperTest
 
 
     /**
-     * Tests connecting to the server.
+     * Tests connecting to the server without encryption.
      */
     @ParameterizedTest
-    @LdapServersSource
-    public void testConnect( TestLdapServer ldapServer )
+    @LdapServersSource(mode = Mode.All)
+    public void testConnectPlain( TestLdapServer ldapServer )
     {
         StudioProgressMonitor monitor = getProgressMonitor();
-        ConnectionParameter connectionParameter = new ConnectionParameter( null, ldapServer.getHost(),
-            ldapServer.getPort(), EncryptionMethod.NONE, AuthenticationMethod.NONE, null, null, null, true, null,
-            30000L );
-        Connection connection = new Connection( connectionParameter );
-        ConnectionWrapper connectionWrapper = connection.getConnectionWrapper();
+        getConnection( monitor, ldapServer, null, null );
 
         assertFalse( connectionWrapper.isConnected() );
 
-        connectionWrapper.connect( monitor );
+        X509Certificate[] certificates = connectionWrapper.connect( monitor );
         assertTrue( connectionWrapper.isConnected() );
+        assertFalse( connectionWrapper.isSecured() );
         assertNull( monitor.getException() );
+        assertNull( certificates );
 
         connectionWrapper.disconnect();
         assertFalse( connectionWrapper.isConnected() );
+    }
 
-        // TODO: SSL, StartTLS
+
+    /**
+     * Tests connecting to the server using ldaps:// encryption.
+     */
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All)
+    public void testConnectLdaps( TestLdapServer ldapServer )
+    {
+        StudioProgressMonitor monitor = getProgressMonitor();
+        Connection connection = getConnection( monitor, ldapServer, null, null );
+        connection.setPort( ldapServer.getPortSSL() );
+        connection.setEncryptionMethod( EncryptionMethod.LDAPS );
+        acceptAllCertificates();
+
+        assertFalse( connectionWrapper.isConnected() );
+
+        X509Certificate[] certificates = connectionWrapper.connect( monitor );
+        assertTrue( connectionWrapper.isConnected() );
+        assertTrue( connectionWrapper.isSecured() );
+        assertNull( monitor.getException() );
+        assertNotNull( certificates );
+
+        connectionWrapper.disconnect();
+        assertFalse( connectionWrapper.isConnected() );
+    }
+
+
+    /**
+     * Tests connecting to the server using StartTLS encryption.
+     */
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All)
+    public void testConnectStartTls( TestLdapServer ldapServer )
+    {
+        StudioProgressMonitor monitor = getProgressMonitor();
+        Connection connection = getConnection( monitor, ldapServer, null, null );
+        connection.setEncryptionMethod( EncryptionMethod.START_TLS );
+        acceptAllCertificates();
+
+        assertFalse( connectionWrapper.isConnected() );
+
+        X509Certificate[] certificates = connectionWrapper.connect( monitor );
+        assertTrue( connectionWrapper.isConnected() );
+        assertTrue( connectionWrapper.isSecured() );
+        assertNull( monitor.getException() );
+        assertNotNull( certificates );
+
+        connectionWrapper.disconnect();
+        assertFalse( connectionWrapper.isConnected() );
     }
 
 
@@ -179,21 +232,16 @@ public class DirectoryApiConnectionWrapperTest
      * Test failed connections to the server.
      */
     @ParameterizedTest
-    @LdapServersSource
+    @LdapServersSource(mode = Mode.All)
     public void testConnectFailures( TestLdapServer ldapServer )
     {
         StudioProgressMonitor monitor = null;
-        ConnectionParameter connectionParameter = null;
         Connection connection = null;
-        ConnectionWrapper connectionWrapper = null;
 
         // invalid port
         monitor = getProgressMonitor();
-        connectionParameter = new ConnectionParameter( null, ldapServer.getHost(),
-            AvailablePortFinder.getNextAvailable(), EncryptionMethod.NONE, AuthenticationMethod.NONE, null, null, null,
-            true, null, 30000L );
-        connection = new Connection( connectionParameter );
-        connectionWrapper = connection.getConnectionWrapper();
+        connection = getConnection( monitor, ldapServer, null, null );
+        connection.setPort( AvailablePortFinder.getNextAvailable() );
         connectionWrapper.connect( monitor );
         assertFalse( connectionWrapper.isConnected() );
         assertNotNull( monitor.getException() );
@@ -205,10 +253,8 @@ public class DirectoryApiConnectionWrapperTest
 
         // unknown host
         monitor = getProgressMonitor();
-        connectionParameter = new ConnectionParameter( null, "555.555.555.555", ldapServer.getPort(),
-            EncryptionMethod.NONE, AuthenticationMethod.NONE, null, null, null, true, null, 30000L );
-        connection = new Connection( connectionParameter );
-        connectionWrapper = connection.getConnectionWrapper();
+        connection = getConnection( monitor, ldapServer, null, null );
+        connection.setHost( "555.555.555.555" );
         connectionWrapper.connect( monitor );
         assertFalse( connectionWrapper.isConnected() );
         assertNotNull( monitor.getException() );
@@ -217,30 +263,222 @@ public class DirectoryApiConnectionWrapperTest
         assertTrue( monitor.getException().getCause() instanceof InvalidConnectionException );
         assertNotNull( monitor.getException().getCause().getCause() );
         assertTrue( monitor.getException().getCause().getCause() instanceof UnresolvedAddressException );
-
-        // TODO: SSL, StartTLS
     }
 
 
     /**
-     * Test binding to the server.
+     * Test binding to the server using simple auth and no encryption.
      */
     @ParameterizedTest
-    @LdapServersSource
-    public void testBind( TestLdapServer ldapServer )
+    @LdapServersSource(mode = Mode.All)
+    public void testSimpleBindPlain( TestLdapServer ldapServer )
     {
+        ldapServer.setConfidentialityRequired( false );
         StudioProgressMonitor monitor = getProgressMonitor();
-        ConnectionParameter connectionParameter = new ConnectionParameter( null, ldapServer.getHost(),
-            ldapServer.getPort(), EncryptionMethod.NONE, AuthenticationMethod.SIMPLE, ldapServer.getAdminDn(),
-            ldapServer.getAdminPassword(), null, true, null, 30000L );
-        Connection connection = new Connection( connectionParameter );
-        ConnectionWrapper connectionWrapper = connection.getConnectionWrapper();
+        getConnection( monitor, ldapServer, ldapServer.getAdminDn(), ldapServer.getAdminPassword() );
 
         assertFalse( connectionWrapper.isConnected() );
 
         connectionWrapper.connect( monitor );
         connectionWrapper.bind( monitor );
         assertTrue( connectionWrapper.isConnected() );
+        assertFalse( connectionWrapper.isSecured() );
+        assertNull( monitor.getException() );
+
+        connectionWrapper.unbind();
+        connectionWrapper.disconnect();
+        assertFalse( connectionWrapper.isConnected() );
+    }
+
+
+    /**
+     * Test binding to the server using simple auth and no encryption should fail if the server requires confidentially.
+     */
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All)
+    public void testSimpleBindPlainConfidentiallyRequired( TestLdapServer ldapServer )
+    {
+        ldapServer.setConfidentialityRequired( true );
+        StudioProgressMonitor monitor = getProgressMonitor();
+        getConnection( monitor, ldapServer, ldapServer.getAdminDn(), ldapServer.getAdminPassword() );
+
+        assertFalse( connectionWrapper.isConnected() );
+
+        connectionWrapper.connect( monitor );
+        connectionWrapper.bind( monitor );
+
+        assertFalse( connectionWrapper.isConnected() );
+        assertFalse( connectionWrapper.isSecured() );
+        assertNotNull( monitor.getException() );
+        assertTrue( monitor.getException() instanceof StudioLdapException );
+        assertTrue( monitor.getException().getMessage().contains( "[LDAP result code 13 - confidentialityRequired]" ) );
+        assertNotNull( monitor.getException().getCause() );
+        assertTrue( monitor.getException().getCause() instanceof LdapAuthenticationNotSupportedException );
+    }
+
+
+    /**
+     * Test binding to the server using simple auth and ldaps:// encryption.
+     */
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All)
+    public void testSimpleBindLdaps( TestLdapServer ldapServer )
+    {
+        ldapServer.setConfidentialityRequired( true );
+        StudioProgressMonitor monitor = getProgressMonitor();
+        Connection connection = getConnection( monitor, ldapServer, ldapServer.getAdminDn(),
+            ldapServer.getAdminPassword() );
+        connection.setPort( ldapServer.getPortSSL() );
+        connection.setEncryptionMethod( EncryptionMethod.LDAPS );
+        acceptAllCertificates();
+
+        assertFalse( connectionWrapper.isConnected() );
+
+        connectionWrapper.connect( monitor );
+        connectionWrapper.bind( monitor );
+        assertTrue( connectionWrapper.isConnected() );
+        assertTrue( connectionWrapper.isSecured() );
+        assertNull( monitor.getException() );
+
+        connectionWrapper.unbind();
+        connectionWrapper.disconnect();
+        assertFalse( connectionWrapper.isConnected() );
+    }
+
+
+    /**
+     * Test binding to the server using simple auth and StartTLS encryption.
+     */
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All)
+    public void testSimpleBindStartTls( TestLdapServer ldapServer )
+    {
+        ldapServer.setConfidentialityRequired( true );
+        StudioProgressMonitor monitor = getProgressMonitor();
+        Connection connection = getConnection( monitor, ldapServer, ldapServer.getAdminDn(),
+            ldapServer.getAdminPassword() );
+        connection.setEncryptionMethod( EncryptionMethod.START_TLS );
+        acceptAllCertificates();
+
+        assertFalse( connectionWrapper.isConnected() );
+
+        connectionWrapper.connect( monitor );
+        connectionWrapper.bind( monitor );
+        assertTrue( connectionWrapper.isConnected() );
+        assertTrue( connectionWrapper.isSecured() );
+        assertNull( monitor.getException() );
+
+        connectionWrapper.unbind();
+        connectionWrapper.disconnect();
+        assertFalse( connectionWrapper.isConnected() );
+    }
+
+
+    /**
+     * Test binding to the server using SASL and no encryption.
+     */
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All, except = LdapServerType.Fedora389ds)
+    public void testSaslBindPlain( TestLdapServer ldapServer )
+    {
+        ldapServer.setConfidentialityRequired( false );
+        StudioProgressMonitor monitor = getProgressMonitor();
+        Connection connection = getConnection( monitor, ldapServer, "user.1", "password" );
+        connection.setAuthMethod( AuthenticationMethod.SASL_DIGEST_MD5 );
+
+        assertFalse( connectionWrapper.isConnected() );
+
+        connectionWrapper.connect( monitor );
+        connectionWrapper.bind( monitor );
+
+        assertTrue( connectionWrapper.isConnected() );
+        assertFalse( connectionWrapper.isSecured() );
+        assertNull( monitor.getException() );
+
+        connectionWrapper.unbind();
+        connectionWrapper.disconnect();
+        assertFalse( connectionWrapper.isConnected() );
+    }
+
+
+    /**
+     * Test binding to the server using SASL and no encryption should fail if the server requires confidentially.
+     */
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All, except = LdapServerType.Fedora389ds)
+    public void testSaslBindPlainConfidentiallyRequired( TestLdapServer ldapServer )
+    {
+        ldapServer.setConfidentialityRequired( true );
+        StudioProgressMonitor monitor = getProgressMonitor();
+        Connection connection = getConnection( monitor, ldapServer, "user.1", "password" );
+        connection.setAuthMethod( AuthenticationMethod.SASL_DIGEST_MD5 );
+
+        assertFalse( connectionWrapper.isConnected() );
+
+        connectionWrapper.connect( monitor );
+        connectionWrapper.bind( monitor );
+
+        assertFalse( connectionWrapper.isConnected() );
+        assertFalse( connectionWrapper.isSecured() );
+        assertNotNull( monitor.getException() );
+        assertTrue( monitor.getException() instanceof StudioLdapException );
+        assertTrue( monitor.getException().getMessage().contains( "[LDAP result code 13 - confidentialityRequired]" ) );
+        assertNotNull( monitor.getException().getCause() );
+        assertTrue( monitor.getException().getCause() instanceof LdapAuthenticationNotSupportedException );
+    }
+
+
+    /**
+     * Test binding to the server using SASL and ldaps:// encryption.
+     */
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All, except = LdapServerType.Fedora389ds)
+    public void testSaslBindLdaps( TestLdapServer ldapServer )
+    {
+        ldapServer.setConfidentialityRequired( true );
+        StudioProgressMonitor monitor = getProgressMonitor();
+        Connection connection = getConnection( monitor, ldapServer, "user.1", "password" );
+        connection.setPort( ldapServer.getPortSSL() );
+        connection.setEncryptionMethod( EncryptionMethod.LDAPS );
+        connection.setAuthMethod( AuthenticationMethod.SASL_DIGEST_MD5 );
+        acceptAllCertificates();
+
+        assertFalse( connectionWrapper.isConnected() );
+
+        connectionWrapper.connect( monitor );
+        connectionWrapper.bind( monitor );
+
+        assertTrue( connectionWrapper.isConnected() );
+        assertTrue( connectionWrapper.isSecured() );
+        assertNull( monitor.getException() );
+
+        connectionWrapper.unbind();
+        connectionWrapper.disconnect();
+        assertFalse( connectionWrapper.isConnected() );
+    }
+
+
+    /**
+     * Test binding to the server using SASL and StartTLS encryption.
+     */
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All, except = LdapServerType.Fedora389ds)
+    public void testSaslBindStartTls( TestLdapServer ldapServer )
+    {
+        ldapServer.setConfidentialityRequired( true );
+        StudioProgressMonitor monitor = getProgressMonitor();
+        Connection connection = getConnection( monitor, ldapServer, "user.1", "password" );
+        connection.setEncryptionMethod( EncryptionMethod.START_TLS );
+        connection.setAuthMethod( AuthenticationMethod.SASL_DIGEST_MD5 );
+        acceptAllCertificates();
+
+        assertFalse( connectionWrapper.isConnected() );
+
+        connectionWrapper.connect( monitor );
+        connectionWrapper.bind( monitor );
+
+        assertTrue( connectionWrapper.isConnected() );
+        assertTrue( connectionWrapper.isSecured() );
         assertNull( monitor.getException() );
 
         connectionWrapper.unbind();
@@ -257,17 +495,10 @@ public class DirectoryApiConnectionWrapperTest
     public void testBindFailures( TestLdapServer ldapServer )
     {
         StudioProgressMonitor monitor = null;
-        ConnectionParameter connectionParameter = null;
-        Connection connection = null;
-        ConnectionWrapper connectionWrapper = null;
 
         // simple auth with invalid user
         monitor = getProgressMonitor();
-        connectionParameter = new ConnectionParameter( null, ldapServer.getHost(), ldapServer.getPort(),
-            EncryptionMethod.NONE, AuthenticationMethod.SIMPLE, "cn=invalid," + USERS_DN, "invalid", null, true,
-            null, 30000L );
-        connection = new Connection( connectionParameter );
-        connectionWrapper = connection.getConnectionWrapper();
+        getConnection( monitor, ldapServer, "cn=invalid," + USERS_DN, "invalid" );
         connectionWrapper.connect( monitor );
         connectionWrapper.bind( monitor );
         assertFalse( connectionWrapper.isConnected() );
@@ -283,11 +514,7 @@ public class DirectoryApiConnectionWrapperTest
 
         // simple auth with invalid password
         monitor = getProgressMonitor();
-        connectionParameter = new ConnectionParameter( null, ldapServer.getHost(), ldapServer.getPort(),
-            EncryptionMethod.NONE, AuthenticationMethod.SIMPLE, ldapServer.getAdminDn(), "invalid", null, true, null,
-            30000L );
-        connection = new Connection( connectionParameter );
-        connectionWrapper = connection.getConnectionWrapper();
+        getConnection( monitor, ldapServer, ldapServer.getAdminDn(), "invalid" );
         connectionWrapper.connect( monitor );
         connectionWrapper.bind( monitor );
         assertFalse( connectionWrapper.isConnected() );
@@ -1055,58 +1282,57 @@ public class DirectoryApiConnectionWrapperTest
     }
 
 
+    protected void acceptAllCertificates()
+    {
+        ConnectionCorePlugin.getDefault().setCertificateHandler( ( host, certChain, failCauses ) -> {
+            return TrustLevel.Permanent;
+        } );
+    }
+
+
+    protected ConnectionWrapper getConnectionWrapper( StudioProgressMonitor monitor, TestLdapServer ldapServer )
+    {
+        return getConnectionWrapper( monitor, ldapServer, ldapServer.getAdminDn(),
+            ldapServer.getAdminPassword() );
+    }
+
+
     protected ConnectionWrapper getConnectionWrapper( StudioProgressMonitor monitor, TestLdapServer ldapServer,
+        String dn, String password )
+    {
+        getConnection( monitor, ldapServer, dn, password );
+
+        connectionWrapper.connect( monitor );
+        connectionWrapper.bind( monitor );
+        assertTrue( connectionWrapper.isConnected() );
+        assertNull( monitor.getException() );
+
+        return connectionWrapper;
+
+    }
+
+
+    protected Connection getConnection( StudioProgressMonitor monitor, TestLdapServer ldapServer,
         String dn, String password )
     {
         // simple auth without principal and credential
         ConnectionParameter connectionParameter = new ConnectionParameter( null, ldapServer.getHost(),
             ldapServer.getPort(), EncryptionMethod.NONE, AuthenticationMethod.SIMPLE, dn, password, null, false, null,
             30000L );
+        connectionParameter.setSaslQop( SaslQoP.AUTH_CONF );
+        connectionParameter.setSaslSecurityStrength( SaslSecurityStrength.HIGH );
+        connectionParameter.setSaslMutualAuthentication( true );
 
         Connection connection = new Connection( connectionParameter );
-
-        connectionWrapper = connection.getConnectionWrapper();
-        connectionWrapper.connect( monitor );
-        connectionWrapper.bind( monitor );
-
-        assertTrue( connectionWrapper.isConnected() );
 
         IReferralHandler referralHandler = referralUrls -> {
             return connection;
         };
         ConnectionCorePlugin.getDefault().setReferralHandler( referralHandler );
 
-        assertTrue( connectionWrapper.isConnected() );
-        assertNull( monitor.getException() );
-
-        return connectionWrapper;
-    }
-
-
-    protected ConnectionWrapper getConnectionWrapper( StudioProgressMonitor monitor, TestLdapServer ldapServer )
-    {
-        // simple auth without principal and credential
-        ConnectionParameter connectionParameter = new ConnectionParameter( null, ldapServer.getHost(),
-            ldapServer.getPort(), EncryptionMethod.NONE, AuthenticationMethod.SIMPLE, ldapServer.getAdminDn(),
-            ldapServer.getAdminPassword(), null, false, null, 30000L );
-
-        Connection connection = new Connection( connectionParameter );
-
         connectionWrapper = connection.getConnectionWrapper();
-        connectionWrapper.connect( monitor );
-        connectionWrapper.bind( monitor );
 
-        assertTrue( connectionWrapper.isConnected() );
-
-        IReferralHandler referralHandler = referralUrls -> {
-            return connection;
-        };
-        ConnectionCorePlugin.getDefault().setReferralHandler( referralHandler );
-
-        assertTrue( connectionWrapper.isConnected() );
-        assertNull( monitor.getException() );
-
-        return connectionWrapper;
+        return connection;
     }
 
 }

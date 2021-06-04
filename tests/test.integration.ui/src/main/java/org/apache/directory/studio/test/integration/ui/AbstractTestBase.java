@@ -23,6 +23,7 @@ package org.apache.directory.studio.test.integration.ui;
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.CONTEXT_DN;
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.REFERRALS_DN;
 
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,6 +31,7 @@ import java.util.List;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
+import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.test.integration.junit5.SkipTestIfLdapServerIsNotAvailableInterceptor;
 import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
 import org.apache.directory.studio.test.integration.ui.bots.ApacheDSServersViewBot;
@@ -76,6 +78,20 @@ public class AbstractTestBase
     @AfterEach
     final void tearDownBase() throws Exception
     {
+        // clear custom trust stores
+        X509Certificate[] permanentCertificates = ConnectionCorePlugin.getDefault().getPermanentTrustStoreManager()
+            .getCertificates();
+        for ( X509Certificate certificate : permanentCertificates )
+        {
+            ConnectionCorePlugin.getDefault().getPermanentTrustStoreManager().removeCertificate( certificate );
+        }
+        X509Certificate[] temporaryCertificates = ConnectionCorePlugin.getDefault().getSessionTrustStoreManager()
+            .getCertificates();
+        for ( X509Certificate certificate : temporaryCertificates )
+        {
+            ConnectionCorePlugin.getDefault().getSessionTrustStoreManager().removeCertificate( certificate );
+        }
+
         connectionsViewBot.deleteTestConnections();
         serversViewBot.deleteTestServers();
         Assertions.genericTearDownAssertions();

@@ -89,5 +89,6 @@ public class Messages extends NLS
 
     public static String DirectoryApiConnectionWrapper_NoConnection;
     public static String DirectoryApiConnectionWrapper_UnableToConnect;
+    public static String DirectoryApiConnectionWrapper_UnsecuredConnection;
 
 }

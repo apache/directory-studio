@@ -84,9 +84,6 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
     /** The URL simple constant */
     private static final String X_AUTH_METHOD_SIMPLE = "Simple"; //$NON-NLS-1$
 
-    /** The URL PLAIN constant */
-    private static final String X_AUTH_METHOD_PLAIN = "PLAIN"; //$NON-NLS-1$
-
     /** The URL DIGEST-MD5 constant */
     private static final String X_AUTH_METHOD_DIGEST_MD5 = "DIGEST-MD5"; //$NON-NLS-1$
 
@@ -145,9 +142,6 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
     /** The text widget to input bind password */
     private Text bindPasswordText;
 
-    /** The text widget to input the SASL PLAIN autzid (if selected) */
-    private Text authzidText;
-
     /** The checkbox to choose if the bind password should be saved on disk */
     private Button saveBindPasswordButton;
 
@@ -172,7 +166,6 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
     private Text krb5ConfigManualRealmText;
     private Text krb5ConfigManualHostText;
     private Text krb5ConfigManualPortText;
-
 
     /**
      * Gets the authentication method.
@@ -220,17 +213,6 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
     private String getBindPassword()
     {
         return isSaveBindPassword() ? bindPasswordText.getText() : null;
-    }
-
-
-    /**
-     * Gets the bind authzid.
-     * 
-     * @return the authzid
-     */
-    private String getAuthzid()
-    {
-        return authzidText.getText();
     }
 
 
@@ -377,10 +359,6 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
         String[] dnHistory = HistoryUtils.load( ConnectionUIPlugin.getDefault().getDialogSettings(),
             ConnectionUIConstants.DIALOGSETTING_KEY_PRINCIPAL_HISTORY );
         bindPrincipalCombo = BaseWidgetUtils.createCombo( composite, dnHistory, -1, 2 );
-
-        BaseWidgetUtils.createLabel( composite, Messages.getString( "AuthenticationParameterPage.Authzid" ), 1 ); //$NON-NLS-1$
-        authzidText = BaseWidgetUtils.createText( composite, "SASL PLAIN only", 2 ); //$NON-NLS-1$
-        authzidText.setEnabled( false );
 
         BaseWidgetUtils.createLabel( composite, Messages.getString( "AuthenticationParameterPage.BindPassword" ), 1 ); //$NON-NLS-1$
         bindPasswordText = BaseWidgetUtils.createPasswordText( composite, StringUtils.EMPTY, 2 ); //$NON-NLS-1$
@@ -1031,10 +1009,6 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
     {
         switch ( parameter.getAuthMethod() )
         {
-            case SASL_PLAIN :
-                ldapUrl.getExtensions().add( new Extension( false, X_AUTH_METHOD, X_AUTH_METHOD_PLAIN ) );
-                break;
-                
             case SASL_CRAM_MD5:
                 ldapUrl.getExtensions().add( new Extension( false, X_AUTH_METHOD, X_AUTH_METHOD_CRAM_MD5 ) );
                 break;
@@ -1078,7 +1052,6 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
 
         switch ( parameter.getAuthMethod() )
         {
-            case SASL_PLAIN:
             case SASL_CRAM_MD5:
             case SASL_DIGEST_MD5:
             case SASL_GSSAPI:
