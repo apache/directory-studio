@@ -32,6 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Arrays;
 
 import org.apache.directory.api.ldap.model.constants.SaslQoP;
 import org.apache.directory.api.ldap.model.constants.SaslSecurityStrength;
@@ -40,9 +41,14 @@ import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionManager;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
+import org.apache.directory.studio.ldapbrowser.core.BrowserConnectionManager;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.test.integration.junit5.LdapServerType;
 import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
 import org.apache.directory.studio.test.integration.junit5.LdapServersSource.Mode;
+import org.apache.directory.studio.test.integration.junit5.OpenLdapServer;
 import org.apache.directory.studio.test.integration.junit5.TestFixture;
 import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
 import org.apache.directory.studio.test.integration.ui.bots.CertificateTrustDialogBot;
@@ -373,7 +379,7 @@ public class NewConnectionWizardTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(mode = Mode.All)
+    @LdapServersSource
     public void testCreateConnectionNoEncryptionSimpleAuthOK( TestLdapServer server ) throws UnknownHostException
     {
         // enter connection parameter
@@ -414,7 +420,6 @@ public class NewConnectionWizardTest extends AbstractTestBase
     @ParameterizedTest
     @LdapServersSource(mode = Mode.All)
     public void testCreateConnectionNoEncryptionSimpleAuthConfidentialityRequired( TestLdapServer server )
-
     {
         setConnectionParameters( server, EncryptionMethod.NONE );
 
@@ -433,7 +438,7 @@ public class NewConnectionWizardTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(mode = Mode.All)
+    @LdapServersSource
     public void testCreateConnectionNoEncryptionSaslCramMd5OK( TestLdapServer server )
     {
         setConnectionParameters( server, EncryptionMethod.NONE );
@@ -453,8 +458,8 @@ public class NewConnectionWizardTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(mode = Mode.All)
-    public void testCreateConnectionNoEncryptionSaslDigestMd5OK( TestLdapServer server )
+    @LdapServersSource
+    public void testCreateConnectionNoEncryptionSaslDigestMd5AuthOK( TestLdapServer server )
     {
         setConnectionParameters( server, EncryptionMethod.NONE );
 
@@ -473,7 +478,69 @@ public class NewConnectionWizardTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(mode = Mode.All, except = LdapServerType.Fedora389ds, reason = "Only secure binds configured for 389ds")
+    @LdapServersSource(except = LdapServerType.ApacheDS, reason = "Bug in SASL filter in ApacheDS 2.0.0.M26")
+    public void testCreateConnectionNoEncryptionSaslDigestMd5AuthIntOK( TestLdapServer server )
+    {
+        // Configure OpenLDAP with ssf=1 (1 implies integrity protection only)
+        if ( server instanceof OpenLdapServer )
+        {
+            OpenLdapServer openLdapServer = ( OpenLdapServer ) server;
+            openLdapServer.setSecurityProps( 1, 0 );
+        }
+
+        setConnectionParameters( server, EncryptionMethod.NONE );
+
+        wizardBot.selectDigestMD5Authentication();
+        wizardBot.typeUser( "user.1" );
+        wizardBot.typePassword( "password" );
+        if ( server.getType() == LdapServerType.ApacheDS )
+        {
+            wizardBot.typeRealm( "EXAMPLE.ORG" );
+        }
+        wizardBot.selectQualityOfProtection( SaslQoP.AUTH_INT );
+        wizardBot.selectProtectionStrength( SaslSecurityStrength.HIGH );
+
+        String result = wizardBot.clickCheckAuthenticationButton();
+        assertNull( result, "Expected OK" );
+
+        finishAndAssertConnection( server, EncryptionMethod.NONE, AuthenticationMethod.SASL_DIGEST_MD5,
+            "user.1", "password" );
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(except = LdapServerType.ApacheDS, reason = "Bug in SASL filter in ApacheDS 2.0.0.M26.")
+    public void testCreateConnectionNoEncryptionSaslDigestMd5AuthConfOK( TestLdapServer server )
+    {
+        // Configure OpenLDAP with ssf=128 (128 allows RC4, Blowfish and other modern strong ciphers)
+        if ( server instanceof OpenLdapServer )
+        {
+            OpenLdapServer openLdapServer = ( OpenLdapServer ) server;
+            openLdapServer.setSecurityProps( 128, 0 );
+        }
+
+        setConnectionParameters( server, EncryptionMethod.NONE );
+
+        wizardBot.selectDigestMD5Authentication();
+        wizardBot.typeUser( "user.1" );
+        wizardBot.typePassword( "password" );
+        if ( server.getType() == LdapServerType.ApacheDS )
+        {
+            wizardBot.typeRealm( "EXAMPLE.ORG" );
+        }
+        wizardBot.selectQualityOfProtection( SaslQoP.AUTH_CONF );
+        wizardBot.selectProtectionStrength( SaslSecurityStrength.HIGH );
+
+        String result = wizardBot.clickCheckAuthenticationButton();
+        assertNull( result, "Expected OK" );
+
+        finishAndAssertConnection( server, EncryptionMethod.NONE, AuthenticationMethod.SASL_DIGEST_MD5,
+            "user.1", "password" );
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(except = LdapServerType.Fedora389ds, reason = "Only secure binds configured for 389ds")
     public void testCreateConnectionNoEncryptionSaslDigestMd5ConfidentialityRequired( TestLdapServer server )
     {
         setConnectionParameters( server, EncryptionMethod.NONE );
@@ -491,8 +558,8 @@ public class NewConnectionWizardTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(mode = Mode.All, except = LdapServerType.ApacheDS, reason = "Missing OSGi import: org.apache.directory.server.kerberos.shared.store.PrincipalStoreEntryModifier cannot be found by org.apache.directory.server.protocol.shared_2.0.0.AM26")
-    public void testCreateConnectionNoEncryptionSaslGssapiNativeTgtOK( TestLdapServer server ) throws Exception
+    @LdapServersSource(except = LdapServerType.ApacheDS, reason = "Missing OSGi import: org.apache.directory.server.kerberos.shared.store.PrincipalStoreEntryModifier cannot be found by org.apache.directory.server.protocol.shared_2.0.0.AM26")
+    public void testCreateConnectionNoEncryptionSaslGssapiNativeTgtAuthOK( TestLdapServer server ) throws Exception
     {
         TestFixture.skipIfKdcServerIsNotAvailable();
 
@@ -520,8 +587,44 @@ public class NewConnectionWizardTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(mode = Mode.All, except = LdapServerType.ApacheDS, reason = "Missing OSGi import: org.apache.directory.server.kerberos.shared.store.PrincipalStoreEntryModifier cannot be found by org.apache.directory.server.protocol.shared_2.0.0.AM26")
-    public void testCreateConnectionNoEncryptionSaslGssapiObtainOK( TestLdapServer server )
+    @LdapServersSource(except = LdapServerType.ApacheDS, reason = "Missing OSGi import: org.apache.directory.server.kerberos.shared.store.PrincipalStoreEntryModifier cannot be found by org.apache.directory.server.protocol.shared_2.0.0.AM26")
+    public void testCreateConnectionNoEncryptionSaslGssapiNativeTgtAuthConfOK( TestLdapServer server ) throws Exception
+    {
+        TestFixture.skipIfKdcServerIsNotAvailable();
+
+        // Configure OpenLDAP with ssf=128 (128 allows RC4, Blowfish and other modern strong ciphers)
+        if ( server instanceof OpenLdapServer )
+        {
+            OpenLdapServer openLdapServer = ( OpenLdapServer ) server;
+            openLdapServer.setSecurityProps( 128, 0 );
+        }
+
+        // obtain native TGT
+        String[] cmd =
+            { "/bin/sh", "-c", "echo secret | /usr/bin/kinit hnelson" };
+        Process process = Runtime.getRuntime().exec( cmd );
+        int exitCode = process.waitFor();
+        assertEquals( 0, exitCode );
+
+        setConnectionParameters( server, EncryptionMethod.NONE );
+
+        wizardBot.selectGssApiAuthentication();
+        wizardBot.selectQualityOfProtection( SaslQoP.AUTH_CONF );
+        wizardBot.selectProtectionStrength( SaslSecurityStrength.HIGH );
+        wizardBot.selectUseNativeTgt();
+        wizardBot.selectUseNativeSystemConfiguration();
+
+        String result = wizardBot.clickCheckAuthenticationButton();
+        assertNull( result, "Expected OK" );
+
+        finishAndAssertConnection( server, EncryptionMethod.NONE, AuthenticationMethod.SASL_GSSAPI,
+            "", "" );
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(except = LdapServerType.ApacheDS, reason = "Missing OSGi import: org.apache.directory.server.kerberos.shared.store.PrincipalStoreEntryModifier cannot be found by org.apache.directory.server.protocol.shared_2.0.0.AM26")
+    public void testCreateConnectionNoEncryptionSaslGssapiObtainAuthOK( TestLdapServer server )
     {
         TestFixture.skipIfKdcServerIsNotAvailable();
 
@@ -543,7 +646,37 @@ public class NewConnectionWizardTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(mode = Mode.All)
+    @LdapServersSource(except = LdapServerType.ApacheDS, reason = "Missing OSGi import: org.apache.directory.server.kerberos.shared.store.PrincipalStoreEntryModifier cannot be found by org.apache.directory.server.protocol.shared_2.0.0.AM26")
+    public void testCreateConnectionNoEncryptionSaslGssapiObtainAuthConfOK( TestLdapServer server )
+    {
+        TestFixture.skipIfKdcServerIsNotAvailable();
+
+        // Configure OpenLDAP with ssf=128 (128 allows RC4, Blowfish and other modern strong ciphers)
+        if ( server instanceof OpenLdapServer )
+        {
+            OpenLdapServer openLdapServer = ( OpenLdapServer ) server;
+            openLdapServer.setSecurityProps( 128, 0 );
+        }
+
+        setConnectionParameters( server, EncryptionMethod.NONE );
+
+        wizardBot.selectGssApiAuthentication();
+        wizardBot.selectObtainTgtFromKdc();
+        wizardBot.typeUser( "hnelson" );
+        wizardBot.typePassword( "secret" );
+        wizardBot.selectQualityOfProtection( SaslQoP.AUTH_CONF );
+        wizardBot.selectProtectionStrength( SaslSecurityStrength.HIGH );
+
+        String result = wizardBot.clickCheckAuthenticationButton();
+        assertNull( result, "Expected OK" );
+
+        finishAndAssertConnection( server, EncryptionMethod.NONE, AuthenticationMethod.SASL_GSSAPI,
+            "hnelson", "secret" );
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource
     public void testCreateConnectionLdapsEncryptionNoAuthOK( TestLdapServer server )
     {
         setConnectionParameters( server, EncryptionMethod.LDAPS );
@@ -555,7 +688,7 @@ public class NewConnectionWizardTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(mode = Mode.All)
+    @LdapServersSource
     public void testCreateConnectionLdapsEncryptionSimpleAuthOK( TestLdapServer server )
     {
         setConnectionParameters( server, EncryptionMethod.LDAPS );
@@ -586,8 +719,8 @@ public class NewConnectionWizardTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(mode = Mode.All)
-    public void testCreateConnectionLdapsEncryptionSaslDigestMd5Ok( TestLdapServer server )
+    @LdapServersSource
+    public void testCreateConnectionLdapsEncryptionSaslDigestMd5AuthOk( TestLdapServer server )
     {
         setConnectionParameters( server, EncryptionMethod.LDAPS );
 
@@ -595,6 +728,48 @@ public class NewConnectionWizardTest extends AbstractTestBase
         wizardBot.typeUser( "user.1" );
         wizardBot.typePassword( "password" );
         wizardBot.selectQualityOfProtection( SaslQoP.AUTH );
+        wizardBot.selectProtectionStrength( SaslSecurityStrength.HIGH );
+
+        finishAndAssertConnection( server, EncryptionMethod.LDAPS, AuthenticationMethod.SASL_DIGEST_MD5,
+            "user.1", "password" );
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(except = LdapServerType.ApacheDS, reason = "Bug in SASL filter in ApacheDS 2.0.0.M26.")
+    public void testCreateConnectionLdapsEncryptionSaslDigestMd5AuthIntOk( TestLdapServer server )
+    {
+        setConnectionParameters( server, EncryptionMethod.LDAPS );
+
+        wizardBot.selectDigestMD5Authentication();
+        wizardBot.typeUser( "user.1" );
+        wizardBot.typePassword( "password" );
+        if ( server.getType() == LdapServerType.ApacheDS )
+        {
+            wizardBot.typeRealm( "EXAMPLE.ORG" );
+        }
+        wizardBot.selectQualityOfProtection( SaslQoP.AUTH_INT );
+        wizardBot.selectProtectionStrength( SaslSecurityStrength.HIGH );
+
+        finishAndAssertConnection( server, EncryptionMethod.LDAPS, AuthenticationMethod.SASL_DIGEST_MD5,
+            "user.1", "password" );
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(except = LdapServerType.ApacheDS, reason = "Bug in SASL filter in ApacheDS 2.0.0.M26.")
+    public void testCreateConnectionLdapsEncryptionSaslDigestMd5AuthConfOk( TestLdapServer server )
+    {
+        setConnectionParameters( server, EncryptionMethod.LDAPS );
+
+        wizardBot.selectDigestMD5Authentication();
+        wizardBot.typeUser( "user.1" );
+        wizardBot.typePassword( "password" );
+        if ( server.getType() == LdapServerType.ApacheDS )
+        {
+            wizardBot.typeRealm( "EXAMPLE.ORG" );
+        }
+        wizardBot.selectQualityOfProtection( SaslQoP.AUTH_CONF );
         wizardBot.selectProtectionStrength( SaslSecurityStrength.HIGH );
 
         finishAndAssertConnection( server, EncryptionMethod.LDAPS, AuthenticationMethod.SASL_DIGEST_MD5,
@@ -642,7 +817,7 @@ public class NewConnectionWizardTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(mode = Mode.All)
+    @LdapServersSource
     public void testCreateConnectionStartTlsEncryptionNoAuthOK( TestLdapServer server )
     {
         setConnectionParameters( server, EncryptionMethod.START_TLS );
@@ -654,7 +829,7 @@ public class NewConnectionWizardTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(mode = Mode.All)
+    @LdapServersSource
     public void testCreateConnectionStartTlsEncryptionSimpleAuthOK( TestLdapServer server )
     {
         setConnectionParameters( server, EncryptionMethod.START_TLS );
@@ -685,7 +860,7 @@ public class NewConnectionWizardTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(mode = Mode.All)
+    @LdapServersSource
     public void testCreateConnectionStartTlsEncryptionSaslDigestMd5OK( TestLdapServer server )
     {
         setConnectionParameters( server, EncryptionMethod.START_TLS );
@@ -721,7 +896,165 @@ public class NewConnectionWizardTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(mode = Mode.All)
+    @LdapServersSource(except = LdapServerType.ApacheDS, reason = "Missing OSGi import: org.apache.directory.server.kerberos.shared.store.PrincipalStoreEntryModifier cannot be found by org.apache.directory.server.protocol.shared_2.0.0.AM26")
+    public void testCreateConnectionStartTlsEncryptionSaslGssapiNativeTgtAuthOK( TestLdapServer server )
+        throws Exception
+    {
+        TestFixture.skipIfKdcServerIsNotAvailable();
+
+        // obtain native TGT
+        String[] cmd =
+            { "/bin/sh", "-c", "echo secret | /usr/bin/kinit hnelson" };
+        Process process = Runtime.getRuntime().exec( cmd );
+        int exitCode = process.waitFor();
+        assertEquals( 0, exitCode );
+
+        setConnectionParameters( server, EncryptionMethod.START_TLS );
+
+        wizardBot.selectGssApiAuthentication();
+        wizardBot.selectQualityOfProtection( SaslQoP.AUTH );
+        wizardBot.selectProtectionStrength( SaslSecurityStrength.HIGH );
+        wizardBot.selectUseNativeTgt();
+        wizardBot.selectUseNativeSystemConfiguration();
+
+        String result = wizardBot.clickCheckAuthenticationButton();
+        assertNull( result, "Expected OK" );
+
+        finishAndAssertConnection( server, EncryptionMethod.START_TLS, AuthenticationMethod.SASL_GSSAPI,
+            "", "" );
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(except = LdapServerType.ApacheDS, reason = "Missing OSGi import: org.apache.directory.server.kerberos.shared.store.PrincipalStoreEntryModifier cannot be found by org.apache.directory.server.protocol.shared_2.0.0.AM26")
+    public void testCreateConnectionStartTlsEncryptionSaslGssapiNativeTgtAuthConfOK( TestLdapServer server )
+        throws Exception
+    {
+        TestFixture.skipIfKdcServerIsNotAvailable();
+
+        // obtain native TGT
+        String[] cmd =
+            { "/bin/sh", "-c", "echo secret | /usr/bin/kinit hnelson" };
+        Process process = Runtime.getRuntime().exec( cmd );
+        int exitCode = process.waitFor();
+        assertEquals( 0, exitCode );
+
+        setConnectionParameters( server, EncryptionMethod.START_TLS );
+
+        wizardBot.selectGssApiAuthentication();
+        wizardBot.selectQualityOfProtection( SaslQoP.AUTH_CONF );
+        wizardBot.selectProtectionStrength( SaslSecurityStrength.HIGH );
+        wizardBot.selectUseNativeTgt();
+        wizardBot.selectUseNativeSystemConfiguration();
+
+        String result = wizardBot.clickCheckAuthenticationButton();
+        assertNull( result, "Expected OK" );
+
+        finishAndAssertConnection( server, EncryptionMethod.START_TLS, AuthenticationMethod.SASL_GSSAPI,
+            "", "" );
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(except = LdapServerType.ApacheDS, reason = "Missing OSGi import: org.apache.directory.server.kerberos.shared.store.PrincipalStoreEntryModifier cannot be found by org.apache.directory.server.protocol.shared_2.0.0.AM26")
+    public void testCreateConnectionStartTlsEncryptionSaslGssapiNativeTgtAuthConfInvalidCredentials(
+        TestLdapServer server ) throws Exception
+    {
+        TestFixture.skipIfKdcServerIsNotAvailable();
+
+        // obtain native TGT
+        String[] cmd =
+            { "/bin/sh", "-c", "echo secret | /usr/bin/kdestroy -A" };
+        Process process = Runtime.getRuntime().exec( cmd );
+        int exitCode = process.waitFor();
+        assertEquals( 0, exitCode );
+
+        setConnectionParameters( server, EncryptionMethod.START_TLS );
+
+        wizardBot.selectGssApiAuthentication();
+        wizardBot.selectQualityOfProtection( SaslQoP.AUTH_CONF );
+        wizardBot.selectProtectionStrength( SaslSecurityStrength.HIGH );
+        wizardBot.selectUseNativeTgt();
+        wizardBot.selectUseNativeSystemConfiguration();
+
+        String result = wizardBot.clickCheckAuthenticationButton();
+        assertThat( result, containsString( "Unable to obtain Principal Name for authentication" ) );
+
+        finishAndAssertConnectionError( "Unable to obtain Principal Name for authentication" );
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(except = LdapServerType.ApacheDS, reason = "Missing OSGi import: org.apache.directory.server.kerberos.shared.store.PrincipalStoreEntryModifier cannot be found by org.apache.directory.server.protocol.shared_2.0.0.AM26")
+    public void testCreateConnectionStartTlsEncryptionSaslGssapiObtainAuthOK( TestLdapServer server )
+    {
+        TestFixture.skipIfKdcServerIsNotAvailable();
+
+        setConnectionParameters( server, EncryptionMethod.START_TLS );
+
+        wizardBot.selectGssApiAuthentication();
+        wizardBot.selectObtainTgtFromKdc();
+        wizardBot.typeUser( "hnelson" );
+        wizardBot.typePassword( "secret" );
+        wizardBot.selectQualityOfProtection( SaslQoP.AUTH );
+        wizardBot.selectProtectionStrength( SaslSecurityStrength.HIGH );
+
+        String result = wizardBot.clickCheckAuthenticationButton();
+        assertNull( result, "Expected OK" );
+
+        finishAndAssertConnection( server, EncryptionMethod.START_TLS, AuthenticationMethod.SASL_GSSAPI,
+            "hnelson", "secret" );
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(except = LdapServerType.ApacheDS, reason = "Missing OSGi import: org.apache.directory.server.kerberos.shared.store.PrincipalStoreEntryModifier cannot be found by org.apache.directory.server.protocol.shared_2.0.0.AM26")
+    public void testCreateConnectionStartTlsEncryptionSaslGssapiObtainAuthConfOK( TestLdapServer server )
+    {
+        TestFixture.skipIfKdcServerIsNotAvailable();
+
+        setConnectionParameters( server, EncryptionMethod.START_TLS );
+
+        wizardBot.selectGssApiAuthentication();
+        wizardBot.selectObtainTgtFromKdc();
+        wizardBot.typeUser( "hnelson" );
+        wizardBot.typePassword( "secret" );
+        wizardBot.selectQualityOfProtection( SaslQoP.AUTH_CONF );
+        wizardBot.selectProtectionStrength( SaslSecurityStrength.HIGH );
+
+        String result = wizardBot.clickCheckAuthenticationButton();
+        assertNull( result, "Expected OK" );
+
+        finishAndAssertConnection( server, EncryptionMethod.START_TLS, AuthenticationMethod.SASL_GSSAPI,
+            "hnelson", "secret" );
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All, except = LdapServerType.ApacheDS, reason = "Missing OSGi import: org.apache.directory.server.kerberos.shared.store.PrincipalStoreEntryModifier cannot be found by org.apache.directory.server.protocol.shared_2.0.0.AM26")
+    public void testCreateConnectionStartTlsEncryptionSaslGssapiObtainAuthConfInvalidCredentials(
+        TestLdapServer server )
+    {
+        TestFixture.skipIfKdcServerIsNotAvailable();
+
+        setConnectionParameters( server, EncryptionMethod.START_TLS );
+
+        wizardBot.selectGssApiAuthentication();
+        wizardBot.selectObtainTgtFromKdc();
+        wizardBot.typeUser( "hnelson" );
+        wizardBot.typePassword( "invalid" );
+        wizardBot.selectQualityOfProtection( SaslQoP.AUTH_CONF );
+        wizardBot.selectProtectionStrength( SaslSecurityStrength.HIGH );
+
+        String result = wizardBot.clickCheckAuthenticationButton();
+        assertThat( result, containsString( "Integrity check on decrypted field failed (31) - PREAUTH_FAILED" ) );
+
+        finishAndAssertConnectionError( "Integrity check on decrypted field failed (31) - PREAUTH_FAILED" );
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource
     public void testCheckNetworkParameterButtonNoEncryptionNotOk( TestLdapServer server )
     {
         setConnectionParameters( server, EncryptionMethod.NONE );
@@ -744,7 +1077,7 @@ public class NewConnectionWizardTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(mode = Mode.All)
+    @LdapServersSource
     public void testCheckNetworkParameterButtonLdapsEncryptionNotOk( TestLdapServer server )
     {
         setConnectionParameters( server, EncryptionMethod.LDAPS );
@@ -772,7 +1105,7 @@ public class NewConnectionWizardTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(mode = Mode.All)
+    @LdapServersSource
     public void testCheckNetworkParameterButtonStartTlsEncryptionNotOk( TestLdapServer server )
     {
         setConnectionParameters( server, EncryptionMethod.START_TLS );
@@ -859,6 +1192,16 @@ public class NewConnectionWizardTest extends AbstractTestBase
 
         // ensure connection is visible in Connections view
         assertEquals( 1, connectionsViewBot.getCount() );
+
+        // assert Root DSE and schema was read
+        BrowserConnectionManager browserConnectionManager = BrowserCorePlugin.getDefault().getConnectionManager();
+        IBrowserConnection browserConnection = browserConnectionManager.getBrowserConnection( connection );
+        IRootDSE rootDSE = browserConnection.getRootDSE();
+        assertTrue( Arrays.asList( rootDSE.getAttribute( "namingContexts" ).getStringValues() )
+            .contains( TestFixture.CONTEXT_DN.getName() ) );
+        assertFalse( browserConnection.getSchema().isDefault() );
+        assertTrue( browserConnection.getSchema().getObjectClassDescriptions().size() > 50 );
+        assertTrue( browserConnection.getSchema().getAttributeTypeDescriptions().size() > 100 );
 
         // close connection
         connectionsViewBot.closeSelectedConnections();

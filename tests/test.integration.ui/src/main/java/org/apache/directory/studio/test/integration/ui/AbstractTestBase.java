@@ -32,6 +32,8 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.test.integration.junit5.SkipTestIfLdapServerIsNotAvailableInterceptor;
 import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
 import org.apache.directory.studio.test.integration.ui.bots.ApacheDSServersViewBot;
@@ -72,6 +74,8 @@ public class AbstractTestBase
         searchLogsViewBot = studioBot.getSearchLogsViewBot();
         modificationLogsViewBot = studioBot.getModificationLogsViewBot();
         serversViewBot = studioBot.getApacheDSServersViewBot();
+        BrowserCorePlugin.getDefault()
+            .getPluginPreferences().setValue( BrowserCoreConstants.PREFERENCE_LDIF_LINE_WIDTH, 1000 );
     }
 
 

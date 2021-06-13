@@ -92,7 +92,6 @@ import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
-import org.apache.directory.studio.connection.core.ConnectionParameter.Krb5Configuration;
 import org.apache.directory.studio.connection.core.ConnectionParameter.Krb5CredentialConfiguration;
 import org.apache.directory.studio.connection.core.ICertificateHandler.TrustLevel;
 import org.apache.directory.studio.connection.core.IReferralHandler;
@@ -378,16 +377,45 @@ public class DirectoryApiConnectionWrapperTest
 
 
     /**
-     * Test binding to the server using SASL and no encryption.
+     * Test binding to the server using SASL auth and no encryption.
      */
     @ParameterizedTest
     @LdapServersSource(mode = Mode.All)
-    public void testSaslBindPlain( TestLdapServer ldapServer )
+    public void testSaslDigestMd5BindAuthPlain( TestLdapServer ldapServer )
+    {
+        testSaslDigestMd5BindPlain( ldapServer, SaslQoP.AUTH );
+    }
+
+
+    /**
+     * Test binding to the server using SASL auth-int and no encryption.
+     */
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All, except = LdapServerType.Fedora389ds)
+    public void testSaslDigestMd5BindAuthIntPlain( TestLdapServer ldapServer )
+    {
+        testSaslDigestMd5BindPlain( ldapServer, SaslQoP.AUTH_INT );
+    }
+
+
+    /**
+     * Test binding to the server using SASL auth-conf and no encryption.
+     */
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All, except = LdapServerType.Fedora389ds)
+    public void testSaslDigestMd5BindAuthConfPlain( TestLdapServer ldapServer )
+    {
+        testSaslDigestMd5BindPlain( ldapServer, SaslQoP.AUTH_CONF );
+    }
+
+
+    private void testSaslDigestMd5BindPlain( TestLdapServer ldapServer, SaslQoP saslQoP )
     {
         ldapServer.setConfidentialityRequired( false );
         StudioProgressMonitor monitor = getProgressMonitor();
         Connection connection = getConnection( monitor, ldapServer, "user.1", "password" );
         connection.setAuthMethod( AuthenticationMethod.SASL_DIGEST_MD5 );
+        connection.getConnectionParameter().setSaslQop( SaslQoP.AUTH_CONF );
 
         assertFalse( connectionWrapper.isConnected() );
 
@@ -432,11 +460,39 @@ public class DirectoryApiConnectionWrapperTest
 
 
     /**
-     * Test binding to the server using SASL and ldaps:// encryption.
+     * Test binding to the server using SASL auth and ldaps:// encryption.
+     */
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All, except = LdapServerType.Fedora389ds)
+    public void testSaslDigestMd5BindAuthLdaps( TestLdapServer ldapServer )
+    {
+        testSaslDigestMd5BindLdaps( ldapServer, SaslQoP.AUTH );
+    }
+
+
+    /**
+     * Test binding to the server using SASL auth-int and ldaps:// encryption.
+     */
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All, except = LdapServerType.Fedora389ds)
+    public void testSaslDigestMd5BindAuthIntLdaps( TestLdapServer ldapServer )
+    {
+        testSaslDigestMd5BindLdaps( ldapServer, SaslQoP.AUTH_INT );
+    }
+
+
+    /**
+     * Test binding to the server using SASL auth-conf and ldaps:// encryption.
      */
     @ParameterizedTest
     @LdapServersSource(mode = Mode.All)
-    public void testSaslBindLdaps( TestLdapServer ldapServer )
+    public void testSaslDigestMd5BindAuthConfLdaps( TestLdapServer ldapServer )
+    {
+        testSaslDigestMd5BindLdaps( ldapServer, SaslQoP.AUTH_CONF );
+    }
+
+
+    private void testSaslDigestMd5BindLdaps( TestLdapServer ldapServer, SaslQoP saslQoP )
     {
         ldapServer.setConfidentialityRequired( true );
         StudioProgressMonitor monitor = getProgressMonitor();
@@ -444,6 +500,7 @@ public class DirectoryApiConnectionWrapperTest
         connection.setPort( ldapServer.getPortSSL() );
         connection.setEncryptionMethod( EncryptionMethod.LDAPS );
         connection.setAuthMethod( AuthenticationMethod.SASL_DIGEST_MD5 );
+        connection.getConnectionParameter().setSaslQop( saslQoP );
         acceptAllCertificates();
 
         assertFalse( connectionWrapper.isConnected() );
@@ -462,17 +519,46 @@ public class DirectoryApiConnectionWrapperTest
 
 
     /**
-     * Test binding to the server using SASL and StartTLS encryption.
+     * Test binding to the server using SASL auth and StartTLS encryption.
+     */
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All, except = LdapServerType.Fedora389ds)
+    public void testSaslDigestMd5BindAuthStartTls( TestLdapServer ldapServer )
+    {
+        testSaslDigestMd5BindStartTls( ldapServer, SaslQoP.AUTH );
+    }
+
+
+    /**
+     * Test binding to the server using SASL auth-int and StartTLS encryption.
+     */
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All, except = LdapServerType.Fedora389ds)
+    public void testSaslDigestMd5BindAuthIntStartTls( TestLdapServer ldapServer )
+    {
+        testSaslDigestMd5BindStartTls( ldapServer, SaslQoP.AUTH_INT );
+    }
+
+
+    /**
+     * Test binding to the server using SASL auth-conf and StartTLS encryption.
      */
     @ParameterizedTest
     @LdapServersSource(mode = Mode.All)
-    public void testSaslBindStartTls( TestLdapServer ldapServer )
+    public void testSaslDigestMd5BindAuthConfStartTls( TestLdapServer ldapServer )
+    {
+        testSaslDigestMd5BindStartTls( ldapServer, SaslQoP.AUTH_CONF );
+    }
+
+
+    private void testSaslDigestMd5BindStartTls( TestLdapServer ldapServer, SaslQoP saslQoP )
     {
         ldapServer.setConfidentialityRequired( true );
         StudioProgressMonitor monitor = getProgressMonitor();
         Connection connection = getConnection( monitor, ldapServer, "user.1", "password" );
         connection.setEncryptionMethod( EncryptionMethod.START_TLS );
         connection.setAuthMethod( AuthenticationMethod.SASL_DIGEST_MD5 );
+        connection.getConnectionParameter().setSaslQop( saslQoP );
         acceptAllCertificates();
 
         assertFalse( connectionWrapper.isConnected() );
@@ -491,11 +577,39 @@ public class DirectoryApiConnectionWrapperTest
 
 
     /**
-     * Test binding to the server using GSSAPI and no encryption.
+     * Test binding to the server using GSSAPI auth and no encryption.
      */
     @ParameterizedTest
     @LdapServersSource(mode = Mode.All, except = LdapServerType.ApacheDS, reason = "Missing OSGi import: org.apache.directory.server.kerberos.shared.store.PrincipalStoreEntryModifier cannot be found by org.apache.directory.server.protocol.shared_2.0.0.AM26")
-    public void testSaslGssapiBindPlain( TestLdapServer ldapServer )
+    public void testSaslGssapiBindAuthPlain( TestLdapServer ldapServer )
+    {
+        testSaslGssapiBindPlain( ldapServer, SaslQoP.AUTH );
+    }
+
+
+    /**
+     * Test binding to the server using GSSAPI auth-int and no encryption.
+     */
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All, except = LdapServerType.ApacheDS, reason = "Missing OSGi import: org.apache.directory.server.kerberos.shared.store.PrincipalStoreEntryModifier cannot be found by org.apache.directory.server.protocol.shared_2.0.0.AM26")
+    public void testSaslGssapiBindAuthIntPlain( TestLdapServer ldapServer )
+    {
+        testSaslGssapiBindPlain( ldapServer, SaslQoP.AUTH_INT );
+    }
+
+
+    /**
+     * Test binding to the server using GSSAPI auth-conf and no encryption.
+     */
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All, except = LdapServerType.ApacheDS, reason = "Missing OSGi import: org.apache.directory.server.kerberos.shared.store.PrincipalStoreEntryModifier cannot be found by org.apache.directory.server.protocol.shared_2.0.0.AM26")
+    public void testSaslGssapiBindAuthConfPlain( TestLdapServer ldapServer )
+    {
+        testSaslGssapiBindPlain( ldapServer, SaslQoP.AUTH_CONF );
+    }
+
+
+    private void testSaslGssapiBindPlain( TestLdapServer ldapServer, SaslQoP saslQoP )
     {
         TestFixture.skipIfKdcServerIsNotAvailable();
 
@@ -504,6 +618,7 @@ public class DirectoryApiConnectionWrapperTest
         Connection connection = getConnection( monitor, ldapServer, "hnelson", "secret" );
         connection.setAuthMethod( AuthenticationMethod.SASL_GSSAPI );
         connection.getConnectionParameter().setKrb5CredentialConfiguration( Krb5CredentialConfiguration.OBTAIN_TGT );
+        connection.getConnectionParameter().setSaslQop( saslQoP );
 
         assertFalse( connectionWrapper.isConnected() );
 
@@ -521,11 +636,39 @@ public class DirectoryApiConnectionWrapperTest
 
 
     /**
-     * Test binding to the server using GSSAPI and ldaps:// encryption.
+     * Test binding to the server using GSSAPI auth and ldaps:// encryption.
      */
     @ParameterizedTest
     @LdapServersSource(mode = Mode.All, except = LdapServerType.ApacheDS, reason = "Missing OSGi import: org.apache.directory.server.kerberos.shared.store.PrincipalStoreEntryModifier cannot be found by org.apache.directory.server.protocol.shared_2.0.0.AM26")
-    public void testSaslGssapiBindLdaps( TestLdapServer ldapServer ) throws Exception
+    public void testSaslGssapiBindAuthLdaps( TestLdapServer ldapServer ) throws Exception
+    {
+        testSaslGssapiBindLdaps( ldapServer, SaslQoP.AUTH );
+    }
+
+
+    /**
+     * Test binding to the server using GSSAPI auth-int and ldaps:// encryption.
+     */
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All, except = LdapServerType.ApacheDS, reason = "Missing OSGi import: org.apache.directory.server.kerberos.shared.store.PrincipalStoreEntryModifier cannot be found by org.apache.directory.server.protocol.shared_2.0.0.AM26")
+    public void testSaslGssapiBindAuthIntLdaps( TestLdapServer ldapServer ) throws Exception
+    {
+        testSaslGssapiBindLdaps( ldapServer, SaslQoP.AUTH_INT );
+    }
+
+
+    /**
+     * Test binding to the server using GSSAPI auth-conf and ldaps:// encryption.
+     */
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All, except = LdapServerType.ApacheDS, reason = "Missing OSGi import: org.apache.directory.server.kerberos.shared.store.PrincipalStoreEntryModifier cannot be found by org.apache.directory.server.protocol.shared_2.0.0.AM26")
+    public void testSaslGssapiBindAuthConfLdaps( TestLdapServer ldapServer ) throws Exception
+    {
+        testSaslGssapiBindLdaps( ldapServer, SaslQoP.AUTH_CONF );
+    }
+
+
+    private void testSaslGssapiBindLdaps( TestLdapServer ldapServer, SaslQoP saslQoP ) throws Exception
     {
         TestFixture.skipIfKdcServerIsNotAvailable();
 
@@ -543,6 +686,7 @@ public class DirectoryApiConnectionWrapperTest
         connection.setEncryptionMethod( EncryptionMethod.LDAPS );
         connection.setAuthMethod( AuthenticationMethod.SASL_GSSAPI );
         connection.getConnectionParameter().setKrb5CredentialConfiguration( Krb5CredentialConfiguration.USE_NATIVE );
+        connection.getConnectionParameter().setSaslQop( saslQoP );
         acceptAllCertificates();
 
         assertFalse( connectionWrapper.isConnected() );
@@ -561,11 +705,39 @@ public class DirectoryApiConnectionWrapperTest
 
 
     /**
-     * Test binding to the server using GSSAPI and StartTLS encryption.
+     * Test binding to the server using GSSAPI auth and StartTLS encryption.
      */
     @ParameterizedTest
     @LdapServersSource(mode = Mode.All, except = LdapServerType.ApacheDS, reason = "Missing OSGi import: org.apache.directory.server.kerberos.shared.store.PrincipalStoreEntryModifier cannot be found by org.apache.directory.server.protocol.shared_2.0.0.AM26")
-    public void testSaslGssapiBindStartTls( TestLdapServer ldapServer )
+    public void testSaslGssapiBindAuthStartTls( TestLdapServer ldapServer )
+    {
+        testSaslGssapiBindStartTls( ldapServer, SaslQoP.AUTH );
+    }
+
+
+    /**
+     * Test binding to the server using GSSAPI auth-int and StartTLS encryption.
+     */
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All, except = LdapServerType.ApacheDS, reason = "Missing OSGi import: org.apache.directory.server.kerberos.shared.store.PrincipalStoreEntryModifier cannot be found by org.apache.directory.server.protocol.shared_2.0.0.AM26")
+    public void testSaslGssapiBindAuthIntStartTls( TestLdapServer ldapServer )
+    {
+        testSaslGssapiBindStartTls( ldapServer, SaslQoP.AUTH_INT );
+    }
+
+
+    /**
+     * Test binding to the server using GSSAPI auth-conf and StartTLS encryption.
+     */
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All, except = LdapServerType.ApacheDS, reason = "Missing OSGi import: org.apache.directory.server.kerberos.shared.store.PrincipalStoreEntryModifier cannot be found by org.apache.directory.server.protocol.shared_2.0.0.AM26")
+    public void testSaslGssapiBindAuthConfStartTls( TestLdapServer ldapServer )
+    {
+        testSaslGssapiBindStartTls( ldapServer, SaslQoP.AUTH_CONF );
+    }
+
+
+    private void testSaslGssapiBindStartTls( TestLdapServer ldapServer, SaslQoP saslQoP )
     {
         TestFixture.skipIfKdcServerIsNotAvailable();
 
@@ -575,6 +747,7 @@ public class DirectoryApiConnectionWrapperTest
         connection.setEncryptionMethod( EncryptionMethod.START_TLS );
         connection.setAuthMethod( AuthenticationMethod.SASL_GSSAPI );
         connection.getConnectionParameter().setKrb5CredentialConfiguration( Krb5CredentialConfiguration.OBTAIN_TGT );
+        connection.getConnectionParameter().setSaslQop( saslQoP );
         acceptAllCertificates();
 
         assertFalse( connectionWrapper.isConnected() );

@@ -21,7 +21,7 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import static org.apache.directory.studio.test.integration.junit5.TestFixture.USER1_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.USER8_DN;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -77,8 +77,8 @@ public class SchemaBrowserTest extends AbstractTestBase
             .getBrowserConnection( connection );
         browserConnection.setSchema( Schema.DEFAULT_SCHEMA );
 
-        // Open connection as uid=user.1 which is not allowed to read cn=subschema
-        connection.setBindPrincipal( USER1_DN.getName() );
+        // Open connection as uid=user.8 which is not allowed to read cn=subschema
+        connection.setBindPrincipal( USER8_DN.getName() );
         connection.setBindPassword( "password" );
         ErrorDialogBot errorDialog = connectionsViewBot.openSelectedConnectionExpectingNoSchemaProvidedErrorDialog();
         assertThat( errorDialog.getErrorDetails(),

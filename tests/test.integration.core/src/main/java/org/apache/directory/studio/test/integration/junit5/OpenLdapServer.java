@@ -21,8 +21,6 @@
 package org.apache.directory.studio.test.integration.junit5;
 
 
-import static org.apache.directory.studio.test.integration.junit5.Constants.LOCALHOST;
-
 import org.apache.directory.api.ldap.model.entry.DefaultModification;
 import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.entry.ModificationOperation;
@@ -88,12 +86,28 @@ public class OpenLdapServer extends TestLdapServer
     @Override
     public void setConfidentialityRequired( boolean confidentialityRequired )
     {
+        if ( confidentialityRequired )
+        {
+            setSecurityProps( 256, 256 );
+        }
+        else
+        {
+            setSecurityProps( 0, 0 );
+        }
+    }
+
+
+    public void setSecurityProps( int ssf, int tls )
+    {
+
         try ( LdapConnection connection = openConnection() )
         {
             connection.bind( OPENLDAP_CONFIG_DN, OPENLDAP_CONFIG_PASSWORD );
-            Modification modification = new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE,
-                "olcSecurity", confidentialityRequired ? "ssf=256 tls=256" : "ssf=0 tls=0" );
-            connection.modify( "cn=config", modification );
+            Modification modification1 = new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE,
+                "olcSecurity", "ssf=" + ssf + " tls=" + tls );
+            Modification modification2 = new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE,
+                "olcSaslSecProps", "noplain,noanonymous,minssf=" + ssf );
+            connection.modify( "cn=config", modification1, modification2 );
         }
         catch ( LdapNoSuchAttributeException e )
         {

@@ -63,7 +63,7 @@ ldapwhoami -H ldap://fedora389ds.example.com:21389 -Y GSSAPI -N
 ### UI integration tests
 
 ```
-docker run -it --rm --cpus="1.5" \
+docker run -it --rm \
     -u $(id -u):$(id -g) \
     -v ~/.m2:/home/hnelson/.m2 \
     -v $(pwd):/home/hnelson/project \
