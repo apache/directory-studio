@@ -21,8 +21,6 @@
 package org.apache.directory.studio.test.integration.junit5;
 
 
-import static org.apache.directory.studio.test.integration.junit5.Constants.LOCALHOST;
-
 import org.apache.directory.api.ldap.model.entry.DefaultModification;
 import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.entry.ModificationOperation;
@@ -36,7 +34,7 @@ import org.apache.directory.api.ldap.model.entry.ModificationOperation;
  */
 public class Fedora389dsLdapServer extends TestLdapServer
 {
-    private static final String FEDORA_389DS_HOST = getEnvOrDefault( "FEDORA_389DS_HOST", LOCALHOST );
+    private static final String FEDORA_389DS_HOST = getEnvOrDefault( "FEDORA_389DS_HOST", "fedora389ds.example.com" );
     private static final int FEDORA_389DS_PORT = Integer.parseInt( getEnvOrDefault( "FEDORA_389DS_PORT", "21389" ) );
     private static final int FEDORA_389DS_PORT_SSL = Integer
         .parseInt( getEnvOrDefault( "FEDORA_389DS_PORT_SSL", "21636" ) );
@@ -65,6 +63,5 @@ public class Fedora389dsLdapServer extends TestLdapServer
                 "nsslapd-require-secure-binds", confidentialityRequired ? "on" : "off" );
             connection.modify( "cn=config", modification );
         } );
-
     }
 }

@@ -92,6 +92,7 @@ import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
+import org.apache.directory.studio.connection.core.ConnectionParameter.Krb5CredentialConfiguration;
 import org.apache.directory.studio.connection.core.ICertificateHandler.TrustLevel;
 import org.apache.directory.studio.connection.core.IReferralHandler;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
@@ -378,7 +379,7 @@ public class DirectoryApiConnectionWrapperTest
      * Test binding to the server using SASL and no encryption.
      */
     @ParameterizedTest
-    @LdapServersSource(mode = Mode.All, except = LdapServerType.Fedora389ds)
+    @LdapServersSource(mode = Mode.All)
     public void testSaslBindPlain( TestLdapServer ldapServer )
     {
         ldapServer.setConfidentialityRequired( false );
@@ -432,7 +433,7 @@ public class DirectoryApiConnectionWrapperTest
      * Test binding to the server using SASL and ldaps:// encryption.
      */
     @ParameterizedTest
-    @LdapServersSource(mode = Mode.All, except = LdapServerType.Fedora389ds)
+    @LdapServersSource(mode = Mode.All)
     public void testSaslBindLdaps( TestLdapServer ldapServer )
     {
         ldapServer.setConfidentialityRequired( true );
@@ -462,7 +463,7 @@ public class DirectoryApiConnectionWrapperTest
      * Test binding to the server using SASL and StartTLS encryption.
      */
     @ParameterizedTest
-    @LdapServersSource(mode = Mode.All, except = LdapServerType.Fedora389ds)
+    @LdapServersSource(mode = Mode.All)
     public void testSaslBindStartTls( TestLdapServer ldapServer )
     {
         ldapServer.setConfidentialityRequired( true );
@@ -470,6 +471,102 @@ public class DirectoryApiConnectionWrapperTest
         Connection connection = getConnection( monitor, ldapServer, "user.1", "password" );
         connection.setEncryptionMethod( EncryptionMethod.START_TLS );
         connection.setAuthMethod( AuthenticationMethod.SASL_DIGEST_MD5 );
+        acceptAllCertificates();
+
+        assertFalse( connectionWrapper.isConnected() );
+
+        connectionWrapper.connect( monitor );
+        connectionWrapper.bind( monitor );
+
+        assertTrue( connectionWrapper.isConnected() );
+        assertTrue( connectionWrapper.isSecured() );
+        assertNull( monitor.getException() );
+
+        connectionWrapper.unbind();
+        connectionWrapper.disconnect();
+        assertFalse( connectionWrapper.isConnected() );
+    }
+
+
+    /**
+     * Test binding to the server using GSSAPI and no encryption.
+     */
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All, except = LdapServerType.ApacheDS, reason = "Missing OSGi import: org.apache.directory.server.kerberos.shared.store.PrincipalStoreEntryModifier cannot be found by org.apache.directory.server.protocol.shared_2.0.0.AM26")
+    public void testSaslGssapiBindPlain( TestLdapServer ldapServer )
+    {
+        ldapServer.setConfidentialityRequired( false );
+        StudioProgressMonitor monitor = getProgressMonitor();
+        Connection connection = getConnection( monitor, ldapServer, "hnelson", "secret" );
+        connection.setAuthMethod( AuthenticationMethod.SASL_GSSAPI );
+        connection.getConnectionParameter().setKrb5CredentialConfiguration( Krb5CredentialConfiguration.OBTAIN_TGT );
+
+        assertFalse( connectionWrapper.isConnected() );
+
+        connectionWrapper.connect( monitor );
+        connectionWrapper.bind( monitor );
+
+        assertTrue( connectionWrapper.isConnected() );
+        assertFalse( connectionWrapper.isSecured() );
+        assertNull( monitor.getException() );
+
+        connectionWrapper.unbind();
+        connectionWrapper.disconnect();
+        assertFalse( connectionWrapper.isConnected() );
+    }
+
+
+    /**
+     * Test binding to the server using GSSAPI and ldaps:// encryption.
+     */
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All, except = LdapServerType.ApacheDS, reason = "Missing OSGi import: org.apache.directory.server.kerberos.shared.store.PrincipalStoreEntryModifier cannot be found by org.apache.directory.server.protocol.shared_2.0.0.AM26")
+    public void testSaslGssapiBindLdaps( TestLdapServer ldapServer ) throws Exception
+    {
+        // obtain native TGT
+        String[] cmd =
+            { "/bin/sh", "-c", "echo secret | /usr/bin/kinit hnelson" };
+        Process process = Runtime.getRuntime().exec( cmd );
+        int exitCode = process.waitFor();
+        assertEquals( 0, exitCode );
+
+        ldapServer.setConfidentialityRequired( true );
+        StudioProgressMonitor monitor = getProgressMonitor();
+        Connection connection = getConnection( monitor, ldapServer, "hnelson", "secret" );
+        connection.setPort( ldapServer.getPortSSL() );
+        connection.setEncryptionMethod( EncryptionMethod.LDAPS );
+        connection.setAuthMethod( AuthenticationMethod.SASL_GSSAPI );
+        connection.getConnectionParameter().setKrb5CredentialConfiguration( Krb5CredentialConfiguration.USE_NATIVE );
+        acceptAllCertificates();
+
+        assertFalse( connectionWrapper.isConnected() );
+
+        connectionWrapper.connect( monitor );
+        connectionWrapper.bind( monitor );
+
+        assertTrue( connectionWrapper.isConnected() );
+        assertTrue( connectionWrapper.isSecured() );
+        assertNull( monitor.getException() );
+
+        connectionWrapper.unbind();
+        connectionWrapper.disconnect();
+        assertFalse( connectionWrapper.isConnected() );
+    }
+
+
+    /**
+     * Test binding to the server using GSSAPI and StartTLS encryption.
+     */
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All, except = LdapServerType.ApacheDS, reason = "Missing OSGi import: org.apache.directory.server.kerberos.shared.store.PrincipalStoreEntryModifier cannot be found by org.apache.directory.server.protocol.shared_2.0.0.AM26")
+    public void testSaslGssapiBindStartTls( TestLdapServer ldapServer )
+    {
+        ldapServer.setConfidentialityRequired( true );
+        StudioProgressMonitor monitor = getProgressMonitor();
+        Connection connection = getConnection( monitor, ldapServer, "hnelson", "secret" );
+        connection.setEncryptionMethod( EncryptionMethod.START_TLS );
+        connection.setAuthMethod( AuthenticationMethod.SASL_GSSAPI );
+        connection.getConnectionParameter().setKrb5CredentialConfiguration( Krb5CredentialConfiguration.OBTAIN_TGT );
         acceptAllCertificates();
 
         assertFalse( connectionWrapper.isConnected() );
