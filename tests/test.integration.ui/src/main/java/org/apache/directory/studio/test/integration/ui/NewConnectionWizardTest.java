@@ -531,7 +531,7 @@ public class NewConnectionWizardTest extends AbstractTestBase
         wizardBot.selectProtectionStrength( SaslSecurityStrength.HIGH );
         wizardBot.selectUseManualConfiguration();
         wizardBot.typeKerberosRealm( "EXAMPLE.COM" );
-        wizardBot.typeKdcHost( LOCALHOST );
+        wizardBot.typeKdcHost( "kerby.example.com" );
         wizardBot.typeKdcPort( 60088 );
 
         String result = wizardBot.clickCheckAuthenticationButton();

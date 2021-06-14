@@ -136,7 +136,7 @@ def inTestLab(Closure action){
   docker.image('coheigea/kerby').withRun('-h kerby.example.com -v $(pwd)/tools/testlab/kerby-data:/kerby-data') { kerby ->
     docker.image('osixia/openldap:1.5.0').withRun('-h openldap.example.com -v $(pwd)/tools/testlab/ldap.keytab:/etc/krb5.keytab -v $(pwd)/tools/testlab/krb5.conf:/etc/krb5.conf -e LDAP_TLS_VERIFY_CLIENT=never') { openldap ->
       docker.image('389ds/dirsrv').withRun('-h fedora389ds.example.com -v $(pwd)/tools/testlab/ldap.keytab:/etc/krb5.keytab -v $(pwd)/tools/testlab/krb5.conf:/etc/krb5.conf -e DS_DM_PASSWORD=admin', 'bash -c "zypper install -y cyrus-sasl-crammd5 cyrus-sasl-digestmd5 cyrus-sasl-gssapi; set -m; /usr/lib/dirsrv/dscontainer -r & while ! /usr/lib/dirsrv/dscontainer -H; do sleep 5; done; sleep 5; /usr/sbin/dsconf localhost backend create --suffix dc=example,dc=org --be-name example; fg"') { fedora389ds ->
-        docker.image('apachedirectory/maven-build:jdk-8').inside("--link=${kerby.id}:kerby.example.com --link=${openldap.id}:openldap.example.com -v ${pwd}/tools/testlab/krb5.conf:/etc/krb5.conf -e OPENLDAP_HOST=openldap -e OPENLDAP_PORT=389 -e OPENLDAP_PORT_SSL=636 --link=${fedora389ds.id}:fedora389ds.example.com -e FEDORA_389DS_HOST=fedora389ds -e FEDORA_389DS_PORT=3389 -e FEDORA_389DS_PORT_SSL=3636") {
+        docker.image('apachedirectory/maven-build:jdk-8').inside('-v ${env.WORKSPACE}/tools/testlab/krb5.conf:/etc/krb5.conf --link=${kerby.id}:kerby.example.com --link=${openldap.id}:openldap.example.com -e OPENLDAP_HOST=openldap -e OPENLDAP_PORT=389 -e OPENLDAP_PORT_SSL=636 --link=${fedora389ds.id}:fedora389ds.example.com -e FEDORA_389DS_HOST=fedora389ds -e FEDORA_389DS_PORT=3389 -e FEDORA_389DS_PORT_SSL=3636') {
           action()
         }
       }
