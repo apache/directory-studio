@@ -21,7 +21,6 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import static org.apache.directory.studio.test.integration.ui.utils.Constants.LOCALHOST;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -44,6 +43,7 @@ import org.apache.directory.studio.connection.core.ConnectionParameter.Encryptio
 import org.apache.directory.studio.test.integration.junit5.LdapServerType;
 import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
 import org.apache.directory.studio.test.integration.junit5.LdapServersSource.Mode;
+import org.apache.directory.studio.test.integration.junit5.TestFixture;
 import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
 import org.apache.directory.studio.test.integration.ui.bots.CertificateTrustDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.ErrorDialogBot;
@@ -494,6 +494,8 @@ public class NewConnectionWizardTest extends AbstractTestBase
     @LdapServersSource(mode = Mode.All, except = LdapServerType.ApacheDS, reason = "Missing OSGi import: org.apache.directory.server.kerberos.shared.store.PrincipalStoreEntryModifier cannot be found by org.apache.directory.server.protocol.shared_2.0.0.AM26")
     public void testCreateConnectionNoEncryptionSaslGssapiNativeTgtOK( TestLdapServer server ) throws Exception
     {
+        TestFixture.skipIfKdcServerIsNotAvailable();
+
         // obtain native TGT
         String[] cmd =
             { "/bin/sh", "-c", "echo secret | /usr/bin/kinit hnelson" };
@@ -521,6 +523,8 @@ public class NewConnectionWizardTest extends AbstractTestBase
     @LdapServersSource(mode = Mode.All, except = LdapServerType.ApacheDS, reason = "Missing OSGi import: org.apache.directory.server.kerberos.shared.store.PrincipalStoreEntryModifier cannot be found by org.apache.directory.server.protocol.shared_2.0.0.AM26")
     public void testCreateConnectionNoEncryptionSaslGssapiObtainOK( TestLdapServer server )
     {
+        TestFixture.skipIfKdcServerIsNotAvailable();
+
         setConnectionParameters( server, EncryptionMethod.NONE );
 
         wizardBot.selectGssApiAuthentication();
@@ -529,10 +533,6 @@ public class NewConnectionWizardTest extends AbstractTestBase
         wizardBot.typePassword( "secret" );
         wizardBot.selectQualityOfProtection( SaslQoP.AUTH );
         wizardBot.selectProtectionStrength( SaslSecurityStrength.HIGH );
-        wizardBot.selectUseManualConfiguration();
-        wizardBot.typeKerberosRealm( "EXAMPLE.COM" );
-        wizardBot.typeKdcHost( "kerby.example.com" );
-        wizardBot.typeKdcPort( 60088 );
 
         String result = wizardBot.clickCheckAuthenticationButton();
         assertNull( result, "Expected OK" );

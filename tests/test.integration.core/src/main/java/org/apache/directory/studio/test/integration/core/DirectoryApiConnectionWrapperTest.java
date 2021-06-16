@@ -92,6 +92,7 @@ import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.ConnectionParameter;
 import org.apache.directory.studio.connection.core.ConnectionParameter.AuthenticationMethod;
 import org.apache.directory.studio.connection.core.ConnectionParameter.EncryptionMethod;
+import org.apache.directory.studio.connection.core.ConnectionParameter.Krb5Configuration;
 import org.apache.directory.studio.connection.core.ConnectionParameter.Krb5CredentialConfiguration;
 import org.apache.directory.studio.connection.core.ICertificateHandler.TrustLevel;
 import org.apache.directory.studio.connection.core.IReferralHandler;
@@ -107,6 +108,7 @@ import org.apache.directory.studio.test.integration.junit5.LdapServerType;
 import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
 import org.apache.directory.studio.test.integration.junit5.LdapServersSource.Mode;
 import org.apache.directory.studio.test.integration.junit5.SkipTestIfLdapServerIsNotAvailableInterceptor;
+import org.apache.directory.studio.test.integration.junit5.TestFixture;
 import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
 import org.apache.mina.util.AvailablePortFinder;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -495,6 +497,8 @@ public class DirectoryApiConnectionWrapperTest
     @LdapServersSource(mode = Mode.All, except = LdapServerType.ApacheDS, reason = "Missing OSGi import: org.apache.directory.server.kerberos.shared.store.PrincipalStoreEntryModifier cannot be found by org.apache.directory.server.protocol.shared_2.0.0.AM26")
     public void testSaslGssapiBindPlain( TestLdapServer ldapServer )
     {
+        TestFixture.skipIfKdcServerIsNotAvailable();
+
         ldapServer.setConfidentialityRequired( false );
         StudioProgressMonitor monitor = getProgressMonitor();
         Connection connection = getConnection( monitor, ldapServer, "hnelson", "secret" );
@@ -523,6 +527,8 @@ public class DirectoryApiConnectionWrapperTest
     @LdapServersSource(mode = Mode.All, except = LdapServerType.ApacheDS, reason = "Missing OSGi import: org.apache.directory.server.kerberos.shared.store.PrincipalStoreEntryModifier cannot be found by org.apache.directory.server.protocol.shared_2.0.0.AM26")
     public void testSaslGssapiBindLdaps( TestLdapServer ldapServer ) throws Exception
     {
+        TestFixture.skipIfKdcServerIsNotAvailable();
+
         // obtain native TGT
         String[] cmd =
             { "/bin/sh", "-c", "echo secret | /usr/bin/kinit hnelson" };
@@ -561,6 +567,8 @@ public class DirectoryApiConnectionWrapperTest
     @LdapServersSource(mode = Mode.All, except = LdapServerType.ApacheDS, reason = "Missing OSGi import: org.apache.directory.server.kerberos.shared.store.PrincipalStoreEntryModifier cannot be found by org.apache.directory.server.protocol.shared_2.0.0.AM26")
     public void testSaslGssapiBindStartTls( TestLdapServer ldapServer )
     {
+        TestFixture.skipIfKdcServerIsNotAvailable();
+
         ldapServer.setConfidentialityRequired( true );
         StudioProgressMonitor monitor = getProgressMonitor();
         Connection connection = getConnection( monitor, ldapServer, "hnelson", "secret" );
