@@ -21,6 +21,7 @@
 package org.apache.directory.studio.test.integration.junit5;
 
 
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -47,6 +48,7 @@ import org.apache.directory.api.ldap.model.schema.comparators.DnComparator;
 import org.apache.directory.ldap.client.api.EntryCursorImpl;
 import org.apache.directory.ldap.client.api.LdapConnection;
 import org.apache.directory.studio.connection.core.Controls;
+import org.junit.jupiter.api.Assumptions;
 
 
 /**
@@ -90,6 +92,29 @@ public class TestFixture
         catch ( LdapInvalidDnException e )
         {
             throw new RuntimeException( e );
+        }
+    }
+
+    public static final String KRB5_REALM = "EXAMPLE>COM";
+    public static final String KDC_HOST = "kerby.example.com";
+    public static final int KDC_PORT = 60088;
+
+    public static void skipIfKdcServerIsNotAvailable()
+    {
+        boolean available = false;
+        try
+        {
+            available = InetAddress.getByName( KDC_HOST ).isReachable( 3 );
+        }
+        catch ( Exception e )
+        {
+            available = false;
+        }
+
+        if ( !available )
+        {
+            Assumptions.assumeTrue( false,
+                "Skip test because KDC server " + KDC_HOST + " is not available" );
         }
     }
 

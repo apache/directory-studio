@@ -22,7 +22,6 @@ package org.apache.directory.studio.test.integration.ui;
 
 
 import static org.apache.directory.studio.test.integration.ui.utils.Constants.LOCALHOST;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.File;
@@ -150,48 +149,6 @@ public class GssApiTest extends AbstractTestBase
     }
 
 
-    @Test
-    public void testGssApiUseNativeTgtAndNativeConfigurationAndObtainServiceTicket() throws Exception
-    {
-        // create the server
-        createServer( serverName );
-
-        // configure ApacheDS and KDC server
-        configureApacheDS( serverName );
-
-        // start ApacheDS
-        serversViewBot.runServer( serverName );
-        serversViewBot.waitForServerStart( serverName );
-
-        // import KDC data
-        connectionsViewBot.createTestConnection( "GssApiTest", ldapPort );
-        importData();
-
-        // obtain native TGT
-        String[] cmd =
-            { "/bin/sh", "-c", "echo secret | /usr/bin/kinit hnelson" };
-        Process process = Runtime.getRuntime().exec( cmd );
-        int exitCode = process.waitFor();
-        assertEquals( 0, exitCode );
-
-        // connect with GSSAPI authentication
-        NewConnectionWizardBot wizardBot = connectionsViewBot.openNewConnectionWizard();
-        wizardBot.typeConnectionName( getConnectionName() );
-        wizardBot.typeHost( LOCALHOST );
-        wizardBot.typePort( ldapPort );
-        wizardBot.clickNextButton();
-        wizardBot.selectGssApiAuthentication();
-        wizardBot.selectUseNativeTgt();
-        wizardBot.selectUseNativeSystemConfiguration();
-
-        // check the connection
-        String result = wizardBot.clickCheckAuthenticationButton();
-        assertNull( result, "Expected OK" );
-
-        wizardBot.clickCancelButton();
-    }
-
-
     private void createServer( String serverName )
     {
         // Showing view
@@ -217,7 +174,6 @@ public class GssApiTest extends AbstractTestBase
         editorBot.enableKerberosServer();
 
         editorBot.setAvailablePorts();
-        editorBot.setKerberosPort( 60088 );
         ldapPort = editorBot.getLdapPort();
         kdcPort = editorBot.getKerberosPort();
 

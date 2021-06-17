@@ -40,7 +40,7 @@ import org.apache.directory.ldap.client.api.LdapConnection;
  */
 public class OpenLdapServer extends TestLdapServer
 {
-    private static final String OPENLDAP_HOST = getEnvOrDefault( "OPENLDAP_HOST", LOCALHOST );
+    private static final String OPENLDAP_HOST = getEnvOrDefault( "OPENLDAP_HOST", "openldap.example.com" );
     private static final int OPENLDAP_PORT = Integer.parseInt( getEnvOrDefault( "OPENLDAP_PORT", "20389" ) );
     private static final int OPENLDAP_PORT_SSL = Integer.parseInt( getEnvOrDefault( "OPENLDAP_PORT_SSL", "20636" ) );
     private static final String OPENLDAP_ADMIN_DN = getEnvOrDefault( "OPENLDAP_ADMIN_DN",

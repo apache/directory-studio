@@ -43,6 +43,7 @@ import org.apache.directory.studio.connection.core.ConnectionParameter.Encryptio
 import org.apache.directory.studio.test.integration.junit5.LdapServerType;
 import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
 import org.apache.directory.studio.test.integration.junit5.LdapServersSource.Mode;
+import org.apache.directory.studio.test.integration.junit5.TestFixture;
 import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
 import org.apache.directory.studio.test.integration.ui.bots.CertificateTrustDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.ErrorDialogBot;
@@ -432,7 +433,7 @@ public class NewConnectionWizardTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(mode = Mode.All, except = LdapServerType.Fedora389ds, reason = "SASL not configured for 389ds")
+    @LdapServersSource(mode = Mode.All)
     public void testCreateConnectionNoEncryptionSaslCramMd5OK( TestLdapServer server )
     {
         setConnectionParameters( server, EncryptionMethod.NONE );
@@ -452,7 +453,7 @@ public class NewConnectionWizardTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(mode = Mode.All, except = LdapServerType.Fedora389ds, reason = "SASL not configured for 389ds")
+    @LdapServersSource(mode = Mode.All)
     public void testCreateConnectionNoEncryptionSaslDigestMd5OK( TestLdapServer server )
     {
         setConnectionParameters( server, EncryptionMethod.NONE );
@@ -460,10 +461,6 @@ public class NewConnectionWizardTest extends AbstractTestBase
         wizardBot.selectDigestMD5Authentication();
         wizardBot.typeUser( "user.1" );
         wizardBot.typePassword( "password" );
-        if ( server.getType() == LdapServerType.ApacheDS )
-        {
-            wizardBot.typeRealm( "EXAMPLE.ORG" );
-        }
         wizardBot.selectQualityOfProtection( SaslQoP.AUTH );
         wizardBot.selectProtectionStrength( SaslSecurityStrength.HIGH );
 
@@ -476,7 +473,7 @@ public class NewConnectionWizardTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(mode = Mode.All, except = LdapServerType.Fedora389ds, reason = "SASL not configured for 389ds")
+    @LdapServersSource(mode = Mode.All, except = LdapServerType.Fedora389ds, reason = "Only secure binds configured for 389ds")
     public void testCreateConnectionNoEncryptionSaslDigestMd5ConfidentialityRequired( TestLdapServer server )
     {
         setConnectionParameters( server, EncryptionMethod.NONE );
@@ -490,6 +487,58 @@ public class NewConnectionWizardTest extends AbstractTestBase
         server.setConfidentialityRequired( true );
 
         finishAndAssertConnectionError( "[LDAP result code 13 - confidentialityRequired]" );
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All, except = LdapServerType.ApacheDS, reason = "Missing OSGi import: org.apache.directory.server.kerberos.shared.store.PrincipalStoreEntryModifier cannot be found by org.apache.directory.server.protocol.shared_2.0.0.AM26")
+    public void testCreateConnectionNoEncryptionSaslGssapiNativeTgtOK( TestLdapServer server ) throws Exception
+    {
+        TestFixture.skipIfKdcServerIsNotAvailable();
+
+        // obtain native TGT
+        String[] cmd =
+            { "/bin/sh", "-c", "echo secret | /usr/bin/kinit hnelson" };
+        Process process = Runtime.getRuntime().exec( cmd );
+        int exitCode = process.waitFor();
+        assertEquals( 0, exitCode );
+
+        setConnectionParameters( server, EncryptionMethod.NONE );
+
+        wizardBot.selectGssApiAuthentication();
+        wizardBot.selectQualityOfProtection( SaslQoP.AUTH );
+        wizardBot.selectProtectionStrength( SaslSecurityStrength.HIGH );
+        wizardBot.selectUseNativeTgt();
+        wizardBot.selectUseNativeSystemConfiguration();
+
+        String result = wizardBot.clickCheckAuthenticationButton();
+        assertNull( result, "Expected OK" );
+
+        finishAndAssertConnection( server, EncryptionMethod.NONE, AuthenticationMethod.SASL_GSSAPI,
+            "", "" );
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All, except = LdapServerType.ApacheDS, reason = "Missing OSGi import: org.apache.directory.server.kerberos.shared.store.PrincipalStoreEntryModifier cannot be found by org.apache.directory.server.protocol.shared_2.0.0.AM26")
+    public void testCreateConnectionNoEncryptionSaslGssapiObtainOK( TestLdapServer server )
+    {
+        TestFixture.skipIfKdcServerIsNotAvailable();
+
+        setConnectionParameters( server, EncryptionMethod.NONE );
+
+        wizardBot.selectGssApiAuthentication();
+        wizardBot.selectObtainTgtFromKdc();
+        wizardBot.typeUser( "hnelson" );
+        wizardBot.typePassword( "secret" );
+        wizardBot.selectQualityOfProtection( SaslQoP.AUTH );
+        wizardBot.selectProtectionStrength( SaslSecurityStrength.HIGH );
+
+        String result = wizardBot.clickCheckAuthenticationButton();
+        assertNull( result, "Expected OK" );
+
+        finishAndAssertConnection( server, EncryptionMethod.NONE, AuthenticationMethod.SASL_GSSAPI,
+            "hnelson", "secret" );
     }
 
 
@@ -537,7 +586,7 @@ public class NewConnectionWizardTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(mode = Mode.All, except = LdapServerType.Fedora389ds, reason = "SASL not configured for 389ds")
+    @LdapServersSource(mode = Mode.All)
     public void testCreateConnectionLdapsEncryptionSaslDigestMd5Ok( TestLdapServer server )
     {
         setConnectionParameters( server, EncryptionMethod.LDAPS );
@@ -545,10 +594,6 @@ public class NewConnectionWizardTest extends AbstractTestBase
         wizardBot.selectDigestMD5Authentication();
         wizardBot.typeUser( "user.1" );
         wizardBot.typePassword( "password" );
-        if ( server.getType() == LdapServerType.ApacheDS )
-        {
-            wizardBot.typeRealm( "EXAMPLE.ORG" );
-        }
         wizardBot.selectQualityOfProtection( SaslQoP.AUTH );
         wizardBot.selectProtectionStrength( SaslSecurityStrength.HIGH );
 
@@ -558,7 +603,7 @@ public class NewConnectionWizardTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(mode = Mode.All, except = LdapServerType.Fedora389ds, reason = "SASL not configured for 389ds")
+    @LdapServersSource(mode = Mode.All)
     public void testCreateConnectionLdapsEncryptionSaslDigestMd5InvalidCredentials( TestLdapServer server )
     {
         setConnectionParameters( server, EncryptionMethod.LDAPS );
@@ -566,10 +611,6 @@ public class NewConnectionWizardTest extends AbstractTestBase
         wizardBot.selectDigestMD5Authentication();
         wizardBot.typeUser( "user.1" );
         wizardBot.typePassword( "invalid" );
-        if ( server.getType() == LdapServerType.ApacheDS )
-        {
-            wizardBot.typeRealm( "EXAMPLE.ORG" );
-        }
         wizardBot.selectQualityOfProtection( SaslQoP.AUTH );
         wizardBot.selectProtectionStrength( SaslSecurityStrength.HIGH );
 
@@ -581,7 +622,7 @@ public class NewConnectionWizardTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(mode = Mode.All, except = LdapServerType.Fedora389ds, reason = "SASL not configured for 389ds")
+    @LdapServersSource(mode = Mode.All)
     public void testCreateConnectionLdapsEncryptionSaslDigestMd5InvalidRealm( TestLdapServer server )
     {
         setConnectionParameters( server, EncryptionMethod.LDAPS );
@@ -644,7 +685,7 @@ public class NewConnectionWizardTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(mode = Mode.All, except = LdapServerType.Fedora389ds, reason = "SASL not configured for 389ds")
+    @LdapServersSource(mode = Mode.All)
     public void testCreateConnectionStartTlsEncryptionSaslDigestMd5OK( TestLdapServer server )
     {
         setConnectionParameters( server, EncryptionMethod.START_TLS );
@@ -652,10 +693,6 @@ public class NewConnectionWizardTest extends AbstractTestBase
         wizardBot.selectDigestMD5Authentication();
         wizardBot.typeUser( "user.1" );
         wizardBot.typePassword( "password" );
-        if ( server.getType() == LdapServerType.ApacheDS )
-        {
-            wizardBot.typeRealm( "EXAMPLE.ORG" );
-        }
         wizardBot.selectQualityOfProtection( SaslQoP.AUTH );
         wizardBot.selectProtectionStrength( SaslSecurityStrength.HIGH );
 
@@ -665,7 +702,7 @@ public class NewConnectionWizardTest extends AbstractTestBase
 
 
     @ParameterizedTest
-    @LdapServersSource(mode = Mode.All, except = LdapServerType.Fedora389ds, reason = "SASL not configured for 389ds")
+    @LdapServersSource(mode = Mode.All)
     public void testCreateConnectionStartTlsEncryptionSaslDigestMd5InvalidCredentials( TestLdapServer server )
     {
         setConnectionParameters( server, EncryptionMethod.START_TLS );
@@ -673,10 +710,6 @@ public class NewConnectionWizardTest extends AbstractTestBase
         wizardBot.selectDigestMD5Authentication();
         wizardBot.typeUser( "user.1" );
         wizardBot.typePassword( "invalid" );
-        if ( server.getType() == LdapServerType.ApacheDS )
-        {
-            wizardBot.typeRealm( "EXAMPLE.ORG" );
-        }
         wizardBot.selectQualityOfProtection( SaslQoP.AUTH );
         wizardBot.selectProtectionStrength( SaslSecurityStrength.HIGH );
 

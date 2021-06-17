@@ -218,7 +218,7 @@ public class AuthenticationParameterPage extends AbstractConnectionParameterPage
 
     private String getSaslRealm()
     {
-        return saslRealmText.getText();
+        return Strings.isEmpty( saslRealmText.getText() ) ? null : saslRealmText.getText();
     }
 
 
