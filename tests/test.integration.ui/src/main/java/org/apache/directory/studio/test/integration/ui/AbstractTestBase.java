@@ -44,6 +44,7 @@ import org.apache.directory.studio.test.integration.ui.bots.SearchLogsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
 import org.apache.directory.studio.test.integration.ui.utils.Assertions;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.junit5.SWTBotJunit5Extension;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -74,8 +75,10 @@ public class AbstractTestBase
         searchLogsViewBot = studioBot.getSearchLogsViewBot();
         modificationLogsViewBot = studioBot.getModificationLogsViewBot();
         serversViewBot = studioBot.getApacheDSServersViewBot();
-        BrowserCorePlugin.getDefault()
-            .getPluginPreferences().setValue( BrowserCoreConstants.PREFERENCE_LDIF_LINE_WIDTH, 1000 );
+        UIThreadRunnable.syncExec( () -> {
+            BrowserCorePlugin.getDefault()
+                .getPluginPreferences().setValue( BrowserCoreConstants.PREFERENCE_LDIF_LINE_WIDTH, 1000 );
+        } );
     }
 
 

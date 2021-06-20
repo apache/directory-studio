@@ -183,6 +183,14 @@ public class StudioBot
                     }
 
                     // close shells (open dialogs)
+                    Shell[] shells = Display.getCurrent().getShells();
+                    for ( Shell shell : shells )
+                    {
+                        if ( shell != null && shell != window.getShell() )
+                        {
+                            shell.close();
+                        }
+                    }
                     Shell activeShell = Display.getCurrent().getActiveShell();
                     if ( activeShell != null && activeShell != window.getShell() )
                     {
