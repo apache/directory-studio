@@ -42,4 +42,7 @@ olcAuthzRegexp: uid=([^,]*),cn=cram-md5,cn=auth uid=$1,ou=users,dc=example,dc=or
 replace: olcSaslSecProps
 olcSaslSecProps: noplain,noanonymous,minssf=0
 -
+replace: olcTLSCipherSuite
+olcTLSCipherSuite: SECURE256:+SECURE128:-VERS-TLS-ALL:+VERS-TLS1.3:+VERS-TLS1.2:-RSA:-DHE-DSS:-CAMELLIA-128-CBC:-CAMELLIA-256-CBC
+-
 

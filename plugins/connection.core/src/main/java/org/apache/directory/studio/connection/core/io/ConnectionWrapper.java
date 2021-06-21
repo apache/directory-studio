@@ -20,10 +20,10 @@
 package org.apache.directory.studio.connection.core.io;
 
 
-import java.security.cert.X509Certificate;
 import java.util.Collection;
 
 import javax.naming.directory.SearchControls;
+import javax.net.ssl.SSLSession;
 
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Modification;
@@ -50,7 +50,7 @@ public interface ConnectionWrapper
      * 
      * @param monitor the progres monitor
      */
-    X509Certificate[] connect( StudioProgressMonitor monitor );
+    void connect( StudioProgressMonitor monitor );
 
 
     /**
@@ -87,6 +87,14 @@ public interface ConnectionWrapper
      * @return true, if is secured
      */
     boolean isSecured();
+
+
+    /**
+     * Gets the {@link SSLSession} associated with the connection.
+     * 
+     * @return the {@link SSLSession} associated with the connection or null if the connection is not secured
+     */
+    SSLSession getSslSession();
 
 
     /**

@@ -22,6 +22,7 @@ package org.apache.directory.studio.test.integration.ui;
 
 
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -52,6 +53,7 @@ import org.apache.directory.studio.test.integration.junit5.OpenLdapServer;
 import org.apache.directory.studio.test.integration.junit5.TestFixture;
 import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
 import org.apache.directory.studio.test.integration.ui.bots.CertificateTrustDialogBot;
+import org.apache.directory.studio.test.integration.ui.bots.DialogBot.CheckResponse;
 import org.apache.directory.studio.test.integration.ui.bots.ErrorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewConnectionWizardBot;
 import org.apache.mina.util.AvailablePortFinder;
@@ -388,15 +390,19 @@ public class NewConnectionWizardTest extends AbstractTestBase
         wizardBot.typePort( server.getPort() );
 
         // click "Check Network Parameter" button
-        String result = wizardBot.clickCheckNetworkParameterButton();
-        assertNull( result, "Expected OK" );
+        CheckResponse checkResponse = wizardBot.clickCheckNetworkParameterButton();
+        assertFalse( checkResponse.isError(), "Expected OK" );
+        assertThat( checkResponse.getMessage(), not( containsString( "Protocol" ) ) );
+        assertThat( checkResponse.getMessage(), not( containsString( "Cipher Suite" ) ) );
 
         // enter IPv4 address as host
         wizardBot.typeHost( InetAddress.getByName( server.getHost() ).getHostAddress() );
 
         // click "Check Network Parameter" button
-        result = wizardBot.clickCheckNetworkParameterButton();
-        assertNull( result, "Expected OK" );
+        checkResponse = wizardBot.clickCheckNetworkParameterButton();
+        assertFalse( checkResponse.isError(), "Expected OK" );
+        assertThat( checkResponse.getMessage(), not( containsString( "Protocol" ) ) );
+        assertThat( checkResponse.getMessage(), not( containsString( "Cipher Suite" ) ) );
 
         // enter hostname as host again
         wizardBot.typeHost( server.getHost() );
@@ -409,7 +415,7 @@ public class NewConnectionWizardTest extends AbstractTestBase
         wizardBot.typePassword( server.getAdminPassword() );
 
         // click "Check Network Parameter" button
-        result = wizardBot.clickCheckAuthenticationButton();
+        String result = wizardBot.clickCheckAuthenticationButton();
         assertNull( result, "Expected OK" );
 
         finishAndAssertConnection( server, EncryptionMethod.NONE, AuthenticationMethod.SIMPLE,
@@ -1062,15 +1068,18 @@ public class NewConnectionWizardTest extends AbstractTestBase
 
         // Invalid port
         wizardBot.typePort( getInvalidPort() );
-        String result = wizardBot.clickCheckNetworkParameterButton();
-        assertThat( result, containsString( "The connection failed" ) );
+        CheckResponse checkResponse = wizardBot.clickCheckNetworkParameterButton();
+        assertTrue( checkResponse.isError() );
+        assertThat( checkResponse.getMessage(), containsString( "The connection failed" ) );
 
         // Invalid host
         String hostname = getInvalidHostName();
         wizardBot.typeHost( hostname );
-        result = wizardBot.clickCheckNetworkParameterButton();
-        assertThat( result, containsString( "The connection failed" ) );
-        assertThat( "Unknown host name must occur in error message", result, containsString( hostname ) );
+        checkResponse = wizardBot.clickCheckNetworkParameterButton();
+        assertTrue( checkResponse.isError() );
+        assertThat( checkResponse.getMessage(), containsString( "The connection failed" ) );
+        assertThat( "Unknown host name must occur in error message", checkResponse.getMessage(),
+            containsString( hostname ) );
 
         wizardBot.clickCancelButton();
     }
@@ -1085,20 +1094,24 @@ public class NewConnectionWizardTest extends AbstractTestBase
 
         // Invalid port
         wizardBot.typePort( getInvalidPort() );
-        String result = wizardBot.clickCheckNetworkParameterButton();
-        assertThat( result, containsString( "The connection failed" ) );
+        CheckResponse checkResponse = wizardBot.clickCheckNetworkParameterButton();
+        assertTrue( checkResponse.isError() );
+        assertThat( checkResponse.getMessage(), containsString( "The connection failed" ) );
 
         // Non ldaps port
         wizardBot.typePort( server.getPort() );
-        result = wizardBot.clickCheckNetworkParameterButton();
-        assertThat( result, containsString( "The connection failed" ) );
+        checkResponse = wizardBot.clickCheckNetworkParameterButton();
+        assertTrue( checkResponse.isError() );
+        assertThat( checkResponse.getMessage(), containsString( "The connection failed" ) );
 
         // Invalid host
         String hostname = getInvalidHostName();
         wizardBot.typeHost( hostname );
-        result = wizardBot.clickCheckNetworkParameterButton();
-        assertThat( result, containsString( "The connection failed" ) );
-        assertThat( "Unknown host name must occur in error message", result, containsString( hostname ) );
+        checkResponse = wizardBot.clickCheckNetworkParameterButton();
+        assertTrue( checkResponse.isError() );
+        assertThat( checkResponse.getMessage(), containsString( "The connection failed" ) );
+        assertThat( "Unknown host name must occur in error message", checkResponse.getMessage(),
+            containsString( hostname ) );
 
         wizardBot.clickCancelButton();
     }
@@ -1113,20 +1126,24 @@ public class NewConnectionWizardTest extends AbstractTestBase
 
         // Invalid port
         wizardBot.typePort( getInvalidPort() );
-        String result = wizardBot.clickCheckNetworkParameterButton();
-        assertThat( result, containsString( "The connection failed" ) );
+        CheckResponse checkResponse = wizardBot.clickCheckNetworkParameterButton();
+        assertTrue( checkResponse.isError() );
+        assertThat( checkResponse.getMessage(), containsString( "The connection failed" ) );
 
         // Ldaps port
         wizardBot.typePort( server.getPortSSL() );
-        result = wizardBot.clickCheckNetworkParameterButton();
-        assertThat( result, containsString( "The connection failed" ) );
+        assertTrue( checkResponse.isError() );
+        checkResponse = wizardBot.clickCheckNetworkParameterButton();
+        assertThat( checkResponse.getMessage(), containsString( "The connection failed" ) );
 
         // Invalid host
         String hostname = getInvalidHostName();
         wizardBot.typeHost( hostname );
-        result = wizardBot.clickCheckNetworkParameterButton();
-        assertThat( result, containsString( "The connection failed" ) );
-        assertThat( "Unknown host name must occur in error message", result, containsString( hostname ) );
+        checkResponse = wizardBot.clickCheckNetworkParameterButton();
+        assertTrue( checkResponse.isError() );
+        assertThat( checkResponse.getMessage(), containsString( "The connection failed" ) );
+        assertThat( "Unknown host name must occur in error message", checkResponse.getMessage(),
+            containsString( hostname ) );
 
         wizardBot.clickCancelButton();
     }
@@ -1155,6 +1172,11 @@ public class NewConnectionWizardTest extends AbstractTestBase
             trustDialog.selectTrustPermanent();
             trustDialog.clickOkButton();
             bot.button( "OK" ).click();
+
+            CheckResponse checkResponse = wizardBot.clickCheckNetworkParameterButton();
+            assertFalse( checkResponse.isError() );
+            assertThat( checkResponse.getMessage(), containsString( "Protocol" ) );
+            assertThat( checkResponse.getMessage(), containsString( "Cipher Suite" ) );
         }
 
         wizardBot.clickNextButton();

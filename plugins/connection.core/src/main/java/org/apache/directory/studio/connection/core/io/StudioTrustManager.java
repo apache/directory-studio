@@ -53,8 +53,6 @@ public class StudioTrustManager implements X509TrustManager
 {
     private X509TrustManager jvmTrustManager;
     private String host;
-    private X509Certificate[] chain;
-
 
     /**
      * Creates a new instance of StudioTrustManager.
@@ -94,8 +92,6 @@ public class StudioTrustManager implements X509TrustManager
      */
     public void checkServerTrusted( X509Certificate[] chain, String authType ) throws CertificateException
     {
-        this.chain = chain;
-
         // check permanent trusted certificates, return on success
         try
         {
@@ -249,8 +245,4 @@ public class StudioTrustManager implements X509TrustManager
         return null;
     }
 
-    public X509Certificate[] getChain()
-    {
-        return chain;
-    }
 }

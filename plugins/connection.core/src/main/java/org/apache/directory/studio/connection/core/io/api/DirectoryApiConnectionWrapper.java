@@ -21,7 +21,6 @@ package org.apache.directory.studio.connection.core.io.api;
 
 
 import java.security.KeyStore;
-import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -29,6 +28,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 import javax.naming.directory.SearchControls;
+import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
@@ -137,25 +137,24 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     /**
      * {@inheritDoc}
      */
-    public X509Certificate[] connect( StudioProgressMonitor monitor )
+    public void connect( StudioProgressMonitor monitor )
     {
         ldapConnection = null;
         jobThread = null;
 
         try
         {
-            return doConnect( monitor );
+            doConnect( monitor );
         }
         catch ( Exception e )
         {
             disconnect();
             monitor.reportError( e );
-            return null;
         }
     }
 
 
-    private X509Certificate[] doConnect( final StudioProgressMonitor monitor ) throws Exception
+    private void doConnect( final StudioProgressMonitor monitor ) throws Exception
     {
         ldapConnection = null;
 
@@ -210,8 +209,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
             }
         }
 
-        AtomicReference<X509Certificate[]> serverCertificates = new AtomicReference<>();
-
         InnerRunnable runnable = new InnerRunnable()
         {
             public void run()
@@ -238,12 +235,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                         ldapConnectionUnderConstruction.startTls();
                     }
 
-                    // Capture the server certificates
-                    if ( studioTrustmanager.get() != null )
-                    {
-                        serverCertificates.set( studioTrustmanager.get().getChain() );
-                    }
-
                     // Now set the LDAP connection once the (optional) security layer is in place
                     ldapConnection = ldapConnectionUnderConstruction;
 
@@ -255,7 +246,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     // DIRSTUDIO-1219: Verify secure connection if ldaps:// or StartTLS is configured
                     if ( ldapConnectionConfig.isUseTls() || ldapConnectionConfig.isUseSsl() )
                     {
-                        if ( !isSecured() || serverCertificates.get() == null )
+                        if ( !isSecured() )
                         {
                             throw new Exception( Messages.DirectoryApiConnectionWrapper_UnsecuredConnection );
                         }
@@ -294,8 +285,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         {
             throw runnable.getException();
         }
-
-        return serverCertificates.get();
     }
 
 
@@ -536,6 +525,13 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     public boolean isSecured()
     {
         return isConnected() && ldapConnection.isSecured();
+    }
+
+
+    @Override
+    public SSLSession getSslSession()
+    {
+        return isConnected() ? ldapConnection.getSslSession() : null;
     }
 
 

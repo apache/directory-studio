@@ -434,8 +434,9 @@ public class NewConnectionWizardBot extends WizardBot
      * 
      * @return null if the OK dialog pops up, the error message if the error dialog pops up
      */
-    public String clickCheckNetworkParameterButton()
+    public CheckResponse clickCheckNetworkParameterButton()
     {
+        activate();
         return clickCheckButton( CHECK_NETWORK_PARAMETER, CHECK_NETWORK_PARAMETER );
     }
 
@@ -458,7 +459,8 @@ public class NewConnectionWizardBot extends WizardBot
      */
     public String clickCheckAuthenticationButton()
     {
-        return clickCheckButton( CHECK_AUTHENTICATION, CHECK_AUTHENTICATION );
+        CheckResponse checkResponse = clickCheckButton( CHECK_AUTHENTICATION, CHECK_AUTHENTICATION );
+        return checkResponse.isError() ? checkResponse.getMessage() : null;
     }
 
 

@@ -22,6 +22,7 @@ package org.apache.directory.studio.test.integration.junit5;
 
 
 import java.net.InetAddress;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -102,9 +103,9 @@ public class TestFixture
     public static void skipIfKdcServerIsNotAvailable()
     {
         boolean available = false;
-        try
+        try(Socket s = new Socket(KDC_HOST, KDC_PORT))
         {
-            available = InetAddress.getByName( KDC_HOST ).isReachable( 3 );
+            available = true;
         }
         catch ( Exception e )
         {

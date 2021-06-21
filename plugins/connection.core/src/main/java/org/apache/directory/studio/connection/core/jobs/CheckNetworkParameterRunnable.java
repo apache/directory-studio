@@ -21,7 +21,7 @@
 package org.apache.directory.studio.connection.core.jobs;
 
 
-import java.security.cert.X509Certificate;
+import javax.net.ssl.SSLSession;
 
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
@@ -38,7 +38,7 @@ public class CheckNetworkParameterRunnable implements StudioConnectionRunnableWi
 {
 
     private Connection connection;
-    private X509Certificate[] serverCertificates;
+    private SSLSession sslSession;
 
     /**
      * Creates a new instance of CheckNetworkParameterJob.
@@ -79,7 +79,8 @@ public class CheckNetworkParameterRunnable implements StudioConnectionRunnableWi
         monitor.reportProgress( " " ); //$NON-NLS-1$
         monitor.worked( 1 );
 
-        this.serverCertificates = connection.getConnectionWrapper().connect( monitor );
+        connection.getConnectionWrapper().connect( monitor );
+        this.sslSession = connection.getConnectionWrapper().getSslSession();
         connection.getConnectionWrapper().disconnect();
     }
 
@@ -102,9 +103,8 @@ public class CheckNetworkParameterRunnable implements StudioConnectionRunnableWi
     }
 
 
-    public X509Certificate[] getServerCertificates()
+    public SSLSession getSslSession()
     {
-        return serverCertificates;
-
+        return sslSession;
     }
 }

@@ -88,7 +88,7 @@ public class OpenLdapServer extends TestLdapServer
     {
         if ( confidentialityRequired )
         {
-            setSecurityProps( 256, 256 );
+            setSecurityProps( 128, 128 );
         }
         else
         {

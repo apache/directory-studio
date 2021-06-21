@@ -91,14 +91,14 @@ public abstract class TestLdapServer
     }
 
 
-    public LdapConnection openConnection() throws LdapException
+    public LdapNetworkConnection openConnection() throws LdapException
     {
         LdapConnectionConfig config = new LdapConnectionConfig();
         config.setLdapHost( host );
         config.setLdapPort( port );
         config.setUseTls( true );
         config.setTrustManagers( new NoVerificationTrustManager() );
-        LdapConnection connection = new LdapNetworkConnection( config );
+        LdapNetworkConnection connection = new LdapNetworkConnection( config );
         connection.connect();
         return connection;
     }

@@ -57,6 +57,8 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 
 import javax.naming.directory.SearchControls;
+import javax.net.ssl.SSLPeerUnverifiedException;
+import javax.net.ssl.SSLSession;
 
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
@@ -168,11 +170,11 @@ public class DirectoryApiConnectionWrapperTest
 
         assertFalse( connectionWrapper.isConnected() );
 
-        X509Certificate[] certificates = connectionWrapper.connect( monitor );
+        connectionWrapper.connect( monitor );
         assertTrue( connectionWrapper.isConnected() );
         assertFalse( connectionWrapper.isSecured() );
+        assertNull( connectionWrapper.getSslSession() );
         assertNull( monitor.getException() );
-        assertNull( certificates );
 
         connectionWrapper.disconnect();
         assertFalse( connectionWrapper.isConnected() );
@@ -194,11 +196,11 @@ public class DirectoryApiConnectionWrapperTest
 
         assertFalse( connectionWrapper.isConnected() );
 
-        X509Certificate[] certificates = connectionWrapper.connect( monitor );
+        connectionWrapper.connect( monitor );
         assertTrue( connectionWrapper.isConnected() );
         assertTrue( connectionWrapper.isSecured() );
+        assertSslSession( ldapServer );
         assertNull( monitor.getException() );
-        assertNotNull( certificates );
 
         connectionWrapper.disconnect();
         assertFalse( connectionWrapper.isConnected() );
@@ -219,11 +221,11 @@ public class DirectoryApiConnectionWrapperTest
 
         assertFalse( connectionWrapper.isConnected() );
 
-        X509Certificate[] certificates = connectionWrapper.connect( monitor );
+        connectionWrapper.connect( monitor );
         assertTrue( connectionWrapper.isConnected() );
         assertTrue( connectionWrapper.isSecured() );
+        assertSslSession( ldapServer );
         assertNull( monitor.getException() );
-        assertNotNull( certificates );
 
         connectionWrapper.disconnect();
         assertFalse( connectionWrapper.isConnected() );
@@ -265,6 +267,31 @@ public class DirectoryApiConnectionWrapperTest
         assertTrue( monitor.getException().getCause() instanceof InvalidConnectionException );
         assertNotNull( monitor.getException().getCause().getCause() );
         assertTrue( monitor.getException().getCause().getCause() instanceof UnresolvedAddressException );
+    }
+
+
+    private void assertSslSession( TestLdapServer ldapServer )
+    {
+        try
+        {
+            SSLSession sslSession = connectionWrapper.getSslSession();
+            assertNotNull( sslSession );
+            assertNotNull( sslSession.getProtocol() );
+            assertNotNull( sslSession.getCipherSuite() );
+            assertNotNull( sslSession.getPeerCertificates() );
+            if ( ldapServer.getType() == LdapServerType.ApacheDS )
+            {
+                assertEquals( "TLSv1.2", sslSession.getProtocol() );
+            }
+            else
+            {
+                assertEquals( "TLSv1.3", sslSession.getProtocol() );
+            }
+        }
+        catch ( SSLPeerUnverifiedException e )
+        {
+            throw new RuntimeException( e );
+        }
     }
 
 
@@ -340,6 +367,7 @@ public class DirectoryApiConnectionWrapperTest
         connectionWrapper.bind( monitor );
         assertTrue( connectionWrapper.isConnected() );
         assertTrue( connectionWrapper.isSecured() );
+        assertSslSession( ldapServer );
         assertNull( monitor.getException() );
 
         connectionWrapper.unbind();
@@ -368,6 +396,7 @@ public class DirectoryApiConnectionWrapperTest
         connectionWrapper.bind( monitor );
         assertTrue( connectionWrapper.isConnected() );
         assertTrue( connectionWrapper.isSecured() );
+        assertSslSession( ldapServer );
         assertNull( monitor.getException() );
 
         connectionWrapper.unbind();
@@ -510,6 +539,7 @@ public class DirectoryApiConnectionWrapperTest
 
         assertTrue( connectionWrapper.isConnected() );
         assertTrue( connectionWrapper.isSecured() );
+        assertSslSession( ldapServer );
         assertNull( monitor.getException() );
 
         connectionWrapper.unbind();
@@ -568,6 +598,7 @@ public class DirectoryApiConnectionWrapperTest
 
         assertTrue( connectionWrapper.isConnected() );
         assertTrue( connectionWrapper.isSecured() );
+        assertSslSession( ldapServer );
         assertNull( monitor.getException() );
 
         connectionWrapper.unbind();
@@ -696,6 +727,7 @@ public class DirectoryApiConnectionWrapperTest
 
         assertTrue( connectionWrapper.isConnected() );
         assertTrue( connectionWrapper.isSecured() );
+        assertSslSession( ldapServer );
         assertNull( monitor.getException() );
 
         connectionWrapper.unbind();
@@ -757,6 +789,7 @@ public class DirectoryApiConnectionWrapperTest
 
         assertTrue( connectionWrapper.isConnected() );
         assertTrue( connectionWrapper.isSecured() );
+        assertSslSession( ldapServer );
         assertNull( monitor.getException() );
 
         connectionWrapper.unbind();

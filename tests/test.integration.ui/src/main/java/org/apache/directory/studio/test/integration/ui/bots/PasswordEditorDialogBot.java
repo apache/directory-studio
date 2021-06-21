@@ -103,13 +103,15 @@ public class PasswordEditorDialogBot extends DialogBot
 
     public String clickVerifyButton()
     {
-        return clickCheckButton( "Verify", "Password Verification" );
+        CheckResponse checkResponse = clickCheckButton( "Verify", "Password Verification" );
+        return checkResponse.isError() ? checkResponse.getMessage() : null;
     }
 
 
     public String clickBindButton()
     {
-        return clickCheckButton( "Bind", "Check Authentication" );
+        CheckResponse checkResponse = clickCheckButton( "Bind", "Check Authentication" );
+        return checkResponse.isError() ? checkResponse.getMessage() : null;
     }
 
 }

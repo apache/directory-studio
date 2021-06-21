@@ -21,9 +21,13 @@
 package org.apache.directory.studio.connection.ui.widgets;
 
 
+import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import javax.net.ssl.SSLPeerUnverifiedException;
+import javax.net.ssl.SSLSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.directory.api.ldap.model.url.LdapUrl;
@@ -463,10 +467,16 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
 
                 if ( status.isOK() )
                 {
-                    MessageDialog.openInformation( Display.getDefault().getActiveShell(), Messages
-                        .getString( "NetworkParameterPage.CheckNetworkParameter" ), //$NON-NLS-1$
-                        Messages
-                            .getString( "NetworkParameterPage.ConnectionEstablished" ) ); //$NON-NLS-1$
+                    String title = Messages.getString( "NetworkParameterPage.CheckNetworkParameter" ); //$NON-NLS-1$
+                    String message = Messages.getString( "NetworkParameterPage.ConnectionEstablished" ); //$NON-NLS-1$
+
+                    SSLSession sslSession = runnable.getSslSession();
+                    if ( sslSession != null )
+                    {
+                        message += "\n\nProtocol: " + sslSession.getProtocol();
+                        message += "\nCipher Suite: " + sslSession.getCipherSuite();
+                    }
+                    MessageDialog.openInformation( Display.getDefault().getActiveShell(), title, message );
                 }
             }
         } );
@@ -482,8 +492,21 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
 
                 if ( status.isOK() )
                 {
-                    X509Certificate[] serverCertificates = runnable.getServerCertificates();
-                    new CertificateInfoDialog( Display.getDefault().getActiveShell(), serverCertificates ).open();
+                    try
+                    {
+                        SSLSession sslSession = runnable.getSslSession();
+                        Certificate[] certificates = sslSession.getPeerCertificates();
+                        X509Certificate[] serverCertificates = new X509Certificate[certificates.length];
+                        for ( int i = 0; i < certificates.length; i++ )
+                        {
+                            serverCertificates[i] = ( X509Certificate ) certificates[i];
+                        }
+                        new CertificateInfoDialog( Display.getDefault().getActiveShell(), serverCertificates ).open();
+                    }
+                    catch ( SSLPeerUnverifiedException e )
+                    {
+                        throw new RuntimeException( e );
+                    }
                 }
             }
         } );

@@ -61,6 +61,7 @@ import org.apache.directory.studio.test.integration.ui.bots.CertificateTrustDial
 import org.apache.directory.studio.test.integration.ui.bots.CertificateValidationPreferencePageBot;
 import org.apache.directory.studio.test.integration.ui.bots.CertificateViewerDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.CheckAuthenticationDialogBot;
+import org.apache.directory.studio.test.integration.ui.bots.DialogBot.CheckResponse;
 import org.apache.directory.studio.test.integration.ui.bots.ErrorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewConnectionWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.PreferencesBot;
@@ -323,8 +324,8 @@ public class CertificateValidationTest extends AbstractTestBase
         wizardBotWithLdaps( server, false );
 
         // check the certificate, should be OK
-        String result = wizardBot.clickCheckNetworkParameterButton();
-        assertNull( result, "Expected OK, valid and trusted certificate" );
+        CheckResponse checkResponse = wizardBot.clickCheckNetworkParameterButton();
+        assertFalse( checkResponse.isError(), "Expected OK, valid and trusted certificate" );
 
         // view the certificate
         CertificateViewerDialogBot certificateViewerBot = wizardBot.clickViewCertificateButton();
@@ -499,8 +500,8 @@ public class CertificateValidationTest extends AbstractTestBase
         wizardBot.selectStartTlsEncryption();
 
         // check the certificate, should be OK
-        String result = wizardBot.clickCheckNetworkParameterButton();
-        assertNull( result, "Expected OK, valid and trusted certificate" );
+        CheckResponse checkResponse = wizardBot.clickCheckNetworkParameterButton();
+        assertFalse( checkResponse.isError(), "Expected OK, valid and trusted certificate" );
 
         // view the certificate
         CertificateViewerDialogBot certificateViewerBot = wizardBot.clickViewCertificateButton();

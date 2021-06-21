@@ -138,7 +138,7 @@ public abstract class DialogBot
     }
 
 
-    protected String clickCheckButton( final String label, final String title )
+    protected CheckResponse clickCheckButton( final String label, final String title )
     {
         SWTBotShell parentShell = bot.activeShell();
         SWTBotShell shell = BotUtils.shell( new Runnable()
@@ -151,21 +151,54 @@ public abstract class DialogBot
 
         String shellText = shell.getText();
         // label(0) may be the image
-        String labelText = bot.label( 0 ).getText();
-        if ( StringUtils.isBlank( labelText ) )
+        String messageText = bot.label( 0 ).getText();
+        if ( StringUtils.isBlank( messageText ) )
         {
-            labelText = bot.label( 1 ).getText();
+            messageText = bot.label( 1 ).getText();
         }
         bot.button( "OK" ).click();
         parentShell.activate();
 
         if ( shellText.equals( title ) )
         {
-            return null;
+            return new CheckResponse( false, shellText, messageText );
         }
         else
         {
-            return labelText;
+            return new CheckResponse( true, shellText, messageText );
         }
+    }
+
+    public static class CheckResponse
+    {
+        boolean isError;
+        String title;
+        String message;
+
+        public CheckResponse( boolean isError, String title, String message )
+        {
+            this.isError = isError;
+            this.title = title;
+            this.message = message;
+        }
+
+
+        public boolean isError()
+        {
+            return isError;
+        }
+
+
+        public String getTitle()
+        {
+            return title;
+        }
+
+
+        public String getMessage()
+        {
+            return message;
+        }
+
     }
 }
