@@ -94,8 +94,8 @@
     <org.apache.commons.lang3.bundleversion>3.12.0</org.apache.commons.lang3.bundleversion>
     <org.apache.commons.pool.version>2.9.0</org.apache.commons.pool.version>
     <org.apache.commons.pool.bundleversion>2.9.0</org.apache.commons.pool.bundleversion>
-    <org.apache.directory.api.version>2.0.3-SNAPSHOT</org.apache.directory.api.version>
-    <org.apache.directory.api.bundleversion>2.0.3.SNAPSHOT</org.apache.directory.api.bundleversion>
+    <org.apache.directory.api.version>2.1.0-SNAPSHOT</org.apache.directory.api.version>
+    <org.apache.directory.api.bundleversion>2.1.0.SNAPSHOT</org.apache.directory.api.bundleversion>
     <org.apache.directory.server.version>2.0.0.AM26</org.apache.directory.server.version>
     <org.apache.mina.version>2.1.3</org.apache.mina.version>
     <org.apache.mina.bundleversion>2.1.3</org.apache.mina.bundleversion>
