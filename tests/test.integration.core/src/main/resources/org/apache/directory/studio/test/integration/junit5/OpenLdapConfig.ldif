@@ -18,19 +18,21 @@
 dn: olcDatabase={-1}frontend,cn=config
 changetype: modify
 replace: olcAccess
-olcAccess: {0}to * by dn.exact=gidNumber=0+uidNumber=0,cn=peercred,cn=external
- ,cn=auth manage by * break
+olcAccess: {0}to * by dn.exact=gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth manage by * break
 olcAccess: {1}to dn.exact="" by * read
 # Forbid user.8 to read the schema, used in SchemaBrowserTest
 olcAccess: {2}to dn.base="cn=Subschema" by dn.exact="uid=user.8,ou=users,dc=example,dc=org" none by * read
+-
+replace: olcSizeLimit
+olcSizeLimit: 2000
 -
 
 dn: olcDatabase={1}mdb,cn=config
 changetype: modify
 replace: olcAccess
 olcAccess: {0}to * by dn.exact=gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth manage by * break
-olcAccess: {1}to attrs=userPassword,shadowLastChange by self write by dn="cn=a dmin,dc=example,dc=org" write by anonymous auth by * none
-olcAccess: {2}to * by self read by dn="cn=admin,dc=example,dc=org" write by anonymous auth by * none
+olcAccess: {1}to attrs=userPassword,shadowLastChange by self write by dn="cn=admin,dc=example,dc=org" write by dn="uid=hnelson,cn=gssapi,cn=auth" write by anonymous auth by * none
+olcAccess: {2}to * by self read by dn="cn=admin,dc=example,dc=org" write by dn="uid=hnelson,cn=gssapi,cn=auth" write by anonymous auth by * none
 -
 
 dn: cn=config

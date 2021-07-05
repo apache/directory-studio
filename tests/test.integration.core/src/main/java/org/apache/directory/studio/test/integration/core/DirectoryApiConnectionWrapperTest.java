@@ -22,6 +22,7 @@ package org.apache.directory.studio.test.integration.core;
 
 
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.CONTEXT_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.MISC111_DN;
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.MISC_DN;
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.REFERRALS_DN;
 import static org.apache.directory.studio.test.integration.junit5.TestFixture.REFERRAL_LOOP_1_DN;
@@ -44,8 +45,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.ConnectException;
 import java.nio.channels.UnresolvedAddressException;
-import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -60,6 +62,7 @@ import javax.naming.directory.SearchControls;
 import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.net.ssl.SSLSession;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 //import org.apache.directory.api.ldap.extras.extended.endTransaction.EndTransactionRequest;
@@ -71,6 +74,7 @@ import org.apache.directory.api.ldap.extras.extended.whoAmI.WhoAmIRequest;
 import org.apache.directory.api.ldap.extras.extended.whoAmI.WhoAmIResponse;
 import org.apache.directory.api.ldap.model.constants.SaslQoP;
 import org.apache.directory.api.ldap.model.constants.SaslSecurityStrength;
+import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.api.ldap.model.entry.DefaultEntry;
 import org.apache.directory.api.ldap.model.entry.DefaultModification;
@@ -109,6 +113,7 @@ import org.apache.directory.studio.test.integration.junit5.LdapServerType;
 import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
 import org.apache.directory.studio.test.integration.junit5.LdapServersSource.Mode;
 import org.apache.directory.studio.test.integration.junit5.SkipTestIfLdapServerIsNotAvailableInterceptor;
+import org.apache.directory.studio.test.integration.junit5.TestData;
 import org.apache.directory.studio.test.integration.junit5.TestFixture;
 import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
 import org.apache.mina.util.AvailablePortFinder;
@@ -842,6 +847,167 @@ public class DirectoryApiConnectionWrapperTest
 
 
     /**
+     * Executes load tests without encryption.
+     */
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All, except = LdapServerType.ApacheDS, reason = "JDBM JAR defines wrong OSGi imports")
+    public void loadTestPlain( TestLdapServer ldapServer ) throws Exception
+    {
+        ldapServer.setConfidentialityRequired( false );
+        StudioProgressMonitor monitor = getProgressMonitor();
+        getConnection( monitor, ldapServer, ldapServer.getAdminDn(), ldapServer.getAdminPassword() );
+
+        loadTest( ldapServer );
+    }
+
+
+    /**
+     * Executes load test with ldaps:// encryption.
+     */
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All, except = LdapServerType.ApacheDS, reason = "JDBM JAR defines wrong OSGi imports")
+    public void loadTestLdaps( TestLdapServer ldapServer ) throws Exception
+    {
+        ldapServer.setConfidentialityRequired( true );
+        StudioProgressMonitor monitor = getProgressMonitor();
+        Connection connection = getConnection( monitor, ldapServer, ldapServer.getAdminDn(),
+            ldapServer.getAdminPassword() );
+        connection.setPort( ldapServer.getPortSSL() );
+        connection.setEncryptionMethod( EncryptionMethod.LDAPS );
+        acceptAllCertificates();
+
+        loadTest( ldapServer );
+        loadTest( ldapServer );
+
+        assertEquals( "TLSv1.3", connectionWrapper.getSslSession().getProtocol() );
+    }
+
+
+    /**
+     * Executes load test with StartTLS encryption.
+     */
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All, except = LdapServerType.ApacheDS, reason = "JDBM JAR defines wrong OSGi imports")
+    public void loadTestStartTls( TestLdapServer ldapServer ) throws Exception
+    {
+        ldapServer.setConfidentialityRequired( true );
+        StudioProgressMonitor monitor = getProgressMonitor();
+        Connection connection = getConnection( monitor, ldapServer, ldapServer.getAdminDn(),
+            ldapServer.getAdminPassword() );
+        connection.setEncryptionMethod( EncryptionMethod.START_TLS );
+        acceptAllCertificates();
+
+        loadTest( ldapServer );
+        loadTest( ldapServer );
+
+        assertEquals( "TLSv1.3", connectionWrapper.getSslSession().getProtocol() );
+    }
+
+
+    /**
+     * Executes various search and modify operations with small and large payloads.
+     */
+    private void loadTest( TestLdapServer ldapServer ) throws LdapException
+    {
+        int num = 500;
+
+        StudioProgressMonitor monitor = getProgressMonitor();
+
+        // connect and bind
+        for ( int i = 1; i <= 20; i++ )
+        {
+            connectionWrapper.connect( monitor );
+            connectionWrapper.bind( monitor );
+            connectionWrapper.unbind();
+            assertNull( monitor.getException() );
+        }
+        connectionWrapper.connect( monitor );
+        connectionWrapper.bind( monitor );
+        assertNull( monitor.getException() );
+
+        // lookup Root DSE
+        Entry rootDSE = lookup( "", monitor );
+        assertNull( monitor.getException() );
+        assertTrue( rootDSE.containsAttribute( "namingContexts", "subschemaSubentry" ) );
+        String subschemaSubentryDn = rootDSE.get( "subschemaSubentry" ).getString();
+
+        // lookup schema
+        Entry schema = lookup( subschemaSubentryDn, monitor );
+        assertNull( monitor.getException() );
+        assertTrue( schema.containsAttribute( "objectClasses", "attributeTypes" ) );
+
+        // create entries with some large attributes
+        for ( int i = 1; i <= num; i++ )
+        {
+            String dn = "uid=user." + i + "," + MISC111_DN;
+            Entry entry = new DefaultEntry( dn, "objectClass: inetOrgPerson", "sn: " + i, "cn: " + i,
+                "uid: user." + i );
+            if ( i % 50 == 0 )
+            {
+                entry.add( "description", RandomStringUtils.randomAscii( 10000 ) );
+                entry.add( "jpegPhoto", TestData.jpegImage( 100000 ) );
+            }
+            connectionWrapper.createEntry( entry, null, monitor, null );
+            assertNull( monitor.getException() );
+        }
+
+        // modify entries
+        for ( int i = 1; i <= num; i++ )
+        {
+            Dn dn = new Dn( "uid=user." + i + "," + MISC111_DN );
+            Collection<Modification> modifications = Arrays.asList(
+                new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE, "description",
+                    RandomStringUtils.randomAscii( 20 ) ),
+                new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE, "userPassword",
+                    RandomStringUtils.randomAscii( 20 ) ) );
+            connectionWrapper.modifyEntry( dn, modifications, null, monitor, null );
+            assertNull( monitor.getException() );
+        }
+
+        try
+        {
+            Thread.sleep( 5000L );
+        }
+        catch ( InterruptedException e )
+        {
+        }
+
+        // search entries
+        StudioSearchResultEnumeration result = connectionWrapper.search( MISC111_DN.getName(),
+            TestFixture.OBJECT_CLASS_ALL_FILTER, new SearchControls(), AliasDereferencingMethod.NEVER,
+            ReferralHandlingMethod.IGNORE, null, monitor, null );
+        List<Dn> dns = consume( result, sr -> sr.getDn() );
+        assertEquals( num, dns.size() );
+        assertNull( monitor.getException() );
+
+        // delete entries
+        for ( int i = 1; i <= num; i++ )
+        {
+            Dn dn = new Dn( "uid=user." + i + "," + MISC111_DN );
+            connectionWrapper.deleteEntry( dn, null, monitor, null );
+            assertNull( monitor.getException() );
+        }
+
+        assertNull( monitor.getException() );
+    }
+
+
+    private Entry lookup( String dn, StudioProgressMonitor monitor ) throws LdapException
+    {
+        SearchControls searchControls = new SearchControls();
+        searchControls.setSearchScope( SearchControls.OBJECT_SCOPE );
+        searchControls.setReturningAttributes( SchemaConstants.ALL_ATTRIBUTES_ARRAY );
+        StudioSearchResultEnumeration result = connectionWrapper.search( dn,
+            TestFixture.OBJECT_CLASS_ALL_FILTER, searchControls, AliasDereferencingMethod.NEVER,
+            ReferralHandlingMethod.IGNORE, null,
+            monitor, null );
+        List<Entry> entries = consume( result, sr -> sr.getEntry() );
+        assertEquals( 1, entries.size() );
+        return entries.get( 0 );
+    }
+
+
+    /**
      * Test searching.
      */
     @ParameterizedTest
@@ -1051,6 +1217,7 @@ public class DirectoryApiConnectionWrapperTest
     protected <T> List<T> consume( StudioSearchResultEnumeration result, Function<StudioSearchResult, T> fn )
         throws LdapException
     {
+        assertNotNull( result );
         List<T> list = new ArrayList<>();
         while ( result.hasMore() )
         {

@@ -85,6 +85,7 @@
  javax.annotation</Require-Bundle>
             
             <Import-Package>org.apache.commons.codec.digest,
+ org.apache.commons.lang3,
  org.apache.http.conn.ssl,
  org.bouncycastle.asn1,
  org.bouncycastle.asn1.x509,

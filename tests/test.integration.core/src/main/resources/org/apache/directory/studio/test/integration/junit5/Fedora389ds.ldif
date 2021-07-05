@@ -15,6 +15,13 @@
 #  specific language governing permissions and limitations
 #  under the License.
 #
+
+dn: ou=misc,dc=example,dc=org
+changetype: modify
+add: aci
+aci: (targetattr="*")(version 3.0; aci "allow hnelson all access"; allow(all) userdn="ldap:///uid=hnelson,ou=misc,dc=example,dc=org";)
+-
+
 dn: cn=config
 changetype: modify
 replace: passwordStorageScheme
