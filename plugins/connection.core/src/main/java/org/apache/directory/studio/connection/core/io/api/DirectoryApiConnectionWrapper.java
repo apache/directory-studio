@@ -111,9 +111,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     /** The Studio connection  */
     private Connection connection;
 
-    /** The LDAP connection configuration */
-    private LdapConnectionConfig ldapConnectionConfig;
-
     /** The LDAP connection */
     private LdapNetworkConnection ldapConnection;
 
@@ -158,7 +155,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     {
         ldapConnection = null;
 
-        ldapConnectionConfig = new LdapConnectionConfig();
+        LdapConnectionConfig ldapConnectionConfig = new LdapConnectionConfig();
         ldapConnectionConfig.setLdapHost( connection.getHost() );
         ldapConnectionConfig.setLdapPort( connection.getPort() );
 
@@ -235,6 +232,10 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                         ldapConnectionUnderConstruction.startTls();
                     }
 
+                    // Set original timeout again
+                    ldapConnectionConfig.setTimeout( oldTimeout );
+                    ldapConnectionUnderConstruction.setTimeOut( oldTimeout );
+
                     // Now set the LDAP connection once the (optional) security layer is in place
                     ldapConnection = ldapConnectionUnderConstruction;
 
@@ -251,9 +252,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                             throw new Exception( Messages.DirectoryApiConnectionWrapper_UnsecuredConnection );
                         }
                     }
-
-                    // Set old timeout again
-                    ldapConnectionConfig.setTimeout( oldTimeout );
                 }
                 catch ( Exception e )
                 {
