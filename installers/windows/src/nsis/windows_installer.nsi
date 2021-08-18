@@ -212,6 +212,8 @@
         # Configuring registries for the uninstaller
         WriteRegStr "${INSTDIR_REG_ROOT}" "${INSTDIR_REG_KEY}" "DisplayName" "${Application} - (remove only)"
         WriteRegStr "${INSTDIR_REG_ROOT}" "${INSTDIR_REG_KEY}" "DisplayIcon" "$INSTDIR\uninstall.exe"
+        WriteRegStr "${INSTDIR_REG_ROOT}" "${INSTDIR_REG_KEY}" "DisplayVersion" "${BrandingVersion}"
+        WriteRegStr "${INSTDIR_REG_ROOT}" "${INSTDIR_REG_KEY}" "Publisher" "The Apache Software Foundation"
         WriteRegStr "${INSTDIR_REG_ROOT}" "${INSTDIR_REG_KEY}" "UninstallString" '"$INSTDIR\uninstall.exe"'
         WriteRegDWORD "${INSTDIR_REG_ROOT}" "${INSTDIR_REG_KEY}" "NoModify" "1"
         WriteRegDWORD "${INSTDIR_REG_ROOT}" "${INSTDIR_REG_KEY}" "NoRepair" "1"
