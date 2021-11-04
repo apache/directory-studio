@@ -19,7 +19,6 @@
    <feature url="features/org.apache.directory.studio.rcp.feature_2.0.0.qualifier.jar" id="org.apache.directory.studio.rcp.feature" version="2.0.0.qualifier">
       <category name="org.apache.directory.studio.product"/>
    </feature>
-   <feature url="features/org.apache.directory.studio.nls.feature_2.0.0.qualifier.jar" id="org.apache.directory.studio.nls.feature" version="2.0.0.qualifier">
       <category name="org.apache.directory.studio.product"/>
    </feature>
    <bundle id="org.apache.directory.studio.slf4j-eclipselog" version="2.0.0.qualifier">

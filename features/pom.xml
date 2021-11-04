@@ -37,7 +37,6 @@
     <module>rcp.feature</module>
     <module>schemaeditor.feature</module>
     <module>openldap.feature</module>
-    <module>nls.feature</module>
   </modules>
   
   <build>

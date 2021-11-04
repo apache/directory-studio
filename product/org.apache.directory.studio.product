@@ -243,7 +243,6 @@ http://www.apache.org/licenses/
 
    <features>
       <feature id="org.apache.directory.studio.rcp.feature"/>
-      <feature id="org.apache.directory.studio.nls.feature"/>
       <feature id="org.apache.directory.studio.apacheds.feature"/>
       <feature id="org.apache.directory.studio.ldapbrowser.feature"/>
       <feature id="org.apache.directory.studio.ldifeditor.feature"/>
