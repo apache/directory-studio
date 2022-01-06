@@ -25,8 +25,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.Base64;
 
-import org.apache.directory.api.util.Base64;
 import org.apache.directory.studio.entryeditors.IEntryEditor;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -147,7 +147,7 @@ public class EditorFileChooser extends EditorWidget<TemplateFileChooser>
             {
                 try
                 {
-                    iconData = new ImageData( new ByteArrayInputStream( Base64.decode( icon.toCharArray() ) ) );
+                    iconData = new ImageData( new ByteArrayInputStream( Base64.getDecoder().decode( icon ) ) );
                 }
                 catch ( SWTException e )
                 {
