@@ -25,7 +25,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +36,6 @@ import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
-import org.apache.directory.api.util.Base64;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Controls;
 import org.apache.directory.studio.connection.core.StudioControl;
@@ -357,7 +358,7 @@ public class BrowserConnectionIO
                 {
                     if ( oidAttribute != null && isCriticalAttribute != null && valueAttribute != null )
                     {
-                        byte[] bytes = Base64.decode( valueAttribute.getValue().toCharArray() );
+                        byte[] bytes = Base64.getDecoder().decode( valueAttribute.getValue() );
                         Control control = Controls.create( oidAttribute.getValue(),
                             Boolean.valueOf( isCriticalAttribute.getValue() ), bytes );
                         searchParameter.getControls().add( control );
@@ -365,7 +366,7 @@ public class BrowserConnectionIO
                     else if ( valueAttribute != null )
                     {
                         // Backward compatibility: read objects using Java serialization
-                        byte[] bytes = Base64.decode( valueAttribute.getValue().toCharArray() );
+                        byte[] bytes = Base64.getDecoder().decode( valueAttribute.getValue() );
                         ByteArrayInputStream bais = null;
                         ObjectInputStream ois = null;
                         bais = new ByteArrayInputStream( bytes );
@@ -541,7 +542,7 @@ public class BrowserConnectionIO
         for ( Control control : searchParameter.getControls() )
         {
             byte[] bytes = Controls.getEncodedValue( control );
-            String controlsValue = new String( Base64.encode( bytes ) );
+            String controlsValue = new String( Base64.getEncoder().encode( bytes ), StandardCharsets.UTF_8 );
 
             Element controlElement = controlsElement.addElement( CONTROL_TAG );
             controlElement.addAttribute( OID_TAG, control.getOid() );

@@ -25,8 +25,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.Base64;
 
-import org.apache.directory.api.util.Base64;
 import org.apache.directory.studio.entryeditors.IEntryEditor;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -239,7 +239,7 @@ public class EditorImage extends EditorWidget<TemplateImage>
             String imageDataString = getWidget().getImageData();
             if ( ( imageDataString != null ) && ( !imageDataString.equals( "" ) ) ) //$NON-NLS-1$
             {
-                imageBytes = Base64.decode( imageDataString.toCharArray() );
+                imageBytes = Base64.getDecoder().decode( imageDataString );
             }
         }
     }
