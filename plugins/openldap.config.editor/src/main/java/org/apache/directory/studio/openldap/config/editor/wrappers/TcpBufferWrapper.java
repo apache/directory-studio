@@ -334,7 +334,7 @@ public class TcpBufferWrapper implements Cloneable, Comparable<TcpBufferWrapper>
     {
         int h = 37;
         
-        h += h*17 + size;
+        h += h*17 + Long.hashCode( size );
         h += h*17 + tcpType.hashCode();
         h += h*17 + listener.hashCode();
         

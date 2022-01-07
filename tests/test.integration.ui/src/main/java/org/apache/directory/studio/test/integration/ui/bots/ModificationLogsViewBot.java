@@ -31,6 +31,7 @@ import org.apache.directory.studio.ldifparser.model.LdifFile;
 import org.apache.directory.studio.ldifparser.model.container.LdifCommentContainer;
 import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
 import org.apache.directory.studio.ldifparser.parser.LdifParser;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 
 
 public class ModificationLogsViewBot extends AbstractLogsViewBot
@@ -46,6 +47,16 @@ public class ModificationLogsViewBot extends AbstractLogsViewBot
         return super.getLogsText();
     }
 
+
+    public void enableModificationLogs( boolean b )
+    {
+        view.show();
+        SWTBotMenu menuItem = view.viewMenu( "Enable Modification Logs" );
+        if ( menuItem.isChecked() != b )
+        {
+            menuItem.click();
+        }
+    }
 
     public void assertContainsOk( String... lines )
     {
@@ -87,7 +98,7 @@ public class ModificationLogsViewBot extends AbstractLogsViewBot
                 return;
             }
         }
-        throw new AssertionError( "Expeted to find all parts " + parts + " in\n" + text );
+        throw new AssertionError( "Expected to find all parts " + parts + " in\n" + text );
     }
 
 

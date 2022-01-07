@@ -15,85 +15,8 @@
 #  specific language governing permissions and limitations
 #  under the License.
 #
-dn: uid=user.1,ou=users,ou=system
-changetype: add
-objectClass: top
-objectClass: person
-objectClass: organizationalPerson
-objectClass: inetOrgPerson
-givenName: Aaccf
-sn: Amar
-cn: Aaccf Amar
-initials: AA
-uid: user.1
-mail: user.1@null
-userPassword: password
-telephoneNumber: 976-893-3312
-homePhone: 337-310-0727
-pager: 185-156-4071
-mobile: 626-188-0934
-employeeNumber: 1
-street: 27919 Broadway Street
-l: Tallahassee
-st: DE
-postalCode: 67698
-postalAddress: Aaccf Amar$27919 Broadway Street$Tallahassee, DE  67698
-description: This is the description for Aaccf Amar.
-roomNumber: 0000
 
-dn: uid=user.2,ou=users,ou=system
-changetype: add
-objectClass: top
-objectClass: person
-objectClass: organizationalPerson
-objectClass: inetOrgPerson
-givenName: Aaren
-sn: Atp
-cn: Aaren Atp
-initials: AA
-uid: user.2
-mail: user.2@null
-userPassword: password
-telephoneNumber: 147-953-0396
-homePhone: 174-439-5329
-pager: 617-443-8449
-mobile: 045-464-2512
-employeeNumber: 2
-street: 36109 Center Street
-l: Harlingen
-st: CO
-postalCode: 21733
-postalAddress: Aaren Atp$36109 Center Street$Harlingen, CO  21733
-description: This is the description for Aaren Atp.
-roomNumber: 1198
-
-dn: uid=user.3,ou=users,ou=system
-changetype: add
-objectClass: top
-objectClass: person
-objectClass: organizationalPerson
-objectClass: inetOrgPerson
-givenName: Aarika
-sn: Atpco
-cn: Aarika Atpco
-initials: AA
-uid: user.3
-mail: user.3@null
-userPassword: password
-telephoneNumber: 925-356-4943
-homePhone: 099-983-0308
-pager: 806-672-7363
-mobile: 425-493-8009
-employeeNumber: 3
-street: 14730 Fourteenth Street
-l: Evansville
-st: ND
-postalCode: 95526
-postalAddress: Aarika Atpco$14730 Fourteenth Street$Evansville, ND  95526
-description: This is the description for Aarika Atpco.
-roomNumber: 1135
-
-dn: uid=user.1,ou=users,ou=system
+dn: uid=user.1,ou=users,dc=example,dc=org
 changetype: modify
 delete: initials
 initials: AA
@@ -102,6 +25,12 @@ delete: l
 -
 add: description
 description:: QSDDqSDigqwg0K8gzrsg16kg2Lkg4ruhIA==
+-
+add: description;lang-en
+description;lang-en: English
+-
+add: description;lang-de
+description;lang-de: Deutsch
 -
 add: roomNumber
 roomNumber: 1234
@@ -114,14 +43,28 @@ replace: employeeType
 employeeType: Intern
 -
 replace: mail
-mail: mail: user.1@example.com
-mail: mail: Aaccf.Amar@example.com
+mail: user.1@example.com
+mail: Aaccf.Amar@example.com
+-
+add: userCertificate;binary
+userCertificate;binary:: MIICcTCCAdqgAwIBAgIBEjANBgkqhkiG9w0BAQUFADBDMRMwEQYKCZImiZPy
+ LGQBGRYDY29tMRcwFQYKCZImiZPyLGQBGRYHZXhhbXBsZTETMBEGA1UEAxMKRXhhbXBsZSBDQTAeF
+ w0wNDA5MTUxMTQ4MjFaFw0wNTAzMTUxMTQ4MjFaMEMxEzARBgoJkiaJk/IsZAEZFgNjb20xFzAVBg
+ oJkiaJk/IsZAEZFgdleGFtcGxlMRMwEQYDVQQDEwpFbmQgRW50aXR5MIGfMA0GCSqGSIb3DQEBAQU
+ AA4GNADCBiQKBgQDhauQDMJcCPPQQ87UeTX8Ue/b10HjppIrwo3Xs7bZWln+ImYWa8j5od4frntGf
+ wLQX3KuJI6QdfhYjTE+oTfUxuHyq4xpJCfRLJtsnZzCCEgFK6Rq2wQxTi2z8L3pD7DM2fjKye9Wqz
+ wEUxhLsE/ItFHqLIVgUE0xGo5ryFpX/IwIDAQABo3UwczAhBgNVHREEGjAYgRZlbmQuZW50aXR5QG
+ V4YW1wbGUuY29tMB0GA1UdDgQWBBQXe5Iw/0TWZuGQECJsFk/AjkHdbTAfBgNVHSMEGDAWgBQIaK+
+ FM8g5Snr4gpOOcGpKIIQsMjAOBgNVHQ8BAf8EBAMCBsAwDQYJKoZIhvcNAQEFBQADgYEAACAoNFto
+ MgG7CjYOrXHFlRrhBM+urcdiFKQbNjHA4gw92R7AANwQoLqFb0HLYnq3TGOBJl7SgEVeM+dwRTs5O
+ yZKnDvyJjZpCHm7+5ZDd0thi6GrkWTg8zdhPBqjpMmKsr9z1E3kWORi6rwgdJKGDs6EYHbpc7vHhd
+ ORRepiXc0=
 
 
-dn: uid=user.2,ou=users,ou=system
+dn: uid=user.2,ou=users,dc=example,dc=org
 changetype: delete
 
-dn: uid=user.3,ou=users,ou=system
+dn: uid=user.3,ou=users,dc=example,dc=org
 changetype: moddn
 newrdn: uid=user.33
 deleteoldrdn: 1

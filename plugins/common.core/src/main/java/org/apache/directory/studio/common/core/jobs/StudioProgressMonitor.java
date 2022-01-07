@@ -285,7 +285,7 @@ public class StudioProgressMonitor extends ProgressMonitorWrapper
                     
                     if ( indexOfAny > -1 )
                     {
-                        exceptionMessage = exceptionMessage.substring( 0, indexOfAny - 1 );
+                        exceptionMessage = exceptionMessage.substring( 0, indexOfAny );
                     }
                     
                     buffer.append( "\n - " ).append( exceptionMessage ); //$NON-NLS-1$

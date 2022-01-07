@@ -21,6 +21,8 @@
 package org.apache.directory.studio.connection.core.jobs;
 
 
+import javax.net.ssl.SSLSession;
+
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Messages;
@@ -36,7 +38,7 @@ public class CheckNetworkParameterRunnable implements StudioConnectionRunnableWi
 {
 
     private Connection connection;
-
+    private SSLSession sslSession;
 
     /**
      * Creates a new instance of CheckNetworkParameterJob.
@@ -78,6 +80,7 @@ public class CheckNetworkParameterRunnable implements StudioConnectionRunnableWi
         monitor.worked( 1 );
 
         connection.getConnectionWrapper().connect( monitor );
+        this.sslSession = connection.getConnectionWrapper().getSslSession();
         connection.getConnectionWrapper().disconnect();
     }
 
@@ -97,5 +100,11 @@ public class CheckNetworkParameterRunnable implements StudioConnectionRunnableWi
     public Connection[] getConnections()
     {
         return null;
+    }
+
+
+    public SSLSession getSslSession()
+    {
+        return sslSession;
     }
 }

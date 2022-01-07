@@ -25,9 +25,8 @@ import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jface.preference.PreferencePage;
-import org.eclipse.swt.events.VerifyEvent;
-import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -50,7 +49,6 @@ public class SearchLogsPreferencePage extends PreferencePage implements IWorkben
     private Button enableSearchResultEntryLogging;
     private Text logFileCountText;
     private Text logFileSizeText;
-
 
     /**
      * Creates a new instance of SearchResultEditorPreferencePage.
@@ -82,56 +80,61 @@ public class SearchLogsPreferencePage extends PreferencePage implements IWorkben
         BaseWidgetUtils.createSpacer( composite, 1 );
         enableSearchRequestLogging = BaseWidgetUtils.createCheckbox( composite, Messages
             .getString( "SearchLogsPreferencePage.EnableRequestLogs" ), 1 ); //$NON-NLS-1$
-        enableSearchRequestLogging.setSelection( ConnectionCorePlugin.getDefault().getPluginPreferences().getBoolean(
-            ConnectionCoreConstants.PREFERENCE_SEARCHREQUESTLOGS_ENABLE ) );
         enableSearchResultEntryLogging = BaseWidgetUtils.createCheckbox( composite, Messages
             .getString( "SearchLogsPreferencePage.EnableResultLogs" ), 1 ); //$NON-NLS-1$
-        enableSearchResultEntryLogging.setSelection( ConnectionCorePlugin.getDefault().getPluginPreferences()
-            .getBoolean( ConnectionCoreConstants.PREFERENCE_SEARCHRESULTENTRYLOGS_ENABLE ) );
 
         Group rotateGroup = BaseWidgetUtils.createGroup( BaseWidgetUtils.createColumnContainer( composite, 1, 1 ),
             Messages.getString( "SearchLogsPreferencePage.LogFileRotation" ), 1 ); //$NON-NLS-1$
         Composite rotateComposite = BaseWidgetUtils.createColumnContainer( rotateGroup, 5, 1 );
         BaseWidgetUtils.createLabel( rotateComposite, Messages.getString( "SearchLogsPreferencePage.Use" ), 1 ); //$NON-NLS-1$
         logFileCountText = BaseWidgetUtils.createText( rotateComposite, "", 3, 1 ); //$NON-NLS-1$
-        logFileCountText.setText( ConnectionCorePlugin.getDefault().getPluginPreferences().getString(
-            ConnectionCoreConstants.PREFERENCE_SEARCHLOGS_FILE_COUNT ) );
-        logFileCountText.addVerifyListener( new VerifyListener()
-        {
-            public void verifyText( VerifyEvent e )
+        logFileCountText.addVerifyListener( e -> {
+            if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
             {
-                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
-                {
-                    e.doit = false;
-                }
-                if ( "".equals( logFileCountText.getText() ) && e.text.matches( "[0]" ) ) //$NON-NLS-1$ //$NON-NLS-2$
-                {
-                    e.doit = false;
-                }
+                e.doit = false;
+            }
+            if ( "".equals( logFileCountText.getText() ) && e.text.matches( "[0]" ) ) //$NON-NLS-1$ //$NON-NLS-2$
+            {
+                e.doit = false;
             }
         } );
-        BaseWidgetUtils.createLabel( rotateComposite, Messages.getString( "SearchLogsPreferencePage.LogFilesEach" ), 1 ); //$NON-NLS-1$
+        logFileCountText.addModifyListener( e -> validate() );
+        BaseWidgetUtils.createLabel( rotateComposite, Messages.getString( "SearchLogsPreferencePage.LogFilesEach" ), //$NON-NLS-1$
+            1 );
         logFileSizeText = BaseWidgetUtils.createText( rotateComposite, "", 5, 1 ); //$NON-NLS-1$
-        logFileSizeText.setText( ConnectionCorePlugin.getDefault().getPluginPreferences().getString(
-            ConnectionCoreConstants.PREFERENCE_SEARCHLOGS_FILE_SIZE ) );
-        logFileSizeText.addVerifyListener( new VerifyListener()
-        {
-            public void verifyText( VerifyEvent e )
+        logFileSizeText.addVerifyListener( e -> {
+            if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
             {
-                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
-                {
-                    e.doit = false;
-                }
-                if ( "".equals( logFileSizeText.getText() ) && e.text.matches( "[0]" ) ) //$NON-NLS-1$ //$NON-NLS-2$
-                {
-                    e.doit = false;
-                }
+                e.doit = false;
+            }
+            if ( "".equals( logFileSizeText.getText() ) && e.text.matches( "[0]" ) ) //$NON-NLS-1$ //$NON-NLS-2$
+            {
+                e.doit = false;
             }
         } );
+        logFileSizeText.addModifyListener( e -> validate() );
         BaseWidgetUtils.createLabel( rotateComposite, Messages.getString( "SearchLogsPreferencePage.KB" ), 1 ); //$NON-NLS-1$
+
+        setValues();
 
         applyDialogFont( composite );
         return composite;
+    }
+
+
+    private void setValues()
+    {
+        enableSearchRequestLogging.setSelection( ConnectionCorePlugin.getDefault().isSearchRequestLogsEnabled() );
+        enableSearchResultEntryLogging
+            .setSelection( ConnectionCorePlugin.getDefault().isSearchResultEntryLogsEnabled() );
+        logFileCountText.setText( "" + ConnectionCorePlugin.getDefault().getSearchLogsFileCount() );
+        logFileSizeText.setText( "" + ConnectionCorePlugin.getDefault().getSearchLogsFileSize() );
+    }
+
+
+    public void validate()
+    {
+        setValid( logFileCountText.getText().matches( "[0-9]+" ) && logFileSizeText.getText().matches( "[0-9]+" ) );
     }
 
 
@@ -140,15 +143,16 @@ public class SearchLogsPreferencePage extends PreferencePage implements IWorkben
      */
     public boolean performOk()
     {
-        ConnectionCorePlugin.getDefault().getPluginPreferences().setValue(
-            ConnectionCoreConstants.PREFERENCE_SEARCHREQUESTLOGS_ENABLE, enableSearchRequestLogging.getSelection() );
-        ConnectionCorePlugin.getDefault().getPluginPreferences().setValue(
-            ConnectionCoreConstants.PREFERENCE_SEARCHRESULTENTRYLOGS_ENABLE,
+        IEclipsePreferences instancePreferences = ConnectionCorePlugin.getDefault().getInstanceScopePreferences();
+        instancePreferences.putBoolean( ConnectionCoreConstants.PREFERENCE_SEARCHREQUESTLOGS_ENABLE,
+            enableSearchRequestLogging.getSelection() );
+        instancePreferences.putBoolean( ConnectionCoreConstants.PREFERENCE_SEARCHRESULTENTRYLOGS_ENABLE,
             enableSearchResultEntryLogging.getSelection() );
-        ConnectionCorePlugin.getDefault().getPluginPreferences().setValue(
-            ConnectionCoreConstants.PREFERENCE_SEARCHLOGS_FILE_COUNT, logFileCountText.getText() );
-        ConnectionCorePlugin.getDefault().getPluginPreferences().setValue(
-            ConnectionCoreConstants.PREFERENCE_SEARCHLOGS_FILE_SIZE, logFileSizeText.getText() );
+        instancePreferences.putInt( ConnectionCoreConstants.PREFERENCE_SEARCHLOGS_FILE_COUNT,
+            Integer.parseInt( logFileCountText.getText() ) );
+        instancePreferences.putInt( ConnectionCoreConstants.PREFERENCE_SEARCHLOGS_FILE_SIZE,
+            Integer.parseInt( logFileSizeText.getText() ) );
+        ConnectionCorePlugin.getDefault().flushInstanceScopePreferences();
         return true;
     }
 
@@ -158,14 +162,13 @@ public class SearchLogsPreferencePage extends PreferencePage implements IWorkben
      */
     protected void performDefaults()
     {
-        enableSearchRequestLogging.setSelection( ConnectionCorePlugin.getDefault().getPluginPreferences()
-            .getDefaultBoolean( ConnectionCoreConstants.PREFERENCE_SEARCHREQUESTLOGS_ENABLE ) );
-        enableSearchResultEntryLogging.setSelection( ConnectionCorePlugin.getDefault().getPluginPreferences()
-            .getDefaultBoolean( ConnectionCoreConstants.PREFERENCE_SEARCHRESULTENTRYLOGS_ENABLE ) );
-        logFileCountText.setText( ConnectionCorePlugin.getDefault().getPluginPreferences().getDefaultString(
-            ConnectionCoreConstants.PREFERENCE_SEARCHLOGS_FILE_COUNT ) );
-        logFileSizeText.setText( ConnectionCorePlugin.getDefault().getPluginPreferences().getDefaultString(
-            ConnectionCoreConstants.PREFERENCE_SEARCHLOGS_FILE_SIZE ) );
+        IEclipsePreferences instancePreferences = ConnectionCorePlugin.getDefault().getInstanceScopePreferences();
+        instancePreferences.remove( ConnectionCoreConstants.PREFERENCE_SEARCHREQUESTLOGS_ENABLE );
+        instancePreferences.remove( ConnectionCoreConstants.PREFERENCE_SEARCHRESULTENTRYLOGS_ENABLE );
+        instancePreferences.remove( ConnectionCoreConstants.PREFERENCE_SEARCHLOGS_FILE_COUNT );
+        instancePreferences.remove( ConnectionCoreConstants.PREFERENCE_SEARCHLOGS_FILE_SIZE );
+        ConnectionCorePlugin.getDefault().flushInstanceScopePreferences();
+        setValues();
         super.performDefaults();
     }
 

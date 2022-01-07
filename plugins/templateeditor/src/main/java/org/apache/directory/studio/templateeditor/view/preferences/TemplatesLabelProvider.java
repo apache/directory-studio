@@ -32,7 +32,6 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
-import org.apache.directory.studio.common.ui.CommonUIConstants;
 import org.apache.directory.studio.templateeditor.EntryTemplatePlugin;
 import org.apache.directory.studio.templateeditor.EntryTemplatePluginConstants;
 import org.apache.directory.studio.templateeditor.EntryTemplatePluginUtils;
@@ -48,9 +47,6 @@ import org.apache.directory.studio.templateeditor.view.ColumnsLabelProvider;
  */
 public class TemplatesLabelProvider extends ColumnsLabelProvider implements ITableFontProvider, ITableColorProvider
 {
-    /** The Grey color constant */
-    private static final Color GREY_COLOR = CommonUIConstants.ML_GREY_COLOR;
-
     /** The templates manager */
     private PreferencesTemplatesManager manager;
 
@@ -315,7 +311,8 @@ public class TemplatesLabelProvider extends ColumnsLabelProvider implements ITab
         {
             if ( !manager.isEnabled( ( Template ) element ) )
             {
-                return GREY_COLOR;
+                // TODO: get disabled color
+                return null;
             }
         }
 

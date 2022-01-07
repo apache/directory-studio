@@ -333,7 +333,7 @@ public class BrowserQuickSearchWidget
         quickSearch.getSearchParameter().setFilter( filter.toString() );
 
         // set new quick search
-        browserWidget.setQuickSearch( quickSearch );
+        conn.setQuickSearch( quickSearch );
 
         // execute quick search
         new StudioBrowserJob( new SearchRunnable( new ISearch[]

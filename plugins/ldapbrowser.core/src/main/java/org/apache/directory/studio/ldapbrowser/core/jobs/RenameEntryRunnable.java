@@ -28,7 +28,6 @@ import java.util.Set;
 
 import javax.naming.directory.SearchControls;
 
-import org.apache.directory.api.ldap.model.exception.LdapContextNotEmptyException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.name.Dn;
@@ -36,6 +35,7 @@ import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Controls;
+import org.apache.directory.studio.connection.core.io.StudioLdapException;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.EntryRenamedEvent;
@@ -166,7 +166,7 @@ public class RenameEntryRunnable implements StudioConnectionBulkRunnableWithProg
         // do a simulated rename, if renaming of a non-leaf entry is not supported.
         if ( dummyMonitor.errorsReported() && !monitor.isCanceled() )
         {
-            if ( dialog != null && dummyMonitor.getException() instanceof LdapContextNotEmptyException )
+            if ( dialog != null && StudioLdapException.isContextNotEmptyException( dummyMonitor.getException() ) )
             {
                 // open dialog
                 dialog.setEntryInfo( browserConnection, oldDn, newDn );

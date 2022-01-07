@@ -22,6 +22,7 @@ package org.apache.directory.studio.openldap.config.editor.dialogs;
 
 import org.apache.directory.studio.common.ui.AddEditDialog;
 import org.apache.directory.studio.common.ui.CommonUIConstants;
+import org.apache.directory.studio.common.ui.CommonUIPlugin;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
@@ -235,13 +236,13 @@ public class SizeTimeLimitDialog extends AddEditDialog<LimitWrapper>
             
             if ( sizeLimitWrapper.isValid() )
             {
-                sizeLimitText.setForeground( CommonUIConstants.BLACK_COLOR );
+                sizeLimitText.setForeground( CommonUIPlugin.getDefault().getColor( CommonUIConstants.DEFAULT_COLOR ) );
                 setEditedElement( sizeLimitWrapper );
                 okButton.setEnabled( true );
             }
             else
             {
-                sizeLimitText.setForeground( CommonUIConstants.RED_COLOR );
+                sizeLimitText.setForeground( CommonUIPlugin.getDefault().getColor( CommonUIConstants.ERROR_COLOR ) );
                 okButton.setEnabled( false );
             }
         };
@@ -264,13 +265,13 @@ public class SizeTimeLimitDialog extends AddEditDialog<LimitWrapper>
             
             if ( timeLimitWrapper.isValid() )
             {
-                timeLimitText.setForeground( CommonUIConstants.BLACK_COLOR );
+                timeLimitText.setForeground( CommonUIPlugin.getDefault().getColor( CommonUIConstants.DEFAULT_COLOR ) );
                 setEditedElement( timeLimitWrapper );
                 okButton.setEnabled( true );
             }
             else
             {
-                timeLimitText.setForeground( CommonUIConstants.RED_COLOR );
+                timeLimitText.setForeground( CommonUIPlugin.getDefault().getColor( CommonUIConstants.ERROR_COLOR ) );
                 okButton.setEnabled( false );
             }
         };

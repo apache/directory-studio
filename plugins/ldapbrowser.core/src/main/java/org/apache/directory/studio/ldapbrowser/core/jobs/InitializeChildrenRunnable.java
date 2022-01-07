@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.message.controls.PagedResults;
@@ -64,7 +65,6 @@ public class InitializeChildrenRunnable implements StudioConnectionBulkRunnableW
 
     /** The paged search control, only used internally. */
     private PagedResults pagedSearchControl;
-
 
     /**
      * Creates a new instance of InitializeChildrenRunnable.
@@ -198,7 +198,7 @@ public class InitializeChildrenRunnable implements StudioConnectionBulkRunnableW
     {
         monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_progress_sub,
             new String[]
-                { parent.getDn().getName() } ) );
+            { parent.getDn().getName() } ) );
 
         // clear old children
         clearCaches( parent, purgeAllCaches );
@@ -262,7 +262,7 @@ public class InitializeChildrenRunnable implements StudioConnectionBulkRunnableW
                 {
                     if ( search.isPagedSearchScrollMode() )
                     {
-                        if ( prRequestControl.getCookieValue() > 0 )
+                        if ( ArrayUtils.isNotEmpty( prRequestControl.getCookie() ) )
                         {
                             // create top page search runnable, same as original search
                             InitializeChildrenRunnable topPageChildrenRunnable = new InitializeChildrenRunnable(
@@ -270,7 +270,7 @@ public class InitializeChildrenRunnable implements StudioConnectionBulkRunnableW
                             parent.setTopPageChildrenRunnable( topPageChildrenRunnable );
                         }
 
-                        if ( prResponseControl.getCookieValue() > 0 )
+                        if ( ArrayUtils.isNotEmpty( prResponseControl.getCookie() ) )
                         {
                             PagedResults newPrc = Controls.newPagedResultsControl( prRequestControl.getSize(),
                                 prResponseControl.getCookie() );
@@ -282,7 +282,7 @@ public class InitializeChildrenRunnable implements StudioConnectionBulkRunnableW
                     else
                     {
                         // transparently continue search, till count limit is reached
-                        if ( prResponseControl.getCookieValue() > 0
+                        if ( ArrayUtils.isNotEmpty( prResponseControl.getCookie() )
                             && ( search.getCountLimit() == 0 || search.getSearchResults().length < search
                                 .getCountLimit() ) )
                         {
@@ -359,7 +359,7 @@ public class InitializeChildrenRunnable implements StudioConnectionBulkRunnableW
         ISearchResult[] srs = search.getSearchResults();
         monitor.reportProgress( BrowserCoreMessages.bind( BrowserCoreMessages.jobs__init_entries_progress_subcount,
             new String[]
-                { srs == null ? Integer.toString( 0 ) : Integer.toString( srs.length ), parent.getDn().getName() } ) );
+            { srs == null ? Integer.toString( 0 ) : Integer.toString( srs.length ), parent.getDn().getName() } ) );
     }
 
 

@@ -1,0 +1,61 @@
+#  Licensed to the Apache Software Foundation (ASF) under one
+#  or more contributor license agreements.  See the NOTICE file
+#  distributed with this work for additional information
+#  regarding copyright ownership.  The ASF licenses this file
+#  to you under the Apache License, Version 2.0 (the
+#  "License"); you may not use this file except in compliance
+#  with the License.  You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing,
+#  software distributed under the License is distributed on an
+#  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#  KIND, either express or implied.  See the License for the
+#  specific language governing permissions and limitations
+#  under the License.
+#
+
+dn: ou=misc,dc=example,dc=org
+changetype: modify
+add: administrativeRole
+administrativeRole: accessControlSpecificArea
+-
+
+dn: ou=target,dc=example,dc=org
+changetype: modify
+add: administrativeRole
+administrativeRole: accessControlSpecificArea
+-
+
+dn: cn=subentry,ou=misc,dc=example,dc=org
+changetype: add
+objectClass: top
+objectClass: subentry
+cn: subentry
+subtreeSpecification: {}
+
+dn: uid=hnelson,ou=misc,dc=example,dc=org
+changetype: modify
+add: subtreeSpecification
+subtreeSpecification: {}
+-
+add: entryACI
+entryACI: { identificationTag "test", precedence 1, authenticationLevel none, 
+ itemOrUserFirst userFirst: { userClasses { subtree { { base "dc=example,dc=co
+ m", minimum 1, maximum 2, specificExclusions { chopBefore: "dc=example,dc=com
+ " } } }, allUsers, userGroup { "dc=example,dc=com" } }, userPermissions { { p
+ recedence 2, protectedItems { allUserAttributeTypes, attributeValue {userpass
+ word=*  }, maxImmSub 2, entry, maxValueCount {{ type userPassword, maxCount 2
+ }} }, grantsAndDenials { denyRemove, grantReturnDN, denyModify, denyAdd, deny
+ Rename, grantFilterMatch, grantBrowse, grantRead, grantCompare } } } } }
+-
+add: prescriptiveACI
+prescriptiveACI: { identificationTag "allUsersACI", precedence 10, authenticat
+ ionLevel simple, itemOrUserFirst userFirst: { userClasses { allUsers }, userP
+ ermissions { { protectedItems { allUserAttributeTypesAndValues, entry }, gran
+ tsAndDenials { grantReturnDN, grantCompare, grantRead, grantDiscloseOnError, 
+ grantFilterMatch, grantBrowse } }, { protectedItems { attributeType { userPas
+ sword } }, grantsAndDenials { denyCompare, denyRead, denyFilterMatch } } } } 
+ }
+-

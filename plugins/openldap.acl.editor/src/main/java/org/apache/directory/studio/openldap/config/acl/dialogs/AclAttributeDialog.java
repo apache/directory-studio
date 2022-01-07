@@ -23,6 +23,7 @@ import org.apache.directory.api.ldap.model.schema.SchemaUtils;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.common.ui.AddEditDialog;
 import org.apache.directory.studio.common.ui.CommonUIConstants;
+import org.apache.directory.studio.common.ui.CommonUIPlugin;
 import org.apache.directory.studio.common.ui.CommonUIUtils;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -274,12 +275,12 @@ public class AclAttributeDialog extends AddEditDialog<AclAttributeWrapper>
             // Check that the element does not already exist
             if ( getElements().contains( getEditedElement() ) )
             {
-                attributevalueText.setForeground( CommonUIConstants.RED_COLOR );
+                attributevalueText.setForeground( CommonUIPlugin.getDefault().getColor( CommonUIConstants.ERROR_COLOR ) );
                 okButton.setEnabled( false );
             }
             else
             {
-                attributevalueText.setForeground( CommonUIConstants.BLACK_COLOR );
+                attributevalueText.setForeground( CommonUIPlugin.getDefault().getColor( CommonUIConstants.DEFAULT_COLOR ) );
                 okButton.setEnabled( true );
             }
         }

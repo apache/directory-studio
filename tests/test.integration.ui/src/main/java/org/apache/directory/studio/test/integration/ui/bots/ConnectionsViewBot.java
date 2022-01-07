@@ -20,7 +20,11 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
-import static org.apache.directory.studio.test.integration.ui.Constants.LOCALHOST;
+import static org.apache.directory.studio.test.integration.ui.utils.Constants.LOCALHOST;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
@@ -33,8 +37,9 @@ import org.apache.directory.studio.connection.core.ConnectionParameter.Encryptio
 import org.apache.directory.studio.connection.core.Messages;
 import org.apache.directory.studio.connection.core.jobs.OpenConnectionsRunnable;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionJob;
-import org.apache.directory.studio.test.integration.ui.ContextMenuHelper;
-import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
+import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
+import org.apache.directory.studio.test.integration.ui.utils.ContextMenuHelper;
+import org.apache.directory.studio.test.integration.ui.utils.JobWatcher;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.utils.TableCollection;
@@ -48,7 +53,6 @@ public class ConnectionsViewBot
 {
     private SWTWorkbenchBot bot = new SWTWorkbenchBot();
 
-
     public NewConnectionWizardBot openNewConnectionWizard()
     {
         ContextMenuHelper.clickContextMenu( getConnectionsTree(), "New Connection..." );
@@ -57,10 +61,10 @@ public class ConnectionsViewBot
     }
 
 
-    public SchemaBrowserBot openSchemaBrowser()
+    public NewConnectionFolderDialogBot openNewConnectionFolderDialog()
     {
-        ContextMenuHelper.clickContextMenu( getConnectionsTree(), "Open Schema Browser" );
-        return new SchemaBrowserBot();
+        ContextMenuHelper.clickContextMenu( getConnectionsTree(), "New Connection Folder..." );
+        return new NewConnectionFolderDialogBot();
     }
 
 
@@ -83,6 +87,17 @@ public class ConnectionsViewBot
     }
 
 
+    public ErrorDialogBot openSelectedConnectionExpectingNoSchemaProvidedErrorDialog()
+    {
+        String shellText = BotUtils.shell( () -> {
+            JobWatcher watcher = new JobWatcher( Messages.jobs__open_connections_name_1 );
+            getConnectionsTree().contextMenu( "Open Connection" ).click();
+            watcher.waitUntilDone();
+        }, "Problem Occurred" ).getText();
+        return new ErrorDialogBot( shellText );
+    }
+
+
     public void closeSelectedConnections()
     {
         JobWatcher watcher = new JobWatcher( Messages.jobs__close_connections_name_1 );
@@ -91,13 +106,62 @@ public class ConnectionsViewBot
     }
 
 
-    public void selectConnection( String connectionName )
+    public SchemaBrowserBot openSchemaBrowser()
     {
-        getConnectionsTree().select( connectionName );
+        ContextMenuHelper.clickContextMenu( getConnectionsTree(), "Open Schema Browser" );
+        return new SchemaBrowserBot();
     }
 
 
-    public String getSelectedConnection()
+    public DeleteDialogBot openDeleteConnectionDialog()
+    {
+        getConnectionsTree().contextMenu( "Delete Connection" ).click();
+        return new DeleteDialogBot( DeleteDialogBot.DELETE_CONNECTION );
+    }
+
+
+    public DeleteDialogBot openDeleteConnectionFolderDialog()
+    {
+        getConnectionsTree().contextMenu( DeleteDialogBot.DELETE_CONNECTION_FOLDER ).click();
+        return new DeleteDialogBot( DeleteDialogBot.DELETE_CONNECTION_FOLDER );
+    }
+
+
+    public ExportConnectionsWizardBot openExportConnectionsWizard()
+    {
+        getConnectionsTree().contextMenu( "Export" ).contextMenu( "Export Connections..." ).click();
+        return new ExportConnectionsWizardBot();
+    }
+
+
+    public ImportConnectionsWizardBot openImportConnectionsWizard()
+    {
+        getConnectionsTree().contextMenu( "Import" ).contextMenu( "Import Connections..." ).click();
+        return new ImportConnectionsWizardBot();
+    }
+
+
+    public ApacheDSConfigurationEditorBot openApacheDSConfiguration()
+    {
+        getConnectionsTree().contextMenu( "Open Configuration" ).click();
+        String title = getSelection() + " - Configuration";
+        return new ApacheDSConfigurationEditorBot( title );
+    }
+
+
+    public void select( String... path )
+    {
+        List<String> pathList = new ArrayList<String>( Arrays.asList( path ) );
+        SWTBotTreeItem item = getConnectionsTree().getTreeItem( pathList.remove( 0 ) );
+        while ( !pathList.isEmpty() )
+        {
+            item = item.getNode( pathList.remove( 0 ) );
+        }
+        item.select();
+    }
+
+
+    public String getSelection()
     {
         TableCollection selection = getConnectionsTree().selection();
         if ( selection != null && selection.rowCount() == 1 )
@@ -109,9 +173,9 @@ public class ConnectionsViewBot
     }
 
 
-    public int getConnectionCount()
+    public int getCount()
     {
-        return getConnectionsTree().rowCount();
+        return getConnectionsTree().visibleRowCount();
     }
 
 
@@ -150,6 +214,14 @@ public class ConnectionsViewBot
     }
 
 
+    public Connection createTestConnection( TestLdapServer server ) throws Exception
+    {
+        return createTestConnection( server.getType().name(), server.getHost(),
+            server.getPort(), server.getAdminDn(),
+            server.getAdminPassword() );
+    }
+
+
     /**
      * Creates the test connection.
      *
@@ -163,17 +235,24 @@ public class ConnectionsViewBot
      */
     public Connection createTestConnection( String name, int port ) throws Exception
     {
+        return createTestConnection( name, LOCALHOST, port, "uid=admin,ou=system", "secret" );
+    }
+
+
+    public Connection createTestConnection( String name, String host, int port, String bindDn, String bindPassword )
+        throws Exception
+    {
         name = name + "_" + System.currentTimeMillis();
 
         ConnectionManager connectionManager = ConnectionCorePlugin.getDefault().getConnectionManager();
         ConnectionParameter connectionParameter = new ConnectionParameter();
         connectionParameter.setName( name );
-        connectionParameter.setHost( LOCALHOST );
+        connectionParameter.setHost( host );
         connectionParameter.setPort( port );
         connectionParameter.setEncryptionMethod( EncryptionMethod.NONE );
         connectionParameter.setAuthMethod( AuthenticationMethod.SIMPLE );
-        connectionParameter.setBindPrincipal( "uid=admin,ou=system" );
-        connectionParameter.setBindPassword( "secret" );
+        connectionParameter.setBindPrincipal( bindDn );
+        connectionParameter.setBindPassword( bindPassword );
         Connection connection = new Connection( connectionParameter );
         connectionManager.addConnection( connection );
 
@@ -182,7 +261,7 @@ public class ConnectionsViewBot
         ConnectionFolder rootConnectionFolder = connectionFolderManager.getRootConnectionFolder();
         rootConnectionFolder.addConnectionId( connection.getId() );
 
-        selectConnection( name );
+        select( name );
         StudioConnectionJob job = new StudioConnectionJob( new OpenConnectionsRunnable( connection ) );
         job.execute();
         job.join();
@@ -201,14 +280,13 @@ public class ConnectionsViewBot
         {
             connectionManager.removeConnection( connection );
         }
-    }
 
-
-    public ApacheDSConfigurationEditorBot openApacheDSConfiguration()
-    {
-        getConnectionsTree().contextMenu( "Open Configuration" ).click();
-        String title = getSelectedConnection() + " - Configuration";
-        return new ApacheDSConfigurationEditorBot( title );
+        ConnectionFolderManager connectionFolderManager = ConnectionCorePlugin.getDefault()
+            .getConnectionFolderManager();
+        for ( ConnectionFolder connectionFolder : connectionFolderManager.getConnectionFolders() )
+        {
+            connectionFolderManager.removeConnectionFolder( connectionFolder );
+        }
     }
 
 }

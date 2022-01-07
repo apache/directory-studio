@@ -21,8 +21,8 @@ package org.apache.directory.studio.test.integration.ui.bots;
 
 
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
-import org.apache.directory.studio.test.integration.ui.ContextMenuHelper;
-import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
+import org.apache.directory.studio.test.integration.ui.utils.ContextMenuHelper;
+import org.apache.directory.studio.test.integration.ui.utils.JobWatcher;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 
@@ -31,7 +31,6 @@ public class BrowserViewBot
 {
     private SWTWorkbenchBot bot;
     private BrowserWidgetBot browserBot;
-
 
     public BrowserViewBot()
     {
@@ -57,7 +56,8 @@ public class BrowserViewBot
 
     public void selectEntry( String... path )
     {
-        boolean wait = !"Quick Search".equals( path[path.length - 1] )
+        boolean wait = !path[path.length - 1].startsWith( "Quick Search" )
+            && !path[path.length - 1].equals( "No Results" )
             && !"Searches".equals( path[0] );
         browserBot.selectEntry( wait, path );
     }
@@ -72,6 +72,13 @@ public class BrowserViewBot
     public ReferralDialogBot selectEntryExpectingReferralDialog( String... path )
     {
         return browserBot.selectEntryExpectingReferralDialog( path );
+    }
+
+
+    public void selectAndExpandEntry( String... path )
+    {
+        selectEntry( path );
+        expandEntry( path );
     }
 
 
@@ -210,7 +217,6 @@ public class BrowserViewBot
             JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__copy_entries_name_1 );
             ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Paste" );
             watcher.waitUntilDone();
-
         }
     }
 
@@ -229,10 +235,10 @@ public class BrowserViewBot
     }
 
 
-    public SearchPropertiesDialogBot pasteSearch()
+    public SearchPropertiesDialogBot pasteSearch( String searchName )
     {
         ContextMenuHelper.clickContextMenu( browserBot.getTree(), "Paste" );
-        return new SearchPropertiesDialogBot();
+        return new SearchPropertiesDialogBot( searchName );
     }
 
 

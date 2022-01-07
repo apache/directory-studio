@@ -33,14 +33,12 @@ pipeline {
         retry(2)
       }
       agent {
-        docker {
-          label 'ubuntu && !H28 && !H36 && !H40'
-          image 'apachedirectory/maven-build:jdk-8'
-          //args '-v $HOME/.m2:/home/hnelson/.m2'
-        }
+        label 'ubuntu'
       }
       steps {
-        sh 'export DISPLAY=:99; env; ps aux'
+        script {
+          inTestLab('jdk-11', { sh 'export DISPLAY=:99; env; ps aux' })
+        }
       }
       post {
         always {
@@ -50,20 +48,18 @@ pipeline {
     }
     stage ('Build and Test') {
       parallel {
-        stage ('Linux Java 8') {
+        stage ('Linux Java 11') {
           options {
             timeout(time: 4, unit: 'HOURS')
             retry(2)
           }
           agent {
-            docker {
-              label 'ubuntu && !H28 && !H36 && !H40'
-              image 'apachedirectory/maven-build:jdk-8'
-              //args '-v $HOME/.m2:/home/hnelson/.m2'
-            }
+            label 'ubuntu'
           }
           steps {
-            sh 'export DISPLAY=:99; mvn -V -U -f pom-first.xml clean install && mvn -V clean install -Dorg.eclipse.swtbot.search.timeout=20000 -Denable-ui-tests'
+            script {
+              inTestLab('jdk-11', { sh 'export DISPLAY=:99; mvn -V -U -f pom-first.xml clean install && mvn -V clean install -Dorg.eclipse.swtbot.search.timeout=20000 -Denable-ui-tests' })
+            }
           }
           post {
             always {
@@ -73,20 +69,18 @@ pipeline {
             }
           }
         }
-        stage ('Linux Java 11') {
+        stage ('Linux Java 17') {
           options {
             timeout(time: 4, unit: 'HOURS')
             retry(2)
           }
           agent {
-            docker {
-              label 'ubuntu && !H28 && !H36 && !H40'
-              image 'apachedirectory/maven-build:jdk-11'
-              //args '-v $HOME/.m2:/home/hnelson/.m2'
-            }
+            label 'ubuntu'
           }
           steps {
-            sh 'export DISPLAY=:99; mvn -V -U -f pom-first.xml clean install && mvn -V clean install -Dorg.eclipse.swtbot.search.timeout=20000 -Denable-ui-tests'
+            script {
+              inTestLab('jdk-17', { sh 'export DISPLAY=:99; mvn -V -U -f pom-first.xml clean install && mvn -V clean install -Dorg.eclipse.swtbot.search.timeout=20000 -Denable-ui-tests' })
+            }
           }
           post {
             always {
@@ -96,30 +90,7 @@ pipeline {
             }
           }
         }
-        stage ('Linux Java 14') {
-          options {
-            timeout(time: 4, unit: 'HOURS')
-            retry(2)
-          }
-          agent {
-            docker {
-              label 'ubuntu && !H28 && !H36 && !H40'
-              image 'apachedirectory/maven-build:jdk-14'
-              //args '-v $HOME/.m2:/home/hnelson/.m2'
-            }
-          }
-          steps {
-            sh 'export DISPLAY=:99; mvn -V -U -f pom-first.xml clean install && mvn -V clean install -Dorg.eclipse.swtbot.search.timeout=20000 -Denable-ui-tests'
-          }
-          post {
-            always {
-              junit '**/target/surefire-reports/*.xml'
-              archiveArtifacts artifacts:'tests/test.integration.ui/screenshots/*', allowEmptyArchive:true
-              deleteDir()
-            }
-          }
-        }
-        stage ('Windows Java 8') {
+        stage ('Windows Java 11') {
           options {
             timeout(time: 4, unit: 'HOURS')
             retry(2)
@@ -129,7 +100,8 @@ pipeline {
           }
           steps {
             bat '''
-            set JAVA_HOME=F:\\jenkins\\tools\\java\\latest1.8
+            rmdir /S /Q F:\\hudson\\m2_repository\\p2\\osgi\\bundle\\org.apache.directory.api.ldap.model
+            set JAVA_HOME=F:\\jenkins\\tools\\java\\latest11
             set MAVEN_OPTS="-Xmx512m"
             call F:\\jenkins\\tools\\maven\\latest3\\bin\\mvn -V -U -f pom-first.xml clean install
             call F:\\jenkins\\tools\\maven\\latest3\\bin\\mvn -V clean install -Dorg.eclipse.swtbot.search.timeout=20000 -Denable-ui-tests
@@ -160,3 +132,14 @@ pipeline {
   }
 }
 
+def inTestLab(String dockerImageTag, Closure action){
+  docker.image('coheigea/kerby').withRun('-h kerby.example.com -v $(pwd)/tools/testlab/kerby-data:/kerby-data') { kerby ->
+    docker.image('osixia/openldap:1.5.0').withRun('-h openldap.example.com -v $(pwd)/tools/testlab/ldap.keytab:/etc/krb5.keytab -v $(pwd)/tools/testlab/krb5.conf:/etc/krb5.conf -e LDAP_TLS_VERIFY_CLIENT=never') { openldap ->
+      docker.image('389ds/dirsrv').withRun('-h fedora389ds.example.com -v $(pwd)/tools/testlab/ldap.keytab:/etc/krb5.keytab -v $(pwd)/tools/testlab/krb5.conf:/etc/krb5.conf -e DS_DM_PASSWORD=admin', 'bash -c "zypper install -y cyrus-sasl-crammd5 cyrus-sasl-digestmd5 cyrus-sasl-gssapi; set -m; /usr/lib/dirsrv/dscontainer -r & while ! /usr/lib/dirsrv/dscontainer -H; do sleep 5; done; sleep 5; /usr/sbin/dsconf localhost backend create --suffix dc=example,dc=org --be-name example; fg"') { fedora389ds ->
+        docker.image("apachedirectory/maven-build:${dockerImageTag}").inside("-v ${env.WORKSPACE}/tools/testlab/krb5.conf:/etc/krb5.conf --link=${kerby.id}:kerby.example.com --link=${openldap.id}:openldap.example.com -e OPENLDAP_HOST=openldap.example.com -e OPENLDAP_PORT=389 -e OPENLDAP_PORT_SSL=636 --link=${fedora389ds.id}:fedora389ds.example.com -e FEDORA_389DS_HOST=fedora389ds.example.com -e FEDORA_389DS_PORT=3389 -e FEDORA_389DS_PORT_SSL=3636") {
+          action()
+        }
+      }
+    }
+  }
+}

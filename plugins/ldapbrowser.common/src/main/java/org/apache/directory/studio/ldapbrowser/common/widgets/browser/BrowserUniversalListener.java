@@ -277,9 +277,9 @@ public class BrowserUniversalListener implements ConnectionUpdateListener, Entry
 
         if ( ( search instanceof IQuickSearch ) && ( searchUpdateEvent.getDetail() == EventDetail.SEARCH_REMOVED ) )
         {
-            if ( widget.getQuickSearch() == search )
+            if ( search.getBrowserConnection().getQuickSearch() == search )
             {
-                widget.setQuickSearch( null );
+                search.getBrowserConnection().setQuickSearch( null );
             }
         }
 

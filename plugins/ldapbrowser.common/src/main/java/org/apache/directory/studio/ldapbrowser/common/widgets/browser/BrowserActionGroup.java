@@ -108,8 +108,7 @@ public class BrowserActionGroup implements ActionHandlerManager, IMenuListener
         showQuickSearchAction = new ShowQuickSearchAction( mainWidget.getQuickSearchWidget() );
         collapseAllAction = new CollapseAllAction( viewer );
 
-        browserActionMap.put( OPEN_QUICK_SEARCH_ACTION, new BrowserViewActionProxy( viewer, new OpenQuickSearchAction(
-            mainWidget ) ) );
+        browserActionMap.put( OPEN_QUICK_SEARCH_ACTION, new BrowserViewActionProxy( viewer, new OpenQuickSearchAction() ) );
         browserActionMap.put( UP_ACTION, new BrowserViewActionProxy( viewer, new UpAction( viewer ) ) );
         browserActionMap.put( REFRESH_ACTION, new BrowserViewActionProxy( viewer, new RefreshAction() ) );
         browserActionMap.put( FILTER_CHILDREN_ACTION, new BrowserViewActionProxy( viewer, new FilterChildrenAction() ) );

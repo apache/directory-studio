@@ -96,8 +96,8 @@ public class ClearAction extends BrowserAction
             Messages.getString( "ClearAction.Delete" ), Messages.getString( "ClearAction.DeleteAllLogFiles" ) ) ) //$NON-NLS-1$ //$NON-NLS-2$
         {
             view.getUniversalListener().clearInput();
+            new RefreshAction( view ).run();
         }
-
     }
 
 

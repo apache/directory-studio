@@ -41,7 +41,11 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.preferences.DefaultScope;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.osgi.framework.BundleContext;
+import org.osgi.service.prefs.BackingStoreException;
 
 
 /**
@@ -94,7 +98,6 @@ public class ConnectionCorePlugin extends Plugin
 
     /** The plugin properties */
     private PropertyResourceBundle properties;
-
 
     /**
      * The constructor
@@ -481,7 +484,8 @@ public class ConnectionCorePlugin extends Plugin
             connectionListeners = new ArrayList<IConnectionListener>();
 
             IExtensionRegistry registry = Platform.getExtensionRegistry();
-            IExtensionPoint extensionPoint = registry.getExtensionPoint( "org.apache.directory.studio.connectionlistener" ); //$NON-NLS-1$
+            IExtensionPoint extensionPoint = registry
+                .getExtensionPoint( "org.apache.directory.studio.connectionlistener" ); //$NON-NLS-1$
             IConfigurationElement[] members = extensionPoint.getConfigurationElements();
             for ( IConfigurationElement member : members )
             {
@@ -494,7 +498,8 @@ public class ConnectionCorePlugin extends Plugin
                 {
                     getLog().log(
                         new Status( IStatus.ERROR, ConnectionCoreConstants.PLUGIN_ID, 1,
-                            Messages.error__unable_to_create_connection_listener + member.getAttribute( "class" ), e ) ); //$NON-NLS-1$
+                            Messages.error__unable_to_create_connection_listener + member.getAttribute( "class" ), //$NON-NLS-1$
+                            e ) );
                 }
             }
         }
@@ -566,6 +571,100 @@ public class ConnectionCorePlugin extends Plugin
         }
 
         return defaultKrb5LoginModule;
+    }
+
+
+    public IEclipsePreferences getDefaultScopePreferences()
+    {
+        return DefaultScope.INSTANCE.getNode( ConnectionCoreConstants.PLUGIN_ID );
+    }
+
+
+    public void flushDefaultScopePreferences()
+    {
+        try
+        {
+            getDefaultScopePreferences().flush();
+        }
+        catch ( BackingStoreException e )
+        {
+            throw new RuntimeException( e );
+        }
+    }
+
+
+    public IEclipsePreferences getInstanceScopePreferences()
+    {
+        return InstanceScope.INSTANCE.getNode( ConnectionCoreConstants.PLUGIN_ID );
+    }
+
+
+    public void flushInstanceScopePreferences()
+    {
+        try
+        {
+            getInstanceScopePreferences().flush();
+        }
+        catch ( BackingStoreException e )
+        {
+            throw new RuntimeException( e );
+        }
+    }
+
+
+    public int getModificationLogsFileCount()
+    {
+        return Platform.getPreferencesService().getInt( ConnectionCoreConstants.PLUGIN_ID,
+            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_FILE_COUNT, -1, null );
+    }
+
+
+    public int getModificationLogsFileSize()
+    {
+        return Platform.getPreferencesService().getInt( ConnectionCoreConstants.PLUGIN_ID,
+            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_FILE_SIZE, -1, null );
+    }
+
+
+    public boolean isModificationLogsEnabled()
+    {
+        return Platform.getPreferencesService().getBoolean( ConnectionCoreConstants.PLUGIN_ID,
+            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_ENABLE, true, null );
+    }
+
+
+    public String getMModificationLogsMaskedAttributes()
+    {
+        return Platform.getPreferencesService().getString( ConnectionCoreConstants.PLUGIN_ID,
+            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_MASKED_ATTRIBUTES, null, null );
+    }
+
+
+    public int getSearchLogsFileCount()
+    {
+        return Platform.getPreferencesService().getInt( ConnectionCoreConstants.PLUGIN_ID,
+            ConnectionCoreConstants.PREFERENCE_SEARCHLOGS_FILE_COUNT, -1, null );
+    }
+
+
+    public int getSearchLogsFileSize()
+    {
+        return Platform.getPreferencesService().getInt( ConnectionCoreConstants.PLUGIN_ID,
+            ConnectionCoreConstants.PREFERENCE_SEARCHLOGS_FILE_SIZE, -1, null );
+    }
+
+
+    public boolean isSearchRequestLogsEnabled()
+    {
+        return Platform.getPreferencesService().getBoolean( ConnectionCoreConstants.PLUGIN_ID,
+            ConnectionCoreConstants.PREFERENCE_SEARCHREQUESTLOGS_ENABLE, true, null );
+    }
+
+
+    public boolean isSearchResultEntryLogsEnabled()
+    {
+        return Platform.getPreferencesService().getBoolean( ConnectionCoreConstants.PLUGIN_ID,
+            ConnectionCoreConstants.PREFERENCE_SEARCHRESULTENTRYLOGS_ENABLE, false, null );
     }
 
 }

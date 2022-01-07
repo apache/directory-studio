@@ -31,13 +31,13 @@ import java.util.Set;
 
 import javax.naming.directory.SearchControls;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.message.controls.PagedResults;
-import org.apache.directory.api.ldap.model.message.controls.PagedResultsImpl;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.url.LdapUrl;
 import org.apache.directory.api.util.Strings;
@@ -47,7 +47,6 @@ import org.apache.directory.studio.connection.core.Controls;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.StudioControl;
-import org.apache.directory.studio.connection.core.StudioPagedResultsControl;
 import org.apache.directory.studio.connection.core.io.api.StudioSearchResult;
 import org.apache.directory.studio.connection.core.io.api.StudioSearchResultEnumeration;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
@@ -240,7 +239,7 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
                         nextPageSearch.getControls().add( nextPrc );
                         if ( search.isPagedSearchScrollMode() )
                         {
-                            if ( prRequestControl.getCookieValue() > 0 )
+                            if ( ArrayUtils.isNotEmpty( prRequestControl.getCookie() ) )
                             {
                                 // create top page search runnable, same as original search
                                 ISearch topPageSearch = ( ISearch ) search.clone();
@@ -248,7 +247,7 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
                                 SearchRunnable topPageSearchRunnable = new SearchRunnable( search, topPageSearch );
                                 search.setTopPageSearchRunnable( topPageSearchRunnable );
                             }
-                            if ( prResponseControl.getCookieValue() > 0 )
+                            if ( ArrayUtils.isNotEmpty( prResponseControl.getCookie() ) )
                             {
                                 // create next page search runnable
                                 SearchRunnable nextPageSearchRunnable = new SearchRunnable( search, nextPageSearch );
@@ -258,7 +257,7 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
                         else
                         {
                             // transparently continue search, till count limit is reached
-                            if ( prResponseControl.getCookieValue() > 0
+                            if ( ArrayUtils.isNotEmpty( prResponseControl.getCookie() )
                                 && ( search.getCountLimit() == 0 || search.getSearchResults().length < search
                                     .getCountLimit() ) )
                             {
@@ -406,7 +405,8 @@ public class SearchRunnable implements StudioConnectionBulkRunnableWithProgress
                             search.getResponseControls().add( control );
                             if ( control instanceof PagedResults )
                             {
-                                search.setCountLimitExceeded( ( ( PagedResults ) control ).getCookieValue() > 0 );
+                                search.setCountLimitExceeded(
+                                    ArrayUtils.isNotEmpty( ( ( PagedResults ) control ).getCookie() ) );
                             }
                         }
                     }

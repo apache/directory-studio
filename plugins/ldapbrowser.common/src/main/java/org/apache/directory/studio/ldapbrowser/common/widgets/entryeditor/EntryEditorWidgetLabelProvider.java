@@ -22,12 +22,14 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor;
 
 
 import org.apache.directory.studio.common.ui.CommonUIConstants;
+import org.apache.directory.studio.common.ui.CommonUIPlugin;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.valueeditors.IValueEditor;
 import org.apache.directory.studio.valueeditors.ValueEditorManager;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.IFontProvider;
@@ -63,7 +65,6 @@ public class EntryEditorWidgetLabelProvider extends LabelProvider implements ITa
 
     /** The value editor manager. */
     private ValueEditorManager valueEditorManager;
-
 
     /**
      * Creates a new instance of EntryEditorWidgetLabelProvider.
@@ -115,7 +116,8 @@ public class EntryEditorWidgetLabelProvider extends LabelProvider implements ITa
             {
                 return NLS
                     .bind(
-                        Messages.getString( "EntryEditorWidgetLabelProvider.AttributeLabel" ), attribute.getDescription(), getNumberOfValues( attribute ) ); //$NON-NLS-1$
+                        Messages.getString( "EntryEditorWidgetLabelProvider.AttributeLabel" ), //$NON-NLS-1$
+                        attribute.getDescription(), getNumberOfValues( attribute ) );
             }
             else
             {
@@ -262,15 +264,15 @@ public class EntryEditorWidgetLabelProvider extends LabelProvider implements ITa
         {
             if ( value.isEmpty() )
             {
-                return CommonUIConstants.RED_COLOR;
+                return CommonUIPlugin.getDefault().getColor( CommonUIConstants.ERROR_COLOR );
             }
         }
-        
+
         if ( attribute != null && value == null )
         {
             if ( !attribute.isConsistent() )
             {
-                return CommonUIConstants.RED_COLOR;
+                return CommonUIPlugin.getDefault().getColor( CommonUIConstants.ERROR_COLOR );
             }
         }
 
@@ -279,33 +281,39 @@ public class EntryEditorWidgetLabelProvider extends LabelProvider implements ITa
         {
             if ( attribute.isObjectClassAttribute() )
             {
-                RGB rgb = PreferenceConverter.getColor( BrowserCommonActivator.getDefault().getPreferenceStore(),
-                    BrowserCommonConstants.PREFERENCE_OBJECTCLASS_COLOR );
-                return BrowserCommonActivator.getDefault().getColor( rgb );
+                return getColorIfNotDefaultElseNull( BrowserCommonConstants.PREFERENCE_OBJECTCLASS_COLOR );
             }
             else if ( attribute.isMustAttribute() )
             {
-                RGB rgb = PreferenceConverter.getColor( BrowserCommonActivator.getDefault().getPreferenceStore(),
-                    BrowserCommonConstants.PREFERENCE_MUSTATTRIBUTE_COLOR );
-                return BrowserCommonActivator.getDefault().getColor( rgb );
+                return getColorIfNotDefaultElseNull( BrowserCommonConstants.PREFERENCE_MUSTATTRIBUTE_COLOR );
             }
             else if ( attribute.isOperationalAttribute() )
             {
-                RGB rgb = PreferenceConverter.getColor( BrowserCommonActivator.getDefault().getPreferenceStore(),
-                    BrowserCommonConstants.PREFERENCE_OPERATIONALATTRIBUTE_COLOR );
-                return BrowserCommonActivator.getDefault().getColor( rgb );
+                return getColorIfNotDefaultElseNull( BrowserCommonConstants.PREFERENCE_OPERATIONALATTRIBUTE_COLOR );
             }
             else
             {
-                RGB rgb = PreferenceConverter.getColor( BrowserCommonActivator.getDefault().getPreferenceStore(),
-                    BrowserCommonConstants.PREFERENCE_MAYATTRIBUTE_COLOR );
-                return BrowserCommonActivator.getDefault().getColor( rgb );
+                return getColorIfNotDefaultElseNull( BrowserCommonConstants.PREFERENCE_MAYATTRIBUTE_COLOR );
             }
         }
         else
         {
             return null;
         }
+    }
+
+
+    private Color getColorIfNotDefaultElseNull( String color )
+    {
+        BrowserCommonActivator plugin = BrowserCommonActivator.getDefault();
+        IPreferenceStore preferenceStore = plugin.getPreferenceStore();
+
+        if ( preferenceStore.isDefault( color ) )
+        {
+            return null;
+        }
+        RGB rgb = PreferenceConverter.getColor( preferenceStore, color );
+        return plugin.getColor( rgb );
     }
 
 

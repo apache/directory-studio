@@ -51,6 +51,7 @@
     <initializer class="org.apache.directory.studio.ldapbrowser.common.BrowserCommonPreferencesInitializer"/>
   </extension> 
 
+
   <extension
       point="org.eclipse.ui.preferencePages">
     <page

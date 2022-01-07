@@ -134,10 +134,9 @@ public class AttributesPreferencePage extends PreferencePage implements IWorkben
             attributeItalicButtons[i] = BaseWidgetUtils.createCheckbox( colorsAndFontsComposite, Messages
                 .getString( "AttributesPreferencePage.Italic" ), 1 ); //$NON-NLS-1$
 
-            FontData[] fontDatas = PreferenceConverter.getFontDataArray( BrowserCommonActivator.getDefault()
-                .getPreferenceStore(), ATTRIBUTE_FONT_CONSTANTS[i] );
-            RGB rgb = PreferenceConverter.getColor( BrowserCommonActivator.getDefault().getPreferenceStore(),
-                ATTRIBUTE_COLOR_CONSTANTS[i] );
+            FontData[] fontDatas = PreferenceConverter.getFontDataArray( getPreferenceStore(),
+                ATTRIBUTE_FONT_CONSTANTS[i] );
+            RGB rgb = PreferenceConverter.getColor( getPreferenceStore(), ATTRIBUTE_COLOR_CONSTANTS[i] );
             setColorsAndFonts( i, fontDatas, rgb );
         }
 
@@ -214,14 +213,12 @@ public class AttributesPreferencePage extends PreferencePage implements IWorkben
         // Attributes Colors And Fonts
         for ( int i = 0; i < ATTRIBUTE_TYPES.length; i++ )
         {
-            FontData[] fontDatas = PreferenceConverter.getFontDataArray( BrowserCommonActivator.getDefault()
-                .getPreferenceStore(), ATTRIBUTE_FONT_CONSTANTS[i] );
+            FontData[] fontDatas = PreferenceConverter.getFontDataArray( getPreferenceStore(),
+                ATTRIBUTE_FONT_CONSTANTS[i] );
             setFontData( fontDatas, attributeBoldButtons[i], attributeItalicButtons[i] );
             RGB rgb = attributeColorSelectors[i].getColorValue();
-            PreferenceConverter.setValue( BrowserCommonActivator.getDefault().getPreferenceStore(),
-                ATTRIBUTE_FONT_CONSTANTS[i], fontDatas );
-            PreferenceConverter.setValue( BrowserCommonActivator.getDefault().getPreferenceStore(),
-                ATTRIBUTE_COLOR_CONSTANTS[i], rgb );
+            PreferenceConverter.setValue( getPreferenceStore(), ATTRIBUTE_FONT_CONSTANTS[i], fontDatas );
+            PreferenceConverter.setValue( getPreferenceStore(), ATTRIBUTE_COLOR_CONSTANTS[i], rgb );
         }
 
         return true;
@@ -240,10 +237,11 @@ public class AttributesPreferencePage extends PreferencePage implements IWorkben
         // Attributes Colors And Fonts
         for ( int i = 0; i < ATTRIBUTE_TYPES.length; i++ )
         {
-            FontData[] fontDatas = PreferenceConverter.getDefaultFontDataArray( BrowserCommonActivator.getDefault()
-                .getPreferenceStore(), ATTRIBUTE_FONT_CONSTANTS[i] );
-            RGB rgb = PreferenceConverter.getDefaultColor( BrowserCommonActivator.getDefault().getPreferenceStore(),
-                ATTRIBUTE_COLOR_CONSTANTS[i] );
+            FontData[] fontDatas = PreferenceConverter.getDefaultFontDataArray( getPreferenceStore(),
+                ATTRIBUTE_FONT_CONSTANTS[i] );
+            getPreferenceStore().setToDefault( ATTRIBUTE_FONT_CONSTANTS[i] );
+            RGB rgb = PreferenceConverter.getDefaultColor( getPreferenceStore(), ATTRIBUTE_COLOR_CONSTANTS[i] );
+            getPreferenceStore().setToDefault( ATTRIBUTE_COLOR_CONSTANTS[i] );
             setColorsAndFonts( i, fontDatas, rgb );
         }
 

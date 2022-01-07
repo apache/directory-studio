@@ -20,6 +20,8 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.directory.studio.test.integration.ui.utils.JobWatcher;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
@@ -32,11 +34,24 @@ public abstract class DialogBot
 
     protected SWTWorkbenchBot bot = new SWTWorkbenchBot();
     protected String title;
-
+    protected String[] okButtonJobWatcherJobNames = null;
 
     protected DialogBot( String title )
     {
         this.title = title;
+    }
+
+
+    public void setWaitAfterClickOkButton( boolean wait, String... jobNames )
+    {
+        if ( wait )
+        {
+            this.okButtonJobWatcherJobNames = jobNames;
+        }
+        else
+        {
+            this.okButtonJobWatcherJobNames = null;
+        }
     }
 
 
@@ -68,7 +83,23 @@ public abstract class DialogBot
 
     public void clickOkButton()
     {
-        clickButton( "OK" );
+        if ( okButtonJobWatcherJobNames != null )
+        {
+            JobWatcher jobWatcher = new JobWatcher( okButtonJobWatcherJobNames );
+            clickButton( "OK" );
+            jobWatcher.waitUntilDone();
+        }
+        else
+        {
+            clickButton( "OK" );
+        }
+    }
+
+
+    public ErrorDialogBot clickOkButtonExpectingErrorDialog()
+    {
+        String shellText = BotUtils.shell( () -> clickButton( "OK" ), "Error", "Problem Occurred" ).getText();
+        return new ErrorDialogBot( shellText );
     }
 
 
@@ -107,7 +138,7 @@ public abstract class DialogBot
     }
 
 
-    protected String clickCheckButton( final String label, final String title )
+    protected CheckResponse clickCheckButton( final String label, final String title )
     {
         SWTBotShell parentShell = bot.activeShell();
         SWTBotShell shell = BotUtils.shell( new Runnable()
@@ -119,17 +150,55 @@ public abstract class DialogBot
         }, "Error", title );
 
         String shellText = shell.getText();
-        String labelText = bot.label( 1 ).getText(); // label(0) is the image
+        // label(0) may be the image
+        String messageText = bot.label( 0 ).getText();
+        if ( StringUtils.isBlank( messageText ) )
+        {
+            messageText = bot.label( 1 ).getText();
+        }
         bot.button( "OK" ).click();
         parentShell.activate();
 
         if ( shellText.equals( title ) )
         {
-            return null;
+            return new CheckResponse( false, shellText, messageText );
         }
         else
         {
-            return labelText;
+            return new CheckResponse( true, shellText, messageText );
         }
+    }
+
+    public static class CheckResponse
+    {
+        boolean isError;
+        String title;
+        String message;
+
+        public CheckResponse( boolean isError, String title, String message )
+        {
+            this.isError = isError;
+            this.title = title;
+            this.message = message;
+        }
+
+
+        public boolean isError()
+        {
+            return isError;
+        }
+
+
+        public String getTitle()
+        {
+            return title;
+        }
+
+
+        public String getMessage()
+        {
+            return message;
+        }
+
     }
 }

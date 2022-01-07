@@ -220,7 +220,7 @@ public class ProtectedItemWrapper
             for ( Iterator<AttributeType> it = aav.iterator(); it.hasNext(); )
             {
                 AttributeType attributeType = it.next();
-                values.add( attributeType.toString() );
+                values.add( attributeType.getName() );
             }
         }
         else if ( item instanceof AttributeValueItem )
@@ -240,7 +240,7 @@ public class ProtectedItemWrapper
             for ( Iterator<AttributeType> it = sv.iterator(); it.hasNext(); )
             {
                 AttributeType attributeType = it.next();
-                values.add( attributeType.toString() );
+                values.add( attributeType.getName() );
             }
         }
         else if ( item instanceof RangeOfValuesItem )

@@ -437,8 +437,8 @@
 							Specify the modify mode for attributes with an equality matching rule.
 							Description of options:
 							<itemizedlist spacing="normal" mark="bullet">
-								<listitem>Optimized Modify Operations: uses add/delete by default, 
-								uses replace if operation count is less</listitem>
+								<listitem>Default: uses add/delete by default, 
+								uses replace for X-ORDERED attributes</listitem>
 								<listitem>Always REPLACE: always uses replace operations to perform 
 								entry modifications</listitem>
 								<listitem>Always ADD/DELETE: always uses add and/or delete operations 
@@ -452,8 +452,8 @@
 							Specify the modify mode for attributes with *no* equality matching rule.
 							Description of options:
 							<itemizedlist spacing="normal" mark="bullet">
-								<listitem>Optimized Modify Operations: uses add/delete by default, 
-								uses replace if operation count is less</listitem>
+								<listitem>Default: uses add/delete by default, 
+								uses replace for X-ORDERED attributes</listitem>
 								<listitem>Always REPLACE: always uses replace operations to perform 
 								entry modifications</listitem>
 								<listitem>Always ADD/DELETE: always uses add and/or delete operations 
@@ -461,14 +461,14 @@
 							</itemizedlist>
 							Recommended values for various LDAP servers:
 							<itemizedlist spacing="normal" mark="bullet">
-								<listitem>ApacheDS: Optimized Modify Operations or REPLACE</listitem>
+								<listitem>ApacheDS: Default or REPLACE</listitem>
 								<listitem>OpenLDAP: REPLACE</listitem>
-								<listitem>OpenDS / SunDSEE: Optimized Modify Operations or REPLACE</listitem>
-								<listitem>FedoraDS / 389DS: Optimized Modify Operations 
+								<listitem>OpenDS / SunDSEE: Default or REPLACE</listitem>
+								<listitem>FedoraDS / 389DS: Default 
 								(missing equality matching rules for many standard attribute types)</listitem>
-								<listitem>Active Directory: Optimized Modify Operations 
+								<listitem>Active Directory: Default 
 								(exposes no equality matching rules at all)</listitem>
-								<listitem>eDirectory: Optimized Modify Operations 
+								<listitem>eDirectory: Default 
 								(exposes no equality matching rules at all)</listitem>
 							</itemizedlist>
 						</entry>

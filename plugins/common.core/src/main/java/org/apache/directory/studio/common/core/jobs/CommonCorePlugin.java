@@ -70,7 +70,6 @@ public class CommonCorePlugin extends Plugin
         plugin = null;
 
         studioProgressMonitorWatcherJob.stop();
-        studioProgressMonitorWatcherJob.join();
         studioProgressMonitorWatcherJob = null;
 
         super.stop( context );

@@ -37,6 +37,7 @@ import org.apache.directory.studio.ldapbrowser.core.SearchManager;
 import org.apache.directory.studio.ldapbrowser.core.internal.search.LdapSearchPageScoreComputer;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.IQuickSearch;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.ISearch;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
@@ -68,6 +69,9 @@ public class BrowserConnection implements IBrowserConnection, Serializable
 
     /** The bookmark manager. */
     private BookmarkManager bookmarkManager;
+
+    /** The quick search. */
+    private IQuickSearch quickSearch;
 
     /** The dn to entry cache. */
     private volatile Map<String, IEntry> dnToEntryCache;
@@ -495,6 +499,24 @@ public class BrowserConnection implements IBrowserConnection, Serializable
     }
 
 
+    /** 
+     * {@inheritDoc}
+     */
+    public void setQuickSearch( IQuickSearch quickSearch )
+    {
+        this.quickSearch = quickSearch;
+    }
+
+
+    /** 
+     * {@inheritDoc}
+     */
+    public IQuickSearch getQuickSearch()
+    {
+        return quickSearch;
+    }
+
+
     /**
      * {@inheritDoc}
      */
@@ -586,6 +608,9 @@ public class BrowserConnection implements IBrowserConnection, Serializable
     protected synchronized void uncacheEntry( IEntry entry )
     {
         dnToEntryCache.remove( Utils.getNormalizedOidString( entry.getDn(), getSchema() ) );
+        setAttributeInfo( entry, null );
+        setChildrenInfo( entry, null );
+        setChildrenFilter(entry, null);
     }
 
 
@@ -603,17 +628,6 @@ public class BrowserConnection implements IBrowserConnection, Serializable
             }
         }
         uncacheEntry( entry );
-    }
-
-
-    /**
-     * Removes the entry from the cache.
-     * 
-     * @param dn the Dn of the entry to remove from cache
-     */
-    protected synchronized void uncacheEntry( Dn dn )
-    {
-        dnToEntryCache.remove( Utils.getNormalizedOidString( dn, getSchema() ) );
     }
 
 

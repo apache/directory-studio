@@ -54,7 +54,6 @@ public class StudioTrustManager implements X509TrustManager
     private X509TrustManager jvmTrustManager;
     private String host;
 
-
     /**
      * Creates a new instance of StudioTrustManager.
      * 

@@ -23,9 +23,9 @@ package org.apache.directory.studio.test.integration.ui;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
@@ -34,22 +34,17 @@ import org.apache.directory.studio.connection.core.ConnectionFolderManager;
 import org.apache.directory.studio.connection.core.ConnectionManager;
 import org.apache.directory.studio.ldapservers.LdapServersManager;
 import org.apache.directory.studio.test.integration.ui.bots.ApacheDSConfigurationEditorBot;
-import org.apache.directory.studio.test.integration.ui.bots.ApacheDSServersViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.BotUtils;
 import org.apache.directory.studio.test.integration.ui.bots.ConnectionFromServerDialogBot;
-import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.ConsoleViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.DeleteDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.ModificationLogsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewApacheDSServerWizardBot;
-import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
-import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
-import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledForJreRange;
+import org.junit.jupiter.api.condition.JRE;
 
 
 /**
@@ -58,32 +53,15 @@ import org.junit.runner.RunWith;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-@RunWith(FrameworkRunnerWithScreenshotCaptureListener.class)
-public class ApacheDSPluginTest
+@DisabledForJreRange(min = JRE.JAVA_16)
+public class ApacheDSPluginTest extends AbstractTestBase
 {
-    private StudioBot studioBot;
-    private ApacheDSServersViewBot serversViewBot;
-    private ConnectionsViewBot connectionsViewBot;
-    private ConsoleViewBot consoleViewBot;
+    protected ConsoleViewBot consoleViewBot;
 
-
-    @Before
-    public void setUp() throws Exception
+    @BeforeEach
+    void setUp() throws Exception
     {
-        studioBot = new StudioBot();
-        studioBot.resetLdapPerspective();
-        serversViewBot = studioBot.getApacheDSServersViewBot();
-        connectionsViewBot = studioBot.getConnectionView();
         consoleViewBot = studioBot.getConsoleView();
-    }
-
-
-    @After
-    public void tearDown() throws Exception
-    {
-        connectionsViewBot.deleteTestConnections();
-        serversViewBot.deleteTestServers();
-        Assertions.genericTearDownAssertions();
     }
 
 
@@ -124,7 +102,7 @@ public class ApacheDSPluginTest
         assertEquals( 1, getBrowserConnectionsCount() );
 
         // Opening the connection
-        connectionsViewBot.selectConnection( serverName );
+        connectionsViewBot.select( serverName );
         connectionsViewBot.openSelectedConnection();
 
         // Getting the associated connection object
@@ -134,7 +112,7 @@ public class ApacheDSPluginTest
         assertTrue( connection.getConnectionWrapper().isConnected() );
 
         // Closing the connection
-        connectionsViewBot.selectConnection( serverName );
+        connectionsViewBot.select( serverName );
         connectionsViewBot.closeSelectedConnections();
 
         // Checking if the connection is closed
@@ -350,7 +328,7 @@ public class ApacheDSPluginTest
         connectionFromServerDialogBot.clickOkButton();
 
         // Open the connection
-        connectionsViewBot.selectConnection( serverName );
+        connectionsViewBot.select( serverName );
         connectionsViewBot.openSelectedConnection();
 
         // Open the config editor and load remote config
@@ -389,7 +367,7 @@ public class ApacheDSPluginTest
         localEditorBot.close();
 
         // Close the connection
-        connectionsViewBot.selectConnection( serverName );
+        connectionsViewBot.select( serverName );
         connectionsViewBot.closeSelectedConnections();
 
         // Delete the connection
@@ -417,7 +395,7 @@ public class ApacheDSPluginTest
 
         // Repair the server
         serversViewBot.repairServer( serverName );
-        consoleViewBot.waitForConsoleText("Database repaired");
+        consoleViewBot.waitForConsoleText( "Database repaired" );
         serversViewBot.waitForServerStop( serverName );
 
         // Wait a bit more after repair, another weird race condition...

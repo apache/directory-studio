@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.common.ui.CommonUIConstants;
+import org.apache.directory.studio.common.ui.CommonUIPlugin;
 import org.apache.directory.studio.openldap.common.ui.model.DatabaseTypeEnum;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPlugin;
 import org.apache.directory.studio.openldap.config.OpenLdapConfigurationPluginConstants;
@@ -49,7 +50,7 @@ public class DatabaseWrapperLabelProvider extends StyledCellLabelProvider
         @Override
         public void applyStyles( TextStyle textStyle ) 
         {
-            textStyle.foreground = CommonUIConstants.L_GREY_COLOR;
+            textStyle.foreground = CommonUIPlugin.getDefault().getColor( CommonUIConstants.DISABLED_COLOR );
         }
     };
     

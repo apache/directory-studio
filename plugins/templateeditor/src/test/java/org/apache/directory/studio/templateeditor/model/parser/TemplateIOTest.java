@@ -20,7 +20,14 @@
 package org.apache.directory.studio.templateeditor.model.parser;
 
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.jupiter.api.Test;
 
 import org.apache.directory.studio.templateeditor.model.FileTemplate;
 import org.apache.directory.studio.templateeditor.model.parser.TemplateIO;
@@ -47,11 +54,12 @@ import org.apache.directory.studio.templateeditor.model.widgets.ValueItem;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class TemplateIOTest extends TestCase
+public class TemplateIOTest
 {
     /**
      * Tests the parser with a minimal template file.
      */
+    @Test
     public void testReadTemplateMinimalTest()
     {
         FileTemplate template = null;
@@ -92,6 +100,7 @@ public class TemplateIOTest extends TestCase
     /**
      * Tests the parser with a minimal template file.
      */
+    @Test
     public void testReadTemplateMinimalWithCompositeTest()
     {
         FileTemplate template = null;
@@ -135,6 +144,7 @@ public class TemplateIOTest extends TestCase
      * Tests the parser with a template file containing a section with a 
      * 'columns' attribute.
      */
+    @Test
     public void testReadTemplateSectionColumnsAttributeTest()
     {
         FileTemplate template = null;
@@ -167,6 +177,7 @@ public class TemplateIOTest extends TestCase
      * Tests the parser with a template file containing a section with a 
      * 'columns' attribute.
      */
+    @Test
     public void testReadTemplateSectionDescriptionAttributeTest()
     {
         FileTemplate template = null;
@@ -199,6 +210,7 @@ public class TemplateIOTest extends TestCase
      * Tests the parser with a template file containing a section with a 
      * 'columns' attribute.
      */
+    @Test
     public void testReadTemplateSectionTitleAttributeTest()
     {
         FileTemplate template = null;
@@ -231,6 +243,7 @@ public class TemplateIOTest extends TestCase
      * Tests the parser with a template file containing a section with a wrong
      * 'columns' attribute.
      */
+    @Test
     public void testReadTemplateSectionWrongColumnsAttributeTest() throws Exception
     {
         testParsingFail( "template_section_with_wrong_columns_attribute.xml" ); //$NON-NLS-1$
@@ -241,6 +254,7 @@ public class TemplateIOTest extends TestCase
      * Tests the parser with a template file containing a checkbox with a 
      * value for the 'attributeType' attribute.
      */
+    @Test
     public void testReadTemplateCheckboxAttributetypeValueTest()
     {
         FileTemplate template = null;
@@ -282,6 +296,7 @@ public class TemplateIOTest extends TestCase
      * Tests the parser with a template file containing a checkbox with a 
      * value for the 'checkedValue' attribute.
      */
+    @Test
     public void testReadTemplateCheckboxCheckedValueTest()
     {
         FileTemplate template = null;
@@ -323,6 +338,7 @@ public class TemplateIOTest extends TestCase
      * Tests the parser with a template file containing a checkbox with a 
      * value for the 'uncheckedValue' attribute.
      */
+    @Test
     public void testReadTemplateCheckboxUncheckedValueTest()
     {
         FileTemplate template = null;
@@ -364,6 +380,7 @@ public class TemplateIOTest extends TestCase
      * Tests the parser with a template file containing a checkbox with a 
      * value for the 'uncheckedValue' attribute.
      */
+    @Test
     public void testReadTemplateCheckboxCheckedAndUnheckedValuesTest()
     {
         FileTemplate template = null;
@@ -405,6 +422,7 @@ public class TemplateIOTest extends TestCase
      * Tests the parser with a template file containing a file chooser with 
      * only value for the 'attributeType' attribute.
      */
+    @Test
     public void testReadTemplateFileChooserAttributeTypeValueTest()
     {
         FileTemplate template = null;
@@ -448,6 +466,7 @@ public class TemplateIOTest extends TestCase
      * Tests the parser with a template file containing a file chooser with all 
      * values.
      */
+    @Test
     public void testReadTemplateFileChooserAllValuesTest()
     {
         FileTemplate template = null;
@@ -491,6 +510,7 @@ public class TemplateIOTest extends TestCase
      * Tests the parser with a template file containing an image with only the
      * value for the 'attributeType' attribute.
      */
+    @Test
     public void testReadTemplateImageAttributeTypeValueTest()
     {
         FileTemplate template = null;
@@ -535,6 +555,7 @@ public class TemplateIOTest extends TestCase
      * Tests the parser with a template file containing an image with all
      * values.
      */
+    @Test
     public void testReadTemplateImageAllValuesTest()
     {
         FileTemplate template = null;
@@ -579,6 +600,7 @@ public class TemplateIOTest extends TestCase
      * Tests the parser with a template file containing a label with only the
      * value for the 'attributeType' attribute.
      */
+    @Test
     public void testReadTemplateLabelAttributeTypeValueTest()
     {
         FileTemplate template = null;
@@ -618,6 +640,7 @@ public class TemplateIOTest extends TestCase
      * Tests the parser with a template file containing a label with a value
      * for the 'value' attribute.
      */
+    @Test
     public void testReadTemplateLabelValueValueTest()
     {
         FileTemplate template = null;
@@ -657,6 +680,7 @@ public class TemplateIOTest extends TestCase
      * Tests the parser with a template file containing a link with only the
      * value for the 'attributeType' attribute.
      */
+    @Test
     public void testReadTemplateLinkAttributeTypeValueTest()
     {
         FileTemplate template = null;
@@ -696,6 +720,7 @@ public class TemplateIOTest extends TestCase
      * Tests the parser with a template file containing a link with a value
      * for the 'value' attribute.
      */
+    @Test
     public void testReadTemplateLinkValueValueTest()
     {
         FileTemplate template = null;
@@ -735,6 +760,7 @@ public class TemplateIOTest extends TestCase
      * Tests the parser with a template file containing a listbox with the 
      * minimal set of elements and attributes.
      */
+    @Test
     public void testReadTemplateListboxMinimalTest()
     {
         FileTemplate template = null;
@@ -777,6 +803,7 @@ public class TemplateIOTest extends TestCase
      * Tests the parser with a template file containing a listbox with the 
      * minimal set of elements and attributes.
      */
+    @Test
     public void testReadTemplateListboxSingleSelectionTest()
     {
         FileTemplate template = null;
@@ -819,6 +846,7 @@ public class TemplateIOTest extends TestCase
      * Tests the parser with a template file containing a listbox with 
      * multiple items.
      */
+    @Test
     public void testReadTemplateListboxMultipleItemsTest()
     {
         FileTemplate template = null;
@@ -863,6 +891,7 @@ public class TemplateIOTest extends TestCase
      * Tests the parser with a template file containing a password with the 
      * minimal set of elements and attributes.
      */
+    @Test
     public void testReadTemplatePasswordMinimalTest()
     {
         FileTemplate template = null;
@@ -903,6 +932,7 @@ public class TemplateIOTest extends TestCase
      * Tests the parser with a template file containing a password with the 
      * minimal set of elements and attributes.
      */
+    @Test
     public void testReadTemplatePasswordNotHiddenTest()
     {
         FileTemplate template = null;
@@ -943,6 +973,7 @@ public class TemplateIOTest extends TestCase
      * Tests the parser with a template file containing a password with the 
      * minimal set of elements and attributes.
      */
+    @Test
     public void testReadTemplatePasswordNotShowChangeButtonTest()
     {
         FileTemplate template = null;
@@ -983,6 +1014,7 @@ public class TemplateIOTest extends TestCase
      * Tests the parser with a template file containing a radio buttons with 
      * the minimal set of elements and attributes.
      */
+    @Test
     public void testReadTemplateRadioButtonsMinimalTest()
     {
         FileTemplate template = null;
@@ -1024,6 +1056,7 @@ public class TemplateIOTest extends TestCase
      * Tests the parser with a template file containing a radio buttons with 
      * multiple buttons.
      */
+    @Test
     public void testReadTemplateRadioButtonsMultipleButtonsTest()
     {
         FileTemplate template = null;
@@ -1067,6 +1100,7 @@ public class TemplateIOTest extends TestCase
      * Tests the parser with a template file containing a spinner with the 
      * minimal set of elements and attributes.
      */
+    @Test
     public void testReadTemplateSpinnerMinimalTest()
     {
         FileTemplate template = null;
@@ -1110,6 +1144,7 @@ public class TemplateIOTest extends TestCase
      * Tests the parser with a template file containing a spinner with all the
      * values for its attributes.
      */
+    @Test
     public void testReadTemplateSpinnerAllValuesTest()
     {
         FileTemplate template = null;
@@ -1152,6 +1187,7 @@ public class TemplateIOTest extends TestCase
     /**
      * Tests the parser with a template file containing a table.
      */
+    @Test
     public void testReadTemplateTableTest()
     {
         FileTemplate template = null;
@@ -1189,6 +1225,7 @@ public class TemplateIOTest extends TestCase
      * Tests the parser with a template file containing a text field with the
      * minimal set of elements and attributes.
      */
+    @Test
     public void testReadTemplateTextFieldMinimalTest()
     {
         FileTemplate template = null;
@@ -1229,6 +1266,7 @@ public class TemplateIOTest extends TestCase
      * Tests the parser with a template file containing a text field with the
      * minimal set of elements and attributes.
      */
+    @Test
     public void testReadTemplateTextFieldAllValuesTest()
     {
         FileTemplate template = null;
@@ -1268,6 +1306,7 @@ public class TemplateIOTest extends TestCase
     /**
      * Tests the parser with a template containing a wrong root element.
      */
+    @Test
     public void testReadTemplateWrongRootElementTest() throws Exception
     {
         testParsingFail( "template_wrong_root_element.xml" ); //$NON-NLS-1$
@@ -1277,6 +1316,7 @@ public class TemplateIOTest extends TestCase
     /**
      * Tests the parser with a template containing no 'id' attribute.
      */
+    @Test
     public void testReadTemplateNoIdAttributeTest() throws Exception
     {
         testParsingFail( "template_no_id_attribute.xml" ); //$NON-NLS-1$
@@ -1286,6 +1326,7 @@ public class TemplateIOTest extends TestCase
     /**
      * Tests the parser with a template containing no 'title' attribute.
      */
+    @Test
     public void testReadTemplateNoTitleAttributeTest() throws Exception
     {
         testParsingFail( "template_no_title_attribute.xml" ); //$NON-NLS-1$
@@ -1295,6 +1336,7 @@ public class TemplateIOTest extends TestCase
     /**
      * Tests the parser with a template containing no 'objectClasses' element.
      */
+    @Test
     public void testReadTemplateNoObjectClassesElementTest() throws Exception
     {
         testParsingFail( "template_no_objectClasses_element.xml" ); //$NON-NLS-1$
@@ -1304,6 +1346,7 @@ public class TemplateIOTest extends TestCase
     /**
      * Tests the parser with a template containing no 'structural' element.
      */
+    @Test
     public void testReadTemplateNoObjectClassElementTest() throws Exception
     {
         testParsingFail( "template_no_structural_element.xml" ); //$NON-NLS-1$
@@ -1313,6 +1356,7 @@ public class TemplateIOTest extends TestCase
     /**
      * Tests the parser with a template containing no 'form' element.
      */
+    @Test
     public void testReadTemplateNoFormElementTest() throws Exception
     {
         testParsingFail( "template_no_form_element.xml" ); //$NON-NLS-1$
@@ -1322,6 +1366,7 @@ public class TemplateIOTest extends TestCase
     /**
      * Tests the parser with a template containing no 'section' element.
      */
+    @Test
     public void testReadTemplateNoSectionElementTest() throws Exception
     {
         testParsingFail( "template_no_section_element.xml" ); //$NON-NLS-1$
@@ -1344,7 +1389,7 @@ public class TemplateIOTest extends TestCase
         }
         catch ( TemplateIOException e )
         {
-            assertTrue( e.getMessage(), true );
+            assertTrue( true, e.getMessage() );
             return;
         }
         fail();
@@ -1355,6 +1400,7 @@ public class TemplateIOTest extends TestCase
      * Tests the parser with a template file containing a section with a 
      * 'columns' attribute.
      */
+    @Test
     public void testReadTemplateCompositeColumnsAttributeTest()
     {
         FileTemplate template = null;

@@ -21,6 +21,8 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
+import java.util.List;
+
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEclipseEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
@@ -30,10 +32,18 @@ public class LdifEditorBot
 {
     private SWTBotEditor editor;
 
-
     public LdifEditorBot( String title )
     {
         SWTWorkbenchBot bot = new SWTWorkbenchBot();
+        List<? extends SWTBotEditor> editors = bot.editors();
+        for ( SWTBotEditor editor : editors )
+        {
+            if ( editor.getTitle().startsWith( title ) )
+            {
+                this.editor = editor;
+                return;
+            }
+        }
         editor = bot.editorByTitle( title );
     }
 

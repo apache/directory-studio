@@ -21,7 +21,6 @@ package org.apache.directory.studio.test.integration.ui.bots;
 
 
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
-import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
 
 
 public class MoveEntriesDialogBot extends DialogBot
@@ -30,14 +29,7 @@ public class MoveEntriesDialogBot extends DialogBot
     public MoveEntriesDialogBot()
     {
         super( "Move Entries" );
-    }
-
-
-    public void clickOkButton()
-    {
-        JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__move_entry_name_1 );
-        super.clickOkButton();
-        watcher.waitUntilDone();
+        super.setWaitAfterClickOkButton( true, BrowserCoreMessages.jobs__move_entry_name_1 );
     }
 
 

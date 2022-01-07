@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.studio.common.ui.CommonUIConstants;
+import org.apache.directory.studio.common.ui.CommonUIPlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.LdapFilter;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterParser;
 import org.apache.directory.studio.ldapbrowser.core.model.filter.parser.LdapFilterToken;
@@ -41,6 +42,7 @@ import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.jface.text.source.IAnnotationModelExtension;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.MatchingCharacterPainter;
+import org.eclipse.swt.graphics.Color;
 
 
 /**
@@ -60,7 +62,6 @@ public class FilterReconcilingStrategy implements IReconcilingStrategy
 
     /** The paint manager. */
     private PaintManager paintManager;
-
 
     /**
      * Creates a new instance of FilterReconcilingStrategy.
@@ -88,16 +89,19 @@ public class FilterReconcilingStrategy implements IReconcilingStrategy
         }
 
         // add annotation painter
-        if ( paintManager == null && sourceViewer.getAnnotationModel() instanceof IAnnotationModelExtension )
+        Color annotationColor = CommonUIPlugin.getDefault().getColor( CommonUIConstants.KEYWORD_1_COLOR );
+        if ( paintManager == null && annotationColor != null
+            && sourceViewer.getAnnotationModel() instanceof IAnnotationModelExtension )
         {
             AnnotationPainter ap = new AnnotationPainter( sourceViewer, null );
             ap.addAnnotationType( "DEFAULT" ); //$NON-NLS-1$
-            ap.setAnnotationTypeColor( "DEFAULT", CommonUIConstants.RED_COLOR ); //$NON-NLS-1$
+            ap.setAnnotationTypeColor( "DEFAULT", //$NON-NLS-1$
+                CommonUIPlugin.getDefault().getColor( CommonUIConstants.ERROR_COLOR ) );
             sourceViewer.getAnnotationModel().addAnnotationModelListener( ap );
 
             FilterCharacterPairMatcher cpm = new FilterCharacterPairMatcher( sourceViewer, parser );
             MatchingCharacterPainter mcp = new MatchingCharacterPainter( sourceViewer, cpm );
-            mcp.setColor( CommonUIConstants.ML_GREY_COLOR );
+            mcp.setColor( annotationColor );
 
             paintManager = new PaintManager( sourceViewer );
             paintManager.addPainter( ap );
@@ -137,8 +141,9 @@ public class FilterReconcilingStrategy implements IReconcilingStrategy
                 {
                     int start = invalidFilters[i].getStartToken().getOffset();
                     int stop = invalidFilters[i].getStopToken() != null ? invalidFilters[i].getStopToken().getOffset()
-                        + invalidFilters[i].getStopToken().getLength() : start
-                        + invalidFilters[i].getStartToken().getLength();
+                        + invalidFilters[i].getStopToken().getLength()
+                        : start
+                            + invalidFilters[i].getStartToken().getLength();
 
                     Annotation annotation = new Annotation( "DEFAULT", true, invalidFilters[i].toString() ); //$NON-NLS-1$
                     Position position = new Position( start, stop - start );

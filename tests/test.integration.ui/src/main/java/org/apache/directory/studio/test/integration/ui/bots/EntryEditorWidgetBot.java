@@ -25,8 +25,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
-import org.apache.directory.studio.test.integration.ui.ContextMenuHelper;
-import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
+import org.apache.directory.studio.test.integration.ui.utils.ContextMenuHelper;
+import org.apache.directory.studio.test.integration.ui.utils.JobWatcher;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
@@ -41,7 +41,6 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 class EntryEditorWidgetBot
 {
     private SWTBot bot;
-
 
     EntryEditorWidgetBot( SWTBot bot )
     {
@@ -95,6 +94,13 @@ class EntryEditorWidgetBot
     }
 
 
+    public ErrorDialogBot typeValueAndFinishAndExpectErrorDialog( String value )
+    {
+        String shellText = BotUtils.shell( () -> typeValueAndFinish( value, false ), "Error" ).getText();
+        return new ErrorDialogBot( shellText );
+    }
+
+
     void cancelEditValue()
     {
         SWTBotTree tree = bot.tree( 0 );
@@ -117,6 +123,16 @@ class EntryEditorWidgetBot
         SWTBotTree tree = bot.tree();
         tree.getTreeItem( attributeType ).click();
         ContextMenuHelper.clickContextMenu( bot.tree(), "New Value" );
+    }
+
+
+    EditAttributeWizardBot editAttribute( String attributeType, String value )
+    {
+        cancelEditValue();
+        SWTBotTreeItem treeItem = getTreeItem( attributeType, value );
+        treeItem.select();
+        ContextMenuHelper.clickContextMenu( bot.tree(), "Edit Attribute Description" );
+        return new EditAttributeWizardBot();
     }
 
 
@@ -151,6 +167,35 @@ class EntryEditorWidgetBot
     }
 
 
+    AciItemEditorDialogBot editValueExpectingAciItemEditor( String attributeType, String value )
+    {
+        editValue( attributeType, value );
+        return new AciItemEditorDialogBot();
+    }
+
+
+    SubtreeSpecificationEditorDialogBot editValueExpectingSubtreeSpecificationEditor( String attributeType,
+        String value )
+    {
+        editValue( attributeType, value );
+        return new SubtreeSpecificationEditorDialogBot();
+    }
+
+
+    CertificateEditorDialogBot editValueExpectingCertificateEditor( String attributeType, String value )
+    {
+        editValue( attributeType, value );
+        return new CertificateEditorDialogBot();
+    }
+
+
+    HexEditorDialogBot editValueExpectingHexEditor( String attributeType, String value )
+    {
+        editValue( attributeType, value );
+        return new HexEditorDialogBot();
+    }
+
+
     TextEditorDialogBot editValueWithTextEditor( String attributeType, String value )
     {
         editValueWith( attributeType, value, "^Text Editor$" );
@@ -164,7 +209,8 @@ class EntryEditorWidgetBot
         SWTBotTreeItem[] allItems = tree.getAllItems();
         for ( SWTBotTreeItem item : allItems )
         {
-            if ( item.cell( 0 ).equals( attributeType ) && item.cell( 1 ).equals( value ) )
+            if ( item.cell( 0 ).equalsIgnoreCase( attributeType )
+                && ( value == null || item.cell( 1 ).equals( value ) ) )
             {
                 return item;
             }
@@ -197,6 +243,16 @@ class EntryEditorWidgetBot
         ContextMenuHelper.clickContextMenu( bot.tree(), "Delete Value" );
         DeleteDialogBot deleteDialogBot = new DeleteDialogBot( DeleteDialogBot.DELETE_VALUE_TITLE );
         deleteDialogBot.clickOkButton();
+    }
+
+
+    public ErrorDialogBot deleteValueExpectingErrorDialog( String attributeType, String value )
+    {
+        SWTBotTreeItem treeItem = getTreeItem( attributeType, value );
+        treeItem.select();
+        ContextMenuHelper.clickContextMenu( bot.tree(), "Delete Value" );
+        DeleteDialogBot deleteDialogBot = new DeleteDialogBot( DeleteDialogBot.DELETE_VALUE_TITLE );
+        return deleteDialogBot.clickOkButtonExpectingErrorDialog();
     }
 
 

@@ -23,7 +23,6 @@ package org.apache.directory.studio.connection.core;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,7 +34,8 @@ import org.apache.directory.api.util.FileUtils;
 import org.apache.directory.studio.connection.core.event.ConnectionEventRegistry;
 import org.apache.directory.studio.connection.core.event.ConnectionUpdateListener;
 import org.apache.directory.studio.connection.core.io.ConnectionIO;
-import org.apache.directory.studio.connection.core.io.ConnectionIOException;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 
 
 /**
@@ -365,21 +365,23 @@ public class ConnectionFolderManager implements ConnectionUpdateListener
      */
     private synchronized void saveConnectionFolders()
     {
+        File file = new File( getConnectionFolderStoreFileName() );
+        File tempFile = new File( getConnectionFolderStoreFileName() + ConnectionManager.TEMP_SUFFIX );
+
         // To avoid a corrupt file, save object to a temp file first 
-        try
+        try ( FileOutputStream fileOutputStream = new FileOutputStream( tempFile ) )
         {
-            ConnectionIO.saveConnectionFolders( folderList, new FileOutputStream( getConnectionFolderStoreFileName()
-                + ConnectionManager.TEMP_SUFFIX ) );
+            ConnectionIO.saveConnectionFolders( folderList, fileOutputStream );
         }
         catch ( IOException e )
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            Status status = new Status( IStatus.ERROR, ConnectionCoreConstants.PLUGIN_ID,
+                Messages.error__saving_connections + e.getMessage(), e );
+            ConnectionCorePlugin.getDefault().getLog().log( status );
+            return;
         }
 
         // move temp file to good file
-        File file = new File( getConnectionFolderStoreFileName() );
-        File tempFile = new File( getConnectionFolderStoreFileName() + ConnectionManager.TEMP_SUFFIX );
         if ( file.exists() )
         {
             file.delete();
@@ -392,8 +394,10 @@ public class ConnectionFolderManager implements ConnectionUpdateListener
         }
         catch ( IOException e )
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            Status status = new Status( IStatus.ERROR, ConnectionCoreConstants.PLUGIN_ID,
+                Messages.error__saving_connections + e.getMessage(), e );
+            ConnectionCorePlugin.getDefault().getLog().log( status );
+            return;
         }
     }
 
@@ -405,25 +409,18 @@ public class ConnectionFolderManager implements ConnectionUpdateListener
     {
         ConnectionEventRegistry.suspendEventFiringInCurrentThread();
 
-        try
+        File file = new File( getConnectionFolderStoreFileName() );
+        if ( file.exists() )
         {
-            folderList = ConnectionIO.loadConnectionFolders( new FileInputStream( getConnectionFolderStoreFileName() ) );
-        }
-        catch ( Exception e )
-        {
-            // If loading failed, try with temp file
-            try
+            try ( FileInputStream fileInputStream = new FileInputStream( file ) )
             {
-                folderList = ConnectionIO.loadConnectionFolders( new FileInputStream(
-                    getConnectionFolderStoreFileName() + ConnectionManager.TEMP_SUFFIX ) );
+                folderList = ConnectionIO.loadConnectionFolders( fileInputStream );
             }
-            catch ( FileNotFoundException e1 )
+            catch ( Exception e )
             {
-                // TODO Auto-generated catch block
-            }
-            catch ( ConnectionIOException e1 )
-            {
-                // TODO Auto-generated catch block
+                Status status = new Status( IStatus.ERROR, ConnectionCoreConstants.PLUGIN_ID,
+                    Messages.error__loading_connections + e.getMessage(), e );
+                ConnectionCorePlugin.getDefault().getLog().log( status );
             }
         }
 

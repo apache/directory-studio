@@ -1,0 +1,50 @@
+#  Licensed to the Apache Software Foundation (ASF) under one
+#  or more contributor license agreements.  See the NOTICE file
+#  distributed with this work for additional information
+#  regarding copyright ownership.  The ASF licenses this file
+#  to you under the Apache License, Version 2.0 (the
+#  "License"); you may not use this file except in compliance
+#  with the License.  You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing,
+#  software distributed under the License is distributed on an
+#  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#  KIND, either express or implied.  See the License for the
+#  specific language governing permissions and limitations
+#  under the License.
+#
+dn: olcDatabase={-1}frontend,cn=config
+changetype: modify
+replace: olcAccess
+olcAccess: {0}to * by dn.exact=gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth manage by * break
+olcAccess: {1}to dn.exact="" by * read
+# Forbid user.8 to read the schema, used in SchemaBrowserTest
+olcAccess: {2}to dn.base="cn=Subschema" by dn.exact="uid=user.8,ou=users,dc=example,dc=org" none by * read
+-
+replace: olcSizeLimit
+olcSizeLimit: 2000
+-
+
+dn: olcDatabase={1}mdb,cn=config
+changetype: modify
+replace: olcAccess
+olcAccess: {0}to * by dn.exact=gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth manage by * break
+olcAccess: {1}to attrs=userPassword,shadowLastChange by self write by dn="cn=admin,dc=example,dc=org" write by dn="uid=hnelson,cn=gssapi,cn=auth" write by anonymous auth by * none
+olcAccess: {2}to * by self read by dn="cn=admin,dc=example,dc=org" write by dn="uid=hnelson,cn=gssapi,cn=auth" write by anonymous auth by * none
+-
+
+dn: cn=config
+changetype: modify
+replace: olcAuthzRegexp
+olcAuthzRegexp: uid=([^,]*),cn=digest-md5,cn=auth uid=$1,ou=users,dc=example,dc=org
+olcAuthzRegexp: uid=([^,]*),cn=cram-md5,cn=auth uid=$1,ou=users,dc=example,dc=org
+-
+replace: olcSaslSecProps
+olcSaslSecProps: noplain,noanonymous,minssf=0
+-
+replace: olcTLSCipherSuite
+olcTLSCipherSuite: SECURE256:+SECURE128:-VERS-TLS-ALL:+VERS-TLS1.3:+VERS-TLS1.2:-RSA:-DHE-DSS:-CAMELLIA-128-CBC:-CAMELLIA-256-CBC
+-
+

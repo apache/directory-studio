@@ -35,7 +35,10 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
@@ -52,6 +55,8 @@ import org.eclipse.swt.widgets.Text;
 public class HexDialog extends Dialog
 {
 
+    public static final String LOAD_FILE_NAME_TOOLTIP = "LoadFileName";
+
     /** The default title. */
     private static final String DIALOG_TITLE = Messages.getString( "HexDialog.HexEditor" ); //$NON-NLS-1$
 
@@ -63,6 +68,9 @@ public class HexDialog extends Dialog
 
     /** The button ID for the save button. */
     private static final int SAVE_BUTTON_ID = 9999;
+
+    /** Hidden text to set the filename, used for UI tests. */
+    private Text loadFilenameText;
 
     /** The current data. */
     private byte[] currentData;
@@ -134,18 +142,7 @@ public class HexDialog extends Dialog
             String returnedFileName = fileDialog.open();
             if ( returnedFileName != null )
             {
-                try
-                {
-                    File file = new File( returnedFileName );
-                    currentData = FileUtils.readFileToByteArray( file );
-                    hexText.setText( toFormattedHex( currentData ) );
-                }
-                catch ( IOException e )
-                {
-                    ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
-                        new Status( IStatus.ERROR, BrowserCommonConstants.PLUGIN_ID, IStatus.ERROR, Messages
-                            .getString( "HexDialog.CantReadFile" ), e ) ); //$NON-NLS-1$
-                }
+                loadFile( returnedFileName );
             }
         }
         else
@@ -154,6 +151,23 @@ public class HexDialog extends Dialog
         }
 
         super.buttonPressed( buttonId );
+    }
+
+
+    private void loadFile( String fileName )
+    {
+        try
+        {
+            File file = new File( fileName );
+            currentData = FileUtils.readFileToByteArray( file );
+            hexText.setText( toFormattedHex( currentData ) );
+        }
+        catch ( IOException e )
+        {
+            ConnectionUIPlugin.getDefault().getExceptionHandler().handleException(
+                new Status( IStatus.ERROR, BrowserCommonConstants.PLUGIN_ID, IStatus.ERROR, Messages
+                    .getString( "HexDialog.CantReadFile" ), e ) ); //$NON-NLS-1$
+        }
     }
 
 
@@ -187,11 +201,23 @@ public class HexDialog extends Dialog
      */
     protected void createButtonsForButtonBar( Composite parent )
     {
+        ((GridLayout) parent.getLayout()).numColumns++;
+        loadFilenameText = new Text( parent, SWT.NONE );
+        loadFilenameText.setToolTipText( LOAD_FILE_NAME_TOOLTIP );
+        loadFilenameText.setBackground( parent.getBackground() );
+        loadFilenameText.addModifyListener( new ModifyListener()
+        {
+            public void modifyText( ModifyEvent e )
+            {
+                loadFile( loadFilenameText.getText() );
+            }
+        } );
+
         if ( isEditable( currentData ) )
         {
            createButton( parent, EDIT_AS_TEXT_BUTTON_ID, Messages.getString( "HexDialog.EditAsText" ), false ); //$NON-NLS-1$
         }
-        
+
         createButton( parent, LOAD_BUTTON_ID, Messages.getString( "HexDialog.LoadDataButton" ), false ); //$NON-NLS-1$
         createButton( parent, SAVE_BUTTON_ID, Messages.getString( "HexDialog.SaveDataButton" ), false ); //$NON-NLS-1$
         createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false );
@@ -255,7 +281,7 @@ public class HexDialog extends Dialog
             sb.append( s ).append( " " ); //$NON-NLS-1$
 
             // extra space after 8 hex numbers
-            if ( ( i + 1 ) % 8 == 0 )
+            if ( ( i + 1 ) % 8 == 0 && ( i + 1 ) % 16 != 0 )
             {
                 sb.append( " " ); //$NON-NLS-1$
             }
@@ -272,16 +298,15 @@ public class HexDialog extends Dialog
                     }
                     i++;
                 }
-                sb.append( " " ); //$NON-NLS-1$
             }
 
             // print ASCII characters after 16 hex numbers 
             if ( ( i + 1 ) % 16 == 0 )
             {
-                sb.append( "   " ); //$NON-NLS-1$
+                sb.append( "    " ); //$NON-NLS-1$
                 for ( int x = i - 16 + 1; x <= i && x < data.length; x++ )
                 {
-                    // print ASCII charachter if printable
+                    // print ASCII character if printable
                     // otherwise print a dot
                     if ( data[x] > 32 && data[x] < 127 )
                     {

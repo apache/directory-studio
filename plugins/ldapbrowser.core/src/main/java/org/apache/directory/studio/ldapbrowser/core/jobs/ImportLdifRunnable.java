@@ -42,7 +42,6 @@ import org.apache.directory.api.ldap.model.entry.DefaultModification;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.entry.ModificationOperation;
-import org.apache.directory.api.ldap.model.exception.LdapEntryAlreadyExistsException;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.exception.LdapSchemaException;
@@ -52,6 +51,7 @@ import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
 import org.apache.directory.studio.connection.core.Controls;
+import org.apache.directory.studio.connection.core.io.StudioLdapException;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 import org.apache.directory.studio.ldapbrowser.core.events.BulkModificationEvent;
@@ -445,7 +445,7 @@ public class ImportLdifRunnable implements StudioConnectionBulkRunnableWithProgr
                 .createEntry( entry, getControls( record ), monitor, null );
 
             if ( monitor.errorsReported() && updateIfEntryExists
-                && monitor.getException() instanceof LdapEntryAlreadyExistsException )
+                && StudioLdapException.isEntryAlreadyExistsException( monitor.getException() ) )
             {
                 // creation failed with Error 68, now try to update the existing entry
                 monitor.reset();

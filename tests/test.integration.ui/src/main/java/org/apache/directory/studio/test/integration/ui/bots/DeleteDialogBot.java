@@ -21,37 +21,23 @@ package org.apache.directory.studio.test.integration.ui.bots;
 
 
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
-import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
 
 
 public class DeleteDialogBot extends DialogBot
 {
+    public static final String DELETE_CONNECTION = "Delete Connection";
+    public static final String DELETE_CONNECTION_FOLDER = "Delete Connection Folder";
     public static final String DELETE_ENTRY_TITLE = "Delete Entry";
     public static final String DELETE_ENTRIES_TITLE = "Delete Entries";
     public static final String DELETE_VALUE_TITLE = "Delete Value";
     public static final String DELETE_SERVER = "Delete Server";
     public static final String DELETE_PROJECT = "Delete Project";
 
-
     public DeleteDialogBot( String title )
     {
         super( title );
-    }
-
-
-    public void clickOkButton()
-    {
-        String jobWatcherTitle = getJobWatcherTitle( title );
-        if ( jobWatcherTitle != null )
-        {
-            JobWatcher watcher = new JobWatcher( jobWatcherTitle );
-            super.clickOkButton();
-            watcher.waitUntilDone();
-        }
-        else
-        {
-            super.clickOkButton();
-        }
+        String jobName = getJobWatcherTitle( title );
+        super.setWaitAfterClickOkButton( jobName != null, jobName );
     }
 
 
@@ -61,6 +47,8 @@ public class DeleteDialogBot extends DialogBot
         {
             case DELETE_VALUE_TITLE:
                 return BrowserCoreMessages.jobs__execute_ldif_name;
+            case DELETE_CONNECTION:
+            case DELETE_CONNECTION_FOLDER:
             case DELETE_PROJECT:
                 return null;
             default:
@@ -68,9 +56,4 @@ public class DeleteDialogBot extends DialogBot
         }
     }
 
-
-    public void clickCancelButton()
-    {
-        super.clickButton( "Cancel" );
-    }
 }

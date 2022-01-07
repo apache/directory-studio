@@ -20,7 +20,7 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
 
 
 public class PasswordModifyExtendedOperationDialogBot extends DialogBot
@@ -28,6 +28,7 @@ public class PasswordModifyExtendedOperationDialogBot extends DialogBot
     public PasswordModifyExtendedOperationDialogBot()
     {
         super( "Password Modify Extended Operation (RFC 3062)" );
+        super.setWaitAfterClickOkButton( true, BrowserCoreMessages.jobs__extended_operation_name );
     }
 
 
@@ -121,21 +122,6 @@ public class PasswordModifyExtendedOperationDialogBot extends DialogBot
         {
             bot.checkBox( 2 ).deselect();
         }
-    }
-
-
-    public ErrorDialogBot clickOkButtonExpectingErrorDialog()
-    {
-        SWTBotShell shell = BotUtils.shell( new Runnable()
-        {
-            public void run()
-            {
-                clickOkButton();
-            }
-        }, "Error" );
-        String shellText = shell.getText();
-
-        return new ErrorDialogBot( shellText );
     }
 
 }

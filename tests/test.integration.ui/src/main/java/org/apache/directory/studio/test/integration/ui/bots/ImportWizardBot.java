@@ -21,7 +21,7 @@ package org.apache.directory.studio.test.integration.ui.bots;
 
 
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
-import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
+import org.apache.directory.studio.test.integration.ui.utils.JobWatcher;
 
 
 public class ImportWizardBot extends WizardBot
@@ -29,7 +29,6 @@ public class ImportWizardBot extends WizardBot
     public static final String IMPORT_LDIF_TITLE = "LDIF Import";
     public static final String IMPORT_DSML_TITLE = "DSML Import";
     private String title;
-
 
     public ImportWizardBot()
     {
@@ -68,6 +67,32 @@ public class ImportWizardBot extends WizardBot
         if ( watcher != null )
         {
             watcher.waitUntilDone();
+        }
+    }
+
+
+    public void setContinueOnError( boolean enabled )
+    {
+        if ( enabled )
+        {
+            bot.checkBox( "Continue on error" ).select();
+        }
+        else
+        {
+            bot.checkBox( "Continue on error" ).deselect();
+        }
+    }
+
+
+    public void setUpdateExistingEntries( boolean enabled )
+    {
+        if ( enabled )
+        {
+            bot.checkBox( "Update existing entries" ).select();
+        }
+        else
+        {
+            bot.checkBox( "Update existing entries" ).deselect();
         }
     }
 

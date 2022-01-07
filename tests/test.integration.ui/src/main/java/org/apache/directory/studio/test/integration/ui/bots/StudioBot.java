@@ -20,6 +20,10 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
+import java.util.Random;
+
+import org.eclipse.e4.ui.css.swt.theme.IThemeEngine;
+import org.eclipse.e4.ui.css.swt.theme.IThemeManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
@@ -149,6 +153,25 @@ public class StudioBot
                     IWorkbench workbench = PlatformUI.getWorkbench();
                     IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
 
+                    // set default/dark theme
+                    /*
+                    IThemeManager tm = workbench.getService( IThemeManager.class );
+                    IThemeEngine te = tm.getEngineForDisplay( Display.getCurrent() );
+                    int random = new Random().nextInt( 3 );
+                    switch ( random )
+                    {
+                        case 0:
+                            te.setTheme( "org.eclipse.e4.ui.css.theme.e4_dark", false );
+                            break;
+                        case 1:
+                            te.setTheme( "org.eclipse.e4.ui.css.theme.e4_default", false );
+                            break;
+                        case 2:
+                            te.setTheme( "org.eclipse.e4.ui.css.theme.high-contrast", false );
+                            break;
+                    }
+                    */
+
                     // close welcome view
                     IWorkbenchPage page = window.getActivePage();
                     for ( IViewReference viewref : page.getViewReferences() )
@@ -160,6 +183,14 @@ public class StudioBot
                     }
 
                     // close shells (open dialogs)
+                    Shell[] shells = Display.getCurrent().getShells();
+                    for ( Shell shell : shells )
+                    {
+                        if ( shell != null && shell != window.getShell() )
+                        {
+                            shell.close();
+                        }
+                    }
                     Shell activeShell = Display.getCurrent().getActiveShell();
                     if ( activeShell != null && activeShell != window.getShell() )
                     {
@@ -180,11 +211,8 @@ public class StudioBot
                     }
 
                     // reset LDAP perspective
-                    if ( page.getActivePart() != null )
-                    {
-                        page.closeAllEditors( false );
-                        page.resetPerspective();
-                    }
+                    page.closeAllEditors( false );
+                    page.resetPerspective();
                 }
                 catch ( Exception e )
                 {

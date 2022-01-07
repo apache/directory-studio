@@ -21,25 +21,25 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.DN_WITH_LEADING_SHARP_BACKSLASH_PREFIXED;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.DN_WITH_LEADING_SHARP_HEX_PAIR_ESCAPED;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.MISC111_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.MISC_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.DN_WITH_ESCAPED_CHARACTERS_BACKSLASH_PREFIXED;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.DN_WITH_ESCAPED_CHARACTERS_HEX_PAIR_ESCAPED;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.apache.directory.server.annotations.CreateLdapServer;
-import org.apache.directory.server.annotations.CreateTransport;
-import org.apache.directory.server.core.annotations.ApplyLdifFiles;
-import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
-import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
-import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.studio.test.integration.junit5.LdapServerType;
+import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
+import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
+import org.apache.directory.studio.test.integration.junit5.LdapServersSource.Mode;
 import org.apache.directory.studio.test.integration.ui.bots.MoveEntriesDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.SelectDnDialogBot;
-import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
-import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
-import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.params.ParameterizedTest;
 
 
 /**
@@ -48,72 +48,58 @@ import org.junit.runner.RunWith;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-@RunWith(FrameworkRunnerWithScreenshotCaptureListener.class)
-@CreateLdapServer(transports =
-    { @CreateTransport(protocol = "LDAP") })
-@ApplyLdifFiles(clazz = MoveEntryTest.class, value = "org/apache/directory/studio/test/integration/ui/RenameEntryDialogTest.ldif")
-public class MoveEntryTest extends AbstractLdapTestUnit
+public class MoveEntryTest extends AbstractTestBase
 {
-    private StudioBot studioBot;
-    private ConnectionsViewBot connectionsViewBot;
-    private BrowserViewBot browserViewBot;
 
-
-    @Before
-    public void setUp() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testMoveUp( TestLdapServer server ) throws Exception
     {
-        studioBot = new StudioBot();
-        studioBot.resetLdapPerspective();
-        connectionsViewBot = studioBot.getConnectionView();
-        connectionsViewBot.createTestConnection( "MoveEntryTest", ldapServer.getPort() );
-        browserViewBot = studioBot.getBrowserView();
-    }
+        Dn dnToMove = MISC111_DN;
+        Dn newParentDn = MISC_DN;
 
-
-    @After
-    public void tearDown() throws Exception
-    {
-        connectionsViewBot.deleteTestConnections();
-        Assertions.genericTearDownAssertions();
-    }
-
-
-    @Test
-    public void testMoveUp() throws Exception
-    {
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Barbara Jensen+uid=bjensen" );
+        connectionsViewBot.createTestConnection( server );
+        browserViewBot.selectEntry( path( dnToMove ) );
 
         MoveEntriesDialogBot moveEntryDialog = browserViewBot.openMoveEntryDialog();
         assertTrue( moveEntryDialog.isVisible() );
-        moveEntryDialog.setParentText( "ou=system" );
+        moveEntryDialog.setParentText( newParentDn.getName() );
         moveEntryDialog.clickOkButton();
 
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "cn=Barbara Jensen+uid=bjensen" ) );
-        assertFalse(
-            browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Barbara Jensen+uid=bjensen" ) );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "cn=Barbara Jensen+uid=bjensen" );
+        assertTrue( browserViewBot.existsEntry( path( newParentDn, dnToMove.getRdn() ) ) );
+        browserViewBot.selectEntry( path( newParentDn, dnToMove.getRdn() ) );
+        assertFalse( browserViewBot.existsEntry( path( dnToMove ) ) );
     }
 
 
-    @Test
-    public void testMoveDown() throws Exception
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All)
+    public void testMoveDown( TestLdapServer server ) throws Exception
     {
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=\\#123456" );
+        Dn dnToMove = DN_WITH_ESCAPED_CHARACTERS_BACKSLASH_PREFIXED;
+        Dn newParentDn = DN_WITH_LEADING_SHARP_BACKSLASH_PREFIXED;
+        if ( server.getType() == LdapServerType.OpenLdap || server.getType() == LdapServerType.Fedora389ds )
+        {
+            // OpenLDAP and 389ds escape all characters with hex digits 
+            dnToMove = DN_WITH_ESCAPED_CHARACTERS_HEX_PAIR_ESCAPED;
+            newParentDn = DN_WITH_LEADING_SHARP_HEX_PAIR_ESCAPED;
+        }
+
+        connectionsViewBot.createTestConnection( server );
+        browserViewBot.selectEntry( path( dnToMove ) );
 
         MoveEntriesDialogBot moveEntryDialog = browserViewBot.openMoveEntryDialog();
         assertTrue( moveEntryDialog.isVisible() );
         SelectDnDialogBot selectDnBot = moveEntryDialog.clickBrowseButtonExpectingSelectDnDialog();
         assertTrue( selectDnBot.isVisible() );
-        selectDnBot.selectEntry( "Root DSE", "ou=system", "ou=users", "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\"" );
+        selectDnBot.selectEntry( ArrayUtils.remove( path( newParentDn ), 0 ) );
         selectDnBot.clickOkButton();
         moveEntryDialog.activate();
-        assertEquals( "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system", moveEntryDialog.getParentText() );
+        assertEquals( newParentDn.getName(), moveEntryDialog.getParentText() );
         moveEntryDialog.clickOkButton();
 
-        assertTrue( browserViewBot.existsEntry( "DIT", "Root DSE", "ou=system", "ou=users",
-            "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\"", "cn=\\#123456" ) );
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users",
-            "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\"", "cn=\\#123456" );
+        assertTrue( browserViewBot.existsEntry( path( newParentDn, dnToMove.getRdn() ) ) );
+        browserViewBot.selectEntry( path( newParentDn, dnToMove.getRdn() ) );
     }
 
 }

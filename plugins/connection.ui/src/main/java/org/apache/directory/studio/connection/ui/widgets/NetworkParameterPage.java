@@ -21,8 +21,13 @@
 package org.apache.directory.studio.connection.ui.widgets;
 
 
+import java.security.cert.Certificate;
+import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import javax.net.ssl.SSLPeerUnverifiedException;
+import javax.net.ssl.SSLSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.directory.api.ldap.model.url.LdapUrl;
@@ -41,6 +46,7 @@ import org.apache.directory.studio.connection.ui.AbstractConnectionParameterPage
 import org.apache.directory.studio.connection.ui.ConnectionUIConstants;
 import org.apache.directory.studio.connection.ui.ConnectionUIPlugin;
 import org.apache.directory.studio.connection.ui.RunnableContextRunner;
+import org.apache.directory.studio.connection.ui.dialogs.CertificateInfoDialog;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -115,6 +121,9 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
 
     /** The combo to select the encryption method */
     private Combo encryptionMethodCombo;
+
+    /** The button to fetch and show the server's certificate */
+    private Button viewServerCertificateButton;
 
     /** The button to check the connection parameters */
     private Button checkConnectionButton;
@@ -316,11 +325,14 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
                 .getString( "NetworkParameterPage.WarningCertificateValidation" ), 2 ); //$NON-NLS-1$
         }
 
-        BaseWidgetUtils.createSpacer( groupComposite, 2 );
-        checkConnectionButton = new Button( groupComposite, SWT.PUSH );
+        BaseWidgetUtils.createSpacer( groupComposite, 1 );
         GridData gridData = new GridData();
         gridData.horizontalAlignment = SWT.RIGHT;
         gridData.verticalAlignment = SWT.BOTTOM;
+        viewServerCertificateButton = new Button( groupComposite, SWT.PUSH );
+        viewServerCertificateButton.setLayoutData( gridData );
+        viewServerCertificateButton.setText( Messages.getString( "NetworkParameterPage.ViewCertificate" ) ); //$NON-NLS-1$
+        checkConnectionButton = new Button( groupComposite, SWT.PUSH );
         checkConnectionButton.setLayoutData( gridData );
         checkConnectionButton.setText( Messages.getString( "NetworkParameterPage.CheckNetworkParameter" ) ); //$NON-NLS-1$
 
@@ -340,7 +352,11 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
     {
         // set enabled/disabled state of check connection button
         checkConnectionButton.setEnabled( !hostCombo.getText().equals( StringUtils.EMPTY ) &&
-            !portCombo.getText().equals( StringUtils.EMPTY ) ); //$NON-NLS-1$ //$NON-NLS-2$
+            !portCombo.getText().equals( StringUtils.EMPTY ) );
+
+        // set enabled/disabled state of show server certificate button
+        viewServerCertificateButton.setEnabled( checkConnectionButton.isEnabled()
+            && getEncyrptionMethod() != EncryptionMethod.NONE );
 
         // validate input fields
         message = null;
@@ -451,10 +467,46 @@ public class NetworkParameterPage extends AbstractConnectionParameterPage
 
                 if ( status.isOK() )
                 {
-                    MessageDialog.openInformation( Display.getDefault().getActiveShell(), Messages
-                        .getString( "NetworkParameterPage.CheckNetworkParameter" ), //$NON-NLS-1$
-                        Messages
-                            .getString( "NetworkParameterPage.ConnectionEstablished" ) ); //$NON-NLS-1$
+                    String title = Messages.getString( "NetworkParameterPage.CheckNetworkParameter" ); //$NON-NLS-1$
+                    String message = Messages.getString( "NetworkParameterPage.ConnectionEstablished" ); //$NON-NLS-1$
+
+                    SSLSession sslSession = runnable.getSslSession();
+                    if ( sslSession != null )
+                    {
+                        message += "\n\nProtocol: " + sslSession.getProtocol();
+                        message += "\nCipher Suite: " + sslSession.getCipherSuite();
+                    }
+                    MessageDialog.openInformation( Display.getDefault().getActiveShell(), title, message );
+                }
+            }
+        } );
+
+        viewServerCertificateButton.addSelectionListener( new SelectionAdapter()
+        {
+            @Override
+            public void widgetSelected( SelectionEvent event )
+            {
+                Connection connection = getTestConnection();
+                CheckNetworkParameterRunnable runnable = new CheckNetworkParameterRunnable( connection );
+                IStatus status = RunnableContextRunner.execute( runnable, runnableContext, true );
+
+                if ( status.isOK() )
+                {
+                    try
+                    {
+                        SSLSession sslSession = runnable.getSslSession();
+                        Certificate[] certificates = sslSession.getPeerCertificates();
+                        X509Certificate[] serverCertificates = new X509Certificate[certificates.length];
+                        for ( int i = 0; i < certificates.length; i++ )
+                        {
+                            serverCertificates[i] = ( X509Certificate ) certificates[i];
+                        }
+                        new CertificateInfoDialog( Display.getDefault().getActiveShell(), serverCertificates ).open();
+                    }
+                    catch ( SSLPeerUnverifiedException e )
+                    {
+                        throw new RuntimeException( e );
+                    }
                 }
             }
         } );

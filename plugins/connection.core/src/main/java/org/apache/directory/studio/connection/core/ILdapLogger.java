@@ -20,17 +20,23 @@
 package org.apache.directory.studio.connection.core;
 
 
+import java.io.File;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.naming.directory.SearchControls;
 
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Modification;
-import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
+import org.apache.directory.studio.connection.core.io.StudioLdapException;
+import org.apache.directory.studio.connection.core.io.api.StudioSearchResult;
+import org.eclipse.core.runtime.Platform;
 
 
 /**
@@ -49,7 +55,10 @@ public interface ILdapLogger
      * @param controls the controls
      * @param ex the LDAP exception if an error occurred, null otherwise
      */
-    void logChangetypeAdd( Connection connection, final Entry entry, final Control[] controls, LdapException ex );
+    default void logChangetypeAdd( Connection connection, final Entry entry, final Control[] controls,
+        StudioLdapException ex )
+    {
+    }
 
 
     /**
@@ -61,8 +70,11 @@ public interface ILdapLogger
      * @param ex the LDAP exception if an error occurred, null otherwise
      * 
      */
-    void logChangetypeDelete( Connection connection, final Dn dn, final Control[] controls,
-        LdapException ex );
+    default void logChangetypeDelete( Connection connection, final Dn dn, final Control[] controls,
+        StudioLdapException ex )
+    {
+
+    }
 
 
     /**
@@ -74,8 +86,10 @@ public interface ILdapLogger
      * @param ex the LDAP exception if an error occurred, null otherwise
      * @param controls the controls
      */
-    void logChangetypeModify( Connection connection, final Dn dn,
-        final Collection<Modification> modifications, final Control[] controls, LdapException ex );
+    default void logChangetypeModify( Connection connection, final Dn dn,
+        final Collection<Modification> modifications, final Control[] controls, StudioLdapException ex )
+    {
+    }
 
 
     /**
@@ -88,8 +102,10 @@ public interface ILdapLogger
      * @param controls the controls
      * @param ex the LDAP exception if an error occurred, null otherwise
      */
-    void logChangetypeModDn( Connection connection, final Dn oldDn, final Dn newDn,
-        final boolean deleteOldRdn, final Control[] controls, LdapException ex );
+    default void logChangetypeModDn( Connection connection, final Dn oldDn, final Dn newDn,
+        final boolean deleteOldRdn, final Control[] controls, StudioLdapException ex )
+    {
+    }
 
 
     /**
@@ -152,9 +168,25 @@ public interface ILdapLogger
      * @param requestNum the request number
      * @param ex the LDAP exception if an error occurred, null otherwise
      */
-    void logSearchRequest( Connection connection, String searchBase, String filter,
+    default void logSearchRequest( Connection connection, String searchBase, String filter,
         SearchControls searchControls, AliasDereferencingMethod aliasesDereferencingMethod,
-        Control[] controls, long requestNum, LdapException ex );
+        Control[] controls, long requestNum, StudioLdapException ex )
+    {
+    }
+
+
+    /**
+     * Logs a search result entry.
+     * 
+     * @param connection the connection
+     * @param studioSearchResult the search result entry
+     * @param requestNum the request number
+     * @param ex the LDAP exception if an error occurred, null otherwise
+     */
+    default void logSearchResultEntry( Connection connection, StudioSearchResult studioSearchResult, long requestNum,
+        StudioLdapException ex )
+    {
+    }
 
 
     /**
@@ -166,8 +198,10 @@ public interface ILdapLogger
      * @param requestNum the request number
      * @param ex the LDAP exception if an error occurred, null otherwise
      */
-    void logSearchResultReference( Connection connection, Referral referral,
-        ReferralsInfo referralsInfo, long requestNum, LdapException ex );
+    default void logSearchResultReference( Connection connection, Referral referral,
+        ReferralsInfo referralsInfo, long requestNum, StudioLdapException ex )
+    {
+    }
 
 
     /**
@@ -178,6 +212,53 @@ public interface ILdapLogger
      * @param requestNum the request number
      * @param ex the LDAP exception if an error occurred, null otherwise
      */
-    void logSearchResultDone( Connection connection, long count, long requestNum, LdapException ex );
+    default void logSearchResultDone( Connection connection, long count, long requestNum, StudioLdapException ex )
+    {
+    }
 
+    /**
+     * Gets the masked attributes.
+     * 
+     * @return the masked attributes
+     */
+    default Set<String> getMaskedAttributes()
+    {
+        Set<String> maskedAttributes = new HashSet<String>();
+
+        String maskedAttributeString = Platform.getPreferencesService().getString( ConnectionCoreConstants.PLUGIN_ID,
+            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_MASKED_ATTRIBUTES, "", null );
+        String[] splitted = maskedAttributeString.split( "," ); //$NON-NLS-1$
+
+        for ( String s : splitted )
+        {
+            maskedAttributes.add( Strings.toLowerCaseAscii( s ) );
+        }
+
+        return maskedAttributes;
+    }
+
+
+    /**
+     * Deletes a file. Retries up to 5 times to work around Windows file delete issues.
+     */
+    default void deleteFileWithRetry( File file )
+    {
+        for ( int i = 0; i < 6; i++ )
+        {
+            if ( file != null && file.exists() )
+            {
+                if ( file.delete() )
+                {
+                    break;
+                }
+                try
+                {
+                    Thread.sleep( 500L );
+                }
+                catch ( InterruptedException e )
+                {
+                }
+            }
+        }
+    }
 }

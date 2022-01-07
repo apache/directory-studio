@@ -24,7 +24,6 @@ package org.apache.directory.studio.ldapbrowser.common.widgets.browser;
 import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.common.ui.widgets.ViewFormWidget;
 import org.apache.directory.studio.ldapbrowser.common.dialogs.SelectEntryDialog;
-import org.apache.directory.studio.ldapbrowser.core.model.IQuickSearch;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -64,9 +63,6 @@ public class BrowserWidget extends ViewFormWidget
 
     /** The tree viewer. */
     private TreeViewer viewer;
-
-    /** The quick search. */
-    private IQuickSearch quickSearch;
 
 
     /**
@@ -245,27 +241,5 @@ public class BrowserWidget extends ViewFormWidget
     public TreeViewer getViewer()
     {
         return viewer;
-    }
-
-
-    /**
-     * Sets the quick search.
-     * 
-     * @param quickSearch the new quick search
-     */
-    public void setQuickSearch( IQuickSearch quickSearch )
-    {
-        this.quickSearch = quickSearch;
-    }
-
-
-    /**
-     * Gets the quick search.
-     * 
-     * @return the quick search
-     */
-    public IQuickSearch getQuickSearch()
-    {
-        return quickSearch;
     }
 }

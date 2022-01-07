@@ -23,6 +23,7 @@ package org.apache.directory.studio.connection.core;
 
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 
 
 /**
@@ -38,6 +39,7 @@ public class ConnectionCorePreferencesInitializer extends AbstractPreferenceInit
     public void initializeDefaultPreferences()
     {
         Preferences preferences = ConnectionCorePlugin.getDefault().getPluginPreferences();
+        IEclipsePreferences defaultPreferences = ConnectionCorePlugin.getDefault().getDefaultScopePreferences();
 
         // LDAP connection settings
         preferences.setDefault( ConnectionCoreConstants.PREFERENCE_VALIDATE_CERTIFICATES, true );
@@ -46,18 +48,21 @@ public class ConnectionCorePreferencesInitializer extends AbstractPreferenceInit
         preferences.setDefault( ConnectionCoreConstants.PREFERENCE_USE_KRB5_SYSTEM_PROPERTIES, false );
 
         // Modification Logs
-        preferences.setDefault( ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_ENABLE, true );
-        preferences.setDefault( ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_FILE_COUNT, 10 );
-        preferences.setDefault( ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_FILE_SIZE, 100 );
+        defaultPreferences.putBoolean( ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_ENABLE, true );
+        defaultPreferences.put( ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_MASKED_ATTRIBUTES, "" );
+        defaultPreferences.putInt( ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_FILE_COUNT, 10 );
+        defaultPreferences.putInt( ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_FILE_SIZE, 100 );
 
         // Search Logs
-        preferences.setDefault( ConnectionCoreConstants.PREFERENCE_SEARCHREQUESTLOGS_ENABLE, true );
-        preferences.setDefault( ConnectionCoreConstants.PREFERENCE_SEARCHRESULTENTRYLOGS_ENABLE, false );
-        preferences.setDefault( ConnectionCoreConstants.PREFERENCE_SEARCHLOGS_FILE_COUNT, 10 );
-        preferences.setDefault( ConnectionCoreConstants.PREFERENCE_SEARCHLOGS_FILE_SIZE, 100 );
+        defaultPreferences.putBoolean( ConnectionCoreConstants.PREFERENCE_SEARCHREQUESTLOGS_ENABLE, true );
+        defaultPreferences.putBoolean( ConnectionCoreConstants.PREFERENCE_SEARCHRESULTENTRYLOGS_ENABLE, false );
+        defaultPreferences.putInt( ConnectionCoreConstants.PREFERENCE_SEARCHLOGS_FILE_COUNT, 10 );
+        defaultPreferences.putInt( ConnectionCoreConstants.PREFERENCE_SEARCHLOGS_FILE_SIZE, 100 );
 
         // Connections Passwords Keystore
         preferences.setDefault( ConnectionCoreConstants.PREFERENCE_CONNECTIONS_PASSWORDS_KEYSTORE,
             ConnectionCoreConstants.PREFERENCE_CONNECTIONS_PASSWORDS_KEYSTORE_OFF );
+
+        ConnectionCorePlugin.getDefault().flushDefaultScopePreferences();
     }
 }

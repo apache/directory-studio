@@ -17,7 +17,7 @@
 #
 version: 1
 
-dn: cn=U0034692,ou=users,ou=system
+dn: cn=U0034692,ou=misc,dc=example,dc=org
 sn: Doe
 displayName:: SsO2aG4gRG/DpGXDtg==
 givenName:: SsO2aG4gRG/DpGXDtg==

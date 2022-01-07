@@ -24,7 +24,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.directory.ldap.client.api.LdapConnectionConfig;
-import org.apache.directory.ldap.client.api.LdapNetworkConnection;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
@@ -56,15 +55,7 @@ public class BotUtils
             {
                 public boolean test() throws Exception
                 {
-                    String shellText = bot.activeShell().getText();
-                    for ( String label : labels )
-                    {
-                        if ( shellText.equals( label ) && bot.button( "OK" ) != null )
-                        {
-                            return true;
-                        }
-                    }
-                    return false;
+                    return getShell( labels ) != null;
                 }
 
 
@@ -81,7 +72,28 @@ public class BotUtils
             ErrorDialog.AUTOMATED_MODE = errorDialogAutomatedMode;
         }
 
-        return bot.activeShell();
+        return getShell( labels );
+    }
+
+
+    private static SWTBotShell getShell( final String... labels )
+    {
+        SWTBotShell[] shells = bot.shells();
+        for ( SWTBotShell shell : shells )
+        {
+            String shellText = shell.getText();
+            for ( String label : labels )
+            {
+                if ( shellText.equals( label ) )
+                {
+                    shell.activate();
+                    if( bot.button( "OK" ) != null) {
+                        return shell;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
 

@@ -20,14 +20,8 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
-public class PasswordsKeystorePreferencePageBot extends DialogBot
+public class PasswordsKeystorePreferencePageBot extends PreferencePageBot
 {
-
-    public PasswordsKeystorePreferencePageBot()
-    {
-        super( "Preferences" );
-    }
-
 
     public boolean isPasswordsKeystoreEnabled()
     {

@@ -21,44 +21,38 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
 import java.security.cert.X509Certificate;
+import java.util.Date;
 import java.util.List;
 
+import org.apache.directory.api.ldap.model.entry.DefaultEntry;
+import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.util.FileUtils;
-import org.apache.directory.server.annotations.CreateLdapServer;
-import org.apache.directory.server.annotations.CreateTransport;
-import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
-import org.apache.directory.server.core.security.CertificateUtil;
+import org.apache.directory.server.core.security.TlsKeyGenerator;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.connection.core.PasswordsKeyStoreManager;
+import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
+import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
 import org.apache.directory.studio.test.integration.ui.bots.CertificateValidationPreferencePageBot;
 import org.apache.directory.studio.test.integration.ui.bots.CertificateViewerDialogBot;
-import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.KeepConnectionsPasswordsDialogBot;
+import org.apache.directory.studio.test.integration.ui.bots.ModificationLogsViewPreferencePageBot;
 import org.apache.directory.studio.test.integration.ui.bots.PasswordsKeystorePreferencePageBot;
 import org.apache.directory.studio.test.integration.ui.bots.PreferencesBot;
+import org.apache.directory.studio.test.integration.ui.bots.SearchLogsViewPreferencePageBot;
 import org.apache.directory.studio.test.integration.ui.bots.SetupMasterPasswordDialogBot;
-import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
 import org.apache.directory.studio.test.integration.ui.bots.VerifyMasterPasswordDialogBot;
-import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
-import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
 import org.eclipse.core.runtime.Platform;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import sun.security.x509.X500Name;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
 
 
 /**
@@ -67,45 +61,17 @@ import sun.security.x509.X500Name;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-@RunWith(FrameworkRunnerWithScreenshotCaptureListener.class)
-@CreateLdapServer(transports =
-    { @CreateTransport(protocol = "LDAP") })
-public class PreferencesTest extends AbstractLdapTestUnit
+public class PreferencesTest extends AbstractTestBase
 {
-    private StudioBot studioBot;
-    private ConnectionsViewBot connectionsViewBot;
-
-
-    @Before
-    public void setUp() throws Exception
-    {
-        studioBot = new StudioBot();
-        studioBot.resetLdapPerspective();
-        connectionsViewBot = studioBot.getConnectionView();
-    }
-
-
-    @After
-    public void tearDown() throws Exception
-    {
-        connectionsViewBot.deleteTestConnections();
-        Assertions.genericTearDownAssertions();
-    }
-
 
     /**
      * Test for DIRSTUDIO-580
      * (Setting "Validate certificates for secure LDAP connections" is not saved).
-     *
-     * @throws Exception
      */
     @Test
     public void testCertificatValidationSettingsSaved() throws Exception
     {
-        URL url = Platform.getInstanceLocation().getURL();
-        File file = new File( url.getFile()
-            + ".metadata/.plugins/org.eclipse.core.runtime/.settings/org.apache.directory.studio.connection.core.prefs" );
-        assertFalse( file.exists() );
+        File file = getConnectionCorePreferencesFile();
 
         // open preferences dialog
         PreferencesBot preferencesBot = studioBot.openPreferences();
@@ -134,9 +100,26 @@ public class PreferencesTest extends AbstractLdapTestUnit
         pageBot.clickRestoreDefaultsButton();
         assertTrue( pageBot.isValidateCertificatesSelected() );
 
-        // click OK, this should remove the property file as only defaults are set
+        // click OK, this should remove the property or the whole file
         preferencesBot.clickOkButton();
-        assertFalse( file.exists() );
+        if ( file.exists() )
+        {
+            lines = FileUtils.readLines( file, StandardCharsets.UTF_8 );
+            assertFalse( lines.contains( "validateCertificates=false" ) );
+        }
+        else
+        {
+            assertFalse( file.exists() );
+        }
+    }
+
+
+    private File getConnectionCorePreferencesFile()
+    {
+        URL url = Platform.getInstanceLocation().getURL();
+        File file = new File( url.getFile()
+            + ".metadata/.plugins/org.eclipse.core.runtime/.settings/org.apache.directory.studio.connection.core.prefs" );
+        return file;
     }
 
 
@@ -157,11 +140,15 @@ public class PreferencesTest extends AbstractLdapTestUnit
         preferencesBot.clickCancelButton();
 
         // add a certificate (not possible via native file dialog)
-        X500Name issuer = new X500Name( "apacheds", "directory", "apache", "US" );
-        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance( "EC" );
-        keyPairGenerator.initialize( 256 );
-        KeyPair keyPair = keyPairGenerator.generateKeyPair();
-        X509Certificate certificate = CertificateUtil.generateSelfSignedCertificate( issuer, keyPair, 365, "SHA256WithECDSA" );
+        Entry entry = new DefaultEntry();
+        String issuerDn = "cn=apacheds,ou=directory,o=apache,c=US";
+        Date startDate = new Date();
+        Date expiryDate = new Date( System.currentTimeMillis() + TlsKeyGenerator.YEAR_MILLIS );
+        String keyAlgo = "RSA";
+        int keySize = 1024;
+        CertificateValidationTest.addKeyPair( entry, issuerDn, issuerDn, startDate, expiryDate, keyAlgo, keySize,
+            null );
+        X509Certificate certificate = TlsKeyGenerator.getCertificate( entry );
         ConnectionCorePlugin.getDefault().getPermanentTrustStoreManager().addCertificate( certificate );
 
         // verify there is one certificate now
@@ -197,10 +184,11 @@ public class PreferencesTest extends AbstractLdapTestUnit
      * Test for DIRSTUDIO-1179
      * (java.io.IOException: Invalid secret key format after Java update).
      */
-    @Test
-    public void testConnectionPasswordsKeystore() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testConnectionPasswordsKeystore( TestLdapServer server ) throws Exception
     {
-        Connection connection = connectionsViewBot.createTestConnection( "BrowserTest", ldapServer.getPort() );
+        Connection connection = connectionsViewBot.createTestConnection( server );
         connectionsViewBot.closeSelectedConnections();
 
         // the global password keystore manager
@@ -233,7 +221,7 @@ public class PreferencesTest extends AbstractLdapTestUnit
         assertTrue( passwordsKeyStoreManager.isLoaded() );
 
         // verify connection can be opened because keystore is already loaded
-        connectionsViewBot.selectConnection( connection.getName() );
+        connectionsViewBot.select( connection.getName() );
         connectionsViewBot.openSelectedConnection();
         connectionsViewBot.closeSelectedConnections();
 
@@ -242,7 +230,7 @@ public class PreferencesTest extends AbstractLdapTestUnit
         assertFalse( passwordsKeyStoreManager.isLoaded() );
 
         // verify master password prompt when opening the connection
-        connectionsViewBot.selectConnection( connection.getName() );
+        connectionsViewBot.select( connection.getName() );
         connectionsViewBot.openSelectedConnectionExpectingVerifyMasterPasswordDialog( "secret12" );
         connectionsViewBot.closeSelectedConnections();
 
@@ -251,7 +239,8 @@ public class PreferencesTest extends AbstractLdapTestUnit
         pageBot = preferencesBot.openPasswordsKeystorePage();
         assertTrue( pageBot.isPasswordsKeystoreEnabled() );
         KeepConnectionsPasswordsDialogBot keepConnectionsPasswordsDialogBot = pageBot.disablePasswordsKeystore();
-        VerifyMasterPasswordDialogBot verifyMasterPasswordDialog = keepConnectionsPasswordsDialogBot.clickYesButtonExpectingVerifyMasterPasswordDialog();
+        VerifyMasterPasswordDialogBot verifyMasterPasswordDialog = keepConnectionsPasswordsDialogBot
+            .clickYesButtonExpectingVerifyMasterPasswordDialog();
         verifyMasterPasswordDialog.enterMasterPassword( "secret12" );
         verifyMasterPasswordDialog.clickOkButton();
         assertFalse( pageBot.isPasswordsKeystoreEnabled() );
@@ -264,9 +253,100 @@ public class PreferencesTest extends AbstractLdapTestUnit
         assertFalse( passwordsKeyStoreManager.isLoaded() );
 
         // verify connection can be opened and connections password was kept
-        connectionsViewBot.selectConnection( connection.getName() );
+        connectionsViewBot.select( connection.getName() );
         connectionsViewBot.openSelectedConnection();
         connectionsViewBot.closeSelectedConnections();
+    }
+
+
+    @Test
+    public void testLdifEditorPreferencesPage() throws Exception
+    {
+        // open preferences dialog
+        PreferencesBot preferencesBot = studioBot.openPreferences();
+        assertTrue( preferencesBot.isVisible() );
+
+        // open LDIF editor syntax coloring page
+        preferencesBot.openLdifEditorSyntaxColoringPage();
+        preferencesBot.clickCancelButton();
+    }
+
+
+    @Test
+    public void testSearchLogsViewPreferencesPage() throws Exception
+    {
+        File file = getConnectionCorePreferencesFile();
+
+        // open preferences dialog
+        PreferencesBot preferencesBot = studioBot.openPreferences();
+        SearchLogsViewPreferencePageBot page = preferencesBot.openSearchLogsViewPage();
+
+        page.setEnableSearchRequestLogs( false );
+        page.setEnableSearchResultEntryLogs( true );
+        page.setLogFileCount( 7 );
+        page.setLogFileSize( 77 );
+        page.clickApplyButton();
+
+        assertTrue( file.exists() );
+        List<String> lines = FileUtils.readLines( file, StandardCharsets.UTF_8 );
+        assertTrue( lines.contains( "searchRequestLogsEnable=false" ) );
+        assertTrue( lines.contains( "searchResultEntryLogsEnable=true" ) );
+        assertTrue( lines.contains( "searchLogsFileCount=7" ) );
+        assertTrue( lines.contains( "searchLogsFileSize=77" ) );
+
+        page.clickRestoreDefaultsButton();
+        preferencesBot.clickOkButton();
+        if ( file.exists() )
+        {
+            lines = FileUtils.readLines( file, StandardCharsets.UTF_8 );
+            assertFalse( lines.contains( "searchRequestLogsEnable=false" ) );
+            assertFalse( lines.contains( "searchResultEntryLogsEnable=true" ) );
+            assertFalse( lines.contains( "searchLogsFileCount=7" ) );
+            assertFalse( lines.contains( "searchLogsFileSize=77" ) );
+        }
+        else
+        {
+            assertFalse( file.exists() );
+        }
+    }
+
+
+    @Test
+    public void testModificationLogsViewPreferencesPage() throws Exception
+    {
+        File file = getConnectionCorePreferencesFile();
+
+        // open preferences dialog
+        PreferencesBot preferencesBot = studioBot.openPreferences();
+        ModificationLogsViewPreferencePageBot page = preferencesBot.openModificationLogsViewPage();
+
+        page.setEnableModificationLogs( false );
+        page.setMaskedAttributes( "userPassword" );
+        page.setLogFileCount( 2 );
+        page.setLogFileSize( 22 );
+        page.clickApplyButton();
+
+        assertTrue( file.exists() );
+        List<String> lines = FileUtils.readLines( file, StandardCharsets.UTF_8 );
+        assertTrue( lines.contains( "modificationLogsEnable=false" ) );
+        assertTrue( lines.contains( "modificationLogsMaskedAttributes=userPassword" ) );
+        assertTrue( lines.contains( "modificationLogsFileCount=2" ) );
+        assertTrue( lines.contains( "modificationLogsFileSize=22" ) );
+
+        page.clickRestoreDefaultsButton();
+        preferencesBot.clickOkButton();
+        if ( file.exists() )
+        {
+            lines = FileUtils.readLines( file, StandardCharsets.UTF_8 );
+            assertFalse( lines.contains( "modificationLogsEnable=false" ) );
+            assertFalse( lines.contains( "modificationLogsMaskedAttributes=userPassword" ) );
+            assertFalse( lines.contains( "modificationLogsFileCount=2" ) );
+            assertFalse( lines.contains( "modificationLogsFileSize=22" ) );
+        }
+        else
+        {
+            assertFalse( file.exists() );
+        }
     }
 
 }

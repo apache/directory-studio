@@ -124,12 +124,5 @@
 			</mediaobject>
 		</screenshot>
 	</para>
-	<para>
-		1. The SOCKS proxy support in Java 1.4 had certain limitations.
-		Due to these limitations, the setting of the SOCKS system
-		properties is not performed when a 1.4 VM is used. The SOCKS
-		proxy may still be used by some tooling when running on a 1.4 VM
-		(e.g. CVS). However, users should use a 1.5 (or 5.0) VM if they
-		require full SOCKS proxy support.
-	</para>
+
 </section>

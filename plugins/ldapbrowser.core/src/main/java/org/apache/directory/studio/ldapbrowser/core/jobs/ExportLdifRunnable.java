@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Value;
@@ -273,7 +274,7 @@ public class ExportLdifRunnable implements StudioConnectionRunnableWithProgress
                     if ( responseControl instanceof PagedResults )
                     {
                         PagedResults prc = ( PagedResults ) responseControl;
-                        if ( prc.getCookieValue() > 0 )
+                        if ( ArrayUtils.isNotEmpty( prc.getCookie() ) )
                         {
                             // search again: pass the response control cookie to the request control
                             byte[] cookie = prc.getCookie();

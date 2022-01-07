@@ -23,6 +23,7 @@ package org.apache.directory.studio.connection.core.io;
 import java.util.Collection;
 
 import javax.naming.directory.SearchControls;
+import javax.net.ssl.SSLSession;
 
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Modification;
@@ -31,9 +32,9 @@ import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
-import org.apache.directory.studio.connection.core.ReferralsInfo;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
+import org.apache.directory.studio.connection.core.ReferralsInfo;
 import org.apache.directory.studio.connection.core.io.api.StudioSearchResultEnumeration;
 
 
@@ -78,6 +79,22 @@ public interface ConnectionWrapper
      * @return true, if is connected
      */
     boolean isConnected();
+
+
+    /**
+     * Checks if the connection is secured.
+     * 
+     * @return true, if is secured
+     */
+    boolean isSecured();
+
+
+    /**
+     * Gets the {@link SSLSession} associated with the connection.
+     * 
+     * @return the {@link SSLSession} associated with the connection or null if the connection is not secured
+     */
+    SSLSession getSslSession();
 
 
     /**

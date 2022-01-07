@@ -21,64 +21,55 @@
 package org.apache.directory.studio.test.integration.ui;
 
 
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.BJENSEN_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.GROUP1_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.HNELSON_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.MULTI_VALUED_RDN_DN;
+import static org.apache.directory.studio.test.integration.junit5.TestFixture.USER1_DN;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.File;
-import java.io.InputStream;
-import java.net.URL;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.cert.X509Certificate;
-
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.directory.api.ldap.model.constants.AuthenticationLevel;
 import org.apache.directory.api.ldap.model.constants.LdapSecurityConstants;
-import org.apache.directory.api.ldap.model.entry.DefaultModification;
 import org.apache.directory.api.ldap.model.entry.Entry;
-import org.apache.directory.api.ldap.model.entry.ModificationOperation;
-import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.password.PasswordUtil;
-import org.apache.directory.api.util.FileUtils;
-import org.apache.directory.api.util.IOUtils;
 import org.apache.directory.api.util.Strings;
-import org.apache.directory.server.annotations.CreateLdapServer;
-import org.apache.directory.server.annotations.CreateTransport;
-import org.apache.directory.server.core.annotations.ApplyLdifFiles;
-import org.apache.directory.server.core.integ.AbstractLdapTestUnit;
-import org.apache.directory.server.core.security.CertificateUtil;
+import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
+import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
+import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection.ModifyMode;
 import org.apache.directory.studio.ldifparser.LdifFormatParameters;
 import org.apache.directory.studio.ldifparser.LdifParserConstants;
 import org.apache.directory.studio.ldifparser.model.lines.LdifAttrValLine;
-import org.apache.directory.studio.test.integration.ui.bots.BotUtils;
-import org.apache.directory.studio.test.integration.ui.bots.BrowserViewBot;
-import org.apache.directory.studio.test.integration.ui.bots.ConnectionsViewBot;
+import org.apache.directory.studio.test.integration.junit5.LdapServerType;
+import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
+import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
+import org.apache.directory.studio.test.integration.junit5.LdapServersSource.Mode;
+import org.apache.directory.studio.test.integration.ui.bots.AciItemEditorDialogBot;
+import org.apache.directory.studio.test.integration.ui.bots.CertificateEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.DnEditorDialogBot;
+import org.apache.directory.studio.test.integration.ui.bots.EditAttributeWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.EntryEditorBot;
+import org.apache.directory.studio.test.integration.ui.bots.HexEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.ImageEditorDialogBot;
-import org.apache.directory.studio.test.integration.ui.bots.ModificationLogsViewBot;
 import org.apache.directory.studio.test.integration.ui.bots.NewAttributeWizardBot;
 import org.apache.directory.studio.test.integration.ui.bots.PasswordEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.SelectDnDialogBot;
-import org.apache.directory.studio.test.integration.ui.bots.StudioBot;
+import org.apache.directory.studio.test.integration.ui.bots.SubtreeSpecificationEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.TextEditorDialogBot;
-import org.apache.directory.studio.test.integration.ui.bots.utils.Assertions;
-import org.apache.directory.studio.test.integration.ui.bots.utils.Characters;
-import org.apache.directory.studio.test.integration.ui.bots.utils.FrameworkRunnerWithScreenshotCaptureListener;
-import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
-import org.eclipse.core.runtime.Platform;
+import org.apache.directory.studio.test.integration.ui.utils.Characters;
+import org.apache.directory.studio.test.integration.ui.utils.JobWatcher;
+import org.apache.directory.studio.test.integration.ui.utils.ResourceUtils;
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import sun.security.x509.X500Name;
+import org.junit.jupiter.params.ParameterizedTest;
 
 
 /**
@@ -87,54 +78,23 @@ import sun.security.x509.X500Name;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-@RunWith(FrameworkRunnerWithScreenshotCaptureListener.class)
-@CreateLdapServer(transports =
-    { @CreateTransport(protocol = "LDAP") })
-@ApplyLdifFiles(clazz = EntryEditorTest.class, value =
-    { "org/apache/directory/studio/test/integration/ui/EntryEditorTest.ldif" })
-public class EntryEditorTest extends AbstractLdapTestUnit
+public class EntryEditorTest extends AbstractTestBase
 {
-    private StudioBot studioBot;
-    private ConnectionsViewBot connectionsViewBot;
-    private BrowserViewBot browserViewBot;
-    private ModificationLogsViewBot modificationLogsViewBot;
-
-
-    @Before
-    public void setUp() throws Exception
-    {
-        studioBot = new StudioBot();
-        studioBot.resetLdapPerspective();
-        connectionsViewBot = studioBot.getConnectionView();
-        connectionsViewBot.createTestConnection( "EntryEditorTest", ldapServer.getPort() );
-        browserViewBot = studioBot.getBrowserView();
-        modificationLogsViewBot = studioBot.getModificationLogsViewBot();
-    }
-
-
-    @After
-    public void tearDown() throws Exception
-    {
-        connectionsViewBot.deleteTestConnections();
-        Assertions.genericTearDownAssertions();
-    }
-
 
     /**
      * Test adding, editing and deleting of attributes in the entry editor.
-     *
-     * @throws Exception
-     *             the exception
      */
-    @Test
-    public void testAddEditDeleteAttribute() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testAddEditDeleteAttribute( TestLdapServer server ) throws Exception
     {
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Barbara Jensen" );
+        connectionsViewBot.createTestConnection( server );
+        browserViewBot.selectEntry( path( BJENSEN_DN ) );
 
-        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "cn=Barbara Jensen,ou=users,ou=system" );
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( BJENSEN_DN.getName() );
         entryEditorBot.activate();
         String dn = entryEditorBot.getDnText();
-        assertEquals( "DN: cn=Barbara Jensen,ou=users,ou=system", dn );
+        assertEquals( "DN: " + BJENSEN_DN.getName(), dn );
         assertEquals( 8, entryEditorBot.getAttributeValues().size() );
         assertEquals( "", modificationLogsViewBot.getModificationLogsText() );
 
@@ -162,7 +122,6 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         entryEditorBot.editValue( "description", "This is the 2nd description." );
         entryEditorBot.typeValueAndFinish( "This is the 3rd description." );
         assertEquals( 10, entryEditorBot.getAttributeValues().size() );
-        assertEquals( 10, entryEditorBot.getAttributeValues().size() );
         assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the 1st description." ) );
         assertFalse( entryEditorBot.getAttributeValues().contains( "description: This is the 2nd description." ) );
         assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the 3rd description." ) );
@@ -182,35 +141,172 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         assertEquals( 9, entryEditorBot.getAttributeValues().size() );
         assertFalse( entryEditorBot.getAttributeValues().contains( "description: This is the 1st description." ) );
         assertTrue( entryEditorBot.getAttributeValues().contains( "description: This is the final description." ) );
-        modificationLogsViewBot.waitForText( "replace: description\ndescription: This is the final description." );
+        modificationLogsViewBot.waitForText( "delete: description\ndescription: This is the 1st description." );
+        modificationLogsViewBot.waitForText( "add: description\ndescription: This is the final description." );
 
         // delete 1st value/attribute
         entryEditorBot.deleteValue( "description", "This is the final description." );
         assertEquals( 8, entryEditorBot.getAttributeValues().size() );
         assertFalse( entryEditorBot.getAttributeValues().contains( "description: This is the final description." ) );
-        modificationLogsViewBot.waitForText( "delete: description\n-" );
+        modificationLogsViewBot.waitForText( "delete: description\ndescription: This is the final description.\n-" );
 
-        assertEquals( "Expected 6 modifications.", 6,
-            StringUtils.countMatches( modificationLogsViewBot.getModificationLogsText(), "#!RESULT OK" ) );
+        assertEquals( 6, StringUtils.countMatches( modificationLogsViewBot.getModificationLogsText(), "#!RESULT OK" ),
+            "Expected 6 modifications." );
+    }
+
+
+    /**
+     * Test adding, editing and deleting of attributes without equality matching rule in the entry editor.
+     */
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All)
+    public void testAddEditDeleteAttributeWithoutEqualityMatchingRule( TestLdapServer server ) throws Exception
+    {
+        Connection connection = connectionsViewBot.createTestConnection( server );
+
+        if ( server.getType() == LdapServerType.OpenLdap )
+        {
+            IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
+                .getBrowserConnection( connection );
+            browserConnection.setModifyModeNoEMR( ModifyMode.REPLACE );
+        }
+
+        browserViewBot.selectEntry( path( BJENSEN_DN ) );
+
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( BJENSEN_DN.getName() );
+        entryEditorBot.activate();
+        String dn = entryEditorBot.getDnText();
+        assertEquals( "DN: " + BJENSEN_DN.getName(), dn );
+        assertEquals( 8, entryEditorBot.getAttributeValues().size() );
+        assertEquals( "", modificationLogsViewBot.getModificationLogsText() );
+
+        // add facsimileTelephoneNumber attribute
+        entryEditorBot.activate();
+        NewAttributeWizardBot wizardBot = entryEditorBot.openNewAttributeWizard();
+        assertTrue( wizardBot.isVisible() );
+        wizardBot.typeAttributeType( "facsimileTelephoneNumber" );
+        wizardBot.clickFinishButton();
+        entryEditorBot.typeValueAndFinish( "+1 234 567 890" );
+        assertEquals( 9, entryEditorBot.getAttributeValues().size() );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "facsimileTelephoneNumber: +1 234 567 890" ) );
+        if ( server.getType() == LdapServerType.OpenLdap )
+        {
+            modificationLogsViewBot
+                .waitForText( "replace: facsimileTelephoneNumber\nfacsimileTelephoneNumber: +1 234 567 890" );
+
+        }
+        else
+        {
+            modificationLogsViewBot
+                .waitForText( "add: facsimileTelephoneNumber\nfacsimileTelephoneNumber: +1 234 567 890" );
+
+        }
+
+        // edit value
+        entryEditorBot.editValue( "facsimileTelephoneNumber", "+1 234 567 890" );
+        entryEditorBot.typeValueAndFinish( "000000000000" );
+        assertEquals( 9, entryEditorBot.getAttributeValues().size() );
+        assertFalse( entryEditorBot.getAttributeValues().contains( "facsimileTelephoneNumber: +1 234 567 890" ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "facsimileTelephoneNumber: 000000000000" ) );
+        if ( server.getType() == LdapServerType.OpenLdap )
+        {
+            modificationLogsViewBot
+                .waitForText( "replace: facsimileTelephoneNumber\nfacsimileTelephoneNumber: 000000000000" );
+
+        }
+        else
+        {
+            modificationLogsViewBot
+                .waitForText( "delete: facsimileTelephoneNumber\nfacsimileTelephoneNumber: +1 234 567 890" );
+            modificationLogsViewBot
+                .waitForText( "add: facsimileTelephoneNumber\nfacsimileTelephoneNumber: 000000000000" );
+        }
+
+        // delete 1st value/attribute
+        entryEditorBot.deleteValue( "facsimileTelephoneNumber", "000000000000" );
+        assertEquals( 8, entryEditorBot.getAttributeValues().size() );
+        assertFalse( entryEditorBot.getAttributeValues().contains( "facsimileTelephoneNumber: 000000000000" ) );
+        if ( server.getType() == LdapServerType.OpenLdap )
+        {
+            modificationLogsViewBot.waitForText( "replace: facsimileTelephoneNumber\n-" );
+
+        }
+        else
+        {
+            modificationLogsViewBot
+                .waitForText( "delete: facsimileTelephoneNumber\nfacsimileTelephoneNumber: 000000000000\n-" );
+        }
+
+        assertEquals( 3, StringUtils.countMatches( modificationLogsViewBot.getModificationLogsText(), "#!RESULT OK" ),
+            "Expected 3 modifications." );
+    }
+
+
+    /**
+     * DIRSTUDIO-1267:Test adding, editing and deleting of attributes with language tag in the entry editor.
+     */
+    @ParameterizedTest
+    @LdapServersSource(except = LdapServerType.ApacheDS, reason = "Language tags not yet supported by ApacheDS")
+    public void testAddEditDeleteAttributeWithLanguageTag( TestLdapServer server ) throws Exception
+    {
+        connectionsViewBot.createTestConnection( server );
+        browserViewBot.selectEntry( path( USER1_DN ) );
+
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( USER1_DN.getName() );
+        entryEditorBot.activate();
+
+        // add attribute description;lang-en
+        entryEditorBot.activate();
+        NewAttributeWizardBot wizardBot = entryEditorBot.openNewAttributeWizard();
+        assertTrue( wizardBot.isVisible() );
+        wizardBot.typeAttributeType( "description" );
+        wizardBot.clickNextButton();
+        wizardBot.setLanguageTag( "en", "" );
+        wizardBot.clickFinishButton();
+        entryEditorBot.typeValueAndFinish( "English" );
+        modificationLogsViewBot.waitForText( "add: description;lang-en\ndescription;lang-en: English\n-" );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "description;lang-en: English" ) );
+
+        // edit the attribute to description;lang-en
+        EditAttributeWizardBot editWizardBot = entryEditorBot.editAttribute( "description;lang-en", "English" );
+        editWizardBot.clickNextButton();
+        editWizardBot.setLanguageTag( "en", "us" );
+        editWizardBot.clickFinishButton();
+        modificationLogsViewBot.waitForText( "delete: description;lang-en\ndescription;lang-en: English\n-" );
+        modificationLogsViewBot.waitForText( "add: description;lang-en-us\ndescription;lang-en-us: English\n-" );
+        assertFalse( entryEditorBot.getAttributeValues().contains( "description;lang-en: English" ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "description;lang-en-us: English" ) );
+
+        // edit the value
+        entryEditorBot.editValue( "description;lang-en-us", "English" );
+        entryEditorBot.typeValueAndFinish( "English US" );
+        modificationLogsViewBot.waitForText( "delete: description;lang-en-us\ndescription;lang-en-us: English\n-" );
+        modificationLogsViewBot.waitForText( "add: description;lang-en-us\ndescription;lang-en-us: English US\n-" );
+        assertFalse( entryEditorBot.getAttributeValues().contains( "description;lang-en-us: English" ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "description;lang-en-us: English US" ) );
+
+        // delete the attribute
+        entryEditorBot.deleteValue( "description;lang-en-us", "English US" );
+        modificationLogsViewBot.waitForText( "delete: description;lang-en-us\ndescription;lang-en-us: English US\n-" );
+        assertFalse( entryEditorBot.getAttributeValues().contains( "description;lang-en-us: English US" ) );
     }
 
 
     /**
      * DIRSTUDIO-483: DN Editor escapes all non-ascii characters
-     *
-     * @throws Exception
-     *             the exception
      */
-    @Test
-    public void testDnValueEditor() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testDnValueEditor( TestLdapServer server ) throws Exception
     {
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=groups", "cn=My Group" );
+        connectionsViewBot.createTestConnection( server );
+        browserViewBot.selectEntry( path( GROUP1_DN ) );
 
-        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "cn=My Group,ou=groups,ou=system" );
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( GROUP1_DN.getName() );
         entryEditorBot.activate();
         String dn = entryEditorBot.getDnText();
-        assertEquals( "DN: cn=My Group,ou=groups,ou=system", dn );
-        assertEquals( 4, entryEditorBot.getAttributeValues().size() );
+        assertEquals( "DN: " + GROUP1_DN.getName(), dn );
+        assertEquals( 12, entryEditorBot.getAttributeValues().size() );
 
         // add member attribute
         NewAttributeWizardBot wizardBot = entryEditorBot.openNewAttributeWizard();
@@ -220,50 +316,45 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         assertTrue( dnEditorBot.isVisible() );
         SelectDnDialogBot selectDnBot = dnEditorBot.clickBrowseButtonExpectingSelectDnDialog();
         assertTrue( selectDnBot.isVisible() );
-        selectDnBot.selectEntry( "Root DSE", "ou=system", "ou=users", "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\"" );
+        selectDnBot.selectEntry( ArrayUtils.remove( path( MULTI_VALUED_RDN_DN ), 0 ) );
         selectDnBot.clickOkButton();
-        assertEquals( "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system", dnEditorBot.getDnText() );
+        assertEquals( MULTI_VALUED_RDN_DN.getName(), dnEditorBot.getDnText() );
         dnEditorBot.clickOkButton();
 
         // assert value after saved and reloaded from server
-        SWTUtils.sleep( 1000 );
-        assertEquals( 5, entryEditorBot.getAttributeValues().size() );
-        assertTrue( entryEditorBot.getAttributeValues().contains(
-            "member: cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system" ) );
-        dnEditorBot = entryEditorBot.editValueExpectingDnEditor( "member",
-            "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system" );
-        assertEquals( "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system", dnEditorBot.getDnText() );
+        assertEquals( 13, entryEditorBot.getAttributeValues().size() );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "member: " + MULTI_VALUED_RDN_DN.getName() ) );
+        dnEditorBot = entryEditorBot.editValueExpectingDnEditor( "member", MULTI_VALUED_RDN_DN.getName() );
+        assertEquals( MULTI_VALUED_RDN_DN.getName(), dnEditorBot.getDnText() );
         dnEditorBot.clickCancelButton();
 
         modificationLogsViewBot.waitForText( "#!RESULT OK" );
-        assertEquals( "Expected 1 modification.", 1,
-            StringUtils.countMatches( modificationLogsViewBot.getModificationLogsText(), "#!RESULT OK" ) );
+        assertEquals( 1, StringUtils.countMatches( modificationLogsViewBot.getModificationLogsText(), "#!RESULT OK" ),
+            "Expected 1 modification." );
     }
 
 
     /**
      * DIRSTUDIO-637: copy/paste of attributes no longer works.
      * Test copy/paste within entry editor.
-     *
-     * @throws Exception
-     *             the exception
      */
-    @Test
-    public void testCopyPasteStringValue() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testCopyPasteStringValue( TestLdapServer server ) throws Exception
     {
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Barbara Jensen" );
+        connectionsViewBot.createTestConnection( server );
+        browserViewBot.selectEntry( path( BJENSEN_DN ) );
 
         // copy a value
-        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "cn=Barbara Jensen,ou=users,ou=system" );
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( BJENSEN_DN.getName() );
         entryEditorBot.activate();
         entryEditorBot.copyValue( "uid", "bjensen" );
 
         // go to another entry
-        browserViewBot
-            .selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\"" );
-        entryEditorBot = studioBot.getEntryEditorBot( "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system" );
+        browserViewBot.selectEntry( path( USER1_DN ) );
+        entryEditorBot = studioBot.getEntryEditorBot( USER1_DN.getName() );
         entryEditorBot.activate();
-        assertEquals( 8, entryEditorBot.getAttributeValues().size() );
+        assertEquals( 23, entryEditorBot.getAttributeValues().size() );
 
         // paste value, wait till job is done
         JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__execute_ldif_name );
@@ -271,33 +362,36 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         watcher.waitUntilDone();
 
         // assert pasted value visible in editor
-        assertEquals( 9, entryEditorBot.getAttributeValues().size() );
-        assertTrue( "Should contain uid=bjensen: " + entryEditorBot.getAttributeValues(),
-            entryEditorBot.getAttributeValues().contains( "uid: bjensen" ) );
+        assertEquals( 24, entryEditorBot.getAttributeValues().size() );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "uid: bjensen" ),
+            "Should contain uid=bjensen: " + entryEditorBot.getAttributeValues() );
 
         // assert pasted value was written to directory
-        Entry entry = service.getAdminSession()
-            .lookup( new Dn( "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system" ) );
-        assertTrue( "Should contain uid=bjensen: " + entry, entry.contains( "uid", "bjensen" ) );
+        server.withAdminConnection( conn -> {
+            Entry entry = conn.lookup( USER1_DN );
+            assertTrue( entry.contains( "uid", "bjensen" ), "Should contain uid=bjensen: " + entry );
+
+        } );
     }
 
 
-    @Test
-    public void testCopyPasteMultipleStringAndBinaryValues() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testCopyPasteMultipleStringAndBinaryValues( TestLdapServer server ) throws Exception
     {
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "uid=hnelson" );
+        connectionsViewBot.createTestConnection( server );
+        browserViewBot.selectEntry( path( HNELSON_DN ) );
 
         // copy the values
-        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "uid=hnelson,ou=users,ou=system" );
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( HNELSON_DN.getName() );
         entryEditorBot.activate();
-        entryEditorBot.copyValues( "userpassword", "uid", "description", "jpegphoto" );
+        entryEditorBot.copyValues( "userPassword", "uid", "description", "jpegPhoto" );
 
         // go to another entry
-        browserViewBot
-            .selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\"" );
-        entryEditorBot = studioBot.getEntryEditorBot( "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system" );
+        browserViewBot.selectEntry( path( USER1_DN ) );
+        entryEditorBot = studioBot.getEntryEditorBot( USER1_DN.getName() );
         entryEditorBot.activate();
-        assertEquals( 8, entryEditorBot.getAttributeValues().size() );
+        assertEquals( 23, entryEditorBot.getAttributeValues().size() );
 
         // paste values, wait till job is done
         JobWatcher watcher = new JobWatcher( BrowserCoreMessages.jobs__execute_ldif_name );
@@ -305,35 +399,37 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         watcher.waitUntilDone();
 
         // assert pasted values are visible in editor
-        SWTUtils.sleep( 1000 );
-        assertEquals( 12, entryEditorBot.getAttributeValues().size() );
+        assertEquals( 27, entryEditorBot.getAttributeValues().size() );
         assertTrue( entryEditorBot.getAttributeValues().contains( "uid: hnelson" ) );
         assertTrue( entryEditorBot.getAttributeValues().contains( "description: " + Characters.ALL ) );
         assertTrue( entryEditorBot.getAttributeValues().contains( "jpegPhoto: JPEG-Image (1x1 Pixel, 631 Bytes)" ) );
         assertTrue( entryEditorBot.getAttributeValues().contains( "userPassword: SSHA-512 hashed password" ) );
 
         // assert pasted values were written to directory
-        Entry entry = service.getAdminSession()
-            .lookup( new Dn( "cn=\\#\\\\\\+\\, \\\"\u00F6\u00E9\\\",ou=users,ou=system" ) );
-        assertTrue( "Should contain uid=hnelson: " + entry, entry.contains( "uid", "hnelson" ) );
-        assertTrue( "Should contain description: " + entry, entry.contains( "description", Characters.ALL ) );
-        assertTrue( "Should contain userPassword: " + entry, entry.containsAttribute( "userPassword" ) );
-        assertTrue( "Should contain jpegPhoto: " + entry, entry.containsAttribute( "jpegPhoto" ) );
+        server.withAdminConnection( conn -> {
+            Entry entry = conn.lookup( USER1_DN );
+            assertTrue( entry.contains( "uid", "hnelson" ), "Should contain uid=hnelson: " + entry );
+            assertTrue( entry.contains( "description", Characters.ALL ), "Should contain description: " + entry );
+            assertTrue( entry.containsAttribute( "userPassword" ), "Should contain userPassword: " + entry );
+            assertTrue( entry.containsAttribute( "jpegPhoto" ), "Should contain jpegPhoto: " + entry );
+        } );
     }
 
 
     /**
      * DIRSTUDIO-738: Add support for modular crypt format password
      */
-    @Test
-    public void testPasswordValueEditor() throws Exception
+    @ParameterizedTest
+    @LdapServersSource(mode=Mode.All)
+    public void testPasswordValueEditor( TestLdapServer server ) throws Exception
     {
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Barbara Jensen" );
+        connectionsViewBot.createTestConnection( server );
+        browserViewBot.selectEntry( path( BJENSEN_DN ) );
 
-        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "cn=Barbara Jensen,ou=users,ou=system" );
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( BJENSEN_DN.getName() );
         entryEditorBot.activate();
         String dn = entryEditorBot.getDnText();
-        assertEquals( "DN: cn=Barbara Jensen,ou=users,ou=system", dn );
+        assertEquals( "DN: " + BJENSEN_DN.getName(), dn );
         assertEquals( 8, entryEditorBot.getAttributeValues().size() );
         assertEquals( "", modificationLogsViewBot.getModificationLogsText() );
 
@@ -371,7 +467,6 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         pwdEditorBot.clickOkButton();
 
         // assert value after saved and reloaded from server
-        SWTUtils.sleep( 1000 );
         assertTrue( entryEditorBot.getAttributeValues().contains( "userPassword: CRYPT-SHA-512 hashed password" ) );
 
         // verify and bind with the correct password
@@ -400,11 +495,8 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         pwdEditorBot.setShowNewPasswordDetails( true );
         assertHashMethod( pwdEditorBot, LdapSecurityConstants.HASH_METHOD_SSHA256, PasswordUtil.SHA256_LENGTH, 8 );
         pwdEditorBot.clickOkButton();
-        SWTUtils.sleep( 1000 );
         assertTrue( entryEditorBot.getAttributeValues().contains( "userPassword: SSHA-256 hashed password" ) );
     }
-
-
     private void assertHashMethod( PasswordEditorDialogBot passwordEditorBot, LdapSecurityConstants hashMethod,
         int passwordLength, int saltLength ) throws Exception
     {
@@ -433,15 +525,17 @@ public class EntryEditorTest extends AbstractLdapTestUnit
     /**
      * DIRSTUDIO-1157: Values cannot be modified by text editor
      */
-    @Test
-    public void testTextValueEditor() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testTextValueEditor( TestLdapServer server ) throws Exception
     {
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Barbara Jensen" );
+        connectionsViewBot.createTestConnection( server );
+        browserViewBot.selectEntry( path( BJENSEN_DN ) );
 
-        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "cn=Barbara Jensen,ou=users,ou=system" );
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( BJENSEN_DN.getName() );
         entryEditorBot.activate();
         String dn = entryEditorBot.getDnText();
-        assertEquals( "DN: cn=Barbara Jensen,ou=users,ou=system", dn );
+        assertEquals( "DN: " + BJENSEN_DN.getName(), dn );
         assertEquals( 8, entryEditorBot.getAttributeValues().size() );
         assertEquals( "", modificationLogsViewBot.getModificationLogsText() );
 
@@ -468,52 +562,116 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         assertTrue( entryEditorBot.getAttributeValues().contains( "description: " + newValue ) );
         String description2Ldif = LdifAttrValLine.create( "description", newValue )
             .toFormattedString( LdifFormatParameters.DEFAULT ).replace( LdifParserConstants.LINE_SEPARATOR, "\n" );
-        modificationLogsViewBot.waitForText( "replace: description\n" + description2Ldif );
+        modificationLogsViewBot.waitForText( "delete: description\ndescription: testTextValueEditor 1" );
+        modificationLogsViewBot.waitForText( "add: description\n" + description2Ldif );
     }
 
 
     /**
-     * DIRSTUDIO-1199, DIRSTUDIO-1204: Binary attributes
+     * DIRSTUDIO-1199, DIRSTUDIO-1204, DIRSTUDIO-1267: Binary attributes.
+     * Test adding, editing and deleting of attributes with binary option in the entry editor.
      */
-    @Test
-    public void testCertificateValueEditor() throws Exception
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All)
+    public void testCertificateValueEditor( TestLdapServer server ) throws Exception
     {
-        X500Name issuer = new X500Name( "Foo", "Bar", "Baz", "US" );
-        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance( "EC" );
-        keyPairGenerator.initialize( 256 );
-        KeyPair keyPair = keyPairGenerator.generateKeyPair();
-        X509Certificate certificate = CertificateUtil.generateSelfSignedCertificate( issuer, keyPair, 365,
-            "SHA256WithECDSA" );
-        getService().getAdminSession().modify( new Dn( "cn=Barbara Jensen,ou=users,ou=system" ),
-            new DefaultModification( ModificationOperation.ADD_ATTRIBUTE, "userCertificate",
-                certificate.getEncoded() ) );
+        connectionsViewBot.createTestConnection( server );
+        String certFile = ResourceUtils.prepareInputFile( "rfc5280_cert2.cer" );
+        String cert3File = ResourceUtils.prepareInputFile( "rfc5280_cert3.cer" );
 
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Barbara Jensen" );
+        browserViewBot.selectEntry( path( BJENSEN_DN ) );
 
-        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "cn=Barbara Jensen,ou=users,ou=system" );
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( BJENSEN_DN.getName() );
         entryEditorBot.activate();
 
-        BotUtils.sleep( 1000 );
-        assertTrue( entryEditorBot.getAttributeValues()
-            .contains( "userCertificate: X.509v3: CN=Foo,OU=Bar,O=Baz,C=US" ) );
+        // add userCertificate;binary
+        NewAttributeWizardBot wizardBot = entryEditorBot.openNewAttributeWizard();
+        assertTrue( wizardBot.isVisible() );
+        wizardBot.typeAttributeType( "userCertificate" );
+        wizardBot.clickNextButton();
+        wizardBot.selectBinaryOption();
+        CertificateEditorDialogBot certEditorBot = wizardBot.clickFinishButtonExpectingCertificateEditor();
+        assertTrue( certEditorBot.isVisible() );
+        certEditorBot.typeFile( certFile );
+        certEditorBot.clickOkButton();
+        modificationLogsViewBot.waitForText( "add: userCertificate;binary\nuserCertificate;binary:: " );
+        if ( server.getType() == LdapServerType.OpenLdap || server.getType() == LdapServerType.Fedora389ds )
+        {
+            assertTrue( entryEditorBot.getAttributeValues()
+                .contains( "userCertificate;binary: X.509v3: CN=End Entity,DC=example,DC=com" ) );
+        }
+        else
+        {
+            assertTrue( entryEditorBot.getAttributeValues()
+                .contains( "userCertificate: X.509v3: CN=End Entity,DC=example,DC=com" ) );
+        }
+
+        // edit userCertificate;binary
+        if ( server.getType() == LdapServerType.OpenLdap || server.getType() == LdapServerType.Fedora389ds )
+        {
+            certEditorBot = entryEditorBot.editValueExpectingCertificateEditor( "userCertificate;binary",
+                "X.509v3: CN=End Entity,DC=example,DC=com" );
+        }
+        else
+        {
+            certEditorBot = entryEditorBot.editValueExpectingCertificateEditor( "userCertificate",
+                "X.509v3: CN=End Entity,DC=example,DC=com" );
+        }
+        assertTrue( certEditorBot.isVisible() );
+        certEditorBot.typeFile( cert3File );
+        certEditorBot.clickOkButton();
+        if ( server.getType() == LdapServerType.OpenLdap || server.getType() == LdapServerType.Fedora389ds )
+        {
+            modificationLogsViewBot
+                .waitForText( "delete: userCertificate;binary\nuserCertificate;binary:: MIICcTCCAdqg" );
+            modificationLogsViewBot.waitForText( "add: userCertificate;binary\nuserCertificate;binary:: MIIDjjCCA06g" );
+            assertFalse( entryEditorBot.getAttributeValues()
+                .contains( "userCertificate;binary: X.509v3: CN=End Entity,DC=example,DC=com" ) );
+            assertTrue( entryEditorBot.getAttributeValues()
+                .contains( "userCertificate;binary: X.509v3: CN=DSA End Entity,DC=example,DC=com" ) );
+        }
+        else
+        {
+            modificationLogsViewBot.waitForText( "delete: userCertificate\nuserCertificate:: MIICcTCCAdqg" );
+            modificationLogsViewBot.waitForText( "add: userCertificate\nuserCertificate:: MIIDjjCCA06g" );
+            assertFalse( entryEditorBot.getAttributeValues()
+                .contains( "userCertificate: X.509v3: CN=End Entity,DC=example,DC=com" ) );
+            assertTrue( entryEditorBot.getAttributeValues()
+                .contains( "userCertificate: X.509v3: CN=DSA End Entity,DC=example,DC=com" ) );
+        }
+
+        // delete userCertificate;binary
+        if ( server.getType() == LdapServerType.OpenLdap || server.getType() == LdapServerType.Fedora389ds )
+        {
+            entryEditorBot.deleteValue( "userCertificate;binary", "X.509v3: CN=DSA End Entity,DC=example,DC=com" );
+            modificationLogsViewBot
+                .waitForText( "delete: userCertificate;binary\nuserCertificate;binary:: MIIDjjCCA06g" );
+            assertFalse( entryEditorBot.getAttributeValues()
+                .contains( "userCertificate;binary: X.509v3: CN=DSA End Entity,DC=example,DC=com" ) );
+        }
+        else
+        {
+            entryEditorBot.deleteValue( "userCertificate", "X.509v3: CN=DSA End Entity,DC=example,DC=com" );
+            modificationLogsViewBot.waitForText( "delete: userCertificate\nuserCertificate:: MIIDjjCCA06g" );
+            assertFalse( entryEditorBot.getAttributeValues()
+                .contains( "userCertificate: X.509v3: CN=DSA End Entity,DC=example,DC=com" ) );
+        }
     }
 
 
     /**
      * DIRSTUDIO-1199, DIRSTUDIO-1204: Binary attributes
      */
-    @Test
-    public void testImageValueEditor() throws Exception
+    @ParameterizedTest
+    @LdapServersSource
+    public void testImageValueEditor( TestLdapServer server ) throws Exception
     {
-        URL url = Platform.getInstanceLocation().getURL();
-        String destFile = url.getFile() + "studio_64x64.jpg";
-        InputStream is = getClass().getResourceAsStream( "studio_64x64.jpg" );
-        byte[] data = IOUtils.toByteArray( is, 2014 );
-        FileUtils.writeByteArrayToFile( new File( destFile ), data );
+        connectionsViewBot.createTestConnection( server );
+        String imgFile = ResourceUtils.prepareInputFile( "studio_64x64.jpg" );
 
-        browserViewBot.selectEntry( "DIT", "Root DSE", "ou=system", "ou=users", "cn=Barbara Jensen" );
+        browserViewBot.selectEntry( path( BJENSEN_DN ) );
 
-        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( "cn=Barbara Jensen,ou=users,ou=system" );
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( BJENSEN_DN.getName() );
         entryEditorBot.activate();
 
         // add image
@@ -522,12 +680,290 @@ public class EntryEditorTest extends AbstractLdapTestUnit
         wizardBot.typeAttributeType( "jpegPhoto" );
         ImageEditorDialogBot imageEditorBot = wizardBot.clickFinishButtonExpectingImageEditor();
         assertTrue( imageEditorBot.isVisible() );
-        imageEditorBot.typeFile( destFile );
+        imageEditorBot.typeFile( imgFile );
         imageEditorBot.clickOkButton();
 
         // assert value after saved and reloaded from server
-        SWTUtils.sleep( 1000 );
+        modificationLogsViewBot.waitForText( "add: jpegPhoto\njpegPhoto:: " );
         assertTrue( entryEditorBot.getAttributeValues().contains( "jpegPhoto: JPEG-Image (64x64 Pixel, 2014 Bytes)" ) );
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "ApacheDS specific test")
+    public void testAciItemEditorAllOptions( TestLdapServer server ) throws Exception
+    {
+        connectionsViewBot.createTestConnection( server );
+        browserViewBot.selectEntry( path( HNELSON_DN ) );
+
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( HNELSON_DN.getName() );
+        entryEditorBot.activate();
+        entryEditorBot.fetchOperationalAttributes();
+        SWTUtils.sleep( 1000 );
+
+        entryEditorBot.activate();
+        AciItemEditorDialogBot aciItemEditor = entryEditorBot.editValueExpectingAciItemEditor( "entryACI", null );
+
+        aciItemEditor.activateSourceTab();
+        aciItemEditor.activateVisualEditorTab();
+
+        aciItemEditor.setIdentificationTag( "Test 1234" );
+
+        aciItemEditor.setPrecedence( 1 );
+        aciItemEditor.setPrecedence( 10 );
+        aciItemEditor.setPrecedence( 100 );
+
+        aciItemEditor.setAuthenticationLevel( AuthenticationLevel.NONE );
+        aciItemEditor.setAuthenticationLevel( AuthenticationLevel.SIMPLE );
+        aciItemEditor.setAuthenticationLevel( AuthenticationLevel.STRONG );
+
+        aciItemEditor.setUserFirst();
+
+        aciItemEditor.enableUserClassAllUsers();
+        aciItemEditor.disableUserClassAllUsers();
+        aciItemEditor.enableUserClassThisEntry();
+        aciItemEditor.disableUserClassThisEntry();
+        aciItemEditor.enableUserClassParentOfEntry();
+        aciItemEditor.disableUserClassParentOfEntry();
+        aciItemEditor.enableUserClassName();
+        aciItemEditor.disableUserClassName();
+        aciItemEditor.enableUserClassUserGroup();
+        aciItemEditor.disableUserClassUserGroup();
+        aciItemEditor.enableUserClassSubtree();
+        aciItemEditor.disableUserClassSubtree();
+
+        aciItemEditor.setItemFirst();
+
+        aciItemEditor.enableProtectedItemEntry();
+        aciItemEditor.disableProtectedItemEntry();
+        aciItemEditor.enableProtectedItemAllUserAttributeTypes();
+        aciItemEditor.disableProtectedItemAllUserAttributeTypes();
+        aciItemEditor.enableProtectedItemAttributeType();
+        aciItemEditor.disableProtectedItemAttributeType();
+        aciItemEditor.enableProtectedItemAllAttributeValues();
+        aciItemEditor.disableProtectedItemAllAttributeValues();
+        aciItemEditor.enableProtectedItemAllUserAttributeTypesAndValues();
+        aciItemEditor.disableProtectedItemAllUserAttributeTypesAndValues();
+        aciItemEditor.enableProtectedItemAttributeValues();
+        aciItemEditor.disableProtectedItemAttributeValues();
+        aciItemEditor.enableProtectedItemSelfValue();
+        aciItemEditor.disableProtectedItemSelfValue();
+        aciItemEditor.enableProtectedItemRangeOfValues();
+        aciItemEditor.disableProtectedItemRangeOfValues();
+        aciItemEditor.enableProtectedItemMaxValueCount();
+        aciItemEditor.disableProtectedItemMaxValueCount();
+        aciItemEditor.enableProtectedItemMaxNumberOfImmediateSubordinates();
+        aciItemEditor.disableProtectedItemMaxNumberOfImmediateSubordinates();
+        aciItemEditor.enableProtectedItemRestrictedBy();
+        aciItemEditor.disableProtectedItemRestrictedBy();
+        aciItemEditor.enableProtectedItemClasses();
+        aciItemEditor.disableProtectedItemClasses();
+
+        aciItemEditor.clickCancelButton();
+    }
+
+
+    /**
+     * Test for DIRSTUDIO-1135
+     */
+    @ParameterizedTest
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "ApacheDS specific test")
+    public void testAciItemEditorAllAttributesValuesParser( TestLdapServer server ) throws Exception
+    {
+        connectionsViewBot.createTestConnection( server );
+        browserViewBot.selectEntry( path( HNELSON_DN ) );
+
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( HNELSON_DN.getName() );
+        entryEditorBot.activate();
+        entryEditorBot.fetchOperationalAttributes();
+        SWTUtils.sleep( 1000 );
+
+        entryEditorBot.activate();
+        AciItemEditorDialogBot aciItemEditor = entryEditorBot.editValueExpectingAciItemEditor( "entryACI", null );
+
+        aciItemEditor.activateSourceTab();
+        aciItemEditor.setSource(
+            "{ identificationTag \"Test\", precedence 0, authenticationLevel none, itemOrUserFirst itemFirst: { protectedItems { allAttributeValues { cn } }, itemPermissions { } } }" );
+        aciItemEditor.clickCheckSyntaxButtonOk();
+
+        aciItemEditor.activateVisualEditorTab();
+        aciItemEditor.clickCheckSyntaxButtonOk();
+
+        aciItemEditor.activateSourceTab();
+        aciItemEditor.clickCheckSyntaxButtonOk();
+
+        aciItemEditor.activateVisualEditorTab();
+        aciItemEditor.clickCheckSyntaxButtonOk();
+
+        aciItemEditor.clickOkButton();
+
+        modificationLogsViewBot.waitForText( "delete: entryACI\n" );
+        modificationLogsViewBot.waitForText( "add: entryACI\n" );
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "ApacheDS specific test")
+    public void testAciItemEditorEntryAci( TestLdapServer server ) throws Exception
+    {
+        connectionsViewBot.createTestConnection( server );
+        browserViewBot.selectEntry( path( HNELSON_DN ) );
+
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( HNELSON_DN.getName() );
+        entryEditorBot.activate();
+        entryEditorBot.fetchOperationalAttributes();
+        SWTUtils.sleep( 1000 );
+
+        entryEditorBot.activate();
+        AciItemEditorDialogBot aciItemEditor = entryEditorBot.editValueExpectingAciItemEditor( "entryACI", null );
+
+        aciItemEditor.activateSourceTab();
+        aciItemEditor.clickCheckSyntaxButtonOk();
+
+        aciItemEditor.activateVisualEditorTab();
+        aciItemEditor.clickCheckSyntaxButtonOk();
+
+        aciItemEditor.activateSourceTab();
+        aciItemEditor.clickFormatButton();
+        aciItemEditor.clickCheckSyntaxButtonOk();
+
+        String source = aciItemEditor.getSource();
+        source = source.replace( "grantFilterMatch,", "" );
+
+        aciItemEditor.setSource( "invalid" );
+        aciItemEditor.clickCheckSyntaxButtonError();
+
+        aciItemEditor.setSource( source );
+        aciItemEditor.clickCheckSyntaxButtonOk();
+
+        aciItemEditor.clickOkButton();
+
+        modificationLogsViewBot.waitForText( "delete: entryACI\n" );
+        modificationLogsViewBot.waitForText( "add: entryACI\n" );
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "ApacheDS specific test")
+    public void testAciItemEditorPrescriptiveAci( TestLdapServer server ) throws Exception
+    {
+        connectionsViewBot.createTestConnection( server );
+        browserViewBot.selectEntry( path( HNELSON_DN ) );
+
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( HNELSON_DN.getName() );
+        entryEditorBot.activate();
+        entryEditorBot.fetchOperationalAttributes();
+        SWTUtils.sleep( 1000 );
+
+        entryEditorBot.activate();
+        AciItemEditorDialogBot aciItemEditor = entryEditorBot.editValueExpectingAciItemEditor( "prescriptiveACI",
+            null );
+
+        aciItemEditor.activateSourceTab();
+        aciItemEditor.clickFormatButton();
+        aciItemEditor.clickCheckSyntaxButtonOk();
+
+        aciItemEditor.activateVisualEditorTab();
+        aciItemEditor.clickCheckSyntaxButtonOk();
+
+        aciItemEditor.clickOkButton();
+
+        modificationLogsViewBot.waitForText( "delete: prescriptiveACI\n" );
+        modificationLogsViewBot.waitForText( "add: prescriptiveACI\n" );
+    }
+
+
+    @ParameterizedTest
+    @LdapServersSource(only = LdapServerType.ApacheDS, reason = "ApacheDS specific test")
+    public void testSubtreeSpecificationEditor( TestLdapServer server ) throws Exception
+    {
+        connectionsViewBot.createTestConnection( server );
+        browserViewBot.selectEntry( path( HNELSON_DN ) );
+
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( HNELSON_DN.getName() );
+        entryEditorBot.activate();
+        entryEditorBot.fetchOperationalAttributes();
+        SWTUtils.sleep( 1000 );
+
+        entryEditorBot.activate();
+        SubtreeSpecificationEditorDialogBot subtreeEditorBot = entryEditorBot
+            .editValueExpectingSubtreeSpecificationEditor( "subtreeSpecification",
+                null );
+
+        subtreeEditorBot.clickOkButton();
+    }
+
+
+    /**
+     * Test for DIRSTUDIO-1249, DIRSTUDIO-1267: userSMIMECertificate is a binary attribute.
+     */
+    @ParameterizedTest
+    @LdapServersSource(mode = Mode.All)
+    public void testHexEditor( TestLdapServer server ) throws Exception
+    {
+        Connection connection = connectionsViewBot.createTestConnection( server );
+        if ( server.getType() == LdapServerType.OpenLdap )
+        {
+            IBrowserConnection browserConnection = BrowserCorePlugin.getDefault().getConnectionManager()
+                .getBrowserConnection( connection );
+            browserConnection.setModifyModeNoEMR( ModifyMode.REPLACE );
+        }
+
+        browserViewBot.selectEntry( path( HNELSON_DN ) );
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( HNELSON_DN.getName() );
+        entryEditorBot.activate();
+        assertTrue( entryEditorBot.getAttributeValues().contains( "userSMIMECertificate: Binary Data (255 Bytes)" ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "userSMIMECertificate: Binary Data (256 Bytes)" ) );
+        assertTrue( entryEditorBot.getAttributeValues().contains( "userSMIMECertificate: Binary Data (257 Bytes)" ) );
+
+        HexEditorDialogBot hexEditorDialogBot = entryEditorBot.editValueExpectingHexEditor( "userSMIMECertificate",
+            "Binary Data (256 Bytes)" );
+        String hexText = hexEditorDialogBot.getHexText();
+        assertTrue( hexText.contains( "00 01 02 03 04 05 06 07  08 09 0a 0b 0c 0d 0e 0f     ........ ........" ) );
+        assertTrue( hexText.contains( "70 71 72 73 74 75 76 77  78 79 7a 7b 7c 7d 7e 7f     pqrstuvw xyz{|}~." ) );
+        assertTrue( hexText.contains( "80 81 82 83 84 85 86 87  88 89 8a 8b 8c 8d 8e 8f     ........ ........" ) );
+        assertTrue( hexText.contains( "f0 f1 f2 f3 f4 f5 f6 f7  f8 f9 fa fb fc fd fe ff     ........ ........" ) );
+        hexEditorDialogBot.clickCancelButton();
+
+        hexEditorDialogBot = entryEditorBot.editValueExpectingHexEditor( "userSMIMECertificate",
+            "Binary Data (255 Bytes)" );
+        hexText = hexEditorDialogBot.getHexText();
+        assertTrue( hexText.contains( "f0 f1 f2 f3 f4 f5 f6 f7  f8 f9 fa fb fc fd fe        ........ ......." ) );
+        hexEditorDialogBot.clickCancelButton();
+
+        hexEditorDialogBot = entryEditorBot.editValueExpectingHexEditor( "userSMIMECertificate",
+            "Binary Data (257 Bytes)" );
+        hexText = hexEditorDialogBot.getHexText();
+        assertTrue( hexText.contains( "f0 f1 f2 f3 f4 f5 f6 f7  f8 f9 fa fb fc fd fe ff     ........ ........" ) );
+        assertTrue( hexText.contains( "00                                                   ." ) );
+        hexEditorDialogBot.clickCancelButton();
+
+        String crtFile = ResourceUtils.prepareInputFile( "rfc5280_cert2.cer" );
+
+        entryEditorBot.activate();
+        NewAttributeWizardBot wizardBot = entryEditorBot.openNewAttributeWizard();
+        assertTrue( wizardBot.isVisible() );
+        wizardBot.typeAttributeType( "userSMIMECertificate" );
+        wizardBot.clickNextButton();
+        HexEditorDialogBot hexEditorBot = wizardBot.clickFinishButtonExpectingHexEditor();
+
+        assertTrue( hexEditorBot.isVisible() );
+        hexEditorBot.typeFile( crtFile );
+
+        hexEditorBot.clickOkButton();
+
+        if ( server.getType() == LdapServerType.OpenLdap )
+        {
+            modificationLogsViewBot.waitForText( "replace: userSMIMECertificate\nuserSMIMECertificate:: " );
+            assertTrue( entryEditorBot.getAttributeValues()
+                .contains( "userSMIMECertificate: Binary Data (629 Bytes)" ) );
+        }
+        else
+        {
+            modificationLogsViewBot.waitForText( "add: userSMIMECertificate\nuserSMIMECertificate:: " );
+            assertTrue( entryEditorBot.getAttributeValues()
+                .contains( "userSMIMECertificate: Binary Data (629 Bytes)" ) );
+        }
     }
 
 }

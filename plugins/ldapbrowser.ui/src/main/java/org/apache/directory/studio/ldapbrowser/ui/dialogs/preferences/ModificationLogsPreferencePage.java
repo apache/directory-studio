@@ -25,9 +25,8 @@ import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.ldapbrowser.ui.BrowserUIPlugin;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jface.preference.PreferencePage;
-import org.eclipse.swt.events.VerifyEvent;
-import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -50,7 +49,6 @@ public class ModificationLogsPreferencePage extends PreferencePage implements IW
     private Text logFileCountText;
     private Text logFileSizeText;
     private Text maskedAttributesText;
-
 
     /**
      * Creates a new instance of ModificationLogsPreferencePage.
@@ -82,8 +80,6 @@ public class ModificationLogsPreferencePage extends PreferencePage implements IW
         BaseWidgetUtils.createSpacer( composite, 1 );
         enableModificationLogging = BaseWidgetUtils.createCheckbox( composite, Messages
             .getString( "ModificationLogsPreferencePage.EnableModificationLogs" ), 1 ); //$NON-NLS-1$
-        enableModificationLogging.setSelection( ConnectionCorePlugin.getDefault().getPluginPreferences().getBoolean(
-            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_ENABLE ) );
 
         BaseWidgetUtils.createSpacer( composite, 1 );
         BaseWidgetUtils.createSpacer( composite, 1 );
@@ -92,8 +88,6 @@ public class ModificationLogsPreferencePage extends PreferencePage implements IW
             1 ), Messages.getString( "ModificationLogsPreferencePage.MaskedAttributes" ), 1 ); //$NON-NLS-1$
         Composite maskedAttributesComposite = BaseWidgetUtils.createColumnContainer( maskedAttributesGroup, 1, 1 );
         maskedAttributesText = BaseWidgetUtils.createText( maskedAttributesComposite, "", 1 ); //$NON-NLS-1$
-        maskedAttributesText.setText( ConnectionCorePlugin.getDefault().getPluginPreferences().getString(
-            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_MASKED_ATTRIBUTES ) );
         String maskedAttributesHelp = Messages.getString( "ModificationLogsPreferencePage.CommaSeparatedList" ); //$NON-NLS-1$
         BaseWidgetUtils.createWrappedLabel( maskedAttributesComposite, maskedAttributesHelp, 1 );
 
@@ -105,45 +99,52 @@ public class ModificationLogsPreferencePage extends PreferencePage implements IW
         Composite rotateComposite = BaseWidgetUtils.createColumnContainer( rotateGroup, 5, 1 );
         BaseWidgetUtils.createLabel( rotateComposite, Messages.getString( "ModificationLogsPreferencePage.Use" ), 1 ); //$NON-NLS-1$
         logFileCountText = BaseWidgetUtils.createText( rotateComposite, "", 3, 1 ); //$NON-NLS-1$
-        logFileCountText.setText( ConnectionCorePlugin.getDefault().getPluginPreferences().getString(
-            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_FILE_COUNT ) );
-        logFileCountText.addVerifyListener( new VerifyListener()
-        {
-            public void verifyText( VerifyEvent e )
+        logFileCountText.addVerifyListener( e -> {
+            if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
             {
-                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
-                {
-                    e.doit = false;
-                }
-                if ( "".equals( logFileCountText.getText() ) && e.text.matches( "[0]" ) ) //$NON-NLS-1$ //$NON-NLS-2$
-                {
-                    e.doit = false;
-                }
+                e.doit = false;
+            }
+            if ( "".equals( logFileCountText.getText() ) && e.text.matches( "[0]" ) ) //$NON-NLS-1$ //$NON-NLS-2$
+            {
+                e.doit = false;
             }
         } );
+        logFileCountText.addModifyListener( e -> validate() );
         BaseWidgetUtils.createLabel( rotateComposite, Messages
             .getString( "ModificationLogsPreferencePage.LogFilesEach" ), 1 ); //$NON-NLS-1$
         logFileSizeText = BaseWidgetUtils.createText( rotateComposite, "", 5, 1 ); //$NON-NLS-1$
-        logFileSizeText.setText( ConnectionCorePlugin.getDefault().getPluginPreferences().getString(
-            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_FILE_SIZE ) );
-        logFileSizeText.addVerifyListener( new VerifyListener()
-        {
-            public void verifyText( VerifyEvent e )
+        logFileSizeText.addVerifyListener( e -> {
+            if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
             {
-                if ( !e.text.matches( "[0-9]*" ) ) //$NON-NLS-1$
-                {
-                    e.doit = false;
-                }
-                if ( "".equals( logFileSizeText.getText() ) && e.text.matches( "[0]" ) ) //$NON-NLS-1$ //$NON-NLS-2$
-                {
-                    e.doit = false;
-                }
+                e.doit = false;
+            }
+            if ( "".equals( logFileSizeText.getText() ) && e.text.matches( "[0]" ) ) //$NON-NLS-1$ //$NON-NLS-2$
+            {
+                e.doit = false;
             }
         } );
+        logFileSizeText.addModifyListener( e -> validate() );
         BaseWidgetUtils.createLabel( rotateComposite, Messages.getString( "ModificationLogsPreferencePage.KB" ), 1 ); //$NON-NLS-1$
+
+        setValues();
 
         applyDialogFont( composite );
         return composite;
+    }
+
+
+    private void setValues()
+    {
+        enableModificationLogging.setSelection( ConnectionCorePlugin.getDefault().isModificationLogsEnabled() );
+        maskedAttributesText.setText( ConnectionCorePlugin.getDefault().getMModificationLogsMaskedAttributes() );
+        logFileCountText.setText( "" + ConnectionCorePlugin.getDefault().getModificationLogsFileCount() );
+        logFileSizeText.setText( "" + ConnectionCorePlugin.getDefault().getModificationLogsFileSize() );
+    }
+
+
+    public void validate()
+    {
+        setValid( logFileCountText.getText().matches( "[0-9]+" ) && logFileSizeText.getText().matches( "[0-9]+" ) );
     }
 
 
@@ -152,14 +153,16 @@ public class ModificationLogsPreferencePage extends PreferencePage implements IW
      */
     public boolean performOk()
     {
-        ConnectionCorePlugin.getDefault().getPluginPreferences().setValue(
-            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_ENABLE, enableModificationLogging.getSelection() );
-        ConnectionCorePlugin.getDefault().getPluginPreferences().setValue(
-            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_FILE_COUNT, logFileCountText.getText() );
-        ConnectionCorePlugin.getDefault().getPluginPreferences().setValue(
-            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_FILE_SIZE, logFileSizeText.getText() );
-        ConnectionCorePlugin.getDefault().getPluginPreferences().setValue(
-            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_MASKED_ATTRIBUTES, maskedAttributesText.getText() );
+        IEclipsePreferences instancePreferences = ConnectionCorePlugin.getDefault().getInstanceScopePreferences();
+        instancePreferences.putBoolean( ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_ENABLE,
+            enableModificationLogging.getSelection() );
+        instancePreferences.put( ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_MASKED_ATTRIBUTES,
+            maskedAttributesText.getText() );
+        instancePreferences.putInt( ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_FILE_COUNT,
+            Integer.parseInt( logFileCountText.getText() ) );
+        instancePreferences.putInt( ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_FILE_SIZE,
+            Integer.parseInt( logFileSizeText.getText() ) );
+        ConnectionCorePlugin.getDefault().flushInstanceScopePreferences();
         return true;
     }
 
@@ -169,14 +172,13 @@ public class ModificationLogsPreferencePage extends PreferencePage implements IW
      */
     protected void performDefaults()
     {
-        enableModificationLogging.setSelection( ConnectionCorePlugin.getDefault().getPluginPreferences()
-            .getDefaultBoolean( ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_ENABLE ) );
-        logFileCountText.setText( ConnectionCorePlugin.getDefault().getPluginPreferences().getDefaultString(
-            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_FILE_COUNT ) );
-        logFileSizeText.setText( ConnectionCorePlugin.getDefault().getPluginPreferences().getDefaultString(
-            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_FILE_SIZE ) );
-        maskedAttributesText.setText( ConnectionCorePlugin.getDefault().getPluginPreferences().getDefaultString(
-            ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_MASKED_ATTRIBUTES ) );
+        IEclipsePreferences instancePreferences = ConnectionCorePlugin.getDefault().getInstanceScopePreferences();
+        instancePreferences.remove( ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_ENABLE );
+        instancePreferences.remove( ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_MASKED_ATTRIBUTES );
+        instancePreferences.remove( ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_FILE_COUNT );
+        instancePreferences.remove( ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_FILE_SIZE );
+        ConnectionCorePlugin.getDefault().flushInstanceScopePreferences();
+        setValues();
         super.performDefaults();
     }
 

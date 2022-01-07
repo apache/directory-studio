@@ -20,6 +20,7 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
@@ -29,8 +30,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarPushButton;
 public class AbstractLogsViewBot
 {
 
-    private SWTBotView view;
-
+    protected SWTBotView view;
 
     public AbstractLogsViewBot( String title )
     {
@@ -64,7 +64,7 @@ public class AbstractLogsViewBot
                 {
                     refreshButton.click();
                 }
-                return view.bot().styledText().getText().contains( text );
+                return StringUtils.containsIgnoreCase( view.bot().styledText().getText(), text );
             }
 
 
@@ -76,4 +76,43 @@ public class AbstractLogsViewBot
 
         } );
     }
+
+
+    public void clear()
+    {
+        view.show();
+        view.toolbarPushButton( "Clear" ).click();
+        new DialogBot( "Delete" )
+        {
+        }.clickOkButton();
+    }
+
+
+    public boolean isOlderButtonEnabled()
+    {
+        view.show();
+        return view.toolbarPushButton( "Older" ).isEnabled();
+    }
+
+
+    public void clickOlderButton()
+    {
+        view.show();
+        view.toolbarPushButton( "Older" ).click();
+    }
+
+
+    public boolean isNewerButtonEnabled()
+    {
+        view.show();
+        return view.toolbarPushButton( "Newer" ).isEnabled();
+    }
+
+
+    public void clickNewerButton()
+    {
+        view.show();
+        view.toolbarPushButton( "Newer" ).click();
+    }
+
 }

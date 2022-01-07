@@ -20,7 +20,7 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
-import org.apache.directory.studio.test.integration.ui.bots.utils.TreeBot;
+import org.apache.directory.studio.test.integration.ui.utils.TreeBot;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 
@@ -60,6 +60,7 @@ public abstract class WizardBot extends DialogBot
 
     protected boolean isButtonEnabled( String buttonTitle )
     {
+        activate();
         return bot.button( buttonTitle ).isEnabled();
     }
 
@@ -93,9 +94,10 @@ public abstract class WizardBot extends DialogBot
     }
 
 
-    public void clickCancelButton()
+    public ErrorDialogBot clickFinishButtonExpectingError()
     {
-        clickButton( "Cancel" );
+        String shellText = BotUtils.shell( () -> clickFinishButton(), "Error", "Problem Occurred" ).getText();
+        return new ErrorDialogBot( shellText );
     }
 
 

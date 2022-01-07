@@ -24,7 +24,6 @@ package org.apache.directory.studio.ldapbrowser.common.actions;
 import org.apache.directory.studio.connection.core.Utils;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonActivator;
 import org.apache.directory.studio.ldapbrowser.common.BrowserCommonConstants;
-import org.apache.directory.studio.ldapbrowser.common.widgets.browser.BrowserWidget;
 import org.apache.directory.studio.ldapbrowser.core.jobs.SearchRunnable;
 import org.apache.directory.studio.ldapbrowser.core.jobs.StudioBrowserJob;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
@@ -45,19 +44,6 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
  */
 public class OpenQuickSearchAction extends BrowserAction
 {
-    /** The browser widget */
-    private BrowserWidget widget;
-
-
-    /**
-     * Creates a new instance of OpenQuickSearchAction.
-     */
-    public OpenQuickSearchAction( BrowserWidget widget )
-    {
-        this.widget = widget;
-    }
-
-
     /**
      * {@inheritDoc}
      */
@@ -68,7 +54,7 @@ public class OpenQuickSearchAction extends BrowserAction
         if ( browserConnection != null )
         {
             // Getting the current quick search
-            IQuickSearch quickSearch = widget.getQuickSearch();
+            IQuickSearch quickSearch = browserConnection.getQuickSearch();
 
             // Creating a new quick search with the currently selected entry
             // if there's no current quick search or quick search isn't selected
@@ -88,7 +74,7 @@ public class OpenQuickSearchAction extends BrowserAction
 
                 // Creating a new quick search
                 quickSearch = new QuickSearch( searchBase, browserConnection );
-                widget.setQuickSearch( quickSearch );
+                browserConnection.setQuickSearch( quickSearch );
             }
 
             // Creating and opening the dialog
@@ -201,7 +187,7 @@ public class OpenQuickSearchAction extends BrowserAction
     {
         if ( getSelectedSearches().length == 1 )
         {
-            return getSelectedSearches()[0].equals( widget.getQuickSearch() );
+            return getSelectedSearches()[0] instanceof IQuickSearch;
         }
 
         return false;

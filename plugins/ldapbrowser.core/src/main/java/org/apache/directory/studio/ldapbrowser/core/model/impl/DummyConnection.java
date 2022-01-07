@@ -28,6 +28,7 @@ import org.apache.directory.studio.ldapbrowser.core.BookmarkManager;
 import org.apache.directory.studio.ldapbrowser.core.SearchManager;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.IEntry;
+import org.apache.directory.studio.ldapbrowser.core.model.IQuickSearch;
 import org.apache.directory.studio.ldapbrowser.core.model.IRootDSE;
 import org.apache.directory.studio.ldapbrowser.core.model.schema.Schema;
 
@@ -383,6 +384,23 @@ public class DummyConnection implements IBrowserConnection
      */
     public void setPagedSearchScrollMode( boolean pagedSearchScrollMode )
     {
+    }
+
+
+    /** 
+     * {@inheritDoc}
+     */
+    public void setQuickSearch( IQuickSearch quickSearch )
+    {
+    }
+
+
+    /** 
+     * {@inheritDoc}
+     */
+    public IQuickSearch getQuickSearch()
+    {
+        return null;
     }
 
 

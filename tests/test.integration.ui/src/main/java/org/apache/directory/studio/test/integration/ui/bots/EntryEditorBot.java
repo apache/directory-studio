@@ -23,6 +23,7 @@ package org.apache.directory.studio.test.integration.ui.bots;
 
 import java.util.List;
 
+import org.apache.directory.studio.test.integration.ui.utils.ContextMenuHelper;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
@@ -34,7 +35,6 @@ public class EntryEditorBot
     private SWTBotEditor editor;
     private SWTBot bot;
     private EntryEditorWidgetBot editorBot;
-
 
     public EntryEditorBot( String title )
     {
@@ -83,6 +83,12 @@ public class EntryEditorBot
     }
 
 
+    public ErrorDialogBot typeValueAndFinishAndExpectErrorDialog( String value )
+    {
+        return editorBot.typeValueAndFinishAndExpectErrorDialog( value );
+    }
+
+
     public void addValue( String attributeType )
     {
         editorBot.addValue( attributeType );
@@ -92,6 +98,12 @@ public class EntryEditorBot
     public void editValue( String attributeType, String value )
     {
         editorBot.editValue( attributeType, value );
+    }
+
+
+    public EditAttributeWizardBot editAttribute( String attributeType, String value )
+    {
+        return editorBot.editAttribute( attributeType, value );
     }
 
 
@@ -107,6 +119,31 @@ public class EntryEditorBot
     }
 
 
+    public AciItemEditorDialogBot editValueExpectingAciItemEditor( String attributeType, String value )
+    {
+        return editorBot.editValueExpectingAciItemEditor( attributeType, value );
+    }
+
+
+    public SubtreeSpecificationEditorDialogBot editValueExpectingSubtreeSpecificationEditor( String attributeType,
+        String value )
+    {
+        return editorBot.editValueExpectingSubtreeSpecificationEditor( attributeType, value );
+    }
+
+
+    public CertificateEditorDialogBot editValueExpectingCertificateEditor( String attributeType, String value )
+    {
+        return editorBot.editValueExpectingCertificateEditor( attributeType, value );
+    }
+
+
+    public HexEditorDialogBot editValueExpectingHexEditor( String attributeType, String value )
+    {
+        return editorBot.editValueExpectingHexEditor( attributeType, value );
+    }
+
+
     public TextEditorDialogBot editValueWithTextEditor( String attributeType, String value )
     {
         return editorBot.editValueWithTextEditor( attributeType, value );
@@ -116,6 +153,12 @@ public class EntryEditorBot
     public void deleteValue( String attributeType, String value )
     {
         editorBot.deleteValue( attributeType, value );
+    }
+
+
+    public ErrorDialogBot deleteValueExpectingErrorDialog( String attributeType, String value )
+    {
+        return editorBot.deleteValueExpectingErrorDialog( attributeType, value );
     }
 
 
@@ -140,6 +183,12 @@ public class EntryEditorBot
     public void pasteValues()
     {
         editorBot.pasteValues();
+    }
+
+
+    public void fetchOperationalAttributes()
+    {
+        ContextMenuHelper.clickContextMenu( bot.tree(), "Fetch Operational Attributes" );
     }
 
 }

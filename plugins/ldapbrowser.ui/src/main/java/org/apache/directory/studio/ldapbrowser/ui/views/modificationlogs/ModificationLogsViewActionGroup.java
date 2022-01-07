@@ -24,7 +24,6 @@ package org.apache.directory.studio.ldapbrowser.ui.views.modificationlogs;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.directory.studio.connection.core.ConnectionCoreConstants;
 import org.apache.directory.studio.connection.core.ConnectionCorePlugin;
 import org.apache.directory.studio.ldapbrowser.common.actions.proxy.ActionHandlerManager;
 import org.apache.directory.studio.ldapbrowser.ui.actions.proxy.ModificationLogsViewActionProxy;
@@ -144,8 +143,8 @@ public class ModificationLogsViewActionGroup implements ActionHandlerManager, IM
         {
             public void menuAboutToShow( IMenuManager manager )
             {
-                enableModificationLogsAction.setChecked( ConnectionCorePlugin.getDefault().getPluginPreferences()
-                    .getBoolean( ConnectionCoreConstants.PREFERENCE_MODIFICATIONLOGS_ENABLE ) );
+                enableModificationLogsAction
+                    .setChecked( ConnectionCorePlugin.getDefault().isModificationLogsEnabled() );
             }
         } );
     }

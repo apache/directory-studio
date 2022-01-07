@@ -25,8 +25,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import javax.naming.directory.SearchControls;
+import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
@@ -74,7 +76,6 @@ import org.apache.directory.ldap.client.api.LdapNetworkConnection;
 import org.apache.directory.ldap.client.api.SaslCramMd5Request;
 import org.apache.directory.ldap.client.api.SaslDigestMd5Request;
 import org.apache.directory.ldap.client.api.SaslGssApiRequest;
-import org.apache.directory.ldap.client.api.SaslPlainRequest;
 import org.apache.directory.ldap.client.api.exception.InvalidConnectionException;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
@@ -91,6 +92,7 @@ import org.apache.directory.studio.connection.core.Messages;
 import org.apache.directory.studio.connection.core.ReferralsInfo;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapper;
 import org.apache.directory.studio.connection.core.io.ConnectionWrapperUtils;
+import org.apache.directory.studio.connection.core.io.StudioLdapException;
 import org.apache.directory.studio.connection.core.io.StudioTrustManager;
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.osgi.util.NLS;
@@ -106,33 +108,17 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     /** The search request number */
     private static int searchRequestNum = 0;
 
-    /** The connection*/
+    /** The Studio connection  */
     private Connection connection;
 
-    /** The LDAP Connection Configuration */
-    private LdapConnectionConfig ldapConnectionConfig;
-
-    /** The LDAP Connection */
+    /** The LDAP connection */
     private LdapNetworkConnection ldapConnection;
 
     /** The binary attribute detector */
     private DefaultConfigurableBinaryAttributeDetector binaryAttributeDetector;
 
-    /** Indicates if the wrapper is connected */
-    private boolean isConnected = false;
-
     /** The current job thread */
     private Thread jobThread;
-
-    /** The bind principal */
-    private String bindPrincipal;
-
-    /** The bind password */
-    private String bindPassword;
-
-    /** The SASL PLAIN authzid */
-    private String authzId;
-
 
     /**
      * Creates a new instance of DirectoryApiConnectionWrapper.
@@ -151,7 +137,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     public void connect( StudioProgressMonitor monitor )
     {
         ldapConnection = null;
-        isConnected = false;
         jobThread = null;
 
         try
@@ -169,9 +154,8 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     private void doConnect( final StudioProgressMonitor monitor ) throws Exception
     {
         ldapConnection = null;
-        isConnected = true;
 
-        ldapConnectionConfig = new LdapConnectionConfig();
+        LdapConnectionConfig ldapConnectionConfig = new LdapConnectionConfig();
         ldapConnectionConfig.setLdapHost( connection.getHost() );
         ldapConnectionConfig.setLdapPort( connection.getPort() );
 
@@ -186,6 +170,8 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
 
         binaryAttributeDetector = new DefaultConfigurableBinaryAttributeDetector();
         ldapConnectionConfig.setBinaryAttributeDetector( binaryAttributeDetector );
+
+        AtomicReference<StudioTrustManager> studioTrustmanager = new AtomicReference<>();
 
         if ( ( connection.getEncryptionMethod() == EncryptionMethod.LDAPS )
             || ( connection.getEncryptionMethod() == EncryptionMethod.START_TLS ) )
@@ -209,6 +195,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     trustManagers[i] = new StudioTrustManager( ( X509TrustManager ) defaultTrustManagers[i] );
                     trustManagers[i].setHost( connection.getHost() );
                 }
+                studioTrustmanager.set( trustManagers[0] );
 
                 ldapConnectionConfig.setTrustManagers( trustManagers );
             }
@@ -223,6 +210,12 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         {
             public void run()
             {
+                /*
+                 * Use local temp variable while the connection is being established and secured.
+                 * This process can take a while and the user might be asked to inspect the server
+                 * certificate. During that process the connection must not be used.
+                 */
+                LdapNetworkConnection ldapConnectionUnderConstruction = null;
                 try
                 {
                     // Set lower timeout for connecting
@@ -230,26 +223,45 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     ldapConnectionConfig.setTimeout( Math.min( oldTimeout, 5000L ) );
 
                     // Connecting
-                    ldapConnection = new LdapNetworkConnection( ldapConnectionConfig );
-                    boolean connected = ldapConnection.connect();
+                    ldapConnectionUnderConstruction = new LdapNetworkConnection( ldapConnectionConfig );
+                    ldapConnectionUnderConstruction.connect();
 
-                    if ( !connected )
+                    // DIRSTUDIO-1219: Establish TLS layer if TLS is enabled and SSL is not
+                    if ( ldapConnectionConfig.isUseTls() && !ldapConnectionConfig.isUseSsl() )
+                    {
+                        ldapConnectionUnderConstruction.startTls();
+                    }
+
+                    // Set original timeout again
+                    ldapConnectionConfig.setTimeout( oldTimeout );
+                    ldapConnectionUnderConstruction.setTimeOut( oldTimeout );
+
+                    // Now set the LDAP connection once the (optional) security layer is in place
+                    ldapConnection = ldapConnectionUnderConstruction;
+
+                    if ( !isConnected() )
                     {
                         throw new Exception( Messages.DirectoryApiConnectionWrapper_UnableToConnect );
                     }
 
-                    // Set old timeout again
-                    ldapConnectionConfig.setTimeout( oldTimeout );
+                    // DIRSTUDIO-1219: Verify secure connection if ldaps:// or StartTLS is configured
+                    if ( ldapConnectionConfig.isUseTls() || ldapConnectionConfig.isUseSsl() )
+                    {
+                        if ( !isSecured() )
+                        {
+                            throw new Exception( Messages.DirectoryApiConnectionWrapper_UnsecuredConnection );
+                        }
+                    }
                 }
                 catch ( Exception e )
                 {
-                    exception = e;
+                    exception = toStudioLdapException( e );
 
                     try
                     {
-                        if ( ldapConnection != null )
+                        if ( ldapConnectionUnderConstruction != null )
                         {
-                            ldapConnection.close();
+                            ldapConnectionUnderConstruction.close();
                         }
                     }
                     catch ( Exception exception )
@@ -298,7 +310,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
             ldapConnection = null;
             binaryAttributeDetector = null;
         }
-        isConnected = false;
     }
 
 
@@ -329,26 +340,9 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     }
 
 
-    private BindResponse bindSaslPlain() throws LdapException
-    {
-        SaslPlainRequest saslPlainRequest = new SaslPlainRequest();
-        saslPlainRequest.setUsername( bindPrincipal );
-        saslPlainRequest.setCredentials( bindPassword );
-        saslPlainRequest.setAuthorizationId( authzId );
-        saslPlainRequest
-            .setQualityOfProtection( connection.getConnectionParameter().getSaslQop() );
-        saslPlainRequest.setSecurityStrength( connection.getConnectionParameter()
-            .getSaslSecurityStrength() );
-        saslPlainRequest.setMutualAuthentication( connection.getConnectionParameter()
-            .isSaslMutualAuthentication() );
-
-        return ldapConnection.bindSaslPlain( bindPrincipal, bindPassword, authzId );
-    }
-
-
     private void doBind( final StudioProgressMonitor monitor ) throws Exception
     {
-        if ( ldapConnection != null && isConnected )
+        if ( isConnected() )
         {
             InnerRunnable runnable = new InnerRunnable()
             {
@@ -391,21 +385,14 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                                 monitor.reportError( Messages.model__no_credentials, exception );
                                 throw exception;
                             }
-                            bindPrincipal = credentials.getBindPrincipal();
-                            bindPassword = credentials.getBindPassword();
+                            String bindPrincipal = credentials.getBindPrincipal();
+                            String bindPassword = credentials.getBindPassword();
 
                             switch ( connection.getConnectionParameter().getAuthMethod() )
                             {
                                 case SIMPLE:
                                     // Simple Authentication
                                     bindResponse = bindSimple( bindPrincipal, bindPassword );
-
-                                    break;
-
-                                case SASL_PLAIN:
-                                    // SASL Plain authentication
-                                    bindResponse = bindSaslPlain();
-
                                     break;
 
                                 case SASL_CRAM_MD5:
@@ -493,7 +480,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                     }
                     catch ( Exception e )
                     {
-                        exception = e;
+                        exception = toStudioLdapException( e );
                     }
                 }
             };
@@ -527,6 +514,22 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     public boolean isConnected()
     {
         return ( ldapConnection != null && ldapConnection.isConnected() );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isSecured()
+    {
+        return isConnected() && ldapConnection.isSecured();
+    }
+
+
+    @Override
+    public SSLSession getSslSession()
+    {
+        return isConnected() ? ldapConnection.getSslSession() : null;
     }
 
 
@@ -593,23 +596,21 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                 }
                 catch ( Exception e )
                 {
-                    exception = e;
+                    exception = toStudioLdapException( e );
                 }
-
-                LdapException le = toLdapException( exception );
 
                 for ( ILdapLogger logger : getLdapLoggers() )
                 {
                     if ( searchResultEnumeration != null )
                     {
                         logger.logSearchRequest( connection, searchBase, filter, searchControls,
-                            aliasesDereferencingMethod, controls, requestNum, le );
+                            aliasesDereferencingMethod, controls, requestNum, exception );
                     }
                     else
                     {
                         logger.logSearchRequest( connection, searchBase, filter, searchControls,
-                            aliasesDereferencingMethod, controls, requestNum, le );
-                        logger.logSearchResultDone( connection, 0, requestNum, le );
+                            aliasesDereferencingMethod, controls, requestNum, exception );
+                        logger.logSearchResultDone( connection, 0, requestNum, exception );
                     }
                 }
             }
@@ -750,14 +751,12 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                 }
                 catch ( Exception e )
                 {
-                    exception = e;
+                    exception = toStudioLdapException( e );
                 }
-
-                LdapException le = toLdapException( exception );
 
                 for ( ILdapLogger logger : getLdapLoggers() )
                 {
-                    logger.logChangetypeModify( connection, dn, modifications, controls, le );
+                    logger.logChangetypeModify( connection, dn, modifications, controls, exception );
                 }
             }
         };
@@ -831,14 +830,12 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                 }
                 catch ( Exception e )
                 {
-                    exception = e;
+                    exception = toStudioLdapException( e );
                 }
-
-                LdapException le = toLdapException( exception );
 
                 for ( ILdapLogger logger : getLdapLoggers() )
                 {
-                    logger.logChangetypeModDn( connection, oldDn, newDn, deleteOldRdn, controls, le );
+                    logger.logChangetypeModDn( connection, oldDn, newDn, deleteOldRdn, controls, exception );
                 }
             }
         };
@@ -912,14 +909,12 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                 }
                 catch ( Exception e )
                 {
-                    exception = e;
+                    exception = toStudioLdapException( e );
                 }
-
-                LdapException le = toLdapException( exception );
 
                 for ( ILdapLogger logger : getLdapLoggers() )
                 {
-                    logger.logChangetypeAdd( connection, entry, controls, le );
+                    logger.logChangetypeAdd( connection, entry, controls, exception );
                 }
             }
         };
@@ -990,14 +985,12 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                 }
                 catch ( Exception e )
                 {
-                    exception = e;
+                    exception = toStudioLdapException( e );
                 }
-
-                LdapException le = toLdapException( exception );
 
                 for ( ILdapLogger logger : getLdapLoggers() )
                 {
-                    logger.logChangetypeDelete( connection, dn, controls, le );
+                    logger.logChangetypeDelete( connection, dn, controls, exception );
                 }
             }
         };
@@ -1020,6 +1013,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
             monitor.reportError( runnable.getException() );
         }
     }
+
 
     @Override
     public ExtendedResponse extended( ExtendedRequest request, StudioProgressMonitor monitor )
@@ -1049,11 +1043,8 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                 }
                 catch ( Exception e )
                 {
-                    exception = e;
+                    exception = toStudioLdapException( e );
                 }
-
-                // TODO: logging?
-                LdapException le = toLdapException( exception );
 
                 for ( ILdapLogger logger : getLdapLoggers() )
                 {
@@ -1090,9 +1081,8 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     abstract class InnerRunnable implements Runnable
     {
         protected StudioSearchResultEnumeration searchResultEnumeration = null;
-        protected Exception exception = null;
+        protected StudioLdapException exception = null;
         protected boolean canceled = false;
-
 
         /**
          * Gets the exception.
@@ -1146,7 +1136,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
 
     }
 
-
     private boolean checkAndHandleReferral( ResultResponse response, StudioProgressMonitor monitor,
         ReferralsInfo referralsInfo, ReferralHandlingDataConsumer consumer ) throws LdapException
     {
@@ -1192,7 +1181,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         String referralDn;
         ReferralsInfo newReferralsInfo;
 
-
         ReferralHandlingData( ConnectionWrapper connectionWrapper, String referralDn, ReferralsInfo newReferralsInfo )
         {
             this.connectionWrapper = connectionWrapper;
@@ -1201,12 +1189,11 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         }
     }
 
-
     private void checkConnectionAndRunAndMonitor( final InnerRunnable runnable, final StudioProgressMonitor monitor )
         throws Exception
     {
         // check connection
-        if ( !isConnected || ldapConnection == null )
+        if ( !isConnected() )
         {
             doConnect( monitor );
             doBind( monitor );
@@ -1260,11 +1247,8 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
                         {
                         }
 
-                        isConnected = false;
                         ldapConnection = null;
                     }
-
-                    isConnected = false;
                 }
             };
 
@@ -1293,7 +1277,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     {
         private String krb5LoginModule;
         private AppConfigurationEntry[] configList = null;
-
 
         public InnerConfiguration( String krb5LoginModule )
         {
@@ -1333,7 +1316,6 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         }
     }
 
-
     private List<ILdapLogger> getLdapLoggers()
     {
         return ConnectionCorePlugin.getDefault().getLdapLoggers();
@@ -1357,7 +1339,7 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
     }
 
 
-    private LdapException toLdapException( Exception exception )
+    private StudioLdapException toStudioLdapException( Exception exception )
     {
         if ( exception == null )
         {
@@ -1365,11 +1347,11 @@ public class DirectoryApiConnectionWrapper implements ConnectionWrapper
         }
         else if ( exception instanceof LdapException )
         {
-            return ( LdapException ) exception;
+            return new StudioLdapException( ( LdapException ) exception );
         }
         else
         {
-            return new LdapException( exception.getMessage(), exception );
+            return new StudioLdapException( exception );
         }
     }
 

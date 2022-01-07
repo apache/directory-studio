@@ -19,9 +19,10 @@
  */
 package org.apache.directory.studio.test.integration.ui.bots;
 
+
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
-import org.apache.directory.studio.test.integration.ui.bots.utils.JobWatcher;
+import org.apache.directory.studio.test.integration.ui.utils.JobWatcher;
 
 
 public class NewEntryWizardBot extends WizardBot
@@ -29,7 +30,6 @@ public class NewEntryWizardBot extends WizardBot
     private static final String TITLE = "New Entry";
 
     private EntryEditorWidgetBot widgetBot;
-
 
     public NewEntryWizardBot()
     {
@@ -94,6 +94,20 @@ public class NewEntryWizardBot extends WizardBot
     }
 
 
+    public NewAttributeWizardBot openNewAttributeWizard()
+    {
+        widgetBot.isVisisble();
+        return widgetBot.openNewAttributeWizard();
+    }
+
+
+    public EditAttributeWizardBot editAttribute( String attributeType, String value )
+    {
+        widgetBot.isVisisble();
+        return widgetBot.editAttribute( attributeType, value );
+    }
+
+
     public void editValue( String attributeType, String value )
     {
         widgetBot.isVisisble();
@@ -113,7 +127,7 @@ public class NewEntryWizardBot extends WizardBot
         while ( true )
         {
             String text = bot.text( 1 ).getText();
-            
+
             if ( Dn.isValid( text ) )
             {
                 return text;

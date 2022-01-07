@@ -20,12 +20,16 @@
 package org.apache.directory.studio.test.integration.ui.bots;
 
 
+import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
+
+
 public class DnEditorDialogBot extends DialogBot
 {
 
     public DnEditorDialogBot()
     {
         super( "DN Editor" );
+        super.setWaitAfterClickOkButton( true, BrowserCoreMessages.jobs__execute_ldif_name );
     }
 
 

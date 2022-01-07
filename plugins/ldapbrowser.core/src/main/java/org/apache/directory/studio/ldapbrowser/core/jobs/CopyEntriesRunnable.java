@@ -43,6 +43,7 @@ import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.Connection.AliasDereferencingMethod;
 import org.apache.directory.studio.connection.core.Connection.ReferralHandlingMethod;
 import org.apache.directory.studio.connection.core.Controls;
+import org.apache.directory.studio.connection.core.io.StudioLdapException;
 import org.apache.directory.studio.connection.core.io.api.StudioSearchResultEnumeration;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionBulkRunnableWithProgress;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreMessages;
@@ -317,7 +318,8 @@ public class CopyEntriesRunnable implements StudioConnectionBulkRunnableWithProg
 
                 while ( dummyMonitor.errorsReported() )
                 {
-                    if ( dialog != null && dummyMonitor.getException() instanceof LdapEntryAlreadyExistsException )
+                    if ( dialog != null
+                        && StudioLdapException.isEntryAlreadyExistsException( dummyMonitor.getException() ) )
                     {
                         // open dialog
                         dialog.setExistingEntry( targetBrowserConnection, newLdapDn );

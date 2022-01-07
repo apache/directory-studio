@@ -28,8 +28,6 @@ import java.util.Map;
 
 import javax.naming.directory.SearchControls;
 
-import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.model.cursor.CursorException;
 import org.apache.directory.api.ldap.model.cursor.SearchCursor;
 import org.apache.directory.api.ldap.model.entry.DefaultEntry;
@@ -268,6 +266,12 @@ public class StudioSearchResultEnumeration
             {
                 resultEntryCounter++;
                 StudioSearchResult ssr = new StudioSearchResult( currentSearchResultEntry, connection, false, null );
+
+                for ( ILdapLogger logger : ConnectionCorePlugin.getDefault().getLdapLoggers() )
+                {
+                    logger.logSearchResultEntry( connection, ssr, requestNum, null );
+                }
+
                 return ssr;
             }
 

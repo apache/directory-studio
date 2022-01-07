@@ -37,7 +37,6 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 
 
@@ -60,8 +59,7 @@ public class BrowserCommonPreferencesInitializer extends AbstractPreferenceIniti
         store.setDefault( BrowserCommonConstants.PREFERENCE_COUNT_LIMIT, 1000 );
         store.setDefault( BrowserCommonConstants.PREFERENCE_TIME_LIMIT, 0 );
 
-        // Colors and Fonts
-        RGB rgbBlack = Display.getDefault().getSystemColor( SWT.COLOR_BLACK ).getRGB();
+        // Fonts
         FontData[] fontData = Display.getDefault().getSystemFont().getFontData();
         FontData fontDataNormal = new FontData( fontData[0].getName(), fontData[0].getHeight(), SWT.NORMAL );
         FontData fontDataItalic = new FontData( fontData[0].getName(), fontData[0].getHeight(), SWT.ITALIC );
@@ -69,13 +67,13 @@ public class BrowserCommonPreferencesInitializer extends AbstractPreferenceIniti
         FontData fontDataBoldItalic = new FontData( fontData[0].getName(), fontData[0].getHeight(), SWT.BOLD
             | SWT.ITALIC );
         // Attributes colors and fonts
-        PreferenceConverter.setDefault( store, BrowserCommonConstants.PREFERENCE_OBJECTCLASS_COLOR, rgbBlack );
+        store.setDefault( BrowserCommonConstants.PREFERENCE_OBJECTCLASS_COLOR, IPreferenceStore.STRING_DEFAULT_DEFAULT );
         PreferenceConverter.setDefault( store, BrowserCommonConstants.PREFERENCE_OBJECTCLASS_FONT, fontDataBoldItalic );
-        PreferenceConverter.setDefault( store, BrowserCommonConstants.PREFERENCE_MUSTATTRIBUTE_COLOR, rgbBlack );
+        store.setDefault( BrowserCommonConstants.PREFERENCE_MUSTATTRIBUTE_COLOR, IPreferenceStore.STRING_DEFAULT_DEFAULT );
         PreferenceConverter.setDefault( store, BrowserCommonConstants.PREFERENCE_MUSTATTRIBUTE_FONT, fontDataBold );
-        PreferenceConverter.setDefault( store, BrowserCommonConstants.PREFERENCE_MAYATTRIBUTE_COLOR, rgbBlack );
+        store.setDefault( BrowserCommonConstants.PREFERENCE_MAYATTRIBUTE_COLOR, IPreferenceStore.STRING_DEFAULT_DEFAULT );
         PreferenceConverter.setDefault( store, BrowserCommonConstants.PREFERENCE_MAYATTRIBUTE_FONT, fontDataNormal );
-        PreferenceConverter.setDefault( store, BrowserCommonConstants.PREFERENCE_OPERATIONALATTRIBUTE_COLOR, rgbBlack );
+        store.setDefault( BrowserCommonConstants.PREFERENCE_MAYATTRIBUTE_COLOR, IPreferenceStore.STRING_DEFAULT_DEFAULT );
         PreferenceConverter.setDefault( store, BrowserCommonConstants.PREFERENCE_OPERATIONALATTRIBUTE_FONT,
             fontDataItalic );
 
