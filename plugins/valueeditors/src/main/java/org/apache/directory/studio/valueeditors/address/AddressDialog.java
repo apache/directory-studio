@@ -22,6 +22,7 @@ package org.apache.directory.studio.valueeditors.address;
 
 
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
+import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.valueeditors.ValueEditorsActivator;
 import org.apache.directory.studio.valueeditors.ValueEditorsConstants;
 import org.eclipse.jface.dialogs.Dialog;
@@ -93,10 +94,7 @@ public class AddressDialog extends Dialog
      */
     protected void okPressed()
     {
-        returnAddress = text.getText();
-        returnAddress = returnAddress.replaceAll( "\n", "\\$" ); //$NON-NLS-1$ //$NON-NLS-2$
-        returnAddress = returnAddress.replaceAll( "\r", "\\$" ); //$NON-NLS-1$ //$NON-NLS-2$
-        returnAddress = returnAddress.replaceAll( "\\$\\$", "\\$" ); //$NON-NLS-1$ //$NON-NLS-2$
+        returnAddress = Utils.encodePostalAddress( text.getText(), BrowserCoreConstants.LINE_SEPARATOR );
         super.okPressed();
     }
 
@@ -113,7 +111,7 @@ public class AddressDialog extends Dialog
 
         // text widget
         text = new Text( composite, SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL );
-        text.setText( initialAddress.replaceAll( "\\$", BrowserCoreConstants.LINE_SEPARATOR ) ); //$NON-NLS-1$
+        text.setText( Utils.decodePostalAddress( initialAddress, BrowserCoreConstants.LINE_SEPARATOR ) );
         // GridData gd = new GridData(GridData.GRAB_HORIZONTAL |
         // GridData.HORIZONTAL_ALIGN_FILL);
         gd = new GridData( GridData.FILL_BOTH );
