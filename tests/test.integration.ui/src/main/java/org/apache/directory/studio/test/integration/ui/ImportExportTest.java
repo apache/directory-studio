@@ -625,7 +625,9 @@ public class ImportExportTest extends AbstractTestBase
         store.setDefault( BrowserCoreConstants.PREFERENCE_FORMAT_CSV_ENCODING, "UTF-8" );
 
         URL url = Platform.getInstanceLocation().getURL();
-        final String file = url.getFile() + "ImportExportTest" + server.getType().name() + ".csv";
+        final String file = url.getFile()
+            + "ImportExportShouldPrefixFormulaWithApostropheTest"
+            + server.getType().name() + ".csv";
 
         browserViewBot.selectEntry( path( GERMAN_UMLAUT_DN ) );
 
@@ -643,6 +645,44 @@ public class ImportExportTest extends AbstractTestBase
         assertEquals( "dn,cn,description", lines.get( 0 ) );
         // verify that the second line is actual content and the formula is prefixed with an apostrophe
         assertEquals( "\"" + GERMAN_UMLAUT_DN.getName() + "\",\"Wolfgang K\u00f6lbel\",\"'=1+1\"", lines.get( 1 ) );
+    }
+
+
+    /**
+     * Export to CSV and checks that RFC 4517 Postal Address syntax is decoded.
+     */
+    @ParameterizedTest
+    @LdapServersSource
+    public void testExportCsvShouldDecodePostalAddress( TestLdapServer server ) throws Exception
+    {
+        connectionsViewBot.createTestConnection( server );
+        // set CSV encoding explicit to UTF-8, otherwise platform default encoding would be used
+        Preferences store = BrowserCorePlugin.getDefault().getPluginPreferences();
+        store.setDefault( BrowserCoreConstants.PREFERENCE_FORMAT_CSV_ENCODING, "UTF-8" );
+
+        URL url = Platform.getInstanceLocation().getURL();
+        final String file = url.getFile()
+            + "ImportExportShouldDecodePostalAddressTest"
+            + server.getType().name() + ".csv";
+
+        browserViewBot.selectEntry( path( USER1_DN ) );
+
+        // export CSV
+        ExportWizardBot wizardBot = browserViewBot.openExportCsvWizard();
+        assertTrue( wizardBot.isVisible() );
+        wizardBot.setReturningAttributes( "postalAddress" );
+        wizardBot.clickNextButton();
+        wizardBot.typeFile( file );
+        wizardBot.clickFinishButton();
+        wizardBot.waitTillExportFinished( file, 100 );
+
+        List<String> lines = FileUtils.readLines( new File( file ), StandardCharsets.UTF_8 );
+        // verify that the first line is header
+        assertEquals( "dn,postalAddress", lines.get( 0 ) );
+        // verify that the postal address is broken into several lines
+        assertEquals( "\"uid=user.1,ou=users,dc=example,dc=org\",\"Aaccf Amar", lines.get( 1 ) );
+        assertEquals( "27919 Broadway Street", lines.get( 2 ) );
+        assertEquals( "Tallahassee, DE  67698\"", lines.get( 3 ) );
     }
 
 

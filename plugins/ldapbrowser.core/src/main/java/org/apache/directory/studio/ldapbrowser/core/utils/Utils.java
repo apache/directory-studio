@@ -657,4 +657,31 @@ public class Utils
             return LdifAttrValLine.create( attribute.getDescription(), value.getStringValue() );
         }
     }
+
+
+    /**
+     * Decodes the RFC 4517 Postal Address syntax.
+     *
+     * <pre>
+     * PostalAddress = line *( DOLLAR line )
+     * line          = 1*line-char
+     * line-char     = %x00-23
+     *                 / (%x5C "24")  ; escaped "$"
+     *                 / %x25-5B
+     *                 / (%x5C "5C")  ; escaped "\"
+     *                 / %x5D-7F
+     *                 / UTFMB
+     * </pre>
+     *
+     * @param input the encoded string
+     * @param separator the separator to output between address lines
+     * @return the decoded string
+     */
+    public static String decodePostalAddress( String input, String separator )
+    {
+        return input.replace( "$", separator ) //$NON-NLS-1$
+            .replace( "\\24", "$" ) //$NON-NLS-1$ //$NON-NLS-2$
+            .replace( "\\5C", "\\" ) //$NON-NLS-1$ //$NON-NLS-2$
+            .replace( "\\5c", "\\" ); //$NON-NLS-1$ //$NON-NLS-2$
+    }
 }

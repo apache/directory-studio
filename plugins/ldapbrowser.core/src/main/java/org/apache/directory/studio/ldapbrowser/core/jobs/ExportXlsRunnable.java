@@ -27,7 +27,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionRunnableWithProgress;
@@ -37,6 +39,7 @@ import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.apache.directory.studio.ldapbrowser.core.utils.JNDIUtils;
+import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.ldifparser.model.LdifEnumeration;
 import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
 import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
@@ -45,6 +48,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.eclipse.core.runtime.Preferences;
 
 
@@ -280,6 +284,9 @@ public class ExportXlsRunnable implements StudioConnectionRunnableWithProgress
         Map<String, String> attributeMap = ExportCsvRunnable.getAttributeMap( null, record, valueDelimiter, "UTF-16", //$NON-NLS-1$
             binaryEncoding );
 
+        CellStyle wrapStyle = sheet.getWorkbook().createCellStyle();
+        wrapStyle.setWrapText( true );
+
         // output attributes
         HSSFRow row = sheet.createRow( sheet.getLastRowNum() + 1 );
         if ( exportDn )
@@ -303,6 +310,13 @@ public class ExportXlsRunnable implements StudioConnectionRunnableWithProgress
             {
                 int cellNum = headerRowAttributeNameMap.get( attributeName ).shortValue();
                 HSSFCell cell = createStringCell( row, cellNum );
+                AttributeType type = browserConnection.getSchema().getAttributeTypeDescription( attributeName );
+                if ( SchemaConstants.POSTAL_ADDRESS_SYNTAX.equals( type.getSyntaxOid() ) )
+                {
+                    // https://poi.apache.org/components/spreadsheet/quick-guide.html#NewLinesInCells
+                    value = Utils.decodePostalAddress( value, "\n" ); //$NON-NLS-1$
+                    cell.setCellStyle( wrapStyle );
+                }
                 cell.setCellValue( value );
             }
         }

@@ -26,7 +26,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.studio.common.core.jobs.StudioProgressMonitor;
 import org.apache.directory.studio.connection.core.Connection;
 import org.apache.directory.studio.connection.core.jobs.StudioConnectionRunnableWithProgress;
@@ -36,6 +38,7 @@ import org.apache.directory.studio.ldapbrowser.core.BrowserCorePlugin;
 import org.apache.directory.studio.ldapbrowser.core.model.IBrowserConnection;
 import org.apache.directory.studio.ldapbrowser.core.model.SearchParameter;
 import org.apache.directory.studio.ldapbrowser.core.utils.JNDIUtils;
+import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.ldifparser.model.LdifEnumeration;
 import org.apache.directory.studio.ldifparser.model.container.LdifContainer;
 import org.apache.directory.studio.ldifparser.model.container.LdifContentRecord;
@@ -290,6 +293,13 @@ public class ExportOdfRunnable implements StudioConnectionRunnableWithProgress
                 short cellNum = headerRowAttributeNameMap.get( attributeName ).shortValue();
                 Cell cell = row.getCellByIndex( cellNum );
                 cell.setValueType( ValueType.STRING.name() );
+                AttributeType type = browserConnection.getSchema().getAttributeTypeDescription( attributeName );
+                if ( SchemaConstants.POSTAL_ADDRESS_SYNTAX.equals( type.getSyntaxOid() ) )
+                {
+                    // https://docs.oasis-open.org/office/OpenDocument/v1.3/os/part4-formula/OpenDocument-v1.3-os-part4-formula.html#__RefHeading__1017970_715980110
+                    value = Utils.decodePostalAddress( value, "\n" ); //$NON-NLS-1$
+                    cell.setTextWrapped( true );
+                }
                 cell.setStringValue( value );
             }
         }
