@@ -54,6 +54,7 @@ import org.apache.directory.studio.test.integration.junit5.LdapServersSource;
 import org.apache.directory.studio.test.integration.junit5.TestLdapServer;
 import org.apache.directory.studio.test.integration.junit5.LdapServersSource.Mode;
 import org.apache.directory.studio.test.integration.ui.bots.AciItemEditorDialogBot;
+import org.apache.directory.studio.test.integration.ui.bots.AddressEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.CertificateEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.DnEditorDialogBot;
 import org.apache.directory.studio.test.integration.ui.bots.EditAttributeWizardBot;
@@ -564,6 +565,76 @@ public class EntryEditorTest extends AbstractTestBase
             .toFormattedString( LdifFormatParameters.DEFAULT ).replace( LdifParserConstants.LINE_SEPARATOR, "\n" );
         modificationLogsViewBot.waitForText( "delete: description\ndescription: testTextValueEditor 1" );
         modificationLogsViewBot.waitForText( "add: description\n" + description2Ldif );
+    }
+
+
+    /**
+     * DIRSTUDIO-1298: The RFC 4517 Postal Address value editor en-/decoding is incomplete
+     */
+    @ParameterizedTest
+    @LdapServersSource
+    public void testAddressValueEditor( TestLdapServer server ) throws Exception
+    {
+        connectionsViewBot.createTestConnection( server );
+        browserViewBot.selectEntry( path( BJENSEN_DN ) );
+
+        EntryEditorBot entryEditorBot = studioBot.getEntryEditorBot( BJENSEN_DN.getName() );
+        entryEditorBot.activate();
+        String dn = entryEditorBot.getDnText();
+        assertEquals( "DN: " + BJENSEN_DN.getName(), dn );
+        assertEquals( 8, entryEditorBot.getAttributeValues().size() );
+        assertEquals( "", modificationLogsViewBot.getModificationLogsText() );
+
+        // add postalAddress attribute and verify value is correctly encoded
+        entryEditorBot.activate();
+        NewAttributeWizardBot wizardBot = entryEditorBot.openNewAttributeWizard();
+        assertTrue( wizardBot.isVisible() );
+        wizardBot.typeAttributeType( "postalAddress" );
+        AddressEditorDialogBot addressEditorDialogBot = wizardBot.clickFinishButtonExpectingAddressEditor();
+        assertTrue( addressEditorDialogBot.isVisible() );
+        addressEditorDialogBot.setText( "1234 Main St.\nAnytown, CA 12345\nUSA" );
+        addressEditorDialogBot.clickOkButton();
+        assertEquals( 9, entryEditorBot.getAttributeValues().size() );
+        assertTrue(
+            entryEditorBot.getAttributeValues().contains( "postalAddress: 1234 Main St., Anytown, CA 12345, USA" ) );
+        modificationLogsViewBot.waitForText( "add: postalAddress\npostalAddress: 1234 Main St.$Anytown, CA 12345$USA" );
+
+        // verify value is correctly decoded
+        addressEditorDialogBot = entryEditorBot.editValueExpectingAddressEditor( "postalAddress",
+            "1234 Main St., Anytown, CA 12345, USA" );
+        assertTrue( addressEditorDialogBot.isVisible() );
+        assertEquals( "1234 Main St.\nAnytown, CA 12345\nUSA", addressEditorDialogBot.getText() );
+        addressEditorDialogBot.clickCancelButton();
+
+        // edit value with a complex address and verify value is correctly encoded
+        addressEditorDialogBot = entryEditorBot.editValueExpectingAddressEditor( "postalAddress",
+            "1234 Main St., Anytown, CA 12345, USA" );
+        assertTrue( addressEditorDialogBot.isVisible() );
+        assertEquals( "1234 Main St.\nAnytown, CA 12345\nUSA", addressEditorDialogBot.getText() );
+        // TODO: $1,000,000 Sweepstakes
+        addressEditorDialogBot.setText( "1,000,000 Sweepstakes\nPO Box 1000000\nAnytown, CA 12345\nUSA" );
+        addressEditorDialogBot.clickOkButton();
+        assertEquals( 9, entryEditorBot.getAttributeValues().size() );
+        assertFalse( entryEditorBot.getAttributeValues()
+            .contains( "postalAddress: 1234 Main St., Anytown, CA 12345, USA" ) );
+        assertTrue( entryEditorBot.getAttributeValues()
+            // TODO: $1,000,000 Sweepstakes
+            .contains( "postalAddress: 1,000,000 Sweepstakes, PO Box 1000000, Anytown, CA 12345, USA" ) );
+        modificationLogsViewBot
+            .waitForText( "delete: postalAddress\npostalAddress: 1234 Main St.$Anytown, CA 12345$USA" );
+        modificationLogsViewBot.waitForText(
+            // TODO: $1,000,000 Sweepstakes
+            "add: postalAddress\npostalAddress: 1,000,000 Sweepstakes$PO Box 1000000$Anytown, CA 12345$USA" );
+
+        // verify value is correctly decoded
+        // TODO: $1,000,000 Sweepstakes
+        addressEditorDialogBot = entryEditorBot.editValueExpectingAddressEditor( "postalAddress",
+            "1,000,000 Sweepstakes, PO Box 1000000, Anytown, CA 12345, USA" );
+        assertTrue( addressEditorDialogBot.isVisible() );
+        // TODO: $1,000,000 Sweepstakes
+        assertEquals( "1,000,000 Sweepstakes\nPO Box 1000000\nAnytown, CA 12345\nUSA",
+            addressEditorDialogBot.getText() );
+        addressEditorDialogBot.clickCancelButton();
     }
 
 

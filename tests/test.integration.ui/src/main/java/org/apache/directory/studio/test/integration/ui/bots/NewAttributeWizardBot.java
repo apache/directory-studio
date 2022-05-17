@@ -82,4 +82,11 @@ public class NewAttributeWizardBot extends WizardBot
         return new HexEditorDialogBot();
     }
 
+
+    public AddressEditorDialogBot clickFinishButtonExpectingAddressEditor()
+    {
+        clickFinishButton();
+        return new AddressEditorDialogBot();
+    }
+
 }
