@@ -196,6 +196,13 @@ class EntryEditorWidgetBot
     }
 
 
+    AddressEditorDialogBot editValueExpectingAddressEditor( String attributeType, String value )
+    {
+        editValue( attributeType, value );
+        return new AddressEditorDialogBot();
+    }
+
+
     TextEditorDialogBot editValueWithTextEditor( String attributeType, String value )
     {
         editValueWith( attributeType, value, "^Text Editor$" );

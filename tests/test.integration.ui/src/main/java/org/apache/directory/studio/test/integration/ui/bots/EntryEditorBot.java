@@ -144,6 +144,12 @@ public class EntryEditorBot
     }
 
 
+    public AddressEditorDialogBot editValueExpectingAddressEditor( String attributeType, String value )
+    {
+        return editorBot.editValueExpectingAddressEditor( attributeType, value );
+    }
+
+
     public TextEditorDialogBot editValueWithTextEditor( String attributeType, String value )
     {
         return editorBot.editValueWithTextEditor( attributeType, value );
