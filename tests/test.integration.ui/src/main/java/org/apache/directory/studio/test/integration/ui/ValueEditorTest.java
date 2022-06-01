@@ -42,6 +42,7 @@ import org.apache.directory.studio.valueeditors.HexValueEditor;
 import org.apache.directory.studio.valueeditors.IValueEditor;
 import org.apache.directory.studio.valueeditors.InPlaceTextValueEditor;
 import org.apache.directory.studio.valueeditors.TextValueEditor;
+import org.apache.directory.studio.valueeditors.address.AddressValueEditor;
 import org.apache.directory.studio.valueeditors.bool.InPlaceBooleanValueEditor;
 import org.apache.directory.studio.valueeditors.oid.InPlaceOidValueEditor;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -58,6 +59,7 @@ public class ValueEditorTest extends AbstractTestBase
 {
 
     private static final String CN = "cn";
+    private static final String POSTAL = "postalAddress";
     private static final String USER_PWD = "userPassword";
 
     private static final String EMPTY_STRING = "";
@@ -75,6 +77,9 @@ public class ValueEditorTest extends AbstractTestBase
 
     private static final String NUMERIC_OID = "1.3.6.1.4.1.1466.20037";
     private static final String DESCR_OID = "a-zA-Z0-9";
+
+    private static final String ADDRESS_DISPLAY = "$1,000,000 Sweepstakes, PO Box 1000000, Anytown, CA 12345, USA";
+    private static final String ADDRESS_RAW = "\\241,000,000 Sweepstakes$PO Box 1000000$Anytown, CA 12345$USA";
 
     public static Stream<Arguments> data()
     {
@@ -329,6 +334,16 @@ public class ValueEditorTest extends AbstractTestBase
                     Data.data().valueEditorClass( HexValueEditor.class ).attribute( USER_PWD ).rawValue( PNG )
                         .expectedRawValue( PNG ).expectedDisplayValue( "Binary Data (4 Bytes)" )
                         .expectedHasValue( true ).expectedStringOrBinaryValue( PNG ) },
+
+                /*
+                 * AddressValueEditor can handle a multi-line postal address with escaped characters.
+                 */
+
+                {
+                    "AddressValueEditor - RFC example",
+                    Data.data().valueEditorClass( AddressValueEditor.class ).attribute( POSTAL ).rawValue( ADDRESS_RAW )
+                        .expectedRawValue( ADDRESS_RAW ).expectedDisplayValue( ADDRESS_DISPLAY )
+                        .expectedHasValue( true ).expectedStringOrBinaryValue( ADDRESS_RAW ) },
             } ).map( d -> Arguments.arguments( ( String ) d[0], ( Data ) d[1] ) );
     }
 

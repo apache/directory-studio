@@ -22,6 +22,7 @@ package org.apache.directory.studio.valueeditors.address;
 
 
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
+import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.valueeditors.AbstractDialogStringValueEditor;
 import org.eclipse.swt.widgets.Shell;
 
@@ -72,7 +73,7 @@ public class AddressValueEditor extends AbstractDialogStringValueEditor
 
         if ( !showRawValues() )
         {
-            displayValue = displayValue.replaceAll( "\\$", ", " ); //$NON-NLS-1$ //$NON-NLS-2$
+            displayValue = Utils.decodePostalAddress( displayValue, ", " ); //$NON-NLS-1$
         }
 
         return displayValue;

@@ -684,4 +684,19 @@ public class Utils
             .replace( "\\5C", "\\" ) //$NON-NLS-1$ //$NON-NLS-2$
             .replace( "\\5c", "\\" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
+
+
+    /**
+     * Encodes the RFC 4517 Postal Address syntax.
+     *
+     * @param input the string to encode
+     * @param separator the separator used between address lines
+     * @return the encoded string
+     */
+    public static String encodePostalAddress( String input, String separator )
+    {
+        return input.replace( "\\", "\\5C" ) //$NON-NLS-1$ //$NON-NLS-2$
+            .replace( "$", "\\24" ) //$NON-NLS-1$ //$NON-NLS-2$
+            .replace( separator, "$" ); //$NON-NLS-1$
+    }
 }
