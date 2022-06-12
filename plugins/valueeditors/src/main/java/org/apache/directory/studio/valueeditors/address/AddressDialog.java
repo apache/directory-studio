@@ -21,6 +21,7 @@
 package org.apache.directory.studio.valueeditors.address;
 
 
+import org.apache.commons.text.translate.CharSequenceTranslator;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.valueeditors.ValueEditorsActivator;
@@ -52,6 +53,11 @@ public class AddressDialog extends Dialog
     /** The text widget. */
     private Text text;
 
+    /** The postal address decoder. */
+    private CharSequenceTranslator decoder;
+
+    /** The postal address encoder. */
+    private CharSequenceTranslator encoder;
 
     /**
      * Creates a new instance of AddressDialog.
@@ -65,6 +71,8 @@ public class AddressDialog extends Dialog
         super.setShellStyle( super.getShellStyle() | SWT.RESIZE );
         this.initialAddress = initialAddress;
         this.returnAddress = null;
+        this.decoder = Utils.createPostalAddressDecoder( BrowserCoreConstants.LINE_SEPARATOR );
+        this.encoder = Utils.createPostalAddressEncoder( BrowserCoreConstants.LINE_SEPARATOR );
     }
 
 
@@ -94,7 +102,7 @@ public class AddressDialog extends Dialog
      */
     protected void okPressed()
     {
-        returnAddress = Utils.encodePostalAddress( text.getText(), BrowserCoreConstants.LINE_SEPARATOR );
+        returnAddress = encoder.translate( text.getText() );
         super.okPressed();
     }
 
@@ -111,7 +119,7 @@ public class AddressDialog extends Dialog
 
         // text widget
         text = new Text( composite, SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL );
-        text.setText( Utils.decodePostalAddress( initialAddress, BrowserCoreConstants.LINE_SEPARATOR ) );
+        text.setText( decoder.translate( initialAddress ) );
         // GridData gd = new GridData(GridData.GRAB_HORIZONTAL |
         // GridData.HORIZONTAL_ALIGN_FILL);
         gd = new GridData( GridData.FILL_BOTH );

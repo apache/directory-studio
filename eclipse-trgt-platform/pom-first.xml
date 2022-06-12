@@ -74,6 +74,12 @@
       <version>${org.apache.commons.pool.version}</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-text</artifactId>
+      <version>${org.apache.commons.text.version}</version>
+    </dependency>
+
     <!-- Bouncycastle modules -->
     <dependency>
       <groupId>org.bouncycastle</groupId>

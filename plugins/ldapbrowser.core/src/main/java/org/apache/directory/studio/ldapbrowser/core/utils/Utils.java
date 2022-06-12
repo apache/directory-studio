@@ -35,6 +35,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.text.translate.CharSequenceTranslator;
+import org.apache.commons.text.translate.LookupTranslator;
 import org.apache.directory.api.ldap.model.name.Ava;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
@@ -673,30 +675,30 @@ public class Utils
      *                 / UTFMB
      * </pre>
      *
-     * @param input the encoded string
      * @param separator the separator to output between address lines
-     * @return the decoded string
+     * @return a translator object for decoding
      */
-    public static String decodePostalAddress( String input, String separator )
+    public static CharSequenceTranslator createPostalAddressDecoder( String separator )
     {
-        return input.replace( "$", separator ) //$NON-NLS-1$
-            .replace( "\\24", "$" ) //$NON-NLS-1$ //$NON-NLS-2$
-            .replace( "\\5C", "\\" ) //$NON-NLS-1$ //$NON-NLS-2$
-            .replace( "\\5c", "\\" ); //$NON-NLS-1$ //$NON-NLS-2$
+        return new LookupTranslator( Map.of(
+            "$", separator, //$NON-NLS-1$
+            "\\24", "$", //$NON-NLS-1$ //$NON-NLS-2$
+            "\\5C", "\\", //$NON-NLS-1$ //$NON-NLS-2$
+            "\\5c", "\\" ) ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 
     /**
      * Encodes the RFC 4517 Postal Address syntax.
      *
-     * @param input the string to encode
      * @param separator the separator used between address lines
-     * @return the encoded string
+     * @return a translator object for encoding
      */
-    public static String encodePostalAddress( String input, String separator )
+    public static CharSequenceTranslator createPostalAddressEncoder( String separator )
     {
-        return input.replace( "\\", "\\5C" ) //$NON-NLS-1$ //$NON-NLS-2$
-            .replace( "$", "\\24" ) //$NON-NLS-1$ //$NON-NLS-2$
-            .replace( separator, "$" ); //$NON-NLS-1$
+        return new LookupTranslator( Map.of(
+            "\\", "\\5C", //$NON-NLS-1$ //$NON-NLS-2$
+            "$", "\\24", //$NON-NLS-1$ //$NON-NLS-2$
+            separator, "$" ) ); //$NON-NLS-1$
     }
 }

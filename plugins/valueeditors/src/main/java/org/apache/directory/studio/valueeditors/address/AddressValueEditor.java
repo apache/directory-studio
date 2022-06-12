@@ -21,6 +21,7 @@
 package org.apache.directory.studio.valueeditors.address;
 
 
+import org.apache.commons.text.translate.CharSequenceTranslator;
 import org.apache.directory.studio.ldapbrowser.core.model.IValue;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.valueeditors.AbstractDialogStringValueEditor;
@@ -37,6 +38,10 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class AddressValueEditor extends AbstractDialogStringValueEditor
 {
+    /** The postal address decoder. */
+    private CharSequenceTranslator decoder = Utils.createPostalAddressDecoder( ", " ); //$NON-NLS-1$
+
+
     /**
      * {@inheritDoc}
      * 
@@ -73,7 +78,7 @@ public class AddressValueEditor extends AbstractDialogStringValueEditor
 
         if ( !showRawValues() )
         {
-            displayValue = Utils.decodePostalAddress( displayValue, ", " ); //$NON-NLS-1$
+            displayValue = decoder.translate( displayValue );
         }
 
         return displayValue;
