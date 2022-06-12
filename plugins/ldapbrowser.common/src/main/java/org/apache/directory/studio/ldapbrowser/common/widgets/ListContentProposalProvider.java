@@ -124,7 +124,7 @@ public class ListContentProposalProvider implements IContentProposalProvider
         }
         else
         {
-            this.proposals = newProposals;
+            this.proposals = new ArrayList<String>( newProposals );
         }
     }
 
