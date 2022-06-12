@@ -21,6 +21,7 @@ package org.apache.directory.studio.ldapbrowser.core.utils;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.apache.commons.text.translate.CharSequenceTranslator;
 import org.junit.jupiter.api.Test;
 
 
@@ -29,36 +30,42 @@ public class UtilsTest
     @Test
     public void testPostalAddressTrivial()
     {
-        assertEquals( "abc", Utils.decodePostalAddress( "abc", "!" ) );
-        assertEquals( "abc", Utils.encodePostalAddress( "abc", "!" ) );
+        assertEquals( "abc", Utils.createPostalAddressDecoder( "!" ).translate( "abc" ) );
+        assertEquals( "abc", Utils.createPostalAddressEncoder( "!" ).translate( "abc" ) );
     }
 
 
     @Test
     public void testPostalAddressEscaped()
     {
-        assertEquals( "!", Utils.decodePostalAddress( "$", "!" ) );
-        assertEquals( "$", Utils.decodePostalAddress( "\\24", "!" ) );
-        assertEquals( "\\", Utils.decodePostalAddress( "\\5C", "!" ) );
-        assertEquals( "\\", Utils.decodePostalAddress( "\\5c", "!" ) );
+        CharSequenceTranslator decoder = Utils.createPostalAddressDecoder( "!" );
+        assertEquals( "!", decoder.translate( "$" ) );
+        assertEquals( "$", decoder.translate( "\\24" ) );
+        assertEquals( "\\", decoder.translate( "\\5C" ) );
+        assertEquals( "\\", decoder.translate( "\\5c" ) );
+        assertEquals( "\\5C", decoder.translate( "\\5c5C" ) );
+        assertEquals( "\\5c", decoder.translate( "\\5C5c" ) );
 
-        assertEquals( "$", Utils.encodePostalAddress( "!", "!" ) );
-        assertEquals( "\\24", Utils.encodePostalAddress( "$", "!" ) );
-        assertEquals( "\\5C", Utils.encodePostalAddress( "\\", "!" ) );
+        CharSequenceTranslator encoder = Utils.createPostalAddressEncoder( "!" );
+        assertEquals( "$", encoder.translate( "!" ) );
+        assertEquals( "\\24", encoder.translate( "$" ) );
+        assertEquals( "\\5C", encoder.translate( "\\" ) );
     }
 
 
     @Test
     public void testPostalAddressRfcExamples()
     {
+        CharSequenceTranslator decoder = Utils.createPostalAddressDecoder( "\n" );
         assertEquals( "1234 Main St.\nAnytown, CA 12345\nUSA",
-            Utils.decodePostalAddress( "1234 Main St.$Anytown, CA 12345$USA", "\n" ) );
+            decoder.translate( "1234 Main St.$Anytown, CA 12345$USA" ) );
         assertEquals( "$1,000,000 Sweepstakes\nPO Box 1000000\nAnytown, CA 12345\nUSA",
-            Utils.decodePostalAddress( "\\241,000,000 Sweepstakes$PO Box 1000000$Anytown, CA 12345$USA", "\n" ) );
+            decoder.translate( "\\241,000,000 Sweepstakes$PO Box 1000000$Anytown, CA 12345$USA" ) );
 
+        CharSequenceTranslator encoder = Utils.createPostalAddressEncoder( "\n" );
         assertEquals( "1234 Main St.$Anytown, CA 12345$USA",
-            Utils.encodePostalAddress( "1234 Main St.\nAnytown, CA 12345\nUSA", "\n" ) );
+            encoder.translate( "1234 Main St.\nAnytown, CA 12345\nUSA" ) );
         assertEquals( "\\241,000,000 Sweepstakes$PO Box 1000000$Anytown, CA 12345$USA",
-            Utils.encodePostalAddress( "$1,000,000 Sweepstakes\nPO Box 1000000\nAnytown, CA 12345\nUSA", "\n" ) );
+            encoder.translate( "$1,000,000 Sweepstakes\nPO Box 1000000\nAnytown, CA 12345\nUSA" ) );
     }
 }

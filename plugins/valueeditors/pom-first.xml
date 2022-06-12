@@ -64,10 +64,12 @@
  org.apache.directory.studio.valueeditors.uuid</Export-Package>
  
             <Import-Package>org.apache.commons.codec,
- org.apache.commons.codec.binary
+ org.apache.commons.codec.binary,
+ org.apache.commons.text
             </Import-Package>
             
             <Require-Bundle>
+ org.apache.commons.commons-text,
  org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.bundleversion}",
  org.apache.directory.api.util;bundle-version="${org.apache.directory.api.bundleversion}",
  org.apache.directory.studio.common.ui,

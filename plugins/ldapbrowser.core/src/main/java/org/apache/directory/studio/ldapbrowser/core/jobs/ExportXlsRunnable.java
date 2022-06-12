@@ -27,6 +27,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.text.translate.CharSequenceTranslator;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
@@ -61,6 +62,9 @@ public class ExportXlsRunnable implements StudioConnectionRunnableWithProgress
 {
     /** The maximum count limit */
     public static final int MAX_COUNT_LIMIT = 65000;
+
+    /** The postal address decoder. */
+    private static CharSequenceTranslator DECODER = Utils.createPostalAddressDecoder( "\n" ); //$NON-NLS-1$;
 
     /** The filename of the XLS file. */
     private String exportXlsFilename;
@@ -314,7 +318,7 @@ public class ExportXlsRunnable implements StudioConnectionRunnableWithProgress
                 if ( SchemaConstants.POSTAL_ADDRESS_SYNTAX.equals( type.getSyntaxOid() ) )
                 {
                     // https://poi.apache.org/components/spreadsheet/quick-guide.html#NewLinesInCells
-                    value = Utils.decodePostalAddress( value, "\n" ); //$NON-NLS-1$
+                    value = DECODER.translate( value );
                     cell.setCellStyle( wrapStyle );
                 }
                 cell.setCellValue( value );

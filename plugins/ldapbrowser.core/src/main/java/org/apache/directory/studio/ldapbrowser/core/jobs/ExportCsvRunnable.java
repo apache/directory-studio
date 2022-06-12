@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.text.translate.CharSequenceTranslator;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
@@ -267,6 +268,7 @@ public class ExportCsvRunnable implements StudioConnectionRunnableWithProgress
         String[] attributes, String attributeDelimiter, String valueDelimiter, String quoteCharacter,
         String lineSeparator, String encoding, int binaryEncoding, boolean exportDn )
     {
+        CharSequenceTranslator decoder = Utils.createPostalAddressDecoder( lineSeparator );
 
         // group multi-valued attributes
         Map<String, String> attributeMap = getAttributeMap( browserConnection, record, valueDelimiter, encoding,
@@ -294,7 +296,7 @@ public class ExportCsvRunnable implements StudioConnectionRunnableWithProgress
                 AttributeType type = browserConnection.getSchema().getAttributeTypeDescription( attributeName );
                 if ( SchemaConstants.POSTAL_ADDRESS_SYNTAX.equals( type.getSyntaxOid() ) )
                 {
-                    value = Utils.decodePostalAddress( value, lineSeparator );
+                    value = decoder.translate( value );
                 }
                 appendValue( quoteCharacter, sb, value );
             }
