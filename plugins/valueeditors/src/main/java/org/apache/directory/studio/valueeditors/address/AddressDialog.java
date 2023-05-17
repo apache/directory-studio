@@ -21,7 +21,10 @@
 package org.apache.directory.studio.valueeditors.address;
 
 
+import java.util.regex.Pattern;
+
 import org.apache.commons.text.translate.CharSequenceTranslator;
+import org.apache.directory.studio.common.ui.widgets.BaseWidgetUtils;
 import org.apache.directory.studio.ldapbrowser.core.BrowserCoreConstants;
 import org.apache.directory.studio.ldapbrowser.core.utils.Utils;
 import org.apache.directory.studio.valueeditors.ValueEditorsActivator;
@@ -30,6 +33,8 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
@@ -58,6 +63,9 @@ public class AddressDialog extends Dialog
 
     /** The postal address encoder. */
     private CharSequenceTranslator encoder;
+
+    /** The checkbox to strip trailing whitespace. */
+    private Button stripWhitespaceCheckbox;
 
     /**
      * Creates a new instance of AddressDialog.
@@ -92,9 +100,15 @@ public class AddressDialog extends Dialog
      */
     protected void createButtonsForButtonBar( Composite parent )
     {
+        ((GridLayout) parent.getLayout()).numColumns = 2;
+        stripWhitespaceCheckbox = BaseWidgetUtils.createCheckbox( parent, Messages.getString( "AddressDialog.StripWhitespace" ), 2 ); //$NON-NLS-1$
+        stripWhitespaceCheckbox.setSelection( true );
         createButton( parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false );
         createButton( parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false );
     }
+
+
+    private static final Pattern TRAILING_WHITESPACE = Pattern.compile( "\\s+$", Pattern.MULTILINE ); //$NON-NLS-1$
 
 
     /**
@@ -102,7 +116,11 @@ public class AddressDialog extends Dialog
      */
     protected void okPressed()
     {
-        returnAddress = encoder.translate( text.getText() );
+        String lines = text.getText();
+        if ( stripWhitespaceCheckbox.getSelection() ) {
+            lines = TRAILING_WHITESPACE.matcher(lines).replaceAll( "" ); //$NON-NLS-1$
+        }
+        returnAddress = encoder.translate( lines );
         super.okPressed();
     }
 

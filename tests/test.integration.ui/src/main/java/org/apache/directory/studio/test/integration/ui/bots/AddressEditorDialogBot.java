@@ -44,4 +44,9 @@ public class AddressEditorDialogBot extends DialogBot
         bot.text( 0 ).setText( text );
     }
 
+    public void deselectStripWhitespaceCheckbox()
+    {
+        bot.checkBox( "Strip trailing whitespace" ).deselect();
+    }
+
 }
