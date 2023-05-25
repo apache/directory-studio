@@ -630,6 +630,29 @@ public class EntryEditorTest extends AbstractTestBase
         assertEquals( "$1,000,000 Sweepstakes\nPO Box 1000000\nAnytown, CA 12345\nUSA",
             addressEditorDialogBot.getText() );
         addressEditorDialogBot.clickCancelButton();
+
+        // verify that the default is to strip trailing whitespace
+        addressEditorDialogBot = entryEditorBot.editValueExpectingAddressEditor( "postalAddress",
+            "$1,000,000 Sweepstakes, PO Box 1000000, Anytown, CA 12345, USA" );
+        assertTrue( addressEditorDialogBot.isVisible() );
+        addressEditorDialogBot.setText( "line 1 \nline 2  \nline 3   \n" );
+        addressEditorDialogBot.clickOkButton();
+        assertEquals( 9, entryEditorBot.getAttributeValues().size() );
+        assertTrue( entryEditorBot.getAttributeValues()
+            .contains( "postalAddress: line 1, line 2, line 3" ) );
+        modificationLogsViewBot.waitForText(
+            "add: postalAddress\npostalAddress: line 1$line 2$line 3" );
+
+        // verify that stripping of trailing whitespace can be disabled
+        addressEditorDialogBot = entryEditorBot.editValueExpectingAddressEditor( "postalAddress",
+            "line 1, line 2, line 3" );
+        assertTrue( addressEditorDialogBot.isVisible() );
+        addressEditorDialogBot.setText( "line 1 \nline 2  \nline 3" );
+        addressEditorDialogBot.deselectStripWhitespaceCheckbox();
+        addressEditorDialogBot.clickOkButton();
+        assertEquals( 9, entryEditorBot.getAttributeValues().size() );
+        modificationLogsViewBot.waitForText(
+            "add: postalAddress\npostalAddress: line 1 $line 2  $line 3" );
     }
 
 
