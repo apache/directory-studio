@@ -54,7 +54,7 @@
  org.apache.directory.studio.apacheds.configuration.jobs,
  org.apache.directory.studio.apacheds.configuration.wizards</Export-Package>
             <Require-Bundle>
- com.github.ben-manes.caffeine;bundle-version="${com.github.ben-manes.caffeine.bundleversion}",
+ com.github.benmanes.caffeine;bundle-version="${com.github.ben-manes.caffeine.bundleversion}",
  org.apache.directory.api.util;bundle-version="${org.apache.directory.api.bundleversion}",
  org.apache.directory.api.ldap.model;bundle-version="${org.apache.directory.api.bundleversion}",
  org.apache.directory.api.ldap.schema;bundle-version="${org.apache.directory.api.bundleversion}",
