@@ -9,4 +9,4 @@ plugins/ldapbrowser.core/lib/
 plugins/ldapservers.apacheds/resources/libs/
 tests/test.integration.ui/screenshots
 .DS_Store
-
+workspace
