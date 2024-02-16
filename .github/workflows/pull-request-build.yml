@@ -38,7 +38,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Build with Apache Maven
-        run: mvn -f pom-first.xml -U clean install -Djava.awt.headless=true
+        run: mvn -f pom-first.xml -U clean install  && mvn clean install 
     env: 
        MAVEN_OPTS: "-Xmx1024M"
 
