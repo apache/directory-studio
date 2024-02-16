@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.apache.directory.project</groupId>
     <artifactId>project</artifactId>
-    <version>45</version>
+    <version>48</version>
     <relativePath />
   </parent>
 
@@ -74,8 +74,8 @@
     <!-- Set versions for dependencies -->
     <antlr.version>2.7.7</antlr.version>
     <antlr.bundleversion>2.7.7</antlr.bundleversion>
-    <junit.platform.version>1.7.1</junit.platform.version>
-    <junit.jupiter.version>5.7.1</junit.jupiter.version>
+    <junit.platform.version>1.10.2</junit.platform.version>
+    <junit.jupiter.version>5.10.2</junit.jupiter.version>
     <log4j.log4j.version>1.2.17</log4j.log4j.version>
     <log4j.log4j.bundleversion>1.2.17</log4j.log4j.bundleversion>
     <com.github.ben-manes.caffeine.version>2.7.0</com.github.ben-manes.caffeine.version>
@@ -103,7 +103,7 @@
     <org.apache.mina.bundleversion>2.1.3</org.apache.mina.bundleversion>
     <org.apache.poi.version>3.9</org.apache.poi.version>
     <org.apache.poi.bundleversion>3.9.0</org.apache.poi.bundleversion>
-    <org.apache.xmlgraphics.fop.version>2.2</org.apache.xmlgraphics.fop.version>
+    <org.apache.xmlgraphics.fop.version>2.9</org.apache.xmlgraphics.fop.version>
     <org.bouncycastle.version>1.62</org.bouncycastle.version>
     <org.slf4j.version>1.7.25</org.slf4j.version>
     <org.slf4j.bundleversion>1.7.25</org.slf4j.bundleversion>
@@ -235,7 +235,7 @@
             <dependency>
               <groupId>org.apache.ant</groupId>
               <artifactId>ant-apache-regexp</artifactId>
-              <version>1.7.1</version>
+              <version>1.10.14</version>
               <scope>compile</scope>
             </dependency>
 
