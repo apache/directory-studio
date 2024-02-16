@@ -16,7 +16,8 @@
 > under the License.
 
 
-[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/apache/directory-studio/badge)][https://api.securityscorecards.dev/projects/github.com/apache/directory-studio]
+
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/apache/directory-studio/badge)](https://api.securityscorecards.dev/projects/github.com/apache/directory-studio)
 # Apache Directory Studio (TM)
 
 The Eclipse-based LDAP browser and directory client.
