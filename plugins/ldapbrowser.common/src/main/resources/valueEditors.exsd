@@ -143,7 +143,7 @@
     &lt;valueEditor
           name=&quot;Text Editor&quot;
           icon=&quot;resources/icons/texteditor.gif&quot;
-          class=&quot;oorg.apache.directory.studio.valueeditors.TextValueEditor&quot;
+          class=&quot;org.apache.directory.studio.valueeditors.TextValueEditor&quot;
           /&gt;
    &lt;/extension&gt;         
 &lt;/pre&gt;
