@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
 # distributed with this work for additional information
@@ -18,34 +18,47 @@
 
 set -e
 
-# Creating dmg and .background folders
-mkdir dmg
-mkdir -p dmg/.background
+make_dmg () {
+    platform=$1
+    path_fo_file=$2
 
-# Copy the application
-tar -xf ../../../product/target/products/ApacheDirectoryStudio-*-macosx.cocoa.x86_64.tar.gz -C dmg
+    # Creating dmg and .background folders
+    mkdir dmg-$platform
+    mkdir -p dmg-$platform/.background    
 
-# Copy legal files
-cp dmg/ApacheDirectoryStudio.app/Contents/Eclipse/LICENSE dmg/
-cp dmg/ApacheDirectoryStudio.app/Contents/Eclipse/NOTICE dmg/
+    # Copy the application
+    tar -xf $path_fo_file -C dmg-$platform
 
-# Move background image
-mv background.png dmg/.background/
+    # Copy legal files
+    cp dmg-$platform/ApacheDirectoryStudio.app/Contents/Eclipse/LICENSE dmg-$platform/
+    cp dmg-$platform/ApacheDirectoryStudio.app/Contents/Eclipse/NOTICE dmg-$platform/
 
-# Move .DS_Store file
-mv DS_Store dmg/.DS_Store
+    # Move background image
+    cp background.png dmg-$platform/.background/
 
-# Creating symbolic link to Applications folder
-ln -s /Applications dmg/Applications
+    # Move .DS_Store file
+    cp DS_Store dmg-$platform/.DS_Store
 
-# Codesign the App with the ASF key, and verify
-codesign --force --deep --timestamp --options runtime --entitlements entitlements.plist -s ${APPLE_SIGNING_ID} dmg/ApacheDirectoryStudio.app
-codesign -dv --verbose=4 dmg/ApacheDirectoryStudio.app
+    # Creating symbolic link to Applications folder
+    ln -s /Applications dmg-$platform/Applications
 
-# Creating the disk image
-hdiutil create -srcfolder dmg/ -volname "ApacheDirectoryStudio" -o TMP.dmg
-hdiutil convert -format UDZO TMP.dmg -o ApacheDirectoryStudio-${version}-macosx.cocoa.x86_64.dmg
+    # Codesign the App with the ASF key, and verify
+    codesign --force --deep --timestamp --options runtime --entitlements entitlements.plist -s ${APPLE_SIGNING_ID} dmg-$platform/ApacheDirectoryStudio.app
+    codesign -dv --verbose=4 dmg-$platform/ApacheDirectoryStudio.app
 
-# Cleaning
-#rm TMP.dmg
-#rm -rf dmg/
+    # Creating the disk image
+    hdiutil create -srcfolder dmg-$platform/ -volname "ApacheDirectoryStudio" -o TMP.dmg
+    hdiutil convert -format UDZO TMP.dmg -o ApacheDirectoryStudio-${version}-macosx.cocoa.$platform.dmg
+
+    # Cleaning
+    rm TMP.dmg
+    rm -rf dmg-$platform/
+}
+
+# Find platform,artifact
+find_files () {
+    file_list=$(ls -A1 ../../../product/target/products/ApacheDirectoryStudio-*-macosx.cocoa.*.tar.gz)
+    for i in $file_list; do make_dmg $(echo $i | sed -e 's/.*cocoa.\(.*\).tar.*/\1/') $i ;done
+}
+
+find_files  
