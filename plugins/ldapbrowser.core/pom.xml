@@ -51,7 +51,7 @@
                 <artifactItem>
                   <groupId>org.apache.poi</groupId>
                   <artifactId>poi</artifactId>
-                  <version>3.9</version>
+                  <version>5.3.0</version>
                 </artifactItem>
               </artifactItems>
             </configuration>
