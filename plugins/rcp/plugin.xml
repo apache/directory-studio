@@ -39,7 +39,7 @@
 
       <property
           name="aboutImage"
-          value="resources/pictures/product_lg.gif"/>
+          value="resources/pictures/product_lg.png"/>
 
       <property
           name="windowImages"
@@ -72,7 +72,7 @@
       point="org.eclipse.ui.intro">
     <intro
         class="org.eclipse.ui.intro.config.CustomizableIntroPart"
-        icon="resources/icons/intro.gif"
+        icon="resources/icons/intro.png"
         id="studio.intro"/>
 
     <introProductBinding

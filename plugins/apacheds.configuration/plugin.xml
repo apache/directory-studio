@@ -24,7 +24,7 @@
     <editor
         class="org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor"
         default="false"
-        icon="resources/icons/editor.gif"
+        icon="resources/icons/editor.png"
         id="org.apache.directory.studio.apacheds.configuration.editor.ServerConfigurationEditor"
         name="%Editor_ServerConfigurationEditor_name">
       <contentTypeBinding contentTypeId="%ContentType_ServerConfiguration_id"/>
@@ -49,7 +49,7 @@
           enablesFor="1"
           id="org.apache.directory.studio.apacheds.configuration.actions.OpenConfigurationAction"
           label="%OpenConfigurationAction_label"
-          icon="resources/icons/editor.gif"/>
+          icon="resources/icons/editor.png"/>
       <visibility>
         <!-- Only work for ApacheDS 2.0.0 -->
         <and>
@@ -72,7 +72,7 @@
       category="%NewWizards_Category_id"
       class="org.apache.directory.studio.apacheds.configuration.wizards.NewApacheDSConfigurationFileWizard"
       hasPages="false"
-      icon="resources/icons/editor_new.gif"
+      icon="resources/icons/editor_new.png"
       id="org.apache.directory.studio.apacheds.configuration.wizards.NewApacheDSConfigurationFileWizard"
       name="%NewWizards_NewApacheDSConfigurationFileWizard_name"
       project="false"/>

@@ -29,8 +29,8 @@
 					result or bookmark. Then choose
 					<inlinemediaobject>
 						<imageobject>
-							<imagedata scale="50" fileref="icons/entry_add.gif"
-								format="GIF" />
+							<imagedata scale="50" fileref="icons/entry_add.png"
+								format="PNG" />
 						</imageobject>
 					</inlinemediaobject>
 					<emphasis role="strong">New -> New Context Entry...</emphasis>

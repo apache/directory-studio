@@ -103,7 +103,7 @@
 								<inlinemediaobject>
 									<imageobject>
 										<imagedata scale="50"
-											fileref="icons/entry_person.gif" format="GIF" />
+											fileref="icons/entry_person.png" format="PNG" />
 									</imageobject>
 								</inlinemediaobject>
 							</guiicon>
@@ -116,7 +116,7 @@
 								<inlinemediaobject>
 									<imageobject>
 										<imagedata scale="50"
-											fileref="icons/entry_group.gif" format="GIF" />
+											fileref="icons/entry_group.png" format="PNG" />
 									</imageobject>
 								</inlinemediaobject>
 							</guiicon>
@@ -129,7 +129,7 @@
 								<inlinemediaobject>
 									<imageobject>
 										<imagedata scale="50"
-											fileref="icons/entry_org.gif" format="GIF" />
+											fileref="icons/entry_org.png" format="PNG" />
 									</imageobject>
 								</inlinemediaobject>
 							</guiicon>
@@ -142,7 +142,7 @@
 								<inlinemediaobject>
 									<imageobject>
 										<imagedata scale="50"
-											fileref="icons/entry_dc.gif" format="GIF" />
+											fileref="icons/entry_dc.png" format="PNG" />
 									</imageobject>
 								</inlinemediaobject>
 							</guiicon>
@@ -155,7 +155,7 @@
 								<inlinemediaobject>
 									<imageobject>
 										<imagedata scale="50"
-											fileref="icons/entry_alias.png" format="GIF" />
+											fileref="icons/entry_alias.png" format="PNG" />
 									</imageobject>
 								</inlinemediaobject>
 							</guiicon>
@@ -168,7 +168,7 @@
 								<inlinemediaobject>
 									<imageobject>
 										<imagedata scale="50"
-											fileref="icons/entry_ref.png" format="GIF" />
+											fileref="icons/entry_ref.png" format="PNG" />
 									</imageobject>
 								</inlinemediaobject>
 							</guiicon>
@@ -181,7 +181,7 @@
 								<inlinemediaobject>
 									<imageobject>
 										<imagedata scale="50"
-											fileref="icons/browser_schemabrowsereditor.gif" format="GIF" />
+											fileref="icons/browser_schemabrowsereditor.png" format="PNG" />
 									</imageobject>
 								</inlinemediaobject>
 							</guiicon>
@@ -194,7 +194,7 @@
 								<inlinemediaobject>
 									<imageobject>
 										<imagedata scale="50"
-											fileref="icons/entry_root.gif" format="GIF" />
+											fileref="icons/entry_root.png" format="PNG" />
 									</imageobject>
 								</inlinemediaobject>
 							</guiicon>
@@ -207,7 +207,7 @@
 								<inlinemediaobject>
 									<imageobject>
 										<imagedata scale="50"
-											fileref="icons/entry_default.gif" format="GIF" />
+											fileref="icons/entry_default.png" format="PNG" />
 									</imageobject>
 								</inlinemediaobject>
 							</guiicon>
@@ -236,7 +236,7 @@
 						<inlinemediaobject>
 							<imageobject>
 								<imagedata scale="50"
-									fileref="icons/entry_alias.png" format="GIF" />
+									fileref="icons/entry_alias.png" format="PNG" />
 							</imageobject>
 						</inlinemediaobject>
 					</guiicon>
@@ -266,7 +266,7 @@
 						<inlinemediaobject>
 							<imageobject>
 								<imagedata scale="50"
-									fileref="icons/entry_ref.png" format="GIF" />
+									fileref="icons/entry_ref.png" format="PNG" />
 							</imageobject>
 						</inlinemediaobject>
 					</guiicon>
@@ -290,8 +290,8 @@
 			<guiicon>
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata scale="50" fileref="icons/folder.gif"
-							format="GIF" />
+						<imagedata scale="50" fileref="icons/folder.png"
+							format="PNG" />
 					</imageobject>
 				</inlinemediaobject>
 			</guiicon>
@@ -319,8 +319,8 @@
 			<guiicon>
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata scale="50" fileref="icons/filter_dit.gif"
-							format="GIF" />
+						<imagedata scale="50" fileref="icons/filter_dit.png"
+							format="PNG" />
 					</imageobject>
 				</inlinemediaobject>
 			</guiicon>

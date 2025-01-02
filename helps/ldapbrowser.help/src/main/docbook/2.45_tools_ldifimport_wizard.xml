@@ -34,7 +34,7 @@
 						<inlinemediaobject>
 							<imageobject>
 								<imagedata scale="50"
-									fileref="icons/import_ldif.gif" format="GIF" />
+									fileref="icons/import_ldif.png" format="PNG" />
 							</imageobject>
 						</inlinemediaobject>
 						LDIF Import...
@@ -50,7 +50,7 @@
 						<inlinemediaobject>
 							<imageobject>
 								<imagedata scale="50"
-									fileref="icons/import_ldif.gif" format="GIF" />
+									fileref="icons/import_ldif.png" format="PNG" />
 							</imageobject>
 						</inlinemediaobject>
 						LDIF Import...
@@ -67,7 +67,7 @@
 						<inlinemediaobject>
 							<imageobject>
 								<imagedata scale="50"
-									fileref="icons/import_ldif.gif" format="GIF" />
+									fileref="icons/import_ldif.png" format="PNG" />
 							</imageobject>
 						</inlinemediaobject>
 						LDIF into LDAP

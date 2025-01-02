@@ -69,7 +69,7 @@
 			<listitem>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/icons_server_new.gif" format="GIF" />
+						fileref="images/icons_server_new.png" format="PNG" />
 				</imageobject>
 				-
 				<emphasis>New server</emphasis>
@@ -78,7 +78,7 @@
 			<listitem>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/icons_run.gif" format="GIF" />
+						fileref="images/icons_run.png" format="PNG" />
 				</imageobject>
 				-
 				<emphasis>Run</emphasis>
@@ -87,7 +87,7 @@
 			<listitem>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/icons_stop.gif" format="GIF" />
+						fileref="images/icons_stop.png" format="PNG" />
 				</imageobject>
 				-
 				<emphasis>Stop</emphasis>
@@ -104,7 +104,7 @@
 			<listitem>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/icons_server_new.gif" format="GIF" />
+						fileref="images/icons_server_new.png" format="PNG" />
 				</imageobject>
 				-
 				<emphasis>New Server</emphasis>
@@ -117,7 +117,7 @@
 			<listitem>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/icons_delete.gif" format="GIF" />
+						fileref="images/icons_delete.png" format="PNG" />
 				</imageobject>
 				-
 				<emphasis>Delete</emphasis>
@@ -130,7 +130,7 @@
 			<listitem>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/icons_run.gif" format="GIF" />
+						fileref="images/icons_run.png" format="PNG" />
 				</imageobject>
 				-
 				<emphasis>Run</emphasis>
@@ -139,7 +139,7 @@
 			<listitem>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/icons_stop.gif" format="GIF" />
+						fileref="images/icons_stop.png" format="PNG" />
 				</imageobject>
 				-
 				<emphasis>Stop</emphasis>
@@ -148,7 +148,7 @@
 			<listitem>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/icons_connection_add.gif" format="GIF" />
+						fileref="images/icons_connection_add.png" format="PNG" />
 				</imageobject>
 				-
 				<emphasis>Create a Connection</emphasis>
@@ -183,7 +183,7 @@
 							<mediaobject>
 								<imageobject>
 									<imagedata scale="50"
-										fileref="images/icons_server.gif" format="GIF" />
+										fileref="images/icons_server.png" format="PNG" />
 								</imageobject>
 							</mediaobject>
 						</entry>
@@ -194,22 +194,22 @@
 							<mediaobject>
 								<imageobject>
 									<imagedata scale="50"
-										fileref="images/icons_server_starting1.gif"
-										format="GIF" />
+										fileref="images/icons_server_starting1.png"
+										format="PNG" />
 								</imageobject>
 							</mediaobject>
 							<mediaobject>
 								<imageobject>
 									<imagedata scale="50"
-										fileref="images/icons_server_starting2.gif"
-										format="GIF" />
+										fileref="images/icons_server_starting2.png"
+										format="PNG" />
 								</imageobject>
 							</mediaobject>
 							<mediaobject>
 								<imageobject>
 									<imagedata scale="50"
-										fileref="images/icons_server_starting3.gif"
-										format="GIF" />
+										fileref="images/icons_server_starting3.png"
+										format="PNG" />
 								</imageobject>
 							</mediaobject>
 						</entry>
@@ -220,8 +220,8 @@
 							<mediaobject>
 								<imageobject>
 									<imagedata scale="50"
-										fileref="images/icons_server_started.gif"
-										format="GIF" />
+										fileref="images/icons_server_started.png"
+										format="PNG" />
 								</imageobject>
 							</mediaobject>
 						</entry>
@@ -232,22 +232,22 @@
 							<mediaobject>
 								<imageobject>
 									<imagedata scale="50"
-										fileref="images/icons_server_stopping1.gif"
-										format="GIF" />
+										fileref="images/icons_server_stopping1.png"
+										format="PNG" />
 								</imageobject>
 							</mediaobject>
 							<mediaobject>
 								<imageobject>
 									<imagedata scale="50"
-										fileref="images/icons_server_stopping2.gif"
-										format="GIF" />
+										fileref="images/icons_server_stopping2.png"
+										format="PNG" />
 								</imageobject>
 							</mediaobject>
 							<mediaobject>
 								<imageobject>
 									<imagedata scale="50"
-										fileref="images/icons_server_stopping3.gif"
-										format="GIF" />
+										fileref="images/icons_server_stopping3.png"
+										format="PNG" />
 								</imageobject>
 							</mediaobject>
 						</entry>
@@ -258,8 +258,8 @@
 							<mediaobject>
 								<imageobject>
 									<imagedata scale="50"
-										fileref="images/icons_server_stopped.gif"
-										format="GIF" />
+										fileref="images/icons_server_stopped.png"
+										format="PNG" />
 								</imageobject>
 							</mediaobject>
 						</entry>

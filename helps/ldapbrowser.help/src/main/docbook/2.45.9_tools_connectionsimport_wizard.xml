@@ -29,7 +29,7 @@
 			<inlinemediaobject>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="icons/import_connections.gif" format="GIF" />
+						fileref="icons/import_connections.png" format="PNG" />
 				</imageobject>
 			</inlinemediaobject>
 			Import Connections...

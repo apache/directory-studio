@@ -24,7 +24,7 @@
     <editor
         class="org.apache.directory.studio.openldap.config.editor.OpenLdapServerConfigurationEditor"
         default="false"
-        icon="resources/icons/editor.gif"
+        icon="resources/icons/editor.png"
         id="org.apache.directory.studio.openldap.config.editor.OpenLdapServerConfigurationEditor"
         name="OpenLDAP Configuration Editor">
     </editor>
@@ -40,7 +40,7 @@
           enablesFor="1"
           id="org.apache.directory.studio.openldap.config.actions.OpenConfigurationAction"
           label="Open Configuration"
-          icon="resources/icons/editor.gif"/>
+          icon="resources/icons/editor.png"/>
       <visibility> 
         <!-- We support OpenLDAP 2.3 and 2.4 atm -->
         <or>
@@ -67,7 +67,7 @@
       </menu>
       <action
           class="org.apache.directory.studio.openldap.config.actions.OpenDirectoryConfigurationAction"
-          icon="resources/icons/open_configuration.gif"
+          icon="resources/icons/open_configuration.png"
           id="org.apache.directory.studio.openldap.config.actions.OpenDirectoryConfigurationAction"
           label="%Action_OpenDirectoryConfigurationAction_label"
           menubarPath="%Action_OpenDirectoryConfigurationAction_menubarpath"
@@ -84,7 +84,7 @@
         category="%NewWizards_Category_id"
         class="org.apache.directory.studio.openldap.config.wizards.NewOpenLdapConfigurationFileWizard"
         hasPages="false"
-        icon="resources/icons/editor_new.gif"
+        icon="resources/icons/editor_new.png"
         id="%NewWizards_NewOpenLdapConfigurationFileWizard_id"
         name="%NewWizards_NewOpenLdapConfigurationFileWizard_name"
         project="false"/>

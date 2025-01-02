@@ -39,7 +39,7 @@
           enablesFor="1"
           id="org.apache.directory.studio.ldapservers.apacheds.CreateConnectionAction"
           label="%ActionCreateConnection_label"
-          icon="resources/icons/connection_new.gif">
+          icon="resources/icons/connection_new.png">
       </action>
 
       <action
