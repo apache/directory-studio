@@ -36,7 +36,7 @@
 							<inlinemediaobject>
 								<imageobject>
 									<imagedata scale="50"
-										fileref="icons/search_new.gif" format="GIF" />
+										fileref="icons/search_new.png" format="PNG" />
 								</imageobject>
 							</inlinemediaobject>
 						</guiicon>
@@ -52,7 +52,7 @@
 							<inlinemediaobject>
 								<imageobject>
 									<imagedata scale="50"
-										fileref="icons/search.gif" format="GIF" />
+										fileref="icons/search.png" format="PNG" />
 								</imageobject>
 							</inlinemediaobject>
 						</guiicon>
@@ -90,7 +90,7 @@
 				<inlinemediaobject>
 					<imageobject>
 						<imagedata scale="50"
-							fileref="icons/locate_searchresult_in_dit.gif" format="GIF" />
+							fileref="icons/locate_searchresult_in_dit.png" format="PNG" />
 					</imageobject>
 				</inlinemediaobject>
 			</guiicon>
@@ -108,7 +108,7 @@
 				<inlinemediaobject>
 					<imageobject>
 						<imagedata scale="50"
-							fileref="icons/search_unperformed.gif" format="GIF" />
+							fileref="icons/search_unperformed.png" format="PNG" />
 					</imageobject>
 				</inlinemediaobject>
 			</guiicon>
@@ -126,8 +126,8 @@
 			<guiicon>
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata scale="50" fileref="icons/search.gif"
-							format="GIF" />
+						<imagedata scale="50" fileref="icons/search.png"
+							format="PNG" />
 					</imageobject>
 				</inlinemediaobject>
 			</guiicon>
@@ -162,7 +162,7 @@
 				<inlinemediaobject>
 					<imageobject>
 						<imagedata scale="50"
-							fileref="icons/ovr16/searchresult.gif" format="GIF" />
+							fileref="icons/ovr16/searchresult.png" format="PNG" />
 					</imageobject>
 				</inlinemediaobject>
 			</guiicon>
@@ -176,8 +176,8 @@
 			<guiicon>
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata scale="50" fileref="icons/folder.gif"
-							format="GIF" />
+						<imagedata scale="50" fileref="icons/folder.png"
+							format="PNG" />
 					</imageobject>
 				</inlinemediaobject>
 			</guiicon>
@@ -205,8 +205,8 @@
 			<guiicon>
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata scale="50" fileref="icons/batch.gif"
-							format="GIF" />
+						<imagedata scale="50" fileref="icons/batch.png"
+							format="PNG" />
 					</imageobject>
 				</inlinemediaobject>
 			</guiicon>

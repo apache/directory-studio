@@ -39,7 +39,7 @@
 						<listitem>
 							<para>
 								Select the connection you want to duplicate and select 
-								<inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/copy.gif" format="GIF"/></imageobject></inlinemediaobject>
+								<inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/copy.png" format="PNG"/></imageobject></inlinemediaobject>
 								<emphasis role="strong">Copy Connection</emphasis> from context menu
 								or use the  
 								<shortcut><keycombo><keycap>Strg</keycap><keycap>C</keycap></keycombo></shortcut>
@@ -49,7 +49,7 @@
 						<listitem>
 							<para>
 								Afterward select
-								<inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/paste.gif" format="GIF"/></imageobject></inlinemediaobject>
+								<inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/paste.png" format="PNG"/></imageobject></inlinemediaobject>
 								<emphasis role="strong">Paste Connection</emphasis> from context menu
 								or use the  
 								<shortcut><keycombo><keycap>Strg</keycap><keycap>V</keycap></keycombo></shortcut>
@@ -105,7 +105,7 @@
 				<inlinemediaobject>
 					<imageobject>
 						<imagedata scale="50"
-							fileref="icons/delete.gif" format="GIF" />
+							fileref="icons/delete.png" format="PNG" />
 					</imageobject>
 				</inlinemediaobject>
 				<emphasis role="strong">Delete Connection</emphasis>
@@ -130,7 +130,7 @@
 							<inlinemediaobject>
 								<imageobject>
 									<imagedata scale="50"
-										fileref="icons/connection_connect.gif" format="GIF" />
+										fileref="icons/connection_connect.png" format="PNG" />
 								</imageobject>
 							</inlinemediaobject>
 							<emphasis role="strong">Open Connection</emphasis>
@@ -152,7 +152,7 @@
 				<inlinemediaobject>
 					<imageobject>
 						<imagedata scale="50"
-							fileref="icons/connection_disconnect.gif" format="GIF" />
+							fileref="icons/connection_disconnect.png" format="PNG" />
 					</imageobject>
 				</inlinemediaobject>
 				<emphasis role="strong">Close Connection</emphasis>
@@ -350,7 +350,7 @@
 					<inlinemediaobject>
 						<imageobject>
 							<imagedata scale="50"
-								fileref="icons/filter_dit.gif" format="GIF" />
+								fileref="icons/filter_dit.png" format="PNG" />
 						</imageobject>
 					</inlinemediaobject>
 					<emphasis role="strong">Filter Children...</emphasis>
@@ -447,7 +447,7 @@
 				<inlinemediaobject>
 					<imageobject>
 						<imagedata scale="50"
-							fileref="icons/delete.gif" format="GIF" />
+							fileref="icons/delete.png" format="PNG" />
 					</imageobject>
 				</inlinemediaobject>
 				<emphasis role="strong">Delete</emphasis>
@@ -493,8 +493,8 @@
 							Choose 
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata scale="50" fileref="icons/value_add.gif"
-										format="GIF" />
+									<imagedata scale="50" fileref="icons/value_add.png"
+										format="PNG" />
 								</imageobject>
 							</inlinemediaobject>
 							<emphasis role="strong">New Value</emphasis>
@@ -564,7 +564,7 @@
 				<inlinemediaobject>
 					<imageobject>
 						<imagedata scale="50"
-							fileref="icons/delete.gif" format="GIF" />
+							fileref="icons/delete.png" format="PNG" />
 					</imageobject>
 				</inlinemediaobject>
 				<emphasis role="strong">Delete</emphasis>

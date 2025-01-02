@@ -33,7 +33,7 @@
 						<inlinemediaobject>
 							<imageobject>
 								<imagedata scale="50"
-									fileref="icons/export_dsml.gif" format="GIF" />
+									fileref="icons/export_dsml.png" format="PNG" />
 							</imageobject>
 						</inlinemediaobject>
 						DSML Export...
@@ -50,7 +50,7 @@
 						<inlinemediaobject>
 							<imageobject>
 								<imagedata scale="50"
-									fileref="icons/export_dsml.gif" format="GIF" />
+									fileref="icons/export_dsml.png" format="PNG" />
 							</imageobject>
 						</inlinemediaobject>
 						DSML Export...
@@ -67,7 +67,7 @@
 						<inlinemediaobject>
 							<imageobject>
 								<imagedata scale="50"
-									fileref="icons/export_dsml.gif" format="GIF" />
+									fileref="icons/export_dsml.png" format="PNG" />
 							</imageobject>
 						</inlinemediaobject>
 						LDAP to DSML

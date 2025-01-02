@@ -31,23 +31,23 @@ public interface EntryTemplatePluginConstants
     String PLUGIN_ID = EntryTemplatePluginConstants.class.getPackage().getName();
 
     // Images
-    String IMG_EXPORT_TEMPLATES_WIZARD = "resources/icons/export_templates_wizard.gif"; //$NON-NLS-1$
-    String IMG_FILE = "resources/icons/file.gif"; //$NON-NLS-1$
-    String IMG_IMPORT_TEMPLATES_WIZARD = "resources/icons/import_templates_wizard.gif"; //$NON-NLS-1$
-    String IMG_NO_IMAGE = "resources/icons/no_image.gif"; //$NON-NLS-1$
+    String IMG_EXPORT_TEMPLATES_WIZARD = "resources/icons/export_templates_wizard.png"; //$NON-NLS-1$
+    String IMG_FILE = "resources/icons/file.png"; //$NON-NLS-1$
+    String IMG_IMPORT_TEMPLATES_WIZARD = "resources/icons/import_templates_wizard.png"; //$NON-NLS-1$
+    String IMG_NO_IMAGE = "resources/icons/no_image.png"; //$NON-NLS-1$
     String IMG_OBJECT_CLASS = "resources/icons/object_class.png"; //$NON-NLS-1$
-    String IMG_SWITCH_TEMPLATE = "resources/icons/switch_template.gif"; //$NON-NLS-1$
-    String IMG_TEMPLATE = "resources/icons/template.gif"; //$NON-NLS-1$
-    String IMG_TEMPLATE_DISABLED = "resources/icons/template_disabled.gif"; //$NON-NLS-1$
-    String IMG_TOOLBAR_ADD_VALUE = "resources/icons/toolbar_add_value.gif"; //$NON-NLS-1$
-    String IMG_TOOLBAR_BROWSE_FILE = "resources/icons/toolbar_browse_file.gif"; //$NON-NLS-1$
-    String IMG_TOOLBAR_BROWSE_IMAGE = "resources/icons/toolbar_browse_image.gif"; //$NON-NLS-1$
-    String IMG_TOOLBAR_CLEAR = "resources/icons/toolbar_clear.gif"; //$NON-NLS-1$
-    String IMG_TOOLBAR_DELETE_VALUE = "resources/icons/toolbar_delete_value.gif"; //$NON-NLS-1$
-    String IMG_TOOLBAR_EDIT_PASSWORD = "resources/icons/toolbar_edit_password.gif"; //$NON-NLS-1$
-    String IMG_TOOLBAR_EDIT_DATE = "resources/icons/toolbar_edit_date.gif"; //$NON-NLS-1$
-    String IMG_TOOLBAR_EDIT_VALUE = "resources/icons/toolbar_edit_value.gif"; //$NON-NLS-1$
-    String IMG_TOOLBAR_SAVE_AS = "resources/icons/toolbar_save_as.gif"; //$NON-NLS-1$
+    String IMG_SWITCH_TEMPLATE = "resources/icons/switch_template.png"; //$NON-NLS-1$
+    String IMG_TEMPLATE = "resources/icons/template.png"; //$NON-NLS-1$
+    String IMG_TEMPLATE_DISABLED = "resources/icons/template_disabled.png"; //$NON-NLS-1$
+    String IMG_TOOLBAR_ADD_VALUE = "resources/icons/toolbar_add_value.png"; //$NON-NLS-1$
+    String IMG_TOOLBAR_BROWSE_FILE = "resources/icons/toolbar_browse_file.png"; //$NON-NLS-1$
+    String IMG_TOOLBAR_BROWSE_IMAGE = "resources/icons/toolbar_browse_image.png"; //$NON-NLS-1$
+    String IMG_TOOLBAR_CLEAR = "resources/icons/toolbar_clear.png"; //$NON-NLS-1$
+    String IMG_TOOLBAR_DELETE_VALUE = "resources/icons/toolbar_delete_value.png"; //$NON-NLS-1$
+    String IMG_TOOLBAR_EDIT_PASSWORD = "resources/icons/toolbar_edit_password.png"; //$NON-NLS-1$
+    String IMG_TOOLBAR_EDIT_DATE = "resources/icons/toolbar_edit_date.png"; //$NON-NLS-1$
+    String IMG_TOOLBAR_EDIT_VALUE = "resources/icons/toolbar_edit_value.png"; //$NON-NLS-1$
+    String IMG_TOOLBAR_SAVE_AS = "resources/icons/toolbar_save_as.png"; //$NON-NLS-1$
 
     // Preferences
     String PREF_TEMPLATE_ENTRY_EDITOR_PAGE_ID = "org.apache.directory.studio.templateeditor.view.preferences.TemplateEntryEditorPreferencePage"; //$NON-NLS-1$

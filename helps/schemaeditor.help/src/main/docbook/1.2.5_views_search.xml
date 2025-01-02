@@ -39,7 +39,7 @@
 			<listitem>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/icons_show-search-field.gif" format="GIF" />
+						fileref="images/icons_show-search-field.png" format="PNG" />
 				</imageobject>
 				-
 				<emphasis>Show Search Field</emphasis>
@@ -48,7 +48,7 @@
 			<listitem>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/icons_run-current-search-again.gif" format="GIF" />
+						fileref="images/icons_run-current-search-again.png" format="PNG" />
 				</imageobject>
 				-
 				<emphasis>Run the Current Search Again</emphasis>
@@ -57,7 +57,7 @@
 			<listitem>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/icons_show-search-history.gif" format="GIF" />
+						fileref="images/icons_show-search-history.png" format="PNG" />
 				</imageobject>
 				-
 				<emphasis>Search History</emphasis>
@@ -77,7 +77,7 @@
 			<listitem>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/icons_sorting.gif" format="GIF" />
+						fileref="images/icons_sorting.png" format="PNG" />
 				</imageobject>
 				-
 				<emphasis>Sorting...</emphasis>
@@ -110,8 +110,8 @@
 							<mediaobject>
 								<imageobject>
 									<imagedata scale="50"
-										fileref="images/icons_attribute-type-operational.gif"
-										format="GIF" />
+										fileref="images/icons_attribute-type-operational.png"
+										format="PNG" />
 								</imageobject>
 							</mediaobject>
 						</entry>
@@ -122,7 +122,7 @@
 							<mediaobject>
 								<imageobject>
 									<imagedata scale="50"
-										fileref="images/icons_attribute-type-user.gif" format="GIF" />
+										fileref="images/icons_attribute-type-user.png" format="PNG" />
 								</imageobject>
 							</mediaobject>
 						</entry>
@@ -133,7 +133,7 @@
 							<mediaobject>
 								<imageobject>
 									<imagedata scale="50"
-										fileref="images/icons_object-class-abstract.gif" format="GIF" />
+										fileref="images/icons_object-class-abstract.png" format="PNG" />
 								</imageobject>
 							</mediaobject>
 						</entry>
@@ -144,8 +144,8 @@
 							<mediaobject>
 								<imageobject>
 									<imagedata scale="50"
-										fileref="images/icons_object-class-auxiliary.gif"
-										format="GIF" />
+										fileref="images/icons_object-class-auxiliary.png"
+										format="PNG" />
 								</imageobject>
 							</mediaobject>
 						</entry>
@@ -156,8 +156,8 @@
 							<mediaobject>
 								<imageobject>
 									<imagedata scale="50"
-										fileref="images/icons_object-class-structural.gif"
-										format="GIF" />
+										fileref="images/icons_object-class-structural.png"
+										format="PNG" />
 								</imageobject>
 							</mediaobject>
 						</entry>

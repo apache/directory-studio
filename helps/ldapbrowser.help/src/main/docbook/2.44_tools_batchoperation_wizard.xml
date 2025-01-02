@@ -32,8 +32,8 @@
 					Then choose
 					<inlinemediaobject>
 						<imageobject>
-							<imagedata scale="50" fileref="icons/batch.gif"
-								format="GIF" />
+							<imagedata scale="50" fileref="icons/batch.png"
+								format="PNG" />
 						</imageobject>
 					</inlinemediaobject>
 					<emphasis role="strong">
@@ -48,8 +48,8 @@
 					drop-down menu on the New Wizard button and select
 					<inlinemediaobject>
 						<imageobject>
-							<imagedata scale="50" fileref="icons/batch.gif"
-								format="GIF" />
+							<imagedata scale="50" fileref="icons/batch.png"
+								format="PNG" />
 						</imageobject>
 					</inlinemediaobject>
 					<emphasis role="strong">
@@ -64,8 +64,8 @@
 						File > New >
 						<inlinemediaobject>
 							<imageobject>
-								<imagedata scale="50" fileref="icons/batch.gif"
-									format="GIF" />
+								<imagedata scale="50" fileref="icons/batch.png"
+									format="PNG" />
 							</imageobject>
 						</inlinemediaobject>
 						LDAP Batch Operation

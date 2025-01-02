@@ -25,17 +25,17 @@
       point="org.apache.directory.studio.valueeditors">
     <valueEditor
         class="org.apache.directory.studio.valueeditors.InPlaceTextValueEditor"
-        icon="resources/icons/inplace_texteditor.gif"
+        icon="resources/icons/inplace_texteditor.png"
         name="%ValueEditors_InPlaceTextValueEditor_name"/>
         
     <valueEditor
         class="org.apache.directory.studio.valueeditors.TextValueEditor"
-        icon="resources/icons/texteditor.gif"
+        icon="resources/icons/texteditor.png"
         name="%ValueEditors_TextValueEditor_name"/>
         
     <valueEditor
         class="org.apache.directory.studio.valueeditors.HexValueEditor"
-        icon="resources/icons/hexeditor.gif"
+        icon="resources/icons/hexeditor.png"
         name="%ValueEditors_HexValueEditor_name"/>
   </extension>
   

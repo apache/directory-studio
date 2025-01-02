@@ -42,7 +42,7 @@ public final class CommonUIConstants
     public static final String PLUGIN_ID = CommonUIConstants.class.getPackage().getName();
 
     /** The pull-down image */
-    public static final String IMG_PULLDOWN = "resources/icons/pulldown.gif"; //$NON-NLS-1$
+    public static final String IMG_PULLDOWN = "resources/icons/pulldown.png"; //$NON-NLS-1$
 
     /*
      * Names of semantic colors. Actual color values are theme specific and defined in default.css and dark.css.
@@ -63,6 +63,6 @@ public final class CommonUIConstants
     public static final String MODIFY_COLOR = "modifyColor";
     public static final String RENAME_COLOR = "renameColor";
 
-    public static final String IMG_INFORMATION = "resources/icons/information.gif"; //$NON-NLS-1$
+    public static final String IMG_INFORMATION = "resources/icons/information.png"; //$NON-NLS-1$
 
 }

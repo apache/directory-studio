@@ -31,7 +31,7 @@
 						<inlinemediaobject>
 							<imageobject>
 								<imagedata scale="50"
-									fileref="icons/export_csv.gif" format="GIF" />
+									fileref="icons/export_csv.png" format="PNG" />
 							</imageobject>
 						</inlinemediaobject>
 						CSV Export...
@@ -48,7 +48,7 @@
 						<inlinemediaobject>
 							<imageobject>
 								<imagedata scale="50"
-									fileref="icons/export_csv.gif" format="GIF" />
+									fileref="icons/export_csv.png" format="PNG" />
 							</imageobject>
 						</inlinemediaobject>
 						CSV Export...
@@ -65,7 +65,7 @@
 						<inlinemediaobject>
 							<imageobject>
 								<imagedata scale="50"
-									fileref="icons/export_csv.gif" format="GIF" />
+									fileref="icons/export_csv.png" format="PNG" />
 							</imageobject>
 						</inlinemediaobject>
 						LDAP to CSV
