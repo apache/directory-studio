@@ -20,7 +20,7 @@ on:
     branches: ['master']
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
@@ -40,13 +40,22 @@ jobs:
       - name: Build with Apache Maven
         run: mvn -f pom-first.xml -U clean install  && mvn clean install 
 
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+    #   - name: Upload artifacts
+    #     uses: actions/upload-artifact@v4
+    #     with:
+    #       name: platform-binaries
+    #       path: |
+    #         product/target/products/ApacheDirectoryStudio-*
+    #       compression-level: 0 # no compression
+
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
         with:
-          name: platform-binaries
-          path: |
-            product/target/products/ApacheDirectoryStudio-*
-          compression-level: 0 # no compression
+          file: product/target/products/ApacheDirectoryStudio-*
+          overwrite: true
+          file_glob: true
+          prerelease: true
+
     env: 
        MAVEN_OPTS: "-Xmx1024M"
 
