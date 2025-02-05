@@ -39,6 +39,14 @@ jobs:
           cache: maven
       - name: Build with Apache Maven
         run: mvn -f pom-first.xml -U clean install  && mvn clean install 
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: platform-binaries
+          path: |
+            product/target/products/ApacheDirectoryStudio-*
+          compression-level: 0 # no compression
     env: 
        MAVEN_OPTS: "-Xmx1024M"
 
