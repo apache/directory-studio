@@ -47,20 +47,20 @@ public final class LdapServersPluginConstants
     // ------
     // IMAGES
     // ------
-    public static final String IMG_FOLDER = "resources/icons/folder.gif"; //$NON-NLS-1$
-    public static final String IMG_SERVER_NEW = "resources/icons/server_new.gif"; //$NON-NLS-1$
+    public static final String IMG_FOLDER = "resources/icons/folder.png"; //$NON-NLS-1$
+    public static final String IMG_SERVER_NEW = "resources/icons/server_new.png"; //$NON-NLS-1$
     public static final String IMG_SERVER_NEW_WIZARD = "resources/icons/server_new_wizard.png"; //$NON-NLS-1$
-    public static final String IMG_SERVER = "resources/icons/server.gif"; //$NON-NLS-1$
-    public static final String IMG_SERVER_STARTED = "resources/icons/server_started.gif"; //$NON-NLS-1$
-    public static final String IMG_SERVER_STARTING1 = "resources/icons/server_starting1.gif"; //$NON-NLS-1$
-    public static final String IMG_SERVER_STARTING2 = "resources/icons/server_starting2.gif"; //$NON-NLS-1$
-    public static final String IMG_SERVER_STARTING3 = "resources/icons/server_starting3.gif"; //$NON-NLS-1$
-    public static final String IMG_SERVER_STOPPED = "resources/icons/server_stopped.gif"; //$NON-NLS-1$
-    public static final String IMG_SERVER_STOPPING1 = "resources/icons/server_stopping1.gif"; //$NON-NLS-1$
-    public static final String IMG_SERVER_STOPPING2 = "resources/icons/server_stopping2.gif"; //$NON-NLS-1$
-    public static final String IMG_SERVER_STOPPING3 = "resources/icons/server_stopping3.gif"; //$NON-NLS-1$
-    public static final String IMG_START = "resources/icons/start.gif"; //$NON-NLS-1$
-    public static final String IMG_STOP = "resources/icons/stop.gif"; //$NON-NLS-1$
+    public static final String IMG_SERVER = "resources/icons/server.png"; //$NON-NLS-1$
+    public static final String IMG_SERVER_STARTED = "resources/icons/server_started.png"; //$NON-NLS-1$
+    public static final String IMG_SERVER_STARTING1 = "resources/icons/server_starting1.png"; //$NON-NLS-1$
+    public static final String IMG_SERVER_STARTING2 = "resources/icons/server_starting2.png"; //$NON-NLS-1$
+    public static final String IMG_SERVER_STARTING3 = "resources/icons/server_starting3.png"; //$NON-NLS-1$
+    public static final String IMG_SERVER_STOPPED = "resources/icons/server_stopped.png"; //$NON-NLS-1$
+    public static final String IMG_SERVER_STOPPING1 = "resources/icons/server_stopping1.png"; //$NON-NLS-1$
+    public static final String IMG_SERVER_STOPPING2 = "resources/icons/server_stopping2.png"; //$NON-NLS-1$
+    public static final String IMG_SERVER_STOPPING3 = "resources/icons/server_stopping3.png"; //$NON-NLS-1$
+    public static final String IMG_START = "resources/icons/start.png"; //$NON-NLS-1$
+    public static final String IMG_STOP = "resources/icons/stop.png"; //$NON-NLS-1$
 
     // --------
     // COMMANDS

@@ -45,46 +45,46 @@ public final class ConnectionUIConstants
     public static final String DIALOGSETTING_KEY_REALM_HISTORY = "saslrealmHistory"; //$NON-NLS-1$
 
     /** The certificate image */
-    public static final String IMG_CERTIFICATE = "resources/icons/certificate.gif"; //$NON-NLS-1$
+    public static final String IMG_CERTIFICATE = "resources/icons/certificate.png"; //$NON-NLS-1$
 
     /** The image to add a connection. */
-    public static final String IMG_CONNECTION_ADD = "resources/icons/connection_add.gif"; //$NON-NLS-1$
+    public static final String IMG_CONNECTION_ADD = "resources/icons/connection_add.png"; //$NON-NLS-1$
 
     /** The image used to display the connected state of connections. */
-    public static final String IMG_CONNECTION_CONNECTED = "resources/icons/connection_connected.gif"; //$NON-NLS-1$
+    public static final String IMG_CONNECTION_CONNECTED = "resources/icons/connection_connected.png"; //$NON-NLS-1$
 
     /** The image used to display the disconnected state of connections. */
-    public static final String IMG_CONNECTION_DISCONNECTED = "resources/icons/connection_disconnected.gif"; //$NON-NLS-1$
+    public static final String IMG_CONNECTION_DISCONNECTED = "resources/icons/connection_disconnected.png"; //$NON-NLS-1$
 
     /** The image used to display the connected state of SSL connections. */
-    public static final String IMG_CONNECTION_SSL_CONNECTED = "resources/icons/connection_ssl_connected.gif"; //$NON-NLS-1$
+    public static final String IMG_CONNECTION_SSL_CONNECTED = "resources/icons/connection_ssl_connected.png"; //$NON-NLS-1$
 
     /** The image used to display the disconnected state of SSL connections. */
-    public static final String IMG_CONNECTION_SSL_DISCONNECTED = "resources/icons/connection_ssl_disconnected.gif"; //$NON-NLS-1$
+    public static final String IMG_CONNECTION_SSL_DISCONNECTED = "resources/icons/connection_ssl_disconnected.png"; //$NON-NLS-1$
 
     /** The image to connect connections. */
-    public static final String IMG_CONNECTION_CONNECT = "resources/icons/connection_connect.gif"; //$NON-NLS-1$
+    public static final String IMG_CONNECTION_CONNECT = "resources/icons/connection_connect.png"; //$NON-NLS-1$
 
     /** The image to disconnect connections. */
-    public static final String IMG_CONNECTION_DISCONNECT = "resources/icons/connection_disconnect.gif"; //$NON-NLS-1$
+    public static final String IMG_CONNECTION_DISCONNECT = "resources/icons/connection_disconnect.png"; //$NON-NLS-1$
 
     /** The new connection wizard image */
-    public static final String IMG_CONNECTION_WIZARD = "resources/icons/connection_wizard.gif"; //$NON-NLS-1$
+    public static final String IMG_CONNECTION_WIZARD = "resources/icons/connection_wizard.png"; //$NON-NLS-1$
 
     /** The image used for connection folders. */
-    public static final String IMG_CONNECTION_FOLDER = "resources/icons/connection_folder.gif"; //$NON-NLS-1$
+    public static final String IMG_CONNECTION_FOLDER = "resources/icons/connection_folder.png"; //$NON-NLS-1$
 
     /** The image to add a connection folder. */
-    public static final String IMG_CONNECTION_FOLDER_ADD = "resources/icons/connection_folder_add.gif"; //$NON-NLS-1$
+    public static final String IMG_CONNECTION_FOLDER_ADD = "resources/icons/connection_folder_add.png"; //$NON-NLS-1$
 
     /** The expand all image */
-    public static final String IMG_EXPANDALL = "resources/icons/expandall.gif"; //$NON-NLS-1$
+    public static final String IMG_EXPANDALL = "resources/icons/expandall.png"; //$NON-NLS-1$
 
     /** The collapse all image */
-    public static final String IMG_COLLAPSEALL = "resources/icons/collapseall.gif"; //$NON-NLS-1$
+    public static final String IMG_COLLAPSEALL = "resources/icons/collapseall.png"; //$NON-NLS-1$
 
     /** The export certificate wizard image */
-    public static final String IMG_CERTIFICATE_EXPORT_WIZARD = "resources/icons/certificate_export_wizard.gif"; //$NON-NLS-1$
+    public static final String IMG_CERTIFICATE_EXPORT_WIZARD = "resources/icons/certificate_export_wizard.png"; //$NON-NLS-1$
 
     /** The connection transfer typename */
     public static final String TYPENAME = "org.apache.directory.studio.ldapbrowser.connection"; //$NON-NLS-1$

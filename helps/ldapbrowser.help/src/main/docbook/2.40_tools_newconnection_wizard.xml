@@ -32,7 +32,7 @@
 					<inlinemediaobject>
 						<imageobject>
 							<imagedata scale="50"
-								fileref="icons/connection_add.gif" format="GIF" />
+								fileref="icons/connection_add.png" format="PNG" />
 						</imageobject>
 					</inlinemediaobject>
 					<emphasis role="strong">New Connection...</emphasis>

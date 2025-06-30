@@ -30,7 +30,7 @@
 			<inlinemediaobject>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="icons/export_connections.gif" format="GIF" />
+						fileref="icons/export_connections.png" format="PNG" />
 				</imageobject>
 			</inlinemediaobject>
 			Export Connections...
