@@ -26,7 +26,7 @@
         contributorClass="org.apache.directory.studio.ldifeditor.editor.LdifEditorContributor"
         default="false"
         extensions="ldif, ldiflog"
-        icon="resources/icons/ldifeditor.gif"
+        icon="resources/icons/ldifeditor.png"
         id="%Editor_LdifEditor_id"
         name="%Editor_LdifEditor_name"/>         
   </extension>
@@ -38,7 +38,7 @@
         category="%NewWizards_Category_id"
         class="org.apache.directory.studio.ldifeditor.wizards.NewLdifFileWizard"
         hasPages="false"
-        icon="resources/icons/ldifeditor_new.gif"
+        icon="resources/icons/ldifeditor_new.png"
         id="%NewWizard_NewLdifFileWizard_id"
         name="%NewWizard_NewLdifFileWizard_name"
         project="false"/>
@@ -120,7 +120,7 @@
         autoinsert="true"
         contextTypeId="%CtxType_LdifFile_id"
         description="%Template_LdifContentRecord_description"
-        icon="resources/icons/entry.gif"
+        icon="resources/icons/entry.png"
         id="org.apache.directory.studio.ldifeditor.templates.ldifContentRecord"
         name="dn: ">
       <pattern>
@@ -134,7 +134,7 @@ ${cursor}
         autoinsert="true"
         contextTypeId="%CtxType_LdifFile_id"
         description="%Template_LdifAddRecord_description"
-        icon="resources/icons/ldif_add.gif"
+        icon="resources/icons/ldif_add.png"
         id="org.apache.directory.studio.ldifeditor.templates.ldifChangeAddRecord"
         name="changetype: add">
       <pattern>
@@ -149,7 +149,7 @@ ${cursor}
         autoinsert="true"
         contextTypeId="%CtxType_LdifFile_id"
         description="%Template_LdifModifyRecord_description"
-        icon="resources/icons/ldif_modify.gif"
+        icon="resources/icons/ldif_modify.png"
         id="org.apache.directory.studio.ldifeditor.templatesldifChangeModifyRecord"
         name="changetype: modify">
       <pattern>
@@ -163,7 +163,7 @@ ${cursor}
         autoinsert="true"
         contextTypeId="%CtxType_LdifFile_id"
         description="%Template_LdifDeleteRecord_description"
-        icon="resources/icons/ldif_delete.gif"
+        icon="resources/icons/ldif_delete.png"
         id="org.apache.directory.studio.ldifeditor.templates.ldifChangeDeleteRecord"
         name="changetype: modify">
       <pattern>
@@ -177,7 +177,7 @@ ${cursor}
         autoinsert="true"
         contextTypeId="%CtxType_LdifFile_id"
         description="%Template_LdifModdnRecord_description"
-        icon="resources/icons/ldif_rename.gif"
+        icon="resources/icons/ldif_rename.png"
         id="org.apache.directory.studio.ldifeditor.templates.ldifChangeModdnRecord"
         name="changetype: modify">
       <pattern
@@ -194,7 +194,7 @@ ${cursor}
         autoinsert="true"
         contextTypeId="%CtxType_LdifModificationRecord_id"
         description="%Template_LdifModifyRecord_AddValue_description"
-        icon="resources/icons/ldif_mod_add.gif"
+        icon="resources/icons/ldif_mod_add.png"
         id="org.apache.directory.studio.ldifeditor.templates.ldifModificationRecordAddModification"
         name="add: ">
       <pattern>
@@ -209,7 +209,7 @@ ${cursor}
         autoinsert="true"
         contextTypeId="%CtxType_LdifModificationRecord_id"
         description="%Template_LdifModifyRecord_ReplaceValue_description"
-        icon="resources/icons/ldif_mod_replace.gif"
+        icon="resources/icons/ldif_mod_replace.png"
         id="org.apache.directory.studio.ldifeditor.ui.templates.ldifModificationRecordReplaceModification"
         name="replace: ">
       <pattern>
@@ -224,7 +224,7 @@ ${cursor}
         autoinsert="true"
         contextTypeId="%CtxType_LdifModificationRecord_id"
         description="%Template_LdifModifyRecord_DeleteValue_description"
-        icon="resources/icons/ldif_mod_delete.gif"
+        icon="resources/icons/ldif_mod_delete.png"
         id="org.apache.directory.studio.ldifeditor.templates.ldifModificationRecordDeleteModification"
         name="delete: ">
       <pattern>
@@ -239,7 +239,7 @@ ${cursor}
         autoinsert="true"
         contextTypeId="%CtxType_LdifModificationRecord_id"
         description="%Template_LdifModifyRecord_DeleteAttribute_description"
-        icon="resources/icons/ldif_mod_delete.gif"
+        icon="resources/icons/ldif_mod_delete.png"
         id="org.apache.directory.studio.ldifeditor.templates.ldifModificationRecordDeleteAttributeModification"
         name="delete: ">
       <pattern>

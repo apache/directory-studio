@@ -29,7 +29,7 @@
     <view
         category="org.apache.directory.studio.ldapservers.view.category"
         class="org.apache.directory.studio.ldapservers.views.ServersView"
-        icon="resources/icons/servers_view.gif"
+        icon="resources/icons/servers_view.png"
         id="org.apache.directory.studio.ldapservers.views.ServersView"
         name="%View_ServersView_name"/>
   </extension>

@@ -28,7 +28,7 @@
 					New >
 					<imageobject>
 						<imagedata scale="50"
-							fileref="images/icons_object-class-new.gif" format="GIF" />
+							fileref="images/icons_object-class-new.png" format="PNG" />
 					</imageobject>
 					New Object Class
 				</emphasis>
@@ -39,7 +39,7 @@
 				<emphasis role="strong">
 					<imageobject>
 						<imagedata scale="50"
-							fileref="images/icons_object-class-new.gif" format="GIF" />
+							fileref="images/icons_object-class-new.png" format="PNG" />
 					</imageobject>
 					New Object Class
 				</emphasis>
@@ -51,7 +51,7 @@
 				and choose
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/icons_object-class-new.gif" format="GIF" />
+						fileref="images/icons_object-class-new.png" format="PNG" />
 				</imageobject>
 				<emphasis role="strong">New Object Class</emphasis>
 			</listitem>

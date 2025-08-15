@@ -39,7 +39,7 @@
     <editor
       class="org.apache.directory.studio.combinededitor.editor.SingleTabCombinedEntryEditor"
       default="false"
-      icon="resources/icons/editor_single_tab.gif"
+      icon="resources/icons/editor_single_tab.png"
       id="%Editor_SingleTabCombinedEntryEditor_id"
       matchingStrategy="org.apache.directory.studio.entryeditors.SingleTabEntryEditorMatchingStrategy"
       name="%Editor_SingleTabCombinedEntryEditor_shortname">
@@ -48,7 +48,7 @@
     <editor      
       class="org.apache.directory.studio.combinededitor.editor.MultiTabCombinedEntryEditor"
       default="false"
-      icon="resources/icons/editor_multi_tab.gif"
+      icon="resources/icons/editor_multi_tab.png"
       id="%Editor_MultiTabCombinedEntryEditor_id"
       matchingStrategy="org.apache.directory.studio.entryeditors.MultiTabEntryEditorMatchingStrategy"
       name="%Editor_MultiTabCombinedEntryEditor_shortname">
@@ -60,7 +60,7 @@
       class="org.apache.directory.studio.combinededitor.editor.SingleTabCombinedEntryEditor"
       description="%Editor_SingleTabCombinedEntryEditor_description"
       editorId="%Editor_SingleTabCombinedEntryEditor_id"
-      icon="resources/icons/editor_single_tab.gif"
+      icon="resources/icons/editor_single_tab.png"
       id="%Editor_SingleTabCombinedEntryEditor_id"
       name="%Editor_SingleTabCombinedEntryEditor_fullname"
       priority="42"
@@ -71,7 +71,7 @@
       class="org.apache.directory.studio.combinededitor.editor.MultiTabCombinedEntryEditor"
       description="%Editor_MultiTabCombinedEntryEditor_description"
       editorId="%Editor_MultiTabCombinedEntryEditor_id"
-      icon="resources/icons/editor_multi_tab.gif"
+      icon="resources/icons/editor_multi_tab.png"
       id="%Editor_MultiTabCombinedEntryEditor_id"
       name="%Editor_MultiTabCombinedEntryEditor_fullname"
       priority="41"

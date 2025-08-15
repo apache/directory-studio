@@ -32,16 +32,16 @@ public interface OpenLdapConfigurationPluginConstants
     // ------
     // IMAGES
     // ------
-    String IMG_ATTRIBUTE = "resources/icons/attribute.gif"; //$NON-NLS-1$
-    String IMG_DATABASE = "resources/icons/database.gif"; //$NON-NLS-1$
-    String IMG_DISABLED_DATABASE = "resources/icons/disabledDatabase.gif"; //$NON-NLS-1$
-    String IMG_EDITOR = "resources/icons/editor.gif"; //$NON-NLS-1$
-    String IMG_EXPORT = "resources/icons/export.gif"; //$NON-NLS-1$
+    String IMG_ATTRIBUTE = "resources/icons/attribute.png"; //$NON-NLS-1$
+    String IMG_DATABASE = "resources/icons/database.png"; //$NON-NLS-1$
+    String IMG_DISABLED_DATABASE = "resources/icons/disabledDatabase.png"; //$NON-NLS-1$
+    String IMG_EDITOR = "resources/icons/editor.png"; //$NON-NLS-1$
+    String IMG_EXPORT = "resources/icons/export.png"; //$NON-NLS-1$
     String IMG_INDEX = "resources/icons/index.png"; //$NON-NLS-1$
-    String IMG_INFORMATION = "resources/icons/information.gif"; //$NON-NLS-1$
-    String IMG_IMPORT = "resources/icons/import.gif"; //$NON-NLS-1$
-    String IMG_OVERLAY = "resources/icons/overlay.gif"; //$NON-NLS-1$
-    String IMG_LDAP_SERVER = "resources/icons/server.gif"; //$NON-NLS-1$
+    String IMG_INFORMATION = "resources/icons/information.png"; //$NON-NLS-1$
+    String IMG_IMPORT = "resources/icons/import.png"; //$NON-NLS-1$
+    String IMG_OVERLAY = "resources/icons/overlay.png"; //$NON-NLS-1$
+    String IMG_LDAP_SERVER = "resources/icons/server.png"; //$NON-NLS-1$
 
     public static final String WIZARD_NEW_OPENLDAP_CONFIG = OpenLdapConfigurationPlugin.getDefault().getPluginProperties()
         .getString( "NewWizards_NewOpenLdapConfigurationFileWizard_id" ); //$NON-NLS-1$

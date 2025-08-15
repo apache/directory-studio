@@ -457,8 +457,8 @@
 							By clicking
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata scale="50" fileref="icons/parent.gif"
-										format="GIF" />
+									<imagedata scale="50" fileref="icons/parent.png"
+										format="PNG" />
 								</imageobject>
 							</inlinemediaobject>
 							<emphasis role="strong">Parent</emphasis>

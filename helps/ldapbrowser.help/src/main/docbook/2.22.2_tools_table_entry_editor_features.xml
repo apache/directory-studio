@@ -38,8 +38,8 @@
 				<guiicon>
 					<inlinemediaobject>
 						<imageobject>
-							<imagedata scale="50" fileref="icons/sort.gif"
-								format="GIF" />
+							<imagedata scale="50" fileref="icons/sort.png"
+								format="PNG" />
 						</imageobject>
 					</inlinemediaobject>
 				</guiicon>
@@ -123,8 +123,8 @@
 			<guiicon>
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata scale="50" fileref="icons/filter.gif"
-							format="GIF" />
+						<imagedata scale="50" fileref="icons/filter.png"
+							format="PNG" />
 					</imageobject>
 				</inlinemediaobject>
 			</guiicon>
@@ -189,8 +189,8 @@
 			<guiicon>
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata scale="50" fileref="icons/collapseall.gif"
-							format="GIF" />
+						<imagedata scale="50" fileref="icons/collapseall.png"
+							format="PNG" />
 					</imageobject>
 				</inlinemediaobject>
 			</guiicon>
@@ -198,8 +198,8 @@
 			<guiicon>
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata scale="50" fileref="icons/expandall.gif"
-							format="GIF" />
+						<imagedata scale="50" fileref="icons/expandall.png"
+							format="PNG" />
 					</imageobject>
 				</inlinemediaobject>
 			</guiicon>
@@ -228,8 +228,8 @@
 			<guiicon>
 				<inlinemediaobject>
 					<imageobject>
-						<imagedata scale="50" fileref="icons/locate_dn_in_dit.gif"
-							format="GIF" />
+						<imagedata scale="50" fileref="icons/locate_dn_in_dit.png"
+							format="PNG" />
 					</imageobject>
 				</inlinemediaobject>
 			</guiicon>

@@ -43,7 +43,7 @@
 			<listitem>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/icons_hierarchy-type.gif" format="GIF" />
+						fileref="images/icons_hierarchy-type.png" format="PNG" />
 				</imageobject>
 				-
 				<emphasis>Show the Type Hierarchy</emphasis>
@@ -52,7 +52,7 @@
 			<listitem>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/icons_hierarchy-supertype.gif" format="GIF" />
+						fileref="images/icons_hierarchy-supertype.png" format="PNG" />
 				</imageobject>
 				-
 				<emphasis>Show the Supertype Hierarchy</emphasis>
@@ -61,7 +61,7 @@
 			<listitem>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/icons_hierarchy-subtype.gif" format="GIF" />
+						fileref="images/icons_hierarchy-subtype.png" format="PNG" />
 				</imageobject>
 				-
 				<emphasis>Show the Subtype Hierarchy</emphasis>
@@ -70,7 +70,7 @@
 			<listitem>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/icons_link-with-editor.gif" format="GIF" />
+						fileref="images/icons_link-with-editor.png" format="PNG" />
 				</imageobject>
 				-
 				<emphasis>Link with Editor</emphasis>
@@ -87,7 +87,7 @@
 			<listitem>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/icons_hierarchy-type.gif" format="GIF" />
+						fileref="images/icons_hierarchy-type.png" format="PNG" />
 				</imageobject>
 				-
 				<emphasis>Show the Type Hierarchy</emphasis>
@@ -96,7 +96,7 @@
 			<listitem>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/icons_hierarchy-supertype.gif" format="GIF" />
+						fileref="images/icons_hierarchy-supertype.png" format="PNG" />
 				</imageobject>
 				-
 				<emphasis>Show the Supertype Hierarchy</emphasis>
@@ -105,7 +105,7 @@
 			<listitem>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/icons_hierarchy-subtype.gif" format="GIF" />
+						fileref="images/icons_hierarchy-subtype.png" format="PNG" />
 				</imageobject>
 				-
 				<emphasis>Show the Subtype Hierarchy</emphasis>
@@ -114,7 +114,7 @@
 			<listitem>
 				<imageobject>
 					<imagedata scale="50"
-						fileref="images/icons_link-with-editor.gif" format="GIF" />
+						fileref="images/icons_link-with-editor.png" format="PNG" />
 				</imageobject>
 				-
 				<emphasis>Link with Editor</emphasis>
@@ -148,8 +148,8 @@
 							<mediaobject>
 								<imageobject>
 									<imagedata scale="50"
-										fileref="images/icons_attribute-type-operational.gif"
-										format="GIF" />
+										fileref="images/icons_attribute-type-operational.png"
+										format="PNG" />
 								</imageobject>
 							</mediaobject>
 						</entry>
@@ -160,7 +160,7 @@
 							<mediaobject>
 								<imageobject>
 									<imagedata scale="50"
-										fileref="images/icons_attribute-type-user.gif" format="GIF" />
+										fileref="images/icons_attribute-type-user.png" format="PNG" />
 								</imageobject>
 							</mediaobject>
 						</entry>
@@ -171,7 +171,7 @@
 							<mediaobject>
 								<imageobject>
 									<imagedata scale="50"
-										fileref="images/icons_object-class-abstract.gif" format="GIF" />
+										fileref="images/icons_object-class-abstract.png" format="PNG" />
 								</imageobject>
 							</mediaobject>
 						</entry>
@@ -182,8 +182,8 @@
 							<mediaobject>
 								<imageobject>
 									<imagedata scale="50"
-										fileref="images/icons_object-class-auxiliary.gif"
-										format="GIF" />
+										fileref="images/icons_object-class-auxiliary.png"
+										format="PNG" />
 								</imageobject>
 							</mediaobject>
 						</entry>
@@ -194,8 +194,8 @@
 							<mediaobject>
 								<imageobject>
 									<imagedata scale="50"
-										fileref="images/icons_object-class-structural.gif"
-										format="GIF" />
+										fileref="images/icons_object-class-structural.png"
+										format="PNG" />
 								</imageobject>
 							</mediaobject>
 						</entry>
@@ -206,8 +206,8 @@
 							<mediaobject>
 								<imageobject>
 									<imagedata scale="50"
-										fileref="images/icons_object-class-hierarchy-selected.gif"
-										format="GIF" />
+										fileref="images/icons_object-class-hierarchy-selected.png"
+										format="PNG" />
 								</imageobject>
 							</mediaobject>
 						</entry>
@@ -220,8 +220,8 @@
 							<mediaobject>
 								<imageobject>
 									<imagedata scale="50"
-										fileref="images/icons_attribute-type-hierarchy-selected.gif"
-										format="GIF" />
+										fileref="images/icons_attribute-type-hierarchy-selected.png"
+										format="PNG" />
 								</imageobject>
 							</mediaobject>
 						</entry>

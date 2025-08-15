@@ -63,23 +63,23 @@
 				</thead>
 				<tbody>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/connection_connected.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/connection_connected.png" format="PNG"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry>Connection is opened.</entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/connection_disconnected.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/connection_disconnected.png" format="PNG"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry>Connection is closed.</entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/connection_ssl_connected.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/connection_ssl_connected.png" format="PNG"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry>Secure Connection is opened.</entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/connection_ssl_disconnected.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/connection_ssl_disconnected.png" format="PNG"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry>Secure Connection is closed.</entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/connection_folder.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/connection_folder.png" format="PNG"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry>Connection folder</entry>
 					</row>
 				</tbody>
@@ -103,27 +103,27 @@
 				</thead>
 				<tbody>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/connection_add.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/connection_add.png" format="PNG"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry>New Connection...</entry>
 					  <entry>Starts the <link linkend="tools_newconnection_wizard">New Connection wizard</link></entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/connection_connect.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/connection_connect.png" format="PNG"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry>Open Connection</entry>
 					  <entry>Opens the selected connection(s)</entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/connection_disconnect.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/connection_disconnect.png" format="PNG"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry>Close Connection</entry>
 					  <entry>Closes the selected connection(s)</entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/expandall.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/expandall.png" format="PNG"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry>Expand All</entry>
 					  <entry>Expands all connection folders</entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/collapseall.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/collapseall.png" format="PNG"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry>Collapse All</entry>
 					  <entry>Collapses all connection folders</entry>
 					</row>
@@ -149,37 +149,37 @@
 				</thead>
 				<tbody>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/connection_add.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/connection_add.png" format="PNG"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry>New Connection...</entry>
 					  <entry>Starts the <link linkend="tools_newconnection_wizard">New Connection wizard</link></entry>
 					  <entry></entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/connection_folder_add.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/connection_folder_add.png" format="PNG"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry>New Connection Folder...</entry>
 					  <entry>Opens a dialog to create a new connection folder.</entry>
 					  <entry></entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/connection_connect.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/connection_connect.png" format="PNG"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry>Open Connection</entry>
 					  <entry>Opens the selected connection(s)</entry>
 					  <entry></entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/connection_disconnect.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/connection_disconnect.png" format="PNG"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry>Close Connection</entry>
 					  <entry>Closes the selected connection(s)</entry>
 					  <entry></entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/browser_schemabrowsereditor.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/browser_schemabrowsereditor.png" format="PNG"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry>Open Schema Browser</entry>
 					  <entry>Opens the Schema Browser and shows the schema of the selected connection</entry>
 					  <entry></entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/copy.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/copy.png" format="PNG"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry>Copy Connection</entry>
 					  <entry>Copies the selected connection(s) as LDAP URL(s) to the clipboard. To duplicate an existing connection please combine copy and paste.</entry>
 					  <entry>
@@ -189,7 +189,7 @@
 					  </entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/paste.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/paste.png" format="PNG"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry>Paste Connection</entry>
 					  <entry>Pastes the copied connection(s) or LDAP URL(s) from clipboard. Only enabled if there are connections or LDAP URLs in clipboard.</entry>
 					  <entry>
@@ -199,7 +199,7 @@
 					  </entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/delete.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/delete.png" format="PNG"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry>Delete Connection</entry>
 					  <entry>Deletes the selected connections(s). Only enabled if the selected connections are closed.</entry>
 					  <entry><shortcut><keycap>Delete</keycap></shortcut></entry>
@@ -223,7 +223,7 @@
 					  <entry><shortcut><keycap>F2</keycap></shortcut></entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/import_ldif.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/import_ldif.png" format="PNG"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry><menuchoice>
 						<guimenu>Import</guimenu>
 						<guisubmenu>LDIF Import...</guisubmenu>
@@ -233,7 +233,7 @@
 					  <entry></entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/import_dsml.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/import_dsml.png" format="PNG"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry><menuchoice>
 						<guimenu>Import</guimenu>
 						<guisubmenu>DSML Import...</guisubmenu>
@@ -243,7 +243,7 @@
 					  <entry></entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/import_connections.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/import_connections.png" format="PNG"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry><menuchoice>
 						<guimenu>Import</guimenu>
 						<guisubmenu>Import Connections...</guisubmenu>
@@ -253,7 +253,7 @@
 					  <entry></entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/export_ldif.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/export_ldif.png" format="PNG"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry><menuchoice>
 						<guimenu>Export</guimenu>
 						<guisubmenu>LDIF Export...</guisubmenu>
@@ -263,7 +263,7 @@
 					  <entry></entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/export_dsml.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/export_dsml.png" format="PNG"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry><menuchoice>
 						<guimenu>Export</guimenu>
 						<guisubmenu>DSML Export...</guisubmenu>
@@ -273,7 +273,7 @@
 					  <entry></entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/export_csv.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/export_csv.png" format="PNG"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry><menuchoice>
 						<guimenu>Export</guimenu>
 						<guisubmenu>CSV Export...</guisubmenu>
@@ -283,7 +283,7 @@
 					  <entry></entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/export_xls.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/export_xls.png" format="PNG"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry><menuchoice>
 						<guimenu>Export</guimenu>
 						<guisubmenu>Excel Export...</guisubmenu>
@@ -293,7 +293,7 @@
 					  <entry></entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/export_odf.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/export_odf.png" format="PNG"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry><menuchoice>
 						<guimenu>Export</guimenu>
 						<guisubmenu>ODF Export...</guisubmenu>
@@ -303,7 +303,7 @@
 					  <entry></entry>
 					</row>
 					<row>
-					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/export_connections.gif" format="GIF"/></imageobject></inlinemediaobject></guiicon></entry>
+					  <entry><guiicon><inlinemediaobject><imageobject><imagedata scale="50" fileref="icons/export_connections.png" format="PNG"/></imageobject></inlinemediaobject></guiicon></entry>
 					  <entry><menuchoice>
 						<guimenu>Export</guimenu>
 						<guisubmenu>Export Connections...</guisubmenu>
