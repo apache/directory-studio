@@ -47,6 +47,17 @@ Build the main eclipse artifacts using Tycho
 
     mvn clean install
 
+
+Special workaround for building with openjdk 25.0.4 2026-07-21 on Linux
+
+export MAVEN_OPTS="-Djdk.xml.maxGeneralEntitySizeLimit=0 -Djdk.xml.totalEntitySizeLimit=0 -Djdk.xml.entityExpansionLimit=0
+
+# Step 1: Generate OSGi Manifests and ANTLR Java sources
+mvn -f pom-first.xml clean install -DskipTests
+
+# Step 2: Build Tycho plugins and final application distributions
+mvn clean install -DskipTests
+
 #### Use the script  (which runs the two previous commands)
 
 On Linux / macOS :
