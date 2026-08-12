@@ -44,7 +44,7 @@
     <plugins>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
-        <artifactId>antlr-maven-plugin</artifactId>
+        <artifactId>exec-maven-plugin</artifactId>
         <configuration>
           <grammars>*.g</grammars>
         </configuration>
@@ -52,7 +52,7 @@
         <executions>
           <execution>
             <goals>
-              <goal>generate</goal>
+              <goal>java</goal>
             </goals>
           </execution>
         </executions>
