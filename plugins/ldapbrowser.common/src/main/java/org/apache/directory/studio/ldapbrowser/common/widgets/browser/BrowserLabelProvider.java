@@ -392,7 +392,7 @@ public class BrowserLabelProvider extends LabelProvider implements IFontProvider
         else
         {
             // return
-            // Activator.getDefault().getImage("icons/sandglass.gif");
+            // Activator.getDefault().getImage("icons/sandglass.png");
             return null;
         }
     }

@@ -59,7 +59,7 @@
 								<inlinemediaobject>
 									<imageobject>
 										<imagedata scale="50"
-											fileref="icons/dit.gif" format="GIF" />
+											fileref="icons/dit.png" format="PNG" />
 									</imageobject>
 								</inlinemediaobject>
 							</guiicon>
@@ -75,7 +75,7 @@
 								<inlinemediaobject>
 									<imageobject>
 										<imagedata scale="50"
-											fileref="icons/entry_person.gif" format="GIF" />
+											fileref="icons/entry_person.png" format="PNG" />
 									</imageobject>
 								</inlinemediaobject>
 							</guiicon>
@@ -83,7 +83,7 @@
 								<inlinemediaobject>
 									<imageobject>
 										<imagedata scale="50"
-											fileref="icons/entry_group.gif" format="GIF" />
+											fileref="icons/entry_group.png" format="PNG" />
 									</imageobject>
 								</inlinemediaobject>
 							</guiicon>
@@ -91,7 +91,7 @@
 								<inlinemediaobject>
 									<imageobject>
 										<imagedata scale="50"
-											fileref="icons/entry_org.gif" format="GIF" />
+											fileref="icons/entry_org.png" format="PNG" />
 									</imageobject>
 								</inlinemediaobject>
 							</guiicon>
@@ -99,7 +99,7 @@
 								<inlinemediaobject>
 									<imageobject>
 										<imagedata scale="50"
-											fileref="icons/entry_dc.gif" format="GIF" />
+											fileref="icons/entry_dc.png" format="PNG" />
 									</imageobject>
 								</inlinemediaobject>
 							</guiicon>
@@ -107,7 +107,7 @@
 								<inlinemediaobject>
 									<imageobject>
 										<imagedata scale="50"
-											fileref="icons/entry_default.gif" format="GIF" />
+											fileref="icons/entry_default.png" format="PNG" />
 									</imageobject>
 								</inlinemediaobject>
 							</guiicon>
@@ -122,7 +122,7 @@
 								<inlinemediaobject>
 									<imageobject>
 										<imagedata scale="50"
-											fileref="icons/entry_alias.png" format="GIF" />
+											fileref="icons/entry_alias.png" format="PNG" />
 									</imageobject>
 								</inlinemediaobject>
 							</guiicon>
@@ -130,7 +130,7 @@
 								<inlinemediaobject>
 									<imageobject>
 										<imagedata scale="50"
-											fileref="icons/entry_ref.png" format="GIF" />
+											fileref="icons/entry_ref.png" format="PNG" />
 									</imageobject>
 								</inlinemediaobject>
 							</guiicon>
@@ -143,7 +143,7 @@
 								<inlinemediaobject>
 									<imageobject>
 										<imagedata scale="50"
-											fileref="icons/browser_schemabrowsereditor.gif" format="GIF" />
+											fileref="icons/browser_schemabrowsereditor.png" format="PNG" />
 									</imageobject>
 								</inlinemediaobject>
 							</guiicon>
@@ -156,7 +156,7 @@
 								<inlinemediaobject>
 									<imageobject>
 										<imagedata scale="50"
-											fileref="icons/entry_root.gif" format="GIF" />
+											fileref="icons/entry_root.png" format="PNG" />
 									</imageobject>
 								</inlinemediaobject>
 							</guiicon>
@@ -169,7 +169,7 @@
 								<inlinemediaobject>
 									<imageobject>
 										<imagedata scale="50"
-											fileref="icons/folder.gif" format="GIF" />
+											fileref="icons/folder.png" format="PNG" />
 									</imageobject>
 								</inlinemediaobject>
 							</guiicon>
@@ -182,7 +182,7 @@
 								<inlinemediaobject>
 									<imageobject>
 										<imagedata scale="50"
-											fileref="icons/searches.gif" format="GIF" />
+											fileref="icons/searches.png" format="PNG" />
 									</imageobject>
 								</inlinemediaobject>
 							</guiicon>
@@ -198,7 +198,7 @@
 								<inlinemediaobject>
 									<imageobject>
 										<imagedata scale="50"
-											fileref="icons/search.gif" format="GIF" />
+											fileref="icons/search.png" format="PNG" />
 									</imageobject>
 								</inlinemediaobject>
 							</guiicon>
@@ -211,7 +211,7 @@
 								<inlinemediaobject>
 									<imageobject>
 										<imagedata scale="50"
-											fileref="icons/bookmarks.gif" format="GIF" />
+											fileref="icons/bookmarks.png" format="PNG" />
 									</imageobject>
 								</inlinemediaobject>
 							</guiicon>
@@ -226,7 +226,7 @@
 								<inlinemediaobject>
 									<imageobject>
 										<imagedata scale="50"
-											fileref="icons/bookmark.gif" format="GIF" />
+											fileref="icons/bookmark.png" format="PNG" />
 									</imageobject>
 								</inlinemediaobject>
 							</guiicon>
@@ -261,7 +261,7 @@
 									<inlinemediaobject>
 										<imageobject>
 											<imagedata scale="50"
-												fileref="icons/parent.gif" format="GIF" />
+												fileref="icons/parent.png" format="PNG" />
 										</imageobject>
 									</inlinemediaobject>
 								</guiicon>
@@ -278,7 +278,7 @@
 									<inlinemediaobject>
 										<imageobject>
 											<imagedata scale="50"
-												fileref="icons/refresh.gif" format="GIF" />
+												fileref="icons/refresh.png" format="PNG" />
 										</imageobject>
 									</inlinemediaobject>
 								</guiicon>
@@ -294,7 +294,7 @@
 									<inlinemediaobject>
 										<imageobject>
 											<imagedata scale="50"
-												fileref="icons/collapseall.gif" format="GIF" />
+												fileref="icons/collapseall.png" format="PNG" />
 										</imageobject>
 									</inlinemediaobject>
 								</guiicon>
@@ -311,7 +311,7 @@
 									<inlinemediaobject>
 										<imageobject>
 											<imagedata scale="50"
-												fileref="icons/link_with_editor.gif" format="GIF" />
+												fileref="icons/link_with_editor.png" format="PNG" />
 										</imageobject>
 									</inlinemediaobject>
 								</guiicon>
@@ -422,7 +422,7 @@
 				<inlinemediaobject>
 					<imageobject>
 						<imagedata scale="50"
-							fileref="icons/subtree.gif" format="GIF" />
+							fileref="icons/subtree.png" format="PNG" />
 					</imageobject>
 				</inlinemediaobject>
 			</guiicon>
@@ -436,7 +436,7 @@
 				<inlinemediaobject>
 					<imageobject>
 						<imagedata scale="50"
-							fileref="icons/quicksearch.gif" format="GIF" />
+							fileref="icons/quicksearch.png" format="PNG" />
 					</imageobject>
 				</inlinemediaobject>
 			</guiicon>
@@ -450,7 +450,7 @@
 				<inlinemediaobject>
 					<imageobject>
 						<imagedata scale="50"
-							fileref="icons/quicksearch.gif" format="GIF" />
+							fileref="icons/quicksearch.png" format="PNG" />
 					</imageobject>
 				</inlinemediaobject>
 			</guiicon>

@@ -825,7 +825,7 @@ public class ImageDialog extends Dialog
             case SWT.IMAGE_JPEG :
                 return "JPEG"; //$NON-NLS-1$
                 
-            case SWT.IMAGE_GIF :
+            case SWT.IMAGE_GIF:
                 return "GIF"; //$NON-NLS-1$
                 
             case SWT.IMAGE_PNG :

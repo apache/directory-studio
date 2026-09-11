@@ -137,7 +137,7 @@
 										<inlinemediaobject>
 											<imageobject>
 												<imagedata scale="50"
-													fileref="icons/defaultschema.gif" format="GIF" />
+													fileref="icons/defaultschema.png" format="PNG" />
 											</imageobject>
 										</inlinemediaobject>
 									</guiicon>
@@ -155,7 +155,7 @@
 										<inlinemediaobject>
 											<imageobject>
 												<imagedata scale="50"
-													fileref="icons/refresh.gif" format="GIF" />
+													fileref="icons/refresh.png" format="PNG" />
 											</imageobject>
 										</inlinemediaobject>
 									</guiicon>

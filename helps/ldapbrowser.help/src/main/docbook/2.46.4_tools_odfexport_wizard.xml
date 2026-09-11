@@ -31,7 +31,7 @@
 						<inlinemediaobject>
 							<imageobject>
 								<imagedata scale="50"
-									fileref="icons/export_odf.gif" format="GIF" />
+									fileref="icons/export_odf.png" format="PNG" />
 							</imageobject>
 						</inlinemediaobject>
 						ODF Export...
@@ -48,7 +48,7 @@
 						<inlinemediaobject>
 							<imageobject>
 								<imagedata scale="50"
-									fileref="icons/export_odf.gif" format="GIF" />
+									fileref="icons/export_odf.png" format="PNG" />
 							</imageobject>
 						</inlinemediaobject>
 						ODF Export...
@@ -65,7 +65,7 @@
 						<inlinemediaobject>
 							<imageobject>
 								<imagedata scale="50"
-									fileref="icons/export_odf.gif" format="GIF" />
+									fileref="icons/export_odf.png" format="PNG" />
 							</imageobject>
 						</inlinemediaobject>
 						LDAP to ODF

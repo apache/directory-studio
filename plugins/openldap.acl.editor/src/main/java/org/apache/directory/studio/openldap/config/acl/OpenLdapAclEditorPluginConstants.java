@@ -44,11 +44,11 @@ public final class OpenLdapAclEditorPluginConstants
     public static String TEMPLATE_ID = OpenLdapAclEditorPlugin.getDefault().getPluginProperties()
         .getString( "CtxType_Template_id" ); //$NON-NLS-1$
 
-    public static String IMG_ADD = "resources/icons/add.gif"; //$NON-NLS-1$
-    public static String IMG_DELETE = "resources/icons/delete.gif"; //$NON-NLS-1$
+    public static String IMG_ADD = "resources/icons/add.png"; //$NON-NLS-1$
+    public static String IMG_DELETE = "resources/icons/delete.png"; //$NON-NLS-1$
     public static String IMG_DOWN = "resources/icons/down.png"; //$NON-NLS-1$
-    public static String IMG_EDITOR = "resources/icons/editor.gif"; //$NON-NLS-1$
-    public static String IMG_KEYWORD = "resources/icons/keyword.gif"; //$NON-NLS-1$
+    public static String IMG_EDITOR = "resources/icons/editor.png"; //$NON-NLS-1$
+    public static String IMG_KEYWORD = "resources/icons/keyword.png"; //$NON-NLS-1$
     public static String IMG_UP = "resources/icons/up.png"; //$NON-NLS-1$
     
     public static String DIALOGSETTING_KEY_ATTRIBUTES_HISTORY = "attributesHistory"; //$NON-NLS-1$

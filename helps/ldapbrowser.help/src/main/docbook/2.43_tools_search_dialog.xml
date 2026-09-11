@@ -41,7 +41,7 @@
 						<inlinemediaobject>
 							<imageobject>
 								<imagedata scale="50"
-									fileref="icons/search_new.gif" format="GIF" />
+									fileref="icons/search_new.png" format="PNG" />
 							</imageobject>
 						</inlinemediaobject>
 						New Search...
@@ -58,7 +58,7 @@
 						<inlinemediaobject>
 							<imageobject>
 								<imagedata scale="50"
-									fileref="icons/search.gif" format="GIF" />
+									fileref="icons/search.png" format="PNG" />
 							</imageobject>
 						</inlinemediaobject>
 						Search

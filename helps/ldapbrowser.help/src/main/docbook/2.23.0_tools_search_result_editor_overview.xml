@@ -112,7 +112,7 @@
 									<inlinemediaobject>
 										<imageobject>
 											<imagedata scale="50"
-												fileref="icons/value_add.gif" format="GIF" />
+												fileref="icons/value_add.png" format="PNG" />
 										</imageobject>
 									</inlinemediaobject>
 								</guiicon>
@@ -137,7 +137,7 @@
 									<inlinemediaobject>
 										<imageobject>
 											<imagedata scale="50"
-												fileref="icons/delete.gif" format="GIF" />
+												fileref="icons/delete.png" format="PNG" />
 										</imageobject>
 									</inlinemediaobject>
 								</guiicon>
@@ -158,7 +158,7 @@
 									<inlinemediaobject>
 										<imageobject>
 											<imagedata scale="50"
-												fileref="icons/refresh.gif" format="GIF" />
+												fileref="icons/refresh.png" format="PNG" />
 										</imageobject>
 									</inlinemediaobject>
 								</guiicon>
@@ -177,7 +177,7 @@
 									<inlinemediaobject>
 										<imageobject>
 											<imagedata scale="50"
-												fileref="icons/copy_table.gif" format="GIF" />
+												fileref="icons/copy_table.png" format="PNG" />
 										</imageobject>
 									</inlinemediaobject>
 								</guiicon>
@@ -206,7 +206,7 @@
 									<inlinemediaobject>
 										<imageobject>
 											<imagedata scale="50"
-												fileref="icons/filter.gif" format="GIF" />
+												fileref="icons/filter.png" format="PNG" />
 										</imageobject>
 									</inlinemediaobject>
 								</guiicon>

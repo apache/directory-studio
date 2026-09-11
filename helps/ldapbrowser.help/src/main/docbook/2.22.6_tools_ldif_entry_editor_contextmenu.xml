@@ -122,8 +122,8 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata scale="50" fileref="icons/copy.gif"
-										format="GIF" />
+									<imagedata scale="50" fileref="icons/copy.png"
+										format="PNG" />
 								</imageobject>
 							</inlinemediaobject>
 						</guiicon>
@@ -166,8 +166,8 @@
 						<guiicon>
 							<inlinemediaobject>
 								<imageobject>
-									<imagedata scale="50" fileref="icons/paste.gif"
-										format="GIF" />
+									<imagedata scale="50" fileref="icons/paste.png"
+										format="PNG" />
 								</imageobject>
 							</inlinemediaobject>
 						</guiicon>
@@ -311,7 +311,7 @@
 							<inlinemediaobject>
 								<imageobject>
 									<imagedata scale="50"
-										fileref="icons/refresh.gif" format="GIF" />
+										fileref="icons/refresh.png" format="PNG" />
 								</imageobject>
 							</inlinemediaobject>
 						</guiicon>

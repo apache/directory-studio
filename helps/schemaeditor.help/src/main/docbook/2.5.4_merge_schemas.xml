@@ -26,7 +26,7 @@
 			Import >
 			<imageobject>
 				<imagedata scale="50"
-					fileref="images/icons_schemas-import.gif" format="GIF" />
+					fileref="images/icons_schemas-import.png" format="PNG" />
 			</imageobject>
 			Merge Schemas from other Projects
 		</emphasis>

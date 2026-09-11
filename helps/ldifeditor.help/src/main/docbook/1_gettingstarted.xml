@@ -245,8 +245,8 @@
 					<guiicon>
 						<inlinemediaobject>
 							<imageobject>
-								<imagedata scale="50" fileref="icons/browser_ldifeditor.gif"
-									format="GIF" />
+								<imagedata scale="50" fileref="icons/browser_ldifeditor.png"
+									format="PNG" />
 							</imageobject>
 						</inlinemediaobject>
 					</guiicon>
@@ -296,8 +296,8 @@
 								<guiicon>
 									<inlinemediaobject>
 										<imageobject>
-											<imagedata scale="50" fileref="icons/execute.gif"
-												format="GIF" />
+											<imagedata scale="50" fileref="icons/execute.png"
+												format="PNG" />
 										</imageobject>
 									</inlinemediaobject>
 								</guiicon>
@@ -451,7 +451,7 @@
 					<inlinemediaobject>
 						<imageobject>
 							<imagedata scale="50"
-								fileref="icons/error.gif" format="GIF" />
+								fileref="icons/error.png" format="PNG" />
 						</imageobject>
 					</inlinemediaobject>
 				</guiicon>
@@ -523,7 +523,7 @@
 								<inlinemediaobject>
 									<imageobject>
 										<imagedata scale="50"
-											fileref="icons/entry_default.gif" format="GIF" />
+											fileref="icons/entry_default.png" format="PNG" />
 									</imageobject>
 								</inlinemediaobject>
 							</guiicon>
@@ -536,7 +536,7 @@
 								<inlinemediaobject>
 									<imageobject>
 										<imagedata scale="50"
-											fileref="icons/ldif_add.gif" format="GIF" />
+											fileref="icons/ldif_add.png" format="PNG" />
 									</imageobject>
 								</inlinemediaobject>
 							</guiicon>
@@ -549,7 +549,7 @@
 								<inlinemediaobject>
 									<imageobject>
 										<imagedata scale="50"
-											fileref="icons/ldif_modify.gif" format="GIF" />
+											fileref="icons/ldif_modify.png" format="PNG" />
 									</imageobject>
 								</inlinemediaobject>
 							</guiicon>
@@ -562,7 +562,7 @@
 								<inlinemediaobject>
 									<imageobject>
 										<imagedata scale="50"
-											fileref="icons/ldif_delete.gif" format="GIF" />
+											fileref="icons/ldif_delete.png" format="PNG" />
 									</imageobject>
 								</inlinemediaobject>
 							</guiicon>
@@ -575,7 +575,7 @@
 								<inlinemediaobject>
 									<imageobject>
 										<imagedata scale="50"
-											fileref="icons/ldif_rename.gif" format="GIF" />
+											fileref="icons/ldif_rename.png" format="PNG" />
 									</imageobject>
 								</inlinemediaobject>
 							</guiicon>
@@ -605,7 +605,7 @@
 								<inlinemediaobject>
 									<imageobject>
 										<imagedata scale="50"
-											fileref="icons/ldif_attribute.gif" format="GIF" />
+											fileref="icons/ldif_attribute.png" format="PNG" />
 									</imageobject>
 								</inlinemediaobject>
 							</guiicon>
@@ -618,7 +618,7 @@
 								<inlinemediaobject>
 									<imageobject>
 										<imagedata scale="50"
-											fileref="icons/ldif_value.gif" format="GIF" />
+											fileref="icons/ldif_value.png" format="PNG" />
 									</imageobject>
 								</inlinemediaobject>
 							</guiicon>
@@ -631,7 +631,7 @@
 								<inlinemediaobject>
 									<imageobject>
 										<imagedata scale="50"
-											fileref="icons/ldif_mod_add.gif" format="GIF" />
+											fileref="icons/ldif_mod_add.png" format="PNG" />
 									</imageobject>
 								</inlinemediaobject>
 							</guiicon>
@@ -644,7 +644,7 @@
 								<inlinemediaobject>
 									<imageobject>
 										<imagedata scale="50"
-											fileref="icons/ldif_mod_replace.gif" format="GIF" />
+											fileref="icons/ldif_mod_replace.png" format="PNG" />
 									</imageobject>
 								</inlinemediaobject>
 							</guiicon>
@@ -657,7 +657,7 @@
 								<inlinemediaobject>
 									<imageobject>
 										<imagedata scale="50"
-											fileref="icons/ldif_mod_delete.gif" format="GIF" />
+											fileref="icons/ldif_mod_delete.png" format="PNG" />
 									</imageobject>
 								</inlinemediaobject>
 							</guiicon>

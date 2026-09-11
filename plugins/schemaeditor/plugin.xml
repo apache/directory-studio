@@ -24,7 +24,7 @@
         point="org.eclipse.ui.perspectives">
     <perspective
         class="org.apache.directory.studio.schemaeditor.view.Perspective"
-        icon="resources/icons/schemaeditor_perspective.gif"
+        icon="resources/icons/schemaeditor_perspective.png"
         id="%Perspective_SchemaEditor_id"
         name="%Perspective_SchemaEditor_name"/>
   </extension>
@@ -47,7 +47,7 @@
         allowMultiple="false"
         category="%Views_Category_id"
         class="org.apache.directory.studio.schemaeditor.view.views.HierarchyView"
-        icon="resources/icons/hierarchy_view.gif"
+        icon="resources/icons/hierarchy_view.png"
         id="%View_HierarchyView_id"
         name="%View_HierarchyView_name"/>
 
@@ -55,7 +55,7 @@
         allowMultiple="false"
         category="%Views_Category_id"
         class="org.apache.directory.studio.schemaeditor.view.views.ProblemsView"
-        icon="resources/icons/problems_view.gif"
+        icon="resources/icons/problems_view.png"
         id="%View_ProblemsView_id"
         name="%View_ProblemsView_name"/>
 
@@ -63,7 +63,7 @@
         allowMultiple="false"
         category="%Views_Category_id"
         class="org.apache.directory.studio.schemaeditor.view.views.ProjectsView"
-        icon="resources/icons/projects_view.gif"
+        icon="resources/icons/projects_view.png"
         id="%View_ProjectsView_id"
         name="%View_ProjectsView_name"/>
 
@@ -71,7 +71,7 @@
         allowMultiple="false"
         category="%Views_Category_id"
         class="org.apache.directory.studio.schemaeditor.view.views.SearchView"
-        icon="resources/icons/search_view.gif"
+        icon="resources/icons/search_view.png"
         id="%View_SearchView_id"
         name="%View_SearchView_name"/>
   </extension>
@@ -91,7 +91,7 @@
         category="%NewWizards_Category_id"
         class="org.apache.directory.studio.schemaeditor.view.wizards.NewProjectWizard"
         hasPages="true"
-        icon="resources/icons/project_new.gif"
+        icon="resources/icons/project_new.png"
         id="%NewWizard_NewProjectWizard_id"
         name="%NewWizard_NewProjectWizard_name"
         project="true"/>
@@ -100,7 +100,7 @@
         category="%NewWizards_Category_id"
         class="org.apache.directory.studio.schemaeditor.view.wizards.NewSchemaWizard"
         hasPages="true"
-        icon="resources/icons/schema_new.gif"
+        icon="resources/icons/schema_new.png"
         id="%NewWizard_NewSchemaWizard_id"
         name="%NewWizard_NewSchemaWizard_name"
         project="false"/>
@@ -109,7 +109,7 @@
         category="%NewWizards_Category_id"
         class="org.apache.directory.studio.schemaeditor.view.wizards.NewAttributeTypeWizard"
         hasPages="true"
-        icon="resources/icons/attribute_type_new.gif"
+        icon="resources/icons/attribute_type_new.png"
         id="%NewWizard_NewAttributeTypeWizard_id"
         name="%NewWizard_NewAttributeTypeWizard_name"
         project="false"/>
@@ -118,7 +118,7 @@
         category="%NewWizards_Category_id"
         class="org.apache.directory.studio.schemaeditor.view.wizards.NewObjectClassWizard"
         hasPages="true"
-        icon="resources/icons/object_class_new.gif"
+        icon="resources/icons/object_class_new.png"
         id="%NewWizard_NewObjectClassWizard_id"
         name="%NewWizard_NewObjectClassWizard_name"
         project="false"/>
@@ -128,21 +128,21 @@
     <editor
         class="org.apache.directory.studio.schemaeditor.view.editors.objectclass.ObjectClassEditor"
         default="false"
-        icon="resources/icons/object_class.gif"
+        icon="resources/icons/object_class.png"
         id="%Editor_ObjectClassEditor_id"
         name="%Editor_ObjectClassEditor_name"/>
 
     <editor
         class="org.apache.directory.studio.schemaeditor.view.editors.attributetype.AttributeTypeEditor"
         default="false"
-        icon="resources/icons/attribute_type.gif"
+        icon="resources/icons/attribute_type.png"
         id="%Editor_AttributeTypeEditor_id"
         name="%Editor_AttributeTypeEditor_name"/>
     
     <editor
         class="org.apache.directory.studio.schemaeditor.view.editors.schema.SchemaEditor"
         default="false"
-        icon="resources/icons/schema.gif"
+        icon="resources/icons/schema.png"
         id="%Editor_SchemaEditor_id"
         name="%Editor_SchemaEditor_name"/>
   </extension>
@@ -156,28 +156,28 @@
     <wizard
         category="%ExportWizards_Category_id"
         class="org.apache.directory.studio.schemaeditor.view.wizards.ExportSchemasAsXmlWizard"
-        icon="resources/icons/schemas_export.gif"
+        icon="resources/icons/schemas_export.png"
         id="org.apache.directory.studio.schemaeditor.wizards.ExportSchemasAsXmlWizard"
         name="%ExportWizard_ExportSchemasAsXmlWizard_name"/>
 
     <wizard
         category="%ExportWizards_Category_id"
         class="org.apache.directory.studio.schemaeditor.view.wizards.ExportSchemasAsOpenLdapWizard"
-        icon="resources/icons/schemas_export.gif"
+        icon="resources/icons/schemas_export.png"
         id="org.apache.directory.studio.schemaeditor.wizards.ExportSchemasAsXmlWizard"
         name="%ExportWizard_ExportSchemasAsOpenLdapWizard_name"/>
 
     <wizard
         category="%ExportWizards_Category_id"
         class="org.apache.directory.studio.schemaeditor.view.wizards.ExportSchemasForADSWizard"
-        icon="resources/icons/schemas_export_for_ads.gif"
+        icon="resources/icons/schemas_export_for_ads.png"
         id="org.apache.directory.studio.schemaeditor.wizards.ExportSchemasForADSWizard"
         name="%ExportWizard_ExportSchemasForADSWizard_name"/>
 
     <wizard
         category="%ExportWizards_Category_id"
         class="org.apache.directory.studio.schemaeditor.view.wizards.ExportProjectsWizard"
-        icon="resources/icons/project_export.gif"
+        icon="resources/icons/project_export.png"
         id="org.apache.directory.studio.schemaeditor.wizards.ExportProjectsWizard"
         name="%ExportWizard_ExportProjectsWizard_name"/>
   </extension>
@@ -191,28 +191,28 @@
     <wizard
         category="%ImportWizards_Category_id"
         class="org.apache.directory.studio.schemaeditor.view.wizards.ImportCoreSchemasWizard"
-        icon="resources/icons/schemas_import.gif"
+        icon="resources/icons/schemas_import.png"
         id="org.apache.directory.studio.schemaeditor.wizards.ImportCoreSchemasWizard"
         name="%ImportWizard_ImportCoreSchemasWizard_name"/>
 
     <wizard
         category="%ImportWizards_Category_id"
         class="org.apache.directory.studio.schemaeditor.view.wizards.ImportSchemasFromXmlWizard"
-        icon="resources/icons/schemas_import.gif"
+        icon="resources/icons/schemas_import.png"
         id="org.apache.directory.studio.schemaeditor.wizards.ImportSchemasFromXmlWizard"
         name="%ImportWizard_ImportSchemasFromXmlWizard_name"/>
 
     <wizard
         category="%ImportWizards_Category_id"
         class="org.apache.directory.studio.schemaeditor.view.wizards.ImportSchemasFromOpenLdapWizard"
-        icon="resources/icons/schemas_import.gif"
+        icon="resources/icons/schemas_import.png"
         id="org.apache.directory.studio.schemaeditor.wizards.ImportSchemasFromOpenLdapWizard"
         name="%ImportWizard_ImportSchemasFromOpenLdapWizard_name"/>
 
     <wizard
         category="%ImportWizards_Category_id"
         class="org.apache.directory.studio.schemaeditor.view.wizards.ImportProjectsWizard"
-        icon="resources/icons/project_import.gif"
+        icon="resources/icons/project_import.png"
         id="org.apache.directory.studio.schemaeditor.wizards.ImportProjectsWizard"
         name="%ImportWizard_ImportProjectsWizard_name"/>
   </extension>
@@ -308,7 +308,7 @@
     <page
         class="org.apache.directory.studio.schemaeditor.view.search.SearchPage"
         enabled="true"
-        icon="resources/icons/search.gif"
+        icon="resources/icons/search.png"
         id="org.apache.directory.studio.schemaeditor.search"
         label="%SearchPage_SchemaEditorSearch_label"
         showScopeSection="false"

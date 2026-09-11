@@ -24,7 +24,7 @@
   <extension
       point="org.eclipse.ui.perspectives">
     <perspective
-      icon="resources/icons/browser_browserview.gif"
+      icon="resources/icons/browser_browserview.png"
       class="org.apache.directory.studio.ldapbrowser.ui.perspective.BrowserPerspective"
       fixed="false"
       name="%Perspective_LdapPerspective_name"
@@ -50,7 +50,7 @@
     <editor
       class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.SingleTabEntryEditor"
       default="true"
-      icon="resources/icons/browser_singletab_entry_editor.gif"
+      icon="resources/icons/browser_singletab_entry_editor.png"
       id="%Editor_SingleTabEntryEditor_id"
       matchingStrategy="org.apache.directory.studio.entryeditors.SingleTabEntryEditorMatchingStrategy"
       name="%Editor_SingleTabEntryEditor_shortname"/>
@@ -58,7 +58,7 @@
     <editor
       class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.MultiTabEntryEditor"
       default="true"
-      icon="resources/icons/browser_multitab_entry_editor.gif"
+      icon="resources/icons/browser_multitab_entry_editor.png"
       id="%Editor_MultiTabEntryEditor_id"
       matchingStrategy="org.apache.directory.studio.entryeditors.MultiTabEntryEditorMatchingStrategy"
       name="%Editor_MultiTabEntryEditor_shortname"/>
@@ -66,7 +66,7 @@
     <editor
       class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.SingleTabLdifEntryEditor"
       default="false"
-      icon="resources/icons/browser_singletab_ldif_editor.gif"
+      icon="resources/icons/browser_singletab_ldif_editor.png"
       id="%Editor_SingleTabLdifEntryEditor_id"
       matchingStrategy="org.apache.directory.studio.entryeditors.SingleTabEntryEditorMatchingStrategy"
       name="%Editor_SingleTabLdifEntryEditor_shortname"/>
@@ -74,7 +74,7 @@
     <editor
       class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.MultiTabLdifEntryEditor"
       default="true"
-      icon="resources/icons/browser_multitab_ldif_editor.gif"
+      icon="resources/icons/browser_multitab_ldif_editor.png"
       id="%Editor_MultiTabLdifEntryEditor_id"
       matchingStrategy="org.apache.directory.studio.entryeditors.MultiTabEntryEditorMatchingStrategy"
       name="%Editor_MultiTabLdifEntryEditor_shortname"/>
@@ -82,7 +82,7 @@
     <editor
       class="org.apache.directory.studio.ldapbrowser.ui.editors.searchresult.SearchResultEditor"
       default="true"
-      icon="resources/icons/browser_searchresulteditor.gif"
+      icon="resources/icons/browser_searchresulteditor.png"
       id="%Editor_SearchResultEditor_id"
       matchingStrategy="org.apache.directory.studio.ldapbrowser.ui.editors.searchresult.SingleTabSearchResultEditorMatchingStrategy"
       name="%Editor_SearchResultEditor_name"/>
@@ -90,7 +90,7 @@
     <editor
       class="org.apache.directory.studio.ldapbrowser.ui.editors.schemabrowser.SchemaBrowser"
       default="true"
-      icon="resources/icons/browser_schemabrowsereditor.gif"
+      icon="resources/icons/browser_schemabrowsereditor.png"
       id="%Editor_SchemaBrowser_id"
       name="%Editor_SchemaBrowser_name"/>
   </extension>
@@ -108,7 +108,7 @@
     <view
         allowMultiple="false"
         class="org.apache.directory.studio.ldapbrowser.ui.views.connection.ConnectionView"
-        icon="resources/icons/browser_connectionview.gif"
+        icon="resources/icons/browser_connectionview.png"
         category="%View_Category_id"
         name="%View_ConnectionView_name"
         id="%View_ConnectionView_id"/>
@@ -117,7 +117,7 @@
          allowMultiple="false"
          category="%View_Category_id"
          class="org.apache.directory.studio.ldapbrowser.ui.views.browser.BrowserView"
-         icon="resources/icons/browser_browserview.gif"
+         icon="resources/icons/browser_browserview.png"
          id="%View_BrowserView_id"
          name="%View_BrowserView_name"/>
     
@@ -125,7 +125,7 @@
          allowMultiple="false"
          category="%View_Category_id"
          class="org.apache.directory.studio.ldapbrowser.ui.views.modificationlogs.ModificationLogsView"
-         icon="resources/icons/browser_modificationlogview.gif"
+         icon="resources/icons/browser_modificationlogview.png"
          id="%View_ModificationLogsView_id"
          name="%View_ModificationLogsView_name"/>
     
@@ -133,7 +133,7 @@
          allowMultiple="false"
          category="%View_Category_id"
          class="org.apache.directory.studio.ldapbrowser.ui.views.searchlogs.SearchLogsView"
-         icon="resources/icons/browser_modificationlogview.gif"
+         icon="resources/icons/browser_modificationlogview.png"
          id="%View_SearchLogsView_id"
          name="%View_SearchLogsView_name"/>
   </extension>
@@ -150,7 +150,7 @@
         category="%NewWizards_Category_id"
         class="org.apache.directory.studio.ldapbrowser.ui.wizards.BatchOperationWizard"
         hasPages="true"
-        icon="resources/icons/batch.gif"
+        icon="resources/icons/batch.png"
         id="%NewWizard_BatchOperationWizard_id"
         name="%NewWizard_BatchOperationWizard_name"
         project="false"/>
@@ -159,7 +159,7 @@
         category="%NewWizards_Category_id"
         class="org.apache.directory.studio.ldapbrowser.ui.wizards.NewBookmarkWizard"
         hasPages="true"
-        icon="resources/icons/bookmark_add.gif"
+        icon="resources/icons/bookmark_add.png"
         id="%NewWizard_NewBookmarkWizard_id"
         name="%NewWizard_NewBookmarkWizard_name"
         project="false"/>
@@ -168,7 +168,7 @@
         category="%NewWizards_Category_id"
         class="org.apache.directory.studio.ldapbrowser.common.wizards.NewContextEntryWizard"
         hasPages="true"
-        icon="resources/icons/entry_add.gif"
+        icon="resources/icons/entry_add.png"
         id="%NewWizard_NewContextEntryWizard_id"
         name="%NewWizard_NewContextEntryWizard_name"
         project="false"/>
@@ -177,7 +177,7 @@
         category="%NewWizards_Category_id"
         class="org.apache.directory.studio.ldapbrowser.common.wizards.NewEntryWizard"
         hasPages="true"
-        icon="resources/icons/entry_add.gif"
+        icon="resources/icons/entry_add.png"
         id="org.apache.directory.studio.ldapbrowser.common.wizards.NewEntryWizard"
         name="%NewWizard_NewEntryWizard_name"
         project="false"/>
@@ -187,7 +187,7 @@
         category="%NewWizards_Category_id"
         class="org.apache.directory.studio.ldapbrowser.ui.wizards.NewSearchWizard"
         hasPages="false"
-        icon="resources/icons/search_new.gif"
+        icon="resources/icons/search_new.png"
         id="%NewWizard_NewSearchWizard_id"
         name="%NewWizard_NewSearchWizard_name"
         project="false"/>
@@ -205,7 +205,7 @@
     <wizard
           category="%ImportWizards_Category_id"
           class="org.apache.directory.studio.ldapbrowser.ui.wizards.ImportLdifWizard"
-          icon="resources/icons/import_ldif.gif"
+          icon="resources/icons/import_ldif.png"
           id="%ImportWizard_ImportLdifWizard_id"
           name="%ImportWizard_ImportLdifWizard_name">
       <description>
@@ -219,7 +219,7 @@
     <wizard
           category="%ImportWizards_Category_id"
           class="org.apache.directory.studio.ldapbrowser.ui.wizards.ImportDsmlWizard"
-          icon="resources/icons/import_dsml.gif"
+          icon="resources/icons/import_dsml.png"
           id="%ImportWizard_ImportDsmlWizard_id"
           name="%ImportWizard_ImportDsmlWizard_name">
       <description>
@@ -245,7 +245,7 @@
     <wizard
         category="%ExportWizards_Category_id"
         class="org.apache.directory.studio.ldapbrowser.ui.wizards.ExportLdifWizard"
-        icon="resources/icons/export_ldif.gif"
+        icon="resources/icons/export_ldif.png"
         id="%ExportWizard_ExportLdifWizard_id"
         name="%ExportWizard_ExportLdifWizard_name">
       <description>
@@ -259,7 +259,7 @@
     <wizard
         category="%ExportWizards_Category_id"
         class="org.apache.directory.studio.ldapbrowser.ui.wizards.ExportDsmlWizard"
-        icon="resources/icons/export_dsml.gif"
+        icon="resources/icons/export_dsml.png"
         id="%ExportWizard_ExportDdsmlWizard_id"
         name="%ExportWizard_ExportDdsmlWizard_name">
       <description>
@@ -273,7 +273,7 @@
     <wizard
         category="%ExportWizards_Category_id"
         class="org.apache.directory.studio.ldapbrowser.ui.wizards.ExportCsvWizard"
-        icon="resources/icons/export_csv.gif"
+        icon="resources/icons/export_csv.png"
         id="%ExportWizard_ExportCsvWizard_id"
         name="%ExportWizard_ExportCsvWizard_name">
       <description>
@@ -287,7 +287,7 @@
     <wizard
         category="%ExportWizards_Category_id"
         class="org.apache.directory.studio.ldapbrowser.ui.wizards.ExportExcelWizard"
-        icon="resources/icons/export_xls.gif"
+        icon="resources/icons/export_xls.png"
         id="%ExportWizard_ExportExcelWizard_id"
         name="%ExportWizard_ExportExcelWizard_name">
       <description>
@@ -301,7 +301,7 @@
     <wizard
         category="%ExportWizards_Category_id"
         class="org.apache.directory.studio.ldapbrowser.ui.wizards.ExportOdfWizard"
-        icon="resources/icons/export_odf.gif"
+        icon="resources/icons/export_odf.png"
         id="%ExportWizard_ExportOdfWizard_id"
         name="%ExportWizard_ExportOdfWizard_name">
       <description>
@@ -318,7 +318,7 @@
         enabled="true"
         label="%SearchPage_LdapSearch_label"
         class="org.apache.directory.studio.ldapbrowser.ui.search.SearchPage"
-        icon="resources/icons/browser_searchresulteditor.gif"
+        icon="resources/icons/browser_searchresulteditor.png"
         showScopeSection="false"
         sizeHint="450,450"
         id="%SearchPage_LdapSearch_id"/>
@@ -483,7 +483,7 @@
       
       <action
            class="org.apache.directory.studio.ldapbrowser.ui.actions.OpenSchemaBrowserAction"
-           icon="resources/icons/browser_schemabrowsereditor.gif"
+           icon="resources/icons/browser_schemabrowsereditor.png"
            id="org.apache.directory.studio.ldapbrowser.ui.actions.OpenSchemaBrowserAction"
            label="%Action_OpenSchemaBrowserAction_label"
            menubarPath="%Action_OpenSchemaBrowserAction_menubarpath"
@@ -491,7 +491,7 @@
 
        <action
            class="org.apache.directory.studio.connection.ui.actions.NewConnectionAction"
-           icon="resources/icons/connection_add.gif"
+           icon="resources/icons/connection_add.png"
            id="org.apache.directory.studio.connection.ui.actions.NewConnectionAction"
            label="%Action_NewConnectionAction_label"
            menubarPath="%Action_NewConnectionAction_menubarpath"
@@ -499,7 +499,7 @@
 
        <action
            class="org.apache.directory.studio.ldapbrowser.ui.actions.NewEntryAction"
-           icon="resources/icons/entry_add.gif"
+           icon="resources/icons/entry_add.png"
            id="org.apache.directory.studio.ldapbrowser.ui.actions.NewEntryAction"
            label="%Action_NewEntryAction_label"
            menubarPath="%Action_NewEntryAction_menubarpath"
@@ -507,7 +507,7 @@
 
        <action
            class="org.apache.directory.studio.ldapbrowser.common.actions.NewAttributeAction"
-           icon="resources/icons/attribute_add.gif"
+           icon="resources/icons/attribute_add.png"
            id="org.apache.directory.studio.ldapbrowser.ui.actions.NewAttributeAction"
            label="%Action_NewAttributeAction_label"
            menubarPath="%Action_NewAttributeAction_menubarpath"
@@ -515,7 +515,7 @@
 
        <action
            class="org.apache.directory.studio.ldapbrowser.common.actions.NewValueAction"
-           icon="resources/icons/value_add.gif"
+           icon="resources/icons/value_add.png"
            id="org.apache.directory.studio.ldapbrowser.ui.actions.NewValueAction"
            label="%Action_NewValueAction_label"
            menubarPath="%Action_NewValueAction_menubarpath"
@@ -523,7 +523,7 @@
 
        <action
            class="org.apache.directory.studio.ldapbrowser.ui.actions.NewSearchAction"
-           icon="resources/icons/search_new.gif"
+           icon="resources/icons/search_new.png"
            id="org.apache.directory.studio.ldapbrowser.ui.actions.NewSearchAction"
            label="%Action_NewSearchAction_label"
            menubarPath="%Action_NewSearchAction_menubarpath"
@@ -531,7 +531,7 @@
            
        <action
            class="org.apache.directory.studio.ldapbrowser.ui.actions.NewBookmarkAction"
-           icon="resources/icons/bookmark_add.gif"
+           icon="resources/icons/bookmark_add.png"
            id="org.apache.directory.studio.ldapbrowser.ui.actions.NewBookmarkAction"
            label="%Action_NewBookmarkAction_label"
            menubarPath="%Action_NewBookmarkAction_menubarpath"
@@ -539,7 +539,7 @@
              
        <action
            class="org.apache.directory.studio.ldapbrowser.ui.actions.NewBatchOperationAction"
-           icon="resources/icons/batch.gif"
+           icon="resources/icons/batch.png"
            id="org.apache.directory.studio.ldapbrowser.ui.actions.NewBatchOperationAction"
            label="%Action_NewBatchOperationAction_label"
            menubarPath="%Action_NewBatchOperationAction_menubarpath"
@@ -554,7 +554,7 @@
 
        <action
            class="org.apache.directory.studio.ldapbrowser.ui.actions.NewLdifFileAction"
-           icon="resources/icons/ldifeditor_new.gif"
+           icon="resources/icons/ldifeditor_new.png"
            id="org.apache.directory.studio.ldapbrowser.ui.actions.NewLdifFileAction"
            label="%Action_NewLdifFileAction_label"
            menubarPath="%Action_NewLdifFileAction_menubarpath"
@@ -562,7 +562,7 @@
 
        <action
            class="org.apache.directory.studio.ldapbrowser.ui.actions.GotoDnNavigateMenuAction"
-           icon="resources/icons/locate_dn_in_dit.gif"
+           icon="resources/icons/locate_dn_in_dit.png"
            id="org.apache.directory.studio.ldapbrowser.ui.actions.GotoDnAction"
            label="%Action_GotoDnAction_label"
            menubarPath="%Action_GotoDnAction_menubarpath"
@@ -605,7 +605,7 @@
         class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.SingleTabEntryEditor"
         description="%Editor_SingleTabEntryEditor_description"
         editorId="%Editor_SingleTabEntryEditor_id"
-        icon="resources/icons/browser_singletab_entry_editor.gif"
+        icon="resources/icons/browser_singletab_entry_editor.png"
         id="%Editor_SingleTabEntryEditor_id"
         name="%Editor_SingleTabEntryEditor_fullname"
         priority="52"
@@ -615,7 +615,7 @@
         class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.MultiTabEntryEditor"
         description="%Editor_MultiTabEntryEditor_description"
         editorId="%Editor_MultiTabEntryEditor_id"
-        icon="resources/icons/browser_multitab_entry_editor.gif"
+        icon="resources/icons/browser_multitab_entry_editor.png"
         id="%Editor_MultiTabEntryEditor_id"
         name="%Editor_MultiTabEntryEditor_fullname"
         priority="51"
@@ -625,7 +625,7 @@
         class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.SingleTabLdifEntryEditor"
         description="%Editor_SingleTabLdifEntryEditor_description"
         editorId="%Editor_SingleTabLdifEntryEditor_id"
-        icon="resources/icons/browser_singletab_ldif_editor.gif"
+        icon="resources/icons/browser_singletab_ldif_editor.png"
         id="%Editor_SingleTabLdifEntryEditor_id"
         multiWindow="false"
         name="%Editor_SingleTabLdifEntryEditor_fullname"
@@ -635,7 +635,7 @@
         class="org.apache.directory.studio.ldapbrowser.ui.editors.entry.MultiTabLdifEntryEditor"
         description="%Editor_MultiTabLdifEntryEditor_description"
         editorId="%Editor_MultiTabLdifEntryEditor_id"
-        icon="resources/icons/browser_multitab_ldif_editor.gif"
+        icon="resources/icons/browser_multitab_ldif_editor.png"
         id="%Editor_MultiTabLdifEntryEditor_id"
         multiWindow="true"
         name="%Editor_MultiTabLdifEntryEditor_fullname"

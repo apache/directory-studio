@@ -136,37 +136,37 @@ public final class LdifEditorConstants
     public static final String LDIF_MODDN_RECORD_TEMPLATE_ID = LdifEditorActivator.getDefault().getPluginProperties()
         .getString( "CtxType_LdifModdnRecord_id" ); //$NON-NLS-1$
 
-    public static final String IMG_LDIF_ADD = "resources/icons/ldif_add.gif"; //$NON-NLS-1$
+    public static final String IMG_LDIF_ADD = "resources/icons/ldif_add.png"; //$NON-NLS-1$
 
-    public static final String IMG_LDIF_MODIFY = "resources/icons/ldif_modify.gif"; //$NON-NLS-1$
+    public static final String IMG_LDIF_MODIFY = "resources/icons/ldif_modify.png"; //$NON-NLS-1$
 
-    public static final String IMG_LDIF_DELETE = "resources/icons/ldif_delete.gif"; //$NON-NLS-1$
+    public static final String IMG_LDIF_DELETE = "resources/icons/ldif_delete.png"; //$NON-NLS-1$
 
-    public static final String IMG_LDIF_RENAME = "resources/icons/ldif_rename.gif"; //$NON-NLS-1$
+    public static final String IMG_LDIF_RENAME = "resources/icons/ldif_rename.png"; //$NON-NLS-1$
 
-    public static final String IMG_LDIF_ATTRIBUTE = "resources/icons/ldif_attribute.gif"; //$NON-NLS-1$
+    public static final String IMG_LDIF_ATTRIBUTE = "resources/icons/ldif_attribute.png"; //$NON-NLS-1$
 
-    public static final String IMG_LDIF_VALUE = "resources/icons/ldif_value.gif"; //$NON-NLS-1$
+    public static final String IMG_LDIF_VALUE = "resources/icons/ldif_value.png"; //$NON-NLS-1$
 
-    public static final String IMG_LDIF_MOD_ADD = "resources/icons/ldif_mod_add.gif"; //$NON-NLS-1$
+    public static final String IMG_LDIF_MOD_ADD = "resources/icons/ldif_mod_add.png"; //$NON-NLS-1$
 
-    public static final String IMG_LDIF_MOD_REPLACE = "resources/icons/ldif_mod_replace.gif"; //$NON-NLS-1$
+    public static final String IMG_LDIF_MOD_REPLACE = "resources/icons/ldif_mod_replace.png"; //$NON-NLS-1$
 
-    public static final String IMG_LDIF_MOD_DELETE = "resources/icons/ldif_mod_delete.gif"; //$NON-NLS-1$
+    public static final String IMG_LDIF_MOD_DELETE = "resources/icons/ldif_mod_delete.png"; //$NON-NLS-1$
 
-    public static final String IMG_LDIF_COMMENT = "resources/icons/ldif_comment.gif"; //$NON-NLS-1$
+    public static final String IMG_LDIF_COMMENT = "resources/icons/ldif_comment.png"; //$NON-NLS-1$
 
-    public static final String IMG_LDIF_DN = "resources/icons/ldif_dn.gif"; //$NON-NLS-1$
+    public static final String IMG_LDIF_DN = "resources/icons/ldif_dn.png"; //$NON-NLS-1$
 
-    public static final String IMG_ENTRY = "resources/icons/entry.gif"; //$NON-NLS-1$
+    public static final String IMG_ENTRY = "resources/icons/entry.png"; //$NON-NLS-1$
 
-    public static final String IMG_TEMPLATE = "resources/icons/template.gif"; //$NON-NLS-1$
+    public static final String IMG_TEMPLATE = "resources/icons/template.png"; //$NON-NLS-1$
 
-    public static final String IMG_BROWSER_LDIFEDITOR = "resources/icons/ldifeditor.gif"; //$NON-NLS-1$
+    public static final String IMG_BROWSER_LDIFEDITOR = "resources/icons/ldifeditor.png"; //$NON-NLS-1$
 
-    public static final String IMG_LDIFEDITOR_NEW = "resources/icons/ldifeditor_new.gif"; //$NON-NLS-1$
+    public static final String IMG_LDIFEDITOR_NEW = "resources/icons/ldifeditor_new.png"; //$NON-NLS-1$
 
-    public static final String IMG_EXECUTE = "resources/icons/execute.gif"; //$NON-NLS-1$
+    public static final String IMG_EXECUTE = "resources/icons/execute.png"; //$NON-NLS-1$
 
     public static final String LDIF_PARTITIONING = "org.apache.directory.studio.ldifeditor.LdifPartitioning"; //$NON-NLS-1$
 

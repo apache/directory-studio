@@ -22,7 +22,7 @@
   <extension point="org.apache.directory.studio.valueeditors">
    <valueEditor
        class="org.apache.directory.studio.openldap.config.acl.editor.OpenLdapAclValueEditor"
-       icon="resources/icons/editor.gif"
+       icon="resources/icons/editor.png"
        name="OpenLDAP ACL Editor">
      <attribute attributeType="olcAccess" />
    </valueEditor>
