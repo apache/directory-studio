@@ -27,6 +27,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
+import org.junit.jupiter.api.Timeout.ThreadMode;
 
 
 /**
@@ -723,5 +725,52 @@ public class SyncReplParserTest
         assertEquals( BindMethod.SIMPLE, syncRepl.getBindMethod() );
         assertEquals( "cn=syncuser,dc=example,dc=com", syncRepl.getBindDn() );
         assertEquals( "secret", syncRepl.getCredentials() );
+    }
+
+
+    @Test
+    @Timeout(value = 5, threadMode = ThreadMode.SEPARATE_THREAD)
+    public void testQuotedValueKeepsBackslashes() throws Exception
+    {
+        // cn=config values are split by slapd's strtok_quote_ldif(), which passes backslashes through unchanged
+        SyncReplParser parser = new SyncReplParser();
+        SyncRepl syncRepl = parser.parse( "rid=1 tls_cacert=\"C:\\certs\\ca.pem\"" );
+
+        assertNotNull( syncRepl );
+        assertEquals( "C:\\certs\\ca.pem", syncRepl.getTlsCacert() );
+    }
+
+
+    @Test
+    @Timeout(value = 5, threadMode = ThreadMode.SEPARATE_THREAD)
+    public void testFilterAndBindDnWithBackslashSurviveRoundTrip() throws Exception
+    {
+        SyncRepl syncRepl = new SyncRepl();
+        syncRepl.setRid( "1" );
+        syncRepl.setFilter( "(cn=a\\2ab)" );
+        syncRepl.setBindDn( "cn=Smith\\, John,dc=example,dc=com" );
+
+        String value = syncRepl.toString();
+
+        assertTrue( value.contains( "filter=\"(cn=a\\2ab)\"" ), value );
+        assertTrue( value.contains( "binddn=\"cn=Smith\\, John,dc=example,dc=com\"" ), value );
+
+        SyncRepl reparsed = new SyncReplParser().parse( value );
+
+        assertNotNull( reparsed );
+        assertEquals( "(cn=a\\2ab)", reparsed.getFilter() );
+        assertEquals( "cn=Smith\\, John,dc=example,dc=com", reparsed.getBindDn() );
+    }
+
+
+    @Test
+    public void testTlsCacertDir() throws Exception
+    {
+        SyncReplParser parser = new SyncReplParser();
+        SyncRepl syncRepl = parser.parse( "rid=1 tls_cacertdir=/etc/openldap/certs" );
+
+        assertNotNull( syncRepl );
+        assertEquals( "/etc/openldap/certs", syncRepl.getTlsCacertDir() );
+        assertNull( syncRepl.getTlsCacert() );
     }
 }
