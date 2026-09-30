@@ -21,8 +21,7 @@
 package org.apache.directory.studio.ldapbrowser.common.widgets.entryeditor;
 
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.apache.directory.studio.ldapbrowser.core.model.IAttribute;
 import org.apache.directory.studio.ldapbrowser.core.model.impl.Attribute;
@@ -62,7 +61,7 @@ public class EntryEditorWidgetSorterTest
     public void testEqual()
     {
         int result = sorter.compare( null, valueA1, valueA2 );
-        assertThat( result, equalTo( 0 ) );
+        assertEquals( 0, result );
     }
 
 
@@ -70,7 +69,7 @@ public class EntryEditorWidgetSorterTest
     public void testLeftIsSmaller()
     {
         int result = sorter.compare( null, valueA1, valueB );
-        assertThat( result, equalTo( -1 ) );
+        assertEquals( -1, result );
     }
 
 
@@ -78,7 +77,7 @@ public class EntryEditorWidgetSorterTest
     public void testRightIsSmaller()
     {
         int result = sorter.compare( null, valueB, valueA2 );
-        assertThat( result, equalTo( 1 ) );
+        assertEquals( 1, result );
     }
 
 
@@ -86,7 +85,7 @@ public class EntryEditorWidgetSorterTest
     public void testLeftIsEmpty()
     {
         int result = sorter.compare( null, empytValue1, valueA2 );
-        assertThat( result, equalTo( -1 ) );
+        assertEquals( -1, result );
     }
 
 
@@ -94,7 +93,7 @@ public class EntryEditorWidgetSorterTest
     public void testRightIsEmpty()
     {
         int result = sorter.compare( null, valueB, empytValue2 );
-        assertThat( result, equalTo( 1 ) );
+        assertEquals( 1, result );
     }
 
 
@@ -102,7 +101,7 @@ public class EntryEditorWidgetSorterTest
     public void testBothAreEmpty()
     {
         int result = sorter.compare( null, empytValue1, empytValue2 );
-        assertThat( result, equalTo( 0 ) );
+        assertEquals( 0, result );
     }
 
 }
