@@ -2257,7 +2257,7 @@ public class DatabasesDetailsPage implements IDetailsPage
                 CommonUIUtils
                     .openErrorDialog( NLS
                         .bind(
-                            "The replication consumer definition could not be read correctly.\nThe following error occured:\n {0}",
+                            "The replication consumer definition could not be read correctly.\nThe following error occurred:\n {0}",
                             e ) );
             }
         }
